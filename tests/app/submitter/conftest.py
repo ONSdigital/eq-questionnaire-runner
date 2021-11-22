@@ -12,7 +12,6 @@ from app.utilities.metadata_parser import (
     validate_questionnaire_claims,
     validate_runner_claims,
 )
-from tests.app.conftest import RESPONSE_EXPIRY
 
 
 @pytest.fixture
@@ -78,7 +77,6 @@ def fake_questionnaire_store(fake_metadata, fake_response_metadata):
             "ce_sid",
             1,
             None,
-            RESPONSE_EXPIRY,
         )
     )
     storage.add_or_update = MagicMock()

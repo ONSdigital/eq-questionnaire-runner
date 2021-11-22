@@ -30,13 +30,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         )
         # check we can decrypt the data
         self.assertEqual(
-            (
-                "test",
-                "ce_sid",
-                QuestionnaireStore.LATEST_VERSION,
-                None,
-                RESPONSE_EXPIRY,
-            ),
+            ("test", "ce_sid", QuestionnaireStore.LATEST_VERSION, None),
             encrypted.get_user_data(),
         )
 
@@ -58,7 +52,6 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
                 "ce_sid",
                 QuestionnaireStore.LATEST_VERSION,
                 now,
-                RESPONSE_EXPIRY,
             ),
             encrypted.get_user_data(),
         )
@@ -83,7 +76,6 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
                 "ce_sid",
                 QuestionnaireStore.LATEST_VERSION,
                 None,
-                RESPONSE_EXPIRY,
             ),
             self.storage.get_user_data(),
         )
@@ -101,11 +93,10 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
                 "ce_sid",
                 QuestionnaireStore.LATEST_VERSION,
                 None,
-                RESPONSE_EXPIRY,
             ),
             self.storage.get_user_data(),
         )
         self.storage.delete()
         self.assertEqual(
-            (None, None, None, None, None), self.storage.get_user_data()
+            (None, None, None, None), self.storage.get_user_data()
         )  # pylint: disable=protected-access

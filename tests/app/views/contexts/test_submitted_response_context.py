@@ -12,7 +12,6 @@ from app.utilities.schema import load_schema_from_name
 from app.views.contexts.view_submitted_response_context import (
     build_view_submitted_response_context,
 )
-from tests.app.conftest import RESPONSE_EXPIRY
 
 SUBMITTED_AT = datetime.now(timezone.utc)
 SCHEMA = load_schema_from_name("test_view_submitted_response", "en")
@@ -109,7 +108,6 @@ def fake_questionnaire_store():
             "ce_sid",
             1,
             None,
-            RESPONSE_EXPIRY,
         )
     )
     questionnaire_store = QuestionnaireStore(storage)

@@ -40,27 +40,20 @@ class EncryptedQuestionnaireStorage:
     def get_user_data(
         self,
     ) -> Union[
-        tuple[None, None, None, None, None],
-        tuple[str, str, int, Optional[datetime], Optional[datetime]],
+        tuple[None, None, None, None],
+        tuple[str, str, int, Optional[datetime]],
     ]:
         questionnaire_state = self._find_questionnaire_state()
         if questionnaire_state and questionnaire_state.state_data:
             version = questionnaire_state.version
             submitted_at = questionnaire_state.submitted_at
             collection_exercise_sid = questionnaire_state.collection_exercise_sid
-            expires_at = questionnaire_state.expires_at
             decrypted_data = self._get_snappy_compressed_data(
                 questionnaire_state.state_data
             )
-            return (
-                decrypted_data,
-                collection_exercise_sid,
-                version,
-                submitted_at,
-                expires_at,
-            )
+            return (decrypted_data, collection_exercise_sid, version, submitted_at)
 
-        return None, None, None, None, None
+        return None, None, None, None
 
     def delete(self) -> None:
         logger.debug("deleting users data", user_id=self._user_id)

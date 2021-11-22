@@ -5,7 +5,6 @@ from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.utilities.json import json_dumps, json_loads
-from tests.app.conftest import RESPONSE_EXPIRY
 
 
 def get_basic_input():
@@ -50,7 +49,6 @@ class TestQuestionnaireStore(TestCase):
                 "ce_sid",
                 1,
                 None,
-                RESPONSE_EXPIRY,
             )
 
         def set_output_data(data, collection_exercise_sid, submitted_at, expires_at):

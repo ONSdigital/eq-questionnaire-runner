@@ -1,11 +1,10 @@
 from types import MappingProxyType
 
-import dateutil
-
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import ProgressStore
 from app.utilities.json import json_dumps, json_loads
+from app.utilities.metadata_parser import parse_iso_8601_datetime
 
 
 class QuestionnaireStore:
@@ -29,7 +28,6 @@ class QuestionnaireStore:
             self.collection_exercise_sid,
             version,
             self.submitted_at,
-            self.expires_at,
         ) = self._storage.get_user_data()
 
         if raw_data:
@@ -85,7 +83,7 @@ class QuestionnaireStore:
             data=data,
             collection_exercise_sid=collection_exercise_sid,
             submitted_at=self.submitted_at,
-            expires_at=dateutil.parser.parse(response_expires_at)
+            expires_at=parse_iso_8601_datetime(response_expires_at)
             if response_expires_at
             else None,
         )
