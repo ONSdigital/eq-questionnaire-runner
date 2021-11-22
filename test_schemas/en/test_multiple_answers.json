@@ -143,8 +143,7 @@
                                         "type": "Duration",
                                         "units": ["years", "months"],
                                         "mandatory": true,
-                                        "label": "How long have you had your licence?",
-                                        "dontWrap": false
+                                        "label": "How long have you had your licence?"
                                     },
                                     {
                                         "id": "year-date-answer",
