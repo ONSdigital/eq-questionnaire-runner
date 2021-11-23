@@ -8,7 +8,7 @@ from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
-from app.questionnaire.routing.operations import evaluate_count
+from app.questionnaire.routing.operations import Operations
 from app.settings import DEFAULT_LOCALE
 
 DAYS_OF_WEEK = {
@@ -332,4 +332,4 @@ class PlaceholderTransforms:
 
     @staticmethod
     def list_item_count(list_to_count: Optional[Sized]) -> int:
-        return evaluate_count(list_to_count)
+        return Operations().evaluate_count(list_to_count)
