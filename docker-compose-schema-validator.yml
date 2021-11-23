@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+    ajv:
+        image: onsdigital/eq-questionnaire-validator:use-AJV-validator-ajv # update image with latest-ajv
+        networks:
+            - eq-schema
+        ports:
+            - "5002:5002"
+
+    py-validator:
+        image: onsdigital/eq-questionnaire-validator:use-AJV-validator # update image with latest
+        networks:
+            - eq-schema
+        environment:
+            AJV_HOST: "ajv"
+        ports:
+            - "5001:5000"
+        depends_on:
+            - ajv
+networks:
+    eq-schema:
+        driver: bridge
