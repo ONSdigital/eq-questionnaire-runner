@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from app.data_models import QuestionnaireStore
 from app.storage.encrypted_questionnaire_storage import EncryptedQuestionnaireStorage
 from tests.app.app_context_test_case import AppContextTestCase
+from tests.app.conftest import RESPONSE_EXPIRY
 
 
 class TestEncryptedQuestionnaireStorage(AppContextTestCase):
@@ -22,7 +23,9 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         encrypted = EncryptedQuestionnaireStorage(
             user_id="1", user_ik="2", pepper="pepper"
         )
-        encrypted.save(data="test", collection_exercise_sid="ce_sid")
+        encrypted.save(
+            data="test", collection_exercise_sid="ce_sid", expires_at=RESPONSE_EXPIRY
+        )
         # check we can decrypt the data
         self.assertEqual(
             ("test", "ce_sid", QuestionnaireStore.LATEST_VERSION, None),
@@ -34,7 +37,12 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
         encrypted = EncryptedQuestionnaireStorage(
             user_id="1", user_ik="2", pepper="pepper"
         )
-        encrypted.save(data="test", collection_exercise_sid="ce_sid", submitted_at=now)
+        encrypted.save(
+            data="test",
+            collection_exercise_sid="ce_sid",
+            submitted_at=now,
+            expires_at=RESPONSE_EXPIRY,
+        )
 
         self.assertEqual(
             ("test", "ce_sid", QuestionnaireStore.LATEST_VERSION, now),
@@ -50,7 +58,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
 
     def test_get(self):
         data = "test"
-        self.storage.save(data, "ce_sid")
+        self.storage.save(data, "ce_sid", expires_at=RESPONSE_EXPIRY)
         self.assertEqual(
             (data, "ce_sid", QuestionnaireStore.LATEST_VERSION, None),
             self.storage.get_user_data(),
@@ -58,7 +66,7 @@ class TestEncryptedQuestionnaireStorage(AppContextTestCase):
 
     def test_delete(self):
         data = "test"
-        self.storage.save(data, "ce_sid")
+        self.storage.save(data, "ce_sid", expires_at=RESPONSE_EXPIRY)
         self.assertEqual(
             (data, "ce_sid", QuestionnaireStore.LATEST_VERSION, None),
             self.storage.get_user_data(),

@@ -20,6 +20,12 @@ logger = get_logger()
 ISO_8601_DATETIME = "%Y-%m-%dT%H:%M:%S%z"
 
 
+def parse_iso_8601_datetime(iso_8601_datetime: str) -> datetime:
+    return datetime.strptime(iso_8601_datetime, ISO_8601_DATETIME).replace(
+        tzinfo=timezone.utc
+    )
+
+
 class RegionCode(validate.Regexp):
     """A region code defined as per ISO 3166-2:GB
     Currently, this does not validate the subdivision, but only checks length
@@ -100,10 +106,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     case_type = VALIDATORS["string"](required=False)  # type:ignore
     response_expires_at = VALIDATORS["iso_8601_date_string"](
         required=False,
-        validate=lambda x: datetime.strptime(x, ISO_8601_DATETIME).replace(
-            tzinfo=timezone.utc
-        )
-        > datetime.now(tz=timezone.utc),
+        validate=lambda x: parse_iso_8601_datetime(x) > datetime.now(tz=timezone.utc),
     )  # type:ignore
 
     # Either schema_name OR the three census parameters are required. Should be required after census.
