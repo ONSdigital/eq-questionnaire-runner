@@ -22,6 +22,7 @@ class EncryptedQuestionnaireStorage:
         data: str,
         collection_exercise_sid: str,
         submitted_at: Optional[datetime] = None,
+        expires_at: Optional[datetime] = None,
     ) -> None:
         compressed_data = snappy.compress(data)
         encrypted_data = self.encrypter.encrypt_data(compressed_data)
@@ -31,6 +32,7 @@ class EncryptedQuestionnaireStorage:
             collection_exercise_sid,
             QuestionnaireStore.LATEST_VERSION,
             submitted_at,
+            expires_at,
         )
 
         current_app.eq["storage"].put(questionnaire_state)  # type: ignore
