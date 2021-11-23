@@ -28,7 +28,6 @@ run:
             datastoreReadGqlQuery="SELECT * FROM \`questionnaire-state\` WHERE submitted_at < $((`date --utc +%s` - EXPIRATION_TIME_OFFSET_IN_SECONDS)) AND submitted_at > NULL",\
             datastoreReadProjectId="${PROJECT_ID}",\
             datastoreDeleteProjectId="${PROJECT_ID}" \
-            --network eq  \
             --subnetwork regions/europe-west2/subnetworks/eq \
             --format="value(id.scope())")
 

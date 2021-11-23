@@ -28,7 +28,6 @@ run:
       datastoreReadGqlQuery="SELECT * FROM \`eq-session\` WHERE expires_at < $((`date --utc +%s` - EXPIRATION_TIME_OFFSET_IN_SECONDS))",\
       datastoreReadProjectId="${PROJECT_ID}",\
       datastoreDeleteProjectId="${PROJECT_ID}" \
-      --network eq  \
       --subnetwork regions/europe-west2/subnetworks/eq \
       --format="value(id.scope())")
 
