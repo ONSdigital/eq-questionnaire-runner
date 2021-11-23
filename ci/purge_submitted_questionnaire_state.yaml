@@ -21,7 +21,7 @@ run:
             gcloud auth activate-service-account --key-file "${GOOGLE_APPLICATION_CREDENTIALS}"
             gcloud config set project "${PROJECT_ID}"
 
-            DATAFLOW_JOB=$(gcloud dataflow jobs run purge_questionnaire_state \
+            DATAFLOW_JOB=$(gcloud dataflow jobs run purge_submitted_questionnaire_state \
             --region europe-west2 \
             --gcs-location gs://dataflow-templates/"${DATAFLOW_TEMPLATE_VERSION}"/Firestore_to_Firestore_Delete \
             --parameters \

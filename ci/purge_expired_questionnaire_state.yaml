@@ -20,11 +20,11 @@ run:
             gcloud auth activate-service-account --key-file "${GOOGLE_APPLICATION_CREDENTIALS}"
             gcloud config set project "${PROJECT_ID}"
 
-            DATAFLOW_JOB=$(gcloud dataflow jobs run purge_questionnaire_state \
+            DATAFLOW_JOB=$(gcloud dataflow jobs run purge_expired_questionnaire_state \
             --region europe-west2 \
             --gcs-location gs://dataflow-templates/"${DATAFLOW_TEMPLATE_VERSION}"/Firestore_to_Firestore_Delete \
             --parameters \
-            firestoreReadGqlQuery="SELECT * FROM \`questionnaire-state\` WHERE expired_at < $(`date --utc +%s`) AND submitted_at = NULL",\
+            firestoreReadGqlQuery="SELECT * FROM \`questionnaire-state\` WHERE expired_at < $((`date --utc +%s`)) AND submitted_at = NULL",\
             firestoreReadProjectId="${PROJECT_ID}",\
             firestoreDeleteProjectId="${PROJECT_ID}" \
             --format="value(id.scope())")
