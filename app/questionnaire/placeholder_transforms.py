@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from decimal import Decimal
 from typing import Optional, Sequence, Sized, Union
 from urllib.parse import quote
@@ -8,21 +8,13 @@ from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
-from app.questionnaire.routing.operations import Operations
+from app.questionnaire.routing.operations import DateOffset, Operations
+from app.questionnaire.routing.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
 
-DAYS_OF_WEEK = {
-    "MONDAY": 0,
-    "TUESDAY": 1,
-    "WEDNESDAY": 2,
-    "THURSDAY": 3,
-    "FRIDAY": 4,
-    "SATURDAY": 5,
-    "SUNDAY": 6,
-}
-
-
 # pylint: disable=too-many-public-methods
+
+
 class PlaceholderTransforms:
     """
     A class to group the transforms that can be used within placeholders
@@ -31,6 +23,7 @@ class PlaceholderTransforms:
     def __init__(self, language: str):
         self.language = language
         self.locale = DEFAULT_LOCALE if language in ["en", "eo"] else language
+        self._operations = Operations()
 
     input_date_format = "%Y-%m-%d"
 
@@ -128,8 +121,8 @@ class PlaceholderTransforms:
     def calculate_date_difference(first_date: str, second_date: str) -> str:
 
         time = relativedelta(
-            PlaceholderTransforms.parse_date(second_date),
-            PlaceholderTransforms.parse_date(first_date),
+            parse_datetime(second_date),
+            parse_datetime(first_date),
         )
 
         if time.years:
@@ -171,22 +164,12 @@ class PlaceholderTransforms:
         :return: The start and end datetime objects of the range.
         :rtype: Tuple[datetime, datetime]
         """
-        try:
-            first_day_of_week_idx = DAYS_OF_WEEK[first_day_of_week]
-        except KeyError as err:
-            raise KeyError(f"'{first_day_of_week}' is not a valid weekday") from err
+        first_day_of_prior_full_week: date = self._operations.resolve_date_from_string(
+            reference_date,
+            DateOffset(days=offset_full_weeks * 7, day_of_week=first_day_of_week),
+            offset_by_full_weeks=True,
+        )  # type: ignore
 
-        if days_in_range < 1:
-            raise ValueError("'days_in_range' must be a positive integer")
-
-        reference_datetime = PlaceholderTransforms.parse_date(reference_date)
-
-        first_day_of_current_week = reference_datetime - relativedelta(
-            days=(reference_datetime.weekday() - first_day_of_week_idx) % 7
-        )
-        first_day_of_prior_full_week = first_day_of_current_week + relativedelta(
-            days=offset_full_weeks * 7
-        )
         last_day_of_range = first_day_of_prior_full_week + relativedelta(
             days=days_in_range - 1
         )
@@ -209,7 +192,7 @@ class PlaceholderTransforms:
         :rtype: str
         """
         start_date_str, end_date_str = date_range
-        start_date, end_date = list(map(PlaceholderTransforms.parse_date, date_range))
+        start_date, end_date = list(map(parse_datetime, date_range))
         start_date_format = "EEEE d"
         end_date_format = "EEEE d MMMM y"
 
@@ -222,29 +205,6 @@ class PlaceholderTransforms:
         end_date_formatted = self.format_date(end_date_str, end_date_format)
 
         return f"{start_date_formatted} to {end_date_formatted}"
-
-    @staticmethod
-    def parse_date(date: str) -> datetime:
-        """
-        :param date: string representing a date
-        :return: datetime of that date
-
-        Convert `date` from string into `datetime` object. `date` can be 'YYYY-MM-DD', 'YYYY-MM','now' or ISO 8601 format.
-        Note that in the shorthand YYYY-MM format, day_of_month is assumed to be 1.
-        """
-        if date == "now":
-            return datetime.now(tz=timezone.utc)
-
-        date_formats = ["%Y-%m-%d", "%Y-%m-%dT%H:%M:%S.%f%z", "%Y-%m"]
-
-        for date_format in date_formats:
-            try:
-                return datetime.strptime(date, date_format).replace(tzinfo=timezone.utc)
-            except ValueError:
-                continue
-        raise ValueError(
-            f"No valid date format for date '{date}', possible formats: {date_formats}"
-        )
 
     @staticmethod
     def add(lhs: Union[int, Decimal], rhs: Union[int, Decimal]) -> Union[int, Decimal]:
@@ -330,6 +290,5 @@ class PlaceholderTransforms:
     def _create_hyperlink(href: str, link_text: str) -> str:
         return f'<a href="{href}">{link_text}</a>'
 
-    @staticmethod
-    def list_item_count(list_to_count: Optional[Sized]) -> int:
-        return Operations().evaluate_count(list_to_count)
+    def list_item_count(self, list_to_count: Optional[Sized]) -> int:
+        return self._operations.evaluate_count(list_to_count)
