@@ -1,5 +1,4 @@
 import unittest
-from datetime import datetime, timezone
 from decimal import Decimal
 
 import pytest
@@ -284,28 +283,6 @@ class TestPlaceholderParser(unittest.TestCase):
         assert self.transforms.list_item_count([]) == 0
         assert self.transforms.list_item_count(None) == 0
 
-    @staticmethod
-    def test_parse_date():
-        assert PlaceholderTransforms.parse_date("2021-10") == datetime.strptime(
-            "2021-10", "%Y-%m"
-        ).replace(tzinfo=timezone.utc)
-        assert PlaceholderTransforms.parse_date("2021-10-29") == datetime.strptime(
-            "2021-10-29", "%Y-%m-%d"
-        ).replace(tzinfo=timezone.utc)
-        assert PlaceholderTransforms.parse_date(
-            "2021-10-29T10:53:41.511833+00:00"
-        ) == datetime.strptime(
-            "2021-10-29T10:53:41.511833+00:00", "%Y-%m-%dT%H:%M:%S.%f%z"
-        ).replace(
-            tzinfo=timezone.utc
-        )
-
-    def test_parse_date_exception(self):
-        with self.assertRaises(ValueError):
-            PlaceholderTransforms.parse_date("2021--10")
-            PlaceholderTransforms.parse_date("2021-10-229")
-            PlaceholderTransforms.parse_date("2021-10-29T10:53:41.511833+00:0000")
-
 
 @pytest.mark.parametrize(
     "ref_date,weeks_prior,day_range,first_day_of_week,expected",
@@ -375,16 +352,6 @@ def test_date_range_bounds_kwarg_default_monday(placeholder_transform):
     expected = ("2021-09-13", "2021-09-19")
     actual = placeholder_transform.date_range_bounds("2021-09-26", -1, 7)
     assert actual == expected
-
-
-def test_date_range_bounds_negative_range_raises_ValueError(placeholder_transform):
-    with pytest.raises(ValueError):
-        placeholder_transform.date_range_bounds("2021-09-27", 0, -7)
-
-
-def test_date_range_bounds_bad_day_name_raises_KeyError(placeholder_transform):
-    with pytest.raises(KeyError):
-        placeholder_transform.date_range_bounds("2021-09-27", 0, 7, "RANDOMDAY")
 
 
 @pytest.mark.parametrize(

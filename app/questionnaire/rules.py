@@ -1,11 +1,11 @@
 import logging
-import re
 from datetime import datetime, timezone
 from typing import Optional
 
 from dateutil.relativedelta import relativedelta
 
 from app.data_models.answer import AnswerValueTypes
+from app.questionnaire.routing.utils import parse_datetime
 
 MAX_REPEATS = 25
 
@@ -138,17 +138,7 @@ def get_date_match_value(date_comparison, answer_store, schema, metadata):
 
 
 def convert_to_datetime(value: Optional[str]) -> Optional[datetime]:
-    if not value:
-        return None
-
-    if re.match(r"\d{4}-\d{2}-\d{2}", value):
-        date_format = "%Y-%m-%d"
-    elif re.match(r"\d{4}$", value):
-        date_format = "%Y"
-    else:
-        date_format = "%Y-%m"
-
-    return datetime.strptime(value, date_format).replace(tzinfo=timezone.utc)
+    return parse_datetime(value)
 
 
 def evaluate_goto(

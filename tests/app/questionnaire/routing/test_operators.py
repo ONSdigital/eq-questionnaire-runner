@@ -300,6 +300,7 @@ def test_operation_date(date_string: str, offset):
     operator = Operator(Operator.DATE, operation)
 
     offset = offset or {}
+
     expected_result = (
         convert_to_datetime(date_string).date()
         + relativedelta(
@@ -312,6 +313,64 @@ def test_operation_date(date_string: str, offset):
     )
 
     assert operator.evaluate(operands) == expected_result
+
+
+@pytest.mark.parametrize(
+    "offset, expected_result",
+    [
+        # Last Thursday (Yesterday from reference date)
+        ({"day_of_week": "THURSDAY"}, datetime(year=2020, month=12, day=31)),
+        # Last Saturday
+        ({"day_of_week": "SATURDAY"}, datetime(year=2020, month=12, day=26)),
+        # Last Week Thursday
+        (
+            {"day_of_week": "THURSDAY", "days": -7},
+            datetime(year=2020, month=12, day=24),
+        ),
+        # Last Week Saturday (Same as Last Saturday since reference date is a Friday)
+        (
+            {"day_of_week": "SATURDAY", "days": -7},
+            datetime(year=2020, month=12, day=26),
+        ),
+        # Next Thursday / Next Week Thursday
+        ({"day_of_week": "THURSDAY", "days": 7}, datetime(year=2021, month=1, day=7)),
+        # Next Saturday (Tomorrow from reference date)
+        ({"day_of_week": "SATURDAY", "days": 7}, datetime(year=2021, month=1, day=2)),
+        # Next Week Saturday
+        ({"day_of_week": "SATURDAY", "days": 14}, datetime(year=2021, month=1, day=9)),
+        # 1 full week Thursday
+        ({"day_of_week": "THURSDAY", "days": 14}, datetime(year=2021, month=1, day=14)),
+    ],
+)
+def test_operation_date_offsets_literal_date(offset, expected_result):
+    """
+    This is to test a literal date instead of dynamically generating the expected date.
+
+    Initial date: 2021-01-01 is a Friday
+    """
+
+    date_string = "2021-01-01"
+    operands = (
+        date_string,
+        offset,
+    )
+    operation = get_operation(Operator.DATE)
+    operator = Operator(Operator.DATE, operation)
+
+    assert operator.evaluate(operands) == expected_result.date()
+
+
+def test_operation_date_day_of_week_offsets_with_invalid_days_offset():
+    date_string = "2021-01-01"
+    operands = (
+        date_string,
+        {"day_of_week": "MONDAY", "days": -1},
+    )
+    operation = get_operation(Operator.DATE)
+    operator = Operator(Operator.DATE, operation)
+
+    with pytest.raises(ValueError):
+        operator.evaluate(operands)
 
 
 @pytest.mark.parametrize(
