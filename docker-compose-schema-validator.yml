@@ -1,23 +1,24 @@
+---
 version: '3'
 
 services:
-    ajv:
-        image: onsdigital/eq-questionnaire-validator:${TAG}-ajv # update image with latest-ajv
-        networks:
-            - eq-schema
-        ports:
-            - "5002:5002"
+  ajv-validator:
+    image: onsdigital/eq-questionnaire-validator:${TAG}-ajv
+    networks:
+      - eq-schema
+    ports:
+      - 5002:5002
 
-    py-validator:
-        image: onsdigital/eq-questionnaire-validator:${TAG} # update image with latest
-        networks:
-            - eq-schema
-        environment:
-            AJV_HOST: "ajv"
-        ports:
-            - "5001:5000"
-        depends_on:
-            - ajv
+  py-validator:
+    image: onsdigital/eq-questionnaire-validator:${TAG}
+    networks:
+      - eq-schema
+    environment:
+      AJV_HOST: ajv-validator
+    ports:
+      - 5001:5000
+    depends_on:
+      - ajv-validator
 networks:
-    eq-schema:
-        driver: bridge
+  eq-schema:
+    driver: bridge
