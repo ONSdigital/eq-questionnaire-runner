@@ -2,14 +2,14 @@ version: '3'
 
 services:
     ajv:
-        image: onsdigital/eq-questionnaire-validator:use-AJV-validator-ajv # update image with latest-ajv
+        image: onsdigital/eq-questionnaire-validator:${TAG}-ajv # update image with latest-ajv
         networks:
             - eq-schema
         ports:
             - "5002:5002"
 
     py-validator:
-        image: onsdigital/eq-questionnaire-validator:use-AJV-validator # update image with latest
+        image: onsdigital/eq-questionnaire-validator:${TAG} # update image with latest
         networks:
             - eq-schema
         environment:
