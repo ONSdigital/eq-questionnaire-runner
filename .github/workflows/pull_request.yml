@@ -181,9 +181,9 @@ jobs:
           docker push onsdigital/eq-questionnaire-runner:$TAG
       - name: Push to GCR
         env:
-            GCR_SERVICE_KEY: ${{ secrets.GCR_SERVICE_KEY }}
+            TEMP_JN_211125_EQ_GAR: ${{ secrets.TEMP_JN_211125_EQ_GAR }}
         run: |
-          echo $GCR_SERVICE_KEY | docker login -u _json_key --password-stdin https://eu.gcr.io
+          echo $TEMP_JN_211125_EQ_GAR | docker login -u _json_key --password-stdin https://europe-west2-docker.pkg.dev
           gcloud auth configure-docker europe-west2-docker.pkg.dev
-          echo "Pushing to GCR with tag $TAG"
+          echo "Pushing to GAR with tag $TAG"
           docker push europe-west2-docker.pkg.dev/james-dev-gar-211124a/eq-questionnaire-runner/eq-questionnaire-runner:$TAG
