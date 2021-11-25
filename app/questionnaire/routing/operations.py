@@ -125,9 +125,9 @@ class Operations:
                 if not offset_by_full_weeks and days_offset < 0 and days_difference < 0:
                     # If we have a negative offset and the date difference is less than 6 days.
                     # Add 7 days as this always goes backwards to reach the `day_of_week`, hence it can already be -7 days.
-                    value_as_date += relativedelta(days=7)
+                    days_to_reduce -= 7
 
-                value_as_date -= relativedelta(days=days_to_reduce)
+                days_offset -= days_to_reduce
 
             value_as_date += relativedelta(
                 days=days_offset,
