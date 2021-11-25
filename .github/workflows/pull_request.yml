@@ -185,4 +185,4 @@ jobs:
         run: |
           echo $GCR_SERVICE_KEY | docker login -u _json_key --password-stdin https://eu.gcr.io
           echo "Pushing to GCR with tag $TAG"
-          docker push eu.gcr.io/${{ secrets.GCR_PROJECT_ID }}/eq-questionnaire-runner:$TAG
+          docker push europe-west2-docker.pkg.dev/james-dev-gar-211124a/eq-questionnaire-runner/eq-questionnaire-runner:$TAG
