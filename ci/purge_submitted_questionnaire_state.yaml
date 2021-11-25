@@ -7,6 +7,7 @@ params:
     SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
     PROJECT_ID:
     DATAFLOW_TEMPLATE_VERSION: '2021-11-12-00_RC00'
+    SUBMITTED_AT_PURGE_OFFSET_IN_SECONDS: 3600
 run:
     path: bash
     args:
@@ -20,11 +21,11 @@ run:
             gcloud auth activate-service-account --key-file "${GOOGLE_APPLICATION_CREDENTIALS}"
             gcloud config set project "${PROJECT_ID}"
 
-            DATAFLOW_JOB=$(gcloud dataflow jobs run purge_expired_questionnaire_state \
+            DATAFLOW_JOB=$(gcloud dataflow jobs run purge_submitted_questionnaire_state \
             --region europe-west2 \
             --gcs-location gs://dataflow-templates/"${DATAFLOW_TEMPLATE_VERSION}"/Firestore_to_Firestore_Delete \
             --parameters \
-            firestoreReadGqlQuery="SELECT * FROM \`questionnaire-state\` WHERE expires_at < $((`date --utc +%s`))",\
+            firestoreReadGqlQuery="SELECT * FROM \`questionnaire-state\` WHERE submitted_at < $((`date --utc +%s` - SUBMITTED_AT_PURGE_OFFSET_IN_SECONDS)) AND submitted_at > NULL",\
             firestoreReadProjectId="${PROJECT_ID}",\
             firestoreDeleteProjectId="${PROJECT_ID}" \
             --format="value(id.scope())")
@@ -37,7 +38,7 @@ run:
             done
 
             if [[ "${DATAFLOW_JOB_STATE}" == "JOB_STATE_DONE" ]]; then
-              echo "Expired questionnaire states purged successfully from Datastore"
+              echo "Submitted questionnaire states purged successfully from Datastore"
             else
               exit 1
             fi
