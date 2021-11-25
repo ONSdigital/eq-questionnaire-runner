@@ -38,7 +38,7 @@ run:
             done
 
             if [[ "${DATAFLOW_JOB_STATE}" == "JOB_STATE_DONE" ]]; then
-              echo "Expired questionnaire states purged successfully from Datastore"
+              echo "Submitted questionnaire states purged successfully from Datastore"
             else
               exit 1
             fi
