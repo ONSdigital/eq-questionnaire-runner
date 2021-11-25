@@ -3,7 +3,6 @@ from typing import Mapping, Optional, Union
 from unittest.mock import Mock
 
 import pytest
-from babel.dates import format_datetime
 from freezegun import freeze_time
 
 from app.data_models import AnswerStore, ListStore

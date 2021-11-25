@@ -2,10 +2,12 @@ from datetime import date
 from decimal import Decimal
 from typing import Iterable, Optional, Sequence, Sized, TypedDict, TypeVar, Union
 
+from babel.dates import format_datetime
 from dateutil.relativedelta import relativedelta
 
 from app.questionnaire.routing.helpers import ValueTypes, casefold
 from app.questionnaire.routing.utils import parse_datetime
+from app.settings import DEFAULT_LOCALE
 
 ComparableValue = TypeVar("ComparableValue", str, int, float, Decimal, date)
 NonArrayPrimitiveTypes = Union[str, int, float, Decimal, None]
@@ -32,6 +34,10 @@ class Operations:
     """
     A class to group the operations
     """
+
+    def __init__(self, language: str):
+        self._language = language
+        self._locale = DEFAULT_LOCALE if language in ["en", "eo"] else language
 
     @staticmethod
     @casefold
@@ -136,3 +142,13 @@ class Operations:
             )
 
         return value_as_date
+
+    @staticmethod
+    def date_range(start_date: date, days_in_range: int) -> list[date]:
+        return [(start_date + relativedelta(days=i)) for i in range(days_in_range)]
+
+    def format_date(self, date_to_format: date, date_format: str) -> str:
+        formatted_date: str = format_datetime(
+            date_to_format, date_format, locale=self._locale
+        )
+        return formatted_date
