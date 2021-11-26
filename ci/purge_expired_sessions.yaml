@@ -6,8 +6,8 @@ image_resource:
 params:
   SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
   PROJECT_ID:
-  DATAFLOW_TEMPLATE_VERSION: '2021-08-02-00_RC00'
-  EXPIRATION_TIME_OFFSET_IN_SECONDS: 10800
+  DATAFLOW_TEMPLATE_VERSION: '2021-11-12-00_RC00'
+  EXPIRES_AT_PURGE_OFFSET_IN_SECONDS: 10800
 run:
   path: bash
   args:
@@ -23,11 +23,11 @@ run:
 
       DATAFLOW_JOB=$(gcloud dataflow jobs run purge_session \
       --region europe-west2 \
-      --gcs-location gs://dataflow-templates/"${DATAFLOW_TEMPLATE_VERSION}"/Datastore_to_Datastore_Delete \
+      --gcs-location gs://dataflow-templates/"${DATAFLOW_TEMPLATE_VERSION}"/Firestore_to_Firestore_Delete \
       --parameters \
-      datastoreReadGqlQuery="SELECT * FROM \`eq-session\` WHERE expires_at < $((`date --utc +%s` - EXPIRATION_TIME_OFFSET_IN_SECONDS))",\
-      datastoreReadProjectId="${PROJECT_ID}",\
-      datastoreDeleteProjectId="${PROJECT_ID}" \
+      firestoreReadGqlQuery="SELECT * FROM \`eq-session\` WHERE expires_at < $((`date --utc +%s` - EXPIRES_AT_PURGE_OFFSET_IN_SECONDS))",\
+      firestoreReadProjectId="${PROJECT_ID}",\
+      firestoreDeleteProjectId="${PROJECT_ID}" \
       --subnetwork regions/europe-west2/subnetworks/eq \
       --format="value(id.scope())")
 
