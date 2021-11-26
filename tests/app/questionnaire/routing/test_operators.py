@@ -318,7 +318,7 @@ def test_operation_date(date_string: str, offset):
 @pytest.mark.parametrize(
     "offset, expected_result",
     [
-        # Last Thursday (Yesterday from reference date)
+        # Last Thursday (Day before reference date)
         ({"day_of_week": "THURSDAY"}, datetime(year=2020, month=12, day=31)),
         # Last Saturday
         ({"day_of_week": "SATURDAY"}, datetime(year=2020, month=12, day=26)),
@@ -343,15 +343,9 @@ def test_operation_date(date_string: str, offset):
     ],
 )
 def test_operation_date_offsets_literal_date(offset, expected_result):
-    """
-    This is to test a literal date instead of dynamically generating the expected date.
-
-    Initial date: 2021-01-01 is a Friday
-    """
-
-    date_string = "2021-01-01"
+    reference_date_string = "2021-01-01"  # Friday
     operands = (
-        date_string,
+        reference_date_string,
         offset,
     )
     operation = get_operation(Operator.DATE)
