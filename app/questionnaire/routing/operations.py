@@ -35,7 +35,7 @@ class Operations:
     A class to group the operations
     """
 
-    def __init__(self, language: str):
+    def __init__(self, language: str) -> None:
         self._language = language
         self._locale = DEFAULT_LOCALE if language in ["en", "eo"] else language
 
