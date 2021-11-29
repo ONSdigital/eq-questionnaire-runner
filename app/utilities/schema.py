@@ -1,3 +1,4 @@
+import os
 from functools import lru_cache
 from glob import glob
 from pathlib import Path
@@ -15,7 +16,7 @@ from app.utilities.json import json_load, json_loads
 
 logger = get_logger()
 
-SCHEMA_DIR = "schemas/*"
+SCHEMA_DIR = "schemas"
 TEST_SCHEMA_DIR = "schemas/test"
 LANGUAGE_CODES = ("en", "cy", "ga")
 
@@ -32,15 +33,16 @@ def get_schema_path_map(include_test_schemas: Optional[bool] = False) -> Mapping
     dirs = [SCHEMA_DIR]
     if include_test_schemas:
         dirs.append(TEST_SCHEMA_DIR)
-
-    return {
-        language_code: {
-            Path(schema_file).with_suffix("").name: schema_file
-            for schema_dir in dirs
-            for schema_file in glob(f"{schema_dir}/{language_code}/*.json")
+    schemas = {}
+    for survey_type in os.listdir(f"{os.getcwd()}/{SCHEMA_DIR}"):
+        schemas[survey_type] = {
+            language_code: {
+                Path(schema_file).with_suffix("").name: schema_file
+                for schema_file in glob(f"{os.getcwd()}/{SCHEMA_DIR}/{survey_type}/{language_code}/*.json")
+            }
+            for language_code in LANGUAGE_CODES
         }
-        for language_code in LANGUAGE_CODES
-    }
+    return schemas
 
 
 def _schema_exists(language_code, schema_name):
