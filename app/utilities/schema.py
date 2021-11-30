@@ -2,7 +2,7 @@ import os
 from functools import lru_cache
 from glob import glob
 from pathlib import Path
-from typing import List, Mapping, Optional
+from typing import Mapping, Optional
 
 import requests
 from structlog import get_logger
