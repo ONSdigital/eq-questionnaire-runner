@@ -928,3 +928,73 @@ def test_format_date(rule, expected_result):
         ),
     )
     assert when_rule_evaluator.evaluate(rule=rule) == expected_result
+
+
+@freeze_time("2021-01-01")
+def test_map_without_nested_date_operator():
+    rule = {
+        Operator.MAP: [
+            {Operator.FORMAT_DATE: ["self", "yyyy-MM-dd"]},
+            {
+                Operator.DATE_RANGE: [
+                    {
+                        Operator.DATE: [
+                            {"source": "response_metadata", "identifier": "started_at"},
+                            {"days": -7, "day_of_week": "MONDAY"},
+                        ]
+                    },
+                    3,
+                ]
+            },
+        ]
+    }
+
+    when_rule_evaluator = get_when_rule_evaluator(
+        response_metadata={"started_at": datetime.now(timezone.utc).isoformat()}
+    )
+
+    assert when_rule_evaluator.evaluate(rule=rule) == [
+        "2020-12-21",
+        "2020-12-22",
+        "2020-12-23",
+    ]
+
+
+@freeze_time("2021-01-01")
+@pytest.mark.parametrize(
+    "offset, expected_result",
+    [
+        ({}, ["1 January 2021", "2 January 2021", "3 January 2021"]),
+        ({"days": 7}, ["8 January 2021", "9 January 2021", "10 January 2021"]),
+    ],
+)
+def test_map_with_nested_date_operator(offset, expected_result):
+    rule = {
+        Operator.MAP: [
+            {
+                Operator.FORMAT_DATE: [
+                    {
+                        Operator.DATE: [
+                            "self",
+                            offset,
+                        ]
+                    },
+                    "d MMMM yyyy",
+                ]
+            },
+            {"source": "answers", "identifier": "checkbox-answer"},
+        ]
+    }
+
+    when_rule_evaluator = get_when_rule_evaluator(
+        answer_store=AnswerStore(
+            [
+                {
+                    "answer_id": "checkbox-answer",
+                    "value": ["2021-01-01", "2021-01-02", "2021-01-03"],
+                }
+            ]
+        )
+    )
+
+    assert when_rule_evaluator.evaluate(rule=rule) == expected_result

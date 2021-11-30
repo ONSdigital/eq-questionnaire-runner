@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import date
-from typing import Generator, Mapping, Optional, Sequence, Union
+from typing import Generator, Iterable, Mapping, Optional, Sequence, Union
 
 from app.data_models import AnswerStore, ListStore
 from app.questionnaire import Location, QuestionnaireSchema
@@ -42,30 +42,43 @@ class WhenRuleEvaluator:
         self.operations = Operations(language=self.language)
 
     def _evaluate(self, rule: dict[str, Sequence]) -> Union[bool, Optional[date]]:
-        next_rule = next(iter(rule))
-        operator = Operator(next_rule, self.operations)
-        operands = rule[next_rule]
+        operator_name = next(iter(rule))
+        operator = Operator(operator_name, self.operations)
+        operands = rule[operator_name]
 
         if not isinstance(operands, Sequence):
             raise TypeError(
                 f"The rule is invalid, operands should be of type Sequence and not {type(operands)}"
             )
 
-        resolved_operands = self.get_resolved_operands(operands)
+        resolved_operands: Iterable[Union[bool, Optional[date], ValueSourceTypes]]
+
+        if operator_name == Operator.MAP:
+            resolved_iterables = self._resolved_operand(operands[1])
+            resolved_operands = [operands[0], resolved_iterables]
+        else:
+            resolved_operands = self.get_resolved_operands(operands)
+
         return operator.evaluate(resolved_operands)
+
+    def _resolved_operand(
+        self, operand: ValueSourceTypes
+    ) -> Union[bool, Optional[date], ValueSourceTypes]:
+        if isinstance(operand, dict) and "source" in operand:
+            return self.value_source_resolver.resolve(operand)
+
+        if isinstance(operand, dict) and any(
+            operator in operand for operator in OPERATION_MAPPING
+        ):
+            return self._evaluate(operand)
+
+        return operand
 
     def get_resolved_operands(
         self, operands: Sequence[ValueSourceTypes]
     ) -> Generator[Union[bool, Optional[date], ValueSourceTypes], None, None]:
         for operand in operands:
-            if isinstance(operand, dict) and "source" in operand:
-                yield self.value_source_resolver.resolve(operand)
-            elif isinstance(operand, dict) and any(
-                operator in operand for operator in OPERATION_MAPPING
-            ):
-                yield self._evaluate(operand)
-            else:
-                yield operand
+            yield self._resolved_operand(operand)
 
     def evaluate(self, rule: dict[str, Sequence]) -> Union[bool, Optional[date]]:
         return self._evaluate(rule)

@@ -1,6 +1,12 @@
 from datetime import datetime, timezone
 from typing import Optional, overload
 
+ISO_8601_DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
+
+
+def parse_iso_8601_datetime(iso_8601_datetime: str) -> datetime:
+    return datetime.fromisoformat(iso_8601_datetime).replace(tzinfo=timezone.utc)
+
 
 @overload
 def parse_datetime(date_string: None) -> None:
@@ -26,7 +32,12 @@ def parse_datetime(date_string: Optional[str]) -> Optional[datetime]:
     if date_string == "now":
         return datetime.now(tz=timezone.utc)
 
-    date_formats = ["%Y-%m-%dT%H:%M:%S.%f%z", "%Y-%m-%d", "%Y-%m", "%Y"]
+    try:
+        return parse_iso_8601_datetime(date_string)
+    except ValueError:
+        pass
+
+    date_formats = ["%Y-%m-%d", "%Y-%m", "%Y"]
 
     for date_format in date_formats:
         try:
