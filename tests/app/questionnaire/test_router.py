@@ -245,6 +245,22 @@ class TestRouterLocationValidity(RouterTestCase):
 
         self.assertTrue(can_access_location)
 
+    def test_can_access_with_list_name_and_list_name_id(self):
+        self.schema = load_schema_from_name("test_textfield")
+
+        current_location = Location(
+            section_id="default-section",
+            block_id="name-block",
+            list_name="default-list",
+            list_item_id="default-list-id",
+        )
+        routing_path = RoutingPath(["name-block"], section_id="default-section")
+        can_access_location = self.router.can_access_location(
+            current_location, routing_path
+        )
+
+        self.assertFalse(can_access_location)
+
     def test_cant_access(self):
         self.schema = load_schema_from_name(
             "test_repeating_sections_with_hub_and_spoke"

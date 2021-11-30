@@ -506,7 +506,6 @@
                                 "answers": [
                                     {
                                         "id": "duration-answer",
-                                        "label": "Years and Months",
                                         "mandatory": false,
                                         "units": ["years", "months"],
                                         "type": "Duration"

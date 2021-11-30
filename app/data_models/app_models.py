@@ -5,7 +5,13 @@ from marshmallow import Schema, fields, post_load, pre_dump
 
 class QuestionnaireState:
     def __init__(
-        self, user_id, state_data, collection_exercise_sid, version, submitted_at=None
+        self,
+        user_id,
+        state_data,
+        collection_exercise_sid,
+        version,
+        submitted_at=None,
+        expires_at=None,
     ):
         self.user_id = user_id
         self.state_data = state_data
@@ -14,6 +20,7 @@ class QuestionnaireState:
         self.created_at = datetime.now(tz=timezone.utc)
         self.updated_at = datetime.now(tz=timezone.utc)
         self.submitted_at = submitted_at
+        self.expires_at = expires_at
 
 
 class EQSession:
@@ -61,6 +68,7 @@ class QuestionnaireStateSchema(Schema, DateTimeSchemaMixin):
     collection_exercise_sid = fields.Str()
     version = fields.Integer()
     submitted_at = Timestamp(allow_none=True)
+    expires_at = Timestamp(allow_none=True)
 
     @post_load
     def make_model(self, data, **kwargs):  # pylint: disable=unused-argument
