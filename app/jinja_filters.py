@@ -8,7 +8,7 @@ from flask import current_app
 from jinja2 import pass_eval_context
 from markupsafe import Markup, escape
 
-from app.questionnaire.rules import convert_to_datetime
+from app.questionnaire.when_rules import convert_to_datetime
 from app.settings import MAX_NUMBER
 
 blueprint = flask.Blueprint("filters", __name__)

@@ -13,7 +13,7 @@ from app.forms.field_handlers import DateHandler
 from app.forms.fields import date_field
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.questionnaire.rules import convert_to_datetime
+from app.questionnaire.when_rules import convert_to_datetime
 from app.utilities.schema import load_schema_from_name
 
 

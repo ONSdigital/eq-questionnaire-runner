@@ -7,7 +7,7 @@ from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing.when_rule_evaluator import WhenRuleEvaluator
 from app.questionnaire.routing_path import RoutingPath
-from app.questionnaire.rules import evaluate_goto, evaluate_when_rules
+from app.questionnaire.when_rules import evaluate_goto, evaluate_when_rules
 
 
 class PathFinder:

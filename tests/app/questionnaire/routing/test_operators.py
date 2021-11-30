@@ -6,7 +6,7 @@ from freezegun import freeze_time
 
 from app.questionnaire.routing.operations import Operations
 from app.questionnaire.routing.operator import Operator
-from app.questionnaire.rules import convert_to_datetime
+from app.questionnaire.when_rules import convert_to_datetime
 
 current_date = datetime.now(timezone.utc)
 current_date_as_yyyy_mm_dd = current_date.strftime("%Y-%m-%d")

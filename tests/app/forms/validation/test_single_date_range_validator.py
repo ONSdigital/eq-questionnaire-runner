@@ -4,7 +4,7 @@ from wtforms.validators import ValidationError
 
 from app.forms import error_messages
 from app.forms.validators import SingleDatePeriodCheck
-from app.questionnaire.rules import convert_to_datetime
+from app.questionnaire.when_rules import convert_to_datetime
 from tests.app.app_context_test_case import AppContextTestCase
 
 
