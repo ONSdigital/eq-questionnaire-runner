@@ -42,7 +42,7 @@ def test_get_schema_path_map():
     schema_path_map = get_schema_path_map(include_test_schemas=True)
 
     assert all(
-        language_code in schema_path_map.keys() for language_code in ["en", "cy"]
+        language_code in schema_path_map for language_code in ["en", "cy"]
     )
     assert all(os.path.exists(path) for path in schema_path_map["en"].values())
     assert all(
