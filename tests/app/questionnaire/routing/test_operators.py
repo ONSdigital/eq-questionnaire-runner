@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 
 from app.questionnaire.routing.operations import Operations
 from app.questionnaire.routing.operator import Operator
-from app.questionnaire.rules import convert_to_datetime
+from app.questionnaire.routing.utils import parse_datetime
 
 current_date = datetime.now(timezone.utc)
 current_date_as_yyyy_mm_dd = current_date.strftime("%Y-%m-%d")
@@ -302,7 +302,7 @@ def test_operation_date(date_string: str, offset):
     offset = offset or {}
 
     expected_result = (
-        convert_to_datetime(date_string).date()
+        parse_datetime(date_string).date()
         + relativedelta(
             days=offset.get("days", 0),
             months=offset.get("months", 0),
