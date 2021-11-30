@@ -6,7 +6,7 @@ from app.data_models.progress_store import ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
-from app.questionnaire.rules.when_rule_evaluator import WhenRuleEvaluator
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.when_rules import evaluate_goto, evaluate_when_rules
 
 
@@ -123,7 +123,7 @@ class PathFinder:
     def _evaluate_routing_rules(
         self, this_location, blocks, routing_rules, block_index, routing_path_block_ids
     ):
-        when_rule_evaluator = WhenRuleEvaluator(
+        when_rule_evaluator = RuleEvaluator(
             self.schema,
             self.answer_store,
             self.list_store,
@@ -173,7 +173,7 @@ class PathFinder:
             return False
 
         if isinstance(skip_conditions, dict):
-            when_rule_evaluator = WhenRuleEvaluator(
+            when_rule_evaluator = RuleEvaluator(
                 self.schema,
                 self.answer_store,
                 self.list_store,

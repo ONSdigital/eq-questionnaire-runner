@@ -15,7 +15,7 @@ from app.questionnaire.value_source_resolver import (
 
 
 @dataclass
-class WhenRuleEvaluator:
+class RuleEvaluator:
     schema: QuestionnaireSchema
     answer_store: AnswerStore
     list_store: ListStore
