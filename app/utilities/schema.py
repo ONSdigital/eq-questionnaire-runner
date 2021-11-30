@@ -34,6 +34,7 @@ def get_schema_list(language_code: str = DEFAULT_LANGUAGE_CODE) -> dict[str, lis
         if lang == language_code
     }
 
+
 @lru_cache(maxsize=None)
 def get_schema_path(language_code, schema_name):
     for schemas_by_language in get_schema_path_map(include_test_schemas=True).values():
