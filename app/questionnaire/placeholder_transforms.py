@@ -8,8 +8,8 @@ from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
-from app.questionnaire.routing.operations import DateOffset, Operations
-from app.questionnaire.routing.utils import parse_datetime
+from app.questionnaire.rules.operations import DateOffset, Operations
+from app.questionnaire.rules.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
 
 # pylint: disable=too-many-public-methods

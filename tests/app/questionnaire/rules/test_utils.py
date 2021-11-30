@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 import pytest
 from freezegun import freeze_time
 
-from app.questionnaire.routing.utils import parse_datetime
+from app.questionnaire.rules.utils import parse_datetime
 
 
 @pytest.mark.parametrize(

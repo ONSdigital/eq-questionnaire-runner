@@ -1,10 +1,10 @@
 from datetime import date
 from typing import TYPE_CHECKING, Generator, Iterable, Optional, Sequence, Union
 
-from app.questionnaire.routing.helpers import ValueTypes
+from app.questionnaire.rules.helpers import ValueTypes
 
 if TYPE_CHECKING:
-    from app.questionnaire.routing.operations import Operations  # pragma: no cover
+    from app.questionnaire.rules.operations import Operations  # pragma: no cover
 
 
 class Operator:

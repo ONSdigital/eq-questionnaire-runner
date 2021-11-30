@@ -4,8 +4,8 @@ import pytest
 from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 
-from app.questionnaire.routing.operations import Operations
-from app.questionnaire.routing.operator import Operator
+from app.questionnaire.rules.operations import Operations
+from app.questionnaire.rules.operator import Operator
 from app.questionnaire.when_rules import convert_to_datetime
 
 current_date = datetime.now(timezone.utc)

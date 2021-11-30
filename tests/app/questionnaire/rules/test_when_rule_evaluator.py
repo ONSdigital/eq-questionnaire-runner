@@ -9,8 +9,8 @@ from app.data_models import AnswerStore, ListStore
 from app.data_models.answer import Answer
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
-from app.questionnaire.routing.operator import Operator
-from app.questionnaire.routing.when_rule_evaluator import WhenRuleEvaluator
+from app.questionnaire.rules.operator import Operator
+from app.questionnaire.rules.when_rule_evaluator import WhenRuleEvaluator
 from tests.app.questionnaire.test_value_source_resolver import get_list_items
 
 current_date = datetime.now(timezone.utc).date()

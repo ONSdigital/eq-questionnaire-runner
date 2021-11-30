@@ -5,8 +5,8 @@ from app.data_models.list_store import ListStore
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.questionnaire.routing.when_rule_evaluator import WhenRuleEvaluator
 from app.questionnaire.routing_path import RoutingPath
+from app.questionnaire.rules.when_rule_evaluator import WhenRuleEvaluator
 from app.questionnaire.when_rules import evaluate_goto, evaluate_when_rules
 
 

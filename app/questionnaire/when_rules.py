@@ -5,7 +5,7 @@ from typing import Optional
 from dateutil.relativedelta import relativedelta
 
 from app.data_models.answer import AnswerValueTypes
-from app.questionnaire.routing.utils import parse_datetime
+from app.questionnaire.rules.utils import parse_datetime
 
 MAX_REPEATS = 25
 

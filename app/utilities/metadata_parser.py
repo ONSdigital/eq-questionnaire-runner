@@ -14,7 +14,7 @@ from marshmallow import (
 )
 from structlog import get_logger
 
-from app.questionnaire.routing.utils import parse_iso_8601_datetime
+from app.questionnaire.rules.utils import parse_iso_8601_datetime
 from app.utilities.schema import get_schema_name_from_params
 
 logger = get_logger()

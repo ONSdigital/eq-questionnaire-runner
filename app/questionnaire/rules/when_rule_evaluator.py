@@ -6,8 +6,8 @@ from app.data_models import AnswerStore, ListStore
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.relationship_location import RelationshipLocation
-from app.questionnaire.routing.operations import Operations
-from app.questionnaire.routing.operator import OPERATION_MAPPING, Operator
+from app.questionnaire.rules.operations import Operations
+from app.questionnaire.rules.operator import OPERATION_MAPPING, Operator
 from app.questionnaire.value_source_resolver import (
     ValueSourceResolver,
     ValueSourceTypes,
