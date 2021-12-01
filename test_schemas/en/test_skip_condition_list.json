@@ -193,17 +193,21 @@
                                     }
                                 ]
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                             "skip_conditions": {
+                                "when": {
+                                    "<": [
                                         {
-                                            "list": "people",
-                                            "condition": "less than",
-                                            "value": 3
-                                        }
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "people"
+                                                }
+                                            ]
+                                        },
+                                        3
                                     ]
                                 }
-                            ],
+                            },
                             "type": "Interstitial"
                         },
                         {
@@ -216,17 +220,21 @@
                                     }
                                 ]
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
                                         {
-                                            "list": "people",
-                                            "condition": "not equals",
-                                            "value": 2
-                                        }
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "people"
+                                                }
+                                            ]
+                                        },
+                                        2
                                     ]
                                 }
-                            ],
+                            },
                             "type": "Interstitial"
                         },
                         {
@@ -239,17 +247,21 @@
                                     }
                                 ]
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    ">": [
                                         {
-                                            "list": "people",
-                                            "condition": "greater than",
-                                            "value": 1
-                                        }
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "people"
+                                                }
+                                            ]
+                                        },
+                                        1
                                     ]
                                 }
-                            ],
+                            },
                             "type": "Interstitial"
                         }
                     ]
