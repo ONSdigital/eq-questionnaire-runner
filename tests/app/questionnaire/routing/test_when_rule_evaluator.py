@@ -32,6 +32,8 @@ def get_mock_schema():
 
 
 def get_when_rule_evaluator(
+    *,
+    language="en",
     schema: QuestionnaireSchema = None,
     answer_store: AnswerStore = AnswerStore(),
     list_store: ListStore = ListStore(),
@@ -48,6 +50,7 @@ def get_when_rule_evaluator(
         schema.get_default_answer = Mock(return_value=None)
 
     return WhenRuleEvaluator(
+        language=language,
         schema=schema,
         metadata=metadata or {},
         response_metadata=response_metadata,
@@ -880,3 +883,48 @@ def test_answer_source_count(rule, expected_result):
         ),
     )
     assert when_rule_evaluator.evaluate(rule=rule) is expected_result
+
+
+@freeze_time("2021-01-01")
+@pytest.mark.parametrize(
+    "rule, expected_result",
+    [
+        # With nested date operator
+        (
+            {
+                Operator.FORMAT_DATE: [
+                    {
+                        Operator.DATE: [
+                            {"source": "answers", "identifier": "some-answer"},
+                            {"days": 7},
+                        ]
+                    },
+                    "EEEE d MMMM yyyy",
+                ]
+            },
+            "Friday 8 January 2021",
+        ),
+        # Without nested date operator
+        (
+            {
+                Operator.FORMAT_DATE: [
+                    datetime(2021, 1, 1, tzinfo=timezone.utc),
+                    "EEEE d MMMM yyyy",
+                ]
+            },
+            "Friday 1 January 2021",
+        ),
+    ],
+)
+def test_format_date(rule, expected_result):
+    when_rule_evaluator = get_when_rule_evaluator(
+        answer_store=AnswerStore(
+            [
+                {
+                    "answer_id": "some-answer",
+                    "value": "2021-01-01",
+                }
+            ]
+        ),
+    )
+    assert when_rule_evaluator.evaluate(rule=rule) == expected_result
