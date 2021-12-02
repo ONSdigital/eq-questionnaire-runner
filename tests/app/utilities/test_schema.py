@@ -50,9 +50,13 @@ def test_get_schema_path_map():
 
 
 def test_get_schema_list():
-    assert get_schema_list() == list(
-        get_schema_path_map(include_test_schemas=True)["en"].keys()
-    )
+    expected_output = {
+        survey_type: list(schemas_by_language['en'])
+        for survey_type, schemas_by_language in get_schema_path_map(
+            include_test_schemas=True
+        ).items()
+    }
+    assert get_schema_list() == expected_output
 
 
 # pylint: disable=no-value-for-parameter
