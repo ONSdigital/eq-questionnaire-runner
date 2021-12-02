@@ -23,7 +23,7 @@ class PlaceholderTransforms:
     def __init__(self, language: str):
         self.language = language
         self.locale = DEFAULT_LOCALE if language in ["en", "eo"] else language
-        self._operations = Operations()
+        self._operations = Operations(language=self.language)
 
     input_date_format = "%Y-%m-%d"
 

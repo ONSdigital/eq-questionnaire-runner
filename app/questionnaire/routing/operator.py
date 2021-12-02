@@ -1,7 +1,8 @@
 from datetime import date
-from typing import Callable, Generator, Iterable, Optional, Sequence, Union
+from typing import Generator, Iterable, Optional, Sequence, Union
 
 from app.questionnaire.routing.helpers import ValueTypes
+from app.questionnaire.routing.operations import Operations
 
 
 class Operator:
@@ -19,10 +20,12 @@ class Operator:
     ANY_IN: str = "any-in"
     COUNT: str = "count"
     DATE: str = "date"
+    DATE_RANGE: str = "date-range"
+    FORMAT_DATE: str = "format-date"
 
-    def __init__(self, name: str, operation: Callable) -> None:
+    def __init__(self, name: str, operations: Operations) -> None:
         self.name = name
-        self._operation = operation
+        self._operation = getattr(operations, OPERATION_MAPPING[self.name])
         self._ensure_operands_not_none = self.name in {
             Operator.GREATER_THAN,
             Operator.GREATER_THAN_OR_EQUAL,
@@ -50,3 +53,23 @@ class Operator:
     @staticmethod
     def _any_operands_none(*operands: Union[Sequence, ValueTypes]) -> bool:
         return any(operand is None for operand in operands)
+
+
+OPERATION_MAPPING: dict[str, str] = {
+    Operator.NOT: "evaluate_not",
+    Operator.AND: "evaluate_and",
+    Operator.OR: "evaluate_or",
+    Operator.EQUAL: "evaluate_equal",
+    Operator.NOT_EQUAL: "evaluate_not_equal",
+    Operator.GREATER_THAN: "evaluate_greater_than",
+    Operator.LESS_THAN: "evaluate_less_than",
+    Operator.GREATER_THAN_OR_EQUAL: "evaluate_greater_than_or_equal",
+    Operator.LESS_THAN_OR_EQUAL: "evaluate_less_than_or_equal",
+    Operator.IN: "evaluate_in",
+    Operator.ALL_IN: "evaluate_all_in",
+    Operator.ANY_IN: "evaluate_any_in",
+    Operator.COUNT: "evaluate_count",
+    Operator.DATE: "resolve_date_from_string",
+    Operator.DATE_RANGE: "date_range",
+    Operator.FORMAT_DATE: "format_date",
+}
