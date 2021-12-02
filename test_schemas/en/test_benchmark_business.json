@@ -208,6 +208,57 @@
                             ]
                         },
                         {
+                            "id": "block380",
+                            "type": "Question",
+                            "question": {
+                                "id": "question380",
+                                "title": "For which period are you able to report?",
+                                "type": "DateRange",
+                                "answers": [
+                                    {
+                                        "id": "answerfrom",
+                                        "type": "Date",
+                                        "mandatory": true,
+                                        "label": "Period from",
+                                        "q_code": "11",
+                                        "minimum": {
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ref_p_start_date"
+                                            },
+                                            "offset_by": {
+                                                "days": -31
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "answerto",
+                                        "type": "Date",
+                                        "mandatory": true,
+                                        "label": "Period to",
+                                        "q_code": "12",
+                                        "maximum": {
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ref_p_end_date"
+                                            },
+                                            "offset_by": {
+                                                "days": 31
+                                            }
+                                        }
+                                    }
+                                ],
+                                "period_limits": {
+                                    "minimum": {
+                                        "days": 76
+                                    },
+                                    "maximum": {
+                                        "days": 106
+                                    }
+                                }
+                            }
+                        },
+                        {
                             "id": "block381",
                             "type": "Question",
                             "question": {
