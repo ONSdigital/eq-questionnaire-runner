@@ -44,7 +44,7 @@ def evaluate_rule(when, answer_value):
 def evaluate_date_rule(when, answer_store, schema, metadata, answer_value):
     date_comparison = when["date_comparison"]
 
-    answer_value = convert_to_datetime(answer_value)
+    answer_value = parse_datetime(answer_value)
     match_value = get_date_match_value(date_comparison, answer_store, schema, metadata)
     condition = when.get("condition")
 
@@ -124,7 +124,7 @@ def get_date_match_value(date_comparison, answer_store, schema, metadata):
     elif "meta" in date_comparison:
         match_value = get_metadata_value(metadata, date_comparison["meta"])
 
-    match_value = convert_to_datetime(match_value)
+    match_value = parse_datetime(match_value)
 
     if "offset_by" in date_comparison and match_value:
         offset = date_comparison["offset_by"]
@@ -135,10 +135,6 @@ def get_date_match_value(date_comparison, answer_store, schema, metadata):
         )
 
     return match_value
-
-
-def convert_to_datetime(value: Optional[str]) -> Optional[datetime]:
-    return parse_datetime(value)
 
 
 def evaluate_goto(

@@ -25,8 +25,15 @@ def test_parse_datetime_now():
     assert parse_datetime("now") == datetime.now(timezone.utc)
 
 
-def test_parse_date_exception():
+@pytest.mark.parametrize(
+    "date_string",
+    [
+        "2021--10",
+        "2021-10-229",
+        "2021-10-29T10:53:41.511833+00:0000",
+        "2021-11-22T15:34:544Z",
+    ],
+)
+def test_parse_date_exception(date_string):
     with pytest.raises(ValueError):
-        parse_datetime("2021--10")
-        parse_datetime("2021-10-229")
-        parse_datetime("2021-10-29T10:53:41.511833+00:0000")
+        parse_datetime(date_string)
