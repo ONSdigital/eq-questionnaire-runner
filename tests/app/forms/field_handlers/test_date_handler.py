@@ -13,7 +13,7 @@ from app.forms.field_handlers import DateHandler
 from app.forms.fields import date_field
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.questionnaire.rules import convert_to_datetime
+from app.questionnaire.routing.utils import parse_datetime
 from app.utilities.schema import load_schema_from_name
 
 
@@ -88,7 +88,7 @@ def test_get_referenced_offset_value_for_value(app, value_source_resolver):
     minimum_date = handler.get_date_value("minimum")
     minimum_date = handler.transform_date_by_offset(minimum_date, {"days": 10})
 
-    assert minimum_date == convert_to_datetime("2017-06-21")
+    assert minimum_date == parse_datetime("2017-06-21")
 
 
 def test_get_referenced_offset_value_for_now_value(app, value_source_resolver):
@@ -111,7 +111,7 @@ def test_get_referenced_offset_value_for_meta(app, value_source_resolver):
     minimum_date = handler.get_date_value("minimum")
     minimum_date = handler.transform_date_by_offset(minimum_date, {"days": -10})
 
-    assert minimum_date == convert_to_datetime("2018-02-10")
+    assert minimum_date == parse_datetime("2018-02-10")
 
 
 @patch(
@@ -129,7 +129,7 @@ def test_get_referenced_offset_value_for_answer_id(app, value_source_resolver):
     maximum_date = handler.get_date_value("maximum")
     maximum_date = handler.transform_date_by_offset(maximum_date, {"months": 1})
 
-    assert maximum_date == convert_to_datetime("2018-04-20")
+    assert maximum_date == parse_datetime("2018-04-20")
 
 
 @patch(
@@ -161,7 +161,7 @@ def test_get_referenced_offset_value_with_list_item_id(app, value_source_resolve
     handler = DateHandler(answer, value_source_resolver, error_messages)
     maximum_date = handler.get_date_value("maximum")
 
-    assert maximum_date == convert_to_datetime("2018-04-20")
+    assert maximum_date == parse_datetime("2018-04-20")
 
 
 def test_get_referenced_offset_value_with_no_offset(app, value_source_resolver):
@@ -171,7 +171,7 @@ def test_get_referenced_offset_value_with_no_offset(app, value_source_resolver):
     minimum_date = handler.get_date_value("minimum")
     minimum_date = handler.transform_date_by_offset(minimum_date, {})
 
-    assert minimum_date == convert_to_datetime("2017-06-11")
+    assert minimum_date == parse_datetime("2017-06-11")
 
 
 @patch(
@@ -201,8 +201,8 @@ def test_minimum_and_maximum_offset_dates(app, value_source_resolver):
     minimum_date = handler.get_date_value("minimum")
     maximum_date = handler.get_date_value("maximum")
 
-    assert minimum_date == convert_to_datetime("2018-02-10")
-    assert maximum_date == convert_to_datetime("2019-03-20")
+    assert minimum_date == parse_datetime("2018-02-10")
+    assert maximum_date == parse_datetime("2019-03-20")
 
 
 def test_greater_minimum_date_than_maximum_date(app, value_source_resolver):
