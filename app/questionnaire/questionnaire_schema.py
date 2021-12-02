@@ -215,6 +215,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         schema: ImmutableDict = self.json.get("post_submission", ImmutableDict({}))
         return schema
 
+    @staticmethod
+    def _check_list_exists(rule: Union[dict, tuple], list_name: str) -> bool:
+        return isinstance(rule, dict) and (
+            rule.get("list") == list_name or rule.get("identifier") == list_name
+        )
+
     def _section_ids_associated_to_list_name(self, list_name: str) -> list[str]:
         section_ids: list[str] = []
 
@@ -223,7 +229,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             when_rules = get_values_for_key(section, "when", ignore_keys)
 
             if any(
-                rule.get("list") == list_name
+                self._check_list_exists(rule, list_name)
                 for when_rule in when_rules
                 for rule in when_rule
             ):
