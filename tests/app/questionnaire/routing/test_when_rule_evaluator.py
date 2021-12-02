@@ -607,7 +607,12 @@ def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
         (
             {
                 Operator.LESS_THAN: [
-                    {Operator.DATE: [current_date_as_yyyy_mm_dd, {"days": -1}]},
+                    {
+                        Operator.DATE: [
+                            current_date_as_yyyy_mm_dd,
+                            {"day_of_week": "MONDAY", "days": -7},
+                        ]
+                    },
                     {Operator.DATE: ["now"]},
                 ]
             },
