@@ -21,7 +21,7 @@ from app.forms.fields import (
     IntegerFieldWithSeparator,
 )
 from app.jinja_filters import format_number, get_formatted_currency
-from app.questionnaire.when_rules import convert_to_datetime
+from app.questionnaire.rules.utils import parse_datetime
 from app.utilities import safe_content
 
 if TYPE_CHECKING:
@@ -278,7 +278,7 @@ class SingleDatePeriodCheck:
         self.date_format = date_format
 
     def __call__(self, form: "QuestionnaireForm", field: StringField) -> None:
-        date = convert_to_datetime(form.data)
+        date = parse_datetime(form.data)
 
         if self.minimum_date and date and date < self.minimum_date:
             raise validators.ValidationError(
@@ -320,8 +320,8 @@ class DateRangeCheck:
     def __call__(
         self, form: "QuestionnaireForm", from_field: DateField, to_field: DateField
     ) -> None:
-        from_date = convert_to_datetime(from_field.data)
-        to_date = convert_to_datetime(to_field.data)
+        from_date = parse_datetime(from_field.data)
+        to_date = parse_datetime(to_field.data)
 
         if from_date and to_date:
             if from_date >= to_date:

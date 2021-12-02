@@ -8,7 +8,7 @@ from flask import current_app
 from jinja2 import pass_eval_context
 from markupsafe import Markup, escape
 
-from app.questionnaire.when_rules import convert_to_datetime
+from app.questionnaire.rules.utils import parse_datetime
 from app.settings import MAX_NUMBER
 
 blueprint = flask.Blueprint("filters", __name__)
@@ -125,7 +125,7 @@ def get_format_date(value):
     if value and re.match(r"\d{4}$", value):
         date_format = "yyyy"
 
-    date_to_format = convert_to_datetime(value).date()
+    date_to_format = parse_datetime(value).date()
 
     date = flask_babel.format_date(date_to_format, format=date_format)
 

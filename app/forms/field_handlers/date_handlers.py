@@ -13,7 +13,7 @@ from app.forms.validators import (
     SingleDatePeriodCheck,
     format_message_with_title,
 )
-from app.questionnaire.when_rules import convert_to_datetime
+from app.questionnaire.rules.utils import parse_datetime
 
 DateValidatorTypes = list[
     Union[OptionalForm, DateRequired, DateCheck, SingleDatePeriodCheck]
@@ -80,7 +80,7 @@ class DateHandler(FieldHandler):
         if value == "now":
             value = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
-        return convert_to_datetime(value) if isinstance(value, str) else None
+        return parse_datetime(value) if isinstance(value, str) else None
 
     @staticmethod
     def transform_date_by_offset(

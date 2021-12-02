@@ -1,11 +1,11 @@
 from datetime import datetime, timezone
 from typing import Optional, overload
 
-ISO_8601_DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
+from dateutil import parser
 
 
-def parse_iso_8601_datetime(iso_8601_datetime: str) -> datetime:
-    return datetime.fromisoformat(iso_8601_datetime).replace(tzinfo=timezone.utc)
+def parse_iso_8601_datetime(iso_8601_date_string: str) -> datetime:
+    return parser.isoparse(iso_8601_date_string).replace(tzinfo=timezone.utc)
 
 
 @overload
@@ -34,19 +34,5 @@ def parse_datetime(date_string: Optional[str]) -> Optional[datetime]:
 
     try:
         return parse_iso_8601_datetime(date_string)
-    except ValueError:
-        pass
-
-    date_formats = ["%Y-%m-%d", "%Y-%m", "%Y"]
-
-    for date_format in date_formats:
-        try:
-            return datetime.strptime(date_string, date_format).replace(
-                tzinfo=timezone.utc
-            )
-        except ValueError:
-            continue
-
-    raise ValueError(
-        f"No valid date format for date '{date_string}', possible formats: {date_formats}"
-    )
+    except ValueError as ex:
+        raise ValueError(f"'{date_string}' is not in a valid date format") from ex
