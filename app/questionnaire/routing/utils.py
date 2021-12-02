@@ -16,6 +16,7 @@ def parse_datetime(date_string: Optional[str]) -> Optional[datetime]:
     """
     :param date_string: string representing a date
     :return: datetime of that date string
+
     Convert `date` from string into `datetime` object. `date` can be 'YYYY-MM-DD', 'YYYY-MM','now' or ISO 8601 format.
     Note that in the shorthand YYYY-MM format, day_of_month is assumed to be 1.
     """
