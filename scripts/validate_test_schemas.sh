@@ -6,7 +6,7 @@ default="$(tput sgr0)"
 checks=4
 
 until [ "$checks" == 0 ]; do
-    response="$(curl -so /dev/null -w '%{http_code}' http://localhost:5001/status)"
+    response="$(curl -so /dev/null -w '%{http_code}' http://localhost:5002/status)"
 
     if [ "$response" != "200" ]; then
         echo "${red}---Error: Schema Validator Not Reachable---"
