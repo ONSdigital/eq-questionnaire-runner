@@ -206,9 +206,9 @@ class Operations:
         function_operands = deepcopy(function[function_operator])
 
         results = []
-        for iterable in iterables:
+        for item in iterables:
             resolved_operands = self._resolve_self_reference(
-                iterable, function_operands
+                item, function_operands
             )
 
             results.append(

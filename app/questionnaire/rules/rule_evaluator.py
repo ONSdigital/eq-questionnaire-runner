@@ -54,14 +54,14 @@ class RuleEvaluator:
         resolved_operands: Iterable[Union[bool, Optional[date], ValueSourceTypes]]
 
         if operator_name == Operator.MAP:
-            resolved_iterables = self._resolved_operand(operands[1])
+            resolved_iterables = self._resolve_operand(operands[1])
             resolved_operands = [operands[0], resolved_iterables]
         else:
             resolved_operands = self.get_resolved_operands(operands)
 
         return operator.evaluate(resolved_operands)
 
-    def _resolved_operand(
+    def _resolve_operand(
         self, operand: ValueSourceTypes
     ) -> Union[bool, Optional[date], ValueSourceTypes]:
         if isinstance(operand, dict) and "source" in operand:
@@ -78,7 +78,7 @@ class RuleEvaluator:
         self, operands: Sequence[ValueSourceTypes]
     ) -> Generator[Union[bool, Optional[date], ValueSourceTypes], None, None]:
         for operand in operands:
-            yield self._resolved_operand(operand)
+            yield self._resolve_operand(operand)
 
     def evaluate(self, rule: dict[str, Sequence]) -> Union[bool, Optional[date]]:
         return self._evaluate(rule)
