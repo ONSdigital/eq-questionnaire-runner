@@ -15,6 +15,9 @@
             }
         }
     },
+    "post_submission": {
+        "feedback": true
+    },
     "sections": [
         {
             "id": "sectionquestionnaire-introduction",
