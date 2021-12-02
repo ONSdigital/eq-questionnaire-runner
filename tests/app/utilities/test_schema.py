@@ -105,7 +105,8 @@ def test_schema_cache_on_app_start_up():
 
     total_schemas = sum(
         len(schemas)
-        for schemas in get_schema_path_map(include_test_schemas=True).values()
+        for schemas_by_language in get_schema_path_map(include_test_schemas=True).values()
+        for schemas in schemas_by_language.values()
     )
     cache_info = _load_schema_from_name.cache_info()
     assert cache_info.currsize > 0 and cache_info.currsize == total_schemas

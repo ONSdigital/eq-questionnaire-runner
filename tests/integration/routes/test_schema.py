@@ -20,6 +20,6 @@ class TestSchema(IntegrationTestCase):
         response = self.getResponseData()
         parsed_json = json_loads(response)
 
-        self.assertIsInstance(parsed_json, list)
+        self.assertIsInstance(parsed_json, dict)
         self.assertIsInstance(parsed_json[0], str)
         self.assertIn("test_textfield", parsed_json)
