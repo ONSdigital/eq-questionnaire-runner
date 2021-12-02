@@ -21,5 +21,5 @@ class TestSchema(IntegrationTestCase):
         parsed_json = json_loads(response)
 
         self.assertIsInstance(parsed_json, dict)
-        self.assertIsInstance(parsed_json['test'][0], str)
-        self.assertIn("test_textfield", parsed_json['test'])
+        self.assertIsInstance(parsed_json["test"][0], str)
+        self.assertIn("test_textfield", parsed_json["test"])
