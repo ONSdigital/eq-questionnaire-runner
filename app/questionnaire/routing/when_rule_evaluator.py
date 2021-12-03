@@ -4,8 +4,10 @@ from typing import Generator, Mapping, Optional, Sequence, Union
 
 from app.data_models import AnswerStore, ListStore
 from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.relationship_location import RelationshipLocation
-from app.questionnaire.routing.operator import OPERATIONS, Operator
+from app.questionnaire.routing.operations import Operations
+from app.questionnaire.routing.operator import OPERATION_MAPPING, Operator
 from app.questionnaire.value_source_resolver import (
     ValueSourceResolver,
     ValueSourceTypes,
@@ -21,6 +23,7 @@ class WhenRuleEvaluator:
     response_metadata: Mapping
     location: Union[None, Location, RelationshipLocation]
     routing_path_block_ids: Optional[list] = None
+    language: str = DEFAULT_LANGUAGE_CODE
 
     # pylint: disable=attribute-defined-outside-init
     def __post_init__(self) -> None:
@@ -36,10 +39,12 @@ class WhenRuleEvaluator:
             routing_path_block_ids=self.routing_path_block_ids,
             use_default_answer=True,
         )
+        self.operations = Operations(language=self.language)
 
     def _evaluate(self, rule: dict[str, Sequence]) -> Union[bool, Optional[date]]:
-        operator = Operator(next(iter(rule)))
-        operands = rule[operator.name]
+        next_rule = next(iter(rule))
+        operator = Operator(next_rule, self.operations)
+        operands = rule[next_rule]
 
         if not isinstance(operands, Sequence):
             raise TypeError(
@@ -56,7 +61,7 @@ class WhenRuleEvaluator:
             if isinstance(operand, dict) and "source" in operand:
                 yield self.value_source_resolver.resolve(operand)
             elif isinstance(operand, dict) and any(
-                operator in operand for operator in OPERATIONS
+                operator in operand for operator in OPERATION_MAPPING
             ):
                 yield self._evaluate(operand)
             else:

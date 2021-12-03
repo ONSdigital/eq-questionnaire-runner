@@ -1,11 +1,11 @@
 import logging
-import re
 from datetime import datetime, timezone
 from typing import Optional
 
 from dateutil.relativedelta import relativedelta
 
 from app.data_models.answer import AnswerValueTypes
+from app.questionnaire.routing.utils import parse_datetime
 
 MAX_REPEATS = 25
 
@@ -44,7 +44,7 @@ def evaluate_rule(when, answer_value):
 def evaluate_date_rule(when, answer_store, schema, metadata, answer_value):
     date_comparison = when["date_comparison"]
 
-    answer_value = convert_to_datetime(answer_value)
+    answer_value = parse_datetime(answer_value)
     match_value = get_date_match_value(date_comparison, answer_store, schema, metadata)
     condition = when.get("condition")
 
@@ -124,7 +124,7 @@ def get_date_match_value(date_comparison, answer_store, schema, metadata):
     elif "meta" in date_comparison:
         match_value = get_metadata_value(metadata, date_comparison["meta"])
 
-    match_value = convert_to_datetime(match_value)
+    match_value = parse_datetime(match_value)
 
     if "offset_by" in date_comparison and match_value:
         offset = date_comparison["offset_by"]
@@ -135,20 +135,6 @@ def get_date_match_value(date_comparison, answer_store, schema, metadata):
         )
 
     return match_value
-
-
-def convert_to_datetime(value: Optional[str]) -> Optional[datetime]:
-    if not value:
-        return None
-
-    if re.match(r"\d{4}-\d{2}-\d{2}", value):
-        date_format = "%Y-%m-%d"
-    elif re.match(r"\d{4}$", value):
-        date_format = "%Y"
-    else:
-        date_format = "%Y-%m"
-
-    return datetime.strptime(value, date_format).replace(tzinfo=timezone.utc)
 
 
 def evaluate_goto(

@@ -114,17 +114,17 @@
                                 "contents": [
                                     {
                                         "description": {
-                                            "text": "You were asked to enter <em>123</em> or <em>321</em> but you actually entered <em>{answer-1}</em> and <em>{answer-2}</em>.",
+                                            "text": "You were asked to enter <em>123</em> or <em>321</em> but you actually entered <em>{answer_1}</em> and <em>{answer_2}</em>.",
                                             "placeholders": [
                                                 {
-                                                    "placeholder": "answer-1",
+                                                    "placeholder": "answer_1",
                                                     "value": {
                                                         "source": "answers",
                                                         "identifier": "answer-1"
                                                     }
                                                 },
                                                 {
-                                                    "placeholder": "answer-2",
+                                                    "placeholder": "answer_2",
                                                     "value": {
                                                         "source": "answers",
                                                         "identifier": "answer-2"
@@ -149,17 +149,17 @@
                                 "contents": [
                                     {
                                         "description": {
-                                            "text": "You were asked to enter <em>123</em> or <em>321</em> and you entered <em>{answer-1}</em> and <em>{answer-2}</em>.",
+                                            "text": "You were asked to enter <em>123</em> or <em>321</em> and you entered <em>{answer_1}</em> and <em>{answer_2}</em>.",
                                             "placeholders": [
                                                 {
-                                                    "placeholder": "answer-1",
+                                                    "placeholder": "answer_1",
                                                     "value": {
                                                         "source": "answers",
                                                         "identifier": "answer-1"
                                                     }
                                                 },
                                                 {
-                                                    "placeholder": "answer-2",
+                                                    "placeholder": "answer_2",
                                                     "value": {
                                                         "source": "answers",
                                                         "identifier": "answer-2"
