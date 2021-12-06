@@ -77,6 +77,12 @@ To update the design system templates run:
 make load-design-system-templates
 ```
 
+To update the schemas folder with the latest schemas, this command will download the latest schemas.zip and extract them into the relevant folders:
+
+``` shell
+make load-schemas
+```
+
 Run the server inside the virtual env created by Pipenv with:
 
 ``` shell
