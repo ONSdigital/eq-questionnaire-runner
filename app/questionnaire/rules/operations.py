@@ -207,9 +207,7 @@ class Operations:
 
         results = []
         for item in iterables:
-            resolved_operands = self._resolve_self_reference(
-                item, function_operands
-            )
+            resolved_operands = self._resolve_self_reference(item, function_operands)
 
             results.append(
                 getattr(self, OPERATION_MAPPING[function_operator])(*resolved_operands)
