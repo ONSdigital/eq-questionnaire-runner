@@ -9,7 +9,11 @@ from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.routing_path import RoutingPath
-from app.questionnaire.rules import evaluate_goto, evaluate_rule, evaluate_when_rules
+from app.questionnaire.when_rules import (
+    evaluate_goto,
+    evaluate_rule,
+    evaluate_when_rules,
+)
 from tests.app.app_context_test_case import AppContextTestCase
 
 
@@ -962,9 +966,11 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         )
 
         with patch(
-            "app.questionnaire.rules.get_answer_for_answer_id", return_value=answer
+            "app.questionnaire.when_rules.get_answer_for_answer_id", return_value=answer
         ):
-            with patch("app.questionnaire.rules._is_answer_on_path", return_value=True):
+            with patch(
+                "app.questionnaire.when_rules._is_answer_on_path", return_value=True
+            ):
                 self.assertTrue(
                     evaluate_when_rules(
                         when_rules=when["when"],
@@ -1004,10 +1010,10 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         )
 
         with patch(
-            "app.questionnaire.rules.get_answer_for_answer_id", return_value=answer
+            "app.questionnaire.when_rules.get_answer_for_answer_id", return_value=answer
         ):
             with patch(
-                "app.questionnaire.rules._is_answer_on_path", return_value=False
+                "app.questionnaire.when_rules._is_answer_on_path", return_value=False
             ):
                 self.assertFalse(
                     evaluate_when_rules(
@@ -1046,7 +1052,9 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
 
         current_location = Location(section_id="some-section", block_id="some-block")
 
-        with patch("app.questionnaire.rules._is_answer_on_path", return_value=False):
+        with patch(
+            "app.questionnaire.when_rules._is_answer_on_path", return_value=False
+        ):
             self.assertFalse(
                 evaluate_when_rules(
                     when_rules=when["when"],

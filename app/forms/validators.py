@@ -21,7 +21,7 @@ from app.forms.fields import (
     IntegerFieldWithSeparator,
 )
 from app.jinja_filters import format_number, get_formatted_currency
-from app.questionnaire.routing.utils import parse_datetime
+from app.questionnaire.rules.utils import parse_datetime
 from app.utilities import safe_content
 
 if TYPE_CHECKING:

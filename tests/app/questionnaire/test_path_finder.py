@@ -72,7 +72,9 @@ class TestPathFinder(AppContextTestCase):
             self.response_metadata,
         )
 
-        with patch("app.questionnaire.rules.evaluate_when_rules", return_value=False):
+        with patch(
+            "app.questionnaire.when_rules.evaluate_when_rules", return_value=False
+        ):
             routing_path = path_finder.routing_path(section_id=current_section["id"])
 
         self.assertNotIn("introduction", routing_path)

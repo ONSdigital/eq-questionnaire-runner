@@ -9,8 +9,8 @@ from app.data_models import AnswerStore, ListStore
 from app.data_models.answer import Answer
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
-from app.questionnaire.routing.operator import Operator
-from app.questionnaire.routing.when_rule_evaluator import WhenRuleEvaluator
+from app.questionnaire.rules.operator import Operator
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from tests.app.questionnaire.test_value_source_resolver import get_list_items
 
 current_date = datetime.now(timezone.utc).date()
@@ -31,7 +31,7 @@ def get_mock_schema():
     return schema
 
 
-def get_when_rule_evaluator(
+def get_rule_evaluator(
     *,
     language="en",
     schema: QuestionnaireSchema = None,
@@ -49,7 +49,7 @@ def get_when_rule_evaluator(
         schema.is_repeating_answer = Mock(return_value=True)
         schema.get_default_answer = Mock(return_value=None)
 
-    return WhenRuleEvaluator(
+    return RuleEvaluator(
         language=language,
         schema=schema,
         metadata=metadata or {},
@@ -93,8 +93,8 @@ def get_when_rule_evaluator(
     ],
 )
 def test_boolean_operators_as_rule(rule, expected_result):
-    when_rule_evaluator = get_when_rule_evaluator()
-    assert when_rule_evaluator.evaluate(rule=rule) is expected_result
+    rule_evaluator = get_rule_evaluator()
+    assert rule_evaluator.evaluate(rule=rule) is expected_result
 
 
 @pytest.mark.parametrize(
@@ -102,12 +102,12 @@ def test_boolean_operators_as_rule(rule, expected_result):
     [(3, True), (7, False)],
 )
 def test_answer_source(answer_value, expected_result):
-    when_rule_evaluator = get_when_rule_evaluator(
+    rule_evaluator = get_rule_evaluator(
         answer_store=AnswerStore([{"answer_id": "some-answer", "value": answer_value}]),
     )
 
     assert (
-        when_rule_evaluator.evaluate(
+        rule_evaluator.evaluate(
             rule={
                 Operator.EQUAL: [{"source": "answers", "identifier": "some-answer"}, 3]
             }
@@ -121,7 +121,7 @@ def test_answer_source(answer_value, expected_result):
     [(3, True), (7, False)],
 )
 def test_answer_source_with_list_item_selector_location(answer_value, expected_result):
-    when_rule_evaluator = get_when_rule_evaluator(
+    rule_evaluator = get_rule_evaluator(
         answer_store=AnswerStore(
             [
                 {
@@ -137,7 +137,7 @@ def test_answer_source_with_list_item_selector_location(answer_value, expected_r
     )
 
     assert (
-        when_rule_evaluator.evaluate(
+        rule_evaluator.evaluate(
             rule={
                 Operator.EQUAL: [
                     {
@@ -163,7 +163,7 @@ def test_answer_source_with_list_item_selector_location(answer_value, expected_r
 def test_answer_source_with_list_item_selector_list_first_item(
     answer_value, expected_result
 ):
-    when_rule_evaluator = get_when_rule_evaluator(
+    rule_evaluator = get_rule_evaluator(
         answer_store=AnswerStore(
             [
                 {
@@ -177,7 +177,7 @@ def test_answer_source_with_list_item_selector_list_first_item(
     )
 
     assert (
-        when_rule_evaluator.evaluate(
+        rule_evaluator.evaluate(
             rule={
                 Operator.EQUAL: [
                     {
@@ -202,7 +202,7 @@ def test_answer_source_with_list_item_selector_list_first_item(
     [(3, True), (7, False)],
 )
 def test_answer_source_with_dict_answer_selector(answer_value, expected_result):
-    when_rule_evaluator = get_when_rule_evaluator(
+    rule_evaluator = get_rule_evaluator(
         answer_store=AnswerStore(
             [
                 {
@@ -214,7 +214,7 @@ def test_answer_source_with_dict_answer_selector(answer_value, expected_result):
     )
 
     assert (
-        when_rule_evaluator.evaluate(
+        rule_evaluator.evaluate(
             rule={
                 Operator.EQUAL: [
                     {
@@ -235,12 +235,12 @@ def test_answer_source_with_dict_answer_selector(answer_value, expected_result):
     [(3, True), (7, False)],
 )
 def test_metadata_source(metadata_value, expected_result):
-    when_rule_evaluator = get_when_rule_evaluator(
+    rule_evaluator = get_rule_evaluator(
         metadata={"some-metadata": metadata_value},
     )
 
     assert (
-        when_rule_evaluator.evaluate(
+        rule_evaluator.evaluate(
             rule={
                 Operator.EQUAL: [
                     {"source": "metadata", "identifier": "some-metadata"},
@@ -260,12 +260,12 @@ def test_metadata_source(metadata_value, expected_result):
     ],
 )
 def test_response_metadata_source(response_metadata_value, expected_result):
-    when_rule_evaluator = get_when_rule_evaluator(
+    rule_evaluator = get_rule_evaluator(
         response_metadata={"started_at": response_metadata_value},
     )
 
     assert (
-        when_rule_evaluator.evaluate(
+        rule_evaluator.evaluate(
             rule={
                 Operator.EQUAL: [
                     {"source": "response_metadata", "identifier": "started_at"},
@@ -282,14 +282,14 @@ def test_response_metadata_source(response_metadata_value, expected_result):
     [(3, True), (7, False)],
 )
 def test_list_source(list_count, expected_result):
-    when_rule_evaluator = get_when_rule_evaluator(
+    rule_evaluator = get_rule_evaluator(
         list_store=ListStore(
             [{"name": "some-list", "items": get_list_items(list_count)}]
         ),
     )
 
     assert (
-        when_rule_evaluator.evaluate(
+        rule_evaluator.evaluate(
             rule={
                 Operator.EQUAL: [
                     {"source": "list", "identifier": "some-list", "selector": "count"},
@@ -306,12 +306,12 @@ def test_list_source(list_count, expected_result):
     [("item-1", True), ("item-2", False)],
 )
 def test_list_source_with_id_selector_first(list_item_id, expected_result):
-    when_rule_evaluator = get_when_rule_evaluator(
+    rule_evaluator = get_rule_evaluator(
         list_store=ListStore([{"name": "some-list", "items": get_list_items(1)}]),
     )
 
     assert (
-        when_rule_evaluator.evaluate(
+        rule_evaluator.evaluate(
             rule={
                 Operator.EQUAL: [
                     {
@@ -332,7 +332,7 @@ def test_list_source_with_id_selector_first(list_item_id, expected_result):
     [("item-1", True), ("item-2", True), ("item-3", True), ("item-4", False)],
 )
 def test_list_source_with_id_selector_same_name_items(list_item_id, expected_result):
-    when_rule_evaluator = get_when_rule_evaluator(
+    rule_evaluator = get_rule_evaluator(
         list_store=ListStore(
             [
                 {
@@ -345,7 +345,7 @@ def test_list_source_with_id_selector_same_name_items(list_item_id, expected_res
     )
 
     assert (
-        when_rule_evaluator.evaluate(
+        rule_evaluator.evaluate(
             rule={
                 Operator.IN: [
                     list_item_id,
@@ -376,7 +376,7 @@ def test_list_source_id_selector_primary_person(
         list_name="household",
     )
 
-    when_rule_evaluator = get_when_rule_evaluator(
+    rule_evaluator = get_rule_evaluator(
         list_store=ListStore(
             [
                 {
@@ -390,7 +390,7 @@ def test_list_source_id_selector_primary_person(
     )
 
     assert (
-        when_rule_evaluator.evaluate(
+        rule_evaluator.evaluate(
             rule={
                 Operator.EQUAL: [
                     {
@@ -411,14 +411,14 @@ def test_list_source_id_selector_primary_person(
     [("item-1", True), ("item-2", False)],
 )
 def test_current_location_source(list_item_id, expected_result):
-    when_rule_evaluator = get_when_rule_evaluator(
+    rule_evaluator = get_rule_evaluator(
         location=Location(
             section_id="some-section", block_id="some-block", list_item_id=list_item_id
         ),
     )
 
     assert (
-        when_rule_evaluator.evaluate(
+        rule_evaluator.evaluate(
             rule={
                 Operator.EQUAL: [
                     {"source": "location", "identifier": "list_item_id"},
@@ -502,7 +502,7 @@ def test_current_location_source(list_item_id, expected_result):
     ],
 )
 def test_nested_rules(operator, operands, expected_result):
-    when_rule_evaluator = get_when_rule_evaluator(
+    rule_evaluator = get_rule_evaluator(
         answer_store=AnswerStore(
             [
                 {
@@ -532,7 +532,7 @@ def test_nested_rules(operator, operands, expected_result):
         ),
     )
 
-    assert when_rule_evaluator.evaluate(rule={operator: operands}) is expected_result
+    assert rule_evaluator.evaluate(rule={operator: operands}) is expected_result
 
 
 @pytest.mark.parametrize(
@@ -556,8 +556,8 @@ def test_nested_rules(operator, operands, expected_result):
     ],
 )
 def test_comparison_operator_rule_with_nonetype_operands(operator_name, operands):
-    when_rule_evaluator = get_when_rule_evaluator()
-    assert when_rule_evaluator.evaluate(rule={operator_name: operands}) is False
+    rule_evaluator = get_rule_evaluator()
+    assert rule_evaluator.evaluate(rule={operator_name: operands}) is False
 
 
 @pytest.mark.parametrize(
@@ -575,9 +575,9 @@ def test_comparison_operator_rule_with_nonetype_operands(operator_name, operands
     "operator_name", [Operator.ALL_IN, Operator.ANY_IN, Operator.IN]
 )
 def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
-    when_rule_evaluator = get_when_rule_evaluator()
+    rule_evaluator = get_rule_evaluator()
     assert (
-        when_rule_evaluator.evaluate(
+        rule_evaluator.evaluate(
             rule={operator_name: operands},
         )
         is False
@@ -697,7 +697,7 @@ def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
     ],
 )
 def test_date_value(rule, expected_result):
-    when_rule_evaluator = get_when_rule_evaluator(
+    rule_evaluator = get_rule_evaluator(
         answer_store=AnswerStore(
             [
                 {
@@ -710,7 +710,7 @@ def test_date_value(rule, expected_result):
     )
 
     assert (
-        when_rule_evaluator.evaluate(
+        rule_evaluator.evaluate(
             rule=rule,
         )
         is expected_result
@@ -723,7 +723,7 @@ def test_answer_source_outside_of_repeating_section():
     schema.is_repeating_answer = Mock(return_value=False)
     answer_store = AnswerStore([{"answer_id": "some-answer", "value": "Yes"}])
 
-    when_rule_evaluator = get_when_rule_evaluator(
+    rule_evaluator = get_rule_evaluator(
         schema=schema,
         answer_store=answer_store,
         location=Location(
@@ -732,7 +732,7 @@ def test_answer_source_outside_of_repeating_section():
     )
 
     assert (
-        when_rule_evaluator.evaluate(
+        rule_evaluator.evaluate(
             rule={
                 Operator.EQUAL: [
                     {"source": "answers", "identifier": "some-answer"},
@@ -761,7 +761,7 @@ def test_answer_source_not_on_path_non_repeating_section(is_answer_on_path):
 
     answer = Answer(answer_id=answer_id, value="Yes")
 
-    when_rule_evaluator = get_when_rule_evaluator(
+    rule_evaluator = get_rule_evaluator(
         schema=schema,
         answer_store=AnswerStore([answer.to_dict()]),
         location=location,
@@ -769,7 +769,7 @@ def test_answer_source_not_on_path_non_repeating_section(is_answer_on_path):
     )
 
     assert (
-        when_rule_evaluator.evaluate(
+        rule_evaluator.evaluate(
             rule={
                 Operator.EQUAL: [
                     "Yes",
@@ -800,7 +800,7 @@ def test_answer_source_not_on_path_repeating_section(is_answer_on_path):
 
     answer = Answer(answer_id=answer_id, list_item_id="item-1", value="Yes")
 
-    when_rule_evaluator = get_when_rule_evaluator(
+    rule_evaluator = get_rule_evaluator(
         schema=schema,
         answer_store=AnswerStore([answer.to_dict()]),
         location=location,
@@ -808,7 +808,7 @@ def test_answer_source_not_on_path_repeating_section(is_answer_on_path):
     )
 
     assert (
-        when_rule_evaluator.evaluate(
+        rule_evaluator.evaluate(
             rule={
                 Operator.EQUAL: [
                     "Yes",
@@ -829,13 +829,13 @@ def test_answer_source_default_answer_used_when_no_answer(
         return_value=Answer(answer_id="answer-that-does-not-exist", value=3)
     )
 
-    when_rule_evaluator = get_when_rule_evaluator(
+    rule_evaluator = get_rule_evaluator(
         schema=schema,
         answer_store=AnswerStore([{"answer_id": "some-answer", "value": "No"}]),
     )
 
     assert (
-        when_rule_evaluator.evaluate(
+        rule_evaluator.evaluate(
             rule={
                 Operator.EQUAL: [
                     {"source": "answers", "identifier": "answer-that-does-not-exist"},
@@ -849,8 +849,8 @@ def test_answer_source_default_answer_used_when_no_answer(
 
 def test_raises_exception_when_bad_operand_type():
     with pytest.raises(TypeError):
-        when_rule_evaluator = get_when_rule_evaluator()
-        when_rule_evaluator.evaluate(rule={Operator.EQUAL: {1, 1}})
+        rule_evaluator = get_rule_evaluator()
+        rule_evaluator.evaluate(rule={Operator.EQUAL: {1, 1}})
 
 
 @pytest.mark.parametrize(
@@ -872,7 +872,7 @@ def test_raises_exception_when_bad_operand_type():
     ],
 )
 def test_answer_source_count(rule, expected_result):
-    when_rule_evaluator = get_when_rule_evaluator(
+    rule_evaluator = get_rule_evaluator(
         answer_store=AnswerStore(
             [
                 {
@@ -882,7 +882,7 @@ def test_answer_source_count(rule, expected_result):
             ]
         ),
     )
-    assert when_rule_evaluator.evaluate(rule=rule) is expected_result
+    assert rule_evaluator.evaluate(rule=rule) is expected_result
 
 
 @freeze_time("2021-01-01")
@@ -917,7 +917,7 @@ def test_answer_source_count(rule, expected_result):
     ],
 )
 def test_format_date(rule, expected_result):
-    when_rule_evaluator = get_when_rule_evaluator(
+    rule_evaluator = get_rule_evaluator(
         answer_store=AnswerStore(
             [
                 {
@@ -927,4 +927,74 @@ def test_format_date(rule, expected_result):
             ]
         ),
     )
-    assert when_rule_evaluator.evaluate(rule=rule) == expected_result
+    assert rule_evaluator.evaluate(rule=rule) == expected_result
+
+
+@freeze_time("2021-01-01")
+def test_map_without_nested_date_operator():
+    rule = {
+        Operator.MAP: [
+            {Operator.FORMAT_DATE: ["self", "yyyy-MM-dd"]},
+            {
+                Operator.DATE_RANGE: [
+                    {
+                        Operator.DATE: [
+                            {"source": "response_metadata", "identifier": "started_at"},
+                            {"days": -7, "day_of_week": "MONDAY"},
+                        ]
+                    },
+                    3,
+                ]
+            },
+        ]
+    }
+
+    rule_evaluator = get_rule_evaluator(
+        response_metadata={"started_at": datetime.now(timezone.utc).isoformat()}
+    )
+
+    assert rule_evaluator.evaluate(rule=rule) == [
+        "2020-12-21",
+        "2020-12-22",
+        "2020-12-23",
+    ]
+
+
+@freeze_time("2021-01-01")
+@pytest.mark.parametrize(
+    "offset, expected_result",
+    [
+        ({}, ["1 January 2021", "2 January 2021", "3 January 2021"]),
+        ({"days": 7}, ["8 January 2021", "9 January 2021", "10 January 2021"]),
+    ],
+)
+def test_map_with_nested_date_operator(offset, expected_result):
+    rule = {
+        Operator.MAP: [
+            {
+                Operator.FORMAT_DATE: [
+                    {
+                        Operator.DATE: [
+                            "self",
+                            offset,
+                        ]
+                    },
+                    "d MMMM yyyy",
+                ]
+            },
+            {"source": "answers", "identifier": "checkbox-answer"},
+        ]
+    }
+
+    rule_evaluator = get_rule_evaluator(
+        answer_store=AnswerStore(
+            [
+                {
+                    "answer_id": "checkbox-answer",
+                    "value": ["2021-01-01", "2021-01-02", "2021-01-03"],
+                }
+            ]
+        )
+    )
+
+    assert rule_evaluator.evaluate(rule=rule) == expected_result
