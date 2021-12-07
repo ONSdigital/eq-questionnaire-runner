@@ -40,8 +40,6 @@ def test_get_allowed_languages(schema_name, launch_language, expected):
 
 def test_get_schema_path_map():
     schema_path_map = get_schema_path_map(include_test_schemas=True)
-    print("test")
-    print(schema_path_map['test'])
 
     assert "test" in schema_path_map
     test_schemas_by_language = schema_path_map['test']
