@@ -46,7 +46,7 @@ def get_schema_path(language_code, schema_name):
 @lru_cache(maxsize=None)
 def get_schema_path_map(include_test_schemas: Optional[bool] = False) -> Mapping:
     schemas = {}
-    for survey_type in os.listdir(f"{os.getcwd()}/{SCHEMA_DIR}"):
+    for survey_type in os.listdir(SCHEMA_DIR):
         if not include_test_schemas and survey_type == "test":
             continue
 
@@ -54,7 +54,7 @@ def get_schema_path_map(include_test_schemas: Optional[bool] = False) -> Mapping
             language_code: {
                 Path(schema_file).with_suffix("").name: schema_file
                 for schema_file in glob(
-                    f"{os.getcwd()}/{SCHEMA_DIR}/{survey_type}/{language_code}/*.json"
+                    f"{SCHEMA_DIR}/{survey_type}/{language_code}/*.json"
                 )
             }
             for language_code in LANGUAGE_CODES
