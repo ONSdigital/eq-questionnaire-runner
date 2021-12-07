@@ -77,7 +77,7 @@ To update the design system templates run:
 make load-design-system-templates
 ```
 
-To download the latest schemas from the questionnaire registry(https://github.com/ONSdigital/eq-questionnaire-schemas):
+To download the latest schemas from the [Questionnaire Registry](https://github.com/ONSdigital/eq-questionnaire-schemas):
 
 ``` shell
 make load-schemas
