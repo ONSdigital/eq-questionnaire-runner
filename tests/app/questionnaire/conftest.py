@@ -410,13 +410,19 @@ def sections_dependent_on_list_schema():
                                     "title": {"text": "Does anyone else live here?"},
                                     "type": "General",
                                 },
-                                "when": [
-                                    {
-                                        "condition": "greater than",
-                                        "list": "list",
-                                        "value": 0,
-                                    }
-                                ],
+                                "when": {
+                                    ">": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "list",
+                                                }
+                                            ]
+                                        },
+                                        0,
+                                    ]
+                                },
                             }
                         ],
                     }

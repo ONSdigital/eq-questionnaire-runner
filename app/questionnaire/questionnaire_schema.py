@@ -1,7 +1,7 @@
 from collections import abc, defaultdict
 from copy import deepcopy
 from functools import cached_property
-from typing import Any, Generator, Iterable, Mapping, Optional, Union
+from typing import Any, Generator, Iterable, Mapping, Optional, Sequence, Union
 
 from flask_babel import force_locale
 from werkzeug.datastructures import ImmutableDict
@@ -215,11 +215,28 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         schema: ImmutableDict = self.json.get("post_submission", ImmutableDict({}))
         return schema
 
-    @staticmethod
-    def _check_list_exists(rule: Union[dict, tuple], list_name: str) -> bool:
-        return isinstance(rule, dict) and (
-            rule.get("list") == list_name or rule.get("identifier") == list_name
-        )
+    def _check_list_exists(self, rule: Union[dict, Sequence], list_name: str) -> bool:
+        # old rules
+        if (
+            isinstance(rule, Sequence)
+            and "condition" in rule[0]
+            and rule[0].get("list") == list_name
+        ):
+            return True
+
+        # New rules
+        if (
+            isinstance(rule, dict)
+            and "source" in rule
+            and rule.get("identifier") == list_name
+        ):
+            return True
+
+        # for nested new rules
+        if isinstance(rule, dict):
+            operator = next(iter(rule))
+            operand = rule[operator]
+            return self._check_list_exists(operand[0], list_name)
 
     def _section_ids_associated_to_list_name(self, list_name: str) -> list[str]:
         section_ids: list[str] = []
@@ -227,13 +244,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for section in self.get_sections():
             ignore_keys = ["question_variants", "content_variants"]
             when_rules = get_values_for_key(section, "when", ignore_keys)
-
-            if any(
-                self._check_list_exists(rule, list_name)
-                for when_rule in when_rules
-                for rule in when_rule
-            ):
-                section_ids.append(section["id"])
+            try:
+                rule = next(when_rules)
+                if self._check_list_exists(rule, list_name):
+                    section_ids.append(section["id"])
+            except StopIteration:
+                continue
 
         return section_ids
 
