@@ -41,12 +41,15 @@ def test_get_allowed_languages(schema_name, launch_language, expected):
 def test_get_schema_path_map():
     schema_path_map = get_schema_path_map(include_test_schemas=True)
 
+    # assert there is a test schemas folder
     assert "test" in schema_path_map
     test_schemas_by_language = schema_path_map['test']
+    # assert in the test schemas folder is en and cy folders
     assert all(lang in test_schemas_by_language for lang in ["en", "cy"])
 
     for path_by_schemas in test_schemas_by_language.values():
         for schema_name, schema_path in path_by_schemas.items():
+            # for each schema in the list assert schema file exists
             assert os.path.exists(schema_path)
             assert os.path.basename(schema_path).replace(".json", "") == schema_name
 
