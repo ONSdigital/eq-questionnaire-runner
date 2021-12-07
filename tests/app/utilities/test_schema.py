@@ -43,7 +43,7 @@ def test_get_schema_path_map():
 
     # assert there is a test schemas folder
     assert "test" in schema_path_map
-    test_schemas_by_language = schema_path_map['test']
+    test_schemas_by_language = schema_path_map["test"]
     # assert in the test schemas folder is en and cy folders
     assert all(lang in test_schemas_by_language for lang in ["en", "cy"])
 
