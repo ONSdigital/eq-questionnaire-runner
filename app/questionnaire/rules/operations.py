@@ -1,12 +1,24 @@
+from copy import deepcopy
 from datetime import date
 from decimal import Decimal
-from typing import Iterable, Optional, Sequence, Sized, TypedDict, TypeVar, Union
+from typing import (
+    Iterable,
+    Mapping,
+    Optional,
+    Sequence,
+    Sized,
+    TypedDict,
+    TypeVar,
+    Union,
+)
 
 from babel.dates import format_datetime
 from dateutil.relativedelta import relativedelta
 
-from app.questionnaire.routing.helpers import ValueTypes, casefold
-from app.questionnaire.routing.utils import parse_datetime
+from app.questionnaire.rules.helpers import ValueTypes, casefold
+from app.questionnaire.rules.operator import OPERATION_MAPPING
+from app.questionnaire.rules.utils import parse_datetime
+from app.questionnaire.value_source_resolver import ValueSourceTypes
 from app.settings import DEFAULT_LOCALE
 
 ComparableValue = TypeVar("ComparableValue", str, int, float, Decimal, date)
@@ -21,6 +33,8 @@ DAYS_OF_WEEK = {
     "SATURDAY": 5,
     "SUNDAY": 6,
 }
+
+SELF_REFERENCE_KEY = "self"
 
 
 class DateOffset(TypedDict, total=False):
@@ -37,7 +51,7 @@ class Operations:
 
     def __init__(self, language: str) -> None:
         self._language = language
-        self._locale = DEFAULT_LOCALE if language in ["en", "eo"] else language
+        self._locale = DEFAULT_LOCALE if language in {"en", "eo"} else language
 
     @staticmethod
     @casefold
@@ -155,3 +169,48 @@ class Operations:
             date_to_format, date_format, locale=self._locale
         )
         return formatted_date
+
+    def _resolve_self_reference(
+        self,
+        self_reference_value: Union[ValueSourceTypes, date],
+        operands: Sequence[Union[ValueSourceTypes, date]],
+    ) -> list[Union[ValueSourceTypes, date]]:
+        resolved_operands = []
+        for operand in operands:
+            if isinstance(operand, dict) and any(
+                operator in operand for operator in OPERATION_MAPPING
+            ):
+                operator_name = next(iter(operand))
+                resolved_nested_operands = self._resolve_self_reference(
+                    self_reference_value, operand[operator_name]
+                )
+                resolved_value = getattr(self, OPERATION_MAPPING[operator_name])(
+                    *resolved_nested_operands
+                )
+
+            else:
+                resolved_value = (
+                    self_reference_value if operand == SELF_REFERENCE_KEY else operand
+                )
+
+            resolved_operands.append(resolved_value)
+
+        return resolved_operands
+
+    def evaluate_map(
+        self,
+        function: Mapping[str, list],
+        iterables: Sequence[Union[ValueSourceTypes, date]],
+    ) -> list[str]:
+        function_operator = next(iter(function))
+        function_operands = deepcopy(function[function_operator])
+
+        results = []
+        for item in iterables:
+            resolved_operands = self._resolve_self_reference(item, function_operands)
+
+            results.append(
+                getattr(self, OPERATION_MAPPING[function_operator])(*resolved_operands)
+            )
+
+        return results

@@ -1,6 +1,6 @@
 from flask import url_for
 
-from app.questionnaire.rules import evaluate_when_rules
+from app.questionnaire.when_rules import evaluate_when_rules
 from app.views.contexts.summary.question import Question
 
 

@@ -4,7 +4,7 @@ from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.list_store import ListStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.questionnaire.rules import evaluate_date_rule, evaluate_goto
+from app.questionnaire.when_rules import evaluate_date_rule, evaluate_goto
 from tests.app.app_context_test_case import AppContextTestCase
 
 

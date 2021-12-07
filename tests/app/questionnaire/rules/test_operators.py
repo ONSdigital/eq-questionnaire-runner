@@ -1,12 +1,12 @@
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 import pytest
 from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 
-from app.questionnaire.routing.operations import Operations
-from app.questionnaire.routing.operator import Operator
-from app.questionnaire.routing.utils import parse_datetime
+from app.questionnaire.rules.operations import Operations
+from app.questionnaire.rules.operator import Operator
+from app.questionnaire.rules.utils import parse_datetime
 
 current_date = datetime.now(timezone.utc)
 current_date_as_yyyy_mm_dd = current_date.strftime("%Y-%m-%d")
@@ -437,6 +437,45 @@ def test_format_date(date_format, expected_result):
         operator.evaluate([datetime.now(timezone.utc).date(), date_format])
         == expected_result
     )
+
+
+def test_map_without_nested_date_operator():
+    operator = get_operator(Operator.MAP)
+
+    function = {Operator.FORMAT_DATE: ["self", "yyyy-MM-dd"]}
+    iterables = [
+        date(year=2021, month=1, day=1),
+        date(year=2021, month=1, day=2),
+        date(year=2021, month=1, day=3),
+    ]
+
+    assert operator.evaluate([function, iterables]) == [
+        "2021-01-01",
+        "2021-01-02",
+        "2021-01-03",
+    ]
+
+
+def test_map_with_nested_date_operator():
+    operator = get_operator(Operator.MAP)
+
+    function = {
+        Operator.FORMAT_DATE: [
+            {
+                Operator.DATE: [
+                    "self",
+                ]
+            },
+            "d MMMM yyyy",
+        ]
+    }
+    iterables = ["2021-01-01", "2021-01-02", "2021-01-03"]
+
+    assert operator.evaluate([function, iterables]) == [
+        "1 January 2021",
+        "2 January 2021",
+        "3 January 2021",
+    ]
 
 
 def get_operator(operator_name, language="en"):

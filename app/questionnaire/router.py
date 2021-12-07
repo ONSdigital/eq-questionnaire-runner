@@ -6,9 +6,9 @@ from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.path_finder import PathFinder
-from app.questionnaire.routing.when_rule_evaluator import WhenRuleEvaluator
 from app.questionnaire.routing_path import RoutingPath
-from app.questionnaire.rules import evaluate_when_rules
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from app.questionnaire.when_rules import evaluate_when_rules
 
 
 class Router:
@@ -301,7 +301,7 @@ class Router:
 
         enabled = section["enabled"]
         if isinstance(enabled, dict):
-            when_rule_evaluator = WhenRuleEvaluator(
+            when_rule_evaluator = RuleEvaluator(
                 self._schema,
                 self._answer_store,
                 self._list_store,
