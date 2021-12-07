@@ -13,7 +13,7 @@ from app.forms.validators import (
     SingleDatePeriodCheck,
     format_message_with_title,
 )
-from app.questionnaire.routing.utils import parse_datetime
+from app.questionnaire.rules.utils import parse_datetime
 
 DateValidatorTypes = list[
     Union[OptionalForm, DateRequired, DateCheck, SingleDatePeriodCheck]
