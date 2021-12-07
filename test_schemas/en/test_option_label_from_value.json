@@ -1,0 +1,167 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Other input fields",
+    "theme": "default",
+    "description": "A questionnaire to demo using option labels as placeholders",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "mandatory-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "mandatory-checkbox-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Head (label)",
+                                                "value": "Head",
+                                                "q_code": "0"
+                                            },
+                                            {
+                                                "label": "Body (label)",
+                                                "value": "Body",
+                                                "q_code": "1"
+                                            },
+                                            {
+                                                "label": "Right Arm (label)",
+                                                "value": "Right Arm",
+                                                "q_code": "2"
+                                            },
+                                            {
+                                                "label": "Left Arm (label)",
+                                                "value": "Left Arm",
+                                                "q_code": "3"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "mandatory-checkbox-question",
+                                "title": "When you had your accident, where did you sustain injuries?",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "checkboxes"
+                },
+                {
+                    "id": "radio",
+                    "title": "Radio Mandatory",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "optional-radio",
+                            "question": {
+                                "type": "General",
+                                "id": "optional-radio-question",
+                                "title": "If you suffered any one injury from the options below, please select the most serious one.",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "optional-radio-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Eyes (label)",
+                                                "value": "Eye"
+                                            },
+                                            {
+                                                "label": "Ears (label)",
+                                                "value": "Ears"
+                                            },
+                                            {
+                                                "label": "Mouth (label)",
+                                                "value": "Mouth"
+                                            },
+                                            {
+                                                "label": "Nose (label)",
+                                                "value": "Nose"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {   "id": "recovery",
+                    "blocks": [
+                    {"type": "Question",
+                    "id": "recovery-question-block",
+                    "question": {
+                        "id": "recovery-question",
+                        "title": {
+                            "text": "How long did it take to recover from the injury to your {body_part}?",
+                            "placeholders": [
+                                {
+                                    "placeholder": "body_part",
+                                    "transforms": [
+                                        {
+                                            "transform": "first_non_empty_item",
+                                            "arguments": {
+                                                "items": [
+                                                    { "source": "answers", "identifier": "optional-radio-answer" },
+                                                    { "source": "answers", "identifier": "mandatory-checkbox-answer" }
+                                                 ]
+                                             }
+                                        },
+                                        {
+                                            "transform": "option_label_from_value",
+                                            "arguments": {
+                                                "value": {
+                                                    "source": "previous_transform"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "type": "General",
+                        "answers": [
+                            {
+                                "id": "recovery-answer",
+                                "label": "Recovery time",
+                                "mandatory": false,
+                                "type": "Number"
+                            }
+                        ]
+                    }}
+                ]
+                }
+            ]
+        }
+    ]
+}
