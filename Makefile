@@ -14,6 +14,7 @@ load-design-system-templates:
 	./scripts/load_print_styles_from_cdn.sh $(DESIGN_SYSTEM_VERSION)
 
 build: load-design-system-templates
+	make load-schemas
 	make translate
 
 lint: lint-python
