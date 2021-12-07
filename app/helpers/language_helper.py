@@ -7,15 +7,9 @@ from app.globals import get_session_store
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.utilities.schema import get_allowed_languages
 
-# eo has been used for Ulstér Scotch as there is no language code in the
-# CLDR (http://cldr.unicode.org) for it and this is required for survey runner
-# to work (http://babel.pocoo.org/en/latest/locale.html).
-
 LANGUAGE_TEXT = {
     "en": "English",
     "cy": "Cymraeg",
-    "ga": "Gaeilge",
-    "eo": "Ulstér Scotch",
 }
 
 

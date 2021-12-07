@@ -109,17 +109,22 @@ class TestMultipleLogin(MultipleClientTestCase):
         survey in different languages
         """
 
-        # user A launches the test language questionnaire in Gaeilge
-        self.launchSurvey(self.client_a, "test_language", language_code="ga")
+        # user A launches the test language questionnaire in English
+        self.launchSurvey(self.client_a, "test_language", language_code="en")
         self.post(self.client_a)
         last_response_a = self.cache[self.client_a]["last_response"]
-        self.assertIn("Iontráil ainm", last_response_a.get_data(True))
+        self.assertIn("Please enter a name", last_response_a.get_data(True))
 
-        # user A changes language to English and has the option to change back
+        # user A changes language to Welsh and has the option to change back
+        self.get(self.client_a, "/questionnaire/name-block/?language_code=cy")
+        last_response_a = self.cache[self.client_a]["last_response"]
+        self.assertIn("Please enter a name", last_response_a.get_data(True))
+        self.assertIn("Rhowch enw", last_response_a.get_data(True))
+
+        # user A changes language back to English
         self.get(self.client_a, "/questionnaire/name-block/?language_code=en")
         last_response_a = self.cache[self.client_a]["last_response"]
         self.assertIn("Please enter a name", last_response_a.get_data(True))
-        self.assertIn("Gaeilge", last_response_a.get_data(True))
 
         # user B launches the same questionnaire but in Welsh
         self.launchSurvey(self.client_b, "test_language", language_code="cy")
@@ -140,14 +145,14 @@ class TestMultipleLogin(MultipleClientTestCase):
         self.assertIn("John", last_response_a.get_data(True))
         self.assertIn("Smith", last_response_a.get_data(True))
 
-        # user A language is still English, but with the option to change it to Gaeilge
+        # user A language is still English, but with the option to change it to Welsh
         self.assertIn("Please enter a name", last_response_a.get_data(True))
-        self.assertIn("Gaeilge", last_response_a.get_data(True))
+        self.assertIn("Cymraeg", last_response_a.get_data(True))
 
-        # user A changes language to Gaeilge
+        # user A changes language to Welsh
         self.get(self.client_a, "/questionnaire/name-block/?language_code=ga")
         last_response_a = self.cache[self.client_a]["last_response"]
-        self.assertIn("Iontráil ainm", last_response_a.get_data(True))
+        self.assertIn("Rhowch enw", last_response_a.get_data(True))
 
 
 class TestCollectionMetadataStorage(MultipleClientTestCase):
