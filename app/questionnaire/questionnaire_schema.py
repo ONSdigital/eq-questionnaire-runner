@@ -215,27 +215,25 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         schema: ImmutableDict = self.json.get("post_submission", ImmutableDict({}))
         return schema
 
-    def _check_list_exists(self, rule: Union[dict, Sequence], list_name: str) -> bool:
+    def _check_list_exists(self, rules: Union[dict, Sequence], list_name: str) -> bool:
         # old rules
-        if (
-            isinstance(rule, Sequence)
-            and "condition" in rule[0]
-            and rule[0].get("list") == list_name
-        ):
-            return True
+        if isinstance(rules, Sequence):
+            return any(
+                rule.get("list") == list_name and "list" in rule for rule in rules
+            )
 
         # New rules
         if (
-            isinstance(rule, dict)
-            and "source" in rule
-            and rule.get("identifier") == list_name
+            isinstance(rules, dict)
+            and rules.get("source") == "list"
+            and rules.get("identifier") == list_name
         ):
             return True
 
         # for nested new rules
-        if isinstance(rule, dict):
-            operator = next(iter(rule))
-            operand = rule[operator]
+        if isinstance(rules, dict):
+            operator = next(iter(rules))
+            operand = rules[operator]
             return self._check_list_exists(operand[0], list_name)
 
     def _section_ids_associated_to_list_name(self, list_name: str) -> list[str]:
@@ -249,6 +247,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 if self._check_list_exists(rule, list_name):
                     section_ids.append(section["id"])
             except StopIteration:
+                # handle empty when_rules
                 continue
 
         return section_ids
