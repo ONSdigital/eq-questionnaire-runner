@@ -292,3 +292,6 @@ class PlaceholderTransforms:
 
     def list_item_count(self, list_to_count: Optional[Sized]) -> int:
         return self._operations.evaluate_count(list_to_count)
+
+    def option_label_from_value(self, value, answer_id):
+        return self._operations.option_label_from_value(value, answer_id)

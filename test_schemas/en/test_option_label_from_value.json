@@ -31,7 +31,7 @@
     },
     "sections": [
         {
-            "id": "default-section",
+            "id": "checkbox-section",
             "groups": [
                 {
                     "blocks": [
@@ -72,25 +72,76 @@
                                 "title": "When you had your accident, where did you sustain injuries?",
                                 "type": "General"
                             }
-                        }
-                    ],
-                    "id": "checkboxes"
-                },
-                {
-                    "id": "radio",
-                    "title": "Radio Mandatory",
-                    "blocks": [
+                        },
                         {
                             "type": "Question",
-                            "id": "optional-radio",
+                            "id": "recovery-question-checkbox-block",
+                            "question": {
+                                "id": "recovery-question",
+                                "title": {
+                                    "text": "How long did it take to recover from the injury to {body_part}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "body_part",
+                                            "transforms": [
+                                                {
+                                                    "transform": "first_non_empty_item",
+                                                    "arguments": {
+                                                        "items": {
+                                                            "source": "answers",
+                                                            "identifier": "mandatory-checkbox-answer"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "transform": "format_possessive",
+                                                    "arguments": {
+                                                        "string_to_format": {
+                                                            "source": "previous_transform"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "recovery-checkbox-answer",
+                                        "label": "Recovery time",
+                                        "mandatory": false,
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    ">": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "identifier": "mandatory-checkbox-answer",
+                                                    "source": "answers"
+                                                }
+                                            ]
+                                        },
+                                        1
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "mandatory-radio",
                             "question": {
                                 "type": "General",
-                                "id": "optional-radio-question",
+                                "id": "mandatory-radio-question",
                                 "title": "If you suffered any one injury from the options below, please select the most serious one.",
                                 "answers": [
                                     {
                                         "type": "Radio",
-                                        "id": "optional-radio-answer",
+                                        "id": "mandatory-radio-answer",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -112,54 +163,75 @@
                                         ]
                                     }
                                 ]
-                            }
-                        }
-                    ]
-                },
-                {   "id": "recovery",
-                    "blocks": [
-                    {"type": "Question",
-                    "id": "recovery-question-block",
-                    "question": {
-                        "id": "recovery-question",
-                        "title": {
-                            "text": "How long did it take to recover from the injury to your {body_part}?",
-                            "placeholders": [
-                                {
-                                    "placeholder": "body_part",
-                                    "transforms": [
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
                                         {
-                                            "transform": "first_non_empty_item",
-                                            "arguments": {
-                                                "items": [
-                                                    { "source": "answers", "identifier": "optional-radio-answer" },
-                                                    { "source": "answers", "identifier": "mandatory-checkbox-answer" }
-                                                 ]
-                                             }
-                                        },
-                                        {
-                                            "transform": "option_label_from_value",
-                                            "arguments": {
-                                                "value": {
-                                                    "source": "previous_transform"
+                                            "count": [
+                                                {
+                                                    "identifier": "mandatory-checkbox-answer",
+                                                    "source": "answers"
                                                 }
-                                            }
-                                        }
+                                            ]
+                                        },
+                                        1
                                     ]
                                 }
-                            ]
-                        },
-                        "type": "General",
-                        "answers": [
-                            {
-                                "id": "recovery-answer",
-                                "label": "Recovery time",
-                                "mandatory": false,
-                                "type": "Number"
                             }
-                        ]
-                    }}
-                ]
+                        },
+                        {
+                            "type": "Question",
+                            "id": "recovery-question-radio-block",
+                            "question": {
+                                "id": "recovery-question",
+                                "title": {
+                                    "text": "How long did it take to recover from the injury to {body_part}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "body_part",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_possessive",
+                                                    "arguments": {
+                                                        "string_to_format": {
+                                                            "source": "answers",
+                                                            "identifier": "mandatory-radio-answer"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "recovery-radio-answer",
+                                        "label": "Recovery time",
+                                        "mandatory": false,
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "identifier": "mandatory-checkbox-answer",
+                                                    "source": "answers"
+                                                }
+                                            ]
+                                        },
+                                        1
+                                    ]
+                                }
+                            }
+                        }
+                    ],
+                    "id": "checkboxes"
                 }
             ]
         }

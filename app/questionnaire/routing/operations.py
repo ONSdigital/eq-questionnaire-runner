@@ -155,3 +155,8 @@ class Operations:
             date_to_format, date_format, locale=self._locale
         )
         return formatted_date
+
+    @staticmethod
+    def option_label_from_value(value, answer_id):
+        print(value, answer_id)
+        return value + answer_id
