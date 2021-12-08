@@ -150,7 +150,7 @@ class TestMultipleLogin(MultipleClientTestCase):
         self.assertIn("Cymraeg", last_response_a.get_data(True))
 
         # user A changes language to Welsh
-        self.get(self.client_a, "/questionnaire/name-block/?language_code=ga")
+        self.get(self.client_a, "/questionnaire/name-block/?language_code=cy")
         last_response_a = self.cache[self.client_a]["last_response"]
         self.assertIn("Rhowch enw", last_response_a.get_data(True))
 
