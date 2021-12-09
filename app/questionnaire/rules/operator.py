@@ -1,29 +1,32 @@
 from datetime import date
-from typing import Generator, Iterable, Optional, Sequence, Union
+from typing import TYPE_CHECKING, Generator, Iterable, Optional, Sequence, Union
 
-from app.questionnaire.routing.helpers import ValueTypes
-from app.questionnaire.routing.operations import Operations
+from app.questionnaire.rules.helpers import ValueTypes
+
+if TYPE_CHECKING:
+    from app.questionnaire.rules.operations import Operations  # pragma: no cover
 
 
 class Operator:
-    NOT: str = "not"
-    AND: str = "and"
-    OR: str = "or"
-    EQUAL: str = "=="
-    NOT_EQUAL: str = "!="
-    GREATER_THAN: str = ">"
-    LESS_THAN: str = "<"
-    GREATER_THAN_OR_EQUAL: str = ">="
-    LESS_THAN_OR_EQUAL: str = "<="
-    IN: str = "in"
-    ALL_IN: str = "all-in"
-    ANY_IN: str = "any-in"
-    COUNT: str = "count"
-    DATE: str = "date"
-    DATE_RANGE: str = "date-range"
-    FORMAT_DATE: str = "format-date"
+    NOT = "not"
+    AND = "and"
+    OR = "or"
+    EQUAL = "=="
+    NOT_EQUAL = "!="
+    GREATER_THAN = ">"
+    LESS_THAN = "<"
+    GREATER_THAN_OR_EQUAL = ">="
+    LESS_THAN_OR_EQUAL = "<="
+    IN = "in"
+    ALL_IN = "all-in"
+    ANY_IN = "any-in"
+    COUNT = "count"
+    DATE = "date"
+    DATE_RANGE = "date-range"
+    FORMAT_DATE = "format-date"
+    MAP = "map"
 
-    def __init__(self, name: str, operations: Operations) -> None:
+    def __init__(self, name: str, operations: "Operations") -> None:
         self.name = name
         self._operation = getattr(operations, OPERATION_MAPPING[self.name])
         self._ensure_operands_not_none = self.name in {
@@ -72,4 +75,5 @@ OPERATION_MAPPING: dict[str, str] = {
     Operator.DATE: "resolve_date_from_string",
     Operator.DATE_RANGE: "date_range",
     Operator.FORMAT_DATE: "format_date",
+    Operator.MAP: "evaluate_map",
 }

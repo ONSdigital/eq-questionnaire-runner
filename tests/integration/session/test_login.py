@@ -137,7 +137,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema")
     def survey_url_mock(_url, _request):
-        schema_path = SCHEMA_PATH_MAP["en"]["test_textarea"]
+        schema_path = SCHEMA_PATH_MAP["test"]["en"]["test_textarea"]
 
         with open(schema_path, encoding="utf8") as json_data:
             return json_data.read()
@@ -274,7 +274,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema")
     def survey_url_mock(_url, _request):
-        schema_path = SCHEMA_PATH_MAP["en"]["test_textarea"]
+        schema_path = SCHEMA_PATH_MAP["test"]["en"]["test_textarea"]
 
         with open(schema_path, encoding="utf8") as json_data:
             return json_data.read()

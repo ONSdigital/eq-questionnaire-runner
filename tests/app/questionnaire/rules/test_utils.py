@@ -1,9 +1,10 @@
 from datetime import datetime, timezone
 
 import pytest
+from dateutil import parser
 from freezegun import freeze_time
 
-from app.questionnaire.routing.utils import parse_datetime
+from app.questionnaire.rules.utils import parse_datetime
 
 
 @pytest.mark.parametrize(
@@ -11,13 +12,20 @@ from app.questionnaire.routing.utils import parse_datetime
     [
         ("2021-10", "%Y-%m"),
         ("2021-10-29", "%Y-%m-%d"),
-        ("2021-10-29T10:53:41.511833+00:00", "%Y-%m-%dT%H:%M:%S.%f%z"),
+        ("2021-10-29T10:53:41.511833+00:00", "iso8601"),
+        ("2021-10-29T10:53:41+00:00", "iso8601"),
+        ("2021-10-29T10:53:41.511833Z", "iso8601"),
+        ("2021-11-22T15:34:54Z", "iso8601"),
     ],
 )
 def test_parse_datetime(date_string, date_format):
-    assert parse_datetime(date_string) == datetime.strptime(
-        date_string, date_format
-    ).replace(tzinfo=timezone.utc)
+    expected_date = (
+        parser.isoparse(date_string)
+        if date_format == "iso8601"
+        else datetime.strptime(date_string, date_format)
+    )
+
+    assert parse_datetime(date_string) == expected_date.replace(tzinfo=timezone.utc)
 
 
 @freeze_time(datetime.now(timezone.utc))

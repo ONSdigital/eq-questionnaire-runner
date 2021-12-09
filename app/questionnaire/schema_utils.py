@@ -1,6 +1,6 @@
 from werkzeug.datastructures import ImmutableDict
 
-from app.questionnaire.rules import evaluate_when_rules
+from app.questionnaire.when_rules import evaluate_when_rules
 
 
 def find_pointers_containing(input_data, search_key, pointer=None):

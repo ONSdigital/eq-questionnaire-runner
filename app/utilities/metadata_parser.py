@@ -14,16 +14,10 @@ from marshmallow import (
 )
 from structlog import get_logger
 
+from app.questionnaire.rules.utils import parse_iso_8601_datetime
 from app.utilities.schema import get_schema_name_from_params
 
 logger = get_logger()
-ISO_8601_DATETIME = "%Y-%m-%dT%H:%M:%S%z"
-
-
-def parse_iso_8601_datetime(iso_8601_datetime: str) -> datetime:
-    return datetime.strptime(iso_8601_datetime, ISO_8601_DATETIME).replace(
-        tzinfo=timezone.utc
-    )
 
 
 class RegionCode(validate.Regexp):

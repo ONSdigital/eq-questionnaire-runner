@@ -8,8 +8,8 @@ from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
-from app.questionnaire.routing.operations import DateOffset, Operations
-from app.questionnaire.routing.utils import parse_datetime
+from app.questionnaire.rules.operations import DateOffset, Operations
+from app.questionnaire.rules.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
 
 # pylint: disable=too-many-public-methods
@@ -22,7 +22,7 @@ class PlaceholderTransforms:
 
     def __init__(self, language: str, schema):
         self.language = language
-        self.locale = DEFAULT_LOCALE if language in ["en", "eo"] else language
+        self.locale = DEFAULT_LOCALE if language in {"en", "eo"} else language
         self._operations = Operations(language=self.language, schema=schema)
 
     input_date_format = "%Y-%m-%d"
