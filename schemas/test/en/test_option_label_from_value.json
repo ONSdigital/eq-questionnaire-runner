@@ -214,8 +214,7 @@
                                                     "transform": "format_possessive",
                                                     "arguments": {
                                                         "string_to_format": {
-                                                            "source": "answers",
-                                                            "identifier": "mandatory-radio-answer"
+                                                            "source": "previous_transform"
                                                         }
                                                     }
                                                 }

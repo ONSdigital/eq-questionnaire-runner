@@ -217,13 +217,16 @@ class Operations:
 
         return results
 
-    def option_label_from_value(self, value, answer_id):
-        print(value, self.schema.get_answers_by_answer_id(answer_id))
-        label = ""
+    def get_option_label_from_value(self, value: str, answer_id: str) -> str:
+        """
+        Accepts value and answer_id and returns corresponding label for the value
+
+        """
+        option_label = ""
         answers = self.schema.get_answers_by_answer_id(answer_id)
         try:
-            label = next(options["label"] for answer in answers for options in answer["options"] if value in options["value"])
+            option_label = next(options["label"] for answer in answers for options in answer["options"] if value in options["value"])
         except StopIteration:
-            print(f" No label found for {value}")
+            print(f"No label found for {option_label}")
         finally:
-            return label
+            return option_label
