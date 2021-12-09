@@ -5,6 +5,7 @@ from typing import Iterable, Optional, Sequence, Sized, TypedDict, TypeVar, Unio
 from babel.dates import format_datetime
 from dateutil.relativedelta import relativedelta
 
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.routing.helpers import ValueTypes, casefold
 from app.questionnaire.routing.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
@@ -35,9 +36,10 @@ class Operations:
     A class to group the operations
     """
 
-    def __init__(self, language: str) -> None:
+    def __init__(self, language: str, schema: QuestionnaireSchema) -> None:
         self._language = language
         self._locale = DEFAULT_LOCALE if language in ["en", "eo"] else language
+        self.schema = schema
 
     @staticmethod
     @casefold
@@ -156,7 +158,6 @@ class Operations:
         )
         return formatted_date
 
-    @staticmethod
-    def option_label_from_value(value, answer_id):
-        print(value, answer_id)
-        return value + answer_id
+    def option_label_from_value(self, value, answer_id):
+        print(value, self.schema.get_answers_by_answer_id(answer_id)["options"][""])
+        return value

@@ -94,11 +94,12 @@
                                                     }
                                                 },
                                                 {
-                                                    "transform": "format_possessive",
+                                                    "transform": "option_label_from_value",
                                                     "arguments": {
-                                                        "string_to_format": {
+                                                        "value": {
                                                             "source": "previous_transform"
-                                                        }
+                                                        },
+                                                        "answer_id": "mandatory-checkbox-answer"
                                                     }
                                                 }
                                             ]

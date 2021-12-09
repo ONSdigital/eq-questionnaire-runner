@@ -39,7 +39,7 @@ class WhenRuleEvaluator:
             routing_path_block_ids=self.routing_path_block_ids,
             use_default_answer=True,
         )
-        self.operations = Operations(language=self.language)
+        self.operations = Operations(language=self.language, schema=self.schema)
 
     def _evaluate(self, rule: dict[str, Sequence]) -> Union[bool, Optional[date]]:
         next_rule = next(iter(rule))

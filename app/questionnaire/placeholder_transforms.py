@@ -20,10 +20,10 @@ class PlaceholderTransforms:
     A class to group the transforms that can be used within placeholders
     """
 
-    def __init__(self, language: str):
+    def __init__(self, language: str, schema):
         self.language = language
         self.locale = DEFAULT_LOCALE if language in ["en", "eo"] else language
-        self._operations = Operations(language=self.language)
+        self._operations = Operations(language=self.language, schema=schema)
 
     input_date_format = "%Y-%m-%d"
 
