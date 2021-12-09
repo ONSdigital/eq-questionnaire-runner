@@ -461,6 +461,78 @@ def sections_dependent_on_list_schema():
                     }
                 ],
             },
+            {
+                "id": "section4",
+                "groups": [
+                    {
+                        "id": "group4",
+                        "blocks": [
+                            {
+                                "type": "Question",
+                                "id": "block4",
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "id": "answer1",
+                                            "mandatory": True,
+                                            "type": "General",
+                                        }
+                                    ],
+                                    "id": "question1",
+                                    "title": {"text": "Does anyone else live here?"},
+                                    "type": "General",
+                                },
+                                "when": [
+                                    {
+                                        "condition": "greater than",
+                                        "list": "list",
+                                        "value": 0,
+                                    }
+                                ],
+                            }
+                        ],
+                    }
+                ],
+            },
+            {
+                "id": "section5",
+                "groups": [
+                    {
+                        "id": "group5",
+                        "blocks": [
+                            {
+                                "type": "Question",
+                                "id": "block5",
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "id": "answer1",
+                                            "mandatory": True,
+                                            "type": "General",
+                                        }
+                                    ],
+                                    "id": "question1",
+                                    "title": {"text": "Does anyone else live here?"},
+                                    "type": "General",
+                                },
+                                "when": {
+                                    ">": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "not-a-list",
+                                                }
+                                            ]
+                                        },
+                                        0,
+                                    ]
+                                },
+                            }
+                        ],
+                    }
+                ],
+            },
         ]
     }
 

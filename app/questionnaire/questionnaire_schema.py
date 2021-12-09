@@ -223,12 +223,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             )
 
         # New rules
-        if (
-            isinstance(rules, dict)
-            and rules.get("source") == "list"
-            and rules.get("identifier") == list_name
-        ):
-            return True
+        if isinstance(rules, dict) and rules.get("source") == "list":
+            return rules.get("identifier") == list_name
 
         # for nested new rules
         if isinstance(rules, dict):
