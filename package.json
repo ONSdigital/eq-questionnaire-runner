@@ -14,12 +14,12 @@
     "start": "make dev-compose-up && concurrently \"make run\" \"livereload . -e 'html,njk'\"",
     "lint": "yarn generate_pages && yarn lint:tests && yarn lint:test-schemas",
     "lint:tests": "prettier --check \"tests/functional/**/*.js\" && eslint \"tests/functional/**/*.js\"",
-    "lint:test-schemas": "prettier --check \"test_schemas/*/*.json\" && eslint \"test_schemas/**/*.json\"",
+    "lint:test-schemas": "prettier --check \"schemas/test/*/*.json\" && eslint \"schemas/test/**/*.json\"",
     "test_functional": "./node_modules/.bin/wdio tests/functional/wdio.conf.js",
-    "generate_pages": "rm -rf ./tests/functional/generated_pages && pipenv run python -m tests.functional.generate_pages test_schemas/en/ ./tests/functional/generated_pages -r '../../base_pages'",
+    "generate_pages": "rm -rf ./tests/functional/generated_pages && pipenv run python -m tests.functional.generate_pages schemas/test/en/ ./tests/functional/generated_pages -r '../../base_pages'",
     "format": "yarn format:tests && yarn format:test-schemas",
     "format:tests": "prettier \"tests/functional/**/*.js\" --write && eslint --fix \"tests/functional/**/*.js\"",
-    "format:test-schemas": "prettier \"test_schemas/*/*.json\" --write && eslint --fix \"test_schemas/*/*.json\""
+    "format:test-schemas": "prettier \"schemas/test/*/*.json\" --write && eslint --fix \"schemas/test/*/*.json\""
   },
   "devDependencies": {
     "@wdio/cli": "^6.1.16",
