@@ -1,7 +1,8 @@
+import os
 from functools import lru_cache
 from glob import glob
 from pathlib import Path
-from typing import List, Mapping, Optional
+from typing import Mapping, Optional
 
 import requests
 from structlog import get_logger
@@ -16,38 +17,58 @@ from app.utilities.json import json_load, json_loads
 logger = get_logger()
 
 SCHEMA_DIR = "schemas"
-TEST_SCHEMA_DIR = "test_schemas"
-LANGUAGE_CODES = ("en", "cy", "ga")
+LANGUAGE_CODES = ("en", "cy")
 
-LANGUAGES_MAP = {"test_language": [["en", "cy"], ["en", "ga"]]}
+LANGUAGES_MAP = {"test_language": [["en", "cy"]]}
 
 
 @lru_cache(maxsize=None)
-def get_schema_list(language_code: str = DEFAULT_LANGUAGE_CODE) -> List:
-    return list(get_schema_path_map(include_test_schemas=True)[language_code].keys())
+def get_schema_list(language_code: str = DEFAULT_LANGUAGE_CODE) -> dict[str, list]:
+    return {
+        survey_type: list(schemas_by_language[language_code])
+        for survey_type, schemas_by_language in get_schema_path_map(
+            include_test_schemas=True
+        ).items()
+        for lang in schemas_by_language
+        if lang == language_code
+    }
+
+
+@lru_cache(maxsize=None)
+def get_schema_path(language_code, schema_name):
+    for schemas_by_language in get_schema_path_map(include_test_schemas=True).values():
+        schema_path = schemas_by_language.get(language_code, {}).get(schema_name)
+        if schema_path:
+            return schema_path
 
 
 @lru_cache(maxsize=None)
 def get_schema_path_map(include_test_schemas: Optional[bool] = False) -> Mapping:
-    dirs = [SCHEMA_DIR]
-    if include_test_schemas:
-        dirs.append(TEST_SCHEMA_DIR)
+    schemas = {}
+    for survey_type in os.listdir(SCHEMA_DIR):
+        if not include_test_schemas and survey_type == "test":
+            continue
 
-    return {
-        language_code: {
-            Path(schema_file).with_suffix("").name: schema_file
-            for schema_dir in dirs
-            for schema_file in glob(f"{schema_dir}/{language_code}/*.json")
+        schemas[survey_type] = {
+            language_code: {
+                Path(schema_file).with_suffix("").name: schema_file
+                for schema_file in glob(
+                    f"{SCHEMA_DIR}/{survey_type}/{language_code}/*.json"
+                )
+            }
+            for language_code in LANGUAGE_CODES
         }
-        for language_code in LANGUAGE_CODES
-    }
+
+    return schemas
 
 
 def _schema_exists(language_code, schema_name):
     schema_path_map = get_schema_path_map(include_test_schemas=True)
-    return (
-        language_code in schema_path_map
-        and schema_name in schema_path_map[language_code]
+    return any(
+        True
+        for survey_type, schemas_by_lang in schema_path_map.items()
+        if language_code in schemas_by_lang
+        and schema_name in schemas_by_lang[language_code]
     )
 
 
@@ -112,9 +133,7 @@ def _load_schema_file(schema_name, language_code):
         )
         raise FileNotFoundError
 
-    schema_path = get_schema_path_map(include_test_schemas=True)[language_code][
-        schema_name
-    ]
+    schema_path = get_schema_path(language_code, schema_name)
 
     logger.info(
         "loading schema",
@@ -147,6 +166,7 @@ def load_schema_from_url(survey_url, language_code):
 
 
 def cache_questionnaire_schemas():
-    for language_code, schemas in get_schema_path_map().items():
-        for schema in schemas:
-            load_schema_from_name(schema, language_code)
+    for schemas_by_language in get_schema_path_map().values():
+        for language_code, schemas in schemas_by_language.items():
+            for schema in schemas:
+                load_schema_from_name(schema, language_code)
