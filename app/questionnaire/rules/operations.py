@@ -222,11 +222,15 @@ class Operations:
         Accepts value and answer_id and returns corresponding label for the value
 
         """
-        option_label = ""
+
         answers = self.schema.get_answers_by_answer_id(answer_id)
-        try:
-            option_label = next(options["label"] for answer in answers for options in answer["options"] if value in options["value"])
-        except StopIteration:
-            print(f"No label found for {option_label}")
-        finally:
-            return option_label
+        option_label = next(
+            (
+                options["label"]
+                for answer in answers
+                for options in answer["options"]
+                if value in options["value"]
+            ),
+            "",
+        )
+        return option_label
