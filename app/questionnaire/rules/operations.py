@@ -233,4 +233,5 @@ class Operations:
             ),
             "",
         )
+
         return option_label

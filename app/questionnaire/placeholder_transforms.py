@@ -8,6 +8,9 @@ from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
+from app.data_models.answer_store import AnswerStore
+from app.data_models.list_store import ListStore
+from app.questionnaire import placeholder_parser
 from app.questionnaire.rules.operations import DateOffset, Operations
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
@@ -22,6 +25,7 @@ class PlaceholderTransforms:
 
     def __init__(self, language: str, schema):
         self.language = language
+        self.schema = schema
         self.locale = DEFAULT_LOCALE if language in {"en", "eo"} else language
         self._operations = Operations(language=self.language, schema=schema)
 
@@ -294,4 +298,18 @@ class PlaceholderTransforms:
         return self._operations.evaluate_count(list_to_count)
 
     def option_label_from_value(self, value, answer_id):
-        return self._operations.get_option_label_from_value(value, answer_id)
+        label = self._operations.get_option_label_from_value(value, answer_id)
+        if isinstance(label, str):
+            return label
+        elif isinstance(label, dict):
+            parser = placeholder_parser.PlaceholderParser(
+                language=DEFAULT_LOCALE,
+                answer_store=AnswerStore(),
+                list_store=ListStore(),
+                metadata={},
+                response_metadata={},
+                schema=self.schema,
+            )
+            placeholder_text = label["text"].replace("{", "").replace("}", "")
+            label = parser(label["placeholders"])[placeholder_text]
+            return label
