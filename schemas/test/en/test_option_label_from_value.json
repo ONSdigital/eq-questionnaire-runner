@@ -53,7 +53,12 @@
                                                             "transforms": [
                                                                 {
                                                                     "transform": "concatenate_list",
-                                                                    "arguments": { "list_to_concatenate": { "value": ["He", "ad", " label"] }, "delimiter": "" }
+                                                                    "arguments": {
+                                                                        "list_to_concatenate": {
+                                                                            "value": ["He", "ad", " label"]
+                                                                        },
+                                                                        "delimiter": ""
+                                                                    }
                                                                 }
                                                             ]
                                                         }
@@ -63,17 +68,17 @@
                                                 "q_code": "0"
                                             },
                                             {
-                                                "label": "Body (label)",
+                                                "label": "Body",
                                                 "value": "Body",
                                                 "q_code": "1"
                                             },
                                             {
-                                                "label": "Right Arm (label)",
+                                                "label": "Right Arm",
                                                 "value": "Right Arm",
                                                 "q_code": "2"
                                             },
                                             {
-                                                "label": "Left Arm (label)",
+                                                "label": "Left Arm ",
                                                 "value": "Left Arm",
                                                 "q_code": "3"
                                             }
