@@ -4,12 +4,15 @@ from decimal import Decimal
 import pytest
 
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 
 
 # pylint: disable=too-many-public-methods,no-self-use
 class TestPlaceholderParser(unittest.TestCase):
     def setUp(self):
-        self.transforms = PlaceholderTransforms(language="en")
+        self.transforms = PlaceholderTransforms(
+            language="en", schema=QuestionnaireSchema({})
+        )
 
     def test_format_currency(self):
         assert self.transforms.format_currency("11", "GBP") == "£11.00"
@@ -60,7 +63,9 @@ class TestPlaceholderParser(unittest.TestCase):
 
     @staticmethod
     def test_format_possessive_non_english_does_nothing():
-        welsh_transforms = PlaceholderTransforms(language="cy")
+        welsh_transforms = PlaceholderTransforms(
+            language="cy", schema=QuestionnaireSchema({})
+        )
         assert welsh_transforms.format_possessive("Alice Aardvark") == "Alice Aardvark"
         assert (
             welsh_transforms.format_possessive("Dave Dixon Davies")
@@ -164,7 +169,9 @@ class TestPlaceholderParser(unittest.TestCase):
 
     @staticmethod
     def test_format_ordinal_with_determiner_ulster_scots():
-        ulster_scots_transforms = PlaceholderTransforms(language="eo")
+        ulster_scots_transforms = PlaceholderTransforms(
+            language="eo", schema=QuestionnaireSchema({})
+        )
         assert ulster_scots_transforms.format_ordinal(1, "a_or_an") == "a 1st"
         assert ulster_scots_transforms.format_ordinal(2, "a_or_an") == "a 2nd"
         assert ulster_scots_transforms.format_ordinal(3, "a_or_an") == "a 3rd"
@@ -174,7 +181,9 @@ class TestPlaceholderParser(unittest.TestCase):
 
     @staticmethod
     def test_format_ordinal_without_determiner_ulster_scots():
-        ulster_scots_transforms = PlaceholderTransforms(language="eo")
+        ulster_scots_transforms = PlaceholderTransforms(
+            language="eo", schema=QuestionnaireSchema({})
+        )
         assert ulster_scots_transforms.format_ordinal(1) == "1st"
         assert ulster_scots_transforms.format_ordinal(2) == "2nd"
         assert ulster_scots_transforms.format_ordinal(3) == "3rd"
@@ -183,7 +192,9 @@ class TestPlaceholderParser(unittest.TestCase):
 
     @staticmethod
     def test_format_ordinal_gaelic():
-        gaelic_transforms = PlaceholderTransforms(language="ga")
+        gaelic_transforms = PlaceholderTransforms(
+            language="ga", schema=QuestionnaireSchema({})
+        )
         assert gaelic_transforms.format_ordinal(1) == "1ú"
         assert gaelic_transforms.format_ordinal(2) == "2ú"
         assert gaelic_transforms.format_ordinal(5) == "5ú"
@@ -192,7 +203,9 @@ class TestPlaceholderParser(unittest.TestCase):
 
     @staticmethod
     def test_format_ordinal_welsh():
-        welsh_transforms = PlaceholderTransforms(language="cy")
+        welsh_transforms = PlaceholderTransforms(
+            language="cy", schema=QuestionnaireSchema({})
+        )
         assert welsh_transforms.format_ordinal(1) == "1af"
         assert welsh_transforms.format_ordinal(2) == "2il"
         assert welsh_transforms.format_ordinal(3) == "3ydd"

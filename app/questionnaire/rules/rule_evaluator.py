@@ -39,7 +39,7 @@ class RuleEvaluator:
             routing_path_block_ids=self.routing_path_block_ids,
             use_default_answer=True,
         )
-        self.operations = Operations(language=self.language, schema=self.schema)
+        self.operations = Operations(language=self.language)
 
     def _evaluate(self, rule: dict[str, Sequence]) -> Union[bool, Optional[date]]:
         operator_name = next(iter(rule))

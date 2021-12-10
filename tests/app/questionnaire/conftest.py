@@ -702,4 +702,4 @@ def mock_schema():
 
 @pytest.fixture
 def placeholder_transform():
-    return PlaceholderTransforms(language="en")
+    return PlaceholderTransforms(language="en", schema=QuestionnaireSchema)

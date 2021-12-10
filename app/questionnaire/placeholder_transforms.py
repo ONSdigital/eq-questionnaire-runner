@@ -11,6 +11,7 @@ from flask_babel import ngettext
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.questionnaire import placeholder_parser
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.rules.operations import DateOffset, Operations
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
@@ -23,11 +24,11 @@ class PlaceholderTransforms:
     A class to group the transforms that can be used within placeholders
     """
 
-    def __init__(self, language: str, schema):
+    def __init__(self, language: str, schema: QuestionnaireSchema):
         self.language = language
         self.schema = schema
         self.locale = DEFAULT_LOCALE if language in {"en", "eo"} else language
-        self._operations = Operations(language=self.language, schema=self.schema)
+        self._operations = Operations(language=self.language)
 
     input_date_format = "%Y-%m-%d"
 
@@ -297,7 +298,7 @@ class PlaceholderTransforms:
     def list_item_count(self, list_to_count: Optional[Sized]) -> int:
         return self._operations.evaluate_count(list_to_count)
 
-    def option_label_from_value(self, value, answer_id):
+    def option_label_from_value(self, value: str, answer_id: str):
         if isinstance(label, str):
             answers = self.schema.get_answers_by_answer_id(answer_id)
             label = next(
