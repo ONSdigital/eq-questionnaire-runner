@@ -303,7 +303,7 @@ class PlaceholderTransforms:
             return label
         elif isinstance(label, dict):
             parser = placeholder_parser.PlaceholderParser(
-                language=DEFAULT_LOCALE,
+                language=self.locale,
                 answer_store=AnswerStore(),
                 list_store=ListStore(),
                 metadata={},
