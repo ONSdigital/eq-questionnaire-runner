@@ -216,22 +216,3 @@ class Operations:
             )
 
         return results
-
-    def get_option_label_from_value(self, value: str, answer_id: str) -> str:
-        """
-        Accepts value and answer_id and returns corresponding label for the value
-
-        """
-
-        answers = self.schema.get_answers_by_answer_id(answer_id)
-        option_label = next(
-            (
-                options["label"]
-                for answer in answers
-                for options in answer["options"]
-                if value in options["value"]
-            ),
-            "",
-        )
-
-        return option_label

@@ -298,9 +298,17 @@ class PlaceholderTransforms:
         return self._operations.evaluate_count(list_to_count)
 
     def option_label_from_value(self, value, answer_id):
-        label = self._operations.get_option_label_from_value(value, answer_id)
         if isinstance(label, str):
-            return label
+            answers = self.schema.get_answers_by_answer_id(answer_id)
+            label = next(
+                (
+                    options["label"]
+                    for answer in answers
+                    for options in answer["options"]
+                    if value in options["value"]
+                ),
+                "",
+            )
         elif isinstance(label, dict):
             parser = placeholder_parser.PlaceholderParser(
                 language=self.locale,
@@ -312,4 +320,4 @@ class PlaceholderTransforms:
             )
             placeholder_text = label["text"].replace("{", "").replace("}", "")
             label = parser(label["placeholders"])[placeholder_text]
-            return label
+        return label
