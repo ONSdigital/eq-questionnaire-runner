@@ -27,7 +27,7 @@ class PlaceholderTransforms:
         self.language = language
         self.schema = schema
         self.locale = DEFAULT_LOCALE if language in {"en", "eo"} else language
-        self._operations = Operations(language=self.language, schema=schema)
+        self._operations = Operations(language=self.language, schema=self.schema)
 
     input_date_format = "%Y-%m-%d"
 
