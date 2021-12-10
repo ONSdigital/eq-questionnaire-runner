@@ -9,7 +9,7 @@ echo "Starting Validator"
 ./scripts/run_validator.sh
 
 echo "Running schema validation"
-./scripts/validate_test_schemas.sh test_schemas/en
+./scripts/validate_test_schemas.sh schemas/test/en
 
 echo "Running python lint tests"
 ./scripts/run_lint_python.sh

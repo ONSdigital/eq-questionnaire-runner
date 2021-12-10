@@ -77,6 +77,12 @@ To update the design system templates run:
 make load-design-system-templates
 ```
 
+To download the latest schemas from the [Questionnaire Registry](https://github.com/ONSdigital/eq-questionnaire-schemas):
+
+``` shell
+make load-schemas
+```
+
 Run the server inside the virtual env created by Pipenv with:
 
 ``` shell
@@ -196,11 +202,11 @@ You can also individually run the `generate_pages` and `test_functional` yarn sc
 
 To generate the pages manually you can run the `generate_pages` scripts with the schema directory. Run it from the `tests/functional` directory as follows:
 
-`./generate_pages.py ../../test_schemas/en/ ./generated_pages -r "../../base_pages"`
+`./generate_pages.py ../../schemas/test/en/ ./generated_pages -r "../../base_pages"`
 
 To generate a spec file with the imports included, you can use the `generate_pages.py` script on a single schema with the `-s` argument.
 
-`./generate_pages.py ../../test_schemas/en/test_multiple_piping.json ./temp_directory -r "../../base_pages" -s spec/test_multiple_piping.spec.js`
+`./generate_pages.py ../../schemas/test/en/test_multiple_piping.json ./temp_directory -r "../../base_pages" -s spec/test_multiple_piping.spec.js`
 
 If you have already built the generated pages, then the functional tests can be executed with:
 
