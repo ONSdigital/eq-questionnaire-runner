@@ -8,6 +8,7 @@ params:
   SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
   PROJECT_ID:
   BUCKET_NAME:
+  FILE_PREFIX:
 outputs:
   - name: backup-questionnaire-state-output
 run:
@@ -23,7 +24,8 @@ run:
       gcloud auth activate-service-account --key-file $GOOGLE_APPLICATION_CREDENTIALS
       gcloud config set project "${PROJECT_ID}"
 
-      EXPORT_OPERATION=$(gcloud datastore export --kinds="questionnaire-state" gs://"${BUCKET_NAME}" --format="value(name.scope())")
+      EXPORT_DATETIME=$(date --utc +"%Y-%m-%dT%H:%M:%S")
+      EXPORT_OPERATION=$(gcloud datastore export --kinds="questionnaire-state" gs://"${BUCKET_NAME}/${FILE_PREFIX}/${EXPORT_DATETIME}" --format="value(name.scope())")
       EXPORT_STATE=$(gcloud datastore operations describe "$EXPORT_OPERATION" --format="value(metadata.common.state.scope())")
       TOTAL_ENTITIES_EXPORTED=$(gcloud datastore operations describe "$EXPORT_OPERATION" --format="value(metadata.progressEntities.workCompleted.scope())")
 

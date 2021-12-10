@@ -32,11 +32,13 @@ Questionnaire state can be backed up using the `backup_questionnaire_state.yaml`
 ```sh
 PROJECT_ID=<project_id> \
 BUCKET_NAME=<bucket_name> \
+FILE_PREFIX=<file_prefix> \
 fly -t <target-concourse> execute \
   --config ci/backup_questionnaire_state.yaml
 ```
 
 - `BUCKET_NAME` should not contain `gs://`
+- `FILE_PREFIX` is used to separate the backups into folders. Do not include a leading or trailing slash.
 
 ## Restoring questionnaire state
 
@@ -46,12 +48,14 @@ Questionnaire state can be restored using the `restore_questionnaire_state.yaml`
 PROJECT_ID=<project_id> \
 BUCKET_NAME=<bucket_name> \
 BACKUP_NAME=<backup_name> \
+FILE_PREFIX=<file_prefix> \
 fly -t <target-concourse> execute \
   --config ci/restore_questionnaire_state.yaml
 ```
 
 - `BUCKET_NAME` should not contain `gs://`
-- `BACKUP_NAME` is the timestamped folder name containing the backup files and folders e.g. `2021-01-05T09:37:15_88808`
+- `BACKUP_NAME` is the timestamped folder name containing the backup files and folders e.g. `2021-01-05T09:37:15`
+- `FILE_PREFIX` is the top level folder in which the backup resides. Do not include a leading or trailing slash.
 
 ## Purge expired sessions
 
