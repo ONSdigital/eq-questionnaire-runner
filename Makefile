@@ -2,7 +2,7 @@ SCHEMAS_VERSION=`cat .schemas-version`
 DESIGN_SYSTEM_VERSION=`cat .design-system-version`
 
 clean:
-	rm -rf schemas
+	find schemas/* -prune | grep -v "schemas/test" | xargs rm -r
 	rm -rf templates/components
 	rm -rf templates/layout
 
