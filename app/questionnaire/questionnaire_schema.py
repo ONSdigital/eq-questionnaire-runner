@@ -8,6 +8,7 @@ from werkzeug.datastructures import ImmutableDict
 
 from app.data_models.answer import Answer
 from app.forms import error_messages
+from app.questionnaire.rules.operator import OPERATION_MAPPING
 from app.questionnaire.schema_utils import get_values_for_key
 
 DEFAULT_LANGUAGE_CODE = "en"
@@ -216,23 +217,40 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return schema
 
     def _is_list_name_in_rule(
-        self, rules: Union[dict, Sequence], list_name: str
+        self, when_rules: Union[dict, Sequence], list_name: str
     ) -> bool:
-        # old rules
+        rules: Union[dict, Sequence]
+        if isinstance(when_rules, dict) and any(
+            operator in when_rules for operator in OPERATION_MAPPING
+        ):
+            rules = self.get_operand(when_rules)
+        else:
+            rules = when_rules
+
         if isinstance(rules, Sequence):
-            return any(
-                rule.get("list") == list_name and "list" in rule for rule in rules
-            )
+            for rule in rules:
+                # old rules
+                if isinstance(rule, dict) and "list" in rule:
+                    return rule.get("list") == list_name
 
-        # New rules
-        if isinstance(rules, dict) and rules.get("source") == "list":
-            return rules.get("identifier") == list_name
+                # New rules
+                if isinstance(rule, dict) and "source" in rule:
+                    return (
+                        rule.get("source") == "list"
+                        and rule.get("identifier") == list_name
+                    )
 
-        # for nested new rules
-        if isinstance(rules, dict):
-            operator = next(iter(rules))
-            operand = rules[operator]
-            return self._is_list_name_in_rule(operand[0], list_name)
+                # Nested rules
+                if isinstance(rule, dict) and any(
+                    operator in rule for operator in OPERATION_MAPPING
+                ):
+                    return self._is_list_name_in_rule(rule, list_name)
+
+    @staticmethod
+    def get_operand(rules: dict) -> list:
+        operator = next(iter(rules))
+        operand: list = rules[operator]
+        return operand
 
     def _section_ids_associated_to_list_name(self, list_name: str) -> list[str]:
         section_ids: list[str] = []
@@ -240,14 +258,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for section in self.get_sections():
             ignore_keys = ["question_variants", "content_variants"]
             when_rules = get_values_for_key(section, "when", ignore_keys)
-            try:
-                rule = next(when_rules)
-                if self._is_list_name_in_rule(rule, list_name):
-                    section_ids.append(section["id"])
-            except StopIteration:
-                # handle empty when_rules
-                continue
 
+            rule: Union[dict, list] = next(when_rules, [])
+            if self._is_list_name_in_rule(rule, list_name):
+                section_ids.append(section["id"])
         return section_ids
 
     @staticmethod

@@ -412,6 +412,7 @@ def sections_dependent_on_list_schema():
                                 },
                                 "when": {
                                     ">": [
+                                        0,
                                         {
                                             "count": [
                                                 {
@@ -420,7 +421,6 @@ def sections_dependent_on_list_schema():
                                                 }
                                             ]
                                         },
-                                        0,
                                     ]
                                 },
                             }
