@@ -217,40 +217,39 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return schema
 
     def _is_list_name_in_rule(
-        self, when_rules: Union[dict, Sequence], list_name: str
+        self, rules_dict: Union[dict, Sequence], list_name: str
     ) -> bool:
         rules: Union[dict, Sequence]
-        if isinstance(when_rules, dict) and any(
-            operator in when_rules for operator in OPERATION_MAPPING
+        if isinstance(rules_dict, dict) and any(
+            operator in rules_dict for operator in OPERATION_MAPPING
         ):
-            rules = self.get_operand(when_rules)
+            rules = self.get_operands(rules_dict)
         else:
-            rules = when_rules
+            rules = rules_dict
 
-        if isinstance(rules, Sequence):
-            for rule in rules:
+        for rule in rules:
+            if not isinstance(rule, dict):
+                continue
+
                 # old rules
-                if isinstance(rule, dict) and "list" in rule:
-                    return rule.get("list") == list_name
+            if "list" in rule:
+                return rule.get("list") == list_name
 
                 # New rules
-                if isinstance(rule, dict) and "source" in rule:
-                    return (
-                        rule.get("source") == "list"
-                        and rule.get("identifier") == list_name
-                    )
+            if "source" in rule:
+                return (
+                    rule.get("source") == "list" and rule.get("identifier") == list_name
+                )
 
                 # Nested rules
-                if isinstance(rule, dict) and any(
-                    operator in rule for operator in OPERATION_MAPPING
-                ):
-                    return self._is_list_name_in_rule(rule, list_name)
+            if any(operator in rule for operator in OPERATION_MAPPING):
+                return self._is_list_name_in_rule(rule, list_name)
 
     @staticmethod
-    def get_operand(rules: dict) -> list:
+    def get_operands(rules: dict) -> list:
         operator = next(iter(rules))
-        operand: list = rules[operator]
-        return operand
+        operands: list = rules[operator]
+        return operands
 
     def _section_ids_associated_to_list_name(self, list_name: str) -> list[str]:
         section_ids: list[str] = []
