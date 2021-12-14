@@ -217,15 +217,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return schema
 
     def _is_list_name_in_rule(
-        self, rules_dict: Union[dict, Sequence], list_name: str
+        self, rules: Union[dict, Sequence], list_name: str
     ) -> bool:
-        rules: Union[dict, Sequence]
-        if isinstance(rules_dict, dict) and any(
-            operator in rules_dict for operator in OPERATION_MAPPING
+
+        if isinstance(rules, dict) and any(
+            operator in rules for operator in OPERATION_MAPPING
         ):
-            rules = self.get_operands(rules_dict)
-        else:
-            rules = rules_dict
+            rules = self.get_operands(rules)
 
         for rule in rules:
             if not isinstance(rule, dict):
