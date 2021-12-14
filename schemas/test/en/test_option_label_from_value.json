@@ -45,7 +45,29 @@
                                         "mandatory": true,
                                         "options": [
                                             {
-                                                "label": "Head",
+                                                "label": {
+                                                    "text": "{head}",
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "head",
+                                                            "transforms": [
+                                                                {
+                                                                    "transform": "concatenate_list",
+                                                                    "arguments": {
+                                                                        "list_to_concatenate": {
+                                                                            "value": [
+                                                                                "He",
+                                                                                "ad",
+                                                                                " label"
+                                                                            ]
+                                                                        },
+                                                                        "delimiter": ""
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
                                                 "value": "Head",
                                                 "q_code": "0"
                                             },

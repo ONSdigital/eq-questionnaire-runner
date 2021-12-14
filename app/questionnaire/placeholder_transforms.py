@@ -7,15 +7,17 @@ from babel.dates import format_datetime
 from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
+from flask_login import current_user
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
-from app.questionnaire import placeholder_parser
+from app.globals import get_answer_store
+from app.questionnaire import placeholder_renderer
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.rules.operations import DateOffset, Operations
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
+
 
 # pylint: disable=too-many-public-methods
 
@@ -30,6 +32,15 @@ class PlaceholderTransforms:
         self.schema = schema
         self.locale = DEFAULT_LOCALE if language in {"en", "eo"} else language
         self._operations = Operations(language=self.language)
+        self.answer_store = get_answer_store(current_user)
+        self.ph_renderer = placeholder_renderer.PlaceholderRenderer(
+            language=self.locale,
+            answer_store=self.answer_store,
+            list_store=ListStore(),
+            metadata=ImmutableDict({}),
+            response_metadata={},
+            schema=self.schema,
+        )
 
     input_date_format = "%Y-%m-%d"
 
@@ -300,9 +311,13 @@ class PlaceholderTransforms:
         return self._operations.evaluate_count(list_to_count)
 
     def option_label_from_value(self, value: str, answer_id: str) -> str:
-
+        """
+        Accepts the option value and answer id and return label.
+        label can be simple string or Placeholder
+        """
+        label: str = ""
         answers = self.schema.get_answers_by_answer_id(answer_id)
-        option_label: str = next(
+        label_options: str = next(
             (
                 options["label"]
                 for answer in answers
@@ -312,19 +327,10 @@ class PlaceholderTransforms:
             "",
         )
 
-        if isinstance(option_label, str):
-            label = option_label
+        if isinstance(label_options, str):
+            label = label_options
 
-        elif isinstance(option_label, dict):
-            parser = placeholder_parser.PlaceholderParser(
-                language=self.locale,
-                answer_store=AnswerStore(),
-                list_store=ListStore(),
-                metadata=ImmutableDict({}),
-                response_metadata={},
-                schema=self.schema,
-            )
-            placeholder_text = option_label["text"].replace("{", "").replace("}", "")
-            label = parser(option_label["placeholders"])[placeholder_text]
+        elif isinstance(label_options, dict):
+            label = self.ph_renderer.render_placeholder(label_options, list_item_id=None)
 
         return label
