@@ -45,25 +45,7 @@
                                         "mandatory": true,
                                         "options": [
                                             {
-                                                "label": {
-                                                    "text": "{head}",
-                                                    "placeholders": [
-                                                        {
-                                                            "placeholder": "head",
-                                                            "transforms": [
-                                                                {
-                                                                    "transform": "concatenate_list",
-                                                                    "arguments": {
-                                                                        "list_to_concatenate": {
-                                                                            "value": ["He", "ad", " label"]
-                                                                        },
-                                                                        "delimiter": ""
-                                                                    }
-                                                                }
-                                                            ]
-                                                        }
-                                                    ]
-                                                },
+                                                "label": "Head",
                                                 "value": "Head",
                                                 "q_code": "0"
                                             },
@@ -78,7 +60,7 @@
                                                 "q_code": "2"
                                             },
                                             {
-                                                "label": "Left Arm ",
+                                                "label": "Left Arm",
                                                 "value": "Left Arm",
                                                 "q_code": "3"
                                             }
@@ -95,9 +77,9 @@
                             "type": "Question",
                             "id": "recovery-question-checkbox-block",
                             "question": {
-                                "id": "recovery-question",
+                                "id": "recovery-question-checkbox",
                                 "title": {
-                                    "text": "How long did it take to recover from the injury to {body_part}?",
+                                    "text": "How long did it take to recover from the injury to your {body_part}?",
                                     "placeholders": [
                                         {
                                             "placeholder": "body_part",
@@ -105,10 +87,12 @@
                                                 {
                                                     "transform": "first_non_empty_item",
                                                     "arguments": {
-                                                        "items": {
-                                                            "source": "answers",
-                                                            "identifier": "mandatory-checkbox-answer"
-                                                        }
+                                                        "items": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "mandatory-checkbox-answer"
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 {
@@ -118,14 +102,6 @@
                                                             "source": "previous_transform"
                                                         },
                                                         "answer_id": "mandatory-checkbox-answer"
-                                                    }
-                                                },
-                                                {
-                                                    "transform": "format_possessive",
-                                                    "arguments": {
-                                                        "string_to_format": {
-                                                            "source": "previous_transform"
-                                                        }
                                                     }
                                                 }
                                             ]
@@ -172,19 +148,19 @@
                                         "mandatory": true,
                                         "options": [
                                             {
-                                                "label": "Eyes (label)",
-                                                "value": "Eye"
+                                                "label": "Eyes",
+                                                "value": "Eyes"
                                             },
                                             {
-                                                "label": "Ears (label)",
+                                                "label": "Ears",
                                                 "value": "Ears"
                                             },
                                             {
-                                                "label": "Mouth (label)",
+                                                "label": "Mouth",
                                                 "value": "Mouth"
                                             },
                                             {
-                                                "label": "Nose (label)",
+                                                "label": "Nose",
                                                 "value": "Nose"
                                             }
                                         ]
@@ -211,9 +187,9 @@
                             "type": "Question",
                             "id": "recovery-question-radio-block",
                             "question": {
-                                "id": "recovery-question",
+                                "id": "recovery-question-radio",
                                 "title": {
-                                    "text": "How long did it take to recover from the injury to {body_part}?",
+                                    "text": "How long did it take to recover from the injury to your {body_part}?",
                                     "placeholders": [
                                         {
                                             "placeholder": "body_part",
@@ -226,14 +202,6 @@
                                                             "identifier": "mandatory-radio-answer"
                                                         },
                                                         "answer_id": "mandatory-radio-answer"
-                                                    }
-                                                },
-                                                {
-                                                    "transform": "format_possessive",
-                                                    "arguments": {
-                                                        "string_to_format": {
-                                                            "source": "previous_transform"
-                                                        }
                                                     }
                                                 }
                                             ]

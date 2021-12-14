@@ -391,3 +391,18 @@ def test_date_range_bounds_kwarg_default_monday(placeholder_transform):
 def test_format_date_range(placeholder_transform, date_range, expected):
     actual = placeholder_transform.format_date_range(date_range)
     assert actual == expected
+
+
+@pytest.mark.parametrize(
+    "answer_id,value,expected",
+    [
+        ("mandatory-checkbox-answer", "Head", "Head label"),
+        ("mandatory-checkbox-answer", "Body", "Body label"),
+    ],
+)
+def test_option_label_from_value_with_placeholder_label(
+    placeholder_transform, answer_id, value, expected
+):
+    actual = placeholder_transform.option_label_from_value(value, answer_id)
+
+    assert actual == expected
