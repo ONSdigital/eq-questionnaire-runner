@@ -686,6 +686,84 @@ def section_with_repeating_list():
 
 
 @pytest.fixture
+def section_with_labels():
+    return {
+        "sections": [
+            {
+                "id": "checkbox-section",
+                "groups": [
+                    {
+                        "blocks": [
+                            {
+                                "type": "Question",
+                                "id": "mandatory-checkbox",
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "id": "mandatory-checkbox-answer",
+                                            "mandatory": True,
+                                            "options": [
+                                                {
+                                                    "label": {
+                                                        "text": "{head}",
+                                                        "placeholders": [
+                                                            {
+                                                                "placeholder": "head",
+                                                                "transforms": [
+                                                                    {
+                                                                        "transform": "concatenate_list",
+                                                                        "arguments": {
+                                                                            "list_to_concatenate": {
+                                                                                "value": [
+                                                                                    "He",
+                                                                                    "ad",
+                                                                                    " label",
+                                                                                ]
+                                                                            },
+                                                                            "delimiter": "",
+                                                                        },
+                                                                    }
+                                                                ],
+                                                            }
+                                                        ],
+                                                    },
+                                                    "value": "Head",
+                                                    "q_code": "0",
+                                                },
+                                                {
+                                                    "label": "Body label",
+                                                    "value": "Body",
+                                                    "q_code": "1",
+                                                },
+                                                {
+                                                    "label": "Right Arm",
+                                                    "value": "Right Arm",
+                                                    "q_code": "2",
+                                                },
+                                                {
+                                                    "label": "Left Arm ",
+                                                    "value": "Left Arm",
+                                                    "q_code": "3",
+                                                },
+                                            ],
+                                            "type": "Checkbox",
+                                        }
+                                    ],
+                                    "id": "mandatory-checkbox-question",
+                                    "title": "When you had your accident, where did you sustain injuries?",
+                                    "type": "General",
+                                },
+                            }
+                        ],
+                        "id": "checkboxes",
+                    }
+                ],
+            }
+        ]
+    }
+
+
+@pytest.fixture
 def mock_schema():
     schema = Mock(
         QuestionnaireSchema(
@@ -701,5 +779,7 @@ def mock_schema():
 
 
 @pytest.fixture
-def placeholder_transform():
-    return PlaceholderTransforms(language="en")
+def placeholder_transform(section_with_labels):
+    return PlaceholderTransforms(
+        language="en", schema=QuestionnaireSchema(section_with_labels)
+    )

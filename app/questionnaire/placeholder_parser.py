@@ -41,7 +41,7 @@ class PlaceholderParser:
         self._schema = schema
         self._list_item_id = list_item_id
         self._location = location
-        self._transformer = PlaceholderTransforms(language)
+        self._transformer = PlaceholderTransforms(language, schema)
         self._placeholder_map: MutableMapping[
             str, Union[ValueSourceEscapedTypes, ValueSourceTypes, None]
         ] = {}

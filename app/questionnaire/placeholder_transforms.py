@@ -7,7 +7,12 @@ from babel.dates import format_datetime
 from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
+from werkzeug.datastructures import ImmutableDict
 
+from app.data_models.answer_store import AnswerStore
+from app.data_models.list_store import ListStore
+from app.questionnaire import placeholder_parser
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.rules.operations import DateOffset, Operations
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
@@ -20,8 +25,9 @@ class PlaceholderTransforms:
     A class to group the transforms that can be used within placeholders
     """
 
-    def __init__(self, language: str):
+    def __init__(self, language: str, schema: QuestionnaireSchema):
         self.language = language
+        self.schema = schema
         self.locale = DEFAULT_LOCALE if language in {"en", "eo"} else language
         self._operations = Operations(language=self.language)
 
@@ -292,3 +298,33 @@ class PlaceholderTransforms:
 
     def list_item_count(self, list_to_count: Optional[Sized]) -> int:
         return self._operations.evaluate_count(list_to_count)
+
+    def option_label_from_value(self, value: str, answer_id: str) -> str:
+
+        answers = self.schema.get_answers_by_answer_id(answer_id)
+        option_label: str = next(
+            (
+                options["label"]
+                for answer in answers
+                for options in answer["options"]
+                if value in options["value"]
+            ),
+            "",
+        )
+
+        if isinstance(option_label, str):
+            label = option_label
+
+        elif isinstance(option_label, dict):
+            parser = placeholder_parser.PlaceholderParser(
+                language=self.locale,
+                answer_store=AnswerStore(),
+                list_store=ListStore(),
+                metadata=ImmutableDict({}),
+                response_metadata={},
+                schema=self.schema,
+            )
+            placeholder_text = option_label["text"].replace("{", "").replace("}", "")
+            label = parser(option_label["placeholders"])[placeholder_text]
+
+        return label
