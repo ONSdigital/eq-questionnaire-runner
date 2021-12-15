@@ -14,7 +14,10 @@ from app.questionnaire.rules.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
 
 if TYPE_CHECKING:
-    from app.questionnaire.placeholder_renderer import PlaceholderRenderer
+    from app.questionnaire.placeholder_renderer import (
+        PlaceholderRenderer,  # pragma: no cover
+    )
+
 
 # pylint: disable=too-many-public-methods
 

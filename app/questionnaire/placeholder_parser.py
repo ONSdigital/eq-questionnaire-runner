@@ -23,7 +23,9 @@ from app.questionnaire.value_source_resolver import (
 
 TransformedValueTypes = Union[None, str, int, Decimal, bool]
 if TYPE_CHECKING:
-    from app.questionnaire.placeholder_renderer import PlaceholderRenderer
+    from app.questionnaire.placeholder_renderer import (
+        PlaceholderRenderer,  # pragma: no cover
+    )
 
 
 class PlaceholderParser:
