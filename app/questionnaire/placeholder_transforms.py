@@ -7,17 +7,11 @@ from babel.dates import format_datetime
 from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
-from flask_login import current_user
-from werkzeug.datastructures import ImmutableDict
 
-from app.data_models.list_store import ListStore
-from app.globals import get_answer_store
-from app.questionnaire import placeholder_renderer
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.questionnaire.rules.operations import DateOffset, Operations
+from app.questionnaire.rules.operations import Operations
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
-
 
 # pylint: disable=too-many-public-methods
 
@@ -27,20 +21,12 @@ class PlaceholderTransforms:
     A class to group the transforms that can be used within placeholders
     """
 
-    def __init__(self, language: str, schema: QuestionnaireSchema):
+    def __init__(self, language: str, schema: QuestionnaireSchema, renderer):
         self.language = language
         self.schema = schema
+        self.renderer = renderer
         self.locale = DEFAULT_LOCALE if language in {"en", "eo"} else language
         self._operations = Operations(language=self.language)
-        self.answer_store = get_answer_store(current_user)
-        self.ph_renderer = placeholder_renderer.PlaceholderRenderer(
-            language=self.locale,
-            answer_store=self.answer_store,
-            list_store=ListStore(),
-            metadata=ImmutableDict({}),
-            response_metadata={},
-            schema=self.schema,
-        )
 
     input_date_format = "%Y-%m-%d"
 
@@ -183,7 +169,7 @@ class PlaceholderTransforms:
         """
         first_day_of_prior_full_week: date = self._operations.resolve_date_from_string(
             reference_date,
-            DateOffset(days=offset_full_weeks * 7, day_of_week=first_day_of_week),
+            dict(days=offset_full_weeks * 7, day_of_week=first_day_of_week),
             offset_by_full_weeks=True,
         )  # type: ignore
 
@@ -331,6 +317,7 @@ class PlaceholderTransforms:
             label = label_options
 
         elif isinstance(label_options, dict):
-            label = self.ph_renderer.render_placeholder(label_options, list_item_id=None)
+
+            label = self.renderer.render_placeholder(label_options, list_item_id=None)
 
         return label

@@ -75,6 +75,7 @@ class PlaceholderRenderer:
             schema=self._schema,
             list_item_id=list_item_id,
             location=self._location,
+            renderer=self,
         )
 
         placeholder_data = QuestionnaireSchema.get_mutable_deepcopy(placeholder_data)

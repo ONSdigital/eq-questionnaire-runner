@@ -32,6 +32,7 @@ class PlaceholderParser:
         schema: QuestionnaireSchema,
         list_item_id: Optional[str] = None,
         location: Location = None,
+        renderer=None,
     ):
 
         self._answer_store = answer_store
@@ -41,7 +42,7 @@ class PlaceholderParser:
         self._schema = schema
         self._list_item_id = list_item_id
         self._location = location
-        self._transformer = PlaceholderTransforms(language, schema)
+        self._transformer = PlaceholderTransforms(language, schema, renderer)
         self._placeholder_map: MutableMapping[
             str, Union[ValueSourceEscapedTypes, ValueSourceTypes, None]
         ] = {}

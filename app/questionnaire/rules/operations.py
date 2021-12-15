@@ -15,7 +15,6 @@ from typing import (
 from babel.dates import format_datetime
 from dateutil.relativedelta import relativedelta
 
-from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.rules.helpers import ValueTypes, casefold
 from app.questionnaire.rules.operator import OPERATION_MAPPING
 from app.questionnaire.rules.utils import parse_datetime

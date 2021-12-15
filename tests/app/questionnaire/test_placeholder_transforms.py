@@ -5,13 +5,13 @@ import pytest
 
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-
+from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 
 # pylint: disable=too-many-public-methods,no-self-use
 class TestPlaceholderParser(unittest.TestCase):
     def setUp(self):
         self.transforms = PlaceholderTransforms(
-            language="en", schema=QuestionnaireSchema({})
+            language="en", schema=QuestionnaireSchema({}),renderer=PlaceholderRenderer({})
         )
 
     def test_format_currency(self):
