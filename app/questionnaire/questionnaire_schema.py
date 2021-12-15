@@ -219,7 +219,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _is_list_name_in_rule(
         self, rules: Union[dict, Sequence], list_name: str
     ) -> bool:
-
         if isinstance(rules, dict) and any(
             operator in rules for operator in OPERATION_MAPPING
         ):
@@ -229,17 +228,17 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             if not isinstance(rule, dict):
                 continue
 
-                # old rules
+            # Old rules
             if "list" in rule:
                 return rule.get("list") == list_name
 
-                # New rules
+            # New rules
             if "source" in rule:
                 return (
                     rule.get("source") == "list" and rule.get("identifier") == list_name
                 )
 
-                # Nested rules
+            # Nested rules
             if any(operator in rule for operator in OPERATION_MAPPING):
                 return self._is_list_name_in_rule(rule, list_name)
 
