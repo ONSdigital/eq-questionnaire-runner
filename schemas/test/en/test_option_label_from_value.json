@@ -47,6 +47,10 @@
                                             {
                                                 "label": "Head",
                                                 "value": "Head"
+                                            },
+                                            {
+                                                "label": "Dont choose this one",
+                                                "value": "Dont choose this one"
                                             }
                                         ],
                                         "type": "Radio"
@@ -69,6 +73,10 @@
                                             {
                                                 "label": "label",
                                                 "value": "label"
+                                            },
+                                            {
+                                                "label": "Dont choose this one",
+                                                "value": "Dont choose this one"
                                             }
                                         ],
                                         "type": "Radio"
@@ -129,7 +137,7 @@
                                                 "q_code": "2"
                                             },
                                             {
-                                                "label": "Left Arm ",
+                                                "label": "Left Arm",
                                                 "value": "Left Arm",
                                                 "q_code": "3"
                                             }
@@ -146,7 +154,7 @@
                             "type": "Question",
                             "id": "recovery-question-checkbox-block",
                             "question": {
-                                "id": "recovery-question",
+                                "id": "recovery-question-checkbox",
                                 "title": {
                                     "text": "How long did it take to recover from the injury to your {body_part}?",
                                     "placeholders": [
@@ -156,10 +164,12 @@
                                                 {
                                                     "transform": "first_non_empty_item",
                                                     "arguments": {
-                                                        "items": {
-                                                            "source": "answers",
-                                                            "identifier": "mandatory-checkbox-answer"
-                                                        }
+                                                        "items": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "mandatory-checkbox-answer"
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 {
@@ -216,7 +226,7 @@
                                         "options": [
                                             {
                                                 "label": "Eyes",
-                                                "value": "Eye"
+                                                "value": "Eyes"
                                             },
                                             {
                                                 "label": "Ears",
@@ -254,7 +264,7 @@
                             "type": "Question",
                             "id": "recovery-question-radio-block",
                             "question": {
-                                "id": "recovery-question",
+                                "id": "recovery-question-radio",
                                 "title": {
                                     "text": "How long did it take to recover from the injury to your {body_part}?",
                                     "placeholders": [
