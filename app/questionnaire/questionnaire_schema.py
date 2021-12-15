@@ -1,13 +1,14 @@
 from collections import abc, defaultdict
 from copy import deepcopy
 from functools import cached_property
-from typing import Any, Generator, Iterable, Mapping, Optional, Union
+from typing import Any, Generator, Iterable, Mapping, Optional, Sequence, Union
 
 from flask_babel import force_locale
 from werkzeug.datastructures import ImmutableDict
 
 from app.data_models.answer import Answer
 from app.forms import error_messages
+from app.questionnaire.rules.operator import OPERATION_MAPPING
 from app.questionnaire.schema_utils import get_values_for_key
 
 DEFAULT_LANGUAGE_CODE = "en"
@@ -215,6 +216,38 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         schema: ImmutableDict = self.json.get("post_submission", ImmutableDict({}))
         return schema
 
+    def _is_list_name_in_rule(
+        self, rules: Union[dict, Sequence], list_name: str
+    ) -> bool:
+        if isinstance(rules, dict) and any(
+            operator in rules for operator in OPERATION_MAPPING
+        ):
+            rules = self.get_operands(rules)
+
+        for rule in rules:
+            if not isinstance(rule, dict):
+                continue
+
+            # Old rules
+            if "list" in rule:
+                return rule.get("list") == list_name
+
+            # New rules
+            if "source" in rule:
+                return (
+                    rule.get("source") == "list" and rule.get("identifier") == list_name
+                )
+
+            # Nested rules
+            if any(operator in rule for operator in OPERATION_MAPPING):
+                return self._is_list_name_in_rule(rule, list_name)
+
+    @staticmethod
+    def get_operands(rules: dict) -> list:
+        operator = next(iter(rules))
+        operands: list = rules[operator]
+        return operands
+
     def _section_ids_associated_to_list_name(self, list_name: str) -> list[str]:
         section_ids: list[str] = []
 
@@ -222,13 +255,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             ignore_keys = ["question_variants", "content_variants"]
             when_rules = get_values_for_key(section, "when", ignore_keys)
 
-            if any(
-                rule.get("list") == list_name
-                for when_rule in when_rules
-                for rule in when_rule
-            ):
+            rule: Union[dict, list] = next(when_rules, [])
+            if self._is_list_name_in_rule(rule, list_name):
                 section_ids.append(section["id"])
-
         return section_ids
 
     @staticmethod
