@@ -37,6 +37,50 @@
                     "blocks": [
                         {
                             "type": "Question",
+                            "id": "mandatory-radio-label-1",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "mandatory-radio-label-answer-1",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Head",
+                                                "value": "Head"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "mandatory-radio-label-question-1",
+                                "title": "The option below must be selected for the placeholder label to be constructed properly",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "mandatory-radio-label-2",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "mandatory-radio-label-answer-2",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "label",
+                                                "value": "label"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "mandatory-radio-label-question-2",
+                                "title": "The option below must be selected for the placeholder label to be constructed properly",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
                             "id": "mandatory-checkbox",
                             "question": {
                                 "answers": [
@@ -54,14 +98,17 @@
                                                                 {
                                                                     "transform": "concatenate_list",
                                                                     "arguments": {
-                                                                        "list_to_concatenate": {
-                                                                            "value": [
-                                                                                "He",
-                                                                                "ad",
-                                                                                " label"
-                                                                            ]
-                                                                        },
-                                                                        "delimiter": ""
+                                                                        "list_to_concatenate": [
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "mandatory-radio-label-answer-1"
+                                                                            },
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "mandatory-radio-label-answer-2"
+                                                                            }
+                                                                        ],
+                                                                        "delimiter": " "
                                                                     }
                                                                 }
                                                             ]
@@ -82,7 +129,7 @@
                                                 "q_code": "2"
                                             },
                                             {
-                                                "label": "Left Arm",
+                                                "label": "Left Arm ",
                                                 "value": "Left Arm",
                                                 "q_code": "3"
                                             }
@@ -99,7 +146,7 @@
                             "type": "Question",
                             "id": "recovery-question-checkbox-block",
                             "question": {
-                                "id": "recovery-question-checkbox",
+                                "id": "recovery-question",
                                 "title": {
                                     "text": "How long did it take to recover from the injury to your {body_part}?",
                                     "placeholders": [
@@ -109,12 +156,10 @@
                                                 {
                                                     "transform": "first_non_empty_item",
                                                     "arguments": {
-                                                        "items": [
-                                                            {
-                                                                "source": "answers",
-                                                                "identifier": "mandatory-checkbox-answer"
-                                                            }
-                                                        ]
+                                                        "items": {
+                                                            "source": "answers",
+                                                            "identifier": "mandatory-checkbox-answer"
+                                                        }
                                                     }
                                                 },
                                                 {
@@ -171,7 +216,7 @@
                                         "options": [
                                             {
                                                 "label": "Eyes",
-                                                "value": "Eyes"
+                                                "value": "Eye"
                                             },
                                             {
                                                 "label": "Ears",
@@ -209,7 +254,7 @@
                             "type": "Question",
                             "id": "recovery-question-radio-block",
                             "question": {
-                                "id": "recovery-question-radio",
+                                "id": "recovery-question",
                                 "title": {
                                     "text": "How long did it take to recover from the injury to your {body_part}?",
                                     "placeholders": [
