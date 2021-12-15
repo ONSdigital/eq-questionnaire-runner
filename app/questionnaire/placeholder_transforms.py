@@ -1,6 +1,6 @@
 from datetime import date, datetime, timezone
 from decimal import Decimal
-from typing import Optional, Sequence, Sized, Union
+from typing import TYPE_CHECKING, Optional, Sequence, Sized, Union
 from urllib.parse import quote
 
 from babel.dates import format_datetime
@@ -9,9 +9,12 @@ from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.questionnaire.rules.operations import Operations
+from app.questionnaire.rules.operations import DateOffset, Operations
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
+
+if TYPE_CHECKING:
+    from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 
 # pylint: disable=too-many-public-methods
 
@@ -21,7 +24,12 @@ class PlaceholderTransforms:
     A class to group the transforms that can be used within placeholders
     """
 
-    def __init__(self, language: str, schema: QuestionnaireSchema, renderer):
+    def __init__(
+        self,
+        language: str,
+        schema: QuestionnaireSchema,
+        renderer: "PlaceholderRenderer" = None,
+    ):
         self.language = language
         self.schema = schema
         self.renderer = renderer
@@ -169,7 +177,7 @@ class PlaceholderTransforms:
         """
         first_day_of_prior_full_week: date = self._operations.resolve_date_from_string(
             reference_date,
-            dict(days=offset_full_weeks * 7, day_of_week=first_day_of_week),
+            DateOffset(days=offset_full_weeks * 7, day_of_week=first_day_of_week),
             offset_by_full_weeks=True,
         )  # type: ignore
 
@@ -308,7 +316,7 @@ class PlaceholderTransforms:
                 options["label"]
                 for answer in answers
                 for options in answer["options"]
-                if value in options["value"]
+                if value == options["value"]
             ),
             "",
         )
@@ -317,7 +325,6 @@ class PlaceholderTransforms:
             label = label_options
 
         elif isinstance(label_options, dict):
-
             label = self.renderer.render_placeholder(label_options, list_item_id=None)
 
         return label

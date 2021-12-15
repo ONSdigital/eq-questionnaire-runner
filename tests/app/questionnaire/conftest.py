@@ -2,12 +2,14 @@
 from unittest.mock import Mock
 
 import pytest
+from werkzeug.datastructures import ImmutableDict
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.placeholder_parser import PlaceholderParser
+from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 
 
@@ -774,6 +776,52 @@ def section_with_labels():
                         "blocks": [
                             {
                                 "type": "Question",
+                                "id": "mandatory-radio-label-1",
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "id": "mandatory-radio-label-answer-1",
+                                            "mandatory": True,
+                                            "options": [
+                                                {"label": "Head", "value": "Head"},
+                                                {
+                                                    "label": "Don‘t choose this one",
+                                                    "value": "Don‘t choose this one",
+                                                },
+                                            ],
+                                            "type": "Radio",
+                                        }
+                                    ],
+                                    "id": "mandatory-radio-label-question-1",
+                                    "title": "The option below must be selected for the placeholder label to be constructed properly",
+                                    "type": "General",
+                                },
+                            },
+                            {
+                                "type": "Question",
+                                "id": "mandatory-radio-label-2",
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "id": "mandatory-radio-label-answer-2",
+                                            "mandatory": True,
+                                            "options": [
+                                                {"label": "label", "value": "label"},
+                                                {
+                                                    "label": "Don‘t choose this one",
+                                                    "value": "Don‘t choose this one",
+                                                },
+                                            ],
+                                            "type": "Radio",
+                                        }
+                                    ],
+                                    "id": "mandatory-radio-label-question-2",
+                                    "title": "The option below must be selected for the placeholder label to be constructed properly",
+                                    "type": "General",
+                                },
+                            },
+                            {
+                                "type": "Question",
                                 "id": "mandatory-checkbox",
                                 "question": {
                                     "answers": [
@@ -791,25 +839,28 @@ def section_with_labels():
                                                                     {
                                                                         "transform": "concatenate_list",
                                                                         "arguments": {
-                                                                            "list_to_concatenate": {
-                                                                                "value": [
-                                                                                    "He",
-                                                                                    "ad",
-                                                                                    " label",
-                                                                                ]
-                                                                            },
-                                                                            "delimiter": "",
+                                                                            "list_to_concatenate": [
+                                                                                {
+                                                                                    "source": "answers",
+                                                                                    "identifier": "mandatory-radio-label-answer-1",
+                                                                                },
+                                                                                {
+                                                                                    "source": "answers",
+                                                                                    "identifier": "mandatory-radio-label-answer-2",
+                                                                                },
+                                                                            ],
+                                                                            "delimiter": " ",
                                                                         },
                                                                     }
                                                                 ],
                                                             }
                                                         ],
                                                     },
-                                                    "value": "Head",
+                                                    "value": "{head}",
                                                     "q_code": "0",
                                                 },
                                                 {
-                                                    "label": "Body label",
+                                                    "label": "Body",
                                                     "value": "Body",
                                                     "q_code": "1",
                                                 },
@@ -819,7 +870,7 @@ def section_with_labels():
                                                     "q_code": "2",
                                                 },
                                                 {
-                                                    "label": "Left Arm ",
+                                                    "label": "Left Arm",
                                                     "value": "Left Arm",
                                                     "q_code": "3",
                                                 },
@@ -831,7 +882,68 @@ def section_with_labels():
                                     "title": "When you had your accident, where did you sustain injuries?",
                                     "type": "General",
                                 },
-                            }
+                            },
+                            {
+                                "type": "Question",
+                                "id": "recovery-question-checkbox-block",
+                                "question": {
+                                    "id": "recovery-question-checkbox",
+                                    "title": {
+                                        "text": "How long did it take to recover from the injury to your {body_part}?",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "body_part",
+                                                "transforms": [
+                                                    {
+                                                        "transform": "first_non_empty_item",
+                                                        "arguments": {
+                                                            "items": [
+                                                                {
+                                                                    "source": "answers",
+                                                                    "identifier": "mandatory-checkbox-answer",
+                                                                }
+                                                            ]
+                                                        },
+                                                    },
+                                                    {
+                                                        "transform": "option_label_from_value",
+                                                        "arguments": {
+                                                            "value": {
+                                                                "source": "previous_transform"
+                                                            },
+                                                            "answer_id": "mandatory-checkbox-answer",
+                                                        },
+                                                    },
+                                                ],
+                                            }
+                                        ],
+                                    },
+                                    "type": "General",
+                                    "answers": [
+                                        {
+                                            "id": "recovery-checkbox-answer",
+                                            "label": "Recovery time",
+                                            "mandatory": False,
+                                            "type": "Number",
+                                        }
+                                    ],
+                                },
+                                "skip_conditions": {
+                                    "when": {
+                                        ">": [
+                                            {
+                                                "count": [
+                                                    {
+                                                        "identifier": "mandatory-checkbox-answer",
+                                                        "source": "answers",
+                                                    }
+                                                ]
+                                            },
+                                            1,
+                                        ]
+                                    }
+                                },
+                            },
                         ],
                         "id": "checkboxes",
                     }
@@ -858,6 +970,19 @@ def mock_schema():
 
 @pytest.fixture
 def placeholder_transform(section_with_labels):
-    return PlaceholderTransforms(
-        language="en", schema=QuestionnaireSchema(section_with_labels)
+    schema = QuestionnaireSchema(section_with_labels)
+    answer_id = AnswerStore(
+        [
+            {"answer_id": "mandatory-radio-label-answer-1", "value": "Head"},
+            {"answer_id": "mandatory-radio-label-answer-2", "value": "label"},
+        ]
     )
+    renderer = PlaceholderRenderer(
+        language="en",
+        answer_store=answer_id,
+        list_store=ListStore(),
+        metadata=ImmutableDict({}),
+        response_metadata={},
+        schema=schema,
+    )
+    return PlaceholderTransforms(language="en", schema=schema, renderer=renderer)

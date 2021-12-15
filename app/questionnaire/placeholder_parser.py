@@ -1,5 +1,13 @@
 from decimal import Decimal
-from typing import Any, Mapping, MutableMapping, Optional, Sequence, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Mapping,
+    MutableMapping,
+    Optional,
+    Sequence,
+    Union,
+)
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -14,6 +22,8 @@ from app.questionnaire.value_source_resolver import (
 )
 
 TransformedValueTypes = Union[None, str, int, Decimal, bool]
+if TYPE_CHECKING:
+    from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 
 
 class PlaceholderParser:
@@ -32,7 +42,7 @@ class PlaceholderParser:
         schema: QuestionnaireSchema,
         list_item_id: Optional[str] = None,
         location: Location = None,
-        renderer=None,
+        renderer: "PlaceholderRenderer" = None,
     ):
 
         self._answer_store = answer_store

@@ -5,13 +5,13 @@ import pytest
 
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.questionnaire.placeholder_renderer import PlaceholderRenderer
+
 
 # pylint: disable=too-many-public-methods,no-self-use
 class TestPlaceholderParser(unittest.TestCase):
     def setUp(self):
         self.transforms = PlaceholderTransforms(
-            language="en", schema=QuestionnaireSchema({}),renderer=PlaceholderRenderer({})
+            language="en", schema=QuestionnaireSchema({})
         )
 
     def test_format_currency(self):
@@ -273,7 +273,6 @@ class TestPlaceholderParser(unittest.TestCase):
         )
 
     def test_email_link_with_subject_and_reference(self):
-
         assert (
             self.transforms.email_link("test@email.com", "test subject", "12345")
             == '<a href="mailto:test@email.com?subject=test%20subject%2012345">test@email.com</a>'
@@ -286,7 +285,6 @@ class TestPlaceholderParser(unittest.TestCase):
         )
 
     def test_list_item_count(self):
-
         assert (
             self.transforms.list_item_count(
                 ["Alice Aardvark", "Bob Berty Brown", "Dave Dixon Davies"]
@@ -396,8 +394,8 @@ def test_format_date_range(placeholder_transform, date_range, expected):
 @pytest.mark.parametrize(
     "answer_id,value,expected",
     [
-        ("mandatory-checkbox-answer", "Head", "Head label"),
-        ("mandatory-checkbox-answer", "Body", "Body label"),
+        ("mandatory-checkbox-answer", "{head}", "Head label"),
+        ("mandatory-checkbox-answer", "Body", "Body"),
     ],
 )
 def test_option_label_from_value_with_placeholder_label(
