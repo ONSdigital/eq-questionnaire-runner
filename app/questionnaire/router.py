@@ -124,11 +124,13 @@ class Router:
         if self._progress_store.is_section_complete(
             location.section_id, location.list_item_id
         ):
+            if return_to and (
+                return_to_url := self._get_return_to_location_url(location, return_to)
+            ):
+                return return_to_url
+
             if is_last_block_in_section:
                 return self._get_next_location_url_for_last_block_in_section(location)
-
-            if return_to:
-                return self._get_return_to_location_url(location, return_to)
 
         # Due to backwards routing, you can be on the last block without the section being complete
         if is_last_block_in_section:
@@ -154,10 +156,14 @@ class Router:
         Returns the previous 'location' to visit given a set of user answers
         """
 
-        if return_to and self._progress_store.is_section_complete(
-            location.section_id, location.list_item_id
+        if (
+            return_to
+            and self._progress_store.is_section_complete(
+                location.section_id, location.list_item_id
+            )
+            and (return_to_url := self._get_return_to_location_url(location, return_to))
         ):
-            return self._get_return_to_location_url(location, return_to)
+            return return_to_url
 
         block_id_index = routing_path.index(location.block_id)
 
