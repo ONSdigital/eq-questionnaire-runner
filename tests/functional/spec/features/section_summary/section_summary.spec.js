@@ -84,6 +84,15 @@ describe("Section Summary", () => {
       expect(browser.getUrl()).to.contain(AddressDurationPage.pageName);
     });
 
+    it("When I select edit from Final Summary and change an answer and then go to the next question and click previous, Then I should return to the question I originally edited", () => {
+      $(SubmitPage.summaryShowAllButton()).click();
+      $(SubmitPage.insuranceTypeAnswerEdit()).click();
+      $(InsuranceTypePage.contents()).click();
+      $(InsuranceTypePage.submit()).click();
+      $(InsuranceAddressPage.previous()).click();
+      expect(browser.getUrl()).to.contain(InsuranceTypePage.pageName);
+    });
+
     it("When I change an answer, Then the final summary should display the updated value", () => {
       $(SubmitPage.summaryShowAllButton()).click();
       expect($(SubmitPage.insuranceAddressAnswer()).getText()).to.contain("No answer provided");
