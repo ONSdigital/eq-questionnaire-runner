@@ -148,11 +148,23 @@ class Router:
         return self.get_next_location_url_for_end_of_section()
 
     def get_previous_location_url(
-        self, location: Location, routing_path: RoutingPath
+        self,
+        location: Location,
+        routing_path: RoutingPath,
+        return_to: Optional[str] = None,
     ) -> Optional[str]:
         """
         Returns the previous 'location' to visit given a set of user answers
         """
+        if self._progress_store.is_section_complete(
+            location.section_id, location.list_item_id
+        ):
+            if return_to == "section-summary":
+                return self._get_section_url(location)
+
+            if return_to == "final-summary" and self.is_questionnaire_complete:
+                return url_for("questionnaire.submit_questionnaire")
+
         block_id_index = routing_path.index(location.block_id)
 
         if block_id_index != 0:

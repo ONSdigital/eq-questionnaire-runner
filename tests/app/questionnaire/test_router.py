@@ -561,6 +561,33 @@ class TestRouterPreviousLocation(RouterTestCase):
 
         self.assertEqual(expected_location_url, previous_location_url)
 
+    def test_return_to_section_summary(self):
+        self.schema = load_schema_from_name("test_section_summary")
+        self.progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "property-details-section",
+                    "list_item_id": None,
+                    "status": CompletionStatus.COMPLETED,
+                    "block_ids": ["insurance-type", "insurance-address"],
+                }
+            ]
+        )
+
+        current_location = Location(
+            section_id="property-details-section", block_id="insurance-type"
+        )
+        routing_path = RoutingPath(
+            ["insurance-type", "insurance-address"], section_id="default-section"
+        )
+        previous_location = self.router.get_previous_location_url(
+            current_location, routing_path, return_to="section-summary"
+        )
+
+        self.assertIn(
+            "/questionnaire/sections/property-details-section/", previous_location
+        )
+
 
 class TestRouterPreviousLocationLinearFlow(RouterTestCase):
     def test_is_none_on_first_block_single_section(self):
