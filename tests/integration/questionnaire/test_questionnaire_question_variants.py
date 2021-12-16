@@ -6,18 +6,28 @@ class TestQuestionnaireQuestionVariants(IntegrationTestCase):
         self.proxy_url = None
         super().__init__(*args, **kwargs)
 
-    def test_non_proxy_answer_shows_non_proxy_title(self):
-        self.launchSurvey("test_variants_question")
-
-        self.complete_first_section(proxy=False)
-
     def test_proxy_answer_shows_proxy_title(self):
         self.launchSurvey("test_variants_question")
 
         self.complete_first_section(proxy=True)
 
-    def test_summaries_proxy(self):
+    def test_non_proxy_answer_shows_non_proxy_title(self):
+        self.launchSurvey("test_new_variants_question")
+
+        self.complete_first_section(proxy=False)
+
+    def test_new_non_proxy_answer_shows_non_proxy_title(self):
         self.launchSurvey("test_variants_question")
+
+        self.complete_first_section(proxy=False)
+
+    def test_new_proxy_answer_shows_proxy_title(self):
+        self.launchSurvey("test_new_variants_question")
+
+        self.complete_first_section(proxy=True)
+
+    def test_new_summaries_proxy(self):
+        self.launchSurvey("test_new_variants_question")
 
         self.complete_first_section(proxy=True)
 
@@ -39,6 +49,7 @@ class TestQuestionnaireQuestionVariants(IntegrationTestCase):
         self.assertInBody("What is your age")
 
     def complete_first_section(self, proxy=False):
+
         self.assertInBody("Who is this questionnaire about")
 
         self.post({"first-name-answer": "Linus", "last-name-answer": "Torvalds"})
