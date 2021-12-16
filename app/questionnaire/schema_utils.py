@@ -28,7 +28,7 @@ def find_pointers_containing(input_data, search_key, pointer=None):
             yield from find_pointers_containing(item, search_key, f"{pointer}/{index}")
 
 
-def _choose_variant(
+def choose_variant(
     block,
     schema,
     metadata,
@@ -69,7 +69,7 @@ def _choose_variant(
 def choose_question_to_display(
     block, schema, metadata, answer_store, list_store, current_location
 ):
-    return _choose_variant(
+    return choose_variant(
         block,
         schema,
         metadata,
@@ -84,7 +84,7 @@ def choose_question_to_display(
 def choose_content_to_display(
     block, schema, metadata, answer_store, list_store, current_location
 ):
-    return _choose_variant(
+    return choose_variant(
         block,
         schema,
         metadata,

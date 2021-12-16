@@ -49,7 +49,6 @@ class TestQuestionnaireQuestionVariants(IntegrationTestCase):
         self.assertInBody("What is your age")
 
     def complete_first_section(self, proxy=False):
-
         self.assertInBody("Who is this questionnaire about")
 
         self.post({"first-name-answer": "Linus", "last-name-answer": "Torvalds"})

@@ -1,7 +1,6 @@
 from flask import url_for
 
-from app.questionnaire.rules.rule_evaluator import RuleEvaluator
-from app.questionnaire.when_rules import evaluate_when_rules
+from app.questionnaire.schema_utils import choose_variant
 from app.views.contexts.summary.question import Question
 
 
@@ -39,31 +38,20 @@ class Block:
         block_schema, answer_store, list_store, metadata, schema, location
     ):
         """ Taking question variants into account, return the question which was displayed to the user """
-
         list_item_id = location.list_item_id
-        for variant in block_schema.get("question_variants", []):
-            if isinstance(variant.get("when"), dict):
-                when_rule_evaluator = RuleEvaluator(
-                    schema, answer_store, list_store, metadata, {}, location
-                )
-                display_variant = when_rule_evaluator.evaluate(variant.get("when"))
-            else:
-                display_variant = evaluate_when_rules(
-                    variant.get("when"),
-                    schema,
-                    metadata,
-                    answer_store,
-                    list_store,
-                    location,
-                )
-            if display_variant:
-                return Question(
-                    variant["question"], answer_store, schema, list_item_id
-                ).serialize()
 
-        return Question(
-            block_schema["question"], answer_store, schema, list_item_id
-        ).serialize()
+        variant = choose_variant(
+            block_schema,
+            schema,
+            metadata,
+            answer_store,
+            list_store,
+            variants_key="question_variants",
+            single_key="question",
+            current_location=location,
+        )
+
+        return Question(variant, answer_store, schema, list_item_id).serialize()
 
     def serialize(self):
         return {
