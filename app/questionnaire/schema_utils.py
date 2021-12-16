@@ -55,7 +55,6 @@ def _choose_variant(
 
             if when_rule_evaluator.evaluate(when_rules):
                 return variant[single_key]
-
         elif evaluate_when_rules(
             when_rules,
             schema,
@@ -70,7 +69,6 @@ def _choose_variant(
 def choose_question_to_display(
     block, schema, metadata, answer_store, list_store, current_location
 ):
-
     return _choose_variant(
         block,
         schema,
