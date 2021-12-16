@@ -156,9 +156,8 @@ class Router:
         Returns the previous 'location' to visit given a set of user answers
         """
 
-        if (
-            return_to
-            and self._progress_store.is_section_complete(
+        if return_to and (
+            self._progress_store.is_section_complete(
                 location.section_id, location.list_item_id
             )
             and (return_to_url := self._get_return_to_location_url(location, return_to))
