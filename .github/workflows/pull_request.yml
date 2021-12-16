@@ -173,7 +173,7 @@ jobs:
       - name: Build
         run: >
           docker build -t onsdigital/eq-questionnaire-runner:$TAG
-          -t eu.gcr.io/${{ secrets.GCR_PROJECT_ID }}/eq-questionnaire-runner:$TAG .
+          -t eu.gcr.io/${{ secrets.GCR_PROJECT_ID }}/eq-questionnaire-runner:$TAG -t ${{ secrets.GAR_LOCATION }}/${{ secrets.GAR_PROJECT_ID }}/docker-images/eq-questionnaire-runner:$TAG .
       - name: Push to Docker Hub
         run: |
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
@@ -186,3 +186,12 @@ jobs:
           echo $GCR_SERVICE_KEY | docker login -u _json_key --password-stdin https://eu.gcr.io
           echo "Pushing to GCR with tag $TAG"
           docker push eu.gcr.io/${{ secrets.GCR_PROJECT_ID }}/eq-questionnaire-runner:$TAG
+
+      - name: Push to GAR
+        env:
+          GAR_SERVICE_KEY: ${{ secrets.GAR_SERVICE_KEY }}
+        run: |
+          echo $GAR_SERVICE_KEY | docker login -u _json_key --password-stdin https://${{ secrets.GAR_LOCATION }}
+          gcloud auth configure-docker ${{ secrets.GAR_LOCATION }}
+          echo "Pushing to GAR with tag $TAG"
+          docker push ${{ secrets.GAR_LOCATION }}/${{ secrets.GAR_PROJECT_ID }}/docker-images/eq-questionnaire-runner:$TAG
