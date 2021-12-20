@@ -63,7 +63,8 @@
   {% endif %}
 
   {% if cookie_settings_url %}
-    {{ onsCookiesBanner({
+    {{
+      onsCookiesBanner({
         "secondaryButtonUrl": cookie_settings_url,
         "statementTitle": _('Tell us whether you accept cookies'),
         "statementText": _("We use <a href='{cookie_settings_url}'>cookies to collect information</a> about how you use census.gov.uk. We use this information to make the website work as well as possible and improve our services.").format(cookie_settings_url=cookie_settings_url),
@@ -71,7 +72,8 @@
         "primaryButtonText": _('Accept all cookies'),
         "secondaryButtonText": _('Set cookie preferences'),
         "confirmationButtonText": _('Hide'),
-      }) }}
+      })
+    }}
   {% endif %}
 {% endblock %}
 
@@ -83,33 +85,23 @@
     and triggers can be set up in Google Tag Manager
     -->
     <script nonce="{{ csp_nonce }}">
-      dataLayer =
-      {{ data_layer | tojson }}
+      dataLayer = {{ data_layer | tojson }}
     </script>
 
     <!-- Google Tag Manager -->
     <script nonce="{{ csp_nonce }}">
       function loadGTM() {
-        (function (w, d, s, l, i) {
-          w[l] = w[l] || [];
-          w[l].push({
-            'gtm.start':
-              new Date().getTime(), event: 'gtm.js'
-          });
-          var f = d.getElementsByTagName(s)[0],
-            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
-          j.async = true;
-          j.src =
-            'https://www.googletagmanager.com/gtm.js?id=' + i + dl + '&gtm_auth={{ google_tag_manager_auth }}&gtm_cookies_win=x';
-          var n = d.querySelector('[nonce]');
-          n && j.setAttribute('nonce', n.nonce || n.getAttribute('nonce'));
-          f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', '{{ google_tag_manager_id }}');
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl+ '&gtm_auth={{ google_tag_manager_auth }}&gtm_cookies_win=x';var n=d.querySelector('[nonce]');
+        n&&j.setAttribute('nonce',n.nonce||n.getAttribute('nonce'));f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','{{ google_tag_manager_id }}');
       }
 
       var cookie_usage_regex = /^(.*)?\s*'usage':true\s*[^;]+(.*)?$/;
       if (document.cookie.match(cookie_usage_regex)) {
-        loadGTM();
+          loadGTM();
       }
     </script>
     <!-- End Google Tag Manager -->
@@ -118,7 +110,7 @@
 
 
 {% block bodyStart %}
-  {% if google_tag_manager_id and google_tag_manager_auth %}
+  {% if google_tag_manager_id and google_tag_manager_auth  %}
     <!-- Google Tag Manager (noscript) -->
     <noscript>
       <iframe src="https://www.googletagmanager.com/ns.html?id={{ google_tag_manager_id }}&gtm_auth={{ google_tag_manager_auth }}&gtm_cookies_win=x"
@@ -131,17 +123,19 @@
 
 
 {% block skipLink %}
-  {{ onsSkipToContent({
+  {{
+    onsSkipToContent({
       "url": "#main-content",
       "text": _("Skip to main content")
-    }) }}
+    })
+  }}
 {% endblock %}
 
 
 {% block scripts %}
   {% if config['EQ_ENABLE_LIVE_RELOAD'] %}
     <script nonce="{{ csp_nonce }}" id="__bs_script__">//<![CDATA[
-    document.write("<script async nonce='{{ csp_nonce }}' src='http://HOST:35729/livereload.js'><\/script>".replace("HOST", location.hostname));
+      document.write("<script async nonce='{{ csp_nonce }}' src='http://HOST:35729/livereload.js'><\/script>".replace("HOST", location.hostname));
     //]]></script>
   {% endif %}
 {% endblock %}
