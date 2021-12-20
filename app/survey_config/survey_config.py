@@ -1,10 +1,12 @@
+# pylint: disable=R1707
 from dataclasses import dataclass, field
-from typing import Iterable, Mapping, MutableMapping, Optional, Union
+from typing import Any, Iterable, Mapping, MutableMapping, Optional, Union
 
 from flask_babel import lazy_gettext
 from flask_babel.speaklater import LazyString
 
 from app.settings import ACCOUNT_SERVICE_BASE_URL
+from app.survey_config.link import Link
 
 
 @dataclass
@@ -26,6 +28,16 @@ class SurveyConfig:
     account_service_surveys_path: Optional[str] = None
     title_logo: Optional[str] = None
     title_logo_alt: Optional[str] = None
+    contact_us_url: tuple[dict[str, Any]] = (
+        Link(lazy_gettext("Contact us"), f"{base_url}/contact-us/").__dict__,
+    )
+    cookie_settings_url: Optional[str] = f"{base_url}/cookies"
+    privacy_and_data_protection: tuple[dict[str, Any]] = (
+        Link(
+            lazy_gettext("Privacy and data protection"),
+            f"{base_url}/privacy-and-data-protection",
+        ).__dict__,
+    )
     header_logo: Optional[str] = None
     mobile_logo: Optional[str] = None
     powered_by_logo: Optional[str] = None

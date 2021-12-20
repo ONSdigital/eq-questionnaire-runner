@@ -3,8 +3,11 @@ from typing import Iterable, Mapping, MutableMapping
 
 from flask_babel import lazy_gettext
 
+from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config.link import Link
 from app.survey_config.survey_config import SurveyConfig
+
+base_url: str = ACCOUNT_SERVICE_BASE_URL
 
 
 @dataclass
@@ -18,7 +21,10 @@ class BusinessSurveyConfig(
     footer_links: Iterable[MutableMapping] = field(
         default_factory=lambda: [
             Link(lazy_gettext("What we do"), "#").__dict__,
-            Link(lazy_gettext("Contact us"), "#").__dict__,
+            Link(
+                lazy_gettext("Contact us"),
+                f"{base_url}/contact-us/",
+            ).__dict__,
             Link(
                 lazy_gettext("Accessibility"),
                 "#",
@@ -30,10 +36,10 @@ class BusinessSurveyConfig(
 
     footer_legal_links: Iterable[Mapping] = field(
         default_factory=lambda: [
-            Link(lazy_gettext("Cookies"), "#").__dict__,
+            Link(lazy_gettext("Cookies"), f"{base_url}/cookies").__dict__,
             Link(
                 lazy_gettext("Privacy and data protection"),
-                "#",
+                f"{base_url}/privacy-and-data-protection",
             ).__dict__,
         ],
         compare=False,
