@@ -396,6 +396,58 @@ def sections_dependent_on_list_schema():
                         "id": "group2",
                         "blocks": [
                             {
+                                "type": "Interstitial",
+                                "id": "household-occupance",
+                                "content_variants": [
+                                    {
+                                        "content": {
+                                            "title": "Household Occupance",
+                                            "contents": [
+                                                {
+                                                    "description": "According to your answer this household is occupied"
+                                                }
+                                            ],
+                                        },
+                                        "when": {
+                                            ">": [
+                                                0,
+                                                {
+                                                    "count": [
+                                                        {
+                                                            "source": "list",
+                                                            "identifier": "list",
+                                                        }
+                                                    ]
+                                                },
+                                            ]
+                                        },
+                                    },
+                                    {
+                                        "content": {
+                                            "title": "Household Occupance",
+                                            "contents": [
+                                                {
+                                                    "description": "According to your answer this household is unoccupied"
+                                                }
+                                            ],
+                                        },
+                                        "when": {
+                                            "==": [
+                                                0,
+                                                {
+                                                    "count": [
+                                                        {
+                                                            "source": "list",
+                                                            "identifier": "list",
+                                                        }
+                                                    ]
+                                                },
+                                            ]
+                                        },
+                                    },
+                                ],
+                            },
+                            {
                                 "type": "Question",
                                 "id": "block2",
                                 "question": {
@@ -423,7 +475,7 @@ def sections_dependent_on_list_schema():
                                         },
                                     ]
                                 },
-                            }
+                            },
                         ],
                     }
                 ],

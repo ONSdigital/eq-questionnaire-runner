@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Test Question Variants",
+    "title": "Test New Question Variants",
     "theme": "default",
-    "description": "A questionnaire to test question variants",
+    "description": "A questionnaire to test new question variants",
     "metadata": [
         {
             "name": "user_id",
@@ -142,13 +142,15 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "proxy-answer",
-                                            "condition": "equals",
-                                            "value": "Yes, I am"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "proxy-answer"
+                                            },
+                                            "Yes, I am"
+                                        ]
+                                    }
                                 },
                                 {
                                     "question": {
@@ -189,13 +191,15 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "proxy-answer",
-                                            "condition": "equals",
-                                            "value": "No, I am answering on their behalf"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "proxy-answer"
+                                            },
+                                            "No, I am answering on their behalf"
+                                        ]
+                                    }
                                 }
                             ]
                         },
@@ -226,18 +230,28 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "age-answer",
-                                            "condition": "greater than",
-                                            "value": 16
-                                        },
-                                        {
-                                            "id": "proxy-answer",
-                                            "condition": "not equals",
-                                            "value": "No, I am answering on their behalf"
-                                        }
-                                    ]
+                                    "when": {
+                                        "and": [
+                                            {
+                                                ">=": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "age-answer"
+                                                    },
+                                                    16
+                                                ]
+                                            },
+                                            {
+                                                "!=": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "proxy-answer"
+                                                    },
+                                                    "No, I am answering on their behalf"
+                                                ]
+                                            }
+                                        ]
+                                    }
                                 },
                                 {
                                     "question": {
@@ -262,18 +276,28 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "age-answer",
-                                            "condition": "less than or equal to",
-                                            "value": 16
-                                        },
-                                        {
-                                            "id": "proxy-answer",
-                                            "condition": "not equals",
-                                            "value": "No, I am answering on their behalf"
-                                        }
-                                    ]
+                                    "when": {
+                                        "and": [
+                                            {
+                                                "<=": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "age-answer"
+                                                    },
+                                                    16
+                                                ]
+                                            },
+                                            {
+                                                "!=": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "proxy-answer"
+                                                    },
+                                                    "No, I am answering on their behalf"
+                                                ]
+                                            }
+                                        ]
+                                    }
                                 },
                                 {
                                     "question": {
@@ -323,18 +347,28 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "age-answer",
-                                            "condition": "greater than or equal to",
-                                            "value": 16
-                                        },
-                                        {
-                                            "id": "proxy-answer",
-                                            "condition": "equals",
-                                            "value": "No, I am answering on their behalf"
-                                        }
-                                    ]
+                                    "when": {
+                                        "and": [
+                                            {
+                                                ">=": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "age-answer"
+                                                    },
+                                                    16
+                                                ]
+                                            },
+                                            {
+                                                "==": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "proxy-answer"
+                                                    },
+                                                    "No, I am answering on their behalf"
+                                                ]
+                                            }
+                                        ]
+                                    }
                                 },
                                 {
                                     "question": {
@@ -384,37 +418,45 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "age-answer",
-                                            "condition": "less than or equal to",
-                                            "value": 16
-                                        },
-                                        {
-                                            "id": "proxy-answer",
-                                            "condition": "equals",
-                                            "value": "No, I am answering on their behalf"
-                                        }
-                                    ]
+                                    "when": {
+                                        "and": [
+                                            {
+                                                "<=": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "age-answer"
+                                                    },
+                                                    16
+                                                ]
+                                            },
+                                            {
+                                                "==": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "proxy-answer"
+                                                    },
+                                                    "No, I am answering on their behalf"
+                                                ]
+                                            }
+                                        ]
+                                    }
                                 }
                             ],
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "age-block",
-                                        "when": [
+                                    "block": "age-block",
+                                    "when": {
+                                        "==": [
                                             {
-                                                "id": "age-confirm-answer",
-                                                "condition": "equals",
-                                                "value": "No"
-                                            }
+                                                "source": "answers",
+                                                "identifier": "age-confirm-answer"
+                                            },
+                                            "No"
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         }
@@ -476,13 +518,15 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "currency-answer",
-                                            "condition": "equals",
-                                            "value": "Sterling"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "currency-answer"
+                                            },
+                                            "Sterling"
+                                        ]
+                                    }
                                 },
                                 {
                                     "question": {
@@ -500,13 +544,15 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "currency-answer",
-                                            "condition": "equals",
-                                            "value": "US Dollars"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "currency-answer"
+                                            },
+                                            "US Dollars"
+                                        ]
+                                    }
                                 }
                             ]
                         },
@@ -530,13 +576,15 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "currency-answer",
-                                            "condition": "equals",
-                                            "value": "Sterling"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "currency-answer"
+                                            },
+                                            "Sterling"
+                                        ]
+                                    }
                                 },
                                 {
                                     "question": {
@@ -554,13 +602,15 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "currency-answer",
-                                            "condition": "equals",
-                                            "value": "US Dollars"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "currency-answer"
+                                            },
+                                            "US Dollars"
+                                        ]
+                                    }
                                 }
                             ]
                         }
