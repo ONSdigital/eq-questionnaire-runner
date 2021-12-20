@@ -11,6 +11,7 @@ class Block:
         answer_store,
         list_store,
         metadata,
+        response_metadata,
         schema,
         location,
         return_to,
@@ -21,7 +22,13 @@ class Block:
         self.number = block_schema.get("number")
         self.link = self._build_link(block_schema["id"], return_to)
         self.question = self.get_question(
-            block_schema, answer_store, list_store, metadata, schema, location
+            block_schema,
+            answer_store,
+            list_store,
+            metadata,
+            response_metadata,
+            schema,
+            location,
         )
 
     def _build_link(self, block_id, return_to):
@@ -35,7 +42,13 @@ class Block:
 
     @staticmethod
     def get_question(
-        block_schema, answer_store, list_store, metadata, schema, location
+        block_schema,
+        answer_store,
+        list_store,
+        metadata,
+        response_metadata,
+        schema,
+        location,
     ):
         """ Taking question variants into account, return the question which was displayed to the user """
         list_item_id = location.list_item_id
@@ -44,6 +57,7 @@ class Block:
             block_schema,
             schema,
             metadata,
+            response_metadata,
             answer_store,
             list_store,
             variants_key="question_variants",

@@ -118,6 +118,7 @@
         {
             "id": "basic-question-variant-section",
             "summary": { "show_on_completion": true },
+            "title": "Question variant section",
             "groups": [
                 {
                     "id": "basic-question-variant-group",

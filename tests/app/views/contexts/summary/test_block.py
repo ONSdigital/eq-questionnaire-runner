@@ -28,6 +28,7 @@ class TestSection(TestCase):
         self.answer_store = MagicMock()
         self.list_store = MagicMock()
         self.metadata = MagicMock()
+        self.response_metadata = MagicMock()
         self.schema = MagicMock()
 
     def test_create_block(self):
@@ -47,6 +48,7 @@ class TestSection(TestCase):
                 self.answer_store,
                 self.list_store,
                 self.metadata,
+                self.response_metadata,
                 self.schema,
                 location,
                 return_to="final-summary",
