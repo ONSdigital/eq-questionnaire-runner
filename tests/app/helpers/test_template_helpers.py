@@ -389,11 +389,11 @@ def test_context_set_from_app_config(app):
 @pytest.mark.parametrize(
     "theme,language,expected",
     [
-        ("default", "en", "main"),
-        ("business", "en", "main"),
-        ("health", "en", "main"),
-        ("social", "en", "main"),
-        ("northernireland", "en", "main"),
+        ("default", "en", None),
+        ("business", "en", None),
+        ("health", "en", None),
+        ("social", "en", None),
+        ("northernireland", "en", None),
         ("census", "en", "census"),
         ("census", "cy", "census"),
         ("census-nisra", "en", "census"),
