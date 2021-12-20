@@ -40,6 +40,7 @@ def test_convert_answers_to_payload_0_0_1_with_key_error(fake_questionnaire_stor
     ]
     answer_object = convert_answers_to_payload_0_0_1(
         fake_questionnaire_store.metadata,
+        fake_questionnaire_store.response_metadata,
         fake_questionnaire_store.answer_store,
         fake_questionnaire_store.list_store,
         QuestionnaireSchema(questionnaire),
