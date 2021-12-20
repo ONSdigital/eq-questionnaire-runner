@@ -186,7 +186,9 @@ class Router:
 
         return None
 
-    def _get_return_to_location_url(self, location: Location, return_to: str) -> Optional[str]:
+    def _get_return_to_location_url(
+        self, location: Location, return_to: str
+    ) -> Optional[str]:
         if return_to == "section-summary":
             return self._get_section_url(location)
 

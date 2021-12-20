@@ -580,12 +580,12 @@ class TestRouterPreviousLocation(RouterTestCase):
         routing_path = RoutingPath(
             ["insurance-type", "insurance-address"], section_id="default-section"
         )
-        previous_location = self.router.get_previous_location_url(
+        previous_location_url = self.router.get_previous_location_url(
             current_location, routing_path, return_to="section-summary"
         )
 
         self.assertIn(
-            "/questionnaire/sections/property-details-section/", previous_location
+            "/questionnaire/sections/property-details-section/", previous_location_url
         )
 
     def test_return_to_final_summary(self):
