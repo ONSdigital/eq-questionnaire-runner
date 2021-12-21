@@ -2,7 +2,7 @@ import ageQuestionBlock from "../generated_pages/variants_content/age-question-b
 
 describe("QuestionVariants", () => {
   beforeEach(() => {
-    browser.openQuestionnaire("test_variants_content.json");
+    browser.openQuestionnaire("test_new_variants_content.json");
   });
 
   it("Given I am completing the survey, then the correct content is shown based on my previous answers when i am under 16", () => {

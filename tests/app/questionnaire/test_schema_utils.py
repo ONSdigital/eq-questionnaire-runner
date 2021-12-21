@@ -5,7 +5,6 @@ from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.schema_utils import (
     choose_content_to_display,
     choose_question_to_display,
-    get_values_for_key,
     transform_variants,
 )
 
@@ -21,6 +20,7 @@ def test_transform_variants_with_question_variants(question_variant_schema):
     answer_store = AnswerStore({})
     answer_store.add_or_update(Answer(answer_id="when-answer", value="no"))
     metadata = {}
+    response_metadata = {}
 
     block = schema.get_block("block1")
     section_id = schema.get_section_id_for_block_id(block["id"])
@@ -29,6 +29,7 @@ def test_transform_variants_with_question_variants(question_variant_schema):
         block,
         schema,
         metadata,
+        response_metadata,
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
@@ -42,6 +43,7 @@ def test_transform_variants_with_question_variants(question_variant_schema):
         block,
         schema,
         metadata,
+        response_metadata,
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
@@ -55,6 +57,7 @@ def test_transform_variants_with_content(content_variant_schema):
     answer_store = AnswerStore({})
     answer_store.add_or_update(Answer(answer_id="age-answer", value="18"))
     metadata = {}
+    response_metadata = {}
 
     block = schema.get_block("block1")
     section_id = schema.get_section_id_for_block_id(block["id"])
@@ -63,6 +66,7 @@ def test_transform_variants_with_content(content_variant_schema):
         block,
         schema,
         metadata,
+        response_metadata,
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
@@ -77,6 +81,7 @@ def test_transform_variants_with_no_variants(question_schema):
     schema = QuestionnaireSchema(question_schema)
     answer_store = AnswerStore({})
     metadata = {}
+    response_metadata = {}
 
     block = schema.get_block("block1")
     section_id = schema.get_section_id_for_block_id(block["id"])
@@ -85,6 +90,7 @@ def test_transform_variants_with_no_variants(question_schema):
         block,
         schema,
         metadata,
+        response_metadata,
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
@@ -98,6 +104,7 @@ def test_transform_variants_list_collector(list_collector_variant_schema):
     answer_store = AnswerStore({})
     answer_store.add_or_update(Answer(answer_id="when-answer", value="no"))
     metadata = {}
+    response_metadata = {}
 
     block = schema.get_block("block1")
     section_id = schema.get_section_id_for_block_id(block["id"])
@@ -106,6 +113,7 @@ def test_transform_variants_list_collector(list_collector_variant_schema):
         block,
         schema,
         metadata,
+        response_metadata,
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
@@ -127,6 +135,7 @@ def test_transform_variants_list_collector(list_collector_variant_schema):
         block,
         schema,
         metadata,
+        response_metadata,
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
@@ -148,6 +157,7 @@ def test_choose_content_to_display(content_variant_schema):
     answer_store = AnswerStore({})
     answer_store.add_or_update(Answer(answer_id="age-answer", value="18"))
     metadata = {}
+    response_metadata = {}
 
     block = schema.get_block("block1")
     section_id = schema.get_section_id_for_block_id(block["id"])
@@ -156,6 +166,7 @@ def test_choose_content_to_display(content_variant_schema):
         schema.get_block("block1"),
         schema,
         metadata,
+        response_metadata,
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
@@ -169,6 +180,7 @@ def test_choose_content_to_display(content_variant_schema):
         schema.get_block("block1"),
         schema,
         metadata,
+        response_metadata,
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
@@ -182,6 +194,7 @@ def test_choose_question_to_display(question_variant_schema):
     answer_store = AnswerStore({})
     answer_store.add_or_update(Answer(answer_id="when-answer", value="yes"))
     metadata = {}
+    response_metadata = {}
 
     block = schema.get_block("block1")
     section_id = schema.get_section_id_for_block_id(block["id"])
@@ -190,6 +203,7 @@ def test_choose_question_to_display(question_variant_schema):
         schema.get_block("block1"),
         schema,
         metadata,
+        response_metadata,
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
@@ -203,26 +217,10 @@ def test_choose_question_to_display(question_variant_schema):
         schema.get_block("block1"),
         schema,
         metadata,
+        response_metadata,
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
     )
 
     assert question_to_display["title"] == "Question 1, No"
-
-
-def test_get_values_for_key_ignores_variants():
-    block = {"question_variants": [{"when": "test"}]}
-    result = list(get_values_for_key(block, "when", {"question_variants"}))
-    assert result == []
-
-
-def test_get_values_for_key_ignores_multiple_keys():
-    block = {
-        "question_variants": [{"when": "test"}],
-        "content_variants": [{"when": "test"}],
-    }
-    result = list(
-        get_values_for_key(block, "when", {"question_variants", "content_variants"})
-    )
-    assert result == []

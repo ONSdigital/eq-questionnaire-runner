@@ -15,6 +15,7 @@ MetadataType = Mapping[str, Union[str, int, list]]
 # pylint: disable=too-many-locals,too-many-nested-blocks
 def convert_answers_to_payload_0_0_1(
     metadata: MetadataType,
+    response_metadata: MetadataType,
     answer_store: AnswerStore,
     list_store: ListStore,
     schema: QuestionnaireSchema,
@@ -28,6 +29,7 @@ def convert_answers_to_payload_0_0_1(
           '002': '30-03-2016'
         }
     :param metadata: questionnaire metadata
+    :param response_metadata: response metadata
     :param answer_store: questionnaire answers
     :param list_store: list store
     :param schema: QuestionnaireSchema class with populated schema json
@@ -55,6 +57,7 @@ def convert_answers_to_payload_0_0_1(
                     block,
                     schema,
                     metadata,
+                    response_metadata,
                     answer_store,
                     list_store,
                     current_location=current_location,
