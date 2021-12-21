@@ -16,8 +16,18 @@ class TestQuestionnaireQuestionVariants(IntegrationTestCase):
 
         self.complete_first_section(proxy=True)
 
-    def test_summaries_proxy(self):
-        self.launchSurvey("test_variants_question")
+    def test_new_non_proxy_answer_shows_non_proxy_title(self):
+        self.launchSurvey("test_new_variants_question")
+
+        self.complete_first_section(proxy=False)
+
+    def test_new_proxy_answer_shows_proxy_title(self):
+        self.launchSurvey("test_new_variants_question")
+
+        self.complete_first_section(proxy=True)
+
+    def test_new_summaries_proxy(self):
+        self.launchSurvey("test_new_variants_question")
 
         self.complete_first_section(proxy=True)
 

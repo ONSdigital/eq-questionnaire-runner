@@ -1,5 +1,6 @@
 from werkzeug.datastructures import ImmutableDict
 
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.when_rules import evaluate_when_rules
 
 
@@ -27,10 +28,11 @@ def find_pointers_containing(input_data, search_key, pointer=None):
             yield from find_pointers_containing(item, search_key, f"{pointer}/{index}")
 
 
-def _choose_variant(
+def choose_variant(
     block,
     schema,
     metadata,
+    response_metadata,
     answer_store,
     list_store,
     variants_key,
@@ -39,10 +41,22 @@ def _choose_variant(
 ):
     if block.get(single_key):
         return block[single_key]
-
     for variant in block.get(variants_key, []):
         when_rules = variant.get("when", [])
-        if evaluate_when_rules(
+
+        if isinstance(when_rules, dict):
+            when_rule_evaluator = RuleEvaluator(
+                schema,
+                answer_store,
+                list_store,
+                metadata,
+                response_metadata,
+                location=current_location,
+            )
+
+            if when_rule_evaluator.evaluate(when_rules):
+                return variant[single_key]
+        elif evaluate_when_rules(
             when_rules,
             schema,
             metadata,
@@ -54,12 +68,19 @@ def _choose_variant(
 
 
 def choose_question_to_display(
-    block, schema, metadata, answer_store, list_store, current_location
+    block,
+    schema,
+    metadata,
+    response_metadata,
+    answer_store,
+    list_store,
+    current_location,
 ):
-    return _choose_variant(
+    return choose_variant(
         block,
         schema,
         metadata,
+        response_metadata,
         answer_store,
         list_store,
         variants_key="question_variants",
@@ -69,12 +90,19 @@ def choose_question_to_display(
 
 
 def choose_content_to_display(
-    block, schema, metadata, answer_store, list_store, current_location
+    block,
+    schema,
+    metadata,
+    response_metadata,
+    answer_store,
+    list_store,
+    current_location,
 ):
-    return _choose_variant(
+    return choose_variant(
         block,
         schema,
         metadata,
+        response_metadata,
         answer_store,
         list_store,
         variants_key="content_variants",
@@ -84,13 +112,24 @@ def choose_content_to_display(
 
 
 def transform_variants(
-    block, schema, metadata, answer_store, list_store, current_location
+    block,
+    schema,
+    metadata,
+    response_metadata,
+    answer_store,
+    list_store,
+    current_location,
 ):
     output_block = dict(block)
-
     if "question_variants" in block:
         question = choose_question_to_display(
-            block, schema, metadata, answer_store, list_store, current_location
+            block,
+            schema,
+            metadata,
+            response_metadata,
+            answer_store,
+            list_store,
+            current_location,
         )
         output_block.pop("question_variants", None)
         output_block.pop("question", None)
@@ -99,7 +138,13 @@ def transform_variants(
 
     if "content_variants" in block:
         content = choose_content_to_display(
-            block, schema, metadata, answer_store, list_store, current_location
+            block,
+            schema,
+            metadata,
+            response_metadata,
+            answer_store,
+            list_store,
+            current_location,
         )
         output_block.pop("content_variants", None)
         output_block.pop("content", None)
@@ -114,6 +159,7 @@ def transform_variants(
                     block[list_operation],
                     schema,
                     metadata,
+                    response_metadata,
                     answer_store,
                     list_store,
                     current_location,
@@ -129,20 +175,3 @@ def get_answer_ids_in_block(block):
         answer_ids.append(answer["id"])
 
     return answer_ids
-
-
-def get_values_for_key(block, key, ignore_keys=None):
-    ignore_keys = ignore_keys or []
-    for k, v in block.items():
-        try:
-            if k in ignore_keys:
-                continue
-            if k == key:
-                yield v
-            if isinstance(v, dict):
-                yield from get_values_for_key(v, key)
-            elif isinstance(v, (list, tuple)):
-                for d in v:
-                    yield from get_values_for_key(d, key)
-        except AttributeError:
-            continue

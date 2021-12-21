@@ -9,7 +9,6 @@ from werkzeug.datastructures import ImmutableDict
 from app.data_models.answer import Answer
 from app.forms import error_messages
 from app.questionnaire.rules.operator import OPERATION_MAPPING
-from app.questionnaire.schema_utils import get_values_for_key
 
 DEFAULT_LANGUAGE_CODE = "en"
 
@@ -253,7 +252,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         for section in self.get_sections():
             ignore_keys = ["question_variants", "content_variants"]
-            when_rules = get_values_for_key(section, "when", ignore_keys)
+            when_rules = self._get_values_for_key(section, "when", ignore_keys)
 
             rule: Union[dict, list] = next(when_rules, [])
             if self._is_list_name_in_rule(rule, list_name):
@@ -602,6 +601,24 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             for answer in question["answers"]
             if answer["type"] == "Address" and "lookup_options" in answer
         )
+
+    def _get_values_for_key(
+        self, block: Mapping, key: str, ignore_keys: list[str] = None
+    ) -> Generator:
+        ignore_keys = ignore_keys or []
+        for k, v in block.items():
+            try:
+                if k in ignore_keys:
+                    continue
+                if k == key:
+                    yield v
+                if isinstance(v, dict):
+                    yield from self._get_values_for_key(v, key, ignore_keys)
+                elif isinstance(v, (list, tuple)):
+                    for d in v:
+                        yield from self._get_values_for_key(d, key, ignore_keys)
+            except AttributeError:
+                continue
 
     def _get_parent_section_id_for_block(self, block_id: str) -> str:
         parent_block_id = self._parent_id_map[block_id]
