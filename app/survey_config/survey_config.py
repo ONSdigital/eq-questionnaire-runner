@@ -1,4 +1,3 @@
-# pylint: disable=R1707
 from dataclasses import dataclass, field
 from typing import Any, Iterable, Mapping, MutableMapping, Optional, Union
 
