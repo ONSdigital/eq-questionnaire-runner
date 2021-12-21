@@ -32,4 +32,12 @@ describe("Units", () => {
     expect($(SubmitPage.durationHour()).getText()).to.equal("6 awr");
     expect($(SubmitPage.durationYear()).getText()).to.equal("20 mlynedd");
   });
+
+  it("Given we open a questionnaire with unit labels, when the label is highlighted by the tooltip, then the long unit label should be displayed.", () => {
+    browser.openQuestionnaire("test_unit_patterns.json", { language: "en" });
+    expect($(SetLengthUnitsBlockPage.centimetres()).getAttribute("title")).to.equal("centimeters");
+    expect($(SetLengthUnitsBlockPage.metres()).getAttribute("title")).to.equal("meters");
+    expect($(SetLengthUnitsBlockPage.kilometres()).getAttribute("title")).to.equal("kilometers");
+    expect($(SetLengthUnitsBlockPage.miles()).getAttribute("title")).to.equal("miles");
+  });
 });
