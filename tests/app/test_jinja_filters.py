@@ -161,20 +161,43 @@ class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-m
     @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
     def test_format_unit_input_label_long(self):
         self.assertEqual(format_unit_input_label("length-meter", "long"), "metres")
-        self.assertEqual(format_unit_input_label("length-centimeter", "long"), "centimetres")
+        self.assertEqual(
+            format_unit_input_label("length-centimeter", "long"), "centimetres"
+        )
         self.assertEqual(format_unit_input_label("length-mile", "long"), "miles")
-        self.assertEqual(format_unit_input_label("length-kilometer", "long"), "kilometres")
-        self.assertEqual(format_unit_input_label("area-square-meter", "long"), "square metres")
-        self.assertEqual(format_unit_input_label("area-square-centimeter", "long"), "square centimetres")
-        self.assertEqual(format_unit_input_label("area-square-kilometer", "long"), "square kilometres")
-        self.assertEqual(format_unit_input_label("area-square-mile", "long"), "square miles")
+        self.assertEqual(
+            format_unit_input_label("length-kilometer", "long"), "kilometres"
+        )
+        self.assertEqual(
+            format_unit_input_label("area-square-meter", "long"), "square metres"
+        )
+        self.assertEqual(
+            format_unit_input_label("area-square-centimeter", "long"),
+            "square centimetres",
+        )
+        self.assertEqual(
+            format_unit_input_label("area-square-kilometer", "long"),
+            "square kilometres",
+        )
+        self.assertEqual(
+            format_unit_input_label("area-square-mile", "long"), "square miles"
+        )
         self.assertEqual(format_unit_input_label("area-hectare", "long"), "hectares")
         self.assertEqual(format_unit_input_label("area-acre", "long"), "acres")
-        self.assertEqual(format_unit_input_label("volume-cubic-meter", "long"), "cubic metres")
-        self.assertEqual(format_unit_input_label("volume-cubic-centimeter", "long"), "cubic centimetres")
+        self.assertEqual(
+            format_unit_input_label("volume-cubic-meter", "long"), "cubic metres"
+        )
+        self.assertEqual(
+            format_unit_input_label("volume-cubic-centimeter", "long"),
+            "cubic centimetres",
+        )
         self.assertEqual(format_unit_input_label("volume-liter", "long"), "litres")
-        self.assertEqual(format_unit_input_label("volume-hectoliter", "long"), "hectolitres")
-        self.assertEqual(format_unit_input_label("volume-megaliter", "long"), "megalitres")
+        self.assertEqual(
+            format_unit_input_label("volume-hectoliter", "long"), "hectolitres"
+        )
+        self.assertEqual(
+            format_unit_input_label("volume-megaliter", "long"), "megalitres"
+        )
         self.assertEqual(format_unit_input_label("duration-hour", "long"), "hours")
         self.assertEqual(format_unit_input_label("duration-year", "long"), "years")
 
