@@ -153,7 +153,8 @@ class Router:
         return_to: Optional[str] = None,
     ) -> Optional[str]:
         """
-        Returns the previous 'location' to visit given a set of user answers
+        Returns the previous 'location' to visit given a set of user answers or returns to the summary if
+        the `return_to` var is set and the section is complete.
         """
 
         if return_to and (
