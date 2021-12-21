@@ -32,7 +32,7 @@ class SurveyConfig:
         Link(lazy_gettext("Contact us"), f"{base_url}/contact-us/").__dict__,
     )
     cookie_settings_url: Optional[str] = f"{base_url}/cookies"
-    privacy_and_data_protection: tuple[dict[str, Any]] = (
+    privacy_and_data_protection_url: tuple[dict[str, Any]] = (
         Link(
             lazy_gettext("Privacy and data protection"),
             f"{base_url}/privacy-and-data-protection",
