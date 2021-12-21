@@ -35,9 +35,9 @@ describe("Units", () => {
 
   it("Given we open a questionnaire with unit labels, when the label is highlighted by the tooltip, then the long unit label should be displayed.", () => {
     browser.openQuestionnaire("test_unit_patterns.json", { language: "en" });
-    expect($("body").getHTML()).to.contain('title="centimeters"');
-    expect($("body").getHTML()).to.contain('title="meters"');
-    expect($("body").getHTML()).to.contain('title="kilometers"');
-    expect($("body").getHTML()).to.contain('title="miles"');
+    expect($(SetLengthUnitsBlockPage.centimetres()).getAttribute("title")).to.equal("centimeters");
+    expect($(SetLengthUnitsBlockPage.metres()).getAttribute("title")).to.equal("meters");
+    expect($(SetLengthUnitsBlockPage.kilometres()).getAttribute("title")).to.equal("kilometers");
+    expect($(SetLengthUnitsBlockPage.miles()).getAttribute("title")).to.equal("miles");
   });
 });
