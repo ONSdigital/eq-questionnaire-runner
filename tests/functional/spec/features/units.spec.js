@@ -33,7 +33,7 @@ describe("Units", () => {
     expect($(SubmitPage.durationYear()).getText()).to.equal("20 mlynedd");
   });
 
-  it("Given we open a questionnaire with unit labels, when the label is highlighted by the tooltip, then the full unit label should be displayed.", () => {
+  it("Given we open a questionnaire with unit labels, when the label is highlighted by the tooltip, then the long unit label should be displayed.", () => {
     browser.openQuestionnaire("test_unit_patterns.json", { language: "en" });
     expect($("body").getHTML()).to.contain('title="Centimetres"');
     expect($("body").getHTML()).to.contain('title="Metres"');
