@@ -3,11 +3,8 @@ from typing import Iterable, Mapping, MutableMapping
 
 from flask_babel import lazy_gettext
 
-from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config.link import Link
 from app.survey_config.survey_config import SurveyConfig
-
-base_url: str = ACCOUNT_SERVICE_BASE_URL
 
 
 @dataclass
