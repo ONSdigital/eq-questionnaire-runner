@@ -49,8 +49,8 @@ def test_operation_equal(operands, expected_result):
     "operands, expected_result",
     equals_operations,
 )
-def test_operation_not_equal(operands, expected_result):
-    operator = get_operator(Operator.NOT_EQUAL)
+def test_operation_not_equal(operands, expected_result, mock_schema):
+    operator = get_operator(Operator.NOT_EQUAL, mock_schema)
     assert operator.evaluate(operands) is not expected_result
 
 
@@ -478,5 +478,7 @@ def test_map_with_nested_date_operator():
     ]
 
 
-def get_operator(operator_name, language="en"):
-    return Operator(operator_name, operations=Operations(language=language))
+def get_operator(operator_name, language="en", schema=None):
+    return Operator(
+        operator_name, operations=Operations(language=language, schema=schema)
+    )

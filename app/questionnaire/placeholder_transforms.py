@@ -9,7 +9,11 @@ from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.questionnaire.rules.operations import DateOffset, Operations
+from app.questionnaire.rules.operation_helper import (
+    DateOffset,
+    get_option_label_from_value,
+    resolve_date_from_string,
+)
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
 
@@ -20,8 +24,6 @@ if TYPE_CHECKING:
 
 
 # pylint: disable=too-many-public-methods
-
-
 class PlaceholderTransforms:
     """
     A class to group the transforms that can be used within placeholders
@@ -37,7 +39,6 @@ class PlaceholderTransforms:
         self.schema = schema
         self.renderer = renderer
         self.locale = DEFAULT_LOCALE if language in {"en", "eo"} else language
-        self._operations = Operations(language=self.language)
 
     input_date_format = "%Y-%m-%d"
 
@@ -178,7 +179,7 @@ class PlaceholderTransforms:
         :return: The start and end datetime objects of the range.
         :rtype: Tuple[datetime, datetime]
         """
-        first_day_of_prior_full_week: date = self._operations.resolve_date_from_string(
+        first_day_of_prior_full_week: date = resolve_date_from_string(
             reference_date,
             DateOffset(days=offset_full_weeks * 7, day_of_week=first_day_of_week),
             offset_by_full_weeks=True,
@@ -304,30 +305,15 @@ class PlaceholderTransforms:
     def _create_hyperlink(href: str, link_text: str) -> str:
         return f'<a href="{href}">{link_text}</a>'
 
-    def list_item_count(self, list_to_count: Optional[Sized]) -> int:
-        return self._operations.evaluate_count(list_to_count)
+    @staticmethod
+    def list_item_count(list_to_count: Optional[Sized]) -> int:
+        return len(list_to_count or [])
 
     def option_label_from_value(self, value: str, answer_id: str) -> str:
         """
         Accepts the option value and answer id and return label.
         label can be simple string or Placeholder
         """
-        label: str = ""
-        answers = self.schema.get_answers_by_answer_id(answer_id)
-        label_options: str = next(
-            (
-                options["label"]
-                for answer in answers
-                for options in answer["options"]
-                if value == options["value"]
-            ),
-            "",
+        return get_option_label_from_value(
+            self.schema, self.language, self.renderer, value, answer_id
         )
-
-        if isinstance(label_options, str):
-            label = label_options
-
-        elif isinstance(label_options, dict):
-            label = self.renderer.render_placeholder(label_options, list_item_id=None)
-
-        return label
