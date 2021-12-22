@@ -10,7 +10,7 @@ import secondNumberBlock from "../generated_pages/variants_question/second-numbe
 
 describe("QuestionVariants", () => {
   beforeEach(() => {
-    browser.openQuestionnaire("test_variants_question.json");
+    browser.openQuestionnaire("test_new_variants_question.json");
   });
 
   it("Given I am completing the survey, then the correct questions are shown based on my previous answers", () => {
