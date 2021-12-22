@@ -9,11 +9,8 @@ from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.questionnaire.rules.operation_helper import (
-    DateOffset,
-    get_option_label_from_value,
-    resolve_date_from_string,
-)
+from app.questionnaire.rules.operation_helper import OperationHelper
+from app.questionnaire.rules.operations import DateOffset
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
 
@@ -39,6 +36,7 @@ class PlaceholderTransforms:
         self.schema = schema
         self.renderer = renderer
         self.locale = DEFAULT_LOCALE if language in {"en", "eo"} else language
+        self.ops_helper = OperationHelper(self.locale, self.schema, self.renderer)
 
     input_date_format = "%Y-%m-%d"
 
@@ -179,7 +177,7 @@ class PlaceholderTransforms:
         :return: The start and end datetime objects of the range.
         :rtype: Tuple[datetime, datetime]
         """
-        first_day_of_prior_full_week: date = resolve_date_from_string(
+        first_day_of_prior_full_week: date = self.ops_helper.string_to_datetime(
             reference_date,
             DateOffset(days=offset_full_weeks * 7, day_of_week=first_day_of_week),
             offset_by_full_weeks=True,
@@ -314,6 +312,4 @@ class PlaceholderTransforms:
         Accepts the option value and answer id and return label.
         label can be simple string or Placeholder
         """
-        return get_option_label_from_value(
-            self.schema, self.language, self.renderer, value, answer_id
-        )
+        return self.ops_helper.get_option_label_from_value(value, answer_id)
