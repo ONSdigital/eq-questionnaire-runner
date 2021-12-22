@@ -74,6 +74,13 @@ describe("Section Summary", () => {
       expect(browser.getUrl()).to.contain(SubmitPage.url());
     });
 
+    it("When I select edit from Final Summary and click previous on the question page, Then I should be taken to the Final Summary", () => {
+      $(SubmitPage.summaryShowAllButton()).click();
+      $(SubmitPage.insuranceAddressAnswerEdit()).click();
+      $(InsuranceAddressPage.previous()).click();
+      expect(browser.getUrl()).to.contain(SubmitPage.url());
+    });
+
     it("When I select edit from Final Summary and change an answer that affects completeness, Then I should be stepped through the section", () => {
       $(SubmitPage.summaryShowAllButton()).click();
       $(SubmitPage.insuranceTypeAnswerEdit()).click();
