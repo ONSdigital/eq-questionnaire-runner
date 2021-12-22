@@ -13,7 +13,6 @@ from app.survey_config import (
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
-    Link,
     SurveyConfig,
     WelshCensusSurveyConfig,
 )
@@ -42,7 +41,8 @@ class ContextHelper:
         self._account_service_log_out_url = cookie_session.get(
             "account_service_log_out_url"
         )
-        self._cookie_settings_url = current_app.config["COOKIE_SETTINGS_URL"]
+        self._contact_us_url = self._survey_config.contact_us_url
+        self._cookie_settings_url = self._survey_config.cookie_settings_url
         self._cdn_url = (
             f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
         )
@@ -58,10 +58,7 @@ class ContextHelper:
             "account_service_url": self._account_service_url,
             "account_service_log_out_url": self._account_service_log_out_url,
             "account_service_surveys_url": self._account_service_surveys_url,
-            "contact_us_url": Link(
-                lazy_gettext("Contact us"),
-                f"{self._survey_config.base_url}/contact-us/",
-            ).__dict__,
+            "contact_us_url": self._contact_us_url,
             "thank_you_url": url_for("post_submission.get_thank_you"),
             "cookie_settings_url": self._cookie_settings_url,
             "page_header": self.page_header_context,
