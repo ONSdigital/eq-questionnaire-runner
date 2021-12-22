@@ -123,12 +123,12 @@ def test_footer_context_business_theme(app: Flask):
                     "itemsList": [
                         {
                             "text": "Cookies",
-                            "url": "https://surveys.ons.gov.uk/cookies",
+                            "url": "https://surveys.ons.gov.uk/cookies/",
                             "target": "_blank",
                         },
                         {
                             "text": "Privacy and data protection",
-                            "url": "https://surveys.ons.gov.uk/privacy-and-data-protection",
+                            "url": "https://surveys.ons.gov.uk/privacy-and-data-protection/",
                             "target": "_blank",
                         },
                     ]
@@ -315,19 +315,11 @@ def test_get_page_header_context_census_nisra(app: Flask):
     [
         (
             SurveyConfig(),
-            {
-                "url": "https://surveys.ons.gov.uk/contact-us/",
-                "text": "Contact us",
-                "target": "_blank",
-            },
+            "https://surveys.ons.gov.uk/contact-us/",
         ),
         (
             BusinessSurveyConfig(),
-            {
-                "url": "https://surveys.ons.gov.uk/contact-us/",
-                "text": "Contact us",
-                "target": "_blank",
-            },
+            "https://surveys.ons.gov.uk/contact-us/",
         ),
     ],
 )
@@ -342,16 +334,16 @@ def test_contact_us_url_context(
             survey_config=survey_config,
         ).context["contact_us_url"]
 
-    assert result[0] == expected
+    assert result == expected
 
 
 @pytest.mark.parametrize(
     "survey_config,expected",
     [
-        (SurveyConfig(), "https://surveys.ons.gov.uk/cookies"),
+        (SurveyConfig(), "https://surveys.ons.gov.uk/cookies/"),
         (
             BusinessSurveyConfig(),
-            "https://surveys.ons.gov.uk/cookies",
+            "https://surveys.ons.gov.uk/cookies/",
         ),
     ],
 )
