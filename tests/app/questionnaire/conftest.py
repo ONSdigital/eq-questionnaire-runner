@@ -11,7 +11,7 @@ from app.questionnaire.location import Location
 from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
-from app.questionnaire.rules.operation_helper import OperationHelper
+from app.questionnaire.rules.operations_helper import OperationHelper
 
 
 @pytest.fixture
@@ -1022,13 +1022,13 @@ def mock_schema():
 
 
 @pytest.fixture
-def placeholder_transform(placeholder):
-    schema, renderer = placeholder
+def placeholder_transform(schema_placeholder_renderer):
+    schema, renderer = schema_placeholder_renderer
     return PlaceholderTransforms(language="en", schema=schema, renderer=renderer)
 
 
 @pytest.fixture
-def placeholder(section_with_labels):
+def schema_placeholder_renderer(section_with_labels):
     schema = QuestionnaireSchema(section_with_labels)
     answer_id = AnswerStore(
         [
@@ -1048,7 +1048,7 @@ def placeholder(section_with_labels):
 
 
 @pytest.fixture
-def operation_helper(placeholder):
-    schema, renderer = placeholder
+def operation_helper(schema_placeholder_renderer):
+    schema, renderer = schema_placeholder_renderer
     ops_helper = OperationHelper(language="en", schema=schema, renderer=renderer)
     return ops_helper

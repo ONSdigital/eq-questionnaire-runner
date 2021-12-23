@@ -1,7 +1,7 @@
 """
-Operations.py can't be used in placeholder_transformer due to circular reference issue
-these methods will be temporarily placed here and are duplicated from operations.py,
-they will be moved back to operations once placeholder is refactored
+Operations.py can't be used in placeholder_transformer due to the circular reference issue
+The methods here invoke operations methods, so it can be imported in placeholder transformer
+this is a temporary solution until placeholder transformer is refactored.
 """
 from datetime import date
 from typing import TYPE_CHECKING, Optional
