@@ -351,7 +351,6 @@ The following env variables can be used
 | EQ_NEW_RELIC_ENABLED                      | False                      | Enable New Relic monitoring                                                                                    |
 | NEW_RELIC_LICENSE_KEY                     |                            | Enable new relic monitoring by supplying a New Relic license key                                               |
 | NEW_RELIC_APP_NAME                        |                            | The name to display for the application in New Relic                                                           |
-| COOKIE_SETTINGS_URL                       |                            | URL for the Website Cookie Settings page                                                                       |
 | WEB_SERVER_TYPE                           |                            | Web server type used to run the application. This also determines the worker class which can be async/threaded |
 | WEB_SERVER_WORKERS                        |                            | The number of worker processes                                                                                 |
 | WEB_SERVER_THREADS                        |                            | The number of worker threads per worker                                                                        |
