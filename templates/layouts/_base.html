@@ -35,7 +35,6 @@
 
 {% set pageConfig = {
   "title": full_page_title,
-  "theme": theme,
   "header": page_header,
   "footer": footer,
   "language": languages,
@@ -45,6 +44,10 @@
   "breadcrumbs": breadcrumbs,
   "cspNonce": csp_nonce
 } %}
+
+{% if theme %}
+  {% do pageConfig.update({"theme":theme}) %}
+{% endif %}
 
 {% include 'layouts/configs/_save-sign-out-button.html' %}
 

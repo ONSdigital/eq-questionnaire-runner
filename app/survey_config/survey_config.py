@@ -37,5 +37,5 @@ class SurveyConfig:
     footer_links: Optional[Iterable[MutableMapping]] = None
     footer_legal_links: Optional[Iterable[Mapping]] = None
     survey_title: Optional[LazyString] = None
-    design_system_theme: Optional[str] = "main"
+    design_system_theme: Optional[str] = None
     data_layer: Iterable[Union[Mapping]] = field(default_factory=list, compare=False)
