@@ -9,8 +9,8 @@ from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.questionnaire.rules.operation_helper import OperationHelper
 from app.questionnaire.rules.operations import DateOffset
+from app.questionnaire.rules.operations_helper import OperationHelper
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
 
