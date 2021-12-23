@@ -29,6 +29,12 @@ describe("Section Summary", () => {
       expect($(PropertyDetailsSummaryPage.insuranceAddressAnswer()).getText()).to.contain("Test Address");
     });
 
+    it("When I select edit from the section summary and click previous on the question page, Then I should be taken back to the section summary", () => {
+      $(PropertyDetailsSummaryPage.insuranceAddressAnswerEdit()).click();
+      $(InsuranceAddressPage.previous()).click();
+      expect(browser.getUrl()).to.contain(PropertyDetailsSummaryPage.url());
+    });
+
     it("When I continue on the section summary page, Then I should be taken to the next section", () => {
       $(PropertyDetailsSummaryPage.submit()).click();
       expect(browser.getUrl()).to.contain(HouseType.pageName);
@@ -71,13 +77,6 @@ describe("Section Summary", () => {
       $(SubmitPage.insuranceAddressAnswerEdit()).click();
       $(InsuranceAddressPage.answer()).setValue("Test Address");
       $(InsuranceAddressPage.submit()).click();
-      expect(browser.getUrl()).to.contain(SubmitPage.url());
-    });
-
-    it("When I select edit from Final Summary and click previous on the question page, Then I should be taken to the Final Summary", () => {
-      $(SubmitPage.summaryShowAllButton()).click();
-      $(SubmitPage.insuranceAddressAnswerEdit()).click();
-      $(InsuranceAddressPage.previous()).click();
       expect(browser.getUrl()).to.contain(SubmitPage.url());
     });
 
