@@ -88,7 +88,7 @@ class BlockHandler:
 
     def get_previous_location_url(self):
         return self.router.get_previous_location_url(
-            self._current_location, self._routing_path
+            self._current_location, self._routing_path, self._return_to
         )
 
     def get_next_location_url(self):

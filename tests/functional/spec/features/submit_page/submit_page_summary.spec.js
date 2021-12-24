@@ -36,6 +36,15 @@ describe("Submit Page with Summary", () => {
     expect($(RadioPage.bacon()).isSelected()).to.be.true;
   });
 
+  it("Given a questionnaire with a summary has been completed and a summary page edit link is clicked, when I click previous, then it should return to the summary", () => {
+    completeAllQuestions();
+
+    $(SubmitPage.radioAnswerEdit()).click();
+    $(RadioPage.previous()).click();
+
+    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+  });
+
   it("Given a questionnaire with a summary has been completed when a summary page edit link is clicked then it should return to that question then back to summary", () => {
     completeAllQuestions();
 

@@ -26,6 +26,9 @@ class SurveyConfig:
     account_service_surveys_path: Optional[str] = None
     title_logo: Optional[str] = None
     title_logo_alt: Optional[str] = None
+    contact_us_url: str = f"{base_url}/contact-us/"
+    cookie_settings_url: str = f"{base_url}/cookies/"
+    privacy_and_data_protection_url: str = f"{base_url}/privacy-and-data-protection/"
     header_logo: Optional[str] = None
     mobile_logo: Optional[str] = None
     powered_by_logo: Optional[str] = None
@@ -34,5 +37,5 @@ class SurveyConfig:
     footer_links: Optional[Iterable[MutableMapping]] = None
     footer_legal_links: Optional[Iterable[Mapping]] = None
     survey_title: Optional[LazyString] = None
-    design_system_theme: Optional[str] = "main"
+    design_system_theme: Optional[str] = None
     data_layer: Iterable[Union[Mapping]] = field(default_factory=list, compare=False)
