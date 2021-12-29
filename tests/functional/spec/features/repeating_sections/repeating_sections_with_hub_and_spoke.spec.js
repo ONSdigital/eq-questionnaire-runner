@@ -304,6 +304,7 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
     });
 
     it("When the user submits, it should show the thank you page", () => {
+      browser.url(HubPage.url());
       $(HubPage.submit()).click();
       expect(browser.getUrl()).to.contain("thank-you");
     });
