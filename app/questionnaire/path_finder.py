@@ -233,7 +233,10 @@ class PathFinder:
     ):
         rules = self.schema.get_operands(rules)
         for rule in rules:
-            if isinstance(rule, dict):
+            if isinstance(rule, dict) and (
+                "identifier" in rule
+                and rule["identifier"] in answer_ids_for_current_block
+            ):
                 if (
                     "identifier" in rule
                     and rule["identifier"] in answer_ids_for_current_block
