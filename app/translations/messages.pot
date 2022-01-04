@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2021 ORGANIZATION
+# Copyright (C) 2022 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-20 17:51+0000\n"
+"POT-Creation-Date: 2022-01-04 16:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -291,29 +291,29 @@ msgstr ""
 msgid "An individual access code has been sent by text"
 msgstr ""
 
-#: app/survey_config/business_config.py:23
+#: app/survey_config/business_config.py:25
 msgid "What we do"
 msgstr ""
 
-#: app/survey_config/business_config.py:25
+#: app/survey_config/business_config.py:26
 #: app/survey_config/census_config.py:30 app/survey_config/census_config.py:79
-#: app/survey_config/census_config.py:139 app/survey_config/survey_config.py:31
+#: app/survey_config/census_config.py:139
 msgid "Contact us"
 msgstr ""
 
-#: app/survey_config/business_config.py:29
+#: app/survey_config/business_config.py:28
 msgid "Accessibility"
 msgstr ""
 
-#: app/survey_config/business_config.py:39
+#: app/survey_config/business_config.py:33
 #: app/survey_config/census_config.py:44 app/survey_config/census_config.py:94
 #: app/survey_config/census_config.py:146
 msgid "Cookies"
 msgstr ""
 
-#: app/survey_config/business_config.py:41
+#: app/survey_config/business_config.py:35
 #: app/survey_config/census_config.py:50 app/survey_config/census_config.py:100
-#: app/survey_config/census_config.py:152 app/survey_config/survey_config.py:36
+#: app/survey_config/census_config.py:152
 msgid "Privacy and data protection"
 msgstr ""
 
@@ -352,15 +352,15 @@ msgstr ""
 msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
 msgstr ""
 
-#: app/survey_config/census_config.py:130 app/survey_config/survey_config.py:22
+#: app/survey_config/census_config.py:130 app/survey_config/survey_config.py:21
 msgid "Use of address data is subject to the terms and conditions."
 msgstr ""
 
-#: app/survey_config/survey_config.py:16
+#: app/survey_config/survey_config.py:15
 msgid "Office for National Statistics logo"
 msgstr ""
 
-#: app/survey_config/survey_config.py:19
+#: app/survey_config/survey_config.py:18
 msgid "Crown copyright and database rights 2020 OS 100019153."
 msgstr ""
 
@@ -502,7 +502,7 @@ msgstr ""
 
 #: app/views/handlers/confirm_email.py:128
 #: app/views/handlers/confirmation_email.py:68
-#: app/views/handlers/feedback.py:80 app/views/handlers/question.py:159
+#: app/views/handlers/feedback.py:80 app/views/handlers/question.py:160
 msgid "Error: {page_title}"
 msgstr ""
 
@@ -1086,39 +1086,39 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
-#: templates/layouts/_base.html:66
+#: templates/layouts/_base.html:69
 msgid "Tell us whether you accept cookies"
 msgstr ""
 
-#: templates/layouts/_base.html:67
+#: templates/layouts/_base.html:70
 msgid ""
 "We use <a href='{cookie_settings_url}'>cookies to collect information</a>"
 " about how you use census.gov.uk. We use this information to make the "
 "website work as well as possible and improve our services."
 msgstr ""
 
-#: templates/layouts/_base.html:68
+#: templates/layouts/_base.html:71
 msgid ""
 "You’ve accepted all cookies. You can <a "
 "href='{cookie_settings_url}'>change your cookie preferences</a> at any "
 "time."
 msgstr ""
 
-#: templates/layouts/_base.html:69
+#: templates/layouts/_base.html:72
 msgid "Accept all cookies"
 msgstr ""
 
-#: templates/layouts/_base.html:70
+#: templates/layouts/_base.html:73
 msgid "Set cookie preferences"
 msgstr ""
 
-#: templates/layouts/_base.html:71
+#: templates/layouts/_base.html:74
 #: templates/partials/introduction/preview.html:30
 #: templates/partials/summary/collapsible-summary.html:14
 msgid "Hide"
 msgstr ""
 
-#: templates/layouts/_base.html:126
+#: templates/layouts/_base.html:129
 msgid "Skip to main content"
 msgstr ""
 
