@@ -213,7 +213,7 @@ class PathFinder:
         answer_ids_for_current_block = self.schema.get_answer_ids_for_block(
             this_location.block_id
         )
-        if "when" in rules.keys():
+        if "when" in rules:
             if isinstance(rules["when"], dict):
                 self._remove_current_blocks_answers_for_new_backwards_routing(
                     rules["when"], this_location, answer_ids_for_current_block
