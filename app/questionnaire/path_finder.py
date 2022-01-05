@@ -208,31 +208,33 @@ class PathFinder:
         return rule["block"]
 
     def _remove_current_blocks_answers_for_backwards_routing(
-        self, rules, this_location
-    ):
-        answer_ids_for_current_block = self.schema.get_answer_ids_for_block(
-            this_location.block_id
-        )
-        if "when" in rules:
-            if isinstance(rules["when"], dict):
-                self._remove_current_blocks_answers_for_new_backwards_routing(
-                    rules["when"], this_location, answer_ids_for_current_block
-                )
-            else:
-                for rule in rules["when"]:
-                    if "id" in rule and rule["id"] in answer_ids_for_current_block:
-                        self.answer_store.remove_answer(rule["id"])
+        self, rules: dict, this_location: Location
+    ) -> None:
 
-        self.progress_store.remove_location_for_backwards_routing(this_location)
-        self.progress_store.update_section_status(
-            CompletionStatus.IN_PROGRESS, this_location.section_id
-        )
+        if block_id := this_location.block_id:
+            answer_ids_for_current_block = self.schema.get_answer_ids_for_block(
+                block_id
+            )
+            if "when" in rules:
+                if isinstance(rules["when"], dict):
+                    self._remove_current_blocks_answers_for_new_backwards_routing(
+                        rules["when"], answer_ids_for_current_block
+                    )
+                else:
+                    for rule in rules["when"]:
+                        if "id" in rule and rule["id"] in answer_ids_for_current_block:
+                            self.answer_store.remove_answer(rule["id"])
+
+            self.progress_store.remove_location_for_backwards_routing(this_location)
+            self.progress_store.update_section_status(
+                CompletionStatus.IN_PROGRESS, this_location.section_id
+            )
 
     def _remove_current_blocks_answers_for_new_backwards_routing(
-        self, rules, this_location, answer_ids_for_current_block
-    ):
-        rules = self.schema.get_operands(rules)
-        for rule in rules:
+        self, rules: dict, answer_ids_for_current_block: list[str]
+    ) -> None:
+        operands = self.schema.get_operands(rules)
+        for rule in operands:
             if isinstance(rule, dict) and (
                 "identifier" in rule
                 and rule["identifier"] in answer_ids_for_current_block
@@ -244,7 +246,7 @@ class PathFinder:
                     self.answer_store.remove_answer(rule["identifier"])
             if any(operator in rule for operator in OPERATION_MAPPING):
                 return self._remove_current_blocks_answers_for_new_backwards_routing(
-                    rule, this_location, answer_ids_for_current_block
+                    rule, answer_ids_for_current_block
                 )
 
 
