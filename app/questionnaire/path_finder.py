@@ -2,10 +2,11 @@ from typing import List, Mapping, Optional
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
-from app.data_models.progress_store import ProgressStore
+from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
+from app.questionnaire.rules.operator import OPERATION_MAPPING
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.when_rules import evaluate_goto, evaluate_when_rules
 
@@ -160,7 +161,9 @@ class PathFinder:
                 )
 
                 if next_precedes_current:
-                    self._remove_rule_answers(rule, this_location)
+                    self._remove_current_blocks_answers_for_backwards_routing(
+                        rule, this_location
+                    )
                     routing_path_block_ids.append(next_block_id)
                     return None
 
@@ -204,15 +207,47 @@ class PathFinder:
             return self.schema.get_first_block_id_for_group(rule["group"])
         return rule["block"]
 
-    def _remove_rule_answers(self, goto_rule, this_location):
-        # We're jumping backwards, so need to delete all answers from which
-        # route is derived. Need to filter out conditions that don't use answers
-        if "when" in goto_rule.keys():
-            for condition in goto_rule["when"]:
-                if "meta" not in condition.keys():
-                    self.answer_store.remove_answer(condition["id"])
+    def _remove_current_blocks_answers_for_backwards_routing(
+        self, rules: dict, this_location: Location
+    ) -> None:
 
-        self.progress_store.remove_completed_location(location=this_location)
+        if block_id := this_location.block_id:
+            answer_ids_for_current_block = self.schema.get_answer_ids_for_block(
+                block_id
+            )
+            if "when" in rules:
+                if isinstance(rules["when"], dict):
+                    self._remove_current_blocks_answers_for_new_backwards_routing(
+                        rules["when"], answer_ids_for_current_block
+                    )
+                else:
+                    for rule in rules["when"]:
+                        if "id" in rule and rule["id"] in answer_ids_for_current_block:
+                            self.answer_store.remove_answer(rule["id"])
+
+            self.progress_store.remove_location_for_backwards_routing(this_location)
+            self.progress_store.update_section_status(
+                CompletionStatus.IN_PROGRESS, this_location.section_id
+            )
+
+    def _remove_current_blocks_answers_for_new_backwards_routing(
+        self, rules: dict, answer_ids_for_current_block: list[str]
+    ) -> None:
+        operands = self.schema.get_operands(rules)
+        for rule in operands:
+            if isinstance(rule, dict) and (
+                "identifier" in rule
+                and rule["identifier"] in answer_ids_for_current_block
+            ):
+                if (
+                    "identifier" in rule
+                    and rule["identifier"] in answer_ids_for_current_block
+                ):
+                    self.answer_store.remove_answer(rule["identifier"])
+            if any(operator in rule for operator in OPERATION_MAPPING):
+                return self._remove_current_blocks_answers_for_new_backwards_routing(
+                    rule, answer_ids_for_current_block
+                )
 
 
 def should_goto_new(rule, when_rule_evaluator):
