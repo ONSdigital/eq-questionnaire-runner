@@ -1,3 +1,5 @@
+import pytest
+from mock import patch
 from wtforms import Form
 
 from app.forms import error_messages
@@ -54,3 +56,41 @@ def test_get_field(value_source_resolver):
     assert form.test_field.label.text == radio_json["label"]
     assert form.test_field.description == radio_json["guidance"]
     assert form.test_field.choices == expected_choices
+
+
+def test_get_field_with_bad_choices(value_source_resolver):
+    radio_json = {
+        "guidance": "",
+        "id": "choose-your-side-answer",
+        "label": "Choose a side",
+        "mandatory": True,
+        "options": [
+            {
+                "label": "Light Side",
+                "value": "Light Side",
+                "description": "The light side of the Force",
+            },
+            {
+                "label": "Dark Side",
+                "value": "Dark Side",
+                "description": "The dark side of the Force",
+            },
+            {"label": "I prefer Star Trek", "value": "I prefer Star Trek"},
+            {"label": "Other", "value": "Other"},
+        ],
+        "q_code": "20",
+        "type": "Radio",
+        "validation": {"messages": {"MANDATORY_RADIO": "This answer is required"}},
+    }
+    with patch.object(
+        SelectHandler, "build_choices_with_detail_answer_ids", return_value=None
+    ):
+        handler = SelectHandler(radio_json, value_source_resolver, error_messages)
+
+        class TestForm(Form):
+            test_field = handler.get_field()
+
+        form = TestForm()
+
+        with pytest.raises(TypeError):
+            form.validate()

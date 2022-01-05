@@ -12,7 +12,6 @@ from flask_babel import ngettext
 from flask_wtf import FlaskForm
 from structlog import get_logger
 from wtforms import Field, StringField, validators
-from wtforms.compat import string_types
 
 from app.forms import error_messages
 from app.forms.fields import (
@@ -211,7 +210,7 @@ class OptionalForm:
             is_blank = (
                 has_raw_data
                 and len(formfield.raw_data) >= 1
-                and isinstance(formfield.raw_data[0], string_types)
+                and isinstance(formfield.raw_data[0], str)
                 and not formfield.raw_data[0]
             )
 

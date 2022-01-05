@@ -12,7 +12,7 @@ class MultipleSelectFieldWithDetailAnswer(SelectMultipleField):
 
     def __iter__(self):
         opts = dict(
-            widget=self.option_widget, _name=self.name, _form=None, _meta=self.meta
+            widget=self.option_widget, name=self.name, _form=None, _meta=self.meta
         )
         for i, (value, label, checked, detail_answer_id) in enumerate(
             self.iter_choices()
@@ -24,6 +24,7 @@ class MultipleSelectFieldWithDetailAnswer(SelectMultipleField):
             yield opt
 
     def iter_choices(self):
-        for value, label, detail_answer_id in self.choices:
-            selected = self.data is not None and self.coerce(value) in self.data
-            yield value, label, selected, detail_answer_id
+        if self.choices is not None:
+            for value, label, detail_answer_id in self.choices:
+                selected = self.data is not None and self.coerce(value) in self.data
+                yield value, label, selected, detail_answer_id
