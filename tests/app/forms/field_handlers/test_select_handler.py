@@ -1,5 +1,7 @@
 from wtforms import Form
 
+import pytest
+
 from app.forms import error_messages
 from app.forms.field_handlers import SelectHandler
 from app.forms.fields import SelectFieldWithDetailAnswer
@@ -56,12 +58,42 @@ def test_get_field(value_source_resolver):
     assert form.test_field.choices == expected_choices
 
 
-def test_get_field_with_bad_choices(value_source_resolver):
+def test_get_field_with_no_choices(value_source_resolver):
     radio_json = {
         "id": "choose-your-side-answer",
         "label": "Choose a side",
         "mandatory": True,
         "options": [],
+        "type": "Radio",
+    }
+
+    handler = SelectHandler(radio_json, value_source_resolver, error_messages)
+
+    class TestForm(Form):
+        test_field = handler.get_field()
+
+    form = TestForm()
+    with pytest.raises(TypeError):
+        form.validate()
+
+
+def test_get_field_with_bad_choices(value_source_resolver):
+    radio_json = {
+        "id": "choose-your-side-answer",
+        "label": "Choose a side",
+        "mandatory": True,
+        "options": [
+            {
+                "label": "Light Side",
+                "value": "Dark Side",
+            },
+            {
+                "label": "Dark Side",
+                "value": "Light Side",
+            },
+            {"label": "I prefer Star Trek", "value": "I prefer Star Trek"},
+            {"label": "Other", "value": "Other"},
+        ],
         "type": "Radio",
     }
 
