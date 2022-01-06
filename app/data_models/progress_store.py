@@ -29,6 +29,7 @@ class ProgressStore:
             in_progress_sections: A list of hierarchical dict containing the section status and completed blocks
         """
         self._is_dirty = False  # type: bool
+        self._is_routing_backwards = False  # type: bool
         self._progress = self._build_map(
             in_progress_sections or []
         )  # type: MutableMapping
@@ -66,6 +67,10 @@ class ProgressStore:
     @property
     def is_dirty(self) -> bool:
         return self._is_dirty
+
+    @property
+    def is_routing_backwards(self) -> bool:
+        return self._is_routing_backwards
 
     def is_section_complete(
         self, section_id: str, list_item_id: Optional[str] = None
@@ -191,6 +196,10 @@ class ProgressStore:
 
     def serialize(self) -> List:
         return list(self._progress.values())
+
+    def remove_location_for_backwards_routing(self, location: Location) -> None:
+        self.remove_completed_location(location=location)
+        self._is_routing_backwards = True
 
     def clear(self) -> None:
         self._progress.clear()

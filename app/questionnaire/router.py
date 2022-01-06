@@ -124,11 +124,10 @@ class Router:
         if self._progress_store.is_section_complete(
             location.section_id, location.list_item_id
         ):
-            if return_to == "section-summary":
-                return self._get_section_url(location)
-
-            if return_to == "final-summary" and self.is_questionnaire_complete:
-                return url_for("questionnaire.submit_questionnaire")
+            if return_to and (
+                return_to_url := self._get_return_to_location_url(location, return_to)
+            ):
+                return return_to_url
 
             if is_last_block_in_section:
                 return self._get_next_location_url_for_last_block_in_section(location)
@@ -148,11 +147,24 @@ class Router:
         return self.get_next_location_url_for_end_of_section()
 
     def get_previous_location_url(
-        self, location: Location, routing_path: RoutingPath
+        self,
+        location: Location,
+        routing_path: RoutingPath,
+        return_to: Optional[str] = None,
     ) -> Optional[str]:
         """
-        Returns the previous 'location' to visit given a set of user answers
+        Returns the previous 'location' to visit given a set of user answers or returns to the summary if
+        the `return_to` var is set and the section is complete.
         """
+
+        if return_to and (
+            self._progress_store.is_section_complete(
+                location.section_id, location.list_item_id
+            )
+            and (return_to_url := self._get_return_to_location_url(location, return_to))
+        ):
+            return return_to_url
+
         block_id_index = routing_path.index(location.block_id)
 
         if block_id_index != 0:
@@ -174,6 +186,15 @@ class Router:
             return url_for("questionnaire.get_questionnaire")
 
         return None
+
+    def _get_return_to_location_url(
+        self, location: Location, return_to: str
+    ) -> Optional[str]:
+        if return_to == "section-summary":
+            return self._get_section_url(location)
+
+        if return_to == "final-summary" and self.is_questionnaire_complete:
+            return url_for("questionnaire.submit_questionnaire")
 
     def get_next_location_url_for_end_of_section(self) -> str:
         if self._schema.is_flow_hub and self.can_access_hub():
