@@ -1,6 +1,7 @@
 import pytest
 from mock import patch
 from wtforms import Form
+from wtforms.validators import ValidationError
 
 from app.forms import error_messages
 from app.forms.field_handlers import SelectHandler
@@ -63,28 +64,16 @@ def test_get_field_with_bad_choices(value_source_resolver):
         "id": "choose-your-side-answer",
         "label": "Choose a side",
         "mandatory": True,
-        "options": [
-            {
-                "label": "Light Side",
-                "value": "Light Side",
-            },
-            {
-                "label": "Dark Side",
-                "value": "Dark Side",
-            },
-            {"label": "I prefer Star Trek", "value": "I prefer Star Trek"},
-            {"label": "Other", "value": "Other"},
-        ],
+        "options": [],
         "type": "Radio",
     }
-    with patch.object(
-        SelectHandler, "build_choices_with_detail_answer_ids", return_value=[]
-    ):
-        handler = SelectHandler(radio_json, value_source_resolver, error_messages)
 
-        class TestForm(Form):
-            test_field = handler.get_field()
+    handler = SelectHandler(radio_json, value_source_resolver, error_messages)
 
-        form = TestForm()
+    class TestForm(Form):
+        test_field = handler.get_field()
 
-        form.validate()
+    form = TestForm()
+    form.validate()
+
+    assert form.errors

@@ -29,9 +29,8 @@ class SelectFieldWithDetailAnswer(SelectField):
             yield value, label, self.coerce(value) == self.data, detail_answer_id
 
     def pre_validate(self, _):
-
         for _, _, match, _ in self.iter_choices():
             if match:
                 break
         else:
-            raise ValidationError(self.gettext("Not a valid choice"))
+            raise ValidationError(self.gettext("Not a valid choice."))
