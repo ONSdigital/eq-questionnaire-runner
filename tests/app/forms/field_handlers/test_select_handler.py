@@ -60,7 +60,6 @@ def test_get_field(value_source_resolver):
 
 def test_get_field_with_bad_choices(value_source_resolver):
     radio_json = {
-        "guidance": "",
         "id": "choose-your-side-answer",
         "label": "Choose a side",
         "mandatory": True,
@@ -68,22 +67,18 @@ def test_get_field_with_bad_choices(value_source_resolver):
             {
                 "label": "Light Side",
                 "value": "Light Side",
-                "description": "The light side of the Force",
             },
             {
                 "label": "Dark Side",
                 "value": "Dark Side",
-                "description": "The dark side of the Force",
             },
             {"label": "I prefer Star Trek", "value": "I prefer Star Trek"},
             {"label": "Other", "value": "Other"},
         ],
-        "q_code": "20",
         "type": "Radio",
-        "validation": {"messages": {"MANDATORY_RADIO": "This answer is required"}},
     }
     with patch.object(
-        SelectHandler, "build_choices_with_detail_answer_ids", return_value=None
+        SelectHandler, "build_choices_with_detail_answer_ids", return_value=[]
     ):
         handler = SelectHandler(radio_json, value_source_resolver, error_messages)
 
@@ -92,5 +87,4 @@ def test_get_field_with_bad_choices(value_source_resolver):
 
         form = TestForm()
 
-        with pytest.raises(TypeError):
-            form.validate()
+        form.validate()
