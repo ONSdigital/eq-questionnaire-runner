@@ -2,16 +2,29 @@ import unittest
 from decimal import Decimal
 
 import pytest
+from werkzeug.datastructures import ImmutableDict
 
+from app.data_models.answer_store import AnswerStore
+from app.data_models.list_store import ListStore
+from app.questionnaire import QuestionnaireSchema
+from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+
+renderer = PlaceholderRenderer(
+    language="en",
+    answer_store=AnswerStore(),
+    list_store=ListStore(),
+    metadata=ImmutableDict({}),
+    response_metadata={},
+    schema=QuestionnaireSchema({}),
+)
 
 
 # pylint: disable=too-many-public-methods,no-self-use
 class TestPlaceholderParser(unittest.TestCase):
     def setUp(self):
         self.transforms = PlaceholderTransforms(
-            language="en", schema=QuestionnaireSchema({})
+            language="en", schema=QuestionnaireSchema({}), renderer=renderer
         )
 
     def test_format_currency(self):
@@ -64,7 +77,7 @@ class TestPlaceholderParser(unittest.TestCase):
     @staticmethod
     def test_format_possessive_non_english_does_nothing():
         welsh_transforms = PlaceholderTransforms(
-            language="cy", schema=QuestionnaireSchema({})
+            language="cy", schema=QuestionnaireSchema({}), renderer=renderer
         )
         assert welsh_transforms.format_possessive("Alice Aardvark") == "Alice Aardvark"
         assert (
@@ -170,7 +183,7 @@ class TestPlaceholderParser(unittest.TestCase):
     @staticmethod
     def test_format_ordinal_with_determiner_ulster_scots():
         ulster_scots_transforms = PlaceholderTransforms(
-            language="eo", schema=QuestionnaireSchema({})
+            language="eo", schema=QuestionnaireSchema({}), renderer=renderer
         )
         assert ulster_scots_transforms.format_ordinal(1, "a_or_an") == "a 1st"
         assert ulster_scots_transforms.format_ordinal(2, "a_or_an") == "a 2nd"
@@ -182,7 +195,7 @@ class TestPlaceholderParser(unittest.TestCase):
     @staticmethod
     def test_format_ordinal_without_determiner_ulster_scots():
         ulster_scots_transforms = PlaceholderTransforms(
-            language="eo", schema=QuestionnaireSchema({})
+            language="eo", schema=QuestionnaireSchema({}), renderer=renderer
         )
         assert ulster_scots_transforms.format_ordinal(1) == "1st"
         assert ulster_scots_transforms.format_ordinal(2) == "2nd"
@@ -193,7 +206,7 @@ class TestPlaceholderParser(unittest.TestCase):
     @staticmethod
     def test_format_ordinal_gaelic():
         gaelic_transforms = PlaceholderTransforms(
-            language="ga", schema=QuestionnaireSchema({})
+            language="ga", schema=QuestionnaireSchema({}), renderer=renderer
         )
         assert gaelic_transforms.format_ordinal(1) == "1ú"
         assert gaelic_transforms.format_ordinal(2) == "2ú"
@@ -204,7 +217,7 @@ class TestPlaceholderParser(unittest.TestCase):
     @staticmethod
     def test_format_ordinal_welsh():
         welsh_transforms = PlaceholderTransforms(
-            language="cy", schema=QuestionnaireSchema({})
+            language="cy", schema=QuestionnaireSchema({}), renderer=renderer
         )
         assert welsh_transforms.format_ordinal(1) == "1af"
         assert welsh_transforms.format_ordinal(2) == "2il"
@@ -399,8 +412,12 @@ def test_format_date_range(placeholder_transform, date_range, expected):
     ],
 )
 def test_option_label_from_value_with_placeholder_label(
-    placeholder_transform, answer_id, value, expected
+    placeholder_transform, answer_id, value, expected, schema_placeholder_renderer
 ):
+    label_schema, label_renderer = schema_placeholder_renderer
+    placeholder_transform = PlaceholderTransforms(
+        language="en", schema=label_schema, renderer=label_renderer
+    )
     actual = placeholder_transform.option_label_from_value(value, answer_id)
 
     assert actual == expected

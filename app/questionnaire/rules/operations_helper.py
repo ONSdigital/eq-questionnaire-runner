@@ -20,7 +20,7 @@ class OperationHelper:
         self,
         language: str,
         schema: QuestionnaireSchema,
-        renderer: Optional["PlaceholderRenderer"] = None,
+        renderer: "PlaceholderRenderer",
     ):
         self.language = language
         self.schema = schema

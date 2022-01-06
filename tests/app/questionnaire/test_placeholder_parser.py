@@ -14,7 +14,7 @@ def test_parse_placeholders(placeholder_list, parser):
     assert placeholders["first_name"] == "Joe"
 
 
-def test_metadata_placeholder():
+def test_metadata_placeholder(mock_renderer):
     placeholder_list = [
         {
             "placeholder": "period",
@@ -30,13 +30,14 @@ def test_metadata_placeholder():
         metadata={"period_str": period_str},
         response_metadata={},
         schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
     )
 
     placeholders = parser(placeholder_list)
     assert period_str == placeholders["period"]
 
 
-def test_previous_answer_transform_placeholder():
+def test_previous_answer_transform_placeholder(mock_renderer):
     placeholder_list = [
         {
             "placeholder": "total_turnover",
@@ -67,13 +68,14 @@ def test_previous_answer_transform_placeholder():
         metadata={},
         response_metadata={},
         schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
     )
     placeholders = parser(placeholder_list)
 
     assert placeholders["total_turnover"] == "£1,000.00"
 
 
-def test_metadata_transform_placeholder():
+def test_metadata_transform_placeholder(mock_renderer):
     placeholder_list = [
         {
             "placeholder": "start_date",
@@ -99,13 +101,14 @@ def test_metadata_transform_placeholder():
         metadata={"ref_p_start_date": "2019-02-11"},
         response_metadata={},
         schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
     )
     placeholders = parser(placeholder_list)
 
     assert placeholders["start_date"] == "Monday 11 February 2019"
 
 
-def test_response_metadata_transform_placeholder():
+def test_response_metadata_transform_placeholder(mock_renderer):
     # This test should use ISO format dates when they become supported
     placeholder_list = [
         {
@@ -132,13 +135,14 @@ def test_response_metadata_transform_placeholder():
         metadata={"ref_p_start_date": "2019-02-11"},
         response_metadata={"started_at": "2019-02-11"},
         schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
     )
     placeholders = parser(placeholder_list)
 
     assert placeholders["start_date"] == "Monday 11 February 2019"
 
 
-def test_multiple_answer_transform_placeholder():
+def test_multiple_answer_transform_placeholder(mock_renderer):
     placeholder_list = [
         {
             "placeholder": "persons_name",
@@ -169,6 +173,7 @@ def test_multiple_answer_transform_placeholder():
         metadata={},
         response_metadata={},
         schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
     )
 
     placeholders = parser(placeholder_list)
@@ -176,7 +181,7 @@ def test_multiple_answer_transform_placeholder():
     assert placeholders["persons_name"] == "Joe Bloggs"
 
 
-def test_first_non_empty_item_transform_placeholder():
+def test_first_non_empty_item_transform_placeholder(mock_renderer):
     placeholder_list = [
         {
             "placeholder": "company_name",
@@ -201,6 +206,7 @@ def test_first_non_empty_item_transform_placeholder():
         metadata={"ru_name": "ru_name"},
         response_metadata={},
         schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
     )
 
     placeholders = parser(placeholder_list)
@@ -208,7 +214,7 @@ def test_first_non_empty_item_transform_placeholder():
     assert placeholders["company_name"] == "ru_name"
 
 
-def test_format_list_answer_transform_placeholder():
+def test_format_list_answer_transform_placeholder(mock_renderer):
     placeholder_list = [
         {
             "placeholder": "toppings",
@@ -235,6 +241,7 @@ def test_format_list_answer_transform_placeholder():
         metadata={},
         response_metadata={},
         schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
     )
 
     placeholders = parser(placeholder_list)
@@ -242,7 +249,7 @@ def test_format_list_answer_transform_placeholder():
     assert placeholders["toppings"] == "<ul><li>Ham</li><li>Cheese</li></ul>"
 
 
-def test_placeholder_parser_escapes_answers():
+def test_placeholder_parser_escapes_answers(mock_renderer):
     placeholder_list = [
         {
             "placeholder": "crisps",
@@ -274,6 +281,7 @@ def test_placeholder_parser_escapes_answers():
         metadata={},
         response_metadata={},
         schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
     )
 
     placeholders = parser(placeholder_list)
@@ -284,7 +292,7 @@ def test_placeholder_parser_escapes_answers():
     )
 
 
-def test_multiple_metadata_transform_placeholder():
+def test_multiple_metadata_transform_placeholder(mock_renderer):
     placeholder_list = [
         {
             "placeholder": "start_date",
@@ -317,6 +325,7 @@ def test_multiple_metadata_transform_placeholder():
         metadata={"ref_p_start_date": "2019-02-11"},
         response_metadata={},
         schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
     )
 
     placeholders = parser(placeholder_list)
@@ -324,7 +333,7 @@ def test_multiple_metadata_transform_placeholder():
     assert placeholders["start_date"] == "11/02/2019"
 
 
-def test_multiple_metadata_list_transform_placeholder():
+def test_multiple_metadata_list_transform_placeholder(mock_renderer):
     placeholder_list = [
         {
             "placeholder": "dates",
@@ -350,13 +359,14 @@ def test_multiple_metadata_list_transform_placeholder():
         metadata={"ref_p_start_date": "2019-02-11", "ref_p_end_date": "2019-10-11"},
         response_metadata={},
         schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
     )
     placeholders = parser(placeholder_list)
 
     assert placeholders["dates"] == "2019-02-11 2019-10-11"
 
 
-def test_checkbox_transform_placeholder():
+def test_checkbox_transform_placeholder(mock_renderer):
     placeholder_list = [
         {
             "placeholder": "toppings",
@@ -385,6 +395,7 @@ def test_checkbox_transform_placeholder():
         metadata={},
         response_metadata={},
         schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
     )
 
     placeholders = parser(placeholder_list)
@@ -392,7 +403,7 @@ def test_checkbox_transform_placeholder():
     assert placeholders["toppings"] == "Ham, Cheese"
 
 
-def test_mixed_transform_placeholder():
+def test_mixed_transform_placeholder(mock_renderer):
     placeholder_list = [
         {
             "placeholder": "age",
@@ -423,13 +434,14 @@ def test_mixed_transform_placeholder():
         metadata={"second-date": "2019-02-02"},
         response_metadata={},
         schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
     )
     placeholders = parser(placeholder_list)
 
     assert placeholders["age"] == "20 years"
 
 
-def test_mixed_transform_placeholder_value():
+def test_mixed_transform_placeholder_value(mock_renderer):
     placeholder_list = [
         {
             "placeholder": "age",
@@ -457,13 +469,14 @@ def test_mixed_transform_placeholder_value():
         metadata={},
         response_metadata={},
         schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
     )
     placeholders = parser(placeholder_list)
 
     assert placeholders["age"] == "20 years"
 
 
-def test_list_source_count():
+def test_list_source_count(mock_renderer):
     placeholder_list = [
         {
             "placeholder": "number_of_people",
@@ -482,13 +495,14 @@ def test_list_source_count():
         metadata={},
         response_metadata={},
         schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
     )
     placeholders = parser(placeholder_list)
 
     assert placeholders["number_of_people"] == 2
 
 
-def test_list_source_count_in_transform():
+def test_list_source_count_in_transform(mock_renderer):
     placeholder_list = [
         {
             "placeholder": "number_of_people",
@@ -518,13 +532,14 @@ def test_list_source_count_in_transform():
         metadata={},
         response_metadata={},
         schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
     )
     placeholders = parser(placeholder_list)
 
     assert placeholders["number_of_people"] == 2
 
 
-def test_chain_transform_placeholder():
+def test_chain_transform_placeholder(mock_renderer):
     placeholder_list = [
         {
             "placeholder": "persons_name",
@@ -559,13 +574,14 @@ def test_chain_transform_placeholder():
         metadata={},
         response_metadata={},
         schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
     )
 
     placeholders = parser(placeholder_list)
     assert placeholders["persons_name"] == "Joe Bloggs’"
 
 
-def test_placeholder_resolves_answer_value_based_on_first_item_in_list():
+def test_placeholder_resolves_answer_value_based_on_first_item_in_list(mock_renderer):
     placeholder_list = [
         {
             "placeholder": "answer",
@@ -600,13 +616,16 @@ def test_placeholder_resolves_answer_value_based_on_first_item_in_list():
         metadata={},
         response_metadata={},
         schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
     )
 
     placeholders = parser(placeholder_list)
     assert str(placeholders["answer"]) == "Coffee"
 
 
-def test_placeholder_resolves_list_item_value_based_on_first_item_in_list():
+def test_placeholder_resolves_list_item_value_based_on_first_item_in_list(
+    mock_renderer,
+):
     placeholder_list = [
         {
             "placeholder": "first_person_list_item_id",
@@ -627,6 +646,7 @@ def test_placeholder_resolves_list_item_value_based_on_first_item_in_list():
         metadata={},
         response_metadata={},
         schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
     )
 
     placeholders = parser(placeholder_list)
@@ -634,7 +654,7 @@ def test_placeholder_resolves_list_item_value_based_on_first_item_in_list():
     assert str(placeholders["first_person_list_item_id"]) == list_store["people"].first
 
 
-def test_placeholder_resolves_same_name_items():
+def test_placeholder_resolves_same_name_items(mock_renderer):
     list_store = ListStore(
         [
             {
@@ -662,6 +682,7 @@ def test_placeholder_resolves_same_name_items():
         metadata={},
         response_metadata={},
         schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
         list_item_id="abc123",
     )
 
@@ -670,7 +691,7 @@ def test_placeholder_resolves_same_name_items():
     assert placeholders["answer"] == ["abc123", "fgh789"]
 
 
-def test_placeholder_resolves_name_is_duplicate_chain(mock_schema):
+def test_placeholder_resolves_name_is_duplicate_chain(mock_schema, mock_renderer):
     list_store = ListStore(
         [
             {
@@ -764,6 +785,7 @@ def test_placeholder_resolves_name_is_duplicate_chain(mock_schema):
         response_metadata={},
         schema=mock_schema,
         list_item_id="abc123",
+        renderer=mock_renderer,
     )
 
     placeholders = parser(placeholder_transforms)
@@ -778,6 +800,7 @@ def test_placeholder_resolves_name_is_duplicate_chain(mock_schema):
         response_metadata={},
         schema=mock_schema,
         list_item_id="cde456",
+        renderer=mock_renderer,
     )
 
     placeholders = parser(placeholder_transforms)
@@ -785,7 +808,7 @@ def test_placeholder_resolves_name_is_duplicate_chain(mock_schema):
     assert placeholders["persons_name"] == "Marie Smith"
 
 
-def test_placeholder_resolves_list_has_items_chain(mock_schema):
+def test_placeholder_resolves_list_has_items_chain(mock_schema, mock_renderer):
     list_store = ListStore(
         [
             {
@@ -875,6 +898,7 @@ def test_placeholder_resolves_list_has_items_chain(mock_schema):
         response_metadata={},
         schema=mock_schema,
         list_item_id="abc123",
+        renderer=mock_renderer,
     )
 
     placeholders = parser(placeholder_transforms)
@@ -889,6 +913,7 @@ def test_placeholder_resolves_list_has_items_chain(mock_schema):
         response_metadata={},
         schema=mock_schema,
         list_item_id="cde456",
+        renderer=mock_renderer,
     )
 
     placeholders = parser(placeholder_transforms)

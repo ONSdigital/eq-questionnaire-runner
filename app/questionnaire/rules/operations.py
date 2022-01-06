@@ -28,7 +28,6 @@ if TYPE_CHECKING:
         PlaceholderRenderer,  # pragma: no cover
     )
 
-
 ComparableValue = TypeVar("ComparableValue", str, int, float, Decimal, date)
 NonArrayPrimitiveTypes = Union[str, int, float, Decimal, None]
 
@@ -61,11 +60,11 @@ class Operations:
         self,
         language: str,
         schema: QuestionnaireSchema,
-        renderer: Optional["PlaceholderRenderer"] = None,
+        renderer: "PlaceholderRenderer",
     ) -> None:
         self._language = language
         self._locale = DEFAULT_LOCALE if language in {"en", "eo"} else language
-        self.renderer = renderer or None
+        self.renderer = renderer
         self.schema = schema
 
     @staticmethod
@@ -233,7 +232,7 @@ class Operations:
     def evaluate_option_label_from_value(self, value: str, answer_id: str) -> str:
         label: str = ""
         answers = self.schema.get_answers_by_answer_id(answer_id)
-        label_options: str = next(
+        label_options: Union[str, dict] = next(
             (
                 options["label"]
                 for answer in answers
@@ -246,7 +245,7 @@ class Operations:
         if isinstance(label_options, str):
             label = label_options
 
-        elif isinstance(label_options, dict):
+        else:
             label = self.renderer.render_placeholder(label_options, list_item_id=None)
 
         return label
