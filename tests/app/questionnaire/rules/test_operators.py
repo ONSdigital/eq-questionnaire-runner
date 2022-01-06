@@ -4,7 +4,6 @@ import pytest
 from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 
-from app.questionnaire.rules.operations import Operations
 from app.questionnaire.rules.operator import Operator
 from app.questionnaire.rules.utils import parse_datetime
 
@@ -40,7 +39,7 @@ equals_operations = [
     "operands, expected_result",
     equals_operations,
 )
-def test_operation_equal(operands, expected_result):
+def test_operation_equal(operands, expected_result, get_operator):
     operator = get_operator(Operator.EQUAL)
     assert operator.evaluate(operands) is expected_result
 
@@ -49,8 +48,8 @@ def test_operation_equal(operands, expected_result):
     "operands, expected_result",
     equals_operations,
 )
-def test_operation_not_equal(operands, expected_result, mock_schema):
-    operator = get_operator(Operator.NOT_EQUAL, mock_schema)
+def test_operation_not_equal(operands, expected_result, get_operator):
+    operator = get_operator(Operator.NOT_EQUAL)
     assert operator.evaluate(operands) is not expected_result
 
 
@@ -77,7 +76,7 @@ greater_than_and_less_than_operations_equals = [
     "operands, expected_result",
     greater_than_and_less_than_operations,
 )
-def test_operation_greater_than(operands, expected_result):
+def test_operation_greater_than(operands, expected_result, get_operator):
     operator = get_operator(Operator.GREATER_THAN)
     assert operator.evaluate(operands) is expected_result
 
@@ -86,7 +85,7 @@ def test_operation_greater_than(operands, expected_result):
     "operands, expected_result",
     greater_than_and_less_than_operations_equals,
 )
-def test_operation_greater_than_same_number(operands, expected_result):
+def test_operation_greater_than_same_number(operands, expected_result, get_operator):
     operator = get_operator(Operator.GREATER_THAN)
     assert operator.evaluate(operands) is expected_result
 
@@ -95,7 +94,7 @@ def test_operation_greater_than_same_number(operands, expected_result):
     "operands, expected_result",
     greater_than_and_less_than_operations,
 )
-def test_operation_less_than(operands, expected_result):
+def test_operation_less_than(operands, expected_result, get_operator):
     operator = get_operator(Operator.LESS_THAN)
     assert operator.evaluate(operands) is not expected_result
 
@@ -104,7 +103,7 @@ def test_operation_less_than(operands, expected_result):
     "operands, expected_result",
     greater_than_and_less_than_operations_equals,
 )
-def test_operation_less_than_same_number(operands, expected_result):
+def test_operation_less_than_same_number(operands, expected_result, get_operator):
     operator = get_operator(Operator.LESS_THAN)
     assert operator.evaluate(operands) is expected_result
 
@@ -128,7 +127,7 @@ def test_operation_less_than_same_number(operands, expected_result):
         [(next_week, current_date), False],
     ],
 )
-def test_operation_less_than_or_equal(operands, expected_result):
+def test_operation_less_than_or_equal(operands, expected_result, get_operator):
     operator = get_operator(Operator.LESS_THAN_OR_EQUAL)
     assert operator.evaluate(operands) is expected_result
 
@@ -152,7 +151,7 @@ def test_operation_less_than_or_equal(operands, expected_result):
         [(current_date, next_week), False],
     ],
 )
-def test_operation_greater_than_or_equal(operands, expected_result):
+def test_operation_greater_than_or_equal(operands, expected_result, get_operator):
     operator = get_operator(
         Operator.GREATER_THAN_OR_EQUAL,
     )
@@ -160,7 +159,7 @@ def test_operation_greater_than_or_equal(operands, expected_result):
 
 
 @pytest.mark.parametrize("operand, expected_result", [[False, True], [True, False]])
-def test_operation_not(operand, expected_result):
+def test_operation_not(operand, expected_result, get_operator):
     operator = get_operator(Operator.NOT)
     assert operator.evaluate([operand]) is expected_result
 
@@ -176,7 +175,7 @@ def test_operation_not(operand, expected_result):
         [(False, True, True, True), False],
     ],
 )
-def test_operation_and(operands, expected_result):
+def test_operation_and(operands, expected_result, get_operator):
     operator = get_operator(Operator.AND)
     assert operator.evaluate(operands) is expected_result
 
@@ -193,7 +192,7 @@ def test_operation_and(operands, expected_result):
         [(False, False), False],
     ],
 )
-def test_operation_or(operands, expected_result):
+def test_operation_or(operands, expected_result, get_operator):
     operator = get_operator(Operator.OR)
     assert operator.evaluate(operands) is expected_result
 
@@ -214,7 +213,7 @@ def test_operation_or(operands, expected_result):
         [(None, ["Yes", "No"]), False],
     ],
 )
-def test_operation_in(operands, expected_result):
+def test_operation_in(operands, expected_result, get_operator):
     operator = get_operator(Operator.IN)
     assert operator.evaluate(operands) is expected_result
 
@@ -236,7 +235,7 @@ def test_operation_in(operands, expected_result):
         [([None, "No"], ["Yes", "No"]), False],
     ],
 )
-def test_operation_all_in(operands, expected_result):
+def test_operation_all_in(operands, expected_result, get_operator):
     operator = get_operator(Operator.ALL_IN)
     assert operator.evaluate(operands) is expected_result
 
@@ -257,7 +256,7 @@ def test_operation_all_in(operands, expected_result):
         [([None, 0], ["Yes", "No"]), False],
     ],
 )
-def test_operation_any_in(operands, expected_result):
+def test_operation_any_in(operands, expected_result, get_operator):
     operator = get_operator(Operator.ANY_IN)
     assert operator.evaluate(operands) is expected_result
 
@@ -280,7 +279,7 @@ def test_operation_any_in(operands, expected_result):
         {"days": 1, "months": -1, "years": 1},
     ],
 )
-def test_operation_date(date_string: str, offset):
+def test_operation_date(date_string: str, offset, get_operator):
     operands = (date_string, offset)
     operator = get_operator(Operator.DATE)
 
@@ -327,7 +326,7 @@ def test_operation_date(date_string: str, offset):
         ({"day_of_week": "THURSDAY", "days": 14}, datetime(year=2021, month=1, day=14)),
     ],
 )
-def test_operation_date_offsets_literal_date(offset, expected_result):
+def test_operation_date_offsets_literal_date(offset, expected_result, get_operator):
     reference_date_string = "2021-01-01"  # Friday
     operands = (
         reference_date_string,
@@ -338,7 +337,7 @@ def test_operation_date_offsets_literal_date(offset, expected_result):
     assert operator.evaluate(operands) == expected_result.date()
 
 
-def test_operation_date_day_of_week_offsets_with_invalid_days_offset():
+def test_operation_date_day_of_week_offsets_with_invalid_days_offset(get_operator):
     date_string = "2021-01-01"
     operands = (
         date_string,
@@ -367,7 +366,9 @@ def test_operation_date_day_of_week_offsets_with_invalid_days_offset():
         Operator.LESS_THAN_OR_EQUAL,
     ],
 )
-def test_nonetype_operands_for_comparison_operators(operator_name, operands):
+def test_nonetype_operands_for_comparison_operators(
+    operator_name, operands, get_operator
+):
     operator = get_operator(operator_name)
     assert operator.evaluate(operands) is False
 
@@ -388,7 +389,7 @@ def test_nonetype_operands_for_comparison_operators(operator_name, operands):
         Operator.IN,
     ],
 )
-def test_nonetype_operands_for_array_operators(operator_name, operands):
+def test_nonetype_operands_for_array_operators(operator_name, operands, get_operator):
     operator = get_operator(operator_name)
     assert operator.evaluate(operands) is False
 
@@ -402,13 +403,13 @@ def test_nonetype_operands_for_array_operators(operator_name, operands):
         ([None], 0),
     ],
 )
-def test_operation_count(operands, expected_result):
+def test_operation_count(operands, expected_result, get_operator):
     operator = get_operator(Operator.COUNT)
     assert operator.evaluate(operands) is expected_result
 
 
 @freeze_time("2021-01-01")
-def test_date_range():
+def test_date_range(get_operator):
     operator = get_operator(Operator.DATE_RANGE)
 
     assert operator.evaluate([datetime.now(timezone.utc).date(), 3]) == [
@@ -430,7 +431,7 @@ def test_date_range():
         ("yyyy", "2021"),
     ],
 )
-def test_format_date(date_format, expected_result):
+def test_format_date(date_format, expected_result, get_operator):
     operator = get_operator(Operator.FORMAT_DATE)
 
     assert (
@@ -439,7 +440,7 @@ def test_format_date(date_format, expected_result):
     )
 
 
-def test_map_without_nested_date_operator():
+def test_map_without_nested_date_operator(get_operator):
     operator = get_operator(Operator.MAP)
 
     function = {Operator.FORMAT_DATE: ["self", "yyyy-MM-dd"]}
@@ -456,7 +457,7 @@ def test_map_without_nested_date_operator():
     ]
 
 
-def test_map_with_nested_date_operator():
+def test_map_with_nested_date_operator(get_operator):
     operator = get_operator(Operator.MAP)
 
     function = {
@@ -476,9 +477,3 @@ def test_map_with_nested_date_operator():
         "2 January 2021",
         "3 January 2021",
     ]
-
-
-def get_operator(operator_name, language="en", schema=None):
-    return Operator(
-        operator_name, operations=Operations(language=language, schema=schema)
-    )

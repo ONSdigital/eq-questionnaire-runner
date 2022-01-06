@@ -11,7 +11,6 @@ from app.questionnaire.location import Location
 from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
-from app.questionnaire.rules.operations_helper import OperationHelper
 
 
 @pytest.fixture
@@ -35,7 +34,7 @@ def location():
 
 
 @pytest.fixture
-def parser(answer_store, location, mock_schema):
+def parser(answer_store, location, mock_schema, mock_renderer):
     return PlaceholderParser(
         language="en",
         answer_store=answer_store,
@@ -44,6 +43,7 @@ def parser(answer_store, location, mock_schema):
         response_metadata={},
         schema=mock_schema,
         location=location,
+        renderer=mock_renderer,
     )
 
 
@@ -819,7 +819,7 @@ def section_with_repeating_list():
 
 
 @pytest.fixture
-def section_with_labels():
+def labels_schema_with_placeholders():
     return {
         "sections": [
             {
@@ -1022,15 +1022,16 @@ def mock_schema():
 
 
 @pytest.fixture
-def placeholder_transform(schema_placeholder_renderer):
-    schema, renderer = schema_placeholder_renderer
-    return PlaceholderTransforms(language="en", schema=schema, renderer=renderer)
+def placeholder_transform(mock_schema, mock_renderer):
+    return PlaceholderTransforms(
+        language="en", schema=mock_schema, renderer=mock_renderer
+    )
 
 
 @pytest.fixture
-def schema_placeholder_renderer(section_with_labels):
-    schema = QuestionnaireSchema(section_with_labels)
-    answer_id = AnswerStore(
+def schema_placeholder_renderer(labels_schema_with_placeholders):
+    schema = QuestionnaireSchema(labels_schema_with_placeholders)
+    answer_store = AnswerStore(
         [
             {"answer_id": "mandatory-radio-label-answer-1", "value": "Head"},
             {"answer_id": "mandatory-radio-label-answer-2", "value": "label"},
@@ -1038,7 +1039,7 @@ def schema_placeholder_renderer(section_with_labels):
     )
     renderer = PlaceholderRenderer(
         language="en",
-        answer_store=answer_id,
+        answer_store=answer_store,
         list_store=ListStore(),
         metadata=ImmutableDict({}),
         response_metadata={},
@@ -1048,7 +1049,12 @@ def schema_placeholder_renderer(section_with_labels):
 
 
 @pytest.fixture
-def operation_helper(schema_placeholder_renderer):
-    schema, renderer = schema_placeholder_renderer
-    ops_helper = OperationHelper(language="en", schema=schema, renderer=renderer)
-    return ops_helper
+def mock_renderer(mock_schema):
+    return PlaceholderRenderer(
+        language="en",
+        answer_store=AnswerStore(),
+        list_store=ListStore(),
+        metadata=ImmutableDict({}),
+        response_metadata={},
+        schema=mock_schema,
+    )

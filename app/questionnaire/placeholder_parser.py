@@ -41,9 +41,9 @@ class PlaceholderParser:
         metadata: Mapping,
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
+        renderer: "PlaceholderRenderer",
         list_item_id: Optional[str] = None,
         location: Union[Location, RelationshipLocation, None] = None,
-        renderer: "PlaceholderRenderer" = None,
     ):
 
         self._answer_store = answer_store

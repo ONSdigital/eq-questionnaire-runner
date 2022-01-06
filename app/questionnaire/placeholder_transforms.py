@@ -30,7 +30,7 @@ class PlaceholderTransforms:
         self,
         language: str,
         schema: QuestionnaireSchema,
-        renderer: "PlaceholderRenderer" = None,
+        renderer: "PlaceholderRenderer",
     ):
         self.language = language
         self.schema = schema
@@ -40,7 +40,9 @@ class PlaceholderTransforms:
 
     input_date_format = "%Y-%m-%d"
 
-    def format_currency(self, number: int = None, currency: str = "GBP") -> str:
+    def format_currency(
+        self, number: Union[float, str] = None, currency: str = "GBP"
+    ) -> str:
         formatted_currency: str = format_currency(number, currency, locale=self.locale)
         return formatted_currency
 
