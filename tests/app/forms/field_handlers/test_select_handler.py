@@ -58,25 +58,6 @@ def test_get_field(value_source_resolver):
     assert form.test_field.choices == expected_choices
 
 
-def test_get_field_with_no_choices(value_source_resolver):
-    radio_json = {
-        "id": "choose-your-side-answer",
-        "label": "Choose a side",
-        "mandatory": True,
-        "options": [],
-        "type": "Radio",
-    }
-
-    handler = SelectHandler(radio_json, value_source_resolver, error_messages)
-
-    class TestForm(Form):
-        test_field = handler.get_field()
-
-    form = TestForm()
-    with pytest.raises(TypeError):
-        form.validate()
-
-
 def test_get_field_with_bad_choices(value_source_resolver):
     radio_json = {
         "id": "choose-your-side-answer",
