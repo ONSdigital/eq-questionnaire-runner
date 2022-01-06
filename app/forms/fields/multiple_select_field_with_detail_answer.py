@@ -24,7 +24,6 @@ class MultipleSelectFieldWithDetailAnswer(SelectMultipleField):
             yield opt
 
     def iter_choices(self):
-        if self.choices is not None:
-            for value, label, detail_answer_id in self.choices:
-                selected = self.data is not None and self.coerce(value) in self.data
-                yield value, label, selected, detail_answer_id
+        for value, label, detail_answer_id in self.choices:
+            selected = self.data is not None and self.coerce(value) in self.data
+            yield value, label, selected, detail_answer_id

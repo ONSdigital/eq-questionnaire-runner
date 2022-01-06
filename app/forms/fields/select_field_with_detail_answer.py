@@ -25,9 +25,8 @@ class SelectFieldWithDetailAnswer(SelectField):
             yield opt
 
     def iter_choices(self):
-        if self.choices is not None:
-            for value, label, detail_answer_id in self.choices:
-                yield value, label, self.coerce(value) == self.data, detail_answer_id
+        for value, label, detail_answer_id in self.choices:
+            yield value, label, self.coerce(value) == self.data, detail_answer_id
 
     def pre_validate(self, form):
 
