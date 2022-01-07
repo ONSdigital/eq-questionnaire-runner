@@ -193,9 +193,9 @@ class QuestionnaireStoreUpdater:
             self._answer_store.add_or_update(answer)
 
     def add_completed_location(self, location: Optional[Location] = None):
-        location = location or self._current_location
-
-        self._progress_store.add_completed_location(location)
+        if not self._progress_store.is_routing_backwards:
+            location = location or self._current_location
+            self._progress_store.add_completed_location(location)
 
     def remove_completed_location(self, location: Optional[Location] = None):
         location = location or self._current_location

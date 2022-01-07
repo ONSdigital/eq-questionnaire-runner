@@ -87,6 +87,67 @@ def test_footer_context_census_theme(app: Flask):
     assert result == expected
 
 
+def test_footer_context_business_theme(app: Flask):
+    with app.app_context():
+        expected = {
+            "lang": "en",
+            "crest": True,
+            "newTabWarning": "The following links open in a new tab",
+            "copyrightDeclaration": {
+                "copyright": "Crown copyright and database rights 2020 OS 100019153.",
+                "text": "Use of address data is subject to the terms and conditions.",
+            },
+            "rows": [
+                {
+                    "itemsList": [
+                        {
+                            "text": "What we do",
+                            "url": "#",
+                            "target": "_blank",
+                        },
+                        {
+                            "text": "Contact us",
+                            "url": "https://surveys.ons.gov.uk/contact-us/",
+                            "target": "_blank",
+                        },
+                        {
+                            "text": "Accessibility",
+                            "url": "#",
+                            "target": "_blank",
+                        },
+                    ]
+                }
+            ],
+            "legal": [
+                {
+                    "itemsList": [
+                        {
+                            "text": "Cookies",
+                            "url": "https://surveys.ons.gov.uk/cookies/",
+                            "target": "_blank",
+                        },
+                        {
+                            "text": "Privacy and data protection",
+                            "url": "https://surveys.ons.gov.uk/privacy-and-data-protection/",
+                            "target": "_blank",
+                        },
+                    ]
+                }
+            ],
+        }
+
+        survey_config = BusinessSurveyConfig()
+
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["footer"]
+
+    assert result == expected
+
+
 def test_footer_warning_in_context_census_theme(app: Flask):
     with app.app_context():
         expected = "Make sure you <a href='/sign-out'>leave this page</a> or close your browser if using a shared device"
@@ -254,43 +315,11 @@ def test_get_page_header_context_census_nisra(app: Flask):
     [
         (
             SurveyConfig(),
-            {
-                "url": "https://surveys.ons.gov.uk/contact-us/",
-                "text": "Contact us",
-                "target": "_blank",
-            },
+            "https://surveys.ons.gov.uk/contact-us/",
         ),
         (
             BusinessSurveyConfig(),
-            {
-                "url": "https://surveys.ons.gov.uk/contact-us/",
-                "text": "Contact us",
-                "target": "_blank",
-            },
-        ),
-        (
-            CensusSurveyConfig(),
-            {
-                "url": "https://census.gov.uk/contact-us/",
-                "text": "Contact us",
-                "target": "_blank",
-            },
-        ),
-        (
-            WelshCensusSurveyConfig(),
-            {
-                "url": "https://cyfrifiad.gov.uk/contact-us/",
-                "text": "Contact us",
-                "target": "_blank",
-            },
-        ),
-        (
-            CensusNISRASurveyConfig(),
-            {
-                "url": "https://census.gov.uk/ni/contact-us/",
-                "text": "Contact us",
-                "target": "_blank",
-            },
+            "https://surveys.ons.gov.uk/contact-us/",
         ),
     ],
 )
@@ -304,6 +333,30 @@ def test_contact_us_url_context(
             include_csrf_token=True,
             survey_config=survey_config,
         ).context["contact_us_url"]
+
+    assert result == expected
+
+
+@pytest.mark.parametrize(
+    "survey_config,expected",
+    [
+        (SurveyConfig(), "https://surveys.ons.gov.uk/cookies/"),
+        (
+            BusinessSurveyConfig(),
+            "https://surveys.ons.gov.uk/cookies/",
+        ),
+    ],
+)
+def test_cookie_settings_url_context(
+    app: Flask, survey_config: SurveyConfig, expected: str
+):
+    with app.app_context():
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["cookie_settings_url"]
 
     assert result == expected
 
@@ -362,7 +415,6 @@ def test_get_survey_config(
 
 def test_context_set_from_app_config(app):
     with app.app_context():
-        current_app.config["COOKIE_SETTINGS_URL"] = "test-cookie-settings-url"
         current_app.config["CDN_URL"] = "test-cdn-url"
         current_app.config["CDN_ASSETS_PATH"] = "/test-assets-path"
         current_app.config["ADDRESS_LOOKUP_API_URL"] = "test-address-lookup-api-url"
@@ -379,7 +431,6 @@ def test_context_set_from_app_config(app):
             survey_config=survey_config,
         ).context
 
-    assert context["cookie_settings_url"] == "test-cookie-settings-url"
     assert context["cdn_url"] == "test-cdn-url/test-assets-path"
     assert context["address_lookup_api_url"] == "test-address-lookup-api-url"
     assert context["google_tag_manager_id"] == "test-google-tag-manager-id"
@@ -389,11 +440,11 @@ def test_context_set_from_app_config(app):
 @pytest.mark.parametrize(
     "theme,language,expected",
     [
-        ("default", "en", "main"),
-        ("business", "en", "main"),
-        ("health", "en", "main"),
-        ("social", "en", "main"),
-        ("northernireland", "en", "main"),
+        ("default", "en", None),
+        ("business", "en", None),
+        ("health", "en", None),
+        ("social", "en", None),
+        ("northernireland", "en", None),
         ("census", "en", "census"),
         ("census", "cy", "census"),
         ("census-nisra", "en", "census"),

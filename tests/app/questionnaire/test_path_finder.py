@@ -632,3 +632,89 @@ class TestPathFinder(AppContextTestCase):
             [progress_store.get_completed_block_ids(section_id="default-section")[0]],
         )
         self.assertEqual(len(path_finder.answer_store), 1)
+        self.assertFalse(
+            path_finder.answer_store.get_answer("confirm-zero-employees-answer")
+        )
+        self.assertEqual(
+            progress_store.get_section_status(section_id="default-section"),
+            CompletionStatus.IN_PROGRESS,
+        )
+
+    def test_new_remove_answer_and_block_if_routing_backwards(self):
+        schema = load_schema_from_name("test_new_confirmation_question")
+        section_id = schema.get_section_id_for_block_id("confirm-zero-employees-block")
+
+        # All blocks completed
+        progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "default-section",
+                    "list_item_id": None,
+                    "status": CompletionStatus.COMPLETED,
+                    "block_ids": [
+                        "route-backwards-block",
+                        "number-of-employees-total-block",
+                        "confirm-zero-employees-block",
+                    ],
+                }
+            ]
+        )
+
+        answer_store = AnswerStore()
+        route_backwards_answer = Answer(answer_id="route-backwards-answer", value="Yes")
+        number_of_employees_answer = Answer(
+            answer_id="number-of-employees-total", value=0
+        )
+        confirm_zero_answer = Answer(
+            answer_id="confirm-zero-employees-answer", value="No"
+        )
+        answer_store.add_or_update(route_backwards_answer)
+        answer_store.add_or_update(number_of_employees_answer)
+        answer_store.add_or_update(confirm_zero_answer)
+
+        path_finder = PathFinder(
+            schema,
+            answer_store,
+            self.list_store,
+            progress_store,
+            self.metadata,
+            self.response_metadata,
+        )
+
+        self.assertEqual(
+            len(
+                path_finder.progress_store.get_completed_block_ids(
+                    section_id="default-section"
+                )
+            ),
+            3,
+        )
+        self.assertEqual(len(path_finder.answer_store), 3)
+
+        routing_path = path_finder.routing_path(section_id=section_id)
+
+        expected_path = RoutingPath(
+            [
+                "route-backwards-block",
+                "number-of-employees-total-block",
+                "confirm-zero-employees-block",
+                "number-of-employees-total-block",
+            ],
+            section_id="default-section",
+        )
+        self.assertEqual(routing_path, expected_path)
+        self.assertEqual(
+            path_finder.progress_store.get_completed_block_ids(
+                section_id="default-section"
+            ),
+            progress_store.get_completed_block_ids(section_id="default-section"),
+        )
+
+        self.assertEqual(len(path_finder.answer_store), 2)
+        self.assertFalse(
+            path_finder.answer_store.get_answer("confirm-zero-employees-answer")
+        )
+        self.assertEqual(
+            path_finder.progress_store.get_section_status(section_id="default-section"),
+            CompletionStatus.IN_PROGRESS,
+        )

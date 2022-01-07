@@ -14,31 +14,25 @@ class BusinessSurveyConfig(
 
     account_service_surveys_path: str = "/surveys/todo"
     survey_title: str = "ONS Business Surveys"
+    footer_links: Iterable[MutableMapping] = field(default_factory=list)
+    footer_legal_links: Iterable[Mapping] = field(default_factory=list)
 
-    footer_links: Iterable[MutableMapping] = field(
-        default_factory=lambda: [
+    def __post_init__(self):
+        if not self.account_service_url:
+            self.account_service_url = f"{self.base_url}/sign-in/logout"
+
+        self.footer_links = [
             Link(lazy_gettext("What we do"), "#").__dict__,
-            Link(lazy_gettext("Contact us"), "#").__dict__,
+            Link(lazy_gettext("Contact us"), self.contact_us_url).__dict__,
             Link(
                 lazy_gettext("Accessibility"),
                 "#",
             ).__dict__,
-        ],
-        compare=False,
-        hash=False,
-    )
-
-    footer_legal_links: Iterable[Mapping] = field(
-        default_factory=lambda: [
-            Link(lazy_gettext("Cookies"), "#").__dict__,
+        ]
+        self.footer_legal_links = [
+            Link(lazy_gettext("Cookies"), self.cookie_settings_url).__dict__,
             Link(
                 lazy_gettext("Privacy and data protection"),
-                "#",
+                self.privacy_and_data_protection_url,
             ).__dict__,
-        ],
-        compare=False,
-    )
-
-    def __post_init__(self):
-        if not self.account_service_url:
-            self.account_service_url: str = f"{self.base_url}/sign-in/logout"
+        ]
