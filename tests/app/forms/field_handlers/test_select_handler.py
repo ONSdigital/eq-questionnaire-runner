@@ -1,7 +1,5 @@
 from wtforms import Form
 
-import pytest
-
 from app.forms import error_messages
 from app.forms.field_handlers import SelectHandler
 from app.forms.fields import SelectFieldWithDetailAnswer
