@@ -829,52 +829,6 @@ def labels_schema_with_placeholders():
                         "blocks": [
                             {
                                 "type": "Question",
-                                "id": "mandatory-radio-label-1",
-                                "question": {
-                                    "answers": [
-                                        {
-                                            "id": "mandatory-radio-label-answer-1",
-                                            "mandatory": True,
-                                            "options": [
-                                                {"label": "Head", "value": "Head"},
-                                                {
-                                                    "label": "Don‘t choose this one",
-                                                    "value": "Don‘t choose this one",
-                                                },
-                                            ],
-                                            "type": "Radio",
-                                        }
-                                    ],
-                                    "id": "mandatory-radio-label-question-1",
-                                    "title": "The option below must be selected for the placeholder label to be constructed properly",
-                                    "type": "General",
-                                },
-                            },
-                            {
-                                "type": "Question",
-                                "id": "mandatory-radio-label-2",
-                                "question": {
-                                    "answers": [
-                                        {
-                                            "id": "mandatory-radio-label-answer-2",
-                                            "mandatory": True,
-                                            "options": [
-                                                {"label": "label", "value": "label"},
-                                                {
-                                                    "label": "Don‘t choose this one",
-                                                    "value": "Don‘t choose this one",
-                                                },
-                                            ],
-                                            "type": "Radio",
-                                        }
-                                    ],
-                                    "id": "mandatory-radio-label-question-2",
-                                    "title": "The option below must be selected for the placeholder label to be constructed properly",
-                                    "type": "General",
-                                },
-                            },
-                            {
-                                "type": "Question",
                                 "id": "mandatory-checkbox",
                                 "question": {
                                     "answers": [
@@ -882,36 +836,7 @@ def labels_schema_with_placeholders():
                                             "id": "mandatory-checkbox-answer",
                                             "mandatory": True,
                                             "options": [
-                                                {
-                                                    "label": {
-                                                        "text": "{head}",
-                                                        "placeholders": [
-                                                            {
-                                                                "placeholder": "head",
-                                                                "transforms": [
-                                                                    {
-                                                                        "transform": "concatenate_list",
-                                                                        "arguments": {
-                                                                            "list_to_concatenate": [
-                                                                                {
-                                                                                    "source": "answers",
-                                                                                    "identifier": "mandatory-radio-label-answer-1",
-                                                                                },
-                                                                                {
-                                                                                    "source": "answers",
-                                                                                    "identifier": "mandatory-radio-label-answer-2",
-                                                                                },
-                                                                            ],
-                                                                            "delimiter": " ",
-                                                                        },
-                                                                    }
-                                                                ],
-                                                            }
-                                                        ],
-                                                    },
-                                                    "value": "{head}",
-                                                    "q_code": "0",
-                                                },
+                                                {"label": "Head", "value": "Head"},
                                                 {
                                                     "label": "Body",
                                                     "value": "Body",
@@ -997,6 +922,118 @@ def labels_schema_with_placeholders():
                                     }
                                 },
                             },
+                            {
+                                "type": "Question",
+                                "id": "mandatory-radio",
+                                "question": {
+                                    "type": "General",
+                                    "id": "mandatory-radio-question",
+                                    "title": "If you suffered any one injury from the options below, please select the most serious one.",
+                                    "answers": [
+                                        {
+                                            "type": "Radio",
+                                            "id": "mandatory-radio-answer",
+                                            "mandatory": True,
+                                            "options": [
+                                                {
+                                                    "label": {
+                                                        "text": "{body_part} (piped)",
+                                                        "placeholders": [
+                                                            {
+                                                                "placeholder": "body_part",
+                                                                "transforms": [
+                                                                    {
+                                                                        "transform": "first_non_empty_item",
+                                                                        "arguments": {
+                                                                            "items": [
+                                                                                {
+                                                                                    "source": "answers",
+                                                                                    "identifier": "mandatory-checkbox-answer",
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                    }
+                                                                ],
+                                                            }
+                                                        ],
+                                                    },
+                                                    "value": "{body_part}",
+                                                },
+                                                {"label": "Eyes", "value": "Eyes"},
+                                                {"label": "Ears", "value": "Ears"},
+                                                {"label": "Mouth", "value": "Mouth"},
+                                                {"label": "Nose", "value": "Nose"},
+                                            ],
+                                        }
+                                    ],
+                                },
+                                "skip_conditions": {
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "count": [
+                                                    {
+                                                        "identifier": "mandatory-checkbox-answer",
+                                                        "source": "answers",
+                                                    }
+                                                ]
+                                            },
+                                            1,
+                                        ]
+                                    }
+                                },
+                            },
+                            {
+                                "type": "Question",
+                                "id": "recovery-question-radio-block",
+                                "question": {
+                                    "id": "recovery-question-radio",
+                                    "title": {
+                                        "text": "How long did it take to recover from the injury to your <em>{body_part}</em>?",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "body_part",
+                                                "transforms": [
+                                                    {
+                                                        "transform": "option_label_from_value",
+                                                        "arguments": {
+                                                            "value": {
+                                                                "source": "answers",
+                                                                "identifier": "mandatory-radio-answer",
+                                                            },
+                                                            "answer_id": "mandatory-radio-answer",
+                                                        },
+                                                    }
+                                                ],
+                                            }
+                                        ],
+                                    },
+                                    "type": "General",
+                                    "answers": [
+                                        {
+                                            "id": "recovery-radio-answer",
+                                            "label": "Recovery time",
+                                            "mandatory": False,
+                                            "type": "Number",
+                                        }
+                                    ],
+                                },
+                                "skip_conditions": {
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "count": [
+                                                    {
+                                                        "identifier": "mandatory-checkbox-answer",
+                                                        "source": "answers",
+                                                    }
+                                                ]
+                                            },
+                                            1,
+                                        ]
+                                    }
+                                },
+                            },
                         ],
                         "id": "checkboxes",
                     }
@@ -1033,8 +1070,8 @@ def schema_placeholder_renderer(labels_schema_with_placeholders):
     schema = QuestionnaireSchema(labels_schema_with_placeholders)
     answer_store = AnswerStore(
         [
-            {"answer_id": "mandatory-radio-label-answer-1", "value": "Head"},
-            {"answer_id": "mandatory-radio-label-answer-2", "value": "label"},
+            {"answer_id": "mandatory-radio-answer", "value": "{body_parts}"},
+            {"answer_id": "mandatory-checkbox-answer", "value": ["Body"]},
         ]
     )
     renderer = PlaceholderRenderer(
@@ -1058,3 +1095,13 @@ def mock_renderer(mock_schema):
         response_metadata={},
         schema=mock_schema,
     )
+
+
+@pytest.fixture
+def transformer(mock_renderer, mock_schema):
+    def _transform(language="en"):
+        return PlaceholderTransforms(
+            language=language, schema=mock_schema, renderer=mock_renderer
+        )
+
+    return _transform
