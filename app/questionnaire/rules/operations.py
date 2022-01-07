@@ -230,17 +230,13 @@ class Operations:
         return results
 
     def evaluate_option_label_from_value(self, value: str, answer_id: str) -> str:
-        label: str = ""
         answers = self.schema.get_answers_by_answer_id(answer_id)
-        label_options: Union[str, dict] = next(
-            (
-                options["label"]
-                for answer in answers
-                for options in answer["options"]
-                if value == options["value"]
-            ),
-            "",
-        )
+        label_options: Union[str, dict] = [
+            options["label"]
+            for answer in answers
+            for options in answer["options"]
+            if value == options["value"]
+        ][0]
 
         if isinstance(label_options, str):
             label = label_options
