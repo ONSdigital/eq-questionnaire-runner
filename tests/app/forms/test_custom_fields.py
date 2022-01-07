@@ -15,18 +15,18 @@ class TestMaxTextAreaField(unittest.TestCase):
         self.mock_form = Mock()
 
     def test_text_area_a_wtforms_field(self):
-        text_area = MaxTextAreaField("LabelText", _form=self.mock_form, _name="aName")
+        text_area = MaxTextAreaField("LabelText", _form=self.mock_form, name="aName")
         self.assertIsInstance(text_area, Field)
 
     def test_text_area_supports_maxlength_property(self):
         text_area = MaxTextAreaField(
-            "TestLabel", maxlength=20, _form=self.mock_form, _name="aName"
+            "TestLabel", maxlength=20, _form=self.mock_form, name="aName"
         )
         self.assertIsInstance(text_area, Field)
         self.assertEqual(text_area.maxlength, 20)
 
     def test_integer_field(self):
-        integer_field = IntegerFieldWithSeparator(_form=self.mock_form, _name="aName")
+        integer_field = IntegerFieldWithSeparator(_form=self.mock_form, name="aName")
         self.assertIsInstance(integer_field, Field)
 
         try:
@@ -35,7 +35,7 @@ class TestMaxTextAreaField(unittest.TestCase):
             self.fail("Exceptions should not thrown by CustomIntegerField")
 
     def test_decimal_field(self):
-        decimal_field = DecimalFieldWithSeparator(_form=self.mock_form, _name="aName")
+        decimal_field = DecimalFieldWithSeparator(_form=self.mock_form, name="aName")
         self.assertIsInstance(decimal_field, Field)
 
         try:

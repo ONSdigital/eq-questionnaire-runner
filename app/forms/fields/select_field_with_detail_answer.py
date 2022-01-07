@@ -1,4 +1,5 @@
 from wtforms import SelectField
+from wtforms.validators import ValidationError
 
 
 class SelectFieldWithDetailAnswer(SelectField):
@@ -12,7 +13,7 @@ class SelectFieldWithDetailAnswer(SelectField):
 
     def __iter__(self):
         opts = dict(
-            widget=self.option_widget, _name=self.name, _form=None, _meta=self.meta
+            widget=self.option_widget, name=self.name, _form=None, _meta=self.meta
         )
         for i, (value, label, checked, detail_answer_id) in enumerate(
             self.iter_choices()
@@ -27,9 +28,9 @@ class SelectFieldWithDetailAnswer(SelectField):
         for value, label, detail_answer_id in self.choices:
             yield value, label, self.coerce(value) == self.data, detail_answer_id
 
-    def pre_validate(self, form):
-        for value, _, _ in self.choices:
-            if value == self.data:
+    def pre_validate(self, _):
+        for _, _, match, _ in self.iter_choices():
+            if match:
                 break
         else:
-            raise ValueError(self.gettext("Not a valid choice"))
+            raise ValidationError(self.gettext("Not a valid choice."))

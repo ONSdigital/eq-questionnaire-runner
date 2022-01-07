@@ -99,7 +99,7 @@ def test_clear():
 
     store.clear()
 
-    assert store.serialize() == []
+    assert not store.serialize()
     assert store.is_dirty
 
 
