@@ -68,7 +68,7 @@ class TestQuestionnaireForm(
             )
 
             expected_form_data = {
-                "csrf_token": "",
+                "csrf_token": None,
                 "date-range-from-answer": "2016-03-01",
                 "date-range-to-answer": "2016-03-31",
             }
@@ -102,7 +102,7 @@ class TestQuestionnaireForm(
             )
 
             expected_form_data = {
-                "csrf_token": "",
+                "csrf_token": None,
                 "date-range-from-answer": "2016-12-25",
                 "date-range-to-answer": "2016-12-25",
             }
@@ -141,7 +141,7 @@ class TestQuestionnaireForm(
             )
 
             expected_form_data = {
-                "csrf_token": "",
+                "csrf_token": None,
                 "date-range-from-answer": "2016-12-25",
                 "date-range-to-answer": "2016-12-24",
             }
@@ -182,7 +182,7 @@ class TestQuestionnaireForm(
             )
 
             expected_form_data = {
-                "csrf_token": "",
+                "csrf_token": None,
                 "date-range-from": "2016-12-25",
                 "date-range-to": "2017-12-24",
             }
@@ -223,7 +223,7 @@ class TestQuestionnaireForm(
             )
 
             expected_form_data = {
-                "csrf_token": "",
+                "csrf_token": None,
                 "date-range-from": "2016-12-25",
                 "date-range-to": "2016-12-26",
             }
@@ -263,7 +263,7 @@ class TestQuestionnaireForm(
             )
 
             expected_form_data = {
-                "csrf_token": "",
+                "csrf_token": None,
                 "date-range-from": "2016-12-25",
                 "date-range-to": "2017-01-26",
             }
@@ -305,7 +305,7 @@ class TestQuestionnaireForm(
             response_metadata = {}
 
             expected_form_data = {
-                "csrf_token": "",
+                "csrf_token": None,
                 "date-range-from": "2017-01-01",
                 "date-range-to": "2017-03-14",
             }
@@ -356,7 +356,7 @@ class TestQuestionnaireForm(
             }
 
             expected_form_data = {
-                "csrf_token": "",
+                "csrf_token": None,
                 "date-range-from": "2017-01-01",
                 "date-range-to": "2017-01-10",
             }
@@ -402,7 +402,7 @@ class TestQuestionnaireForm(
             response_metadata = {}
 
             expected_form_data = {
-                "csrf_token": "",
+                "csrf_token": None,
                 "date-range-from": "2017-01-01",
                 "date-range-to": "2017-02-21",
             }
@@ -446,7 +446,7 @@ class TestQuestionnaireForm(
             response_metadata = {}
 
             expected_form_data = {
-                "csrf_token": "",
+                "csrf_token": None,
                 "date-range-from": "2016-11",
                 "date-range-to": "2017-06",
             }
@@ -495,7 +495,7 @@ class TestQuestionnaireForm(
             }
 
             expected_form_data = {
-                "csrf_token": "",
+                "csrf_token": None,
                 "date-range-from": "2017-01",
                 "date-range-to": "2017-02",
             }
@@ -539,7 +539,7 @@ class TestQuestionnaireForm(
             response_metadata = {}
 
             expected_form_data = {
-                "csrf_token": "",
+                "csrf_token": None,
                 "date-range-from": "2017-01",
                 "date-range-to": "2017-05",
             }
@@ -576,7 +576,7 @@ class TestQuestionnaireForm(
             }
 
             expected_form_data = {
-                "csrf_token": "",
+                "csrf_token": None,
                 "date-range-from": "2015",
                 "date-range-to": "2021",
             }
@@ -618,7 +618,7 @@ class TestQuestionnaireForm(
             }
 
             expected_form_data = {
-                "csrf_token": "",
+                "csrf_token": None,
                 "date-range-from": "2016",
                 "date-range-to": "2017",
             }
@@ -655,7 +655,7 @@ class TestQuestionnaireForm(
             }
 
             expected_form_data = {
-                "csrf_token": "",
+                "csrf_token": None,
                 "date-range-from": "2016",
                 "date-range-to": "2020",
             }
@@ -1053,7 +1053,7 @@ class TestQuestionnaireForm(
             )
 
             expected_form_data = {
-                "csrf_token": "",
+                "csrf_token": None,
                 "breakdown-1": None,
                 "breakdown-2": Decimal("5"),
                 "breakdown-3": Decimal("4"),
@@ -1099,7 +1099,7 @@ class TestQuestionnaireForm(
             )
 
             expected_form_data = {
-                "csrf_token": "",
+                "csrf_token": None,
                 "breakdown-1": None,
                 "breakdown-2": Decimal("5"),
                 "breakdown-3": Decimal("4"),
@@ -1140,7 +1140,7 @@ class TestQuestionnaireForm(
             )
 
             expected_form_data = {
-                "csrf_token": "",
+                "csrf_token": None,
                 "breakdown-1": None,
                 "breakdown-2": None,
                 "breakdown-3": None,
@@ -1249,9 +1249,9 @@ class TestQuestionnaireForm(
 
             question_schema = schema.get_block("single-title-block").get("question")
 
-            form_data = MultiDict({"feeling-answer": "good"})
+            form_data = MultiDict({"feeling-answer": "Good"})
 
-            expected_form_data = {"csrf_token": "", "feeling-answer": "good"}
+            expected_form_data = {"csrf_token": None, "feeling-answer": "Good"}
 
             with patch(
                 "app.questionnaire.path_finder.evaluate_goto", return_value=False
