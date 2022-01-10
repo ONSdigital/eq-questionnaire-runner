@@ -22,11 +22,11 @@ class BusinessSurveyConfig(
             self.account_service_url = f"{self.base_url}/sign-in/logout"
 
         self.footer_links = [
-            Link(lazy_gettext("What we do"), "#").__dict__,
+            Link(lazy_gettext("What we do"), self.what_we_do_url).__dict__,
             Link(lazy_gettext("Contact us"), self.contact_us_url).__dict__,
             Link(
                 lazy_gettext("Accessibility"),
-                "#",
+                self.accessibility_url,
             ).__dict__,
         ]
         self.footer_legal_links = [
