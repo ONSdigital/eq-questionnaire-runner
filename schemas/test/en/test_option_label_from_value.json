@@ -168,7 +168,7 @@
                                                         }
                                                     ]
                                                 },
-                                                "value": "{body_part}"
+                                                "value": "{body_part} (piped)"
                                             },
                                             {
                                                 "label": "Eyes",
