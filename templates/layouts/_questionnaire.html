@@ -1,12 +1,15 @@
 {% extends 'layouts/_base.html' %}
 {% from "components/button/_macro.njk" import onsButton %}
 {% from "components/cookies-banner/_macro.njk" import onsCookiesBanner %}
+{% from "components/timeout-modal/_macro.njk" import onsTimeoutModal %}
 
 {% set block = content.block %}
 {% set form = content.form %}
 {% set last_viewed_question_guidance = content.last_viewed_question_guidance %}
 
 {% block main %}
+
+
   <button type="submit" class="ons-u-d-no" hidden></button>
 
   {% block form_errors %}{% endblock %}
@@ -38,5 +41,23 @@
       <p class="ons-u-mt-xl"><a href="{{ content.return_to_hub_url }}" data-ga-action="Choose another section click">{{ _("Choose another section and return to this later") }}</a></p>
     {% endif %}
   {% endblock %}
+
+  {{
+    onsTimeoutModal({
+      "showModalTimeInSeconds": 60,
+      "serverSessionExpiryEndpoint": "/session-expiry",
+      "sessionExpiresAt": "",
+      "redirectUrl": "/signed-out",
+      "title": _("You will be signed out soon"),
+      "textFirstLine": _("It appears you have been inactive for a while."),
+      "countdownText": _("To protect your information, your progress will be saved and you will be signed out in"),
+      "redirectingText": _("You are being signed out"),
+      "btnText": _("Continue survey"),
+      "minutesTextSingular": _("minute"),
+      "minutesTextPlural": _("minutes"),
+      "secondsTextSingular": _("second"),
+      "secondsTextPlural": _("seconds")
+    })
+  }}
 
 {% endblock %}

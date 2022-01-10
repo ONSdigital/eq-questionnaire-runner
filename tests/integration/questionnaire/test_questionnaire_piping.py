@@ -62,7 +62,7 @@ class TestQuestionnairePiping(IntegrationTestCase):
         # Then
         self.get(self.last_url)
         self.assertStatusOK()
-        self.assertInSelectorCSS("Joe Bloggs\\John Doe", "h1")
+        self.assertInSelectorCSS("Joe Bloggs\\John Doe", "em")
 
     def test_answer_piped_into_option(self):
         # Given

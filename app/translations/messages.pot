@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-06 16:29+0000\n"
+"POT-Creation-Date: 2022-01-10 17:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -830,7 +830,7 @@ msgstr ""
 msgid "If you can’t answer questions for this person"
 msgstr ""
 
-#: templates/interstitial.html:32 templates/layouts/_questionnaire.html:27
+#: templates/interstitial.html:32 templates/layouts/_questionnaire.html:30
 msgid "Save and continue"
 msgstr ""
 
@@ -1122,8 +1122,46 @@ msgstr ""
 msgid "Skip to main content"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:38
+#: templates/layouts/_questionnaire.html:41
 msgid "Choose another section and return to this later"
+msgstr ""
+
+#: templates/layouts/_questionnaire.html:51
+msgid "You will be signed out soon"
+msgstr ""
+
+#: templates/layouts/_questionnaire.html:52
+msgid "It appears you have been inactive for a while."
+msgstr ""
+
+#: templates/layouts/_questionnaire.html:53
+msgid ""
+"To protect your information, your progress will be saved and you will be "
+"signed out in"
+msgstr ""
+
+#: templates/layouts/_questionnaire.html:54
+msgid "You are being signed out"
+msgstr ""
+
+#: templates/layouts/_questionnaire.html:55
+msgid "Continue survey"
+msgstr ""
+
+#: templates/layouts/_questionnaire.html:56
+msgid "minute"
+msgstr ""
+
+#: templates/layouts/_questionnaire.html:57
+msgid "minutes"
+msgstr ""
+
+#: templates/layouts/_questionnaire.html:58
+msgid "second"
+msgstr ""
+
+#: templates/layouts/_questionnaire.html:59
+msgid "seconds"
 msgstr ""
 
 #: templates/layouts/configs/_save-sign-out-button.html:5

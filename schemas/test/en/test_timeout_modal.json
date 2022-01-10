@@ -4,10 +4,10 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "session_timeout_in_seconds": 120,
-    "title": "Timeout test",
+    "session_timeout_in_seconds": 60,
+    "title": "Timeout modal test",
     "theme": "default",
-    "description": "A questionnaire to test the time out functionality",
+    "description": "A questionnaire to test the timeout modal functionality",
     "metadata": [
         {
             "name": "user_id",
@@ -36,25 +36,19 @@
             "groups": [
                 {
                     "id": "timeout-group",
-                    "title": "Timeout",
+                    "title": "Timeout modal",
                     "blocks": [
                         {
-                            "type": "Question",
-                            "id": "timeout-block",
-                            "question": {
-                                "answers": [
+                            "id": "timeout-modal-interstitial",
+                            "content": {
+                                "title": "Timeout modal interstitial",
+                                "contents": [
                                     {
-                                        "id": "timeout-answer",
-                                        "label": "Does the timeout appear?",
-                                        "mandatory": false,
-                                        "q_code": "0",
-                                        "type": "TextField"
+                                        "description": "This modal will always show, even after “Continue survey” press, as the session timeout and “showModalTimeInSeconds” in timeout modal template are both set to 60"
                                     }
-                                ],
-                                "id": "timeout-question",
-                                "title": "Timeout title",
-                                "type": "General"
-                            }
+                                ]
+                            },
+                            "type": "Interstitial"
                         }
                     ]
                 }
