@@ -131,7 +131,8 @@ class Router:
             return self._get_next_location_url_for_complete_section(location)
 
         # Due to backwards routing, you can be on the last block without the section being complete
-        if routing_path[-1] == location.block_id:
+        is_last_block_in_section = routing_path[-1] == location.block_id
+        if is_last_block_in_section:
             return self._get_first_incomplete_location_in_section(routing_path).url()
 
         if return_to:
@@ -266,7 +267,6 @@ class Router:
             if not self._is_block_complete(
                 block_id, routing_path.section_id, routing_path.list_item_id
             ):
-
                 return Location(
                     block_id=block_id,
                     section_id=routing_path.section_id,
@@ -349,7 +349,6 @@ class Router:
         location: Location, routing_path: RoutingPath, **kwargs: str
     ) -> str:
         next_block_id = routing_path[routing_path.index(location.block_id) + 1]
-
         return url_for(
             "questionnaire.block",
             block_id=next_block_id,

@@ -388,7 +388,7 @@ class TestRouterNextLocation(RouterTestCase):
 
         self.assertIn("questionnaire/block-2/", next_location)
 
-    def test_return_to_section_summary_section_completed(self):
+    def test_return_to_section_summary_section_is_complete(self):
         self.schema = load_schema_from_name("test_section_summary")
         self.progress_store = ProgressStore(
             [
@@ -420,7 +420,7 @@ class TestRouterNextLocation(RouterTestCase):
             "/questionnaire/sections/property-details-section/", next_location
         )
 
-    def test_return_to_section_summary_section_in_progress(self):
+    def test_return_to_section_summary_section_is_in_progress(self):
         self.schema = load_schema_from_name("test_section_summary")
         self.answer_store = AnswerStore(
             [
@@ -438,7 +438,6 @@ class TestRouterNextLocation(RouterTestCase):
                 }
             ]
         )
-
         current_location = Location(
             section_id="property-details-section", block_id="insurance-address"
         )
@@ -526,7 +525,7 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
 
         self.assertEqual(url_for("questionnaire.submit_questionnaire"), next_location)
 
-    def test_return_to_final_summary_questionnaire_and_section_complete(self):
+    def test_return_to_final_summary_questionnaire_and_section_is_complete(self):
         self.schema = load_schema_from_name(
             "test_new_routing_to_questionnaire_end_single_section"
         )
@@ -540,7 +539,6 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
                 }
             ]
         )
-
         current_location = Location(section_id="test-section", block_id="test-forced")
         routing_path = RoutingPath(["test-forced"], section_id="test-section")
         next_location = self.router.get_next_location_url(
@@ -549,7 +547,7 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
 
         self.assertEqual(url_for("questionnaire.submit_questionnaire"), next_location)
 
-    def test_return_to_final_summary_section_in_progress(self):
+    def test_return_to_final_summary_section_is_in_progress(self):
         self.schema = load_schema_from_name("test_submit_with_summary")
         self.progress_store = ProgressStore(
             [
@@ -561,7 +559,6 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
                 }
             ]
         )
-
         current_location = Location(
             section_id="default-section", block_id="dessert-confirmation"
         )
@@ -653,7 +650,7 @@ class TestRouterPreviousLocation(RouterTestCase):
             "/questionnaire/sections/property-details-section/", previous_location_url
         )
 
-    def test_return_to_final_summary_section_completed(self):
+    def test_return_to_final_summary(self):
         self.schema = load_schema_from_name("test_submit_with_summary")
         self.progress_store = ProgressStore(
             [

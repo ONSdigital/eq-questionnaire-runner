@@ -10,6 +10,7 @@ import ProxyPage from "../../../generated_pages/repeating_sections_with_hub_and_
 import SecondListCollectorAddPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/another-list-collector-block-add.page";
 import SecondListCollectorInterstitialPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/next-interstitial.page";
 import SecondListCollectorPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/another-list-collector-block.page";
+import SectionSummaryPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/section-summary.page.js";
 import SexPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/sex.page";
 import VisitorsDateOfBirthPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-date-of-birth.page";
 import VisitorsListCollectorAddPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-block-add.page";
@@ -155,27 +156,19 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
 
       // Start section for first visitor
       $(HubPage.summaryRowLink("section")).click();
-      $(PrimaryPersonPage.submit()).click();
-      $(PrimaryPersonAddPage.submit()).click();
-      $(FirstListCollectorPage.submit()).click();
-      $(SecondListCollectorInterstitialPage.submit()).click();
-      $(SecondListCollectorPage.submit()).click();
 
       // Add first visitor
-      $(VisitorsListCollectorPage.yes()).click();
-      $(VisitorsListCollectorPage.submit()).click();
+      $(SectionSummaryPage.visitorListAddLink()).click();
       $(VisitorsListCollectorAddPage.firstName()).setValue("Joe");
       $(VisitorsListCollectorAddPage.lastName()).setValue("Public");
       $(VisitorsListCollectorAddPage.submit()).click();
 
       // Add second visitor
-      $(VisitorsListCollectorPage.yes()).click();
-      $(VisitorsListCollectorPage.submit()).click();
+      $(SectionSummaryPage.visitorListAddLink()).click();
       $(VisitorsListCollectorAddPage.firstName()).setValue("Yvonne");
       $(VisitorsListCollectorAddPage.lastName()).setValue("Yoe");
       $(VisitorsListCollectorAddPage.submit()).click();
-      $(VisitorsListCollectorPage.no()).click();
-      $(VisitorsListCollectorPage.submit()).click();
+      $(SectionSummaryPage.submit()).click();
 
       expect($(HubPage.summaryRowState("visitors-section-1")).getText()).to.equal("Not started");
       expect($(HubPage.summaryRowTitle("visitors-section-1")).getText()).to.equal("Joe Public");
@@ -253,26 +246,17 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       expect($(HubPage.heading()).getText()).to.equal("Submit survey");
     });
 
-    it("When the user adds a new member to the household, Then the Hub should not be in the completed state", () => {
+    it("When the user adds a new visitor, Then the Hub should not be in the completed state", () => {
       $(HubPage.summaryRowLink("section")).click();
-      $(PrimaryPersonPage.submit()).click();
-      $(PrimaryPersonAddPage.submit()).click();
-      $(FirstListCollectorPage.submit()).click();
-      $(SecondListCollectorInterstitialPage.submit()).click();
-      $(SecondListCollectorPage.submit()).click();
 
-      // Add another householder
-      $(VisitorsListCollectorPage.yes()).click();
-      $(VisitorsListCollectorPage.submit()).click();
-
+      // Add another visitor
+      $(SectionSummaryPage.visitorListAddLink()).click();
       $(VisitorsListCollectorAddPage.firstName()).setValue("Anna");
       $(VisitorsListCollectorAddPage.lastName()).setValue("Doe");
+      $(VisitorsListCollectorAddPage.submit()).click();
+      $(SectionSummaryPage.submit()).click();
 
-      $(SecondListCollectorAddPage.submit()).click();
-      $(VisitorsListCollectorPage.no()).click();
-      $(VisitorsListCollectorPage.submit()).click();
-
-      // New householder added to hub
+      // New visitor added to hub
       expect($(HubPage.summaryRowState("visitors-section-3")).getText()).to.equal("Not started");
       expect($(HubPage.summaryRowState("visitors-section-3")).isExisting()).to.be.true;
 
@@ -283,21 +267,18 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       expect($(HubPage.heading()).getText()).to.equal("Choose another section to complete");
     });
 
-    it("When the user removes a member from the household, Then their section is not longer displayed on he Hub", () => {
+    it("When the user removes a visitor, Then their section is not longer displayed on he Hub", () => {
       // Ensure final householder exists
       expect($(HubPage.summaryRowState("visitors-section-3")).isExisting()).to.be.true;
 
       $(HubPage.summaryRowLink("section")).click();
-      $(PrimaryPersonPage.submit()).click();
-      $(PrimaryPersonAddPage.submit()).click();
-      $(FirstListCollectorPage.submit()).click();
-      $(SecondListCollectorInterstitialPage.submit()).click();
-      $(SecondListCollectorPage.submit()).click();
 
-      // Remove final householder
-      $(VisitorsListCollectorPage.listRemoveLink(3)).click();
+      // Remove final visitor
+      $(SectionSummaryPage.visitorListRemoveLink(3)).click();
+
       $(VisitorsListCollectorRemovePage.yes()).click();
       $(VisitorsListCollectorPage.submit()).click();
+      $(SectionSummaryPage.submit()).click();
 
       // Ensure final householder no longer exists
       expect($(HubPage.summaryRowState("visitors-section-3")).isExisting()).to.be.false;
