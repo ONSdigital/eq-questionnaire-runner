@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-04 16:16+0000\n"
+"POT-Creation-Date: 2022-01-06 16:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: app/forms/validators.py:373 app/jinja_filters.py:94
+#: app/forms/validators.py:372 app/jinja_filters.py:94
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:377 app/jinja_filters.py:102
+#: app/forms/validators.py:376 app/jinja_filters.py:102
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
@@ -192,15 +192,15 @@ msgstr ""
 msgid "Remove an answer"
 msgstr ""
 
-#: app/forms/validators.py:384
+#: app/forms/validators.py:383
 #, python-format
 msgid "%(num)s day"
 msgid_plural "%(num)s days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/fields/select_field_with_detail_answer.py:35
-msgid "Not a valid choice"
+#: app/forms/fields/select_field_with_detail_answer.py:36
+msgid "Not a valid choice."
 msgstr ""
 
 #: app/helpers/template_helpers.py:103
