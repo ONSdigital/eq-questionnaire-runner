@@ -1,6 +1,7 @@
 {% extends "layout/_template.njk" %}
 {% from "components/cookies-banner/_macro.njk" import onsCookiesBanner %}
 {% from "components/skip-to-content/_macro.njk" import onsSkipToContent %}
+{% from "components/timeout-modal/_macro.njk" import onsTimeoutModal %}
 
 {% set form = {
   "attributes": {
@@ -118,6 +119,25 @@
       </iframe>
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
+  {% endif %}
+  {% if session_expires_at %}
+    {{
+      onsTimeoutModal({
+        "showModalTimeInSeconds": 60,
+        "serverSessionExpiryEndpoint": url_for('session.session_expiry'),
+        "sessionExpiresAt": session_expires_at,
+        "redirectUrl": url_for('session.get_signed_out'),
+        "title": _("You will be signed out soon"),
+        "textFirstLine": _("It appears you have been inactive for a while."),
+        "countdownText": _("To protect your information, your progress will be saved and you will be signed out in"),
+        "redirectingText": _("You are being signed out"),
+        "btnText": _("Continue survey"),
+        "minutesTextSingular": _("minute"),
+        "minutesTextPlural": _("minutes"),
+        "secondsTextSingular": _("second"),
+        "secondsTextPlural": _("seconds")
+      })
+    }}
   {% endif %}
 {% endblock %}
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-10 17:16+0000\n"
+"POT-Creation-Date: 2022-01-11 17:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -203,11 +203,11 @@ msgstr[1] ""
 msgid "Not a valid choice."
 msgstr ""
 
-#: app/helpers/template_helpers.py:103
+#: app/helpers/template_helpers.py:104
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:133
+#: app/helpers/template_helpers.py:134
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -830,7 +830,7 @@ msgstr ""
 msgid "If you can’t answer questions for this person"
 msgstr ""
 
-#: templates/interstitial.html:32 templates/layouts/_questionnaire.html:30
+#: templates/interstitial.html:32 templates/layouts/_questionnaire.html:29
 msgid "Save and continue"
 msgstr ""
 
@@ -1082,86 +1082,86 @@ msgid ""
 "href='{contact_us_url}'>contact us</a>"
 msgstr ""
 
-#: templates/layouts/_base.html:19
+#: templates/layouts/_base.html:20
 msgid "Previous"
 msgstr ""
 
-#: templates/layouts/_base.html:69
+#: templates/layouts/_base.html:70
 msgid "Tell us whether you accept cookies"
 msgstr ""
 
-#: templates/layouts/_base.html:70
+#: templates/layouts/_base.html:71
 msgid ""
 "We use <a href='{cookie_settings_url}'>cookies to collect information</a>"
 " about how you use census.gov.uk. We use this information to make the "
 "website work as well as possible and improve our services."
 msgstr ""
 
-#: templates/layouts/_base.html:71
+#: templates/layouts/_base.html:72
 msgid ""
 "You’ve accepted all cookies. You can <a "
 "href='{cookie_settings_url}'>change your cookie preferences</a> at any "
 "time."
 msgstr ""
 
-#: templates/layouts/_base.html:72
+#: templates/layouts/_base.html:73
 msgid "Accept all cookies"
 msgstr ""
 
-#: templates/layouts/_base.html:73
+#: templates/layouts/_base.html:74
 msgid "Set cookie preferences"
 msgstr ""
 
-#: templates/layouts/_base.html:74
+#: templates/layouts/_base.html:75
 #: templates/partials/introduction/preview.html:30
 #: templates/partials/summary/collapsible-summary.html:14
 msgid "Hide"
 msgstr ""
 
-#: templates/layouts/_base.html:129
-msgid "Skip to main content"
-msgstr ""
-
-#: templates/layouts/_questionnaire.html:41
-msgid "Choose another section and return to this later"
-msgstr ""
-
-#: templates/layouts/_questionnaire.html:51
+#: templates/layouts/_base.html:130
 msgid "You will be signed out soon"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:52
+#: templates/layouts/_base.html:131
 msgid "It appears you have been inactive for a while."
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:53
+#: templates/layouts/_base.html:132
 msgid ""
 "To protect your information, your progress will be saved and you will be "
 "signed out in"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:54
+#: templates/layouts/_base.html:133
 msgid "You are being signed out"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:55
+#: templates/layouts/_base.html:134
 msgid "Continue survey"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:56
+#: templates/layouts/_base.html:135
 msgid "minute"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:57
+#: templates/layouts/_base.html:136
 msgid "minutes"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:58
+#: templates/layouts/_base.html:137
 msgid "second"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:59
+#: templates/layouts/_base.html:138
 msgid "seconds"
+msgstr ""
+
+#: templates/layouts/_base.html:149
+msgid "Skip to main content"
+msgstr ""
+
+#: templates/layouts/_questionnaire.html:40
+msgid "Choose another section and return to this later"
 msgstr ""
 
 #: templates/layouts/configs/_save-sign-out-button.html:5

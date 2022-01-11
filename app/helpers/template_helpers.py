@@ -8,6 +8,7 @@ from flask import session as cookie_session
 from flask import url_for
 from flask_babel import get_locale, lazy_gettext
 
+from app.globals import get_session_store
 from app.helpers.language_helper import get_languages_context
 from app.survey_config import (
     BusinessSurveyConfig,
@@ -178,9 +179,16 @@ def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     ).context
 
     template = f"{template.lower()}.html"
+
+    try:
+        session_expires_at = get_session_store().expiration_time.isoformat()  # type: ignore
+    except AttributeError:
+        session_expires_at = None
+
     return flask_render_template(
         template,
         csp_nonce=request.csp_nonce,  # type: ignore
+        session_expires_at=session_expires_at,
         **context,
         **kwargs,
     )

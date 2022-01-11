@@ -85,7 +85,6 @@ def login():
     cookie_session["theme"] = g.schema.json["theme"]
     cookie_session["survey_title"] = g.schema.json["title"]
     cookie_session["expires_in"] = get_session_timeout_in_seconds(g.schema)
-    cookie_session["expires_at"] = get_session_store().expiration_time
 
     if claims.get("account_service_url"):
         cookie_session["account_service_url"] = claims.get("account_service_url")
