@@ -102,7 +102,7 @@ def test_footer_context_business_theme(app: Flask):
                     "itemsList": [
                         {
                             "text": "What we do",
-                            "url": "#",
+                            "url": "https://www.ons.gov.uk/aboutus/whatwedo/",
                             "target": "_blank",
                         },
                         {
@@ -112,7 +112,7 @@ def test_footer_context_business_theme(app: Flask):
                         },
                         {
                             "text": "Accessibility",
-                            "url": "#",
+                            "url": "https://www.ons.gov.uk/help/accessibility/",
                             "target": "_blank",
                         },
                     ]

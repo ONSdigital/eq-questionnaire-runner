@@ -153,3 +153,5 @@ ACCOUNT_SERVICE_BASE_URL = os.getenv(
 PRINT_STYLE_SHEET_FILE_PATH = os.getenv(
     "PRINT_STYLE_SHEET_FILEPATH", "templates/assets/styles"
 )
+
+ONS_URL = os.getenv("ONS_URL", "https://www.ons.gov.uk")
