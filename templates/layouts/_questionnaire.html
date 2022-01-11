@@ -45,9 +45,9 @@
   {{
     onsTimeoutModal({
       "showModalTimeInSeconds": 60,
-      "serverSessionExpiryEndpoint": "/session-expiry",
-      "sessionExpiresAt": "",
-      "redirectUrl": "/signed-out",
+      "serverSessionExpiryEndpoint": url_for('session.session_expiry'),
+      "sessionExpiresAt": session.expires_at,
+      "redirectUrl": url_for('session.get_signed_out'),
       "title": _("You will be signed out soon"),
       "textFirstLine": _("It appears you have been inactive for a while."),
       "countdownText": _("To protect your information, your progress will be saved and you will be signed out in"),
