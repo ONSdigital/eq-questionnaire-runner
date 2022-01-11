@@ -70,6 +70,7 @@ def _extend_session_expiry(session_store: SessionStore) -> None:
             > 60
         ):
             session_store.expiration_time = new_expiration_time
+            cookie_session["expires_at"] = session_store.expiration_time
             session_store.save()
             logger.debug("session expiry extended")
 
