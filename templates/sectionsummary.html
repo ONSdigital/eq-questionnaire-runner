@@ -41,14 +41,14 @@
 {% endblock %}
 
 {% block submit_button %}
-    {{
-        onsButton({
-            "text": continue_button_text | default(_("Continue")),
-            "submitType": 'timer',
-            "classes": "ons-u-mt-xl",
-            "attributes": {
-                "data-qa": "btn-submit"
-            }
-        })
-    }}
+  {{
+    onsButton({
+      "text": continue_button_text | default(_("Continue")),
+      "submitType": 'timer',
+      "classes": "ons-u-mt-xl",
+      "attributes": {
+          "data-qa": "btn-submit"
+      }
+    })
+  }}
 {% endblock %}
