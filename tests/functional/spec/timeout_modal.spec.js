@@ -1,11 +1,55 @@
+import TimeoutInterstitialPage from "../generated_pages/timeout_modal/timeout-modal-interstitial.page";
+import TimeoutSubmitPage from "../generated_pages/timeout_modal/submit.page";
+import { TimeoutModalPage } from "../base_pages/timeout-modal.page.js";
+
 describe("Timeout Modal", () => {
-  beforeEach("Open Survey", () => {
+  before("Open Survey", () => {
     browser.openQuestionnaire("test_timeout_modal.json");
   });
 
-  it("Given I am completing the survey, when session time out is set to same amount as the showModalTimeInSeconds of timeout modal I will be able to see timeout modal with the option to extend the session instantly", () => {
-    expect($("body").getHTML()).to.include(
-      '<p class="ons-js-timeout-timer" aria-hidden="true" aria-relevant="additions">To protect your information, your progress will be saved and you will be signed out in <span class="ons-u-fw-b">1 minute</span>'
-    );
+  it("Given I am completing the survey, when the session timeout is set to 2 minutes I will be able to see the timeout modal with the option to extend the session after 60 seconds", () => {
+    checkTimeoutModal();
   });
 });
+
+describe("Timeout Modal", () => {
+  before("Open Survey", () => {
+    browser.openQuestionnaire("test_timeout_modal.json");
+  });
+
+  it("Given I am completing the survey, when I click on “Continue survey” button of the timeout modal I will be able to extend the session", () => {
+    checkTimeoutModal();
+    $(TimeoutModalPage.submit()).click();
+    expect($(TimeoutModalPage.timer()).getText()).to.equal("");
+  });
+});
+
+describe("Timeout Modal", () => {
+  before("Open Survey", () => {
+    browser.openQuestionnaire("test_timeout_modal.json");
+  });
+
+  it("Given I am completing the survey, when I wait for the timeout modal to appear and then focus back on the window I will extend the session", () => {
+    checkTimeoutModal();
+    browser.newWindow("");
+    browser.switchWindow("http://localhost:5000/questionnaire/timeout-modal-interstitial/");
+    expect($(TimeoutModalPage.timer()).getText()).to.equal("");
+  });
+});
+
+describe("Timeout Modal", () => {
+  before("Open Survey", () => {
+    browser.openQuestionnaire("test_timeout_modal.json");
+  });
+
+  it("Given I am completing the survey, when I get to post submission page I should be able see the timeout modal 60 seconds before session expiry", () => {
+    $(TimeoutInterstitialPage.submit()).click();
+    $(TimeoutSubmitPage.submit()).click();
+    checkTimeoutModal();
+  });
+});
+
+function checkTimeoutModal() {
+  $(TimeoutModalPage.timer()).waitForDisplayed({ timeout: 70000 });
+  expect($(TimeoutModalPage.timer()).getText()).to.equal("To protect your information, your progress will be saved and you will be signed out in 1 minute.");
+}
