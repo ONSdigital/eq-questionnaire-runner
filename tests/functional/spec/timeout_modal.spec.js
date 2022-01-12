@@ -29,7 +29,7 @@ describe("Timeout Modal", () => {
     browser.openQuestionnaire("test_timeout_modal.json");
   });
 
-  it("Given I am completing the survey, when I wait for the timeout modal to appear and then focus on the modal window I will extend the session", () => {
+  it("Given I am completing the survey, when I open a new window and then focus on the modal window I will extend the session", () => {
     checkTimeoutModal();
     browser.newWindow("");
     browser.switchWindow("http://localhost:5000/questionnaire/timeout-modal-interstitial/");
