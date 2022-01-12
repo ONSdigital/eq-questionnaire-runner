@@ -29,11 +29,11 @@ describe("Timeout Modal", () => {
     browser.openQuestionnaire("test_timeout_modal.json");
   });
 
-  it("Given I am completing the survey, when I wait for the timeout modal to appear and then focus back on the window I will extend the session", () => {
+  it("Given I am completing the survey, when I wait for the timeout modal to appear and then focus on the modal window I will extend the session", () => {
     checkTimeoutModal();
     browser.newWindow("");
     browser.switchWindow("http://localhost:5000/questionnaire/timeout-modal-interstitial/");
-    expect($(TimeoutModalPage.timer()).getText()).to.equal("");
+    expect($(TimeoutModalPage.timer()).getText()).to.equal("To protect your information, your progress will be saved and you will be signed out in 1 minute.");
   });
 });
 
