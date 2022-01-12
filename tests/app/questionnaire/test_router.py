@@ -399,7 +399,7 @@ class TestRouterNextLocation(RouterTestCase):
                     "block_ids": [
                         "insurance-type",
                         "insurance-address",
-                        "address-duration",
+                        "listed",
                     ],
                 }
             ]
@@ -409,7 +409,7 @@ class TestRouterNextLocation(RouterTestCase):
             section_id="property-details-section", block_id="insurance-type"
         )
         routing_path = RoutingPath(
-            ["insurance-type", "insurance-address"],
+            ["insurance-type", "insurance-address", "listed"],
             section_id="property-details-section",
         )
         next_location = self.router.get_next_location_url(
@@ -426,6 +426,7 @@ class TestRouterNextLocation(RouterTestCase):
             [
                 {"answer_id": "insurance-type-answer", "value": "Both"},
                 {"answer_id": "insurance-address-answer", "value": "Address"},
+                {"answer_id": "listed-answer", "value": "No"},
             ]
         )
         self.progress_store = ProgressStore(
@@ -434,7 +435,7 @@ class TestRouterNextLocation(RouterTestCase):
                     "section_id": "property-details-section",
                     "list_item_id": None,
                     "status": CompletionStatus.IN_PROGRESS,
-                    "block_ids": ["insurance-type", "insurance-address"],
+                    "block_ids": ["insurance-type", "insurance-address", "listed"],
                 }
             ]
         )
@@ -442,7 +443,7 @@ class TestRouterNextLocation(RouterTestCase):
             section_id="property-details-section", block_id="insurance-address"
         )
         routing_path = RoutingPath(
-            ["insurance-type", "insurance-address", "address-duration"],
+            ["insurance-type", "insurance-address", "address-duration", "listed"],
             section_id="property-details-section",
         )
         next_location = self.router.get_next_location_url(
@@ -623,7 +624,7 @@ class TestRouterPreviousLocation(RouterTestCase):
 
         self.assertEqual(expected_location_url, previous_location_url)
 
-    def test_return_to_section_summary(self):
+    def test_return_to_section_summary_section_is_complete(self):
         self.schema = load_schema_from_name("test_section_summary")
         self.progress_store = ProgressStore(
             [
@@ -631,7 +632,7 @@ class TestRouterPreviousLocation(RouterTestCase):
                     "section_id": "property-details-section",
                     "list_item_id": None,
                     "status": CompletionStatus.COMPLETED,
-                    "block_ids": ["insurance-type", "insurance-address"],
+                    "block_ids": ["insurance-type", "insurance-address", "listed"],
                 }
             ]
         )
@@ -640,7 +641,8 @@ class TestRouterPreviousLocation(RouterTestCase):
             section_id="property-details-section", block_id="insurance-type"
         )
         routing_path = RoutingPath(
-            ["insurance-type", "insurance-address"], section_id="default-section"
+            ["insurance-type", "insurance-address", "listed"],
+            section_id="default-section",
         )
         previous_location_url = self.router.get_previous_location_url(
             current_location, routing_path, return_to="section-summary"
@@ -650,7 +652,36 @@ class TestRouterPreviousLocation(RouterTestCase):
             "/questionnaire/sections/property-details-section/", previous_location_url
         )
 
-    def test_return_to_final_summary(self):
+    def test_return_to_section_summary_section_is_in_progress(self):
+        self.schema = load_schema_from_name("test_section_summary")
+        self.progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "property-details-section",
+                    "list_item_id": None,
+                    "status": CompletionStatus.IN_PROGRESS,
+                    "block_ids": ["insurance-type", "insurance-address", "listed"],
+                }
+            ]
+        )
+
+        current_location = Location(
+            section_id="property-details-section", block_id="insurance-address"
+        )
+        routing_path = RoutingPath(
+            ["insurance-type", "insurance-address", "listed"],
+            section_id="default-section",
+        )
+        previous_location_url = self.router.get_previous_location_url(
+            current_location, routing_path, return_to="section-summary"
+        )
+
+        self.assertIn(
+            "/questionnaire/insurance-type/?return_to=section-summary",
+            previous_location_url,
+        )
+
+    def test_return_to_final_summary_section_is_complete(self):
         self.schema = load_schema_from_name("test_submit_with_summary")
         self.progress_store = ProgressStore(
             [
@@ -678,6 +709,37 @@ class TestRouterPreviousLocation(RouterTestCase):
         )
 
         self.assertIn("/questionnaire/submit/", previous_location)
+
+    def test_return_to_final_summary_section_is_in_progress(self):
+        self.schema = load_schema_from_name("test_submit_with_summary")
+        self.progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "default-section",
+                    "list_item_id": None,
+                    "status": CompletionStatus.IN_PROGRESS,
+                    "block_ids": [
+                        "radio",
+                        "dessert",
+                        "dessert-confirmation",
+                        "numbers",
+                    ],
+                }
+            ]
+        )
+
+        current_location = Location(section_id="default-section", block_id="dessert")
+        routing_path = RoutingPath(
+            ["radio", "dessert", "dessert-confirmation", "numbers"],
+            section_id="default-section",
+        )
+        previous_location = self.router.get_previous_location_url(
+            current_location, routing_path, return_to="final-summary"
+        )
+
+        self.assertIn(
+            "/questionnaire/radio/?return_to=final-summary", previous_location
+        )
 
 
 class TestRouterPreviousLocationLinearFlow(RouterTestCase):
@@ -718,7 +780,7 @@ class TestRouterPreviousLocationLinearFlow(RouterTestCase):
                     "block_ids": [
                         "insurance-type",
                         "insurance-address",
-                        "address-duration",
+                        "listed",
                     ],
                 }
             ]
