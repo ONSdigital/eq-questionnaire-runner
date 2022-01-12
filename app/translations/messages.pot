@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-11 17:14+0000\n"
+"POT-Creation-Date: 2022-01-12 12:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1119,45 +1119,45 @@ msgid "Hide"
 msgstr ""
 
 #: templates/layouts/_base.html:130
+msgid "Skip to main content"
+msgstr ""
+
+#: templates/layouts/_base.html:152
 msgid "You will be signed out soon"
 msgstr ""
 
-#: templates/layouts/_base.html:131
+#: templates/layouts/_base.html:153
 msgid "It appears you have been inactive for a while."
 msgstr ""
 
-#: templates/layouts/_base.html:132
+#: templates/layouts/_base.html:154
 msgid ""
 "To protect your information, your progress will be saved and you will be "
 "signed out in"
 msgstr ""
 
-#: templates/layouts/_base.html:133
+#: templates/layouts/_base.html:155
 msgid "You are being signed out"
 msgstr ""
 
-#: templates/layouts/_base.html:134
+#: templates/layouts/_base.html:156
 msgid "Continue survey"
 msgstr ""
 
-#: templates/layouts/_base.html:135
+#: templates/layouts/_base.html:157
 msgid "minute"
 msgstr ""
 
-#: templates/layouts/_base.html:136
+#: templates/layouts/_base.html:158
 msgid "minutes"
 msgstr ""
 
-#: templates/layouts/_base.html:137
+#: templates/layouts/_base.html:159
 msgid "second"
 msgstr ""
 
-#: templates/layouts/_base.html:138
+#: templates/layouts/_base.html:160
 msgid "seconds"
-msgstr ""
-
-#: templates/layouts/_base.html:149
-msgid "Skip to main content"
 msgstr ""
 
 #: templates/layouts/_questionnaire.html:40
