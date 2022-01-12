@@ -312,6 +312,6 @@ class PlaceholderTransforms:
     def option_label_from_value(self, value: str, answer_id: str) -> str:
         """
         Accepts the option value and answer id and return label.
-        label can be simple string or Placeholder
+        label may be simple string or a resolved placeholder string
         """
         return self.ops_helper.get_option_label_from_value(value, answer_id)

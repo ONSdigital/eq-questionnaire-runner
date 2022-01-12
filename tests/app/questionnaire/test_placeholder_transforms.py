@@ -394,16 +394,21 @@ def test_format_date_range(placeholder_transform, date_range, expected):
 @pytest.mark.parametrize(
     "answer_id,value,expected",
     [
-        ("mandatory-radio-answer", "{body_part}", "Body (piped)"),
+        ("mandatory-radio-answer", "{body_part} (piped)", "Body (piped)"),
         ("mandatory-checkbox-answer", "Body", "Body"),
     ],
 )
 def test_option_label_from_value_with_placeholder_label(
-    placeholder_transform, answer_id, value, expected, schema_placeholder_renderer
+    placeholder_transform,
+    answer_id,
+    value,
+    expected,
+    placeholder_renderer,
+    option_label_from_value_schema,
 ):
-    label_schema, label_renderer = schema_placeholder_renderer
+    label_renderer = placeholder_renderer
     placeholder_transform = PlaceholderTransforms(
-        language="en", schema=label_schema, renderer=label_renderer
+        language="en", schema=option_label_from_value_schema, renderer=label_renderer
     )
     actual = placeholder_transform.option_label_from_value(value, answer_id)
 

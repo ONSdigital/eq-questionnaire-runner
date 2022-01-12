@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Other input fields",
+    "title": "Test option label from value",
     "theme": "default",
-    "description": "A questionnaire to demo using option labels as placeholders",
+    "description": "A questionnaire to demo the piping of Checkbox/Radio answer options",
     "metadata": [
         {
             "name": "user_id",

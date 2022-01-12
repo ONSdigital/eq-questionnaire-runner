@@ -20,11 +20,12 @@ from app.questionnaire.value_source_resolver import (
     ValueSourceTypes,
 )
 
-TransformedValueTypes = Union[None, str, int, Decimal, bool]
 if TYPE_CHECKING:
     from app.questionnaire.placeholder_renderer import (
         PlaceholderRenderer,  # pragma: no cover
     )
+
+TransformedValueTypes = Union[None, str, int, Decimal, bool]
 
 
 class PlaceholderParser:

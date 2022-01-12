@@ -21,9 +21,11 @@ def get_operator(mock_renderer, mock_schema):
 
 
 @pytest.fixture
-def operation_helper(schema_placeholder_renderer):
-    schema, renderer = schema_placeholder_renderer
+def operation_helper(placeholder_renderer, option_label_from_value_schema):
+    renderer = placeholder_renderer
     ops_helper = OperationHelper(
-        language=DEFAULT_LANGUAGE, schema=schema, renderer=renderer
+        language=DEFAULT_LANGUAGE,
+        schema=option_label_from_value_schema,
+        renderer=renderer,
     )
     return ops_helper

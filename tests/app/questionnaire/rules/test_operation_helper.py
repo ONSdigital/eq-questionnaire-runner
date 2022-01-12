@@ -15,7 +15,7 @@ def test_string_to_datetime(operation_helper):
 @pytest.mark.parametrize(
     "answer_id,value,expected",
     [
-        ("mandatory-radio-answer", "{body_part}", "Body (piped)"),
+        ("mandatory-radio-answer", "{body_part} (piped)", "Body (piped)"),
         ("mandatory-checkbox-answer", "Body", "Body"),
     ],
 )

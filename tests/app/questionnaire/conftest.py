@@ -11,6 +11,7 @@ from app.questionnaire.location import Location
 from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
+from app.utilities.schema import load_schema_from_name
 
 
 @pytest.fixture
@@ -819,231 +820,6 @@ def section_with_repeating_list():
 
 
 @pytest.fixture
-def labels_schema_with_placeholders():
-    return {
-        "sections": [
-            {
-                "id": "checkbox-section",
-                "groups": [
-                    {
-                        "blocks": [
-                            {
-                                "type": "Question",
-                                "id": "mandatory-checkbox",
-                                "question": {
-                                    "answers": [
-                                        {
-                                            "id": "mandatory-checkbox-answer",
-                                            "mandatory": True,
-                                            "options": [
-                                                {"label": "Head", "value": "Head"},
-                                                {
-                                                    "label": "Body",
-                                                    "value": "Body",
-                                                    "q_code": "1",
-                                                },
-                                                {
-                                                    "label": "Right Arm",
-                                                    "value": "Right Arm",
-                                                    "q_code": "2",
-                                                },
-                                                {
-                                                    "label": "Left Arm",
-                                                    "value": "Left Arm",
-                                                    "q_code": "3",
-                                                },
-                                            ],
-                                            "type": "Checkbox",
-                                        }
-                                    ],
-                                    "id": "mandatory-checkbox-question",
-                                    "title": "When you had your accident, where did you sustain injuries?",
-                                    "type": "General",
-                                },
-                            },
-                            {
-                                "type": "Question",
-                                "id": "recovery-question-checkbox-block",
-                                "question": {
-                                    "id": "recovery-question-checkbox",
-                                    "title": {
-                                        "text": "How long did it take to recover from the injury to your {body_part}?",
-                                        "placeholders": [
-                                            {
-                                                "placeholder": "body_part",
-                                                "transforms": [
-                                                    {
-                                                        "transform": "first_non_empty_item",
-                                                        "arguments": {
-                                                            "items": [
-                                                                {
-                                                                    "source": "answers",
-                                                                    "identifier": "mandatory-checkbox-answer",
-                                                                }
-                                                            ]
-                                                        },
-                                                    },
-                                                    {
-                                                        "transform": "option_label_from_value",
-                                                        "arguments": {
-                                                            "value": {
-                                                                "source": "previous_transform"
-                                                            },
-                                                            "answer_id": "mandatory-checkbox-answer",
-                                                        },
-                                                    },
-                                                ],
-                                            }
-                                        ],
-                                    },
-                                    "type": "General",
-                                    "answers": [
-                                        {
-                                            "id": "recovery-checkbox-answer",
-                                            "label": "Recovery time",
-                                            "mandatory": False,
-                                            "type": "Number",
-                                        }
-                                    ],
-                                },
-                                "skip_conditions": {
-                                    "when": {
-                                        ">": [
-                                            {
-                                                "count": [
-                                                    {
-                                                        "identifier": "mandatory-checkbox-answer",
-                                                        "source": "answers",
-                                                    }
-                                                ]
-                                            },
-                                            1,
-                                        ]
-                                    }
-                                },
-                            },
-                            {
-                                "type": "Question",
-                                "id": "mandatory-radio",
-                                "question": {
-                                    "type": "General",
-                                    "id": "mandatory-radio-question",
-                                    "title": "If you suffered any one injury from the options below, please select the most serious one.",
-                                    "answers": [
-                                        {
-                                            "type": "Radio",
-                                            "id": "mandatory-radio-answer",
-                                            "mandatory": True,
-                                            "options": [
-                                                {
-                                                    "label": {
-                                                        "text": "{body_part} (piped)",
-                                                        "placeholders": [
-                                                            {
-                                                                "placeholder": "body_part",
-                                                                "transforms": [
-                                                                    {
-                                                                        "transform": "first_non_empty_item",
-                                                                        "arguments": {
-                                                                            "items": [
-                                                                                {
-                                                                                    "source": "answers",
-                                                                                    "identifier": "mandatory-checkbox-answer",
-                                                                                }
-                                                                            ]
-                                                                        },
-                                                                    }
-                                                                ],
-                                                            }
-                                                        ],
-                                                    },
-                                                    "value": "{body_part}",
-                                                },
-                                                {"label": "Eyes", "value": "Eyes"},
-                                                {"label": "Ears", "value": "Ears"},
-                                                {"label": "Mouth", "value": "Mouth"},
-                                                {"label": "Nose", "value": "Nose"},
-                                            ],
-                                        }
-                                    ],
-                                },
-                                "skip_conditions": {
-                                    "when": {
-                                        "==": [
-                                            {
-                                                "count": [
-                                                    {
-                                                        "identifier": "mandatory-checkbox-answer",
-                                                        "source": "answers",
-                                                    }
-                                                ]
-                                            },
-                                            1,
-                                        ]
-                                    }
-                                },
-                            },
-                            {
-                                "type": "Question",
-                                "id": "recovery-question-radio-block",
-                                "question": {
-                                    "id": "recovery-question-radio",
-                                    "title": {
-                                        "text": "How long did it take to recover from the injury to your <em>{body_part}</em>?",
-                                        "placeholders": [
-                                            {
-                                                "placeholder": "body_part",
-                                                "transforms": [
-                                                    {
-                                                        "transform": "option_label_from_value",
-                                                        "arguments": {
-                                                            "value": {
-                                                                "source": "answers",
-                                                                "identifier": "mandatory-radio-answer",
-                                                            },
-                                                            "answer_id": "mandatory-radio-answer",
-                                                        },
-                                                    }
-                                                ],
-                                            }
-                                        ],
-                                    },
-                                    "type": "General",
-                                    "answers": [
-                                        {
-                                            "id": "recovery-radio-answer",
-                                            "label": "Recovery time",
-                                            "mandatory": False,
-                                            "type": "Number",
-                                        }
-                                    ],
-                                },
-                                "skip_conditions": {
-                                    "when": {
-                                        "==": [
-                                            {
-                                                "count": [
-                                                    {
-                                                        "identifier": "mandatory-checkbox-answer",
-                                                        "source": "answers",
-                                                    }
-                                                ]
-                                            },
-                                            1,
-                                        ]
-                                    }
-                                },
-                            },
-                        ],
-                        "id": "checkboxes",
-                    }
-                ],
-            }
-        ]
-    }
-
-
-@pytest.fixture
 def mock_schema():
     schema = Mock(
         QuestionnaireSchema(
@@ -1066,8 +842,7 @@ def placeholder_transform(mock_schema, mock_renderer):
 
 
 @pytest.fixture
-def schema_placeholder_renderer(labels_schema_with_placeholders):
-    schema = QuestionnaireSchema(labels_schema_with_placeholders)
+def placeholder_renderer(option_label_from_value_schema):
     answer_store = AnswerStore(
         [
             {"answer_id": "mandatory-radio-answer", "value": "{body_parts}"},
@@ -1080,9 +855,9 @@ def schema_placeholder_renderer(labels_schema_with_placeholders):
         list_store=ListStore(),
         metadata=ImmutableDict({}),
         response_metadata={},
-        schema=schema,
+        schema=option_label_from_value_schema,
     )
-    return schema, renderer
+    return renderer
 
 
 @pytest.fixture
@@ -1095,6 +870,11 @@ def mock_renderer(mock_schema):
         response_metadata={},
         schema=mock_schema,
     )
+
+
+@pytest.fixture
+def option_label_from_value_schema():
+    return load_schema_from_name("test_placeholder_option_label_from_value", "en")
 
 
 @pytest.fixture
