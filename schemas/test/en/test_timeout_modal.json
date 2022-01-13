@@ -44,7 +44,7 @@
                                 "title": "Timeout modal interstitial",
                                 "contents": [
                                     {
-                                        "description": "Timeout modal will appear on this page after 60 seconds as the session timeout is set to 125 seconds, pressing “Continue survey” button on the modal will extend the session by that amount, “showModalTimeInSeconds” field is set to 60"
+                                        "description": "Timeout modal will appear on this page after 60 seconds as the session timeout is set to 2 minutes, pressing “Continue survey” button on the modal will extend the session by that amount, “showModalTimeInSeconds” field is set to 60"
                                     }
                                 ]
                             },
