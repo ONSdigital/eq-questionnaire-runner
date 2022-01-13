@@ -4,10 +4,10 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "session_timeout_in_seconds": 70,
+    "session_timeout_in_seconds": 5,
     "title": "Timeout test",
     "theme": "default",
-    "description": "A questionnaire to test the time out functionality",
+    "description": "A questionnaire to test the timeout functionality in non JS integration test",
     "metadata": [
         {
             "name": "user_id",
