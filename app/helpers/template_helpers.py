@@ -181,7 +181,7 @@ def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     template = f"{template.lower()}.html"
 
     session_expires_at = (
-        session_store.expiration_time
+        session_store.expiration_time.isoformat()
         if (session_store := get_session_store())
         else None
     )
