@@ -5,7 +5,6 @@ import { TimeoutModalPage } from "../base_pages/timeout-modal.page.js";
 describe("Timeout Modal", () => {
   beforeEach("Load the survey", () => {
     browser.openQuestionnaire("test_timeout_modal.json");
-    browser.setTimeout({ script: 70000 });
   });
 
   describe("Given I am completing the survey, when the session timeout is set to 2 minutes", () => {
