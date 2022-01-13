@@ -17,7 +17,7 @@ from app.questionnaire.rules.utils import parse_datetime
 from app.utilities.schema import load_schema_from_name
 
 
-def test_date_field_created_with_guidance(value_source_resolver):
+def test_date_field_created_with_guidance(value_source_resolver, rule_evaluator):
     date_json = {
         "guidance": "Please enter a date",
         "id": "period-to",
@@ -32,7 +32,9 @@ def test_date_field_created_with_guidance(value_source_resolver):
         },
     }
 
-    handler = DateHandler(date_json, value_source_resolver, error_messages)
+    handler = DateHandler(
+        date_json, value_source_resolver, rule_evaluator, error_messages
+    )
 
     class TestForm(Form):
         test_field = handler.get_field()
@@ -44,7 +46,9 @@ def test_date_field_created_with_guidance(value_source_resolver):
     assert form.test_field.description == date_json["guidance"]
 
 
-def test_generate_date_form_validates_single_date_period(app, value_source_resolver):
+def test_generate_date_form_validates_single_date_period(
+    app, value_source_resolver, rule_evaluator
+):
     schema = load_schema_from_name("test_date_validation_single")
     value_source_resolver.schema = schema
     value_source_resolver.metadata = {"ref_p_start_date": "2017-02-20"}
@@ -52,6 +56,7 @@ def test_generate_date_form_validates_single_date_period(app, value_source_resol
     handler = DateHandler(
         schema.get_answers_by_answer_id("date-range-from")[0],
         value_source_resolver,
+        rule_evaluator,
         error_messages,
     )
     form = date_field.get_form_class(handler.validators)
@@ -62,7 +67,7 @@ def test_generate_date_form_validates_single_date_period(app, value_source_resol
 
 
 def test_generate_date_form_validates_single_date_period_with_bespoke_message(
-    app, value_source_resolver
+    app, value_source_resolver, rule_evaluator
 ):
     value_source_resolver.schema = load_schema_from_name("test_date_validation_single")
     answer = {
@@ -73,7 +78,7 @@ def test_generate_date_form_validates_single_date_period_with_bespoke_message(
         "maximum": {"value": "2017-06-11", "offset_by": {"days": 20}},
         "validation": {"messages": {"SINGLE_DATE_PERIOD_TOO_LATE": "Test Message"}},
     }
-    handler = DateHandler(answer, value_source_resolver, error_messages)
+    handler = DateHandler(answer, value_source_resolver, rule_evaluator, error_messages)
     form = date_field.get_form_class(handler.validators)
 
     assert hasattr(form, "day")
@@ -81,20 +86,24 @@ def test_generate_date_form_validates_single_date_period_with_bespoke_message(
     assert hasattr(form, "year")
 
 
-def test_get_referenced_offset_value_for_value(app, value_source_resolver):
+def test_get_referenced_offset_value_for_value(
+    app, value_source_resolver, rule_evaluator
+):
     answer = {"minimum": {"value": "2017-06-11"}}
 
-    handler = DateHandler(answer, value_source_resolver, error_messages)
+    handler = DateHandler(answer, value_source_resolver, rule_evaluator, error_messages)
     minimum_date = handler.get_date_value("minimum")
     minimum_date = handler.transform_date_by_offset(minimum_date, {"days": 10})
 
     assert minimum_date == parse_datetime("2017-06-21")
 
 
-def test_get_referenced_offset_value_for_now_value(app, value_source_resolver):
+def test_get_referenced_offset_value_for_now_value(
+    app, value_source_resolver, rule_evaluator
+):
     answer = {"minimum": {"value": "now"}}
 
-    handler = DateHandler(answer, value_source_resolver, error_messages)
+    handler = DateHandler(answer, value_source_resolver, rule_evaluator, error_messages)
     minimum_date = handler.get_date_value("minimum")
     minimum_date = handler.transform_date_by_offset(minimum_date, {"days": 10})
 
@@ -103,11 +112,13 @@ def test_get_referenced_offset_value_for_now_value(app, value_source_resolver):
     )
 
 
-def test_get_referenced_offset_value_for_meta(app, value_source_resolver):
+def test_get_referenced_offset_value_for_meta(
+    app, value_source_resolver, rule_evaluator
+):
     value_source_resolver.metadata = {"date": "2018-02-20"}
     answer = {"minimum": {"value": {"identifier": "date", "source": "metadata"}}}
 
-    handler = DateHandler(answer, value_source_resolver, error_messages)
+    handler = DateHandler(answer, value_source_resolver, rule_evaluator, error_messages)
     minimum_date = handler.get_date_value("minimum")
     minimum_date = handler.transform_date_by_offset(minimum_date, {"days": -10})
 
@@ -117,7 +128,9 @@ def test_get_referenced_offset_value_for_meta(app, value_source_resolver):
 @patch(
     "app.utilities.schema.load_schema_from_name", return_value=QuestionnaireSchema({})
 )
-def test_get_referenced_offset_value_for_answer_id(app, value_source_resolver):
+def test_get_referenced_offset_value_for_answer_id(
+    app, value_source_resolver, rule_evaluator
+):
     answer_store = AnswerStore()
 
     test_answer_id = Answer(answer_id="date", value="2018-03-20")
@@ -125,7 +138,7 @@ def test_get_referenced_offset_value_for_answer_id(app, value_source_resolver):
     value_source_resolver.answer_store = answer_store
     answer = {"maximum": {"value": {"identifier": "date", "source": "answers"}}}
 
-    handler = DateHandler(answer, value_source_resolver, error_messages)
+    handler = DateHandler(answer, value_source_resolver, rule_evaluator, error_messages)
     maximum_date = handler.get_date_value("maximum")
     maximum_date = handler.transform_date_by_offset(maximum_date, {"months": 1})
 
@@ -136,7 +149,9 @@ def test_get_referenced_offset_value_for_answer_id(app, value_source_resolver):
     "app.questionnaire.questionnaire_schema.QuestionnaireSchema.is_repeating_answer",
     return_value=True,
 )
-def test_get_referenced_offset_value_with_list_item_id(app, value_source_resolver):
+def test_get_referenced_offset_value_with_list_item_id(
+    app, value_source_resolver, rule_evaluator
+):
     list_item_id = "abcde"
 
     test_answer_id = Answer(
@@ -158,16 +173,18 @@ def test_get_referenced_offset_value_with_list_item_id(app, value_source_resolve
         }
     }
 
-    handler = DateHandler(answer, value_source_resolver, error_messages)
+    handler = DateHandler(answer, value_source_resolver, rule_evaluator, error_messages)
     maximum_date = handler.get_date_value("maximum")
 
     assert maximum_date == parse_datetime("2018-04-20")
 
 
-def test_get_referenced_offset_value_with_no_offset(app, value_source_resolver):
+def test_get_referenced_offset_value_with_no_offset(
+    app, value_source_resolver, rule_evaluator
+):
     answer = {"minimum": {"value": "2017-06-11"}}
 
-    handler = DateHandler(answer, value_source_resolver, error_messages)
+    handler = DateHandler(answer, value_source_resolver, rule_evaluator, error_messages)
     minimum_date = handler.get_date_value("minimum")
     minimum_date = handler.transform_date_by_offset(minimum_date, {})
 
@@ -177,7 +194,7 @@ def test_get_referenced_offset_value_with_no_offset(app, value_source_resolver):
 @patch(
     "app.utilities.schema.load_schema_from_name", return_value=QuestionnaireSchema({})
 )
-def test_minimum_and_maximum_offset_dates(app, value_source_resolver):
+def test_minimum_and_maximum_offset_dates(app, value_source_resolver, rule_evaluator):
     value_source_resolver.metadata = {"date": "2018-02-20"}
     answer_store = AnswerStore()
 
@@ -197,7 +214,7 @@ def test_minimum_and_maximum_offset_dates(app, value_source_resolver):
         },
     }
 
-    handler = DateHandler(answer, value_source_resolver, error_messages)
+    handler = DateHandler(answer, value_source_resolver, rule_evaluator, error_messages)
     minimum_date = handler.get_date_value("minimum")
     maximum_date = handler.get_date_value("maximum")
 
@@ -205,7 +222,9 @@ def test_minimum_and_maximum_offset_dates(app, value_source_resolver):
     assert maximum_date == parse_datetime("2019-03-20")
 
 
-def test_greater_minimum_date_than_maximum_date(app, value_source_resolver):
+def test_greater_minimum_date_than_maximum_date(
+    app, value_source_resolver, rule_evaluator
+):
     answer = {
         "id": "date_answer",
         "type": "Date",
@@ -213,7 +232,7 @@ def test_greater_minimum_date_than_maximum_date(app, value_source_resolver):
         "maximum": {"value": "2018-01-15", "offset_by": {"days": 10}},
     }
 
-    handler = DateHandler(answer, value_source_resolver, error_messages)
+    handler = DateHandler(answer, value_source_resolver, rule_evaluator, error_messages)
 
     with pytest.raises(Exception) as ite:
         handler.get_date_value("minimum")
@@ -224,7 +243,7 @@ def test_greater_minimum_date_than_maximum_date(app, value_source_resolver):
         )
 
 
-def test_validate_mandatory_date(app, value_source_resolver):
+def test_validate_mandatory_date(app, value_source_resolver, rule_evaluator):
     answer = {
         "id": "date-range-from",
         "mandatory": True,
@@ -234,7 +253,7 @@ def test_validate_mandatory_date(app, value_source_resolver):
         "validation": {"messages": {"MANDATORY_DATE": "Test Mandatory Date Message"}},
     }
 
-    handler = DateHandler(answer, value_source_resolver, error_messages)
+    handler = DateHandler(answer, value_source_resolver, rule_evaluator, error_messages)
     validator = handler.get_mandatory_validator()
 
     assert validator.message == "Test Mandatory Date Message"

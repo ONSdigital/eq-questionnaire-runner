@@ -32,6 +32,11 @@ def location():
 
 
 @pytest.fixture
+def response_metadata():
+    return {"started_at": "2021-01-01T09:00:00.220038+00:00"}
+
+
+@pytest.fixture
 def parser(answer_store, location, mock_schema):
     return PlaceholderParser(
         language="en",

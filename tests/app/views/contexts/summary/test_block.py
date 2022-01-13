@@ -45,12 +45,12 @@ class TestSection(TestCase):
         ):
             block = Block(
                 block_schema,
-                self.answer_store,
-                self.list_store,
-                self.metadata,
-                self.response_metadata,
-                self.schema,
-                location,
+                answer_store=self.answer_store,
+                list_store=self.list_store,
+                metadata=self.metadata,
+                response_metadata=self.response_metadata,
+                schema=self.schema,
+                location=location,
                 return_to="final-summary",
             )
 
