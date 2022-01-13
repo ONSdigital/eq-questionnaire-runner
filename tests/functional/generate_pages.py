@@ -123,6 +123,14 @@ ANSWER_LABEL_GETTER = Template(
 """
 )
 
+DYNAMIC_ANSWER_LABEL_GETTER = Template(
+    r"""  answerLabelByIndex(answerIndex) {
+    return `[for=${answerId}-${answerIndex}]`;
+  }
+
+"""
+)
+
 ANSWER_ERROR_GETTER = Template(
     r"""  ${answerName}ErrorItem() {
     return `#${answerId}-error .ons-panel__body .ons-panel__error`;
@@ -142,6 +150,14 @@ ANSWER_LABEL_DESCRIPTION_GETTER = Template(
 ANSWER_GETTER = Template(
     r"""  ${answerName}() {
     return `#${answerId}`;
+  }
+
+"""
+)
+
+DYNAMIC_ANSWER_GETTER = Template(
+    r"""  answerByIndex(answerIndex) {
+    return `#${answerId}-${answerIndex}`;
   }
 
 """
@@ -287,7 +303,7 @@ def get_all_questions(block):
 def process_answer_legend(answer_context, answer, page_spec):
     single_duration_answer = answer["type"] == "Duration" and len(answer["units"]) == 1
     single_checkbox_answer = (
-        answer["type"] == "Checkbox" and len(answer["options"]) == 1
+        answer["type"] == "Checkbox" and len(answer.get("options", [])) == 1
     )
     if (
         single_duration_answer
@@ -328,7 +344,7 @@ def process_options(answer_id, options, page_spec, base_prefix):
             page_spec.write(ANSWER_GETTER.substitute(option_context))
 
 
-# pylint: disable=too-complex
+# pylint: disable=too-complex, too-many-branches
 def process_answer(answer, page_spec, long_names, page_name):
     answer_name = generate_pascal_case_from_id(answer["id"])
     answer_name = answer_name.replace(page_name, "")
@@ -348,7 +364,14 @@ def process_answer(answer, page_spec, long_names, page_name):
     page_spec.write(ANSWER_ERROR_GETTER.substitute(answer_context))
 
     if answer["type"] in ("Radio", "Checkbox"):
-        process_options(answer["id"], answer["options"], page_spec, prefix)
+        if answer.get("dynamic_options"):
+            # If the schema has static options in addition to dynamic options, the static options must also be
+            # selected using the index as the number of dynamic options can vary at run-time.
+            page_spec.write(DYNAMIC_ANSWER_GETTER.safe_substitute(answer_context))
+            page_spec.write(DYNAMIC_ANSWER_LABEL_GETTER.safe_substitute(answer_context))
+        elif options := answer.get("options"):
+            process_options(answer["id"], options, page_spec, prefix)
+
         if answer["type"] == "Radio":
             page_spec.write(CLEAR_SELECTION_BUTTON_GETTER)
 
