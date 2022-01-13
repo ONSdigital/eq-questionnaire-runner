@@ -18,6 +18,7 @@ from app.forms.field_handlers import DateHandler, FieldHandler, get_field_handle
 from app.forms.validators import DateRangeCheck, MutuallyExclusiveCheck, SumCheck
 from app.questionnaire import Location, QuestionnaireSchema, QuestionSchema
 from app.questionnaire.relationship_location import RelationshipLocation
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 
 logger = logging.getLogger(__name__)
@@ -296,7 +297,18 @@ class QuestionnaireForm(FlaskForm):
             escape_answer_values=False,
         )
 
-        handler = DateHandler(date_from, value_source_resolver, error_messages)
+        rule_evaluator = RuleEvaluator(
+            schema=self.schema,
+            answer_store=self.answer_store,
+            list_store=self.list_store,
+            metadata=self.metadata,
+            response_metadata=self.response_metadata,
+            location=self.location,
+        )
+
+        handler = DateHandler(
+            date_from, value_source_resolver, rule_evaluator, error_messages
+        )
 
         min_period_date = handler.get_date_value("minimum") or handler.get_date_value(
             "maximum"
@@ -442,6 +454,15 @@ def get_answer_fields(
         response_metadata=response_metadata,
     )
 
+    rule_evaluator = RuleEvaluator(
+        schema=schema,
+        answer_store=answer_store,
+        list_store=list_store,
+        metadata=metadata,
+        response_metadata=response_metadata,
+        location=location,
+    )
+
     answer_fields = {}
     question_title = question.get("title")
     for answer in question.get("answers", []):
@@ -455,16 +476,18 @@ def get_answer_fields(
                 detail_answer = option["detail_answer"]
 
                 answer_fields[option["detail_answer"]["id"]] = get_field_handler(
-                    detail_answer,
-                    value_source_resolver,
-                    schema.error_messages,
+                    answer_schema=detail_answer,
+                    value_source_resolver=value_source_resolver,
+                    rule_evaluator=rule_evaluator,
+                    error_messages=schema.error_messages,
                     disable_validation=disable_validation,
                     question_title=question_title,
                 ).get_field()
         answer_fields[answer["id"]] = get_field_handler(
-            answer,
-            value_source_resolver,
-            schema.error_messages,
+            answer_schema=answer,
+            value_source_resolver=value_source_resolver,
+            rule_evaluator=rule_evaluator,
+            error_messages=schema.error_messages,
             question_title=question_title,
         ).get_field()
 

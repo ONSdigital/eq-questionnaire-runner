@@ -138,7 +138,7 @@ class ListStore:
 
     @staticmethod
     def _build_map(list_models: List[Mapping]):
-        """ Builds the list_store data structure from a list of dictionaries"""
+        """Builds the list_store data structure from a list of dictionaries"""
         return {
             list_model["name"]: ListModel(**list_model) for list_model in list_models
         }
@@ -150,7 +150,7 @@ class ListStore:
         return self[for_list].index(list_item_id) + 1
 
     def _generate_identifier(self):
-        """ Generate an unused random 6 character string"""
+        """Generate an unused random 6 character string"""
         while True:
             candidate = random_string(EQ_LIST_ITEM_ID_LENGTH)
             if candidate not in self._list_item_ids():

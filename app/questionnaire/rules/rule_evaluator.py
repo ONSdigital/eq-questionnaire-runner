@@ -80,5 +80,7 @@ class RuleEvaluator:
         for operand in operands:
             yield self._resolve_operand(operand)
 
-    def evaluate(self, rule: dict[str, Sequence]) -> Union[bool, Optional[date]]:
+    def evaluate(
+        self, rule: dict[str, Sequence]
+    ) -> Union[bool, Optional[date], list[str], list[date]]:
         return self._evaluate(rule)

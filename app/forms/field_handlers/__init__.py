@@ -2,6 +2,7 @@ from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 
+from ...questionnaire.rules.rule_evaluator import RuleEvaluator
 from .address_handler import AddressHandler
 from .date_handlers import DateHandler, MonthYearDateHandler, YearDateHandler
 from .dropdown_handler import DropdownHandler
@@ -34,15 +35,18 @@ FIELD_HANDLER_MAPPINGS = {
 
 
 def get_field_handler(
-    answer: dict,
+    *,
+    answer_schema: dict,
     value_source_resolver: ValueSourceResolver,
+    rule_evaluator: RuleEvaluator,
     error_messages: ImmutableDict,
     disable_validation: bool = False,
     question_title: str = None,
 ) -> FieldHandler:
-    return FIELD_HANDLER_MAPPINGS[answer["type"]](
-        answer,
-        value_source_resolver,
+    return FIELD_HANDLER_MAPPINGS[answer_schema["type"]](
+        answer_schema=answer_schema,
+        value_source_resolver=value_source_resolver,
+        rule_evaluator=rule_evaluator,
         error_messages=error_messages,
         disable_validation=disable_validation,
         question_title=question_title,

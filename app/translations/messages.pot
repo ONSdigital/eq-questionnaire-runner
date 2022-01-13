@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-06 16:29+0000\n"
+"POT-Creation-Date: 2022-01-12 16:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,7 +52,7 @@ msgid "Select an answer <span class=\"ons-u-vh\">to ‘%(question_title)s’</sp
 msgstr ""
 
 #: app/forms/error_messages.py:18
-#: app/forms/field_handlers/dropdown_handler.py:9
+#: app/forms/field_handlers/dropdown_handler.py:15
 msgid "Select an answer"
 msgstr ""
 

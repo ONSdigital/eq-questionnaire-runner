@@ -41,6 +41,7 @@ def choose_variant(
 ):
     if block.get(single_key):
         return block[single_key]
+
     for variant in block.get(variants_key, []):
         when_rules = variant.get("when", [])
 
