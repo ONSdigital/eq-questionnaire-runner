@@ -180,10 +180,11 @@ def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
 
     template = f"{template.lower()}.html"
 
-    try:
-        session_expires_at = get_session_store().expiration_time.isoformat()  # type: ignore
-    except AttributeError:
-        session_expires_at = None
+    session_expires_at = (
+        session_store.expiration_time
+        if (session_store := get_session_store())
+        else None
+    )
 
     return flask_render_template(
         template,
