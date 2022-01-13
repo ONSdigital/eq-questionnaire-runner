@@ -50,18 +50,15 @@
                                             },
                                             {
                                                 "label": "Body",
-                                                "value": "Body",
-                                                "q_code": "1"
+                                                "value": "Body"
                                             },
                                             {
                                                 "label": "Right Arm",
-                                                "value": "Right Arm",
-                                                "q_code": "2"
+                                                "value": "Right Arm"
                                             },
                                             {
                                                 "label": "Left Arm",
-                                                "value": "Left Arm",
-                                                "q_code": "3"
+                                                "value": "Left Arm"
                                             }
                                         ],
                                         "type": "Checkbox"
@@ -69,7 +66,17 @@
                                 ],
                                 "id": "mandatory-checkbox-question",
                                 "title": "When you had your accident, where did you sustain injuries?",
-                                "type": "General"
+                                "type": "General",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "list": [
+                                                "Choose 1 option which will be piped to Question title",
+                                                "Choose more than 1 option, first selected option will be piped to radio"
+                                            ]
+                                        }
+                                    ]
+                                }
                             }
                         },
                         {
@@ -78,7 +85,7 @@
                             "question": {
                                 "id": "recovery-question-checkbox",
                                 "title": {
-                                    "text": "How long did it take to recover from the injury to your {body_part}?",
+                                    "text": "How long did it take to recover from the injury to your <em>{body_part}</em>?",
                                     "placeholders": [
                                         {
                                             "placeholder": "body_part",
@@ -140,6 +147,13 @@
                                 "type": "General",
                                 "id": "mandatory-radio-question",
                                 "title": "If you suffered any one injury from the options below, please select the most serious one.",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "First option is piped from the previous question"
+                                        }
+                                    ]
+                                },
                                 "answers": [
                                     {
                                         "type": "Radio",

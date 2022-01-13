@@ -18,10 +18,11 @@ describe("Option label value check", () => {
     $(MandatoryCheckboxPage.head()).click();
     $(MandatoryCheckboxPage.body()).click();
     $(MandatoryCheckboxPage.submit()).click();
-    expect($("#mandatory-radio-answer-0-label").getText()).to.contain("Head (piped)");
+    const answerPipedOption = $(MandatoryRadioPage.answerBodyPartPipedLabel()).selector;
+    expect($(answerPipedOption).getText()).to.contain("Head (piped)");
   });
 
-  it("Given multiple checkbox options are provided and I subsequently select a single answer from the next displayed list, when I select one answer (piped from checkbox) and go to the next page, then the placeholder contains the label text of the answer I selected", () => {
+  it("Given multiple checkbox options are provided and I subsequently select a single answer from the next displayed list, when I select one answer (piped from checkbox) and go to the next page, then the question title contains the label text of the answer I selected", () => {
     $(MandatoryCheckboxPage.head()).click();
     $(MandatoryCheckboxPage.body()).click();
     $(MandatoryCheckboxPage.submit()).click();
