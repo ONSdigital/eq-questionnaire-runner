@@ -314,6 +314,21 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         # intentionally not using assertIn to avoid duplicating the output message
         self.assertTrue(content in str(data), msg=message)
 
+    def assertAnswerInSummary(self, answer, *, answer_id):
+        # Get answer using data qa
+        data = self.getHtmlSoup().find(attrs={"data-qa": answer_id})
+        self.assertTrue(
+            data is not None, msg=f"Element not found for answer_id: {answer_id}"
+        )
+
+        # Get answer as list to handle all answer types
+        clean_data = [i.strip() for i in data.text.split("\n") if i.strip()]
+        answer_as_list = answer if isinstance(answer, list) else [answer]
+
+        self.assertTrue(
+            answer_as_list == clean_data, msg=f"\n{answer} not in \n{clean_data}"
+        )
+
     def assertInSelectorCSS(self, content, *selectors, **kwargs):
         data = self.getHtmlSoup().find(*selectors, **kwargs)
         message = f"\n{content} not in \n{data}"
