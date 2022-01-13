@@ -26,7 +26,9 @@ describe("Timeout Modal", () => {
       checkTimeoutModal();
       browser.newWindow("");
       browser.switchWindow("http://localhost:5000/questionnaire/timeout-modal-interstitial/");
-      expect($(TimeoutModalPage.timer()).getText()).to.equal("To protect your information, your progress will be saved and you will be signed out in 1 minute.");
+      expect($(TimeoutModalPage.timer()).getText()).to.equal(
+        "To protect your information, your progress will be saved and you will be signed out in 1 minute."
+      );
     });
   });
 
