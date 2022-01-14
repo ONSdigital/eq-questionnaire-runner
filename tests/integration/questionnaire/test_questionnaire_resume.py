@@ -21,6 +21,7 @@ class TestResume(IntegrationTestCase):
         self.launchSurvey("test_section_summary", display_address="test address")
         self.post({"insurance-type-answer": "Both"})
         self.post({"insurance-address-answer": "Address"})
+        self.post({"listed-answer": "No"})
 
         # When I sign out and then resume
         self.get("/sign-out")

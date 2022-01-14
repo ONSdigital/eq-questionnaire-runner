@@ -27,6 +27,18 @@
     },
     "sections": [
         {
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "people",
+                        "title": "Household members",
+                        "add_link_text": "Add someone to this household",
+                        "empty_list_text": "There are no householders"
+                    }
+                ]
+            },
             "id": "who-lives-here",
             "title": "Who Lives Here",
             "groups": [
