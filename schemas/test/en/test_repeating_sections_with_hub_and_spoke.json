@@ -27,6 +27,25 @@
     },
     "sections": [
         {
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "people",
+                        "title": "Household members",
+                        "add_link_text": "Add someone to this household",
+                        "empty_list_text": "There are no householders"
+                    },
+                    {
+                        "type": "List",
+                        "for_list": "visitor",
+                        "title": "Visitors",
+                        "add_link_text": "Add a visitor",
+                        "empty_list_text": "There are no visitors"
+                    }
+                ]
+            },
             "id": "section",
             "title": "Household",
             "groups": [

@@ -3,6 +3,7 @@ import HouseholdDetailsSummaryPage from "../../../generated_pages/section_summar
 import HouseType from "../../../generated_pages/section_summary/house-type.page.js";
 import InsuranceAddressPage from "../../../generated_pages/section_summary/insurance-address.page.js";
 import InsuranceTypePage from "../../../generated_pages/section_summary/insurance-type.page.js";
+import ListedPage from "../../../generated_pages/section_summary/listed.page.js";
 import NumberOfPeoplePage from "../../../generated_pages/section_summary/number-of-people.page.js";
 import PropertyDetailsSummaryPage from "../../../generated_pages/section_summary/property-details-section-summary.page.js";
 import SubmitPage from "../../../generated_pages/section_summary/submit.page.js";
@@ -14,6 +15,7 @@ describe("Collapsible Summary", () => {
       $(InsuranceTypePage.both()).click();
       $(InsuranceTypePage.submit()).click();
       $(InsuranceAddressPage.submit()).click();
+      $(ListedPage.submit()).click();
       $(PropertyDetailsSummaryPage.submit()).click();
       $(HouseType.submit()).click();
       $(HouseholdDetailsSummaryPage.submit()).click();

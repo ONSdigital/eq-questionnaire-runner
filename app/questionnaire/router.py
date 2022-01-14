@@ -120,7 +120,6 @@ class Router:
         Get the next location in the section. If the section is complete, determine where to go next,
         whether it be a summary, the hub or the next incomplete location.
         """
-        is_last_block_in_section = routing_path[-1] == location.block_id
         if self._progress_store.is_section_complete(
             location.section_id, location.list_item_id
         ):
@@ -129,18 +128,16 @@ class Router:
             ):
                 return return_to_url
 
-            if is_last_block_in_section:
-                return self._get_next_location_url_for_last_block_in_section(location)
+            return self._get_next_location_url_for_complete_section(location)
 
-        # Due to backwards routing, you can be on the last block without the section being complete
-        if is_last_block_in_section:
+        # Due to backwards routing you can be on the last block of the path but with an in_progress section
+        is_last_block_on_path = routing_path[-1] == location.block_id
+        if is_last_block_on_path:
             return self._get_first_incomplete_location_in_section(routing_path).url()
 
-        return self.get_next_block_url(location, routing_path)
+        return self.get_next_block_url(location, routing_path, return_to=return_to)
 
-    def _get_next_location_url_for_last_block_in_section(
-        self, location: Location
-    ) -> str:
+    def _get_next_location_url_for_complete_section(self, location: Location) -> str:
         if self._schema.show_summary_on_completion_for_section(location.section_id):
             return self._get_section_url(location)
 
@@ -172,14 +169,14 @@ class Router:
             previous_block = self._schema.get_block(previous_block_id)
             if previous_block and previous_block["type"] == "RelationshipCollector":
                 return url_for(
-                    "questionnaire.relationships",
-                    last=True,
+                    "questionnaire.relationships", last=True, return_to=return_to
                 )
             return url_for(
                 "questionnaire.block",
                 block_id=previous_block_id,
                 list_name=routing_path.list_name,
                 list_item_id=routing_path.list_item_id,
+                return_to=return_to,
             )
 
         if self.can_access_hub():
@@ -346,13 +343,16 @@ class Router:
         )
 
     @staticmethod
-    def get_next_block_url(location: Location, routing_path: RoutingPath) -> str:
+    def get_next_block_url(
+        location: Location, routing_path: RoutingPath, **kwargs: Optional[str]
+    ) -> str:
         next_block_id = routing_path[routing_path.index(location.block_id) + 1]
         return url_for(
             "questionnaire.block",
             block_id=next_block_id,
             list_name=routing_path.list_name,
             list_item_id=routing_path.list_item_id,
+            **kwargs,
         )
 
     @staticmethod
