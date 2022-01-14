@@ -148,7 +148,7 @@
         "showModalTimeInSeconds": 60,
         "serverSessionExpiryEndpoint": url_for('session.session_expiry'),
         "sessionExpiresAt": session_expires_at,
-        "redirectUrl": url_for('session.get_signed_out'),
+        "redirectUrl": url_for('session.get_session_expired'),
         "title": _("You will be signed out soon"),
         "textFirstLine": _("It appears you have been inactive for a while."),
         "countdownText": _("To protect your information, your progress will be saved and you will be signed out in"),

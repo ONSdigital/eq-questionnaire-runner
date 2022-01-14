@@ -10,9 +10,15 @@ describe("Timeout", () => {
 
     it("It will redirect to signed-out page after session expires", () => {
       browser.pause(25000);
-      expect(browser.getUrl()).to.equal("http://localhost:5000/signed-out");
+      expect(browser.getUrl()).to.equal("http://localhost:5000/session-expired");
       expect($("body").getHTML())
-        .to.include("Your survey answers have been saved. You are now signed out.")
+        .to.include(
+          "Sorry, you need to sign in again",
+          "This is because you have either:",
+          "been inactive for 45 minutes and your session has timed out to protect your information",
+          "followed a link to a page you are not signed in to",
+          "followed a link to a survey that has already been submitted"
+        )
         .to.not.include("To protect your information, your progress will be saved and you will be signed out in");
     });
   });
