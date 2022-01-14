@@ -17,7 +17,7 @@ describe("Difference check (years)", () => {
     $(AgeBlockYearPage.month()).setValue(1);
     $(AgeBlockYearPage.year()).setValue(1990);
     $(AgeBlockYearPage.submit()).click();
-    expect($(AgeTestYearPage.heading()).getText()).to.equal(`You are ${getYears()} years old. Is this correct?`);
+    expect($(AgeTestYearPage.heading()).getText()).to.equal(`You are ${getYears("1990/01/01")} years old. Is this correct?`);
   });
 });
 
@@ -32,7 +32,9 @@ describe("Difference check (months and years)", () => {
 
     $(AgeBlockMonthYearPage.submit()).click();
 
-    expect($(AgeTestMonthYearPage.heading()).getText()).to.equal(`It has been ${getYears()} years since you last went on holiday. Is this correct?`);
+    expect($(AgeTestMonthYearPage.heading()).getText()).to.equal(
+      `It has been ${getYears("1990/01/01")} years since you last went on holiday. Is this correct?`
+    );
   });
 });
 
@@ -73,8 +75,6 @@ describe("Difference check (years range)", () => {
   });
 });
 
-function getYears() {
-  const currentDate = new Date();
-  const inputDate = new Date("1990/01/01");
-  return currentDate.getFullYear() - inputDate.getFullYear();
+function getYears(date) {
+  return new Date(new Date() - new Date(date)).getFullYear() - 1970;
 }
