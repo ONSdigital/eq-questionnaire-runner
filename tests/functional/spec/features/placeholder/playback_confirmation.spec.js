@@ -1,4 +1,4 @@
-import MandatoryCheckboxPage from "../../generated_pages/placeholder_playback_list/mandatory-checkbox.page";
+import MandatoryCheckboxPage from "../../../generated_pages/placeholder_playback_list/mandatory-checkbox.page";
 
 describe("Feature: Playback Confirmation", () => {
   beforeEach("Open the schema", () => {
@@ -10,7 +10,6 @@ describe("Feature: Playback Confirmation", () => {
     $(MandatoryCheckboxPage.ham()).click();
     $(MandatoryCheckboxPage.submit()).click();
 
-    expect($("body ul").getHTML()).to.contain("Cheese");
-    expect($("body ul").getHTML()).to.contain("Ham");
+    expect($("body ul").getHTML()).to.contain("Cheese").to.contain("Ham");
   });
 });
