@@ -1,5 +1,7 @@
 import AgeBlockYearPage from "../../../generated_pages/placeholder_difference_in_years/age-block.page";
+import AgeTestYearPage from "../../../generated_pages/placeholder_difference_in_years/age-test.page";
 import AgeBlockMonthYearPage from "../../../generated_pages/placeholder_difference_in_years_month_year/age-block.page";
+import AgeTestMonthYearPage from "../../../generated_pages/placeholder_difference_in_years_month_year/age-test.page";
 import AgeBlockDayMonthYearRangePage from "../../../generated_pages/placeholder_difference_in_years_range/date-block.page";
 import AgeTestDayMonthYearRangePage from "../../../generated_pages/placeholder_difference_in_years_range/age-test.page";
 import AgeBlockMonthYearRangePage from "../../../generated_pages/placeholder_difference_in_years_month_year_range/date-block.page";
@@ -15,9 +17,7 @@ describe("Difference check (years)", () => {
     $(AgeBlockYearPage.month()).setValue(1);
     $(AgeBlockYearPage.year()).setValue(1990);
     $(AgeBlockYearPage.submit()).click();
-
-    const expectedPageTitle = browser.getTitle();
-    expect(expectedPageTitle).to.equal("You are … old. Is this correct? - Difference between two dates");
+    expect($(AgeTestYearPage.heading()).getText()).to.equal(`You are ${getYears()} years old. Is this correct?`);
   });
 });
 
@@ -32,8 +32,7 @@ describe("Difference check (months and years)", () => {
 
     $(AgeBlockMonthYearPage.submit()).click();
 
-    const expectedPageTitle = browser.getTitle();
-    expect(expectedPageTitle).to.equal("It has been … since you last went on holiday. Is this correct? - Difference between two dates");
+    expect($(AgeTestMonthYearPage.heading()).getText()).to.equal(`It has been ${getYears()} years since you last went on holiday. Is this correct?`);
   });
 });
 
@@ -73,3 +72,9 @@ describe("Difference check (years range)", () => {
     expect($(AgeTestDayMonthYearRangePage.heading()).getText()).to.have.string("You were out of the UK for 1 year. Is this correct?");
   });
 });
+
+function getYears() {
+  const currentDate = new Date();
+  const inputDate = new Date("1990/01/01");
+  return currentDate.getFullYear() - inputDate.getFullYear();
+}
