@@ -4,6 +4,7 @@ import HouseholdDetailsSummaryPage from "../../../generated_pages/section_summar
 import HouseType from "../../../generated_pages/section_summary/house-type.page.js";
 import InsuranceAddressPage from "../../../generated_pages/section_summary/insurance-address.page.js";
 import InsuranceTypePage from "../../../generated_pages/section_summary/insurance-type.page.js";
+import ListedPage from "../../../generated_pages/section_summary/listed.page.js";
 import NumberOfPeoplePage from "../../../generated_pages/section_summary/number-of-people.page.js";
 import PropertyDetailsSummaryPage from "../../../generated_pages/section_summary/property-details-section-summary.page.js";
 import SubmitPage from "../../../generated_pages/section_summary/submit.page.js";
@@ -15,6 +16,7 @@ describe("Section Summary", () => {
       $(InsuranceTypePage.both()).click();
       $(InsuranceTypePage.submit()).click();
       $(InsuranceAddressPage.submit()).click();
+      $(ListedPage.submit()).click();
       expect($(PropertyDetailsSummaryPage.insuranceTypeAnswer()).getText()).to.contain("Both");
     });
 
@@ -40,13 +42,29 @@ describe("Section Summary", () => {
       expect(browser.getUrl()).to.contain(HouseType.pageName);
     });
 
-    it("When I select edit from Section Summary but change routing, Then I should be stepped through the section", () => {
+    it("When I select edit from Section Summary but change routing, Then I should step through the section and be returned to the Section Summary once all new questions have been answered", () => {
       $(PropertyDetailsSummaryPage.insuranceTypeAnswerEdit()).click();
       $(InsuranceTypePage.contents()).click();
       $(InsuranceTypePage.submit()).click();
       expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
       $(InsuranceAddressPage.submit()).click();
       expect(browser.getUrl()).to.contain(AddressDurationPage.pageName);
+      $(AddressDurationPage.submit()).click();
+      expect(browser.getUrl()).to.contain(PropertyDetailsSummaryPage.pageName);
+    });
+
+    it("When I select edit from Section Summary but change routing, Then using previous should not prevent me returning to the section summary once all new questions have been answered", () => {
+      $(PropertyDetailsSummaryPage.insuranceTypeAnswerEdit()).click();
+      $(InsuranceTypePage.contents()).click();
+      $(InsuranceTypePage.submit()).click();
+      expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
+      $(InsuranceAddressPage.submit()).click();
+      expect(browser.getUrl()).to.contain(AddressDurationPage.pageName);
+      $(AddressDurationPage.previous()).click();
+      expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
+      $(InsuranceAddressPage.submit()).click();
+      $(AddressDurationPage.submit()).click();
+      expect(browser.getUrl()).to.contain(PropertyDetailsSummaryPage.pageName);
     });
   });
 
@@ -56,6 +74,7 @@ describe("Section Summary", () => {
       $(InsuranceTypePage.both()).click();
       $(InsuranceTypePage.submit()).click();
       $(InsuranceAddressPage.submit()).click();
+      $(ListedPage.submit()).click();
       $(PropertyDetailsSummaryPage.submit()).click();
       $(HouseType.submit()).click();
       $(HouseholdDetailsSummaryPage.submit()).click();
@@ -80,7 +99,7 @@ describe("Section Summary", () => {
       expect(browser.getUrl()).to.contain(SubmitPage.url());
     });
 
-    it("When I select edit from Final Summary and change an answer that affects completeness, Then I should be stepped through the section", () => {
+    it("When I select edit from Final Summary but change routing, Then I should step through the section and be returned to the Final Summary once all new questions have been answered", () => {
       $(SubmitPage.summaryShowAllButton()).click();
       $(SubmitPage.insuranceTypeAnswerEdit()).click();
       $(InsuranceTypePage.contents()).click();
@@ -88,6 +107,23 @@ describe("Section Summary", () => {
       expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
       $(InsuranceAddressPage.submit()).click();
       expect(browser.getUrl()).to.contain(AddressDurationPage.pageName);
+      $(AddressDurationPage.submit()).click();
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    });
+
+    it("When I select edit from Final Summary but change routing, Then using previous should not prevent me returning to the section summary once all new questions have been answered", () => {
+      $(SubmitPage.summaryShowAllButton()).click();
+      $(SubmitPage.insuranceTypeAnswerEdit()).click();
+      $(InsuranceTypePage.contents()).click();
+      $(InsuranceTypePage.submit()).click();
+      expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
+      $(InsuranceAddressPage.submit()).click();
+      expect(browser.getUrl()).to.contain(AddressDurationPage.pageName);
+      $(AddressDurationPage.previous()).click();
+      expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
+      $(InsuranceAddressPage.submit()).click();
+      $(AddressDurationPage.submit()).click();
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
     it("When I select edit from Final Summary and change an answer and then go to the next question and click previous, Then I should return to the question I originally edited", () => {
@@ -118,6 +154,7 @@ describe("Section Summary", () => {
       $(InsuranceTypePage.both()).click();
       $(InsuranceTypePage.submit()).click();
       $(InsuranceAddressPage.submit()).click();
+      $(ListedPage.submit()).click();
       expect($(PropertyDetailsSummaryPage.heading()).getText()).to.contain("Property Details Section");
     });
     it("When there is a title set in the sections summary, it is used for the section summary title", () => {
