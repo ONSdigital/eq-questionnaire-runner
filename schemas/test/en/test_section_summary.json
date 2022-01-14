@@ -135,6 +135,38 @@
                             ]
                         }
                     ]
+                },
+                {
+                    "id": "address-listed",
+                    "title": "Listed Status",
+                    "blocks": [
+                        {
+                            "id": "listed",
+                            "type": "Question",
+                            "question": {
+                                "id": "listed-question",
+                                "title": "Does this address have Listed status?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "listed-answer",
+                                        "type": "Radio",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
                 }
             ]
         },
