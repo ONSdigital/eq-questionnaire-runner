@@ -19,6 +19,7 @@ class TestQuestionnaireListChangeEvaluatesSections(QuestionnaireTestCase):
         self.assertEqualUrl("/questionnaire/list-collector/")
 
         self.post({"anyone-else": "No"})
+        self.post()
         self.assertEqualUrl("/questionnaire/")
 
         self.get("/questionnaire/sections/accommodation-section/")
@@ -29,10 +30,7 @@ class TestQuestionnaireListChangeEvaluatesSections(QuestionnaireTestCase):
         self.post()
         self.assertEqualUrl("/questionnaire/")
 
-        self.get("/questionnaire/sections/who-lives-here/")
-        self.assertEqualUrl("/questionnaire/primary-person-list-collector/")
-        self.post({"you-live-here": "No"})
-
+        self.get("questionnaire/people/add-person/?return_to=section-summary")
         self.add_person("John", "Doe")
         self.post({"anyone-else": "No"})
         self.assertEqualUrl("/questionnaire/")
@@ -62,6 +60,7 @@ class TestQuestionnaireListChangeEvaluatesSections(QuestionnaireTestCase):
         self.post({"you-live-here": "Yes"})
         self.add_person("John", "Doe")
         self.post({"anyone-else": "No"})
+        self.post()
 
         self.assertEqualUrl("/questionnaire/")
         self.assertInSelector(
