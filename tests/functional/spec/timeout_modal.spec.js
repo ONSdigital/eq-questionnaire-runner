@@ -11,7 +11,9 @@ describe("Timeout", () => {
     it("It will redirect to signed-out page after session expires", () => {
       browser.pause(25000);
       expect(browser.getUrl()).to.equal("http://localhost:5000/signed-out");
-      expect($("body").getHTML()).to.include("Your survey answers have been saved. You are now signed out.");
+      expect($("body").getHTML())
+        .to.include("Your survey answers have been saved. You are now signed out.")
+        .to.not.include("To protect your information, your progress will be saved and you will be signed out in");
     });
   });
 });
@@ -28,7 +30,7 @@ describe("Timeout Modal", () => {
   });
 
   describe("Given I am completing the survey, when I click on “Continue survey” button of the timeout modal", () => {
-    it("It will extend the session and modal won‘t reappear in the next 15 seconds and no redirect happens", () => {
+    it("It will extend the session and modal won‘t reappear in the next 15 seconds, no redirect will happen", () => {
       checkTimeoutModal();
       $(TimeoutModalPage.submit()).click();
       expect($(TimeoutModalPage.timer()).getText()).to.equal("");
