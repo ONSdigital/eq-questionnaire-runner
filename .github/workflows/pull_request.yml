@@ -24,17 +24,26 @@ jobs:
           sudo apt-get install -y xfonts-base xfonts-75dpi
           wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb
           sudo dpkg -i wkhtmltox_0.12.6-1.bionic_amd64.deb
-      - name: Install Pipenv
-        run: pip install pipenv==2018.11.26
-      - name: Cache virtualenv
-        id: cache-virtualenv
+      - name: Install poetry
+        uses: snok/install-poetry@v1
+      - name: Cache Poetry virtualenv
         uses: actions/cache@v1
+        id: cache
         with:
-          path: ~/.local/share/virtualenvs/
-          key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('Pipfile.lock') }}
-      - name: Install virtual environment
-        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-        run: pipenv install --dev
+          path: ~/.virtualenvs
+          key: poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            poetry-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Set Poetry config
+        run: |
+          poetry config virtualenvs.path ~/.virtualenvs
+
+      - name: Install Dependencies
+        run: |
+          poetry config virtualenvs.path ~/.virtualenvs
+          poetry install
+        if: steps.cache.outputs.cache-hit != 'true'
   node-dependencies:
     runs-on: ubuntu-18.04
     steps:
@@ -74,17 +83,26 @@ jobs:
             sudo dpkg -i wkhtmltox_0.12.6-1.bionic_amd64.deb
       - name: Write app version
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
-      - name: Install pipenv
-        run: pip install pipenv==2018.11.26
-      - name: Cache virtualenv
-        id: cache-virtualenv
+      - name: Install poetry
+        uses: snok/install-poetry@v1
+      - name: Cache Poetry virtualenv
         uses: actions/cache@v1
+        id: cache
         with:
-          path: ~/.local/share/virtualenvs/
-          key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('Pipfile.lock') }}
-      - name: Install virtual environment
-        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-        run: pipenv install --dev
+          path: ~/.virtualenvs
+          key: poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            poetry-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Set Poetry config
+        run: |
+          poetry config virtualenvs.path ~/.virtualenvs
+
+      - name: Install Dependencies
+        run: |
+          poetry config virtualenvs.path ~/.virtualenvs
+          poetry install
+        if: steps.cache.outputs.cache-hit != 'true'
       - name: Load templates
         run: make load-design-system-templates
       - name: Compile translations
@@ -92,11 +110,11 @@ jobs:
       - name: Link env vars
         run: ln -sf .development.env .env
       - name: Running translation tests
-        run: pipenv run python -m scripts.extract_translation_templates --test
+        run: poetry run python -m scripts.extract_translation_templates --test
       - name: Running lint tests
-        run: pipenv run ./scripts/run_lint_python.sh
+        run: poetry run ./scripts/run_lint_python.sh
       - name: Running unit tests
-        run: pipenv run ./scripts/run_tests_unit.sh
+        run: poetry run ./scripts/run_tests_unit.sh
   validate-schemas:
     runs-on: ubuntu-18.04
     steps:
@@ -124,18 +142,26 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - name: Install pipenv
-        run: pip install pipenv==2018.11.26
-      - name: Cache virtualenv
-        id: cache-virtualenv
+      - name: Install poetry
+        uses: snok/install-poetry@v1
+      - name: Cache Poetry virtualenv
         uses: actions/cache@v1
+        id: cache
         with:
-          path: ~/.local/share/virtualenvs/
-          key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('Pipfile.lock') }}
-      - name: Install virtual environment
-        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+          path: ~/.virtualenvs
+          key: poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            poetry-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Set Poetry config
         run: |
-          pipenv install --dev
+          poetry config virtualenvs.path ~/.virtualenvs
+
+      - name: Install Dependencies
+        run: |
+          poetry config virtualenvs.path ~/.virtualenvs
+          poetry install
+        if: steps.cache.outputs.cache-hit != 'true'
       - name: Get yarn cache
         id: get-yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"

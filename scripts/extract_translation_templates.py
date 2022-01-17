@@ -40,7 +40,7 @@ def print_filename_results(filename, success=True):
 def build_static_template(output_filepath):
     subprocess.run(
         [
-            "pipenv",
+            "poetry",
             "run",
             "pybabel",
             "extract",

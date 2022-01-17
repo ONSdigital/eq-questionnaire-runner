@@ -19,59 +19,59 @@ lint: lint-python
 	yarn lint
 
 lint-python:
-	pipenv run ./scripts/run_lint_python.sh
+	poetry run ./scripts/run_lint_python.sh
 
 format: format-python
 	yarn format
 
 format-python:
-	pipenv run isort .
-	pipenv run black .
+	poetry run isort .
+	poetry run black .
 
 test:
-	pipenv run ./scripts/run_tests.sh
+	poetry run ./scripts/run_tests.sh
 
 test-unit:
-	pipenv run ./scripts/run_tests_unit.sh
+	poetry run ./scripts/run_tests_unit.sh
 
 test-functional:
-	pipenv run ./scripts/run_tests_functional.sh
+	poetry run ./scripts/run_tests_functional.sh
 
 validate-test-schemas:
-	pipenv run ./scripts/validate_test_schemas.sh
+	poetry run ./scripts/validate_test_schemas.sh
 
 translation-templates:
-	pipenv run python -m scripts.extract_translation_templates
+	poetry run python -m scripts.extract_translation_templates
 
 test-translation-templates:
-	pipenv run python -m scripts.extract_translation_templates --test
+	poetry run python -m scripts.extract_translation_templates --test
 
 translate:
-	pipenv run pybabel compile -d app/translations
+	poetry run pybabel compile -d app/translations
 
 run-validator:
-	pipenv run ./scripts/run_validator.sh
+	poetry run ./scripts/run_validator.sh
 
 link-development-env:
 	ln -sf .development.env .env
 
 run: build link-development-env
-	pipenv run flask run
+	poetry run flask run
 
 run-gunicorn-async: link-development-env
-	WEB_SERVER_TYPE=gunicorn-async pipenv run ./run_app.sh
+	WEB_SERVER_TYPE=gunicorn-async poetry run ./run_app.sh
 
 run-gunicorn-threads: link-development-env
-	WEB_SERVER_TYPE=gunicorn-threads pipenv run ./run_app.sh
+	WEB_SERVER_TYPE=gunicorn-threads poetry run ./run_app.sh
 
 run-uwsgi: link-development-env
-	WEB_SERVER_TYPE=uwsgi pipenv run ./run_app.sh
+	WEB_SERVER_TYPE=uwsgi poetry run ./run_app.sh
 
 run-uwsgi-threads: link-development-env
-	WEB_SERVER_TYPE=uwsgi-threads pipenv run ./run_app.sh
+	WEB_SERVER_TYPE=uwsgi-threads poetry run ./run_app.sh
 
 run-uwsgi-async: link-development-env
-	WEB_SERVER_TYPE=uwsgi-async pipenv run ./run_app.sh
+	WEB_SERVER_TYPE=uwsgi-async poetry run ./run_app.sh
 
 dev-compose-up:
 	docker-compose pull eq-questionnaire-launcher
@@ -87,4 +87,4 @@ dev-compose-down-linux:
 	docker-compose -f docker-compose-dev-linux.yml down
 
 profile:
-	pipenv run python profile_application.py
+	poetry run python profile_application.py
