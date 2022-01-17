@@ -1,10 +1,10 @@
-import ListCollectorPage from "../generated_pages/placeholder_based_on_first_item_in_list/list-collector.page.js";
-import ListCollectorAddPage from "../generated_pages/placeholder_based_on_first_item_in_list/list-collector-add.page.js";
-import ListStatusInterstitial from "../generated_pages/placeholder_based_on_first_item_in_list/list-status.page.js";
-import FavouriteDrinkQuestion from "../generated_pages/placeholder_based_on_first_item_in_list/favourite-drink.page.js";
-import ListStatusQuestion from "../generated_pages/placeholder_based_on_first_item_in_list/list-status-2.page.js";
-import SummaryPage from "../generated_pages/placeholder_based_on_first_item_in_list/personal-details-section-summary.page.js";
-import HubPage from "../base_pages/hub.page.js";
+import ListCollectorPage from "../../../generated_pages/placeholder_based_on_first_item_in_list/list-collector.page.js";
+import ListCollectorAddPage from "../../../generated_pages/placeholder_based_on_first_item_in_list/list-collector-add.page.js";
+import ListStatusInterstitial from "../../../generated_pages/placeholder_based_on_first_item_in_list/list-status.page.js";
+import FavouriteDrinkQuestion from "../../../generated_pages/placeholder_based_on_first_item_in_list/favourite-drink.page.js";
+import ListStatusQuestion from "../../../generated_pages/placeholder_based_on_first_item_in_list/list-status-2.page.js";
+import SummaryPage from "../../../generated_pages/placeholder_based_on_first_item_in_list/personal-details-section-summary.page.js";
+import HubPage from "../../../base_pages/hub.page.js";
 
 describe("Component: Definition", () => {
   describe("Load the Survey", () => {
