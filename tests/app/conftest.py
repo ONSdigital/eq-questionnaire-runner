@@ -1,7 +1,9 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import pytest
 
+from app.data_models.session_data import SessionData
+from app.data_models.session_store import SessionStore
 from app.setup import create_app
 
 RESPONSE_EXPIRY = datetime(2021, 11, 10, 8, 54, 22, tzinfo=timezone.utc)
@@ -51,3 +53,49 @@ def answer_schema_textfield():
         "type": "TextField",
         "parent_id": "checkbox-question-textfield-detail",
     }
+
+
+@pytest.fixture
+def expires_at():
+    return datetime.now(timezone.utc) + timedelta(seconds=5)
+
+
+@pytest.fixture()
+def session_store():
+    return SessionStore("user_ik", "pepper", "eq_session_id")
+
+
+@pytest.fixture
+def session_data():
+    return SessionData(
+        tx_id="tx_id",
+        schema_name="some_schema_name",
+        response_id="response_id",
+        period_str="period_str",
+        language_code=None,
+        launch_language_code=None,
+        survey_url=None,
+        ru_name="ru_name",
+        ru_ref="ru_ref",
+        case_id="case_id",
+    )
+
+
+@pytest.fixture
+def mock_get_session_store(mocker):
+    return mocker.patch("app.authentication.authenticator.get_session_store")
+
+
+@pytest.fixture
+def mock_get_metadata(mocker):
+    return mocker.patch("app.authentication.roles.get_metadata")
+
+
+@pytest.fixture
+def mock_current_user(mocker):
+    return mocker.patch("app.authentication.roles.current_user")
+
+
+@pytest.fixture
+def mock_redis_put(mocker):
+    return mocker.patch("app.storage.redis.Redis.put")
