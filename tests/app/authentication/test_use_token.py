@@ -8,8 +8,8 @@ from app.storage.errors import ItemAlreadyExistsError
 
 
 def test_should_use_token(app, mock_redis_put):
-    # Given
     with app.app_context():
+        # Given
         jti_token = str(uuid4())
         expires_at = datetime.now(tz=timezone.utc) + timedelta(seconds=60)
 
