@@ -15,8 +15,12 @@ def test_string_to_datetime(operation_helper):
 @pytest.mark.parametrize(
     "answer_id,value,expected",
     [
-        ("mandatory-radio-answer", "{body_part} (piped)", "Body (piped)"),
-        ("mandatory-checkbox-answer", "Body", "Body"),
+        (
+            "mandatory-radio-answer",
+            "{business_name} (piped)",
+            "ESSENTIAL SERVICES LTD (piped)",
+        ),
+        ("mandatory-radio-answer", "Google LTD", "Google LTD"),
     ],
 )
 def test_get_option_label_from_value(operation_helper, answer_id, value, expected):

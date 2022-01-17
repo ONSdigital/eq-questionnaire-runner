@@ -394,8 +394,12 @@ def test_format_date_range(placeholder_transform, date_range, expected):
 @pytest.mark.parametrize(
     "answer_id,value,expected",
     [
-        ("mandatory-radio-answer", "{body_part} (piped)", "Body (piped)"),
-        ("mandatory-checkbox-answer", "Body", "Body"),
+        (
+            "mandatory-radio-answer",
+            "{business_name} (piped)",
+            "ESSENTIAL SERVICES LTD (piped)",
+        ),
+        ("mandatory-radio-answer", "Meta LTD", "Meta LTD"),
     ],
 )
 def test_option_label_from_value_with_placeholder_label(

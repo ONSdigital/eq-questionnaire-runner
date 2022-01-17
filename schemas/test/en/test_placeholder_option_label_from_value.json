@@ -19,6 +19,11 @@
         {
             "name": "ru_name",
             "type": "string"
+        },
+        {
+            "name": "trad_as",
+            "type": "string",
+            "optional": true
         }
     ],
     "questionnaire_flow": {
@@ -37,120 +42,15 @@
                     "blocks": [
                         {
                             "type": "Question",
-                            "id": "mandatory-checkbox",
-                            "question": {
-                                "answers": [
-                                    {
-                                        "id": "mandatory-checkbox-answer",
-                                        "mandatory": true,
-                                        "options": [
-                                            {
-                                                "label": "Head",
-                                                "value": "Head"
-                                            },
-                                            {
-                                                "label": "Body",
-                                                "value": "Body"
-                                            },
-                                            {
-                                                "label": "Right Arm",
-                                                "value": "Right Arm"
-                                            },
-                                            {
-                                                "label": "Left Arm",
-                                                "value": "Left Arm"
-                                            }
-                                        ],
-                                        "type": "Checkbox"
-                                    }
-                                ],
-                                "id": "mandatory-checkbox-question",
-                                "title": "When you had your accident, where did you sustain injuries?",
-                                "type": "General",
-                                "guidance": {
-                                    "contents": [
-                                        {
-                                            "list": [
-                                                "Choose 1 option which will be piped to Question title",
-                                                "Choose more than 1 option, first selected option will be piped to radio"
-                                            ]
-                                        }
-                                    ]
-                                }
-                            }
-                        },
-                        {
-                            "type": "Question",
-                            "id": "recovery-question-checkbox-block",
-                            "question": {
-                                "id": "recovery-question-checkbox",
-                                "title": {
-                                    "text": "How long did it take to recover from the injury to your <em>{body_part}</em>?",
-                                    "placeholders": [
-                                        {
-                                            "placeholder": "body_part",
-                                            "transforms": [
-                                                {
-                                                    "transform": "first_non_empty_item",
-                                                    "arguments": {
-                                                        "items": [
-                                                            {
-                                                                "source": "answers",
-                                                                "identifier": "mandatory-checkbox-answer"
-                                                            }
-                                                        ]
-                                                    }
-                                                },
-                                                {
-                                                    "transform": "option_label_from_value",
-                                                    "arguments": {
-                                                        "value": {
-                                                            "source": "previous_transform"
-                                                        },
-                                                        "answer_id": "mandatory-checkbox-answer"
-                                                    }
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                },
-                                "type": "General",
-                                "answers": [
-                                    {
-                                        "id": "recovery-checkbox-answer",
-                                        "label": "Recovery time",
-                                        "mandatory": false,
-                                        "type": "Number"
-                                    }
-                                ]
-                            },
-                            "skip_conditions": {
-                                "when": {
-                                    ">": [
-                                        {
-                                            "count": [
-                                                {
-                                                    "identifier": "mandatory-checkbox-answer",
-                                                    "source": "answers"
-                                                }
-                                            ]
-                                        },
-                                        1
-                                    ]
-                                }
-                            }
-                        },
-                        {
-                            "type": "Question",
                             "id": "mandatory-radio",
                             "question": {
                                 "type": "General",
                                 "id": "mandatory-radio-question",
-                                "title": "If you suffered any one injury from the options below, please select the most serious one.",
+                                "title": "What is the trade name of your business ?",
                                 "guidance": {
                                     "contents": [
                                         {
-                                            "description": "First option is piped from the previous question"
+                                            "description": "First option is piped from metadata"
                                         }
                                     ]
                                 },
@@ -162,18 +62,18 @@
                                         "options": [
                                             {
                                                 "label": {
-                                                    "text": "{body_part} (piped)",
+                                                    "text": "{business_name} (piped)",
                                                     "placeholders": [
                                                         {
-                                                            "placeholder": "body_part",
+                                                            "placeholder": "business_name",
                                                             "transforms": [
                                                                 {
                                                                     "transform": "first_non_empty_item",
                                                                     "arguments": {
                                                                         "items": [
                                                                             {
-                                                                                "source": "answers",
-                                                                                "identifier": "mandatory-checkbox-answer"
+                                                                                "source": "metadata",
+                                                                                "identifier": "trad_as"
                                                                             }
                                                                         ]
                                                                     }
@@ -182,54 +82,31 @@
                                                         }
                                                     ]
                                                 },
-                                                "value": "{body_part} (piped)"
+                                                "value": "{business_name} (piped)"
                                             },
                                             {
-                                                "label": "Eyes",
-                                                "value": "Eyes"
+                                                "label": "Google LTD",
+                                                "value": "Google LTD"
                                             },
                                             {
-                                                "label": "Ears",
-                                                "value": "Ears"
-                                            },
-                                            {
-                                                "label": "Mouth",
-                                                "value": "Mouth"
-                                            },
-                                            {
-                                                "label": "Nose",
-                                                "value": "Nose"
+                                                "label": "Meta LTD",
+                                                "value": "Meta LTD"
                                             }
                                         ]
                                     }
                                 ]
-                            },
-                            "skip_conditions": {
-                                "when": {
-                                    "==": [
-                                        {
-                                            "count": [
-                                                {
-                                                    "identifier": "mandatory-checkbox-answer",
-                                                    "source": "answers"
-                                                }
-                                            ]
-                                        },
-                                        1
-                                    ]
-                                }
                             }
                         },
                         {
                             "type": "Question",
-                            "id": "recovery-question-radio-block",
+                            "id": "confirmation-question-radio-block",
                             "question": {
-                                "id": "recovery-question-radio",
+                                "id": "confirmation-question-radio",
                                 "title": {
-                                    "text": "How long did it take to recover from the injury to your <em>{body_part}</em>?",
+                                    "text": "You chose <em>{business_name}</em> as your business name, is that correct ?",
                                     "placeholders": [
                                         {
-                                            "placeholder": "body_part",
+                                            "placeholder": "business_name",
                                             "transforms": [
                                                 {
                                                     "transform": "option_label_from_value",
@@ -248,27 +125,21 @@
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "recovery-radio-answer",
-                                        "label": "Recovery time",
-                                        "mandatory": false,
-                                        "type": "Number"
+                                        "type": "Radio",
+                                        "id": "confirm-business-radio-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
                                     }
                                 ]
-                            },
-                            "skip_conditions": {
-                                "when": {
-                                    "==": [
-                                        {
-                                            "count": [
-                                                {
-                                                    "identifier": "mandatory-checkbox-answer",
-                                                    "source": "answers"
-                                                }
-                                            ]
-                                        },
-                                        1
-                                    ]
-                                }
                             }
                         }
                     ],

@@ -853,7 +853,7 @@ def placeholder_renderer(option_label_from_value_schema):
         language="en",
         answer_store=answer_store,
         list_store=ListStore(),
-        metadata=ImmutableDict({}),
+        metadata=ImmutableDict({"trad_as": "ESSENTIAL SERVICES LTD"}),
         response_metadata={},
         schema=option_label_from_value_schema,
     )
