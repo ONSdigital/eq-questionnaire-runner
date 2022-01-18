@@ -65,7 +65,7 @@ def fixture_session_store():
     return SessionStore("user_ik", "pepper", "eq_session_id")
 
 
-@pytest.fixture()
+@pytest.fixture
 def session_data():
     return SessionData(
         tx_id="tx_id",
