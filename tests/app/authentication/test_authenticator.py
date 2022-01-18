@@ -13,9 +13,7 @@ def test_check_session_with_user_id_in_session(
     session_data,
     expires_at,
     mock_get_session_store,
-):
-    mock_get_session_store.return_value = session_store
-
+):  # pylint: disable=unused-argument
     with app.app_context():
         # Given
         session_store.create("eq_session_id", "user_id", session_data, expires_at)
@@ -46,9 +44,7 @@ def test_load_user(
     session_data,
     expires_at,
     mock_get_session_store,
-):
-    mock_get_session_store.return_value = session_store
-
+):  # pylint: disable=unused-argument
     with app.app_context():
         # Given
         session_store.create(
@@ -73,9 +69,7 @@ def test_request_load_user(
     session_data,
     expires_at,
     mock_get_session_store,
-):
-    mock_get_session_store.return_value = session_store
-
+):  # pylint: disable=unused-argument
     with app.app_context():
         # Given
         session_store.create("eq_session_id", "user_id", session_data, expires_at)
@@ -94,9 +88,7 @@ def test_no_user_when_session_has_expired(
     session_store,
     session_data,
     mock_get_session_store,
-):
-    mock_get_session_store.return_value = session_store
-
+):  # pylint: disable=unused-argument
     with app.app_context():
         # Given
         session_store.create(
@@ -121,9 +113,7 @@ def test_valid_user_does_not_extend_session_expiry_when_expiry_less_than_60_seco
     session_data,
     expires_at,
     mock_get_session_store,
-):
-    mock_get_session_store.return_value = session_store
-
+):  # pylint: disable=unused-argument
     with app.app_context():
         # Given
         session_store.create("eq_session_id", "user_id", session_data, expires_at)
@@ -146,9 +136,7 @@ def test_valid_user_extends_session_expiry_when_expiry_greater_than_60_seconds_d
     session_data,
     expires_at,
     mock_get_session_store,
-):
-    mock_get_session_store.return_value = session_store
-
+):  # pylint: disable=unused-argument
     with app.app_context():
         # Given
         session_store.create("eq_session_id", "user_id", session_data, expires_at)

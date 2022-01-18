@@ -60,12 +60,12 @@ def expires_at():
     return datetime.now(timezone.utc) + timedelta(seconds=5)
 
 
-@pytest.fixture()
-def session_store():
+@pytest.fixture(name="session_store")
+def fixture_session_store():
     return SessionStore("user_ik", "pepper", "eq_session_id")
 
 
-@pytest.fixture
+@pytest.fixture()
 def session_data():
     return SessionData(
         tx_id="tx_id",
@@ -82,8 +82,10 @@ def session_data():
 
 
 @pytest.fixture
-def mock_get_session_store(mocker):
-    return mocker.patch("app.authentication.authenticator.get_session_store")
+def mock_get_session_store(mocker, session_store):
+    return mocker.patch(
+        "app.authentication.authenticator.get_session_store", return_value=session_store
+    )
 
 
 @pytest.fixture
