@@ -1,7 +1,7 @@
-import DateQuestionPage from "../generated_pages/placeholder_transform_date_range_bounds/date-question.page";
-import DaysQuestionBlockPage from "../generated_pages/placeholder_transform_date_range_bounds/days-question-block.page";
-import Block0Page from "../generated_pages/placeholder_transform_date_range_bounds/block0.page";
-import RangeQuestionBlockPage from "../generated_pages/placeholder_transform_date_range_bounds/range-question-block.page";
+import DateQuestionPage from "../../../generated_pages/placeholder_transform_date_range_bounds/date-question.page";
+import DaysQuestionBlockPage from "../../../generated_pages/placeholder_transform_date_range_bounds/days-question-block.page";
+import Block0Page from "../../../generated_pages/placeholder_transform_date_range_bounds/block0.page";
+import RangeQuestionBlockPage from "../../../generated_pages/placeholder_transform_date_range_bounds/range-question-block.page";
 
 describe("Date checks", () => {
   beforeEach("Load the survey", () => {

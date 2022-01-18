@@ -8,11 +8,8 @@ from app.jinja_filters import (
 )
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.questionnaire.schema_utils import (
-    choose_question_to_display,
-    get_answer_ids_in_block,
-    transform_variants,
-)
+from app.questionnaire.schema_utils import get_answer_ids_in_block
+from app.questionnaire.variants import choose_question_to_display, transform_variants
 from app.views.contexts.context import Context
 from app.views.contexts.summary.group import Group
 

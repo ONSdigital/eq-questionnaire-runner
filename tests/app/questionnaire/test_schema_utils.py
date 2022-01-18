@@ -2,7 +2,7 @@ from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.list_store import ListStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.questionnaire.schema_utils import (
+from app.questionnaire.variants import (
     choose_content_to_display,
     choose_question_to_display,
     transform_variants,

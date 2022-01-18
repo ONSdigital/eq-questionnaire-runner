@@ -47,9 +47,6 @@ describe("List Collector Driving Checkbox Question", () => {
       $(AnyoneUsuallyLiveAtPage.previous()).click();
       $(PrimaryPersonListCollectorPage.noIDonTUsuallyLiveHere()).click();
       $(PrimaryPersonListCollectorPage.submit()).click();
-      $(AnyoneUsuallyLiveAtPage.submit()).click();
-      $(ListCollectorPage.submit()).click();
-      $(ListCollectorTemporaryAwayPage.submit()).click();
 
       const householdMembersExpected = ["Suzy Clemens"];
       checkPeopleInList(householdMembersExpected, SummaryPage.peopleListLabel);

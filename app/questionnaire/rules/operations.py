@@ -2,6 +2,7 @@ from copy import deepcopy
 from datetime import date
 from decimal import Decimal
 from typing import (
+    TYPE_CHECKING,
     Iterable,
     Mapping,
     Optional,
@@ -15,11 +16,17 @@ from typing import (
 from babel.dates import format_datetime
 from dateutil.relativedelta import relativedelta
 
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.rules.helpers import ValueTypes, casefold
 from app.questionnaire.rules.operator import OPERATION_MAPPING
 from app.questionnaire.rules.utils import parse_datetime
 from app.questionnaire.value_source_resolver import ValueSourceTypes
 from app.settings import DEFAULT_LOCALE
+
+if TYPE_CHECKING:
+    from app.questionnaire.placeholder_renderer import (
+        PlaceholderRenderer,  # pragma: no cover
+    )
 
 ComparableValue = TypeVar("ComparableValue", str, int, float, Decimal, date)
 NonArrayPrimitiveTypes = Union[str, int, float, Decimal, None]
@@ -49,9 +56,16 @@ class Operations:
     A class to group the operations
     """
 
-    def __init__(self, language: str) -> None:
+    def __init__(
+        self,
+        language: str,
+        schema: QuestionnaireSchema,
+        renderer: "PlaceholderRenderer",
+    ) -> None:
         self._language = language
         self._locale = DEFAULT_LOCALE if language in {"en", "eo"} else language
+        self.renderer = renderer
+        self.schema = schema
 
     @staticmethod
     @casefold
@@ -214,3 +228,20 @@ class Operations:
             )
 
         return results
+
+    def evaluate_option_label_from_value(self, value: str, answer_id: str) -> str:
+        answers = self.schema.get_answers_by_answer_id(answer_id)
+        label_options: Union[str, dict] = [
+            options["label"]
+            for answer in answers
+            for options in answer["options"]
+            if value == options["value"]
+        ][0]
+
+        if isinstance(label_options, str):
+            label = label_options
+
+        else:
+            label = self.renderer.render_placeholder(label_options, list_item_id=None)
+
+        return label
