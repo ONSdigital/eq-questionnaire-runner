@@ -1,16 +1,17 @@
 import TimeoutInterstitialPage from "../generated_pages/timeout_modal/timeout-modal-interstitial.page";
 import TimeoutSubmitPage from "../generated_pages/timeout_modal/submit.page";
 import { TimeoutModalPage } from "../base_pages/timeout-modal.page.js";
+import ThankYouPage from "../base_pages/thank-you.page.js";
 
 describe("Timeout", () => {
-  describe("Given I am completing the survey, when the session timeout is set to 5 seconds", () => {
+  describe("Given I am completing the survey, ", () => {
     before(() => {
       browser.openQuestionnaire("test_timeout.json");
     });
 
-    it("It will redirect to signed-out page after session expires", () => {
+    it("When the session timeout is set to 5 seconds, Then it will redirect to session expired page after session expires", () => {
       browser.pause(25000);
-      expect(browser.getUrl()).to.equal("http://localhost:5000/session-expired");
+      expect(browser.getUrl()).to.contain("/session-expired");
       expect($("body").getHTML())
         .to.include(
           "Sorry, you need to sign in again",
@@ -25,45 +26,64 @@ describe("Timeout", () => {
 });
 
 describe("Timeout Modal", () => {
-  beforeEach("Load the survey", () => {
-    browser.openQuestionnaire("test_timeout_modal.json");
-  });
+  describe("Given I am completing the survey, ", () => {
+    beforeEach(() => {
+      browser.openQuestionnaire("test_timeout_modal.json");
+    });
 
-  describe("Given I am completing the survey, when the session timeout is set to 125 seconds", () => {
-    it("It will make the timeout modal with the option to extend the session visible after 65 seconds", () => {
+    it("When the session timeout is set to 125 seconds, Then it will make the timeout modal with the option to extend the session visible after 65 seconds", () => {
       checkTimeoutModal();
     });
-  });
 
-  describe("Given I am completing the survey, when I click on “Continue survey” button of the timeout modal", () => {
-    it("It will extend the session and modal won‘t reappear in the next 15 seconds, no redirect will happen", () => {
+    it("When I click “Continue survey” button of the timeout modal, Then it will extend the session and modal won‘t reappear in the next 15 seconds, no redirect will happen", () => {
       checkTimeoutModal();
       $(TimeoutModalPage.submit()).click();
       expect($(TimeoutModalPage.timer()).getText()).to.equal("");
       browser.pause(15000);
       expect(browser.getUrl()).to.contain(TimeoutInterstitialPage.pageName);
     });
-  });
-  describe("Given I am completing the survey, when I open a new window and then focus on the modal window", () => {
-    it("It will extend the session", () => {
+
+    it("When I open a new window and then focus on the modal window, Then it will extend the session", () => {
       checkTimeoutModal();
       browser.newWindow("");
-      browser.switchWindow("http://localhost:5000/questionnaire/timeout-modal-interstitial/");
+      browser.switchWindow(TimeoutInterstitialPage.pageName);
       browser.pause(10000);
       expect(browser.getUrl()).to.contain(TimeoutInterstitialPage.pageName);
     });
   });
+});
 
-  describe("Given I am completing the survey, when I get to post submission page", () => {
-    it("It will make the timeout modal visible 60 seconds before session expiry", () => {
+describe("Timeout Modal Post Submission", () => {
+  describe("Given I am completing the survey and get to post submission page, ", () => {
+    beforeEach(() => {
+      browser.openQuestionnaire("test_timeout_modal.json");
       $(TimeoutInterstitialPage.submit()).click();
       $(TimeoutSubmitPage.submit()).click();
+    });
+
+    it("When the session timeout is set to 125 seconds, Then it will make the timeout modal with the option to extend the session visible after 65 seconds", () => {
       checkTimeoutModal();
     });
-  });
 
-  function checkTimeoutModal() {
-    $(TimeoutModalPage.timer()).waitForDisplayed({ timeout: 80000 });
-    expect($(TimeoutModalPage.timer()).getText()).to.equal("To protect your information, your progress will be saved and you will be signed out in 1 minute.");
-  }
+    it("When I click “Continue survey” button of the timeout modal, Then it will extend the session and modal won‘t reappear in the next 15 seconds, no redirect will happen", () => {
+      checkTimeoutModal();
+      $(TimeoutModalPage.submit()).click();
+      expect($(TimeoutModalPage.timer()).getText()).to.equal("");
+      browser.pause(15000);
+      expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
+    });
+
+    it("When I open a new window and then focus on the modal window, Then it will extend the session", () => {
+      checkTimeoutModal();
+      browser.newWindow("");
+      browser.switchWindow(ThankYouPage.pageName);
+      browser.pause(10000);
+      expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
+    });
+  });
 });
+
+function checkTimeoutModal() {
+  $(TimeoutModalPage.timer()).waitForDisplayed({ timeout: 80000 });
+  expect($(TimeoutModalPage.timer()).getText()).to.equal("To protect your information, your progress will be saved and you will be signed out in 1 minute.");
+}
