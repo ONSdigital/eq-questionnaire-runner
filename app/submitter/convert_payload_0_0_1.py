@@ -7,7 +7,7 @@ from app.data_models.answer import AnswerValueTypes, ListAnswer
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.routing_path import RoutingPath
-from app.questionnaire.schema_utils import choose_question_to_display
+from app.questionnaire.variants import choose_question_to_display
 
 MetadataType = Mapping[str, Union[str, int, list]]
 

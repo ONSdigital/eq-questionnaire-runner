@@ -1,7 +1,6 @@
-from typing import Any, Mapping, MutableMapping, Optional
+from typing import Any, Mapping, MutableMapping, Optional, Union
 
 from jsonpointer import resolve_pointer, set_pointer
-from werkzeug.datastructures import ImmutableDict
 
 from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
@@ -9,6 +8,7 @@ from app.data_models.list_store import ListStore
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.questionnaire.plural_forms import get_plural_form_key
+from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.schema_utils import find_pointers_containing
 
 
@@ -23,10 +23,10 @@ class PlaceholderRenderer:
         language: str,
         answer_store: AnswerStore,
         list_store: ListStore,
-        metadata: ImmutableDict,
+        metadata: Mapping,
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
-        location: Location = None,
+        location: Union[None, Location, RelationshipLocation] = None,
     ):
         self._language = language
         self._answer_store = answer_store
@@ -75,6 +75,7 @@ class PlaceholderRenderer:
             schema=self._schema,
             list_item_id=list_item_id,
             location=self._location,
+            renderer=self,
         )
 
         placeholder_data = QuestionnaireSchema.get_mutable_deepcopy(placeholder_data)

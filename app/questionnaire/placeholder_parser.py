@@ -1,17 +1,29 @@
 from decimal import Decimal
-from typing import Any, Mapping, MutableMapping, Optional, Sequence, Union
-
-from werkzeug.datastructures import ImmutableDict
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Mapping,
+    MutableMapping,
+    Optional,
+    Sequence,
+    Union,
+)
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
+from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.value_source_resolver import (
     ValueSourceEscapedTypes,
     ValueSourceResolver,
     ValueSourceTypes,
 )
+
+if TYPE_CHECKING:
+    from app.questionnaire.placeholder_renderer import (
+        PlaceholderRenderer,  # pragma: no cover
+    )
 
 TransformedValueTypes = Union[None, str, int, Decimal, bool]
 
@@ -27,11 +39,12 @@ class PlaceholderParser:
         language: str,
         answer_store: AnswerStore,
         list_store: ListStore,
-        metadata: ImmutableDict,
+        metadata: Mapping,
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
+        renderer: "PlaceholderRenderer",
         list_item_id: Optional[str] = None,
-        location: Location = None,
+        location: Union[Location, RelationshipLocation, None] = None,
     ):
 
         self._answer_store = answer_store
@@ -41,7 +54,7 @@ class PlaceholderParser:
         self._schema = schema
         self._list_item_id = list_item_id
         self._location = location
-        self._transformer = PlaceholderTransforms(language)
+        self._transformer = PlaceholderTransforms(language, schema, renderer)
         self._placeholder_map: MutableMapping[
             str, Union[ValueSourceEscapedTypes, ValueSourceTypes, None]
         ] = {}

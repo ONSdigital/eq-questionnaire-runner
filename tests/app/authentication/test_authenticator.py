@@ -1,169 +1,173 @@
-from datetime import datetime, timedelta, timezone
-from unittest.mock import Mock
+from datetime import datetime, timezone
 
+from flask import Flask
 from flask import session as cookie_session
-from flask.wrappers import Request
-from mock import patch
 
 from app.authentication.authenticator import load_user, request_load_user, user_loader
-from app.data_models.session_data import SessionData
-from app.data_models.session_store import SessionStore
 from app.settings import USER_IK
-from tests.app.app_context_test_case import AppContextTestCase
 
 
-class TestAuthenticator(AppContextTestCase):  # pylint: disable=too-many-public-methods
-    def setUp(self):
-        super().setUp()
-        self.session_data = SessionData(
-            tx_id="tx_id",
-            schema_name="some_schema_name",
-            response_id="response_id",
-            period_str="period_str",
-            language_code=None,
-            launch_language_code=None,
-            survey_url=None,
-            ru_name="ru_name",
-            ru_ref="ru_ref",
-            case_id="case_id",
+def test_check_session_with_user_id_in_session(
+    app,
+    session_store,
+    session_data,
+    expires_at,
+    mocker,
+):
+    mocker.patch(
+        "app.authentication.authenticator.get_session_store", return_value=session_store
+    )
+    with app.app_context():
+        # Given
+        session_store.create("eq_session_id", "user_id", session_data, expires_at)
+        cookie_session[USER_IK] = "user_ik"
+
+        # When
+        user = load_user()
+
+        # Then
+        assert user.user_id == "user_id"
+        assert user.user_ik == "user_ik"
+
+
+def test_check_session_with_no_user_id_in_session(app, mocker):
+    mocker.patch(
+        "app.authentication.authenticator.get_session_store", return_value=None
+    )
+
+    with app.app_context():
+        # Given / When
+        user = load_user()
+
+        # Then
+        assert user is None
+
+
+def test_load_user(
+    app,
+    session_store,
+    session_data,
+    expires_at,
+    mocker,
+):
+    mocker.patch(
+        "app.authentication.authenticator.get_session_store", return_value=session_store
+    )
+    with app.app_context():
+        # Given
+        session_store.create(
+            "eq_session_id",
+            "user_id",
+            session_data,
+            expires_at,
         )
-        self.session_store = SessionStore("user_ik", "pepper", "eq_session_id")
-        self.expires_at = datetime.now(timezone.utc) + timedelta(seconds=5)
+        cookie_session[USER_IK] = "user_ik"
 
-    def test_check_session_with_user_id_in_session(self):
-        with self.app_request_context("/status"):
-            with patch(
-                "app.authentication.authenticator.get_session_store",
-                return_value=self.session_store,
-            ):
-                # Given
-                self.session_store.create(
-                    "eq_session_id", "user_id", self.session_data, self.expires_at
-                )
-                cookie_session[USER_IK] = "user_ik"
+        # When
+        user = user_loader(None)
 
-                # When
-                user = load_user()
+        # Then
+        assert user.user_id == "user_id"
+        assert user.user_ik == "user_ik"
 
-                # Then
-                self.assertEqual(user.user_id, "user_id")
-                self.assertEqual(user.user_ik, "user_ik")
 
-    def test_check_session_with_no_user_id_in_session(self):
-        with self.app_request_context("/status"):
-            with patch(
-                "app.authentication.authenticator.get_session_store", return_value=None
-            ):
-                # When
-                user = load_user()
+def test_request_load_user(
+    app,
+    session_store,
+    session_data,
+    expires_at,
+    mocker,
+):
+    mocker.patch(
+        "app.authentication.authenticator.get_session_store", return_value=session_store
+    )
+    with app.app_context():
+        # Given
+        session_store.create("eq_session_id", "user_id", session_data, expires_at)
+        cookie_session[USER_IK] = "user_ik"
 
-                # Then
-                self.assertIsNone(user)
+        # When
+        user = request_load_user(None)
 
-    def test_load_user(self):
-        with self.app_request_context("/status"):
-            with patch(
-                "app.authentication.authenticator.get_session_store",
-                return_value=self.session_store,
-            ):
-                # Given
-                self.session_store.create(
-                    "eq_session_id", "user_id", self.session_data, self.expires_at
-                )
-                cookie_session[USER_IK] = "user_ik"
+        # Then
+        assert user.user_id == "user_id"
+        assert user.user_ik == "user_ik"
 
-                # When
-                user = user_loader(None)
 
-                # Then
-                self.assertEqual(user.user_id, "user_id")
-                self.assertEqual(user.user_ik, "user_ik")
+def test_no_user_when_session_has_expired(
+    app,
+    session_store,
+    session_data,
+    mocker,
+):
+    mocker.patch(
+        "app.authentication.authenticator.get_session_store", return_value=session_store
+    )
+    with app.app_context():
+        # Given
+        session_store.create(
+            "eq_session_id",
+            "user_id",
+            session_data,
+            expires_at=datetime.now(timezone.utc),
+        )
+        cookie_session[USER_IK] = "user_ik"
 
-    def test_request_load_user(self):
-        with self.app_request_context("/status"):
-            with patch(
-                "app.authentication.authenticator.get_session_store",
-                return_value=self.session_store,
-            ):
-                # Given
-                self.session_store.create(
-                    "eq_session_id", "user_id", self.session_data, self.expires_at
-                )
-                cookie_session[USER_IK] = "user_ik"
+        # When
+        user = user_loader(None)
 
-                # When
-                user = request_load_user(Mock(spec=Request))
+        # Then
+        assert user is None
+        assert cookie_session.get(USER_IK) is None
 
-                # Then
-                self.assertEqual(user.user_id, "user_id")
-                self.assertEqual(user.user_ik, "user_ik")
 
-    def test_no_user_when_session_has_expired(self):
-        with self.app_request_context("/status"):
-            with patch(
-                "app.authentication.authenticator.get_session_store",
-                return_value=self.session_store,
-            ):
-                # Given
-                self.session_store.create(
-                    "eq_session_id",
-                    "user_id",
-                    self.session_data,
-                    expires_at=datetime.now(timezone.utc),
-                )
-                cookie_session[USER_IK] = "user_ik"
+def test_valid_user_does_not_extend_session_expiry_when_expiry_less_than_60_seconds_different(
+    app: Flask,
+    session_store,
+    session_data,
+    expires_at,
+    mocker,
+):
+    mocker.patch(
+        "app.authentication.authenticator.get_session_store", return_value=session_store
+    )
+    with app.app_context():
+        # Given
+        session_store.create("eq_session_id", "user_id", session_data, expires_at)
+        cookie_session[USER_IK] = "user_ik"
+        cookie_session["expires_in"] = 5
 
-                # When
-                user = user_loader(None)
+        # When
+        user = user_loader(None)
 
-                # Then
-                self.assertIsNone(user)
-                self.assertIsNone(cookie_session.get(USER_IK))
+        # Then
+        assert user.user_id == "user_id"
+        assert user.user_ik == "user_ik"
+        assert user.is_authenticated is True
+        assert session_store.expiration_time == expires_at
 
-    def test_valid_user_does_not_extend_session_expiry_when_expiry_less_than_60_seconds_different(
-        self,
-    ):
-        with self.app_request_context("/status"):
-            with patch(
-                "app.authentication.authenticator.get_session_store",
-                return_value=self.session_store,
-            ):
-                # Given
-                self.session_store.create(
-                    "eq_session_id", "user_id", self.session_data, self.expires_at
-                )
-                cookie_session[USER_IK] = "user_ik"
-                cookie_session["expires_in"] = 5
 
-                # When
-                user = user_loader(None)
+def test_valid_user_extends_session_expiry_when_expiry_greater_than_60_seconds_different(
+    app,
+    session_store,
+    session_data,
+    expires_at,
+    mocker,
+):
+    mocker.patch(
+        "app.authentication.authenticator.get_session_store", return_value=session_store
+    )
+    with app.app_context():
+        # Given
+        session_store.create("eq_session_id", "user_id", session_data, expires_at)
+        cookie_session[USER_IK] = "user_ik"
+        cookie_session["expires_in"] = 600
 
-                # Then
-                self.assertEqual(user.user_id, "user_id")
-                self.assertEqual(user.user_ik, "user_ik")
-                self.assertEqual(user.is_authenticated, True)
-                self.assertEqual(self.session_store.expiration_time, self.expires_at)
+        # When
+        user = user_loader(None)
 
-    def test_valid_user_extends_session_expiry_when_expiry_greater_than_60_seconds_different(
-        self,
-    ):
-        with self.app_request_context("/status"):
-            with patch(
-                "app.authentication.authenticator.get_session_store",
-                return_value=self.session_store,
-            ):
-                # Given
-                self.session_store.create(
-                    "eq_session_id", "user_id", self.session_data, self.expires_at
-                )
-                cookie_session[USER_IK] = "user_ik"
-                cookie_session["expires_in"] = 600
-
-                # When
-                user = user_loader(None)
-
-                # Then
-                self.assertEqual(user.user_id, "user_id")
-                self.assertEqual(user.user_ik, "user_ik")
-                self.assertEqual(user.is_authenticated, True)
-                self.assertGreater(self.session_store.expiration_time, self.expires_at)
+        # Then
+        assert user.user_id == "user_id"
+        assert user.user_ik == "user_ik"
+        assert user.is_authenticated is True
+        assert session_store.expiration_time > expires_at

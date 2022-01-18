@@ -1,6 +1,6 @@
 from datetime import date, datetime, timezone
 from decimal import Decimal
-from typing import Optional, Sequence, Sized, Union
+from typing import TYPE_CHECKING, Optional, Sequence, Sized, Union
 from urllib.parse import quote
 
 from babel.dates import format_datetime
@@ -8,26 +8,41 @@ from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
-from app.questionnaire.rules.operations import DateOffset, Operations
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.rules.operations import DateOffset
+from app.questionnaire.rules.operations_helper import OperationHelper
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
 
+if TYPE_CHECKING:
+    from app.questionnaire.placeholder_renderer import (
+        PlaceholderRenderer,  # pragma: no cover
+    )
+
+
 # pylint: disable=too-many-public-methods
-
-
 class PlaceholderTransforms:
     """
     A class to group the transforms that can be used within placeholders
     """
 
-    def __init__(self, language: str):
+    def __init__(
+        self,
+        language: str,
+        schema: QuestionnaireSchema,
+        renderer: "PlaceholderRenderer",
+    ):
         self.language = language
+        self.schema = schema
+        self.renderer = renderer
         self.locale = DEFAULT_LOCALE if language in {"en", "eo"} else language
-        self._operations = Operations(language=self.language)
+        self.ops_helper = OperationHelper(self.locale, self.schema, self.renderer)
 
     input_date_format = "%Y-%m-%d"
 
-    def format_currency(self, number: int = None, currency: str = "GBP") -> str:
+    def format_currency(
+        self, number: Union[float, str] = None, currency: str = "GBP"
+    ) -> str:
         formatted_currency: str = format_currency(number, currency, locale=self.locale)
         return formatted_currency
 
@@ -164,7 +179,7 @@ class PlaceholderTransforms:
         :return: The start and end datetime objects of the range.
         :rtype: Tuple[datetime, datetime]
         """
-        first_day_of_prior_full_week: date = self._operations.resolve_date_from_string(
+        first_day_of_prior_full_week: date = self.ops_helper.string_to_datetime(
             reference_date,
             DateOffset(days=offset_full_weeks * 7, day_of_week=first_day_of_week),
             offset_by_full_weeks=True,
@@ -290,5 +305,13 @@ class PlaceholderTransforms:
     def _create_hyperlink(href: str, link_text: str) -> str:
         return f'<a href="{href}">{link_text}</a>'
 
-    def list_item_count(self, list_to_count: Optional[Sized]) -> int:
-        return self._operations.evaluate_count(list_to_count)
+    @staticmethod
+    def list_item_count(list_to_count: Optional[Sized]) -> int:
+        return len(list_to_count or [])
+
+    def option_label_from_value(self, value: str, answer_id: str) -> str:
+        """
+        Accepts the option value and answer id and return label.
+        label may be simple string or a resolved placeholder string
+        """
+        return self.ops_helper.get_option_label_from_value(value, answer_id)
