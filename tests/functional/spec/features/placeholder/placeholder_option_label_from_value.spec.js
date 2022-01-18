@@ -6,14 +6,14 @@ describe("Option label value check", () => {
     browser.openQuestionnaire("test_placeholder_option_label_from_value.json");
   });
 
-  it("Given radio options are provided and I subsequently select a single answer from the displayed list, when I select first answer (piped from metadata) and go to the next page, then the question title contains the label text of the answer I selected", () => {
+  it("Given radio options are provided, when I select first answer (piped from metadata) and go to the next page, then the question title contains the label text of the answer I selected", () => {
     expect($(MandatoryRadioPage.answerBusinessNamePipedLabel()).getText()).to.contain("Apple (piped)");
     $(MandatoryRadioPage.answerBusinessNamePiped()).click();
     $(MandatoryRadioPage.submit()).click();
     expect($(ConfirmationQuestionRadioBlockPage.questionText()).getText()).to.contain("Apple (piped)");
   });
 
-  it("Given radio options are provided, when I select a single (static) answer and go to the next page, then the question title contains the label text of the answer I selected", () => {
+  it("Given radio options are provided, when I select an answer (static) and go to the next page, then the question title contains the label text of the answer I selected", () => {
     $(MandatoryRadioPage.googleLtd()).click();
     $(MandatoryRadioPage.submit()).click();
     expect($(ConfirmationQuestionRadioBlockPage.questionText()).getText()).to.contain("Google LTD");
