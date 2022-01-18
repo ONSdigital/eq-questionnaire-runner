@@ -5,7 +5,6 @@ verify_ssl = true
 
 [dev-packages]
 "pep8" = "*"
-mock = "*"
 pytest-cov = "*"
 jsonschema = "*"
 pylint = "*"
