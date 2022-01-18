@@ -1,7 +1,9 @@
 from datetime import datetime, timezone
+from unittest.mock import Mock
 
 from flask import Flask
 from flask import session as cookie_session
+from flask.wrappers import Request
 
 from app.authentication.authenticator import load_user, request_load_user, user_loader
 from app.settings import USER_IK
@@ -79,7 +81,8 @@ def test_request_load_user(
     mocker,
 ):
     mocker.patch(
-        "app.authentication.authenticator.get_session_store", return_value=session_store
+        "app.authentication.authenticator.get_session_store",
+        return_value=session_store,
     )
     with app.app_context():
         # Given
@@ -87,7 +90,7 @@ def test_request_load_user(
         cookie_session[USER_IK] = "user_ik"
 
         # When
-        user = request_load_user(None)
+        user = request_load_user(Mock(spec=Request))
 
         # Then
         assert user.user_id == "user_id"
