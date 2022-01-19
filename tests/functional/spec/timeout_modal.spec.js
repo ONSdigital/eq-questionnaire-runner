@@ -8,7 +8,7 @@ describe("Timeout Modal", () => {
     beforeEach(() => {
       browser.openQuestionnaire("test_timeout_modal.json");
     });
-    testSet(TimeoutInterstitialPage);
+    testCase(TimeoutInterstitialPage);
   });
 });
 
@@ -19,14 +19,14 @@ describe("Timeout Modal Post Submission", () => {
       $(TimeoutInterstitialPage.submit()).click();
       $(TimeoutSubmitPage.submit()).click();
     });
-    testSet(ThankYouPage);
+    testCase(ThankYouPage);
   });
 });
 
-function testSet(page) {
-  it("When the session timeout is set to 125 seconds, Then it will make the timeout modal with the option to extend the session visible after 65 seconds and it will redirect after session expires", () => {
+const testCase = (page) => {
+  it("When the timeout modal is displayed, and I do not extend my session, Then I will be redirected to the session expired page", () => {
     checkTimeoutModal();
-    browser.pause(65000);
+    browser.pause(65000); // We are waiting for the session to expire
     expect(browser.getUrl()).to.contain("/session-expired");
     expect($("body").getHTML())
       .to.include(
@@ -39,22 +39,22 @@ function testSet(page) {
       .to.not.include("To protect your information, your progress will be saved and you will be signed out in");
   });
 
-  it("When I click “Continue survey” button of the timeout modal, Then it will extend the session and modal won‘t reappear in the next 15 seconds, no redirect will happen", () => {
+  it("When the timeout modal is displayed, and I click the “Continue survey” button, Then my session will be extended", () => {
     checkTimeoutModal();
     $(TimeoutModalPage.submit()).click();
     expect($(TimeoutModalPage.timer()).getText()).to.equal("");
-    browser.pause(15000);
+    browser.pause(15000); // Waiting 15 seconds to sanity check it hasn't redirected
     expect(browser.getUrl()).to.contain(page.pageName);
   });
 
-  it("When I open a new window and then focus on the modal window, Then it will extend the session", () => {
+  it("When the timeout modal is displayed, but I open a new window and then focus back on the timeout modal window, Then my session will be extended", () => {
     checkTimeoutModal();
     browser.newWindow("");
     browser.switchWindow(page.pageName);
-    browser.pause(10000);
+    browser.pause(10000); // Waiting 10 seconds to sanity check it hasn't redirected
     expect(browser.getUrl()).to.contain(page.pageName);
   });
-}
+};
 
 function checkTimeoutModal() {
   $(TimeoutModalPage.timer()).waitForDisplayed({ timeout: 80000 });
