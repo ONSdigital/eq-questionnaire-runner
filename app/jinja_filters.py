@@ -453,12 +453,13 @@ class SummaryRowItem:
             and answer["label"]
         ):
             self.rowTitle = answer["label"]
-            self.id = answer["id"] + "-label"
             self.rowTitleAttributes = {"data-qa": answer["id"] + "-label"}
         else:
             self.rowTitle = strip_tags(question["title"])
-            self.id = question["id"] + "-row-item"
             self.rowTitleAttributes = {"data-qa": question["id"]}
+
+        if edit_link_text:
+            self.id = answer["id"]
 
         value = answer["value"]
 
