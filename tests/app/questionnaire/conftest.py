@@ -2,13 +2,16 @@
 from unittest.mock import Mock
 
 import pytest
+from werkzeug.datastructures import ImmutableDict
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.placeholder_parser import PlaceholderParser
+from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
+from app.utilities.schema import load_schema_from_name
 
 
 @pytest.fixture
@@ -37,7 +40,7 @@ def response_metadata():
 
 
 @pytest.fixture
-def parser(answer_store, location, mock_schema):
+def parser(answer_store, location, mock_schema, mock_renderer):
     return PlaceholderParser(
         language="en",
         answer_store=answer_store,
@@ -46,6 +49,7 @@ def parser(answer_store, location, mock_schema):
         response_metadata={},
         schema=mock_schema,
         location=location,
+        renderer=mock_renderer,
     )
 
 
@@ -836,5 +840,53 @@ def mock_schema():
 
 
 @pytest.fixture
-def placeholder_transform():
-    return PlaceholderTransforms(language="en")
+def placeholder_transform(mock_schema, mock_renderer):
+    return PlaceholderTransforms(
+        language="en", schema=mock_schema, renderer=mock_renderer
+    )
+
+
+@pytest.fixture
+def placeholder_renderer(option_label_from_value_schema):
+    answer_store = AnswerStore(
+        [
+            {"answer_id": "mandatory-radio-answer", "value": "{body_parts}"},
+            {"answer_id": "mandatory-checkbox-answer", "value": ["Body"]},
+        ]
+    )
+    renderer = PlaceholderRenderer(
+        language="en",
+        answer_store=answer_store,
+        list_store=ListStore(),
+        metadata=ImmutableDict({"trad_as": "ESSENTIAL SERVICES LTD"}),
+        response_metadata={},
+        schema=option_label_from_value_schema,
+    )
+    return renderer
+
+
+@pytest.fixture
+def mock_renderer(mock_schema):
+    return PlaceholderRenderer(
+        language="en",
+        answer_store=AnswerStore(),
+        list_store=ListStore(),
+        metadata=ImmutableDict({}),
+        response_metadata={},
+        schema=mock_schema,
+    )
+
+
+@pytest.fixture
+def option_label_from_value_schema():
+    return load_schema_from_name("test_placeholder_option_label_from_value", "en")
+
+
+@pytest.fixture
+def transformer(mock_renderer, mock_schema):
+    def _transform(language="en"):
+        return PlaceholderTransforms(
+            language=language, schema=mock_schema, renderer=mock_renderer
+        )
+
+    return _transform

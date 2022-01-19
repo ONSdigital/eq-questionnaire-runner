@@ -1,7 +1,7 @@
 from flask import url_for
 
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
-from app.questionnaire.schema_utils import choose_variant
+from app.questionnaire.variants import choose_variant
 from app.views.contexts.summary.question import Question
 
 

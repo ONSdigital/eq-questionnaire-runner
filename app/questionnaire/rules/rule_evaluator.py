@@ -4,6 +4,7 @@ from typing import Generator, Iterable, Mapping, Optional, Sequence, Union
 
 from app.data_models import AnswerStore, ListStore
 from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.operations import Operations
@@ -39,7 +40,18 @@ class RuleEvaluator:
             routing_path_block_ids=self.routing_path_block_ids,
             use_default_answer=True,
         )
-        self.operations = Operations(language=self.language)
+        renderer: PlaceholderRenderer = PlaceholderRenderer(
+            language=self.language,
+            answer_store=self.answer_store,
+            list_store=self.list_store,
+            metadata=self.metadata,
+            response_metadata=self.response_metadata,
+            schema=self.schema,
+            location=self.location,
+        )
+        self.operations = Operations(
+            language=self.language, schema=self.schema, renderer=renderer
+        )
 
     def _evaluate(self, rule: dict[str, Sequence]) -> Union[bool, Optional[date]]:
         operator_name = next(iter(rule))
