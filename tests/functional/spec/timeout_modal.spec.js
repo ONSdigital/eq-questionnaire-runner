@@ -43,16 +43,10 @@ function testCase(page) {
     checkTimeoutModal();
     $(TimeoutModalPage.submit()).click();
     expect($(TimeoutModalPage.timer()).getText()).to.equal("");
-    browser.pause(15000); // Waiting 15 seconds to sanity check it hasn't redirected
+    browser.pause(65000); // Waiting 65 seconds to sanity check it hasn't redirected
     browser.refresh();
     expect(browser.getUrl()).to.contain(page.pageName);
-    expect($("body").getHTML()).to.not.include(
-      "Sorry, you need to sign in again",
-      "This is because you have either:",
-      "been inactive for 45 minutes and your session has timed out to protect your information",
-      "followed a link to a page you are not signed in to",
-      "followed a link to a survey that has already been submitted"
-    );
+    expect($("body").getHTML()).to.not.include("Sorry, you need to sign in again");
   });
 
   it("When the timeout modal is displayed, but I open a new window and then focus back on the timeout modal window, Then my session will be extended", () => {
@@ -60,6 +54,7 @@ function testCase(page) {
     browser.newWindow("");
     browser.switchWindow(page.pageName);
     browser.pause(10000); // Waiting 10 seconds to sanity check it hasn't redirected
+    browser.refresh();
     expect(browser.getUrl()).to.contain(page.pageName);
   });
 }
