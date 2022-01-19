@@ -1,5 +1,4 @@
 from datetime import datetime, timezone
-from unittest.mock import Mock
 
 from flask import Flask
 from flask import session as cookie_session
@@ -90,7 +89,7 @@ def test_request_load_user(
         cookie_session[USER_IK] = "user_ik"
 
         # When
-        user = request_load_user(Mock(spec=Request))
+        user = request_load_user(mocker.Mock(Request))
 
         # Then
         assert user.user_id == "user_id"
