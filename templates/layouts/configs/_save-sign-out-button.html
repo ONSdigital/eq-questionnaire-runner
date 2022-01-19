@@ -1,13 +1,8 @@
 {% if current_user.is_authenticated and not hide_sign_out_button %}
 
     {% if save_on_signout %}
-        {% if account_service_log_out_url %}
-          {% set button_text = _("Save and sign out") %}
-        {% else %}
-          {% set button_text = _("Save and complete later") %}
-        {% endif %}
         {% do pageConfig | setAttribute("signoutButton", {
-            "text": button_text,
+            "text": sign_out_button_text,
             "name": "btn-save-sign-out",
             "url": "/sign-out",
             "attributes": {

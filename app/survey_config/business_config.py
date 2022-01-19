@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
-from typing import Iterable, Mapping, MutableMapping
+from typing import Iterable, Mapping, MutableMapping, Optional
 
 from flask_babel import lazy_gettext
 
-from app.survey_config.link import Link
+from app.survey_config.link import HeaderLink, Link
 from app.survey_config.survey_config import SurveyConfig
 
 
@@ -11,15 +11,21 @@ from app.survey_config.survey_config import SurveyConfig
 class BusinessSurveyConfig(
     SurveyConfig,
 ):
-
-    account_service_surveys_path: str = "/surveys/todo"
     survey_title: str = "ONS Business Surveys"
     footer_links: Iterable[MutableMapping] = field(default_factory=list)
     footer_legal_links: Iterable[Mapping] = field(default_factory=list)
 
     def __post_init__(self):
-        if not self.account_service_url:
-            self.account_service_url = f"{self.base_url}/sign-in/logout"
+        super().__post_init__()
+
+        if not self.account_service_log_out_url:
+            self.account_service_log_out_url: str = f"{self.base_url}/sign-in/logout"
+
+        if not self.account_service_my_account_url:
+            self.account_service_my_account_url: str = f"{self.base_url}/my-account"
+
+        if not self.account_service_todo_url:
+            self.account_service_todo_url: str = f"{self.base_url}/surveys/todo"
 
         self.footer_links = [
             Link(lazy_gettext("What we do"), self.what_we_do_url).__dict__,
@@ -36,3 +42,21 @@ class BusinessSurveyConfig(
                 self.privacy_and_data_protection_url,
             ).__dict__,
         ]
+
+    def get_service_links(
+        self, sign_out_url: str, *, is_authenticated: bool
+    ) -> Optional[list[dict]]:
+        return (
+            [
+                HeaderLink(
+                    lazy_gettext("My account"),
+                    self.account_service_my_account_url,
+                    id="header-link-my-account",
+                ).__dict__,
+                HeaderLink(
+                    lazy_gettext("Sign out"), sign_out_url, id="header-link-sign-out"
+                ).__dict__,
+            ]
+            if is_authenticated
+            else None
+        )

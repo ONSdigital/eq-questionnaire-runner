@@ -1,7 +1,11 @@
+from typing import Type
+from unittest.mock import Mock
+
 import pytest
 from flask import Flask, current_app
 
 from app.helpers.template_helpers import ContextHelper, get_survey_config
+from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config import (
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
@@ -9,6 +13,20 @@ from app.survey_config import (
     SurveyConfig,
     WelshCensusSurveyConfig,
 )
+
+SIGN_OUT_URL = "http://localhost:5000/sign-out"
+
+
+def get_context_helper(
+    app, survey_config, is_post_submission=False, include_csrf_token=True
+):
+    with app.app_context():
+        return ContextHelper(
+            language="en",
+            is_post_submission=is_post_submission,
+            include_csrf_token=include_csrf_token,
+            survey_config=survey_config,
+        )
 
 
 def test_footer_context_census_theme(app: Flask):
@@ -311,6 +329,51 @@ def test_get_page_header_context_census_nisra(app: Flask):
 
 
 @pytest.mark.parametrize(
+    "survey_config, is_authenticated, expected",
+    [
+        (
+            SurveyConfig(),
+            True,
+            None,
+        ),
+        (
+            BusinessSurveyConfig(),
+            True,
+            {
+                "itemsList": [
+                    {
+                        "title": "My account",
+                        "url": "https://surveys.ons.gov.uk/my-account",
+                        "id": "header-link-my-account",
+                    },
+                    {
+                        "title": "Sign out",
+                        "url": "/sign-out",
+                        "id": "header-link-sign-out",
+                    },
+                ]
+            },
+        ),
+    ],
+)
+def test_service_links_context(
+    app: Flask, mocker, survey_config, is_authenticated, expected
+):
+    with app.app_context():
+        current_user = mocker.patch("flask_login.utils._get_user", return_value=Mock())
+        current_user.is_authenticated = is_authenticated
+
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["service_links"]
+
+    assert result == expected
+
+
+@pytest.mark.parametrize(
     "survey_config,expected",
     [
         (
@@ -340,6 +403,27 @@ def test_contact_us_url_context(
 @pytest.mark.parametrize(
     "survey_config,expected",
     [
+        (SurveyConfig(), "Save and sign out"),
+        (CensusSurveyConfig(), "Save and complete later"),
+    ],
+)
+def test_sign_out_button_text_context(
+    app: Flask, survey_config: SurveyConfig, expected: dict[str, str]
+):
+    with app.app_context():
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["sign_out_button_text"]
+
+    assert result == expected
+
+
+@pytest.mark.parametrize(
+    "survey_config,expected",
+    [
         (SurveyConfig(), "https://surveys.ons.gov.uk/cookies/"),
         (
             BusinessSurveyConfig(),
@@ -362,26 +446,61 @@ def test_cookie_settings_url_context(
 
 
 @pytest.mark.parametrize(
+    "survey_config, expected",
+    [
+        (SurveyConfig(), None),
+        (
+            BusinessSurveyConfig(),
+            "https://surveys.ons.gov.uk/my-account",
+        ),
+    ],
+)
+def test_account_service_my_account_url_context(
+    app: Flask, survey_config: SurveyConfig, expected: str
+):
+    result = get_context_helper(app, survey_config).context[
+        "account_service_my_account_url"
+    ]
+
+    assert result == expected
+
+
+@pytest.mark.parametrize(
     "survey_config,expected",
     [
         (SurveyConfig(), None),
-        (BusinessSurveyConfig(), "https://surveys.ons.gov.uk/sign-in/logout"),
+        (
+            BusinessSurveyConfig(),
+            "https://surveys.ons.gov.uk/surveys/todo",
+        ),
+    ],
+)
+def test_account_service_my_todo_url_context(
+    app: Flask, survey_config: SurveyConfig, expected: str
+):
+    result = get_context_helper(app, survey_config).context["account_service_todo_url"]
+    assert result == expected
+
+
+@pytest.mark.parametrize(
+    "survey_config,expected",
+    [
+        (SurveyConfig(), None),
+        (
+            BusinessSurveyConfig(),
+            "https://surveys.ons.gov.uk/sign-in/logout",
+        ),
         (CensusSurveyConfig(), "https://census.gov.uk/en/start"),
         (WelshCensusSurveyConfig(), "https://cyfrifiad.gov.uk/en/start"),
         (CensusNISRASurveyConfig(), "https://census.gov.uk/ni"),
     ],
 )
-def test_account_service_url_context(
+def test_account_service_log_out_url_context(
     app: Flask, survey_config: SurveyConfig, expected: str
 ):
-    with app.app_context():
-        result = ContextHelper(
-            language="en",
-            is_post_submission=False,
-            include_csrf_token=True,
-            survey_config=survey_config,
-        ).context["account_service_url"]
-
+    result = get_context_helper(app, survey_config).context[
+        "account_service_log_out_url"
+    ]
     assert result == expected
 
 
@@ -411,6 +530,40 @@ def test_get_survey_config(
     with app.app_context():
         result = get_survey_config(theme=theme, language=language)
     assert isinstance(result, expected)
+
+
+@pytest.mark.parametrize(
+    "survey_config_type",
+    [SurveyConfig, BusinessSurveyConfig],
+)
+def test_survey_config_base_url_provided_used_in_links(
+    app: Flask, survey_config_type: Type[SurveyConfig]
+):
+    base_url = "http://localhost"
+    with app.app_context():
+        result = survey_config_type(base_url=base_url)
+
+    assert result.base_url == "http://localhost"
+
+    urls_to_check = [
+        result.account_service_my_account_url,
+        result.account_service_log_out_url,
+        result.account_service_todo_url,
+        result.cookie_settings_url,
+        result.contact_us_url,
+        result.privacy_and_data_protection_url,
+    ]
+
+    for url in urls_to_check:
+        if url:
+            assert base_url in url
+
+
+def test_get_survey_config_base_url_not_provided(app: Flask):
+    with app.app_context():
+        result = get_survey_config()
+
+    assert result.base_url == ACCOUNT_SERVICE_BASE_URL
 
 
 def test_context_set_from_app_config(app):

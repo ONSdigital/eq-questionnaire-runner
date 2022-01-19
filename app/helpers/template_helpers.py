@@ -1,15 +1,17 @@
 from functools import cached_property, lru_cache
-from typing import Any, Mapping, Optional, Union
+from typing import Any, Mapping, Optional, Type, Union
 
 from flask import current_app
 from flask import render_template as flask_render_template
 from flask import request
 from flask import session as cookie_session
 from flask import url_for
-from flask_babel import get_locale, lazy_gettext
+from flask_babel import LazyString, get_locale, lazy_gettext
+from flask_login import current_user
 
 from app.globals import get_session_store
 from app.helpers.language_helper import get_languages_context
+from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config import (
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
@@ -25,7 +27,7 @@ class ContextHelper:
         language: str,
         is_post_submission: bool,
         include_csrf_token: bool,
-        survey_config: SurveyConfig = SurveyConfig(),
+        survey_config: SurveyConfig,
     ) -> None:
         self._language = language
         self._is_post_submission = is_post_submission
@@ -35,15 +37,6 @@ class ContextHelper:
             "survey_title", self._survey_config.survey_title
         )
         self._sign_out_url = url_for("session.get_sign_out")
-        self._account_service_url = cookie_session.get(
-            "account_service_url", self._survey_config.account_service_url
-        )
-        self._account_service_surveys_url = f"{self._account_service_url}{self._survey_config.account_service_surveys_path}"
-        self._account_service_log_out_url = cookie_session.get(
-            "account_service_log_out_url"
-        )
-        self._contact_us_url = self._survey_config.contact_us_url
-        self._cookie_settings_url = self._survey_config.cookie_settings_url
         self._cdn_url = (
             f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
         )
@@ -56,13 +49,15 @@ class ContextHelper:
     @property
     def context(self) -> dict[str, Any]:
         return {
-            "account_service_url": self._account_service_url,
-            "account_service_log_out_url": self._account_service_log_out_url,
-            "account_service_surveys_url": self._account_service_surveys_url,
-            "contact_us_url": self._contact_us_url,
+            "sign_out_button_text": self._survey_config.sign_out_button_text,
+            "account_service_my_account_url": self._survey_config.account_service_my_account_url,
+            "account_service_log_out_url": self._survey_config.account_service_log_out_url,
+            "account_service_todo_url": self._survey_config.account_service_todo_url,
+            "contact_us_url": self._survey_config.contact_us_url,
             "thank_you_url": url_for("post_submission.get_thank_you"),
-            "cookie_settings_url": self._cookie_settings_url,
+            "cookie_settings_url": self._survey_config.cookie_settings_url,
             "page_header": self.page_header_context,
+            "service_links": self.service_links_context,
             "footer": self.footer_context,
             "languages": get_languages_context(self._language),
             "theme": self._survey_config.design_system_theme,
@@ -77,7 +72,21 @@ class ContextHelper:
         }
 
     @property
-    def page_header_context(self) -> dict[str, str]:
+    def service_links_context(self) -> Optional[dict[str, list[dict]]]:
+
+        service_links = self._survey_config.get_service_links(
+            sign_out_url=self._sign_out_url,
+            is_authenticated=current_user.is_authenticated,
+        )
+        if service_links:
+            return {"itemsList": service_links}
+
+        return None
+
+    @property
+    def page_header_context(
+        self,
+    ) -> dict[str, Union[str, LazyString]]:
         context = {
             "logo": f"{self._survey_config.page_header_logo}",
             "logoAlt": f"{self._survey_config.page_header_logo_alt}",
@@ -86,9 +95,9 @@ class ContextHelper:
         if self._survey_title:
             context["title"] = self._survey_title
         if self._survey_config.title_logo:
-            context["titleLogo"] = f"{self._survey_config.title_logo}"
+            context["titleLogo"] = self._survey_config.title_logo
         if self._survey_config.title_logo_alt:
-            context["titleLogoAlt"] = f"{self._survey_config.title_logo_alt}"
+            context["titleLogoAlt"] = self._survey_config.title_logo_alt
         if self._survey_config.header_logo:
             context["customHeaderLogo"] = self._survey_config.header_logo
         if self._survey_config.mobile_logo:
@@ -139,8 +148,8 @@ class ContextHelper:
 
 
 @lru_cache
-def survey_config_mapping(theme: str, language: str) -> SurveyConfig:
-    return {
+def survey_config_mapping(*, theme: str, language: str, base_url: str) -> SurveyConfig:
+    survey_type_to_config: dict[str, Type[SurveyConfig]] = {
         "default": BusinessSurveyConfig,
         "business": BusinessSurveyConfig,
         "health": SurveyConfig,
@@ -148,20 +157,30 @@ def survey_config_mapping(theme: str, language: str) -> SurveyConfig:
         "northernireland": SurveyConfig,
         "census": (WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig),
         "census-nisra": CensusNISRASurveyConfig,
-    }[theme]()
+    }
+
+    return survey_type_to_config[theme](
+        base_url=base_url,
+    )
 
 
 def get_survey_config(
-    theme: Optional[str] = None, language: Optional[str] = None
+    *,
+    theme: Optional[str] = None,
+    language: Optional[str] = None,
+    base_url: Optional[str] = None,
 ) -> SurveyConfig:
     # The fallback to assigning SURVEY_TYPE to theme is only being added until
     # business feedback on the differentiation between theme and SURVEY_TYPE.
-    if not language:
-        language = get_locale().language
-    if not theme:
-        theme = get_survey_type()
+    language = language or get_locale().language
+    theme = theme or get_survey_type()
+    base_url = base_url or ACCOUNT_SERVICE_BASE_URL
 
-    return survey_config_mapping(theme, language)
+    return survey_config_mapping(
+        theme=theme,
+        language=language,
+        base_url=base_url,
+    )
 
 
 def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:

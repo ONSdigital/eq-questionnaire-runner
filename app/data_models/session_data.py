@@ -12,7 +12,7 @@ class SessionData:
         response_id,
         case_id,
         case_ref=None,
-        account_service_url=None,
+        account_service_base_url=None,
         account_service_log_out_url=None,
         trad_as=None,
         display_address=None,
@@ -32,7 +32,7 @@ class SessionData:
         self.case_id = case_id
         self.case_ref = case_ref
         self.trad_as = trad_as
-        self.account_service_url = account_service_url
+        self.account_service_base_url = account_service_base_url
         self.account_service_log_out_url = account_service_log_out_url
         self.display_address = display_address
         self.confirmation_email_count = confirmation_email_count
