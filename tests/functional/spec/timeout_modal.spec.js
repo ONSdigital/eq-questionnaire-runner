@@ -23,7 +23,7 @@ describe("Timeout Modal Post Submission", () => {
   });
 });
 
-const testCase = (page) => {
+function testCase(page) {
   it("When the timeout modal is displayed, and I do not extend my session, Then I will be redirected to the session expired page", () => {
     checkTimeoutModal();
     browser.pause(65000); // We are waiting for the session to expire
@@ -62,7 +62,7 @@ const testCase = (page) => {
     browser.pause(10000); // Waiting 10 seconds to sanity check it hasn't redirected
     expect(browser.getUrl()).to.contain(page.pageName);
   });
-};
+}
 
 function checkTimeoutModal() {
   $(TimeoutModalPage.timer()).waitForDisplayed({ timeout: 80000 });
