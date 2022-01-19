@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-06 16:29+0000\n"
+"POT-Creation-Date: 2022-01-19 15:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -213,19 +213,19 @@ msgid ""
 "browser if using a shared device"
 msgstr ""
 
-#: app/questionnaire/placeholder_transforms.py:129
+#: app/questionnaire/placeholder_transforms.py:144
 msgid "{number_of_years} year"
 msgid_plural "{number_of_years} years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:135
+#: app/questionnaire/placeholder_transforms.py:150
 msgid "{number_of_months} month"
 msgid_plural "{number_of_months} months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:140
+#: app/questionnaire/placeholder_transforms.py:155
 msgid "{number_of_days} day"
 msgid_plural "{number_of_days} days"
 msgstr[0] ""
@@ -1114,7 +1114,6 @@ msgstr ""
 
 #: templates/layouts/_base.html:74
 #: templates/partials/introduction/preview.html:30
-#: templates/partials/summary/collapsible-summary.html:14
 msgid "Hide"
 msgstr ""
 
@@ -1142,9 +1141,9 @@ msgstr ""
 msgid "Interviewer note:"
 msgstr ""
 
-#: templates/partials/answer-guidance.html:19
-#: templates/partials/definition.html:19
-#: templates/partials/individual-response-guidance.html:14
+#: templates/partials/answer-guidance.html:18
+#: templates/partials/definition.html:18
+#: templates/partials/individual-response-guidance.html:13
 msgid "Hide this"
 msgstr ""
 
@@ -1172,13 +1171,13 @@ msgstr ""
 msgid "Give feedback"
 msgstr ""
 
-#: templates/partials/individual-response-guidance.html:25
+#: templates/partials/individual-response-guidance.html:24
 msgid ""
 "You can <em>share your household access code</em> with the people you "
 "live with so they can complete their own sections."
 msgstr ""
 
-#: templates/partials/individual-response-guidance.html:26
+#: templates/partials/individual-response-guidance.html:25
 msgid ""
 "If this is not possible, there are <a href={url}>other ways each person "
 "can complete their own census.</a>"
@@ -1373,17 +1372,14 @@ msgid "{x} characters too many"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:29
-#: templates/partials/summary/collapsible-summary.html:13
 msgid "Show"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:48
-#: templates/partials/summary/collapsible-summary.html:58
 msgid "Show all"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:49
-#: templates/partials/summary/collapsible-summary.html:59
 msgid "Hide all"
 msgstr ""
 
@@ -1391,20 +1387,9 @@ msgstr ""
 msgid "Start survey"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:36
-#: templates/partials/summary/summary.html:18
-msgid "No answer provided"
-msgstr ""
-
-#: templates/partials/summary/collapsible-summary.html:37
 #: templates/partials/summary/list-summary.html:8
-#: templates/partials/summary/summary.html:19
-msgid "Change"
-msgstr ""
-
-#: templates/partials/summary/collapsible-summary.html:38
 #: templates/partials/summary/summary.html:20
-msgid "Change your answer for:"
+msgid "Change"
 msgstr ""
 
 #: templates/partials/summary/list-summary.html:9
@@ -1417,5 +1402,13 @@ msgstr ""
 
 #: templates/partials/summary/list-summary.html:11
 msgid "Remove {item_name}"
+msgstr ""
+
+#: templates/partials/summary/summary.html:19
+msgid "No answer provided"
+msgstr ""
+
+#: templates/partials/summary/summary.html:21
+msgid "Change your answer for:"
 msgstr ""
 
