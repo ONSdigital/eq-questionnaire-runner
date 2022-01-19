@@ -43,7 +43,7 @@ function testCase(page) {
     checkTimeoutModal();
     $(TimeoutModalPage.submit()).click();
     expect($(TimeoutModalPage.timer()).getText()).to.equal("");
-    browser.pause(65000); // Waiting 65 seconds to sanity check it hasn't redirected
+    browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
     browser.refresh();
     expect(browser.getUrl()).to.contain(page.pageName);
     expect($("body").getHTML()).to.not.include("Sorry, you need to sign in again");
@@ -53,7 +53,7 @@ function testCase(page) {
     checkTimeoutModal();
     browser.newWindow("");
     browser.switchWindow(page.pageName);
-    browser.pause(10000); // Waiting 10 seconds to sanity check it hasn't redirected
+    browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
     browser.refresh();
     expect(browser.getUrl()).to.contain(page.pageName);
   });
