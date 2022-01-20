@@ -147,21 +147,22 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         return data
 
     @post_load
-    def metadata_response_id(
+    def update_response_id(
         self, data, **kwargs
     ):  # pylint: disable=no-self-use, unused-argument
         """
+        If response_id is present : return as it is
         If response_id is not present : Build response_id from ru_ref,collection_exercise_sid,eq_id and form_type
                                         and updates metadata with response_id
-        If response_id is present : return as it is
+
 
         """
         if data.get("response_id"):
             return data
-        ru_ref = data.get("ru_ref")
-        collection_exercise_sid = data.get("collection_exercise_sid")
         eq_id = data.get("eq_id")
         form_type = data.get("form_type")
+        ru_ref = data.get("ru_ref")
+        collection_exercise_sid = data.get("collection_exercise_sid")
         if ru_ref and collection_exercise_sid and eq_id and form_type:
             response_id = f"{ru_ref}{collection_exercise_sid}{eq_id}{form_type}"
             data["response_id"] = response_id

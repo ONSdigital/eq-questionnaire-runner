@@ -191,6 +191,15 @@ def test_when_response_id_is_missing(fake_business_metadata_runner):
     assert claims["response_id"] == expected
 
 
-def test_when_response_is_present(fake_business_metadata_runner):
+def test_when_response_id_is_present(fake_business_metadata_runner):
     claims = validate_runner_claims(fake_business_metadata_runner)
     assert claims["response_id"] == fake_business_metadata_runner["response_id"]
+
+
+@pytest.mark.parametrize(
+    "metadata", ["eq_id", "form_type", "form_type", "collection_exercise_sid"]
+)
+def test_response_id_for_missing_metadata(metadata, fake_business_metadata_runner):
+    del fake_business_metadata_runner[metadata]
+    with pytest.raises(ValidationError):
+        validate_runner_claims(fake_business_metadata_runner)
