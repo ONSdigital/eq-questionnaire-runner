@@ -53,8 +53,8 @@ function testCase(page) {
     checkTimeoutModal();
     browser.newWindow("");
     browser.switchWindow(page.pageName);
-    browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
     browser.refresh();
+    browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
     expect(browser.getUrl()).to.contain(page.pageName);
   });
 }
