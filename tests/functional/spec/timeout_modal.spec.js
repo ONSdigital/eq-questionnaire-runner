@@ -37,7 +37,7 @@ function testCase(page) {
         "followed a link to a survey that has already been submitted"
       )
       .to.not.include("To protect your information, your progress will be saved and you will be signed out in");
-  });
+  }).timeout(140000);
 
   it("When the timeout modal is displayed, and I click the “Continue survey” button, Then my session will be extended", () => {
     checkTimeoutModal();
@@ -47,7 +47,7 @@ function testCase(page) {
     browser.refresh();
     expect(browser.getUrl()).to.contain(page.pageName);
     expect($("body").getHTML()).to.not.include("Sorry, you need to sign in again");
-  });
+  }).timeout(140000);
 
   it("When the timeout modal is displayed, but I open a new window and then focus back on the timeout modal window, Then my session will be extended", () => {
     checkTimeoutModal();
@@ -56,7 +56,7 @@ function testCase(page) {
     browser.refresh();
     browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
     expect(browser.getUrl()).to.contain(page.pageName);
-  });
+  }).timeout(140000);
 }
 
 function checkTimeoutModal() {
