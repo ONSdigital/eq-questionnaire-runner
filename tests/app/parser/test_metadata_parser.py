@@ -177,3 +177,20 @@ def test_business_params_without_schema_name(fake_business_metadata_runner):
     claims = validate_runner_claims(fake_business_metadata_runner)
 
     assert claims["schema_name"] == "mbs_0253"
+
+
+def test_when_response_id_is_missing(fake_business_metadata_runner):
+    expected = (
+        f"{fake_business_metadata_runner['ru_ref']}"
+        f"{fake_business_metadata_runner['collection_exercise_sid']}"
+        f"{fake_business_metadata_runner['eq_id']}"
+        f"{fake_business_metadata_runner['form_type']}"
+    )
+    del fake_business_metadata_runner["response_id"]
+    claims = validate_runner_claims(fake_business_metadata_runner)
+    assert claims["response_id"] == expected
+
+
+def test_when_response_is_present(fake_business_metadata_runner):
+    claims = validate_runner_claims(fake_business_metadata_runner)
+    assert claims["response_id"] == fake_business_metadata_runner["response_id"]

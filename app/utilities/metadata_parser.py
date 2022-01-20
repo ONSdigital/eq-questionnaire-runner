@@ -86,7 +86,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         validate=validate.Length(min=1)
     )  # type:ignore
     tx_id = VALIDATORS["uuid"]()  # type:ignore
-    response_id = VALIDATORS["string"](validate=validate.Length(min=1))  # type:ignore
+    response_id = VALIDATORS["string"](required=False)  # type:ignore
 
     account_service_url = VALIDATORS["url"](required=True)  # type:ignore
     case_id = VALIDATORS["uuid"]()  # type:ignore
@@ -145,6 +145,27 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
                 data.get("eq_id"), data.get("form_type")
             )
         return data
+
+    @post_load
+    def metadata_response_id(
+        self, data, **kwargs
+    ):  # pylint: disable=no-self-use, unused-argument
+        """
+        If response_id is not present : Build response_id from ru_ref,collection_exercise_sid,eq_id and form_type
+                                        and updates metadata with response_id
+        If response_id is present : return as it is
+
+        """
+        if data.get("response_id"):
+            return data
+        ru_ref = data.get("ru_ref")
+        collection_exercise_sid = data.get("collection_exercise_sid")
+        eq_id = data.get("eq_id")
+        form_type = data.get("form_type")
+        if ru_ref and collection_exercise_sid and eq_id and form_type:
+            response_id = f"{ru_ref}{collection_exercise_sid}{eq_id}{form_type}"
+            data["response_id"] = response_id
+            return data
 
 
 def validate_questionnaire_claims(claims, questionnaire_specific_metadata):
