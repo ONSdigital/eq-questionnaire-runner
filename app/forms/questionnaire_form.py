@@ -203,14 +203,11 @@ class QuestionnaireForm(FlaskForm):
         period_limits_item = self._get_period_limits(period_limits)
         period_min = period_limits_item[0]
 
-        if period_min:
-            min_offset = self._get_offset_value(period_min)
+        # Exception to be raised if range available is smaller than minimum range allowed
+        if period_min and period_range < self._get_offset_value(period_min):
+            exception = f"The schema has invalid period_limits for {question_id}"
 
-            # Exception to be raised if range available is smaller than minimum range allowed
-            if period_range < min_offset:
-                exception = f"The schema has invalid period_limits for {question_id}"
-
-                raise Exception(exception)
+            raise Exception(exception)
 
     @staticmethod
     def validate_date_range_with_single_date_limits(
