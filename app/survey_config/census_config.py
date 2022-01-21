@@ -61,7 +61,7 @@ class CensusSurveyConfig(
         default_factory=lambda: [{"nisra": False}], compare=False
     )
     survey_title: LazyString = lazy_gettext("Census 2021")
-    sign_out_button_text: str = "Save and complete later"
+    sign_out_button_text: str = lazy_gettext("Save and complete later")
 
 
 @dataclass

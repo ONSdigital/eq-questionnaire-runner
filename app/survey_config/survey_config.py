@@ -39,7 +39,7 @@ class SurveyConfig:
     survey_title: Optional[LazyString] = None
     design_system_theme: Optional[str] = None
     data_layer: Iterable[Union[Mapping]] = field(default_factory=list, compare=False)
-    sign_out_button_text: str = "Save and sign out"
+    sign_out_button_text: str = lazy_gettext("Save and sign out")
     contact_us_url: str = field(init=False)
     cookie_settings_url: str = field(init=False)
     privacy_and_data_protection_url: str = field(init=False)
