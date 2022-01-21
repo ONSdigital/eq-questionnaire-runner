@@ -177,3 +177,43 @@ def test_business_params_without_schema_name(fake_business_metadata_runner):
     claims = validate_runner_claims(fake_business_metadata_runner)
 
     assert claims["schema_name"] == "mbs_0253"
+
+
+def test_when_response_id_is_missing(fake_business_metadata_runner):
+    expected = (
+        f"{fake_business_metadata_runner['ru_ref']}"
+        f"{fake_business_metadata_runner['collection_exercise_sid']}"
+        f"{fake_business_metadata_runner['eq_id']}"
+        f"{fake_business_metadata_runner['form_type']}"
+    )
+    del fake_business_metadata_runner["response_id"]
+    claims = validate_runner_claims(fake_business_metadata_runner)
+    assert claims["response_id"] == expected
+
+
+def test_when_response_id_is_present(fake_business_metadata_runner):
+    claims = validate_runner_claims(fake_business_metadata_runner)
+    assert claims["response_id"] == fake_business_metadata_runner["response_id"]
+
+
+@pytest.mark.parametrize(
+    "metadata", ["eq_id", "form_type", "ru_ref", "collection_exercise_sid"]
+)
+def test_response_id_for_missing_metadata(metadata, fake_business_metadata_runner):
+    fake_business_metadata_runner["schema_name"] = "schema_name"
+    del fake_business_metadata_runner["response_id"]
+    del fake_business_metadata_runner[metadata]
+    with pytest.raises(ValidationError):
+        validate_runner_claims(fake_business_metadata_runner)
+
+
+def test_response_id_for_empty_value(fake_business_metadata_runner):
+    expected = (
+        f"{fake_business_metadata_runner['ru_ref']}"
+        f"{fake_business_metadata_runner['collection_exercise_sid']}"
+        f"{fake_business_metadata_runner['eq_id']}"
+        f"{fake_business_metadata_runner['form_type']}"
+    )
+    fake_business_metadata_runner["response_id"] = ""
+    claims = validate_runner_claims(fake_business_metadata_runner)
+    assert claims["response_id"] == expected
