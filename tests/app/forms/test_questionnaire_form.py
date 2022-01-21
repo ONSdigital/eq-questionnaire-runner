@@ -881,6 +881,60 @@ class TestQuestionnaireForm(
                         str(ite.exception),
                     )
 
+    def test_period_limits_minimum_not_set_and_single_date_periods(self):
+        with self.app_request_context():
+            schema = load_schema_from_name("test_date_validation_range")
+
+            question_schema = {
+                "id": "date-range-question",
+                "type": "DateRange",
+                "period_limits": {"maximum": {"days": 8}},
+                "answers": [
+                    {
+                        "id": "date-range-from",
+                        "label": "Period from",
+                        "mandatory": True,
+                        "type": "Date",
+                        "minimum": {"value": "2018-01-10"},
+                    },
+                    {
+                        "id": "date-range-to",
+                        "label": "Period to",
+                        "mandatory": True,
+                        "type": "Date",
+                        "maximum": {"value": "2018-01-18"},
+                    },
+                ],
+            }
+
+            form_data = MultiDict(
+                {
+                    "date-range-from-day": "10",
+                    "date-range-from-month": "1",
+                    "date-range-from-year": "2018",
+                    "date-range-to-day": "11",
+                    "date-range-to-month": "1",
+                    "date-range-to-year": "2018",
+                }
+            )
+
+            form = generate_form(
+                schema,
+                question_schema,
+                AnswerStore(),
+                ListStore(),
+                metadata={},
+                response_metadata={},
+                form_data=form_data,
+            )
+
+            with patch(
+                "app.questionnaire.questionnaire_schema.QuestionnaireSchema.get_all_questions_for_block",
+                return_value=[question_schema],
+            ):
+                form.validate()
+            self.assertEqual(len(form.question_errors), 0)
+
     def test_invalid_date_range_and_single_date_periods(self):
         with self.app_request_context():
             answer_store = AnswerStore()

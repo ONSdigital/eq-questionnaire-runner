@@ -200,12 +200,11 @@ class QuestionnaireForm(FlaskForm):
         period_range: timedelta,
     ) -> None:
         # Get period_limits from question
-        period_limits_item: tuple = self._get_period_limits(period_limits)
-        period_min: Mapping[str, int] = period_limits_item[0]
-        min_offset = self._get_offset_value(period_min)
+        period_limits_item = self._get_period_limits(period_limits)
+        period_min = period_limits_item[0]
 
         # Exception to be raised if range available is smaller than minimum range allowed
-        if period_min and period_range < min_offset:
+        if period_min and period_range < self._get_offset_value(period_min):
             exception = f"The schema has invalid period_limits for {question_id}"
 
             raise Exception(exception)
