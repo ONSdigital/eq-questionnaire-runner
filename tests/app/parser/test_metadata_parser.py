@@ -205,3 +205,15 @@ def test_response_id_for_missing_metadata(metadata, fake_business_metadata_runne
     del fake_business_metadata_runner[metadata]
     with pytest.raises(ValidationError):
         validate_runner_claims(fake_business_metadata_runner)
+
+
+def test_response_id_for_empty_value(fake_business_metadata_runner):
+    expected = (
+        f"{fake_business_metadata_runner['ru_ref']}"
+        f"{fake_business_metadata_runner['collection_exercise_sid']}"
+        f"{fake_business_metadata_runner['eq_id']}"
+        f"{fake_business_metadata_runner['form_type']}"
+    )
+    fake_business_metadata_runner["response_id"] = ""
+    claims = validate_runner_claims(fake_business_metadata_runner)
+    assert claims["response_id"] == expected

@@ -161,14 +161,16 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
             return data
         eq_id = data.get("eq_id")
         form_type = data.get("form_type")
-        ru_ref = data.get("ru_ref")
-        collection_exercise_sid = data.get("collection_exercise_sid")
         if eq_id and form_type:
+            ru_ref = data["ru_ref"]
+            collection_exercise_sid = data["collection_exercise_sid"]
             response_id = f"{ru_ref}{collection_exercise_sid}{eq_id}{form_type}"
             data["response_id"] = response_id
             return data
 
-        raise ValidationError("Either eq_id or form_type is missing")
+        raise ValidationError(
+            "Both 'eq_id' and 'form_type' must be defined when 'response_id' is not provided"
+        )
 
 
 def validate_questionnaire_claims(claims, questionnaire_specific_metadata):
