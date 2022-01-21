@@ -158,6 +158,9 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
 
         """
         if data.get("response_id"):
+            logger.info(
+                "'response_id' exists in claims, skipping 'response_id' generation"
+            )
             return data
         eq_id = data.get("eq_id")
         form_type = data.get("form_type")
