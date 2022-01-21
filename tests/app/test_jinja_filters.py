@@ -324,7 +324,7 @@ def test_map_list_collector_config_no_actions():
                     "actions": [],
                     "iconType": "icon",
                     "rowTitle": "Mark Bloggs",
-                    'id': 'one',
+                    "id": "one",
                     "rowTitleAttributes": {
                         "data-qa": "list-item-1-label",
                         "data-list-item-id": "one",
@@ -338,7 +338,7 @@ def test_map_list_collector_config_no_actions():
                     "actions": [],
                     "iconType": "icon",
                     "rowTitle": "Joe Bloggs",
-                    'id': 'two',
+                    "id": "two",
                     "rowTitleAttributes": {
                         "data-qa": "list-item-2-label",
                         "data-list-item-id": "two",
