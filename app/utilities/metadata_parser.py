@@ -133,7 +133,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
                 )
 
     @post_load
-    def convert_schema_name(self, data, **kwargs):
+    def update_schema_name(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
         """Function to transform parameters into a business schema"""
         if data.get("schema_name"):
@@ -163,10 +163,12 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         form_type = data.get("form_type")
         ru_ref = data.get("ru_ref")
         collection_exercise_sid = data.get("collection_exercise_sid")
-        if ru_ref and collection_exercise_sid and eq_id and form_type:
+        if eq_id and form_type:
             response_id = f"{ru_ref}{collection_exercise_sid}{eq_id}{form_type}"
             data["response_id"] = response_id
             return data
+
+        raise ValidationError("Either eq_id or form_type is missing")
 
 
 def validate_questionnaire_claims(claims, questionnaire_specific_metadata):

@@ -197,9 +197,11 @@ def test_when_response_id_is_present(fake_business_metadata_runner):
 
 
 @pytest.mark.parametrize(
-    "metadata", ["eq_id", "form_type", "form_type", "collection_exercise_sid"]
+    "metadata", ["eq_id", "form_type", "ru_ref", "collection_exercise_sid"]
 )
 def test_response_id_for_missing_metadata(metadata, fake_business_metadata_runner):
+    fake_business_metadata_runner["schema_name"] = "schema_name"
+    del fake_business_metadata_runner["response_id"]
     del fake_business_metadata_runner[metadata]
     with pytest.raises(ValidationError):
         validate_runner_claims(fake_business_metadata_runner)
