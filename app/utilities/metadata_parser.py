@@ -169,7 +169,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
             return data
 
         raise ValidationError(
-            "Both 'eq_id' and 'form_type' must be defined when 'response_id' is not provided"
+            "Both 'eq_id' and 'form_type' must be defined when 'response_id' is not defined"
         )
 
 
