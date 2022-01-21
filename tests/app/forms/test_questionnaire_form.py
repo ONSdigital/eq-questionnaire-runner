@@ -923,7 +923,7 @@ class TestQuestionnaireForm(
                 question_schema,
                 AnswerStore(),
                 ListStore(),
-                metadata=None,
+                metadata={},
                 response_metadata={},
                 form_data=form_data,
             )
