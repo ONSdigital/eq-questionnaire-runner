@@ -73,12 +73,10 @@ class ContextHelper:
 
     @property
     def service_links_context(self) -> Optional[dict[str, list[dict]]]:
-
-        service_links = self._survey_config.get_service_links(
+        if service_links := self._survey_config.get_service_links(
             sign_out_url=self._sign_out_url,
             is_authenticated=current_user.is_authenticated,
-        )
-        if service_links:
+        ):
             return {"itemsList": service_links}
 
         return None
