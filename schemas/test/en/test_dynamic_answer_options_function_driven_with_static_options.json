@@ -351,7 +351,6 @@
                                         "id": "dynamic-mutually-exclusive-static-answer",
                                         "mandatory": false,
                                         "type": "Checkbox",
-                                        "label": "OOr",
                                         "options": [
                                             {
                                                 "label": "I did not work",
