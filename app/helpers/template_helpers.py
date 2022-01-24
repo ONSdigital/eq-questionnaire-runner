@@ -183,7 +183,9 @@ def get_survey_config(
 
 def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     language = get_locale().language
-    survey_config = get_survey_config(language=language)
+    survey_config = get_survey_config(
+        language=language, base_url=cookie_session.get("account_service_base_url")
+    )
     is_post_submission = request.blueprint == "post_submission"
     include_csrf_token = bool(
         request.url_rule

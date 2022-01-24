@@ -1,4 +1,4 @@
-from app.settings import ACCOUNT_SERVICE_BASE_URL
+from tests.integration.create_token import ACCOUNT_SERVICE_URL
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -7,7 +7,7 @@ class TestHeaderLinks(IntegrationTestCase):
         account_link = self.getLinkById("header-link-my-account")
         self.assertIsNotNone(account_link)
         self.assertEqual(account_link.text, "My account")
-        self.assertEqual(account_link["href"], f"{ACCOUNT_SERVICE_BASE_URL}/my-account")
+        self.assertEqual(account_link["href"], f"{ACCOUNT_SERVICE_URL}/my-account")
 
     def assert_my_account_link_does_not_exist(self):
         account_link = self.getLinkById("header-link-my-account")
