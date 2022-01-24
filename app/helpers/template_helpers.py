@@ -166,13 +166,14 @@ def get_survey_config(
     *,
     theme: Optional[str] = None,
     language: Optional[str] = None,
-    base_url: Optional[str] = None,
 ) -> SurveyConfig:
     # The fallback to assigning SURVEY_TYPE to theme is only being added until
     # business feedback on the differentiation between theme and SURVEY_TYPE.
     language = language or get_locale().language
     theme = theme or get_survey_type()
-    base_url = base_url or ACCOUNT_SERVICE_BASE_URL
+    base_url = (
+        cookie_session.get("account_service_base_url") or ACCOUNT_SERVICE_BASE_URL
+    )
 
     return survey_config_mapping(
         theme=theme,
@@ -184,7 +185,7 @@ def get_survey_config(
 def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     language = get_locale().language
     survey_config = get_survey_config(
-        language=language, base_url=cookie_session.get("account_service_base_url")
+        language=language,
     )
     is_post_submission = request.blueprint == "post_submission"
     include_csrf_token = bool(
