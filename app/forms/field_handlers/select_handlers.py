@@ -34,12 +34,10 @@ class SelectHandlerBase(FieldHandler):
             rule_evaluator=self.rule_evaluator,
         )
 
-        choices = [
+        return [
             ChoiceWithDetailAnswer(option["value"], option["label"], None)
             for option in dynamic_options.evaluate()
         ]
-
-        return choices
 
     def _build_static_choices(self) -> list[ChoiceWithDetailAnswer]:
         choices = []

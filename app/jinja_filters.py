@@ -324,7 +324,8 @@ def map_checkbox_config(form, answer):
     options = form["fields"][answer["id"]]
 
     return [
-        SelectConfig(option, idx, answer, form) for idx, option in enumerate(options)
+        SelectConfig(option, index, answer, form)
+        for index, option in enumerate(options)
     ]
 
 
@@ -338,7 +339,8 @@ def map_radio_config(form, answer):
     options = form["fields"][answer["id"]]
 
     return [
-        SelectConfig(option, idx, answer, form) for idx, option in enumerate(options)
+        SelectConfig(option, index, answer, form)
+        for index, option in enumerate(options)
     ]
 
 
