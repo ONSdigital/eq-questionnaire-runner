@@ -81,7 +81,6 @@ class TestExitPostSubmissionWithHubDefaultTheme(IntegrationTestCase):
 
 class TestCensusSignOut(IntegrationTestCase):
     def setUp(self):
-        # Perform setup steps
         self._set_up_app(setting_overrides={"SURVEY_TYPE": "census"})
 
     def test_sign_out_button_text(self):
