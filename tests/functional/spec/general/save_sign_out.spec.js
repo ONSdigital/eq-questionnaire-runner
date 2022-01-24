@@ -1,11 +1,12 @@
-import SetMinMax from "../generated_pages/numbers/set-min-max-block.page.js";
-import TestMinMax from "../generated_pages/numbers/test-min-max-block.page.js";
-import SubmitPage from "../generated_pages/numbers/submit.page";
-import IntroductionPage from "../generated_pages/introduction/introduction.page";
-import IntroInterstitialPage from "../generated_pages/introduction/general-business-information-completed.page";
-import IntroThankYouPagePage from "../base_pages/thank-you.page";
-import HouseHolderConfirmationPage from "../generated_pages/thank_you_census_household/household-confirmation.page";
-import { getRandomString } from "../jwt_helper";
+<<<<<<< HEAD
+import SetMinMax from "../../generated_pages/numbers/set-min-max-block.page.js";
+import TestMinMax from "../../generated_pages/numbers/test-min-max-block.page.js";
+import SubmitPage from "../../generated_pages/numbers/submit.page";
+import IntroductionPage from "../../generated_pages/introduction/introduction.page";
+import IntroInterstitialPage from "../../generated_pages/introduction/general-business-information-completed.page";
+import IntroThankYouPagePage from "../../base_pages/thank-you.page";
+import HouseHolderConfirmationPage from "../../generated_pages/thank_you_census_household/household-confirmation.page";
+import { getRandomString } from "../../jwt_helper";
 
 describe("SaveSignOut", () => {
   const responseId = getRandomString(16);

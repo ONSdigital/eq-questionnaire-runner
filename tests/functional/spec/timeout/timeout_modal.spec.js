@@ -1,7 +1,7 @@
-import TimeoutInterstitialPage from "../generated_pages/timeout_modal/timeout-modal-interstitial.page";
-import TimeoutSubmitPage from "../generated_pages/timeout_modal/submit.page";
-import { TimeoutModalPage } from "../base_pages/timeout-modal.page.js";
-import ThankYouPage from "../base_pages/thank-you.page.js";
+import TimeoutInterstitialPage from "../../generated_pages/timeout_modal/timeout-modal-interstitial.page";
+import TimeoutSubmitPage from "../../generated_pages/timeout_modal/submit.page";
+import { TimeoutModalPage } from "../../base_pages/timeout-modal.page.js";
+import ThankYouPage from "../../base_pages/thank-you.page.js";
 
 describe("Timeout Modal", () => {
   describe("Given I am completing the survey, ", () => {

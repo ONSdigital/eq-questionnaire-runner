@@ -1,7 +1,7 @@
-import MandatoryCheckboxPage from "../generated_pages/checkbox/mandatory-checkbox.page";
-import NonMandatoryCheckboxPage from "../generated_pages/checkbox/non-mandatory-checkbox.page";
-import singleCheckboxPage from "../generated_pages/checkbox/single-checkbox.page";
-import SubmitPage from "../generated_pages/checkbox/submit.page";
+import MandatoryCheckboxPage from "../../generated_pages/checkbox/mandatory-checkbox.page";
+import NonMandatoryCheckboxPage from "../../generated_pages/checkbox/non-mandatory-checkbox.page";
+import singleCheckboxPage from "../../generated_pages/checkbox/single-checkbox.page";
+import SubmitPage from "../../generated_pages/checkbox/submit.page";
 
 describe('Checkbox with "other" option', () => {
   beforeEach("Load the survey", () => {

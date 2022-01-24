@@ -1,4 +1,4 @@
-import ageQuestionBlock from "../generated_pages/variants_content/age-question-block.page.js";
+import ageQuestionBlock from "../../generated_pages/variants_content/age-question-block.page.js";
 
 describe("QuestionVariants", () => {
   beforeEach(() => {

@@ -1,9 +1,9 @@
-import SchemaFeedbackPage from "../generated_pages/feedback/feedback.page";
-import SubmitPage from "../generated_pages/feedback/submit.page";
+import SchemaFeedbackPage from "../../generated_pages/feedback/feedback.page";
+import SubmitPage from "../../generated_pages/feedback/submit.page";
 
-import FeedbackPage from "../base_pages/feedback.page";
-import FeedbackSentPage from "../base_pages/feedback-sent.page";
-import ThankYouPage from "../base_pages/thank-you.page";
+import FeedbackPage from "../../base_pages/feedback.page";
+import FeedbackSentPage from "../../base_pages/feedback-sent.page";
+import ThankYouPage from "../../base_pages/thank-you.page";
 
 describe("Feedback", () => {
   describe("Given I launch and complete the test feedback survey", () => {

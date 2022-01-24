@@ -1,5 +1,5 @@
-import DurationPage from "../generated_pages/durations/duration-block.page.js";
-import SubmitPage from "../generated_pages/durations/submit.page.js";
+import DurationPage from "../../generated_pages/durations/duration-block.page.js";
+import SubmitPage from "../../generated_pages/durations/submit.page.js";
 
 describe("Durations", () => {
   beforeEach("Load the survey", () => {

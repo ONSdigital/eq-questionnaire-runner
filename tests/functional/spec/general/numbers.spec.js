@@ -1,6 +1,6 @@
-import SetMinMax from "../generated_pages/numbers/set-min-max-block.page.js";
-import TestMinMax from "../generated_pages/numbers/test-min-max-block.page.js";
-import SubmitPage from "../generated_pages/numbers/submit.page";
+import SetMinMax from "../../generated_pages/numbers/set-min-max-block.page.js";
+import TestMinMax from "../../generated_pages/numbers/test-min-max-block.page.js";
+import SubmitPage from "../../generated_pages/numbers/submit.page";
 
 describe("NumericRange", () => {
   const numberSchema = "test_numbers.json";

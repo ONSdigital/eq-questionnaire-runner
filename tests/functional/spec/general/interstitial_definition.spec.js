@@ -1,4 +1,4 @@
-import InterstitialDefinitionPage from "../generated_pages/interstitial_definition/interstitial-definition.page";
+import InterstitialDefinitionPage from "../../generated_pages/interstitial_definition/interstitial-definition.page";
 
 describe("Component: Interstitial Definition", () => {
   describe("Given I launch the interstitial definition questionnaire", () => {

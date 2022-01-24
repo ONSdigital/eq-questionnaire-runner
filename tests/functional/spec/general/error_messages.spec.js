@@ -1,4 +1,4 @@
-import AboutYou from "../generated_pages/multiple_answers/about-you-block.page";
+import AboutYou from "../../generated_pages/multiple_answers/about-you-block.page";
 
 function answerAllButOne() {
   $(AboutYou.textfield()).setValue("John Doe");

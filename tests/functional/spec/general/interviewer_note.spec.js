@@ -1,7 +1,7 @@
-import ConfirmPage from "../generated_pages/interviewer_note/confirm-block.page.js";
-import FavouriteTeamPage from "../generated_pages/interviewer_note/favourite-team-block.page.js";
-import FinalInterstitialPage from "../generated_pages/interviewer_note/final-interstitial-block.page.js";
-import InitialInterstitialPage from "../generated_pages/interviewer_note/initial-interstitial-block.page.js";
+import ConfirmPage from "../../generated_pages/interviewer_note/confirm-block.page.js";
+import FavouriteTeamPage from "../../generated_pages/interviewer_note/favourite-team-block.page.js";
+import FinalInterstitialPage from "../../generated_pages/interviewer_note/final-interstitial-block.page.js";
+import InitialInterstitialPage from "../../generated_pages/interviewer_note/initial-interstitial-block.page.js";
 
 describe("Given I start a survey", () => {
   before(() => {

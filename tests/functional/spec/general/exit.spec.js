@@ -1,6 +1,6 @@
-import CensusThankYouPage from "../base_pages/census-thank-you.page.js";
-import HubPage from "../base_pages/hub.page";
-import { SubmitPage } from "../base_pages/submit.page.js";
+import CensusThankYouPage from "../../base_pages/census-thank-you.page.js";
+import HubPage from "../../base_pages/hub.page";
+import { SubmitPage } from "../../base_pages/submit.page.js";
 
 describe("Post submission exit", () => {
   beforeEach("Load the survey", () => {

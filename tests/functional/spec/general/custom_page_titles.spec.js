@@ -1,11 +1,11 @@
-import DateOfBirthPage from "../generated_pages/custom_page_titles/date-of-birth.page.js";
-import HubPage from "../base_pages/hub.page.js";
-import IndividualInterstitialPage from "../generated_pages/custom_page_titles/individual-interstitial.page.js";
-import ListCollectorAddPage from "../generated_pages/custom_page_titles/list-collector-add.page.js";
-import ListCollectorEditPage from "../generated_pages/custom_page_titles/list-collector-edit.page.js";
-import ListCollectorPage from "../generated_pages/custom_page_titles/list-collector.page.js";
-import ProxyPage from "../generated_pages/custom_page_titles/proxy.page.js";
-import RelationshipsPage from "../generated_pages/custom_page_titles/relationships.page.js";
+import DateOfBirthPage from "../../generated_pages/custom_page_titles/date-of-birth.page.js";
+import HubPage from "../../base_pages/hub.page.js";
+import IndividualInterstitialPage from "../../generated_pages/custom_page_titles/individual-interstitial.page.js";
+import ListCollectorAddPage from "../../generated_pages/custom_page_titles/list-collector-add.page.js";
+import ListCollectorEditPage from "../../generated_pages/custom_page_titles/list-collector-edit.page.js";
+import ListCollectorPage from "../../generated_pages/custom_page_titles/list-collector.page.js";
+import ProxyPage from "../../generated_pages/custom_page_titles/proxy.page.js";
+import RelationshipsPage from "../../generated_pages/custom_page_titles/relationships.page.js";
 
 describe("Feature: Custom Page Titles", () => {
   const schema = "test_custom_page_titles.json";

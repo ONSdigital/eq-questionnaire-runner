@@ -1,9 +1,9 @@
-import { SubmitPage } from "../base_pages/submit.page.js";
-import HubPage from "../base_pages/hub.page";
-import CheckboxPage from "../generated_pages/title/single-title-block.page";
-import ThankYouPage from "../base_pages/thank-you.page";
-import DidYouKnowPage from "../generated_pages/thank_you/did-you-know.page";
-import ThankYouSubmitPage from "../generated_pages/thank_you/submit.page";
+import { SubmitPage } from "../../base_pages/submit.page.js";
+import HubPage from "../../base_pages/hub.page";
+import CheckboxPage from "../../generated_pages/title/single-title-block.page";
+import ThankYouPage from "../../base_pages/thank-you.page";
+import DidYouKnowPage from "../../generated_pages/thank_you/did-you-know.page";
+import ThankYouSubmitPage from "../../generated_pages/thank_you/submit.page";
 
 describe("Thank You Social", () => {
   describe("Given I launch a social themed questionnaire", () => {

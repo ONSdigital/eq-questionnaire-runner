@@ -1,4 +1,4 @@
-import IntroductionPage from "../generated_pages/introduction/introduction.page";
+import IntroductionPage from "../../generated_pages/introduction/introduction.page";
 
 describe("Introduction page", () => {
   const introductionSchema = "test_introduction.json";

@@ -1,6 +1,6 @@
-import FoodPage from "../generated_pages/new_skip_condition_set/food-block.page";
-import DrinkPage from "../generated_pages/new_skip_condition_set/drink-block.page";
-import SubmitPage from "../generated_pages/new_skip_condition_set/submit.page";
+import FoodPage from "../../generated_pages/new_skip_condition_set/food-block.page";
+import DrinkPage from "../../generated_pages/new_skip_condition_set/drink-block.page";
+import SubmitPage from "../../generated_pages/new_skip_condition_set/submit.page";
 
 describe("Skip Conditions - Set", () => {
   beforeEach("Load the survey", () => {

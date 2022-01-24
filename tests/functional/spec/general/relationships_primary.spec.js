@@ -1,8 +1,8 @@
-import PrimaryPersonListCollectorPage from "../generated_pages/relationships_primary/primary-person-list-collector.page.js";
-import PrimaryPersonListCollectorAddPage from "../generated_pages/relationships_primary/primary-person-list-collector-add.page.js";
-import ListCollectorPage from "../generated_pages/relationships_primary/list-collector.page.js";
-import ListCollectorAddPage from "../generated_pages/relationships_primary/list-collector-add.page.js";
-import RelationshipsPage from "../generated_pages/relationships_primary/relationships.page.js";
+import PrimaryPersonListCollectorPage from "../../generated_pages/relationships_primary/primary-person-list-collector.page.js";
+import PrimaryPersonListCollectorAddPage from "../../generated_pages/relationships_primary/primary-person-list-collector-add.page.js";
+import ListCollectorPage from "../../generated_pages/relationships_primary/list-collector.page.js";
+import ListCollectorAddPage from "../../generated_pages/relationships_primary/list-collector-add.page.js";
+import RelationshipsPage from "../../generated_pages/relationships_primary/relationships.page.js";
 
 describe("Relationships - Primary Person", () => {
   const schema = "test_relationships_primary.json";

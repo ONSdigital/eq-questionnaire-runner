@@ -1,5 +1,5 @@
-import TextFieldPage from "../generated_pages/textfield/name-block.page.js";
-import SubmitPage from "../generated_pages/textfield/submit.page.js";
+import TextFieldPage from "../../generated_pages/textfield/name-block.page.js";
+import SubmitPage from "../../generated_pages/textfield/submit.page.js";
 
 describe("Textfield", () => {
   it("Given a textfield option, a user should be able to click the label of the textfield to focus", () => {

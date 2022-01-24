@@ -1,6 +1,6 @@
-import AboutYou from "../generated_pages/multiple_answers/about-you-block.page";
-import AgeBlock from "../generated_pages/multiple_answers/age-block.page";
-import SubmitPage from "../generated_pages/multiple_answers/submit.page.js";
+import AboutYou from "../../generated_pages/multiple_answers/about-you-block.page";
+import AgeBlock from "../../generated_pages/multiple_answers/age-block.page";
+import SubmitPage from "../../generated_pages/multiple_answers/submit.page.js";
 
 function answerAllQuestions() {
   $(AboutYou.textfield()).setValue("John Doe");

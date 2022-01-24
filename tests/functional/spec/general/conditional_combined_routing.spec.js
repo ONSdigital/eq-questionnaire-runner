@@ -1,7 +1,7 @@
-import ConditionalCombinedRoutingPage from "../generated_pages/conditional_combined_routing/conditional-routing-block.page";
-import ResponseAny from "../generated_pages/conditional_combined_routing/response-any.page";
-import ResponseNotAny from "../generated_pages/conditional_combined_routing/response-not-any.page";
-import SubmitPage from "../generated_pages/conditional_combined_routing/submit.page";
+import ConditionalCombinedRoutingPage from "../../generated_pages/conditional_combined_routing/conditional-routing-block.page";
+import ResponseAny from "../../generated_pages/conditional_combined_routing/response-any.page";
+import ResponseNotAny from "../../generated_pages/conditional_combined_routing/response-not-any.page";
+import SubmitPage from "../../generated_pages/conditional_combined_routing/submit.page";
 
 describe("Conditional combined routing.", () => {
   beforeEach(() => {

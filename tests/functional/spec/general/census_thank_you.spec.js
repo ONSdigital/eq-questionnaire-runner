@@ -1,7 +1,7 @@
-import { SubmitPage } from "../base_pages/submit.page.js";
-import HubPage from "../base_pages/hub.page";
+import { SubmitPage } from "../../base_pages/submit.page.js";
+import HubPage from "../../base_pages/hub.page";
 
-import ThankYouPage from "../base_pages/thank-you.page";
+import ThankYouPage from "../../base_pages/thank-you.page";
 
 describe("Thank You Census Household", () => {
   describe("Given I launch a census schema without feedback enabled", () => {

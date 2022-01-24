@@ -1,9 +1,9 @@
-import SubmitPage from "../generated_pages/confirmation_email/submit.page";
+import SubmitPage from "../../generated_pages/confirmation_email/submit.page";
 
-import ThankYouPage from "../base_pages/thank-you.page";
-import ConfirmationEmailPage from "../base_pages/confirmation-email.page";
-import ConfirmationEmailSentPage from "../base_pages/confirmation-email-sent.page";
-import ConfirmEmailPage from "../base_pages/confirm-email.page";
+import ThankYouPage from "../../base_pages/thank-you.page";
+import ConfirmationEmailPage from "../../base_pages/confirmation-email.page";
+import ConfirmationEmailSentPage from "../../base_pages/confirmation-email-sent.page";
+import ConfirmEmailPage from "../../base_pages/confirm-email.page";
 
 describe("Email confirmation", () => {
   describe("Given I launch the test email confirmation survey", () => {

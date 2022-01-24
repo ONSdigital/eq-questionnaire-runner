@@ -1,4 +1,4 @@
-import DefinitionPage from "../generated_pages/question_definition/definition-block.page";
+import DefinitionPage from "../../generated_pages/question_definition/definition-block.page";
 
 describe("Component: Definition", () => {
   describe("Given I start a survey which contains question definition", () => {

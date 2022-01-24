@@ -1,8 +1,8 @@
-import NamePage from "../generated_pages/language/name-block.page";
-import DobPage from "../generated_pages/language/dob-block.page";
-import NumberOfPeoplePage from "../generated_pages/language/number-of-people-block.page";
-import ConfirmNumberOfPeoplePage from "../generated_pages/language/confirm-number-of-people.page";
-import HubPage from "../base_pages/hub.page.js";
+import NamePage from "../../generated_pages/language/name-block.page";
+import DobPage from "../../generated_pages/language/dob-block.page";
+import NumberOfPeoplePage from "../../generated_pages/language/number-of-people-block.page";
+import ConfirmNumberOfPeoplePage from "../../generated_pages/language/confirm-number-of-people.page";
+import HubPage from "../../base_pages/hub.page.js";
 
 const PLURAL_TEST_DATA_SETS = [
   {

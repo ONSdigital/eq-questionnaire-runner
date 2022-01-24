@@ -1,7 +1,7 @@
-import RoutingCheckboxContains from "../generated_pages/routing_checkbox_contains/country-checkbox.page";
-import ContainsAllPage from "../generated_pages/routing_checkbox_contains/country-interstitial-all.page";
-import ContainsAnyPage from "../generated_pages/routing_checkbox_contains/country-interstitial-any.page";
-import SubmitPage from "../generated_pages/routing_checkbox_contains/submit.page";
+import RoutingCheckboxContains from "../../generated_pages/routing_checkbox_contains/country-checkbox.page";
+import ContainsAllPage from "../../generated_pages/routing_checkbox_contains/country-interstitial-all.page";
+import ContainsAnyPage from "../../generated_pages/routing_checkbox_contains/country-interstitial-any.page";
+import SubmitPage from "../../generated_pages/routing_checkbox_contains/submit.page";
 
 describe("Routing Checkbox Contains Condition.", () => {
   beforeEach(() => {

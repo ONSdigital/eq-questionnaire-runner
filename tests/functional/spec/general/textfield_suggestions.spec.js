@@ -1,6 +1,6 @@
-import SuggestionsPage from "../generated_pages/textfield_suggestions/country-block.page.js";
-import MultipleSuggestionsPage from "../generated_pages/textfield_suggestions/multiple-country-block.page.js";
-import SubmitPage from "../generated_pages/textfield_suggestions/submit.page.js";
+import SuggestionsPage from "../../generated_pages/textfield_suggestions/country-block.page.js";
+import MultipleSuggestionsPage from "../../generated_pages/textfield_suggestions/multiple-country-block.page.js";
+import SubmitPage from "../../generated_pages/textfield_suggestions/submit.page.js";
 
 describe("Suggestions", () => {
   it("Given I open a textfield with a suggestions url, when I have entered text, then it will show suggestions", () => {

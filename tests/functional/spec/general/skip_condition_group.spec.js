@@ -1,6 +1,6 @@
-import QuestionPage from "../generated_pages/skip_condition_group/do-you-want-to-skip.page";
-import SkipPage from "../generated_pages/skip_condition_group/should-skip.page";
-import SubmitPage from "../generated_pages/skip_condition_group/submit.page";
+import QuestionPage from "../../generated_pages/skip_condition_group/do-you-want-to-skip.page";
+import SkipPage from "../../generated_pages/skip_condition_group/should-skip.page";
+import SubmitPage from "../../generated_pages/skip_condition_group/submit.page";
 
 describe("Skip Conditions - Group", () => {
   const schema = "test_new_skip_condition_group.json";
