@@ -19,43 +19,19 @@ def get_mock_schema():
     )
 
 
-def get_mock_answer_store():
-    return AnswerStore()
-
-
-def get_mock_list_store():
-    return ListStore()
-
-
-def get_mock_metadata():
-    return {}
-
-
 def get_mock_response_metadata():
     return {"started_at": "2021-01-01T09:00:00.220038+00:00"}
-
-
-def get_mock_location():
-    return None
-
-
-def get_mock_list_item_id():
-    return None
-
-
-def escape_answer_values():
-    return False
 
 
 @pytest.fixture
 def rule_evaluator():
     evaluator = RuleEvaluator(
-        answer_store=get_mock_answer_store(),
-        list_store=get_mock_list_store(),
-        metadata=get_mock_metadata(),
+        answer_store=AnswerStore(),
+        list_store=ListStore(),
+        metadata={},
         response_metadata=get_mock_response_metadata(),
         schema=get_mock_schema(),
-        location=get_mock_location(),
+        location=None,
     )
 
     return evaluator
@@ -64,14 +40,14 @@ def rule_evaluator():
 @pytest.fixture
 def value_source_resolver():
     resolver = ValueSourceResolver(
-        answer_store=get_mock_answer_store(),
-        list_store=get_mock_list_store(),
-        metadata=get_mock_metadata(),
+        answer_store=AnswerStore(),
+        list_store=ListStore(),
+        metadata={},
         response_metadata=get_mock_response_metadata(),
         schema=get_mock_schema(),
-        location=get_mock_location(),
-        list_item_id=get_mock_list_item_id(),
-        escape_answer_values=escape_answer_values(),
+        location=None,
+        list_item_id=None,
+        escape_answer_values=False,
     )
 
     return resolver
