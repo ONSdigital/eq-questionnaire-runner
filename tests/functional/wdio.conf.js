@@ -17,6 +17,11 @@ exports.config = {
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
   specs: ["./tests/functional/spec/**/*.js"],
+  suites: {
+          timeout_modal: [
+              './tests/functional/spec/timeout_modal.spec.js',
+          ],
+      },
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
