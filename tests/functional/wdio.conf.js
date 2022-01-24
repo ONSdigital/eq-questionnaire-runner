@@ -18,10 +18,8 @@ exports.config = {
   //
   specs: ["./tests/functional/spec/**/*.js"],
   suites: {
-          timeout_modal: [
-              './tests/functional/spec/timeout_modal.spec.js',
-          ],
-      },
+    timeout_modal: ["./tests/functional/spec/timeout_modal.spec.js"],
+  },
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
