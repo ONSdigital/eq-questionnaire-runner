@@ -33,7 +33,7 @@ class TestSubmissionPayload(AppContextTestCase):
         )
 
     @patch("app.views.handlers.submission.convert_answers", Mock(return_value={}))
-    def test_submission_language_code_in_payload(self):
+    def test_submission_language_code_uses_session_data_language_if_present(self):
         with patch(
             "app.views.handlers.submission.get_session_store",
             return_value=self.session_store,
@@ -42,6 +42,25 @@ class TestSubmissionPayload(AppContextTestCase):
                 QuestionnaireSchema({}), self.questionnaire_store_mock(), {}
             )
             assert submission_handler.get_payload()["submission_language_code"] == "cy"
+
+    @patch("app.views.handlers.submission.convert_answers", Mock(return_value={}))
+    def test_submission_language_code_uses_default_language_if_session_data_language_not_present(
+        self,
+    ):
+        self.session_data.language_code = None
+        self.session_data.launch_language_code = None
+        session_store = SessionStore("user_ik", "pepper", "eq_session_id").create(
+            "eq_session_id", "user_id", self.session_data, self.expires_at
+        )
+
+        with patch(
+            "app.views.handlers.submission.get_session_store",
+            return_value=session_store,
+        ):
+            submission_handler = SubmissionHandler(
+                QuestionnaireSchema({}), self.questionnaire_store_mock(), {}
+            )
+            assert submission_handler.get_payload()["submission_language_code"] == "en"
 
     @patch(
         "app.views.handlers.submission.SubmissionHandler.get_payload",
