@@ -14,8 +14,6 @@ from app.survey_config import (
     WelshCensusSurveyConfig,
 )
 
-SIGN_OUT_URL = "http://localhost:5000/sign-out"
-
 
 def get_context_helper(
     app, survey_config, is_post_submission=False, include_csrf_token=True
