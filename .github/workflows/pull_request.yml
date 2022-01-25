@@ -106,9 +106,9 @@ jobs:
       - name: Running schema tests
         run: ./scripts/validate_test_schemas.sh
   test-functional:
-      strategy:
-          matrix:
-              suite: [ timeout, features, general, components ]
+    strategy:
+      matrix:
+        suite: [ timeout, features, general, components ]
     needs: [python-dependencies, node-dependencies]
     runs-on: ubuntu-18.04
     env:
