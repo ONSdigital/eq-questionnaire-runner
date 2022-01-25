@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Iterable, Mapping, MutableMapping, Optional
+from warnings import warn
 
 from flask_babel import lazy_gettext
 
@@ -16,6 +17,7 @@ class BusinessSurveyConfig(
     footer_legal_links: Iterable[Mapping] = field(default_factory=list)
 
     def __post_init__(self):
+        self.base_url = self._stripped_base_url
         super().__post_init__()
 
         if not self.account_service_log_out_url:
@@ -60,3 +62,10 @@ class BusinessSurveyConfig(
             if is_authenticated
             else None
         )
+
+    @property
+    def _stripped_base_url(self) -> str:
+        warn(
+            "base_url contains extra pathing which will eventually be corrected and this function will need to be removed"
+        )
+        return self.base_url.replace("/surveys/todo", "")
