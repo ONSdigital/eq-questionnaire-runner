@@ -324,6 +324,7 @@ def test_map_list_collector_config_no_actions():
                     "actions": [],
                     "iconType": "icon",
                     "rowTitle": "Mark Bloggs",
+                    "id": "one",
                     "rowTitleAttributes": {
                         "data-qa": "list-item-1-label",
                         "data-list-item-id": "one",
@@ -337,6 +338,7 @@ def test_map_list_collector_config_no_actions():
                     "actions": [],
                     "iconType": "icon",
                     "rowTitle": "Joe Bloggs",
+                    "id": "two",
                     "rowTitleAttributes": {
                         "data-qa": "list-item-2-label",
                         "data-list-item-id": "two",
@@ -356,6 +358,7 @@ def test_map_list_collector_config():
             "edit_link": "/primary/change",
             "primary_person": True,
             "item_title": "Mark Bloggs (You)",
+            "id": "primary",
             "list_item_id": "primary",
         },
         {
@@ -363,6 +366,7 @@ def test_map_list_collector_config():
             "edit_link": "/nonprimary/change",
             "primary_person": False,
             "item_title": "Joe Bloggs",
+            "id": "nonprimary",
             "list_item_id": "nonprimary",
         },
     ]
@@ -390,6 +394,7 @@ def test_map_list_collector_config():
                     ],
                     "iconType": "icon",
                     "rowTitle": "Mark Bloggs (You)",
+                    "id": "primary",
                     "rowTitleAttributes": {
                         "data-qa": "list-item-1-label",
                         "data-list-item-id": "primary",
@@ -416,6 +421,7 @@ def test_map_list_collector_config():
                     ],
                     "iconType": "icon",
                     "rowTitle": "Joe Bloggs",
+                    "id": "nonprimary",
                     "rowTitleAttributes": {
                         "data-qa": "list-item-2-label",
                         "data-list-item-id": "nonprimary",

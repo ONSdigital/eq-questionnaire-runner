@@ -86,11 +86,11 @@ def login():
     cookie_session["survey_title"] = g.schema.json["title"]
     cookie_session["expires_in"] = get_session_timeout_in_seconds(g.schema)
 
-    if claims.get("account_service_url"):
-        cookie_session["account_service_url"] = claims.get("account_service_url")
+    if account_service_url := claims.get("account_service_url"):
+        cookie_session["account_service_base_url"] = account_service_url
 
     if claims.get("account_service_log_out_url"):
-        cookie_session["account_service_log_out_url"] = claims.get(
+        cookie_session["account_service_log_out_url"] = claims.get(  # pragma: no cover
             "account_service_log_out_url"
         )
 
@@ -132,11 +132,7 @@ def get_sign_out():
     """
     Signs the user out of eQ and redirects to the log out url.
     """
-    log_out_url = (
-        cookie_session.get("account_service_log_out_url", url_for(".get_signed_out"))
-        if cookie_session
-        else get_survey_config().base_url
-    )
+    log_out_url = get_survey_config().account_service_log_out_url
 
     # Check for GET as we don't want to log out for HEAD requests
     if request.method == "GET":

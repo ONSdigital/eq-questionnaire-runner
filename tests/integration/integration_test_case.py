@@ -247,9 +247,23 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         self._cache_response(response)
 
-    def sign_out(self):
-        selected = self.getHtmlSoup().find("a", {"data-qa": "btn-save-sign-out"})
-        return self.get(selected["href"])
+    def getLinkById(self, identifier: str):
+        return self.getHtmlSoup().find("a", id=identifier)
+
+    def getSignOutButton(self):
+        return self.getHtmlSoup().find("a", {"data-qa": "btn-save-sign-out"})
+
+    def saveAndSignOut(self):
+        """
+        Sign out of eQ using the `Save and sign out` button and do not follow redirects since the redirect is external
+        """
+        return self.get(self.getSignOutButton()["href"], follow_redirects=False)
+
+    def signOut(self):
+        """
+        Sign out of eQ but do not follow redirects since the redirect is external
+        """
+        self.get("/sign-out", follow_redirects=False)
 
     def exit(self):
         """

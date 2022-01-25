@@ -22,16 +22,14 @@ class SurveyConfig:
         "Use of address data is subject to the terms and conditions."
     )
     base_url: str = ACCOUNT_SERVICE_BASE_URL
-    account_service_url: Optional[str] = None
-    account_service_surveys_path: Optional[str] = None
+    account_service_my_account_url: Optional[str] = None
+    account_service_todo_url: Optional[str] = None
+    account_service_log_out_url: Optional[str] = None
     title_logo: Optional[str] = None
     title_logo_alt: Optional[str] = None
-    contact_us_url: str = f"{base_url}/contact-us/"
-    cookie_settings_url: str = f"{base_url}/cookies/"
-    privacy_and_data_protection_url: str = f"{base_url}/privacy-and-data-protection/"
     accessibility_url: str = f"{ONS_URL}/help/accessibility/"
     what_we_do_url: str = f"{ONS_URL}/aboutus/whatwedo/"
-    header_logo: Optional[str] = None
+    header_logo: Optional[bool] = False
     mobile_logo: Optional[str] = None
     powered_by_logo: Optional[str] = None
     powered_by_logo_alt: Optional[str] = None
@@ -41,3 +39,22 @@ class SurveyConfig:
     survey_title: Optional[LazyString] = None
     design_system_theme: Optional[str] = None
     data_layer: Iterable[Union[Mapping]] = field(default_factory=list, compare=False)
+    sign_out_button_text: str = lazy_gettext("Save and sign out")
+    contact_us_url: str = field(init=False)
+    cookie_settings_url: str = field(init=False)
+    privacy_and_data_protection_url: str = field(init=False)
+
+    def __post_init__(self):
+        self.contact_us_url: str = f"{self.base_url}/contact-us/"
+        self.cookie_settings_url: str = f"{self.base_url}/cookies/"
+        self.privacy_and_data_protection_url: str = (
+            f"{self.base_url}/privacy-and-data-protection/"
+        )
+
+    def get_service_links(  # pylint: disable=unused-argument, no-self-use
+        self,
+        sign_out_url: str,
+        *,
+        is_authenticated: bool,
+    ) -> Optional[list[dict]]:
+        return None
