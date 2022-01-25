@@ -95,8 +95,8 @@ class ContextHelper:
             context["titleLogo"] = self._survey_config.title_logo
         if self._survey_config.title_logo_alt:
             context["titleLogoAlt"] = self._survey_config.title_logo_alt
-        if self._survey_config.header_logo:
-            context["customHeaderLogo"] = self._survey_config.header_logo
+        if self._survey_config.custom_header_logo:
+            context["customHeaderLogo"] = self._survey_config.custom_header_logo
         if self._survey_config.mobile_logo:
             context["mobileLogo"] = self._survey_config.mobile_logo
 
@@ -151,10 +151,9 @@ def survey_config_mapping(*, theme: str, language: str, base_url: str) -> Survey
         "business": BusinessSurveyConfig,
         "health": SurveyConfig,
         "social": SurveyConfig,
-        "northernireland": SurveyConfig,
+        "northernireland": NorthernIrelandBusinessSurveyConfig,
         "census": (WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig),
         "census-nisra": CensusNISRASurveyConfig,
-        "ni-business": NorthernIrelandBusinessSurveyConfig,
     }
 
     return survey_type_to_config[theme](

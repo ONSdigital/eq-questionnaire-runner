@@ -70,4 +70,4 @@ class NorthernIrelandBusinessSurveyConfig(BusinessSurveyConfig):
         "Northern Ireland Department of Finance logo"
     )
     mobile_logo: str = "ni-finance-logo-mobile"
-    header_logo: bool = True
+    custom_header_logo: bool = True

@@ -526,13 +526,12 @@ def test_account_service_log_out_url_context(
         ("health", "cy", SurveyConfig),
         ("social", "en", SurveyConfig),
         ("social", "cy", SurveyConfig),
-        ("northernireland", "en", SurveyConfig),
-        ("northernireland", "cy", SurveyConfig),
+        ("northernireland", "en", NorthernIrelandBusinessSurveyConfig),
+        ("northernireland", "cy", NorthernIrelandBusinessSurveyConfig),
         ("census", "en", CensusSurveyConfig),
         ("census", "cy", WelshCensusSurveyConfig),
         ("census-nisra", "en", CensusNISRASurveyConfig),
         ("census-nisra", "cy", CensusNISRASurveyConfig),
-        ("ni-business", "en", NorthernIrelandBusinessSurveyConfig),
         (None, None, BusinessSurveyConfig),
     ],
 )
@@ -607,7 +606,6 @@ def test_context_set_from_app_config(app):
     [
         ("default", "en", None),
         ("business", "en", None),
-        ("ni-business", "en", None),
         ("health", "en", None),
         ("social", "en", None),
         ("northernireland", "en", None),
@@ -633,10 +631,9 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
     [
         ("default", "en", "ONS Business Surveys"),
         ("business", "en", "ONS Business Surveys"),
-        ("ni-business", "en", "ONS Business Surveys"),
         ("health", "en", None),
         ("social", "en", None),
-        ("northernireland", "en", None),
+        ("northernireland", "en", "ONS Business Surveys"),
         ("census", "en", "Census 2021"),
         ("census", "cy", "Census 2021"),
         ("census-nisra", "en", "Census 2021"),
@@ -661,7 +658,6 @@ def test_correct_survey_title_in_context(
     [
         ("default", "en", []),
         ("business", "en", []),
-        ("ni-business", "en", []),
         ("health", "en", []),
         ("social", "en", []),
         ("northernireland", "en", []),
