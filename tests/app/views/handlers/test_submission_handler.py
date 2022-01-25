@@ -44,7 +44,7 @@ class TestSubmissionPayload(AppContextTestCase):
             assert submission_handler.get_payload()["submission_language_code"] == "cy"
 
     @patch("app.views.handlers.submission.convert_answers", Mock(return_value={}))
-    def test_submission_language_code_uses_default_language_if_session_data_language_not_present(
+    def test_submission_language_code_uses_default_language_if_session_data_language_none(
         self,
     ):
         self.session_data.language_code = None
