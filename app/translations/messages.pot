@@ -1464,4 +1464,3 @@ msgstr ""
 #: templates/partials/summary/list-summary.html:11
 msgid "Remove {item_name}"
 msgstr ""
-
