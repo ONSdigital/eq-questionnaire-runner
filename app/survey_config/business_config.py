@@ -69,3 +69,14 @@ class BusinessSurveyConfig(
             "base_url contains extra pathing which will eventually be corrected and this function will need to be removed"
         )
         return self.base_url.replace("/surveys/todo", "")
+
+
+@dataclass
+class NorthernIrelandBusinessSurveyConfig(BusinessSurveyConfig):
+
+    page_header_logo: str = "ni-finance-logo"
+    page_header_logo_alt: str = lazy_gettext(
+        "Northern Ireland Department of Finance logo"
+    )
+    mobile_logo: str = "ni-finance-logo-mobile"
+    custom_header_logo: bool = True
