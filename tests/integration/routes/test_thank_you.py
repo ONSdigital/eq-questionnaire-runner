@@ -1,6 +1,6 @@
 from tests.integration.integration_test_case import IntegrationTestCase
 
-ACCOUNT_SERVICE_SURVEYS_URL = "/surveys/todo"
+ACCOUNT_SERVICE_TODO_PATH = "/surveys/todo"
 
 
 class TestThankYou(IntegrationTestCase):
@@ -17,12 +17,13 @@ class TestThankYou(IntegrationTestCase):
 
         # We submit the form
         self.post(form_data)
+
         # Submit answers
         self.post()
 
-        # check we're on the thank you page and there's no sign out
+        # check we're on the thank you page and there's no sign out button
         self.assertInUrl("thank-you")
-        self.assertNotInBody("Sign out")
+        self.assertIsNone(self.getSignOutButton())
 
     def test_can_switch_language_on_thank_you_page(self):
         self.launchSurvey("test_language")
@@ -101,4 +102,4 @@ class TestThankYou(IntegrationTestCase):
 
         self.assertInUrl("thank-you")
         self.assertInBody("Back to surveys")
-        self.assertInBody(ACCOUNT_SERVICE_SURVEYS_URL)
+        self.assertInBody(ACCOUNT_SERVICE_TODO_PATH)

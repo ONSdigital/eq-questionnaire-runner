@@ -246,7 +246,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         individual_response_link = self.individual_response_link
         self.post()
         self.get(individual_response_link)
-        self.sign_out()
+        self.saveAndSignOut()
         self.get(individual_response_link)
 
         # Then I should see the 401 page
@@ -258,7 +258,7 @@ class TestIndividualResponseErrorStatus(IndividualResponseTestCase):
         self._add_household_no_primary()
 
         # When I sign out and navigate to the individual response page
-        self.sign_out()
+        self.saveAndSignOut()
         self.get("/individual-response")
 
         # Then I should see the 401 page
