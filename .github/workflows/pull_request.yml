@@ -106,6 +106,9 @@ jobs:
       - name: Running schema tests
         run: ./scripts/validate_test_schemas.sh
   test-functional:
+      strategy:
+          matrix:
+              suite: [ timeout, features, general, components ]
     needs: [python-dependencies, node-dependencies]
     runs-on: ubuntu-18.04
     env:
@@ -154,7 +157,7 @@ jobs:
       - name: Docker compose
         run: docker-compose --version && docker-compose up --build -d
       - name: Functional tests
-        run: ./scripts/run_tests_functional.sh
+        run: ./scripts/run_tests_functional.sh ${{ matrix.suite }}
       - name: Docker compose shutdown
         run: docker-compose kill
   docker-push:
