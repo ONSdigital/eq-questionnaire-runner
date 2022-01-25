@@ -17,9 +17,8 @@ class BusinessSurveyConfig(
     footer_legal_links: Iterable[Mapping] = field(default_factory=list)
 
     def __post_init__(self):
-        super().__post_init__()
-
         self.base_url = self._stripped_base_url
+        super().__post_init__()
 
         if not self.account_service_log_out_url:
             self.account_service_log_out_url: str = f"{self.base_url}/sign-in/logout"
