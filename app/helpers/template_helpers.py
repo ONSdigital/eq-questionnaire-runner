@@ -157,7 +157,9 @@ def survey_config_mapping(*, theme: str, language: str, base_url: str) -> Survey
         "ni-business": NorthernIrelandBusinessSurveyConfig,
     }
 
-    return survey_type_to_config[theme](base_url=base_url)
+    return survey_type_to_config[theme](
+        base_url=base_url,
+    )
 
 
 def get_survey_config(

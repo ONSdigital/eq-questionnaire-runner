@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-25 11:08+0000\n"
+"POT-Creation-Date: 2022-01-25 11:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -203,11 +203,11 @@ msgstr[1] ""
 msgid "Not a valid choice."
 msgstr ""
 
-#: app/helpers/template_helpers.py:110
+#: app/helpers/template_helpers.py:117
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:140
+#: app/helpers/template_helpers.py:147
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -291,41 +291,41 @@ msgstr ""
 msgid "An individual access code has been sent by text"
 msgstr ""
 
-#: app/survey_config/business_config.py:30
+#: app/survey_config/business_config.py:36
 msgid "What we do"
 msgstr ""
 
-#: app/survey_config/business_config.py:31
+#: app/survey_config/business_config.py:37
 #: app/survey_config/census_config.py:30 app/survey_config/census_config.py:80
 #: app/survey_config/census_config.py:141
 msgid "Contact us"
 msgstr ""
 
-#: app/survey_config/business_config.py:33
+#: app/survey_config/business_config.py:39
 msgid "Accessibility"
 msgstr ""
 
-#: app/survey_config/business_config.py:38
+#: app/survey_config/business_config.py:44
 #: app/survey_config/census_config.py:44 app/survey_config/census_config.py:95
 #: app/survey_config/census_config.py:148
 msgid "Cookies"
 msgstr ""
 
-#: app/survey_config/business_config.py:40
+#: app/survey_config/business_config.py:46
 #: app/survey_config/census_config.py:50 app/survey_config/census_config.py:101
 #: app/survey_config/census_config.py:154
 msgid "Privacy and data protection"
 msgstr ""
 
-#: app/survey_config/business_config.py:51
+#: app/survey_config/business_config.py:57
 msgid "My account"
 msgstr ""
 
-#: app/survey_config/business_config.py:56
+#: app/survey_config/business_config.py:62
 msgid "Sign out"
 msgstr ""
 
-#: app/survey_config/business_config.py:68
+#: app/survey_config/business_config.py:75
 msgid "Northern Ireland Department of Finance logo"
 msgstr ""
 

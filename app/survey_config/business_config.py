@@ -8,8 +8,9 @@ from app.survey_config.survey_config import SurveyConfig
 
 
 @dataclass
-class BusinessSurveyConfig(SurveyConfig):
-    account_service_surveys_path: str = "/surveys/todo"
+class BusinessSurveyConfig(
+    SurveyConfig,
+):
     survey_title: str = "ONS Business Surveys"
     footer_links: Iterable[MutableMapping] = field(default_factory=list)
     footer_legal_links: Iterable[Mapping] = field(default_factory=list)
