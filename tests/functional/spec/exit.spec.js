@@ -19,7 +19,7 @@ describe("Post submission exit", () => {
     $(SubmitPage.submit()).click();
     $(HubPage.submit()).click();
     $(CensusThankYouPage.exit()).click();
-    expect(browser.getUrl()).to.equal("http://localhost:5000/signed-out");
+    expect(browser.getUrl()).to.equal("https://census.gov.uk/en/start");
   });
 
   it("Given I have clicked the exit button, When I navigate back, Then I am taken to the session timed out page", () => {

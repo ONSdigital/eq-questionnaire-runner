@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-12 12:27+0000\n"
+"POT-Creation-Date: 2022-01-21 16:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -203,29 +203,29 @@ msgstr[1] ""
 msgid "Not a valid choice."
 msgstr ""
 
-#: app/helpers/template_helpers.py:104
+#: app/helpers/template_helpers.py:113
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:134
+#: app/helpers/template_helpers.py:143
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
 msgstr ""
 
-#: app/questionnaire/placeholder_transforms.py:129
+#: app/questionnaire/placeholder_transforms.py:144
 msgid "{number_of_years} year"
 msgid_plural "{number_of_years} years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:135
+#: app/questionnaire/placeholder_transforms.py:150
 msgid "{number_of_months} month"
 msgid_plural "{number_of_months} months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:140
+#: app/questionnaire/placeholder_transforms.py:155
 msgid "{number_of_days} day"
 msgid_plural "{number_of_days} days"
 msgstr[0] ""
@@ -291,68 +291,80 @@ msgstr ""
 msgid "An individual access code has been sent by text"
 msgstr ""
 
-#: app/survey_config/business_config.py:25
+#: app/survey_config/business_config.py:31
 msgid "What we do"
 msgstr ""
 
-#: app/survey_config/business_config.py:26
-#: app/survey_config/census_config.py:30 app/survey_config/census_config.py:79
-#: app/survey_config/census_config.py:139
+#: app/survey_config/business_config.py:32
+#: app/survey_config/census_config.py:30 app/survey_config/census_config.py:80
+#: app/survey_config/census_config.py:141
 msgid "Contact us"
 msgstr ""
 
-#: app/survey_config/business_config.py:28
+#: app/survey_config/business_config.py:34
 msgid "Accessibility"
 msgstr ""
 
-#: app/survey_config/business_config.py:33
-#: app/survey_config/census_config.py:44 app/survey_config/census_config.py:94
-#: app/survey_config/census_config.py:146
+#: app/survey_config/business_config.py:39
+#: app/survey_config/census_config.py:44 app/survey_config/census_config.py:95
+#: app/survey_config/census_config.py:148
 msgid "Cookies"
 msgstr ""
 
-#: app/survey_config/business_config.py:35
-#: app/survey_config/census_config.py:50 app/survey_config/census_config.py:100
-#: app/survey_config/census_config.py:152
+#: app/survey_config/business_config.py:41
+#: app/survey_config/census_config.py:50 app/survey_config/census_config.py:101
+#: app/survey_config/census_config.py:154
 msgid "Privacy and data protection"
+msgstr ""
+
+#: app/survey_config/business_config.py:52
+msgid "My account"
+msgstr ""
+
+#: app/survey_config/business_config.py:57
+msgid "Sign out"
 msgstr ""
 
 #: app/survey_config/census_config.py:20 app/survey_config/census_config.py:63
 msgid "Census 2021"
 msgstr ""
 
-#: app/survey_config/census_config.py:27 app/survey_config/census_config.py:76
-#: app/survey_config/census_config.py:136
+#: app/survey_config/census_config.py:27 app/survey_config/census_config.py:77
+#: app/survey_config/census_config.py:138
 msgid "Help"
 msgstr ""
 
-#: app/survey_config/census_config.py:32 app/survey_config/census_config.py:81
+#: app/survey_config/census_config.py:32 app/survey_config/census_config.py:82
 msgid "Languages"
 msgstr ""
 
-#: app/survey_config/census_config.py:36 app/survey_config/census_config.py:85
+#: app/survey_config/census_config.py:36 app/survey_config/census_config.py:86
 msgid "BSL and audio videos"
 msgstr ""
 
-#: app/survey_config/census_config.py:46 app/survey_config/census_config.py:96
-#: app/survey_config/census_config.py:148
+#: app/survey_config/census_config.py:46 app/survey_config/census_config.py:97
+#: app/survey_config/census_config.py:150
 msgid "Accessibility statement"
 msgstr ""
 
-#: app/survey_config/census_config.py:54 app/survey_config/census_config.py:104
-#: app/survey_config/census_config.py:156
+#: app/survey_config/census_config.py:54 app/survey_config/census_config.py:105
+#: app/survey_config/census_config.py:158
 msgid "Terms and conditions"
 msgstr ""
 
-#: app/survey_config/census_config.py:122
+#: app/survey_config/census_config.py:64
+msgid "Save and complete later"
+msgstr ""
+
+#: app/survey_config/census_config.py:124
 msgid "Northern Ireland Statistics and Research Agency logo"
 msgstr ""
 
-#: app/survey_config/census_config.py:127
+#: app/survey_config/census_config.py:129
 msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
 msgstr ""
 
-#: app/survey_config/census_config.py:130 app/survey_config/survey_config.py:21
+#: app/survey_config/census_config.py:132 app/survey_config/survey_config.py:21
 msgid "Use of address data is subject to the terms and conditions."
 msgstr ""
 
@@ -362,6 +374,10 @@ msgstr ""
 
 #: app/survey_config/survey_config.py:18
 msgid "Crown copyright and database rights 2020 OS 100019153."
+msgstr ""
+
+#: app/survey_config/survey_config.py:42
+msgid "Save and sign out"
 msgstr ""
 
 #: app/views/contexts/hub_context.py:14
@@ -830,7 +846,7 @@ msgstr ""
 msgid "If you can’t answer questions for this person"
 msgstr ""
 
-#: templates/interstitial.html:32 templates/layouts/_questionnaire.html:29
+#: templates/interstitial.html:32 templates/layouts/_questionnaire.html:27
 msgid "Save and continue"
 msgstr ""
 
@@ -1086,93 +1102,85 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
-#: templates/layouts/_base.html:70
+#: templates/layouts/_base.html:71
 msgid "Tell us whether you accept cookies"
 msgstr ""
 
-#: templates/layouts/_base.html:71
+#: templates/layouts/_base.html:72
 msgid ""
 "We use <a href='{cookie_settings_url}'>cookies to collect information</a>"
 " about how you use census.gov.uk. We use this information to make the "
 "website work as well as possible and improve our services."
 msgstr ""
 
-#: templates/layouts/_base.html:72
+#: templates/layouts/_base.html:73
 msgid ""
 "You’ve accepted all cookies. You can <a "
 "href='{cookie_settings_url}'>change your cookie preferences</a> at any "
 "time."
 msgstr ""
 
-#: templates/layouts/_base.html:73
+#: templates/layouts/_base.html:74
 msgid "Accept all cookies"
 msgstr ""
 
-#: templates/layouts/_base.html:74
+#: templates/layouts/_base.html:75
 msgid "Set cookie preferences"
 msgstr ""
 
-#: templates/layouts/_base.html:75
+#: templates/layouts/_base.html:76
 #: templates/partials/introduction/preview.html:30
 #: templates/partials/summary/collapsible-summary.html:14
 msgid "Hide"
 msgstr ""
 
-#: templates/layouts/_base.html:130
+#: templates/layouts/_base.html:131
 msgid "Skip to main content"
 msgstr ""
 
-#: templates/layouts/_base.html:152
+#: templates/layouts/_base.html:153
 msgid "You will be signed out soon"
 msgstr ""
 
-#: templates/layouts/_base.html:153
+#: templates/layouts/_base.html:154
 msgid "It appears you have been inactive for a while."
 msgstr ""
 
-#: templates/layouts/_base.html:154
+#: templates/layouts/_base.html:155
 msgid ""
 "To protect your information, your progress will be saved and you will be "
 "signed out in"
 msgstr ""
 
-#: templates/layouts/_base.html:155
+#: templates/layouts/_base.html:156
 msgid "You are being signed out"
 msgstr ""
 
-#: templates/layouts/_base.html:156
+#: templates/layouts/_base.html:157
 msgid "Continue survey"
 msgstr ""
 
-#: templates/layouts/_base.html:157
+#: templates/layouts/_base.html:158
 msgid "minute"
 msgstr ""
 
-#: templates/layouts/_base.html:158
+#: templates/layouts/_base.html:159
 msgid "minutes"
 msgstr ""
 
-#: templates/layouts/_base.html:159
+#: templates/layouts/_base.html:160
 msgid "second"
 msgstr ""
 
-#: templates/layouts/_base.html:160
+#: templates/layouts/_base.html:161
 msgid "seconds"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:40
+#: templates/layouts/_questionnaire.html:38
 msgid "Choose another section and return to this later"
 msgstr ""
 
-#: templates/layouts/configs/_save-sign-out-button.html:5
-msgid "Save and sign out"
-msgstr ""
-
-#: templates/layouts/configs/_save-sign-out-button.html:7
-msgid "Save and complete later"
-msgstr ""
-
-#: templates/layouts/configs/_save-sign-out-button.html:25
+#: templates/layouts/configs/_save-sign-out-button.html:20
 msgid "Exit"
 msgstr ""
 

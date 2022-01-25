@@ -28,7 +28,7 @@ class TestErrors(IntegrationTestCase):
 
         # Test that my account link does not show
         self.assertNotInBody("My account")
-        self.assertNotInBody("http://correct.place")
+        self.assertNotInBody("Sign out")
 
     def test_errors_404_with_payload(self):
         with patch("tests.integration.create_token.PAYLOAD", self.example_payload):

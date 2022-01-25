@@ -5,6 +5,8 @@ from sdc.crypto.encrypter import encrypt
 
 from app.keys import KEY_PURPOSE_AUTHENTICATION
 
+ACCOUNT_SERVICE_URL = "http://upstream.url"
+
 PAYLOAD = {
     "user_id": "integration-test",
     "period_str": "April 2016",
@@ -20,7 +22,7 @@ PAYLOAD = {
     "employment_date": "1983-06-02",
     "language_code": "en",
     "roles": [],
-    "account_service_url": "http://upstream.url",
+    "account_service_url": ACCOUNT_SERVICE_URL,
     "display_address": "68 Abingdon Road, Goathill",
 }
 
