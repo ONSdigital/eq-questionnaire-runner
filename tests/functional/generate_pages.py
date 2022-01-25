@@ -176,7 +176,7 @@ SUMMARY_ANSWER_EDIT_GETTER = Template(
 )
 
 SUMMARY_TITLE_GETTER = Template(
-    r"""  ${group_id_camel}Title() { return `#${group_id}`; }
+    r"""  ${group_id_camel}Title() { return `#${group_id} .ons-summary__group-title`; }
 
 """
 )
