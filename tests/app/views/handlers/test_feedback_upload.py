@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 
 from freezegun import freeze_time
 
+from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.views.handlers.feedback import FeedbackMetadata, FeedbackPayload
 
 from .conftest import (
@@ -83,6 +84,23 @@ def test_feedback_payload(
     }
 
     assert expected_payload == feedback_payload()
+
+
+def test_submission_language_code_uses_default_language_when_session_language_none(
+    session_data_feedback, schema_feedback, metadata, response_metadata
+):
+    feedback_payload = FeedbackPayload(
+        metadata=metadata,
+        response_metadata=response_metadata,
+        schema=schema_feedback,
+        case_id=case_id,
+        submission_language_code=None,
+        feedback_count=session_data_feedback.feedback_count,
+        feedback_text=feedback_text,
+        feedback_type=feedback_type,
+    )
+
+    assert feedback_payload()["submission_language_code"] == DEFAULT_LANGUAGE_CODE
 
 
 def test_feedback_metadata():

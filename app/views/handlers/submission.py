@@ -7,6 +7,7 @@ from sdc.crypto.encrypter import encrypt
 
 from app.globals import get_session_store
 from app.keys import KEY_PURPOSE_SUBMISSION
+from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.submitter.converter import convert_answers
 from app.submitter.submission_failed import SubmissionFailedException
 from app.utilities.json import json_dumps
@@ -53,9 +54,9 @@ class SubmissionHandler:
             self._full_routing_path,
             self.submitted_at,
         )
-        payload[
-            "submission_language_code"
-        ] = self._session_store.session_data.language_code
+        payload["submission_language_code"] = (
+            self._session_store.session_data.language_code or DEFAULT_LANGUAGE_CODE
+        )
         return payload
 
     def _store_display_address_in_session(self):
