@@ -570,6 +570,24 @@ def test_survey_config_base_url_provided_used_in_links(
             assert base_url in url
 
 
+def test_survey_config_base_url_duplicate_todo(app: Flask):
+    base_url = "http://localhost/surveys/todo"
+    with app.app_context():
+        result = BusinessSurveyConfig(base_url=base_url)
+
+    assert result.base_url == "http://localhost"
+
+    assert result.account_service_log_out_url == "http://localhost/sign-in/logout"
+    assert result.account_service_my_account_url == "http://localhost/my-account"
+    assert result.account_service_todo_url == "http://localhost/surveys/todo"
+    assert result.contact_us_url == "http://localhost/contact-us/"
+    assert result.cookie_settings_url == "http://localhost/cookies/"
+    assert (
+        result.privacy_and_data_protection_url
+        == "http://localhost/privacy-and-data-protection/"
+    )
+
+
 def test_get_survey_config_base_url_not_provided(app: Flask):
     with app.app_context():
         result = get_survey_config()
