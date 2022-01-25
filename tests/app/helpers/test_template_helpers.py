@@ -1,5 +1,5 @@
 from typing import Type
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 import pytest
 from flask import Flask, current_app
@@ -555,6 +555,30 @@ def test_survey_config_base_url_provided_used_in_links(
     for url in urls_to_check:
         if url:
             assert base_url in url
+
+
+def test_survey_config_base_url_duplicate_todo(app: Flask):
+    base_url = "http://localhost/surveys/todo"
+    with app.app_context():
+        result = BusinessSurveyConfig(base_url=base_url)
+
+    assert result.base_url == "http://localhost/surveys/todo"
+
+    assert result.account_service_log_out_url == "http://localhost/sign-in/logout"
+    assert result.account_service_my_account_url == "http://localhost/my-account"
+    assert result.account_service_todo_url == "http://localhost/surveys/todo"
+
+
+def test_survey_config_base_url_correct_todo(app: Flask):
+    base_url = "http://localhost"
+    with app.app_context():
+        result = BusinessSurveyConfig(base_url=base_url)
+
+    assert result.base_url == "http://localhost"
+
+    assert result.account_service_log_out_url == "http://localhost/sign-in/logout"
+    assert result.account_service_my_account_url == "http://localhost/my-account"
+    assert result.account_service_todo_url == "http://localhost/surveys/todo"
 
 
 def test_get_survey_config_base_url_not_provided(app: Flask):
