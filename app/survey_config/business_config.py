@@ -1,3 +1,5 @@
+from warnings import warn
+
 from dataclasses import dataclass, field
 from typing import Iterable, Mapping, MutableMapping, Optional
 
@@ -19,13 +21,19 @@ class BusinessSurveyConfig(
         super().__post_init__()
 
         if not self.account_service_log_out_url:
-            self.account_service_log_out_url: str = f"{self.base_url}/sign-in/logout"
+            self.account_service_log_out_url: str = (
+                f"{self.stripped_base_url}/sign-in/logout"
+            )
 
         if not self.account_service_my_account_url:
-            self.account_service_my_account_url: str = f"{self.base_url}/my-account"
+            self.account_service_my_account_url: str = (
+                f"{self.stripped_base_url}/my-account"
+            )
 
         if not self.account_service_todo_url:
-            self.account_service_todo_url: str = f"{self.base_url}/surveys/todo"
+            self.account_service_todo_url: str = (
+                f"{self.stripped_base_url}/surveys/todo"
+            )
 
         self.footer_links = [
             Link(lazy_gettext("What we do"), self.what_we_do_url).__dict__,
@@ -60,3 +68,10 @@ class BusinessSurveyConfig(
             if is_authenticated
             else None
         )
+
+    @property
+    def stripped_base_url(self) -> str:
+        warn(
+            "base_url contains extra pathing which will eventually be corrected and this function will need to be removed"
+        )
+        return self.base_url.replace("/surveys/todo", "")
