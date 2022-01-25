@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-19 15:58+0000\n"
+"POT-Creation-Date: 2022-01-25 08:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -830,7 +830,7 @@ msgstr ""
 msgid "If you can’t answer questions for this person"
 msgstr ""
 
-#: templates/interstitial.html:32 templates/layouts/_questionnaire.html:29
+#: templates/interstitial.html:32 templates/layouts/_questionnaire.html:27
 msgid "Save and continue"
 msgstr ""
 
@@ -1114,6 +1114,7 @@ msgstr ""
 
 #: templates/layouts/_base.html:75
 #: templates/partials/introduction/preview.html:30
+#: templates/partials/summary/collapsible-summary.html:15
 msgid "Hide"
 msgstr ""
 
@@ -1159,7 +1160,7 @@ msgstr ""
 msgid "seconds"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:40
+#: templates/layouts/_questionnaire.html:38
 msgid "Choose another section and return to this later"
 msgstr ""
 
@@ -1410,14 +1411,17 @@ msgid "{x} characters too many"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:29
+#: templates/partials/summary/collapsible-summary.html:14
 msgid "Show"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:48
+#: templates/partials/summary/collapsible-summary.html:59
 msgid "Show all"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:49
+#: templates/partials/summary/collapsible-summary.html:60
 msgid "Hide all"
 msgstr ""
 
@@ -1425,9 +1429,20 @@ msgstr ""
 msgid "Start survey"
 msgstr ""
 
+#: templates/partials/summary/collapsible-summary.html:37
+#: templates/partials/summary/summary.html:19
+msgid "No answer provided"
+msgstr ""
+
+#: templates/partials/summary/collapsible-summary.html:38
 #: templates/partials/summary/list-summary.html:8
 #: templates/partials/summary/summary.html:20
 msgid "Change"
+msgstr ""
+
+#: templates/partials/summary/collapsible-summary.html:39
+#: templates/partials/summary/summary.html:21
+msgid "Change your answer for:"
 msgstr ""
 
 #: templates/partials/summary/list-summary.html:9
@@ -1440,13 +1455,5 @@ msgstr ""
 
 #: templates/partials/summary/list-summary.html:11
 msgid "Remove {item_name}"
-msgstr ""
-
-#: templates/partials/summary/summary.html:19
-msgid "No answer provided"
-msgstr ""
-
-#: templates/partials/summary/summary.html:21
-msgid "Change your answer for:"
 msgstr ""
 
