@@ -118,7 +118,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
         # When I change my answer to 'Yes' and sign out
         self.get("questionnaire/primary-person-list-collector/")
         self.post({"you-live-here": "Yes"})
-        self.get("/sign-out")
+        self.signOut()
 
         # Then on resuming, I am returned to the primary-person-list-collector
         self.launchSurvey("test_list_collector_primary_person", reponse_id=response_id)

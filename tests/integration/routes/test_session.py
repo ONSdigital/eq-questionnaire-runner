@@ -3,7 +3,6 @@ from datetime import datetime, timedelta, timezone
 
 from freezegun import freeze_time
 
-from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.utilities.json import json_loads
 from tests.integration.integration_test_case import IntegrationTestCase
 
@@ -30,31 +29,6 @@ class TestSession(IntegrationTestCase):
     def test_session_expired(self):
         self.get("/session-expired")
         self.assertInBody("Sorry, you need to sign in again")
-
-    def test_session_signed_out(self):
-        self.launchSurvey(account_service_log_out_url="https://localhost/logout")
-        self.assertInBody("Save and sign out")
-
-        self.get("/sign-out")
-
-        self.assertInUrl("/logout")
-
-    def test_session_signed_out_no_account_service_log_out_url(self):
-        self.launchSurvey()
-        self.assertInBody("Save and sign out")
-
-        self.get("/sign-out")
-
-        self.assertInUrl("/signed-out")
-
-    def test_session_signed_out_no_cookie_session_default_config(self):
-        self.launchSurvey()
-        self.assertInBody("Save and sign out")
-
-        self.deleteCookie()
-        self.get("/sign-out", follow_redirects=False)
-
-        self.assertInRedirect(ACCOUNT_SERVICE_BASE_URL)
 
     def test_session_jti_token_expired(self):
         self.launchSurvey(exp=time.time() - float(60))

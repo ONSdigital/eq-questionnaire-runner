@@ -20,7 +20,11 @@ class Block:
         self.location = location
         self.title = block_schema.get("title")
         self.number = block_schema.get("number")
-        self.link = self._build_link(block_schema["id"], return_to)
+        self.link = self._build_link(
+            block_schema["id"],
+            return_to,
+            block_schema.get("question", {}).get("answers", ({},))[0].get("id"),
+        )
         self.question = self.get_question(
             block_schema,
             answer_store,
@@ -31,13 +35,14 @@ class Block:
             location,
         )
 
-    def _build_link(self, block_id, return_to):
+    def _build_link(self, block_id, return_to, return_to_answer_id):
         return url_for(
             "questionnaire.block",
             list_name=self.location.list_name,
             block_id=block_id,
             list_item_id=self.location.list_item_id,
             return_to=return_to,
+            return_to_answer_id=return_to_answer_id,
         )
 
     @staticmethod

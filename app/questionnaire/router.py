@@ -148,6 +148,7 @@ class Router:
         location: Location,
         routing_path: RoutingPath,
         return_to: Optional[str] = None,
+        return_to_answer_id: Optional[str] = None,
     ) -> Optional[str]:
         """
         Returns the previous 'location' to visit given a set of user answers or returns to the summary if
@@ -160,7 +161,7 @@ class Router:
             )
             and (return_to_url := self._get_return_to_location_url(location, return_to))
         ):
-            return return_to_url
+            return self._add_answer_id_anchor(return_to_url, return_to_answer_id)
 
         block_id_index = routing_path.index(location.block_id)
 
@@ -168,15 +169,23 @@ class Router:
             previous_block_id = routing_path[block_id_index - 1]
             previous_block = self._schema.get_block(previous_block_id)
             if previous_block and previous_block["type"] == "RelationshipCollector":
-                return url_for(
-                    "questionnaire.relationships", last=True, return_to=return_to
+                return self._add_answer_id_anchor(
+                    url_for(
+                        "questionnaire.relationships",
+                        last=True,
+                        return_to=return_to,
+                    ),
+                    return_to_answer_id,
                 )
-            return url_for(
-                "questionnaire.block",
-                block_id=previous_block_id,
-                list_name=routing_path.list_name,
-                list_item_id=routing_path.list_item_id,
-                return_to=return_to,
+            return self._add_answer_id_anchor(
+                url_for(
+                    "questionnaire.block",
+                    block_id=previous_block_id,
+                    list_name=routing_path.list_name,
+                    list_item_id=routing_path.list_item_id,
+                    return_to=return_to,
+                ),
+                return_to_answer_id,
             )
 
         if self.can_access_hub():
@@ -362,3 +371,10 @@ class Router:
             section_id=location.section_id,
             list_item_id=location.list_item_id,
         )
+
+    @staticmethod
+    def _add_answer_id_anchor(url: str, return_to_answer_id: Optional[str]) -> str:
+        if return_to_answer_id:
+            return f"{url}#{return_to_answer_id}"
+
+        return url

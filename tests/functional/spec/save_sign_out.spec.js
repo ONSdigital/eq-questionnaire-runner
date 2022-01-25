@@ -4,6 +4,7 @@ import SubmitPage from "../generated_pages/numbers/submit.page";
 import IntroductionPage from "../generated_pages/introduction/introduction.page";
 import IntroInterstitialPage from "../generated_pages/introduction/general-business-information-completed.page";
 import IntroThankYouPagePage from "../base_pages/thank-you.page";
+import HouseHolderConfirmationPage from "../generated_pages/thank_you_census_household/household-confirmation.page";
 import { getRandomString } from "../jwt_helper";
 
 describe("SaveSignOut", () => {
@@ -36,8 +37,8 @@ describe("SaveSignOut", () => {
     expect(browser.getUrl()).to.contain("thank-you");
   });
 
-  it("Given a logout url is set, when I navigate the questionnaire, then I see the correct sign out buttons", () => {
-    browser.openQuestionnaire("test_introduction.json", { includeLogoutUrl: true });
+  it("Given a business questionnaire, when I navigate the questionnaire, then I see the correct sign out buttons", () => {
+    browser.openQuestionnaire("test_introduction.json");
 
     expect($(IntroductionPage.exitButton()).getText()).to.contain("Exit");
     $(IntroductionPage.getStarted()).click();
@@ -51,18 +52,12 @@ describe("SaveSignOut", () => {
     expect($(IntroThankYouPagePage.exitButton()).isExisting()).to.be.false;
   });
 
-  it("Given a logout url is not set, when I navigate the questionnaire, then I see the correct sign out buttons", () => {
-    browser.openQuestionnaire("test_introduction.json", { includeLogoutUrl: false });
+  it("Given a Census questionnaire, when I navigate the questionnaire, then I see the correct sign out buttons", () => {
+    browser.openQuestionnaire("test_thank_you_census_household.json");
 
-    expect($(IntroductionPage.exitButton()).getText()).to.contain("Exit");
-    $(IntroductionPage.getStarted()).click();
-
-    expect($(IntroInterstitialPage.saveSignOut()).getText()).to.contain("Save and complete later");
-    $(IntroInterstitialPage.submit()).click();
+    expect($(HouseHolderConfirmationPage.saveSignOut()).getText()).to.contain("Save and complete later");
+    $(HouseHolderConfirmationPage.submit()).click();
 
     expect($(SubmitPage.saveSignOut()).getText()).to.contain("Save and complete later");
-    $(SubmitPage.submit()).click();
-
-    expect($(IntroductionPage.exitButton()).isExisting()).to.be.false;
   });
 });

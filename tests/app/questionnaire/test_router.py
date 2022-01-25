@@ -645,11 +645,15 @@ class TestRouterPreviousLocation(RouterTestCase):
             section_id="default-section",
         )
         previous_location_url = self.router.get_previous_location_url(
-            current_location, routing_path, return_to="section-summary"
+            current_location,
+            routing_path,
+            return_to="section-summary",
+            return_to_answer_id="insurance-address-answer",
         )
 
         self.assertIn(
-            "/questionnaire/sections/property-details-section/", previous_location_url
+            "/questionnaire/sections/property-details-section/#insurance-address-answer",
+            previous_location_url,
         )
 
     def test_return_to_section_summary_section_is_in_progress(self):
@@ -673,11 +677,14 @@ class TestRouterPreviousLocation(RouterTestCase):
             section_id="default-section",
         )
         previous_location_url = self.router.get_previous_location_url(
-            current_location, routing_path, return_to="section-summary"
+            current_location,
+            routing_path,
+            return_to="section-summary",
+            return_to_answer_id="insurance-address-answer",
         )
 
         self.assertIn(
-            "/questionnaire/insurance-type/?return_to=section-summary",
+            "/questionnaire/insurance-type/?return_to=section-summary#insurance-address-answer",
             previous_location_url,
         )
 
@@ -705,10 +712,13 @@ class TestRouterPreviousLocation(RouterTestCase):
             section_id="default-section",
         )
         previous_location = self.router.get_previous_location_url(
-            current_location, routing_path, return_to="final-summary"
+            current_location,
+            routing_path,
+            return_to="final-summary",
+            return_to_answer_id="dessert-answer",
         )
 
-        self.assertIn("/questionnaire/submit/", previous_location)
+        self.assertIn("/questionnaire/submit/#dessert-answer", previous_location)
 
     def test_return_to_final_summary_section_is_in_progress(self):
         self.schema = load_schema_from_name("test_submit_with_summary")
@@ -734,11 +744,15 @@ class TestRouterPreviousLocation(RouterTestCase):
             section_id="default-section",
         )
         previous_location = self.router.get_previous_location_url(
-            current_location, routing_path, return_to="final-summary"
+            current_location,
+            routing_path,
+            return_to="final-summary",
+            return_to_answer_id="dessert-answer",
         )
 
         self.assertIn(
-            "/questionnaire/radio/?return_to=final-summary", previous_location
+            "/questionnaire/radio/?return_to=final-summary#dessert-answer",
+            previous_location,
         )
 
 

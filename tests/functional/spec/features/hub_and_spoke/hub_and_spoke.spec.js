@@ -35,12 +35,12 @@ describe("Feature: Hub and Spoke", () => {
       expect($(HubPage.summaryItems()).getText()).not.to.contain("Relationships");
     });
 
-    it("When the user click the 'Save and sign out' button then they should be on the signed out page", () => {
+    it("When the user click the 'Save and sign out' button then they should be redirected to the correct log out url", () => {
       $(HubPage.saveSignOut()).click();
 
       const expectedUrl = browser.getUrl();
 
-      expect(expectedUrl).to.contain("/signed-out");
+      expect(expectedUrl).to.contain("/sign-in/logout");
     });
 
     it("When a user views the Hub, Then the page title should be Choose another section to complete", () => {
