@@ -80,4 +80,3 @@ class NorthernIrelandBusinessSurveyConfig(BusinessSurveyConfig):
     )
     mobile_logo: str = "ni-finance-logo-mobile"
     custom_header_logo: bool = True
-
