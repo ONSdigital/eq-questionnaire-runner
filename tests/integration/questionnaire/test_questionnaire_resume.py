@@ -10,7 +10,7 @@ class TestResume(IntegrationTestCase):
 
         # When I go back to the first page, sign out and then resume
         self.get("/questionnaire/name-block")
-        self.get("/sign-out")
+        self.signOut()
         self.launchSurvey("test_textfield")
 
         # Then I should resume on the first incomplete location
@@ -24,7 +24,7 @@ class TestResume(IntegrationTestCase):
         self.post({"listed-answer": "No"})
 
         # When I sign out and then resume
-        self.get("/sign-out")
+        self.signOut()
         self.launchSurvey("test_section_summary", display_address="test address")
 
         # Then I should resume on the start of the next section

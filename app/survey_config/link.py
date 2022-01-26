@@ -9,3 +9,10 @@ class Link:
     text: LazyString
     url: str
     target: Optional[str] = "_blank"
+
+
+@dataclass
+class HeaderLink:
+    title: LazyString
+    url: str
+    id: str

@@ -10,6 +10,6 @@ describe("Feature: Playback Confirmation", () => {
     $(MandatoryCheckboxPage.ham()).click();
     $(MandatoryCheckboxPage.submit()).click();
 
-    expect($("body ul").getHTML()).to.contain("Cheese").to.contain("Ham");
+    expect($("#confirm-answers-question ul").getHTML()).to.contain("Cheese").to.contain("Ham");
   });
 });

@@ -202,6 +202,31 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         self._cache_response(response)
 
+    def patch(self, patch_data=None, url=None, **kwargs):
+        """
+        PATCHes to the specified URL with patch_data and performs a GET
+        with the URL from the re-direct.
+
+        Will add the last received CSRF token to the patch_data automatically.
+
+        :param url: the URL to PATCH to; use None to use the last received URL
+        :param patch_data: the data to PATCH
+        """
+        if url is None:
+            url = self.last_url
+
+        self.assertIsNotNone(url)
+
+        _patch_data = (patch_data.copy() or {}) if patch_data else {}
+        if self.last_csrf_token is not None:
+            _patch_data.update({"csrf_token": self.last_csrf_token})
+
+        response = self._client.patch(
+            url, data=_patch_data, follow_redirects=True, **kwargs
+        )
+
+        self._cache_response(response)
+
     def head(self, url, **kwargs):
         """
         Send a HEAD request to the specified URL.
@@ -222,9 +247,23 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         self._cache_response(response)
 
-    def sign_out(self):
-        selected = self.getHtmlSoup().find("a", {"data-qa": "btn-save-sign-out"})
-        return self.get(selected["href"])
+    def getLinkById(self, identifier: str):
+        return self.getHtmlSoup().find("a", id=identifier)
+
+    def getSignOutButton(self):
+        return self.getHtmlSoup().find("a", {"data-qa": "btn-save-sign-out"})
+
+    def saveAndSignOut(self):
+        """
+        Sign out of eQ using the `Save and sign out` button and do not follow redirects since the redirect is external
+        """
+        return self.get(self.getSignOutButton()["href"], follow_redirects=False)
+
+    def signOut(self):
+        """
+        Sign out of eQ but do not follow redirects since the redirect is external
+        """
+        self.get("/sign-out", follow_redirects=False)
 
     def exit(self):
         """

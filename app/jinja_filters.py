@@ -438,6 +438,9 @@ class SummaryRowItem:
             self.rowTitle = strip_tags(question["title"])
             self.rowTitleAttributes = {"data-qa": question["id"]}
 
+        if edit_link_text:
+            self.id = answer["id"]
+
         value = answer["value"]
 
         self.attributes = {"data-qa": answer["id"]}
@@ -504,6 +507,7 @@ class SummaryRow:
         edit_link_aria_label,
     ):
         self.rowTitle = strip_tags(question["title"])
+        self.id = question["id"]
         self.rowItems = []
 
         multiple_answers = len(question["answers"]) > 1
@@ -606,6 +610,7 @@ def map_list_collector_config(
                         "iconType": icon,
                         "actions": actions,
                         "rowTitle": item_name,
+                        "id": list_item.get("list_item_id"),
                         "rowTitleAttributes": {
                             "data-qa": f"list-item-{index}-label",
                             "data-list-item-id": list_item.get("list_item_id"),

@@ -255,7 +255,7 @@ class FeedbackPayload:
         response_metadata: Mapping[str, Union[str, int, list]],
         schema: QuestionnaireSchema,
         case_id: str,
-        submission_language_code: str,
+        submission_language_code: Optional[str],
         feedback_count: int,
         feedback_text: str,
         feedback_type: str,
@@ -278,7 +278,9 @@ class FeedbackPayload:
             "collection": build_collection(self.metadata),
             "metadata": build_metadata(self.metadata),
             "survey_id": self.schema.json["survey_id"],
-            "submission_language_code": self.submission_language_code,
+            "submission_language_code": (
+                self.submission_language_code or DEFAULT_LANGUAGE_CODE
+            ),
             "tx_id": self.metadata["tx_id"],
             "type": "uk.gov.ons.edc.eq:feedback",
             "launch_language_code": self.metadata.get(

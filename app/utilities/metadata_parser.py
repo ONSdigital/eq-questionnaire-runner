@@ -86,7 +86,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         validate=validate.Length(min=1)
     )  # type:ignore
     tx_id = VALIDATORS["uuid"]()  # type:ignore
-    response_id = VALIDATORS["string"](validate=validate.Length(min=1))  # type:ignore
+    response_id = VALIDATORS["string"](required=False)  # type:ignore
 
     account_service_url = VALIDATORS["url"](required=True)  # type:ignore
     case_id = VALIDATORS["uuid"]()  # type:ignore
@@ -133,7 +133,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
                 )
 
     @post_load
-    def convert_schema_name(self, data, **kwargs):
+    def update_schema_name(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
         """Function to transform parameters into a business schema"""
         if data.get("schema_name"):
@@ -145,6 +145,35 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
                 data.get("eq_id"), data.get("form_type")
             )
         return data
+
+    @post_load
+    def update_response_id(
+        self, data, **kwargs
+    ):  # pylint: disable=no-self-use, unused-argument
+        """
+        If response_id is present : return as it is
+        If response_id is not present : Build response_id from ru_ref,collection_exercise_sid,eq_id and form_type
+                                        and updates metadata with response_id
+
+
+        """
+        if data.get("response_id"):
+            logger.info(
+                "'response_id' exists in claims, skipping 'response_id' generation"
+            )
+            return data
+        eq_id = data.get("eq_id")
+        form_type = data.get("form_type")
+        if eq_id and form_type:
+            ru_ref = data["ru_ref"]
+            collection_exercise_sid = data["collection_exercise_sid"]
+            response_id = f"{ru_ref}{collection_exercise_sid}{eq_id}{form_type}"
+            data["response_id"] = response_id
+            return data
+
+        raise ValidationError(
+            "Both 'eq_id' and 'form_type' must be defined when 'response_id' is not defined"
+        )
 
 
 def validate_questionnaire_claims(claims, questionnaire_specific_metadata):

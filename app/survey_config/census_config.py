@@ -19,7 +19,7 @@ class CensusSurveyConfig(
     title_logo: str = "census-logo-en"
     title_logo_alt: LazyString = lazy_gettext("Census 2021")
     base_url: str = EN_BASE_URL
-    account_service_url: str = f"{base_url}/en/start"
+    account_service_log_out_url: str = f"{base_url}/en/start"
     design_system_theme: str = "census"
     footer_links: Iterable[MutableMapping] = field(
         default_factory=lambda: [
@@ -61,6 +61,7 @@ class CensusSurveyConfig(
         default_factory=lambda: [{"nisra": False}], compare=False
     )
     survey_title: LazyString = lazy_gettext("Census 2021")
+    sign_out_button_text: str = lazy_gettext("Save and complete later")
 
 
 @dataclass
@@ -69,7 +70,7 @@ class WelshCensusSurveyConfig(
 ):
     title_logo: str = "census-logo-cy"
     base_url: str = CY_BASE_URL
-    account_service_url: str = f"{CY_BASE_URL}/en/start"
+    account_service_log_out_url: str = f"{base_url}/en/start"
     footer_links: Iterable[MutableMapping] = field(
         default_factory=lambda: [
             Link(
@@ -118,11 +119,12 @@ class CensusNISRASurveyConfig(
     CensusSurveyConfig,
 ):
     base_url: str = NIR_BASE_URL
+    account_service_log_out_url: str = base_url
     page_header_logo: str = "nisra-logo-en"
     page_header_logo_alt: str = lazy_gettext(
         "Northern Ireland Statistics and Research Agency logo"
     )
-    header_logo: str = "nisra"
+    custom_header_logo: bool = True
     mobile_logo: str = "nisra-logo-en-mobile"
     copyright_declaration: LazyString = lazy_gettext(
         "Crown copyright and database rights 2021 NIMA MOU577.501."
@@ -162,7 +164,6 @@ class CensusNISRASurveyConfig(
     )
     powered_by_logo: str = "nisra-logo-black-en"
     powered_by_logo_alt: str = "NISRA - Northern Ireland Statistics and Research Agency"
-    account_service_url: str = NIR_BASE_URL
     data_layer: Iterable[Mapping] = field(
         default_factory=lambda: [{"nisra": True}], compare=False
     )
