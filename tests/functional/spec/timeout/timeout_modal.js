@@ -43,5 +43,4 @@ class TestCase {
   }
 }
 
-export default TestCase;
 export const TimeoutModalTestCase = new TestCase();
