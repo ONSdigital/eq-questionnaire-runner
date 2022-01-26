@@ -18,7 +18,9 @@ exports.config = {
   //
   specs: ["./tests/functional/spec/**/*.js"],
   suites: {
-    timeout_modal: ["./tests/functional/spec/timeout/timeout_modal.spec.js"],
+    timeout_modal_continue: ["./tests/functional/spec/timeout/timeout_modal_continue_session_extended.spec.js"],
+    timeout_modal_new_window: ["./tests/functional/spec/timeout/timeout_modal_new_window_session_extended.spec.js"],
+    timeout_modal_session_expired: ["./tests/functional/spec/timeout/timeout_modal_session_expired.spec.js"],
     components: ["./tests/functional/spec/components/**/*.js"],
     features: ["./tests/functional/spec/features/**/*.js"],
     general: ["./tests/functional/spec/general/*.js"],
