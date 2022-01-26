@@ -102,7 +102,7 @@ DEFINITION_BUTTON_GETTER = Template(
 )
 
 QUESTION_ERROR_PANEL = Template(
-    r"""  ${questionName}ErrorPanel() { return `#${questionId}-error`; }
+    r"""  ${questionName}ErrorPanel() { return `#${questionOrAnswerId}-error`; }
 
 """
 )
@@ -420,14 +420,17 @@ def process_question(question, page_spec, num_questions, page_name):
     for answer in question.get("answers", []):
         process_answer(answer, page_spec, long_names, page_name)
 
-    if question["type"] in ["DateRange", "MutuallyExclusive"]:
-        question_name = generate_pascal_case_from_id(question["id"])
-        question_name = question_name.replace(page_name, "")
-        question_context = {
-            "questionName": camel_case(question_name),
-            "questionId": question["id"],
-        }
-        page_spec.write(QUESTION_ERROR_PANEL.substitute(question_context))
+    question_or_answer_id = (
+        question["id"]
+        if question["type"] in ["DateRange", "MutuallyExclusive"]
+        else question["answers"][0]["id"]
+    )
+    question_name = generate_pascal_case_from_id(question["id"]).replace(page_name, "")
+    question_context = {
+        "questionName": camel_case(question_name),
+        "questionOrAnswerId": question_or_answer_id,
+    }
+    page_spec.write(QUESTION_ERROR_PANEL.substitute(question_context))
 
 
 def process_calculated_summary(answers, page_spec):
