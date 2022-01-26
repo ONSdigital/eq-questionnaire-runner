@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-21 16:43+0000\n"
+"POT-Creation-Date: 2022-01-25 12:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -203,11 +203,11 @@ msgstr[1] ""
 msgid "Not a valid choice."
 msgstr ""
 
-#: app/helpers/template_helpers.py:113
+#: app/helpers/template_helpers.py:110
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:143
+#: app/helpers/template_helpers.py:140
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -323,6 +323,10 @@ msgstr ""
 
 #: app/survey_config/business_config.py:57
 msgid "Sign out"
+msgstr ""
+
+#: app/survey_config/business_config.py:69
+msgid "Northern Ireland Department of Finance logo"
 msgstr ""
 
 #: app/survey_config/census_config.py:20 app/survey_config/census_config.py:63
@@ -1130,7 +1134,7 @@ msgstr ""
 
 #: templates/layouts/_base.html:76
 #: templates/partials/introduction/preview.html:30
-#: templates/partials/summary/collapsible-summary.html:14
+#: templates/partials/summary/collapsible-summary.html:15
 msgid "Hide"
 msgstr ""
 
@@ -1188,9 +1192,9 @@ msgstr ""
 msgid "Interviewer note:"
 msgstr ""
 
-#: templates/partials/answer-guidance.html:19
-#: templates/partials/definition.html:19
-#: templates/partials/individual-response-guidance.html:14
+#: templates/partials/answer-guidance.html:18
+#: templates/partials/definition.html:18
+#: templates/partials/individual-response-guidance.html:13
 msgid "Hide this"
 msgstr ""
 
@@ -1218,13 +1222,13 @@ msgstr ""
 msgid "Give feedback"
 msgstr ""
 
-#: templates/partials/individual-response-guidance.html:25
+#: templates/partials/individual-response-guidance.html:24
 msgid ""
 "You can <em>share your household access code</em> with the people you "
 "live with so they can complete their own sections."
 msgstr ""
 
-#: templates/partials/individual-response-guidance.html:26
+#: templates/partials/individual-response-guidance.html:25
 msgid ""
 "If this is not possible, there are <a href={url}>other ways each person "
 "can complete their own census.</a>"
@@ -1419,17 +1423,17 @@ msgid "{x} characters too many"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:29
-#: templates/partials/summary/collapsible-summary.html:13
+#: templates/partials/summary/collapsible-summary.html:14
 msgid "Show"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:48
-#: templates/partials/summary/collapsible-summary.html:58
+#: templates/partials/summary/collapsible-summary.html:59
 msgid "Show all"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:49
-#: templates/partials/summary/collapsible-summary.html:59
+#: templates/partials/summary/collapsible-summary.html:60
 msgid "Hide all"
 msgstr ""
 
@@ -1437,19 +1441,19 @@ msgstr ""
 msgid "Start survey"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:36
-#: templates/partials/summary/summary.html:18
+#: templates/partials/summary/collapsible-summary.html:37
+#: templates/partials/summary/summary.html:19
 msgid "No answer provided"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:37
+#: templates/partials/summary/collapsible-summary.html:38
 #: templates/partials/summary/list-summary.html:8
-#: templates/partials/summary/summary.html:19
+#: templates/partials/summary/summary.html:20
 msgid "Change"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:38
-#: templates/partials/summary/summary.html:20
+#: templates/partials/summary/collapsible-summary.html:39
+#: templates/partials/summary/summary.html:21
 msgid "Change your answer for:"
 msgstr ""
 

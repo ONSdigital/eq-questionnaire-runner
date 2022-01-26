@@ -10,6 +10,7 @@ from app.survey_config import (
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
+    NorthernIrelandBusinessSurveyConfig,
     SurveyConfig,
     WelshCensusSurveyConfig,
 )
@@ -309,7 +310,7 @@ def test_get_page_header_context_census_nisra(app: Flask):
         "logoAlt": "Northern Ireland Statistics and Research Agency logo",
         "titleLogo": "census-logo-en",
         "titleLogoAlt": "Census 2021",
-        "customHeaderLogo": "nisra",
+        "customHeaderLogo": True,
         "mobileLogo": "nisra-logo-en-mobile",
     }
 
@@ -382,6 +383,10 @@ def test_service_links_context(
             BusinessSurveyConfig(),
             "https://surveys.ons.gov.uk/contact-us/",
         ),
+        (
+            NorthernIrelandBusinessSurveyConfig(),
+            "https://surveys.ons.gov.uk/contact-us/",
+        ),
     ],
 )
 def test_contact_us_url_context(
@@ -425,6 +430,10 @@ def test_sign_out_button_text_context(
         (SurveyConfig(), "https://surveys.ons.gov.uk/cookies/"),
         (
             BusinessSurveyConfig(),
+            "https://surveys.ons.gov.uk/cookies/",
+        ),
+        (
+            NorthernIrelandBusinessSurveyConfig(),
             "https://surveys.ons.gov.uk/cookies/",
         ),
     ],
@@ -491,6 +500,10 @@ def test_account_service_my_todo_url_context(
         (CensusSurveyConfig(), "https://census.gov.uk/en/start"),
         (WelshCensusSurveyConfig(), "https://cyfrifiad.gov.uk/en/start"),
         (CensusNISRASurveyConfig(), "https://census.gov.uk/ni"),
+        (
+            NorthernIrelandBusinessSurveyConfig(),
+            "https://surveys.ons.gov.uk/sign-in/logout",
+        ),
     ],
 )
 def test_account_service_log_out_url_context(
@@ -513,8 +526,8 @@ def test_account_service_log_out_url_context(
         ("health", "cy", SurveyConfig),
         ("social", "en", SurveyConfig),
         ("social", "cy", SurveyConfig),
-        ("northernireland", "en", SurveyConfig),
-        ("northernireland", "cy", SurveyConfig),
+        ("northernireland", "en", NorthernIrelandBusinessSurveyConfig),
+        ("northernireland", "cy", NorthernIrelandBusinessSurveyConfig),
         ("census", "en", CensusSurveyConfig),
         ("census", "cy", WelshCensusSurveyConfig),
         ("census-nisra", "en", CensusNISRASurveyConfig),
@@ -555,6 +568,24 @@ def test_survey_config_base_url_provided_used_in_links(
     for url in urls_to_check:
         if url:
             assert base_url in url
+
+
+def test_survey_config_base_url_duplicate_todo(app: Flask):
+    base_url = "http://localhost/surveys/todo"
+    with app.app_context():
+        result = BusinessSurveyConfig(base_url=base_url)
+
+    assert result.base_url == "http://localhost"
+
+    assert result.account_service_log_out_url == "http://localhost/sign-in/logout"
+    assert result.account_service_my_account_url == "http://localhost/my-account"
+    assert result.account_service_todo_url == "http://localhost/surveys/todo"
+    assert result.contact_us_url == "http://localhost/contact-us/"
+    assert result.cookie_settings_url == "http://localhost/cookies/"
+    assert (
+        result.privacy_and_data_protection_url
+        == "http://localhost/privacy-and-data-protection/"
+    )
 
 
 def test_get_survey_config_base_url_not_provided(app: Flask):
@@ -620,7 +651,7 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
         ("business", "en", "ONS Business Surveys"),
         ("health", "en", None),
         ("social", "en", None),
-        ("northernireland", "en", None),
+        ("northernireland", "en", "ONS Business Surveys"),
         ("census", "en", "Census 2021"),
         ("census", "cy", "Census 2021"),
         ("census-nisra", "en", "Census 2021"),

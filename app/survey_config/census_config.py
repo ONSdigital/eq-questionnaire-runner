@@ -124,7 +124,7 @@ class CensusNISRASurveyConfig(
     page_header_logo_alt: str = lazy_gettext(
         "Northern Ireland Statistics and Research Agency logo"
     )
-    header_logo: str = "nisra"
+    custom_header_logo: bool = True
     mobile_logo: str = "nisra-logo-en-mobile"
     copyright_declaration: LazyString = lazy_gettext(
         "Crown copyright and database rights 2021 NIMA MOU577.501."
