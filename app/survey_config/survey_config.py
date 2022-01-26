@@ -29,7 +29,7 @@ class SurveyConfig:
     title_logo_alt: Optional[str] = None
     accessibility_url: str = f"{ONS_URL}/help/accessibility/"
     what_we_do_url: str = f"{ONS_URL}/aboutus/whatwedo/"
-    header_logo: Optional[str] = None
+    custom_header_logo: bool = False
     mobile_logo: Optional[str] = None
     powered_by_logo: Optional[str] = None
     powered_by_logo_alt: Optional[str] = None
