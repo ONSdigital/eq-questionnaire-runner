@@ -14,15 +14,7 @@ BODY = bytes("test", "utf-8")
 TRANSACTION_ID = str(uuid4())
 
 
-def test_create_task(
-    mocker,
-    cloud_task_publisher,
-    project_id=PROJECT_ID,
-    queue_name=QUEUE_NAME,
-    function_name=FUNCTION_NAME,
-    body=BODY,
-    transaction_id=TRANSACTION_ID,
-):
+def test_create_task(mocker, cloud_task_publisher):
     # Mock the actual call within the gRPC stub, and fake the request.
     call = mocker.patch.object(
         type(
@@ -33,35 +25,30 @@ def test_create_task(
     # Designate an appropriate return value for the call.
     call.return_value = (
         cloud_task_publisher._get_task(  # pylint: disable=protected-access
-            body=body, function_name=function_name
+            body=BODY, function_name=FUNCTION_NAME
         )
     )
     cloud_task_publisher.create_task(
-        body=body,
-        queue_name=queue_name,
-        function_name=function_name,
-        fulfilment_request_transaction_id=transaction_id,
+        body=BODY,
+        queue_name=QUEUE_NAME,
+        function_name=FUNCTION_NAME,
+        fulfilment_request_transaction_id=TRANSACTION_ID,
     )
     # Establish that the underlying gRPC stub method was called.
     assert len(call.mock_calls) == 1
     _, args, _ = call.mock_calls[0]
     assert args[0] == CreateTaskRequest(
         mapping={
-            "parent": f"projects/{project_id}/locations/europe-west2/queues/test",
+            "parent": f"projects/{PROJECT_ID}/locations/europe-west2/queues/test",
             "task": cloud_task_publisher._get_task(  # pylint: disable=protected-access
-                body=body, function_name=function_name
+                body=BODY, function_name=FUNCTION_NAME
             ),
         }
     )
 
 
 def test_create_task_raises_exception_on_non_transient_error(
-    mocker,
-    cloud_task_publisher,
-    queue_name=QUEUE_NAME,
-    function_name=FUNCTION_NAME,
-    body=BODY,
-    transaction_id=TRANSACTION_ID,
+    mocker, cloud_task_publisher
 ):
     mock_create_task = mocker.Mock()
     mock_create_task.side_effect = DeadlineExceeded("test")
@@ -71,31 +58,24 @@ def test_create_task_raises_exception_on_non_transient_error(
 
     with pytest.raises(CloudTaskCreationFailed):
         cloud_task_publisher.create_task(
-            body=body,
-            queue_name=queue_name,
-            function_name=function_name,
-            fulfilment_request_transaction_id=transaction_id,
+            body=BODY,
+            queue_name=QUEUE_NAME,
+            function_name=FUNCTION_NAME,
+            fulfilment_request_transaction_id=TRANSACTION_ID,
         )
 
 
-def test_create_task_transient_error_retries(
-    mocker,
-    cloud_task_publisher,
-    queue_name=QUEUE_NAME,
-    function_name=FUNCTION_NAME,
-    body=BODY,
-    transaction_id=TRANSACTION_ID,
-):
+def test_create_task_transient_error_retries(mocker, cloud_task_publisher):
     mock_create_task = mocker.Mock()
     mock_create_task.side_effect = [ServiceUnavailable("test"), Task()]
     cloud_task_publisher._client.create_task = (  # pylint: disable=protected-access
         mock_create_task
     )
     cloud_task_publisher.create_task(
-        body=body,
-        queue_name=queue_name,
-        function_name=function_name,
-        fulfilment_request_transaction_id=transaction_id,
+        body=BODY,
+        queue_name=QUEUE_NAME,
+        function_name=FUNCTION_NAME,
+        fulfilment_request_transaction_id=TRANSACTION_ID,
     )
 
     assert mock_create_task.call_count == 2
