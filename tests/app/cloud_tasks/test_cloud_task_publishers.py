@@ -5,23 +5,24 @@ from google.api_core.exceptions import DeadlineExceeded, ServiceUnavailable
 from google.cloud.tasks_v2 import CreateTaskRequest
 from google.cloud.tasks_v2.types.task import Task
 
-from app.cloud_tasks import CloudTaskPublisher
 from app.cloud_tasks.exceptions import CloudTaskCreationFailed
+
+PROJECT_ID = "test-project-id"
+QUEUE_NAME = "test"
+FUNCTION_NAME = "test"
+BODY = bytes("test", "utf-8")
+TRANSACTION_ID = str(uuid4())
 
 
 def test_create_task(
     mocker,
-    project_id="test-project-id",
-    queue_name="test",
-    function_name="test",
-    body=bytes("test", "utf-8"),
-    transaction_id=str(uuid4()),
+    cloud_task_publisher,
+    project_id=PROJECT_ID,
+    queue_name=QUEUE_NAME,
+    function_name=FUNCTION_NAME,
+    body=BODY,
+    transaction_id=TRANSACTION_ID,
 ):
-    mocker.patch(
-        "google.auth._default._get_explicit_environ_credentials",
-        return_value=(mocker.Mock, project_id),
-    )
-    cloud_task_publisher = CloudTaskPublisher()
     # Mock the actual call within the gRPC stub, and fake the request.
     call = mocker.patch.object(
         type(
@@ -56,17 +57,12 @@ def test_create_task(
 
 def test_create_task_raises_exception_on_non_transient_error(
     mocker,
-    project_id="test-project-id",
-    queue_name="test",
-    function_name="test",
-    body=bytes("test", "utf-8"),
-    transaction_id=str(uuid4()),
+    cloud_task_publisher,
+    queue_name=QUEUE_NAME,
+    function_name=FUNCTION_NAME,
+    body=BODY,
+    transaction_id=TRANSACTION_ID,
 ):
-    mocker.patch(
-        "google.auth._default._get_explicit_environ_credentials",
-        return_value=(mocker.Mock, project_id),
-    )
-    cloud_task_publisher = CloudTaskPublisher()
     mock_create_task = mocker.Mock()
     mock_create_task.side_effect = DeadlineExceeded("test")
     cloud_task_publisher._client.create_task = (  # pylint: disable=protected-access
@@ -84,17 +80,12 @@ def test_create_task_raises_exception_on_non_transient_error(
 
 def test_create_task_transient_error_retries(
     mocker,
-    project_id="test-project-id",
-    queue_name="test",
-    function_name="test",
-    body=bytes("test", "utf-8"),
-    transaction_id=str(uuid4()),
+    cloud_task_publisher,
+    queue_name=QUEUE_NAME,
+    function_name=FUNCTION_NAME,
+    body=BODY,
+    transaction_id=TRANSACTION_ID,
 ):
-    mocker.patch(
-        "google.auth._default._get_explicit_environ_credentials",
-        return_value=(mocker.Mock, project_id),
-    )
-    cloud_task_publisher = CloudTaskPublisher()
     mock_create_task = mocker.Mock()
     mock_create_task.side_effect = [ServiceUnavailable("test"), Task()]
     cloud_task_publisher._client.create_task = (  # pylint: disable=protected-access
