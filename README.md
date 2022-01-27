@@ -221,6 +221,12 @@ To run a single test, add `.only` into the name of any `describe` or `it` functi
 `describe.only('Skip Conditions', function() {...}` or
 `it.only('Given this is a test', function() {...}`
 
+In order to speed up our functional tests running in Github Actions on pull request, the tests have been split out into 4 suites which can be run concurrently. These suites are configured in the `wdio.conf.js` file.
+An individual test suite can be run using:
+
+`./scripts/run_tests_functional.sh <suite_name>` or
+`./node_modules/.bin/wdio tests/functional/wdio.conf.js --suite <suite_name>`
+
 To run the tests against a remote deployment you will need to specify the environment variable of EQ_FUNCTIONAL_TEST_ENV eg:
 
 `EQ_FUNCTIONAL_TEST_ENV=https://staging-new-surveys.dev.eq.ons.digital/ yarn test_functional`
