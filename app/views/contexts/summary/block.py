@@ -1,4 +1,5 @@
 from flask import url_for
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 
 from app.questionnaire.variants import choose_variant
 from app.views.contexts.summary.question import Question
@@ -12,7 +13,7 @@ class Block:
         list_store,
         metadata,
         response_metadata,
-        schema,
+        schema: QuestionnaireSchema,
         location,
         return_to,
     ):
@@ -21,9 +22,7 @@ class Block:
         self.title = block_schema.get("title")
         self.number = block_schema.get("number")
         self.link = self._build_link(
-            block_schema["id"],
-            return_to,
-            block_schema.get("question", {}).get("answers", ({},))[0].get("id"),
+            block_schema["id"], return_to, schema.get_answer_ids_for_block(self.id)[0]
         )
         self.question = self.get_question(
             block_schema,
