@@ -190,7 +190,13 @@ The tests are written using [WebdriverIO](https://webdriver.io/docs), [Chai](htt
 
 The functional tests use a set of selectors that are generated from each of the test schemas. These make it quick to add new functional tests.
 
-To run the functional tests run :
+To run the functional tests first runner needs to be spin up with:
+
+`ENV_FILE=.functional-tests.env make run`
+
+This will set the correct environment variables for running the functional tests.
+
+Then you can run:
 
 `make test-functional`
 
