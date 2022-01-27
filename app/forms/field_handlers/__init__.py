@@ -1,18 +1,24 @@
 from werkzeug.datastructures import ImmutableDict
 
+from app.forms.field_handlers.address_handler import AddressHandler
+from app.forms.field_handlers.date_handlers import (
+    DateHandler,
+    MonthYearDateHandler,
+    YearDateHandler,
+)
+from app.forms.field_handlers.dropdown_handler import DropdownHandler
+from app.forms.field_handlers.duration_handler import DurationHandler
+from app.forms.field_handlers.field_handler import FieldHandler
+from app.forms.field_handlers.mobile_number_handler import MobileNumberHandler
+from app.forms.field_handlers.number_handler import NumberHandler
+from app.forms.field_handlers.select_handlers import (
+    SelectHandler,
+    SelectMultipleHandler,
+)
+from app.forms.field_handlers.string_handler import StringHandler
+from app.forms.field_handlers.text_area_handler import TextAreaHandler
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
-
-from ...questionnaire.rules.rule_evaluator import RuleEvaluator
-from .address_handler import AddressHandler
-from .date_handlers import DateHandler, MonthYearDateHandler, YearDateHandler
-from .dropdown_handler import DropdownHandler
-from .duration_handler import DurationHandler
-from .field_handler import FieldHandler
-from .mobile_number_handler import MobileNumberHandler
-from .number_handler import NumberHandler
-from .select_handlers import SelectHandler, SelectMultipleHandler
-from .string_handler import StringHandler
-from .text_area_handler import TextAreaHandler
 
 FIELD_HANDLER_MAPPINGS = {
     "Checkbox": SelectMultipleHandler,
