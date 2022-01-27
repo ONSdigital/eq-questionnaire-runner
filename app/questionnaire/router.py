@@ -194,7 +194,10 @@ class Router:
         return None
 
     def _get_return_to_location_url(
-        self, location: Location, return_to: str, return_to_answer_id: str = None
+        self,
+        location: Location,
+        return_to: str,
+        return_to_answer_id: Optional[str] = None,
     ) -> Optional[str]:
         if return_to == "section-summary":
             return self._get_section_url(
@@ -369,7 +372,9 @@ class Router:
         )
 
     @staticmethod
-    def _get_section_url(location: Location, return_to_answer_id: str = None) -> str:
+    def _get_section_url(
+        location: Location, return_to_answer_id: Optional[str] = None
+    ) -> str:
         return url_for(
             "questionnaire.get_section",
             section_id=location.section_id,
