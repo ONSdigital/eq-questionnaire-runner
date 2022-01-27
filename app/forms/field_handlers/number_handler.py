@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Any, Union
+from typing import Any, Type, Union
 
 from wtforms import DecimalField, IntegerField
 
@@ -54,13 +54,18 @@ class NumberHandler(FieldHandler):
     def max_decimals(self) -> int:
         return self.answer_schema.get("decimal_places", 0)
 
-    def get_field(self) -> Union[DecimalField, IntegerField]:
-        field_type = (
+    @property
+    def _field_type(
+        self,
+    ) -> Type[Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator]]:
+        return (
             DecimalFieldWithSeparator
             if self.max_decimals > 0
             else IntegerFieldWithSeparator
         )
-        return field_type(
+
+    def get_field(self) -> Union[DecimalField, IntegerField]:
+        return self._field_type(
             label=self.label, validators=self.validators, description=self.guidance
         )
 
