@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-25 12:33+0000\n"
+"POT-Creation-Date: 2022-01-26 15:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -291,41 +291,41 @@ msgstr ""
 msgid "An individual access code has been sent by text"
 msgstr ""
 
-#: app/survey_config/business_config.py:31
+#: app/survey_config/business_config.py:33
 msgid "What we do"
 msgstr ""
 
-#: app/survey_config/business_config.py:32
+#: app/survey_config/business_config.py:34
 #: app/survey_config/census_config.py:30 app/survey_config/census_config.py:80
 #: app/survey_config/census_config.py:141
 msgid "Contact us"
 msgstr ""
 
-#: app/survey_config/business_config.py:34
+#: app/survey_config/business_config.py:36
 msgid "Accessibility"
 msgstr ""
 
-#: app/survey_config/business_config.py:39
+#: app/survey_config/business_config.py:41
 #: app/survey_config/census_config.py:44 app/survey_config/census_config.py:95
 #: app/survey_config/census_config.py:148
 msgid "Cookies"
 msgstr ""
 
-#: app/survey_config/business_config.py:41
+#: app/survey_config/business_config.py:43
 #: app/survey_config/census_config.py:50 app/survey_config/census_config.py:101
 #: app/survey_config/census_config.py:154
 msgid "Privacy and data protection"
 msgstr ""
 
-#: app/survey_config/business_config.py:52
+#: app/survey_config/business_config.py:54
 msgid "My account"
 msgstr ""
 
-#: app/survey_config/business_config.py:57
+#: app/survey_config/business_config.py:59
 msgid "Sign out"
 msgstr ""
 
-#: app/survey_config/business_config.py:69
+#: app/survey_config/business_config.py:78
 msgid "Northern Ireland Department of Finance logo"
 msgstr ""
 
@@ -1184,7 +1184,7 @@ msgstr ""
 msgid "Choose another section and return to this later"
 msgstr ""
 
-#: templates/layouts/configs/_save-sign-out-button.html:20
+#: templates/layouts/configs/_save-sign-out-button.html:21
 msgid "Exit"
 msgstr ""
 
