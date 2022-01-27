@@ -1,10 +1,11 @@
 {% if current_user.is_authenticated and not hide_sign_out_button %}
+    {% set sign_out_url = url_for('session.get_sign_out') %}
 
     {% if save_on_signout %}
         {% do pageConfig | setAttribute("signoutButton", {
             "text": sign_out_button_text,
             "name": "btn-save-sign-out",
-            "url": "/sign-out",
+            "url": sign_out_url,
             "attributes": {
                 "data-qa": "btn-save-sign-out",
                 "data-ga": "click",
