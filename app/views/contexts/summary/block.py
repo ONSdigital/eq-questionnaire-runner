@@ -1,6 +1,6 @@
 from flask import url_for
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.variants import choose_variant
 from app.views.contexts.summary.question import Question
 
