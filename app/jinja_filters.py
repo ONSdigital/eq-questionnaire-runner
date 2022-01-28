@@ -320,7 +320,7 @@ class OtherConfig:
 
 
 @blueprint.app_template_filter()  # type: ignore
-def map_checkbox_config(form, answer):
+def map_select_config(form, answer):
     options = form["fields"][answer["id"]]
 
     return [
@@ -330,23 +330,8 @@ def map_checkbox_config(form, answer):
 
 
 @blueprint.app_context_processor
-def map_checkbox_config_processor():
-    return dict(map_checkbox_config=map_checkbox_config)
-
-
-@blueprint.app_template_filter()  # type: ignore
-def map_radio_config(form, answer):
-    options = form["fields"][answer["id"]]
-
-    return [
-        SelectConfig(option, index, answer, form)
-        for index, option in enumerate(options)
-    ]
-
-
-@blueprint.app_context_processor
-def map_radio_config_processor():
-    return dict(map_radio_config=map_radio_config)
+def map_select_config_processor():
+    return dict(map_select_config=map_select_config)
 
 
 @blueprint.app_template_filter()  # type: ignore
