@@ -7,24 +7,33 @@ import IntroThankYouPagePage from "../base_pages/thank-you.page";
 import HouseHolderConfirmationPage from "../generated_pages/thank_you_census_household/household-confirmation.page";
 import { getRandomString } from "../jwt_helper";
 
-describe("SaveSignOut", () => {
+describe("Save sign out / Exit", () => {
   const responseId = getRandomString(16);
 
-  it("Given I am completing a survey, when I select save and complete later, then I am redirected to sign out page and my session is cleared", () => {
+  it("Given I am on an introduction page, when I click the exit button, then I am redirected to sign out page and my session is cleared", () => {
+    browser.openQuestionnaire("test_introduction.json");
+    $(IntroductionPage.exitButton()).click();
+
+    expect(browser.getUrl()).to.contain("/sign-in/logout");
+
+    browser.back();
+    expect($("body").getHTML()).to.contain("Sorry, you need to sign in again");
+  });
+
+  it("Given I am completing a questionnaire, when I select save and sign out, then I am redirected to sign out page and my session is cleared", () => {
     browser.openQuestionnaire("test_numbers.json", { userId: "test_user", responseId });
     $(SetMinMax.setMinimum()).setValue("10");
     $(SetMinMax.setMaximum()).setValue("1020");
     $(SetMinMax.submit()).click();
     $(TestMinMax.saveSignOut()).click();
 
-    expect(browser.getUrl()).to.contain("localhost");
+    expect(browser.getUrl()).to.contain("/sign-in/logout");
 
     browser.back();
-
     expect($("body").getHTML()).to.contain("Sorry, you need to sign in again");
   });
 
-  it("Given I have started a questionnaire, when I return to the questionnaire, then I am returned to the page I was on and can then complete the survey", () => {
+  it("Given I have started a questionnaire, when I return to the questionnaire, then I am returned to the page I was on and can then complete the questionnaire", () => {
     browser.openQuestionnaire("test_numbers.json", { userId: "test_user", responseId });
 
     $(TestMinMax.testRange()).setValue("10");
