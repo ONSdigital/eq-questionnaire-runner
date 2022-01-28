@@ -401,12 +401,10 @@ def map_select_config_processor():
 
 
 class SummaryAction:
-    def __init__(
-        self, block, answer, answer_title, edit_link_text, edit_link_aria_label
-    ):
+    def __init__(self, answer, answer_title, edit_link_text, edit_link_aria_label):
         self.text = edit_link_text
         self.ariaLabel = edit_link_aria_label + " " + answer_title
-        self.url = block["link"] + "#" + answer["id"]
+        self.url = answer["link"] + "#" + answer["id"]
 
         self.attributes = {
             "data-qa": answer["id"] + "-edit",
@@ -510,7 +508,7 @@ class SummaryRowItem:
         if answers_are_editable:
             self.actions = [
                 SummaryAction(
-                    block, answer, self.rowTitle, edit_link_text, edit_link_aria_label
+                    answer, self.rowTitle, edit_link_text, edit_link_aria_label
                 )
             ]
 

@@ -4,7 +4,16 @@ from app.views.contexts.summary.answer import Answer
 
 
 class Question:
-    def __init__(self, question_schema, answer_store, schema, list_item_id):
+    def __init__(
+        self,
+        question_schema,
+        answer_store,
+        schema,
+        list_item_id,
+        block_id,
+        list_name,
+        return_to,
+    ):
         self.list_item_id = list_item_id
         self.id = question_schema["id"]
         self.type = question_schema["type"]
@@ -15,6 +24,11 @@ class Question:
             question_schema.get("title") or question_schema["answers"][0]["label"]
         )
         self.number = question_schema.get("number", None)
+        print(schema)
+        print(question_schema)
+        self.block_id = block_id
+        self.list_name = list_name
+        self.return_to = return_to
         self.answers = self._build_answers(answer_store, question_schema)
 
     def _get_answer(self, answer_store, answer_id):
@@ -39,7 +53,14 @@ class Question:
                 answer_store, question_schema, answer_schema, answer_value
             )
 
-            summary_answer = Answer(answer_schema, answer).serialize()
+            summary_answer = Answer(
+                answer_schema,
+                answer,
+                self.block_id,
+                self.list_name,
+                self.list_item_id,
+                self.return_to,
+            ).serialize()
             summary_answers.append(summary_answer)
 
         if question_schema["type"] == "MutuallyExclusive":
