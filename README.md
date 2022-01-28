@@ -221,6 +221,11 @@ To run a single test, add `.only` into the name of any `describe` or `it` functi
 `describe.only('Skip Conditions', function() {...}` or
 `it.only('Given this is a test', function() {...}`
 
+Test suites are configured in the `wdio.conf.js` file.
+An individual test suite can be run using:
+
+`yarn test_functional --suite <suite>`
+
 To run the tests against a remote deployment you will need to specify the environment variable of EQ_FUNCTIONAL_TEST_ENV eg:
 
 `EQ_FUNCTIONAL_TEST_ENV=https://staging-new-surveys.dev.eq.ons.digital/ yarn test_functional`
