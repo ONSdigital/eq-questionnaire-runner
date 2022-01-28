@@ -1,5 +1,6 @@
 from flask import url_for
 
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.variants import choose_variant
 from app.views.contexts.summary.question import Question
 
@@ -8,6 +9,7 @@ class Block:
     def __init__(
         self,
         block_schema,
+        *,
         answer_store,
         list_store,
         metadata,
@@ -21,14 +23,24 @@ class Block:
         self.title = block_schema.get("title")
         self.number = block_schema.get("number")
         self.link = self._build_link(block_schema["id"], return_to)
+
+        self._rule_evaluator = RuleEvaluator(
+            schema=schema,
+            answer_store=answer_store,
+            list_store=list_store,
+            metadata=metadata,
+            response_metadata=response_metadata,
+            location=location,
+        )
+
         self.question = self.get_question(
-            block_schema,
-            answer_store,
-            list_store,
-            metadata,
-            response_metadata,
-            schema,
-            location,
+            block_schema=block_schema,
+            answer_store=answer_store,
+            list_store=list_store,
+            metadata=metadata,
+            response_metadata=response_metadata,
+            schema=schema,
+            location=location,
         )
 
     def _build_link(self, block_id, return_to):
@@ -40,8 +52,9 @@ class Block:
             return_to=return_to,
         )
 
-    @staticmethod
     def get_question(
+        self,
+        *,
         block_schema,
         answer_store,
         list_store,
@@ -50,7 +63,7 @@ class Block:
         schema,
         location,
     ):
-        """ Taking question variants into account, return the question which was displayed to the user """
+        """Taking question variants into account, return the question which was displayed to the user"""
         list_item_id = location.list_item_id
 
         variant = choose_variant(
@@ -65,7 +78,13 @@ class Block:
             current_location=location,
         )
 
-        return Question(variant, answer_store, schema, list_item_id).serialize()
+        return Question(
+            variant,
+            answer_store=answer_store,
+            schema=schema,
+            list_item_id=list_item_id,
+            rule_evaluator=self._rule_evaluator,
+        ).serialize()
 
     def serialize(self):
         return {

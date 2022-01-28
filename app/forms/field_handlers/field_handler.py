@@ -6,6 +6,7 @@ from wtforms import Field, validators
 from wtforms.validators import Optional as OptionalValidator
 
 from app.forms.validators import ResponseRequired, format_message_with_title
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import (
     ValueSourceEscapedTypes,
     ValueSourceResolver,
@@ -20,12 +21,14 @@ class FieldHandler(ABC):
         self,
         answer_schema: Mapping[str, Any],
         value_source_resolver: ValueSourceResolver,
+        rule_evaluator: RuleEvaluator,
         error_messages: Mapping[str, str],
         disable_validation: bool = False,
         question_title: str = None,
     ):
         self.answer_schema = answer_schema
         self.value_source_resolver = value_source_resolver
+        self.rule_evaluator = rule_evaluator
         self.error_messages = error_messages
         self.disable_validation = disable_validation
         self.question_title = str(question_title)

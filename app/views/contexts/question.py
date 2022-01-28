@@ -18,7 +18,7 @@ def build_question_context(rendered_block, form):
         answer_ids.append(answer["id"])
 
         if answer["type"] in ("Checkbox", "Radio"):
-            for option in answer["options"]:
+            for option in answer.get("options", []):
                 if "detail_answer" in option:
                     answer_ids.append(option["detail_answer"]["id"])
 

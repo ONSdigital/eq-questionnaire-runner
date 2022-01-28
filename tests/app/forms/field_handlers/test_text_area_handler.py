@@ -5,7 +5,7 @@ from app.forms.field_handlers import TextAreaHandler
 from app.forms.fields import MaxTextAreaField
 
 
-def test_get_field(value_source_resolver):
+def test_get_field(value_source_resolver, rule_evaluator):
     textarea_json = {
         "guidance": "",
         "id": "answer",
@@ -21,7 +21,7 @@ def test_get_field(value_source_resolver):
     }
 
     text_area_handler = TextAreaHandler(
-        textarea_json, value_source_resolver, error_messages
+        textarea_json, value_source_resolver, rule_evaluator, error_messages
     )
 
     class TestForm(Form):
@@ -34,17 +34,21 @@ def test_get_field(value_source_resolver):
     assert form.test_field.description == textarea_json["guidance"]
 
 
-def test_get_length_validator(value_source_resolver):
+def test_get_length_validator(value_source_resolver, rule_evaluator):
     test_error_messages = {
         "MAX_LENGTH_EXCEEDED": "This is the default max length of %(max)d message"
     }
-    text_area_handler = TextAreaHandler({}, value_source_resolver, test_error_messages)
+    text_area_handler = TextAreaHandler(
+        {}, value_source_resolver, rule_evaluator, test_error_messages
+    )
     validator = text_area_handler.get_length_validator()
 
     assert validator.message == "This is the default max length of %(max)d message"
 
 
-def test_get_length_validator_with_message_override(value_source_resolver):
+def test_get_length_validator_with_message_override(
+    value_source_resolver, rule_evaluator
+):
     answer = {
         "validation": {
             "messages": {
@@ -56,7 +60,7 @@ def test_get_length_validator_with_message_override(value_source_resolver):
         "MAX_LENGTH_EXCEEDED": "This is the default max length message"
     }
     text_area_handler = TextAreaHandler(
-        answer, value_source_resolver, test_error_messages
+        answer, value_source_resolver, rule_evaluator, test_error_messages
     )
 
     validator = text_area_handler.get_length_validator()
@@ -64,18 +68,20 @@ def test_get_length_validator_with_message_override(value_source_resolver):
     assert validator.message == "A message with characters %(max)d placeholder"
 
 
-def test_get_length_validator_with_max_length_override(value_source_resolver):
+def test_get_length_validator_with_max_length_override(
+    value_source_resolver, rule_evaluator
+):
     answer = {"max_length": 30}
     test_error_messages = {"MAX_LENGTH_EXCEEDED": "%(max)d characters"}
     text_area_handler = TextAreaHandler(
-        answer, value_source_resolver, test_error_messages
+        answer, value_source_resolver, rule_evaluator, test_error_messages
     )
     validator = text_area_handler.get_length_validator()
 
     assert validator.max == 30
 
 
-def test_get_text_area_rows_with_default(value_source_resolver):
+def test_get_text_area_rows_with_default(value_source_resolver, rule_evaluator):
     answer = {
         "id": "answer",
         "label": "Enter your comments",
@@ -84,7 +90,11 @@ def test_get_text_area_rows_with_default(value_source_resolver):
     }
 
     text_area_handler = TextAreaHandler(
-        answer, value_source_resolver, error_messages, disable_validation=True
+        answer,
+        value_source_resolver,
+        rule_evaluator,
+        error_messages,
+        disable_validation=True,
     )
 
     class TestForm(Form):
@@ -95,7 +105,7 @@ def test_get_text_area_rows_with_default(value_source_resolver):
     assert form.test_field.rows == 8
 
 
-def test_get_text_area_rows(value_source_resolver):
+def test_get_text_area_rows(value_source_resolver, rule_evaluator):
     answer = {
         "id": "answer",
         "rows": 3,
@@ -105,7 +115,11 @@ def test_get_text_area_rows(value_source_resolver):
     }
 
     text_area_handler = TextAreaHandler(
-        answer, value_source_resolver, error_messages, disable_validation=True
+        answer,
+        value_source_resolver,
+        rule_evaluator,
+        error_messages,
+        disable_validation=True,
     )
 
     class TestForm(Form):
