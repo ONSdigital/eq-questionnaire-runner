@@ -14,10 +14,10 @@ from app.settings import MAX_NUMBER
 
 
 def get_test_form_class(
-    answer_schema, value_source_resolver, messages=error_messages.copy()
+    answer_schema, value_source_resolver, rule_evaluator, messages=error_messages.copy()
 ):
     handler = NumberHandler(
-        answer_schema, value_source_resolver, error_messages=messages
+        answer_schema, value_source_resolver, rule_evaluator, error_messages=messages
     )
 
     class TestForm(Form):
@@ -26,7 +26,7 @@ def get_test_form_class(
     return TestForm
 
 
-def test_integer_field(value_source_resolver):
+def test_integer_field(value_source_resolver, rule_evaluator):
     answer_schema = {
         "alias": "chewies_age",
         "guidance": "",
@@ -38,7 +38,7 @@ def test_integer_field(value_source_resolver):
     }
 
     form_class = get_test_form_class(
-        answer_schema, value_source_resolver, error_messages
+        answer_schema, value_source_resolver, rule_evaluator, error_messages
     )
     form = form_class()
 
@@ -47,7 +47,7 @@ def test_integer_field(value_source_resolver):
     assert form.test_field.description == answer_schema["guidance"]
 
 
-def test_decimal_field(value_source_resolver):
+def test_decimal_field(value_source_resolver, rule_evaluator):
     answer_schema = {
         "guidance": "",
         "id": "lightsaber-cost-answer",
@@ -63,7 +63,7 @@ def test_decimal_field(value_source_resolver):
     }
 
     form_class = get_test_form_class(
-        answer_schema, value_source_resolver, error_messages
+        answer_schema, value_source_resolver, rule_evaluator, error_messages
     )
     form = form_class()
 
@@ -72,7 +72,7 @@ def test_decimal_field(value_source_resolver):
     assert form.test_field.description == answer_schema["guidance"]
 
 
-def test_currency_field(value_source_resolver):
+def test_currency_field(value_source_resolver, rule_evaluator):
     answer_schema = {
         "guidance": "",
         "id": "a04a516d-502d-4068-bbed-a43427c68cd9",
@@ -87,7 +87,7 @@ def test_currency_field(value_source_resolver):
     }
 
     form_class = get_test_form_class(
-        answer_schema, value_source_resolver, error_messages
+        answer_schema, value_source_resolver, rule_evaluator, error_messages
     )
     form = form_class()
 
@@ -96,7 +96,7 @@ def test_currency_field(value_source_resolver):
     assert form.test_field.description == answer_schema["guidance"]
 
 
-def test_percentage_field(value_source_resolver):
+def test_percentage_field(value_source_resolver, rule_evaluator):
     answer_schema = {
         "description": "",
         "id": "percentage-turnover-2016-market-new-answer",
@@ -115,7 +115,7 @@ def test_percentage_field(value_source_resolver):
     }
 
     form_class = get_test_form_class(
-        answer_schema, value_source_resolver, error_messages
+        answer_schema, value_source_resolver, rule_evaluator, error_messages
     )
     form = form_class()
 
@@ -124,7 +124,7 @@ def test_percentage_field(value_source_resolver):
     assert form.test_field.description == answer_schema["description"]
 
 
-def test_manual_min(app, value_source_resolver):
+def test_manual_min(app, value_source_resolver, rule_evaluator):
     answer_schema = {
         "minimum": {"value": 10},
         "label": "Min Test",
@@ -140,7 +140,7 @@ def test_manual_min(app, value_source_resolver):
     }
 
     test_form_class = get_test_form_class(
-        answer_schema, value_source_resolver, error_messages
+        answer_schema, value_source_resolver, rule_evaluator, error_messages
     )
     form = test_form_class(MultiDict({"test_field": "9"}))
 
@@ -152,7 +152,7 @@ def test_manual_min(app, value_source_resolver):
     )
 
 
-def test_manual_max(app, value_source_resolver):
+def test_manual_max(app, value_source_resolver, rule_evaluator):
     answer_schema = {
         "maximum": {"value": 20},
         "label": "Max Test",
@@ -167,7 +167,9 @@ def test_manual_max(app, value_source_resolver):
         "type": "Currency",
     }
 
-    test_form_class = get_test_form_class(answer_schema, value_source_resolver)
+    test_form_class = get_test_form_class(
+        answer_schema, value_source_resolver, rule_evaluator
+    )
     form = test_form_class(MultiDict({"test_field": "21"}))
 
     form.validate()
@@ -178,7 +180,7 @@ def test_manual_max(app, value_source_resolver):
     )
 
 
-def test_manual_decimal(app, value_source_resolver):
+def test_manual_decimal(app, value_source_resolver, rule_evaluator):
     answer_schema = {
         "decimal_places": 2,
         "label": "Range Test 10 to 20",
@@ -193,7 +195,9 @@ def test_manual_decimal(app, value_source_resolver):
         "type": "Currency",
     }
 
-    test_form_class = get_test_form_class(answer_schema, value_source_resolver)
+    test_form_class = get_test_form_class(
+        answer_schema, value_source_resolver, rule_evaluator
+    )
     form = test_form_class(MultiDict({"test_field": "1.234"}))
     form.validate()
 
@@ -203,7 +207,7 @@ def test_manual_decimal(app, value_source_resolver):
     )
 
 
-def test_zero_max(app, value_source_resolver):
+def test_zero_max(app, value_source_resolver, rule_evaluator):
     maximum = 0
 
     answer_schema = {
@@ -215,7 +219,7 @@ def test_zero_max(app, value_source_resolver):
     }
     error_message = error_messages["NUMBER_TOO_LARGE"] % {"max": maximum}
     test_form_class = get_test_form_class(
-        answer_schema, value_source_resolver, messages=error_messages
+        answer_schema, value_source_resolver, rule_evaluator, messages=error_messages
     )
     form = test_form_class(MultiDict({"test_field": "1"}))
     form.validate()
@@ -223,7 +227,7 @@ def test_zero_max(app, value_source_resolver):
     assert form.errors["test_field"][0] == error_message
 
 
-def test_zero_min(app, value_source_resolver):
+def test_zero_min(app, value_source_resolver, rule_evaluator):
     minimum = 0
 
     answer_schema = {
@@ -235,7 +239,7 @@ def test_zero_min(app, value_source_resolver):
     }
     error_message = error_messages["NUMBER_TOO_SMALL"] % {"min": minimum}
     test_form_class = get_test_form_class(
-        answer_schema, value_source_resolver, error_messages
+        answer_schema, value_source_resolver, rule_evaluator, error_messages
     )
     form = test_form_class(MultiDict({"test_field": "-1"}))
     form.validate()
@@ -243,7 +247,7 @@ def test_zero_min(app, value_source_resolver):
     assert form.errors["test_field"][0] == error_message
 
 
-def test_value_min_and_max(app, value_source_resolver):
+def test_value_min_and_max(app, value_source_resolver, rule_evaluator):
     answer_schema = {
         "minimum": {"value": 10},
         "maximum": {"value": 20},
@@ -260,7 +264,9 @@ def test_value_min_and_max(app, value_source_resolver):
         "type": "Currency",
     }
 
-    test_form_class = get_test_form_class(answer_schema, value_source_resolver)
+    test_form_class = get_test_form_class(
+        answer_schema, value_source_resolver, rule_evaluator
+    )
     form = test_form_class(MultiDict({"test_field": "9"}))
     form.validate()
 
@@ -278,7 +284,7 @@ def test_value_min_and_max(app, value_source_resolver):
     )
 
 
-def test_manual_min_exclusive(app, value_source_resolver):
+def test_manual_min_exclusive(app, value_source_resolver, rule_evaluator):
     answer_schema = {
         "minimum": {"value": 10, "exclusive": True},
         "label": "Min Test",
@@ -293,7 +299,9 @@ def test_manual_min_exclusive(app, value_source_resolver):
         "type": "Currency",
     }
 
-    test_form_class = get_test_form_class(answer_schema, value_source_resolver)
+    test_form_class = get_test_form_class(
+        answer_schema, value_source_resolver, rule_evaluator
+    )
 
     form = test_form_class(MultiDict({"test_field": "10"}))
     form.validate()
@@ -304,7 +312,7 @@ def test_manual_min_exclusive(app, value_source_resolver):
     )
 
 
-def test_manual_max_exclusive(app, value_source_resolver):
+def test_manual_max_exclusive(app, value_source_resolver, rule_evaluator):
     answer_schema = {
         "maximum": {"value": 20, "exclusive": True},
         "label": "Max Test",
@@ -319,7 +327,9 @@ def test_manual_max_exclusive(app, value_source_resolver):
         "type": "Currency",
     }
 
-    test_form_class = get_test_form_class(answer_schema, value_source_resolver)
+    test_form_class = get_test_form_class(
+        answer_schema, value_source_resolver, rule_evaluator
+    )
 
     form = test_form_class(MultiDict({"test_field": "20"}))
     form.validate()
@@ -330,7 +340,7 @@ def test_manual_max_exclusive(app, value_source_resolver):
     )
 
 
-def test_default_range(value_source_resolver):
+def test_default_range(value_source_resolver, rule_evaluator):
     answer = {
         "decimal_places": 2,
         "label": "Range Test 10 to 20",
@@ -345,14 +355,16 @@ def test_default_range(value_source_resolver):
         "id": "test-range",
         "type": "Currency",
     }
-    handler = NumberHandler(answer, value_source_resolver, error_messages)
-    field_references = handler.get_field_references()
+    handler = NumberHandler(
+        answer, value_source_resolver, rule_evaluator, error_messages
+    )
+    field_references = handler.references
 
     assert field_references["maximum"] == MAX_NUMBER
     assert field_references["minimum"] == 0
 
 
-def test_get_schema_value_answer_store(value_source_resolver):
+def test_get_schema_value_answer_store(value_source_resolver, rule_evaluator):
     answer_schema = {
         "id": "test-range",
         "label": "",
@@ -372,7 +384,9 @@ def test_get_schema_value_answer_store(value_source_resolver):
     answer_store.add_or_update(Answer(answer_id="set-maximum", value=10))
     answer_store.add_or_update(Answer(answer_id="set-minimum", value=1))
     value_source_resolver.answer_store = answer_store
-    number_handler = NumberHandler(answer_schema, value_source_resolver, error_messages)
+    number_handler = NumberHandler(
+        answer_schema, value_source_resolver, rule_evaluator, error_messages
+    )
 
     maximum = number_handler.get_schema_value(answer_schema["maximum"])
     minimum = number_handler.get_schema_value(answer_schema["minimum"])

@@ -2,44 +2,45 @@ from datetime import datetime, timezone
 
 from app.data_models.app_models import EQSession, QuestionnaireState, UsedJtiClaim
 from app.storage.storage import StorageModel
-from tests.app.app_context_test_case import AppContextTestCase
 
 NOW = datetime.now(tz=timezone.utc).replace(microsecond=0)
 
 
-class TestAppModels(AppContextTestCase):
-    def test_questionnaire_state(self):
-        new_model = self._test_model(
-            QuestionnaireState("someuser", "somedata", "ce_sid", 1)
-        )
+def create_model(model):
+    config = StorageModel.TABLE_CONFIG_BY_TYPE[type(model)]
+    schema = config["schema"]()
 
-        self.assertGreaterEqual(new_model.created_at, NOW)
-        self.assertGreaterEqual(new_model.updated_at, NOW)
+    item = schema.dump(model)
+    new_model = schema.load(item)
 
-    def test_eq_session(self):
-        new_model = self._test_model(
-            EQSession(
-                eq_session_id="sessionid",
-                user_id="someuser",
-                session_data="somedata",
-                expires_at=NOW,
-            )
-        )
+    return new_model
 
-        self.assertGreaterEqual(new_model.created_at, NOW)
-        self.assertGreaterEqual(new_model.updated_at, NOW)
-        self.assertGreaterEqual(new_model.expires_at, NOW)
 
-    def test_used_jti_claim(self):
-        self._test_model(UsedJtiClaim("claimid", NOW))
+def test_used_jti_claim():
+    model = UsedJtiClaim("claimid", NOW)
 
-    def _test_model(self, orig):
-        config = StorageModel.TABLE_CONFIG_BY_TYPE[type(orig)]
-        schema = config["schema"]()
+    assert create_model(model).__dict__ == model.__dict__
 
-        item = schema.dump(orig)
-        new_model = schema.load(item)
 
-        self.assertEqual(orig.__dict__, new_model.__dict__)
+def test_eq_session():
+    model = EQSession(
+        eq_session_id="sessionid",
+        user_id="someuser",
+        session_data="somedata",
+        expires_at=NOW,
+    )
+    new_model = create_model(model)
 
-        return new_model
+    assert new_model.__dict__ == model.__dict__
+    assert new_model.created_at >= NOW
+    assert new_model.updated_at >= NOW
+    assert new_model.expires_at >= NOW
+
+
+def test_questionnaire_state():
+    model = QuestionnaireState("someuser", "somedata", "ce_sid", 1)
+    new_model = create_model(model)
+
+    assert new_model.__dict__ == model.__dict__
+    assert new_model.created_at >= NOW
+    assert new_model.updated_at >= NOW

@@ -14,9 +14,9 @@ RESPONSE_EXPIRY = datetime(2021, 11, 10, 8, 54, 22, tzinfo=timezone.utc)
 @pytest.fixture
 def app(mocker):
     setting_overrides = {"LOGIN_DISABLED": True}
-    the_app = create_app(setting_overrides=setting_overrides)
     mocker.patch("app.setup.datastore.Client", MockDatastore)
     mocker.patch("app.setup.redis.Redis", fakeredis.FakeStrictRedis)
+    the_app = create_app(setting_overrides=setting_overrides)
     return the_app
 
 
