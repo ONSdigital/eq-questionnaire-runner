@@ -1,17 +1,17 @@
-import InsuranceAddressPage from "../../generated_pages/section_summary/insurance-address.page.js";
-import InsuranceTypePage from "../../generated_pages/section_summary/insurance-type.page.js";
-import ListedPage from "../../generated_pages/section_summary/listed.page.js";
-import PropertyDetailsSummaryPage from "../../generated_pages/section_summary/property-details-section-summary.page.js";
-import HouseType from "../../generated_pages/section_summary/house-type.page.js";
-import HouseholdCountSectionSummaryPage from "../../generated_pages/section_summary/household-count-section-summary.page.js";
-import HouseholdDetailsSummaryPage from "../../generated_pages/section_summary/house-details-section-summary.page.js";
-import NumberOfPeoplePage from "../../generated_pages/section_summary/number-of-people.page.js";
-import SubmitPage from "../../generated_pages/section_summary/submit.page.js";
+import InsuranceAddressPage from "../../generated_pages/anchor_scrolling/insurance-address.page.js";
+import InsuranceTypePage from "../../generated_pages/anchor_scrolling/insurance-type.page.js";
+import ListedPage from "../../generated_pages/anchor_scrolling/listed.page.js";
+import PropertyDetailsSummaryPage from "../../generated_pages/anchor_scrolling/property-details-section-summary.page.js";
+import HouseType from "../../generated_pages/anchor_scrolling/house-type.page.js";
+import HouseholdCountSectionSummaryPage from "../../generated_pages/anchor_scrolling/household-count-section-summary.page.js";
+import HouseholdDetailsSummaryPage from "../../generated_pages/anchor_scrolling/house-details-section-summary.page.js";
+import NumberOfPeoplePage from "../../generated_pages/anchor_scrolling/number-of-people.page.js";
+import SubmitPage from "../../generated_pages/anchor_scrolling/submit.page.js";
 
 describe("Summary Anchor Scrolling", () => {
   describe("Given I start a Test Section Summary survey", () => {
     beforeEach(() => {
-      browser.openQuestionnaire("test_section_summary.json");
+      browser.openQuestionnaire("test_anchor_scrolling.json");
       $(InsuranceTypePage.both()).click();
       $(InsuranceTypePage.submit()).click();
     });
@@ -25,24 +25,24 @@ describe("Summary Anchor Scrolling", () => {
     it("When I reach the section summary page, Then the Change link url should contain return_to, return_to_answer_id query params", () => {
       $(InsuranceAddressPage.submit()).click();
       $(ListedPage.submit()).click();
-      expect($(PropertyDetailsSummaryPage.insuranceAddressAnswerEdit()).getAttribute("href")).to.contain(
-        "/questionnaire/insurance-address/?return_to=section-summary&return_to_answer_id=insurance-address-answer#insurance-address-answer"
+      expect($(PropertyDetailsSummaryPage.insuranceAddressAnswer2Edit()).getAttribute("href")).to.contain(
+        "/questionnaire/insurance-address/?return_to=section-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"
       );
     });
 
     it("When I edit an answer from the section summary page, Then the Previous link url should contain an anchor referencing the answer id of the answer I am changing", () => {
       $(InsuranceAddressPage.submit()).click();
       $(ListedPage.submit()).click();
-      $(PropertyDetailsSummaryPage.insuranceAddressAnswerEdit()).click();
-      expect($(InsuranceAddressPage.previous()).getAttribute("href")).to.contain("/questionnaire/sections/property-details-section/#insurance-address-answer");
+      $(PropertyDetailsSummaryPage.insuranceAddressAnswer2Edit()).click();
+      expect($(InsuranceAddressPage.previous()).getAttribute("href")).to.contain("/questionnaire/sections/property-details-section/#insurance-address-answer2");
     });
 
     it("When I edit an answer from the section summary page and click the Previous link, Then the browser url should contain an anchor referencing the answer id of the answer I am changing", () => {
       $(InsuranceAddressPage.submit()).click();
       $(ListedPage.submit()).click();
-      $(PropertyDetailsSummaryPage.insuranceAddressAnswerEdit()).click();
+      $(PropertyDetailsSummaryPage.insuranceAddressAnswer2Edit()).click();
       $(InsuranceAddressPage.previous()).click();
-      expect(browser.getUrl()).to.contain("/questionnaire/sections/property-details-section/#insurance-address-answer");
+      expect(browser.getUrl()).to.contain("/questionnaire/sections/property-details-section/#insurance-address-answer2");
     });
 
     it("When I edit an answer from the final summary page, Then the Change link url should contain return_to, return_to_answer_id query params", () => {
@@ -57,8 +57,8 @@ describe("Summary Anchor Scrolling", () => {
       $(NumberOfPeoplePage.submit()).click();
       $(HouseholdCountSectionSummaryPage.submit()).click();
       $(SubmitPage.summaryShowAllButton()).click();
-      expect($(SubmitPage.insuranceAddressAnswerEdit()).getAttribute("href")).to.contain(
-        "/questionnaire/insurance-address/?return_to=final-summary&return_to_answer_id=insurance-address-answer#insurance-address-answer"
+      expect($(SubmitPage.insuranceAddressAnswer2Edit()).getAttribute("href")).to.contain(
+        "/questionnaire/insurance-address/?return_to=final-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"
       );
     });
 
@@ -74,9 +74,9 @@ describe("Summary Anchor Scrolling", () => {
       $(NumberOfPeoplePage.submit()).click();
       $(HouseholdCountSectionSummaryPage.submit()).click();
       $(SubmitPage.summaryShowAllButton()).click();
-      $(SubmitPage.insuranceAddressAnswerEdit()).click();
+      $(SubmitPage.insuranceAddressAnswer2Edit()).click();
       expect(browser.getUrl()).to.contain(
-        "/questionnaire/insurance-address/?return_to=final-summary&return_to_answer_id=insurance-address-answer#insurance-address-answer"
+        "/questionnaire/insurance-address/?return_to=final-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"
       );
     });
   });

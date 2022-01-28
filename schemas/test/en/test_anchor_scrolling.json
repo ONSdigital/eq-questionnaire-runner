@@ -80,11 +80,16 @@
                             "type": "Question",
                             "question": {
                                 "id": "insurance-address-question",
-                                "title": "What is the address you would like to insure?",
+                                "title": "What are the addresses you would like to insure?",
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "insurance-address-answer",
+                                        "id": "insurance-address-answer1",
+                                        "type": "TextArea",
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "id": "insurance-address-answer2",
                                         "type": "TextArea",
                                         "mandatory": false
                                     }

@@ -57,9 +57,8 @@ class Block:
             variant,
             answer_store,
             schema,
-            location.list_item_id,
+            location,
             self.id,
-            location.list_name,
             self.return_to,
         ).serialize()
 

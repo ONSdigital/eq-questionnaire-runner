@@ -24,7 +24,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         }
 
         # When
-        question = Question(question_schema, self.answer_store, self.schema, None)
+        question = Question(
+            question_schema, self.answer_store, self.schema, None, "", ""
+        )
 
         # Then
         self.assertEqual(question.id, "question_id")
@@ -42,7 +44,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         }
 
         # When
-        question = Question(question_schema, self.answer_store, self.schema, None)
+        question = Question(
+            question_schema, self.answer_store, self.schema, None, "", ""
+        )
 
         # Then
         self.assertEqual(question.id, "question_id")
@@ -65,7 +69,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         }
 
         # When
-        question = Question(question_schema, self.answer_store, self.schema, None)
+        question = Question(
+            question_schema, self.answer_store, self.schema, None, "", ""
+        )
 
         # Then
         self.assertEqual(question.title, "Age")
@@ -137,7 +143,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
                 # When
                 question = Question(
-                    question_schema, self.answer_store, self.schema, None
+                    question_schema, self.answer_store, self.schema, None, "", ""
                 )
 
                 # Then
@@ -189,7 +195,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
                 # When
                 question = Question(
-                    question_schema, self.answer_store, self.schema, None
+                    question_schema, self.answer_store, self.schema, None, "", ""
                 )
 
                 # Then
@@ -213,7 +219,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         }
 
         # When
-        question = Question(question_schema, self.answer_store, self.schema, None)
+        question = Question(
+            question_schema, self.answer_store, self.schema, None, "", ""
+        )
 
         # Then
         self.assertEqual(len(question.answers), 2)
@@ -238,7 +246,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         }
 
         # When
-        question = Question(question_schema, self.answer_store, self.schema, None)
+        question = Question(
+            question_schema, self.answer_store, self.schema, None, "", ""
+        )
 
         # Then
         self.assertEqual(len(question.answers), 1)
@@ -285,7 +295,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         }
 
         # When
-        question = Question(question_schema, self.answer_store, self.schema, None)
+        question = Question(
+            question_schema, self.answer_store, self.schema, None, "", ""
+        )
 
         # Then
         self.assertEqual(len(question.answers), 2)
@@ -318,7 +330,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         }
 
         # When
-        question = Question(question_schema, self.answer_store, self.schema, None)
+        question = Question(
+            question_schema, self.answer_store, self.schema, None, "", ""
+        )
 
         # Then
         self.assertEqual(len(question.answers[0]["value"]), 2)
@@ -353,7 +367,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         }
 
         # When
-        question = Question(question_schema, self.answer_store, self.schema, None)
+        question = Question(
+            question_schema, self.answer_store, self.schema, None, "", ""
+        )
 
         # Then
         self.assertEqual(len(question.answers[0]["value"]), 1)
@@ -391,7 +407,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         }
 
         # When
-        question = Question(question_schema, self.answer_store, self.schema, None)
+        question = Question(
+            question_schema, self.answer_store, self.schema, None, "", ""
+        )
 
         # Then
         self.assertEqual(len(question.answers[0]["value"]), 2)
@@ -428,7 +446,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         }
 
         # When
-        question = Question(question_schema, self.answer_store, self.schema, None)
+        question = Question(
+            question_schema, self.answer_store, self.schema, None, "", ""
+        )
 
         # Then
         self.assertEqual(len(question.answers[0]["value"]), 2)
@@ -464,7 +484,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         }
 
         # When
-        question = Question(question_schema, self.answer_store, self.schema, None)
+        question = Question(
+            question_schema, self.answer_store, self.schema, None, "", ""
+        )
 
         # Then
         self.assertEqual(len(question.answers[0]["value"]), 2)
@@ -491,7 +513,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         }
 
         # When
-        question = Question(question_schema, self.answer_store, self.schema, None)
+        question = Question(
+            question_schema, self.answer_store, self.schema, None, "", ""
+        )
 
         # Then
         self.assertEqual(question.answers[0]["value"], None)
@@ -513,7 +537,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         }
 
         # When
-        question = Question(question_schema, self.answer_store, self.schema, None)
+        question = Question(
+            question_schema, self.answer_store, self.schema, None, "", ""
+        )
 
         # Then
         self.assertEqual(question.answers[0]["value"], None)
@@ -545,7 +571,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         }
 
         # When
-        question = Question(question_schema, self.answer_store, self.schema, None)
+        question = Question(
+            question_schema, self.answer_store, self.schema, None, "", ""
+        )
 
         # Then
         self.assertEqual(question.answers[0]["value"]["detail_answer_value"], "Test")
@@ -578,7 +606,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         }
 
         # When
-        question = Question(question_schema, self.answer_store, self.schema, None)
+        question = Question(
+            question_schema, self.answer_store, self.schema, None, "", ""
+        )
 
         # Then
         self.assertEqual(question.answers[0]["value"]["detail_answer_value"], 1)
@@ -600,7 +630,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         }
 
         # When
-        question = Question(question_schema, self.answer_store, self.schema, None)
+        question = Question(
+            question_schema, self.answer_store, self.schema, None, "", ""
+        )
 
         # Then
         self.assertEqual(question.answers[0]["value"], None)
@@ -627,7 +659,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         self.answer_store.add_or_update(Answer(answer_id="answer_1", value="Dark Side"))
 
         # When
-        question = Question(question_schema, self.answer_store, self.schema, None)
+        question = Question(
+            question_schema, self.answer_store, self.schema, None, "", ""
+        )
 
         # Then
         self.assertEqual(question.answers[0]["value"], "Dark Side label")

@@ -523,7 +523,6 @@ def test_calculated_summary_config():
         SummaryRow(
             block={
                 "id": "first-number-block",
-                "link": "/questionnaire/first-number-block/?return_to=final-summary",
                 "question": {
                     "id": "first-number-question",
                     "type": "General",
@@ -535,6 +534,7 @@ def test_calculated_summary_config():
                             "value": 1,
                             "type": "currency",
                             "currency": "GBP",
+                            "link": "/questionnaire/first-number-block/?return_to=final-summary&return_to_answer_id=first-number-answer#first-number-answer",
                         }
                     ],
                 },
@@ -550,6 +550,7 @@ def test_calculated_summary_config():
                         "value": 1,
                         "type": "currency",
                         "currency": "GBP",
+                        "link": "/questionnaire/first-number-block/?return_to=final-summary&return_to_answer_id=first-number-answer#first-number-answer",
                     }
                 ],
             },
@@ -562,7 +563,6 @@ def test_calculated_summary_config():
         SummaryRow(
             block={
                 "id": "second-number-block",
-                "link": "/questionnaire/second-number-block/?return_to=final-summary",
                 "question": {
                     "id": "second-number-question",
                     "type": "General",
@@ -574,6 +574,7 @@ def test_calculated_summary_config():
                             "value": 1,
                             "type": "currency",
                             "currency": "GBP",
+                            "link": "/questionnaire/second-number-block/?return_to=final-summary&return_to_answer_id=second-number-answer#second-number-answer",
                         }
                     ],
                 },
@@ -589,6 +590,7 @@ def test_calculated_summary_config():
                         "value": 1,
                         "type": "currency",
                         "currency": "GBP",
+                        "link": "/questionnaire/second-number-block/?return_to=final-summary&return_to_answer_id=second-number-answer#second-number-answer",
                     }
                 ],
             },
@@ -618,7 +620,6 @@ def test_calculated_summary_config():
             "blocks": [
                 {
                     "id": "first-number-block",
-                    "link": "/questionnaire/first-number-block/?return_to=final-summary",
                     "question": {
                         "id": "first-number-question",
                         "type": "General",
@@ -630,6 +631,7 @@ def test_calculated_summary_config():
                                 "value": 1,
                                 "type": "currency",
                                 "currency": "GBP",
+                                "link": "/questionnaire/first-number-block/?return_to=final-summary&return_to_answer_id=first-number-answer#first-number-answer",
                             }
                         ],
                     },
@@ -648,6 +650,7 @@ def test_calculated_summary_config():
                                 "value": 1,
                                 "type": "currency",
                                 "currency": "GBP",
+                                "link": "/questionnaire/second-number-block/?return_to=final-summary&return_to_answer_id=second-number-answer#second-number-answer",
                             }
                         ],
                     },

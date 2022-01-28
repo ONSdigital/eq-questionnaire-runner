@@ -9,12 +9,11 @@ class Question:
         question_schema,
         answer_store,
         schema,
-        list_item_id,
+        location,
         block_id,
-        list_name,
         return_to,
     ):
-        self.list_item_id = list_item_id
+        self.list_item_id = location.list_item_id if location else None
         self.id = question_schema["id"]
         self.type = question_schema["type"]
         self.schema = schema
@@ -24,17 +23,20 @@ class Question:
             question_schema.get("title") or question_schema["answers"][0]["label"]
         )
         self.number = question_schema.get("number", None)
-        print(schema)
-        print(question_schema)
-        self.block_id = block_id
-        self.list_name = list_name
-        self.return_to = return_to
-        self.answers = self._build_answers(answer_store, question_schema)
+        self.answers = self._build_answers(
+            answer_store,
+            question_schema,
+            block_id,
+            location.list_name if location else None,
+            return_to,
+        )
 
     def _get_answer(self, answer_store, answer_id):
         return answer_store.get_escaped_answer_value(answer_id, self.list_item_id)
 
-    def _build_answers(self, answer_store, question_schema):
+    def _build_answers(
+        self, answer_store, question_schema, block_id, list_name, return_to
+    ):
 
         if self.summary:
             return [
@@ -56,10 +58,10 @@ class Question:
             summary_answer = Answer(
                 answer_schema,
                 answer,
-                self.block_id,
-                self.list_name,
+                block_id,
+                list_name,
                 self.list_item_id,
-                self.return_to,
+                return_to,
             ).serialize()
             summary_answers.append(summary_answer)
 
