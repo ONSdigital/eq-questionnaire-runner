@@ -5,7 +5,7 @@ class Answer:
     def __init__(
         self,
         answer_schema,
-        answer,
+        answer_value,
         block_id,
         list_name,
         list_item_id,
@@ -13,7 +13,7 @@ class Answer:
     ):
         self.id = answer_schema["id"]
         self.label = answer_schema.get("label")
-        self.value = answer
+        self.value = answer_value
         self.type = answer_schema["type"].lower()
         self.unit = answer_schema.get("unit")
         self.unit_length = answer_schema.get("unit_length")

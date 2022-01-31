@@ -1,6 +1,8 @@
 from mock import MagicMock
 
-from app.data_models.answer_store import Answer, AnswerStore
+from app.data_models import Answer, ListStore
+from app.data_models.answer_store import AnswerStore
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.views.contexts.summary.question import Question
 from tests.app.app_context_test_case import AppContextTestCase
 
@@ -10,8 +12,56 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         super().setUp()
         self.answer_schema = MagicMock()
         self.answer_store = AnswerStore()
+        self.list_store = ListStore()
         self.schema = MagicMock()
         self.metadata = {}
+        self.response_metadata = {}
+
+    def get_rule_evaluator(self):
+        return RuleEvaluator(
+            schema=self.schema,
+            answer_store=self.answer_store,
+            list_store=self.list_store,
+            metadata=self.metadata,
+            response_metadata=self.response_metadata,
+            location=None,
+        )
+
+    @staticmethod
+    def dynamic_answer_options_schema():
+        return {
+            "dynamic_options": {
+                "values": {
+                    "map": [
+                        {"format-date": ["self", "yyyy-MM-dd"]},
+                        {
+                            "date-range": [
+                                {
+                                    "date": [
+                                        {
+                                            "source": "response_metadata",
+                                            "identifier": "started_at",
+                                        },
+                                        {"day_of_week": "MONDAY"},
+                                    ]
+                                },
+                                3,
+                            ]
+                        },
+                    ]
+                },
+                "transform": {"format-date": [{"date": ["self"]}, "EEEE d MMMM yyyy"]},
+            },
+        }
+
+    @staticmethod
+    def get_question_schema(answer_schema):
+        return {
+            "id": "question_id",
+            "title": "question_title",
+            "type": "General",
+            "answers": [answer_schema],
+        }
 
     def test_create_question(self):
         # Given
@@ -25,7 +75,13 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # When
         question = Question(
-            question_schema, self.answer_store, self.schema, None, "", ""
+            question_schema,
+            answer_store=self.answer_store,
+            schema=self.schema,
+            rule_evaluator=self.get_rule_evaluator(),
+            location=None,
+            block_id="",
+            return_to="",
         )
 
         # Then
@@ -45,7 +101,13 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # When
         question = Question(
-            question_schema, self.answer_store, self.schema, None, "", ""
+            question_schema,
+            answer_store=self.answer_store,
+            schema=self.schema,
+            rule_evaluator=self.get_rule_evaluator(),
+            location=None,
+            block_id="",
+            return_to="",
         )
 
         # Then
@@ -70,7 +132,13 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # When
         question = Question(
-            question_schema, self.answer_store, self.schema, None, "", ""
+            question_schema,
+            answer_store=self.answer_store,
+            schema=self.schema,
+            rule_evaluator=self.get_rule_evaluator(),
+            location=None,
+            block_id="",
+            return_to="",
         )
 
         # Then
@@ -143,7 +211,13 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
                 # When
                 question = Question(
-                    question_schema, self.answer_store, self.schema, None, "", ""
+                    question_schema,
+                    answer_store=self.answer_store,
+                    schema=self.schema,
+                    rule_evaluator=self.get_rule_evaluator(),
+                    location=None,
+                    block_id="",
+                    return_to="",
                 )
 
                 # Then
@@ -195,7 +269,13 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
                 # When
                 question = Question(
-                    question_schema, self.answer_store, self.schema, None, "", ""
+                    question_schema,
+                    answer_store=self.answer_store,
+                    schema=self.schema,
+                    rule_evaluator=self.get_rule_evaluator(),
+                    location=None,
+                    block_id="",
+                    return_to="",
                 )
 
                 # Then
@@ -220,7 +300,13 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # When
         question = Question(
-            question_schema, self.answer_store, self.schema, None, "", ""
+            question_schema,
+            answer_store=self.answer_store,
+            schema=self.schema,
+            rule_evaluator=self.get_rule_evaluator(),
+            location=None,
+            block_id="",
+            return_to="",
         )
 
         # Then
@@ -247,7 +333,13 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # When
         question = Question(
-            question_schema, self.answer_store, self.schema, None, "", ""
+            question_schema,
+            answer_store=self.answer_store,
+            schema=self.schema,
+            rule_evaluator=self.get_rule_evaluator(),
+            location=None,
+            block_id="",
+            return_to="",
         )
 
         # Then
@@ -296,7 +388,13 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # When
         question = Question(
-            question_schema, self.answer_store, self.schema, None, "", ""
+            question_schema,
+            answer_store=self.answer_store,
+            schema=self.schema,
+            rule_evaluator=self.get_rule_evaluator(),
+            location=None,
+            block_id="",
+            return_to="",
         )
 
         # Then
@@ -331,7 +429,13 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # When
         question = Question(
-            question_schema, self.answer_store, self.schema, None, "", ""
+            question_schema,
+            answer_store=self.answer_store,
+            schema=self.schema,
+            rule_evaluator=self.get_rule_evaluator(),
+            location=None,
+            block_id="",
+            return_to="",
         )
 
         # Then
@@ -368,7 +472,13 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # When
         question = Question(
-            question_schema, self.answer_store, self.schema, None, "", ""
+            question_schema,
+            answer_store=self.answer_store,
+            schema=self.schema,
+            rule_evaluator=self.get_rule_evaluator(),
+            location=None,
+            block_id="",
+            return_to="",
         )
 
         # Then
@@ -408,7 +518,13 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # When
         question = Question(
-            question_schema, self.answer_store, self.schema, None, "", ""
+            question_schema,
+            answer_store=self.answer_store,
+            schema=self.schema,
+            rule_evaluator=self.get_rule_evaluator(),
+            location=None,
+            block_id="",
+            return_to="",
         )
 
         # Then
@@ -447,7 +563,13 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # When
         question = Question(
-            question_schema, self.answer_store, self.schema, None, "", ""
+            question_schema,
+            answer_store=self.answer_store,
+            schema=self.schema,
+            rule_evaluator=self.get_rule_evaluator(),
+            location=None,
+            block_id="",
+            return_to="",
         )
 
         # Then
@@ -485,7 +607,13 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # When
         question = Question(
-            question_schema, self.answer_store, self.schema, None, "", ""
+            question_schema,
+            answer_store=self.answer_store,
+            schema=self.schema,
+            rule_evaluator=self.get_rule_evaluator(),
+            location=None,
+            block_id="",
+            return_to="",
         )
 
         # Then
@@ -514,7 +642,13 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # When
         question = Question(
-            question_schema, self.answer_store, self.schema, None, "", ""
+            question_schema,
+            answer_store=self.answer_store,
+            schema=self.schema,
+            rule_evaluator=self.get_rule_evaluator(),
+            location=None,
+            block_id="",
+            return_to="",
         )
 
         # Then
@@ -538,7 +672,13 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # When
         question = Question(
-            question_schema, self.answer_store, self.schema, None, "", ""
+            question_schema,
+            answer_store=self.answer_store,
+            schema=self.schema,
+            rule_evaluator=self.get_rule_evaluator(),
+            location=None,
+            block_id="",
+            return_to="",
         )
 
         # Then
@@ -572,7 +712,13 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # When
         question = Question(
-            question_schema, self.answer_store, self.schema, None, "", ""
+            question_schema,
+            answer_store=self.answer_store,
+            schema=self.schema,
+            rule_evaluator=self.get_rule_evaluator(),
+            location=None,
+            block_id="",
+            return_to="",
         )
 
         # Then
@@ -607,7 +753,13 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # When
         question = Question(
-            question_schema, self.answer_store, self.schema, None, "", ""
+            question_schema,
+            answer_store=self.answer_store,
+            schema=self.schema,
+            rule_evaluator=self.get_rule_evaluator(),
+            location=None,
+            block_id="",
+            return_to="",
         )
 
         # Then
@@ -631,7 +783,13 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # When
         question = Question(
-            question_schema, self.answer_store, self.schema, None, "", ""
+            question_schema,
+            answer_store=self.answer_store,
+            schema=self.schema,
+            rule_evaluator=self.get_rule_evaluator(),
+            location=None,
+            block_id="",
+            return_to="",
         )
 
         # Then
@@ -660,8 +818,119 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
         # When
         question = Question(
-            question_schema, self.answer_store, self.schema, None, "", ""
+            question_schema,
+            answer_store=self.answer_store,
+            schema=self.schema,
+            rule_evaluator=self.get_rule_evaluator(),
+            location=None,
+            block_id="",
+            return_to="",
         )
 
         # Then
         self.assertEqual(question.answers[0]["value"], "Dark Side label")
+
+    def test_dynamic_checkbox_answer_options(self):
+        # Given
+        answer_schema = {
+            "id": "dynamic-checkbox-answer",
+            "label": "Which side?",
+            "type": "Checkbox",
+            **self.dynamic_answer_options_schema(),
+        }
+        question_schema = self.get_question_schema(answer_schema)
+
+        self.answer_store = AnswerStore(
+            [
+                {
+                    "answer_id": "dynamic-checkbox-answer",
+                    "value": ["2020-12-29", "2020-12-30", "2020-12-31"],
+                }
+            ]
+        )
+        self.response_metadata = {"started_at": "2021-01-01T09:00:00.220038+00:00"}
+
+        # When
+        question = Question(
+            question_schema,
+            answer_store=self.answer_store,
+            schema=self.schema,
+            rule_evaluator=self.get_rule_evaluator(),
+            location=None,
+            block_id="",
+            return_to="",
+        )
+
+        # Then
+        self.assertEqual(
+            question.answers[0]["value"],
+            [
+                {
+                    "label": "Tuesday 29 December 2020",
+                    "detail_answer_value": None,
+                },
+                {"detail_answer_value": None, "label": "Wednesday 30 December 2020"},
+            ],
+        )
+
+    def test_dynamic_answer_options(self):
+        data_set = [
+            # answer_type, answer_store_value, expected_output
+            (
+                "Radio",
+                "2020-12-29",
+                {"detail_answer_value": None, "label": "Tuesday 29 December 2020"},
+            ),
+            (
+                "Checkbox",
+                ["2020-12-29", "2020-12-30"],
+                [
+                    {
+                        "label": "Tuesday 29 December 2020",
+                        "detail_answer_value": None,
+                    },
+                    {
+                        "detail_answer_value": None,
+                        "label": "Wednesday 30 December 2020",
+                    },
+                ],
+            ),
+            ("Dropdown", "2020-12-30", "Wednesday 30 December 2020"),
+        ]
+
+        for answer_type, answer_store_value, expected_output in data_set:
+            with self.subTest(
+                answer_type=answer_type,
+                answer_store_value=answer_store_value,
+                expected_output=expected_output,
+            ):
+                # Given
+                answer_id = (f"dynamic-{answer_type.lower()}-answer",)
+                answer_schema = {
+                    "id": answer_id,
+                    "label": "Some label",
+                    "type": answer_type,
+                    **self.dynamic_answer_options_schema(),
+                }
+                question_schema = self.get_question_schema(answer_schema)
+
+                self.answer_store = AnswerStore(
+                    [{"answer_id": answer_id, "value": answer_store_value}]
+                )
+                self.response_metadata = {
+                    "started_at": "2021-01-01T09:00:00.220038+00:00"
+                }
+
+                # When
+                question = Question(
+                    question_schema,
+                    answer_store=self.answer_store,
+                    schema=self.schema,
+                    rule_evaluator=self.get_rule_evaluator(),
+                    location=None,
+                    block_id="",
+                    return_to="",
+                )
+
+                # Then
+                self.assertEqual(question.answers[0]["value"], expected_output)
