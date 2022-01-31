@@ -404,7 +404,7 @@ class SummaryAction:
     def __init__(self, answer, answer_title, edit_link_text, edit_link_aria_label):
         self.text = edit_link_text
         self.ariaLabel = edit_link_aria_label + " " + answer_title
-        self.url = answer["link"] + "#" + answer["id"]
+        self.url = answer["link"]
 
         self.attributes = {
             "data-qa": answer["id"] + "-edit",

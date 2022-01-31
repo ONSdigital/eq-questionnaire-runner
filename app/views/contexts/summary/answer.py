@@ -40,4 +40,5 @@ class Answer:
             list_item_id=list_item_id,
             return_to=return_to,
             return_to_answer_id=self.id,
+            _anchor=self.id,
         )

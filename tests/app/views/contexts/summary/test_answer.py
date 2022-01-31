@@ -28,7 +28,7 @@ class TestAnswer(AppContextTestCase):
         self.assertEqual(answer.value, user_answer)
         self.assertEqual(
             answer.link,
-            "http://test.localdomain/questionnaire/house-type/?return_to=section-summary&return_to_answer_id=answer-id",
+            "http://test.localdomain/questionnaire/house-type/?return_to=section-summary&return_to_answer_id=answer-id#answer-id",
         )
 
     def test_date_answer_type(self):
