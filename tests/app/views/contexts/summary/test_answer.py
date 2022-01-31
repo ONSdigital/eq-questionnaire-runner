@@ -1,5 +1,4 @@
 from app.views.contexts.summary.answer import Answer
-
 from tests.app.app_context_test_case import AppContextTestCase
 
 
