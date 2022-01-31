@@ -86,12 +86,14 @@
                                     {
                                         "id": "insurance-address-answer1",
                                         "type": "TextArea",
-                                        "mandatory": false
+                                        "mandatory": false,
+                                        "label": "Insurance address answer 1"
                                     },
                                     {
                                         "id": "insurance-address-answer2",
                                         "type": "TextArea",
-                                        "mandatory": false
+                                        "mandatory": false,
+                                        "label": "Insurance address answer 2"
                                     }
                                 ]
                             }
