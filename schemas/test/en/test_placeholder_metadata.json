@@ -4,12 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Placeholder Test",
+    "title": "Test placeholder metadata",
     "theme": "default",
-    "description": "A questionnaire to test placeholders",
-    "navigation": {
-        "visible": true
-    },
+    "description": "A questionnaire to demo placeholder metadata",
     "metadata": [
         {
             "name": "user_id",
@@ -22,6 +19,11 @@
         {
             "name": "ru_name",
             "type": "string"
+        },
+        {
+            "name": "trad_as",
+            "type": "string",
+            "optional": true
         }
     ],
     "questionnaire_flow": {
@@ -34,31 +36,53 @@
     },
     "sections": [
         {
-            "id": "percent-input-section",
-            "title": "Gross Weekly Pay",
+            "id": "default-section",
             "groups": [
                 {
                     "blocks": [
                         {
                             "type": "Question",
-                            "id": "block",
+                            "id": "mandatory-radio",
                             "question": {
+                                "type": "General",
+                                "id": "mandatory-radio-question",
+                                "title": "What is the trade name of your business ?",
                                 "answers": [
                                     {
-                                        "description": "Enter the total gross weekly pay",
-                                        "id": "answer",
-                                        "label": "Enter a number",
-                                        "mandatory": false,
-                                        "type": "Number"
+                                        "type": "Radio",
+                                        "id": "mandatory-radio-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": {
+                                                    "text": "{ru_name}",
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "ru_name",
+                                                            "value": {
+                                                                "source": "metadata",
+                                                                "identifier": "ru_name"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "value": "{ru_name}"
+                                            },
+                                            {
+                                                "label": "Google LTD",
+                                                "value": "Google LTD"
+                                            },
+                                            {
+                                                "label": "Meta LTD",
+                                                "value": "Meta LTD"
+                                            }
+                                        ]
                                     }
-                                ],
-                                "id": "question",
-                                "title": "Title",
-                                "type": "General"
+                                ]
                             }
                         }
                     ],
-                    "id": "group"
+                    "id": "checkboxes"
                 }
             ]
         }
