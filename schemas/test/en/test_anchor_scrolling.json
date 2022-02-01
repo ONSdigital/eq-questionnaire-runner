@@ -4,8 +4,8 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "999",
-    "title": "Section Summary",
-    "description": "A questionnaire to test section summaries",
+    "title": "Anchor Scrolling",
+    "description": "A questionnaire to test anchor scrolling",
     "theme": "default",
     "navigation": {
         "visible": true
@@ -128,49 +128,6 @@
                                         ]
                                     }
                                 ]
-                            },
-                            "skip_conditions": [
-                                {
-                                    "when": [
-                                        {
-                                            "id": "insurance-type-answer",
-                                            "condition": "equals",
-                                            "value": "Both"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "address-listed",
-                    "title": "Listed Status",
-                    "blocks": [
-                        {
-                            "id": "listed",
-                            "type": "Question",
-                            "question": {
-                                "id": "listed-question",
-                                "title": "Does this address have Listed status?",
-                                "type": "General",
-                                "answers": [
-                                    {
-                                        "id": "listed-answer",
-                                        "type": "Radio",
-                                        "mandatory": false,
-                                        "options": [
-                                            {
-                                                "label": "Yes",
-                                                "value": "Yes"
-                                            },
-                                            {
-                                                "label": "No",
-                                                "value": "No"
-                                            }
-                                        ]
-                                    }
-                                ]
                             }
                         }
                     ]
@@ -228,59 +185,6 @@
                                         ]
                                     }
                                 ]
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "household-count-section",
-            "title": "Household member count",
-            "summary": {
-                "show_on_completion": true,
-                "title": {
-                    "text_plural": {
-                        "forms": {
-                            "one": "{number_of_people} person lives here",
-                            "other": "{number_of_people} people live here"
-                        },
-                        "count": {
-                            "source": "answers",
-                            "identifier": "number-of-people-answer"
-                        }
-                    },
-                    "placeholders": [
-                        {
-                            "placeholder": "number_of_people",
-                            "value": {
-                                "source": "answers",
-                                "identifier": "number-of-people-answer"
-                            }
-                        }
-                    ]
-                }
-            },
-            "groups": [
-                {
-                    "id": "number-of-people-group",
-                    "title": "Number of people",
-                    "blocks": [
-                        {
-                            "type": "Question",
-                            "id": "number-of-people",
-                            "question": {
-                                "answers": [
-                                    {
-                                        "id": "number-of-people-answer",
-                                        "label": "Number of people",
-                                        "mandatory": true,
-                                        "type": "Number"
-                                    }
-                                ],
-                                "id": "number-of-people-question",
-                                "title": "Title",
-                                "type": "General"
                             }
                         }
                     ]
