@@ -4,7 +4,7 @@ import SubmitPage from "../../../../generated_pages/sum_less_validation_against_
 
 describe("Feature: Sum of grouped answers validation (equal or less than) against total", () => {
   beforeEach(() => {
-    browser.openQuestionnaire("test_sum_less_validation_against_total.json");
+    browser.openQuestionnaire("test_sum_equal_or_less_validation_against_total.json");
   });
 
   describe("Given I start a grouped answer validation survey and enter 12 into the total", () => {
@@ -34,15 +34,15 @@ describe("Feature: Sum of grouped answers validation (equal or less than) agains
   });
 
   describe("Given I start a grouped answer validation survey and enter 12 into the total", () => {
-    it("When I continue and enter 3 in each breakdown field, Then I should see a validation error", () => {
+    it("When I continue and enter 4 in each breakdown field, Then I should see a validation error", () => {
       $(TotalAnswerPage.total()).setValue("12");
       $(TotalAnswerPage.submit()).click();
-      $(BreakdownAnswerPage.breakdown1()).setValue("3");
-      $(BreakdownAnswerPage.breakdown2()).setValue("3");
-      $(BreakdownAnswerPage.breakdown3()).setValue("3");
-      $(BreakdownAnswerPage.breakdown4()).setValue("3");
+      $(BreakdownAnswerPage.breakdown1()).setValue("4");
+      $(BreakdownAnswerPage.breakdown2()).setValue("4");
+      $(BreakdownAnswerPage.breakdown3()).setValue("4");
+      $(BreakdownAnswerPage.breakdown4()).setValue("4");
       $(BreakdownAnswerPage.submit()).click();
-      expect($(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to less than £12.00");
+      expect($(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to or are less than 12");
     });
   });
 
@@ -55,7 +55,7 @@ describe("Feature: Sum of grouped answers validation (equal or less than) agains
       $(BreakdownAnswerPage.breakdown3()).setValue("3");
       $(BreakdownAnswerPage.breakdown4()).setValue("3");
       $(BreakdownAnswerPage.submit()).click();
-      expect($(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to less than £5.00");
+      expect($(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to or are less than 5");
     });
   });
 });
