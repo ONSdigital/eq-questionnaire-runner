@@ -1,8 +1,8 @@
 class Answer:
-    def __init__(self, answer_schema, answer):
+    def __init__(self, answer_schema, answer_value):
         self.id = answer_schema["id"]
         self.label = answer_schema.get("label")
-        self.value = answer
+        self.value = answer_value
         self.type = answer_schema["type"].lower()
         self.unit = answer_schema.get("unit")
         self.unit_length = answer_schema.get("unit_length")

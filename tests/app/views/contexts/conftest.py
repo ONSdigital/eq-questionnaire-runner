@@ -189,6 +189,11 @@ def people_list_store():
 
 
 @pytest.fixture
+def response_metadata():
+    return {"started_at": "2021-01-01T09:00:00.220038+00:00"}
+
+
+@pytest.fixture
 def fake_session_data():
     return SessionData(
         tx_id="tx_id",

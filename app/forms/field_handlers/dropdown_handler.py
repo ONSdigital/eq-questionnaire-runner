@@ -1,27 +1,38 @@
+from typing import Sequence
+
 from flask_babel import lazy_gettext
 from wtforms import SelectField
 
-from app.forms.field_handlers.field_handler import FieldHandler
+from app.forms.field_handlers.select_handlers import (
+    Choice,
+    ChoiceWithDetailAnswer,
+    SelectHandlerBase,
+)
 
 
-class DropdownHandler(FieldHandler):
+class DropdownHandler(SelectHandlerBase):
     MANDATORY_MESSAGE_KEY = "MANDATORY_DROPDOWN"
     DEFAULT_PLACEHOLDER = lazy_gettext("Select an answer")
 
+    @property
+    def choices(self) -> Sequence[Choice]:
+        _choices: list[ChoiceWithDetailAnswer] = (
+            self._build_dynamic_choices() + self._build_static_choices()
+        )
+
+        return [
+            Choice("", self._get_placeholder_text()),
+            *(Choice(i.value, i.label) for i in _choices),
+        ]
+
     def _get_placeholder_text(self) -> str:
         return self.answer_schema.get("placeholder", self.DEFAULT_PLACEHOLDER)
-
-    def build_choices(self, options: list[dict[str, str]]) -> list[tuple[str, str]]:
-        choices = [("", self._get_placeholder_text())]
-        for option in options:
-            choices.append((option["value"], option["label"]))
-        return choices
 
     def get_field(self) -> SelectField:
         return SelectField(
             label=self.label,
             description=self.guidance,
-            choices=self.build_choices(self.answer_schema["options"]),
+            choices=self.choices,
             default="",
             validators=self.validators,
         )

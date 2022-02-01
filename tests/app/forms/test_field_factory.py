@@ -3,6 +3,7 @@ from app.data_models.list_store import ListStore
 from app.forms import error_messages
 from app.forms.field_handlers import get_field_handler
 from app.questionnaire import QuestionnaireSchema
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from tests.app.app_context_test_case import AppContextTestCase
 
@@ -46,10 +47,22 @@ class TestFieldFactory(AppContextTestCase):
             escape_answer_values=False,
         )
 
+        rule_evaluator = RuleEvaluator(
+            answer_store=AnswerStore(),
+            list_store=ListStore(),
+            metadata=metadata,
+            response_metadata=response_metadata,
+            schema=schema,
+            location=None,
+        )
+
         # Given
         invalid_field_type = "Football"
         # When / Then
         with self.assertRaises(KeyError):
             get_field_handler(
-                {"type": invalid_field_type}, value_source_resolver, error_messages
+                answer_schema={"type": invalid_field_type},
+                value_source_resolver=value_source_resolver,
+                rule_evaluator=rule_evaluator,
+                error_messages=error_messages,
             )

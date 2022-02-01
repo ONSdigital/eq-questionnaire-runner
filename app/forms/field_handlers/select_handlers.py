@@ -1,13 +1,58 @@
-from typing import Optional
+from collections import namedtuple
+from typing import Any, Optional, Sequence, Union
 
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import (
     MultipleSelectFieldWithDetailAnswer,
     SelectFieldWithDetailAnswer,
 )
+from app.questionnaire.dynamic_answer_options import DynamicAnswerOptions
+
+Choice = namedtuple("Choice", "value label")
+ChoiceWithDetailAnswer = namedtuple(
+    "ChoiceWithDetailAnswer", "value label detail_answer_id"
+)
+
+ChoiceType = Union[Choice, ChoiceWithDetailAnswer]
 
 
-class SelectHandler(FieldHandler):
+class SelectHandlerBase(FieldHandler):
+    @property
+    def choices(self) -> Sequence[ChoiceType]:
+        return self._build_dynamic_choices() + self._build_static_choices()
+
+    @property
+    def dynamic_options_schema(self) -> dict[str, Any]:
+        return self.answer_schema.get("dynamic_options", {})
+
+    def _build_dynamic_choices(self) -> list[ChoiceWithDetailAnswer]:
+        if not self.dynamic_options_schema:
+            return []
+
+        dynamic_options = DynamicAnswerOptions(
+            dynamic_options_schema=self.dynamic_options_schema,
+            rule_evaluator=self.rule_evaluator,
+        )
+
+        return [
+            ChoiceWithDetailAnswer(option["value"], option["label"], None)
+            for option in dynamic_options.evaluate()
+        ]
+
+    def _build_static_choices(self) -> list[ChoiceWithDetailAnswer]:
+        choices = []
+
+        for option in self.answer_schema.get("options", []):
+            detail_answer_id = option.get("detail_answer", {}).get("id")
+            choices.append(
+                ChoiceWithDetailAnswer(
+                    option["value"], option["label"], detail_answer_id
+                )
+            )
+        return choices
+
+
+class SelectHandler(SelectHandlerBase):
     MANDATORY_MESSAGE_KEY = "MANDATORY_RADIO"
 
     @staticmethod
@@ -19,18 +64,6 @@ class SelectHandler(FieldHandler):
         """
         return str(value) if value is not None else None
 
-    @staticmethod
-    def build_choices_with_detail_answer_ids(
-        options: list[dict],
-    ) -> list[tuple[str, str, str]]:
-        choices = []
-        for option in options:
-            detail_answer_id = (
-                option["detail_answer"]["id"] if option.get("detail_answer") else None
-            )
-            choices.append((option["value"], option["label"], detail_answer_id))
-        return choices
-
     # We use a custom coerce function to avoid a defect where Python NoneType
     # is coerced to the string 'None' which clashes with legitimate Radio field
     # values of 'None'; i.e. there is no way to differentiate between the user
@@ -41,9 +74,7 @@ class SelectHandler(FieldHandler):
         return SelectFieldWithDetailAnswer(
             label=self.label,
             description=self.guidance,
-            choices=self.build_choices_with_detail_answer_ids(
-                self.answer_schema["options"]
-            ),
+            choices=self.choices,
             validators=self.validators,
             coerce=self.coerce_str_unless_none,
         )
@@ -56,8 +87,6 @@ class SelectMultipleHandler(SelectHandler):
         return MultipleSelectFieldWithDetailAnswer(
             label=self.label,
             description=self.guidance,
-            choices=self.build_choices_with_detail_answer_ids(
-                self.answer_schema["options"]
-            ),
+            choices=self.choices,
             validators=self.validators,
         )
