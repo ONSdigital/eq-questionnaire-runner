@@ -1,11 +1,8 @@
 import InsuranceAddressPage from "../../generated_pages/anchor_scrolling/insurance-address.page.js";
 import InsuranceTypePage from "../../generated_pages/anchor_scrolling/insurance-type.page.js";
-import ListedPage from "../../generated_pages/anchor_scrolling/listed.page.js";
 import PropertyDetailsSummaryPage from "../../generated_pages/anchor_scrolling/property-details-section-summary.page.js";
 import HouseType from "../../generated_pages/anchor_scrolling/house-type.page.js";
-import HouseholdCountSectionSummaryPage from "../../generated_pages/anchor_scrolling/household-count-section-summary.page.js";
 import HouseholdDetailsSummaryPage from "../../generated_pages/anchor_scrolling/house-details-section-summary.page.js";
-import NumberOfPeoplePage from "../../generated_pages/anchor_scrolling/number-of-people.page.js";
 import SubmitPage from "../../generated_pages/anchor_scrolling/submit.page.js";
 
 describe("Summary Anchor Scrolling", () => {
