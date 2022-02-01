@@ -1,198 +1,90 @@
-import unittest
-from unittest.mock import Mock
-
+import pytest
 from wtforms.validators import StopValidation
 
 from app.forms import error_messages
-from app.forms.validators import DateCheck
 
 
-class TestDateCheckValidator(unittest.TestCase):
-    def test_date_type_validator_empty_string(self):
-        validator = DateCheck()
-
-        mock_form = Mock()
-        mock_form.data = ""
-
-        mock_field = Mock()
-
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
-
-        self.assertEqual(error_messages["INVALID_DATE"], str(ite.exception))
-
-    def test_date_type_validator_missing_day(self):
-        validator = DateCheck()
-
-        mock_form = Mock()
-        mock_form.data = "2016-12-"
-        mock_form.year.data = "2016"
-
-        mock_field = Mock()
-
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
-
-        self.assertEqual(error_messages["INVALID_DATE"], str(ite.exception))
-
-    def test_date_type_validator_missing_month(self):
-        validator = DateCheck()
-
-        mock_form = Mock()
-        mock_form.data = "2016--03"
-        mock_form.year.data = "2016"
-
-        mock_field = Mock()
-
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
-
-        self.assertEqual(error_messages["INVALID_DATE"], str(ite.exception))
-
-    def test_date_type_validator_missing_year(self):
-        validator = DateCheck()
-
-        mock_form = Mock()
-        mock_form.data = "-12-03"
-
-        mock_field = Mock()
-
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
-
-        self.assertEqual(error_messages["INVALID_DATE"], str(ite.exception))
-
-    def test_date_type_validator_invalid_day(self):
-        validator = DateCheck()
-
-        mock_form = Mock()
-        mock_form.data = "2016-12-40"
-        mock_form.year.data = "2016"
-
-        mock_field = Mock()
-
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
-
-        self.assertEqual(error_messages["INVALID_DATE"], str(ite.exception))
-
-    def test_date_type_validator_invalid_month(self):
-        validator = DateCheck()
-
-        mock_form = Mock()
-        mock_form.data = "2016-13-20"
-        mock_form.year.data = "2016"
-
-        mock_field = Mock()
-
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
-
-        self.assertEqual(error_messages["INVALID_DATE"], str(ite.exception))
-
-    def test_date_type_validator_invalid_year(self):
-        validator = DateCheck()
-
-        mock_form = Mock()
-        mock_form.data = "20000-12-20"
-        mock_form.year.data = "20000"
-
-        mock_field = Mock()
-
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
-
-        self.assertEqual(error_messages["INVALID_DATE"], str(ite.exception))
-
-    def test_date_type_validator_invalid_year_digits(self):
-        validator = DateCheck()
-
-        mock_form = Mock()
-        mock_form.data = "2-12-20"
-        mock_form.year.data = "2"
-
-        mock_field = Mock()
-
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
-
-        self.assertEqual(error_messages["INVALID_DATE"], str(ite.exception))
-
-    def test_date_type_validator_invalid_month_digits(self):
-        validator = DateCheck()
-
-        mock_form = Mock()
-        mock_form.data = "2020--2-20"
-
-        mock_field = Mock()
-
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
-
-        self.assertEqual(error_messages["INVALID_DATE"], str(ite.exception))
-
-    def test_date_type_validator_invalid_day_digits(self):
-        validator = DateCheck()
-
-        mock_form = Mock()
-        mock_form.data = "2020-12--2"
-        mock_form.year.data = "2020"
-
-        mock_field = Mock()
-
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
-
-        self.assertEqual(error_messages["INVALID_DATE"], str(ite.exception))
-
-    def test_date_type_validator_invalid_leap_year(self):
-        validator = DateCheck()
-
-        # 2015 was not a leap year
-        mock_form = Mock()
-        mock_form.data = "2015-02-29"
-        mock_form.year.data = "2015"
-
-        mock_field = Mock()
-
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
-
-        self.assertEqual(error_messages["INVALID_DATE"], str(ite.exception))
-
-    @staticmethod
-    def test_date_type_validator_valid_leap_year():
-        validator = DateCheck()
-
-        # 2016 WAS a leap year
-        mock_form = Mock()
-        mock_form.data = "2016-02-29"
-        mock_form.year.data = "2016"
-
-        mock_field = Mock()
-        validator(mock_form, mock_field)
-
-    @staticmethod
-    def test_date_type_validator_valid_dates():
-        validator = DateCheck()
-
-        mock_form = Mock()
-        mock_form.data = "2016-01-29"
-        mock_form.year.data = "2016"
-
-        mock_field = Mock()
-        validator(mock_form, mock_field)
-
-        mock_form = Mock()
-        mock_form.data = "2016-12-01"
-        mock_form.year.data = "2016"
-
-        mock_field = Mock()
-        validator(mock_form, mock_field)
-
-        mock_form = Mock()
-        mock_form.data = "2016-03-03"
-        mock_form.year.data = "2016"
-
-        mock_field = Mock()
-        validator(mock_form, mock_field)
+@pytest.mark.parametrize(
+    "date",
+    [
+        "",
+        "2016-12-",
+        "2016--03",
+        "-12-03",
+        "2016-12-40",
+        "2016-13-20",
+        "20000-12-20",
+        "2015-02-29",  # 2015 was not a leap year
+    ],
+)
+def test_invalid_day_month_year(date_check, mock_form, mock_field, date):
+    mock_form.data = date
+
+    assert_invalid_date_error(date_check, mock_form, mock_field)
+
+
+@pytest.mark.parametrize(
+    "date",
+    [
+        "2016-",
+        "-12",
+        "2016-13",
+        "20000-12",
+    ],
+)
+def test_invalid_month_year(date_check, mock_form, mock_field, date):
+    mock_form.data = date
+    del mock_form.day
+
+    assert_invalid_date_error(date_check, mock_form, mock_field)
+
+
+def test_invalid_year(date_check, mock_form, mock_field):
+    del mock_form.day
+    del mock_form.month
+    mock_form.data = "20000"
+
+    assert_invalid_date_error(date_check, mock_form, mock_field)
+
+
+@pytest.mark.parametrize(
+    "date",
+    [
+        "2016-01-29",
+        "2016-02-29",  # 2016 was a leap year
+    ],
+)
+def test_valid_day_month_year(date_check, mock_form, mock_field, date):
+    mock_form.data = date
+
+    try:
+        date_check(mock_form, mock_field)
+    except StopValidation:
+        pytest.fail("Valid day month year raised StopValidation")
+
+
+def test_valid_month_year(date_check, mock_form, mock_field):
+    del mock_form.day
+    mock_form.data = "2016-12"
+
+    try:
+        date_check(mock_form, mock_field)
+    except StopValidation:
+        pytest.fail("Valid month year raised StopValidation")
+
+
+def test_valid_year(date_check, mock_form, mock_field):
+    del mock_form.day
+    del mock_form.month
+    mock_form.data = "2016"
+
+    try:
+        date_check(mock_form, mock_field)
+    except StopValidation:
+        pytest.fail("Valid year raised StopValidation")
+
+
+def assert_invalid_date_error(date_check, mock_form, mock_field):
+    with pytest.raises(StopValidation) as ite:
+        date_check(mock_form, mock_field)
+    assert error_messages["INVALID_DATE"] == str(ite.value)

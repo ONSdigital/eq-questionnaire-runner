@@ -1,193 +1,167 @@
-import unittest
-from unittest.mock import Mock
-
+import pytest
 from wtforms.validators import ValidationError
 
 from app.forms import error_messages
-from app.forms.validators import DateRangeCheck
 
 
-class TestDateRangeValidator(unittest.TestCase):
-    """
-    With each of the date range tests, on init the validator is passed
-    the 'to' range data dictionary, whilst the validator receives the from
-    form data as an object during the validation call
-    """
+@pytest.mark.parametrize(
+    "date_from, date_to",
+    [
+        ("2016-01-03", "2016-01-03"),
+        ("2018-01-20", "2016-01-20"),
+        ("2018-06", "2018-06"),
+        ("2018-07", "2018-06"),
+    ],
+)
+def test_invalid_date_range(
+    get_date_range_check,
+    mock_form,
+    mock_period_from,
+    mock_period_to,
+    date_from,
+    date_to,
+):
+    mock_period_from.data = date_from
+    mock_period_to.data = date_to
 
-    def test_date_range_matching_dates(self):
-        validator = DateRangeCheck()
+    date_range_check = get_date_range_check()
 
-        period_from = Mock()
-        period_from.data = "2016-01-03"
+    with pytest.raises(ValidationError) as context:
+        date_range_check(mock_form, mock_period_from, mock_period_to)
+    assert error_messages["INVALID_DATE_RANGE"] == str(context.value)
 
-        period_to = Mock()
-        period_to.data = "2016-01-03"
-        mock_form = Mock()
 
-        with self.assertRaises(ValidationError) as context:
-            validator(mock_form, period_from, period_to)
+def test_date_range_with_too_small_period(
+    get_date_range_check, mock_form, mock_period_from, mock_period_to
+):
+    mock_period_from.data = "2016-02-01"
+    mock_period_to.data = "2016-02-12"
+    period_min = {"days": 20}
 
-        self.assertEqual(error_messages["INVALID_DATE_RANGE"], str(context.exception))
+    date_range_check = get_date_range_check(period_min=period_min)
 
-    def test_date_range_to_before_from(self):
-        validator = DateRangeCheck()
+    with pytest.raises(ValidationError) as context:
+        date_range_check(mock_form, mock_period_from, mock_period_to)
 
-        period_from = Mock()
-        period_from.data = "2018-01-20"
+    assert "Enter a reporting period greater than or equal to 20 days" == str(
+        context.value
+    )
 
-        period_to = Mock()
-        period_to.data = "2016-01-20"
 
-        mock_form = Mock()
+def test_date_range_with_too_large_period(
+    get_date_range_check, mock_form, mock_period_from, mock_period_to
+):
+    mock_period_from.data = "2016-02-11"
+    mock_period_to.data = "2016-03-14"
+    period_max = {"months": 1}
 
-        with self.assertRaises(ValidationError) as context:
-            validator(mock_form, period_from, period_to)
+    date_range_check = get_date_range_check(period_max=period_max)
 
-        self.assertEqual(error_messages["INVALID_DATE_RANGE"], str(context.exception))
+    with pytest.raises(ValidationError) as context:
+        date_range_check(mock_form, mock_period_from, mock_period_to)
 
-    @staticmethod
-    def test_date_range_and_period_valid():
-        period_min = {"days": 50}
-        period_max = {"years": 1, "months": 1, "days": 5}
-        validator = DateRangeCheck(period_min=period_min, period_max=period_max)
+    assert "Enter a reporting period less than or equal to 1 month" == str(
+        context.value
+    )
 
-        period_from = Mock()
-        period_from.data = "2016-01-01"
 
-        period_to = Mock()
-        period_to.data = "2017-01-05"
+def test_bespoke_message_playback(
+    get_date_range_check, mock_form, mock_period_from, mock_period_to
+):
+    mock_period_from.data = "2016-02-11"
+    mock_period_to.data = "2018-03-19"
+    message = {"DATE_PERIOD_TOO_LARGE": "Test %(max)s"}
+    period_max = {"years": 2, "months": 1, "days": 3}
 
-        mock_form = Mock()
-        validator(mock_form, period_from, period_to)
+    date_range_check = get_date_range_check(messages=message, period_max=period_max)
 
-    @staticmethod
-    def test_valid_month_year_date_range():
-        validator = DateRangeCheck()
+    with pytest.raises(ValidationError) as context:
+        date_range_check(mock_form, mock_period_from, mock_period_to)
 
-        period_from = Mock()
-        period_from.data = "2016-09"
+    assert "Test 2 years, 1 month, 3 days" == str(context.value)
 
-        period_to = Mock()
-        period_to.data = "2018-01"
 
-        mock_form = Mock()
-        validator(mock_form, period_from, period_to)
+def test_message_combinations(
+    get_date_range_check, mock_form, mock_period_from, mock_period_to
+):
+    mock_period_from.data = "2016-02-11"
+    mock_period_to.data = "2018-03-19"
+    period_max = {"years": 2, "months": 1, "days": 3}
 
-    def test_invalid_month_year_date_range(self):
-        validator = DateRangeCheck()
+    date_range_check = get_date_range_check(period_max=period_max)
 
-        period_from = Mock()
-        period_from.data = "2018-07"
+    with pytest.raises(ValidationError) as context:
+        date_range_check(mock_form, mock_period_from, mock_period_to)
 
-        period_to = Mock()
-        period_to.data = "2018-06"
+    assert (
+        "Enter a reporting period less than or equal to 2 years, 1 month, 3 days"
+        == str(context.value)
+    )
 
-        mock_form = Mock()
+    period_max = {"months": 2, "days": 1}
 
-        with self.assertRaises(ValidationError) as context:
-            validator(mock_form, period_from, period_to)
+    date_range_check = get_date_range_check(period_max=period_max)
 
-        self.assertEqual(error_messages["INVALID_DATE_RANGE"], str(context.exception))
+    with pytest.raises(ValidationError) as context:
+        date_range_check(mock_form, mock_period_from, mock_period_to)
 
-    def test_date_range_with_too_small_period(self):
-        period_min = {"days": 20}
-        validator = DateRangeCheck(period_min=period_min)
+    assert "Enter a reporting period less than or equal to 2 months, 1 day" == str(
+        context.value
+    )
 
-        period_from = Mock()
-        period_from.data = "2016-02-01"
+    period_min = {"years": 3, "days": 2}
 
-        period_to = Mock()
-        period_to.data = "2016-02-12"
+    date_range_check = get_date_range_check(period_min=period_min)
 
-        mock_form = Mock()
+    with pytest.raises(ValidationError) as context:
+        date_range_check(mock_form, mock_period_from, mock_period_to)
 
-        with self.assertRaises(ValidationError) as context:
-            validator(mock_form, period_from, period_to)
+    assert "Enter a reporting period greater than or equal to 3 years, 2 days" == str(
+        context.value
+    )
 
-        self.assertEqual(
-            "Enter a reporting period greater than or equal to 20 days",
-            str(context.exception),
-        )
 
-    def test_date_range_with_too_large_period(self):
-        period_max = {"months": 1}
-        validator = DateRangeCheck(period_max=period_max)
+def test_valid_day_month_year_date_range(
+    get_date_range_check, mock_form, mock_period_from, mock_period_to
+):
+    mock_period_from.data = "2016-09-01"
+    mock_period_to.data = "2018-01-01"
 
-        period_from = Mock()
-        period_from.data = "2016-02-11"
+    date_range_check = get_date_range_check()
 
-        period_to = Mock()
-        period_to.data = "2016-03-14"
+    try:
+        date_range_check(mock_form, mock_period_from, mock_period_to)
+    except ValidationError:
+        pytest.fail("Valid day month year date range raised ValidationError")
 
-        mock_form = Mock()
 
-        with self.assertRaises(ValidationError) as context:
-            validator(mock_form, period_from, period_to)
+def test_valid_month_year_date_range(
+    get_date_range_check, mock_form, mock_period_from, mock_period_to
+):
+    mock_period_from.data = "2016-09"
+    mock_period_to.data = "2018-01"
 
-        self.assertEqual(
-            "Enter a reporting period less than or equal to 1 month",
-            str(context.exception),
-        )
+    date_range_check = get_date_range_check()
 
-    def test_bespoke_message_playback(self):
-        message = {"DATE_PERIOD_TOO_LARGE": "Test %(max)s"}
-        period_max = {"years": 2, "months": 1, "days": 3}
-        validator = DateRangeCheck(messages=message, period_max=period_max)
+    try:
+        date_range_check(mock_form, mock_period_from, mock_period_to)
+    except ValidationError:
+        pytest.fail("Valid month year date range raised ValidationError")
 
-        period_from = Mock()
-        period_from.data = "2016-02-11"
 
-        period_to = Mock()
-        period_to.data = "2018-03-19"
+def test_date_range_and_period_valid(
+    get_date_range_check, mock_form, mock_period_from, mock_period_to
+):
+    mock_period_from.data = "2016-01-01"
+    mock_period_to.data = "2017-01-05"
+    period_min = {"days": 50}
+    period_max = {"years": 1, "months": 1, "days": 5}
 
-        mock_form = Mock()
+    date_range_check = get_date_range_check(
+        period_min=period_min, period_max=period_max
+    )
 
-        with self.assertRaises(ValidationError) as context:
-            validator(mock_form, period_from, period_to)
-
-        self.assertEqual("Test 2 years, 1 month, 3 days", str(context.exception))
-
-    def test_message_combinations(self):
-        period_from = Mock()
-        period_from.data = "2016-02-11"
-
-        period_to = Mock()
-        period_to.data = "2018-03-19"
-
-        mock_form = Mock()
-
-        # Max years, month, days
-        period_max = {"years": 2, "months": 1, "days": 3}
-        validator = DateRangeCheck(period_max=period_max)
-
-        with self.assertRaises(ValidationError) as context:
-            validator(mock_form, period_from, period_to)
-
-        self.assertEqual(
-            "Enter a reporting period less than or equal to 2 years, 1 month, 3 days",
-            str(context.exception),
-        )
-
-        # Max month, day
-        period_max = {"months": 2, "days": 1}
-        validator = DateRangeCheck(period_max=period_max)
-
-        with self.assertRaises(ValidationError) as context:
-            validator(mock_form, period_from, period_to)
-
-        self.assertEqual(
-            "Enter a reporting period less than or equal to 2 months, 1 day",
-            str(context.exception),
-        )
-
-        # Max years, days
-        period_min = {"years": 3, "days": 2}
-        validator = DateRangeCheck(period_min=period_min)
-
-        with self.assertRaises(ValidationError) as context:
-            validator(mock_form, period_from, period_to)
-
-        self.assertEqual(
-            "Enter a reporting period greater than or equal to 3 years, 2 days",
-            str(context.exception),
-        )
+    try:
+        date_range_check(mock_form, mock_period_from, mock_period_to)
+    except ValidationError:
+        pytest.fail("Valid date range and period raised ValidationError")
