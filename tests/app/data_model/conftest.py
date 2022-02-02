@@ -2,7 +2,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from app.data_models.answer_store import Answer, AnswerStore
+from app.data_models.answer_store import Answer
 from app.data_models.progress_store import CompletionStatus
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
@@ -10,14 +10,7 @@ from app.storage import storage_encryption
 
 
 @pytest.fixture
-def empty_answer_store():
-    answer_store = AnswerStore()
-    return answer_store
-
-
-@pytest.fixture
-def basic_answer_store():
-    answer_store = AnswerStore()
+def basic_answer_store(answer_store):
 
     answer_store.add_or_update(
         Answer(answer_id="answer1", value=10, list_item_id="abc123")
@@ -47,8 +40,7 @@ def basic_answer_store():
 
 
 @pytest.fixture
-def relationship_answer_store():
-    answer_store = AnswerStore()
+def relationship_answer_store(answer_store):
 
     answer_store.add_or_update(
         Answer(
@@ -77,8 +69,7 @@ def relationship_answer_store():
 
 
 @pytest.fixture
-def store_to_serialize():
-    answer_store = AnswerStore()
+def store_to_serialize(answer_store):
 
     answer_store.add_or_update(
         Answer(answer_id="answer1", value=10, list_item_id="abc123")

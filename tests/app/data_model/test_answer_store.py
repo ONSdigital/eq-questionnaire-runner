@@ -5,17 +5,17 @@ from app.data_models.answer_store import Answer, AnswerStore
 from app.utilities.json import json_dumps, json_loads
 
 
-def test_adding_new_answer(empty_answer_store):
+def test_adding_new_answer(answer_store):
     answer = Answer(answer_id="4", value=25)
 
-    empty_answer_store.add_or_update(answer)
+    answer_store.add_or_update(answer)
 
-    assert len(empty_answer_store) == 1
+    assert len(answer_store) == 1
 
 
-def test_raises_error_on_invalid_answer(empty_answer_store):
+def test_raises_error_on_invalid_answer(answer_store):
     with pytest.raises(TypeError) as e:
-        empty_answer_store.add_or_update({"answer_id": "4", "value": 25})
+        answer_store.add_or_update({"answer_id": "4", "value": 25})
 
     assert "Method only supports Answer argument type" in str(e.value)
 

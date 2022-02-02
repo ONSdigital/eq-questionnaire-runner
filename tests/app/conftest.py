@@ -3,6 +3,7 @@ from datetime import datetime, timedelta, timezone
 import fakeredis
 import pytest
 
+from app.data_models.answer_store import AnswerStore
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.setup import create_app
@@ -97,3 +98,8 @@ def mock_current_user(mocker):
 @pytest.fixture
 def mock_redis_put(mocker):
     return mocker.patch("app.storage.redis.Redis.put")
+
+
+@pytest.fixture
+def answer_store():
+    return AnswerStore()
