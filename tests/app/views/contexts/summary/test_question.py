@@ -80,7 +80,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             schema=self.schema,
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
-            block_id="",
+            block_id="house-type",
             return_to="",
         )
 
@@ -106,7 +106,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             schema=self.schema,
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
-            block_id="",
+            block_id="house-type",
             return_to="",
         )
 
@@ -137,7 +137,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             schema=self.schema,
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
-            block_id="",
+            block_id="house-type",
             return_to="",
         )
 
@@ -216,7 +216,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                     schema=self.schema,
                     rule_evaluator=self.get_rule_evaluator(),
                     location=None,
-                    block_id="",
+                    block_id="house-type",
                     return_to="",
                 )
 
@@ -274,7 +274,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                     schema=self.schema,
                     rule_evaluator=self.get_rule_evaluator(),
                     location=None,
-                    block_id="",
+                    block_id="house-type",
                     return_to="",
                 )
 
@@ -305,7 +305,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             schema=self.schema,
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
-            block_id="",
+            block_id="house-type",
             return_to="",
         )
 
@@ -338,7 +338,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             schema=self.schema,
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
-            block_id="",
+            block_id="house-type",
             return_to="",
         )
 
@@ -393,7 +393,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             schema=self.schema,
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
-            block_id="",
+            block_id="house-type",
             return_to="",
         )
 
@@ -434,7 +434,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             schema=self.schema,
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
-            block_id="",
+            block_id="house-type",
             return_to="",
         )
 
@@ -477,7 +477,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             schema=self.schema,
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
-            block_id="",
+            block_id="house-type",
             return_to="",
         )
 
@@ -523,7 +523,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             schema=self.schema,
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
-            block_id="",
+            block_id="house-type",
             return_to="",
         )
 
@@ -568,7 +568,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             schema=self.schema,
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
-            block_id="",
+            block_id="house-type",
             return_to="",
         )
 
@@ -612,7 +612,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             schema=self.schema,
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
-            block_id="",
+            block_id="house-type",
             return_to="",
         )
 
@@ -647,7 +647,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             schema=self.schema,
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
-            block_id="",
+            block_id="house-type",
             return_to="",
         )
 
@@ -677,7 +677,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             schema=self.schema,
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
-            block_id="",
+            block_id="house-type",
             return_to="",
         )
 
@@ -717,7 +717,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             schema=self.schema,
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
-            block_id="",
+            block_id="house-type",
             return_to="",
         )
 
@@ -758,7 +758,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             schema=self.schema,
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
-            block_id="",
+            block_id="house-type",
             return_to="",
         )
 
@@ -788,7 +788,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             schema=self.schema,
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
-            block_id="",
+            block_id="house-type",
             return_to="",
         )
 
@@ -823,7 +823,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             schema=self.schema,
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
-            block_id="",
+            block_id="house-type",
             return_to="",
         )
 
@@ -857,7 +857,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             schema=self.schema,
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
-            block_id="",
+            block_id="house-type",
             return_to="",
         )
 
@@ -928,7 +928,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                     schema=self.schema,
                     rule_evaluator=self.get_rule_evaluator(),
                     location=None,
-                    block_id="",
+                    block_id="house-type",
                     return_to="",
                 )
 

@@ -31,18 +31,18 @@ class Question:
         self.rule_evaluator = rule_evaluator
 
         self.answers = self._build_answers(
-            answer_store,
-            question_schema,
-            block_id,
-            location.list_name if location else None,
-            return_to,
+            answer_store=answer_store,
+            question_schema=question_schema,
+            block_id=block_id,
+            list_name=location.list_name if location else None,
+            return_to=return_to,
         )
 
     def _get_answer(self, answer_store, answer_id):
         return answer_store.get_escaped_answer_value(answer_id, self.list_item_id)
 
     def _build_answers(
-        self, answer_store, question_schema, block_id, list_name, return_to
+        self, *, answer_store, question_schema, block_id, list_name, return_to
     ):
 
         if self.summary:
@@ -75,12 +75,12 @@ class Question:
             )
 
             summary_answer = Answer(
-                answer_schema,
-                answer,
-                block_id,
-                list_name,
-                self.list_item_id,
-                return_to,
+                answer_schema=answer_schema,
+                answer_value=answer,
+                block_id=block_id,
+                list_name=list_name,
+                list_item_id=self.list_item_id,
+                return_to=return_to,
             ).serialize()
             summary_answers.append(summary_answer)
 

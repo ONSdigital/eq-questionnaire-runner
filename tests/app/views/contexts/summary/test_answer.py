@@ -4,36 +4,23 @@ from tests.app.app_context_test_case import AppContextTestCase
 
 class TestAnswer(AppContextTestCase):
     def test_create_answer(self):
-        # Given
         answer_schema = {"id": "answer-id", "label": "Answer Label", "type": "date"}
         user_answer = "An answer"
-
-        # When
         answer = Answer(
-            answer_schema,
-            user_answer,
-            "house-type",
-            None,
-            None,
-            "section-summary",
+            answer_schema=answer_schema,
+            answer_value=user_answer,
+            block_id="house-type",
+            list_name="address-list",
+            list_item_id="address-item-id",
+            return_to="section-summary",
         )
 
-        # Then
         self.assertEqual(answer.id, "answer-id")
         self.assertEqual(answer.label, "Answer Label")
-        self.assertEqual(answer.value, user_answer)
+        self.assertEqual(answer.value, "An answer")
+        self.assertEqual(answer.type, "date")
+
         self.assertEqual(
             answer.link,
-            "http://test.localdomain/questionnaire/house-type/?return_to=section-summary&return_to_answer_id=answer-id#answer-id",
+            "http://test.localdomain/questionnaire/address-list/address-item-id/house-type/?return_to=section-summary&return_to_answer_id=answer-id#answer-id",
         )
-
-    def test_date_answer_type(self):
-        # Given
-        answer_schema = {"id": "answer-id", "label": "", "type": "date"}
-        user_answer = None
-
-        # When
-        answer = Answer(answer_schema, user_answer, "1", "2", "3", "section-summary")
-
-        # Then
-        self.assertEqual(answer.type, "date")

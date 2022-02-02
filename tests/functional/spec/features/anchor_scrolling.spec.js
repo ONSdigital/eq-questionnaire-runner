@@ -24,7 +24,7 @@ describe("Summary Anchor Scrolling", () => {
       $(InsuranceAddressPage.submit()).click();
       $(AddressDurationPage.submit()).click();
       expect($(PropertyDetailsSummaryPage.insuranceAddressAnswer2Edit()).getAttribute("href")).to.contain(
-        "/questionnaire/insurance-address/?return_to=section-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"
+        "?return_to=section-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"
       );
     });
 
@@ -51,7 +51,7 @@ describe("Summary Anchor Scrolling", () => {
       $(HouseholdDetailsSummaryPage.submit()).click();
       $(SubmitPage.summaryShowAllButton()).click();
       expect($(SubmitPage.insuranceAddressAnswer2Edit()).getAttribute("href")).to.contain(
-        "/questionnaire/insurance-address/?return_to=final-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"
+        "?return_to=final-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"
       );
     });
 
@@ -63,9 +63,7 @@ describe("Summary Anchor Scrolling", () => {
       $(HouseholdDetailsSummaryPage.submit()).click();
       $(SubmitPage.summaryShowAllButton()).click();
       $(SubmitPage.insuranceAddressAnswer2Edit()).click();
-      expect(browser.getUrl()).to.contain(
-        "/questionnaire/insurance-address/?return_to=final-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"
-      );
+      expect(browser.getUrl()).to.contain("?return_to=final-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2");
     });
   });
 });
