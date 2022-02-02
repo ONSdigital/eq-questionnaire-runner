@@ -6,7 +6,14 @@ from app.data_models.progress_store import ProgressStore
 from app.utilities.json import json_dumps, json_loads
 
 
-def test_questionnaire_store_json_loads(questionnaire_store, basic_input):
+@pytest.mark.parametrize(
+    "extra_basic_input",
+    ({}, {"NOT_A_LEGAL_TOP_LEVEL_KEY": "woop_woop_thats_the_sound_of_the_police"}),
+)
+def test_questionnaire_store_json_loads(
+    questionnaire_store, basic_input, extra_basic_input
+):
+    basic_input.update(extra_basic_input)
     # Given
     questionnaire_store.input_data = json_dumps(basic_input)
     # When
@@ -15,6 +22,8 @@ def test_questionnaire_store_json_loads(questionnaire_store, basic_input):
     assert store.metadata.copy() == basic_input["METADATA"]
     assert store.response_metadata == basic_input["RESPONSE_METADATA"]
     assert store.answer_store == AnswerStore(basic_input["ANSWERS"])
+    assert not hasattr(store, "NOT_A_LEGAL_TOP_LEVEL_KEY")
+    assert not hasattr(store, "not_a_legal_top_level_key")
 
     expected_completed_block_ids = basic_input["PROGRESS"][0]["block_ids"][0]
 
@@ -22,31 +31,6 @@ def test_questionnaire_store_json_loads(questionnaire_store, basic_input):
         len(store.progress_store.get_completed_block_ids("a-test-section", "abc123"))
         == 1
     )
-    assert (
-        store.progress_store.get_completed_block_ids("a-test-section", "abc123")[0]
-        == expected_completed_block_ids
-    )
-
-
-def test_questionnaire_store_ignores_extra_json(questionnaire_store, basic_input):
-    # Given
-    basic_input["NOT_A_LEGAL_TOP_LEVEL_KEY"] = "woop_woop_thats_the_sound_of_the_police"
-    questionnaire_store.input_data = json_dumps(basic_input)
-    # When
-    store = QuestionnaireStore(questionnaire_store.storage)
-    # Then
-    assert store.metadata.copy() == basic_input["METADATA"]
-    assert store.response_metadata == basic_input["RESPONSE_METADATA"]
-
-    assert store.answer_store == AnswerStore(basic_input["ANSWERS"])
-
-    expected_completed_block_ids = basic_input["PROGRESS"][0]["block_ids"][0]
-
-    assert (
-        len(store.progress_store.get_completed_block_ids("a-test-section", "abc123"))
-        == 1
-    )
-
     assert (
         store.progress_store.get_completed_block_ids("a-test-section", "abc123")[0]
         == expected_completed_block_ids
@@ -75,7 +59,7 @@ def test_questionnaire_store_updates_storage(questionnaire_store, basic_input):
     store.progress_store = ProgressStore(basic_input["PROGRESS"])
 
     # When
-    store.save()  # See setUp - populates self.output_data
+    store.save()
 
     # Then
     assert basic_input == json_loads(questionnaire_store.output_data)
@@ -108,7 +92,7 @@ def test_questionnaire_store_deletes(questionnaire_store, basic_input):
     store.progress_store = ProgressStore(basic_input["PROGRESS"])
 
     # When
-    store.delete()  # See setUp - populates self.output_data
+    store.delete()
 
     # Then
     assert "a-test-section" not in store.progress_store

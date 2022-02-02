@@ -4,7 +4,6 @@ from jwcrypto import jwe
 from jwcrypto.common import base64url_encode
 
 from app.data_models.app_models import EQSession
-from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.utilities.json import json_dumps
 
@@ -81,20 +80,9 @@ def test_should_not_delete_when_no_session(app, app_session_store):
         assert context.app.eq["storage"].client.delete_call_count == 0
 
 
-def test_session_store_ignores_new_values_in_session_data(app, app_session_store):
-    session_data = SessionData(
-        tx_id="tx_id",
-        schema_name="some_schema_name",
-        period_str="period_str",
-        language_code=None,
-        launch_language_code=None,
-        survey_url=None,
-        ru_name="ru_name",
-        ru_ref="ru_ref",
-        response_id="response_id",
-        case_id="case_id",
-    )
-
+def test_session_store_ignores_new_values_in_session_data(
+    app, app_session_store, session_data
+):
     session_data.additional_value = "some cool new value you do not know about yet"
 
     with app.test_request_context():
@@ -111,21 +99,8 @@ def test_session_store_ignores_new_values_in_session_data(app, app_session_store
 
 
 def test_session_store_ignores_multiple_new_values_in_session_data(
-    app, app_session_store
+    app, app_session_store, session_data
 ):
-    session_data = SessionData(
-        tx_id="tx_id",
-        schema_name="some_schema_name",
-        period_str="period_str",
-        language_code=None,
-        launch_language_code=None,
-        survey_url=None,
-        ru_name="ru_name",
-        ru_ref="ru_ref",
-        response_id="response_id",
-        case_id="case_id",
-    )
-
     session_data.additional_value = "some cool new value you do not know about yet"
     session_data.second_additional_value = "some other not so cool value"
 
@@ -143,20 +118,9 @@ def test_session_store_ignores_multiple_new_values_in_session_data(
         assert hasattr(session_store.session_data, "second_additional_value") is False
 
 
-def test_session_store_stores_trading_as_value_if_present(app, app_session_store):
-    session_data = SessionData(
-        tx_id="tx_id",
-        schema_name="some_schema_name",
-        period_str="period_str",
-        language_code=None,
-        launch_language_code=None,
-        survey_url=None,
-        ru_name="ru_name",
-        ru_ref="ru_ref",
-        response_id="response_id",
-        trad_as="trading_as",
-        case_id="case_id",
-    )
+def test_session_store_stores_trading_as_value_if_present(
+    app, app_session_store, session_data
+):
     with app.test_request_context():
         app_session_store.session_store.create(
             eq_session_id="eq_session_id",
@@ -171,20 +135,9 @@ def test_session_store_stores_trading_as_value_if_present(app, app_session_store
 
 
 def test_session_store_stores_none_for_trading_as_if_not_present(
-    app, app_session_store
+    app, app_session_store, session_data
 ):
-    session_data = SessionData(
-        tx_id="tx_id",
-        schema_name="some_schema_name",
-        period_str="period_str",
-        language_code=None,
-        launch_language_code=None,
-        survey_url=None,
-        ru_name="ru_name",
-        ru_ref="ru_ref",
-        response_id="response_id",
-        case_id="case_id",
-    )
+    session_data.trad_as = None
     with app.test_request_context():
         app_session_store.session_store.create(
             eq_session_id="eq_session_id",

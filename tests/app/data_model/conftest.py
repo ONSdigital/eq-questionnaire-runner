@@ -130,47 +130,24 @@ def questionnaire_store(mocker):
 
 
 @pytest.fixture
-def app_session_store(app, mocker):
+def app_session_store(app, mocker, session_data):
     app.permanent_session_lifetime = timedelta(seconds=1)
     store = mocker.MagicMock()
     store.session_store = SessionStore("user_ik", "pepper")
     store.expires_at = datetime.now(tz=timezone.utc) + timedelta(seconds=3)
-    store.session_data = SessionData(
-        tx_id="tx_id",
-        schema_name="some_schema_name",
-        period_str="period_str",
-        language_code=None,
-        launch_language_code=None,
-        survey_url=None,
-        ru_name="ru_name",
-        ru_ref="ru_ref",
-        response_id="response_id",
-        case_id="case_id",
-    )
+    store.session_data = session_data
     return store
 
 
 @pytest.fixture
-def app_session_store_encoded(mocker):
+def app_session_store_encoded(mocker, session_data):
     store = mocker.MagicMock()
     store.user_id = "user_id"
     store.user_ik = "user_ik"
     store.pepper = "pepper"
     store.session_id = "session_id"
     store.expires_at = datetime.now(tz=timezone.utc) + timedelta(seconds=3)
-    store.session_data = SessionData(
-        tx_id="tx_id",
-        schema_name="some_schema_name",
-        period_str="period_str",
-        language_code=None,
-        launch_language_code=None,
-        survey_url=None,
-        ru_name="ru_name",
-        response_id="response_id",
-        ru_ref="ru_ref",
-        trad_as="trading_as_name",
-        case_id="case_id",
-    )
+    store.session_data = session_data
 
     # pylint: disable=protected-access
     store.key = storage_encryption.StorageEncryption._generate_key(

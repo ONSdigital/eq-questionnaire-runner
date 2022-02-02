@@ -74,13 +74,14 @@ def session_data():
     return SessionData(
         tx_id="tx_id",
         schema_name="some_schema_name",
-        response_id="response_id",
         period_str="period_str",
         language_code=None,
         launch_language_code=None,
         survey_url=None,
         ru_name="ru_name",
         ru_ref="ru_ref",
+        response_id="response_id",
+        trad_as="trading_as",
         case_id="case_id",
     )
 
