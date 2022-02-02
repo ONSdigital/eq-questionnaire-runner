@@ -1,101 +1,64 @@
-import unittest
-from unittest.mock import Mock
-
+import pytest
 from wtforms.validators import StopValidation
 
 from app.forms import error_messages
-from app.forms.validators import DateRequired
 
 
-class TestDateRequiredValidator(unittest.TestCase):
-    def test_date_required_empty(self):
-        validator = DateRequired()
+def test_day_month_year_required_empty(date_required, mock_form, mock_field):
+    mock_form.day.data = ""
+    mock_form.month.data = ""
+    mock_form.year.data = ""
 
-        mock_form = Mock()
-        mock_form.day.data = ""
-        mock_form.month.data = ""
-        mock_form.year.data = ""
+    assert_mandatory_date_error(date_required, mock_field, mock_form)
 
-        mock_field = Mock()
 
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
+def test_month_year_required_empty(date_required, mock_form, mock_field):
+    del mock_form.day
+    mock_form.month.data = ""
+    mock_form.year.data = ""
 
-        self.assertEqual(error_messages["MANDATORY_DATE"], str(ite.exception))
+    assert_mandatory_date_error(date_required, mock_field, mock_form)
 
-    def test_date_month_year_required_empty(self):
-        validator = DateRequired()
 
-        class TestMonthYearSpec:
-            month = None
-            year = None
+def test_year_required_empty(date_required, mock_form, mock_field):
+    del mock_form.day
+    del mock_form.month
+    mock_form.year.data = ""
 
-        mock_form = Mock(spec=TestMonthYearSpec)
-        mock_form.month.data = ""
-        mock_form.year.data = ""
-        mock_field = Mock()
+    assert_mandatory_date_error(date_required, mock_field, mock_form)
 
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
 
-        self.assertEqual(error_messages["MANDATORY_DATE"], str(ite.exception))
+def test_valid_day_month_year(date_required, mock_form, mock_field):
+    mock_form.day.data = "01"
+    mock_form.month.data = "01"
+    mock_form.year.data = "2015"
 
-    def test_date_year_required_empty(self):
-        validator = DateRequired()
+    try:
+        date_required(mock_form, mock_field)
+    except StopValidation:
+        pytest.fail("Valid day month year raised StopValidation")
 
-        class TestYearSpec:
-            year = None
 
-        mock_form = Mock(spec=TestYearSpec)
-        mock_form.year.data = ""
-        mock_field = Mock()
+def test_valid_month_year(date_required, mock_form, mock_field):
+    mock_form.month.data = "01"
+    mock_form.year.data = "2017"
 
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
+    try:
+        date_required(mock_form, mock_field)
+    except StopValidation:
+        pytest.fail("Valid month year raised StopValidation")
 
-        self.assertEqual(error_messages["MANDATORY_DATE"], str(ite.exception))
 
-    def test_valid_date(self):
+def test_valid_year(date_required, mock_form, mock_field):
+    mock_form.year.data = "2017"
 
-        validator = DateRequired()
+    try:
+        date_required(mock_form, mock_field)
+    except StopValidation:
+        pytest.fail("Valid year raised StopValidation")
 
-        mock_form = Mock()
-        mock_form.day.data = "01"
-        mock_form.month.data = "01"
-        mock_form.year.data = "2015"
 
-        mock_field = Mock()
-
-        try:
-            validator(mock_form, mock_field)
-        except StopValidation:
-            self.fail("Valid date raised StopValidation")
-
-    def test_valid_month_year(self):
-
-        validator = DateRequired()
-
-        mock_form = Mock()
-        mock_form.month.data = "01"
-        mock_form.year.data = "2017"
-
-        mock_field = Mock()
-
-        try:
-            validator(mock_form, mock_field)
-        except StopValidation:
-            self.fail("Valid date raised StopValidation")
-
-    def test_valid__year(self):
-
-        validator = DateRequired()
-
-        mock_form = Mock()
-        mock_form.year.data = "2017"
-
-        mock_field = Mock()
-
-        try:
-            validator(mock_form, mock_field)
-        except StopValidation:
-            self.fail("Valid date raised StopValidation")
+def assert_mandatory_date_error(date_required, mock_field, mock_form):
+    with pytest.raises(StopValidation) as ite:
+        date_required(mock_form, mock_field)
+    assert error_messages["MANDATORY_DATE"] == str(ite.value)
