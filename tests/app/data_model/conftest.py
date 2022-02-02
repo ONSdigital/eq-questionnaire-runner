@@ -4,7 +4,6 @@ import pytest
 
 from app.data_models.answer_store import Answer
 from app.data_models.progress_store import CompletionStatus
-from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.storage import storage_encryption
 
