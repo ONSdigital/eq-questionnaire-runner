@@ -652,7 +652,7 @@ class TestRouterPreviousLocation(RouterTestCase):
         )
 
         self.assertIn(
-            "/questionnaire/sections/property-details-section/#insurance-address-answer",
+            "/questionnaire/sections/property-details-section/",
             previous_location_url,
         )
 

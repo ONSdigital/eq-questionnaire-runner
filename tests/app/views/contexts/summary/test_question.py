@@ -81,7 +81,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
             block_id="house-type",
-            return_to="",
+            return_to=None,
         )
 
         # Then
@@ -107,7 +107,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
             block_id="house-type",
-            return_to="",
+            return_to=None,
         )
 
         # Then
@@ -138,7 +138,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
             block_id="house-type",
-            return_to="",
+            return_to=None,
         )
 
         # Then
@@ -217,7 +217,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                     rule_evaluator=self.get_rule_evaluator(),
                     location=None,
                     block_id="house-type",
-                    return_to="",
+                    return_to=None,
                 )
 
                 # Then
@@ -275,7 +275,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                     rule_evaluator=self.get_rule_evaluator(),
                     location=None,
                     block_id="house-type",
-                    return_to="",
+                    return_to=None,
                 )
 
                 # Then
@@ -306,7 +306,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
             block_id="house-type",
-            return_to="",
+            return_to=None,
         )
 
         # Then
@@ -339,7 +339,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
             block_id="house-type",
-            return_to="",
+            return_to=None,
         )
 
         # Then
@@ -394,7 +394,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
             block_id="house-type",
-            return_to="",
+            return_to=None,
         )
 
         # Then
@@ -435,7 +435,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
             block_id="house-type",
-            return_to="",
+            return_to=None,
         )
 
         # Then
@@ -478,7 +478,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
             block_id="house-type",
-            return_to="",
+            return_to=None,
         )
 
         # Then
@@ -524,7 +524,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
             block_id="house-type",
-            return_to="",
+            return_to=None,
         )
 
         # Then
@@ -569,7 +569,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
             block_id="house-type",
-            return_to="",
+            return_to=None,
         )
 
         # Then
@@ -613,7 +613,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
             block_id="house-type",
-            return_to="",
+            return_to=None,
         )
 
         # Then
@@ -648,7 +648,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
             block_id="house-type",
-            return_to="",
+            return_to=None,
         )
 
         # Then
@@ -678,7 +678,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
             block_id="house-type",
-            return_to="",
+            return_to=None,
         )
 
         # Then
@@ -718,7 +718,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
             block_id="house-type",
-            return_to="",
+            return_to=None,
         )
 
         # Then
@@ -759,7 +759,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
             block_id="house-type",
-            return_to="",
+            return_to=None,
         )
 
         # Then
@@ -789,7 +789,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
             block_id="house-type",
-            return_to="",
+            return_to=None,
         )
 
         # Then
@@ -824,7 +824,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
             block_id="house-type",
-            return_to="",
+            return_to=None,
         )
 
         # Then
@@ -858,7 +858,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             rule_evaluator=self.get_rule_evaluator(),
             location=None,
             block_id="house-type",
-            return_to="",
+            return_to=None,
         )
 
         # Then
@@ -929,7 +929,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                     rule_evaluator=self.get_rule_evaluator(),
                     location=None,
                     block_id="house-type",
-                    return_to="",
+                    return_to=None,
                 )
 
                 # Then
