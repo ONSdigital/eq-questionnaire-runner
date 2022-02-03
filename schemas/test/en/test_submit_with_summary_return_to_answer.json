@@ -42,6 +42,44 @@
             },
             "groups": [
                 {
+                    "id": "name-details",
+                    "title": "Name Details",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "name",
+                            "question": {
+                                "id": "name-question",
+                                "title": "Name",
+                                "type": "General",
+                                "summary": {
+                                    "concatenation_type": "Space"
+                                },
+                                "answers": [
+                                    {
+                                        "id": "first-name",
+                                        "label": "First name",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    },
+                                    {
+                                        "id": "middle-name",
+                                        "label": "Middle name",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    },
+                                    {
+                                        "id": "last-name",
+                                        "label": "Last name",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
                     "id": "property-details",
                     "title": "Property Details",
                     "blocks": [

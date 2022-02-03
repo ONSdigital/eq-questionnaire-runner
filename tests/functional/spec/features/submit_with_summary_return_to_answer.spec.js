@@ -5,11 +5,13 @@ import HouseType from "../../generated_pages/submit_with_summary_return_to_answe
 import HouseholdDetailsSummaryPage from "../../generated_pages/submit_with_summary_return_to_answer/house-details-section-summary.page.js";
 import SubmitPage from "../../generated_pages/submit_with_summary_return_to_answer/submit.page.js";
 import AddressDurationPage from "../../generated_pages/submit_with_summary_return_to_answer/address-duration.page.js";
+import NamePage from "../../generated_pages/submit_with_summary_return_to_answer/name.page.js";
 
 describe("Summary Anchor Scrolling", () => {
   describe("Given I start a Test Section Summary survey", () => {
     beforeEach(() => {
-      browser.openQuestionnaire("submit_with_summary_return_to_answer.json");
+      browser.openQuestionnaire("test_submit_with_summary_return_to_answer.json");
+      $(NamePage.submit()).click();
       $(InsuranceTypePage.both()).click();
       $(InsuranceTypePage.submit()).click();
     });
@@ -24,7 +26,15 @@ describe("Summary Anchor Scrolling", () => {
       $(InsuranceAddressPage.submit()).click();
       $(AddressDurationPage.submit()).click();
       expect($(PropertyDetailsSummaryPage.insuranceAddressAnswer2Edit()).getAttribute("href")).to.contain(
-        "?return_to=section-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"
+        "insurance-address/?return_to=section-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"
+      );
+    });
+
+    it("When I reach the section summary page, Then the Change link url for a concatenated answer should contain return_to, return_to_answer_id query params", () => {
+      $(InsuranceAddressPage.submit()).click();
+      $(AddressDurationPage.submit()).click();
+      expect($(PropertyDetailsSummaryPage.summaryRowState("name-question-concatenated-answer-edit")).getAttribute("href")).to.contain(
+        "name/?return_to=section-summary&return_to_answer_id=name-question-concatenated-answer"
       );
     });
 
@@ -43,7 +53,7 @@ describe("Summary Anchor Scrolling", () => {
       expect(browser.getUrl()).to.contain("property-details-section/#insurance-address-answer2");
     });
 
-    it("When I edit an answer from the section summary page and click the Submit button, Then the browser url should contain an anchor referencing the answer id of the answer I am changing", () => {
+    it("When I edit an answer from the section summary page and click the Submit button, Then I am take to the summary page and the browser url should contain an anchor referencing the answer id of the answer I am changing", () => {
       $(InsuranceAddressPage.submit()).click();
       $(AddressDurationPage.submit()).click();
       $(PropertyDetailsSummaryPage.insuranceAddressAnswer2Edit()).click();
@@ -51,7 +61,7 @@ describe("Summary Anchor Scrolling", () => {
       expect(browser.getUrl()).to.contain("property-details-section/#insurance-address-answer2");
     });
 
-    it("When I edit an answer from the final summary page, Then the Change link url should contain return_to, return_to_answer_id query params", () => {
+    it("When I am on the final summary page, Then the Change link url should contain return_to, return_to_answer_id query params", () => {
       $(InsuranceAddressPage.submit()).click();
       $(AddressDurationPage.submit()).click();
       $(PropertyDetailsSummaryPage.submit()).click();
