@@ -54,6 +54,7 @@ class Question:
                 list_item_id=self.list_item_id,
                 return_to=return_to,
                 return_to_answer_id=answer_id,
+                _anchor=answer_id,
             )
 
             return [
