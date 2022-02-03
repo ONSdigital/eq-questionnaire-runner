@@ -9,13 +9,11 @@ describe("Theme Northern Ireland", () => {
 
     it("When I navigate to the radio page, Then I should see Northern Ireland theme content", () => {
       expect(browser.getUrl()).to.contain(RadioPage.pageName);
-      expect($("#ni-finance-logo-alt").isExisting()).to.equal(true);
       expect($("#ni-finance-logo-alt").getHTML()).to.contain("Northern Ireland Department of Finance logo");
     });
     it("When I navigate to the submit page, Then I should see Northern Ireland theme content", () => {
       $(SubmitPage.submit()).click();
       expect(browser.getUrl()).to.contain(SubmitPage.pageName);
-      expect($("#ni-finance-logo-alt").isExisting()).to.equal(true);
       expect($("#ni-finance-logo-alt").getHTML()).to.contain("Northern Ireland Department of Finance logo");
     });
   });
