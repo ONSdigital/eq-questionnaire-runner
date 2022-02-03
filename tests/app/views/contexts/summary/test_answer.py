@@ -11,8 +11,8 @@ class TestAnswer(AppContextTestCase):
             answer_schema=answer_schema,
             answer_value=user_answer,
             block_id="house-type",
-            list_name="address-list",
-            list_item_id="address-item-id",
+            list_name="answer-list",
+            list_item_id="answer-item-id",
             return_to="section-summary",
         )
 
@@ -23,7 +23,7 @@ class TestAnswer(AppContextTestCase):
 
         self.assertEqual(
             answer.link,
-            "http://test.localdomain/questionnaire/address-list/address-item-id/house-type/?return_to=section-summary&return_to_answer_id=answer-id#answer-id",
+            "http://test.localdomain/questionnaire/answer-list/answer-item-id/house-type/?return_to=section-summary&return_to_answer_id=answer-id#answer-id",
         )
 
     def test_date_answer_type(self):
@@ -36,8 +36,8 @@ class TestAnswer(AppContextTestCase):
             answer_schema=answer_schema,
             answer_value=user_answer,
             block_id="house-type",
-            list_name="address-list",
-            list_item_id="address-item-id",
+            list_name="answer-list",
+            list_item_id="answer-item-id",
             return_to="section-summary",
         )
 
