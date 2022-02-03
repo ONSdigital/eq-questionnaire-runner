@@ -8,7 +8,7 @@ from sdc.crypto.encrypter import encrypt
 from werkzeug.datastructures import MultiDict
 
 from app.data_models import QuestionnaireStore
-from app.data_models.session_data import SessionData
+from app.data_models.session_data import METADATA_MAPPING_TYPE, SessionData
 from app.data_models.session_store import SessionStore
 from app.forms.questionnaire_form import QuestionnaireForm, generate_form
 from app.keys import KEY_PURPOSE_SUBMISSION
@@ -48,8 +48,9 @@ class Feedback:
     ):
         if not self.is_enabled(schema):
             raise FeedbackNotEnabled
-
-        if self.is_limit_reached(session_store.session_data):
+        if isinstance(
+            session_store.session_data, SessionData
+        ) and self.is_limit_reached(session_store.session_data):
             raise FeedbackLimitReached
 
         self._questionnaire_store = questionnaire_store
@@ -85,38 +86,42 @@ class Feedback:
 
     def handle_post(self) -> None:
         session_data = self._session_store.session_data
-        session_data.feedback_count += 1
+        if isinstance(session_data, SessionData):
+            session_data.feedback_count += 1
 
-        feedback_metadata = FeedbackMetadata(
-            session_data.case_id,
-            session_data.tx_id,
-        )
+            if isinstance(session_data.case_id, str) and isinstance(
+                session_data.tx_id, str
+            ):
+                feedback_metadata = FeedbackMetadata(
+                    session_data.case_id,
+                    session_data.tx_id,
+                )
 
-        # pylint: disable=no-member
-        # wtforms Form parents are not discoverable in the 2.3.3 implementation
-        feedback_message = FeedbackPayload(
-            metadata=self._questionnaire_store.metadata,
-            response_metadata=self._questionnaire_store.response_metadata,
-            schema=self._schema,
-            case_id=session_data.case_id,
-            submission_language_code=session_data.language_code,
-            feedback_count=session_data.feedback_count,
-            feedback_text=self.form.data.get("feedback-text"),
-            feedback_type=self.form.data.get("feedback-type"),
-        )
-        message = feedback_message()
-        metadata = feedback_metadata()
-        message.update(metadata)
-        encrypted_message = encrypt(
-            message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION  # type: ignore
-        )
+            # pylint: disable=no-member
+            # wtforms Form parents are not discoverable in the 2.3.3 implementation
+            feedback_message = FeedbackPayload(
+                metadata=self._questionnaire_store.metadata,
+                response_metadata=self._questionnaire_store.response_metadata,
+                schema=self._schema,
+                case_id=session_data.case_id,
+                submission_language_code=session_data.language_code,
+                feedback_count=session_data.feedback_count,
+                feedback_text=self.form.data.get("feedback-text"),
+                feedback_type=self.form.data.get("feedback-type"),
+            )
+            message = feedback_message()
+            metadata = feedback_metadata()
+            message.update(metadata)
+            encrypted_message = encrypt(
+                message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION  # type: ignore
+            )
 
-        if not current_app.eq["feedback_submitter"].upload(  # type: ignore
-            metadata, encrypted_message
-        ):
-            raise FeedbackUploadFailed()
+            if not current_app.eq["feedback_submitter"].upload(  # type: ignore
+                metadata, encrypted_message
+            ):
+                raise FeedbackUploadFailed()
 
-        self._session_store.save()
+            self._session_store.save()
 
     @cached_property
     def question_schema(self) -> Mapping[str, Union[str, list]]:
@@ -254,8 +259,8 @@ class FeedbackPayload:
         metadata: Mapping[str, Union[str, int, list]],
         response_metadata: Mapping[str, Union[str, int, list]],
         schema: QuestionnaireSchema,
-        case_id: str,
-        submission_language_code: Optional[str],
+        case_id: METADATA_MAPPING_TYPE,
+        submission_language_code: METADATA_MAPPING_TYPE,
         feedback_count: int,
         feedback_text: str,
         feedback_type: str,

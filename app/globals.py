@@ -70,7 +70,10 @@ def get_session_timeout_in_seconds(schema: QuestionnaireSchema) -> int:
 
 
 def create_session_store(
-    eq_session_id: str, user_id: str, user_ik: str, session_data: SessionData
+    eq_session_id: str,
+    user_id: str,
+    user_ik: str,
+    session_data: Union[dict, SessionData],
 ) -> None:
     secret_store = current_app.eq["secret_store"]  # type: ignore
     pepper = secret_store.get_secret_by_name(

@@ -1,4 +1,6 @@
+from datetime import datetime
 from types import MappingProxyType
+from typing import Any, Mapping, Union
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
@@ -10,18 +12,21 @@ from app.utilities.json import json_dumps, json_loads
 class QuestionnaireStore:
     LATEST_VERSION = 1
 
-    def __init__(self, storage, version=None):
+    def __init__(self, storage: Any, version: int = None):
+        # Storage type hint needs to be Any due to circular import
         self._storage = storage
         if version is None:
             version = self.get_latest_version_number()
         self.version = version
-        self._metadata = {}
+        self._metadata: Any = {}
         # self.metadata is a read-only view over self._metadata
-        self.metadata = MappingProxyType(self._metadata)
-        self.response_metadata = {}
+        self.metadata: Any = MappingProxyType(self._metadata)
+        self.response_metadata: dict = {}
         self.list_store = ListStore()
         self.answer_store = AnswerStore()
         self.progress_store = ProgressStore()
+        self.submitted_at: Union[datetime, None]
+        self.collection_exercise_sid: str
 
         (
             raw_data,
@@ -35,10 +40,10 @@ class QuestionnaireStore:
         if version is not None:
             self.version = version
 
-    def get_latest_version_number(self):
+    def get_latest_version_number(self) -> int:
         return self.LATEST_VERSION
 
-    def set_metadata(self, to_set):
+    def set_metadata(self, to_set: Mapping[str, Union[str, int, list]]) -> Any:
         """
         Set metadata. This should only be used where absolutely necessary.
         Metadata should normally be read only.
@@ -48,7 +53,7 @@ class QuestionnaireStore:
 
         return self
 
-    def _deserialize(self, data):
+    def _deserialize(self, data: str) -> None:
         json_data = json_loads(data)
         self.progress_store = ProgressStore(json_data.get("PROGRESS"))
         self.set_metadata(json_data.get("METADATA", {}))
@@ -56,7 +61,7 @@ class QuestionnaireStore:
         self.list_store = ListStore.deserialize(json_data.get("LISTS"))
         self.response_metadata = json_data.get("RESPONSE_METADATA", {})
 
-    def serialize(self):
+    def serialize(self) -> Any:
         data = {
             "METADATA": self._metadata,
             "ANSWERS": list(self.answer_store),
@@ -66,14 +71,14 @@ class QuestionnaireStore:
         }
         return json_dumps(data)
 
-    def delete(self):
+    def delete(self) -> None:
         self._storage.delete()
         self._metadata.clear()
         self.response_metadata = {}
         self.answer_store.clear()
         self.progress_store.clear()
 
-    def save(self):
+    def save(self) -> None:
         data = self.serialize()
         collection_exercise_sid = (
             self.collection_exercise_sid or self._metadata["collection_exercise_sid"]

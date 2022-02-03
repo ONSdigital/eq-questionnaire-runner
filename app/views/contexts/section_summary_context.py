@@ -93,12 +93,11 @@ class SectionSummaryContext(Context):
         if section_repeating_page_title:
             page_title = f"{page_title}: {section_repeating_page_title}"
 
-        if self.current_location.list_item_id:
+        if self.current_location.list_item_id and self.current_location.list_name:
             list_item_position = self._list_store.list_item_position(
                 self.current_location.list_name, self.current_location.list_item_id
             )
             page_title = page_title.format(list_item_position=list_item_position)
-
         return page_title
 
     def _build_summary(self, return_to: Optional[str]):

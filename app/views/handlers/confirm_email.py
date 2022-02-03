@@ -49,8 +49,9 @@ class ConfirmEmail:
 
         if not ConfirmationEmail.is_enabled(schema):
             raise ConfirmationEmailNotEnabled
-
-        if ConfirmationEmail.is_limit_reached(session_store.session_data):
+        if isinstance(
+            session_store.session_data, SessionData
+        ) and ConfirmationEmail.is_limit_reached(session_store.session_data):
             raise ConfirmationEmailLimitReached
 
         self._serialized_email = serialized_email

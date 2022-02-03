@@ -1,3 +1,8 @@
+from __future__ import annotations
+
+from datetime import datetime
+from typing import Optional, Union
+
 from flask import current_app
 from jwcrypto.common import base64url_decode
 from structlog import get_logger
@@ -11,18 +16,18 @@ logger = get_logger()
 
 
 class SessionStore:
-    def __init__(self, user_ik, pepper, eq_session_id=None):
+    def __init__(self, user_ik: str, pepper: str, eq_session_id: str = None) -> None:
         self.eq_session_id = eq_session_id
-        self.user_id = None
+        self.user_id: Optional[str] = None
         self.user_ik = user_ik
-        self.session_data = None
-        self._eq_session = None
+        self.session_data: Optional[Union[dict, SessionData]] = None
+        self._eq_session: Optional[EQSession] = None
         self.pepper = pepper
         if eq_session_id:
             self._load()
 
     @property
-    def expiration_time(self):
+    def expiration_time(self) -> datetime:
         """
         Checking if expires_at is available can be removed soon after deployment,
         it is only needed to cater for in-flight sessions.
@@ -31,7 +36,7 @@ class SessionStore:
             return self._eq_session.expires_at
 
     @expiration_time.setter
-    def expiration_time(self, expires_at):
+    def expiration_time(self, expires_at: datetime) -> None:
         """
         Checking if expires_at is available can be removed soon after deployment,
         it is only needed to cater for in-flight sessions.
@@ -39,7 +44,13 @@ class SessionStore:
         if self._eq_session and self._eq_session.expires_at:
             self._eq_session.expires_at = expires_at
 
-    def create(self, eq_session_id, user_id, session_data, expires_at):
+    def create(
+        self,
+        eq_session_id: str,
+        user_id: str,
+        session_data: Union[dict, SessionData],
+        expires_at: datetime,
+    ) -> SessionStore:
         """
         Create a new eq_session and associate it with the user_id specified
         """
@@ -55,7 +66,7 @@ class SessionStore:
 
         return self
 
-    def save(self):
+    def save(self) -> SessionStore:
         """
         save session
         """
@@ -64,29 +75,29 @@ class SessionStore:
                 self.user_id, self.user_ik, self.pepper
             ).encrypt_data(vars(self.session_data))
 
-            current_app.eq["storage"].put(self._eq_session, overwrite=True)
+            current_app.eq["storage"].put(self._eq_session, overwrite=True)  # type: ignore
 
         return self
 
-    def delete(self):
+    def delete(self) -> None:
         """
         deletes user session from database
         """
         if self._eq_session:
-            current_app.eq["storage"].delete(self._eq_session)
+            current_app.eq["storage"].delete(self._eq_session)  # type: ignore
 
             self._eq_session = None
             self.eq_session_id = None
             self.user_id = None
             self.session_data = None
 
-    def _load(self):
+    def _load(self) -> Optional[EQSession]:
         logger.debug(
             "finding eq_session_id in database", eq_session_id=self.eq_session_id
         )
-        self._eq_session = current_app.eq["storage"].get(EQSession, self.eq_session_id)
+        self._eq_session = current_app.eq["storage"].get(EQSession, self.eq_session_id)  # type: ignore
 
-        if self._eq_session:
+        if self._eq_session and self._eq_session.session_data:
             self.user_id = self._eq_session.user_id
 
             encrypted_session_data = self._eq_session.session_data
@@ -94,13 +105,14 @@ class SessionStore:
                 self.user_id, self.user_ik, self.pepper
             ).decrypt_data(encrypted_session_data)
 
-            session_data = session_data.decode()
-            # for backwards compatibility
-            # session data used to be base64 encoded before encryption
-            try:
-                session_data = base64url_decode(session_data).decode()
-            except ValueError:
-                pass
+            if isinstance(session_data, bytes):
+                session_data = session_data.decode()
+                # for backwards compatibility
+                # session data used to be base64 encoded before encryption
+                try:
+                    session_data = base64url_decode(session_data).decode()
+                except ValueError:
+                    pass
 
             self.session_data = json_loads(
                 session_data, object_hook=lambda d: SessionData(**d)

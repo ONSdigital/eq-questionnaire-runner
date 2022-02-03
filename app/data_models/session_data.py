@@ -1,24 +1,29 @@
+from typing import Optional, Union
+
+METADATA_MAPPING_TYPE = Optional[Union[str, int, list]]
+
+
 class SessionData:
     def __init__(
         self,
-        tx_id,
-        schema_name,
-        period_str,
-        language_code,
-        launch_language_code,
-        survey_url,
-        ru_name,
-        ru_ref,
-        response_id,
-        case_id,
-        case_ref=None,
-        account_service_base_url=None,
-        account_service_log_out_url=None,
-        trad_as=None,
-        display_address=None,
-        confirmation_email_count=0,
-        feedback_count=0,
-        **_,
+        tx_id: METADATA_MAPPING_TYPE,
+        schema_name: METADATA_MAPPING_TYPE,
+        period_str: METADATA_MAPPING_TYPE,
+        language_code: METADATA_MAPPING_TYPE,
+        launch_language_code: METADATA_MAPPING_TYPE,
+        survey_url: METADATA_MAPPING_TYPE,
+        ru_name: METADATA_MAPPING_TYPE,
+        ru_ref: METADATA_MAPPING_TYPE,
+        response_id: METADATA_MAPPING_TYPE,
+        case_id: METADATA_MAPPING_TYPE,
+        case_ref: METADATA_MAPPING_TYPE = None,
+        account_service_base_url: METADATA_MAPPING_TYPE = None,
+        account_service_log_out_url: METADATA_MAPPING_TYPE = None,
+        trad_as: METADATA_MAPPING_TYPE = None,
+        display_address: str = None,
+        confirmation_email_count: int = 0,
+        feedback_count: int = 0,
+        **_: str,
     ):  # pylint: disable=too-many-locals
         self.tx_id = tx_id
         self.schema_name = schema_name

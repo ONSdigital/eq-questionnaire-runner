@@ -103,7 +103,10 @@ def load_user(extend_session: bool = True) -> Optional[User]:
         user_ik = cookie_session.get(USER_IK)
         user = User(user_id, user_ik)
 
-        if session_store.session_data.tx_id:
+        if (
+            isinstance(session_store.session_data, SessionData)
+            and session_store.session_data.tx_id
+        ):
             logger.bind(tx_id=session_store.session_data.tx_id)
 
         if extend_session:

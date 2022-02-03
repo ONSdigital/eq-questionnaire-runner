@@ -20,46 +20,49 @@ def build_view_submitted_response_context(
     survey_type: str,
 ) -> dict[str, Union[str, datetime, dict]]:
 
-    view_submitted_response_expired = has_view_submitted_response_expired(
-        questionnaire_store.submitted_at
-    )
-
-    if survey_type == "social":
-        submitted_text = lazy_gettext("Answers submitted.")
-    elif trad_as := questionnaire_store.metadata.get("trad_as"):
-        submitted_text = lazy_gettext(
-            "Answers submitted for <span>{ru_name}</span> ({trad_as})"
-        ).format(ru_name=questionnaire_store.metadata["ru_name"], trad_as=trad_as)
-    else:
-        submitted_text = lazy_gettext(
-            "Answers submitted for <span>{ru_name}</span>"
-        ).format(ru_name=questionnaire_store.metadata["ru_name"])
-
-    metadata = build_submission_metadata_context(
-        survey_type,
-        questionnaire_store.submitted_at,
-        questionnaire_store.metadata["tx_id"],
-    )
-    context = {
-        "hide_sign_out_button": True,
-        "view_submitted_response": {
-            "expired": view_submitted_response_expired,
-        },
-        "metadata": metadata,
-        "submitted_text": submitted_text,
-    }
-
-    if not view_submitted_response_expired:
-        summary_context = SummaryContext(
-            language=language,
-            schema=schema,
-            answer_store=questionnaire_store.answer_store,
-            list_store=questionnaire_store.list_store,
-            progress_store=questionnaire_store.progress_store,
-            metadata=questionnaire_store.metadata,
-            response_metadata=questionnaire_store.response_metadata,
+    if questionnaire_store.submitted_at:
+        view_submitted_response_expired = has_view_submitted_response_expired(
+            questionnaire_store.submitted_at
         )
-        context["summary"] = summary_context()
-        context["pdf_url"] = url_for("post_submission.get_view_submitted_response_pdf")
 
-    return context
+        if survey_type == "social":
+            submitted_text = lazy_gettext("Answers submitted.")
+        elif trad_as := questionnaire_store.metadata.get("trad_as"):
+            submitted_text = lazy_gettext(
+                "Answers submitted for <span>{ru_name}</span> ({trad_as})"
+            ).format(ru_name=questionnaire_store.metadata["ru_name"], trad_as=trad_as)
+        else:
+            submitted_text = lazy_gettext(
+                "Answers submitted for <span>{ru_name}</span>"
+            ).format(ru_name=questionnaire_store.metadata["ru_name"])
+
+        metadata = build_submission_metadata_context(
+            survey_type,
+            questionnaire_store.submitted_at,
+            questionnaire_store.metadata["tx_id"],
+        )
+        context = {
+            "hide_sign_out_button": True,
+            "view_submitted_response": {
+                "expired": view_submitted_response_expired,
+            },
+            "metadata": metadata,
+            "submitted_text": submitted_text,
+        }
+
+        if not view_submitted_response_expired:
+            summary_context = SummaryContext(
+                language=language,
+                schema=schema,
+                answer_store=questionnaire_store.answer_store,
+                list_store=questionnaire_store.list_store,
+                progress_store=questionnaire_store.progress_store,
+                metadata=questionnaire_store.metadata,
+                response_metadata=questionnaire_store.response_metadata,
+            )
+            context["summary"] = summary_context()
+            context["pdf_url"] = url_for(
+                "post_submission.get_view_submitted_response_pdf"
+            )
+
+        return context

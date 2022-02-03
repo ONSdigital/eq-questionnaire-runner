@@ -33,7 +33,9 @@ class ConfirmationEmail:
         if not self.is_enabled(schema):
             raise ConfirmationEmailNotEnabled
 
-        if self.is_limit_reached(session_store.session_data):
+        if isinstance(
+            session_store.session_data, SessionData
+        ) and self.is_limit_reached(session_store.session_data):
             raise ConfirmationEmailLimitReached
 
         self._session_store = session_store

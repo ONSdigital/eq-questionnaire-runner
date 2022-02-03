@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import Dict, List, Optional
+from typing import Dict, Iterator, List, Optional
 
-from app.data_models.answer import Answer, escape_answer_value
+from app.data_models.answer import Answer, AnswerValueEscapedTypes, escape_answer_value
 
 
 class AnswerStore:
@@ -28,17 +28,18 @@ class AnswerStore:
         self.answer_map = self._build_map(existing_answers or [])
         self._is_dirty = False
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator:
         return iter(self.answer_map.values())
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.answer_map)
 
-    def __eq__(self, other):
+    def __eq__(self, other: AnswerStore) -> bool:  # type: ignore
+        # violates Liskov Substitution Principle
         return self.answer_map == other.answer_map
 
     @staticmethod
-    def _build_map(answers: List[Dict]):
+    def _build_map(answers: list[dict]) -> dict:
         """Builds the answer_store's data structure from a list of answer dictionaries"""
         return {
             (answer["answer_id"], answer.get("list_item_id")): Answer.from_dict(answer)
@@ -46,17 +47,17 @@ class AnswerStore:
         }
 
     @staticmethod
-    def _validate(answer):
+    def _validate(answer: Optional[Answer]) -> None:
         if not isinstance(answer, Answer):
             raise TypeError(
                 f"Method only supports Answer argument type, found type: {type(answer)}"
             )
 
     @property
-    def is_dirty(self):
+    def is_dirty(self) -> bool:
         return self._is_dirty
 
-    def add_or_update(self, answer: Answer):
+    def add_or_update(self, answer: Answer) -> None:
         """
         Add a new answer into the answer store, or update if it exists.
         """
@@ -102,13 +103,13 @@ class AnswerStore:
 
         return output_answers
 
-    def clear(self):
+    def clear(self) -> None:
         """
         Clears answers *in place*
         """
         self.answer_map.clear()
 
-    def remove_answer(self, answer_id: str, list_item_id: str = None):
+    def remove_answer(self, answer_id: str, list_item_id: str = None) -> None:
         """
         Removes answer *in place* from the answer store.
         """
@@ -117,7 +118,7 @@ class AnswerStore:
             del self.answer_map[(answer_id, list_item_id)]
             self._is_dirty = True
 
-    def remove_all_answers_for_list_item_id(self, list_item_id: str):
+    def remove_all_answers_for_list_item_id(self, list_item_id: str) -> None:
         """Remove all answers associated with a particular list_item_id.
         This method iterates through the entire list of answers.
 
@@ -132,10 +133,12 @@ class AnswerStore:
             del self.answer_map[key]
             self._is_dirty = True
 
-    def serialize(self):
+    def serialize(self) -> list:
         return list(self.answer_map.values())
 
-    def get_escaped_answer_value(self, answer_id, list_item_id=None):
+    def get_escaped_answer_value(
+        self, answer_id: str, list_item_id: str = None
+    ) -> Optional[AnswerValueEscapedTypes]:
         if answer := self.get_answer(answer_id, list_item_id):
             return escape_answer_value(answer.value)
 

@@ -1,5 +1,15 @@
 from dataclasses import astuple, dataclass
-from typing import Iterable, List, Mapping, MutableMapping, Optional
+from typing import (
+    Any,
+    Iterable,
+    Iterator,
+    List,
+    Mapping,
+    MutableMapping,
+    Optional,
+    Sequence,
+    Union,
+)
 
 from app.data_models.progress import Progress
 from app.questionnaire.location import Location
@@ -12,7 +22,7 @@ class CompletionStatus:
     NOT_STARTED: str = "NOT_STARTED"
     INDIVIDUAL_RESPONSE_REQUESTED: str = "INDIVIDUAL_RESPONSE_REQUESTED"
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator:
         return iter(astuple(self))
 
 
@@ -34,7 +44,7 @@ class ProgressStore:
             in_progress_sections or []
         )  # type: MutableMapping
 
-    def __contains__(self, section_key) -> bool:
+    def __contains__(self, section_key: Union[int, Sequence[int]]) -> bool:
         return section_key in self._progress
 
     @staticmethod
@@ -84,7 +94,7 @@ class ProgressStore:
 
     def section_keys(
         self, statuses: Iterable[str] = None, section_ids: Iterable[str] = None
-    ):
+    ) -> list:
         if not statuses:
             statuses = {*CompletionStatus()}
 
@@ -125,7 +135,7 @@ class ProgressStore:
 
     def get_section_status(
         self, section_id: str, list_item_id: Optional[str] = None
-    ) -> str:
+    ) -> Union[str, Any]:
         section_key = (section_id, list_item_id)
         if section_key in self._progress:
             return self._progress[section_key].status
@@ -134,7 +144,7 @@ class ProgressStore:
 
     def get_completed_block_ids(
         self, section_id: str, list_item_id: Optional[str] = None
-    ) -> List[Optional[str]]:
+    ) -> Union[list[Optional[str]], Any]:
         section_key = (section_id, list_item_id)
         if section_key in self._progress:
             return self._progress[section_key].block_ids
