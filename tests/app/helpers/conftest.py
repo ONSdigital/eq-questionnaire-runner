@@ -1,5 +1,23 @@
 from pytest import fixture
 
+from app.helpers.template_helpers import ContextHelper
+
+
+@fixture
+def get_context_helper():
+    def _context_helper(
+        app, survey_config, is_post_submission=False, include_csrf_token=True
+    ):
+        with app.test_client():
+            return ContextHelper(
+                language="en",
+                is_post_submission=is_post_submission,
+                include_csrf_token=include_csrf_token,
+                survey_config=survey_config,
+            )
+
+    return _context_helper
+
 
 @fixture(name="footer_context")
 def footer():

@@ -1,5 +1,4 @@
 from typing import Type
-from unittest.mock import Mock
 
 import pytest
 from flask import Flask, current_app
@@ -14,18 +13,6 @@ from app.survey_config import (
     SurveyConfig,
     WelshCensusSurveyConfig,
 )
-
-
-def get_context_helper(
-    app, survey_config, is_post_submission=False, include_csrf_token=True
-):
-    with app.test_client():
-        return ContextHelper(
-            language="en",
-            is_post_submission=is_post_submission,
-            include_csrf_token=include_csrf_token,
-            survey_config=survey_config,
-        )
 
 
 def test_footer_context_census_theme(app: Flask, expected_footer_census_theme):
@@ -193,7 +180,9 @@ def test_service_links_context(
     app: Flask, mocker, survey_config, is_authenticated, expected
 ):
     with app.app_context():
-        current_user = mocker.patch("flask_login.utils._get_user", return_value=Mock())
+        current_user = mocker.patch(
+            "flask_login.utils._get_user", return_value=mocker.MagicMock()
+        )
         current_user.is_authenticated = is_authenticated
 
         result = ContextHelper(
@@ -297,7 +286,7 @@ def test_cookie_settings_url_context(
     ],
 )
 def test_account_service_my_account_url_context(
-    app: Flask, survey_config: SurveyConfig, expected: str
+    app: Flask, survey_config: SurveyConfig, expected: str, get_context_helper
 ):
     result = get_context_helper(app, survey_config).context[
         "account_service_my_account_url"
@@ -317,7 +306,7 @@ def test_account_service_my_account_url_context(
     ],
 )
 def test_account_service_my_todo_url_context(
-    app: Flask, survey_config: SurveyConfig, expected: str
+    app: Flask, survey_config: SurveyConfig, expected: str, get_context_helper
 ):
     result = get_context_helper(app, survey_config).context["account_service_todo_url"]
     assert result == expected
@@ -341,7 +330,7 @@ def test_account_service_my_todo_url_context(
     ],
 )
 def test_account_service_log_out_url_context(
-    app: Flask, survey_config: SurveyConfig, expected: str
+    app: Flask, survey_config: SurveyConfig, expected: str, get_context_helper
 ):
     result = get_context_helper(app, survey_config).context[
         "account_service_log_out_url"
