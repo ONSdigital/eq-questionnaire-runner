@@ -521,24 +521,6 @@ def test_other_config_visibility(
 def test_calculated_summary_config():
     expected = [
         SummaryRow(
-            block={
-                "id": "first-number-block",
-                "link": "/questionnaire/first-number-block/?return_to=final-summary",
-                "question": {
-                    "id": "first-number-question",
-                    "type": "General",
-                    "title": "First Number Question Title",
-                    "answers": [
-                        {
-                            "id": "first-number-answer",
-                            "label": "First answer label",
-                            "value": 1,
-                            "type": "currency",
-                            "currency": "GBP",
-                        }
-                    ],
-                },
-            },
             question={
                 "id": "first-number-question",
                 "type": "General",
@@ -550,6 +532,7 @@ def test_calculated_summary_config():
                         "value": 1,
                         "type": "currency",
                         "currency": "GBP",
+                        "link": "/questionnaire/first-number-block/?return_to=final-summary&return_to_answer_id=first-number-answer#first-number-answer",
                     }
                 ],
             },
@@ -560,24 +543,6 @@ def test_calculated_summary_config():
             edit_link_aria_label="Change your answer for",
         ),
         SummaryRow(
-            block={
-                "id": "second-number-block",
-                "link": "/questionnaire/second-number-block/?return_to=final-summary",
-                "question": {
-                    "id": "second-number-question",
-                    "type": "General",
-                    "title": "Second Number Question Title",
-                    "answers": [
-                        {
-                            "id": "second-number-answer",
-                            "label": "Second answer label",
-                            "value": 1,
-                            "type": "currency",
-                            "currency": "GBP",
-                        }
-                    ],
-                },
-            },
             question={
                 "id": "second-number-question",
                 "type": "General",
@@ -589,6 +554,7 @@ def test_calculated_summary_config():
                         "value": 1,
                         "type": "currency",
                         "currency": "GBP",
+                        "link": "/questionnaire/second-number-block/?return_to=final-summary&return_to_answer_id=second-number-answer#second-number-answer",
                     }
                 ],
             },
@@ -599,7 +565,6 @@ def test_calculated_summary_config():
             edit_link_aria_label="Change your answer for",
         ),
         SummaryRow(
-            block=None,
             question={
                 "title": "Grand total of previous values",
                 "id": "calculated-summary-question",
@@ -618,7 +583,6 @@ def test_calculated_summary_config():
             "blocks": [
                 {
                     "id": "first-number-block",
-                    "link": "/questionnaire/first-number-block/?return_to=final-summary",
                     "question": {
                         "id": "first-number-question",
                         "type": "General",
@@ -630,6 +594,10 @@ def test_calculated_summary_config():
                                 "value": 1,
                                 "type": "currency",
                                 "currency": "GBP",
+                                "link": (
+                                    "/questionnaire/first-number-block/?return_to=final-summary"
+                                    "&return_to_answer_id=first-number-answer#first-number-answer"
+                                ),
                             }
                         ],
                     },
@@ -648,6 +616,10 @@ def test_calculated_summary_config():
                                 "value": 1,
                                 "type": "currency",
                                 "currency": "GBP",
+                                "link": (
+                                    "/questionnaire/second-number-block/?return_to=final-summary"
+                                    "&return_to_answer_id=second-number-answer#second-number-answer"
+                                ),
                             }
                         ],
                     },
