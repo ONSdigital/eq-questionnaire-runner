@@ -1,8 +1,5 @@
-import io
-
-from flask_weasyprint import HTML, CSS
-from flask import current_app
-import pdfkit
+from flask_weasyprint import HTML, CSS, render_pdf
+from flask import current_app, Response
 
 from app.data_models import QuestionnaireStore
 from app.questionnaire import QuestionnaireSchema
@@ -57,7 +54,7 @@ class ViewSubmittedResponsePDF(ViewSubmittedResponse):
         """The name to use for the PDF file"""
         return f"{self._metadata['schema_name']}.pdf"
 
-    def get_pdf(self) -> io.BytesIO:
+    def get_pdf(self) -> Response:
         """
         Generates a PDF document from the rendered ViewSubmittedResponse html.
         :return: The generated PDF document as BytesIO
@@ -65,30 +62,13 @@ class ViewSubmittedResponsePDF(ViewSubmittedResponse):
         """
 
         html = self.get_rendered_html()
-        css = """
-            .header__main {
-                background: none !important;
-            }
-            .header__title {
-                color: black !important;
-            }
-        """
-        file = io.BytesIO()
-        HTML(file_obj=html).write_pdf(
-            "file",
+
+        return render_pdf(
+            HTML(string=html),
             stylesheets=[
                 CSS(
                     filename=f'{current_app.config["PRINT_STYLE_SHEET_FILE_PATH"]}/print.css'
                 )
             ],
+            download_filename=self.filename,
         )
-        return file
-
-        # content_as_bytes = pdfkit.from_string(
-        #     input=self.get_rendered_html(),
-        #     output_path=None,
-        #     css=f'{current_app.config["PRINT_STYLE_SHEET_FILE_PATH"]}/print.css',
-        #     options=self.wkhtmltopdf_options,
-        # )
-
-        # return io.BytesIO(content_as_bytes)

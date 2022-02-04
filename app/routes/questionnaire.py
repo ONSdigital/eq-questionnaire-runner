@@ -421,22 +421,15 @@ def get_view_submitted_response_pdf(
     """
 
     try:
-        view_submitted_response_pdf = ViewSubmittedResponsePDF(
+        return ViewSubmittedResponsePDF(
             schema,
             questionnaire_store,
             flask_babel.get_locale().language,
-        )
+        ).get_pdf()
     except ViewSubmittedResponseNotEnabled as exc:
         raise NotFound from exc
     except ViewSubmittedResponseExpired:
         return redirect(url_for(".get_view_submitted_response"))
-
-    return send_file(
-        path_or_file=view_submitted_response_pdf.get_pdf(),
-        mimetype=view_submitted_response_pdf.mimetype,
-        as_attachment=True,
-        download_name=view_submitted_response_pdf.filename,
-    )
 
 
 @post_submission_blueprint.route("confirmation-email/send", methods=["GET", "POST"])
