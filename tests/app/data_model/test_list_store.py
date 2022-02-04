@@ -1,5 +1,3 @@
-from unittest.mock import patch
-
 import pytest
 
 from app.data_models.list_store import ListModel, ListStore
@@ -39,12 +37,12 @@ def test_deserialisation():
     assert deserialized["pets"].items == [additional_id]
 
 
-def test_unique_id_generation():
+def test_unique_id_generation(mocker):
     """
     Ensure that every id generated is unique per questionnaire.
     """
     # Mock the app.data_models.list_store.random_string method to return duplicates.
-    with patch(
+    with mocker.patch(
         "app.data_models.list_store.random_string",
         side_effect=["first", "first", "second"],
     ):
