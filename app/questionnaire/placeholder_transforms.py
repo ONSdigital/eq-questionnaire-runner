@@ -315,3 +315,9 @@ class PlaceholderTransforms:
         label may be simple string or a resolved placeholder string
         """
         return self.ops_helper.get_option_label_from_value(value, answer_id)
+
+    @staticmethod
+    def conditional_trad_as(trad_as: str) -> str:
+        if trad_as:
+            return f" ({trad_as})"
+        return ""

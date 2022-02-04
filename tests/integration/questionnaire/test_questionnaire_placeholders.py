@@ -34,7 +34,9 @@ class TestPlaceholders(IntegrationTestCase):
 
     def test_placeholders_rendered_in_pages(self):
         self.launchSurvey("test_placeholder_transform")
-        self.assertInBody("Please enter the total retail turnover")
+        self.assertInBody(
+            "For Integration Testing (Integration Tests), please enter the total retail turnover"
+        )
         self.post({"total-retail-turnover-answer": 2000})
 
         self.assertInBody(
@@ -50,10 +52,34 @@ class TestPlaceholders(IntegrationTestCase):
         self.post({"add-item-question": "Yes"})
 
         self.assertInUrl(SUBMIT_URL_PATH)
-        self.assertInBody("Please enter the total retail turnover")
+        self.assertInBody(
+            "For Integration Testing (Integration Tests), please enter the total retail turnover"
+        )
         self.assertInBody("Please enter the value of internet sales")
         self.assertInBody("Please enter the number of items")
         self.assertInBody("Do you want to add a 3rd item?")
+
+    def test_conditional_trad_as_without_trad_as_in_token(self):
+        token = self.token_generator.create_token_without_trad_as(
+            "test_placeholder_transform"
+        )
+        self.post(url=f"/session?token={token}")
+
+        self.assertInBody(
+            "For Integration Testing, please enter the total retail turnover"
+        )
+        self.post({"total-retail-turnover-answer": 1000})
+
+        self.post({"total-retail-turnover-internet-sales-answer": 1000})
+
+        self.post({"total-items-answer": 1})
+
+        self.post({"add-item-question": "No"})
+
+        self.assertInUrl(SUBMIT_URL_PATH)
+        self.assertInBody(
+            "For Integration Testing, please enter the total retail turnover"
+        )
 
     def test_placeholder_address_selector_rendered_in_page(self):
         self.launchSurvey("test_address")
