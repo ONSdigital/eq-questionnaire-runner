@@ -422,7 +422,7 @@ def test_option_label_from_value_with_placeholder_label(
 @pytest.mark.parametrize(
     "trad_as, expected",
     [
-        ("trad_as", " (trad_as)"),
+        ("Apple", " (Apple)"),
         (None, ""),
     ],
 )
