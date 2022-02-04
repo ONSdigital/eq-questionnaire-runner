@@ -1,5 +1,17 @@
+from flask import url_for
+
+
 class Answer:
-    def __init__(self, answer_schema, answer_value):
+    def __init__(
+        self,
+        *,
+        answer_schema,
+        answer_value,
+        block_id,
+        list_name,
+        list_item_id,
+        return_to,
+    ):
         self.id = answer_schema["id"]
         self.label = answer_schema.get("label")
         self.value = answer_value
@@ -7,6 +19,12 @@ class Answer:
         self.unit = answer_schema.get("unit")
         self.unit_length = answer_schema.get("unit_length")
         self.currency = answer_schema.get("currency")
+        self.link = self._build_link(
+            block_id=block_id,
+            list_name=list_name,
+            list_item_id=list_item_id,
+            return_to=return_to,
+        )
 
     def serialize(self):
         return {
@@ -17,4 +35,16 @@ class Answer:
             "unit": self.unit,
             "unit_length": self.unit_length,
             "currency": self.currency,
+            "link": self.link,
         }
+
+    def _build_link(self, *, block_id, list_name, list_item_id, return_to):
+        return url_for(
+            "questionnaire.block",
+            list_name=list_name,
+            block_id=block_id,
+            list_item_id=list_item_id,
+            return_to=return_to,
+            return_to_answer_id=self.id,
+            _anchor=self.id,
+        )

@@ -148,6 +148,7 @@ class Router:
         location: Location,
         routing_path: RoutingPath,
         return_to: Optional[str] = None,
+        return_to_answer_id: Optional[str] = None,
     ) -> Optional[str]:
         """
         Returns the previous 'location' to visit given a set of user answers or returns to the summary if
@@ -158,7 +159,11 @@ class Router:
             self._progress_store.is_section_complete(
                 location.section_id, location.list_item_id
             )
-            and (return_to_url := self._get_return_to_location_url(location, return_to))
+            and (
+                return_to_url := self._get_return_to_location_url(
+                    location, return_to, return_to_answer_id=return_to_answer_id
+                )
+            )
         ):
             return return_to_url
 
@@ -169,7 +174,10 @@ class Router:
             previous_block = self._schema.get_block(previous_block_id)
             if previous_block and previous_block["type"] == "RelationshipCollector":
                 return url_for(
-                    "questionnaire.relationships", last=True, return_to=return_to
+                    "questionnaire.relationships",
+                    last=True,
+                    return_to=return_to,
+                    _anchor=return_to_answer_id,
                 )
             return url_for(
                 "questionnaire.block",
@@ -177,6 +185,7 @@ class Router:
                 list_name=routing_path.list_name,
                 list_item_id=routing_path.list_item_id,
                 return_to=return_to,
+                _anchor=return_to_answer_id,
             )
 
         if self.can_access_hub():
@@ -185,13 +194,20 @@ class Router:
         return None
 
     def _get_return_to_location_url(
-        self, location: Location, return_to: str
+        self,
+        location: Location,
+        return_to: str,
+        return_to_answer_id: Optional[str] = None,
     ) -> Optional[str]:
         if return_to == "section-summary":
-            return self._get_section_url(location)
+            return self._get_section_url(
+                location, return_to_answer_id=return_to_answer_id
+            )
 
         if return_to == "final-summary" and self.is_questionnaire_complete:
-            return url_for("questionnaire.submit_questionnaire")
+            return url_for(
+                "questionnaire.submit_questionnaire", _anchor=return_to_answer_id
+            )
 
     def get_next_location_url_for_end_of_section(self) -> str:
         if self._schema.is_flow_hub and self.can_access_hub():
@@ -356,9 +372,12 @@ class Router:
         )
 
     @staticmethod
-    def _get_section_url(location: Location) -> str:
+    def _get_section_url(
+        location: Location, return_to_answer_id: Optional[str] = None
+    ) -> str:
         return url_for(
             "questionnaire.get_section",
             section_id=location.section_id,
             list_item_id=location.list_item_id,
+            _anchor=return_to_answer_id,
         )

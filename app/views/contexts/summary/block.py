@@ -1,5 +1,3 @@
-from flask import url_for
-
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.variants import choose_variant
 from app.views.contexts.summary.question import Question
@@ -19,10 +17,8 @@ class Block:
         return_to,
     ):
         self.id = block_schema["id"]
-        self.location = location
         self.title = block_schema.get("title")
         self.number = block_schema.get("number")
-        self.link = self._build_link(block_schema["id"], return_to)
 
         self._rule_evaluator = RuleEvaluator(
             schema=schema,
@@ -32,7 +28,6 @@ class Block:
             response_metadata=response_metadata,
             location=location,
         )
-
         self.question = self.get_question(
             block_schema=block_schema,
             answer_store=answer_store,
@@ -41,14 +36,6 @@ class Block:
             response_metadata=response_metadata,
             schema=schema,
             location=location,
-        )
-
-    def _build_link(self, block_id, return_to):
-        return url_for(
-            "questionnaire.block",
-            list_name=self.location.list_name,
-            block_id=block_id,
-            list_item_id=self.location.list_item_id,
             return_to=return_to,
         )
 
@@ -62,9 +49,9 @@ class Block:
         response_metadata,
         schema,
         location,
+        return_to,
     ):
-        """Taking question variants into account, return the question which was displayed to the user"""
-        list_item_id = location.list_item_id
+        """ Taking question variants into account, return the question which was displayed to the user """
 
         variant = choose_variant(
             block_schema,
@@ -77,13 +64,14 @@ class Block:
             single_key="question",
             current_location=location,
         )
-
         return Question(
             variant,
             answer_store=answer_store,
             schema=schema,
-            list_item_id=list_item_id,
             rule_evaluator=self._rule_evaluator,
+            location=location,
+            block_id=self.id,
+            return_to=return_to,
         ).serialize()
 
     def serialize(self):
@@ -91,6 +79,5 @@ class Block:
             "id": self.id,
             "title": self.title,
             "number": self.number,
-            "link": self.link,
             "question": self.question,
         }

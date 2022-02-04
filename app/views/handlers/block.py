@@ -38,6 +38,7 @@ class BlockHandler:
         self._routing_path = self._get_routing_path()
         self.page_title = None
         self._return_to = request_args.get("return_to")
+        self._return_to_answer_id = request_args.get("return_to_answer_id")
         self.resume = "resume" in request_args
 
         if not self.is_location_valid():
@@ -88,12 +89,17 @@ class BlockHandler:
 
     def get_previous_location_url(self):
         return self.router.get_previous_location_url(
-            self._current_location, self._routing_path, self._return_to
+            self._current_location,
+            self._routing_path,
+            self._return_to,
+            self._return_to_answer_id,
         )
 
     def get_next_location_url(self):
         return self.router.get_next_location_url(
-            self._current_location, self._routing_path, self._return_to
+            self._current_location,
+            self._routing_path,
+            self._return_to,
         )
 
     def handle_post(self):
