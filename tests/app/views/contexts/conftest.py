@@ -198,12 +198,12 @@ def fake_session_data():
     return SessionData(
         tx_id="tx_id",
         schema_name="some_schema_name",
+        period_str="period_str",
         language_code=None,
         launch_language_code=None,
         survey_url=None,
+        ru_name="ru_name",
         ru_ref="ru_ref",
         response_id="response_id",
         case_id="case_id",
-        period_str=None,
-        ru_name=None,
     )

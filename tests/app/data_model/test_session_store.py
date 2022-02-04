@@ -1,270 +1,211 @@
-from datetime import datetime, timedelta, timezone
-
+import pytest
 from flask import current_app
 from jwcrypto import jwe
 from jwcrypto.common import base64url_encode
 
 from app.data_models.app_models import EQSession
-from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
-from app.storage import storage_encryption
 from app.utilities.json import json_dumps
-from tests.app.app_context_test_case import AppContextTestCase
 
 
-class SessionStoreTest(AppContextTestCase):
-    def setUp(self):
-        super().setUp()
-        self._app.permanent_session_lifetime = timedelta(seconds=1)
-        self.session_store = SessionStore("user_ik", "pepper")
-        self.expires_at = datetime.now(tz=timezone.utc) + timedelta(seconds=3)
-        self.session_data = SessionData(
-            tx_id="tx_id",
-            schema_name="some_schema_name",
-            period_str="period_str",
-            language_code=None,
-            launch_language_code=None,
-            survey_url=None,
-            ru_name="ru_name",
-            ru_ref="ru_ref",
-            response_id="response_id",
-            case_id="case_id",
+def test_no_session(app, app_session_store):
+    with app.test_request_context():
+        assert app_session_store.session_store.user_id is None
+        assert app_session_store.session_store.session_data is None
+
+
+def test_create(app, app_session_store):
+    with app.test_request_context():
+        app_session_store.session_store.create(
+            "eq_session_id",
+            "test",
+            app_session_store.session_data,
+            app_session_store.expires_at,
+        )
+        assert "eq_session_id" == app_session_store.session_store.eq_session_id
+        assert "test" == app_session_store.session_store.user_id
+        assert (
+            app_session_store.session_data
+            == app_session_store.session_store.session_data
         )
 
-    def test_no_session(self):
-        with self._app.test_request_context():
-            self.assertIsNone(self.session_store.user_id)
-            self.assertIsNone(self.session_store.session_data)
 
-    def test_create(self):
-        with self._app.test_request_context():
-            self.session_store.create(
-                "eq_session_id", "test", self.session_data, self.expires_at
-            )
-            self.assertEqual("eq_session_id", self.session_store.eq_session_id)
-            self.assertEqual("test", self.session_store.user_id)
-            self.assertEqual(self.session_data, self.session_store.session_data)
-
-    def test_save(self):
-        with self._app.test_request_context():
-            self.session_store.create(
-                eq_session_id="eq_session_id",
-                user_id="test",
-                session_data=self.session_data,
-                expires_at=self.expires_at,
-            ).save()
-            session_store = SessionStore("user_ik", "pepper", "eq_session_id")
-            self.assertEqual(session_store.session_data.tx_id, "tx_id")
-
-    def test_delete(self):
-        with self._app.test_request_context():
-            self.session_store.create(
-                eq_session_id="eq_session_id",
-                user_id="test",
-                session_data=self.session_data,
-                expires_at=self.expires_at,
-            ).save()
-            self.assertEqual("test", self.session_store.user_id)
-            self.session_store.delete()
-            self.assertEqual(self.session_store.user_id, None)
-
-    def test_add_data_to_session(self):
-        with self._app.test_request_context():
-            self.session_store.create(
-                eq_session_id="eq_session_id",
-                user_id="test",
-                session_data=self.session_data,
-                expires_at=self.expires_at,
-            ).save()
-            display_address = "68 Abingdon Road, Goathill"
-            self.session_store.session_data.display_address = display_address
-            self.session_store.save()
-
-            session_store = SessionStore("user_ik", "pepper", "eq_session_id")
-            self.assertEqual(
-                session_store.session_data.display_address, display_address
-            )
-
-    def test_should_not_delete_when_no_session(self):
-        with self.app_request_context("/status") as context:
-            # Call clear with a valid user_id but no session in database
-            self.session_store.delete()
-
-            # No database calls should have been made
-            self.assertEqual(context.app.eq["storage"].client.delete_call_count, 0)
-
-    def test_session_store_ignores_new_values_in_session_data(self):
-        session_data = SessionData(
-            tx_id="tx_id",
-            schema_name="some_schema_name",
-            period_str="period_str",
-            language_code=None,
-            launch_language_code=None,
-            survey_url=None,
-            ru_name="ru_name",
-            ru_ref="ru_ref",
-            response_id="response_id",
-            case_id="case_id",
-        )
-
-        session_data.additional_value = "some cool new value you do not know about yet"
-
-        with self._app.test_request_context():
-            self.session_store.create(
-                eq_session_id="eq_session_id",
-                user_id="test",
-                session_data=self.session_data,
-                expires_at=self.expires_at,
-            ).save()
-
-            session_store = SessionStore("user_ik", "pepper", "eq_session_id")
-
-            self.assertFalse(hasattr(session_store.session_data, "additional_value"))
-
-    def test_session_store_ignores_multiple_new_values_in_session_data(self):
-        session_data = SessionData(
-            tx_id="tx_id",
-            schema_name="some_schema_name",
-            period_str="period_str",
-            language_code=None,
-            launch_language_code=None,
-            survey_url=None,
-            ru_name="ru_name",
-            ru_ref="ru_ref",
-            response_id="response_id",
-            case_id="case_id",
-        )
-
-        session_data.additional_value = "some cool new value you do not know about yet"
-        session_data.second_additional_value = "some other not so cool value"
-
-        with self._app.test_request_context():
-            self.session_store.create(
-                eq_session_id="eq_session_id",
-                user_id="test",
-                session_data=session_data,
-                expires_at=self.expires_at,
-            ).save()
-
-            session_store = SessionStore("user_ik", "pepper", "eq_session_id")
-
-            self.assertFalse(hasattr(session_store.session_data, "additional_value"))
-            self.assertFalse(
-                hasattr(session_store.session_data, "second_additional_value")
-            )
-
-    def test_session_store_stores_trading_as_value_if_present(self):
-        session_data = SessionData(
-            tx_id="tx_id",
-            schema_name="some_schema_name",
-            period_str="period_str",
-            language_code=None,
-            launch_language_code=None,
-            survey_url=None,
-            ru_name="ru_name",
-            ru_ref="ru_ref",
-            response_id="response_id",
-            trad_as="trading_as",
-            case_id="case_id",
-        )
-        with self._app.test_request_context():
-            self.session_store.create(
-                eq_session_id="eq_session_id",
-                user_id="test",
-                session_data=session_data,
-                expires_at=self.expires_at,
-            ).save()
-
-            session_store = SessionStore("user_ik", "pepper", "eq_session_id")
-
-            self.assertTrue(hasattr(session_store.session_data, "trad_as"))
-
-    def test_session_store_stores_none_for_trading_as_if_not_present(self):
-        session_data = SessionData(
-            tx_id="tx_id",
-            schema_name="some_schema_name",
-            period_str="period_str",
-            language_code=None,
-            launch_language_code=None,
-            survey_url=None,
-            ru_name="ru_name",
-            ru_ref="ru_ref",
-            response_id="response_id",
-            case_id="case_id",
-        )
-        with self._app.test_request_context():
-            self.session_store.create(
-                eq_session_id="eq_session_id",
-                user_id="test",
-                session_data=session_data,
-                expires_at=self.expires_at,
-            ).save()
-
-            session_store = SessionStore("user_ik", "pepper", "eq_session_id")
-
-            self.assertIsNone(session_store.session_data.trad_as)
+def test_save(app, app_session_store):
+    with app.test_request_context():
+        app_session_store.session_store.create(
+            eq_session_id="eq_session_id",
+            user_id="test",
+            session_data=app_session_store.session_data,
+            expires_at=app_session_store.expires_at,
+        ).save()
+        session_store = SessionStore("user_ik", "pepper", "eq_session_id")
+        assert session_store.session_data.tx_id == "tx_id"
 
 
-class TestSessionStoreEncoding(AppContextTestCase):
-    """Session data used to be base64-encoded. For performance reasons the
-    base64 encoding was removed.
-    """
+def test_delete(app, app_session_store):
+    with app.test_request_context():
+        app_session_store.session_store.create(
+            eq_session_id="eq_session_id",
+            user_id="test",
+            session_data=app_session_store.session_data,
+            expires_at=app_session_store.expires_at,
+        ).save()
+        assert "test" == app_session_store.session_store.user_id
+        app_session_store.session_store.delete()
+        assert app_session_store.session_store.user_id is None
 
-    def setUp(self):
-        super().setUp()
-        self.user_id = "user_id"
-        self.user_ik = "user_ik"
-        self.pepper = "pepper"
-        self.session_id = "session_id"
-        self.expires_at = datetime.now(tz=timezone.utc) + timedelta(seconds=3)
-        self.session_data = SessionData(
-            tx_id="tx_id",
-            schema_name="some_schema_name",
-            period_str="period_str",
-            language_code=None,
-            launch_language_code=None,
-            survey_url=None,
-            ru_name="ru_name",
-            response_id="response_id",
-            ru_ref="ru_ref",
-            trad_as="trading_as_name",
-            case_id="case_id",
-        )
 
-        # pylint: disable=protected-access
-        self.key = storage_encryption.StorageEncryption._generate_key(
-            self.user_id, self.user_ik, self.pepper
-        )
+def test_add_data_to_session(app, app_session_store):
+    with app.test_request_context():
+        app_session_store.session_store.create(
+            eq_session_id="eq_session_id",
+            user_id="test",
+            session_data=app_session_store.session_data,
+            expires_at=app_session_store.expires_at,
+        ).save()
+        display_address = "68 Abingdon Road, Goathill"
+        app_session_store.session_store.session_data.display_address = display_address
+        app_session_store.session_store.save()
 
-    def test_legacy_load(self):
-        self._save_session(
-            self.session_id, self.user_id, self.session_data, legacy=True
-        )
-        session_store = SessionStore(self.user_ik, self.pepper, self.session_id)
-        self.assertEqual(session_store.session_data.tx_id, self.session_data.tx_id)
+        session_store = SessionStore("user_ik", "pepper", "eq_session_id")
+        assert session_store.session_data.display_address == display_address
 
-    def test_load(self):
-        self._save_session(self.session_id, self.user_id, self.session_data)
-        session_store = SessionStore(self.user_ik, self.pepper, self.session_id)
-        self.assertEqual(session_store.session_data.tx_id, self.session_data.tx_id)
 
-    def _save_session(self, session_id, user_id, data, legacy=False):
-        raw_data = json_dumps(vars(data))
-        protected_header = {"alg": "dir", "enc": "A256GCM", "kid": "1,1"}
+def test_should_not_delete_when_no_session(app, app_session_store):
+    with app.test_request_context("/status") as context:
+        # Call clear with a valid user_id but no session in database
+        app_session_store.session_store.delete()
 
-        if legacy:
-            plaintext = base64url_encode(raw_data)
-        else:
-            plaintext = raw_data
+        # No database calls should have been made
+        assert context.app.eq["storage"].client.delete_call_count == 0
 
-        jwe_token = jwe.JWE(
-            plaintext=plaintext, protected=protected_header, recipient=self.key
-        )
 
-        session_model = EQSession(
-            eq_session_id=session_id,
-            user_id=user_id,
-            session_data=jwe_token.serialize(compact=True),
-            expires_at=self.expires_at,
-        )
-        current_app.eq["storage"].put(session_model)
+def test_session_store_ignores_new_values_in_session_data(
+    app, app_session_store, session_data
+):
+    session_data.additional_value = "some cool new value you do not know about yet"
+
+    with app.test_request_context():
+        app_session_store.session_store.create(
+            eq_session_id="eq_session_id",
+            user_id="test",
+            session_data=app_session_store.session_data,
+            expires_at=app_session_store.expires_at,
+        ).save()
+
+        session_store = SessionStore("user_ik", "pepper", "eq_session_id")
+
+        assert hasattr(session_store.session_data, "additional_value") is False
+
+
+def test_session_store_ignores_multiple_new_values_in_session_data(
+    app, app_session_store, session_data
+):
+    session_data.additional_value = "some cool new value you do not know about yet"
+    session_data.second_additional_value = "some other not so cool value"
+
+    with app.test_request_context():
+        app_session_store.session_store.create(
+            eq_session_id="eq_session_id",
+            user_id="test",
+            session_data=session_data,
+            expires_at=app_session_store.expires_at,
+        ).save()
+
+        session_store = SessionStore("user_ik", "pepper", "eq_session_id")
+
+        assert hasattr(session_store.session_data, "additional_value") is False
+        assert hasattr(session_store.session_data, "second_additional_value") is False
+
+
+def test_session_store_stores_trading_as_value_if_present(
+    app, app_session_store, session_data
+):
+    with app.test_request_context():
+        app_session_store.session_store.create(
+            eq_session_id="eq_session_id",
+            user_id="test",
+            session_data=session_data,
+            expires_at=app_session_store.expires_at,
+        ).save()
+
+        session_store = SessionStore("user_ik", "pepper", "eq_session_id")
+
+        assert hasattr(session_store.session_data, "trad_as") is True
+
+
+def test_session_store_stores_none_for_trading_as_if_not_present(
+    app, app_session_store, session_data
+):
+    session_data.trad_as = None
+    with app.test_request_context():
+        app_session_store.session_store.create(
+            eq_session_id="eq_session_id",
+            user_id="test",
+            session_data=session_data,
+            expires_at=app_session_store.expires_at,
+        ).save()
+
+        session_store = SessionStore("user_ik", "pepper", "eq_session_id")
+
+        assert session_store.session_data.trad_as is None
+
+
+@pytest.mark.usefixtures("app")
+def test_legacy_load(app_session_store_encoded):
+    _save_session(
+        app_session_store_encoded,
+        app_session_store_encoded.session_id,
+        app_session_store_encoded.user_id,
+        app_session_store_encoded.session_data,
+        legacy=True,
+    )
+    session_store = SessionStore(
+        app_session_store_encoded.user_ik,
+        app_session_store_encoded.pepper,
+        app_session_store_encoded.session_id,
+    )
+
+    assert (
+        session_store.session_data.tx_id == app_session_store_encoded.session_data.tx_id
+    )
+
+
+@pytest.mark.usefixtures("app")
+def test_load(app_session_store_encoded):
+    _save_session(
+        app_session_store_encoded,
+        app_session_store_encoded.session_id,
+        app_session_store_encoded.user_id,
+        app_session_store_encoded.session_data,
+    )
+    session_store = SessionStore(
+        app_session_store_encoded.user_ik,
+        app_session_store_encoded.pepper,
+        app_session_store_encoded.session_id,
+    )
+    assert (
+        session_store.session_data.tx_id == app_session_store_encoded.session_data.tx_id
+    )
+
+
+def _save_session(app_session, session_id, user_id, data, legacy=False):
+    raw_data = json_dumps(vars(data))
+    protected_header = {"alg": "dir", "enc": "A256GCM", "kid": "1,1"}
+
+    if legacy:
+        plaintext = base64url_encode(raw_data)
+    else:
+        plaintext = raw_data
+
+    jwe_token = jwe.JWE(
+        plaintext=plaintext, protected=protected_header, recipient=app_session.key
+    )
+
+    session_model = EQSession(
+        eq_session_id=session_id,
+        user_id=user_id,
+        session_data=jwe_token.serialize(compact=True),
+        expires_at=app_session.expires_at,
+    )
+    current_app.eq["storage"].put(session_model)

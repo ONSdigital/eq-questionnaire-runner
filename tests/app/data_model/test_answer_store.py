@@ -5,99 +5,17 @@ from app.data_models.answer_store import Answer, AnswerStore
 from app.utilities.json import json_dumps, json_loads
 
 
-@pytest.fixture()
-def empty_answer_store():
-    answer_store = AnswerStore()
-    return answer_store
-
-
-@pytest.fixture()
-def basic_answer_store():
-    answer_store = AnswerStore()
-
-    answer_store.add_or_update(
-        Answer(answer_id="answer1", value=10, list_item_id="abc123")
-    )
-    answer_store.add_or_update(
-        Answer(answer_id="answer2", value=20, list_item_id="xyz987")
-    )
-    answer_store.add_or_update(
-        Answer(answer_id="another-answer2", value=25, list_item_id="xyz987")
-    )
-
-    answer_store.add_or_update(Answer(answer_id="answer3", value=30))
-    answer_store.add_or_update(Answer(answer_id="another-answer3", value=35))
-
-    answer_store.add_or_update(Answer(answer_id="answer4", value="<p>abc123</p>"))
-    answer_store.add_or_update(
-        Answer(answer_id="answer5", value=["<p>abc123</p>", "some value"])
-    )
-    answer_store.add_or_update(
-        Answer(
-            answer_id="answer6", value={"item1": "<p>abc123</p>", "item2": "some value"}
-        )
-    )
-
-    answer_store.add_or_update(Answer(answer_id="to-escape", value="'Twenty Five'"))
-    return answer_store
-
-
-@pytest.fixture
-def relationship_answer_store():
-    answer_store = AnswerStore()
-
-    answer_store.add_or_update(
-        Answer(
-            answer_id="relationship-answer",
-            value=[
-                {
-                    "list_item_id": "abc123",
-                    "to_list_item_id": "xyz987",
-                    "relationship": "Husband or Wife",
-                },
-                {
-                    "list_item_id": "abc123",
-                    "to_list_item_id": "123abc",
-                    "relationship": "Son or Daughter",
-                },
-                {
-                    "list_item_id": "xyz987",
-                    "to_list_item_id": "123abc",
-                    "relationship": "Son or Daughter",
-                },
-            ],
-        )
-    )
-
-    return answer_store
-
-
-@pytest.fixture()
-def store_to_serialize():
-    answer_store = AnswerStore()
-
-    answer_store.add_or_update(
-        Answer(answer_id="answer1", value=10, list_item_id="abc123")
-    )
-    answer_store.add_or_update(
-        Answer(answer_id="answer2", value=20, list_item_id="xyz987")
-    )
-    answer_store.add_or_update(Answer(answer_id="answer3", value=30))
-
-    return answer_store
-
-
-def test_adding_new_answer(empty_answer_store):
+def test_adding_new_answer(answer_store):
     answer = Answer(answer_id="4", value=25)
 
-    empty_answer_store.add_or_update(answer)
+    answer_store.add_or_update(answer)
 
-    assert len(empty_answer_store) == 1
+    assert len(answer_store) == 1
 
 
-def test_raises_error_on_invalid_answer(empty_answer_store):
+def test_raises_error_on_invalid_answer(answer_store):
     with pytest.raises(TypeError) as e:
-        empty_answer_store.add_or_update({"answer_id": "4", "value": 25})
+        answer_store.add_or_update({"answer_id": "4", "value": 25})
 
     assert "Method only supports Answer argument type" in str(e.value)
 
