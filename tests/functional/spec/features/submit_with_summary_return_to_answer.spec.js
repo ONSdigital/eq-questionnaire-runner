@@ -53,7 +53,7 @@ describe("Summary Anchor Scrolling", () => {
       expect(browser.getUrl()).to.contain("property-details-section/#insurance-address-answer2");
     });
 
-    it("When I edit an answer from the section summary page and click the Submit button, Then I am take to the summary page and the browser url should contain an anchor referencing the answer id of the answer I am changing", () => {
+    it("When I edit an answer from the section summary page and click the Submit button, Then I am taken to the summary page and the browser url should contain an anchor referencing the answer id of the answer I am changing", () => {
       $(InsuranceAddressPage.submit()).click();
       $(AddressDurationPage.submit()).click();
       $(PropertyDetailsSummaryPage.insuranceAddressAnswer2Edit()).click();
