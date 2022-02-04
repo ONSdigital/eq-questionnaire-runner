@@ -1,12 +1,176 @@
-from flask.app import Flask
 from pytest import fixture
 
-from app.setup import create_app
+
+@fixture(name="footer_context")
+def footer():
+    return {
+        "lang": "en",
+        "crest": True,
+        "newTabWarning": "The following links open in a new tab",
+        "copyrightDeclaration": {
+            "copyright": "Crown copyright and database rights 2020 OS 100019153.",
+            "text": "Use of address data is subject to the terms and conditions.",
+        },
+    }
 
 
 @fixture
-def app() -> Flask:
-    setting_overrides = {"LOGIN_DISABLED": True}
-    _app = create_app(setting_overrides=setting_overrides)
+def expected_footer_census_theme(footer_context):
+    census = {
+        "rows": [
+            {
+                "itemsList": [
+                    {
+                        "text": "Help",
+                        "url": "https://census.gov.uk/help/how-to-answer-questions/online-questions-help/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Contact us",
+                        "url": "https://census.gov.uk/contact-us/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Languages",
+                        "url": "https://census.gov.uk/help/languages-and-accessibility/languages/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "BSL and audio videos",
+                        "url": "https://census.gov.uk/help/languages-and-accessibility/accessibility/accessible-videos-with-bsl/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
+        "legal": [
+            {
+                "itemsList": [
+                    {
+                        "text": "Cookies",
+                        "url": "https://census.gov.uk/cookies/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Accessibility statement",
+                        "url": "https://census.gov.uk/accessibility-statement/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Privacy and data protection",
+                        "url": "https://census.gov.uk/privacy-and-data-protection/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Terms and conditions",
+                        "url": "https://census.gov.uk/terms-and-conditions/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
+    }
+    return {**footer_context, **census}
 
-    return _app
+
+@fixture
+def expected_footer_business_theme(footer_context):
+    business = {
+        "rows": [
+            {
+                "itemsList": [
+                    {
+                        "text": "What we do",
+                        "url": "https://www.ons.gov.uk/aboutus/whatwedo/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Contact us",
+                        "url": "https://surveys.ons.gov.uk/contact-us/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Accessibility",
+                        "url": "https://www.ons.gov.uk/help/accessibility/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
+        "legal": [
+            {
+                "itemsList": [
+                    {
+                        "text": "Cookies",
+                        "url": "https://surveys.ons.gov.uk/cookies/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Privacy and data protection",
+                        "url": "https://surveys.ons.gov.uk/privacy-and-data-protection/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
+    }
+    return {**footer_context, **business}
+
+
+@fixture
+def expected_footer_nisra_theme():
+    return {
+        "lang": "en",
+        "crest": True,
+        "newTabWarning": "The following links open in a new tab",
+        "copyrightDeclaration": {
+            "copyright": "Crown copyright and database rights 2021 NIMA MOU577.501.",
+            "text": "Use of address data is subject to the terms and conditions.",
+        },
+        "rows": [
+            {
+                "itemsList": [
+                    {
+                        "text": "Help",
+                        "url": "https://census.gov.uk/ni/help/help-with-the-questions/online-questions-help/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Contact us",
+                        "url": "https://census.gov.uk/ni/contact-us/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
+        "legal": [
+            {
+                "itemsList": [
+                    {
+                        "text": "Cookies",
+                        "url": "https://census.gov.uk/ni/cookies/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Accessibility statement",
+                        "url": "https://census.gov.uk/ni/accessibility-statement/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Privacy and data protection",
+                        "url": "https://census.gov.uk/ni/privacy-and-data-protection/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Terms and conditions",
+                        "url": "https://census.gov.uk/ni/terms-and-conditions/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
+        "poweredBy": {
+            "logo": "nisra-logo-black-en",
+            "alt": "NISRA - Northern Ireland Statistics and Research Agency",
+        },
+    }
