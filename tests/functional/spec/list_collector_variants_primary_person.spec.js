@@ -7,10 +7,10 @@ import SubmitPage from "../generated_pages/list_collector_variants_primary_perso
 import ThankYouPage from "../base_pages/thank-you.page.js";
 
 describe("List collector with variants primary person", () => {
-  describe("Given that person is lives in house", () => {
+  describe("Given that person lives in house", () => {
     before("Load the survey", () => {
       browser.openQuestionnaire("test_list_collector_variants_primary_person.json");
-      it("The user is asked questions about whether they live there", () => {
+      it("when the user is asked questions about whether they like variant, Then they are routed to section asking if they live in the house", () => {
         $(VariantBlockPage.yes()).click();
         $(VariantBlockPage.submit()).click();
         expect($(PrimaryPersonListCollectorPage.legend()).getText()).to.contain("Do you live here? (variant)");
@@ -31,7 +31,7 @@ describe("List collector with variants primary person", () => {
       $(ListCollectorAddPage.submit()).click();
       expect($(ListCollectorPage.listLabel(1)).getText()).to.equal("John Doe (You)");
     });
-    it("When the user adds another person, they are shown in the summary", () => {
+    it("When the user adds another person, then they are shown in the list collector summary", () => {
       $(ListCollectorPage.yesLabel()).click();
       $(ListCollectorPage.submit()).click();
       $(ListCollectorAddPage.firstName()).setValue("Samuel");
@@ -39,14 +39,14 @@ describe("List collector with variants primary person", () => {
       $(ListCollectorAddPage.submit()).click();
       expect($(ListCollectorPage.listLabel(2)).getText()).to.equal("Samuel Clemens");
     });
-    it("When the user goes back and answers No, the primary person is not shown", () => {
+    it("When the user goes back and answers 'No' for 'Do you live here' question, then the primary person is not shown", () => {
       $(ListCollectorPage.previous()).click();
       $(PrimaryPersonListCollectorPage.youLiveHereNo()).click();
       $(PrimaryPersonListCollectorPage.submit()).click();
       expect($(ListCollectorPage.listLabel(1)).getText()).to.equal("Samuel Clemens");
     });
 
-    it("The user is able to add members of the household", () => {
+    it("when the user adds another person, Then the user is able to add members of the household", () => {
       $(ListCollectorPage.yes()).click();
       $(ListCollectorPage.submit()).click();
       expect($(ListCollectorAddPage.questionText()).getText()).to.equal("What is the name of the person?");
@@ -76,7 +76,7 @@ describe("List collector with variants primary person", () => {
       expect($(ListCollectorPage.listLabel(2)).getText()).to.equal("Samuel Clemens");
     });
 
-    it("The questionnaire shows the confirmation page when no more people to add", () => {
+    it("When the user answers 'no' to add any person, then the questionnaire shows the confirmation page", () => {
       $(ListCollectorPage.no()).click();
       $(ListCollectorPage.submit()).click();
       expect(browser.getUrl()).to.contain(SubmitPage.url());
@@ -104,7 +104,7 @@ describe("Given the user starts on the 'Do you like variant' question", () => {
   before("Load the survey", () => {
     browser.openQuestionnaire("test_list_collector_variants_primary_person.json");
   });
-  it("The user is asked questions about whether they live there ", () => {
+  it("when the user answers 'No' for variant question, Then they are routed to section asking if they live in the house", () => {
     $(VariantBlockPage.no()).click();
     $(VariantBlockPage.submit()).click();
     expect($(PrimaryPersonListCollectorPage.legend()).getText()).to.contain("Do you live here?");

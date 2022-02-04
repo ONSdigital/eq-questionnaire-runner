@@ -19,11 +19,6 @@
         {
             "name": "ru_name",
             "type": "string"
-        },
-        {
-            "name": "trad_as",
-            "type": "string",
-            "optional": true
         }
     ],
     "questionnaire_flow": {
@@ -46,7 +41,7 @@
                             "question": {
                                 "type": "General",
                                 "id": "mandatory-radio-question",
-                                "title": "What is the trade name of your business ?",
+                                "title": "Who is the respondent of your business ?",
                                 "answers": [
                                     {
                                         "type": "Radio",
