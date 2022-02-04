@@ -40,8 +40,6 @@ class TestSection(TestCase):
         with patch(
             "app.views.contexts.summary.block.Question",
             return_value=get_mock_question("A Question"),
-        ), patch(
-            "app.views.contexts.summary.block.url_for", return_value="http://a.url/"
         ):
             block = Block(
                 block_schema,
