@@ -3,6 +3,7 @@ from datetime import datetime, timedelta, timezone
 import fakeredis
 import pytest
 
+from app.data_models.answer_store import AnswerStore
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.setup import create_app
@@ -14,9 +15,9 @@ RESPONSE_EXPIRY = datetime(2021, 11, 10, 8, 54, 22, tzinfo=timezone.utc)
 @pytest.fixture
 def app(mocker):
     setting_overrides = {"LOGIN_DISABLED": True}
-    the_app = create_app(setting_overrides=setting_overrides)
     mocker.patch("app.setup.datastore.Client", MockDatastore)
     mocker.patch("app.setup.redis.Redis", fakeredis.FakeStrictRedis)
+    the_app = create_app(setting_overrides=setting_overrides)
     return the_app
 
 
@@ -73,13 +74,14 @@ def session_data():
     return SessionData(
         tx_id="tx_id",
         schema_name="some_schema_name",
-        response_id="response_id",
         period_str="period_str",
         language_code=None,
         launch_language_code=None,
         survey_url=None,
         ru_name="ru_name",
         ru_ref="ru_ref",
+        response_id="response_id",
+        trad_as="trading_as",
         case_id="case_id",
     )
 
@@ -97,3 +99,8 @@ def mock_current_user(mocker):
 @pytest.fixture
 def mock_redis_put(mocker):
     return mocker.patch("app.storage.redis.Redis.put")
+
+
+@pytest.fixture
+def answer_store():
+    return AnswerStore()
