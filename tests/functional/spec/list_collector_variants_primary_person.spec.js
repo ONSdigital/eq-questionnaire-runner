@@ -104,7 +104,7 @@ describe("Given the user starts on the 'Do you like variant' question", () => {
   before("Load the survey", () => {
     browser.openQuestionnaire("test_list_collector_variants_primary_person.json");
   });
-  it("when the user answers 'No' for variant question, Then they are routed to section asking if they live in the house", () => {
+  it("When the user answers 'No' for variant question, Then they are routed to section asking if they live in the house", () => {
     $(VariantBlockPage.no()).click();
     $(VariantBlockPage.submit()).click();
     expect($(PrimaryPersonListCollectorPage.legend()).getText()).to.contain("Do you live here?");
