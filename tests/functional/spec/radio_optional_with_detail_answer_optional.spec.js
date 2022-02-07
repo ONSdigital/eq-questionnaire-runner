@@ -7,31 +7,31 @@ describe("Checkbox and Radio item descriptions", () => {
   });
 
   describe("Given the user is presented with an optional radio answer with optional detail answer", () => {
-    it("When no answer is provided, the expected answer is displayed", () => {
+    it("When no answer is provided, Then the expected answer is displayed", () => {
       $(RadioNonMandatoryPage.submit()).click();
       expect($(SubmitPage.radioNonMandatoryAnswer()).getText()).to.contain("No answer provided");
     });
 
-    it("When Toast is selected and no detail answer is provided, the expected answer is displayed", () => {
+    it("When Toast is selected and no detail answer is provided, Then the expected answer is displayed", () => {
       $(RadioNonMandatoryPage.toast()).click();
       $(RadioNonMandatoryPage.submit()).click();
       expect($(SubmitPage.radioNonMandatoryAnswer()).getText()).to.contain("Toast");
     });
 
-    it("When Other is selected and no detail answer is provided, the expected answer is displayed", () => {
+    it("When Other is selected and no detail answer is provided, Then the expected answer is displayed", () => {
       $(RadioNonMandatoryPage.other()).click();
       $(RadioNonMandatoryPage.submit()).click();
       expect($(SubmitPage.radioNonMandatoryAnswer()).getText()).to.contain("Other");
     });
 
-    it("When Other is selected and detail answer is provided, the expected answer is displayed", () => {
+    it("When Other is selected and detail answer is provided, Then the expected answer is displayed", () => {
       $(RadioNonMandatoryPage.other()).click();
       $(RadioNonMandatoryPage.otherDetail()).setValue("Eggs");
       $(RadioNonMandatoryPage.submit()).click();
       expect($(SubmitPage.radioNonMandatoryAnswer()).getText()).to.contain("Eggs");
     });
 
-    it("When Other is selected and detail answer is provided, then the answer is changed, the expected answer is displayed", () => {
+    it("When Other is selected and detail answer is provided and the answer is changed, Then the expected answer is displayed", () => {
       $(RadioNonMandatoryPage.other()).click();
       $(RadioNonMandatoryPage.otherDetail()).setValue("Eggs");
       $(RadioNonMandatoryPage.toast()).click();
