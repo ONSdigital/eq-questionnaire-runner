@@ -10,7 +10,7 @@ describe("List collector with variants primary person", () => {
   describe("Given that person lives in house", () => {
     before("Load the survey", () => {
       browser.openQuestionnaire("test_list_collector_variants_primary_person.json");
-      it("when the user is asked questions about whether they like variant, Then they are routed to section asking if they live in the house", () => {
+      it("When the user is asked questions about whether they like variant, then they are routed to section asking if they live in the house", () => {
         $(VariantBlockPage.yes()).click();
         $(VariantBlockPage.submit()).click();
         expect($(PrimaryPersonListCollectorPage.legend()).getText()).to.contain("Do you live here? (variant)");
@@ -46,7 +46,7 @@ describe("List collector with variants primary person", () => {
       expect($(ListCollectorPage.listLabel(1)).getText()).to.equal("Samuel Clemens");
     });
 
-    it("when the user adds another person, Then the user is able to add members of the household", () => {
+    it("When the user adds another person, then the user is able to add members of the household", () => {
       $(ListCollectorPage.yes()).click();
       $(ListCollectorPage.submit()).click();
       expect($(ListCollectorAddPage.questionText()).getText()).to.equal("What is the name of the person?");

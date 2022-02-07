@@ -6,10 +6,10 @@ describe("Placeholder metadata check", () => {
     before("Load the survey", () => {
       browser.openQuestionnaire("test_placeholder_metadata.json");
     });
-    it("When i see responding unit question, Then i see radio options with first option as metadata placeholder (ru_name)", () => {
+    it("When I see responding unit question, Then I see radio options with first option as metadata placeholder (ru_name)", () => {
       expect($(MandatoryRadioPage.answerRuNameLabel()).getText()).to.equal("Apple");
     });
-    it("When answering responding unit question, then i see confirmation page with my selected placeholder metadata option (ru_name)", () => {
+    it("When I answer responding unit question, then I see confirmation page with my selected placeholder metadata option (ru_name)", () => {
       $(MandatoryRadioPage.answerRuName()).click();
       $(MandatoryRadioPage.submit()).click();
 

@@ -15,7 +15,7 @@ describe("Mobile number validation", () => {
     $(MobileNumberBlockPage.submit()).click();
     expect($(submitPage.mobileNumberAnswer()).getText()).to.contain("+447712345678");
   });
-  it("Given I am asked to enter Mobile no, When I enter an invalid mobile number and submit,then an error screen with invalid number information is displayed ", () => {
+  it("Given I am asked to enter Mobile no, When I enter an invalid mobile number and submit,then an error screen with invalid number information is displayed", () => {
     $(MobileNumberBlockPage.mobileNumber()).setValue("12345678");
     $(MobileNumberBlockPage.submit()).click();
     expect($("body").getText()).to.contain("Enter a UK mobile number in a valid format");
