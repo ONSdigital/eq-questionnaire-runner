@@ -11,8 +11,8 @@ class QuestionnaireState:
         state_data: str,
         collection_exercise_sid: str,
         version: int,
-        submitted_at: datetime = None,
-        expires_at: datetime = None,
+        submitted_at: Optional[datetime] = None,
+        expires_at: Optional[datetime] = None,
     ):
         self.user_id = user_id
         self.state_data = state_data
