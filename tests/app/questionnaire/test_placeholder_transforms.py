@@ -424,6 +424,7 @@ def test_option_label_from_value_with_placeholder_label(
     [
         ("Apple", " (Apple)"),
         (None, ""),
+        ("", ""),
     ],
 )
 def test_conditional_trad_as(placeholder_transform, trad_as, expected):
