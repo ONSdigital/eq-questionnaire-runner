@@ -9,10 +9,10 @@ from app.helpers.address_lookup_api_helper import get_jwk_from_secret
 from app.helpers.uuid_helper import is_valid_uuid
 from app.utilities.json import json_loads
 
-time_to_freeze = datetime.now(timezone.utc).replace(second=0, microsecond=0)
+TIME_TO_FREEZE = datetime.now(timezone.utc).replace(second=0, microsecond=0)
 
 
-@freeze_time(time_to_freeze)
+@freeze_time(TIME_TO_FREEZE)
 def test_get_address_lookup_api_auth_token(app: Flask):
     with app.test_request_context("/status"):
         app.config["ADDRESS_LOOKUP_API_AUTH_ENABLED"] = True
