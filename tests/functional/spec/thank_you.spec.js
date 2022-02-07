@@ -62,7 +62,7 @@ describe("Thank You Default View Response Enabled", () => {
 
     it("When I navigate to the thank you page, and I have submitted more than 45 minutes ago, Then I shouldn't see the option to view my answers", () => {
       expect($(ThankYouPage.viewSubmittedGuidance()).isDisplayed()).to.be.false;
-      browser.pause(45000); // Waiting 45 seconds for the timeout to expire (45 minute timeout changed to 45 seconds by overriding VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS for the purpose of the functional test)
+      browser.pause(46000); // Waiting more than 45 seconds for the timeout to expire (45 minute timeout changed to 45 seconds by overriding VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS for the purpose of the functional test)
       browser.refresh();
       expect($(ThankYouPage.viewSubmittedGuidance()).isDisplayed()).to.be.true;
       expect($(ThankYouPage.viewSubmittedGuidance()).getHTML()).to.contain("For security, you can no longer view your answers");

@@ -34,7 +34,7 @@ describe("View Submitted Response", () => {
 
   describe("Given I am on the view submitted response page and I submitted over 45 minutes ago", () => {
     it("When I click the Download as PDF button, Then I should be redirected to a page informing me that I can no longer view or get a copy of my answers", () => {
-      browser.pause(45000); // Waiting 45 seconds for the timeout to expire (45 minute timeout changed to 45 seconds by overriding VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS for the purpose of the functional test)
+      browser.pause(46000); // Waiting more than 45 seconds for the timeout to expire (45 minute timeout changed to 45 seconds by overriding VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS for the purpose of the functional test)
       $(ViewSubmittedResponsePage.downloadButton()).click();
       expect($(ViewSubmittedResponsePage.informationPanel()).isDisplayed()).to.be.true;
       expect($(ViewSubmittedResponsePage.informationPanel()).getHTML()).to.contain("For security, you can no longer view or get a copy of your answers");
