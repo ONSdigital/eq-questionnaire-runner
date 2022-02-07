@@ -192,7 +192,7 @@ The functional tests use a set of selectors that are generated from each of the 
 
 To run the functional tests first runner needs to be spin up with:
 
-`ENV_FILE=.functional-tests.env make run`
+`RUNNER_ENV_FILE=.functional-tests.env make run`
 
 This will set the correct environment variables for running the functional tests.
 

@@ -155,11 +155,11 @@ jobs:
       - name: Javascript linting check
         run: yarn lint
       - name: Docker compose
-        run: docker-compose --version && ENV_FILE=.functional-tests.env docker-compose up --build -d
+        run: docker-compose --version && RUNNER_ENV_FILE=.functional-tests.env docker-compose up --build -d
       - name: Functional tests
         run: ./scripts/run_tests_functional.sh ${{ matrix.suite }}
       - name: Docker compose shutdown
-        run: ENV_FILE=.functional-tests.env docker-compose kill
+        run: RUNNER_ENV_FILE=.functional-tests.env docker-compose kill
   docker-push:
     runs-on: ubuntu-18.04
     steps:
