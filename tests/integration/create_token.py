@@ -68,6 +68,12 @@ class TokenGenerator:
 
         return self.generate_token(payload_vars)
 
+    def create_token_without_trad_as(self, schema_name, **extra_payload):
+        payload_vars = self._get_payload_with_params(schema_name, None, **extra_payload)
+        del payload_vars["trad_as"]
+
+        return self.generate_token(payload_vars)
+
     def create_token_with_survey_url(self, schema_name, survey_url, **extra_payload):
         payload_vars = self._get_payload_with_params(
             schema_name, survey_url, **extra_payload

@@ -417,3 +417,16 @@ def test_option_label_from_value_with_placeholder_label(
     actual = placeholder_transform.option_label_from_value(value, answer_id)
 
     assert actual == expected
+
+
+@pytest.mark.parametrize(
+    "trad_as, expected",
+    [
+        ("Apple", " (Apple)"),
+        (None, ""),
+        ("", ""),
+    ],
+)
+def test_conditional_trad_as(placeholder_transform, trad_as, expected):
+    actual = placeholder_transform.conditional_trad_as(trad_as)
+    assert actual == expected
