@@ -11,7 +11,7 @@ describe("Hub and spoke section required and enabled", () => {
     $(HouseholdRelationshipsBlockPage.submit()).click();
     expect($(RelationshipsCountPage.legend()).getText()).to.contain("How many people are related");
   });
-  it("Given a relationship question in household, When I answer 'No', Then Iam redirected to the hub and can submit my answers without completing the other section", () => {
+  it("Given a relationship question in household, When I answer 'No', Then I am redirected to the hub and can submit my answers without completing the other section", () => {
     $(HouseholdRelationshipsBlockPage.no()).click();
     $(HouseholdRelationshipsBlockPage.submit()).click();
     expect($("body").getText()).to.contain("Submit survey");
