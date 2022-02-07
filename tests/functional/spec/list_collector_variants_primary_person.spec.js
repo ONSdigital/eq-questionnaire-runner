@@ -10,7 +10,7 @@ describe("List collector with variants primary person", () => {
   describe("Given that person lives in house", () => {
     before("Load the survey", () => {
       browser.openQuestionnaire("test_list_collector_variants_primary_person.json");
-      it("When the user is asked questions about whether they like variant, then they are routed to section asking if they live in the house", () => {
+      it("When the user is asked questions about whether they like variant, Then they are routed to section asking if they live in the house", () => {
         $(VariantBlockPage.yes()).click();
         $(VariantBlockPage.submit()).click();
         expect($(PrimaryPersonListCollectorPage.legend()).getText()).to.contain("Do you live here? (variant)");
@@ -21,7 +21,7 @@ describe("List collector with variants primary person", () => {
     before("Load the survey", () => {
       browser.openQuestionnaire("test_list_collector_variants_primary_person.json");
     });
-    it("When the user says that they do live there, then they are shown as the primary person", () => {
+    it("When the user says that they do live there, Then they are shown as the primary person", () => {
       $(VariantBlockPage.yes()).click();
       $(VariantBlockPage.submit()).click();
       $(PrimaryPersonListCollectorPage.youLiveHereYes()).click();
@@ -31,7 +31,7 @@ describe("List collector with variants primary person", () => {
       $(ListCollectorAddPage.submit()).click();
       expect($(ListCollectorPage.listLabel(1)).getText()).to.equal("John Doe (You)");
     });
-    it("When the user adds another person, then they are shown in the list collector summary", () => {
+    it("When the user adds another person, Then they are shown in the list collector summary", () => {
       $(ListCollectorPage.yesLabel()).click();
       $(ListCollectorPage.submit()).click();
       $(ListCollectorAddPage.firstName()).setValue("Samuel");
@@ -39,14 +39,14 @@ describe("List collector with variants primary person", () => {
       $(ListCollectorAddPage.submit()).click();
       expect($(ListCollectorPage.listLabel(2)).getText()).to.equal("Samuel Clemens");
     });
-    it("When the user goes back and answers 'No' for 'Do you live here' question, then the primary person is not shown", () => {
+    it("When the user goes back and answers 'No' for 'Do you live here' question, Then the primary person is not shown", () => {
       $(ListCollectorPage.previous()).click();
       $(PrimaryPersonListCollectorPage.youLiveHereNo()).click();
       $(PrimaryPersonListCollectorPage.submit()).click();
       expect($(ListCollectorPage.listLabel(1)).getText()).to.equal("Samuel Clemens");
     });
 
-    it("When the user adds another person, then the user is able to add members of the household", () => {
+    it("When the user adds another person, Then the user is able to add members of the household", () => {
       $(ListCollectorPage.yes()).click();
       $(ListCollectorPage.submit()).click();
       expect($(ListCollectorAddPage.questionText()).getText()).to.equal("What is the name of the person?");
@@ -54,7 +54,7 @@ describe("List collector with variants primary person", () => {
       $(ListCollectorAddPage.lastName()).setValue("Clemens");
       $(ListCollectorAddPage.submit()).click();
     });
-    it("When the user adds the primary person again, then the primary person is first in the list", () => {
+    it("When the user adds the primary person again, Then the primary person is first in the list", () => {
       $(ListCollectorPage.previous()).click();
       $(PrimaryPersonListCollectorPage.youLiveHereYes()).click();
       $(PrimaryPersonListCollectorPage.submit()).click();
@@ -63,11 +63,11 @@ describe("List collector with variants primary person", () => {
       $(ListCollectorAddPage.submit()).click();
       expect($(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twin (You)");
     });
-    it("When the user views the summary, then it does not show the remove link for the primary person", () => {
+    it("When the user views the summary, Then it does not show the remove link for the primary person", () => {
       expect($(ListCollectorPage.listRemoveLink(1)).isExisting()).to.be.false;
       expect($(ListCollectorPage.listRemoveLink(2)).isExisting()).to.be.true;
     });
-    it("When the user changes the primary person's name on the summary, then the name should be updated", () => {
+    it("When the user changes the primary person's name on the summary, Then the name should be updated", () => {
       $(ListCollectorPage.listEditLink(1)).click();
       $(EditPersonPage.firstName()).setValue("John");
       $(EditPersonPage.lastName()).setValue("Doe");
@@ -76,24 +76,24 @@ describe("List collector with variants primary person", () => {
       expect($(ListCollectorPage.listLabel(2)).getText()).to.equal("Samuel Clemens");
     });
 
-    it("When the user answers 'no' to add any person, then the questionnaire shows the confirmation page", () => {
+    it("When the user answers 'no' to add any person, Then the questionnaire shows the confirmation page", () => {
       $(ListCollectorPage.no()).click();
       $(ListCollectorPage.submit()).click();
       expect(browser.getUrl()).to.contain(SubmitPage.url());
     });
 
-    it("When the user attempts to submit, then they are shown the confirmation page", () => {
+    it("When the user attempts to submit, Then they are shown the confirmation page", () => {
       expect($(SubmitPage.guidance()).getText()).to.contain("Please submit this survey to complete it");
     });
 
-    it("When user updates the variant answer, then it should come back to summary screen with updated answer", () => {
+    it("When user updates the variant answer, Then it should come back to summary screen with updated answer", () => {
       $(SubmitPage.variantAnswerEdit()).click();
       $(VariantBlockPage.no()).click();
       $(VariantBlockPage.submit()).click();
       expect($(SubmitPage.variantAnswer()).getText()).to.equal("No");
     });
 
-    it("When the user submits, then they are allowed to submit the survey", () => {
+    it("When the user submits, Then they are allowed to submit the survey", () => {
       $(SubmitPage.submit()).click();
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
     });
@@ -110,7 +110,7 @@ describe("Given the user starts on the 'Do you like variant' question", () => {
     expect($(PrimaryPersonListCollectorPage.legend()).getText()).to.contain("Do you live here?");
   });
 
-  it("When the user says they do not live there and anyone else, then confirmation screen is displayed", () => {
+  it("When the user says they do not live there and anyone else, Then confirmation screen is displayed", () => {
     $(PrimaryPersonListCollectorPage.youLiveHereNo()).click();
     $(PrimaryPersonListCollectorPage.submit()).click();
     $(ListCollectorPage.no()).click();
