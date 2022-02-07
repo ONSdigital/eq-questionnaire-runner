@@ -1,3 +1,4 @@
+from flask import url_for
 from markupsafe import escape
 
 from app.forms.field_handlers.select_handlers import DynamicAnswerOptions
@@ -6,9 +7,17 @@ from app.views.contexts.summary.answer import Answer
 
 class Question:
     def __init__(
-        self, question_schema, *, answer_store, schema, list_item_id, rule_evaluator
+        self,
+        question_schema,
+        *,
+        answer_store,
+        schema,
+        rule_evaluator,
+        location,
+        block_id,
+        return_to,
     ):
-        self.list_item_id = list_item_id
+        self.list_item_id = location.list_item_id if location else None
         self.id = question_schema["id"]
         self.type = question_schema["type"]
         self.schema = schema
@@ -18,22 +27,43 @@ class Question:
             question_schema.get("title") or question_schema["answers"][0]["label"]
         )
         self.number = question_schema.get("number", None)
+
         self.rule_evaluator = rule_evaluator
 
-        self.answers = self._build_answers(answer_store, question_schema)
+        self.answers = self._build_answers(
+            answer_store=answer_store,
+            question_schema=question_schema,
+            block_id=block_id,
+            list_name=location.list_name if location else None,
+            return_to=return_to,
+        )
 
     def _get_answer(self, answer_store, answer_id):
         return answer_store.get_escaped_answer_value(answer_id, self.list_item_id)
 
-    def _build_answers(self, answer_store, question_schema):
+    def _build_answers(
+        self, *, answer_store, question_schema, block_id, list_name, return_to
+    ):
 
         if self.summary:
+            answer_id = f"{self.id}-concatenated-answer"
+            link = url_for(
+                "questionnaire.block",
+                list_name=list_name,
+                block_id=block_id,
+                list_item_id=self.list_item_id,
+                return_to=return_to,
+                return_to_answer_id=answer_id,
+                _anchor=answer_id,
+            )
+
             return [
                 {
-                    "id": f"{self.id}-concatenated-answer",
+                    "id": answer_id,
                     "value": self._concatenate_answers(
                         answer_store, self.summary["concatenation_type"]
                     ),
+                    "link": link,
                 }
             ]
 
@@ -44,7 +74,14 @@ class Question:
                 answer_store, question_schema, answer_schema, answer_value
             )
 
-            summary_answer = Answer(answer_schema, answer).serialize()
+            summary_answer = Answer(
+                answer_schema=answer_schema,
+                answer_value=answer,
+                block_id=block_id,
+                list_name=list_name,
+                list_item_id=self.list_item_id,
+                return_to=return_to,
+            ).serialize()
             summary_answers.append(summary_answer)
 
         if question_schema["type"] == "MutuallyExclusive":
