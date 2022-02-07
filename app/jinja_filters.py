@@ -366,12 +366,10 @@ def map_dropdown_config_processor():
 
 
 class SummaryAction:
-    def __init__(
-        self, block, answer, answer_title, edit_link_text, edit_link_aria_label
-    ):
+    def __init__(self, answer, answer_title, edit_link_text, edit_link_aria_label):
         self.text = edit_link_text
         self.ariaLabel = edit_link_aria_label + " " + answer_title
-        self.url = block["link"] + "#" + answer["id"]
+        self.url = answer["link"]
 
         self.attributes = {
             "data-qa": answer["id"] + "-edit",
@@ -392,7 +390,6 @@ class SummaryRowItemValue:
 class SummaryRowItem:
     def __init__(  # noqa: C901, R0912 pylint: disable=too-complex, too-many-branches
         self,
-        block,
         question,
         answer,
         multiple_answers,
@@ -475,7 +472,7 @@ class SummaryRowItem:
         if answers_are_editable:
             self.actions = [
                 SummaryAction(
-                    block, answer, self.rowTitle, edit_link_text, edit_link_aria_label
+                    answer, self.rowTitle, edit_link_text, edit_link_aria_label
                 )
             ]
 
@@ -483,7 +480,6 @@ class SummaryRowItem:
 class SummaryRow:
     def __init__(
         self,
-        block,
         question,
         summary_type,
         answers_are_editable,
@@ -503,7 +499,6 @@ class SummaryRow:
         for answer in question["answers"]:
             self.rowItems.append(
                 SummaryRowItem(
-                    block,
                     question,
                     answer,
                     multiple_answers,
@@ -528,7 +523,6 @@ def map_summary_item_config(
 ):
     rows = [
         SummaryRow(
-            block,
             block["question"],
             summary_type,
             answers_are_editable,
@@ -541,7 +535,7 @@ def map_summary_item_config(
 
     if summary_type == "CalculatedSummary":
         rows.append(
-            SummaryRow(None, calculated_question, summary_type, False, None, None, None)
+            SummaryRow(calculated_question, summary_type, False, None, None, None)
         )
 
     return rows
