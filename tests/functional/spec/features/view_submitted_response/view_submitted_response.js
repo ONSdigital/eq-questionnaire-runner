@@ -18,7 +18,7 @@ describe("View Submitted Response", () => {
     expect(browser.getUrl()).to.contain(ViewSubmittedResponsePage.pageName);
   });
 
-  it("Given a questionnaire has view submitted response enabled and has been completed, when on the view response page, then the summary is displayed correctly", () => {
+  it("Given I have completed a questionnaire with view submitted response enabled, When I am on the view submitted response page within 45 minutes of submission, Then the summary is displayed correctly", () => {
     expect($(ViewSubmittedResponsePage.informationPanel()).isDisplayed()).to.be.false;
     expect($(ViewSubmittedResponsePage.printButton()).isDisplayed()).to.be.true;
     expect($(ViewSubmittedResponsePage.heading()).getText()).to.equal("Answers submitted for Apple");
