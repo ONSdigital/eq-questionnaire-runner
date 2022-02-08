@@ -47,7 +47,7 @@ class ListModel:
     def non_primary_people(self) -> list[dict]:
         return [item for item in self.items if item != self.primary_person]
 
-    def index(self, list_item: dict) -> int:
+    def index(self, list_item: str) -> int:
         return self.items.index(list_item)
 
     def serialize(self) -> dict:
@@ -146,7 +146,7 @@ class ListStore:
     def get(self, item: str) -> ListModel:
         return self.__getitem__(item)
 
-    def list_item_position(self, for_list: str, list_item_id: Union[dict, Any]) -> int:
+    def list_item_position(self, for_list: str, list_item_id: str) -> int:
         return self[for_list].index(list_item_id) + 1
 
     def _generate_identifier(self) -> str:
