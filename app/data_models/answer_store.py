@@ -35,6 +35,8 @@ class AnswerStore:
         return len(self.answer_map)
 
     def __eq__(self, other: object) -> bool:
+        if not isinstance(other, AnswerStore):
+            return NotImplemented
         return isinstance(other, AnswerStore) and self.answer_map == other.answer_map
 
     @staticmethod
