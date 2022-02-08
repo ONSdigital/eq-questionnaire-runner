@@ -19,7 +19,7 @@ class AnswerStore:
     }
     """
 
-    def __init__(self, existing_answers: List[Dict] = None):
+    def __init__(self, existing_answers: Optional[List[Dict]] = None):
         """Instantiate an answer_store.
 
         Args:
@@ -69,7 +69,7 @@ class AnswerStore:
             self._is_dirty = True
             self.answer_map[key] = answer
 
-    def get_answer(self, answer_id: str, list_item_id: str = None) -> Optional[Answer]:
+    def get_answer(self, answer_id: str, list_item_id: Optional[str] = None) -> Optional[Answer]:
         """Get a single answer from the store
 
         Args:
@@ -82,7 +82,7 @@ class AnswerStore:
         return self.answer_map.get((answer_id, list_item_id))
 
     def get_answers_by_answer_id(
-        self, answer_ids: List[str], list_item_id: str = None
+        self, answer_ids: List[str], list_item_id: Optional[str] = None
     ) -> List[Answer]:
         """Get multiple answers from the store using the answer_id
 
@@ -108,7 +108,7 @@ class AnswerStore:
         """
         self.answer_map.clear()
 
-    def remove_answer(self, answer_id: str, list_item_id: str = None) -> None:
+    def remove_answer(self, answer_id: str, list_item_id: Optional[str] = None) -> None:
         """
         Removes answer *in place* from the answer store.
         """
@@ -136,7 +136,7 @@ class AnswerStore:
         return list(self.answer_map.values())
 
     def get_escaped_answer_value(
-        self, answer_id: str, list_item_id: str = None
+        self, answer_id: str, list_item_id: Optional[str] = None
     ) -> Optional[AnswerValueEscapedTypes]:
         if answer := self.get_answer(answer_id, list_item_id):
             return escape_answer_value(answer.value)

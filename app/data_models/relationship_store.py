@@ -21,7 +21,7 @@ class RelationshipStore:
     Stores and updates relationships.
     """
 
-    def __init__(self, relationships: dict = None) -> None:
+    def __init__(self, relationships: Optional[dict] = None) -> None:
         self._is_dirty = False
         self._relationships = self._build_map(relationships or [])
 

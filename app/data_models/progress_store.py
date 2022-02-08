@@ -32,7 +32,7 @@ class ProgressStore:
     that have been started.
     """
 
-    def __init__(self, in_progress_sections: List[Mapping] = None) -> None:
+    def __init__(self, in_progress_sections: Optional[List[Mapping]] = None) -> None:
         """
         Instantiate a ProgressStore object that tracks the status of sections and its completed blocks
         Args:
@@ -93,7 +93,7 @@ class ProgressStore:
         )
 
     def section_keys(
-        self, statuses: Iterable[str] = None, section_ids: Iterable[str] = None
+        self, statuses: Optional[Iterable[str]] = None, section_ids: Optional[Iterable[str]] = None
     ) -> list[str]:
         if not statuses:
             statuses = {*CompletionStatus()}

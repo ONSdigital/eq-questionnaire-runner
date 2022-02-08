@@ -1,6 +1,6 @@
 from datetime import datetime
 from types import MappingProxyType
-from typing import Any, Mapping, Union
+from typing import Any, Mapping, Optional, Union
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
@@ -12,7 +12,7 @@ from app.utilities.json import json_dumps, json_loads
 class QuestionnaireStore:
     LATEST_VERSION = 1
 
-    def __init__(self, storage: Any, version: int = None):
+    def __init__(self, storage: Any, version: Optional[int] = None):
         # Storage type hint needs to be Any due to circular import
         self._storage = storage
         if version is None:

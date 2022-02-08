@@ -20,7 +20,7 @@ class SessionData:
         account_service_base_url: METADATA_MAPPING_TYPE = None,
         account_service_log_out_url: METADATA_MAPPING_TYPE = None,
         trad_as: METADATA_MAPPING_TYPE = None,
-        display_address: str = None,
+        display_address: Optional[str] = None,
         confirmation_email_count: int = 0,
         feedback_count: int = 0,
         **_: str,
