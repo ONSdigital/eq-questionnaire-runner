@@ -1,5 +1,4 @@
 from typing import Type
-from unittest.mock import Mock
 
 import pytest
 from flask import Flask, current_app
@@ -16,84 +15,9 @@ from app.survey_config import (
 )
 
 
-def get_context_helper(
-    app, survey_config, is_post_submission=False, include_csrf_token=True
-):
+def test_footer_context_census_theme(app: Flask, expected_footer_census_theme):
     with app.app_context():
-        return ContextHelper(
-            language="en",
-            is_post_submission=is_post_submission,
-            include_csrf_token=include_csrf_token,
-            survey_config=survey_config,
-        )
-
-
-def test_footer_context_census_theme(app: Flask):
-    with app.app_context():
-        expected = {
-            "lang": "en",
-            "crest": True,
-            "newTabWarning": "The following links open in a new tab",
-            "copyrightDeclaration": {
-                "copyright": "Crown copyright and database rights 2020 OS 100019153.",
-                "text": "Use of address data is subject to the terms and conditions.",
-            },
-            "rows": [
-                {
-                    "itemsList": [
-                        {
-                            "text": "Help",
-                            "url": "https://census.gov.uk/help/how-to-answer-questions/online-questions-help/",
-                            "target": "_blank",
-                        },
-                        {
-                            "text": "Contact us",
-                            "url": "https://census.gov.uk/contact-us/",
-                            "target": "_blank",
-                        },
-                        {
-                            "text": "Languages",
-                            "url": "https://census.gov.uk/help/languages-and-accessibility/languages/",
-                            "target": "_blank",
-                        },
-                        {
-                            "text": "BSL and audio videos",
-                            "url": "https://census.gov.uk/help/languages-and-accessibility/accessibility/accessible-videos-with-bsl/",
-                            "target": "_blank",
-                        },
-                    ]
-                }
-            ],
-            "legal": [
-                {
-                    "itemsList": [
-                        {
-                            "text": "Cookies",
-                            "url": "https://census.gov.uk/cookies/",
-                            "target": "_blank",
-                        },
-                        {
-                            "text": "Accessibility statement",
-                            "url": "https://census.gov.uk/accessibility-statement/",
-                            "target": "_blank",
-                        },
-                        {
-                            "text": "Privacy and data protection",
-                            "url": "https://census.gov.uk/privacy-and-data-protection/",
-                            "target": "_blank",
-                        },
-                        {
-                            "text": "Terms and conditions",
-                            "url": "https://census.gov.uk/terms-and-conditions/",
-                            "target": "_blank",
-                        },
-                    ]
-                }
-            ],
-        }
-
         survey_config = CensusSurveyConfig()
-
         result = ContextHelper(
             language="en",
             is_post_submission=False,
@@ -101,58 +25,11 @@ def test_footer_context_census_theme(app: Flask):
             survey_config=survey_config,
         ).context["footer"]
 
-    assert result == expected
+    assert result == expected_footer_census_theme
 
 
-def test_footer_context_business_theme(app: Flask):
-    with app.app_context():
-        expected = {
-            "lang": "en",
-            "crest": True,
-            "newTabWarning": "The following links open in a new tab",
-            "copyrightDeclaration": {
-                "copyright": "Crown copyright and database rights 2020 OS 100019153.",
-                "text": "Use of address data is subject to the terms and conditions.",
-            },
-            "rows": [
-                {
-                    "itemsList": [
-                        {
-                            "text": "What we do",
-                            "url": "https://www.ons.gov.uk/aboutus/whatwedo/",
-                            "target": "_blank",
-                        },
-                        {
-                            "text": "Contact us",
-                            "url": "https://surveys.ons.gov.uk/contact-us/",
-                            "target": "_blank",
-                        },
-                        {
-                            "text": "Accessibility",
-                            "url": "https://www.ons.gov.uk/help/accessibility/",
-                            "target": "_blank",
-                        },
-                    ]
-                }
-            ],
-            "legal": [
-                {
-                    "itemsList": [
-                        {
-                            "text": "Cookies",
-                            "url": "https://surveys.ons.gov.uk/cookies/",
-                            "target": "_blank",
-                        },
-                        {
-                            "text": "Privacy and data protection",
-                            "url": "https://surveys.ons.gov.uk/privacy-and-data-protection/",
-                            "target": "_blank",
-                        },
-                    ]
-                }
-            ],
-        }
-
+def test_footer_context_business_theme(app: Flask, expected_footer_business_theme):
+    with app.test_client():
         survey_config = BusinessSurveyConfig()
 
         result = ContextHelper(
@@ -162,7 +39,7 @@ def test_footer_context_business_theme(app: Flask):
             survey_config=survey_config,
         ).context["footer"]
 
-    assert result == expected
+    assert result == expected_footer_business_theme
 
 
 def test_footer_warning_in_context_census_theme(app: Flask):
@@ -192,64 +69,8 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             ).context["footer"]["footerWarning"]
 
 
-def test_footer_context_census_nisra_theme(app: Flask):
+def test_footer_context_census_nisra_theme(app: Flask, expected_footer_nisra_theme):
     with app.app_context():
-        expected = {
-            "lang": "en",
-            "crest": True,
-            "newTabWarning": "The following links open in a new tab",
-            "copyrightDeclaration": {
-                "copyright": "Crown copyright and database rights 2021 NIMA MOU577.501.",
-                "text": "Use of address data is subject to the terms and conditions.",
-            },
-            "rows": [
-                {
-                    "itemsList": [
-                        {
-                            "text": "Help",
-                            "url": "https://census.gov.uk/ni/help/help-with-the-questions/online-questions-help/",
-                            "target": "_blank",
-                        },
-                        {
-                            "text": "Contact us",
-                            "url": "https://census.gov.uk/ni/contact-us/",
-                            "target": "_blank",
-                        },
-                    ]
-                }
-            ],
-            "legal": [
-                {
-                    "itemsList": [
-                        {
-                            "text": "Cookies",
-                            "url": "https://census.gov.uk/ni/cookies/",
-                            "target": "_blank",
-                        },
-                        {
-                            "text": "Accessibility statement",
-                            "url": "https://census.gov.uk/ni/accessibility-statement/",
-                            "target": "_blank",
-                        },
-                        {
-                            "text": "Privacy and data protection",
-                            "url": "https://census.gov.uk/ni/privacy-and-data-protection/",
-                            "target": "_blank",
-                        },
-                        {
-                            "text": "Terms and conditions",
-                            "url": "https://census.gov.uk/ni/terms-and-conditions/",
-                            "target": "_blank",
-                        },
-                    ]
-                }
-            ],
-            "poweredBy": {
-                "logo": "nisra-logo-black-en",
-                "alt": "NISRA - Northern Ireland Statistics and Research Agency",
-            },
-        }
-
         survey_config = CensusNISRASurveyConfig()
 
         result = ContextHelper(
@@ -259,7 +80,7 @@ def test_footer_context_census_nisra_theme(app: Flask):
             survey_config=survey_config,
         ).context["footer"]
 
-    assert result == expected
+    assert result == expected_footer_nisra_theme
 
 
 def test_get_page_header_context_business(app: Flask):
@@ -359,7 +180,9 @@ def test_service_links_context(
     app: Flask, mocker, survey_config, is_authenticated, expected
 ):
     with app.app_context():
-        current_user = mocker.patch("flask_login.utils._get_user", return_value=Mock())
+        current_user = mocker.patch(
+            "flask_login.utils._get_user", return_value=mocker.MagicMock()
+        )
         current_user.is_authenticated = is_authenticated
 
         result = ContextHelper(
@@ -463,7 +286,7 @@ def test_cookie_settings_url_context(
     ],
 )
 def test_account_service_my_account_url_context(
-    app: Flask, survey_config: SurveyConfig, expected: str
+    app: Flask, survey_config: SurveyConfig, expected: str, get_context_helper
 ):
     result = get_context_helper(app, survey_config).context[
         "account_service_my_account_url"
@@ -483,7 +306,7 @@ def test_account_service_my_account_url_context(
     ],
 )
 def test_account_service_my_todo_url_context(
-    app: Flask, survey_config: SurveyConfig, expected: str
+    app: Flask, survey_config: SurveyConfig, expected: str, get_context_helper
 ):
     result = get_context_helper(app, survey_config).context["account_service_todo_url"]
     assert result == expected
@@ -507,7 +330,7 @@ def test_account_service_my_todo_url_context(
     ],
 )
 def test_account_service_log_out_url_context(
-    app: Flask, survey_config: SurveyConfig, expected: str
+    app: Flask, survey_config: SurveyConfig, expected: str, get_context_helper
 ):
     result = get_context_helper(app, survey_config).context[
         "account_service_log_out_url"
