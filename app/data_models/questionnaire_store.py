@@ -27,7 +27,7 @@ class QuestionnaireStore:
         self.list_store = ListStore()
         self.answer_store = AnswerStore()
         self.progress_store = ProgressStore()
-        self.submitted_at: Union[datetime, None]
+        self.submitted_at: Optional[datetime]
         self.collection_exercise_sid: str
 
         (
