@@ -45,7 +45,7 @@ class RelationshipStore:
         self._relationships.clear()
         self._is_dirty = True
 
-    def serialize(self) -> list:
+    def serialize(self) -> list[str]:
         return [
             relationship.for_json() for relationship in self._relationships.values()
         ]

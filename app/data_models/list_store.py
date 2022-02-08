@@ -210,7 +210,7 @@ class ListStore:
 
         return list_item_id
 
-    def serialize(self) -> list:
+    def serialize(self) -> list[str]:
         return [list_model.serialize() for list_model in self]
 
     @classmethod
