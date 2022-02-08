@@ -7,7 +7,6 @@ from typing import (
     Mapping,
     MutableMapping,
     Optional,
-    Sequence,
     Union,
 )
 
@@ -44,7 +43,7 @@ class ProgressStore:
             in_progress_sections or []
         )  # type: MutableMapping
 
-    def __contains__(self, section_key: Union[int, Sequence[int]]) -> bool:
+    def __contains__(self, section_key: tuple[str, Optional[str]]) -> bool:
         return section_key in self._progress
 
     @staticmethod
