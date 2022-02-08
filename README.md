@@ -220,7 +220,7 @@ If you have already built the generated pages, then the functional tests can be 
 
 This can be limited to a single spec using:
 
-`./node_modules/.bin/wdio tests/functional/wdio.conf.js --spec tests/functional/spec/save_sign_out.spec.js`
+`yarn test_functional --spec save_sign_out.spec.js`
 
 To run a single test, add `.only` into the name of any `describe` or `it` function:
 
