@@ -16,7 +16,9 @@ logger = get_logger()
 
 
 class SessionStore:
-    def __init__(self, user_ik: str, pepper: str, eq_session_id: Optional[str] = None) -> None:
+    def __init__(
+        self, user_ik: str, pepper: str, eq_session_id: Optional[str] = None
+    ) -> None:
         self.eq_session_id = eq_session_id
         self.user_id: Optional[str] = None
         self.user_ik = user_ik

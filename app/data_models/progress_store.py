@@ -93,7 +93,9 @@ class ProgressStore:
         )
 
     def section_keys(
-        self, statuses: Optional[Iterable[str]] = None, section_ids: Optional[Iterable[str]] = None
+        self,
+        statuses: Optional[Iterable[str]] = None,
+        section_ids: Optional[Iterable[str]] = None,
     ) -> list[str]:
         if not statuses:
             statuses = {*CompletionStatus()}
