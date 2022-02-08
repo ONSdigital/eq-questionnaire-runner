@@ -183,7 +183,7 @@ class ListStore:
 
     def add_list_item(
         self, list_name: str, primary_person: bool = False
-    ) -> Optional[str]:
+    ) -> str:
         """Add a new list item to a named list.
 
         If the list does not exist, it will be created
