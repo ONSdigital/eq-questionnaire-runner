@@ -313,7 +313,7 @@ class Router:
 
             if repeating_list:
                 for list_item_id in self._list_store[repeating_list]:
-                    section_key = (section_id, list_item_id)
+                    section_key: tuple[str, Optional[str]] = (section_id, list_item_id)
                     yield section_key
             else:
                 section_key = (section_id, None)

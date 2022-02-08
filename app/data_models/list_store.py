@@ -124,7 +124,7 @@ class ListStore:
     def __iter__(self) -> Iterator[ListModel]:
         yield from self._lists.values()
 
-    def __getitem__(self, list_name: str) -> Union[ListModel, Any]:
+    def __getitem__(self, list_name: str) -> ListModel:
         try:
             return self._lists[list_name]
         except KeyError:
