@@ -34,9 +34,8 @@ class AnswerStore:
     def __len__(self) -> int:
         return len(self.answer_map)
 
-    def __eq__(self, other: AnswerStore) -> bool:  # type: ignore
-        # violates Liskov Substitution Principle
-        return self.answer_map == other.answer_map
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, AnswerStore) and self.answer_map == other.answer_map
 
     @staticmethod
     def _build_map(answers: list[dict]) -> dict:
