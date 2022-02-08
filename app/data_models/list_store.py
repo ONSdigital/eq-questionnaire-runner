@@ -181,9 +181,7 @@ class ListStore:
 
         self._is_dirty = True
 
-    def add_list_item(
-        self, list_name: str, primary_person: bool = False
-    ) -> str:
+    def add_list_item(self, list_name: str, primary_person: bool = False) -> str:
         """Add a new list item to a named list.
 
         If the list does not exist, it will be created

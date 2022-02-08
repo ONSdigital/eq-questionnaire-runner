@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from datetime import datetime
 from types import MappingProxyType
 from typing import Any, Mapping, Optional, Union
@@ -43,7 +45,9 @@ class QuestionnaireStore:
     def get_latest_version_number(self) -> int:
         return self.LATEST_VERSION
 
-    def set_metadata(self, to_set: Mapping[str, Union[str, int, list]]) -> Any:
+    def set_metadata(
+        self, to_set: Mapping[str, Union[str, int, list]]
+    ) -> QuestionnaireStore:
         """
         Set metadata. This should only be used where absolutely necessary.
         Metadata should normally be read only.
