@@ -46,7 +46,7 @@ class AnswerStore:
         }
 
     @staticmethod
-    def _validate(answer: Optional[Answer]) -> None:
+    def _validate(answer: Answer) -> None:
         if not isinstance(answer, Answer):
             raise TypeError(
                 f"Method only supports Answer argument type, found type: {type(answer)}"
