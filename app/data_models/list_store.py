@@ -214,7 +214,7 @@ class ListStore:
         return [list_model.serialize() for list_model in self]
 
     @classmethod
-    def deserialize(cls, serialized: list) -> Any:
+    def deserialize(cls, serialized: list[Mapping]) -> ListStore:
         if not serialized:
             return cls()
 
