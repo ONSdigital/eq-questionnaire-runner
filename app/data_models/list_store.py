@@ -156,7 +156,7 @@ class ListStore:
             if candidate not in self._list_item_ids():
                 return candidate
 
-    def _list_item_ids(self) -> list:
+    def _list_item_ids(self) -> list[str]:
         ids = []
         for named_list in self._lists.values():
             ids.extend(named_list.items)
