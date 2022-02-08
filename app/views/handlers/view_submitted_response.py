@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 from typing import Union
 
@@ -18,6 +19,9 @@ class ViewSubmittedResponseNotEnabled(Exception):
 
 class ViewSubmittedResponseExpired(Exception):
     pass
+
+
+logger = logging.getLogger(__name__)
 
 
 class ViewSubmittedResponse:

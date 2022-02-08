@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import time
 from typing import Union
 
 import flask_babel
-from flask import Blueprint, g, redirect, request, send_file
+from flask import Blueprint, g, redirect, request
 from flask import session as cookie_session
 from flask import url_for
 from flask_login import current_user, login_required
@@ -431,12 +432,16 @@ def get_view_submitted_response_pdf(
     except ViewSubmittedResponseExpired:
         return redirect(url_for(".get_view_submitted_response"))
 
-    return send_file(
-        path_or_file=view_submitted_response_pdf.get_pdf(),
-        mimetype=view_submitted_response_pdf.mimetype,
-        as_attachment=True,
-        download_name=view_submitted_response_pdf.filename,
+    start = time.time()
+    is_weasyprint = request.args.get("weasy")
+    response = (
+        view_submitted_response_pdf.get_pdf_weasy()
+        if is_weasyprint
+        else view_submitted_response_pdf.get_pdf()
     )
+    end = time.time()
+    logger.info(f"PDF generation took {float(end - start):2f} seconds")
+    return response
 
 
 @post_submission_blueprint.route("confirmation-email/send", methods=["GET", "POST"])

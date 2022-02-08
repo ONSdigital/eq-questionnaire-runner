@@ -1,14 +1,36 @@
 import io
+import logging
+from functools import lru_cache
 
 import pdfkit
-from flask import current_app
+from flask import Response, current_app, send_file
+from flask_weasyprint import CSS, HTML, render_pdf
 
 from app.data_models import QuestionnaireStore
 from app.questionnaire import QuestionnaireSchema
+from app.settings import PRINT_STYLE_SHEET_FILE_PATH
 from app.views.handlers.view_submitted_response import (
     ViewSubmittedResponse,
     ViewSubmittedResponseExpired,
 )
+
+# Set weasyprint logging level to ERROR to prevent verbose logs
+weasyprint_logger = logging.getLogger("weasyprint")
+weasyprint_progress_logger = logging.getLogger("weasyprint.progress")
+font_logger = logging.getLogger("fontTools")
+
+weasyprint_logger.setLevel(level=logging.ERROR)
+weasyprint_progress_logger.setLevel(level=logging.ERROR)
+font_logger.setLevel(level=logging.ERROR)
+
+
+@lru_cache(maxsize=None)
+def get_print_css_weasy():
+    with open(
+        f"{PRINT_STYLE_SHEET_FILE_PATH}/print_weasy.css", encoding="utf-8"
+    ) as css_file:
+        css = css_file.read()
+        return CSS(string=css)
 
 
 class ViewSubmittedResponsePDF(ViewSubmittedResponse):
@@ -56,11 +78,11 @@ class ViewSubmittedResponsePDF(ViewSubmittedResponse):
         """The name to use for the PDF file"""
         return f"{self._metadata['schema_name']}.pdf"
 
-    def get_pdf(self) -> io.BytesIO:
+    def get_pdf(self) -> Response:
         """
         Generates a PDF document from the rendered ViewSubmittedResponse html.
         :return: The generated PDF document as BytesIO
-        :rtype: io.BytesIO
+        :rtype: Response
         """
         content_as_bytes = pdfkit.from_string(
             input=self.get_rendered_html(),
@@ -69,4 +91,29 @@ class ViewSubmittedResponsePDF(ViewSubmittedResponse):
             options=self.wkhtmltopdf_options,
         )
 
-        return io.BytesIO(content_as_bytes)
+        return send_file(
+            path_or_file=io.BytesIO(content_as_bytes),
+            mimetype=self.mimetype,
+            as_attachment=True,
+            download_name=self.filename,
+        )
+
+    def get_pdf_weasy(self) -> Response:
+        """
+        Generates a PDF document from the rendered ViewSubmittedResponse html.
+        :return: The generated PDF document as BytesIO
+        :rtype: Response
+        """
+        rendered_html = self.get_rendered_html()
+        # This stylesheet is being removed so Weasyprint will not try resolve it and parse it.
+        # This is hacky and we should look at solutions to making this configurable, so the DS is able to not output it / use a custom path.
+        rendered_html_without_main_css = rendered_html.replace(
+            f'<link rel="stylesheet" href="{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}/45.1.5/css/main.css">',
+            "",
+        )
+        return render_pdf(
+            html=HTML(string=rendered_html_without_main_css),
+            stylesheets=[get_print_css_weasy()],
+            download_filename=self.filename,
+            automatic_download=True,
+        )

@@ -73,6 +73,7 @@ google-cloud-tasks = "*"
 simplejson = "*"
 markupsafe = "*"
 pdfkit = "*"
+flask-weasyprint = "*"
 
 [requires]
 python_version = "3.9"

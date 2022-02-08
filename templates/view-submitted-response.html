@@ -43,10 +43,23 @@
     {{
       onsButton({
         "buttonStyle": 'download',
-        "text": _('Save answers as PDF'),
+        "text": _('Save answers as PDF WKHTML'),
         "submitType": "timer",
         "variants": ['small', 'secondary'],
         "url": content.pdf_url,
+        "attributes": {
+          "data-qa": "btn-pdf"
+        }
+      })
+    }}
+    <br><br>
+    {{
+      onsButton({
+        "buttonStyle": 'download',
+        "text": _('Save answers as PDF Weasy'),
+        "submitType": "timer",
+        "variants": ['small', 'secondary'],
+        "url": content.pdf_url ~ "?weasy=true",
         "attributes": {
           "data-qa": "btn-pdf"
         }
