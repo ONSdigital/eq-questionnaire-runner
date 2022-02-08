@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional, Union
+from typing import Optional
 
 from flask import current_app
 from jwcrypto.common import base64url_decode
@@ -20,7 +20,7 @@ class SessionStore:
         self.eq_session_id = eq_session_id
         self.user_id: Optional[str] = None
         self.user_ik = user_ik
-        self.session_data: Optional[Union[dict, SessionData]] = None
+        self.session_data: Optional[SessionData] = None
         self._eq_session: Optional[EQSession] = None
         self.pepper = pepper
         if eq_session_id:
@@ -48,7 +48,7 @@ class SessionStore:
         self,
         eq_session_id: str,
         user_id: str,
-        session_data: Union[dict, SessionData],
+        session_data: SessionData,
         expires_at: datetime,
     ) -> SessionStore:
         """
