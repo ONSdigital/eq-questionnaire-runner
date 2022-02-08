@@ -76,9 +76,9 @@ class DateTimeSchemaMixin:
     updated_at = fields.DateTime()
 
     # pylint: disable=unused-argument
+    @staticmethod
     @pre_dump
     def set_date(
-        self,
         data: QuestionnaireState,
         **kwargs: dict,
     ) -> QuestionnaireState:
