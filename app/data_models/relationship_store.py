@@ -1,5 +1,5 @@
 from dataclasses import asdict, dataclass
-from typing import Iterator, Mapping, Union
+from typing import Iterator, Mapping, Optional, Union
 
 
 @dataclass
@@ -52,7 +52,7 @@ class RelationshipStore:
 
     def get_relationship(
         self, list_item_id: str, to_list_item_id: str
-    ) -> Union[Relationship, list]:
+    ) -> Optional[Relationship]:
         key = (list_item_id, to_list_item_id)
         return self._relationships.get(key, None)
 
