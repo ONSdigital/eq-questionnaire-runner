@@ -45,7 +45,7 @@ class RelationshipStore:
         self._relationships.clear()
         self._is_dirty = True
 
-    def serialize(self) -> list[str]:
+    def serialize(self) -> list[Mapping[str, str]]:
         return [
             relationship.for_json() for relationship in self._relationships.values()
         ]
@@ -91,7 +91,9 @@ class RelationshipStore:
             self._is_dirty = True
 
     @staticmethod
-    def _build_map(relationships: Union[dict, Union[dict, list]]) -> dict:
+    def _build_map(
+        relationships: Union[dict, Union[dict, list]]
+    ) -> dict[tuple[str, str], Relationship]:
         return {
             (
                 relationship["list_item_id"],
