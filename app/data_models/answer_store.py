@@ -38,7 +38,7 @@ class AnswerStore:
         return isinstance(other, AnswerStore) and self.answer_map == other.answer_map
 
     @staticmethod
-    def _build_map(answers: list[dict]) -> dict:
+    def _build_map(answers: list[dict]) -> dict[tuple[str, Optional[str]], Answer]:
         """Builds the answer_store's data structure from a list of answer dictionaries"""
         return {
             (answer["answer_id"], answer.get("list_item_id")): Answer.from_dict(answer)
@@ -134,7 +134,7 @@ class AnswerStore:
             del self.answer_map[key]
             self._is_dirty = True
 
-    def serialize(self) -> list[str]:
+    def serialize(self) -> list[Answer]:
         return list(self.answer_map.values())
 
     def get_escaped_answer_value(
