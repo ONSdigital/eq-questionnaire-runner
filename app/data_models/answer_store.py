@@ -28,7 +28,7 @@ class AnswerStore:
         self.answer_map = self._build_map(existing_answers or [])
         self._is_dirty = False
 
-    def __iter__(self) -> Iterator:
+    def __iter__(self) -> Iterator[Answer]:
         return iter(self.answer_map.values())
 
     def __len__(self) -> int:

@@ -34,7 +34,7 @@ class ListModel:
             return NotImplemented
         return self.items == other.items and self.primary_person == other.primary_person
 
-    def __iter__(self) -> Iterator:
+    def __iter__(self) -> Iterator[str]:
         yield from self.items
 
     def __getitem__(self, list_item_index: int) -> Union[dict, Any]:
@@ -44,7 +44,7 @@ class ListModel:
         return len(self.items)
 
     @cached_property
-    def non_primary_people(self) -> list:
+    def non_primary_people(self) -> list[dict]:
         return [item for item in self.items if item != self.primary_person]
 
     def index(self, list_item: dict) -> int:
@@ -121,7 +121,7 @@ class ListStore:
 
         self._is_dirty = False
 
-    def __iter__(self) -> Iterator:
+    def __iter__(self) -> Iterator[ListModel]:
         yield from self._lists.values()
 
     def __getitem__(self, list_name: str) -> Union[ListModel, Any]:
@@ -210,7 +210,7 @@ class ListStore:
 
         return list_item_id
 
-    def serialize(self) -> list[str]:
+    def serialize(self) -> list[dict]:
         return [list_model.serialize() for list_model in self]
 
     @classmethod

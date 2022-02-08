@@ -25,7 +25,7 @@ class RelationshipStore:
         self._is_dirty = False
         self._relationships = self._build_map(relationships or [])
 
-    def __iter__(self) -> Iterator:
+    def __iter__(self) -> Iterator[Relationship]:
         return iter(self._relationships.values())
 
     def __contains__(self, relationship: Relationship) -> bool:
