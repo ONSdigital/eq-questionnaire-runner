@@ -48,9 +48,7 @@ class Feedback:
     ):
         if not self.is_enabled(schema):
             raise FeedbackNotEnabled
-        if isinstance(
-            session_store.session_data, SessionData
-        ) and self.is_limit_reached(session_store.session_data):
+        if self.is_limit_reached(session_store.session_data):  # type: ignore
             raise FeedbackLimitReached
 
         self._questionnaire_store = questionnaire_store
