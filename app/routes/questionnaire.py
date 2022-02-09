@@ -440,7 +440,8 @@ def get_view_submitted_response_pdf(
         else view_submitted_response_pdf.get_pdf()
     )
     end = time.time()
-    logger.info(f"PDF generation took {float(end - start):2f} seconds")
+    pdf_type = "Weasyprint" if is_weasyprint else "WKHTML"
+    logger.info(f"{pdf_type} PDF generation took {float(end - start):2f} seconds")
     return response
 
 
