@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from unittest.mock import Mock
 
+import pytest
 from flask import Flask
 from flask_babel import format_datetime
 
@@ -100,6 +101,15 @@ def test_view_submitted_response_expired(
         assert "summary" not in context
 
 
+def test_build_view_submitted_response_exception(app: Flask):
+    with app.app_context():
+        questionnaire_store = fake_questionnaire_store_no_submitted_at()
+        with pytest.raises(Exception):
+            build_view_submitted_response_context(
+                "en", SCHEMA, questionnaire_store, "default"
+            )
+
+
 def fake_questionnaire_store():
     storage = Mock()
     storage.get_user_data = Mock(return_value=("{}", "ce_sid", 1, None))
@@ -119,3 +129,13 @@ def format_submitted_on_description():
     date = format_datetime(SUBMITTED_AT, format="dd LLLL yyyy")
     time = format_datetime(SUBMITTED_AT, format="HH:mm")
     return f"{date} at {time}"
+
+
+def fake_questionnaire_store_no_submitted_at():
+    storage = Mock()
+    storage.get_user_data = Mock(return_value=("{}", "ce_sid", 1, None))
+    questionnaire_store = QuestionnaireStore(storage)
+    questionnaire_store.submitted_at = None
+    questionnaire_store.metadata = {}
+    questionnaire_store.answer_store = AnswerStore()
+    return questionnaire_store
