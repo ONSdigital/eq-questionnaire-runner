@@ -7,7 +7,7 @@ describe("Submit with custom submission text", () => {
     browser.openQuestionnaire("test_submit_with_custom_submission_text.json");
   });
 
-  it("Given a questionnaire with custom submission content has been completed, then the correct submission content should be displayed", () => {
+  it("Given a questionnaire with custom submission content has been started, when it is completed to the submit page, then the correct submission content should be displayed", () => {
     $(IntroductionPage.getStarted()).click();
     $(BreakfastPage.answer()).setValue("Eggs");
     $(BreakfastPage.submit()).click();
