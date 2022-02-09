@@ -2,14 +2,18 @@ from __future__ import annotations
 
 from datetime import datetime
 from types import MappingProxyType
-from typing import Any, Mapping, Optional, Union
+from typing import TYPE_CHECKING, Any, Mapping, Optional, Union
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire.rules.utils import parse_iso_8601_datetime
-from app.storage.encrypted_questionnaire_storage import EncryptedQuestionnaireStorage
 from app.utilities.json import json_dumps, json_loads
+
+if TYPE_CHECKING:
+    from app.storage.encrypted_questionnaire_storage import (
+        EncryptedQuestionnaireStorage,
+    )
 
 
 class QuestionnaireStore:
