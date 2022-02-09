@@ -107,6 +107,14 @@ QUESTION_ERROR_PANEL = Template(
 """
 )
 
+QUESTION_TITLE = Template(
+    r"""  questionTitle() {
+    return `#${questionId}`;
+  }
+
+"""
+)
+
 ANSWER_LEGEND_GETTER = Template(
     r"""  ${answerName}Legend() {
     return `#${answerId} > legend`;
@@ -429,8 +437,10 @@ def process_question(question, page_spec, num_questions, page_name):
     question_context = {
         "questionName": camel_case(question_name),
         "questionOrAnswerId": question_or_answer_id,
+        "questionId": question["id"],
     }
     page_spec.write(QUESTION_ERROR_PANEL.substitute(question_context))
+    page_spec.write(QUESTION_TITLE.substitute(question_context))
 
 
 def process_calculated_summary(answers, page_spec):
