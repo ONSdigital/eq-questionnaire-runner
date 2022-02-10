@@ -1,6 +1,6 @@
 SCHEMAS_VERSION=`cat .schemas-version`
 DESIGN_SYSTEM_VERSION=`cat .design-system-version`
-RUNNER_ENV_FILE ?= .development.env
+RUNNER_ENV_FILE?=.development.env
 
 clean:
 	find schemas/* -prune | grep -v "schemas/test" | xargs rm -r
