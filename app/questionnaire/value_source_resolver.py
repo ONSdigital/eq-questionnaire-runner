@@ -27,22 +27,12 @@ class ValueSourceResolver:
     schema: QuestionnaireSchema
     location: Union[None, Location, RelationshipLocation]
     list_item_id: Optional[str]
-    routing_path_block_ids: Optional[list] = None
     use_default_answer: bool = False
     escape_answer_values: bool = False
-
-    def _is_answer_on_path(self, answer_id: str) -> bool:
-        if self.routing_path_block_ids:
-            block = self.schema.get_block_for_answer_id(answer_id)
-            return block is not None and block["id"] in self.routing_path_block_ids
-
-        return True
 
     def _get_answer_value(
         self, answer_id: str, list_item_id: Optional[str]
     ) -> Optional[AnswerValueTypes]:
-        if not self._is_answer_on_path(answer_id):
-            return None
 
         if answer := self.answer_store.get_answer(answer_id, list_item_id):
             return answer.value

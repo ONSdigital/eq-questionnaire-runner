@@ -144,7 +144,6 @@ def evaluate_goto(
     answer_store,
     list_store,
     current_location,
-    routing_path_block_ids=None,
 ):
     """
     Determine whether a goto rule will be satisfied based on a given answer
@@ -165,7 +164,6 @@ def evaluate_goto(
             answer_store,
             list_store,
             current_location,
-            routing_path_block_ids=routing_path_block_ids,
         )
     return True
 
@@ -175,9 +173,7 @@ def _is_answer_on_path(schema, answer, routing_path_block_ids):
     return block_id in routing_path_block_ids
 
 
-def _get_comparison_id_value(
-    when_rule, answer_store, schema, current_location=None, routing_path_block_ids=None
-):
+def _get_comparison_id_value(when_rule, answer_store, schema, current_location=None):
     """
     Gets the value of a comparison id specified as an operand in a comparator
     """
@@ -195,18 +191,11 @@ def _get_comparison_id_value(
         answer_store,
         schema,
         list_item_id=list_item_id,
-        routing_path_block_ids=routing_path_block_ids,
     )
 
 
 def _get_when_rule_value(
-    when_rule,
-    answer_store,
-    list_store,
-    schema,
-    metadata,
-    list_item_id=None,
-    routing_path_block_ids=None,
+    when_rule, answer_store, list_store, schema, metadata, list_item_id=None
 ):
     """
     Get the value from a when rule.
@@ -219,7 +208,6 @@ def _get_when_rule_value(
             answer_store,
             schema,
             list_item_id=list_item_id,
-            routing_path_block_ids=routing_path_block_ids,
         )
     elif "meta" in when_rule:
         value = get_metadata_value(metadata, when_rule["meta"])
@@ -240,7 +228,6 @@ def evaluate_when_rules(
     answer_store,
     list_store,
     current_location=None,
-    routing_path_block_ids=None,
 ):
     """
     Whether the skip condition has been met.
@@ -250,7 +237,6 @@ def evaluate_when_rules(
     :param answer_store: store of answers to evaluate
     :param list_store: store of lists to evaluate
     :param current_location: The location to use when evaluating when rules
-    :param routing_path_block_ids: The routing path block ids to use when evaluating when rules
     :return: True if the when condition has been met otherwise False
     """
     for when_rule in when_rules:
@@ -264,7 +250,6 @@ def evaluate_when_rules(
             schema,
             metadata,
             list_item_id=list_item_id,
-            routing_path_block_ids=routing_path_block_ids,
         )
 
         if "date_comparison" in when_rule:
@@ -276,7 +261,6 @@ def evaluate_when_rules(
                 answer_store,
                 schema,
                 current_location,
-                routing_path_block_ids,
             )
             if not evaluate_comparison_rule(when_rule, value, comparison_id_value):
                 return False
@@ -300,14 +284,14 @@ def get_answer_for_answer_id(answer_id, answer_store, schema, list_item_id):
 
 
 def get_answer_value(
-    answer_id, answer_store, schema, list_item_id=None, routing_path_block_ids=None
+    answer_id, answer_store, schema, list_item_id=None
 ) -> Optional[AnswerValueTypes]:
     answer = get_answer_for_answer_id(answer_id, answer_store, schema, list_item_id)
 
     if not answer:
         return None
-    else:
-        return answer.value
+
+    return answer.value
 
 
 def get_metadata_value(metadata, key):

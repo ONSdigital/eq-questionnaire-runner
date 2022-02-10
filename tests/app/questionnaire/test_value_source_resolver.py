@@ -40,7 +40,6 @@ def get_value_source_resolver(
         section_id="test-section", block_id="test-block"
     ),
     list_item_id: Optional[str] = None,
-    routing_path_block_ids: Optional[list] = None,
     use_default_answer=False,
     escape_answer_values=False,
 ):
@@ -59,7 +58,6 @@ def get_value_source_resolver(
         schema=schema,
         location=location,
         list_item_id=list_item_id,
-        routing_path_block_ids=routing_path_block_ids,
         use_default_answer=use_default_answer,
         escape_answer_values=escape_answer_values,
     )
@@ -266,7 +264,6 @@ def test_answer_source_not_on_path_non_repeating_section(is_answer_on_path):
         list_store=ListStore([{"name": "some-list", "items": get_list_items(3)}]),
         location=location,
         list_item_id=location.list_item_id,
-        routing_path_block_ids=["block-on-path"],
     )
 
     assert (
@@ -302,7 +299,6 @@ def test_answer_source_not_on_path_repeating_section(is_answer_on_path):
         list_store=ListStore([{"name": "some-list", "items": get_list_items(3)}]),
         location=location,
         list_item_id=location.list_item_id,
-        routing_path_block_ids=["block-on-path"],
     )
 
     assert (

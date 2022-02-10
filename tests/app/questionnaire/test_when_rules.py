@@ -8,7 +8,6 @@ from app.questionnaire.location import Location
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
-from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.when_rules import (
     evaluate_goto,
     evaluate_rule,
@@ -453,11 +452,9 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
             response_metadata={},
         )
 
-        routing_path_block_ids = []
-
         # When
         condition = path_finder.evaluate_skip_conditions(
-            current_location, routing_path_block_ids, skip_conditions
+            current_location, skip_conditions
         )
 
         # Given
@@ -484,13 +481,9 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
             response_metadata={},
         )
 
-        routing_path_block_ids = []
-
         # When
         self.assertTrue(
-            path_finder.evaluate_skip_conditions(
-                current_location, routing_path_block_ids, skip_conditions
-            )
+            path_finder.evaluate_skip_conditions(current_location, skip_conditions)
         )
 
     def test_evaluate_skip_condition_returns_true_when_more_than_one_rule_is_true(self):
@@ -514,11 +507,9 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
             response_metadata={},
         )
 
-        routing_path_block_ids = []
-
         # When
         condition = path_finder.evaluate_skip_conditions(
-            current_location, routing_path_block_ids, skip_conditions
+            current_location, skip_conditions
         )
 
         # Then
@@ -545,11 +536,9 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
             response_metadata={},
         )
 
-        routing_path_block_ids = []
-
         # When
         condition = path_finder.evaluate_skip_conditions(
-            current_location, routing_path_block_ids, skip_conditions
+            current_location, skip_conditions
         )
 
         # Then
@@ -572,11 +561,9 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
             response_metadata={},
         )
 
-        routing_path_block_ids = []
-
         # When
         condition = path_finder.evaluate_skip_conditions(
-            current_location, routing_path_block_ids, skip_conditions
+            current_location, skip_conditions
         )
 
         # Then
@@ -831,7 +818,6 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
                         answer_store=answer_store,
                         list_store=ListStore(),
                         current_location=current_location,
-                        routing_path_block_ids=None,
                     ),
                     expected_result,
                 )
@@ -951,13 +937,6 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         answer = Answer(answer_id="some-answer", value="some value")
         answer_store.add_or_update(answer)
 
-        routing_path = RoutingPath(
-            ["test_block_id", "some-block"],
-            section_id="some-section",
-            list_name="people",
-            list_item_id="abc123",
-        )
-
         current_location = Location(
             section_id="some-section",
             block_id="some-block",
@@ -979,7 +958,6 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
                         answer_store=answer_store,
                         list_store=ListStore(),
                         current_location=current_location,
-                        routing_path_block_ids=routing_path,
                     )
                 )
 
@@ -994,14 +972,6 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         answer = Answer(answer_id="some-answer", value="some value")
         answer_store.add_or_update(answer)
 
-        routing_path = [
-            Location(
-                section_id="some-section",
-                block_id="test_block_id",
-                list_name="people",
-                list_item_id="abc123",
-            )
-        ]
         current_location = Location(
             section_id="some-section",
             block_id="some-block",
@@ -1023,7 +993,6 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
                         answer_store=answer_store,
                         list_store=ListStore(),
                         current_location=current_location,
-                        routing_path_block_ids=routing_path,
                     )
                 )
 
@@ -1036,7 +1005,6 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
         answer_store = AnswerStore()
         answer_store.add_or_update(Answer(answer_id="some-answer", value="some value"))
 
-        routing_path = [Location(section_id="some-section", block_id="test_block_id")]
         current_location = Location(section_id="some-section", block_id="some-block")
 
         self.assertTrue(
@@ -1063,7 +1031,6 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
                     answer_store=answer_store,
                     list_store=ListStore(),
                     current_location=current_location,
-                    routing_path_block_ids=routing_path,
                 )
             )
 

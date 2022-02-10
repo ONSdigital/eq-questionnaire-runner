@@ -46,9 +46,7 @@ class PathFinder:
             for group in section["groups"]:
                 if "skip_conditions" in group:
                     skip_conditions = group.get("skip_conditions")
-                    if self.evaluate_skip_conditions(
-                        current_location, routing_path_block_ids, skip_conditions
-                    ):
+                    if self.evaluate_skip_conditions(current_location, skip_conditions):
                         continue
 
                 blocks.extend(group["blocks"])
@@ -79,7 +77,7 @@ class PathFinder:
             block = blocks[block_index]
             skip_conditions = block.get("skip_conditions")
             is_skipping = self.evaluate_skip_conditions(
-                current_location, routing_path_block_ids, skip_conditions
+                current_location, skip_conditions
             )
 
             if not is_skipping:
@@ -143,7 +141,6 @@ class PathFinder:
                     self.answer_store,
                     self.list_store,
                     current_location=this_location,
-                    routing_path_block_ids=routing_path_block_ids,
                 )
             else:
                 should_goto = should_goto_new(rule, when_rule_evaluator)
@@ -169,9 +166,7 @@ class PathFinder:
 
                 return next_block_index
 
-    def evaluate_skip_conditions(
-        self, this_location, routing_path_block_ids, skip_conditions
-    ):
+    def evaluate_skip_conditions(self, this_location, skip_conditions):
         if not skip_conditions:
             return False
 
@@ -183,7 +178,6 @@ class PathFinder:
                 self.metadata,
                 self.response_metadata,
                 location=this_location,
-                routing_path_block_ids=routing_path_block_ids,
             )
 
             return when_rule_evaluator.evaluate(skip_conditions["when"])
@@ -196,7 +190,6 @@ class PathFinder:
                 self.answer_store,
                 self.list_store,
                 current_location=this_location,
-                routing_path_block_ids=routing_path_block_ids,
             )
             if condition is True:
                 return True
