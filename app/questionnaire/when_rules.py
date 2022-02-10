@@ -306,10 +306,6 @@ def get_answer_value(
 
     if not answer:
         return None
-
-    if routing_path_block_ids:
-        if _is_answer_on_path(schema, answer, routing_path_block_ids):
-            return answer.value
     else:
         return answer.value
 
