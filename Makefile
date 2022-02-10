@@ -56,9 +56,6 @@ run-validator:
 link-development-env:
 	ln -sf .development.env .env
 
-link-functional-tests-env:
-	ln -sf .functional-tests.env .env
-
 run: build $(ENV_FILE_LINK_COMMAND)
 	pipenv run flask run
 
