@@ -18,7 +18,11 @@ def app(mocker):
     mocker.patch("app.setup.datastore.Client", MockDatastore)
     mocker.patch("app.setup.redis.Redis", fakeredis.FakeStrictRedis)
     the_app = create_app(setting_overrides=setting_overrides)
-    return the_app
+    the_app.config["SERVER_NAME"] = "test.localdomain"
+    app_context = the_app.app_context()
+    app_context.push()
+    yield the_app
+    app_context.pop()
 
 
 @pytest.fixture
@@ -104,3 +108,11 @@ def mock_redis_put(mocker):
 @pytest.fixture
 def answer_store():
     return AnswerStore()
+
+
+@pytest.fixture
+def gb_locale(mocker):
+    mocker.patch(
+        "app.jinja_filters.flask_babel.get_locale",
+        mocker.MagicMock(return_value="en_GB"),
+    )

@@ -1,88 +1,61 @@
-import unittest
-
+import pytest
 from wtforms.validators import ValidationError
 
 from app.forms import error_messages
 from app.forms.validators import MutuallyExclusiveCheck, format_message_with_title
 
 
-class TestMutuallyExclusive(unittest.TestCase):
-    def setUp(self):
-        self.question_title = ""
-        self.validator = MutuallyExclusiveCheck(question_title=self.question_title)
-
-    def test_mutually_exclusive_mandatory_checkbox_exception(self):
-        answer_permutations = [[[], []], [None, []], ["", []]]
-
-        for values in answer_permutations:
-            with self.assertRaises(ValidationError) as ite:
-                self.validator(
-                    answer_values=iter(values),
-                    is_mandatory=True,
-                    is_only_checkboxes=True,
-                )
-
-            self.assertEqual(
-                format_message_with_title(
-                    error_messages["MANDATORY_CHECKBOX"], self.question_title
-                ),
-                str(ite.exception),
-            )
-
-    def test_mutually_exclusive_mandatory_exception(self):
-        answer_permutations = [[[], []], [None, []], ["", []]]
-
-        for values in answer_permutations:
-            with self.assertRaises(ValidationError) as ite:
-                self.validator(
-                    answer_values=iter(values),
-                    is_mandatory=True,
-                    is_only_checkboxes=False,
-                )
-
-            self.assertEqual(
-                format_message_with_title(
-                    error_messages["MANDATORY_QUESTION"], self.question_title
-                ),
-                str(ite.exception),
-            )
-
-    def test_mutually_exclusive_passes_when_optional(self):
-        answer_permutations = [[[], []], [None, []], ["", []]]
-
-        for values in answer_permutations:
-            self.validator(
-                answer_values=iter(values), is_mandatory=False, is_only_checkboxes=True
-            )
-
-    def test_mutually_exclusive_exception(self):
-        answer_permutations = [
+@pytest.mark.parametrize(
+    "answer_permutations,is_mandatory,is_only_checkboxes,error_type",
+    (
+        ([[], []], True, True, "MANDATORY_CHECKBOX"),
+        ([None, []], True, True, "MANDATORY_CHECKBOX"),
+        (["", []], True, True, "MANDATORY_CHECKBOX"),
+        ([[], []], True, False, "MANDATORY_QUESTION"),
+        ([None, []], True, False, "MANDATORY_QUESTION"),
+        (["", []], True, False, "MANDATORY_QUESTION"),
+        (
             [["British, Irish"], ["I prefer not to say"]],
-            ["123", ["I prefer not to say"]],
-            ["2018-09-01", ["I prefer not to say"]],
-        ]
+            True,
+            True,
+            "MUTUALLY_EXCLUSIVE",
+        ),
+        (["123", ["I prefer not to say"]], True, True, "MUTUALLY_EXCLUSIVE"),
+        (["2018-09-01", ["I prefer not to say"]], True, True, "MUTUALLY_EXCLUSIVE"),
+    ),
+)
+def test_mutually_exclusive_mandatory_checkbox_raises_ValidationError(
+    answer_permutations, is_mandatory, is_only_checkboxes, error_type
+):
+    validator = MutuallyExclusiveCheck(question_title="")
+    with pytest.raises(ValidationError) as exc:
+        validator(
+            answer_values=iter(answer_permutations),
+            is_mandatory=is_mandatory,
+            is_only_checkboxes=is_only_checkboxes,
+        )
 
-        for values in answer_permutations:
-            with self.assertRaises(ValidationError) as ite:
-                self.validator(
-                    answer_values=iter(values),
-                    is_mandatory=True,
-                    is_only_checkboxes=True,
-                )
+    assert format_message_with_title(error_messages[error_type], "") == str(exc.value)
 
-            self.assertEqual(error_messages["MUTUALLY_EXCLUSIVE"], str(ite.exception))
 
-    def test_mutually_exclusive_pass(self):
-        answer_permutations = [
-            [["British, Irish"], []],
-            ["123", []],
-            ["2018-09-01", []],
-            [[], ["Exclusive option"]],
-            [None, ["I prefer not to say"]],
-            ["", ["I prefer not to say"]],
-        ]
-
-        for values in answer_permutations:
-            self.validator(
-                answer_values=iter(values), is_mandatory=True, is_only_checkboxes=True
-            )
+@pytest.mark.parametrize(
+    "answer_permutations,is_mandatory",
+    (
+        ([["British, Irish"], []], True),
+        (["123", []], True),
+        (["2018-09-01", []], True),
+        ([[], ["Exclusive option"]], True),
+        ([None, ["I prefer not to say"]], True),
+        (["", ["I prefer not to say"]], True),
+        ([[], []], False),
+        ([None, []], False),
+        (["", []], False),
+    ),
+)
+def test_mutually_exclusive_mandatory_checkbox(answer_permutations, is_mandatory):
+    validator = MutuallyExclusiveCheck(question_title="")
+    validator(
+        answer_values=iter(answer_permutations),
+        is_mandatory=is_mandatory,
+        is_only_checkboxes=True,
+    )
