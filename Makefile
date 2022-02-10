@@ -76,16 +76,16 @@ run-uwsgi-async: link-development-env
 
 dev-compose-up:
 	RUNNER_ENV_FILE=$(RUNNER_ENV_FILE) docker-compose pull eq-questionnaire-launcher
-	RUNNER_ENV_FILE=$(RUNNER_ENV_FILE) docker-compose -f docker-compose-dev-mac.yml up -d
+	docker-compose -f docker-compose-dev-mac.yml up -d
 
 dev-compose-up-linux:
-	RUNNER_ENV_FILE=$(RUNNER_ENV_FILE) docker-compose -f docker-compose-dev-linux.yml up -d
+	docker-compose -f docker-compose-dev-linux.yml up -d
 
 dev-compose-down:
-	RUNNER_ENV_FILE=$(RUNNER_ENV_FILE) docker-compose -f docker-compose-dev-mac.yml down
+	docker-compose -f docker-compose-dev-mac.yml down
 
 dev-compose-down-linux:
-	RUNNER_ENV_FILE=$(RUNNER_ENV_FILE) docker-compose -f docker-compose-dev-linux.yml down
+	docker-compose -f docker-compose-dev-linux.yml down
 
 profile:
 	pipenv run python profile_application.py
