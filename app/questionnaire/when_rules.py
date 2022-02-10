@@ -168,11 +168,6 @@ def evaluate_goto(
     return True
 
 
-def _is_answer_on_path(schema, answer, routing_path_block_ids):
-    block_id = schema.get_block_for_answer_id(answer.answer_id)["id"]
-    return block_id in routing_path_block_ids
-
-
 def _get_comparison_id_value(when_rule, answer_store, schema, current_location=None):
     """
     Gets the value of a comparison id specified as an operand in a comparator

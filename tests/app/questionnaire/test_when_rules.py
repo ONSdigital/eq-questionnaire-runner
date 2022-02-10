@@ -1,5 +1,5 @@
 # pylint: disable=too-many-lines
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 
 from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.list_store import ListStore
@@ -925,41 +925,6 @@ class TestRules(AppContextTestCase):  # pylint: disable=too-many-public-methods
                 current_location=current_location,
             )
         )
-
-    def test_routing_answer_on_path_when_in_a_repeat(self):
-        when = {
-            "when": [
-                {"id": "some-answer", "condition": "equals", "value": "some value"}
-            ]
-        }
-
-        answer_store = AnswerStore()
-        answer = Answer(answer_id="some-answer", value="some value")
-        answer_store.add_or_update(answer)
-
-        current_location = Location(
-            section_id="some-section",
-            block_id="some-block",
-            list_name="people",
-            list_item_id="abc123",
-        )
-
-        with patch(
-            "app.questionnaire.when_rules.get_answer_for_answer_id", return_value=answer
-        ):
-            with patch(
-                "app.questionnaire.when_rules._is_answer_on_path", return_value=True
-            ):
-                self.assertTrue(
-                    evaluate_when_rules(
-                        when_rules=when["when"],
-                        schema=get_schema(),
-                        metadata={},
-                        answer_store=answer_store,
-                        list_store=ListStore(),
-                        current_location=current_location,
-                    )
-                )
 
     def test_primary_person_checks_location(self):
         answer_store = AnswerStore()
