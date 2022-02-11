@@ -16,7 +16,7 @@ services:
     image: onsdigital/eq-questionnaire-runner:latest
     build: ./
     env_file:
-      - .development.env
+      - ${RUNNER_ENV_FILE}
     environment:
       DATASTORE_EMULATOR_HOST: datastore:8432
       EQ_REDIS_HOST: "redis"

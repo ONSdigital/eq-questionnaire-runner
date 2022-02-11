@@ -46,17 +46,26 @@ describe("Thank You Default View Response Enabled", () => {
   describe("Given I launch a questionnaire where view response is enabled", () => {
     beforeEach(() => {
       browser.openQuestionnaire("test_thank_you.json");
-    });
-
-    it("When I navigate to the thank you page, and I have submitted less than 45 minutes ago, Then I should see the option to view my answers", () => {
       $(DidYouKnowPage.yes()).click();
       $(DidYouKnowPage.submit()).click();
       $(ThankYouSubmitPage.submit()).click();
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
+    });
+
+    it("When I navigate to the thank you page, and I have submitted less than 45 minutes ago, Then I should see the option to view my answers", () => {
+      expect($(ThankYouPage.viewSubmittedGuidance()).isDisplayed()).to.be.false;
       expect($(ThankYouPage.title()).getHTML()).to.contain("Thank you for completing the Test Thank You");
       expect($(ThankYouPage.viewAnswersTitle()).getHTML()).to.contain("Get a copy of your answers");
       expect($(ThankYouPage.viewAnswersLink()).getText()).to.contain("save or print your answers");
       expect($(ThankYouPage.viewSubmittedWarning()).getHTML()).to.contain("For security your answers will only be available to view for 45 minutes");
+    });
+
+    it("When I navigate to the thank you page, and I have submitted more than 45 minutes ago, Then I shouldn't see the option to view my answers", () => {
+      expect($(ThankYouPage.viewSubmittedGuidance()).isDisplayed()).to.be.false;
+      browser.pause(46000); // Waiting more than 45 seconds for the timeout to expire (45 minute timeout changed to 45 seconds by overriding VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS for the purpose of the functional test)
+      browser.refresh();
+      expect($(ThankYouPage.viewSubmittedGuidance()).isDisplayed()).to.be.true;
+      expect($(ThankYouPage.viewSubmittedGuidance()).getHTML()).to.contain("For security, you can no longer view your answers");
     });
   });
 });

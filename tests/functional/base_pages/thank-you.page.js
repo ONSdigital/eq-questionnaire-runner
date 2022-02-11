@@ -21,12 +21,20 @@ class ThankYouPage extends BasePage {
     return '[id="view-submitted-response-warning"]';
   }
 
+  viewSubmittedGuidance() {
+    return '[id="view-submitted-response-guidance"]';
+  }
+
   metadata() {
     return ".ons-metadata";
   }
 
   exitButton() {
     return '[data-qa="btn-exit"]';
+  }
+
+  savePrintAnswersLink() {
+    return '[id="view-submitted-response-link"]';
   }
 
   email() {
