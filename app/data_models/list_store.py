@@ -137,7 +137,7 @@ class ListStore:
         return f"<ListStore lists={self._lists}>"
 
     @staticmethod
-    def _build_map(list_models: List[Mapping]) -> dict[str, ListModel]:
+    def _build_map(list_models: Sequence[Mapping]) -> dict[str, ListModel]:
         """Builds the list_store data structure from a list of dictionaries"""
         return {
             list_model["name"]: ListModel(**list_model) for list_model in list_models
