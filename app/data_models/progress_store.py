@@ -21,7 +21,7 @@ class CompletionStatus:
     NOT_STARTED: str = "NOT_STARTED"
     INDIVIDUAL_RESPONSE_REQUESTED: str = "INDIVIDUAL_RESPONSE_REQUESTED"
 
-    def __iter__(self) -> Iterator[tuple]:
+    def __iter__(self) -> Iterator[tuple[str]]:
         return iter(astuple(self))
 
 
