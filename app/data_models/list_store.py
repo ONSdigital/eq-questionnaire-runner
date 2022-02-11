@@ -22,7 +22,7 @@ class ListModel:
         name: str,
         items: Optional[list[str]] = None,
         primary_person: Optional[str] = None,
-        same_name_items: Optional[list] = None,
+        same_name_items: Optional[list[str]] = None,
     ):
         self.name = name
         self.items = items or []
