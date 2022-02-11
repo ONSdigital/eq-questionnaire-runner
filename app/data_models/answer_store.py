@@ -86,7 +86,7 @@ class AnswerStore:
         return self.answer_map.get((answer_id, list_item_id))
 
     def get_answers_by_answer_id(
-        self, answer_ids: List[str], list_item_id: Optional[str] = None
+        self, answer_ids: Iterable[str], list_item_id: Optional[str] = None
     ) -> list[Answer]:
         """Get multiple answers from the store using the answer_id
 
