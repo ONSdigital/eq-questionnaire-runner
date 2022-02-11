@@ -37,7 +37,7 @@ class AnswerStore:
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, AnswerStore):
             return NotImplemented
-        return isinstance(other, AnswerStore) and self.answer_map == other.answer_map
+        return self.answer_map == other.answer_map
 
     @staticmethod
     def _build_map(answers: Iterable[Mapping]) -> dict[tuple[str, Optional[str]], Answer]:
