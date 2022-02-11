@@ -44,7 +44,7 @@ class ListModel:
         return len(self.items)
 
     @cached_property
-    def non_primary_people(self) -> list[dict]:
+    def non_primary_people(self) -> list[str]:
         return [item for item in self.items if item != self.primary_person]
 
     def index(self, list_item: str) -> int:
