@@ -47,6 +47,7 @@
         "submitType": "timer",
         "variants": ['small', 'secondary'],
         "url": content.pdf_url,
+        "removeDownloadAttribute": true,
         "attributes": {
           "data-qa": "btn-pdf"
         }
@@ -59,7 +60,7 @@
     {% endblock summary %}
   {% else %}
     {% call onsPanel({
-      "id": "view-submmited-guidance",
+      "id": "view-submitted-guidance",
       "classes": "ons-u-mb-m"
      }) %}
     {{ _("For security, you can no longer view or get a copy of your answers") }}
