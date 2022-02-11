@@ -19,7 +19,7 @@ class AnswerStore:
     }
     """
 
-    def __init__(self, existing_answers: Optional[List[Dict]] = None):
+    def __init__(self, existing_answers: Optional[Iterable[Dict]] = None):
         """Instantiate an answer_store.
 
         Args:
