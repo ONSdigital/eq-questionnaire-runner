@@ -87,7 +87,7 @@ class AnswerStore:
 
     def get_answers_by_answer_id(
         self, answer_ids: List[str], list_item_id: Optional[str] = None
-    ) -> List[Answer]:
+    ) -> list[Answer]:
         """Get multiple answers from the store using the answer_id
 
         Args:
