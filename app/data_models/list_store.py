@@ -20,7 +20,7 @@ class ListModel:
     def __init__(
         self,
         name: str,
-        items: Optional[list] = None,
+        items: Optional[list[str]] = None,
         primary_person: Optional[str] = None,
         same_name_items: Optional[list] = None,
     ):
