@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
 from decimal import Decimal
-from typing import Optional, Union, overload
+from typing import Mapping, Optional, Union, overload
 
 from markupsafe import Markup, escape
 
@@ -28,7 +28,7 @@ class Answer:
     list_item_id: Optional[str] = field(default=None)
 
     @classmethod
-    def from_dict(cls, answer_dict: dict) -> Answer:
+    def from_dict(cls, answer_dict: Mapping) -> Answer:
         return cls(
             answer_id=answer_dict["answer_id"],
             value=answer_dict["value"],

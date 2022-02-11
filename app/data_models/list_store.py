@@ -3,7 +3,7 @@ from __future__ import annotations
 import random
 from functools import cached_property
 from string import ascii_letters
-from typing import Any, Iterator, List, Mapping, Optional, Union
+from typing import Any, Iterator, List, Mapping, Optional, Sequence, Union
 
 from structlog import get_logger
 

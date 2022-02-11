@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, Iterator, List, Optional
+from typing import Dict, Iterable, Iterator, Mapping, Optional
 
 from app.data_models.answer import Answer, AnswerValueEscapedTypes, escape_answer_value
 
@@ -40,7 +40,9 @@ class AnswerStore:
         return self.answer_map == other.answer_map
 
     @staticmethod
-    def _build_map(answers: Iterable[Mapping]) -> dict[tuple[str, Optional[str]], Answer]:
+    def _build_map(
+        answers: Iterable[Mapping],
+    ) -> dict[tuple[str, Optional[str]], Answer]:
         """Builds the answer_store's data structure from a list of answer dictionaries"""
         return {
             (answer["answer_id"], answer.get("list_item_id")): Answer.from_dict(answer)
