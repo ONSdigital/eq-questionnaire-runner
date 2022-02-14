@@ -3,6 +3,7 @@ from typing import Generator, Mapping, Optional, Union
 from flask import url_for
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models.progress_store import SectionKeyType
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.path_finder import PathFinder
@@ -313,7 +314,7 @@ class Router:
 
             if repeating_list:
                 for list_item_id in self._list_store[repeating_list]:
-                    section_key: tuple[str, Optional[str]] = (section_id, list_item_id)
+                    section_key: SectionKeyType = (section_id, list_item_id)
                     yield section_key
             else:
                 section_key = (section_id, None)

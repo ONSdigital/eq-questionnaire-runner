@@ -80,7 +80,7 @@ class DateTimeSchemaMixin:
     @pre_dump
     def set_date(
         data: QuestionnaireState,
-        **kwargs: dict,
+        **kwargs: Any,
     ) -> QuestionnaireState:
         data.updated_at = datetime.now(tz=timezone.utc)
         return data

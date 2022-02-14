@@ -92,7 +92,7 @@ class RelationshipStore:
 
     @staticmethod
     def _build_map(
-        relationships: Union[dict, Union[dict, list]]
+        relationships: list[Mapping[str, str]]
     ) -> dict[tuple[str, str], Relationship]:
         return {
             (
