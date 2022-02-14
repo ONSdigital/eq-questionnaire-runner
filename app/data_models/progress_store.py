@@ -13,6 +13,8 @@ from typing import (
 from app.data_models.progress import Progress
 from app.questionnaire.location import Location
 
+SectionKeyType = tuple[str, Optional[str]]
+
 
 @dataclass
 class CompletionStatus:
@@ -37,11 +39,9 @@ class ProgressStore:
         Args:
             in_progress_sections: A list of hierarchical dict containing the section status and completed blocks
         """
-        self._is_dirty = False  # type: bool
-        self._is_routing_backwards = False  # type: bool
-        self._progress = self._build_map(
-            in_progress_sections or []
-        )  # type: MutableMapping
+        self._is_dirty: bool = False
+        self._is_routing_backwards: bool = False
+        self._progress: MutableMapping = self._build_map(in_progress_sections or [])
 
     def __contains__(self, section_key: tuple[str, Optional[str]]) -> bool:
         return section_key in self._progress
@@ -95,7 +95,7 @@ class ProgressStore:
         self,
         statuses: Optional[Iterable[str]] = None,
         section_ids: Optional[Iterable[str]] = None,
-    ) -> list[str]:
+    ) -> list[SectionKeyType]:
         if not statuses:
             statuses = {*CompletionStatus()}
 

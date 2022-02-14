@@ -86,9 +86,7 @@ class Feedback:
         session_data: SessionData = self._session_store.session_data  # type: ignore
         session_data.feedback_count += 1
 
-        if isinstance(session_data.case_id, str) and isinstance(
-            session_data.tx_id, str
-        ):
+        if session_data.case_id and session_data.tx_id:
             feedback_metadata = FeedbackMetadata(
                 session_data.case_id,
                 session_data.tx_id,

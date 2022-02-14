@@ -21,7 +21,7 @@ class RelationshipStore:
     Stores and updates relationships.
     """
 
-    def __init__(self, relationships: Optional[dict] = None) -> None:
+    def __init__(self, relationships: Optional[list[Mapping]] = None) -> None:
         self._is_dirty = False
         self._relationships = self._build_map(relationships or [])
 
@@ -54,7 +54,7 @@ class RelationshipStore:
         self, list_item_id: str, to_list_item_id: str
     ) -> Optional[Relationship]:
         key = (list_item_id, to_list_item_id)
-        return self._relationships.get(key, None)
+        return self._relationships.get(key)
 
     def remove_relationship(self, list_item_id: str, to_list_item_id: str) -> None:
         key = (list_item_id, to_list_item_id)

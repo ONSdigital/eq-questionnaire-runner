@@ -3,7 +3,7 @@ from __future__ import annotations
 import random
 from functools import cached_property
 from string import ascii_letters
-from typing import Any, Iterator, List, Mapping, Optional, Sequence, Union
+from typing import Iterator, List, Mapping, Optional, Sequence
 
 from structlog import get_logger
 
@@ -37,7 +37,7 @@ class ListModel:
     def __iter__(self) -> Iterator[str]:
         yield from self.items
 
-    def __getitem__(self, list_item_index: int) -> Union[dict, Any]:
+    def __getitem__(self, list_item_index: int) -> str:
         return self.items[list_item_index]
 
     def __len__(self) -> int:
@@ -65,7 +65,7 @@ class ListModel:
         return f"<ListModel name={self.name} items={self.items}, primary_person={self.primary_person}>"
 
     @property
-    def first(self) -> Any:
+    def first(self) -> str:
         try:
             return self.items[0]
         except IndexError as e:

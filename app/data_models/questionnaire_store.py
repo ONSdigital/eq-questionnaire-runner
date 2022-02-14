@@ -69,7 +69,7 @@ class QuestionnaireStore:
         self.list_store = ListStore.deserialize(json_data.get("LISTS"))
         self.response_metadata = json_data.get("RESPONSE_METADATA", {})
 
-    def serialize(self) -> Any:
+    def serialize(self) -> str:
         data = {
             "METADATA": self._metadata,
             "ANSWERS": list(self.answer_store),

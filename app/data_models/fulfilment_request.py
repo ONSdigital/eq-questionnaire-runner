@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from datetime import datetime, timezone
 from functools import cached_property
-from typing import Any, Mapping, Union
+from typing import Mapping
 from uuid import uuid4
 
 from app.utilities.json import json_dumps
@@ -17,7 +17,7 @@ class FulfilmentRequest(ABC):
         return str(uuid4())
 
     @property
-    def message(self) -> Union[bytes, Any]:
+    def message(self) -> bytes:
         message = {
             "event": {
                 "type": "FULFILMENT_REQUESTED",

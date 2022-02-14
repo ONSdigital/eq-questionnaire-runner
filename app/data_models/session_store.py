@@ -93,7 +93,7 @@ class SessionStore:
             self.user_id = None
             self.session_data = None
 
-    def _load(self) -> Optional[EQSession]:
+    def _load(self) -> None:
         logger.debug(
             "finding eq_session_id in database", eq_session_id=self.eq_session_id
         )
@@ -129,5 +129,3 @@ class SessionStore:
             logger.debug(
                 "eq_session_id not found in database", eq_session_id=self.eq_session_id
             )
-
-        return self._eq_session
