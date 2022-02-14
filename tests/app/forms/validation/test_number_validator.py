@@ -1,4 +1,5 @@
 import pytest
+from responses import PATCH
 from wtforms.validators import StopValidation, ValidationError
 
 from app.forms import error_messages
@@ -26,15 +27,24 @@ def test_number_validator_raises_StopValidation(
     assert error_messages["INVALID_NUMBER"] == str(exc.value)
 
 
+@pytest.mark.parametrize(
+    "decimals,error",
+    (
+        (2, error_messages["INVALID_DECIMAL"] % {"max": 2}),
+        (0, error_messages["INVALID_INTEGER"]),
+    ),
+)
 @pytest.mark.usefixtures("gb_locale")
-def test_decimal_validator_raises_StopValidation(mock_form, mock_field):
-    validator = DecimalPlaces(2)
+def test_decimal_validator_raises_StopValidation(
+    decimals, error, mock_form, mock_field
+):
+    validator = DecimalPlaces(decimals)
     mock_field.raw_data = ["1.234"]
 
     with pytest.raises(ValidationError) as exc:
         validator(mock_form, mock_field)
 
-    assert error_messages["INVALID_DECIMAL"] % {"max": 2} == str(exc.value)
+    assert error == str(exc.value)
 
 
 @pytest.mark.parametrize(
