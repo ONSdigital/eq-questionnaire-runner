@@ -3,13 +3,20 @@ from __future__ import annotations
 import random
 from functools import cached_property
 from string import ascii_letters
-from typing import Iterator, List, Mapping, Optional, Sequence
+from typing import Iterator, List, Mapping, Optional, Sequence, TypedDict
 
 from structlog import get_logger
 
 from app.settings import EQ_LIST_ITEM_ID_LENGTH
 
 logger = get_logger()
+
+
+class ListModelDict(TypedDict, total=False):
+    name: str
+    items: list[str]
+    primary_person: str
+    same_name_items: list[str]
 
 
 def random_string(length: int) -> str:
@@ -50,8 +57,8 @@ class ListModel:
     def index(self, list_item: str) -> int:
         return self.items.index(list_item)
 
-    def serialize(self) -> dict:
-        serialized = {"items": self.items, "name": self.name}
+    def serialize(self) -> ListModelDict:
+        serialized = ListModelDict(items=self.items, name=self.name)
 
         if self.primary_person:
             serialized["primary_person"] = self.primary_person
@@ -208,7 +215,7 @@ class ListStore:
 
         return list_item_id
 
-    def serialize(self) -> list[dict]:
+    def serialize(self) -> list[ListModelDict]:
         return [list_model.serialize() for list_model in self]
 
     @classmethod
