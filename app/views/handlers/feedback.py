@@ -8,7 +8,7 @@ from sdc.crypto.encrypter import encrypt
 from werkzeug.datastructures import MultiDict
 
 from app.data_models import QuestionnaireStore
-from app.data_models.session_data import METADATA_MAPPING_TYPE, SessionData
+from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.forms.questionnaire_form import QuestionnaireForm, generate_form
 from app.keys import KEY_PURPOSE_SUBMISSION
@@ -256,8 +256,8 @@ class FeedbackPayload:
         metadata: Mapping[str, Union[str, int, list]],
         response_metadata: Mapping[str, Union[str, int, list]],
         schema: QuestionnaireSchema,
-        case_id: METADATA_MAPPING_TYPE,
-        submission_language_code: METADATA_MAPPING_TYPE,
+        case_id: Optional[str],
+        submission_language_code: Optional[str],
         feedback_count: int,
         feedback_text: str,
         feedback_type: str,

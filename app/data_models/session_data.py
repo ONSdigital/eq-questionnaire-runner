@@ -1,25 +1,23 @@
-from typing import Optional, Union
-
-METADATA_MAPPING_TYPE = Optional[Union[str, int, list]]
+from typing import Optional
 
 
 class SessionData:
     def __init__(
         self,
-        tx_id: METADATA_MAPPING_TYPE,
-        schema_name: METADATA_MAPPING_TYPE,
-        period_str: METADATA_MAPPING_TYPE,
-        language_code: METADATA_MAPPING_TYPE,
-        launch_language_code: METADATA_MAPPING_TYPE,
-        survey_url: METADATA_MAPPING_TYPE,
-        ru_name: METADATA_MAPPING_TYPE,
-        ru_ref: METADATA_MAPPING_TYPE,
-        response_id: METADATA_MAPPING_TYPE,
-        case_id: METADATA_MAPPING_TYPE,
-        case_ref: METADATA_MAPPING_TYPE = None,
-        account_service_base_url: METADATA_MAPPING_TYPE = None,
-        account_service_log_out_url: METADATA_MAPPING_TYPE = None,
-        trad_as: METADATA_MAPPING_TYPE = None,
+        tx_id: Optional[str],
+        schema_name: Optional[str],
+        period_str: Optional[str],
+        language_code: Optional[str],
+        launch_language_code: Optional[str],
+        survey_url: Optional[str],
+        ru_name: Optional[str],
+        ru_ref: Optional[str],
+        response_id: Optional[str],
+        case_id: Optional[str],
+        case_ref: Optional[str] = None,
+        account_service_base_url: Optional[str] = None,
+        account_service_log_out_url: Optional[str] = None,
+        trad_as: Optional[str] = None,
         display_address: Optional[str] = None,
         confirmation_email_count: int = 0,
         feedback_count: int = 0,
