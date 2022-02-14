@@ -130,7 +130,7 @@ def add_relationships_unrelated_answers(
         relationship_store=relationship_store,
         section_id=section_id,
         list_name=list_name,
-        list_item_ids=list_store[list_name],
+        list_item_ids=list_store[list_name],  # type: ignore
         relationships_block_id=relationships_block["id"],
         unrelated_block_id=unrelated_block_id,
         unrelated_answer_id=unrelated_answer_id,
