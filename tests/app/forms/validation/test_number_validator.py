@@ -1,5 +1,4 @@
 import pytest
-from responses import PATCH
 from wtforms.validators import StopValidation, ValidationError
 
 from app.forms import error_messages
