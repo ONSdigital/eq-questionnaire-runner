@@ -20,10 +20,8 @@ def build_view_submitted_response_context(
     survey_type: str,
 ) -> dict[str, Union[str, datetime, dict]]:
 
-    if not questionnaire_store.submitted_at:
-        raise Exception("questionnaire_store.submitted_at not available")
     view_submitted_response_expired = has_view_submitted_response_expired(
-        questionnaire_store.submitted_at
+        questionnaire_store.submitted_at  # type: ignore
     )
 
     if survey_type == "social":
@@ -39,7 +37,7 @@ def build_view_submitted_response_context(
 
     metadata = build_submission_metadata_context(
         survey_type,
-        questionnaire_store.submitted_at,
+        questionnaire_store.submitted_at,  # type: ignore
         questionnaire_store.metadata["tx_id"],
     )
     context = {
