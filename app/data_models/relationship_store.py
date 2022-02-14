@@ -1,5 +1,5 @@
 from dataclasses import asdict, dataclass
-from typing import Iterator, Mapping, Optional, Union
+from typing import Iterator, Mapping, Optional
 
 
 @dataclass
