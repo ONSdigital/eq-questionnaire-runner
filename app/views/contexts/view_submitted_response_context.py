@@ -56,7 +56,7 @@ def build_view_submitted_response_context(
             answer_store=questionnaire_store.answer_store,
             list_store=questionnaire_store.list_store,
             progress_store=questionnaire_store.progress_store,
-            metadata=questionnaire_store.metadata,
+            metadata=questionnaire_store.metadata,  # type: ignore
             response_metadata=questionnaire_store.response_metadata,
         )
         context["summary"] = summary_context()

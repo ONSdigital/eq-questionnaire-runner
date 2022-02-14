@@ -107,14 +107,13 @@ class SessionStore:
                 self.user_id, self.user_ik, self.pepper
             ).decrypt_data(encrypted_session_data)
 
-            if isinstance(session_data, bytes):
-                session_data = session_data.decode()
-                # for backwards compatibility
-                # session data used to be base64 encoded before encryption
-                try:
-                    session_data = base64url_decode(session_data).decode()
-                except ValueError:
-                    pass
+            session_data = session_data.decode()  # type: ignore
+            # for backwards compatibility
+            # session data used to be base64 encoded before encryption
+            try:
+                session_data = base64url_decode(session_data).decode()
+            except ValueError:
+                pass
 
             self.session_data = json_loads(
                 session_data, object_hook=lambda d: SessionData(**d)

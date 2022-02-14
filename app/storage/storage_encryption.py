@@ -51,7 +51,7 @@ class StorageEncryption:
         serialized_token: str = jwe_token.serialize(compact=True)
         return serialized_token
 
-    def decrypt_data(self, encrypted_token: str) -> Union[bytes, str]:
+    def decrypt_data(self, encrypted_token: str) -> bytes:
         jwe_token = jwe.JWE(algs=["dir", "A256GCM"])
         jwe_token.deserialize(encrypted_token, self.key)
 
