@@ -1,13 +1,11 @@
 from dataclasses import astuple, dataclass
 from typing import (
-    Any,
     Iterable,
     Iterator,
     List,
     Mapping,
     MutableMapping,
     Optional,
-    Union,
 )
 
 from app.data_models.progress import Progress
@@ -41,7 +39,9 @@ class ProgressStore:
         """
         self._is_dirty: bool = False
         self._is_routing_backwards: bool = False
-        self._progress: MutableMapping = self._build_map(in_progress_sections or [])
+        self._progress: MutableMapping[SectionKeyType, Progress] = self._build_map(
+            in_progress_sections or []
+        )
 
     def __contains__(self, section_key: tuple[str, Optional[str]]) -> bool:
         return section_key in self._progress
@@ -102,7 +102,7 @@ class ProgressStore:
         section_keys = [
             section_key
             for section_key, section_progress in self._progress.items()
-            if section_progress.status in statuses
+            if section_progress.status in statuses  # type: ignore
         ]
 
         if section_ids is None:
@@ -136,7 +136,7 @@ class ProgressStore:
 
     def get_section_status(
         self, section_id: str, list_item_id: Optional[str] = None
-    ) -> Union[str, Any]:
+    ) -> Optional[str]:
         section_key = (section_id, list_item_id)
         if section_key in self._progress:
             return self._progress[section_key].status
@@ -145,7 +145,7 @@ class ProgressStore:
 
     def get_completed_block_ids(
         self, section_id: str, list_item_id: Optional[str] = None
-    ) -> Union[list[Optional[str]], Any]:
+    ) -> list[Optional[str]]:
         section_key = (section_id, list_item_id)
         if section_key in self._progress:
             return self._progress[section_key].block_ids
