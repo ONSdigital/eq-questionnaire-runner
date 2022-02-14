@@ -1,5 +1,11 @@
 from dataclasses import asdict, dataclass
-from typing import Iterator, Mapping, Optional
+from typing import Iterator, Mapping, Optional, TypedDict
+
+
+class RelationshipDict(TypedDict, total=False):
+    list_item_id: str
+    to_list_item_id: str
+    relationship: str
 
 
 @dataclass
@@ -12,8 +18,8 @@ class Relationship:
     to_list_item_id: str
     relationship: str
 
-    def for_json(self) -> Mapping:
-        return asdict(self)
+    def for_json(self) -> RelationshipDict:
+        return asdict(self)  # type: ignore
 
 
 class RelationshipStore:
@@ -45,7 +51,7 @@ class RelationshipStore:
         self._relationships.clear()
         self._is_dirty = True
 
-    def serialize(self) -> list[Mapping[str, str]]:
+    def serialize(self) -> list[RelationshipDict]:
         return [
             relationship.for_json() for relationship in self._relationships.values()
         ]
