@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, Iterable, Iterator, Mapping, Optional
+from typing import Iterable, Iterator, Mapping, Optional
 
 from app.data_models.answer import Answer, AnswerValueEscapedTypes, escape_answer_value
 
@@ -19,7 +19,7 @@ class AnswerStore:
     }
     """
 
-    def __init__(self, existing_answers: Optional[Iterable[Dict]] = None):
+    def __init__(self, existing_answers: Optional[Iterable[dict]] = None):
         """Instantiate an answer_store.
 
         Args:

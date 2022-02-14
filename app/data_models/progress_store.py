@@ -198,7 +198,7 @@ class ProgressStore:
 
             self._is_dirty = True
 
-    def serialize(self) -> List:
+    def serialize(self) -> list:
         return list(self._progress.values())
 
     def remove_location_for_backwards_routing(self, location: Location) -> None:

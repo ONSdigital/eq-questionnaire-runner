@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, Mapping, Optional
+from typing import Mapping, Optional
 
 
 @dataclass
 class Progress:
     section_id: str
-    block_ids: List[Optional[str]]
+    block_ids: list[Optional[str]]
     status: Optional[str] = None
     list_item_id: Optional[str] = None
 
