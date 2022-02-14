@@ -13,8 +13,16 @@ class ViewSubmittedResponseBasePage extends BasePage {
     return `.ons-metadata > dd:nth-of-type(${number})`;
   }
 
+  informationPanel() {
+    return '[id="view-submitted-guidance"]';
+  }
+
   printButton() {
     return '[data-qa="btn-print"]';
+  }
+
+  downloadButton() {
+    return '[data-qa="btn-pdf"]';
   }
 }
 
