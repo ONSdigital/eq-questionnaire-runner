@@ -3,7 +3,7 @@ from __future__ import annotations
 import random
 from functools import cached_property
 from string import ascii_letters
-from typing import Iterator, List, Mapping, Optional, Sequence, TypedDict
+from typing import Iterable, Iterator, Optional, TypedDict
 
 from structlog import get_logger
 
@@ -121,7 +121,7 @@ class ListStore:
     ```
     """
 
-    def __init__(self, existing_items: Optional[List[Mapping]] = None):
+    def __init__(self, existing_items: Optional[Iterable[ListModelDict]] = None):
         existing_items = existing_items or []
 
         self._lists = self._build_map(existing_items)
@@ -219,7 +219,7 @@ class ListStore:
         return [list_model.serialize() for list_model in self]
 
     @classmethod
-    def deserialize(cls, serialized: list[Mapping]) -> ListStore:
+    def deserialize(cls, serialized: Iterable[ListModelDict]) -> ListStore:
         if not serialized:
             return cls()
 
