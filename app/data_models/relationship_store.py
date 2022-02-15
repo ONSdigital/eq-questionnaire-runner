@@ -19,7 +19,7 @@ class Relationship:
     relationship: str
 
     def for_json(self) -> RelationshipDict:
-        return asdict(self)  # type: ignore
+        return cast(RelationshipDict, asdict(self))
 
 
 class RelationshipStore:
