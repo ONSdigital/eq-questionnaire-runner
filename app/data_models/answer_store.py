@@ -1,9 +1,15 @@
 from __future__ import annotations
 
-from typing import Iterable, Iterator, Mapping, Optional
+from typing import Iterable, Iterator, Mapping, Optional, TypedDict, Union
 
 from app.data_models.answer import Answer, AnswerValueEscapedTypes, escape_answer_value
 from app.data_models.progress_store import SectionKeyType
+
+
+class AnswersDict(TypedDict, total=False):
+    answer_id: str
+    list_item_id: str
+    value: Union[str, int]
 
 
 class AnswerStore:
@@ -20,7 +26,7 @@ class AnswerStore:
     }
     """
 
-    def __init__(self, existing_answers: Optional[Iterable[dict]] = None):
+    def __init__(self, existing_answers: Optional[Iterable[AnswersDict]] = None):
         """Instantiate an answer_store.
 
         Args:
