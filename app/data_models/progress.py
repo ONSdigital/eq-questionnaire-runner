@@ -1,7 +1,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Mapping, Optional
+from typing import Mapping, Optional, TypedDict
+
+
+class ProgressDict(TypedDict, total=False):
+    section_id: str
+    list_item_id: str
+    status: str
+    block_ids: list[Optional[str]]
 
 
 @dataclass
@@ -12,7 +19,7 @@ class Progress:
     list_item_id: Optional[str] = None
 
     @classmethod
-    def from_dict(cls, progress_dict: Mapping) -> Progress:
+    def from_dict(cls, progress_dict: ProgressDict) -> Progress:
         return cls(
             section_id=progress_dict["section_id"],
             block_ids=progress_dict["block_ids"],

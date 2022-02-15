@@ -1,17 +1,10 @@
 from dataclasses import astuple, dataclass
-from typing import Iterable, Iterator, MutableMapping, Optional, TypedDict
+from typing import Iterable, Iterator, MutableMapping, Optional
 
-from app.data_models.progress import Progress
+from app.data_models.progress import Progress, ProgressDict
 from app.questionnaire.location import Location
 
 SectionKeyType = tuple[str, Optional[str]]
-
-
-class SectionsDict(TypedDict, total=False):
-    section_id: str
-    list_item_id: str
-    status: str
-    block_ids: list[str]
 
 
 @dataclass
@@ -32,7 +25,7 @@ class ProgressStore:
     """
 
     def __init__(
-        self, in_progress_sections: Optional[Iterable[SectionsDict]] = None
+        self, in_progress_sections: Optional[Iterable[ProgressDict]] = None
     ) -> None:
         """
         Instantiate a ProgressStore object that tracks the status of sections and its completed blocks
@@ -49,7 +42,7 @@ class ProgressStore:
         return section_key in self._progress
 
     @staticmethod
-    def _build_map(section_progress_list: Iterable[SectionsDict]) -> MutableMapping:
+    def _build_map(section_progress_list: Iterable[ProgressDict]) -> MutableMapping:
         """
         Builds the progress_store's data structure from a list of progress dictionaries.
 
