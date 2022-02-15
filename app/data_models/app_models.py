@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 from marshmallow import Schema, fields, post_load, pre_dump
 
@@ -81,7 +81,7 @@ class DateTimeSchemaMixin:
     def set_date(
         data: QuestionnaireState,
         **kwargs: Any,
-    ) -> QuestionnaireState:
+    ) -> Union[EQSession, QuestionnaireState]:
         data.updated_at = datetime.now(tz=timezone.utc)
         return data
 
