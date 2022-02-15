@@ -1,5 +1,5 @@
 from dataclasses import asdict, dataclass
-from typing import Iterator, Mapping, Optional, TypedDict, cast
+from typing import Iterable, Iterator, Optional, TypedDict, cast
 
 
 class RelationshipDict(TypedDict, total=False):
@@ -100,7 +100,7 @@ class RelationshipStore:
 
     @staticmethod
     def _build_map(
-        relationships: Iterable[RelationshipDict]
+        relationships: Iterable[RelationshipDict],
     ) -> dict[tuple[str, str], Relationship]:
         return {
             (
