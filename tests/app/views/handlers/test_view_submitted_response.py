@@ -17,7 +17,7 @@ def test_not_enabled(storage, language):
         ViewSubmittedResponse(QuestionnaireSchema({}), questionnaire_store, language)
 
 
-def test_has_expired_returns_false(storage, language, app):
+def test_has_expired_no_submitted_at_return_false(storage, language, app):
     with app.app_context():
         set_storage_data(storage)
         questionnaire_store = QuestionnaireStore(storage)

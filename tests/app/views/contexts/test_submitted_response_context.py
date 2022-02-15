@@ -101,7 +101,7 @@ def test_view_submitted_response_expired(
         assert "summary" not in context
 
 
-def test_build_view_submitted_response_exception(app: Flask):
+def test_build_view_submitted_response_no_submitted_at(app: Flask):
     with app.app_context():
         questionnaire_store = fake_questionnaire_store_no_submitted_at()
         with pytest.raises(Exception):
