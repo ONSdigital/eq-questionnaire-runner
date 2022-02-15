@@ -29,7 +29,7 @@ class SessionStore:
             self._load()
 
     @property
-    def expiration_time(self) -> datetime:
+    def expiration_time(self) -> Optional[datetime]:
         """
         Checking if expires_at is available can be removed soon after deployment,
         it is only needed to cater for in-flight sessions.

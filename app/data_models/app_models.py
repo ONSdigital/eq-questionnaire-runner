@@ -79,7 +79,7 @@ class DateTimeSchemaMixin:
     @staticmethod
     @pre_dump
     def set_date(
-        data: QuestionnaireState,
+        data: Union[EQSession, QuestionnaireState],
         **kwargs: Any,
     ) -> Union[EQSession, QuestionnaireState]:
         data.updated_at = datetime.now(tz=timezone.utc)

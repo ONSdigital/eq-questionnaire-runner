@@ -97,7 +97,7 @@ class ProgressStore:
         section_keys = [
             section_key
             for section_key, section_progress in self._progress.items()
-            if section_progress.status and section_progress.status in statuses
+            if section_progress.status in statuses
         ]
 
         if section_ids is None:
