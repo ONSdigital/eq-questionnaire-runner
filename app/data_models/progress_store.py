@@ -165,6 +165,7 @@ class ProgressStore:
                     section_id=section_id,
                     list_item_id=list_item_id,
                     block_ids=completed_block_ids,
+                    status=CompletionStatus.IN_PROGRESS,
                 )
 
             self._is_dirty = True
