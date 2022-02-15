@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Iterable, Iterator, Mapping, Optional
 
 from app.data_models.answer import Answer, AnswerValueEscapedTypes, escape_answer_value
+from app.data_models.progress_store import SectionKeyType
 
 
 class AnswerStore:
@@ -42,7 +43,7 @@ class AnswerStore:
     @staticmethod
     def _build_map(
         answers: Iterable[Mapping],
-    ) -> dict[tuple[str, Optional[str]], Answer]:
+    ) -> dict[SectionKeyType, Answer]:
         """Builds the answer_store's data structure from a list of answer dictionaries"""
         return {
             (answer["answer_id"], answer.get("list_item_id")): Answer.from_dict(answer)
