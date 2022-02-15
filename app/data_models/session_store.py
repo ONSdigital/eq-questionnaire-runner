@@ -103,20 +103,20 @@ class SessionStore:
             self.user_id = self._eq_session.user_id
 
             encrypted_session_data = self._eq_session.session_data
-            session_data = StorageEncryption(
+            session_data_as_bytes = StorageEncryption(
                 self.user_id, self.user_ik, self.pepper
             ).decrypt_data(encrypted_session_data)
 
-            session_data = session_data.decode()  # type: ignore
+            session_data_as_str = session_data_as_bytes.decode()
             # for backwards compatibility
             # session data used to be base64 encoded before encryption
             try:
-                session_data = base64url_decode(session_data).decode()
+                session_data_as_str = base64url_decode(session_data_as_str).decode()
             except ValueError:
                 pass
 
             self.session_data = json_loads(
-                session_data, object_hook=lambda d: SessionData(**d)
+                session_data_as_str, object_hook=lambda d: SessionData(**d)
             )
 
             logger.debug(
