@@ -29,7 +29,7 @@ class QuestionnaireStore:
         self._metadata: dict[str, Any] = {}
         # self.metadata is a read-only view over self._metadata
         self.metadata: MappingProxyType = MappingProxyType(self._metadata)
-        self.response_metadata: dict = {}
+        self.response_metadata: Mapping[str, Any] = {}
         self.list_store = ListStore()
         self.answer_store = AnswerStore()
         self.progress_store = ProgressStore()
