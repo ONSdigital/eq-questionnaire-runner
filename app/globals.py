@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from types import MappingProxyType
-from typing import Union
+from typing import Any, Mapping, Union
 
 from flask import current_app, g
 from flask import session as cookie_session
@@ -92,7 +91,7 @@ def create_session_store(
     )
 
 
-def get_metadata(user: User) -> Union[None, MappingProxyType]:
+def get_metadata(user: User) -> Union[None, Mapping[str, Any]]:
     if user.is_anonymous:
         logger.debug("anonymous user requesting metadata get instance")
         return None

@@ -43,7 +43,7 @@ class SubmitQuestionnaireHandler:
             answer_store=self._questionnaire_store.answer_store,
             list_store=self._questionnaire_store.list_store,
             progress_store=self._questionnaire_store.progress_store,
-            metadata=self._questionnaire_store.metadata,  # type: ignore
+            metadata=self._questionnaire_store.metadata,
             response_metadata=self._questionnaire_store.response_metadata,
         )
         return submit_questionnaire_context()
