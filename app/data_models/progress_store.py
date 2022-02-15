@@ -131,7 +131,7 @@ class ProgressStore:
 
     def get_section_status(
         self, section_id: str, list_item_id: Optional[str] = None
-    ) -> Optional[str]:
+    ) -> str:
         section_key = (section_id, list_item_id)
         if section_key in self._progress:
             return self._progress[section_key].status

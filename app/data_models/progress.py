@@ -15,7 +15,7 @@ class ProgressDict(TypedDict, total=False):
 class Progress:
     section_id: str
     block_ids: list[str]
-    status: Optional[str] = None
+    status: str = "IN_PROGRESS"
     list_item_id: Optional[str] = None
 
     @classmethod
