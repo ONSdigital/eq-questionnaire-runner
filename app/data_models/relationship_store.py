@@ -100,7 +100,7 @@ class RelationshipStore:
 
     @staticmethod
     def _build_map(
-        relationships: list[Mapping[str, str]]
+        relationships: Iterable[RelationshipDict]
     ) -> dict[tuple[str, str], Relationship]:
         return {
             (
