@@ -4,11 +4,12 @@ from typing import Iterable, Iterator, Optional
 
 from app.data_models.answer import (
     Answer,
-    AnswersDict,
+    AnswersDictType,
     AnswerValueEscapedTypes,
     escape_answer_value,
 )
-from app.data_models.progress_store import SectionKeyType
+
+AnswerListItemTupleType = tuple[str, Optional[str]]
 
 
 class AnswerStore:
@@ -25,7 +26,7 @@ class AnswerStore:
     }
     """
 
-    def __init__(self, existing_answers: Optional[Iterable[AnswersDict]] = None):
+    def __init__(self, existing_answers: Optional[Iterable[AnswersDictType]] = None):
         """Instantiate an answer_store.
 
         Args:
@@ -47,8 +48,8 @@ class AnswerStore:
 
     @staticmethod
     def _build_map(
-        answers: Iterable[AnswersDict],
-    ) -> dict[SectionKeyType, Answer]:
+        answers: Iterable[AnswersDictType],
+    ) -> dict[AnswerListItemTupleType, Answer]:
         """Builds the answer_store's data structure from a list of answer dictionaries"""
         return {
             (answer["answer_id"], answer.get("list_item_id")): Answer.from_dict(answer)

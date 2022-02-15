@@ -21,10 +21,10 @@ AnswerValueEscapedTypes = Union[
 ]
 
 
-class AnswersDict(TypedDict, total=False):
+class AnswersDictType(TypedDict, total=False):
     answer_id: str
     list_item_id: str
-    value: Union[str, int]
+    value: AnswerValueTypes
 
 
 @dataclass
@@ -34,7 +34,7 @@ class Answer:
     list_item_id: Optional[str] = field(default=None)
 
     @classmethod
-    def from_dict(cls, answer_dict: AnswersDict) -> Answer:
+    def from_dict(cls, answer_dict: AnswersDictType) -> Answer:
         return cls(
             answer_id=answer_dict["answer_id"],
             value=answer_dict["value"],

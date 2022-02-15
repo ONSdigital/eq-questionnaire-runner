@@ -12,7 +12,7 @@ from app.settings import EQ_LIST_ITEM_ID_LENGTH
 logger = get_logger()
 
 
-class ListModelDict(TypedDict, total=False):
+class ListModelDictType(TypedDict, total=False):
     name: str
     items: list[str]
     primary_person: str
@@ -57,8 +57,8 @@ class ListModel:
     def index(self, list_item: str) -> int:
         return self.items.index(list_item)
 
-    def serialize(self) -> ListModelDict:
-        serialized = ListModelDict(items=self.items, name=self.name)
+    def serialize(self) -> ListModelDictType:
+        serialized = ListModelDictType(items=self.items, name=self.name)
 
         if self.primary_person:
             serialized["primary_person"] = self.primary_person
@@ -121,7 +121,7 @@ class ListStore:
     ```
     """
 
-    def __init__(self, existing_items: Optional[Iterable[ListModelDict]] = None):
+    def __init__(self, existing_items: Optional[Iterable[ListModelDictType]] = None):
         existing_items = existing_items or []
 
         self._lists = self._build_map(existing_items)
@@ -144,7 +144,7 @@ class ListStore:
         return f"<ListStore lists={self._lists}>"
 
     @staticmethod
-    def _build_map(list_models: Iterable[ListModelDict]) -> dict[str, ListModel]:
+    def _build_map(list_models: Iterable[ListModelDictType]) -> dict[str, ListModel]:
         """Builds the list_store data structure from a list of dictionaries"""
         return {
             list_model["name"]: ListModel(**list_model) for list_model in list_models
@@ -215,11 +215,11 @@ class ListStore:
 
         return list_item_id
 
-    def serialize(self) -> list[ListModelDict]:
+    def serialize(self) -> list[ListModelDictType]:
         return [list_model.serialize() for list_model in self]
 
     @classmethod
-    def deserialize(cls, serialized: Iterable[ListModelDict]) -> ListStore:
+    def deserialize(cls, serialized: Iterable[ListModelDictType]) -> ListStore:
         if not serialized:
             return cls()
 

@@ -30,10 +30,9 @@ def build_thank_you_context(
         submission_text = lazy_gettext(
             "Your answers have been submitted for <span>{company_name}</span>"
         ).format(company_name=session_data.ru_name)
-    if session_data.tx_id:
-        metadata = build_submission_metadata_context(
-            survey_type, submitted_at, session_data.tx_id
-        )
+    metadata = build_submission_metadata_context(
+        survey_type, submitted_at, session_data.tx_id  # type: ignore
+    )
     return {
         "hide_sign_out_button": True,
         "submission_text": submission_text,
