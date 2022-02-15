@@ -1,5 +1,5 @@
 from dataclasses import asdict, dataclass
-from typing import Iterator, Mapping, Optional, TypedDict
+from typing import Iterator, Mapping, Optional, TypedDict, cast
 
 
 class RelationshipDict(TypedDict, total=False):

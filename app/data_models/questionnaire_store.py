@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from types import MappingProxyType
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any, Mapping, Optional
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
