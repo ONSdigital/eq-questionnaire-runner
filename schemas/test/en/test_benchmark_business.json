@@ -16,7 +16,8 @@
         }
     },
     "post_submission": {
-        "feedback": true
+        "feedback": true,
+        "view_response": true
     },
     "sections": [
         {
