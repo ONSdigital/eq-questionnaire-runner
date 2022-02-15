@@ -4,6 +4,23 @@ from wtforms.validators import StopValidation
 from app.forms.validators import OptionalForm
 
 
+def _get_comparison_date_parts(day_month_year, mocker):
+    mock_day = mocker.MagicMock()
+    mock_month = mocker.MagicMock()
+    mock_year = mocker.MagicMock()
+
+    mock_month.raw_data = day_month_year[-2]
+    mock_year.raw_data = day_month_year[-1]
+
+    if len(day_month_year) == 3:
+        mock_day.raw_data = day_month_year[-3]
+        comp = [mock_day, mock_month, mock_year]
+    else:
+        comp = [mock_month, mock_year]
+
+    return comp
+
+
 @pytest.mark.parametrize(
     "day_month_year",
     (
@@ -16,19 +33,7 @@ def test_date_validator_day_month_year_invalid_raises_StopValidation(
 ):
     validator = OptionalForm()
 
-    mock_day = mocker.MagicMock()
-    mock_month = mocker.MagicMock()
-    mock_year = mocker.MagicMock()
-
-    mock_month.raw_data = day_month_year[-2]
-    mock_year.raw_data = day_month_year[-1]
-
-    if len(day_month_year) == 3:
-        mock_day.raw_data = day_month_year[-3]
-        comp = [mock_day, mock_month, mock_year]
-
-    elif len(day_month_year) == 2:
-        comp = [mock_month, mock_year]
+    comp = _get_comparison_date_parts(day_month_year, mocker)
 
     mock_form.__iter__ = mocker.MagicMock(return_value=iter(comp))
 
@@ -48,19 +53,7 @@ def test_date_validator_day_month_year_invalid_raises_StopValidation(
 def test_date_validator_day_month_year(day_month_year, mocker, mock_form, mock_field):
     validator = OptionalForm()
 
-    mock_day = mocker.MagicMock()
-    mock_month = mocker.MagicMock()
-    mock_year = mocker.MagicMock()
-
-    mock_month.raw_data = day_month_year[-2]
-    mock_year.raw_data = day_month_year[-1]
-
-    if len(day_month_year) == 3:
-        mock_day.raw_data = day_month_year[-3]
-        comp = [mock_day, mock_month, mock_year]
-
-    elif len(day_month_year) == 2:
-        comp = [mock_month, mock_year]
+    comp = _get_comparison_date_parts(day_month_year, mocker)
 
     mock_form.__iter__ = mocker.MagicMock(return_value=iter(comp))
 
