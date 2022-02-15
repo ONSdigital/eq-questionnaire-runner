@@ -36,7 +36,7 @@ class ProgressStore:
             in_progress_sections or []
         )
 
-    def __contains__(self, section_key: tuple[str, Optional[str]]) -> bool:
+    def __contains__(self, section_key: SectionKeyType) -> bool:
         return section_key in self._progress
 
     @staticmethod
