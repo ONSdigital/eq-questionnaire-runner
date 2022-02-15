@@ -9,7 +9,7 @@ from app.data_models.answer import (
     escape_answer_value,
 )
 
-AnswerListItemTupleType = tuple[str, Optional[str]]
+AnswerKeyType = tuple[str, Optional[str]]
 
 
 class AnswerStore:
@@ -49,7 +49,7 @@ class AnswerStore:
     @staticmethod
     def _build_map(
         answers: Iterable[AnswersDictType],
-    ) -> dict[AnswerListItemTupleType, Answer]:
+    ) -> dict[AnswerKeyType, Answer]:
         """Builds the answer_store's data structure from a list of answer dictionaries"""
         return {
             (answer["answer_id"], answer.get("list_item_id")): Answer.from_dict(answer)
