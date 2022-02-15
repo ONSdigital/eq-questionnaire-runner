@@ -21,7 +21,7 @@ class SessionData:
         display_address: Optional[str] = None,
         confirmation_email_count: int = 0,
         feedback_count: int = 0,
-        **_: str,
+        **_: Any,
     ):  # pylint: disable=too-many-locals
         self.tx_id = tx_id
         self.schema_name = schema_name
