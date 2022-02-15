@@ -8,13 +8,13 @@ class ProgressDict(TypedDict, total=False):
     section_id: str
     list_item_id: str
     status: str
-    block_ids: list[Optional[str]]
+    block_ids: list[str]
 
 
 @dataclass
 class Progress:
     section_id: str
-    block_ids: list[Optional[str]]
+    block_ids: list[str]
     status: Optional[str] = None
     list_item_id: Optional[str] = None
 

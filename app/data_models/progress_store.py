@@ -140,7 +140,7 @@ class ProgressStore:
 
     def get_completed_block_ids(
         self, section_id: str, list_item_id: Optional[str] = None
-    ) -> list[Optional[str]]:
+    ) -> list:
         section_key = (section_id, list_item_id)
         if section_key in self._progress:
             return self._progress[section_key].block_ids
