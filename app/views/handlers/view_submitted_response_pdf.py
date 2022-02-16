@@ -19,9 +19,9 @@ weasyprint_logger = logging.getLogger("weasyprint")
 weasyprint_progress_logger = logging.getLogger("weasyprint.progress")
 font_logger = logging.getLogger("fontTools")
 
-weasyprint_logger.setLevel(level=logging.ERROR)
-weasyprint_progress_logger.setLevel(level=logging.ERROR)
-font_logger.setLevel(level=logging.ERROR)
+# weasyprint_logger.setLevel(level=logging.ERROR)
+# weasyprint_progress_logger.setLevel(level=logging.ERROR)
+# font_logger.setLevel(level=logging.ERROR)
 
 
 @lru_cache(maxsize=None)
@@ -108,7 +108,7 @@ class ViewSubmittedResponsePDF(ViewSubmittedResponse):
         # This stylesheet is being removed so Weasyprint will not try resolve it and parse it.
         # This is hacky and we should look at solutions to making this configurable, so the DS is able to not output it / use a custom path.
         rendered_html_without_main_css = rendered_html.replace(
-            f'<link rel="stylesheet" href="{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}/45.1.5/css/main.css">',
+            f'<link rel="stylesheet" href="{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}/45.2.0/css/main.css">',
             "",
         )
         return render_pdf(
