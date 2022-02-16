@@ -6,7 +6,7 @@ from typing import Mapping, Optional, TypedDict
 
 class ProgressDictType(TypedDict, total=False):
     section_id: str
-    block_ids: list[Optional[str]]
+    block_ids: list[str]
     status: str
     list_item_id: str
 
@@ -14,7 +14,7 @@ class ProgressDictType(TypedDict, total=False):
 @dataclass
 class Progress:
     section_id: str
-    block_ids: list[Optional[str]]
+    block_ids: list[str]
     status: str
     list_item_id: Optional[str] = None
 
