@@ -1,7 +1,7 @@
 from dataclasses import astuple, dataclass
 from typing import Iterable, Iterator, MutableMapping, Optional
 
-from app.data_models.progress import Progress, ProgressDict
+from app.data_models.progress import Progress, ProgressDictType
 from app.questionnaire.location import Location
 
 SectionKeyType = tuple[str, Optional[str]]
@@ -25,7 +25,7 @@ class ProgressStore:
     """
 
     def __init__(
-        self, in_progress_sections: Optional[Iterable[ProgressDict]] = None
+        self, in_progress_sections: Optional[Iterable[ProgressDictType]] = None
     ) -> None:
         """
         Instantiate a ProgressStore object that tracks the status of sections and its completed blocks
@@ -42,7 +42,7 @@ class ProgressStore:
         return section_key in self._progress
 
     @staticmethod
-    def _build_map(section_progress_list: Iterable[ProgressDict]) -> MutableMapping:
+    def _build_map(section_progress_list: Iterable[ProgressDictType]) -> MutableMapping:
         """
         Builds the progress_store's data structure from a list of progress dictionaries.
 
@@ -140,7 +140,7 @@ class ProgressStore:
 
     def get_completed_block_ids(
         self, section_id: str, list_item_id: Optional[str] = None
-    ) -> list:
+    ) -> list[Optional[str]]:
         section_key = (section_id, list_item_id)
         if section_key in self._progress:
             return self._progress[section_key].block_ids
@@ -201,7 +201,7 @@ class ProgressStore:
 
             self._is_dirty = True
 
-    def serialize(self) -> list:
+    def serialize(self) -> list[Progress]:
         return list(self._progress.values())
 
     def remove_location_for_backwards_routing(self, location: Location) -> None:
