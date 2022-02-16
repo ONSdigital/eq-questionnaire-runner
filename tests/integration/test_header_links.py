@@ -54,6 +54,7 @@ class TestHeaderLinksPreSubmission(TestHeaderLinks):
 
 
 class TestHeaderLinksPostSubmission(TestHeaderLinks):
+    @pytest.mark.xfail(reason="DS changes pending")
     def test_links_in_header_when_valid_session(self):
         # Given
         self.launchSurvey("test_thank_you")
