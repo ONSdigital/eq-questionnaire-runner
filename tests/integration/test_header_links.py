@@ -1,3 +1,5 @@
+import pytest
+
 from tests.integration.create_token import ACCOUNT_SERVICE_URL
 from tests.integration.integration_test_case import IntegrationTestCase
 
@@ -27,6 +29,7 @@ class TestHeaderLinks(IntegrationTestCase):
 
 
 class TestHeaderLinksPreSubmission(TestHeaderLinks):
+    @pytest.mark.xfail(reason="DS changes pending")
     def test_links_in_header_when_valid_session(self):
         # Given
         self.launchSurvey("test_thank_you")
