@@ -24,7 +24,7 @@ class Location:
     """
 
     section_id: str
-    block_id: Optional[str] = None  # type: ignore
+    block_id: Optional[str] = None
     list_name: Optional[str] = None
     list_item_id: Optional[str] = None
 
