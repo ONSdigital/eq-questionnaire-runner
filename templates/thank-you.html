@@ -1,6 +1,7 @@
 {% extends 'layouts/_base.html' %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
 {% from "components/metadata/_macro.njk" import onsMetadata %}
+{% from "components/timeout-panel/_macro.njk" import onsTimeoutPanel %}
 
 {% set page_title = _("We’ve received your answers") %}
 {% set hide_sign_out_button = content.hide_sign_out_button %}
@@ -33,7 +34,7 @@
     <p data-qa="guidance">
       {{ content.submission_text }}
     </p>
-      {{ onsMetadata(content.metadata)}}
+    {{ onsMetadata(content.metadata) }}
   {% endcall %}
 
   {% if content.guidance %}
@@ -46,24 +47,31 @@
     <a href="https://www.ons.gov.uk/surveys">https://www.ons.gov.uk/surveys</a></p>
   {% endif %}
 
-  {% if content.view_submitted_response.enabled %}
+  {% if content.view_submitted_response.enabled and not content.view_submitted_response.expired %}
     <h1 data-qa="view-submitted-response-title">{{ _("Get a copy of your answers") }}</h1>
-    {% if not content.view_submitted_response.expired %}
-      <p class="ons-u-mb-s">{{ _("You can <a href='{url}' id='view-submitted-response-link'>save or print your answers</a> for your records.").format(url = content.view_submitted_response.url) }}</p>
-      {% call onsPanel({
-        "id": "view-submitted-response-warning",
-        "type": "warn"
-      }) %}
-        <p>{{ _("For security your answers will only be available to view for 45 minutes") }}</p>
-      {% endcall %}
-    {% else %}
-      {% call onsPanel({
+    <p
+      class="ons-u-mb-s">{{ _("You can <a href='{url}' id='view-submitted-response-link'>save or print your answers</a> for your records.").format(url = content.view_submitted_response.url) }}</p>
+
+    {{ onsTimeoutPanel ({
+        "id": "view-submitted-response-countdown",
+        "countdown": {
+            "countdownInSeconds":content.view_submitted_response.countdown_seconds,
+            "minutesTextSingular":"minute",
+            "minutesTextPlural":"minutes",
+            "secondsTextSingular":"second",
+            "secondsTextPlural":"seconds",
+            "countdownText":"For security, your answers will only be available to view for another",
+            "nojsText": "For security, your answers will only be available to view for another " + content.view_submitted_response.countdown_minutes|string + " minutes",
+            "urlOnTimeout":  url_for("post_submission.get_thank_you")
+        }
+    }) }}
+  {% else %}
+    {% call onsPanel({
         "id": "view-submitted-response-guidance",
         "classes": "ons-u-mb-m"
       }) %}
-        {{ _("For security, you can no longer view your answers") }}
-      {% endcall %}
-    {% endif %}
+      {{ _("For security, you can no longer view or get a copy of your answers") }}
+    {% endcall %}
   {% endif %}
 
   {% if content.show_feedback_call_to_action %}

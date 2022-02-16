@@ -1,7 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Mapping, Optional
 
-from flask import url_for
+from flask import current_app, url_for
 from flask_babel import lazy_gettext
 
 from app.data_models.session_data import SessionData
@@ -50,6 +50,12 @@ def build_view_submitted_response_context(schema, submitted_at):
     if schema.is_view_submitted_response_enabled:
         expired = has_view_submitted_response_expired(submitted_at)
         view_submitted_response["expired"] = expired
+        view_submitted_response["countdown_seconds"] = int(
+            get_submission_countdown_seconds(submitted_at)
+        )
+        view_submitted_response["countdown_minutes"] = int(
+            get_submission_countdown_seconds(submitted_at) / 60
+        )
         if not expired:
             view_submitted_response["url"] = url_for(
                 "post_submission.get_view_submitted_response"
@@ -69,3 +75,11 @@ def build_census_thank_you_context(
     if confirmation_email_form:
         context.update(build_email_form_context(confirmation_email_form))
     return context
+
+
+def get_submission_countdown_seconds(submitted_at):
+    return (
+        datetime.now(timezone.utc) - submitted_at
+    ).total_seconds() + current_app.config[
+        "VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS"
+    ]
