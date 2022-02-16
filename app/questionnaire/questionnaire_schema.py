@@ -10,6 +10,16 @@ from app.data_models.answer import Answer
 from app.forms import error_messages
 from app.questionnaire.rules.operator import OPERATION_MAPPING
 
+
+class InvalidSchemaConfigurationException(Exception):
+    def __init__(self, value: Union[str, int]) -> None:
+        super().__init__()
+        self.value = value
+
+    def __str__(self) -> str:
+        return str(self.value)
+
+
 DEFAULT_LANGUAGE_CODE = "en"
 
 LIST_COLLECTOR_CHILDREN = [
