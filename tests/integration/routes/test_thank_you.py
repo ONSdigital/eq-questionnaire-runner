@@ -1,5 +1,7 @@
-from tests.integration.integration_test_case import IntegrationTestCase
 import pytest
+
+from tests.integration.integration_test_case import IntegrationTestCase
+
 ACCOUNT_SERVICE_TODO_PATH = "/surveys/todo"
 
 

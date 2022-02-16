@@ -1,5 +1,7 @@
-from tests.integration.integration_test_case import IntegrationTestCase
 import pytest
+
+from tests.integration.integration_test_case import IntegrationTestCase
+
 
 class TestQuestionnairePageTitles(IntegrationTestCase):
     def test_introduction_has_introduction_in_page_title(self):

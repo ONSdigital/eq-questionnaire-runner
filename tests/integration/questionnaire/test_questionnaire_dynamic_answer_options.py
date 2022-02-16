@@ -1,5 +1,7 @@
-from tests.integration.integration_test_case import IntegrationTestCase
 import pytest
+
+from tests.integration.integration_test_case import IntegrationTestCase
+
 
 class TestQuestionnaireDynamicAnswerOptionsFunctionDriven(IntegrationTestCase):
     def answer_checkbox_question(self, answer_value):

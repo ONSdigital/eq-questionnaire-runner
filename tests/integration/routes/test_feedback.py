@@ -1,9 +1,11 @@
 from unittest.mock import Mock
 
+import pytest
+
 from app import settings
 from app.settings import EQ_FEEDBACK_LIMIT
 from tests.integration.integration_test_case import IntegrationTestCase
-import pytest
+
 
 # pylint: disable=too-many-public-methods
 class TestFeedback(IntegrationTestCase):
