@@ -1,94 +1,60 @@
-import unittest
-from unittest.mock import Mock
-
+import pytest
 from wtforms.validators import StopValidation
 
 from app.forms.validators import OptionalForm
 
 
-class TestOptionalFormValidator(unittest.TestCase):
-    def test_date_optional_empty(self):
-        validator = OptionalForm()
+def _get_comparison_date_parts(day_month_year, mocker):
+    mock_day = mocker.MagicMock()
+    mock_month = mocker.MagicMock()
+    mock_year = mocker.MagicMock()
 
-        mock_form = Mock()
+    mock_month.raw_data = day_month_year[-2]
+    mock_year.raw_data = day_month_year[-1]
 
-        mock_day = Mock()
-        mock_month = Mock()
-        mock_year = Mock()
+    if len(day_month_year) == 3:
+        mock_day.raw_data = day_month_year[-3]
+        comp = [mock_day, mock_month, mock_year]
+    else:
+        comp = [mock_month, mock_year]
 
-        mock_day.raw_data = [""]
-        mock_month.raw_data = []
-        mock_year.raw_data = [""]
+    return comp
 
-        mock_form.__iter__ = Mock(return_value=iter([mock_day, mock_month, mock_year]))
 
-        mock_field = Mock()
+@pytest.mark.parametrize(
+    "day_month_year",
+    (
+        [[""], [], [""]],
+        [[], [""]],
+    ),
+)
+def test_date_validator_day_month_year_invalid_raises_StopValidation(
+    day_month_year, mocker, mock_form, mock_field
+):
+    validator = OptionalForm()
 
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
+    comp = _get_comparison_date_parts(day_month_year, mocker)
 
-        self.assertEqual("", str(ite.exception))
+    mock_form.__iter__ = mocker.MagicMock(return_value=iter(comp))
 
-    def test_month_year_optional_month_empty(self):
-        validator = OptionalForm()
+    with pytest.raises(StopValidation) as exc:
+        validator(mock_form, mock_field)
 
-        mock_form = Mock()
+    assert "" == str(exc.value)
 
-        mock_month = Mock()
-        mock_year = Mock()
 
-        mock_month.raw_data = []
-        mock_year.raw_data = [""]
+@pytest.mark.parametrize(
+    "day_month_year",
+    (
+        [[""], ["01"], ["2015"]],
+        [["01"], [""]],
+    ),
+)
+def test_date_validator_day_month_year(day_month_year, mocker, mock_form, mock_field):
+    validator = OptionalForm()
 
-        mock_form.__iter__ = Mock(return_value=iter([mock_month, mock_year]))
+    comp = _get_comparison_date_parts(day_month_year, mocker)
 
-        mock_field = Mock()
+    mock_form.__iter__ = mocker.MagicMock(return_value=iter(comp))
 
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
-
-        self.assertEqual("", str(ite.exception))
-
-    def test_date_optional_missing_day(self):
-
-        validator = OptionalForm()
-
-        mock_form = Mock()
-
-        mock_day = Mock()
-        mock_month = Mock()
-        mock_year = Mock()
-
-        mock_day.raw_data = [""]
-        mock_month.raw_data = ["01"]
-        mock_year.raw_data = ["2015"]
-
-        mock_form.__iter__ = Mock(return_value=iter([mock_day, mock_month, mock_year]))
-
-        mock_field = Mock()
-
-        try:
-            validator(mock_form, mock_field)
-        except StopValidation:
-            self.fail("Date that needs checking raised StopValidation")
-
-    def test_month_year_optional_missing_year(self):
-
-        validator = OptionalForm()
-
-        mock_form = Mock()
-
-        mock_month = Mock()
-        mock_year = Mock()
-
-        mock_month.raw_data = ["01"]
-        mock_year.raw_data = [""]
-
-        mock_form.__iter__ = Mock(return_value=iter([mock_month, mock_year]))
-
-        mock_field = Mock()
-
-        try:
-            validator(mock_form, mock_field)
-        except StopValidation:
-            self.fail("Date that needs checking raised StopValidation")
+    validator(mock_form, mock_field)
