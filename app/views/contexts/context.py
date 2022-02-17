@@ -17,7 +17,7 @@ class Context(ABC):
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: Mapping,
+        metadata: Mapping[str, Any],
         response_metadata: Mapping,
     ):
         self._language = language
