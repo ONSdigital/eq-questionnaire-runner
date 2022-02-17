@@ -37,7 +37,7 @@ def test_form_ids_match_block_answer_ids(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
         )
 
@@ -72,7 +72,7 @@ def test_form_date_range_populates_data(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -107,7 +107,7 @@ def test_date_range_matching_dates_raises_question_error(app, answer_store, list
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -150,7 +150,7 @@ def test_date_range_to_precedes_from_raises_question_error(
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -192,7 +192,7 @@ def test_date_range_too_large_period_raises_question_error(
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -233,7 +233,7 @@ def test_date_range_too_small_period_raises_question_error(
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -272,7 +272,7 @@ def test_date_range_valid_period(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -754,7 +754,7 @@ def test_bespoke_message_for_date_validation_range(
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -811,7 +811,7 @@ def test_invalid_minimum_period_limit_and_single_date_periods(
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -871,7 +871,7 @@ def test_invalid_maximum_period_limit_and_single_date_periods(
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -1042,7 +1042,7 @@ def test_invalid_calculation_type(app, answer_store, list_store, mocker):
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -1080,7 +1080,7 @@ def test_bespoke_message_for_sum_validation(app, answer_store, list_store, mocke
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -1126,7 +1126,7 @@ def test_empty_calculated_field(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -1169,7 +1169,7 @@ def test_sum_calculated_field(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -1209,7 +1209,7 @@ def test_get_calculation_total_with_no_input(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -1246,7 +1246,7 @@ def test_multi_calculation(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -1262,7 +1262,7 @@ def test_multi_calculation(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -1278,7 +1278,7 @@ def test_multi_calculation(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -1332,7 +1332,7 @@ def test_form_errors_are_correctly_mapped(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
         )
 
@@ -1355,7 +1355,7 @@ def test_form_subfield_errors_are_correctly_mapped(app, answer_store, list_store
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
         )
 
@@ -1390,7 +1390,7 @@ def test_detail_answer_mandatory_only_checked_if_option_selected(
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=MultiDict({"mandatory-checkbox-answer": "Your choice"}),
         )
@@ -1404,7 +1404,7 @@ def test_detail_answer_mandatory_only_checked_if_option_selected(
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             data={"mandatory-checkbox-answer": "Ham"},
         )
@@ -1428,7 +1428,7 @@ def test_answer_with_detail_answer_errors_are_correctly_mapped(
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=MultiDict({"radio-mandatory-answer": "Other"}),
         )
@@ -1459,7 +1459,7 @@ def test_answer_errors_are_interpolated(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=MultiDict({"set-minimum": "-1"}),
         )
@@ -1484,7 +1484,7 @@ def test_mandatory_mutually_exclusive_question_raises_error_when_not_answered(
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=MultiDict(),
         )
@@ -1525,7 +1525,7 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
             rendered_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=MultiDict(),
         )
@@ -1560,7 +1560,7 @@ def test_mutually_exclusive_question_raises_error_when_both_answered(
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -1582,7 +1582,7 @@ def test_date_range_form(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
         )
 
@@ -1617,7 +1617,7 @@ def test_date_range_form_with_data(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -1655,7 +1655,7 @@ def test_form_for_radio_other_not_selected(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
@@ -1684,7 +1684,7 @@ def test_form_for_radio_other_selected(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=None,
+            metadata={},
             response_metadata={},
             form_data=form_data,
         )
