@@ -9,5 +9,5 @@ def json_loads(data, **kwargs):
     return json.loads(data, use_decimal=True, **kwargs)
 
 
-def json_dumps(data, **kwargs):
+def json_dumps(data, **kwargs) -> str:
     return json.dumps(data, for_json=True, use_decimal=True, **kwargs)

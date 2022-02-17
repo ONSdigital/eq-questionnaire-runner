@@ -21,7 +21,7 @@ def build_view_submitted_response_context(
 ) -> dict[str, Union[str, datetime, dict]]:
 
     view_submitted_response_expired = has_view_submitted_response_expired(
-        questionnaire_store.submitted_at
+        questionnaire_store.submitted_at  # type: ignore
     )
 
     if survey_type == "social":
@@ -37,7 +37,7 @@ def build_view_submitted_response_context(
 
     metadata = build_submission_metadata_context(
         survey_type,
-        questionnaire_store.submitted_at,
+        questionnaire_store.submitted_at,  # type: ignore
         questionnaire_store.metadata["tx_id"],
     )
     context = {
@@ -56,7 +56,7 @@ def build_view_submitted_response_context(
             answer_store=questionnaire_store.answer_store,
             list_store=questionnaire_store.list_store,
             progress_store=questionnaire_store.progress_store,
-            metadata=questionnaire_store.metadata,
+            metadata=questionnaire_store.metadata,  # type: ignore
             response_metadata=questionnaire_store.response_metadata,
         )
         context["summary"] = summary_context()

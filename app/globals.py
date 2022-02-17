@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from types import MappingProxyType
-from typing import Union
+from typing import Any, Mapping, Union
 
 from flask import current_app, g
 from flask import session as cookie_session
@@ -70,7 +69,10 @@ def get_session_timeout_in_seconds(schema: QuestionnaireSchema) -> int:
 
 
 def create_session_store(
-    eq_session_id: str, user_id: str, user_ik: str, session_data: SessionData
+    eq_session_id: str,
+    user_id: str,
+    user_ik: str,
+    session_data: SessionData,
 ) -> None:
     secret_store = current_app.eq["secret_store"]  # type: ignore
     pepper = secret_store.get_secret_by_name(
@@ -89,7 +91,7 @@ def create_session_store(
     )
 
 
-def get_metadata(user: User) -> Union[None, MappingProxyType]:
+def get_metadata(user: User) -> Union[None, Mapping[str, Any]]:
     if user.is_anonymous:
         logger.debug("anonymous user requesting metadata get instance")
         return None

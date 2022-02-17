@@ -1,7 +1,5 @@
 from abc import ABC
-from typing import Mapping
-
-from werkzeug.datastructures import ImmutableDict
+from typing import Any, Mapping
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
@@ -19,7 +17,7 @@ class Context(ABC):
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: ImmutableDict,
+        metadata: Mapping[str, Any],
         response_metadata: Mapping,
     ):
         self._language = language
