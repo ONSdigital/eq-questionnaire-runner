@@ -4,7 +4,7 @@ from typing import Iterable, Iterator, Optional
 
 from app.data_models.answer import (
     Answer,
-    AnswersDictType,
+    AnswerDict,
     AnswerValueEscapedTypes,
     escape_answer_value,
 )
@@ -26,7 +26,7 @@ class AnswerStore:
     }
     """
 
-    def __init__(self, existing_answers: Optional[Iterable[AnswersDictType]] = None):
+    def __init__(self, existing_answers: Optional[Iterable[AnswerDict]] = None):
         """Instantiate an answer_store.
 
         Args:
@@ -48,7 +48,7 @@ class AnswerStore:
 
     @staticmethod
     def _build_map(
-        answers: Iterable[AnswersDictType],
+        answers: Iterable[AnswerDict],
     ) -> dict[AnswerKeyType, Answer]:
         """Builds the answer_store's data structure from a list of answer dictionaries"""
         return {
