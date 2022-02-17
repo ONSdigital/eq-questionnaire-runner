@@ -5,6 +5,12 @@ from app.data_models.answer_store import Answer, AnswerStore
 from app.utilities.json import json_dumps, json_loads
 
 
+def test_answer_store_compare(answer_store, mocker):
+    mock_answer_store = mocker.MagicMock()
+
+    assert answer_store != mock_answer_store
+
+
 def test_adding_new_answer(answer_store):
     answer = Answer(answer_id="4", value=25)
 

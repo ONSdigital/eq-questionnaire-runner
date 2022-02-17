@@ -1,8 +1,10 @@
 from dataclasses import astuple, dataclass
-from typing import Iterable, List, Mapping, MutableMapping, Optional
+from typing import Iterable, Iterator, MutableMapping, Optional
 
-from app.data_models.progress import Progress
+from app.data_models.progress import Progress, ProgressDictType
 from app.questionnaire.location import Location
+
+SectionKeyType = tuple[str, Optional[str]]
 
 
 @dataclass
@@ -12,7 +14,7 @@ class CompletionStatus:
     NOT_STARTED: str = "NOT_STARTED"
     INDIVIDUAL_RESPONSE_REQUESTED: str = "INDIVIDUAL_RESPONSE_REQUESTED"
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[tuple[str]]:
         return iter(astuple(self))
 
 
@@ -22,23 +24,25 @@ class ProgressStore:
     that have been started.
     """
 
-    def __init__(self, in_progress_sections: List[Mapping] = None) -> None:
+    def __init__(
+        self, in_progress_sections: Optional[Iterable[ProgressDictType]] = None
+    ) -> None:
         """
         Instantiate a ProgressStore object that tracks the status of sections and its completed blocks
         Args:
             in_progress_sections: A list of hierarchical dict containing the section status and completed blocks
         """
-        self._is_dirty = False  # type: bool
-        self._is_routing_backwards = False  # type: bool
-        self._progress = self._build_map(
+        self._is_dirty: bool = False
+        self._is_routing_backwards: bool = False
+        self._progress: MutableMapping[SectionKeyType, Progress] = self._build_map(
             in_progress_sections or []
-        )  # type: MutableMapping
+        )
 
-    def __contains__(self, section_key) -> bool:
+    def __contains__(self, section_key: SectionKeyType) -> bool:
         return section_key in self._progress
 
     @staticmethod
-    def _build_map(section_progress_list: List[Mapping]) -> MutableMapping:
+    def _build_map(section_progress_list: Iterable[ProgressDictType]) -> MutableMapping:
         """
         Builds the progress_store's data structure from a list of progress dictionaries.
 
@@ -83,8 +87,10 @@ class ProgressStore:
         )
 
     def section_keys(
-        self, statuses: Iterable[str] = None, section_ids: Iterable[str] = None
-    ):
+        self,
+        statuses: Optional[Iterable[str]] = None,
+        section_ids: Optional[Iterable[str]] = None,
+    ) -> list[SectionKeyType]:
         if not statuses:
             statuses = {*CompletionStatus()}
 
@@ -134,7 +140,7 @@ class ProgressStore:
 
     def get_completed_block_ids(
         self, section_id: str, list_item_id: Optional[str] = None
-    ) -> List[Optional[str]]:
+    ) -> list[str]:
         section_key = (section_id, list_item_id)
         if section_key in self._progress:
             return self._progress[section_key].block_ids
@@ -148,7 +154,7 @@ class ProgressStore:
         completed_block_ids = self.get_completed_block_ids(section_id, list_item_id)
 
         if location.block_id not in completed_block_ids:
-            completed_block_ids.append(location.block_id)
+            completed_block_ids.append(location.block_id)  # type: ignore
 
             section_key = (section_id, list_item_id)
 
@@ -159,6 +165,7 @@ class ProgressStore:
                     section_id=section_id,
                     list_item_id=list_item_id,
                     block_ids=completed_block_ids,
+                    status=CompletionStatus.IN_PROGRESS,
                 )
 
             self._is_dirty = True
@@ -194,7 +201,7 @@ class ProgressStore:
 
             self._is_dirty = True
 
-    def serialize(self) -> List:
+    def serialize(self) -> list[Progress]:
         return list(self._progress.values())
 
     def remove_location_for_backwards_routing(self, location: Location) -> None:

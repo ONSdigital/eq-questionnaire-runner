@@ -1,6 +1,6 @@
-from typing import Dict, List, Mapping, Optional
+from typing import Mapping, Optional
 
-from app.data_models import ListStore
+from app.data_models import Answer, ListStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.relationship_store import RelationshipStore
 from app.questionnaire import QuestionnaireSchema
@@ -14,7 +14,7 @@ def convert_answers_to_payload_0_0_3(
     list_store: ListStore,
     schema: QuestionnaireSchema,
     full_routing_path: RoutingPath,
-) -> List[Dict]:
+) -> list[Answer]:
     """
     Convert answers into the data format below
     'data': [
@@ -130,7 +130,7 @@ def add_relationships_unrelated_answers(
         relationship_store=relationship_store,
         section_id=section_id,
         list_name=list_name,
-        list_item_ids=list_store[list_name],
+        list_item_ids=list_store[list_name].items,
         relationships_block_id=relationships_block["id"],
         unrelated_block_id=unrelated_block_id,
         unrelated_answer_id=unrelated_answer_id,

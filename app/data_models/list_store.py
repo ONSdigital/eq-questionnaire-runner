@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 import random
 from functools import cached_property
 from string import ascii_letters
-from typing import List, Mapping, Optional
+from typing import Iterable, Iterator, Optional, TypedDict
 
 from structlog import get_logger
 
@@ -10,7 +12,14 @@ from app.settings import EQ_LIST_ITEM_ID_LENGTH
 logger = get_logger()
 
 
-def random_string(length):
+class ListModelDictType(TypedDict, total=False):
+    name: str
+    items: list[str]
+    primary_person: str
+    same_name_items: list[str]
+
+
+def random_string(length: int) -> str:
     return "".join(random.choice(ascii_letters) for _ in range(length))
 
 
@@ -18,39 +27,38 @@ class ListModel:
     def __init__(
         self,
         name: str,
-        items: Optional[List] = None,
+        items: Optional[list[str]] = None,
         primary_person: Optional[str] = None,
-        same_name_items: Optional[List] = None,
+        same_name_items: Optional[list[str]] = None,
     ):
         self.name = name
         self.items = items or []
         self.primary_person = primary_person
         self.same_name_items = same_name_items or []
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, ListModel):
             return NotImplemented
         return self.items == other.items and self.primary_person == other.primary_person
 
-    def __iter__(self):
-        for list_item in self.items:
-            yield list_item
+    def __iter__(self) -> Iterator[str]:
+        yield from self.items
 
-    def __getitem__(self, list_item_index):
+    def __getitem__(self, list_item_index: int) -> str:
         return self.items[list_item_index]
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.items)
 
     @cached_property
-    def non_primary_people(self):
+    def non_primary_people(self) -> list[str]:
         return [item for item in self.items if item != self.primary_person]
 
-    def index(self, list_item):
+    def index(self, list_item: str) -> int:
         return self.items.index(list_item)
 
-    def serialize(self):
-        serialized = {"items": self.items, "name": self.name}
+    def serialize(self) -> ListModelDictType:
+        serialized = ListModelDictType(items=self.items, name=self.name)
 
         if self.primary_person:
             serialized["primary_person"] = self.primary_person
@@ -60,11 +68,11 @@ class ListModel:
 
         return serialized
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<ListModel name={self.name} items={self.items}, primary_person={self.primary_person}>"
 
     @property
-    def first(self):
+    def first(self) -> str:
         try:
             return self.items[0]
         except IndexError as e:
@@ -113,50 +121,49 @@ class ListStore:
     ```
     """
 
-    def __init__(self, existing_items: Optional[List[Mapping]] = None):
+    def __init__(self, existing_items: Optional[Iterable[ListModelDictType]] = None):
         existing_items = existing_items or []
 
         self._lists = self._build_map(existing_items)
 
         self._is_dirty = False
 
-    def __iter__(self):
-        for list_item in self._lists.values():
-            yield list_item
+    def __iter__(self) -> Iterator[ListModel]:
+        yield from self._lists.values()
 
-    def __getitem__(self, list_name):
+    def __getitem__(self, list_name: str) -> ListModel:
         try:
             return self._lists[list_name]
         except KeyError:
             return ListModel(list_name)
 
-    def __delitem__(self, list_name):
+    def __delitem__(self, list_name: str) -> None:
         del self._lists[list_name]
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<ListStore lists={self._lists}>"
 
     @staticmethod
-    def _build_map(list_models: List[Mapping]):
+    def _build_map(list_models: Iterable[ListModelDictType]) -> dict[str, ListModel]:
         """Builds the list_store data structure from a list of dictionaries"""
         return {
             list_model["name"]: ListModel(**list_model) for list_model in list_models
         }
 
-    def get(self, item: str):
+    def get(self, item: str) -> ListModel:
         return self.__getitem__(item)
 
-    def list_item_position(self, for_list, list_item_id) -> int:
+    def list_item_position(self, for_list: str, list_item_id: str) -> int:
         return self[for_list].index(list_item_id) + 1
 
-    def _generate_identifier(self):
+    def _generate_identifier(self) -> str:
         """Generate an unused random 6 character string"""
         while True:
             candidate = random_string(EQ_LIST_ITEM_ID_LENGTH)
             if candidate not in self._list_item_ids():
                 return candidate
 
-    def _list_item_ids(self):
+    def _list_item_ids(self) -> list[str]:
         ids = []
         for named_list in self._lists.values():
             ids.extend(named_list.items)
@@ -164,10 +171,10 @@ class ListStore:
         return ids
 
     @property
-    def is_dirty(self):
+    def is_dirty(self) -> bool:
         return self._is_dirty
 
-    def delete_list_item(self, list_name, item_id):
+    def delete_list_item(self, list_name: str, item_id: str) -> None:
         try:
             self[list_name].items.remove(item_id)
         except ValueError:
@@ -181,7 +188,7 @@ class ListStore:
 
         self._is_dirty = True
 
-    def add_list_item(self, list_name, primary_person=False):
+    def add_list_item(self, list_name: str, primary_person: bool = False) -> str:
         """Add a new list item to a named list.
 
         If the list does not exist, it will be created
@@ -208,11 +215,11 @@ class ListStore:
 
         return list_item_id
 
-    def serialize(self):
+    def serialize(self) -> list[ListModelDictType]:
         return [list_model.serialize() for list_model in self]
 
     @classmethod
-    def deserialize(cls, serialized: list):
+    def deserialize(cls, serialized: Iterable[ListModelDictType]) -> ListStore:
         if not serialized:
             return cls()
 

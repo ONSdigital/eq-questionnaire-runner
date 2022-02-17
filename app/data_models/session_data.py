@@ -1,24 +1,27 @@
+from typing import Any, Optional
+
+
 class SessionData:
     def __init__(
         self,
-        tx_id,
-        schema_name,
-        period_str,
-        language_code,
-        launch_language_code,
-        survey_url,
-        ru_name,
-        ru_ref,
-        response_id,
-        case_id,
-        case_ref=None,
-        account_service_base_url=None,
-        account_service_log_out_url=None,
-        trad_as=None,
-        display_address=None,
-        confirmation_email_count=0,
-        feedback_count=0,
-        **_,
+        tx_id: Optional[str],
+        schema_name: Optional[str],
+        period_str: Optional[str],
+        language_code: Optional[str],
+        launch_language_code: Optional[str],
+        survey_url: Optional[str],
+        ru_name: Optional[str],
+        ru_ref: Optional[str],
+        response_id: Optional[str],
+        case_id: Optional[str],
+        case_ref: Optional[str] = None,
+        account_service_base_url: Optional[str] = None,
+        account_service_log_out_url: Optional[str] = None,
+        trad_as: Optional[str] = None,
+        display_address: Optional[str] = None,
+        confirmation_email_count: int = 0,
+        feedback_count: int = 0,
+        **_: Any,
     ):  # pylint: disable=too-many-locals
         self.tx_id = tx_id
         self.schema_name = schema_name
