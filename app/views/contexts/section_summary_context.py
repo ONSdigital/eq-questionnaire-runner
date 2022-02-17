@@ -22,7 +22,7 @@ class SectionSummaryContext(Context):
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: Mapping,
+        metadata: Mapping[str, Any],
         response_metadata: Mapping,
         routing_path: RoutingPath,
         current_location: Location,
