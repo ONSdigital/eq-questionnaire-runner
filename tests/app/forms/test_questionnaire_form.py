@@ -18,7 +18,7 @@ from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.utilities.schema import load_schema_from_name
 
 
-def _error_exists(answer_id, msg, mapped_errors):
+def error_exists(answer_id, msg, mapped_errors):
     error_id = f"{answer_id}-error"
     return any(
         e_id == error_id and str(msg) in ordered_errors
@@ -1339,7 +1339,7 @@ def test_form_errors_are_correctly_mapped(app, answer_store, list_store):
         form.validate()
         mapped_errors = form.map_errors()
 
-        assert _error_exists(
+        assert error_exists(
             "set-minimum", schema.error_messages["MANDATORY_NUMBER"], mapped_errors
         )
 
@@ -1362,13 +1362,13 @@ def test_form_subfield_errors_are_correctly_mapped(app, answer_store, list_store
         form.validate()
         mapped_errors = form.map_errors()
 
-        assert _error_exists(
+        assert error_exists(
             "date-range-from-answer",
             schema.error_messages["MANDATORY_DATE"],
             mapped_errors,
         )
 
-        assert _error_exists(
+        assert error_exists(
             "date-range-to-answer",
             schema.error_messages["MANDATORY_DATE"],
             mapped_errors,
@@ -1436,12 +1436,12 @@ def test_answer_with_detail_answer_errors_are_correctly_mapped(
         form.validate()
         mapped_errors = form.map_errors()
 
-        assert _error_exists(
+        assert error_exists(
             "radio-mandatory-answer",
             schema.error_messages["MANDATORY_TEXTFIELD"],
             mapped_errors,
         )
-        assert not _error_exists(
+        assert not error_exists(
             "other-answer-mandatory",
             schema.error_messages["MANDATORY_TEXTFIELD"],
             mapped_errors,
