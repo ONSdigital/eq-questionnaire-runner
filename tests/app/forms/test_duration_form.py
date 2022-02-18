@@ -1,114 +1,112 @@
+import pytest
+
 from app.forms import error_messages
 from app.forms.duration_form import get_duration_form
-from tests.app.app_context_test_case import AppContextTestCase
 
 
-class TestDurationForm(AppContextTestCase):
-    def test_init(self):
-        answer_schema = {
-            "mandatory": False,
-            "units": ["years", "months"],
-            "validation": {
-                "messages": {
-                    "INVALID_DURATION": "The duration entered is not valid.  Please correct your answer",
-                    "MANDATORY_DURATION": "Please provide a duration to continue",
-                }
-            },
-        }
-        form_class = get_duration_form(answer_schema, error_messages)
-        form = form_class()
+def test_init():
+    answer_schema = {
+        "mandatory": False,
+        "units": ["years", "months"],
+        "validation": {
+            "messages": {
+                "INVALID_DURATION": "The duration entered is not valid.  Please correct your answer",
+                "MANDATORY_DURATION": "Please provide a duration to continue",
+            }
+        },
+    }
+    form_class = get_duration_form(answer_schema, error_messages)
+    form = form_class()
 
-        self.assertIsNone(form.data)
-        self.assertEqual(
-            form.answer_errors["INVALID_DURATION"],
-            answer_schema["validation"]["messages"]["INVALID_DURATION"],
-        )
-        self.assertEqual(
-            form.answer_errors["MANDATORY_DURATION"],
-            answer_schema["validation"]["messages"]["MANDATORY_DURATION"],
-        )
+    assert form.data is None
+    assert (
+        form.answer_errors["INVALID_DURATION"]
+        == answer_schema["validation"]["messages"]["INVALID_DURATION"]
+    )
 
-    def test_zero(self):
-        form_class = get_duration_form(
-            {"mandatory": False, "units": ["years", "months"]}, error_messages
-        )
-        form = form_class()
-        form.years.raw_data = ["0"]
-        form.years.data = 0
-        form.months.raw_data = ["0"]
-        form.months.data = 0
+    assert (
+        form.answer_errors["MANDATORY_DURATION"]
+        == answer_schema["validation"]["messages"]["MANDATORY_DURATION"]
+    )
 
-        self.assertEqual(form.data["years"], 0)
-        self.assertEqual(form.data["months"], 0)
 
-    def test_year_month_validation(self):
-        self._test_validation(False, "5", "4", True)
-        self._test_validation(True, "5", "4", True)
-        self._test_validation(False, "", "", True)
-        self._test_validation(True, "", "", False, error="Enter a duration")
-        self._test_validation(False, "5", "", False, error="Enter a valid duration")
-        self._test_validation(True, "5", "", False, error="Enter a valid duration")
-        self._test_validation(False, "", "4", False, error="Enter a valid duration")
-        self._test_validation(True, "", "4", False, error="Enter a valid duration")
-        self._test_validation(False, "5", "word", False, error="Enter a valid duration")
-        self._test_validation(True, "5", "word", False, error="Enter a valid duration")
-        self._test_validation(False, "5", "12", False, error="Enter a valid duration")
-        self._test_validation(True, "5", "12", False, error="Enter a valid duration")
-        self._test_validation(False, "5", "-1", False, error="Enter a valid duration")
-        self._test_validation(True, "5", "-1", False, error="Enter a valid duration")
-        self._test_validation(False, "-1", "4", False, error="Enter a valid duration")
-        self._test_validation(True, "-1", "4", False, error="Enter a valid duration")
+def test_zero():
+    form_class = get_duration_form(
+        {"mandatory": False, "units": ["years", "months"]}, error_messages
+    )
+    form = form_class()
+    form.years.raw_data = ["0"]
+    form.years.data = 0
+    form.months.raw_data = ["0"]
+    form.months.data = 0
 
-    def test_year_validation(self):
-        self._test_validation(False, "5", None, True)
-        self._test_validation(True, "5", None, True)
-        self._test_validation(False, "", None, True)
-        self._test_validation(True, "", None, False, error="Enter a duration")
-        self._test_validation(
-            False, "word", None, False, error="Enter a valid duration"
-        )
-        self._test_validation(True, "word", None, False, error="Enter a valid duration")
-        self._test_validation(False, "-1", None, False, error="Enter a valid duration")
-        self._test_validation(True, "-1", None, False, error="Enter a valid duration")
+    assert form.data["years"] == 0
+    assert form.data["months"] == 0
 
-    def test_month_validation(self):
-        self._test_validation(False, None, "5", True)
-        self._test_validation(True, None, "5", True)
-        self._test_validation(False, None, "", True)
-        self._test_validation(True, None, "", False, error="Enter a duration")
-        self._test_validation(
-            False, None, "word", False, error="Enter a valid duration"
-        )
-        self._test_validation(True, None, "word", False, error="Enter a valid duration")
-        self._test_validation(False, None, "-1", False, error="Enter a valid duration")
-        self._test_validation(True, None, "-1", False, error="Enter a valid duration")
-        self._test_validation(False, None, "12", True)
-        self._test_validation(True, None, "12", True)
 
-    def _test_validation(self, mandatory, years, months, valid, error=None):
-        units = []
-        if years is not None:
-            units.append("years")
-        if months is not None:
-            units.append("months")
+@pytest.mark.parametrize(
+    "mandatory,years,months,valid,error",
+    (
+        (False, "5", "4", True, None),
+        (True, "5", "4", True, None),
+        (False, "", "", True, None),
+        (True, "", "", False, "Enter a duration"),
+        (False, "5", "", False, "Enter a valid duration"),
+        (True, "5", "", False, "Enter a valid duration"),
+        (False, "", "4", False, "Enter a valid duration"),
+        (True, "", "4", False, "Enter a valid duration"),
+        (False, "5", "word", False, "Enter a valid duration"),
+        (True, "5", "word", False, "Enter a valid duration"),
+        (False, "5", "12", False, "Enter a valid duration"),
+        (True, "5", "12", False, "Enter a valid duration"),
+        (False, "5", "-1", False, "Enter a valid duration"),
+        (True, "5", "-1", False, "Enter a valid duration"),
+        (False, "-1", "4", False, "Enter a valid duration"),
+        (True, "-1", "4", False, "Enter a valid duration"),
+        (False, "5", None, True, None),
+        (True, "5", None, True, None),
+        (False, "", None, True, None),
+        (True, "", None, False, "Enter a duration"),
+        (False, "word", None, False, "Enter a valid duration"),
+        (True, "word", None, False, "Enter a valid duration"),
+        (False, "-1", None, False, "Enter a valid duration"),
+        (True, "-1", None, False, "Enter a valid duration"),
+        (False, None, "5", True, None),
+        (True, None, "5", True, None),
+        (False, None, "", True, None),
+        (True, None, "", False, "Enter a duration"),
+        (False, None, "word", False, "Enter a valid duration"),
+        (True, None, "word", False, "Enter a valid duration"),
+        (False, None, "-1", False, "Enter a valid duration"),
+        (True, None, "-1", False, "Enter a valid duration"),
+        (False, None, "12", True, None),
+        (True, None, "12", True, None),
+    ),
+)
+def test_validation(mandatory, years, months, valid, error, app):
+    units = []
+    if years is not None:
+        units.append("years")
+    if months is not None:
+        units.append("months")
 
-        form_class = get_duration_form(
-            {"mandatory": mandatory, "units": units}, error_messages
-        )
+    form_class = get_duration_form(
+        {"mandatory": mandatory, "units": units}, error_messages
+    )
 
-        form = form_class()
-        if years is not None:
-            form.years.raw_data = [years]
-            form.years.data = to_int(years)
-        if months is not None:
-            form.months.raw_data = [months]
-            form.months.data = to_int(months)
+    form = form_class()
+    if years is not None:
+        form.years.raw_data = [years]
+        form.years.data = to_int(years)
+    if months is not None:
+        form.months.raw_data = [months]
+        form.months.data = to_int(months)
 
-        with self.app_request_context("/"):
-            self.assertEqual(form.validate(), valid)
+    with app.test_request_context("/"):
+        assert form.validate() == valid
 
-            if error:
-                self.assertEqual(getattr(form, units[0]).errors[0], error)
+        if error:
+            assert getattr(form, units[0]).errors[0] == error
 
 
 def to_int(value):
