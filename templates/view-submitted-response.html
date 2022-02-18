@@ -57,10 +57,24 @@
     {{
       onsButton({
         "buttonStyle": 'download',
+        "text": _('Save answers as PDF WKHTML Optimised'),
+        "submitType": "timer",
+        "variants": ['small', 'secondary'],
+        "url": content.pdf_url ~ "?pdf_type=pdfkit_optimised",
+        "removeDownloadAttribute": true,
+        "attributes": {
+          "data-qa": "btn-pdf"
+        }
+      })
+      }}
+    <br><br>
+    {{
+      onsButton({
+        "buttonStyle": 'download',
         "text": _('Save answers as PDF Weasy'),
         "submitType": "timer",
         "variants": ['small', 'secondary'],
-        "url": content.pdf_url ~ "?weasy=true",
+        "url": content.pdf_url ~ "?pdf_type=weasy",
         "attributes": {
           "data-qa": "btn-pdf"
         }

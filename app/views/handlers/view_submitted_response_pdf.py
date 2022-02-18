@@ -98,6 +98,34 @@ class ViewSubmittedResponsePDF(ViewSubmittedResponse):
             download_name=self.filename,
         )
 
+    def get_pdf_pdfkit_optimised(self) -> Response:
+        """
+        Generates a PDF document from the rendered ViewSubmittedResponse html.
+        :return: The generated PDF document as BytesIO
+        :rtype: Response
+        """
+        rendered_html = self.get_rendered_html()
+        # This stylesheet is being removed so Weasyprint will not try resolve it and parse it.
+        # This is hacky and we should look at solutions to making this configurable, so the DS is able to not output it / use a custom path.
+        rendered_html_without_main_css = rendered_html.replace(
+            f'<link rel="stylesheet" href="{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}/45.2.0/css/main.css">',
+            "",
+        )
+
+        content_as_bytes = pdfkit.from_string(
+            input=rendered_html_without_main_css,
+            output_path=None,
+            css=f"{PRINT_STYLE_SHEET_FILE_PATH}/print_weasy.css",
+            options=self.wkhtmltopdf_options,
+        )
+
+        return send_file(
+            path_or_file=io.BytesIO(content_as_bytes),
+            mimetype=self.mimetype,
+            as_attachment=True,
+            download_name=self.filename,
+        )
+
     def get_pdf_weasy(self) -> Response:
         """
         Generates a PDF document from the rendered ViewSubmittedResponse html.

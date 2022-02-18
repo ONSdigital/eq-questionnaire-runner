@@ -432,16 +432,22 @@ def get_view_submitted_response_pdf(
     except ViewSubmittedResponseExpired:
         return redirect(url_for(".get_view_submitted_response"))
 
+    req_type = request.args.get("pdf_type")
+    if req_type == "weasy":
+        handler = view_submitted_response_pdf.get_pdf_weasy
+        pdf_type = "Weasyprint"
+    elif req_type == "pdfkit_optimised":
+        handler = view_submitted_response_pdf.get_pdf_pdfkit_optimised
+        pdf_type = "WKHTML Optimised"
+    else:
+        handler = view_submitted_response_pdf.get_pdf
+        pdf_type = "WKHTML Existing"
+
     start = time.time()
-    is_weasyprint = request.args.get("weasy")
-    response = (
-        view_submitted_response_pdf.get_pdf_weasy()
-        if is_weasyprint
-        else view_submitted_response_pdf.get_pdf()
-    )
+    response = handler()
     end = time.time()
-    pdf_type = "Weasyprint" if is_weasyprint else "WKHTML"
     logger.info(f"{pdf_type} PDF generation took {float(end - start):2f} seconds")
+
     return response
 
 
