@@ -42,7 +42,8 @@ class Question:
         if answer_store.get_escaped_answer_value(
             answer_id, self.list_item_id
         ) or isinstance(
-            answer_store.get_escaped_answer_value(answer_id, self.list_item_id), int  # protection against falsy answer value "0"
+            answer_store.get_escaped_answer_value(answer_id, self.list_item_id),
+            int,  # protection against falsy answer value "0"
         ):
             return answer_store.get_escaped_answer_value(answer_id, self.list_item_id)
         if self.schema.get_default_answer(answer_id):
