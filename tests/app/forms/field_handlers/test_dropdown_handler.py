@@ -7,7 +7,7 @@ from app.questionnaire.questionnaire_schema import InvalidSchemaConfigurationExc
 from tests.app.forms.field_handlers.conftest import (
     dynamic_answer_options_choices,
     dynamic_answer_options_schema,
-    dynamic_radio_options_empty_static_options,
+    dynamic_radio_options_no_static_options,
     static_and_dynamic_answer_options_choices,
     static_and_dynamic_answer_options_schema,
     static_answer_options_choices,
@@ -110,7 +110,7 @@ def test_build_choices_no_dynamic_or_static_choices(
     value_source_resolver, rule_evaluator
 ):
     handler = DropdownHandler(
-        dynamic_radio_options_empty_static_options(),
+        dynamic_radio_options_no_static_options(),
         value_source_resolver,
         rule_evaluator,
         error_messages,

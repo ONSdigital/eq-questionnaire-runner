@@ -1,12 +1,12 @@
-import HealedTheQuickestPage from "../../../generated_pages/dynamic_answer_from_checkbox/healed-the-quickest.page";
-import InjurySustainedPage from "../../../generated_pages/dynamic_answer_from_checkbox/injury-sustained.page";
-import MostSeriousInjuryPage from "../../../generated_pages/dynamic_answer_from_checkbox/most-serious-injury.page";
-import SubmitPage from "../../../generated_pages/dynamic_answer_from_checkbox/submit.page";
+import HealedTheQuickestPage from "../../../generated_pages/dynamic_radio_options_from_checkbox/healed-the-quickest.page";
+import InjurySustainedPage from "../../../generated_pages/dynamic_radio_options_from_checkbox/injury-sustained.page";
+import MostSeriousInjuryPage from "../../../generated_pages/dynamic_radio_options_from_checkbox/most-serious-injury.page";
+import SubmitPage from "../../../generated_pages/dynamic_radio_options_from_checkbox/submit.page";
 
 describe("Dynamic radio options from checkbox answers", () => {
-  describe("Given a dynamic answer options questionnaire and I am on the dynamic checkbox answer page", () => {
+  describe("Given the dynamic radio options from checkbox questionnaire and I am on the checkbox answer page", () => {
     it("When the respondent answers the checkbox question and submits, Then the radio question should show the answers from that checkbox as options, as well as a static option", () => {
-      browser.openQuestionnaire("test_dynamic_answer_from_checkbox.json");
+      browser.openQuestionnaire("test_dynamic_radio_options_from_checkbox.json");
       $(InjurySustainedPage.head()).click();
       $(InjurySustainedPage.body()).click();
       $(InjurySustainedPage.submit()).click();

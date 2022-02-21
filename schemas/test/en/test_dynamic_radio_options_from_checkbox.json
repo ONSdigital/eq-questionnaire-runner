@@ -87,7 +87,7 @@
                                                 "identifier": "injury-sustained-answer"
                                             },
                                             "transform": {
-                                                "option_label_from_value": ["self", "injury-sustained-answer"]
+                                                "option-label-from-value": ["self", "injury-sustained-answer"]
                                             }
                                         },
                                         "options": [
@@ -118,10 +118,9 @@
                                                 "identifier": "injury-sustained-answer"
                                             },
                                             "transform": {
-                                                "option_label_from_value": ["self", "injury-sustained-answer"]
+                                                "option-label-from-value": ["self", "injury-sustained-answer"]
                                             }
-                                        },
-                                        "options": []
+                                        }
                                     }
                                 ]
                             }

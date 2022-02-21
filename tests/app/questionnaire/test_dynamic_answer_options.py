@@ -126,7 +126,7 @@ def test_dynamic_answer_options_answer_source(
         {
             "values": {"source": "answers", "identifier": "injury-sustained-answer"},
             "transform": {
-                "option_label_from_value": ["self", "injury-sustained-answer"]
+                "option-label-from-value": ["self", "injury-sustained-answer"]
             },
         },
         rule_evaluator=rule_evaluator,

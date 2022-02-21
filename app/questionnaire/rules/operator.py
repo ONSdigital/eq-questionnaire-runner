@@ -25,7 +25,7 @@ class Operator:
     DATE_RANGE = "date-range"
     FORMAT_DATE = "format-date"
     MAP = "map"
-    OPTION_LABEL_FROM_VALUE = "option_label_from_value"
+    OPTION_LABEL_FROM_VALUE = "option-label-from-value"
 
     def __init__(self, name: str, operations: "Operations") -> None:
         self.name = name
