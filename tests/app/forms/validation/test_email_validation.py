@@ -1,45 +1,23 @@
-import unittest
-from unittest.mock import Mock
-
+import pytest
 from wtforms.validators import StopValidation
 
 from app.forms import error_messages
 from app.forms.validators import EmailTLDCheck
 
 
-class TestEmailTLDValidator(unittest.TestCase):
-    def test_tld_single_character(self):
-        validator = EmailTLDCheck()
+@pytest.mark.parametrize(
+    "email",
+    (
+        "a@a.a",
+        "a@a.a9",
+        "a@a.\x94",
+    ),
+)
+def test_tld_invalid_emails(email, mock_form, mock_field):
+    validator = EmailTLDCheck()
+    mock_field.data = email
 
-        mock_form = Mock()
-        mock_field = Mock()
-        mock_field.data = "a@a.a"
+    with pytest.raises(StopValidation) as exc:
+        validator(mock_form, mock_field)
 
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
-
-        self.assertEqual(error_messages["INVALID_EMAIL_FORMAT"], str(ite.exception))
-
-    def test_tld_non_alpha_character(self):
-        validator = EmailTLDCheck()
-
-        mock_form = Mock()
-        mock_field = Mock()
-        mock_field.data = "a@a.a9"
-
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
-
-        self.assertEqual(error_messages["INVALID_EMAIL_FORMAT"], str(ite.exception))
-
-    def test_tld_invalid_unicode(self):
-        validator = EmailTLDCheck()
-
-        mock_form = Mock()
-        mock_field = Mock()
-        mock_field.data = "a@a.\x94"
-
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
-
-        self.assertEqual(error_messages["INVALID_EMAIL_FORMAT"], str(ite.exception))
+    assert error_messages["INVALID_EMAIL_FORMAT"] == str(exc.value)

@@ -36,9 +36,11 @@ class ViewSubmittedResponse:
 
     @property
     def has_expired(self) -> bool:
-        return has_view_submitted_response_expired(
-            self._questionnaire_store.submitted_at
-        )
+        if self._questionnaire_store.submitted_at:
+            return has_view_submitted_response_expired(
+                self._questionnaire_store.submitted_at
+            )
+        return False
 
     def get_context(self) -> dict[str, Union[str, datetime, dict]]:
         return build_view_submitted_response_context(

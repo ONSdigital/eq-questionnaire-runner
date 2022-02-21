@@ -1,8 +1,7 @@
 from functools import cached_property
-from typing import Mapping, Optional
+from typing import Any, Mapping, Optional
 
 from flask import url_for
-from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.questionnaire import QuestionnaireSchema
@@ -23,7 +22,7 @@ class SectionSummaryContext(Context):
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: ImmutableDict,
+        metadata: Mapping[str, Any],
         response_metadata: Mapping,
         routing_path: RoutingPath,
         current_location: Location,
@@ -93,12 +92,11 @@ class SectionSummaryContext(Context):
         if section_repeating_page_title:
             page_title = f"{page_title}: {section_repeating_page_title}"
 
-        if self.current_location.list_item_id:
+        if self.current_location.list_item_id and self.current_location.list_name:
             list_item_position = self._list_store.list_item_position(
                 self.current_location.list_name, self.current_location.list_item_id
             )
             page_title = page_title.format(list_item_position=list_item_position)
-
         return page_title
 
     def _build_summary(self, return_to: Optional[str]):

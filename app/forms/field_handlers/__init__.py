@@ -1,3 +1,5 @@
+from typing import Optional
+
 from werkzeug.datastructures import ImmutableDict
 
 from app.forms.field_handlers.address_handler import AddressHandler
@@ -47,7 +49,7 @@ def get_field_handler(
     rule_evaluator: RuleEvaluator,
     error_messages: ImmutableDict,
     disable_validation: bool = False,
-    question_title: str = None,
+    question_title: Optional[str] = None,
 ) -> FieldHandler:
     return FIELD_HANDLER_MAPPINGS[answer_schema["type"]](
         answer_schema=answer_schema,

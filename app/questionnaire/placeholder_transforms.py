@@ -41,7 +41,7 @@ class PlaceholderTransforms:
     input_date_format = "%Y-%m-%d"
 
     def format_currency(
-        self, number: Union[float, str] = None, currency: str = "GBP"
+        self, number: Optional[Union[float, str]] = None, currency: str = "GBP"
     ) -> str:
         formatted_currency: str = format_currency(number, currency, locale=self.locale)
         return formatted_currency
@@ -97,8 +97,8 @@ class PlaceholderTransforms:
     def email_link(
         self,
         email_address: str,
-        email_subject: str = None,
-        email_subject_append: str = None,
+        email_subject: Optional[str] = None,
+        email_subject_append: Optional[str] = None,
     ) -> str:
         href = f"mailto:{email_address}"
         if email_subject:
@@ -225,7 +225,9 @@ class PlaceholderTransforms:
     def add(lhs: Union[int, Decimal], rhs: Union[int, Decimal]) -> Union[int, Decimal]:
         return lhs + rhs
 
-    def format_ordinal(self, number_to_format: int, determiner: str = None) -> str:
+    def format_ordinal(
+        self, number_to_format: int, determiner: Optional[str] = None
+    ) -> str:
 
         indicator = self.get_ordinal_indicator(number_to_format)
 

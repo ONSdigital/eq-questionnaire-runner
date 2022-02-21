@@ -1,124 +1,60 @@
-import unittest
-from unittest.mock import Mock, patch
-
+import pytest
 from wtforms.validators import StopValidation, ValidationError
 
 from app.forms import error_messages
-from app.forms.validators import DecimalPlaces, NumberCheck
+from app.forms.validators import DecimalPlaces
 
 
-# pylint: disable=no-member
-@patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
-class TestNumberValidator(unittest.TestCase):
-    """
-    Number validator uses the raw data from the input, which is in a list
-    """
+@pytest.mark.parametrize(
+    "value",
+    (
+        [None],
+        [""],
+        ["a"],
+        ["2E2"],
+    ),
+)
+@pytest.mark.usefixtures("gb_locale")
+def test_number_validator_raises_StopValidation(
+    number_check, value, mock_form, mock_field
+):
+    mock_field.raw_data = value
 
-    def test_none_invalid(self):
-        validator = NumberCheck()
+    with pytest.raises(StopValidation) as exc:
+        number_check(mock_form, mock_field)
 
-        mock_form = Mock()
-        mock_field = Mock()
-        mock_field.raw_data = [None]
+    assert error_messages["INVALID_NUMBER"] == str(exc.value)
 
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
 
-        self.assertEqual(error_messages["INVALID_NUMBER"], str(ite.exception))
+@pytest.mark.parametrize(
+    "decimals,error",
+    (
+        (2, error_messages["INVALID_DECIMAL"] % {"max": 2}),
+        (0, error_messages["INVALID_INTEGER"]),
+    ),
+)
+@pytest.mark.usefixtures("gb_locale")
+def test_decimal_validator_raises_StopValidation(
+    decimals, error, mock_form, mock_field
+):
+    validator = DecimalPlaces(decimals)
+    mock_field.raw_data = ["1.234"]
 
-    def test_empty_string_invalid(self):
-        validator = NumberCheck()
+    with pytest.raises(ValidationError) as exc:
+        validator(mock_form, mock_field)
 
-        mock_form = Mock()
-        mock_field = Mock()
-        mock_field.raw_data = [""]
+    assert error == str(exc.value)
 
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
 
-        self.assertEqual(error_messages["INVALID_NUMBER"], str(ite.exception))
-
-    def test_non_numeric_string_invalid(self):
-        validator = NumberCheck()
-
-        mock_form = Mock()
-        mock_field = Mock()
-        mock_field.raw_data = ["a"]
-
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
-
-        self.assertEqual(error_messages["INVALID_NUMBER"], str(ite.exception))
-
-    def test_numeric_exponential_invalid(self):
-        validator = NumberCheck()
-
-        mock_form = Mock()
-        mock_field = Mock()
-        mock_field.raw_data = ["2E2"]
-
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
-
-        self.assertEqual(error_messages["INVALID_NUMBER"], str(ite.exception))
-
-    def test_decimal_number_invalid(self):
-        validator = DecimalPlaces(2)
-
-        mock_form = Mock()
-        mock_field = Mock()
-        mock_field.raw_data = ["1.234"]
-
-        with self.assertRaises(ValidationError) as ite:
-            validator(mock_form, mock_field)
-
-        error_message = error_messages["INVALID_DECIMAL"] % {"max": 2}
-        self.assertEqual(error_message, str(ite.exception))
-
-    def test_space_invalid(self):
-        validator = NumberCheck()
-
-        mock_form = Mock()
-        mock_field = Mock()
-        mock_field.raw_data = [" "]
-
-        with self.assertRaises(StopValidation) as ite:
-            validator(mock_form, mock_field)
-
-        self.assertEqual(error_messages["INVALID_NUMBER"], str(ite.exception))
-
-    def test_zero_valid(self):
-        validator = NumberCheck()
-
-        mock_form = Mock()
-        mock_field = Mock()
-        mock_field.raw_data = ["0"]
-
-        try:
-            validator(mock_form, mock_field)
-        except StopValidation:
-            self.fail("Valid number raised StopValidation")
-
-    def test_positive_number_valid(self):
-        validator = NumberCheck()
-
-        mock_form = Mock()
-        mock_field = Mock()
-        mock_field.raw_data = ["10"]
-
-        try:
-            validator(mock_form, mock_field)
-        except StopValidation:
-            self.fail("Valid number raised StopValidation")
-
-    def test_negative_number_valid(self):
-        validator = NumberCheck()
-
-        mock_form = Mock()
-        mock_field = Mock()
-        mock_field.raw_data = ["-10"]
-
-        try:
-            validator(mock_form, mock_field)
-        except StopValidation:
-            self.fail("Valid number raised StopValidation")
+@pytest.mark.parametrize(
+    "value",
+    (
+        ["0"],
+        ["10"],
+        ["-10"],
+    ),
+)
+@pytest.mark.usefixtures("gb_locale")
+def test_number_validator(number_check, value, mock_form, mock_field):
+    mock_field.raw_data = value
+    number_check(mock_form, mock_field)

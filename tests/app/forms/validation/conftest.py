@@ -1,6 +1,6 @@
 import pytest
 
-from app.forms.validators import DateCheck, DateRangeCheck, DateRequired
+from app.forms.validators import DateCheck, DateRangeCheck, DateRequired, NumberCheck
 
 
 @pytest.fixture
@@ -24,16 +24,6 @@ def get_date_range_check():
 
 
 @pytest.fixture
-def mock_form(mocker):
-    return mocker.Mock()
-
-
-@pytest.fixture
-def mock_field(mocker):
-    return mocker.Mock()
-
-
-@pytest.fixture
 def mock_period_from(mocker):
     return mocker.Mock()
 
@@ -41,3 +31,8 @@ def mock_period_from(mocker):
 @pytest.fixture
 def mock_period_to(mocker):
     return mocker.Mock()
+
+
+@pytest.fixture
+def number_check():
+    return NumberCheck()
