@@ -39,7 +39,15 @@ class Question:
         )
 
     def _get_answer(self, answer_store, answer_id):
-        return answer_store.get_escaped_answer_value(answer_id, self.list_item_id)
+        if answer_store.get_escaped_answer_value(
+            answer_id, self.list_item_id
+        ) or isinstance(
+            answer_store.get_escaped_answer_value(answer_id, self.list_item_id), int  # protection against falsy answer value "0"
+        ):
+            return answer_store.get_escaped_answer_value(answer_id, self.list_item_id)
+        if self.schema.get_default_answer(answer_id):
+            return self.schema.get_default_answer(answer_id).value
+        return None
 
     def _build_answers(
         self, *, answer_store, question_schema, block_id, list_name, return_to
