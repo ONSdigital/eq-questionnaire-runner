@@ -919,3 +919,31 @@ def test_placeholder_resolves_list_has_items_chain(mock_schema, mock_renderer):
     placeholders = parser(placeholder_transforms)
 
     assert placeholders["persons_name"] == "Marie Jane Smith"
+
+
+def test_placeholder_default_value(default_placeholder_value_schema, mock_renderer):
+    placeholder_list = [
+        {
+            "placeholder": "answer_employee",
+            "transforms": [
+                {
+                    "transform": "format_number",
+                    "arguments": {
+                        "number": {"source": "answers", "identifier": "employee-no"}
+                    },
+                }
+            ],
+        }
+    ]
+    parser = PlaceholderParser(
+        language="en",
+        answer_store=AnswerStore(),
+        list_store=ListStore(),
+        metadata={},
+        response_metadata={},
+        schema=default_placeholder_value_schema,
+        renderer=mock_renderer,
+    )
+
+    placeholders = parser(placeholder_list)
+    assert placeholders["answer_employee"] == "0"

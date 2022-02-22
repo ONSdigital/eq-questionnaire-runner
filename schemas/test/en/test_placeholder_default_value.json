@@ -1,0 +1,160 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Placeholder default value",
+    "theme": "default",
+    "description": "A questionnaire to demo Placeholder default value.",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {}
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "employee-number-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "employee-no",
+                                        "mandatory": false,
+                                        "decimal_places": 0,
+                                        "type": "Number",
+                                        "label": "Total number of employees",
+                                        "default": 0
+                                    }
+                                ],
+                                "id": "employee-no-question",
+                                "title": {
+                                    "text": "What is the number of employees for the {ru_name} ?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "ru_name",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ru_name"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Leave the text box blank to see the default value on the next page"
+                                        }
+                                    ]
+                                },
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "id": "employee-number-default-interstitial",
+                            "content": {
+                                "title": "Default employee number interstitial",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "The number of employee confirmed are <em>{answer_employee} (default value)</em>",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "answer_employee",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "format_number",
+                                                            "arguments": {
+                                                                "number": {
+                                                                    "source": "answers",
+                                                                    "identifier": "employee-no"
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    ">": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "employee-no"
+                                        },
+                                        0
+                                    ]
+                                }
+                            },
+                            "type": "Interstitial"
+                        },
+                        {
+                            "id": "employee-number-interstitial",
+                            "content": {
+                                "title": "Employee number interstitial",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "The number of employee confirmed are <em>{answer_employee}</em>",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "answer_employee",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "format_number",
+                                                            "arguments": {
+                                                                "number": {
+                                                                    "source": "answers",
+                                                                    "identifier": "employee-no"
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "employee-no"
+                                        },
+                                        0
+                                    ]
+                                }
+                            },
+                            "type": "Interstitial"
+                        }
+                    ],
+                    "id": "employee-count",
+                    "title": "Employee count"
+                }
+            ]
+        }
+    ]
+}
