@@ -238,7 +238,7 @@ def test_remove_completed_location():
     assert store.is_dirty
 
 
-def test_remove_final_completed_location_removes_section():
+def test_remove_final_completed_location_mark_section_as_in_progress():
     completed = [
         {
             "section_id": "s1",
@@ -263,11 +263,12 @@ def test_remove_final_completed_location_removes_section():
     store.remove_completed_location(non_repeating_location)
     store.remove_completed_location(repeating_location)
 
-    assert ("s1", None) not in store
+    assert ("s1", None) in store
     assert store.get_completed_block_ids(section_id="s1") == []
 
-    assert ("s2", "abc123") not in store
+    assert ("s2", "abc123") in store
     assert store.get_completed_block_ids(section_id="s1", list_item_id="abc123") == []
+    assert store.get_section_status("s2", "abc123") == CompletionStatus.IN_PROGRESS
 
     assert store.is_dirty
 

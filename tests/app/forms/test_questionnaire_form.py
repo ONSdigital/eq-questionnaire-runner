@@ -1020,7 +1020,7 @@ def test_invalid_calculation_type(app, answer_store, list_store, mocker):
     answer_store.add_or_update(answer_total)
 
     with app.test_request_context():
-        schema = load_schema_from_name("test_sum_equal_validation_against_total")
+        schema = load_schema_from_name("test_validation_sum_against_total_equal")
 
         question_schema = QuestionnaireSchema.get_mutable_deepcopy(
             schema.get_block("breakdown-block").get("question")
@@ -1063,7 +1063,7 @@ def test_bespoke_message_for_sum_validation(app, answer_store, list_store, mocke
     answer_store.add_or_update(answer_total)
 
     with app.test_request_context():
-        schema = load_schema_from_name("test_sum_equal_validation_against_total")
+        schema = load_schema_from_name("test_validation_sum_against_total_equal")
 
         question_schema = QuestionnaireSchema.get_mutable_deepcopy(
             schema.get_block("breakdown-block").get("question")
@@ -1101,7 +1101,7 @@ def test_empty_calculated_field(app, answer_store, list_store):
     answer_store.add_or_update(answer_total)
 
     with app.test_request_context():
-        schema = load_schema_from_name("test_sum_equal_validation_against_total")
+        schema = load_schema_from_name("test_validation_sum_against_total_equal")
 
         question_schema = schema.get_block("breakdown-block").get("question")
 
@@ -1144,7 +1144,7 @@ def test_sum_calculated_field(app, answer_store, list_store):
     answer_store.add_or_update(answer_total)
 
     with app.test_request_context():
-        schema = load_schema_from_name("test_sum_equal_validation_against_total")
+        schema = load_schema_from_name("test_validation_sum_against_total_equal")
 
         question_schema = schema.get_block("breakdown-block").get("question")
 
@@ -1184,7 +1184,7 @@ def test_get_calculation_total_with_no_input(app, answer_store, list_store):
     answer_store.add_or_update(answer_total)
 
     with app.test_request_context():
-        schema = load_schema_from_name("test_sum_equal_validation_against_total")
+        schema = load_schema_from_name("test_validation_sum_against_total_equal")
 
         question_schema = schema.get_block("breakdown-block").get("question")
 
@@ -1227,7 +1227,7 @@ def test_multi_calculation(app, answer_store, list_store):
     answer_store.add_or_update(answer_total)
 
     with app.test_request_context():
-        schema = load_schema_from_name("test_sum_multi_validation_against_total")
+        schema = load_schema_from_name("test_validation_sum_against_total_multiple")
 
         question_schema = schema.get_block("breakdown-block").get("question")
 

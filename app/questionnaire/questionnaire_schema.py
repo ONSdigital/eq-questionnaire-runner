@@ -1,5 +1,6 @@
 from collections import abc, defaultdict
 from copy import deepcopy
+from dataclasses import dataclass
 from functools import cached_property
 from typing import Any, Generator, Iterable, Mapping, Optional, Sequence, Union
 
@@ -28,19 +29,49 @@ class InvalidSchemaConfigurationException(Exception):
     pass
 
 
+@dataclass(frozen=True)
+class AnswerDependent:
+    """Represents a dependent belonging to some answer.
+
+    The dependent can be a reference to another answer, or just the parent block of the answer.
+    If the dependent has an answer_id, then the dependent answer is removed
+    when the answer this dependents upon is changed.
+
+    An answer can have zero or more dependents.
+    """
+
+    section_id: str
+    block_id: str
+    for_list: Optional[str] = None
+    answer_id: Optional[str] = None
+
+
 class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def __init__(
         self, questionnaire_json: Mapping, language_code: str = DEFAULT_LANGUAGE_CODE
     ):
         self._parent_id_map: dict[str, str] = {}
         self._list_name_to_section_map: dict[str, list[str]] = {}
+        self._answer_dependencies_map: dict[str, set[AnswerDependent]] = defaultdict(
+            set
+        )
+
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
+
+        # The ordering here is required as they depend on each other.
         self._sections_by_id = self._get_sections_by_id()
         self._groups_by_id = self._get_groups_by_id()
         self._blocks_by_id = self._get_blocks_by_id()
         self._questions_by_id = self._get_questions_by_id()
         self._answers_by_id = self._get_answers_by_id()
+
+        # Post schema parsing.
+        self._populate_answer_dependencies()
+
+    @cached_property
+    def answer_dependencies(self) -> ImmutableDict[str, set[AnswerDependent]]:
+        return ImmutableDict(self._answer_dependencies_map)
 
     @cached_property
     def language_code(self) -> str:
@@ -91,6 +122,30 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             key_value_tuples = {k: cls.get_mutable_deepcopy(v) for k, v in data.items()}
             return dict(key_value_tuples)
         return deepcopy(data)
+
+    @cached_property
+    def _flow(self) -> ImmutableDict[str, Any]:
+        questionnaire_flow: ImmutableDict = self.json["questionnaire_flow"]
+        return questionnaire_flow
+
+    @cached_property
+    def flow_options(self) -> ImmutableDict[str, Any]:
+        options: ImmutableDict[str, Any] = self._flow["options"]
+        return options
+
+    @cached_property
+    def is_flow_hub(self) -> bool:
+        return bool(self._flow["type"] == "Hub")
+
+    @cached_property
+    def is_flow_linear(self) -> bool:
+        return bool(self._flow["type"] == "Linear")
+
+    @cached_property
+    def is_view_submitted_response_enabled(self) -> bool:
+        schema: Mapping = self.get_post_submission()
+        is_enabled: bool = schema.get("view_response", False)
+        return is_enabled
 
     def _get_sections_by_id(self) -> dict[str, ImmutableDict]:
         return {section["id"]: section for section in self.json.get("sections", [])}
@@ -150,46 +205,61 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _get_answers_by_id(self) -> dict[str, list[ImmutableDict]]:
         answers_by_id = defaultdict(list)
 
-        for question_set in self._questions_by_id.values():
-            for question in question_set:
-                question_id = question["id"]
-                for answer in question["answers"]:
-                    answer_id = answer["id"]
-                    self._parent_id_map[answer_id] = question_id
+        for question in self._get_flattened_questions():
+            question_id = question["id"]
+            for answer in question["answers"]:
+                answer_id = answer["id"]
+                self._parent_id_map[answer_id] = question_id
 
-                    answers_by_id[answer["id"]].append(answer)
-                    for option in answer.get("options", []):
-                        detail_answer = option.get("detail_answer")
-                        if detail_answer:
-                            detail_answer_id = detail_answer["id"]
-                            answers_by_id[detail_answer_id].append(detail_answer)
-                            self._parent_id_map[detail_answer_id] = question_id
+                answers_by_id[answer["id"]].append(answer)
+                for option in answer.get("options", []):
+                    detail_answer = option.get("detail_answer")
+                    if detail_answer:
+                        detail_answer_id = detail_answer["id"]
+                        answers_by_id[detail_answer_id].append(detail_answer)
+                        self._parent_id_map[detail_answer_id] = question_id
 
         return answers_by_id
 
-    @cached_property
-    def _flow(self) -> ImmutableDict[str, Any]:
-        questionnaire_flow: ImmutableDict = self.json["questionnaire_flow"]
-        return questionnaire_flow
+    def _populate_answer_dependencies(self) -> None:
+        for question in self._get_flattened_questions():
+            if question["type"] == "Calculated":
+                self._update_answer_dependencies_for_calculations(
+                    question["calculations"],
+                )
 
-    @cached_property
-    def flow_options(self) -> ImmutableDict[str, Any]:
-        options: ImmutableDict[str, Any] = self._flow["options"]
-        return options
+    def _get_answer_dependent_for_answer_id(self, answer_id: str) -> AnswerDependent:
+        block_id: str = self.get_block_for_answer_id(answer_id)["id"]  # type: ignore
+        section_id: str = self.get_section_id_for_block_id(block_id)  # type: ignore
+        for_list = self.get_repeating_list_for_section(section_id)
 
-    @cached_property
-    def is_flow_hub(self) -> bool:
-        return bool(self._flow["type"] == "Hub")
+        return AnswerDependent(
+            block_id=block_id,
+            section_id=section_id,
+            for_list=for_list,
+        )
 
-    @cached_property
-    def is_flow_linear(self) -> bool:
-        return bool(self._flow["type"] == "Linear")
+    def _update_answer_dependencies_for_calculations(
+        self,
+        calculations: tuple[ImmutableDict[str, Any]],
+    ) -> None:
+        for calculation in calculations:
+            source_answer_id = calculation.get("answer_id")
+            if not source_answer_id:
+                continue
 
-    @cached_property
-    def is_view_submitted_response_enabled(self) -> bool:
-        schema: Mapping = self.get_post_submission()
-        is_enabled: bool = schema.get("view_response", False)
-        return is_enabled
+            dependents = {
+                self._get_answer_dependent_for_answer_id(answer_id)
+                for answer_id in calculation["answers_to_calculate"]
+            }
+            self._answer_dependencies_map[source_answer_id] |= dependents
+
+    def _get_flattened_questions(self) -> list[ImmutableDict[str, Any]]:
+        return [
+            question
+            for questions in self._questions_by_id.values()
+            for question in questions
+        ]
 
     def get_section_ids_required_for_hub(self) -> list[str]:
         return self.flow_options.get("required_completed_sections", [])

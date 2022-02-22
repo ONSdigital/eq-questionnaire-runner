@@ -1,5 +1,5 @@
 # pylint: disable=redefined-outer-name
-from unittest.mock import Mock
+from unittest.mock import MagicMock
 
 import pytest
 from werkzeug.datastructures import ImmutableDict
@@ -85,6 +85,7 @@ def question_variant_schema():
                                         ],
                                         "question": {
                                             "id": "question1",
+                                            "type": "General",
                                             "title": "Question 1, Yes",
                                             "answers": [
                                                 {
@@ -104,6 +105,7 @@ def question_variant_schema():
                                         ],
                                         "question": {
                                             "id": "question1",
+                                            "type": "General",
                                             "title": "Question 1, No",
                                             "answers": [
                                                 {
@@ -141,6 +143,7 @@ def single_question_schema():
                                 "title": "Block 1",
                                 "question": {
                                     "id": "question1",
+                                    "type": "General",
                                     "title": "Question 1",
                                     "answers": [
                                         {
@@ -674,6 +677,7 @@ def question_schema():
                                 "question": {
                                     "id": "question1",
                                     "title": "A Question",
+                                    "type": "General",
                                     "answers": [{"id": "answer1", "label": "Answer 1"}],
                                 },
                             }
@@ -832,7 +836,7 @@ def section_with_repeating_list():
 
 @pytest.fixture
 def mock_schema():
-    schema = Mock(
+    schema = MagicMock(
         QuestionnaireSchema(
             {
                 "questionnaire_flow": {
@@ -1078,3 +1082,17 @@ def questionnaire_store_get_relationship_collectors_by_list_name_patch(mocker):
     patch_method = "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater._get_relationship_collectors_by_list_name"
     patched = mocker.patch(patch_method)
     patched.return_value = None
+
+
+@pytest.fixture
+def calculated_question_with_dependent_sections_schema_non_repeating():
+    return load_schema_from_name(
+        "test_validation_sum_against_total_hub_with_dependent_section"
+    )
+
+
+@pytest.fixture
+def calculated_question_with_dependent_sections_schema_repeating():
+    return load_schema_from_name(
+        "test_validation_sum_against_total_repeating_with_dependent_section"
+    )
