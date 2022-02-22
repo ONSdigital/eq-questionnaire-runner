@@ -23,7 +23,7 @@ class DynamicAnswerOptions:
         ]
 
         if "source" in values:
-            if not values["source"] == "answers":
+            if values["source"] != "answers":
                 raise NotImplementedError  # pragma: no cover
 
             resolved_values = self.value_source_resolver.resolve(values)
