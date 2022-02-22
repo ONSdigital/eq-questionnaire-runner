@@ -18,7 +18,7 @@ describe("Dynamic radio options from checkbox answers", () => {
       expect($(MostSeriousInjuryPage.answerLabelByIndex(3)).isExisting()).to.be.false;
     });
 
-    it("When the respondent answers the radio question and submits, Then the radio question should show only the answers from the first checkbox as options", () => {
+    it("When the respondent answers the radio question and submits, Then the next radio question should show only the answers from the first checkbox as options", () => {
       $(MostSeriousInjuryPage.answerLabelByIndex(0)).click();
       $(MostSeriousInjuryPage.submit()).click();
 

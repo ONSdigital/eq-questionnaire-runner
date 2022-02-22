@@ -76,5 +76,5 @@ def test_build_choices_no_dynamic_or_static_options(
         error_messages,
     )
     with pytest.raises(InvalidSchemaConfigurationException) as context:
-        handler.choices  # pylint: disable=pointless-statement
+        assert handler.choices
     assert "No dynamic or static choices" == str(context.value)
