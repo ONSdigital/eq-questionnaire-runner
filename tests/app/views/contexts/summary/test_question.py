@@ -144,56 +144,19 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         )
 
     def address_question(self, concatenation_type):
-        building = {
-            "id": "building",
-            "label": "Building",
-            "mandatory": False,
-            "type": "TextField",
-        }
 
-        address_line_1 = {
-            "id": "address-line-1",
-            "label": "Address line 1",
-            "mandatory": False,
-            "type": "TextField",
-        }
-        address_line_2 = {
-            "id": "address-line-2",
-            "label": "Address line 2",
-            "mandatory": False,
-            "type": "TextField",
-        }
-        town_city = {
-            "id": "town-city",
-            "label": "Town or City",
-            "mandatory": False,
-            "type": "TextField",
-        }
-        county = {
-            "id": "county",
-            "label": "County",
-            "mandatory": False,
-            "type": "TextField",
-        }
-        postcode = {
-            "id": "postcode",
-            "label": "Postcode",
-            "mandatory": False,
-            "type": "TextField",
-        }
+        answers = [
+            self.address_questionnaire_schema().get_answers_by_answer_id(answer_id)[0]
+            for answer_id in self.address_questionnaire_schema().get_answer_ids_for_block(
+                "what-is-your-address"
+            )
+        ]
 
         question_schema = {
             "id": "question_id",
             "title": "question_title",
             "type": "General",
-            "answers": [
-                building,
-                address_line_1,
-                address_line_2,
-                town_city,
-                county,
-                postcode,
-            ],
+            "answers": answers,
             "summary": {"concatenation_type": concatenation_type},
         }
 
