@@ -169,7 +169,7 @@
                                         "default": 250
                                     }
                                 ],
-                                "id": "employees-no-question",
+                                "id": "employees-training-question",
                                 "title": "What is average training budget per employee ?",
                                 "guidance": {
                                     "contents": [
@@ -184,7 +184,7 @@
                         {
                             "id": "employees-training-default-interstitial",
                             "content": {
-                                "title": "Default employee's training budget interstitial",
+                                "title": "Default employee training budget interstitial",
                                 "contents": [
                                     {
                                         "description": {
@@ -225,7 +225,7 @@
                         {
                             "id": "employees-training-interstitial",
                             "content": {
-                                "title": "Employee's training budget interstitial",
+                                "title": "Employee training budget interstitial",
                                 "contents": [
                                     {
                                         "description": {
