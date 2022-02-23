@@ -4,13 +4,19 @@ from unittest.mock import Mock
 import pytest
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models.answer_store import AnswerStore
+from app.data_models import QuestionnaireStore
+from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.list_store import ListStore
+from app.data_models.progress_store import ProgressStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.placeholder_parser import PlaceholderParser
-from app.questionnaire.placeholder_renderer import PlaceholderRenderer
+from app.questionnaire.placeholder_renderer import (
+    PlaceholderRenderer,
+    find_pointers_containing,
+)
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
+from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
 
 
@@ -840,13 +846,6 @@ def mock_schema():
 
 
 @pytest.fixture
-def placeholder_transform(mock_schema, mock_renderer):
-    return PlaceholderTransforms(
-        language="en", schema=mock_schema, renderer=mock_renderer
-    )
-
-
-@pytest.fixture
 def placeholder_renderer(option_label_from_value_schema):
     answer_store = AnswerStore(
         [
@@ -890,3 +889,206 @@ def transformer(mock_renderer, mock_schema):
         )
 
     return _transform
+
+
+@pytest.fixture
+@pytest.mark.usefixtures("app", "gb_locale")
+def question_json():
+    return {
+        "id": "confirm-date-of-birth-proxy",
+        "title": "Confirm date of birth",
+        "type": "General",
+        "answers": [
+            {
+                "id": "confirm-date-of-birth-answer-proxy",
+                "mandatory": True,
+                "options": [
+                    {
+                        "label": {
+                            "text": "{person_name_possessive} age is {age}. Is this correct?",
+                            "placeholders": [
+                                {
+                                    "placeholder": "person_name_possessive",
+                                    "transforms": [
+                                        {
+                                            "arguments": {
+                                                "delimiter": " ",
+                                                "list_to_concatenate": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "first-name",
+                                                    },
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "last-name",
+                                                    },
+                                                ],
+                                            },
+                                            "transform": "concatenate_list",
+                                        },
+                                        {
+                                            "arguments": {
+                                                "string_to_format": {
+                                                    "source": "previous_transform"
+                                                }
+                                            },
+                                            "transform": "format_possessive",
+                                        },
+                                    ],
+                                },
+                                {
+                                    "placeholder": "age",
+                                    "transforms": [
+                                        {
+                                            "transform": "calculate_date_difference",
+                                            "arguments": {
+                                                "first_date": {
+                                                    "source": "answers",
+                                                    "identifier": "date-of-birth-answer",
+                                                },
+                                                "second_date": {"value": "now"},
+                                            },
+                                        }
+                                    ],
+                                },
+                            ],
+                        },
+                        "value": "Yes",
+                    },
+                    {
+                        "label": "No, I need to change their date of birth",
+                        "value": "No",
+                    },
+                ],
+                "type": "Radio",
+            }
+        ],
+    }
+
+
+@pytest.fixture
+def pointers(question_json):
+    return list(find_pointers_containing(question_json, "placeholders"))
+
+
+@pytest.fixture
+def fake_list_store():
+    serialized = [
+        {
+            "name": "people",
+            "primary_person": "abcdef",
+            "items": ["abcdef", "ghijkl", "xyzabc"],
+        },
+        {"name": "pets", "items": ["tuvwxy"]},
+    ]
+
+    return ListStore.deserialize(serialized)
+
+
+@pytest.fixture
+def fake_location():
+    return Location(section_id="section-foo", block_id="block-bar")
+
+
+@pytest.fixture
+def schema(mocker):
+    return mocker.MagicMock(spec=QuestionnaireSchema)
+
+
+@pytest.fixture
+def fake_answer_store(mocker):
+    return mocker.MagicMock(spec=AnswerStore)
+
+
+@pytest.fixture
+def progress_store(mocker):
+    _progress_store = mocker.MagicMock(spec=ProgressStore)
+    _progress_store.locations = []
+    return _progress_store
+
+
+@pytest.fixture
+def list_store(mocker):
+    return mocker.MagicMock(spec=ListStore)
+
+
+@pytest.fixture
+def questionnaire_store(fake_list_store, fake_answer_store, progress_store, mocker):
+    return mocker.MagicMock(
+        spec=QuestionnaireStore,
+        completed_blocks=[],
+        answer_store=fake_answer_store,
+        list_store=fake_list_store,
+        progress_store=progress_store,
+    )
+
+
+@pytest.fixture
+def metadata(mocker):
+    return mocker.MagicMock()
+
+
+@pytest.fixture
+def block_ids():
+    return ["block-a", "block-b", "block-c", "block-b", "block-c"]
+
+
+@pytest.fixture
+def section_id():
+    return "section-1"
+
+
+@pytest.fixture
+def list_item_id():
+    return "list_item_id"
+
+
+@pytest.fixture
+def list_name():
+    return "list_name"
+
+
+@pytest.fixture
+def routing_path(block_ids, section_id, list_item_id, list_name):
+    return RoutingPath(
+        block_ids,
+        section_id=section_id,
+        list_item_id=list_item_id,
+        list_name=list_name,
+    )
+
+
+@pytest.fixture
+def answers():
+    return {
+        "low": Answer(answer_id="low", value=1),
+        "medium": Answer(answer_id="medium", value=5),
+        "high": Answer(answer_id="high", value=10),
+        "list_answer": Answer(answer_id="list_answer", value=["a", "abc", "cba"]),
+        "other_list_answer": Answer(
+            answer_id="other_list_answer", value=["x", "y", "z"]
+        ),
+        "other_list_answer_2": Answer(
+            answer_id="other_list_answer_2", value=["a", "abc", "cba"]
+        ),
+        "text_answer": Answer(answer_id="small_string", value="abc"),
+        "other_text_answer": Answer(answer_id="other_string", value="xyz"),
+        "missing_answer": Answer(answer_id="missing", value=1),
+    }
+
+
+@pytest.fixture
+def current_location():
+    return Location(section_id="some-section", block_id="some-block")
+
+
+@pytest.fixture
+def questionnaire_schema():
+    return QuestionnaireSchema(
+        {
+            "questionnaire_flow": {
+                "type": "Linear",
+                "options": {"summary": {"collapsible": False}},
+            }
+        }
+    )
