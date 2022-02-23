@@ -23,7 +23,11 @@
     ],
     "questionnaire_flow": {
         "type": "Linear",
-        "options": {}
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
     },
     "sections": [
         {
@@ -75,48 +79,7 @@
                                 "contents": [
                                     {
                                         "description": {
-                                            "text": "The total number of employees confirmed are <em>{answer_employee} (default value)</em>",
-                                            "placeholders": [
-                                                {
-                                                    "placeholder": "answer_employee",
-                                                    "transforms": [
-                                                        {
-                                                            "transform": "format_number",
-                                                            "arguments": {
-                                                                "number": {
-                                                                    "source": "answers",
-                                                                    "identifier": "employees-no"
-                                                                }
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        }
-                                    }
-                                ]
-                            },
-                            "skip_conditions": {
-                                "when": {
-                                    ">": [
-                                        {
-                                            "source": "answers",
-                                            "identifier": "employees-no"
-                                        },
-                                        0
-                                    ]
-                                }
-                            },
-                            "type": "Interstitial"
-                        },
-                        {
-                            "id": "employees-number-interstitial",
-                            "content": {
-                                "title": "Employees number interstitial",
-                                "contents": [
-                                    {
-                                        "description": {
-                                            "text": "The total number of employees confirmed are <em>{answer_employee}</em>",
+                                            "text": "The total number of employees confirmed are <em>{answer_employee} (default value)</em>, now next question is about training budget",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "answer_employee",
@@ -145,6 +108,156 @@
                                             "identifier": "employees-no"
                                         },
                                         0
+                                    ]
+                                }
+                            },
+                            "type": "Interstitial"
+                        },
+                        {
+                            "id": "employees-number-interstitial",
+                            "content": {
+                                "title": "Employees number interstitial",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "The total number of employees confirmed are <em>{answer_employee} </em>, now next question is about training budget",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "answer_employee",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "format_number",
+                                                            "arguments": {
+                                                                "number": {
+                                                                    "source": "answers",
+                                                                    "identifier": "employees-no"
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "employees-no"
+                                        },
+                                        0
+                                    ]
+                                }
+                            },
+                            "type": "Interstitial"
+                        },
+                        {
+                            "type": "Question",
+                            "id": "employees-training-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "employees-avg-training",
+                                        "mandatory": false,
+                                        "decimal_places": 2,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "label": "Training Budget",
+                                        "default": 250
+                                    }
+                                ],
+                                "id": "employees-no-question",
+                                "title": "What is average training budget per employee ?",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Leave the text box blank to see the default value on the next page"
+                                        }
+                                    ]
+                                },
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "id": "employees-training-default-interstitial",
+                            "content": {
+                                "title": "Default employee's training budget interstitial",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "The average training budget per employee is <em>{answer_emp_training} (default value)</em>",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "answer_emp_training",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "format_currency",
+                                                            "arguments": {
+                                                                "number": {
+                                                                    "source": "answers",
+                                                                    "identifier": "employees-avg-training"
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "employees-avg-training"
+                                        },
+                                        250
+                                    ]
+                                }
+                            },
+                            "type": "Interstitial"
+                        },
+                        {
+                            "id": "employees-training-interstitial",
+                            "content": {
+                                "title": "Employee's training budget interstitial",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "The average training budget per employee is <em>{answer_emp_training}</em>",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "answer_emp_training",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "format_currency",
+                                                            "arguments": {
+                                                                "number": {
+                                                                    "source": "answers",
+                                                                    "identifier": "employees-avg-training"
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "employees-avg-training"
+                                        },
+                                        250
                                     ]
                                 }
                             },
