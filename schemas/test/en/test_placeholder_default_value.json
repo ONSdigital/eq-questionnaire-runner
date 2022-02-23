@@ -33,11 +33,11 @@
                     "blocks": [
                         {
                             "type": "Question",
-                            "id": "employee-number-block",
+                            "id": "employees-number-block",
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "employee-no",
+                                        "id": "employees-no",
                                         "mandatory": false,
                                         "decimal_places": 0,
                                         "type": "Number",
@@ -45,7 +45,7 @@
                                         "default": 0
                                     }
                                 ],
-                                "id": "employee-no-question",
+                                "id": "employees-no-question",
                                 "title": {
                                     "text": "What is the number of employees for the {ru_name} ?",
                                     "placeholders": [
@@ -69,13 +69,13 @@
                             }
                         },
                         {
-                            "id": "employee-number-default-interstitial",
+                            "id": "employees-number-default-interstitial",
                             "content": {
                                 "title": "Default employee number interstitial",
                                 "contents": [
                                     {
                                         "description": {
-                                            "text": "The number of employee confirmed are <em>{answer_employee} (default value)</em>",
+                                            "text": "The total number of employees confirmed are <em>{answer_employee} (default value)</em>",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "answer_employee",
@@ -85,7 +85,7 @@
                                                             "arguments": {
                                                                 "number": {
                                                                     "source": "answers",
-                                                                    "identifier": "employee-no"
+                                                                    "identifier": "employees-no"
                                                                 }
                                                             }
                                                         }
@@ -101,7 +101,7 @@
                                     ">": [
                                         {
                                             "source": "answers",
-                                            "identifier": "employee-no"
+                                            "identifier": "employees-no"
                                         },
                                         0
                                     ]
@@ -110,13 +110,13 @@
                             "type": "Interstitial"
                         },
                         {
-                            "id": "employee-number-interstitial",
+                            "id": "employees-number-interstitial",
                             "content": {
-                                "title": "Employee number interstitial",
+                                "title": "Employees number interstitial",
                                 "contents": [
                                     {
                                         "description": {
-                                            "text": "The number of employee confirmed are <em>{answer_employee}</em>",
+                                            "text": "The total number of employees confirmed are <em>{answer_employee}</em>",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "answer_employee",
@@ -126,7 +126,7 @@
                                                             "arguments": {
                                                                 "number": {
                                                                     "source": "answers",
-                                                                    "identifier": "employee-no"
+                                                                    "identifier": "employees-no"
                                                                 }
                                                             }
                                                         }
@@ -142,7 +142,7 @@
                                     "==": [
                                         {
                                             "source": "answers",
-                                            "identifier": "employee-no"
+                                            "identifier": "employees-no"
                                         },
                                         0
                                     ]

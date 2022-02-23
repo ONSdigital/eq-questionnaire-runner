@@ -929,7 +929,7 @@ def test_placeholder_default_value(default_placeholder_value_schema, mock_render
                 {
                     "transform": "format_number",
                     "arguments": {
-                        "number": {"source": "answers", "identifier": "employee-no"}
+                        "number": {"source": "answers", "identifier": "employees-no"}
                     },
                 }
             ],
