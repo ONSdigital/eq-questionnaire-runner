@@ -1,6 +1,7 @@
 from flask import url_for
 from markupsafe import escape
 
+from app.data_models.answer import escape_answer_value
 from app.forms.field_handlers.select_handlers import DynamicAnswerOptions
 from app.views.contexts.summary.answer import Answer
 
@@ -39,17 +40,11 @@ class Question:
         )
 
     def _get_answer(self, answer_store, answer_id):
-        escaped_answer_value = answer_store.get_escaped_answer_value(
-            answer_id, self.list_item_id
-        )
-        if escaped_answer_value or isinstance(
-            escaped_answer_value,
-            int,  # protection against falsy answer value "0"
-        ):
-            return escaped_answer_value
-        if self.schema.get_default_answer(answer_id):
-            return self.schema.get_default_answer(answer_id).value
-        return None
+        answer = answer_store.get_answer(answer_id, self.list_item_id)
+        if answer and answer.value:
+            return escape_answer_value(answer.value)
+        if default_answer := self.schema.get_default_answer(answer_id):
+            return default_answer.value
 
     def _build_answers(
         self, *, answer_store, question_schema, block_id, list_name, return_to
