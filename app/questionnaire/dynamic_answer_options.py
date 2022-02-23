@@ -1,23 +1,37 @@
 from dataclasses import dataclass
-from typing import Any, Mapping
+from typing import Any, Mapping, Union
 
 from app.questionnaire.rules.operator import Operator
-from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator, RuleEvaluatorTypes
+from app.questionnaire.value_source_resolver import (
+    ValueSourceEscapedTypes,
+    ValueSourceResolver,
+    ValueSourceTypes,
+)
 
 
 @dataclass
 class DynamicAnswerOptions:
     dynamic_options_schema: Mapping[str, Any]
     rule_evaluator: RuleEvaluator
+    value_source_resolver: ValueSourceResolver
 
     def evaluate(self) -> tuple[dict[str, str], ...]:
         values = self.dynamic_options_schema["values"]
-        if "source" in values:  # pylint: disable=no-else-raise
-            # :TODO: Implement value sources support
-            # resolved_values = ...
-            raise NotImplementedError  # pragma: no cover
+        resolved_values: Union[
+            ValueSourceEscapedTypes, ValueSourceTypes, RuleEvaluatorTypes
+        ]
+
+        if "source" in values:
+            if values["source"] != "answers":
+                raise NotImplementedError  # pragma: no cover
+
+            resolved_values = self.value_source_resolver.resolve(values)
         else:
             resolved_values = self.rule_evaluator.evaluate(values)
+
+        if not resolved_values:
+            return ()
 
         resolved_labels = self.rule_evaluator.evaluate(
             {

@@ -477,3 +477,24 @@ def test_map_with_nested_date_operator(get_operator):
         "2 January 2021",
         "3 January 2021",
     ]
+
+
+def test_operation_option_label_from_value(get_operator, mock_schema, mocker):
+    operands = ("Head", "injury-sustained-answer")
+    operator = get_operator(Operator.OPTION_LABEL_FROM_VALUE)
+
+    answer_schema = [
+        {
+            "id": "injury-sustained-answer",
+            "mandatory": True,
+            "options": [
+                {"label": "Head-label", "value": "Head"},
+                {"label": "Body-label", "value": "Body"},
+            ],
+            "type": "Checkbox",
+        }
+    ]
+
+    mock_schema.get_answers_by_answer_id = mocker.Mock(return_value=answer_schema)
+
+    assert operator.evaluate(operands) == "Head-label"
