@@ -7,6 +7,7 @@ from app.forms.fields import (
     SelectFieldWithDetailAnswer,
 )
 from app.questionnaire.dynamic_answer_options import DynamicAnswerOptions
+from app.questionnaire.questionnaire_schema import InvalidSchemaConfigurationException
 
 Choice = namedtuple("Choice", "value label")
 ChoiceWithDetailAnswer = namedtuple(
@@ -19,7 +20,10 @@ ChoiceType = Union[Choice, ChoiceWithDetailAnswer]
 class SelectHandlerBase(FieldHandler):
     @property
     def choices(self) -> Sequence[ChoiceType]:
-        return self._build_dynamic_choices() + self._build_static_choices()
+        _choices = self._build_dynamic_choices() + self._build_static_choices()
+        if not _choices:
+            raise InvalidSchemaConfigurationException("No dynamic or static choices")
+        return _choices
 
     @property
     def dynamic_options_schema(self) -> dict[str, Any]:
@@ -32,6 +36,7 @@ class SelectHandlerBase(FieldHandler):
         dynamic_options = DynamicAnswerOptions(
             dynamic_options_schema=self.dynamic_options_schema,
             rule_evaluator=self.rule_evaluator,
+            value_source_resolver=self.value_source_resolver,
         )
 
         return [

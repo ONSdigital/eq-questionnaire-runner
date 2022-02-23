@@ -24,6 +24,10 @@ RELATIONSHIP_CHILDREN = ["UnrelatedQuestion"]
 QuestionSchema = Mapping[str, Any]
 
 
+class InvalidSchemaConfigurationException(Exception):
+    pass
+
+
 class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def __init__(
         self, questionnaire_json: Mapping, language_code: str = DEFAULT_LANGUAGE_CODE
