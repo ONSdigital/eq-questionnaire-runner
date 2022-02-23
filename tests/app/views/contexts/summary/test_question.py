@@ -185,8 +185,13 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             value_source_resolver=self.get_value_source_resolver(),
         )
 
-    def update_answer_store(self, value):
-        self.answer_store.add_or_update(Answer(answer_id="building", value=value))
+    def update_answer_store(self, remove_answer):
+        if remove_answer:
+            self.answer_store.remove_answer("building")
+        else:
+            self.answer_store.add_or_update(
+                Answer(answer_id="building", value="Main Building")
+            )
         self.answer_store.add_or_update(
             Answer(answer_id="address-line-1", value="Cardiff Rd")
         )
@@ -288,7 +293,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                 concatenation_character=concatenation_character,
             ):
                 # Given
-                self.update_answer_store("Main Building")
+                self.update_answer_store(False)
 
                 # When
                 question = self.address_question(concatenation_type)
@@ -310,7 +315,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                 concatenation_character=concatenation_character,
             ):
                 # Given
-                self.update_answer_store("")
+                self.update_answer_store(True)
 
                 # When
                 question = self.address_question(concatenation_type)

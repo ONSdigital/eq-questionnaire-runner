@@ -42,11 +42,11 @@ class Question:
         )
 
     def _get_answer(self, answer_store, answer_id):
-        answer = answer_store.get_answer(answer_id, self.list_item_id)
-        if answer and (answer.value or answer.value == 0):
-            return escape_answer_value(answer.value)
-        if default_answer := self.schema.get_default_answer(answer_id):
-            return default_answer.value
+        answer = answer_store.get_answer(
+            answer_id, self.list_item_id
+        ) or self.schema.get_default_answer(answer_id)
+
+        return escape_answer_value(answer.value) if answer else None
 
     def _build_answers(
         self, *, answer_store, question_schema, block_id, list_name, return_to
