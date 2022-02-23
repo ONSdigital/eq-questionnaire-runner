@@ -182,6 +182,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             location=None,
             block_id="address-block",
             return_to=None,
+            value_source_resolver=self.get_value_source_resolver(),
         )
 
     def update_answer_store(self, value):
