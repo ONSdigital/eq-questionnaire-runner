@@ -41,7 +41,7 @@ class Question:
 
     def _get_answer(self, answer_store, answer_id):
         answer = answer_store.get_answer(answer_id, self.list_item_id)
-        if answer and answer.value:
+        if answer and (answer.value or answer.value == 0):
             return escape_answer_value(answer.value)
         if default_answer := self.schema.get_default_answer(answer_id):
             return default_answer.value
