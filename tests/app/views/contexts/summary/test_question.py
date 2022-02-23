@@ -7,83 +7,6 @@ from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.views.contexts.summary.question import Question
 from tests.app.app_context_test_case import AppContextTestCase
 
-ADDRESS_QUESTIONNAIRE_SCHEMA = QuestionnaireSchema(
-    {
-        "sections": [
-            {
-                "id": "address-section",
-                "groups": [
-                    {
-                        "blocks": [
-                            {
-                                "type": "Question",
-                                "id": "what-is-your-address",
-                                "question": {
-                                    "id": "what-is-your-address-question",
-                                    "title": "What is your address?",
-                                    "type": "General",
-                                    "answers": [
-                                        {
-                                            "id": "building",
-                                            "label": "Building",
-                                            "mandatory": False,
-                                            "type": "TextField",
-                                            "default": "Government Buildings",
-                                        },
-                                        {
-                                            "id": "address-line-1",
-                                            "label": "Address Line 1",
-                                            "mandatory": True,
-                                            "type": "TextField",
-                                        },
-                                        {
-                                            "id": "address-line-2",
-                                            "label": "Address Line 2",
-                                            "mandatory": False,
-                                            "type": "TextField",
-                                        },
-                                        {
-                                            "id": "address-line-3",
-                                            "label": "Address Line 3",
-                                            "mandatory": False,
-                                            "type": "TextField",
-                                        },
-                                        {
-                                            "id": "town-city",
-                                            "label": "Town/City",
-                                            "mandatory": False,
-                                            "type": "TextField",
-                                        },
-                                        {
-                                            "id": "county",
-                                            "label": "County",
-                                            "mandatory": False,
-                                            "type": "TextField",
-                                        },
-                                        {
-                                            "id": "postcode",
-                                            "label": "Postcode",
-                                            "mandatory": False,
-                                            "type": "TextField",
-                                        },
-                                        {
-                                            "id": "country",
-                                            "label": "Country",
-                                            "mandatory": False,
-                                            "type": "TextField",
-                                        },
-                                    ],
-                                },
-                            },
-                        ],
-                        "id": "address-group",
-                    }
-                ],
-            }
-        ]
-    }
-)
-
 
 class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-methods
     def setUp(self):
@@ -140,6 +63,157 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             "type": "General",
             "answers": [answer_schema],
         }
+
+    @staticmethod
+    def address_questionnaire_schema():
+        return QuestionnaireSchema(
+            {
+                "sections": [
+                    {
+                        "id": "address-section",
+                        "groups": [
+                            {
+                                "blocks": [
+                                    {
+                                        "type": "Question",
+                                        "id": "what-is-your-address",
+                                        "question": {
+                                            "id": "what-is-your-address-question",
+                                            "title": "What is your address?",
+                                            "type": "General",
+                                            "answers": [
+                                                {
+                                                    "id": "building",
+                                                    "label": "Building",
+                                                    "mandatory": False,
+                                                    "type": "TextField",
+                                                    "default": "Government Buildings",
+                                                },
+                                                {
+                                                    "id": "address-line-1",
+                                                    "label": "Address Line 1",
+                                                    "mandatory": True,
+                                                    "type": "TextField",
+                                                },
+                                                {
+                                                    "id": "address-line-2",
+                                                    "label": "Address Line 2",
+                                                    "mandatory": False,
+                                                    "type": "TextField",
+                                                },
+                                                {
+                                                    "id": "address-line-3",
+                                                    "label": "Address Line 3",
+                                                    "mandatory": False,
+                                                    "type": "TextField",
+                                                },
+                                                {
+                                                    "id": "town-city",
+                                                    "label": "Town/City",
+                                                    "mandatory": False,
+                                                    "type": "TextField",
+                                                },
+                                                {
+                                                    "id": "county",
+                                                    "label": "County",
+                                                    "mandatory": False,
+                                                    "type": "TextField",
+                                                },
+                                                {
+                                                    "id": "postcode",
+                                                    "label": "Postcode",
+                                                    "mandatory": False,
+                                                    "type": "TextField",
+                                                },
+                                                {
+                                                    "id": "country",
+                                                    "label": "Country",
+                                                    "mandatory": False,
+                                                    "type": "TextField",
+                                                },
+                                            ],
+                                        },
+                                    },
+                                ],
+                                "id": "address-group",
+                            }
+                        ],
+                    }
+                ]
+            }
+        )
+
+    def address_question(self, concatenation_type):
+        building = {
+            "id": "building",
+            "label": "Building",
+            "mandatory": False,
+            "type": "TextField",
+        }
+
+        address_line_1 = {
+            "id": "address-line-1",
+            "label": "Address line 1",
+            "mandatory": False,
+            "type": "TextField",
+        }
+        address_line_2 = {
+            "id": "address-line-2",
+            "label": "Address line 2",
+            "mandatory": False,
+            "type": "TextField",
+        }
+        town_city = {
+            "id": "town-city",
+            "label": "Town or City",
+            "mandatory": False,
+            "type": "TextField",
+        }
+        county = {
+            "id": "county",
+            "label": "County",
+            "mandatory": False,
+            "type": "TextField",
+        }
+        postcode = {
+            "id": "postcode",
+            "label": "Postcode",
+            "mandatory": False,
+            "type": "TextField",
+        }
+
+        question_schema = {
+            "id": "question_id",
+            "title": "question_title",
+            "type": "General",
+            "answers": [
+                building,
+                address_line_1,
+                address_line_2,
+                town_city,
+                county,
+                postcode,
+            ],
+            "summary": {"concatenation_type": concatenation_type},
+        }
+
+        return Question(
+            question_schema,
+            answer_store=self.answer_store,
+            schema=self.schema,
+            rule_evaluator=self.get_rule_evaluator(),
+            location=None,
+            block_id="address-block",
+            return_to=None,
+        )
+
+    def update_answer_store(self, value):
+        self.answer_store.add_or_update(Answer(answer_id="building", value=value))
+        self.answer_store.add_or_update(
+            Answer(answer_id="address-line-1", value="Cardiff Rd")
+        )
+        self.answer_store.add_or_update(Answer(answer_id="town-city", value="Newport"))
+        self.answer_store.add_or_update(Answer(answer_id="postcode", value="NP10 8XG"))
 
     def test_create_question(self):
         # Given
@@ -225,7 +299,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
     def test_concatenate_textfield_answers(self):
         answer_separators = {"Newline": "<br>", "Space": " "}
-        self.schema = ADDRESS_QUESTIONNAIRE_SCHEMA
+        self.schema = self.address_questionnaire_schema()
 
         for concatenation_type, concatenation_character in answer_separators.items():
             with self.subTest(
@@ -233,93 +307,21 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                 concatenation_character=concatenation_character,
             ):
                 # Given
-                self.answer_store.add_or_update(
-                    Answer(answer_id="building", value="Government Buildings")
-                )
-                self.answer_store.add_or_update(
-                    Answer(answer_id="address-line-1", value="Cardiff Rd")
-                )
-                self.answer_store.add_or_update(
-                    Answer(answer_id="town-city", value="Newport")
-                )
-                self.answer_store.add_or_update(
-                    Answer(answer_id="postcode", value="NP10 8XG")
-                )
-
-                building = {
-                    "id": "building",
-                    "label": "Building",
-                    "mandatory": False,
-                    "type": "TextField",
-                }
-
-                address_line_1 = {
-                    "id": "address-line-1",
-                    "label": "Address line 1",
-                    "mandatory": False,
-                    "type": "TextField",
-                }
-                address_line_2 = {
-                    "id": "address-line-2",
-                    "label": "Address line 2",
-                    "mandatory": False,
-                    "type": "TextField",
-                }
-                town_city = {
-                    "id": "town-city",
-                    "label": "Town or City",
-                    "mandatory": False,
-                    "type": "TextField",
-                }
-                county = {
-                    "id": "county",
-                    "label": "County",
-                    "mandatory": False,
-                    "type": "TextField",
-                }
-                postcode = {
-                    "id": "postcode",
-                    "label": "Postcode",
-                    "mandatory": False,
-                    "type": "TextField",
-                }
-
-                question_schema = {
-                    "id": "question_id",
-                    "title": "question_title",
-                    "type": "General",
-                    "answers": [
-                        building,
-                        address_line_1,
-                        address_line_2,
-                        town_city,
-                        county,
-                        postcode,
-                    ],
-                    "summary": {"concatenation_type": concatenation_type},
-                }
+                self.update_answer_store("Main Building")
 
                 # When
-                question = Question(
-                    question_schema,
-                    answer_store=self.answer_store,
-                    schema=self.schema,
-                    rule_evaluator=self.get_rule_evaluator(),
-                    location=None,
-                    block_id="address-block",
-                    return_to=None,
-                )
+                question = self.address_question(concatenation_type)
 
                 # Then
                 self.assertEqual(
                     question.answers[0]["value"],
-                    f"Government Buildings{concatenation_character}Cardiff Rd{concatenation_character}Newport{concatenation_character}NP10 8XG",
+                    f"Main Building{concatenation_character}Cardiff Rd{concatenation_character}Newport{concatenation_character}NP10 8XG",
                 )
                 self.assertEqual(len(question.answers), 1)
 
     def test_concatenate_textfield_answers_default(self):
         answer_separators = {"Newline": "<br>", "Space": " "}
-        self.schema = ADDRESS_QUESTIONNAIRE_SCHEMA
+        self.schema = self.address_questionnaire_schema()
 
         for concatenation_type, concatenation_character in answer_separators.items():
             with self.subTest(
@@ -327,81 +329,10 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                 concatenation_character=concatenation_character,
             ):
                 # Given
-                self.answer_store.add_or_update(Answer(answer_id="building", value=""))
-                self.answer_store.add_or_update(
-                    Answer(answer_id="address-line-1", value="Cardiff Rd")
-                )
-                self.answer_store.add_or_update(
-                    Answer(answer_id="town-city", value="Newport")
-                )
-                self.answer_store.add_or_update(
-                    Answer(answer_id="postcode", value="NP10 8XG")
-                )
-
-                building = {
-                    "id": "building",
-                    "label": "Building",
-                    "mandatory": False,
-                    "type": "TextField",
-                    "default": "Government Buildings",
-                }
-
-                address_line_1 = {
-                    "id": "address-line-1",
-                    "label": "Address line 1",
-                    "mandatory": False,
-                    "type": "TextField",
-                }
-                address_line_2 = {
-                    "id": "address-line-2",
-                    "label": "Address line 2",
-                    "mandatory": False,
-                    "type": "TextField",
-                }
-                town_city = {
-                    "id": "town-city",
-                    "label": "Town or City",
-                    "mandatory": False,
-                    "type": "TextField",
-                }
-                county = {
-                    "id": "county",
-                    "label": "County",
-                    "mandatory": False,
-                    "type": "TextField",
-                }
-                postcode = {
-                    "id": "postcode",
-                    "label": "Postcode",
-                    "mandatory": False,
-                    "type": "TextField",
-                }
-
-                question_schema = {
-                    "id": "question_id",
-                    "title": "question_title",
-                    "type": "General",
-                    "answers": [
-                        building,
-                        address_line_1,
-                        address_line_2,
-                        town_city,
-                        county,
-                        postcode,
-                    ],
-                    "summary": {"concatenation_type": concatenation_type},
-                }
+                self.update_answer_store("")
 
                 # When
-                question = Question(
-                    question_schema,
-                    answer_store=self.answer_store,
-                    schema=self.schema,
-                    rule_evaluator=self.get_rule_evaluator(),
-                    location=None,
-                    block_id="address-block",
-                    return_to=None,
-                )
+                question = self.address_question(concatenation_type)
 
                 # Then
                 self.assertEqual(
