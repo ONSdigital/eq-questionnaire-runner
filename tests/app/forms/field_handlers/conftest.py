@@ -105,6 +105,18 @@ def dynamic_answer_options_choices():
     ]
 
 
+def dynamic_radio_options_no_static_options():
+    return {
+        "id": "dynamic-radio",
+        "mandatory": False,
+        "type": "Radio",
+        "dynamic_options": {
+            "values": {"source": "answers", "identifier": "checkbox-answer"},
+            "transform": {"option-label-from-value": ["self", "checkbox-answer"]},
+        },
+    }
+
+
 def static_and_dynamic_answer_options_schema():
     return {**dynamic_answer_options_schema(), **static_answer_options_schema()}
 

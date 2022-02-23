@@ -14,6 +14,7 @@ class Question:
         answer_store,
         schema,
         rule_evaluator,
+        value_source_resolver,
         location,
         block_id,
         return_to,
@@ -30,6 +31,7 @@ class Question:
         self.number = question_schema.get("number", None)
 
         self.rule_evaluator = rule_evaluator
+        self.value_source_resolver = value_source_resolver
 
         self.answers = self._build_answers(
             answer_store=answer_store,
@@ -156,6 +158,7 @@ class Question:
         dynamic_options = DynamicAnswerOptions(
             dynamic_options_schema=dynamic_options_schema,
             rule_evaluator=self.rule_evaluator,
+            value_source_resolver=self.value_source_resolver,
         )
 
         return dynamic_options.evaluate()

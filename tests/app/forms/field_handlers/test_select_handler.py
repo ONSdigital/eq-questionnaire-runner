@@ -4,9 +4,11 @@ from wtforms import Form
 from app.forms import error_messages
 from app.forms.field_handlers import SelectHandler
 from app.forms.fields import SelectFieldWithDetailAnswer
+from app.questionnaire.questionnaire_schema import InvalidSchemaConfigurationException
 from tests.app.forms.field_handlers.conftest import (
     dynamic_answer_options_choices,
     dynamic_answer_options_schema,
+    dynamic_radio_options_no_static_options,
     static_and_dynamic_answer_options_choices,
     static_and_dynamic_answer_options_schema,
     static_answer_options_choices,
@@ -62,3 +64,17 @@ def test_get_field(
     assert form.test_field.label.text == radio_json["label"]
     assert form.test_field.description == radio_json["guidance"]
     assert form.test_field.choices == to_choices_with_detail_answer_id(expected_choices)
+
+
+def test_build_choices_no_dynamic_or_static_options(
+    value_source_resolver, rule_evaluator
+):
+    handler = SelectHandler(
+        dynamic_radio_options_no_static_options(),
+        value_source_resolver,
+        rule_evaluator,
+        error_messages,
+    )
+    with pytest.raises(InvalidSchemaConfigurationException) as context:
+        assert handler.choices
+    assert "No dynamic or static choices" == str(context.value)
