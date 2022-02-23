@@ -66,5 +66,5 @@ def test_load_location_from_dict_without_list_item_id():
 
     assert location.section_id == "some-section"
     assert location.block_id == "some-block"
-    assert location.list_item_id == None
-    assert location.list_name == None
+    assert location.list_item_id is None
+    assert location.list_name is None
