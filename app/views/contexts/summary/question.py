@@ -39,13 +39,14 @@ class Question:
         )
 
     def _get_answer(self, answer_store, answer_id):
-        if answer_store.get_escaped_answer_value(
+        escaped_answer_value = answer_store.get_escaped_answer_value(
             answer_id, self.list_item_id
-        ) or isinstance(
-            answer_store.get_escaped_answer_value(answer_id, self.list_item_id),
+        )
+        if escaped_answer_value or isinstance(
+            escaped_answer_value,
             int,  # protection against falsy answer value "0"
         ):
-            return answer_store.get_escaped_answer_value(answer_id, self.list_item_id)
+            return escaped_answer_value
         if self.schema.get_default_answer(answer_id):
             return self.schema.get_default_answer(answer_id).value
         return None
