@@ -8,6 +8,7 @@ from app.forms.field_handlers.select_handlers import (
     ChoiceWithDetailAnswer,
     SelectHandlerBase,
 )
+from app.questionnaire.questionnaire_schema import InvalidSchemaConfigurationException
 
 
 class DropdownHandler(SelectHandlerBase):
@@ -19,6 +20,8 @@ class DropdownHandler(SelectHandlerBase):
         _choices: list[ChoiceWithDetailAnswer] = (
             self._build_dynamic_choices() + self._build_static_choices()
         )
+        if not _choices:
+            raise InvalidSchemaConfigurationException("No dynamic or static choices")
 
         return [
             Choice("", self._get_placeholder_text()),

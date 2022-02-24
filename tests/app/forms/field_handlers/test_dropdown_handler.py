@@ -3,9 +3,11 @@ from wtforms import Form, SelectField
 
 from app.forms import error_messages
 from app.forms.field_handlers.dropdown_handler import DropdownHandler
+from app.questionnaire.questionnaire_schema import InvalidSchemaConfigurationException
 from tests.app.forms.field_handlers.conftest import (
     dynamic_answer_options_choices,
     dynamic_answer_options_schema,
+    dynamic_radio_options_no_static_options,
     static_and_dynamic_answer_options_choices,
     static_and_dynamic_answer_options_schema,
     static_answer_options_choices,
@@ -102,3 +104,17 @@ def test_get_field(answer_options, choices, value_source_resolver, rule_evaluato
     assert form.test_field.description == ""
     assert form.test_field.default == ""
     assert form.test_field.choices == expected_choices
+
+
+def test_build_choices_no_dynamic_or_static_choices(
+    value_source_resolver, rule_evaluator
+):
+    handler = DropdownHandler(
+        dynamic_radio_options_no_static_options(),
+        value_source_resolver,
+        rule_evaluator,
+        error_messages,
+    )
+    with pytest.raises(InvalidSchemaConfigurationException) as context:
+        assert handler.choices
+    assert "No dynamic or static choices" == str(context.value)

@@ -1,0 +1,134 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Test dynamic radio answer options from checkbox",
+    "theme": "default",
+    "description": "A questionnaire to demo dynamic radio answer options from checkbox answers",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "injury-sustained-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "injury-sustained",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "injury-sustained-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Head",
+                                                "value": "Head"
+                                            },
+                                            {
+                                                "label": "Body",
+                                                "value": "Body"
+                                            },
+                                            {
+                                                "label": "Arms",
+                                                "value": "Arms"
+                                            },
+                                            {
+                                                "label": "Legs",
+                                                "value": "Legs"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "injury-sustained-question",
+                                "title": "When you had the injury, where did you sustain injuries?",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "most-serious-injury",
+                            "question": {
+                                "id": "most-serious-injury-question",
+                                "title": "Which was the most serious injury",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "most-serious-injury-answer",
+                                        "mandatory": false,
+                                        "type": "Radio",
+                                        "dynamic_options": {
+                                            "values": {
+                                                "source": "answers",
+                                                "identifier": "injury-sustained-answer"
+                                            },
+                                            "transform": {
+                                                "option-label-from-value": ["self", "injury-sustained-answer"]
+                                            }
+                                        },
+                                        "options": [
+                                            {
+                                                "label": "They were of equal severity (static option)",
+                                                "value": "They were of equal severity (static option)"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "healed-the-quickest",
+                            "question": {
+                                "id": "healed-the-quickest-question",
+                                "title": "Which injury healed the quickest",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "healed-the-quickest-answer",
+                                        "mandatory": false,
+                                        "type": "Radio",
+                                        "dynamic_options": {
+                                            "values": {
+                                                "source": "answers",
+                                                "identifier": "injury-sustained-answer"
+                                            },
+                                            "transform": {
+                                                "option-label-from-value": ["self", "injury-sustained-answer"]
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "injury-group"
+                }
+            ]
+        }
+    ]
+}
