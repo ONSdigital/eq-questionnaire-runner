@@ -73,47 +73,6 @@
                             }
                         },
                         {
-                            "id": "employees-number-default-interstitial",
-                            "content": {
-                                "title": "Default employee number interstitial",
-                                "contents": [
-                                    {
-                                        "description": {
-                                            "text": "The total number of employees confirmed are <em>{answer_employee} (default value)</em>, now next question is about training budget",
-                                            "placeholders": [
-                                                {
-                                                    "placeholder": "answer_employee",
-                                                    "transforms": [
-                                                        {
-                                                            "transform": "format_number",
-                                                            "arguments": {
-                                                                "number": {
-                                                                    "source": "answers",
-                                                                    "identifier": "employees-no"
-                                                                }
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        }
-                                    }
-                                ]
-                            },
-                            "skip_conditions": {
-                                "when": {
-                                    "!=": [
-                                        {
-                                            "source": "answers",
-                                            "identifier": "employees-no"
-                                        },
-                                        0
-                                    ]
-                                }
-                            },
-                            "type": "Interstitial"
-                        },
-                        {
                             "id": "employees-number-interstitial",
                             "content": {
                                 "title": "Employees number interstitial",
@@ -140,17 +99,6 @@
                                         }
                                     }
                                 ]
-                            },
-                            "skip_conditions": {
-                                "when": {
-                                    "==": [
-                                        {
-                                            "source": "answers",
-                                            "identifier": "employees-no"
-                                        },
-                                        0
-                                    ]
-                                }
                             },
                             "type": "Interstitial"
                         },
@@ -182,47 +130,6 @@
                             }
                         },
                         {
-                            "id": "employees-training-default-interstitial",
-                            "content": {
-                                "title": "Default employee training budget interstitial",
-                                "contents": [
-                                    {
-                                        "description": {
-                                            "text": "The average training budget per employee is <em>{answer_emp_training} (default value)</em>",
-                                            "placeholders": [
-                                                {
-                                                    "placeholder": "answer_emp_training",
-                                                    "transforms": [
-                                                        {
-                                                            "transform": "format_currency",
-                                                            "arguments": {
-                                                                "number": {
-                                                                    "source": "answers",
-                                                                    "identifier": "employees-avg-training"
-                                                                }
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        }
-                                    }
-                                ]
-                            },
-                            "skip_conditions": {
-                                "when": {
-                                    "!=": [
-                                        {
-                                            "source": "answers",
-                                            "identifier": "employees-avg-training"
-                                        },
-                                        250
-                                    ]
-                                }
-                            },
-                            "type": "Interstitial"
-                        },
-                        {
                             "id": "employees-training-interstitial",
                             "content": {
                                 "title": "Employee training budget interstitial",
@@ -249,17 +156,6 @@
                                         }
                                     }
                                 ]
-                            },
-                            "skip_conditions": {
-                                "when": {
-                                    "==": [
-                                        {
-                                            "source": "answers",
-                                            "identifier": "employees-avg-training"
-                                        },
-                                        250
-                                    ]
-                                }
                             },
                             "type": "Interstitial"
                         }
