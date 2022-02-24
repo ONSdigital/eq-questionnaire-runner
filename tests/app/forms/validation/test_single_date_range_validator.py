@@ -23,7 +23,7 @@ from app.questionnaire.rules.utils import parse_datetime
         ),
     ),
 )
-@pytest.mark.usefixtures("app")
+@pytest.mark.usefixtures("eq_app")
 def test_single_date_period_invalid_raises_ValidationError(
     validator, data, error_type, error_message, mock_form, mock_field
 ):
@@ -36,7 +36,7 @@ def test_single_date_period_invalid_raises_ValidationError(
     assert error_messages[error_type] % error_message == str(exc.value)
 
 
-@pytest.mark.usefixtures("app")
+@pytest.mark.usefixtures("eq_app")
 def test_single_date_period_custom_message_invalid_raises(mock_form, mock_field):
     maximum_date = parse_datetime("2016-03-31")
     message = {"SINGLE_DATE_PERIOD_TOO_LATE": "Test %(max)s"}

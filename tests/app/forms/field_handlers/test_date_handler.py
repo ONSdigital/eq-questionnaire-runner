@@ -194,7 +194,9 @@ def test_get_referenced_offset_value_with_no_offset(
 @patch(
     "app.utilities.schema.load_schema_from_name", return_value=QuestionnaireSchema({})
 )
-def test_minimum_and_maximum_offset_dates(app, value_source_resolver, rule_evaluator):
+def test_minimum_and_maximum_offset_dates(
+    eq_app, value_source_resolver, rule_evaluator
+):
     value_source_resolver.metadata = {"date": "2018-02-20"}
     answer_store = AnswerStore()
 
@@ -243,7 +245,7 @@ def test_greater_minimum_date_than_maximum_date(
         )
 
 
-def test_validate_mandatory_date(app, value_source_resolver, rule_evaluator):
+def test_validate_mandatory_date(eq_app, value_source_resolver, rule_evaluator):
     answer = {
         "id": "date-range-from",
         "mandatory": True,

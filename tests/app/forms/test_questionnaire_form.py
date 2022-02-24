@@ -26,7 +26,7 @@ def error_exists(answer_id, msg, mapped_errors):
     )
 
 
-def test_form_ids_match_block_answer_ids(app, answer_store, list_store):
+def test_form_ids_match_block_answer_ids(eq_app, answer_store, list_store):
     with app.test_request_context():
         schema = load_schema_from_name("test_textfield")
 
@@ -45,7 +45,7 @@ def test_form_ids_match_block_answer_ids(app, answer_store, list_store):
             assert hasattr(form, answer_id)
 
 
-def test_form_date_range_populates_data(app, answer_store, list_store):
+def test_form_date_range_populates_data(eq_app, answer_store, list_store):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_range")
 
@@ -80,7 +80,9 @@ def test_form_date_range_populates_data(app, answer_store, list_store):
         assert form.data == expected_form_data
 
 
-def test_date_range_matching_dates_raises_question_error(app, answer_store, list_store):
+def test_date_range_matching_dates_raises_question_error(
+    eq_app, answer_store, list_store
+):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_range")
 
@@ -245,7 +247,7 @@ def test_date_range_too_small_period_raises_question_error(
         ] % {"min": "23 days"}
 
 
-def test_date_range_valid_period(app, answer_store, list_store):
+def test_date_range_valid_period(eq_app, answer_store, list_store):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_range")
 
@@ -281,7 +283,7 @@ def test_date_range_valid_period(app, answer_store, list_store):
         assert form.data == expected_form_data
 
 
-def test_date_combined_single_validation(app, answer_store, list_store):
+def test_date_combined_single_validation(eq_app, answer_store, list_store):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_combined")
 
@@ -331,7 +333,7 @@ def test_date_combined_single_validation(app, answer_store, list_store):
         ] % {"max": "14 March 2017"}
 
 
-def test_date_combined_range_too_small_validation(app, answer_store, list_store):
+def test_date_combined_range_too_small_validation(eq_app, answer_store, list_store):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_combined")
 
@@ -375,7 +377,7 @@ def test_date_combined_range_too_small_validation(app, answer_store, list_store)
         ] % {"min": "10 days"}
 
 
-def test_date_combined_range_too_large_validation(app, answer_store, list_store):
+def test_date_combined_range_too_large_validation(eq_app, answer_store, list_store):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_combined")
 
@@ -421,7 +423,7 @@ def test_date_combined_range_too_large_validation(app, answer_store, list_store)
         ] % {"max": "50 days"}
 
 
-def test_date_mm_yyyy_combined_single_validation(app, answer_store, list_store):
+def test_date_mm_yyyy_combined_single_validation(eq_app, answer_store, list_store):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_mm_yyyy_combined")
 
@@ -559,7 +561,7 @@ def test_date_mm_yyyy_combined_range_too_large_validation(
         ] % {"max": "3 months"}
 
 
-def test_date_yyyy_combined_single_validation(app, answer_store, list_store):
+def test_date_yyyy_combined_single_validation(eq_app, answer_store, list_store):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_yyyy_combined")
 
@@ -600,7 +602,9 @@ def test_date_yyyy_combined_single_validation(app, answer_store, list_store):
         ] % {"max": "2021"}
 
 
-def test_date_yyyy_combined_range_too_small_validation(app, answer_store, list_store):
+def test_date_yyyy_combined_range_too_small_validation(
+    eq_app, answer_store, list_store
+):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_yyyy_combined")
 
@@ -637,7 +641,9 @@ def test_date_yyyy_combined_range_too_small_validation(app, answer_store, list_s
         ] % {"min": "2 years"}
 
 
-def test_date_yyyy_combined_range_too_large_validation(app, answer_store, list_store):
+def test_date_yyyy_combined_range_too_large_validation(
+    eq_app, answer_store, list_store
+):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_yyyy_combined")
 
@@ -1014,7 +1020,7 @@ def test_invalid_date_range_and_single_date_periods(
         )
 
 
-def test_invalid_calculation_type(app, answer_store, list_store, mocker):
+def test_invalid_calculation_type(eq_app, answer_store, list_store, mocker):
     answer_total = Answer(answer_id="total-answer", value=10)
 
     answer_store.add_or_update(answer_total)
@@ -1056,7 +1062,7 @@ def test_invalid_calculation_type(app, answer_store, list_store, mocker):
     assert "Invalid calculation_type: subtraction" == str(exc.value)
 
 
-def test_bespoke_message_for_sum_validation(app, answer_store, list_store, mocker):
+def test_bespoke_message_for_sum_validation(eq_app, answer_store, list_store, mocker):
 
     answer_total = Answer(answer_id="total-answer", value=10)
 
@@ -1094,7 +1100,7 @@ def test_bespoke_message_for_sum_validation(app, answer_store, list_store, mocke
     assert form.question_errors["breakdown-question"] == "Test Message"
 
 
-def test_empty_calculated_field(app, answer_store, list_store):
+def test_empty_calculated_field(eq_app, answer_store, list_store):
 
     answer_total = Answer(answer_id="total-answer", value=10)
 
@@ -1138,7 +1144,7 @@ def test_empty_calculated_field(app, answer_store, list_store):
         ] % {"total": "10"}
 
 
-def test_sum_calculated_field(app, answer_store, list_store):
+def test_sum_calculated_field(eq_app, answer_store, list_store):
     answer_total = Answer(answer_id="total-answer", value=10)
 
     answer_store.add_or_update(answer_total)
@@ -1178,7 +1184,7 @@ def test_sum_calculated_field(app, answer_store, list_store):
         assert form.data == expected_form_data
 
 
-def test_get_calculation_total_with_no_input(app, answer_store, list_store):
+def test_get_calculation_total_with_no_input(eq_app, answer_store, list_store):
     answer_total = Answer(answer_id="total-answer", value=10)
 
     answer_store.add_or_update(answer_total)
@@ -1221,7 +1227,7 @@ def test_get_calculation_total_with_no_input(app, answer_store, list_store):
         ] % {"total": "10"}
 
 
-def test_multi_calculation(app, answer_store, list_store):
+def test_multi_calculation(eq_app, answer_store, list_store):
     answer_total = Answer(answer_id="total-answer", value=10)
 
     answer_store.add_or_update(answer_total)
@@ -1289,7 +1295,7 @@ def test_multi_calculation(app, answer_store, list_store):
         ] % {"total": "10"}
 
 
-def test_generate_form_with_title_and_no_answer_label(app, answer_store, list_store):
+def test_generate_form_with_title_and_no_answer_label(eq_app, answer_store, list_store):
     """
     Checks that the form is still generated when there is no answer label but there is a question title
     """
@@ -1321,7 +1327,7 @@ def test_generate_form_with_title_and_no_answer_label(app, answer_store, list_st
         assert form.data == expected_form_data
 
 
-def test_form_errors_are_correctly_mapped(app, answer_store, list_store):
+def test_form_errors_are_correctly_mapped(eq_app, answer_store, list_store):
     with app.test_request_context():
         schema = load_schema_from_name("test_numbers")
 
@@ -1344,7 +1350,7 @@ def test_form_errors_are_correctly_mapped(app, answer_store, list_store):
         )
 
 
-def test_form_subfield_errors_are_correctly_mapped(app, answer_store, list_store):
+def test_form_subfield_errors_are_correctly_mapped(eq_app, answer_store, list_store):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_range")
 
@@ -1448,7 +1454,7 @@ def test_answer_with_detail_answer_errors_are_correctly_mapped(
         )
 
 
-def test_answer_errors_are_interpolated(app, answer_store, list_store):
+def test_answer_errors_are_interpolated(eq_app, answer_store, list_store):
     with app.test_request_context():
         schema = load_schema_from_name("test_numbers")
 
@@ -1572,7 +1578,7 @@ def test_mutually_exclusive_question_raises_error_when_both_answered(
         )
 
 
-def test_date_range_form(app, answer_store, list_store):
+def test_date_range_form(eq_app, answer_store, list_store):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_range")
         question_schema = schema.get_block("date-block").get("question")
@@ -1596,7 +1602,7 @@ def test_date_range_form(app, answer_store, list_store):
         assert isinstance(period_to_field.year.validators[0], DateRequired)
 
 
-def test_date_range_form_with_data(app, answer_store, list_store):
+def test_date_range_form_with_data(eq_app, answer_store, list_store):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_range")
         question_schema = schema.get_block("date-block").get("question")
@@ -1635,7 +1641,7 @@ def test_date_range_form_with_data(app, answer_store, list_store):
         assert period_to_field.data == "2017-09-01"
 
 
-def test_form_for_radio_other_not_selected(app, answer_store, list_store):
+def test_form_for_radio_other_not_selected(eq_app, answer_store, list_store):
     with app.test_request_context():
         schema = load_schema_from_name(
             "test_radio_mandatory_with_detail_answer_mandatory"
@@ -1665,7 +1671,7 @@ def test_form_for_radio_other_not_selected(app, answer_store, list_store):
         assert other_text_field.data == ""
 
 
-def test_form_for_radio_other_selected(app, answer_store, list_store):
+def test_form_for_radio_other_selected(eq_app, answer_store, list_store):
     with app.test_request_context():
         schema = load_schema_from_name(
             "test_radio_mandatory_with_detail_answer_mandatory"

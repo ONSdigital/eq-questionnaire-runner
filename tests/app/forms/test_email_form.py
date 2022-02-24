@@ -3,7 +3,7 @@ from werkzeug.datastructures import MultiDict
 from app.forms.email_form import EmailForm
 
 
-def test_email_filters_strip(app):
+def test_email_filters_strip(eq_app):
     with app.test_request_context():
         email_form = EmailForm(MultiDict({"email": " email@example.com "}))
 

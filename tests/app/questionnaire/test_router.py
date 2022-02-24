@@ -332,7 +332,7 @@ class TestRouterLocationValidity(RouterTestCase):
 
 
 class TestRouterNextLocation(RouterTestCase):
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_within_section(self):
         self.schema = load_schema_from_name("test_checkbox")
         self.progress_store = ProgressStore(
@@ -363,7 +363,7 @@ class TestRouterNextLocation(RouterTestCase):
 
         assert expected_location == next_location
 
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_last_block_in_section_but_section_is_not_complete_when_routing_backwards(
         self,
     ):
@@ -390,7 +390,7 @@ class TestRouterNextLocation(RouterTestCase):
 
         assert "questionnaire/block-2/" in next_location
 
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_return_to_section_summary_section_is_complete(self):
         self.schema = load_schema_from_name("test_section_summary")
         self.progress_store = ProgressStore(
@@ -421,7 +421,7 @@ class TestRouterNextLocation(RouterTestCase):
 
         assert "/questionnaire/sections/property-details-section/" in next_location
 
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_return_to_section_summary_section_is_in_progress(self):
         self.schema = load_schema_from_name("test_section_summary")
         self.answer_store = AnswerStore(
@@ -457,7 +457,7 @@ class TestRouterNextLocation(RouterTestCase):
             in next_location
         )
 
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_section_summary_on_completion_true(self):
         self.schema = load_schema_from_name("test_show_section_summary_on_completion")
         self.progress_store = ProgressStore(
@@ -480,7 +480,7 @@ class TestRouterNextLocation(RouterTestCase):
 
         assert "questionnaire/sections/accommodation-section/" in next_location
 
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_section_summary_on_completion_false(self):
         self.schema = load_schema_from_name("test_show_section_summary_on_completion")
         self.progress_store = ProgressStore(
@@ -508,7 +508,7 @@ class TestRouterNextLocation(RouterTestCase):
 
 
 class TestRouterNextLocationLinearFlow(RouterTestCase):
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_redirects_to_submit_page_when_questionnaire_complete(
         self,
     ):
@@ -532,7 +532,7 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
 
         assert url_for("questionnaire.submit_questionnaire") == next_location
 
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_return_to_final_summary_questionnaire_and_section_is_complete(self):
         self.schema = load_schema_from_name(
             "test_new_routing_to_questionnaire_end_single_section"
@@ -555,7 +555,7 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
 
         assert url_for("questionnaire.submit_questionnaire") == next_location
 
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_return_to_final_summary_section_is_in_progress(self):
         self.schema = load_schema_from_name("test_submit_with_summary")
         self.progress_store = ProgressStore(
@@ -581,7 +581,7 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
 
         assert "/questionnaire/numbers/?return_to=final-summary" in next_location
 
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_return_to_final_summary_questionnaire_is_not_complete(self):
         self.schema = load_schema_from_name(
             "test_new_routing_to_questionnaire_end_multiple_sections"
@@ -613,7 +613,7 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
 
 
 class TestRouterPreviousLocation(RouterTestCase):
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_within_section(self):
         self.schema = load_schema_from_name("test_checkbox")
 
@@ -634,7 +634,7 @@ class TestRouterPreviousLocation(RouterTestCase):
 
         assert expected_location_url == previous_location_url
 
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_return_to_section_summary_section_is_complete(self):
         self.schema = load_schema_from_name("test_section_summary")
         self.progress_store = ProgressStore(
@@ -667,7 +667,7 @@ class TestRouterPreviousLocation(RouterTestCase):
             in previous_location_url
         )
 
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_return_to_section_summary_section_is_in_progress(self):
         self.schema = load_schema_from_name("test_section_summary")
         self.progress_store = ProgressStore(
@@ -700,7 +700,7 @@ class TestRouterPreviousLocation(RouterTestCase):
             in previous_location_url
         )
 
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_return_to_final_summary_section_is_complete(self):
         self.schema = load_schema_from_name("test_submit_with_summary")
         self.progress_store = ProgressStore(
@@ -733,7 +733,7 @@ class TestRouterPreviousLocation(RouterTestCase):
 
         assert "/questionnaire/submit/#dessert-answer" in previous_location
 
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_return_to_final_summary_section_is_in_progress(self):
         self.schema = load_schema_from_name("test_submit_with_summary")
         self.progress_store = ProgressStore(
@@ -771,7 +771,7 @@ class TestRouterPreviousLocation(RouterTestCase):
 
 
 class TestRouterPreviousLocationLinearFlow(RouterTestCase):
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_is_none_on_first_block_single_section(self):
         self.schema = load_schema_from_name("test_checkbox")
         self.progress_store = ProgressStore(
@@ -798,7 +798,7 @@ class TestRouterPreviousLocationLinearFlow(RouterTestCase):
 
         assert previous_location_url is None
 
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_is_none_on_first_block_second_section(self):
         self.schema = load_schema_from_name("test_section_summary")
         self.progress_store = ProgressStore(
@@ -828,7 +828,7 @@ class TestRouterPreviousLocationLinearFlow(RouterTestCase):
 
 
 class TestRouterPreviousLocationHubFlow(RouterTestCase):
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_is_not_none_on_first_block_in_section(self):
         self.schema = load_schema_from_name("test_hub_and_spoke")
 
@@ -847,7 +847,7 @@ class TestRouterPreviousLocationHubFlow(RouterTestCase):
 
 
 class TestRouterLastLocationLinearFlow(RouterTestCase):
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_block_on_path(self):
         self.schema = load_schema_from_name("test_checkbox")
         self.progress_store = ProgressStore(
@@ -870,7 +870,7 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
 
         assert expected_location_url == last_location_url
 
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_last_block_not_on_path(self):
         self.schema = load_schema_from_name(
             "test_new_routing_to_questionnaire_end_multiple_sections"
@@ -916,7 +916,7 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
 
 
 class TestRouterSectionResume(RouterTestCase):
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_section_in_progress_returns_url_for_first_incomplete_location(self):
         self.schema = load_schema_from_name("test_section_summary")
 
@@ -942,7 +942,7 @@ class TestRouterSectionResume(RouterTestCase):
 
         assert "questionnaire/insurance-address/?resume=True" in section_resume_url
 
-    @pytest.mark.usefixtures("app")
+    @pytest.mark.usefixtures("eq_app")
     def test_section_complete_returns_url_for_first_location(
         self,
     ):
