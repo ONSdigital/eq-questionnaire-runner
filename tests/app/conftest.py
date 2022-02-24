@@ -21,10 +21,7 @@ def app(mocker):
     mocker.patch("app.setup.datastore.Client", MockDatastore)
     mocker.patch("app.setup.redis.Redis", fakeredis.FakeStrictRedis)
     the_app = create_app(setting_overrides=setting_overrides)
-    app_context = the_app.app_context()
-    app_context.push()
-    yield the_app
-    app_context.pop()
+    return the_app
 
 
 @pytest.fixture
