@@ -129,7 +129,7 @@ def questionnaire_store(mocker):
 
 
 @pytest.fixture
-def app_session_store(eq_app, mocker, session_data):
+def app_session_store(app, mocker, session_data):
     app.permanent_session_lifetime = timedelta(seconds=1)
     store = mocker.MagicMock()
     store.session_store = SessionStore("user_ik", "pepper")

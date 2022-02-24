@@ -6,7 +6,7 @@ from app.utilities.schema import load_schema_from_name
 from app.views.contexts import ListContext
 
 
-@pytest.mark.usefixtures("eq_app")
+@pytest.mark.usefixtures("app")
 def test_build_list_collector_context(
     list_collector_block, schema, people_answer_store, people_list_store
 ):
@@ -25,7 +25,7 @@ def test_build_list_collector_context(
     assert all(keys in list_context["list"] for keys in ["list_items", "editable"])
 
 
-@pytest.mark.usefixtures("eq_app")
+@pytest.mark.usefixtures("app")
 def test_build_list_summary_context_no_summary_block(
     schema, people_answer_store, people_list_store
 ):
@@ -43,7 +43,7 @@ def test_build_list_summary_context_no_summary_block(
     assert list_context == {"list": {"editable": False, "list_items": []}}
 
 
-@pytest.mark.usefixtures("eq_app")
+@pytest.mark.usefixtures("app")
 def test_build_list_summary_context(
     list_collector_block, people_answer_store, people_list_store
 ):
@@ -85,7 +85,7 @@ def test_build_list_summary_context(
     assert expected == list_context["list"]["list_items"]
 
 
-@pytest.mark.usefixtures("eq_app")
+@pytest.mark.usefixtures("app")
 def test_assert_primary_person_string_appended(
     list_collector_block, people_answer_store, people_list_store
 ):
@@ -110,7 +110,7 @@ def test_assert_primary_person_string_appended(
     assert list_context["list"]["list_items"][1]["item_title"] == "Barry Pheloung"
 
 
-@pytest.mark.usefixtures("eq_app")
+@pytest.mark.usefixtures("app")
 def test_for_list_item_ids(
     list_collector_block, people_answer_store, people_list_store
 ):

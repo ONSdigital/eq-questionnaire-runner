@@ -31,7 +31,7 @@ def test_check_session_with_user_id_in_session(
         assert user.user_ik == "user_ik"
 
 
-def test_check_session_with_no_user_id_in_session(eq_app, mocker):
+def test_check_session_with_no_user_id_in_session(app, mocker):
     mocker.patch(
         "app.authentication.authenticator.get_session_store", return_value=None
     )

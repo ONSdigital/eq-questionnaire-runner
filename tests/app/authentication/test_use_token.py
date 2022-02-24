@@ -7,7 +7,7 @@ from app.authentication.jti_claim_storage import JtiTokenUsed, use_jti_claim
 from app.storage.errors import ItemAlreadyExistsError
 
 
-def test_should_use_token(eq_app, mock_redis_put):
+def test_should_use_token(app, mock_redis_put):
     with app.app_context():
         # Given
         jti_token = str(uuid4())
@@ -30,7 +30,7 @@ def test_should_return_raise_value_error():
         use_jti_claim(token, expires_at)
 
 
-def test_should_raise_jti_token_used_when_token_already_exists(eq_app, mock_redis_put):
+def test_should_raise_jti_token_used_when_token_already_exists(app, mock_redis_put):
     with app.app_context():
         # Given
         jti_token = str(uuid4())

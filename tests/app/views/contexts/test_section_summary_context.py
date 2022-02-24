@@ -147,7 +147,7 @@ class TestSectionSummaryContext(SummaryContextTestCase):
         self.assertEqual(context["summary"]["title"], "Property Details Section")
 
 
-@pytest.mark.usefixtures("eq_app")
+@pytest.mark.usefixtures("app")
 def test_context_for_section_list_summary(people_answer_store):
     schema = load_schema_from_name("test_list_collector_section_summary")
 
@@ -237,7 +237,7 @@ def test_context_for_section_list_summary(people_answer_store):
     assert context == expected
 
 
-@pytest.mark.usefixtures("eq_app")
+@pytest.mark.usefixtures("app")
 def test_context_for_driving_question_summary_empty_list():
     schema = load_schema_from_name("test_list_collector_driving_question")
 
@@ -278,7 +278,7 @@ def test_context_for_driving_question_summary_empty_list():
     assert context == expected
 
 
-@pytest.mark.usefixtures("eq_app")
+@pytest.mark.usefixtures("app")
 def test_context_for_driving_question_summary():
     schema = load_schema_from_name("test_list_collector_driving_question")
 
@@ -343,7 +343,7 @@ def test_context_for_driving_question_summary():
     assert context == expected
 
 
-@pytest.mark.usefixtures("eq_app")
+@pytest.mark.usefixtures("app")
 def test_titles_for_repeating_section_summary(people_answer_store):
     schema = load_schema_from_name("test_repeating_sections_with_hub_and_spoke")
 
@@ -398,7 +398,7 @@ def test_titles_for_repeating_section_summary(people_answer_store):
     assert context["summary"]["title"] == "Barry Pheloung"
 
 
-@pytest.mark.usefixtures("eq_app")
+@pytest.mark.usefixtures("app")
 def test_primary_only_links_for_section_summary(people_answer_store):
     schema = load_schema_from_name("test_list_collector_section_summary")
 
@@ -429,7 +429,7 @@ def test_primary_only_links_for_section_summary(people_answer_store):
     assert "/add-or-edit-primary-person/" in list_items[0]["edit_link"]
 
 
-@pytest.mark.usefixtures("eq_app")
+@pytest.mark.usefixtures("app")
 def test_primary_links_for_section_summary(people_answer_store):
     schema = load_schema_from_name("test_list_collector_section_summary")
 

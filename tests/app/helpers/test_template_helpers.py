@@ -288,7 +288,7 @@ def test_cookie_settings_url_context(
 def test_account_service_my_account_url_context(
     app: Flask, survey_config: SurveyConfig, expected: str, get_context_helper
 ):
-    result = get_context_helper(eq_app, survey_config).context[
+    result = get_context_helper(app, survey_config).context[
         "account_service_my_account_url"
     ]
 
@@ -308,9 +308,7 @@ def test_account_service_my_account_url_context(
 def test_account_service_my_todo_url_context(
     app: Flask, survey_config: SurveyConfig, expected: str, get_context_helper
 ):
-    result = get_context_helper(eq_app, survey_config).context[
-        "account_service_todo_url"
-    ]
+    result = get_context_helper(app, survey_config).context["account_service_todo_url"]
     assert result == expected
 
 
@@ -334,7 +332,7 @@ def test_account_service_my_todo_url_context(
 def test_account_service_log_out_url_context(
     app: Flask, survey_config: SurveyConfig, expected: str, get_context_helper
 ):
-    result = get_context_helper(eq_app, survey_config).context[
+    result = get_context_helper(app, survey_config).context[
         "account_service_log_out_url"
     ]
     assert result == expected
@@ -420,7 +418,7 @@ def test_get_survey_config_base_url_not_provided(app: Flask):
     assert result.base_url == ACCOUNT_SERVICE_BASE_URL
 
 
-def test_context_set_from_app_config(eq_app):
+def test_context_set_from_app_config(app):
     with app.app_context():
         current_app.config["CDN_URL"] = "test-cdn-url"
         current_app.config["CDN_ASSETS_PATH"] = "/test-assets-path"

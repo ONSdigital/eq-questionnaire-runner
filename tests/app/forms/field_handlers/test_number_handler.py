@@ -124,7 +124,7 @@ def test_percentage_field(value_source_resolver, rule_evaluator):
     assert form.test_field.description == answer_schema["description"]
 
 
-def test_manual_min(eq_app, value_source_resolver, rule_evaluator):
+def test_manual_min(app, value_source_resolver, rule_evaluator):
     answer_schema = {
         "minimum": {"value": 10},
         "label": "Min Test",
@@ -152,7 +152,7 @@ def test_manual_min(eq_app, value_source_resolver, rule_evaluator):
     )
 
 
-def test_manual_max(eq_app, value_source_resolver, rule_evaluator):
+def test_manual_max(app, value_source_resolver, rule_evaluator):
     answer_schema = {
         "maximum": {"value": 20},
         "label": "Max Test",
@@ -180,7 +180,7 @@ def test_manual_max(eq_app, value_source_resolver, rule_evaluator):
     )
 
 
-def test_manual_decimal(eq_app, value_source_resolver, rule_evaluator):
+def test_manual_decimal(app, value_source_resolver, rule_evaluator):
     answer_schema = {
         "decimal_places": 2,
         "label": "Range Test 10 to 20",
@@ -207,7 +207,7 @@ def test_manual_decimal(eq_app, value_source_resolver, rule_evaluator):
     )
 
 
-def test_zero_max(eq_app, value_source_resolver, rule_evaluator):
+def test_zero_max(app, value_source_resolver, rule_evaluator):
     maximum = 0
 
     answer_schema = {
@@ -227,7 +227,7 @@ def test_zero_max(eq_app, value_source_resolver, rule_evaluator):
     assert form.errors["test_field"][0] == error_message
 
 
-def test_zero_min(eq_app, value_source_resolver, rule_evaluator):
+def test_zero_min(app, value_source_resolver, rule_evaluator):
     minimum = 0
 
     answer_schema = {
@@ -247,7 +247,7 @@ def test_zero_min(eq_app, value_source_resolver, rule_evaluator):
     assert form.errors["test_field"][0] == error_message
 
 
-def test_value_min_and_max(eq_app, value_source_resolver, rule_evaluator):
+def test_value_min_and_max(app, value_source_resolver, rule_evaluator):
     answer_schema = {
         "minimum": {"value": 10},
         "maximum": {"value": 20},
@@ -284,7 +284,7 @@ def test_value_min_and_max(eq_app, value_source_resolver, rule_evaluator):
     )
 
 
-def test_manual_min_exclusive(eq_app, value_source_resolver, rule_evaluator):
+def test_manual_min_exclusive(app, value_source_resolver, rule_evaluator):
     answer_schema = {
         "minimum": {"value": 10, "exclusive": True},
         "label": "Min Test",
@@ -312,7 +312,7 @@ def test_manual_min_exclusive(eq_app, value_source_resolver, rule_evaluator):
     )
 
 
-def test_manual_max_exclusive(eq_app, value_source_resolver, rule_evaluator):
+def test_manual_max_exclusive(app, value_source_resolver, rule_evaluator):
     answer_schema = {
         "maximum": {"value": 20, "exclusive": True},
         "label": "Max Test",

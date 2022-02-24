@@ -8,13 +8,13 @@ from app.data_models.session_store import SessionStore
 from app.utilities.json import json_dumps
 
 
-def test_no_session(eq_app, app_session_store):
+def test_no_session(app, app_session_store):
     with app.test_request_context():
         assert app_session_store.session_store.user_id is None
         assert app_session_store.session_store.session_data is None
 
 
-def test_create(eq_app, app_session_store):
+def test_create(app, app_session_store):
     with app.test_request_context():
         app_session_store.session_store.create(
             "eq_session_id",
@@ -30,7 +30,7 @@ def test_create(eq_app, app_session_store):
         )
 
 
-def test_save(eq_app, app_session_store):
+def test_save(app, app_session_store):
     with app.test_request_context():
         app_session_store.session_store.create(
             eq_session_id="eq_session_id",
@@ -42,7 +42,7 @@ def test_save(eq_app, app_session_store):
         assert session_store.session_data.tx_id == "tx_id"
 
 
-def test_delete(eq_app, app_session_store):
+def test_delete(app, app_session_store):
     with app.test_request_context():
         app_session_store.session_store.create(
             eq_session_id="eq_session_id",
@@ -55,7 +55,7 @@ def test_delete(eq_app, app_session_store):
         assert app_session_store.session_store.user_id is None
 
 
-def test_add_data_to_session(eq_app, app_session_store):
+def test_add_data_to_session(app, app_session_store):
     with app.test_request_context():
         app_session_store.session_store.create(
             eq_session_id="eq_session_id",
@@ -71,7 +71,7 @@ def test_add_data_to_session(eq_app, app_session_store):
         assert session_store.session_data.display_address == display_address
 
 
-def test_should_not_delete_when_no_session(eq_app, app_session_store):
+def test_should_not_delete_when_no_session(app, app_session_store):
     with app.test_request_context("/status") as context:
         # Call clear with a valid user_id but no session in database
         app_session_store.session_store.delete()
@@ -151,7 +151,7 @@ def test_session_store_stores_none_for_trading_as_if_not_present(
         assert session_store.session_data.trad_as is None
 
 
-@pytest.mark.usefixtures("eq_app")
+@pytest.mark.usefixtures("app")
 def test_legacy_load(app_session_store_encoded):
     _save_session(
         app_session_store_encoded,
@@ -171,7 +171,7 @@ def test_legacy_load(app_session_store_encoded):
     )
 
 
-@pytest.mark.usefixtures("eq_app")
+@pytest.mark.usefixtures("app")
 def test_load(app_session_store_encoded):
     _save_session(
         app_session_store_encoded,

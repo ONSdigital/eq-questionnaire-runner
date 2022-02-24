@@ -3,7 +3,7 @@ import pytest
 from app.questionnaire.location import Location
 
 
-@pytest.mark.usefixtures("eq_app")
+@pytest.mark.usefixtures("app")
 def test_location_url():
     location = Location(section_id="some-section", block_id="some-block")
     assert (
@@ -12,7 +12,7 @@ def test_location_url():
     )
 
 
-@pytest.mark.usefixtures("eq_app")
+@pytest.mark.usefixtures("app")
 def test_location_url_with_list():
     location = Location(
         section_id="some-section", block_id="add-block", list_name="people"
@@ -23,7 +23,7 @@ def test_location_url_with_list():
     )
 
 
-@pytest.mark.usefixtures("eq_app")
+@pytest.mark.usefixtures("app")
 def test_location_url_with_list_item_id():
     location = Location(
         section_id="some-section",
