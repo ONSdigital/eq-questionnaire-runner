@@ -185,19 +185,6 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             value_source_resolver=self.get_value_source_resolver(),
         )
 
-    def update_answer_store(self, remove_answer):
-        if remove_answer:
-            self.answer_store.remove_answer("building")
-        else:
-            self.answer_store.add_or_update(
-                Answer(answer_id="building", value="Main Building")
-            )
-        self.answer_store.add_or_update(
-            Answer(answer_id="address-line-1", value="Cardiff Rd")
-        )
-        self.answer_store.add_or_update(Answer(answer_id="town-city", value="Newport"))
-        self.answer_store.add_or_update(Answer(answer_id="postcode", value="NP10 8XG"))
-
     def test_create_question(self):
         # Given
         question_title = "question_title"
@@ -293,7 +280,18 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                 concatenation_character=concatenation_character,
             ):
                 # Given
-                self.update_answer_store(False)
+                self.answer_store.add_or_update(
+                    Answer(answer_id="building", value="Main Building")
+                )
+                self.answer_store.add_or_update(
+                    Answer(answer_id="address-line-1", value="Cardiff Rd")
+                )
+                self.answer_store.add_or_update(
+                    Answer(answer_id="town-city", value="Newport")
+                )
+                self.answer_store.add_or_update(
+                    Answer(answer_id="postcode", value="NP10 8XG")
+                )
 
                 # When
                 question = self.address_question(concatenation_type)
@@ -315,7 +313,16 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                 concatenation_character=concatenation_character,
             ):
                 # Given
-                self.update_answer_store(True)
+                self.answer_store.remove_answer("building")
+                self.answer_store.add_or_update(
+                    Answer(answer_id="address-line-1", value="Cardiff Rd")
+                )
+                self.answer_store.add_or_update(
+                    Answer(answer_id="town-city", value="Newport")
+                )
+                self.answer_store.add_or_update(
+                    Answer(answer_id="postcode", value="NP10 8XG")
+                )
 
                 # When
                 question = self.address_question(concatenation_type)
