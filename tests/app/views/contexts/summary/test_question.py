@@ -1075,7 +1075,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         ]
 
         for answer_schema, answer_store, expected_output in data_set:
+            schema = self.address_questionnaire_schema("Newline")
             with self.subTest(
+                schema=schema,
                 answer_schema=answer_schema,
                 answer_store=answer_store,
                 expected_output=expected_output,
@@ -1087,7 +1089,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                 question = Question(
                     question_schema,
                     answer_store=answer_store,
-                    schema=self.address_questionnaire_schema("Newline"),
+                    schema=schema,
                     rule_evaluator=self.get_rule_evaluator(),
                     value_source_resolver=self.get_value_source_resolver(),
                     location=None,
