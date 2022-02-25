@@ -79,7 +79,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
         }
 
     @staticmethod
-    def address_questionnaire_schema():
+    def address_questionnaire_schema(concatenation_type):
         return QuestionnaireSchema(
             {
                 "sections": [
@@ -146,6 +146,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                                                     "type": "TextField",
                                                 },
                                             ],
+                                            "summary": {
+                                                "concatenation_type": concatenation_type
+                                            },
                                         },
                                     },
                                 ],
@@ -157,23 +160,9 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             }
         )
 
-    def address_question(self, concatenation_type):
+    def address_question(self):
 
-        answers = [
-            self.address_questionnaire_schema().get_answers_by_answer_id(answer_id)[0]
-            for answer_id in self.address_questionnaire_schema().get_answer_ids_for_block(
-                "what-is-your-address"
-            )
-        ]
-
-        question_schema = {
-            "id": "question_id",
-            "title": "question_title",
-            "type": "General",
-            "answers": answers,
-            "summary": {"concatenation_type": concatenation_type},
-        }
-
+        question_schema = self.schema.get_questions("what-is-your-address-question")[0]
         return Question(
             question_schema,
             answer_store=self.answer_store,
@@ -272,7 +261,6 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
     def test_concatenate_textfield_answers(self):
         answer_separators = {"Newline": "<br>", "Space": " "}
-        self.schema = self.address_questionnaire_schema()
 
         for concatenation_type, concatenation_character in answer_separators.items():
             with self.subTest(
@@ -280,6 +268,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                 concatenation_character=concatenation_character,
             ):
                 # Given
+                self.schema = self.address_questionnaire_schema(concatenation_type)
                 self.answer_store.add_or_update(
                     Answer(answer_id="building", value="Main Building")
                 )
@@ -294,7 +283,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                 )
 
                 # When
-                question = self.address_question(concatenation_type)
+                question = self.address_question()
 
                 # Then
                 self.assertEqual(
@@ -305,7 +294,6 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
     def test_concatenate_textfield_answers_default(self):
         answer_separators = {"Newline": "<br>", "Space": " "}
-        self.schema = self.address_questionnaire_schema()
 
         for concatenation_type, concatenation_character in answer_separators.items():
             with self.subTest(
@@ -313,6 +301,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                 concatenation_character=concatenation_character,
             ):
                 # Given
+                self.schema = self.address_questionnaire_schema(concatenation_type)
                 self.answer_store.remove_answer("building")
                 self.answer_store.add_or_update(
                     Answer(answer_id="address-line-1", value="Cardiff Rd")
@@ -325,7 +314,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                 )
 
                 # When
-                question = self.address_question(concatenation_type)
+                question = self.address_question()
 
                 # Then
                 self.assertEqual(
@@ -1098,7 +1087,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                 question = Question(
                     question_schema,
                     answer_store=answer_store,
-                    schema=self.address_questionnaire_schema(),
+                    schema=self.address_questionnaire_schema("Newline"),
                     rule_evaluator=self.get_rule_evaluator(),
                     value_source_resolver=self.get_value_source_resolver(),
                     location=None,
