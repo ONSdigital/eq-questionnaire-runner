@@ -1058,3 +1058,56 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
                 # Then
                 self.assertEqual(question.answers[0]["value"], expected_output)
+
+    def test_get_answer_method(self):
+        data_set = [
+            # answer_schema, answer_store, expected_output
+            (
+                {
+                    "id": "building",
+                    "label": "Building",
+                    "type": "TextField",
+                },
+                AnswerStore(
+                    [{"answer_id": "building", "value": "Government Buildings"}]
+                ),
+                "Government Buildings",
+            ),
+            (
+                {
+                    "id": "building",
+                    "label": "Building",
+                    "type": "TextField",
+                    "default": "Government Buildings",
+                },
+                AnswerStore([]),
+                "Government Buildings",
+            ),
+        ]
+
+        for answer_schema, answer_store, expected_output in data_set:
+            with self.subTest(
+                answer_schema=answer_schema,
+                answer_store=answer_store,
+                expected_output=expected_output,
+            ):
+                # Given
+                question_schema = self.get_question_schema(answer_schema)
+
+                # When
+                question = Question(
+                    question_schema,
+                    answer_store=answer_store,
+                    schema=self.address_questionnaire_schema(),
+                    rule_evaluator=self.get_rule_evaluator(),
+                    value_source_resolver=self.get_value_source_resolver(),
+                    location=None,
+                    block_id="address-group",
+                    return_to=None,
+                )
+
+                # Then
+                self.assertEqual(
+                    Question.get_answer(question, answer_store, "building"),
+                    expected_output,
+                )

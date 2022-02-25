@@ -41,7 +41,7 @@ class Question:
             return_to=return_to,
         )
 
-    def _get_answer(self, answer_store, answer_id):
+    def get_answer(self, answer_store, answer_id):
         answer = answer_store.get_answer(
             answer_id, self.list_item_id
         ) or self.schema.get_default_answer(answer_id)
@@ -76,7 +76,7 @@ class Question:
 
         summary_answers = []
         for answer_schema in self.answer_schemas:
-            answer_value = self._get_answer(answer_store, answer_schema["id"])
+            answer_value = self.get_answer(answer_store, answer_schema["id"])
             answer = self._build_answer(
                 answer_store, question_schema, answer_schema, answer_value
             )
@@ -104,7 +104,7 @@ class Question:
         answer_separator = answer_separators.get(concatenation_type, " ")
 
         answer_values = [
-            self._get_answer(answer_store, answer_schema["id"])
+            self.get_answer(answer_store, answer_schema["id"])
             for answer_schema in self.answer_schemas
         ]
 
@@ -145,7 +145,7 @@ class Question:
 
     def _build_date_range_answer(self, answer_store, answer):
         next_answer = next(self.answer_schemas)
-        to_date = self._get_answer(answer_store, next_answer["id"])
+        to_date = self.get_answer(answer_store, next_answer["id"])
         return {"from": answer, "to": to_date}
 
     def _get_dynamic_answer_options(
@@ -198,7 +198,7 @@ class Question:
 
     def _get_detail_answer_value(self, option, answer_store):
         if "detail_answer" in option:
-            return self._get_answer(answer_store, option["detail_answer"]["id"])
+            return self.get_answer(answer_store, option["detail_answer"]["id"])
 
     def _build_dropdown_answer(self, answer, answer_schema):
         for option in self.get_answer_options(answer_schema):
