@@ -1,3 +1,4 @@
+import pytest
 from werkzeug.datastructures import MultiDict
 
 from app.data_models import QuestionnaireStore
@@ -258,6 +259,9 @@ def test_remove_completed_relationship_locations_for_list_name(
     assert len(completed) == 0
 
 
+@pytest.mark.usefixtures(
+    "questionnaire_store_get_relationship_collectors_by_list_name_patch"
+)
 def test_remove_completed_relationship_locations_for_list_name_no_locations(
     mock_location,
     schema,
@@ -283,9 +287,6 @@ def test_remove_completed_relationship_locations_for_list_name_no_locations(
         mock_location, schema, questionnaire_store, None
     )
 
-    patch_method = "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater._get_relationship_collectors_by_list_name"
-    patched = mocker.patch(patch_method)
-    patched.return_value = None
     questionnaire_store_updater.remove_completed_relationship_locations_for_list_name(
         "test-relationship-collector"
     )
@@ -293,6 +294,9 @@ def test_remove_completed_relationship_locations_for_list_name_no_locations(
     assert progress_store.serialize() == initial_progress_store
 
 
+@pytest.mark.usefixtures(
+    "questionnaire_store_get_relationship_collectors_by_list_name_patch"
+)
 def test_update_relationship_question_completeness_no_relationship_collectors(
     mock_location,
     schema,
@@ -313,9 +317,6 @@ def test_update_relationship_question_completeness_no_relationship_collectors(
         mock_location, schema, questionnaire_store, None
     )
 
-    patch_method = "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater._get_relationship_collectors_by_list_name"
-    patched = mocker.patch(patch_method)
-    patched.return_value = None
     assert (
         questionnaire_store_updater.update_relationship_question_completeness(
             "test-relationship-collector"

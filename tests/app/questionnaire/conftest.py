@@ -1092,3 +1092,10 @@ def questionnaire_schema():
             }
         }
     )
+
+
+@pytest.fixture
+def questionnaire_store_get_relationship_collectors_by_list_name_patch(mocker):
+    patch_method = "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater._get_relationship_collectors_by_list_name"
+    patched = mocker.patch(patch_method)
+    patched.return_value = None
