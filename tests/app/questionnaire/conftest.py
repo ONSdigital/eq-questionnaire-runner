@@ -972,7 +972,7 @@ def pointers(question_json):
 
 
 @pytest.fixture
-def fake_list_store():
+def mock_list_store():
     serialized = [
         {
             "name": "people",
@@ -986,7 +986,7 @@ def fake_list_store():
 
 
 @pytest.fixture
-def fake_location():
+def mock_location():
     return Location(section_id="section-foo", block_id="block-bar")
 
 
@@ -996,7 +996,7 @@ def schema(mocker):
 
 
 @pytest.fixture
-def fake_answer_store(mocker):
+def mock_answer_store(mocker):
     return mocker.MagicMock(spec=AnswerStore)
 
 
@@ -1013,12 +1013,12 @@ def list_store(mocker):
 
 
 @pytest.fixture
-def questionnaire_store(fake_list_store, fake_answer_store, progress_store, mocker):
+def questionnaire_store(mock_list_store, mock_answer_store, progress_store, mocker):
     return mocker.MagicMock(
         spec=QuestionnaireStore,
         completed_blocks=[],
-        answer_store=fake_answer_store,
-        list_store=fake_list_store,
+        answer_store=mock_answer_store,
+        list_store=mock_list_store,
         progress_store=progress_store,
     )
 

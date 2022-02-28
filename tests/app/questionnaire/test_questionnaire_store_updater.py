@@ -9,9 +9,9 @@ from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpda
 
 
 def test_save_answers_with_form_data(
-    fake_location,
+    mock_location,
     schema,
-    fake_answer_store,
+    mock_answer_store,
     questionnaire_store,
 ):
     answer_id = "answer"
@@ -21,15 +21,15 @@ def test_save_answers_with_form_data(
 
     form_data = {answer_id: answer_value}
 
-    current_question = schema.get_block(fake_location.block_id)["question"]
+    current_question = schema.get_block(mock_location.block_id)["question"]
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        fake_location, schema, questionnaire_store, current_question
+        mock_location, schema, questionnaire_store, current_question
     )
     questionnaire_store_updater.update_answers(form_data)
 
-    assert fake_answer_store.add_or_update.call_count == 1
+    assert mock_answer_store.add_or_update.call_count == 1
 
-    created_answer = fake_answer_store.add_or_update.call_args[0][0]
+    created_answer = mock_answer_store.add_or_update.call_args[0][0]
     assert created_answer.__dict__ == {
         "answer_id": answer_id,
         "list_item_id": None,
@@ -39,7 +39,7 @@ def test_save_answers_with_form_data(
 
 def test_save_empty_answer_removes_existing_answer(
     schema,
-    fake_answer_store,
+    mock_answer_store,
     questionnaire_store,
 ):
     answer_id = "answer"
@@ -63,9 +63,9 @@ def test_save_empty_answer_removes_existing_answer(
     )
     questionnaire_store_updater.update_answers(form_data)
 
-    assert fake_answer_store.add_or_update.call_count == 1
+    assert mock_answer_store.add_or_update.call_count == 1
 
-    created_answer = fake_answer_store.add_or_update.call_args[0][0]
+    created_answer = mock_answer_store.add_or_update.call_args[0][0]
     assert created_answer.__dict__ == {
         "answer_id": answer_id,
         "list_item_id": "abc123",
@@ -75,15 +75,15 @@ def test_save_empty_answer_removes_existing_answer(
     form_data = MultiDict({answer_id: ""})
     questionnaire_store_updater.update_answers(form_data)
 
-    assert fake_answer_store.remove_answer.call_count == 1
-    answer_key = fake_answer_store.remove_answer.call_args[0]
+    assert mock_answer_store.remove_answer.call_count == 1
+    answer_key = mock_answer_store.remove_answer.call_args[0]
     assert answer_key == (answer_id, list_item_id)
 
 
 def test_default_answers_are_not_saved(
-    fake_location,
+    mock_location,
     schema,
-    fake_answer_store,
+    mock_answer_store,
     questionnaire_store,
 ):
     answer_id = "answer"
@@ -97,17 +97,17 @@ def test_default_answers_are_not_saved(
 
     current_question = {"answers": [{"id": "answer", "default": default_value}]}
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        fake_location, schema, questionnaire_store, current_question
+        mock_location, schema, questionnaire_store, current_question
     )
     questionnaire_store_updater.update_answers(form_data)
 
-    assert fake_answer_store.add_or_update.call_count == 0
+    assert mock_answer_store.add_or_update.call_count == 0
 
 
 def test_empty_answers(
-    fake_location,
+    mock_location,
     schema,
-    fake_answer_store,
+    mock_answer_store,
     questionnaire_store,
 ):
     string_answer_id = "string-answer"
@@ -134,17 +134,17 @@ def test_empty_answers(
         ]
     }
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        fake_location, schema, questionnaire_store, current_question
+        mock_location, schema, questionnaire_store, current_question
     )
     questionnaire_store_updater.update_answers(form_data)
 
-    assert fake_answer_store.add_or_update.call_count == 0
+    assert mock_answer_store.add_or_update.call_count == 0
 
 
 def test_remove_all_answers_with_list_item_id(
-    fake_location, schema, fake_answer_store, list_store, questionnaire_store, mocker
+    mock_location, schema, mock_answer_store, list_store, questionnaire_store, mocker
 ):
-    fake_answer_store = AnswerStore(
+    mock_answer_store = AnswerStore(
         existing_answers=[
             {"answer_id": "test1", "value": 1, "list_item_id": "abcdef"},
             {"answer_id": "test2", "value": 2, "list_item_id": "abcdef"},
@@ -155,29 +155,29 @@ def test_remove_all_answers_with_list_item_id(
     questionnaire_store = mocker.MagicMock(
         spec=QuestionnaireStore,
         completed_blocks=[],
-        answer_store=fake_answer_store,
+        answer_store=mock_answer_store,
         list_store=list_store(spec=ListStore),
         progress_store=ProgressStore(),
     )
 
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        fake_location, schema, questionnaire_store, None
+        mock_location, schema, questionnaire_store, None
     )
     questionnaire_store_updater.remove_list_item_and_answers("abc", "abcdef")
 
-    assert len(fake_answer_store) == 1
-    assert fake_answer_store.get_answer("test3", "uvwxyz")
+    assert len(mock_answer_store) == 1
+    assert mock_answer_store.get_answer("test3", "uvwxyz")
 
 
 def test_remove_primary_person(
-    fake_location,
+    mock_location,
     schema,
-    fake_answer_store,
+    mock_answer_store,
     questionnaire_store,
-    fake_list_store,
+    mock_list_store,
     mocker,
 ):
-    fake_answer_store = AnswerStore(
+    mock_answer_store = AnswerStore(
         existing_answers=[
             {"answer_id": "test1", "value": 1, "list_item_id": "abcdef"},
             {"answer_id": "test2", "value": 2, "list_item_id": "abcdef"},
@@ -188,48 +188,48 @@ def test_remove_primary_person(
     questionnaire_store = mocker.MagicMock(
         spec=QuestionnaireStore,
         completed_blocks=[],
-        answer_store=fake_answer_store,
-        list_store=fake_list_store,
+        answer_store=mock_answer_store,
+        list_store=mock_list_store,
         progress_store=ProgressStore(),
     )
 
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        fake_location, schema, questionnaire_store, None
+        mock_location, schema, questionnaire_store, None
     )
 
     questionnaire_store_updater.remove_primary_person("people")
 
 
 def test_add_primary_person(
-    fake_location,
+    mock_location,
     schema,
-    fake_answer_store,
+    mock_answer_store,
     questionnaire_store,
-    fake_list_store,
+    mock_list_store,
     mocker,
 ):
 
     questionnaire_store = mocker.MagicMock(
         spec=QuestionnaireStore,
         completed_blocks=[],
-        answer_store=fake_answer_store,
-        list_store=fake_list_store,
+        answer_store=mock_answer_store,
+        list_store=mock_list_store,
         progress_store=ProgressStore(),
     )
 
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        fake_location, schema, questionnaire_store, None
+        mock_location, schema, questionnaire_store, None
     )
     questionnaire_store_updater.add_primary_person("people")
 
 
 def test_remove_completed_relationship_locations_for_list_name(
-    fake_location,
+    mock_location,
     schema,
-    fake_answer_store,
+    mock_answer_store,
     progress_store,
     questionnaire_store,
-    fake_list_store,
+    mock_list_store,
     mocker,
 ):
     progress_store.add_completed_location(
@@ -239,12 +239,12 @@ def test_remove_completed_relationship_locations_for_list_name(
     questionnaire_store = mocker.MagicMock(
         spec=QuestionnaireStore,
         completed_blocks=[],
-        answer_store=fake_answer_store,
-        list_store=fake_list_store,
+        answer_store=mock_answer_store,
+        list_store=mock_list_store,
         progress_store=progress_store,
     )
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        fake_location, schema, questionnaire_store, None
+        mock_location, schema, questionnaire_store, None
     )
 
     patch_method = "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater._get_relationship_collectors_by_list_name"
@@ -259,12 +259,12 @@ def test_remove_completed_relationship_locations_for_list_name(
 
 
 def test_remove_completed_relationship_locations_for_list_name_no_locations(
-    fake_location,
+    mock_location,
     schema,
-    fake_answer_store,
+    mock_answer_store,
     progress_store,
     questionnaire_store,
-    fake_list_store,
+    mock_list_store,
     mocker,
 ):
     progress_store.add_completed_location(
@@ -275,12 +275,12 @@ def test_remove_completed_relationship_locations_for_list_name_no_locations(
     questionnaire_store = mocker.MagicMock(
         spec=QuestionnaireStore,
         completed_blocks=[],
-        answer_store=fake_answer_store,
-        list_store=fake_list_store,
+        answer_store=mock_answer_store,
+        list_store=mock_list_store,
         progress_store=progress_store,
     )
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        fake_location, schema, questionnaire_store, None
+        mock_location, schema, questionnaire_store, None
     )
 
     patch_method = "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater._get_relationship_collectors_by_list_name"
@@ -294,23 +294,23 @@ def test_remove_completed_relationship_locations_for_list_name_no_locations(
 
 
 def test_update_relationship_question_completeness_no_relationship_collectors(
-    fake_location,
+    mock_location,
     schema,
-    fake_answer_store,
+    mock_answer_store,
     progress_store,
     questionnaire_store,
-    fake_list_store,
+    mock_list_store,
     mocker,
 ):
     questionnaire_store = mocker.MagicMock(
         spec=QuestionnaireStore,
         completed_blocks=[],
-        answer_store=fake_answer_store,
-        list_store=fake_list_store,
+        answer_store=mock_answer_store,
+        list_store=mock_list_store,
         progress_store=progress_store,
     )
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        fake_location, schema, questionnaire_store, None
+        mock_location, schema, questionnaire_store, None
     )
 
     patch_method = "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater._get_relationship_collectors_by_list_name"
@@ -325,14 +325,14 @@ def test_update_relationship_question_completeness_no_relationship_collectors(
 
 
 def test_update_same_name_items(
-    fake_location,
+    mock_location,
     schema,
-    fake_answer_store,
+    mock_answer_store,
     questionnaire_store,
-    fake_list_store,
+    mock_list_store,
     mocker,
 ):
-    fake_answer_store = AnswerStore(
+    mock_answer_store = AnswerStore(
         existing_answers=[
             {"answer_id": "first-name", "value": "Joe", "list_item_id": "abcdef"},
             {
@@ -360,18 +360,18 @@ def test_update_same_name_items(
     questionnaire_store = mocker.MagicMock(
         spec=QuestionnaireStore,
         completed_blocks=[],
-        answer_store=fake_answer_store,
-        list_store=fake_list_store,
+        answer_store=mock_answer_store,
+        list_store=mock_list_store,
         progress_store=ProgressStore(),
     )
 
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        fake_location, schema, questionnaire_store, None
+        mock_location, schema, questionnaire_store, None
     )
 
     questionnaire_store_updater.update_same_name_items(
         "people", ["first-name", "last-name"]
     )
 
-    assert "abcdef" in fake_list_store["people"].same_name_items
-    assert "ghijkl" in fake_list_store["people"].same_name_items
+    assert "abcdef" in mock_list_store["people"].same_name_items
+    assert "ghijkl" in mock_list_store["people"].same_name_items
