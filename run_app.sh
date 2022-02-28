@@ -14,4 +14,9 @@ elif [ "$WEB_SERVER_TYPE" = "uwsgi-async" ]; then
     run_command="uwsgi uwsgi.ini --module patched:application --workers ${WEB_SERVER_WORKERS} --gevent ${WEB_SERVER_UWSGI_ASYNC_CORES} --http-keepalive=${HTTP_KEEP_ALIVE}"
 fi
 
-eval "$run_command"
+if [ "$EQ_NEW_RELIC_ENABLED" = "True" ]; then
+    new_relic_run_command="NEW_RELIC_CONFIG_FILE=newrelic.ini newrelic-admin run-program ${run_command}"
+    eval "$new_relic_run_command"
+else
+    eval "$run_command"
+fi

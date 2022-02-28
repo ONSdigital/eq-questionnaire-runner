@@ -11,9 +11,8 @@ def test_non_existent_model_type():
     assert "Invalid model_type provided" in str(ex)
 
 
-def test_storage_model_properties(
-    app, fake_eq_session
-):  # pylint: disable=unused-argument
+@pytest.mark.usefixtures("app")
+def test_storage_model_properties(fake_eq_session):
     storage_model = StorageModel(model_type=type(fake_eq_session))
 
     assert storage_model.key_field == "eq_session_id"

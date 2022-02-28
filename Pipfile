@@ -46,6 +46,7 @@ gevent = {version = "*",platform_python_implementation = "=='CPython'"}
 google-cloud-datastore = "*"
 grpcio = "*"
 gunicorn = "*"
+newrelic = "*"
 pika = "*"
 pyyaml = "*"
 requests = "*"

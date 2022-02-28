@@ -18,6 +18,7 @@ describe("Feature: Confirmation Question", () => {
       expect($$(SubmitPage.confirmZeroEmployeesAnswer())).to.be.empty;
     });
   });
+
   describe("Given a confirmation Question", () => {
     it("When I answer 'No' to the confirmation question, Then I should be routed back to the source question", () => {
       browser.openQuestionnaire("test_confirmation_question.json");
@@ -25,15 +26,6 @@ describe("Feature: Confirmation Question", () => {
       $(ConfirmZeroEmployeesBlockPage.noINeedToChangeThis()).click();
       $(ConfirmZeroEmployeesBlockPage.submit()).click();
       expect(browser.getUrl()).to.contain(NumberOfEmployeesTotalBlockPage.pageName);
-    });
-  });
-  describe("Given a number of employees Question", () => {
-    it("When I don't answer the number of employees question and go to summary, Then default value should be displayed for the the number of employees question", () => {
-      browser.openQuestionnaire("test_confirmation_question.json");
-      $(NumberOfEmployeesTotalBlockPage.submit()).click();
-      $(ConfirmZeroEmployeesBlockPage.yesThisIsCorrect()).click();
-      $(ConfirmZeroEmployeesBlockPage.submit()).click();
-      expect($(SubmitPage.numberOfEmployeesTotal()).getText()).to.contain("0");
     });
   });
 });
