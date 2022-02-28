@@ -513,7 +513,7 @@ def test_remove_answer_and_block_if_routing_backwards(list_store):
     confirm_zero_answer = Answer(
         answer_id="confirm-zero-employees-answer", value="No I need to change this"
     )
-    answer_store = AnswerStore()
+    answer_store = AnswerStore({})
     answer_store.add_or_update(number_of_employees_answer)
     answer_store.add_or_update(confirm_zero_answer)
 
