@@ -882,6 +882,11 @@ def option_label_from_value_schema():
 
 
 @pytest.fixture
+def default_placeholder_value_schema():
+    return load_schema_from_name("test_placeholder_default_value", "en")
+
+
+@pytest.fixture
 def transformer(mock_renderer, mock_schema):
     def _transform(language="en"):
         return PlaceholderTransforms(

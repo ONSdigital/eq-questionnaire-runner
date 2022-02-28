@@ -68,6 +68,7 @@ class PlaceholderParser:
             list_item_id=self._list_item_id,
             escape_answer_values=True,
             response_metadata=self._response_metadata,
+            use_default_answer=True,
         )
 
     def __call__(
