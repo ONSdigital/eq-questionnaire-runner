@@ -12,7 +12,7 @@ describe("Feature: Default Value", () => {
     $(QuestionPageTwo.two()).setValue(123);
     $(QuestionPageTwo.submit()).click();
     expect(browser.getUrl()).to.contain(SubmitPage.pageName);
-    expect($(SubmitPage.answerOne()).getText()).to.contain("No answer provided");
+    expect($(SubmitPage.answerOne()).getText()).to.contain("0");
   });
 
   it("Given I have not answered a question containing a default value, When I return to the question, Then no value should be displayed", () => {
