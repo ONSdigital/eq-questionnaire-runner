@@ -302,7 +302,6 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
             ):
                 # Given
                 self.schema = self.address_questionnaire_schema(concatenation_type)
-                self.answer_store.remove_answer("building")
                 self.answer_store.add_or_update(
                     Answer(answer_id="address-line-1", value="Cardiff Rd")
                 )
@@ -1067,6 +1066,17 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                     "id": "building",
                     "label": "Building",
                     "type": "TextField",
+                },
+                AnswerStore(
+                    [{"answer_id": "building", "value": "<p>Government Buildings</p>"}]
+                ),
+                "&lt;p&gt;Government Buildings&lt;/p&gt;",
+            ),
+            (
+                {
+                    "id": "building",
+                    "label": "Building",
+                    "type": "TextField",
                     "default": "Government Buildings",
                 },
                 AnswerStore([]),
@@ -1099,6 +1109,6 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
 
                 # Then
                 self.assertEqual(
-                    Question.get_answer(question, answer_store, "building"),
+                    question.get_answer(answer_store, "building"),
                     expected_output,
                 )
