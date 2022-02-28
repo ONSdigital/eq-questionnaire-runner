@@ -1,21 +1,26 @@
-from app.questionnaire.plural_forms import get_plural_form_key
+import pytest
+
+from app.questionnaire.plural_forms import DEFAULT_LANGUAGE_CODE, get_plural_form_key
 
 
-def test_lookup_count_key_en():
-    assert get_plural_form_key(1) == "one"
-    assert get_plural_form_key(0) == "other"
-    assert get_plural_form_key(2) == "other"
-    assert get_plural_form_key(3) == "other"
-    assert get_plural_form_key(4) == "other"
-    assert get_plural_form_key(5) == "other"
-    assert get_plural_form_key(500) == "other"
-
-
-def test_lookup_count_key_cy():
-    assert get_plural_form_key(0, language="cy") == "zero"
-    assert get_plural_form_key(1, language="cy") == "one"
-    assert get_plural_form_key(2, language="cy") == "two"
-    assert get_plural_form_key(3, language="cy") == "few"
-    assert get_plural_form_key(6, language="cy") == "many"
-    assert get_plural_form_key(7, language="cy") == "other"
-    assert get_plural_form_key(500, language="cy") == "other"
+@pytest.mark.parametrize(
+    "count,language,expected",
+    (
+        (1, DEFAULT_LANGUAGE_CODE, "one"),
+        (0, DEFAULT_LANGUAGE_CODE, "other"),
+        (2, DEFAULT_LANGUAGE_CODE, "other"),
+        (3, DEFAULT_LANGUAGE_CODE, "other"),
+        (4, DEFAULT_LANGUAGE_CODE, "other"),
+        (5, DEFAULT_LANGUAGE_CODE, "other"),
+        (500, DEFAULT_LANGUAGE_CODE, "other"),
+        (0, "cy", "zero"),
+        (1, "cy", "one"),
+        (2, "cy", "two"),
+        (3, "cy", "few"),
+        (6, "cy", "many"),
+        (7, "cy", "other"),
+        (500, "cy", "other"),
+    ),
+)
+def test_lookup_count_key(count, language, expected):
+    assert get_plural_form_key(count, language=language) == expected

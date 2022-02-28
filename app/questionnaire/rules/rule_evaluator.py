@@ -14,6 +14,8 @@ from app.questionnaire.value_source_resolver import (
     ValueSourceTypes,
 )
 
+RuleEvaluatorTypes = Union[bool, Optional[date], list[str], list[date]]
+
 
 @dataclass
 class RuleEvaluator:
@@ -92,7 +94,5 @@ class RuleEvaluator:
         for operand in operands:
             yield self._resolve_operand(operand)
 
-    def evaluate(
-        self, rule: dict[str, Sequence]
-    ) -> Union[bool, Optional[date], list[str], list[date]]:
+    def evaluate(self, rule: dict[str, Sequence]) -> RuleEvaluatorTypes:
         return self._evaluate(rule)

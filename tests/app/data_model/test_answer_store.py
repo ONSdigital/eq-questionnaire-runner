@@ -137,18 +137,3 @@ def test_serialize_and_deserialize(basic_answer_store):
 def test_bad_answer_type(basic_answer_store):
     with pytest.raises(TypeError):
         basic_answer_store.add_or_update({"answer_id": "test", "value": 20})
-
-
-def test_escaped_answer_value_method(basic_answer_store):
-    assert (
-        basic_answer_store.get_escaped_answer_value("answer4")
-        == "&lt;p&gt;abc123&lt;/p&gt;"
-    )
-    assert basic_answer_store.get_escaped_answer_value("answer5") == [
-        "&lt;p&gt;abc123&lt;/p&gt;",
-        "some value",
-    ]
-    assert basic_answer_store.get_escaped_answer_value("answer6") == {
-        "item1": "&lt;p&gt;abc123&lt;/p&gt;",
-        "item2": "some value",
-    }
