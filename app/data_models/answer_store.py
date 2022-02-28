@@ -2,12 +2,7 @@ from __future__ import annotations
 
 from typing import Iterable, Iterator, Optional
 
-from app.data_models.answer import (
-    Answer,
-    AnswerDict,
-    AnswerValueEscapedTypes,
-    escape_answer_value,
-)
+from app.data_models.answer import Answer, AnswerDict
 
 AnswerKeyType = tuple[str, Optional[str]]
 
@@ -147,11 +142,3 @@ class AnswerStore:
 
     def serialize(self) -> list[Answer]:
         return list(self.answer_map.values())
-
-    def get_escaped_answer_value(
-        self, answer_id: str, list_item_id: Optional[str] = None
-    ) -> Optional[AnswerValueEscapedTypes]:
-        if answer := self.get_answer(answer_id, list_item_id):
-            return escape_answer_value(answer.value)
-
-        return None
