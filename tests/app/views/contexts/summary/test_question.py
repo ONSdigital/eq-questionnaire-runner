@@ -1048,7 +1048,7 @@ class TestQuestion(AppContextTestCase):  # pylint: disable=too-many-public-metho
                 # Then
                 self.assertEqual(question.answers[0]["value"], expected_output)
 
-    def test_get_answer_method(self):
+    def test_get_answer(self):
         data_set = [
             # answer_schema, answer_store, expected_output
             (
