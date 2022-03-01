@@ -1,276 +1,251 @@
 import uuid
-from unittest import TestCase
 
-from mock import Mock, call, patch
 from pika.exceptions import AMQPError, NackError
+import pytest
 
 from app.submitter import GCSFeedbackSubmitter, GCSSubmitter, RabbitMQSubmitter
 from app.utilities.json import json_dumps
 
 
-class TestRabbitMQSubmitter(TestCase):
-    def setUp(self):
-        self.queue = "test_queue"
-        self.host1 = "host1"
-        self.host2 = "host2"
-        self.port = 5672
+def test_when_fail_to_connect_to_queue_then_published_false(
+    rabbitmq_submitter, patch_blocking_connection
+):
+    # Given
+    patch_blocking_connection.side_effect = AMQPError()
 
-        self.submitter = RabbitMQSubmitter(
-            host=self.host1, secondary_host=self.host2, port=self.port, queue=self.queue
-        )
+    # When
+    published = rabbitmq_submitter.send_message(
+        message={},
+        tx_id="123",
+        case_id="456",
+    )
 
-    def test_when_fail_to_connect_to_queue_then_published_false(self):
-        # Given
-        with patch("app.submitter.submitter.BlockingConnection") as connection:
-            connection.side_effect = AMQPError()
-
-            # When
-            published = self.submitter.send_message(
-                message={},
-                tx_id="123",
-                case_id="456",
-            )
-
-            # Then
-            self.assertFalse(published, "send_message should fail to publish message")
-
-    def test_when_message_sent_then_published_true(self):
-        # Given
-        with patch("app.submitter.submitter.BlockingConnection"):
-            published = self.submitter.send_message(
-                message={},
-                tx_id="123",
-                case_id="456",
-            )
-
-            # When
-
-            # Then
-            self.assertTrue(published, "send_message should publish message")
-
-    def test_when_first_connection_fails_then_secondary_succeeds(self):
-        # Given
-        with patch("app.submitter.submitter.BlockingConnection") as connection, patch(
-            "app.submitter.submitter.URLParameters"
-        ) as url_parameters:
-            secondary_connection = Mock()
-            connection.side_effect = [AMQPError(), secondary_connection]
-
-            # When
-            published = self.submitter.send_message(
-                message={},
-                tx_id="12345",
-                case_id="456",
-            )
-
-            # Then
-            self.assertTrue(published, "send_message should publish message")
-            # Check we create url for primary then secondary
-            url_parameters_calls = [
-                call(f"amqp://{self.host1}:{self.port}/%2F"),
-                call(f"amqp://{self.host2}:{self.port}/%2F"),
-            ]
-            url_parameters.assert_has_calls(url_parameters_calls)
-            # Check we create connection twice, failing first then with self.url2
-            self.assertEqual(connection.call_count, 2)
-
-    def test_url_generation_with_credentials(self):
-        # Given
-        with patch("app.submitter.submitter.BlockingConnection") as connection, patch(
-            "app.submitter.submitter.URLParameters"
-        ) as url_parameters:
-            secondary_connection = Mock()
-            connection.side_effect = [AMQPError(), secondary_connection]
-
-            username = "testUsername"
-            password = str(uuid.uuid4())
-
-            submitter = RabbitMQSubmitter(
-                host=self.host1,
-                secondary_host=self.host2,
-                port=self.port,
-                queue=self.queue,
-                username=username,
-                password=password,
-            )
-
-            # When
-            published = submitter.send_message(
-                message={},
-                tx_id="12345",
-                case_id="456",
-            )
-
-            # Then
-            self.assertTrue(published, "send_message should publish message")
-            # Check we create url for primary then secondary
-            url_parameters_calls = [
-                call(f"amqp://{username}:{password}@{self.host1}:{self.port}/%2F"),
-                call(f"amqp://{username}:{password}@{self.host2}:{self.port}/%2F"),
-            ]
-            url_parameters.assert_has_calls(url_parameters_calls)
-            # Check we create connection twice, failing first then with self.url2
-            self.assertEqual(connection.call_count, 2)
-
-    def test_when_fail_to_disconnect_then_log_warning_message(self):
-        # Given
-        connection = Mock()
-        error = AMQPError()
-        connection.close.side_effect = [error]
-
-        with patch(
-            "app.submitter.submitter.BlockingConnection", return_value=connection
-        ), patch("app.submitter.submitter.logger") as logger:
-            # When
-            published = self.submitter.send_message(
-                message={},
-                tx_id="123",
-                case_id="456",
-            )
-
-            # Then
-            self.assertTrue(published)
-            logger.error.assert_called_once_with(
-                "unable to close connection", category="rabbitmq", exc_info=error
-            )
-
-    def test_when_fail_to_publish_message_then_returns_false(self):
-        # Given
-        channel = Mock()
-        channel.basic_publish = Mock(
-            side_effect=NackError("Mock exception for basic_publish")
-        )
-        connection = Mock()
-        connection.channel.side_effect = Mock(return_value=channel)
-        with patch(
-            "app.submitter.submitter.BlockingConnection", return_value=connection
-        ):
-            # When
-            published = self.submitter.send_message(
-                message={},
-                tx_id="123",
-                case_id="456",
-            )
-
-            # Then
-            self.assertFalse(published, "send_message should fail to publish message")
-
-    def test_when_message_sent_then_metadata_is_sent_in_header(self):
-        # Given
-        channel = Mock()
-        connection = Mock()
-        connection.channel.side_effect = Mock(return_value=channel)
-        with patch(
-            "app.submitter.submitter.BlockingConnection", return_value=connection
-        ):
-            # When
-            self.submitter.send_message(
-                message={},
-                tx_id="12345",
-                case_id="98765",
-            )
-
-            # Then
-            call_args = channel.basic_publish.call_args
-            properties = call_args[1]["properties"]
-            headers = properties.headers
-            self.assertEqual(headers["tx_id"], "12345")
-            self.assertEqual(headers["case_id"], "98765")
+    # Then
+    assert not published, "send_message should fail to publish message"
 
 
-class TestGCSSubmitter(TestCase):
-    @staticmethod
-    def test_send_message():
-        with patch("app.submitter.submitter.storage.Client") as client:
-            # Given
-            submitter = GCSSubmitter(bucket_name="test_bucket")
+@pytest.mark.usefixtures("patch_blocking_connection")
+def test_when_message_sent_then_published_true(rabbitmq_submitter):
+    # Given
+    published = rabbitmq_submitter.send_message(
+        message={},
+        tx_id="123",
+        case_id="456",
+    )
 
-            # When
-            published = submitter.send_message(
-                message={"test_data"},
-                tx_id="123",
-                case_id="456",
-            )
-
-            # Then
-            bucket = client.return_value.get_bucket.return_value
-            blob = bucket.blob.return_value
-            assert isinstance(blob.metadata, dict)
-
-            blob_name = bucket.blob.call_args[0][0]
-            assert blob_name == "123"
-
-            blob_contents = blob.upload_from_string.call_args[0][0]
-            assert blob_contents == b"{'test_data'}"
-
-            assert published is True
-
-    @staticmethod
-    def test_send_message_adds_metadata():
-        with patch("app.submitter.submitter.storage.Client") as client:
-            # Given
-            submitter = GCSSubmitter(bucket_name="test_bucket")
-
-            # When
-            submitter.send_message(
-                message={"test_data"},
-                tx_id="123",
-                case_id="456",
-            )
-
-            # Then
-            bucket = client.return_value.get_bucket.return_value
-            blob = bucket.blob.return_value
-
-            assert blob.metadata == {
-                "tx_id": "123",
-                "case_id": "456",
-            }
+    # Then
+    assert published, "send_message should publish message"
 
 
-class TestGCSFeedbackSubmitter(TestCase):
-    @staticmethod
-    @patch("app.submitter.submitter.storage.Client")
-    def test_upload_feedback(client):
-        # Given
-        feedback = GCSFeedbackSubmitter(bucket_name="feedback")
+def test_when_first_connection_fails_then_secondary_succeeds(
+    rabbitmq_submitter, patch_blocking_connection, patch_url_parameters, mocker
+):
+    # Given
 
-        metadata = {
-            "feedback_count": 1,
-            "feedback_submission_date": "2021-03-23",
-            "form_type": "H",
-            "language_code": "cy",
-            "region_code": "GB-ENG",
-            "tx_id": "12345",
-        }
+    patch_blocking_connection.side_effect = [AMQPError(), mocker.Mock()]
 
-        payload = {
-            "feedback-type": "Feedback type",
-            "feedback-text": "Feedback text",
-        }
+    # When
+    published = rabbitmq_submitter.send_message(
+        message={},
+        tx_id="12345",
+        case_id="456",
+    )
 
-        payload.update(metadata)
+    # Then
+    assert published, "send_message should publish message"
+    # Check we create url for primary then secondary
+    url_parameters_calls = [
+        mocker.call("amqp://host1:5672/%2F"),
+        mocker.call("amqp://host2:5672/%2F"),
+    ]
+    patch_url_parameters.assert_has_calls(url_parameters_calls)
+    # Check we create connection twice, failing first then with self.url2
+    assert patch_blocking_connection.call_count == 2
 
-        # When
-        feedback_upload = feedback.upload(metadata, json_dumps(payload))
 
-        # Then
-        bucket = client.return_value.get_bucket.return_value
-        blob = bucket.blob.return_value
+def test_url_generation_with_credentials(
+    patch_blocking_connection, patch_url_parameters, mocker
+):
+    # Given
 
-        assert blob.metadata["feedback_count"] == 1
-        assert blob.metadata["feedback_submission_date"] == "2021-03-23"
-        assert blob.metadata["form_type"] == "H"
-        assert blob.metadata["language_code"] == "cy"
-        assert blob.metadata["tx_id"] == "12345"
-        assert blob.metadata["region_code"] == "GB-ENG"
+    patch_blocking_connection.side_effect = [AMQPError(), mocker.Mock()]
 
-        blob_contents = blob.upload_from_string.call_args[0][0]
+    username = "testUsername"
+    password = str(uuid.uuid4())
 
-        assert (
-            blob_contents
-            == b'{"feedback-type": "Feedback type", "feedback-text": "Feedback text", '
-            b'"feedback_count": 1, "feedback_submission_date": "2021-03-23", '
-            b'"form_type": "H", "language_code": "cy", "region_code": "GB-ENG", "tx_id": "12345"}'
-        )
-        assert feedback_upload is True
+    submitter = RabbitMQSubmitter(
+        host="host1",
+        secondary_host="host2",
+        port=5672,
+        queue="test_queue",
+        username=username,
+        password=password,
+    )
+
+    # When
+    published = submitter.send_message(
+        message={},
+        tx_id="12345",
+        case_id="456",
+    )
+
+    # Then
+    assert published, "send_message should publish message"
+    # Check we create url for primary then secondary
+    url_parameters_calls = [
+        mocker.call(f"amqp://{username}:{password}@host1:5672/%2F"),
+        mocker.call(f"amqp://{username}:{password}@host2:5672/%2F"),
+    ]
+    patch_url_parameters.assert_has_calls(url_parameters_calls)
+    # Check we create connection twice, failing first then with self.url2
+    assert patch_blocking_connection.call_count == 2
+
+
+def test_when_fail_to_disconnect_then_log_warning_message(rabbitmq_submitter, mocker):
+    # Given
+    connection = mocker.Mock()
+    error = AMQPError()
+    connection.close.side_effect = [error]
+
+    mocker.patch("app.submitter.submitter.BlockingConnection", return_value=connection)
+    logger = mocker.patch("app.submitter.submitter.logger")
+    # When
+    published = rabbitmq_submitter.send_message(
+        message={},
+        tx_id="123",
+        case_id="456",
+    )
+
+    # Then
+    assert published
+    logger.error.assert_called_once_with(
+        "unable to close connection", category="rabbitmq", exc_info=error
+    )
+
+
+def test_when_fail_to_publish_message_then_returns_false(rabbitmq_submitter, mocker):
+    # Given
+    channel = mocker.Mock()
+    channel.basic_publish = mocker.Mock(
+        side_effect=NackError("Mock exception for basic_publish")
+    )
+    connection = mocker.Mock()
+    connection.channel.side_effect = mocker.Mock(return_value=channel)
+    mocker.patch("app.submitter.submitter.BlockingConnection", return_value=connection)
+    # When
+    published = rabbitmq_submitter.send_message(
+        message={},
+        tx_id="123",
+        case_id="456",
+    )
+
+    # Then
+    assert not published, "send_message should fail to publish message"
+
+
+def test_when_message_sent_then_metadata_is_sent_in_header(rabbitmq_submitter, mocker):
+    # Given
+    channel = mocker.Mock()
+    connection = mocker.Mock()
+    connection.channel.side_effect = mocker.Mock(return_value=channel)
+    mocker.patch("app.submitter.submitter.BlockingConnection", return_value=connection)
+    # When
+    rabbitmq_submitter.send_message(
+        message={},
+        tx_id="12345",
+        case_id="98765",
+    )
+
+    # Then
+    call_args = channel.basic_publish.call_args
+    properties = call_args[1]["properties"]
+    headers = properties.headers
+    assert headers["tx_id"] == "12345"
+    assert headers["case_id"] == "98765"
+
+
+def test_send_message(patch_client):
+    gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
+    # When
+    published = gcs_submitter.send_message(
+        message={"test_data"},
+        tx_id="123",
+        case_id="456",
+    )
+
+    # Then
+    bucket = patch_client.return_value.get_bucket.return_value
+    blob = bucket.blob.return_value
+    assert isinstance(blob.metadata, dict)
+
+    blob_name = bucket.blob.call_args[0][0]
+    assert blob_name == "123"
+
+    blob_contents = blob.upload_from_string.call_args[0][0]
+    assert blob_contents == b"{'test_data'}"
+
+    assert published is True
+
+
+def test_send_message_adds_metadata(patch_client):
+    gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
+    # When
+    gcs_submitter.send_message(
+        message={"test_data"},
+        tx_id="123",
+        case_id="456",
+    )
+
+    # Then
+    bucket = patch_client.return_value.get_bucket.return_value
+    blob = bucket.blob.return_value
+
+    assert blob.metadata == {
+        "tx_id": "123",
+        "case_id": "456",
+    }
+
+
+def test_upload_feedback(patch_client):
+    # Given
+    feedback = GCSFeedbackSubmitter(bucket_name="feedback")
+
+    metadata = {
+        "feedback_count": 1,
+        "feedback_submission_date": "2021-03-23",
+        "form_type": "H",
+        "language_code": "cy",
+        "region_code": "GB-ENG",
+        "tx_id": "12345",
+    }
+
+    payload = {
+        "feedback-type": "Feedback type",
+        "feedback-text": "Feedback text",
+    }
+
+    payload.update(metadata)
+
+    # When
+    feedback_upload = feedback.upload(metadata, json_dumps(payload))
+
+    # Then
+    bucket = patch_client.return_value.get_bucket.return_value
+    blob = bucket.blob.return_value
+
+    assert blob.metadata["feedback_count"] == 1
+    assert blob.metadata["feedback_submission_date"] == "2021-03-23"
+    assert blob.metadata["form_type"] == "H"
+    assert blob.metadata["language_code"] == "cy"
+    assert blob.metadata["tx_id"] == "12345"
+    assert blob.metadata["region_code"] == "GB-ENG"
+
+    blob_contents = blob.upload_from_string.call_args[0][0]
+
+    assert (
+        blob_contents
+        == b'{"feedback-type": "Feedback type", "feedback-text": "Feedback text", '
+        b'"feedback_count": 1, "feedback_submission_date": "2021-03-23", '
+        b'"form_type": "H", "language_code": "cy", "region_code": "GB-ENG", "tx_id": "12345"}'
+    )
+    assert feedback_upload is True
