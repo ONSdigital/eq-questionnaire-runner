@@ -53,8 +53,8 @@ CACHE_HEADERS = {
 }
 
 CSP_POLICY = {
-    "default-src": ["'self'", "https://cdn.ons.gov.uk",],
-    "font-src": ["'self'", "https://cdn.ons.gov.uk", "data:", "https://fonts.gstatic.com"],
+    "default-src": ["'self'"],
+    "font-src": ["'self'", "data:", "https://fonts.gstatic.com"],
     "script-src": [
         "'self'",
         "https://www.googletagmanager.com",
