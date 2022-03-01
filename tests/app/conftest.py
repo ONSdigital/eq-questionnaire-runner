@@ -8,6 +8,7 @@ from app.data_models.list_store import ListStore
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.setup import create_app
+from app.storage.datastore import Datastore
 from tests.app.mock_data_store import MockDatastore
 
 RESPONSE_EXPIRY = datetime(2021, 11, 10, 8, 54, 22, tzinfo=timezone.utc)
@@ -122,3 +123,8 @@ def gb_locale(mocker):
         "app.jinja_filters.flask_babel.get_locale",
         mocker.MagicMock(return_value="en_GB"),
     )
+
+
+@pytest.fixture
+def datastore(client):
+    return Datastore(client)
