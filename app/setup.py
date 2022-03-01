@@ -57,7 +57,6 @@ CSP_POLICY = {
     "font-src": ["'self'", "https://cdn.ons.gov.uk", "data:", "https://fonts.gstatic.com"],
     "script-src": [
         "'self'",
-        "https://cdn.ons.gov.uk",
         "https://www.googletagmanager.com",
         "https://www.google-analytics.com",
         "https://ssl.google-analytics.com",
@@ -65,7 +64,6 @@ CSP_POLICY = {
     ],
     "style-src": [
         "'self'",
-        "https://cdn.ons.gov.uk",
         "https://tagmanager.google.com",
         "https://fonts.googleapis.com",
         "'unsafe-inline'",
@@ -75,7 +73,6 @@ CSP_POLICY = {
     "img-src": [
         "'self'",
         "data:",
-        "https://cdn.ons.gov.uk",
         "https://www.google-analytics.com",
         "https://ssl.gstatic.com",
         "https://www.gstatic.com",
