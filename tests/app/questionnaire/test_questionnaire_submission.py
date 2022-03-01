@@ -1,7 +1,5 @@
 from unittest.mock import Mock
 
-import pytest
-
 from tests.integration.integration_test_case import IntegrationTestCase
 from tests.integration.questionnaire import HUB_URL_PATH, THANK_YOU_URL_PATH
 
@@ -30,7 +28,6 @@ class TestQuestionnaireSubmission(SubmissionTestCase):
         self.post()
         self.post()
 
-    @pytest.mark.xfail(reason="DS changes pending")
     def test_successful_submission(self):
         # Given I launch and answer a questionnaire, When I submit and the submissions succeeds
         self._launch_and_submit_questionnaire()
@@ -74,7 +71,6 @@ class TestQuestionnaireSubmissionHub(SubmissionTestCase):
         self.post()
         self.post()
 
-    @pytest.mark.xfail(reason="DS changes pending")
     def test_successful_submission(self):
         # Given I launch and answer a questionnaire, When I submit and the submissions succeeds
         self._launch_and_submit_questionnaire()
@@ -111,7 +107,6 @@ class TestQuestionnaireSubmissionWithSummary(SubmissionTestCase):
         self.post()
         self.post()
 
-    @pytest.mark.xfail(reason="DS changes pending")
     def test_successful_submission(self):
         # Given I launch and answer a questionnaire, When I submit and the submissions succeeds
         self._launch_and_submit_questionnaire()

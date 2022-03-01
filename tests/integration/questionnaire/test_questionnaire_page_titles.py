@@ -1,5 +1,3 @@
-import pytest
-
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -39,7 +37,6 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
             "Check your answers and submit - Percentage Field Demo"
         )
 
-    @pytest.mark.xfail(reason="DS changes pending")
     def test_should_have_survey_in_page_title_on_thank_you(self):
         # Given
         self.launchSurvey("test_submit_with_custom_submission_text")

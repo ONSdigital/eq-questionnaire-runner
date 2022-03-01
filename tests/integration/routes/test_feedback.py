@@ -1,7 +1,5 @@
 from unittest.mock import Mock
 
-import pytest
-
 from app import settings
 from app.settings import EQ_FEEDBACK_LIMIT
 from tests.integration.integration_test_case import IntegrationTestCase
@@ -229,7 +227,6 @@ class TestFeedback(IntegrationTestCase):
         # Then I should be taken to the thank you page
         self.assertInUrl("/submitted/thank-you")
 
-    @pytest.mark.xfail(reason="DS changes pending")
     def test_feedback_call_to_action_shown(self):
         # Given I launch and complete the test_feedback questionnaire
         self._launch_and_complete_questionnaire()

@@ -1,5 +1,3 @@
-import pytest
-
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -106,7 +104,6 @@ class TestQuestionnaireDynamicAnswerOptionsFunctionDriven(IntegrationTestCase):
         self.assertInUrl("/thank-you")
         self.assertInBody("Your answers have been submitted")
 
-    @pytest.mark.xfail(reason="DS changes pending")
     def test_dynamic_answer_options(self):
         for schema_name in [
             "test_dynamic_answer_options_function_driven_with_static_options",
@@ -117,7 +114,6 @@ class TestQuestionnaireDynamicAnswerOptionsFunctionDriven(IntegrationTestCase):
                 self.assert_dynamic_answer_options(schema_name=schema_name)
                 self.assert_questionnaire_submission()
 
-    @pytest.mark.xfail(reason="DS changes pending")
     def test_dynamic_answer_options_no_answer_provided(self):
         for schema_name in [
             "test_dynamic_answer_options_function_driven_with_static_options",
@@ -130,7 +126,6 @@ class TestQuestionnaireDynamicAnswerOptionsFunctionDriven(IntegrationTestCase):
                 )
                 self.assert_questionnaire_submission()
 
-    @pytest.mark.xfail(reason="DS changes pending")
     def test_static_answer_options(self):
         # Given I launch a schema with dynamic options with additional static option
         self.launchSurvey(

@@ -1,5 +1,3 @@
-import pytest
-
 from tests.integration.integration_test_case import IntegrationTestCase
 
 ACCOUNT_SERVICE_TODO_PATH = "/surveys/todo"
@@ -80,7 +78,6 @@ class TestThankYou(IntegrationTestCase):
         for output in logs.output:
             self.assertNotIn("questionnaire request", output)
 
-    @pytest.mark.xfail(reason="DS changes pending")
     def test_default_guidance(self):
         self.launchSurvey("test_textfield")
         self.post({"name-answer": "Adam"})
@@ -89,7 +86,6 @@ class TestThankYou(IntegrationTestCase):
         self.assertInUrl("thank-you")
         self.assertInBody("Your answers will be processed in the next few weeks.")
 
-    @pytest.mark.xfail(reason="DS changes pending")
     def test_custom_guidance(self):
         self.launchSurvey("test_thank_you")
         self.post({"answer": "Yes"})
@@ -99,7 +95,6 @@ class TestThankYou(IntegrationTestCase):
         self.assertInBody("This survey was important.")
         self.assertInBody('<a href="">Important link</a>')
 
-    @pytest.mark.xfail(reason="DS changes pending")
     def test_back_to_surveys_link_on_thank_you(self):
         self.launchSurvey("test_thank_you")
         self.post({"answer": "Yes"})
