@@ -80,4 +80,3 @@ def build_census_thank_you_context(
     if confirmation_email_form:
         context.update(build_email_form_context(confirmation_email_form))
     return context
-
