@@ -51,7 +51,7 @@
     <h1 data-qa="view-submitted-response-title">{{ _("Get a copy of your answers") }}</h1>
     <p
       class="ons-u-mb-s">{{ _("You can <a href='{url}' id='view-submitted-response-link'>save or print your answers</a> for your records.").format(url = content.view_submitted_response.url) }}</p>
-    {% if session_expires_at %}
+    {% if content.view_submitted_response.expires_at %}
       {{ onsTimeoutPanel ({
           "id": "view-submitted-response-countdown",
           "minutesTextSingular": _("minute"),
@@ -59,10 +59,10 @@
           "secondsTextSingular": _("second"),
           "secondsTextPlural": _("seconds"),
           "countdownText": _("For security, your answers will only be available to view for another"),
-          "nojsText": _("For security, your answers will only be available to view for another ") + content.view_submitted_response.countdown_minutes|string + _(" minutes"),
+          "nojsText": _("For security, your answers will only be available to view for another ") + content.view_submitted_response.expires_minutes|string + _(" minutes"),
           "redirectUrl":  url_for("post_submission.get_thank_you"),
           "serverSessionExpiryEndpoint": url_for('session.session_expiry'),
-          "sessionExpiresAt": session_expires_at
+          "sessionExpiresAt": content.view_submitted_response.expires_at
       }) }}
     {% endif %}
   {% else %}

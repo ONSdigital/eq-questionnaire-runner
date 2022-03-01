@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-02-16 09:41+0000\n"
+"POT-Creation-Date: 2022-03-01 18:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,7 +52,7 @@ msgid "Select an answer <span class=\"ons-u-vh\">to ‘%(question_title)s’</sp
 msgstr ""
 
 #: app/forms/error_messages.py:18
-#: app/forms/field_handlers/dropdown_handler.py:15
+#: app/forms/field_handlers/dropdown_handler.py:16
 msgid "Select an answer"
 msgstr ""
 
@@ -522,7 +522,7 @@ msgstr ""
 
 #: app/views/handlers/confirm_email.py:128
 #: app/views/handlers/confirmation_email.py:68
-#: app/views/handlers/feedback.py:80 app/views/handlers/question.py:160
+#: app/views/handlers/feedback.py:79 app/views/handlers/question.py:160
 msgid "Error: {page_title}"
 msgstr ""
 
@@ -534,35 +534,35 @@ msgstr ""
 msgid "Feedback"
 msgstr ""
 
-#: app/views/handlers/feedback.py:127
+#: app/views/handlers/feedback.py:123
 msgid "Give feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:133 app/views/handlers/feedback.py:157
+#: app/views/handlers/feedback.py:129 app/views/handlers/feedback.py:153
 msgid "Select what your feedback is about"
 msgstr ""
 
-#: app/views/handlers/feedback.py:136 app/views/handlers/feedback.py:137
+#: app/views/handlers/feedback.py:132 app/views/handlers/feedback.py:133
 msgid "The survey questions"
 msgstr ""
 
-#: app/views/handlers/feedback.py:138
+#: app/views/handlers/feedback.py:134
 msgid "For example, questions not clear, answer options not relevant"
 msgstr ""
 
-#: app/views/handlers/feedback.py:143 app/views/handlers/feedback.py:144
+#: app/views/handlers/feedback.py:139 app/views/handlers/feedback.py:140
 msgid "Page design and structure"
 msgstr ""
 
-#: app/views/handlers/feedback.py:147 app/views/handlers/feedback.py:150
+#: app/views/handlers/feedback.py:143 app/views/handlers/feedback.py:146
 msgid "General feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:165 app/views/handlers/feedback.py:175
+#: app/views/handlers/feedback.py:161 app/views/handlers/feedback.py:171
 msgid "Enter your feedback"
 msgstr ""
 
-#: app/views/handlers/feedback.py:166
+#: app/views/handlers/feedback.py:162
 msgid "Do not include confidential information, such as your contact details"
 msgstr ""
 
@@ -707,7 +707,7 @@ msgstr ""
 msgid "Thank you for completing the census"
 msgstr ""
 
-#: app/views/handlers/view_submitted_response.py:50
+#: app/views/handlers/view_submitted_response.py:52
 msgid "View Submitted Response"
 msgstr ""
 
@@ -922,6 +922,34 @@ msgstr ""
 msgid ""
 "You can <a href='{url}' id='view-submitted-response-link'>save or print "
 "your answers</a> for your records."
+msgstr ""
+
+#: templates/layouts/_base.html:158 templates/thank-you.html:57
+msgid "minute"
+msgstr ""
+
+#: templates/layouts/_base.html:159 templates/thank-you.html:58
+msgid "minutes"
+msgstr ""
+
+#: templates/layouts/_base.html:160 templates/thank-you.html:59
+msgid "second"
+msgstr ""
+
+#: templates/layouts/_base.html:161 templates/thank-you.html:60
+msgid "seconds"
+msgstr ""
+
+#: templates/thank-you.html:61
+msgid "For security, your answers will only be available to view for another"
+msgstr ""
+
+#: templates/thank-you.html:62
+msgid "For security, your answers will only be available to view for another "
+msgstr ""
+
+#: templates/thank-you.html:62
+msgid " minutes"
 msgstr ""
 
 #: templates/thank-you.html:73 templates/view-submitted-response.html:66
@@ -1154,22 +1182,6 @@ msgstr ""
 
 #: templates/layouts/_base.html:157
 msgid "Continue survey"
-msgstr ""
-
-#: templates/layouts/_base.html:158
-msgid "minute"
-msgstr ""
-
-#: templates/layouts/_base.html:159
-msgid "minutes"
-msgstr ""
-
-#: templates/layouts/_base.html:160
-msgid "second"
-msgstr ""
-
-#: templates/layouts/_base.html:161
-msgid "seconds"
 msgstr ""
 
 #: templates/layouts/_questionnaire.html:38

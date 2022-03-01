@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta
 from typing import Mapping, Optional
 
 from flask import current_app, url_for
@@ -45,16 +45,21 @@ def build_thank_you_context(
 
 
 def build_view_submitted_response_context(schema, submitted_at):
+
     view_submitted_response = {"enabled": schema.is_view_submitted_response_enabled}
 
     if schema.is_view_submitted_response_enabled:
+        view_submitted_expiry_seconds = current_app.config[
+            "VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS"
+        ]
+        response_expires_at = submitted_at + timedelta(
+            seconds=view_submitted_expiry_seconds
+        )
         expired = has_view_submitted_response_expired(submitted_at)
         view_submitted_response["expired"] = expired
-        view_submitted_response["countdown_seconds"] = int(
-            get_submission_countdown_seconds(submitted_at)
-        )
-        view_submitted_response["countdown_minutes"] = int(
-            get_submission_countdown_seconds(submitted_at) / 60
+        view_submitted_response["expires_at"] = response_expires_at
+        view_submitted_response["expires_minutes"] = int(
+            view_submitted_expiry_seconds / 60
         )
         if not expired:
             view_submitted_response["url"] = url_for(
@@ -76,10 +81,3 @@ def build_census_thank_you_context(
         context.update(build_email_form_context(confirmation_email_form))
     return context
 
-
-def get_submission_countdown_seconds(submitted_at):
-    return (
-        datetime.now(timezone.utc) - submitted_at
-    ).total_seconds() + current_app.config[
-        "VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS"
-    ]
