@@ -24,6 +24,10 @@ RELATIONSHIP_CHILDREN = ["UnrelatedQuestion"]
 QuestionSchema = Mapping[str, Any]
 
 
+class InvalidSchemaConfigurationException(Exception):
+    pass
+
+
 class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def __init__(
         self, questionnaire_json: Mapping, language_code: str = DEFAULT_LANGUAGE_CODE
@@ -603,7 +607,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         )
 
     def _get_values_for_key(
-        self, block: Mapping, key: str, ignore_keys: list[str] = None
+        self, block: Mapping, key: str, ignore_keys: Optional[list[str]] = None
     ) -> Generator:
         ignore_keys = ignore_keys or []
         for k, v in block.items():

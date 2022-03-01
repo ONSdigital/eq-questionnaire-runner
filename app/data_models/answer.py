@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
 from decimal import Decimal
-from typing import Optional, Union, overload
+from typing import Optional, TypedDict, Union, overload
 
 from markupsafe import Markup, escape
 
@@ -21,6 +21,12 @@ AnswerValueEscapedTypes = Union[
 ]
 
 
+class AnswerDict(TypedDict, total=False):
+    answer_id: str
+    list_item_id: str
+    value: AnswerValueTypes
+
+
 @dataclass
 class Answer:
     answer_id: str
@@ -28,7 +34,7 @@ class Answer:
     list_item_id: Optional[str] = field(default=None)
 
     @classmethod
-    def from_dict(cls, answer_dict: dict) -> Answer:
+    def from_dict(cls, answer_dict: AnswerDict) -> Answer:
         return cls(
             answer_id=answer_dict["answer_id"],
             value=answer_dict["value"],

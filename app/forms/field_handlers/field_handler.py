@@ -24,7 +24,7 @@ class FieldHandler(ABC):
         rule_evaluator: RuleEvaluator,
         error_messages: Mapping[str, str],
         disable_validation: bool = False,
-        question_title: str = None,
+        question_title: Optional[str] = None,
     ):
         self.answer_schema = answer_schema
         self.value_source_resolver = value_source_resolver

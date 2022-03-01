@@ -48,8 +48,7 @@ class Feedback:
     ):
         if not self.is_enabled(schema):
             raise FeedbackNotEnabled
-
-        if self.is_limit_reached(session_store.session_data):
+        if self.is_limit_reached(session_store.session_data):  # type: ignore
             raise FeedbackLimitReached
 
         self._questionnaire_store = questionnaire_store
@@ -84,13 +83,10 @@ class Feedback:
         return self.PAGE_TITLE
 
     def handle_post(self) -> None:
-        session_data = self._session_store.session_data
+        session_data: SessionData = self._session_store.session_data  # type: ignore
         session_data.feedback_count += 1
 
-        feedback_metadata = FeedbackMetadata(
-            session_data.case_id,
-            session_data.tx_id,
-        )
+        feedback_metadata = FeedbackMetadata(session_data.case_id, session_data.tx_id)  # type: ignore
 
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
@@ -254,7 +250,7 @@ class FeedbackPayload:
         metadata: Mapping[str, Union[str, int, list]],
         response_metadata: Mapping[str, Union[str, int, list]],
         schema: QuestionnaireSchema,
-        case_id: str,
+        case_id: Optional[str],
         submission_language_code: Optional[str],
         feedback_count: int,
         feedback_text: str,
