@@ -290,9 +290,6 @@ The following environment variables are optional:
 | MEMORY                       | 4G               | The amount of memory to allocate for each Cloud Run container instance                                         |
 | GOOGLE_TAG_MANAGER_ID        |                  | The Google Tag Manger ID - Specifies the GTM account                                                           |
 | GOOGLE_TAG_MANAGER_AUTH      |                  | The Google Tag Manger Auth - Ties the GTM container with the whole environment                                 |
-| EQ_NEW_RELIC_ENABLED         | False            | Enable New Relic monitoring                                                                                    |
-| NEW_RELIC_LICENSE_KEY        |                  | New Relic license key                                                                                          |
-| NEW_RELIC_APP_NAME           |                  | Display name for the application in New Relic                                                                  |
 | WEB_SERVER_TYPE              | gunicorn-threads | Web server type used to run the application. This also determines the worker class which can be async/threaded |
 | WEB_SERVER_WORKERS           | 7                | The number of worker processes                                                                                 |
 | WEB_SERVER_THREADS           | 10               | The number of worker threads per worker                                                                        |
@@ -359,9 +356,6 @@ The following env variables can be used
 | EQ_QUESTIONNAIRE_STATE_TABLE_NAME         |                            |                                                                                                                |
 | EQ_SESSION_TABLE_NAME                     |                            |                                                                                                                |
 | EQ_USED_JTI_CLAIM_TABLE_NAME              |                            |                                                                                                                |
-| EQ_NEW_RELIC_ENABLED                      | False                      | Enable New Relic monitoring                                                                                    |
-| NEW_RELIC_LICENSE_KEY                     |                            | Enable new relic monitoring by supplying a New Relic license key                                               |
-| NEW_RELIC_APP_NAME                        |                            | The name to display for the application in New Relic                                                           |
 | WEB_SERVER_TYPE                           |                            | Web server type used to run the application. This also determines the worker class which can be async/threaded |
 | WEB_SERVER_WORKERS                        |                            | The number of worker processes                                                                                 |
 | WEB_SERVER_THREADS                        |                            | The number of worker threads per worker                                                                        |
