@@ -898,7 +898,7 @@ def transformer(mock_renderer, mock_schema):
 
 @pytest.fixture
 @pytest.mark.usefixtures("app", "gb_locale")
-def question_json():
+def placholder_transform_question_json():
     return {
         "id": "confirm-date-of-birth-proxy",
         "title": "Confirm date of birth",
@@ -972,12 +972,14 @@ def question_json():
 
 
 @pytest.fixture
-def pointers(question_json):
-    return list(find_pointers_containing(question_json, "placeholders"))
+def placholder_transform_pointers(placholder_transform_question_json):
+    return list(
+        find_pointers_containing(placholder_transform_question_json, "placeholders")
+    )
 
 
 @pytest.fixture
-def mock_list_store():
+def populated_list_store():
     serialized = [
         {
             "name": "people",
@@ -996,41 +998,33 @@ def mock_location():
 
 
 @pytest.fixture
-def schema(mocker):
+def mock_empty_schema(mocker):
     return mocker.MagicMock(spec=QuestionnaireSchema)
 
 
 @pytest.fixture
-def mock_answer_store(mocker):
+def mock_empty_answer_store(mocker):
     return mocker.MagicMock(spec=AnswerStore)
 
 
 @pytest.fixture
-def progress_store(mocker):
-    _progress_store = mocker.MagicMock(spec=ProgressStore)
-    _progress_store.locations = []
-    return _progress_store
+def mock_empty_progress_store(mocker):
+    progress_store = mocker.MagicMock(spec=ProgressStore)
+    progress_store.locations = []
+    return progress_store
 
 
 @pytest.fixture
-def list_store(mocker):
-    return mocker.MagicMock(spec=ListStore)
-
-
-@pytest.fixture
-def questionnaire_store(mock_list_store, mock_answer_store, progress_store, mocker):
+def mock_questionnaire_store(
+    populated_list_store, mock_empty_answer_store, mock_empty_progress_store, mocker
+):
     return mocker.MagicMock(
         spec=QuestionnaireStore,
         completed_blocks=[],
-        answer_store=mock_answer_store,
-        list_store=mock_list_store,
-        progress_store=progress_store,
+        answer_store=mock_empty_answer_store,
+        list_store=populated_list_store,
+        progress_store=mock_empty_progress_store,
     )
-
-
-@pytest.fixture
-def metadata(mocker):
-    return mocker.MagicMock()
 
 
 @pytest.fixture

@@ -5,11 +5,11 @@ from app.data_models.list_store import ListStore
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 
 
-def test_correct_pointers(pointers):
-    assert pointers[0] == "/answers/0/options/0/label"
+def test_correct_pointers(placholder_transform_pointers):
+    assert placholder_transform_pointers[0] == "/answers/0/options/0/label"
 
 
-def test_renders_pointer(question_json, mocker):
+def test_renders_pointer(placholder_transform_question_json, mocker):
     mock_transform = {
         "transform": "calculate_date_difference",
         "arguments": {
@@ -21,7 +21,7 @@ def test_renders_pointer(question_json, mocker):
         },
     }
 
-    json_to_render = question_json.copy()
+    json_to_render = placholder_transform_question_json.copy()
     json_to_render["answers"][0]["options"][0]["label"]["placeholders"][1][
         "transforms"
     ][0] = mock_transform
@@ -35,13 +35,15 @@ def test_renders_pointer(question_json, mocker):
     )
     renderer = get_placeholder_render(mocker=mocker, answer_store=answer_store)
     rendered = renderer.render_pointer(
-        question_json, "/answers/0/options/0/label", list_item_id=None
+        placholder_transform_question_json,
+        "/answers/0/options/0/label",
+        list_item_id=None,
     )
 
     assert rendered == "Hal Abelson’s age is 28 years. Is this correct?"
 
 
-def test_renders_json(question_json, mocker):
+def test_renders_json(placholder_transform_question_json, mocker):
     mock_transform = {
         "transform": "calculate_date_difference",
         "arguments": {
@@ -52,7 +54,7 @@ def test_renders_json(question_json, mocker):
             "second_date": {"value": "2019-02-01"},
         },
     }
-    json_to_render = question_json.copy()
+    json_to_render = placholder_transform_question_json.copy()
     json_to_render["answers"][0]["options"][0]["label"]["placeholders"][1][
         "transforms"
     ][0] = mock_transform
@@ -72,7 +74,7 @@ def test_renders_json(question_json, mocker):
     assert rendered_label == "Alfred Aho’s age is 33 years. Is this correct?"
 
 
-def test_renders_json_uses_language(question_json, mocker):
+def test_renders_json_uses_language(placholder_transform_question_json, mocker):
     mock_transform = {
         "transform": "calculate_date_difference",
         "arguments": {
@@ -83,7 +85,7 @@ def test_renders_json_uses_language(question_json, mocker):
             "second_date": {"value": "2019-02-01"},
         },
     }
-    json_to_render = question_json.copy()
+    json_to_render = placholder_transform_question_json.copy()
     json_to_render["answers"][0]["options"][0]["label"]["placeholders"][1][
         "transforms"
     ][0] = mock_transform
@@ -104,11 +106,13 @@ def test_renders_json_uses_language(question_json, mocker):
     assert rendered_label == "Alfred Aho age is 33 years. Is this correct?"
 
 
-def test_errors_on_invalid_pointer(question_json, mocker):
+def test_errors_on_invalid_pointer(placholder_transform_question_json, mocker):
     renderer = get_placeholder_render(mocker=mocker)
 
     with pytest.raises(ValueError):
-        renderer.render_pointer(question_json, "/title", list_item_id=None)
+        renderer.render_pointer(
+            placholder_transform_question_json, "/title", list_item_id=None
+        )
 
 
 def test_errors_on_invalid_json(mocker):
