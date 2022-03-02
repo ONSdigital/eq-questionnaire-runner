@@ -93,6 +93,7 @@ requirements.txt
 # Ignore built schemas but not test schemas
 schemas/*
 !schemas/test
+!schemas/business
 
 # Ignore any generated pages for the functional tests
 tests/functional/generated_pages

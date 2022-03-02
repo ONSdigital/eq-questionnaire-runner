@@ -101,7 +101,8 @@ def load_schema_from_name(schema_name, language_code=DEFAULT_LANGUAGE_CODE):
 @lru_cache(maxsize=None)
 def _load_schema_from_name(schema_name, language_code):
     schema_json = _load_schema_file(schema_name, language_code)
-
+    cache_info = _load_schema_from_name.cache_info()
+    logger.error(f"hey rhys check out this log info: cache_info.miss: {cache_info.misses}, cache_info.hits: {cache_info.hits} cache_info.currsize: {cache_info.currsize}")
     return QuestionnaireSchema(schema_json, language_code)
 
 
