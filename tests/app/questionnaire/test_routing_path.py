@@ -1,14 +1,13 @@
 from app.questionnaire.routing_path import RoutingPath
 
 
-def test_eq_to_routing_path(
-    routing_path, block_ids, section_id, list_item_id, list_name
-):
+def test_eq_to_routing_path(block_ids, routing_path):
+
     assert routing_path == RoutingPath(
         block_ids,
-        section_id=section_id,
-        list_item_id=list_item_id,
-        list_name=list_name,
+        section_id="section-1",
+        list_item_id="list_item_id",
+        list_name="list_name",
     )
 
 
@@ -17,7 +16,7 @@ def test_eq_to_tuple(block_ids, routing_path):
 
 
 def test_len(block_ids, routing_path):
-    assert len(block_ids) == len(routing_path)
+    assert len(routing_path) == len(block_ids)
 
 
 def test_reversed(block_ids, routing_path):
@@ -37,8 +36,8 @@ def test_getitem(block_ids, routing_path):
     assert block_ids[0] == routing_path[0]
 
 
-def test_properties(block_ids, routing_path, section_id, list_item_id, list_name):
+def test_properties(block_ids, routing_path):
     assert block_ids == routing_path
-    assert section_id == routing_path.section_id
-    assert list_item_id == routing_path.list_item_id
-    assert list_name == routing_path.list_name
+    assert "section-1" == routing_path.section_id
+    assert "list_item_id" == routing_path.list_item_id
+    assert "list_name" == routing_path.list_name

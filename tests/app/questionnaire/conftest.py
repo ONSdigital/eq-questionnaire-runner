@@ -1033,27 +1033,12 @@ def block_ids():
 
 
 @pytest.fixture
-def section_id():
-    return "section-1"
-
-
-@pytest.fixture
-def list_item_id():
-    return "list_item_id"
-
-
-@pytest.fixture
-def list_name():
-    return "list_name"
-
-
-@pytest.fixture
-def routing_path(block_ids, section_id, list_item_id, list_name):
+def routing_path(block_ids):
     return RoutingPath(
         block_ids,
-        section_id=section_id,
-        list_item_id=list_item_id,
-        list_name=list_name,
+        section_id="section-1",
+        list_item_id="list_item_id",
+        list_name="list_name",
     )
 
 
@@ -1074,11 +1059,6 @@ def answers():
         "other_text_answer": Answer(answer_id="other_string", value="xyz"),
         "missing_answer": Answer(answer_id="missing", value=1),
     }
-
-
-@pytest.fixture
-def current_location():
-    return Location(section_id="some-section", block_id="some-block")
 
 
 @pytest.fixture

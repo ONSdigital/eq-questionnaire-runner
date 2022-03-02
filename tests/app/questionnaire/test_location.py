@@ -4,10 +4,9 @@ from app.questionnaire.location import Location
 
 
 @pytest.mark.usefixtures("app")
-def test_location_url():
-    location = Location(section_id="some-section", block_id="some-block")
+def test_location_url(current_location):
     assert (
-        location.url(_external=True)
+        current_location.url(_external=True)
         == "http://test.localdomain/questionnaire/some-block/"
     )
 
@@ -37,10 +36,8 @@ def test_location_url_with_list_item_id():
     )
 
 
-def test_location_hash():
-    location = Location(section_id="some-section", block_id="some-block")
-
-    assert hash(location) == hash(frozenset(location.__dict__.values()))
+def test_location_hash(current_location):
+    assert hash(current_location) == hash(frozenset(current_location.__dict__.values()))
 
 
 def test_load_location_from_dict():

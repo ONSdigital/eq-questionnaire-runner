@@ -9,6 +9,7 @@ from app.data_models.progress_store import ProgressStore
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.publisher import PubSubPublisher
+from app.questionnaire.location import Location
 from app.setup import create_app
 from tests.app.mock_data_store import MockDatastore
 
@@ -134,3 +135,8 @@ def gb_locale(mocker):
         "app.jinja_filters.flask_babel.get_locale",
         mocker.MagicMock(return_value="en_GB"),
     )
+
+
+@pytest.fixture
+def current_location():
+    return Location(section_id="some-section", block_id="some-block")

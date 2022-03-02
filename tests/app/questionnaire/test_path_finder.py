@@ -264,14 +264,7 @@ def test_routing_path_should_skip_block(answer_store, list_store):
     )
 
     # When
-    path_finder = PathFinder(
-        schema,
-        answer_store,
-        list_store,
-        progress_store,
-        {},
-        {},
-    )
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
     routing_path = path_finder.routing_path(section_id=section_id)
 
     # Then
@@ -303,14 +296,7 @@ def test_new_routing_path_should_skip_block(answer_store, list_store):
     )
 
     # When
-    path_finder = PathFinder(
-        schema,
-        answer_store,
-        list_store,
-        progress_store,
-        {},
-        {},
-    )
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
     routing_path = path_finder.routing_path(section_id=section_id)
 
     # Then
@@ -342,14 +328,7 @@ def test_routing_path_should_skip_group(answer_store, list_store):
     )
 
     # When
-    path_finder = PathFinder(
-        schema,
-        answer_store,
-        list_store,
-        progress_store,
-        {},
-        {},
-    )
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
     routing_path = path_finder.routing_path(section_id=section_id)
 
     # Then
@@ -381,14 +360,7 @@ def test_new_routing_path_should_skip_group(answer_store, list_store):
     )
 
     # When
-    path_finder = PathFinder(
-        schema,
-        answer_store,
-        list_store,
-        progress_store,
-        {},
-        {},
-    )
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
     routing_path = path_finder.routing_path(section_id=section_id)
 
     # Then
@@ -420,14 +392,7 @@ def test_routing_path_should_not_skip_group(answer_store, list_store):
     )
 
     # When
-    path_finder = PathFinder(
-        schema,
-        answer_store,
-        list_store,
-        progress_store,
-        {},
-        {},
-    )
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
     routing_path = path_finder.routing_path(section_id=section_id)
 
     # Then
@@ -449,14 +414,7 @@ def test_get_routing_path_when_first_block_in_group_skipped(
     )
 
     # When
-    path_finder = PathFinder(
-        schema,
-        answer_store,
-        list_store,
-        progress_store,
-        {},
-        {},
-    )
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
 
     # Then
     expected_route = RoutingPath(
@@ -475,14 +433,7 @@ def test_build_path_with_group_routing(answer_store, list_store, progress_store)
     answer_store.add_or_update(Answer(answer_id="which-group-answer", value="group2"))
 
     # When i build the path
-    path_finder = PathFinder(
-        schema,
-        answer_store,
-        list_store,
-        progress_store,
-        {},
-        {},
-    )
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
     path = path_finder.routing_path(section_id=section_id)
 
     # Then it should route me straight to Group2 and not Group1
@@ -517,14 +468,7 @@ def test_remove_answer_and_block_if_routing_backwards(list_store):
     answer_store.add_or_update(number_of_employees_answer)
     answer_store.add_or_update(confirm_zero_answer)
 
-    path_finder = PathFinder(
-        schema,
-        answer_store,
-        list_store,
-        progress_store,
-        {},
-        {},
-    )
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
 
     assert (
         len(
@@ -589,14 +533,7 @@ def test_new_remove_answer_and_block_if_routing_backwards(list_store):
     answer_store.add_or_update(number_of_employees_answer)
     answer_store.add_or_update(confirm_zero_answer)
 
-    path_finder = PathFinder(
-        schema,
-        answer_store,
-        list_store,
-        progress_store,
-        {},
-        {},
-    )
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
 
     assert (
         len(
