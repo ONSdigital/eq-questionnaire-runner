@@ -61,7 +61,6 @@
           "countdownText": _("For security, your answers will only be available to view for another"),
           "nojsText": _("For security, your answers will only be available to view for another ") + content.view_submitted_response.expires_minutes|string + _(" minutes"),
           "redirectUrl":  url_for("post_submission.get_thank_you"),
-          "serverSessionExpiryEndpoint": url_for('session.session_expiry'),
           "sessionExpiresAt": content.view_submitted_response.expires_at
       }) }}
     {% endif %}
