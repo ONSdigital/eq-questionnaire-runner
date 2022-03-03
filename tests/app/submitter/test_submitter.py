@@ -7,7 +7,7 @@ from app.submitter import GCSFeedbackSubmitter, GCSSubmitter, RabbitMQSubmitter
 from app.utilities.json import json_dumps
 
 
-def test_when_fail_to_connect_to_queue_then_published_false(
+def test_rabbitmq_submitter_when_fail_to_connect_to_queue_then_published_false(
     rabbitmq_submitter, patch_blocking_connection
 ):
     # Given
@@ -25,7 +25,7 @@ def test_when_fail_to_connect_to_queue_then_published_false(
 
 
 @pytest.mark.usefixtures("patch_blocking_connection")
-def test_when_message_sent_then_published_true(rabbitmq_submitter):
+def test_rabbitmq_submitter_when_message_sent_then_published_true(rabbitmq_submitter):
     # Given
     published = rabbitmq_submitter.send_message(
         message={},
@@ -37,7 +37,7 @@ def test_when_message_sent_then_published_true(rabbitmq_submitter):
     assert published, "send_message should publish message"
 
 
-def test_when_first_connection_fails_then_secondary_succeeds(
+def test_rabbitmq_submitter_when_first_connection_fails_then_secondary_succeeds(
     rabbitmq_submitter, patch_blocking_connection, patch_url_parameters, mocker
 ):
     # Given
@@ -63,7 +63,7 @@ def test_when_first_connection_fails_then_secondary_succeeds(
     assert patch_blocking_connection.call_count == 2
 
 
-def test_url_generation_with_credentials(
+def test_rabbitmq_submitter_url_generation_with_credentials(
     patch_blocking_connection, patch_url_parameters, mocker
 ):
     # Given
@@ -101,7 +101,9 @@ def test_url_generation_with_credentials(
     assert patch_blocking_connection.call_count == 2
 
 
-def test_when_fail_to_disconnect_then_log_warning_message(rabbitmq_submitter, mocker):
+def test_rabbitmq_submitter_when_fail_to_disconnect_then_log_warning_message(
+    rabbitmq_submitter, mocker
+):
     # Given
     connection = mocker.Mock()
     error = AMQPError()
@@ -123,7 +125,9 @@ def test_when_fail_to_disconnect_then_log_warning_message(rabbitmq_submitter, mo
     )
 
 
-def test_when_fail_to_publish_message_then_returns_false(rabbitmq_submitter, mocker):
+def test_rabbitmq_submitter_when_fail_to_publish_message_then_returns_false(
+    rabbitmq_submitter, mocker
+):
     # Given
     channel = mocker.Mock()
     channel.basic_publish = mocker.Mock(
@@ -143,7 +147,9 @@ def test_when_fail_to_publish_message_then_returns_false(rabbitmq_submitter, moc
     assert not published, "send_message should fail to publish message"
 
 
-def test_when_message_sent_then_metadata_is_sent_in_header(rabbitmq_submitter, mocker):
+def test_rabbitmq_submitter_when_message_sent_then_metadata_is_sent_in_header(
+    rabbitmq_submitter, mocker
+):
     # Given
     channel = mocker.Mock()
     connection = mocker.Mock()
@@ -164,7 +170,7 @@ def test_when_message_sent_then_metadata_is_sent_in_header(rabbitmq_submitter, m
     assert headers["case_id"] == "98765"
 
 
-def test_send_message(patch_client):
+def test_gcs_submitter_send_message(patch_client):
     gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
     # When
     published = gcs_submitter.send_message(
@@ -187,7 +193,7 @@ def test_send_message(patch_client):
     assert published is True
 
 
-def test_send_message_adds_metadata(patch_client):
+def test_gcs_submitter_send_message_adds_metadata(patch_client):
     gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
     # When
     gcs_submitter.send_message(
@@ -206,7 +212,7 @@ def test_send_message_adds_metadata(patch_client):
     }
 
 
-def test_upload_feedback(patch_client):
+def test_gcs_feedback_submitter_upload_feedback(patch_client):
     # Given
     feedback = GCSFeedbackSubmitter(bucket_name="feedback")
 
