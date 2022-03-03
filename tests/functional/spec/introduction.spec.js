@@ -18,9 +18,8 @@ describe("Introduction page", () => {
   });
   it("Given I start a survey with introduction guidance set, When I view the introduction page, Then I should be able to see introduction guidance", () => {
     browser.openQuestionnaire(introductionSchema);
-    expect($("#item-guidance-business-details > div").getText()).to.contain("Coronavirus (COVID-19) guidance");
-    expect($("#item-guidance-business-details > div > p").getText()).to.contain(
-      "Explain your figures in the comment section to minimise us contacting you and to help us tell an industry story"
-    );
+    expect($(IntroductionPage.guidancePanel(1)).isDisplayed()).to.be.true;
+    expect($(IntroductionPage.guidancePanel(1)).getHTML()).to.contain("Coronavirus (COVID-19) guidance");
+    expect($(IntroductionPage.guidancePanel(1)).getHTML()).to.contain("Explain your figures in the comment section to minimise us contacting you and to help us tell an industry story");
   });
 });

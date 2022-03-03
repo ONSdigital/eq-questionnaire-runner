@@ -5,6 +5,7 @@ import json
 import logging
 import os
 import re
+from pprint import pprint
 from string import Template
 
 from app.utilities.json import json_loads
@@ -97,6 +98,12 @@ DEFINITION_CONTENT_GETTER = Template(
 
 DEFINITION_BUTTON_GETTER = Template(
     r"""  definitionButton(definitionIndex) { return `[data-qa='${definitionId}-${definitionIndex}-button']`; }
+
+"""
+)
+
+GUIDANCE_PANEL_GETTER = Template(
+    r"""  guidancePanel(guidanceIndex) { return `[data-qa='${guidanceId}-${guidanceIndex}']`; }
 
 """
 )
@@ -522,6 +529,10 @@ def process_definition(context, page_spec):
     page_spec.write(DEFINITION_BUTTON_GETTER.safe_substitute(context))
 
 
+def process_guidance(context, page_spec):
+    page_spec.write(GUIDANCE_PANEL_GETTER.safe_substitute(context))
+
+
 def write_summary_spec(page_spec, section, collapsible, answers_are_editable=False):
     list_summaries = [
         summary_element
@@ -763,7 +774,19 @@ def process_block(
             relative_require=relative_require,
         )
 
-        if block["type"] == "CalculatedSummary":
+        if block["type"] == "Introduction":
+            has_guidance = False
+            for content in block.get("primary_content", []):
+                contents_block = content.get("contents")
+
+                if contents_block and _has_guidance_in_primary_contents(contents_block):
+                    has_guidance = True
+
+            if has_guidance:
+                context = {"guidanceId": "guidance"}
+                process_guidance(context, page_spec)
+
+        elif block["type"] == "CalculatedSummary":
             process_calculated_summary(
                 block["calculation"]["answers_to_calculate"], page_spec
             )
@@ -811,6 +834,8 @@ def process_block(
 def _has_definitions_in_block_contents(block_contents):
     return any("definition" in element for element in block_contents)
 
+def _has_guidance_in_primary_contents(block_contents):
+    return any("guidance" in element for element in block_contents)
 
 def process_schema(in_schema, out_dir, spec_file, require_path=".."):
     try:
