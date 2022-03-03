@@ -3,5 +3,6 @@
     <h2>{{ content_block.title }}</h2>
   {% endif %}
   {% set contents = content_block.contents %}
+  {% set guidance_id = content_block.id %}
   {% include 'partials/contents.html' %}
 </div>
