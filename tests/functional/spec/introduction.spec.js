@@ -2,6 +2,9 @@ import IntroductionPage from "../generated_pages/introduction/introduction.page"
 
 describe("Introduction page", () => {
   const introductionSchema = "test_introduction.json";
+  beforeEach(() => {
+    browser.openQuestionnaire(introductionSchema);
+  });
 
   it("Given I start a survey, When I view the introduction page, Then I should be able to see introduction information", () => {
     browser.openQuestionnaire(introductionSchema);
@@ -13,11 +16,6 @@ describe("Introduction page", () => {
       "To take part, all you need to do is check that you have the information you need to answer the survey questions."
     );
   });
-});
-
-describe("Introduction page", () => {
-  const introductionSchema = "test_introduction_with_guidance.json";
-
   it("Given I start a survey with introduction guidance set, When I view the introduction page, Then I should be able to see introduction guidance", () => {
     browser.openQuestionnaire(introductionSchema);
     expect($("#item-guidance-business-details > div").getText()).to.contain("Coronavirus (COVID-19) guidance");
