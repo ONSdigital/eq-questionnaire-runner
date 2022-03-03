@@ -1,7 +1,7 @@
 import uuid
 
-from pika.exceptions import AMQPError, NackError
 import pytest
+from pika.exceptions import AMQPError, NackError
 
 from app.submitter import GCSFeedbackSubmitter, GCSSubmitter, RabbitMQSubmitter
 from app.utilities.json import json_dumps
