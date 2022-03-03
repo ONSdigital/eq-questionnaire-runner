@@ -108,18 +108,16 @@
                                                     }
                                                 ]
                                             }
-                                        },
-                                        {
-                                            "guidance": {
-                                                "contents": [
-                                                    {
-                                                        "title": "Coronavirus (COVID-19) guidance",
-                                                        "description": "<strong>Explain your figures</strong> in the comment section to minimise us contacting you and to help us tell an industry story"
-                                                    }
-                                                ]
-                                            }
                                         }
-                                    ]
+                                    ],
+                                    "guidance": {
+                                        "contents": [
+                                            {
+                                                "title": "Coronavirus (COVID-19) guidance",
+                                                "description": "<strong>Explain your figures</strong> in the comment section to minimise us contacting you and to help us tell an industry story"
+                                            }
+                                        ]
+                                    }
                                 },
                                 {
                                     "id": "use-of-information",

@@ -1,3 +1,5 @@
+{% from "components/panel/_macro.njk" import onsPanel %}
+
 <div id="{{content_block.id}}" class="ons-u-mb-s">
   {% if content_block.title %}
     <h2>{{ content_block.title }}</h2>
@@ -5,4 +7,15 @@
   {% set contents = content_block.contents %}
   {% set guidance_id = content_block.id %}
   {% include 'partials/contents.html' %}
+
+  {%- if content_block.guidance -%}
+  {% set contents = content_block.guidance.contents %}
+    {% call onsPanel({
+      "id": "item-guidance-" ~ guidance_id,
+      "classes": "ons-u-mb-m"
+      }) %}
+      {% set contents = content_block.guidance.contents %}
+      {% include 'partials/contents.html' %}
+    {% endcall %}
+  {% endif %}
 </div>
