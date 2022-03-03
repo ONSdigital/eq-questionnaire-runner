@@ -834,8 +834,10 @@ def process_block(
 def _has_definitions_in_block_contents(block_contents):
     return any("definition" in element for element in block_contents)
 
+
 def _has_guidance_in_primary_contents(block_contents):
     return any("guidance" in element for element in block_contents)
+
 
 def process_schema(in_schema, out_dir, spec_file, require_path=".."):
     try:
