@@ -168,6 +168,7 @@ def load_schema_from_url(survey_url, language_code):
 
 def cache_questionnaire_schemas():
     for schemas_by_language in get_schema_path_map().values():
+        logger.error(f"Caching schemas for {get_schema_path_map().values()}")
         for language_code, schemas in schemas_by_language.items():
             for schema in schemas:
                 load_schema_from_name(schema, language_code)
