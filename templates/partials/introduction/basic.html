@@ -5,15 +5,14 @@
     <h2>{{ content_block.title }}</h2>
   {% endif %}
   {% set contents = content_block.contents %}
-  {% set guidance_id = content_block.id %}
   {% include 'partials/contents.html' %}
 
   {%- if content_block.guidance -%}
-  {% set contents = content_block.guidance.contents %}
     {% call onsPanel({
-      "id": "item-guidance-" ~ guidance_id,
+      "id": "item-guidance-" ~ content_block.id,
       "classes": "ons-u-mb-m"
       }) %}
+      {% set contents = content_block.guidance.contents %}
       {% include 'partials/contents.html' %}
     {% endcall %}
   {% endif %}
