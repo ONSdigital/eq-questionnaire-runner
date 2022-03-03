@@ -5,7 +5,6 @@ import json
 import logging
 import os
 import re
-from pprint import pprint
 from string import Template
 
 from app.utilities.json import json_loads
