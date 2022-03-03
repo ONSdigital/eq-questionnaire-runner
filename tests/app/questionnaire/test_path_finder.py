@@ -1,3 +1,5 @@
+import pytest
+
 from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.path_finder import PathFinder
@@ -50,8 +52,15 @@ def test_introduction_not_in_path_when_not_in_schema(
     assert "introduction" not in routing_path
 
 
-def test_routing_path_with_conditional_path(answer_store, list_store):
-    schema = load_schema_from_name("test_new_routing_number_equals")
+@pytest.mark.parametrize(
+    "schema",
+    (
+        "test_new_routing_number_equals",
+        "test_routing_number_equals",
+    ),
+)
+def test_routing_path_with_conditional_path(schema, answer_store, list_store):
+    schema = load_schema_from_name(schema)
     section_id = schema.get_section_id_for_block_id("number-question")
     expected_path = RoutingPath(
         ["number-question", "correct-answer"],
@@ -244,9 +253,18 @@ def test_routing_path_with_conditional_value_not_in_metadata(answer_store, list_
     assert routing_path == expected_path
 
 
-def test_routing_path_should_skip_block(answer_store, list_store):
+@pytest.mark.parametrize(
+    "schema,expected_routing_path_ids",
+    (
+        ("test_new_skip_condition_block", ["do-you-want-to-skip"]),
+        ("test_skip_condition_block", ["do-you-want-to-skip", "a-non-skipped-block"]),
+    ),
+)
+def test_new_routing_path_should_skip_block(
+    schema, expected_routing_path_ids, answer_store, list_store
+):
     # Given
-    schema = load_schema_from_name("test_skip_condition_block")
+    schema = load_schema_from_name(schema)
     section_id = schema.get_section_id_for_block_id("should-skip")
     answer_store.add_or_update(
         Answer(answer_id="do-you-want-to-skip-answer", value="Yes")
@@ -269,48 +287,23 @@ def test_routing_path_should_skip_block(answer_store, list_store):
 
     # Then
     expected_routing_path = RoutingPath(
-        ["do-you-want-to-skip", "a-non-skipped-block"],
+        expected_routing_path_ids,
         section_id="default-section",
     )
 
     assert routing_path == expected_routing_path
 
 
-def test_new_routing_path_should_skip_block(answer_store, list_store):
+@pytest.mark.parametrize(
+    "schema",
+    (
+        "test_skip_condition_group",
+        "test_new_skip_condition_group",
+    ),
+)
+def test_routing_path_should_skip_group(schema, answer_store, list_store):
     # Given
-    schema = load_schema_from_name("test_new_skip_condition_block")
-    section_id = schema.get_section_id_for_block_id("should-skip")
-    answer_store.add_or_update(
-        Answer(answer_id="do-you-want-to-skip-answer", value="Yes")
-    )
-
-    progress_store = ProgressStore(
-        [
-            {
-                "section_id": "introduction-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["do-you-want-to-skip"],
-            }
-        ]
-    )
-
-    # When
-    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
-    routing_path = path_finder.routing_path(section_id=section_id)
-
-    # Then
-    expected_routing_path = RoutingPath(
-        ["do-you-want-to-skip"],
-        section_id="default-section",
-    )
-
-    assert routing_path == expected_routing_path
-
-
-def test_routing_path_should_skip_group(answer_store, list_store):
-    # Given
-    schema = load_schema_from_name("test_skip_condition_group")
+    schema = load_schema_from_name(schema)
 
     section_id = schema.get_section_id_for_block_id("do-you-want-to-skip")
     answer_store.add_or_update(
@@ -340,41 +333,16 @@ def test_routing_path_should_skip_group(answer_store, list_store):
     assert routing_path == expected_routing_path
 
 
-def test_new_routing_path_should_skip_group(answer_store, list_store):
+@pytest.mark.parametrize(
+    "schema",
+    (
+        "test_skip_condition_group",
+        "test_new_skip_condition_group",
+    ),
+)
+def test_routing_path_should_not_skip_group(schema, answer_store, list_store):
     # Given
-    schema = load_schema_from_name("test_new_skip_condition_group")
-
-    section_id = schema.get_section_id_for_block_id("do-you-want-to-skip")
-    answer_store.add_or_update(
-        Answer(answer_id="do-you-want-to-skip-answer", value="Yes")
-    )
-    progress_store = ProgressStore(
-        [
-            {
-                "section_id": "default-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["do-you-want-to-skip"],
-            }
-        ]
-    )
-
-    # When
-    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
-    routing_path = path_finder.routing_path(section_id=section_id)
-
-    # Then
-    expected_routing_path = RoutingPath(
-        ["do-you-want-to-skip"],
-        section_id="default-section",
-    )
-
-    assert routing_path == expected_routing_path
-
-
-def test_routing_path_should_not_skip_group(answer_store, list_store):
-    # Given
-    schema = load_schema_from_name("test_skip_condition_group")
+    schema = load_schema_from_name(schema)
 
     section_id = schema.get_section_id_for_block_id("do-you-want-to-skip")
     answer_store.add_or_update(
