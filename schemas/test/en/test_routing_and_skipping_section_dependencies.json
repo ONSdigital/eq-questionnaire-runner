@@ -23,11 +23,7 @@
     ],
     "questionnaire_flow": {
         "type": "Hub",
-        "options": {
-            "summary": {
-                "collapsible": false
-            }
-        }
+        "options": {}
     },
     "sections": [
         {
@@ -147,7 +143,7 @@
                             }
                         }
                     ],
-                    "id": "group2"
+                    "id": "skip-confirmation-group"
                 }
             ]
         },
@@ -164,6 +160,7 @@
                             "question": {
                                 "answers": [
                                     {
+                                        "label": "Full Name",
                                         "id": "name-answer",
                                         "mandatory": false,
                                         "type": "TextField"
@@ -180,6 +177,7 @@
                             "question": {
                                 "answers": [
                                     {
+                                        "label": "Age in years",
                                         "id": "age-answer",
                                         "mandatory": false,
                                         "type": "Number"
@@ -234,7 +232,7 @@
                                     }
                                 ],
                                 "id": "reason-no-confirmation-question",
-                                "title": "Why didn't you answer the age skipping confirmation question?",
+                                "title": "Why did you not answer the age skipping confirmation question?",
                                 "type": "General"
                             }
                         }
@@ -469,7 +467,6 @@
                             "question": {
                                 "answers": [
                                     {
-                                        "default": "Yes",
                                         "id": "repeating-answer",
                                         "mandatory": false,
                                         "options": [
@@ -497,12 +494,13 @@
                             "question": {
                                 "answers": [
                                     {
+                                        "label": "Age in years",
                                         "id": "repeating-age-answer",
                                         "mandatory": false,
                                         "type": "Number"
                                     }
                                 ],
-                                "id": "age-question",
+                                "id": "repeating-age-question",
                                 "title": "What age is this person?",
                                 "type": "General"
                             },
