@@ -52,7 +52,7 @@ describe("Thank You Default View Response Enabled", () => {
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
     });
 
-    it("When I navigate to the thank you page, and I have submitted less than 45 seconds ago, Then I should see the option to view my answers and countdown timer before it expires", () => {
+    it("When I navigate to the thank you page, and I have submitted less than 40 seconds ago, Then I should see the option to view my answers and countdown timer before it expires", () => {
       expect($(ThankYouPage.viewSubmittedGuidance()).isDisplayed()).to.be.false;
       expect($(ThankYouPage.title()).getHTML()).to.contain("Thank you for completing the Test Thank You");
       expect($(ThankYouPage.viewAnswersTitle()).getHTML()).to.contain("Get a copy of your answers");
@@ -60,11 +60,11 @@ describe("Thank You Default View Response Enabled", () => {
       expect($(ThankYouPage.viewSubmittedCountdown()).getHTML()).to.contain("For security, your answers will only be available to view for another");
     });
 
-    it("When I navigate to the thank you page, and I have submitted more than 45 seconds ago, Then I shouldn't see the option to view my answers", () => {
+    it("When I navigate to the thank you page, and I have submitted more than 40 seconds ago, Then I shouldn't see the option to view my answers", () => {
       expect($(ThankYouPage.viewSubmittedGuidance()).isDisplayed()).to.be.false;
-      browser.pause(46000); // Waiting more than 45 seconds for the timeout to expire (45 minute timeout changed to 45 seconds by overriding VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS for the purpose of the functional test)
+      browser.pause(40000); // Waiting 40 seconds for the timeout to expire (45 minute timeout changed to 35 seconds by overriding VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS for the purpose of the functional test)
       expect($(ThankYouPage.viewSubmittedGuidance()).isDisplayed()).to.be.true;
-      expect($(ThankYouPage.viewSubmittedGuidance()).getHTML()).to.contain("For security, you can no longer view your answers");
+      expect($(ThankYouPage.viewSubmittedGuidance()).getHTML()).to.contain("For security, you can no longer view or get a copy of your answers");
     });
   });
 });
