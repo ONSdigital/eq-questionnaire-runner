@@ -58,7 +58,7 @@ def build_view_submitted_response_context(schema, submitted_at):
         expired = has_view_submitted_response_expired(submitted_at)
         view_submitted_response["expired"] = expired
         view_submitted_response["expires_at"] = response_expires_at
-        view_submitted_response["expires_minutes"] = int(
+        view_submitted_response["expiry_minutes"] = int(
             view_submitted_expiry_seconds / 60
         )
         if not expired:

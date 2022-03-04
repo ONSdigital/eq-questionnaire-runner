@@ -59,7 +59,7 @@
           "secondsTextSingular": _("second"),
           "secondsTextPlural": _("seconds"),
           "countdownText": _("For security, your answers will only be available to view for another"),
-          "nojsText": _("For security, your answers will only be available to view for another ") + content.view_submitted_response.expires_minutes|string + _(" minutes"),
+          "nojsText": _("For security, your answers will only be available to view for another ") + content.view_submitted_response.expiry_minutes|string + _(" minutes"),
           "redirectUrl":  url_for("post_submission.get_thank_you"),
           "countdownExpiredText": _("For security, you can no longer view or get a copy of your answers"),
           "sessionExpiresAt": content.view_submitted_response.expires_at
