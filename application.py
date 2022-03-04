@@ -2,6 +2,9 @@
 import logging
 import os
 import sys
+import time
+
+from structlog import get_logger
 
 from structlog import configure
 from structlog.dev import ConsoleRenderer
@@ -79,5 +82,11 @@ from app.setup import (  # NOQA isort:skip # pylint: disable=wrong-import-positi
 application = create_app()
 
 if __name__ == "__main__":
+    logger = get_logger()
+    logger.info(f"hey guys {os.environ.get('SERVER_SOFTWARE', 'No value')}")
+    while ("gunicorn" not in os.environ.get("SERVER_SOFTWARE", "")):
+        logger.info(f"hey guys I am on a loop")
+        time.sleep(5)
+    logger.info(f"Server software is {os.environ.get('SERVER_SOFTWARE', 'No value')}")
     port = int(os.environ.get("PORT", 5000))
     application.run(port=port, threaded=True)
