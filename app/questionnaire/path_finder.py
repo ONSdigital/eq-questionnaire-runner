@@ -1,5 +1,7 @@
 from typing import List, Mapping, Optional
 
+from werkzeug.datastructures import ImmutableDict
+
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import CompletionStatus, ProgressStore
@@ -34,7 +36,6 @@ class PathFinder:
         """
         Visits all the blocks in a section and returns a path given a list of answers.
         """
-        blocks: List[Mapping] = []
         routing_path_block_ids: List[str] = []
         current_location = Location(section_id=section_id, list_item_id=list_item_id)
         section = self.schema.get_section(section_id)
@@ -43,22 +44,69 @@ class PathFinder:
         )
 
         if section:
+            when_rule_block_id_dependencies = self._get_when_rule_block_id_dependencies(
+                section
+            )
+            blocks = self._get_not_skipped_blocks_in_section(
+                current_location,
+                routing_path_block_ids,
+                section,
+                when_rule_block_id_dependencies,
+            )
+
+            if blocks:
+                routing_path_block_ids = self._build_routing_path_block_ids(
+                    blocks, current_location, when_rule_block_id_dependencies
+                )
+
+        return RoutingPath(routing_path_block_ids, section_id, list_item_id, list_name)
+
+    def _get_when_rule_block_id_dependencies(self, section: ImmutableDict) -> List[str]:
+        when_rule_block_id_dependencies: List[str] = []
+
+        for section_dependency in self.schema.get_section_when_rules_dependencies(
+            section
+        ):
+            section_location = Location(section_id=section_dependency["id"])
+            blocks = self._get_not_skipped_blocks_in_section(
+                section_location,
+                [],
+                section_dependency,
+                when_rule_block_id_dependencies,
+            )
+
+            if blocks:
+                when_rule_block_id_dependencies += self._build_routing_path_block_ids(
+                    blocks,
+                    section_location,
+                    when_rule_block_id_dependencies,
+                )
+        return when_rule_block_id_dependencies
+
+    def _get_not_skipped_blocks_in_section(
+        self,
+        location: Location,
+        routing_path_block_ids: List[str],
+        section: ImmutableDict,
+        when_rule_block_id_dependencies: List[str],
+    ) -> List[Mapping]:
+        # :TODO: Fix group skipping in its own section. Routing path will be empty and therefore not checked
+        if section:
+            not_skipped_blocks: List[Mapping] = []
             for group in section["groups"]:
+
                 if "skip_conditions" in group:
                     skip_conditions = group.get("skip_conditions")
                     if self.evaluate_skip_conditions(
-                        current_location, routing_path_block_ids, skip_conditions
+                        location,
+                        routing_path_block_ids,
+                        skip_conditions,
+                        when_rule_block_id_dependencies,
                     ):
                         continue
+                not_skipped_blocks.extend(group["blocks"])
 
-                blocks.extend(group["blocks"])
-
-        if blocks:
-            routing_path_block_ids = self._build_routing_path_block_ids(
-                blocks, current_location
-            )
-
-        return RoutingPath(routing_path_block_ids, section_id, list_item_id, list_name)
+            return not_skipped_blocks
 
     @staticmethod
     def _block_index_for_block_id(blocks, block_id):
@@ -67,9 +115,15 @@ class PathFinder:
             None,
         )
 
-    def _build_routing_path_block_ids(self, blocks, current_location):
+    def _build_routing_path_block_ids(
+        self,
+        blocks: List[Mapping],
+        current_location: Location,
+        when_rule_block_id_dependencies: List[str],
+    ) -> List[str]:
         # Keep going unless we've hit the last block
-        routing_path_block_ids = []
+
+        routing_path_block_ids: List[str] = []
         block_index = 0
         repeating_list = self.schema.get_repeating_list_for_section(
             current_location.section_id
@@ -78,8 +132,12 @@ class PathFinder:
         while block_index < len(blocks):
             block = blocks[block_index]
             skip_conditions = block.get("skip_conditions")
+
             is_skipping = self.evaluate_skip_conditions(
-                current_location, routing_path_block_ids, skip_conditions
+                current_location,
+                routing_path_block_ids,
+                skip_conditions,
+                when_rule_block_id_dependencies,
             )
 
             if not is_skipping:
@@ -108,6 +166,7 @@ class PathFinder:
                         routing_rules,
                         block_index,
                         routing_path_block_ids,
+                        when_rule_block_id_dependencies,
                     )
                     if block_index:
                         continue
@@ -122,8 +181,19 @@ class PathFinder:
             block_index = block_index + 1
 
     def _evaluate_routing_rules(
-        self, this_location, blocks, routing_rules, block_index, routing_path_block_ids
+        self,
+        this_location,
+        blocks,
+        routing_rules,
+        block_index,
+        routing_path_block_ids,
+        when_rule_block_id_dependencies,
     ):
+        if when_rule_block_id_dependencies:
+            routing_path_block_ids = (
+                when_rule_block_id_dependencies + routing_path_block_ids
+            )
+
         when_rule_evaluator = RuleEvaluator(
             self.schema,
             self.answer_store,
@@ -170,10 +240,19 @@ class PathFinder:
                 return next_block_index
 
     def evaluate_skip_conditions(
-        self, this_location, routing_path_block_ids, skip_conditions
+        self,
+        this_location,
+        routing_path_block_ids,
+        skip_conditions,
+        when_rule_block_id_dependencies,
     ):
         if not skip_conditions:
             return False
+
+        if when_rule_block_id_dependencies:
+            routing_path_block_ids = (
+                when_rule_block_id_dependencies + routing_path_block_ids
+            )
 
         if isinstance(skip_conditions, dict):
             when_rule_evaluator = RuleEvaluator(

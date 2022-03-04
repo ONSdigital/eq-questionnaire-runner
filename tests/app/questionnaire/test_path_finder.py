@@ -1,5 +1,6 @@
 import pytest
 
+from app.data_models import ListStore
 from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.path_finder import PathFinder
@@ -535,3 +536,253 @@ def test_new_remove_answer_and_block_if_routing_backwards(list_store):
         path_finder.progress_store.get_section_status(section_id="default-section")
         == CompletionStatus.IN_PROGRESS
     )
+
+
+@pytest.mark.parametrize(
+    "skip_age_answer, skip_confirmation_answer, schema, section_id, expected_route",
+    (
+        (
+            "Yes",
+            None,
+            "test_new_routing_and_skipping_section_dependencies",
+            "skip-confirmation-section",
+            ["security", "skip-confirmation"],
+        ),
+        (
+            "Yes",
+            None,
+            "test_new_routing_and_skipping_section_dependencies",
+            "primary-person",
+            ["name-block", "reason-no-confirmation"],
+        ),
+        (
+            "No",
+            None,
+            "test_new_routing_and_skipping_section_dependencies",
+            "skip-confirmation-section",
+            ["security"],
+        ),
+        (
+            "No",
+            None,
+            "test_new_routing_and_skipping_section_dependencies",
+            "primary-person",
+            ["name-block", "age", "reason-no-confirmation"],
+        ),
+        (
+            "Yes",
+            "Yes",
+            "test_new_routing_and_skipping_section_dependencies",
+            "primary-person",
+            ["name-block"],
+        ),
+        (
+            "Yes",
+            "No",
+            "test_new_routing_and_skipping_section_dependencies",
+            "primary-person",
+            ["name-block", "age"],
+        ),
+        (  # The skipping age question must of changed from Yes to No after answering the confirmation question,
+            # this means the confirmation answer will not be on the path, so the primary person section will asked why there was no confirmation
+            "No",
+            "Yes",
+            "test_new_routing_and_skipping_section_dependencies",
+            "primary-person",
+            ["name-block", "age", "reason-no-confirmation"],
+        ),
+        (
+            "Yes",
+            None,
+            "test_routing_and_skipping_section_dependencies",
+            "skip-confirmation-section",
+            ["security", "skip-confirmation"],
+        ),
+        (
+            "Yes",
+            None,
+            "test_routing_and_skipping_section_dependencies",
+            "primary-person",
+            ["name-block", "reason-no-confirmation"],
+        ),
+        (
+            "No",
+            None,
+            "test_routing_and_skipping_section_dependencies",
+            "skip-confirmation-section",
+            ["security"],
+        ),
+        (
+            "No",
+            None,
+            "test_routing_and_skipping_section_dependencies",
+            "primary-person",
+            ["name-block", "age", "reason-no-confirmation"],
+        ),
+        (
+            "Yes",
+            "Yes",
+            "test_routing_and_skipping_section_dependencies",
+            "primary-person",
+            ["name-block"],
+        ),
+        (
+            "Yes",
+            "No",
+            "test_routing_and_skipping_section_dependencies",
+            "primary-person",
+            ["name-block", "age"],
+        ),
+        (
+            "No",
+            "Yes",
+            "test_routing_and_skipping_section_dependencies",
+            "primary-person",
+            ["name-block", "age", "reason-no-confirmation"],
+        ),
+    ),
+)
+def test_routing_path_when_rule_block_id_dependencies(
+    list_store,
+    skip_age_answer,
+    skip_confirmation_answer,
+    schema,
+    section_id,
+    expected_route,
+):
+    # Given
+    schema = load_schema_from_name(schema)
+    answer_store = AnswerStore()
+    answer_store.add_or_update(
+        Answer(answer_id="skip-age-answer", value=skip_age_answer)
+    )
+
+    progress = [
+        {
+            "section_id": "skip-section",
+            "list_item_id": None,
+            "status": CompletionStatus.COMPLETED,
+            "block_ids": ["skip-age"],
+        }
+    ]
+
+    if skip_confirmation_answer:
+        answer_store.add_or_update(
+            Answer(answer_id="skip-confirmation-answer", value=skip_confirmation_answer)
+        )
+        progress.append(
+            {
+                "section_id": "skip-confirmation-section",
+                "list_item_id": None,
+                "status": CompletionStatus.COMPLETED,
+                "block_ids": ["security", "skip-confirmation"],
+            }
+        )
+
+    progress_store = ProgressStore(progress)
+
+    # When
+    path_finder = PathFinder(
+        schema,
+        answer_store,
+        list_store,
+        progress_store,
+        {},
+        {},
+    )
+    routing_path = path_finder.routing_path(section_id=section_id)
+
+    # Then
+    expected_routing_path = RoutingPath(
+        expected_route,
+        section_id=section_id,
+    )
+    assert routing_path == expected_routing_path
+
+
+@pytest.mark.parametrize(
+    "skip_age_answer, schema, expected_route",
+    (
+        (
+            "Yes",
+            "test_new_routing_and_skipping_section_dependencies",
+            ["repeating-sex"],
+        ),
+        (
+            "No",
+            "test_new_routing_and_skipping_section_dependencies",
+            ["repeating-sex", "repeating-age"],
+        ),
+        (
+            "Yes",
+            "test_routing_and_skipping_section_dependencies",
+            ["repeating-sex"],
+        ),
+        (
+            "No",
+            "test_routing_and_skipping_section_dependencies",
+            ["repeating-sex", "repeating-age"],
+        ),
+    ),
+)
+def test_routing_path_when_rule_block_id_dependencies_repeating(
+    skip_age_answer,
+    schema,
+    expected_route,
+):
+    # Given
+    schema = load_schema_from_name(schema)
+    answer_store = AnswerStore()
+    answer_store.add_or_update(
+        Answer(answer_id="skip-age-answer", value=skip_age_answer)
+    )
+    answer_store.add_or_update(
+        Answer(answer_id="first-name", value="John", list_item_id="lCIZsS")
+    )
+    answer_store.add_or_update(
+        Answer(answer_id="last-name", value="Smith", list_item_id="lCIZsS")
+    )
+
+    answer_store.add_or_update(Answer(answer_id="anyone-else", value="No"))
+
+    list_store = (ListStore([{"items": ["lCIZsS"], "name": "people"}]),)
+
+    progress_store = ProgressStore(
+        [
+            {
+                "section_id": "skip-section",
+                "list_item_id": None,
+                "status": CompletionStatus.COMPLETED,
+                "block_ids": ["skip-age"],
+            },
+            {
+                "section_id": "household-section",
+                "list_item_id": None,
+                "status": CompletionStatus.COMPLETED,
+                "block_ids": ["list-collector"],
+            },
+        ]
+    )
+
+    # When
+    path_finder = PathFinder(
+        schema,
+        answer_store,
+        list_store,
+        progress_store,
+        {},
+        {},
+    )
+    routing_path = path_finder.routing_path(
+        section_id="household-personal-details-section", list_item_id="lCIZsS"
+    )
+
+    # Then
+    expected_routing_path = RoutingPath(
+        expected_route,
+        section_id="household-personal-details-section",
+        list_item_id="lCIZsS",
+        list_name="people",
+    )
+
+    assert routing_path == expected_routing_path
