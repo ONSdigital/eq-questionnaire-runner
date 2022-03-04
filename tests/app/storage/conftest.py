@@ -3,17 +3,8 @@ from datetime import datetime, timedelta, timezone
 from pytest import fixture
 
 from app.data_models.app_models import EQSession
-from app.setup import create_app
 
 NOW = datetime.now(tz=timezone.utc).replace(microsecond=0)
-
-
-@fixture
-def app():
-    setting_overrides = {"LOGIN_DISABLED": True}
-    the_app = create_app(setting_overrides=setting_overrides)
-
-    return the_app
 
 
 @fixture
