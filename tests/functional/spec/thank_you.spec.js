@@ -57,7 +57,7 @@ describe("Thank You Default View Response Enabled", () => {
       expect($(ThankYouPage.title()).getHTML()).to.contain("Thank you for completing the Test Thank You");
       expect($(ThankYouPage.viewAnswersTitle()).getHTML()).to.contain("Get a copy of your answers");
       expect($(ThankYouPage.viewAnswersLink()).getText()).to.contain("save or print your answers");
-      expect($(ThankYouPage.viewSubmittedGuidance()).getHTML()).to.contain("For security, your answers will only be available to view for another");
+      expect($(ThankYouPage.viewSubmittedCountdown()).getHTML()).to.contain("For security, your answers will only be available to view for another");
     });
 
     it("When I navigate to the thank you page, and I have submitted more than 45 seconds ago, Then I shouldn't see the option to view my answers", () => {

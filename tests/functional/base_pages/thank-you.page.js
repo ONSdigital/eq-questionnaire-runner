@@ -25,6 +25,10 @@ class ThankYouPage extends BasePage {
     return '[id="view-submitted-response-guidance"]';
   }
 
+  viewSubmittedCountdown() {
+    return '[id="view-submitted-response-countdown"]';
+  }
+
   metadata() {
     return ".ons-metadata";
   }
