@@ -1,4 +1,5 @@
 {% set definition_count = namespace(value=1) %}
+{% set guidance_count = namespace(value=1) %}
 
 {% for item in contents %}
   {%- if item.definition -%}
@@ -9,11 +10,18 @@
     {% set definition_count.value = definition_count.value + 1 %}
   {%- endif -%}
 
+  {%- if item.guidance -%}
+    {% set guidance = item.guidance %}
+    {% set guidance_id = 'guidance-' ~ guidance_count.value %}
+    {%- include 'partials/guidance.html' -%}
+    {% set guidance_count.value = guidance_count.value + 1 %}
+  {%- endif -%}
+
   {%- if item.title -%}
     {%- if block and block.type == 'Interstitial' -%}
       <h2>{{item.title}}</h2>
     {%- else -%}
-      <strong class="ons-u-mb-s">{{item.title}}</strong>
+      <h3>{{item.title}}</h3>
     {%- endif -%}
   {% endif %}
 
