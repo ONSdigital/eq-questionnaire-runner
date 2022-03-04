@@ -102,12 +102,8 @@ class AWSReverseProxied:
 def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     setting_overrides=None,
 ):
-    logger = get_logger()
-    logger.error(f"hey create_app {os.environ.get('SERVER_SOFTWARE', 'No value')}")
-    while ("gunicorn" not in os.environ.get("SERVER_SOFTWARE", "")):
-        logger.error(f"hey hey create_app I am on a loop")
-        time.sleep(5)
-    logger.error(f"Server software is {os.environ.get('SERVER_SOFTWARE', 'No value')}")
+    logger.error("App sleeps for 10s")
+    time.sleep(10)
     application = Flask(__name__, template_folder="../templates")
     application.config.from_object(settings)
     if setting_overrides:

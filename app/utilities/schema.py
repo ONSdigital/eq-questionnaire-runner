@@ -95,8 +95,6 @@ def load_schema_from_session_data(session_data):
 
 
 def load_schema_from_name(schema_name, language_code=DEFAULT_LANGUAGE_CODE):
-    cache_info = _load_schema_from_name.cache_info()
-    logger.error(f"hey rhys check out this log info: cache_info.miss: {cache_info.misses}, cache_info.hits: {cache_info.hits} cache_info.currsize: {cache_info.currsize}")
     return _load_schema_from_name(schema_name, language_code)
 
 
