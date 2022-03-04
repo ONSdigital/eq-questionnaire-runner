@@ -7,7 +7,6 @@ from freezegun import freeze_time
 
 from app.data_models.session_data import SessionData
 from app.questionnaire import QuestionnaireSchema
-from app.setup import create_app
 
 time_to_freeze = datetime.now(timezone.utc).replace(second=0, microsecond=0)
 tx_id = str(uuid.uuid4())
@@ -66,14 +65,6 @@ def confirmation_email_fulfilment_schema():
             "submission": {"confirmation_email": True},
         }
     )
-
-
-@pytest.fixture
-def app():
-    setting_overrides = {"LOGIN_DISABLED": True}
-    the_app = create_app(setting_overrides=setting_overrides)
-
-    return the_app
 
 
 @pytest.fixture
