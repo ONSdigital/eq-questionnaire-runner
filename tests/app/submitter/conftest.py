@@ -8,6 +8,7 @@ from app.data_models import QuestionnaireStore
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.submitter import RabbitMQSubmitter
 from app.utilities.metadata_parser import (
     validate_questionnaire_claims,
     validate_runner_claims,
@@ -89,3 +90,25 @@ def fake_questionnaire_schema():
     questionnaire = {"survey_id": "021", "data_version": "0.0.3"}
 
     return QuestionnaireSchema(questionnaire)
+
+
+@pytest.fixture
+def rabbitmq_submitter():
+    return RabbitMQSubmitter(
+        host="host1", secondary_host="host2", port=5672, queue="test_queue"
+    )
+
+
+@pytest.fixture
+def patch_blocking_connection(mocker):
+    return mocker.patch("app.submitter.submitter.BlockingConnection")
+
+
+@pytest.fixture
+def patch_url_parameters(mocker):
+    return mocker.patch("app.submitter.submitter.URLParameters")
+
+
+@pytest.fixture
+def patch_client(mocker):
+    return mocker.patch("app.submitter.submitter.storage.Client")

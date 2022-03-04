@@ -1,33 +1,29 @@
-import unittest
+import pytest
 
 from app.utilities import strings
 
 
-class TestStrings(unittest.TestCase):
-    def test_to_bytes_with_string(self):
-        b = strings.to_bytes("abc")
-        self.assertEqual(b, b"abc")
-
-    def test_to_bytes_with_bytes(self):
-        b = strings.to_bytes(b"def")
-        self.assertEqual(b, b"def")
-
-    def test_to_bytes_with_none(self):
-        b = strings.to_bytes(None)
-        self.assertEqual(b, None)
-
-    def test_to_string_with_string(self):
-        s = strings.to_str("hij")
-        self.assertEqual(s, "hij")
-
-    def test_to_string_with_bytes(self):
-        s = strings.to_str(b"klm")
-        self.assertEqual(s, "klm")
-
-    def test_to_string_with_None(self):
-        s = strings.to_str(None)
-        self.assertEqual(s, None)
+@pytest.mark.parametrize(
+    "input_str,bytes_str",
+    (
+        ("abc", b"abc"),
+        (b"def", b"def"),
+        (None, None),
+        ("", b""),
+    ),
+)
+def test_to_bytes(input_str, bytes_str):
+    assert strings.to_bytes(input_str) == bytes_str
 
 
-if __name__ == "__main__":
-    unittest.main()
+@pytest.mark.parametrize(
+    "input_str,bytes_str",
+    (
+        ("hij", "hij"),
+        (b"klm", "klm"),
+        (None, None),
+        (b"", ""),
+    ),
+)
+def test_to_str(input_str, bytes_str):
+    assert strings.to_str(input_str) == bytes_str
