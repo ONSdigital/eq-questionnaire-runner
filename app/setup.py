@@ -1,3 +1,5 @@
+import os
+import time
 from copy import deepcopy
 from typing import Dict
 from uuid import uuid4
@@ -100,6 +102,11 @@ class AWSReverseProxied:
 def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     setting_overrides=None,
 ):
+    logger.info(f"hey guys {os.environ.get('SERVER_SOFTWARE', 'No value')}")
+    while ("gunicorn" not in os.environ.get("SERVER_SOFTWARE", "")):
+        logger.info(f"hey guys I am on a loop")
+        time.sleep(5)
+    logger.info(f"Server software is {os.environ.get('SERVER_SOFTWARE', 'No value')}")
     application = Flask(__name__, template_folder="../templates")
     application.config.from_object(settings)
     if setting_overrides:
