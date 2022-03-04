@@ -5,8 +5,11 @@ import pytest
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
+from app.data_models.progress_store import ProgressStore
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
+from app.publisher import PubSubPublisher
+from app.questionnaire.location import Location
 from app.setup import create_app
 from app.storage.datastore import Datastore
 from tests.app.mock_data_store import MockDatastore
@@ -16,15 +19,11 @@ RESPONSE_EXPIRY = datetime(2021, 11, 10, 8, 54, 22, tzinfo=timezone.utc)
 
 @pytest.fixture
 def app(mocker):
-    setting_overrides = {"LOGIN_DISABLED": True}
+    setting_overrides = {"LOGIN_DISABLED": True, "SERVER_NAME": "test.localdomain"}
     mocker.patch("app.setup.datastore.Client", MockDatastore)
     mocker.patch("app.setup.redis.Redis", fakeredis.FakeStrictRedis)
     the_app = create_app(setting_overrides=setting_overrides)
-    the_app.config["SERVER_NAME"] = "test.localdomain"
-    app_context = the_app.app_context()
-    app_context.push()
-    yield the_app
-    app_context.pop()
+    return the_app
 
 
 @pytest.fixture
@@ -118,6 +117,20 @@ def list_store():
 
 
 @pytest.fixture
+def progress_store():
+    return ProgressStore()
+
+
+@pytest.fixture
+def publisher(mocker):
+    mocker.patch(
+        "app.publisher.publisher.google.auth._default._get_explicit_environ_credentials",
+        return_value=(mocker.Mock(), "test-project-id"),
+    )
+    return PubSubPublisher()
+
+
+@pytest.fixture
 def gb_locale(mocker):
     mocker.patch(
         "app.jinja_filters.flask_babel.get_locale",
@@ -128,3 +141,9 @@ def gb_locale(mocker):
 @pytest.fixture
 def datastore(client):
     return Datastore(client)
+  
+
+@pytest.fixture
+def current_location():
+    return Location(section_id="some-section", block_id="some-block")
+
