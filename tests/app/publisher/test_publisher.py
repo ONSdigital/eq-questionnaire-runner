@@ -1,51 +1,43 @@
-from unittest import TestCase, mock
-from unittest.mock import Mock, patch, sentinel
 from uuid import uuid4
 
+import pytest
 from google.pubsub_v1.types.pubsub import PubsubMessage
 
-from app.publisher import PubSubPublisher
 from app.publisher.exceptions import PublicationFailed
 
 
-class TestPubSub(TestCase):
+def test_publish(publisher, mocker):
     topic_id = "test-topic-id"
     topic_path = f"projects/test-project-id/topics/{topic_id}"
 
-    def setUp(self) -> None:
-        with patch(
-            "app.publisher.publisher.google.auth._default._get_explicit_environ_credentials",
-            return_value=(Mock(), "test-project-id"),
-        ):
-            self.publisher = PubSubPublisher()
+    future = mocker.sentinel.future
+    future.add_done_callback = mocker.Mock(spec=["__call__"])
+
+    # Use a mock in lieu of the actual batch class.
+    # pylint: disable=protected-access
+    batch = mocker.Mock(spec=publisher._client._batch_class)
+
+    # Set the mock up to accepts the message.
+    batch.publish.side_effect = (future,)
 
     # pylint: disable=protected-access
-    def test_publish(self):
-        future = sentinel.future
-        future.add_done_callback = Mock(spec=["__call__"])
+    publisher._client._set_batch(topic_path, batch)
 
-        # Use a mock in lieu of the actual batch class.
-        batch = Mock(spec=self.publisher._client._batch_class)
+    # Publish message.
+    future = publisher._publish(topic_id, b"test-message")
+    assert future is mocker.sentinel.future
 
-        # Set the mock up to accepts the message.
-        batch.publish.side_effect = (future,)
+    # Check mock.
+    batch.publish.assert_has_calls([mocker.call(PubsubMessage(data=b"test-message"))])
 
-        self.publisher._client._set_batch(self.topic_path, batch)
 
-        # Publish message.
-        future = self.publisher._publish(self.topic_id, b"test-message")
-        assert future is sentinel.future
+def test_resolving_message_raises_exception_on_error(publisher):
+    with pytest.raises(PublicationFailed) as ex:
+        # Try resolve the future with an invalid credentials
+        publisher.publish(
+            "test-topic-id",
+            b"test-message",
+            fulfilment_request_transaction_id=str(uuid4()),
+        )
 
-        # Check mock.
-        batch.publish.assert_has_calls([mock.call(PubsubMessage(data=b"test-message"))])
-
-    def test_resolving_message_raises_exception_on_error(self):
-        with self.assertRaises(PublicationFailed) as ex:
-            # Try resolve the future with an invalid credentials
-            self.publisher.publish(
-                self.topic_id,
-                b"test-message",
-                fulfilment_request_transaction_id=str(uuid4()),
-            )
-
-        assert "403 The request is missing a valid API key." in str(ex.exception)
+    assert "403 The request is missing a valid API key." in str(ex.value)
