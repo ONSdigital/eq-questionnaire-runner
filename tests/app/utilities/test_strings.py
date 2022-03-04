@@ -9,6 +9,7 @@ from app.utilities import strings
         ("abc", b"abc"),
         (b"def", b"def"),
         (None, None),
+        ("", ""),
     ),
 )
 def test_to_bytes(input_str, bytes_str):
@@ -21,6 +22,7 @@ def test_to_bytes(input_str, bytes_str):
         ("hij", "hij"),
         (b"klm", "klm"),
         (None, None),
+        ("", ""),
     ),
 )
 def test_to_str(input_str, bytes_str):
