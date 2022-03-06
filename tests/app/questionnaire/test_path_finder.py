@@ -642,7 +642,7 @@ def test_new_remove_answer_and_block_if_routing_backwards(list_store):
         ),
     ),
 )
-def test_routing_path_when_rule_block_id_dependencies(
+def test_routing_path_block_ids_dependent_on_when_rules(
     list_store,
     skip_age_answer,
     skip_confirmation_answer,
@@ -725,7 +725,7 @@ def test_routing_path_when_rule_block_id_dependencies(
         ),
     ),
 )
-def test_routing_path_when_rule_block_id_dependencies_repeating(
+def test_routing_path_block_ids_dependent_on_when_rules_repeating(
     skip_age_answer,
     schema,
     expected_route,
