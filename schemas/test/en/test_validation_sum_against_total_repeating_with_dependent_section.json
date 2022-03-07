@@ -278,15 +278,11 @@
             },
             "enabled": {
                 "when": {
-                    "and": [
+                    "!=": [
+                        null,
                         {
-                            "!=": [
-                                null,
-                                {
-                                    "source": "answers",
-                                    "identifier": "total-spending-answer"
-                                }
-                            ]
+                            "source": "answers",
+                            "identifier": "total-spending-answer"
                         }
                     ]
                 }
