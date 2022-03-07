@@ -5,7 +5,7 @@ import ThankYouPage from "../../base_pages/thank-you.page.js";
 import { TimeoutModalTestCase } from "./timeout_modal.js";
 
 describe("Timeout Modal Post Submission", () => {
-  describe("Given I am completing the survey and get to post submission page, ", () => {
+  describe("Given I am completing the survey and get to post submission page,", () => {
     beforeEach(() => {
       browser.openQuestionnaire("test_timeout_modal.json");
       $(TimeoutInterstitialPage.submit()).click();
