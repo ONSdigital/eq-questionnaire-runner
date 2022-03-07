@@ -17,18 +17,6 @@ NOW = datetime.now(tz=timezone.utc).replace(microsecond=0)
 
 
 @pytest.fixture
-def fake_eq_session():
-    eq_session = EQSession(
-        eq_session_id="sessionid",
-        user_id="someuser",
-        session_data="somedata",
-        expires_at=NOW + timedelta(minutes=1),
-    )
-
-    return eq_session
-
-
-@pytest.fixture
 def dynamodb():
     with mock_dynamodb2() as mock_dynamo:
         mock_dynamo.start()
