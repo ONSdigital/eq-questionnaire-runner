@@ -141,9 +141,8 @@ def gb_locale(mocker):
 @pytest.fixture
 def datastore(client):
     return Datastore(client)
-  
+
 
 @pytest.fixture
 def current_location():
     return Location(section_id="some-section", block_id="some-block")
-
