@@ -102,8 +102,6 @@ class AWSReverseProxied:
 def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     setting_overrides=None,
 ):
-    logger.error("App sleeps for 10s")
-    time.sleep(10)
     application = Flask(__name__, template_folder="../templates")
     application.config.from_object(settings)
     if setting_overrides:
