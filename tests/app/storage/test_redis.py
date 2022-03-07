@@ -37,14 +37,9 @@ def test_duplicate_put_jti_fails(redis):
         redis.put(jti, overwrite=False)
 
 
-def test_put_session(redis):
+def test_put_session(redis, eq_session):
     # given
-    eq_session = EQSession(
-        eq_session_id="sessionid",
-        user_id="someuser",
-        session_data="somedata",
-        expires_at=EXPIRES_AT,
-    )
+
     stored_data = redis.get(EQSession, eq_session.eq_session_id)
     assert stored_data is None
 
@@ -56,14 +51,8 @@ def test_put_session(redis):
     assert stored_data is not None
 
 
-def test_get_session(redis):
+def test_get_session(redis, eq_session):
     # Given
-    eq_session = EQSession(
-        eq_session_id="sessionid",
-        user_id="someuser",
-        session_data="somedata",
-        expires_at=EXPIRES_AT,
-    )
     stored_data = redis.get(EQSession, eq_session.eq_session_id)
     assert stored_data is None
     redis.put(eq_session)
@@ -80,14 +69,8 @@ def test_get_session(redis):
             assert v == parsed_value
 
 
-def test_delete_session(redis):
+def test_delete_session(redis, eq_session):
     # Given
-    eq_session = EQSession(
-        eq_session_id="sessionid",
-        user_id="someuser",
-        session_data="somedata",
-        expires_at=EXPIRES_AT,
-    )
     redis.put(eq_session)
     session = redis.get(EQSession, "sessionid")
     assert session.eq_session_id == eq_session.eq_session_id
@@ -99,14 +82,8 @@ def test_delete_session(redis):
     assert redis.get(EQSession, "sessionid") is None
 
 
-def test_redis_does_not_store_key_field_in_value(redis, redis_client):
+def test_redis_does_not_store_key_field_in_value(redis, redis_client, eq_session):
     # Given
-    eq_session = EQSession(
-        eq_session_id="sessionid",
-        user_id="someuser",
-        session_data="somedata",
-        expires_at=EXPIRES_AT,
-    )
     stored_data = redis.get(EQSession, eq_session.eq_session_id)
     assert stored_data is None
     redis.put(eq_session)
@@ -119,14 +96,8 @@ def test_redis_does_not_store_key_field_in_value(redis, redis_client):
     assert storage_model.key_field not in json_loads(stored_data)
 
 
-def test_get_redis_expiry_when_expiry_set(redis, redis_client):
+def test_get_redis_expiry_when_expiry_set(redis, redis_client, eq_session):
     # Given
-    eq_session = EQSession(
-        eq_session_id="sessionid",
-        user_id="someuser",
-        session_data="somedata",
-        expires_at=EXPIRES_AT,
-    )
     # When
     redis.put(eq_session)
 
@@ -136,14 +107,8 @@ def test_get_redis_expiry_when_expiry_set(redis, redis_client):
 
 
 # @pytest.mark.usefixtures("app")
-def test_get_redis_expiry_when_expiry_not_set(redis, redis_client, mocker):
+def test_get_redis_expiry_when_expiry_not_set(redis, redis_client, mocker, eq_session):
     # Given
-    eq_session = EQSession(
-        eq_session_id="sessionid",
-        user_id="someuser",
-        session_data="somedata",
-        expires_at=EXPIRES_AT,
-    )
 
     # When
     mock_expiry_field = mocker.patch(
