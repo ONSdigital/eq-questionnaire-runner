@@ -22,4 +22,4 @@ RUN pip install pipenv==2018.11.26 && pipenv install --deploy --system && make b
 
 USER appuser
 
-CMD ["sh", "run_app.sh"]
+ENTRYPOINT ["sh", "run_app.sh"]
