@@ -137,7 +137,9 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             ).headers
 
             csp_policy_parts = headers["Content-Security-Policy"].split("; ")
-            self.assertIn(f"default-src 'self' {cdn_url} {lookup_url}", csp_policy_parts)
+            self.assertIn(
+                f"default-src 'self' {cdn_url} {lookup_url}", csp_policy_parts
+            )
             self.assertIn(
                 "script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com "
                 f"https://ssl.google-analytics.com 'unsafe-inline' {cdn_url} {lookup_url} 'nonce-{request.csp_nonce}'",
