@@ -260,9 +260,8 @@ class QuestionnaireStoreUpdater:
         )
 
     def _capture_dependencies_for_answer(self, answer_id):
-        """Captures answer and progress dependencies for the provided answer id.
+        """Captures a unique list of block ids that are dependents of the provided answer id.
 
-        Captures a unique list of block ids that need to be removed from the ProgressStore for each dependency, if any.
         The block_ids are mapped to the section key. Dependencies in a repeating section use the list items
         for the repeating list when creating the section key.
 
@@ -302,15 +301,9 @@ class QuestionnaireStoreUpdater:
                 self._capture_dependencies_for_answer(answer_id)
 
     def update_progress_for_dependant_sections(self):
-        """Marks blocks within dependent sections as incomplete and updates section progress to IN_PROGRESS.
+        """Removes dependent blocks from the progress store and updates the progress to IN_PROGRESS.
 
-        Removes dependent blocks from the progress store and updates the progress to IN_PROGRESS.
-
-        Dependant blocks are only removed for sections that are in-progress or completed.
-        Section progress is not updated for:
-            - sections that have not been started
-            - sections in which the dependant block was not completed
-            - section for the the current location as it is handled by `handle_post` on block handlers.
+        Section progress is not updated for the current location as it is handled by `handle_post` on block handlers.
 
         When updating the progress store, the routing path is not re-evaluated because
         removing previously completed blocks means the section can't be complete.
