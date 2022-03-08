@@ -139,8 +139,8 @@ def gb_locale(mocker):
 
 
 @pytest.fixture
-def datastore(client):
-    return Datastore(client)
+def datastore(mock_client):
+    return Datastore(mock_client)
 
 
 @pytest.fixture

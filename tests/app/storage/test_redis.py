@@ -38,12 +38,11 @@ def test_duplicate_put_jti_fails(redis):
 
 
 def test_put_session(redis, eq_session):
-    # given
-
+    # Given
     stored_data = redis.get(EQSession, eq_session.eq_session_id)
     assert stored_data is None
 
-    # when
+    # When
     redis.put(eq_session)
 
     # Then
@@ -97,7 +96,6 @@ def test_redis_does_not_store_key_field_in_value(redis, redis_client, eq_session
 
 
 def test_get_redis_expiry_when_expiry_set(redis, redis_client, eq_session):
-    # Given
     # When
     redis.put(eq_session)
 
@@ -108,8 +106,6 @@ def test_get_redis_expiry_when_expiry_set(redis, redis_client, eq_session):
 
 # @pytest.mark.usefixtures("app")
 def test_get_redis_expiry_when_expiry_not_set(redis, redis_client, mocker, eq_session):
-    # Given
-
     # When
     mock_expiry_field = mocker.patch(
         "app.storage.storage.StorageModel.expiry_field",

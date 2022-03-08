@@ -12,12 +12,12 @@ from app.data_models.app_models import (
 
 
 @pytest.mark.usefixtures("app")
-def test_get_by_key(datastore, client, questionnaire_state):
+def test_get_by_key(datastore, mock_client, questionnaire_state):
     model_data = QuestionnaireStateSchema().dump(questionnaire_state)
 
     m_entity = google_datastore.Entity()
     m_entity.update(model_data)
-    client.get.return_value = m_entity
+    mock_client.get.return_value = m_entity
 
     returned_model = datastore.get(QuestionnaireState, "someuser")
 
@@ -32,18 +32,18 @@ def test_get_by_key(datastore, client, questionnaire_state):
 
 
 @pytest.mark.usefixtures("app")
-def test_get_not_found(datastore, client):
-    client.get.return_value = None
+def test_get_not_found(datastore, mock_client):
+    mock_client.get.return_value = None
     returned_model = datastore.get(QuestionnaireState, "someuser")
     assert not returned_model
 
 
 @pytest.mark.usefixtures("app")
-def test_put(datastore, client, questionnaire_state):
+def test_put(datastore, mock_client, questionnaire_state):
 
     datastore.put(questionnaire_state, True)
 
-    put_data = client.put.call_args[0][0]
+    put_data = mock_client.put.call_args[0][0]
 
     assert questionnaire_state.user_id == put_data["user_id"]
     assert questionnaire_state.state_data == put_data["state_data"]
@@ -85,21 +85,21 @@ def test_put_with_index(datastore, mocker):
 
 
 @pytest.mark.usefixtures("app")
-def test_delete(datastore, client, questionnaire_state):
+def test_delete(datastore, mock_client, questionnaire_state):
     datastore.delete(questionnaire_state)
 
-    assert client.key.call_args[0][1] == questionnaire_state.user_id
+    assert mock_client.key.call_args[0][1] == questionnaire_state.user_id
 
-    m_key = client.key.return_value
+    m_key = mock_client.key.return_value
 
-    client.delete.assert_called_once_with(m_key)
+    mock_client.delete.assert_called_once_with(m_key)
 
 
 @pytest.mark.usefixtures("app")
-def test_retry(datastore, client, mocker, questionnaire_state):
+def test_retry(datastore, mock_client, mocker, questionnaire_state):
 
-    client.put = mocker.Mock(
+    mock_client.put = mocker.Mock(
         side_effect=[exceptions.InternalServerError("error"), mocker.DEFAULT]
     )
     datastore.put(questionnaire_state, True)
-    assert client.put.call_count > 1
+    assert mock_client.put.call_count > 1

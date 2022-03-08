@@ -13,8 +13,6 @@ from app.storage.encrypted_questionnaire_storage import EncryptedQuestionnaireSt
 from app.storage.redis import Redis
 from app.storage.storage import StorageModel
 
-NOW = datetime.now(tz=timezone.utc).replace(microsecond=0)
-
 
 @pytest.fixture
 def dynamodb():
@@ -42,10 +40,10 @@ def dynamodb():
 
 
 @pytest.fixture
-def client(mocker):
-    mock_client = mocker.Mock()
-    mock_client.transaction.return_value = contextlib.suppress()
-    return mock_client
+def mock_client(mocker):
+    client = mocker.Mock()
+    client.transaction.return_value = contextlib.suppress()
+    return client
 
 
 @pytest.fixture

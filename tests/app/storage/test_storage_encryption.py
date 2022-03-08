@@ -12,7 +12,7 @@ from app.utilities.json import json_loads
         ("user_id", "user_ik", None),
     ),
 )
-def test_encrypted_storage_requires_args(user_id, user_ik, pepper):
+def test_encrypted_storage_missing_required_args(user_id, user_ik, pepper):
     with pytest.raises(ValueError):
         StorageEncryption(user_id, user_ik, pepper)
 
