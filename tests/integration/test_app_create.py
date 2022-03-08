@@ -119,12 +119,10 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
     def test_csp_policy_headers(self):
         cdn_url = "https://cdn.test.domain"
-        lookup_url = "https://cdn.lookup.test.domain"
         address_lookup_api_url = "https://ai.test.domain"
         self._setting_overrides = {
             "EQ_ENABLE_LIVE_RELOAD": False,
             "CDN_URL": cdn_url,
-            "LOOKUP_URL": lookup_url,
             "ADDRESS_LOOKUP_API_URL": address_lookup_api_url,
         }
 
@@ -138,30 +136,30 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
             csp_policy_parts = headers["Content-Security-Policy"].split("; ")
             self.assertIn(
-                f"default-src 'self' {cdn_url} {lookup_url}", csp_policy_parts
+                f"default-src 'self' {cdn_url}", csp_policy_parts
             )
             self.assertIn(
                 "script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com "
-                f"https://ssl.google-analytics.com 'unsafe-inline' {cdn_url} {lookup_url} 'nonce-{request.csp_nonce}'",
+                f"https://ssl.google-analytics.com 'unsafe-inline' {cdn_url} 'nonce-{request.csp_nonce}'",
                 csp_policy_parts,
             )
             self.assertIn(
-                f"style-src 'self' https://tagmanager.google.com https://fonts.googleapis.com 'unsafe-inline' {cdn_url} {lookup_url}",
+                f"style-src 'self' https://tagmanager.google.com https://fonts.googleapis.com 'unsafe-inline' {cdn_url}",
                 csp_policy_parts,
             )
             self.assertIn(
-                f"img-src 'self' data: https://www.google-analytics.com https://ssl.gstatic.com https://www.gstatic.com {cdn_url} {lookup_url}",
+                f"img-src 'self' data: https://www.google-analytics.com https://ssl.gstatic.com https://www.gstatic.com {cdn_url}",
                 csp_policy_parts,
             )
             self.assertIn(
-                f"font-src 'self' data: https://fonts.gstatic.com {cdn_url} {lookup_url}",
+                f"font-src 'self' data: https://fonts.gstatic.com {cdn_url}",
                 csp_policy_parts,
             )
             self.assertIn(
                 "frame-src https://www.googletagmanager.com", csp_policy_parts
             )
             self.assertIn(
-                f"connect-src 'self' https://www.google-analytics.com {cdn_url} {lookup_url} {address_lookup_api_url}",
+                f"connect-src 'self' https://www.google-analytics.com {cdn_url} {address_lookup_api_url}",
                 csp_policy_parts,
             )
             self.assertIn(

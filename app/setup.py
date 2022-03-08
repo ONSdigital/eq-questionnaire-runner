@@ -246,18 +246,17 @@ def setup_jinja_env(application):
     application.jinja_env.add_extension("jinja2.ext.do")
 
 
-def _add_cdn_url_and_lookup_url_to_csp_policy(cdn_url, lookup_url) -> Dict:
+def _add_cdn_url_to_csp_policy(cdn_url) -> Dict:
     csp_policy = deepcopy(CSP_POLICY)
     for directive in csp_policy:
         if directive not in ["frame-src", "object-src", "base-uri"]:
             csp_policy[directive].append(cdn_url)
-            csp_policy[directive].append(lookup_url)
     return csp_policy
 
 
 def setup_secure_headers(application):
-    csp_policy = _add_cdn_url_and_lookup_url_to_csp_policy(
-        application.config["CDN_URL"], application.config["LOOKUP_URL"]
+    csp_policy = _add_cdn_url_to_csp_policy(
+        application.config["CDN_URL"]
     )
 
     if api_url := application.config["ADDRESS_LOOKUP_API_URL"]:
