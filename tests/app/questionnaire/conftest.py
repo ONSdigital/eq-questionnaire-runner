@@ -1,5 +1,4 @@
 # pylint: disable=redefined-outer-name
-from unittest.mock import MagicMock
 
 import pytest
 from werkzeug.datastructures import ImmutableDict
@@ -835,8 +834,8 @@ def section_with_repeating_list():
 
 
 @pytest.fixture
-def mock_schema():
-    schema = MagicMock(
+def mock_schema(mocker):
+    schema = mocker.MagicMock(
         QuestionnaireSchema(
             {
                 "questionnaire_flow": {
