@@ -244,8 +244,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         calculations: tuple[ImmutableDict[str, Any]],
     ) -> None:
         for calculation in calculations:
-            source_answer_id = calculation.get("answer_id")
-            if not source_answer_id:
+            if not (source_answer_id := calculation.get("answer_id")):
                 continue
 
             dependents = {
