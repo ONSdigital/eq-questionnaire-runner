@@ -7,6 +7,7 @@ from app.data_models.answer_store import Answer
 from app.data_models.progress_store import CompletionStatus, SectionKeyType
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
+from app.questionnaire.questionnaire_schema import AnswerDependent
 
 
 class QuestionnaireStoreUpdater:
@@ -235,7 +236,7 @@ class QuestionnaireStoreUpdater:
         answer_id: str,
         list_item_id: Optional[str],
         answer_value: AnswerValueTypes,
-    ):
+    ) -> bool:
         answer_value_to_store = (
             {
                 key: value
@@ -259,7 +260,7 @@ class QuestionnaireStoreUpdater:
             )
         )
 
-    def _capture_dependencies_for_answer(self, answer_id):
+    def _capture_dependencies_for_answer(self, answer_id: str) -> None:
         """Captures a unique list of block ids that are dependents of the provided answer id.
 
         The block_ids are mapped to the section key. Dependencies in a repeating section use the list items
@@ -269,14 +270,18 @@ class QuestionnaireStoreUpdater:
         multiples times, as you may have multiple dependencies for one block which may also apply to each item in the list.
         However, when updating the progress store, the block ids are checked to ensure they exist in the progress store.
         """
-        dependencies = self._schema.answer_dependencies.get(answer_id, [])
+        dependencies: set[AnswerDependent] = self._schema.answer_dependencies.get(
+            answer_id, set()
+        )
 
         for dependency in dependencies:
-            list_item_ids = (
-                self._list_store[dependency.for_list].items
-                if dependency.for_list
-                else [None]
-            )
+            if dependency.for_list:
+                list_item_ids: Union[list[str], list[None]] = self._list_store[
+                    dependency.for_list
+                ].items
+            else:
+                list_item_ids = [None]
+
             for list_item_id in list_item_ids:
                 if dependency.answer_id:  # pragma: no cover
                     # :TODO: Remove answer. Required for dynamic options
@@ -286,7 +291,9 @@ class QuestionnaireStoreUpdater:
                     (dependency.section_id, list_item_id)
                 ].add(dependency.block_id)
 
-    def update_answers(self, form_data, list_item_id=None):
+    def update_answers(
+        self, form_data: Mapping[str, Any], list_item_id: Optional[str] = None
+    ) -> None:
         list_item_id = list_item_id or self._current_location.list_item_id
         answer_ids_for_question = self._schema.get_answer_ids_for_question(
             self._current_question
@@ -300,7 +307,7 @@ class QuestionnaireStoreUpdater:
             if answer_updated:
                 self._capture_dependencies_for_answer(answer_id)
 
-    def update_progress_for_dependant_sections(self):
+    def update_progress_for_dependant_sections(self) -> None:
         """Removes dependent blocks from the progress store and updates the progress to IN_PROGRESS.
 
         Section progress is not updated for the current location as it is handled by `handle_post` on block handlers.
