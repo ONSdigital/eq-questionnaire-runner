@@ -317,16 +317,16 @@ class QuestionnaireStoreUpdater:
 
             section_id, list_item_id = section_key
 
-            removed_any = False
+            blocks_removed = False
             for block_id in blocks_to_remove:
                 location = Location(
                     section_id=section_id,
                     list_item_id=list_item_id,
                     block_id=block_id,
                 )
-                removed_any |= self.remove_completed_location(location)
+                blocks_removed |= self.remove_completed_location(location)
 
-            if removed_any and (
+            if blocks_removed and (
                 section_id != self._current_location.section_id
                 or list_item_id != self._current_location.list_item_id
             ):
