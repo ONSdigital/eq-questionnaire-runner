@@ -37,7 +37,7 @@ const answerAndSubmitTotalEmployeesQuestion = (total) => {
 
 describe("Feature: Validation - Sum of grouped answers to equal total (Total in separate section)", () => {
   describe("Given I start a grouped answer validation with dependent sections and complete the total turnover and total employees questions", () => {
-    beforeEach(() => {
+    before(() => {
       browser.openQuestionnaire("test_validation_sum_against_total_hub_with_dependent_section.json");
       answerAndSubmitTotalTurnoverQuestion(1000);
       answerAndSubmitTotalEmployeesQuestion(10);
@@ -50,17 +50,6 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Total in 
       expect($(HubPage.summaryRowState(breakdownSectionId)).getText()).to.equal("Not started");
     });
 
-    it("When I start the breakdown section and enter answers that are equal the total, Then I should be able to get to the section summary and the breakdown section should be marked as 'Completed'", () => {
-      $(HubPage.submit()).click();
-      answerAndSubmitTurnoverBreakdownQuestion(500, 250, 250);
-      answerAndSubmitEmployeeBreakdownQuestion(5, 5);
-
-      expect(browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
-      $(BreakdownSectionSummary.submit()).click();
-
-      expect($(HubPage.summaryRowState(breakdownSectionId)).getText()).to.equal("Completed");
-    });
-
     it("When I start the breakdown section and enter an answer that is not equal to the total for the turnover question, Then I should see a validation error", () => {
       $(HubPage.submit()).click();
       answerAndSubmitTurnoverBreakdownQuestion(1000, 250, 250);
@@ -68,15 +57,14 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Total in 
       expect($(TurnoverBreakdownPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to £1,000.00");
     });
 
-    it("When I start the breakdown section and enter an answer that is not equal to the total for the employees question, Then I should see a validation error", () => {
-      $(HubPage.submit()).click();
-      // Answer turnover question
+    it("When I start the breakdown section and enter answers that are equal the total, Then I should be able to get to the section summary and the breakdown section should be marked as 'Completed'", () => {
       answerAndSubmitTurnoverBreakdownQuestion(500, 250, 250);
+      answerAndSubmitEmployeeBreakdownQuestion(5, 5);
 
-      expect(browser.getUrl()).to.contain(EmployeesBreakdownPage.pageName);
-      answerAndSubmitEmployeeBreakdownQuestion(10, 5);
+      expect(browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
+      $(BreakdownSectionSummary.submit()).click();
 
-      expect($(EmployeesBreakdownPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 10");
+      expect($(HubPage.summaryRowState(breakdownSectionId)).getText()).to.equal("Completed");
     });
   });
 
@@ -126,47 +114,6 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Total in 
 
       expect(browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
       $(BreakdownSectionSummary.submit()).click();
-      expect($(HubPage.summaryRowState(breakdownSectionId)).getText()).to.equal("Completed");
-    });
-
-    it("When I change my answer for the total employees question, Then the breakdown section should be marked as 'Partially completed'", () => {
-      $(HubPage.summaryRowLink(companyOverviewSectionID)).click();
-      $(CompanySectionSummary.totalEmployeesAnswerEdit()).click();
-
-      answerAndSubmitTotalEmployeesQuestion(15);
-      $(CompanySectionSummary.submit()).click();
-      expect($(HubPage.summaryRowState(breakdownSectionId)).getText()).to.equal("Partially completed");
-    });
-
-    it("When I click 'Continue with section' on the breakdown section, Then I should be taken to the employee breakdown question and my previous answers should be prefilled", () => {
-      $(HubPage.summaryRowLink(breakdownSectionId)).click();
-
-      expect($(EmployeesBreakdownPage.employeesBreakdown1()).getValue()).to.equal("5");
-      expect($(EmployeesBreakdownPage.employeesBreakdown2()).getValue()).to.equal("5");
-    });
-
-    it("When I submit the employee breakdown question with no changes, Then I should see a validation error", () => {
-      $(TurnoverBreakdownPage.submit()).click();
-
-      expect($(EmployeesBreakdownPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 15");
-    });
-
-    it("When I update my answers to equal the new total employees, Then I should be able to get to the section summary and the breakdown section should be marked as 'Completed'", () => {
-      answerAndSubmitEmployeeBreakdownQuestion(10, 5);
-
-      expect(browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
-      $(BreakdownSectionSummary.submit()).click();
-      expect($(HubPage.summaryRowState(breakdownSectionId)).getText()).to.equal("Completed");
-    });
-
-    it("When I edit and resubmit the total employees question without changing the value, Then the breakdown section should stay marked as 'Completed'", () => {
-      $(HubPage.summaryRowLink(companyOverviewSectionID)).click();
-      $(CompanySectionSummary.totalTurnoverAnswerEdit()).click();
-
-      expect($(TotalTurnoverPage.totalTurnover()).getValue()).to.equal("1500.00");
-      $(TotalTurnoverPage.submit()).click();
-      $(CompanySectionSummary.submit()).click();
-
       expect($(HubPage.summaryRowState(breakdownSectionId)).getText()).to.equal("Completed");
     });
 
