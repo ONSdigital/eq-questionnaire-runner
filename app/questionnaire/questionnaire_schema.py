@@ -211,7 +211,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 answer_id = answer["id"]
                 self._parent_id_map[answer_id] = question_id
 
-                answers_by_id[answer["id"]].append(answer)
+                answers_by_id[answer_id].append(answer)
                 for option in answer.get("options", []):
                     detail_answer = option.get("detail_answer")
                     if detail_answer:

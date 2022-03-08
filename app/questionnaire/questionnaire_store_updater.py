@@ -247,19 +247,17 @@ class QuestionnaireStoreUpdater:
         )
 
         if answer_value_to_store in self.EMPTY_ANSWER_VALUES:
-            answer_updated = self._answer_store.remove_answer(
+            return self._answer_store.remove_answer(
                 answer_id, list_item_id=list_item_id
             )
-        else:
-            answer = Answer(
+
+        return self._answer_store.add_or_update(
+            Answer(
                 answer_id=answer_id,
                 list_item_id=list_item_id,
                 value=answer_value_to_store,
             )
-
-            answer_updated = self._answer_store.add_or_update(answer)
-
-        return answer_updated
+        )
 
     def _capture_dependencies_for_answer(self, answer_id):
         """Captures answer and progress dependencies for the provided answer id.
