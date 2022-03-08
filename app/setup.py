@@ -255,9 +255,7 @@ def _add_cdn_url_to_csp_policy(cdn_url) -> Dict:
 
 
 def setup_secure_headers(application):
-    csp_policy = _add_cdn_url_to_csp_policy(
-        application.config["CDN_URL"]
-    )
+    csp_policy = _add_cdn_url_to_csp_policy(application.config["CDN_URL"])
 
     if api_url := application.config["ADDRESS_LOOKUP_API_URL"]:
         csp_policy["connect-src"] += [api_url]
