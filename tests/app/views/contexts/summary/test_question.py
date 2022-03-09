@@ -450,21 +450,21 @@ def test_checkbox_button_options(answer_store, list_store, schema):
         Answer(answer_id="answer_1", value=["Light Side", "Dark Side"])
     )
 
-    options = [
-        {"label": "Light Side label", "value": "Light Side"},
-        {"label": "Dark Side label", "value": "Dark Side"},
-    ]
-    answer_schema = {
-        "id": "answer_1",
-        "label": "Which side?",
-        "type": "Checkbox",
-        "options": options,
-    }
     question_schema = {
         "id": "question_id",
         "title": "question_title",
         "type": "GENERAL",
-        "answers": [answer_schema],
+        "answers": [
+            {
+                "id": "answer_1",
+                "label": "Which side?",
+                "type": "Checkbox",
+                "options": [
+                    {"label": "Light Side label", "value": "Light Side"},
+                    {"label": "Dark Side label", "value": "Dark Side"},
+                ],
+            }
+        ],
     }
 
     # When
@@ -492,25 +492,25 @@ def test_checkbox_button_detail_answer_empty(answer_store, list_store, schema):
     # Given
     answer_store.add_or_update(Answer(answer_id="answer_1", value=["other", ""]))
 
-    options = [
-        {"label": "Light Side", "value": "Light Side"},
-        {
-            "label": "Other option label",
-            "value": "other",
-            "other": {"label": "Please specify other"},
-        },
-    ]
-    answer_schema = {
-        "id": "answer_1",
-        "label": "Which side?",
-        "type": "Checkbox",
-        "options": options,
-    }
     question_schema = {
         "id": "question_id",
         "title": "question_title",
         "type": "GENERAL",
-        "answers": [answer_schema],
+        "answers": [
+            {
+                "id": "answer_1",
+                "label": "Which side?",
+                "type": "Checkbox",
+                "options": [
+                    {"label": "Light Side", "value": "Light Side"},
+                    {
+                        "label": "Other option label",
+                        "value": "other",
+                        "other": {"label": "Please specify other"},
+                    },
+                ],
+            }
+        ],
     }
 
     # When
@@ -578,19 +578,18 @@ def test_checkbox_answer_with_detail_answer_returns_the_value(
     for answer in answers:
         answer_store.add_or_update(answer)
 
-    answer_schema = [
-        {
-            "id": "answer_1",
-            "label": "Which side?",
-            "type": "Checkbox",
-            "options": options,
-        }
-    ]
     question_schema = {
         "id": "question_id",
         "title": "question_title",
         "type": "GENERAL",
-        "answers": answer_schema,
+        "answers": [
+            {
+                "id": "answer_1",
+                "label": "Which side?",
+                "type": "Checkbox",
+                "options": options,
+            }
+        ],
     }
 
     # When
@@ -619,25 +618,26 @@ def test_checkbox_button_other_option_text(answer_store, list_store, schema):
         Answer(answer_id="answer_1", value=["Light Side", "other"])
     )
     answer_store.add_or_update(Answer(answer_id="child_answer", value="Neither"))
-    options = [
-        {"label": "Light Side", "value": "Light Side"},
-        {
-            "label": "other",
-            "value": "other",
-            "detail_answer": {"id": "child_answer"},
-        },
-    ]
-    answer_schema = {
-        "id": "answer_1",
-        "label": "Which side?",
-        "type": "Checkbox",
-        "options": options,
-    }
+
     question_schema = {
         "id": "question_id",
         "title": "question_title",
         "type": "GENERAL",
-        "answers": [answer_schema],
+        "answers": [
+            {
+                "id": "answer_1",
+                "label": "Which side?",
+                "type": "Checkbox",
+                "options": [
+                    {"label": "Light Side", "value": "Light Side"},
+                    {
+                        "label": "other",
+                        "value": "other",
+                        "detail_answer": {"id": "child_answer"},
+                    },
+                ],
+            }
+        ],
     }
 
     # When
@@ -704,19 +704,18 @@ def test_radio_answer_with_detail_answers_returns_corrrect_type(
     for answer in answers:
         answer_store.add_or_update(answer)
 
-    answer_schema = [
-        {
-            "id": "answer_1",
-            "label": "How many cakes have you had today?",
-            "type": answer_type,
-            "options": options,
-        }
-    ]
     question_schema = {
         "id": "question_id",
         "title": "question_title",
         "type": "GENERAL",
-        "answers": answer_schema,
+        "answers": [
+            {
+                "id": "answer_1",
+                "label": "How many cakes have you had today?",
+                "type": answer_type,
+                "options": options,
+            }
+        ],
     }
 
     # When
@@ -773,12 +772,6 @@ def test_radio_answer_with_detail_answers_returns_corrrect_type(
 def test_answer_types_selected_option_label(
     answer_type, options, answers, expected, answer_store, list_store, schema
 ):
-    answer_schema = {
-        "id": "answer_1",
-        "label": "Which side?",
-        "type": answer_type,
-        "options": options,
-    }
 
     for answer in answers:
         answer_store.add_or_update(answer)
@@ -787,7 +780,14 @@ def test_answer_types_selected_option_label(
         "id": "question_id",
         "title": "question_title",
         "type": "GENERAL",
-        "answers": [answer_schema],
+        "answers": [
+            {
+                "id": "answer_1",
+                "label": "Which side?",
+                "type": answer_type,
+                "options": options,
+            }
+        ],
     }
 
     # When
