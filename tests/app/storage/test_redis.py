@@ -104,7 +104,6 @@ def test_get_redis_expiry_when_expiry_set(redis, redis_client, eq_session):
     assert expires_in > 0
 
 
-# @pytest.mark.usefixtures("app")
 def test_get_redis_expiry_when_expiry_not_set(redis, redis_client, mocker, eq_session):
     # When
     mock_expiry_field = mocker.patch(
