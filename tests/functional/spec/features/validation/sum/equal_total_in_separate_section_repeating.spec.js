@@ -86,7 +86,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       expect($(HubPage.summaryRowState(householdOverviewSectionId)).getText()).to.equal("Completed");
     });
 
-    it("When I am on the hub, Then the two repeating breakdown sectionw should be marked as 'Not Started'", () => {
+    it("When I am on the hub, Then the two repeating breakdown sections should be marked as 'Not Started'", () => {
       expect($(HubPage.summaryRowState(repeatingSectionId(1))).getText()).to.equal("Not started");
       expect($(HubPage.summaryRowState(repeatingSectionId(2))).getText()).to.equal("Not started");
     });
