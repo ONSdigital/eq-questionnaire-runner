@@ -1,5 +1,5 @@
 import KJUR from "jsrsasign";
-import uuid from "uuid/v1";
+import uuid from "uuid";
 import JSONWebKey from "json-web-key";
 import jose from "node-jose";
 import crypto from "crypto";
