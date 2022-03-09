@@ -55,7 +55,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._answer_dependencies_map: dict[str, set[AnswerDependent]] = defaultdict(
             set
         )
-
+        self._section_when_rules_dependencies_map: dict[str, set[str]] = defaultdict(
+            set
+        )
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
 
@@ -68,10 +70,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         # Post schema parsing.
         self._populate_answer_dependencies()
+        self._populate_section_when_rule_dependencies()
 
     @cached_property
     def answer_dependencies(self) -> ImmutableDict[str, set[AnswerDependent]]:
         return ImmutableDict(self._answer_dependencies_map)
+
+    @cached_property
+    def section_when_rule_dependencies(self) -> ImmutableDict[str, set[str]]:
+        return ImmutableDict(self._section_when_rules_dependencies_map)
 
     @cached_property
     def language_code(self) -> str:
@@ -279,13 +286,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             section_ids = self._section_ids_associated_to_list_name(list_name)
             self._list_name_to_section_map[list_name] = section_ids
             return section_ids
-
-    def get_section_ids_dependent_on_when_rules(
-        self, section: ImmutableDict
-    ) -> set[str]:
-        when_rules = self._get_values_for_key(section, "when")
-        rules: Union[dict, list] = next(when_rules, [])
-        return self._get_section_ids_dependent_on_rules(section["id"], rules)
 
     def get_submission(self) -> ImmutableDict:
         schema: ImmutableDict = self.json.get("submission", ImmutableDict({}))
@@ -754,17 +754,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
             if "id" in rule:
                 answer_id = rule["id"]
-            elif "source" in rule and rule["source"] == "answers":
+            elif rule.get("source") == "answers":
                 answer_id = rule.get("identifier")
 
             if answer_id:
-                block = self._block_for_answer(answer_id)
+                block = self.get_block_for_answer_id(answer_id)  # type: ignore
+                section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
 
-                if block:
-                    section_id = self.get_section_id_for_block_id(block["id"])
-
-                    if section_id and section_id != current_section_id:
-                        section_ids_dependent_on_rules.add(section_id)
+                if section_id != current_section_id:
+                    section_ids_dependent_on_rules.add(section_id)  # type: ignore
 
             if any(operator in rule for operator in OPERATION_MAPPING):
                 section_ids_dependent_on_rules.update(
@@ -772,3 +770,16 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 )
 
         return section_ids_dependent_on_rules
+
+    def _populate_section_when_rule_dependencies(self) -> None:
+        for section in self.get_sections():
+            when_rules = self._get_values_for_key(section, "when")
+            rules: Union[dict, list] = next(when_rules, [])
+            section_ids_dependent_on_rules = self._get_section_ids_dependent_on_rules(
+                section["id"], rules
+            )
+
+            if section_ids_dependent_on_rules:
+                self._section_when_rules_dependencies_map[
+                    section["id"]
+                ] = section_ids_dependent_on_rules

@@ -34,7 +34,7 @@ describe("Given the routing and skipping section dependencies questionnaire", ()
     expectReasonNoConfirmationAnswer();
   });
 
-  it("When I answer 'Yes' to skipping the age question, Then in the Primary Person section I am asked my name and why I didn't confirm skipping", () => {
+  it("When I answer 'Yes' to skipping the age question, Then in the Primary Person section I am only asked my name and why I didn't confirm skipping", () => {
     answerYesToSkipAgeQuestion();
 
     selectPrimaryPerson();
@@ -46,7 +46,7 @@ describe("Given the routing and skipping section dependencies questionnaire", ()
     expectPersonalDetailsAgeExistingFalse();
   });
 
-  it("When I answer 'Yes' to skipping the age question and 'Yes' to are you sure in skip question confirmation section, Then in the Primary Person section I am asked just my name", () => {
+  it("When I answer 'Yes' to skipping the age question and 'Yes' to are you sure in skip question confirmation section, Then in the Primary Person section I am only asked just my name", () => {
     answerYesToSkipAgeQuestion();
 
     selectConfirmationSectionAndAnswerSecurityQuestion();
@@ -60,7 +60,7 @@ describe("Given the routing and skipping section dependencies questionnaire", ()
     expectReasonNoConfirmationExistingFalse();
   });
 
-  it("When I answer 'Yes' to skipping the age question but 'No' to are you sure in skip question confirmation section, Then in the Primary Person section I am asked my name and age", () => {
+  it("When I answer 'Yes' to skipping the age question but 'No' to are you sure in skip question confirmation section, Then in the Primary Person section I am just asked my name and age", () => {
     answerYesToSkipAgeQuestion();
 
     selectConfirmationSectionAndAnswerSecurityQuestion();
@@ -75,7 +75,7 @@ describe("Given the routing and skipping section dependencies questionnaire", ()
     expectReasonNoConfirmationExistingFalse();
   });
 
-  it("When I answer 'Yes' to skipping the age question but 'No' to are you sure in skip question confirmation section, but change my to skipping age to 'No', removing the are you sure question from the path, Then in the Primary Person section I am asked my name, age and why I didn't confirm skipping", () => {
+  it("Given I answered 'Yes' to skipping the age question but 'No' to are you sure in skip question confirmation section, When I change my answer to skipping age to 'No', removing the 'are you sure' question from the path, Then in the Primary Person section I am asked my name, age and why I didn't confirm skipping", () => {
     answerYesToSkipAgeQuestion();
 
     selectConfirmationSectionAndAnswerSecurityQuestion();
@@ -101,7 +101,7 @@ describe("Given the routing and skipping section dependencies questionnaire", ()
     );
   });
 
-  it("When I answer 'Yes' to skipping the age question and populate the household, Then in each repeating section I am not asked my age", () => {
+  it("When I answer 'No' to skipping the age question and populate the household, Then in each repeating section I am not asked their age", () => {
     answerNoToSkipAgeQuestion();
 
     addHouseholdMembers();
@@ -126,7 +126,7 @@ describe("Given the routing and skipping section dependencies questionnaire", ()
     expect($(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("10");
   });
 
-  it("When I answer 'No' to skipping the age question and populate the household, Then in each repeating section I am not asked my age", () => {
+  it("When I answer 'Yes' to skipping the age question and populate the household, Then in each repeating section I am not asked their age", () => {
     answerYesToSkipAgeQuestion();
 
     addHouseholdMembers();
@@ -145,92 +145,92 @@ describe("Given the routing and skipping section dependencies questionnaire", ()
     expect($(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
     expect($(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).to.be.false;
   });
-
-  function selectPrimaryPerson() {
-    $(HubPage.summaryRowLink("primary-person")).click();
-  }
-
-  function selectConfirmationSectionAndAnswerSecurityQuestion() {
-    $(HubPage.summaryRowLink("skip-confirmation-section")).click();
-    $(SecurityPage.yes()).click();
-    $(SecurityPage.submit()).click();
-  }
-
-  function answerYesToSkipAgeQuestion() {
-    $(HubPage.summaryRowLink("skip-section")).click();
-    $(SkipAgePage.yes()).click();
-    $(SkipAgePage.submit()).click();
-    $(SkipSectionSummaryPage.submit()).click();
-  }
-
-  function answerNoToSkipAgeQuestion() {
-    $(HubPage.summaryRowLink("skip-section")).click();
-    $(SkipAgePage.no()).click();
-    $(SkipAgePage.submit()).click();
-    $(SkipSectionSummaryPage.submit()).click();
-  }
-
-  function answerNoToSkipConfirmationQuestion() {
-    $(SkipConfirmationPage.no()).click();
-    $(SkipConfirmationPage.submit()).click();
-    $(SkipConfirmationSectionSummaryPage.submit()).click();
-  }
-
-  function answerYesToSkipConfirmationQuestion() {
-    $(SkipConfirmationPage.yes()).click();
-    $(SkipConfirmationPage.submit()).click();
-    $(SkipConfirmationSectionSummaryPage.submit()).click();
-  }
-
-  function answerAndSubmitNameQuestion() {
-    $(NamePage.name()).setValue("John Smith");
-    $(NamePage.submit()).click();
-  }
-
-  function answerAndSubmitAgeQuestion() {
-    $(AgePage.answer()).setValue("50");
-    $(AgePage.submit()).click();
-  }
-
-  function answerAndSubmitReasonForNoConfirmationQuestion() {
-    $(ReasonNoConfirmationPage.iDidNotVisitSection2SoConfirmationWasNotNeeded()).click();
-    $(ReasonNoConfirmationPage.submit()).click();
-  }
-
-  function expectPersonalDetailsName() {
-    expect($(PrimaryPersonSummaryPage.nameAnswer()).getText()).to.contain("John Smith");
-  }
-
-  function expectPersonalDetailsAge() {
-    expect($(PrimaryPersonSummaryPage.ageAnswer()).getText()).to.contain("50");
-  }
-
-  function expectReasonNoConfirmationAnswer() {
-    expect($(PrimaryPersonSummaryPage.reasonNoConfirmationAnswer()).getText()).to.contain("I did not visit section 2, so confirmation was not needed");
-  }
-
-  function expectPersonalDetailsAgeExistingFalse() {
-    expect($(PrimaryPersonSummaryPage.ageAnswer()).isExisting()).to.be.false;
-  }
-
-  function expectReasonNoConfirmationExistingFalse() {
-    expect($(PrimaryPersonSummaryPage.reasonNoConfirmationAnswer()).isExisting()).to.be.false;
-  }
-
-  function addHouseholdMembers() {
-    $(HubPage.summaryRowLink("household-section")).click();
-    $(ListCollectorPage.yes()).click();
-    $(ListCollectorPage.submit()).click();
-    $(ListCollectorAddPage.firstName()).setValue("Sarah");
-    $(ListCollectorAddPage.lastName()).setValue("Smith");
-    $(ListCollectorAddPage.submit()).click();
-    $(ListCollectorPage.yes()).click();
-    $(ListCollectorPage.submit()).click();
-    $(ListCollectorAddPage.firstName()).setValue("Marcus");
-    $(ListCollectorAddPage.lastName()).setValue("Smith");
-    $(ListCollectorAddPage.submit()).click();
-    $(ListCollectorPage.no()).click();
-    $(ListCollectorPage.submit()).click();
-    $(HouseholdSectionSummaryPage.submit()).click();
-  }
 });
+
+const addHouseholdMembers = () => {
+  $(HubPage.summaryRowLink("household-section")).click();
+  $(ListCollectorPage.yes()).click();
+  $(ListCollectorPage.submit()).click();
+  $(ListCollectorAddPage.firstName()).setValue("Sarah");
+  $(ListCollectorAddPage.lastName()).setValue("Smith");
+  $(ListCollectorAddPage.submit()).click();
+  $(ListCollectorPage.yes()).click();
+  $(ListCollectorPage.submit()).click();
+  $(ListCollectorAddPage.firstName()).setValue("Marcus");
+  $(ListCollectorAddPage.lastName()).setValue("Smith");
+  $(ListCollectorAddPage.submit()).click();
+  $(ListCollectorPage.no()).click();
+  $(ListCollectorPage.submit()).click();
+  $(HouseholdSectionSummaryPage.submit()).click();
+};
+
+const selectPrimaryPerson = () => {
+  $(HubPage.summaryRowLink("primary-person")).click();
+};
+
+const selectConfirmationSectionAndAnswerSecurityQuestion = () => {
+  $(HubPage.summaryRowLink("skip-confirmation-section")).click();
+  $(SecurityPage.yes()).click();
+  $(SecurityPage.submit()).click();
+};
+
+const answerYesToSkipAgeQuestion = () => {
+  $(HubPage.summaryRowLink("skip-section")).click();
+  $(SkipAgePage.yes()).click();
+  $(SkipAgePage.submit()).click();
+  $(SkipSectionSummaryPage.submit()).click();
+};
+
+const answerNoToSkipAgeQuestion = () => {
+  $(HubPage.summaryRowLink("skip-section")).click();
+  $(SkipAgePage.no()).click();
+  $(SkipAgePage.submit()).click();
+  $(SkipSectionSummaryPage.submit()).click();
+};
+
+const answerNoToSkipConfirmationQuestion = () => {
+  $(SkipConfirmationPage.no()).click();
+  $(SkipConfirmationPage.submit()).click();
+  $(SkipConfirmationSectionSummaryPage.submit()).click();
+};
+
+const answerYesToSkipConfirmationQuestion = () => {
+  $(SkipConfirmationPage.yes()).click();
+  $(SkipConfirmationPage.submit()).click();
+  $(SkipConfirmationSectionSummaryPage.submit()).click();
+};
+
+const answerAndSubmitNameQuestion = () => {
+  $(NamePage.name()).setValue("John Smith");
+  $(NamePage.submit()).click();
+};
+
+const answerAndSubmitAgeQuestion = () => {
+  $(AgePage.answer()).setValue("50");
+  $(AgePage.submit()).click();
+};
+
+const answerAndSubmitReasonForNoConfirmationQuestion = () => {
+  $(ReasonNoConfirmationPage.iDidNotVisitSection2SoConfirmationWasNotNeeded()).click();
+  $(ReasonNoConfirmationPage.submit()).click();
+};
+
+const expectPersonalDetailsName = () => {
+  expect($(PrimaryPersonSummaryPage.nameAnswer()).getText()).to.contain("John Smith");
+};
+
+const expectPersonalDetailsAge = () => {
+  expect($(PrimaryPersonSummaryPage.ageAnswer()).getText()).to.contain("50");
+};
+
+const expectReasonNoConfirmationAnswer = () => {
+  expect($(PrimaryPersonSummaryPage.reasonNoConfirmationAnswer()).getText()).to.contain("I did not visit section 2, so confirmation was not needed");
+};
+
+const expectPersonalDetailsAgeExistingFalse = () => {
+  expect($(PrimaryPersonSummaryPage.ageAnswer()).isExisting()).to.be.false;
+};
+
+const expectReasonNoConfirmationExistingFalse = () => {
+  expect($(PrimaryPersonSummaryPage.reasonNoConfirmationAnswer()).isExisting()).to.be.false;
+};

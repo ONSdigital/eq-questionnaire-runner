@@ -1,4 +1,4 @@
-from typing import Mapping, Optional
+from typing import Any, Mapping, Optional
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -62,12 +62,16 @@ class PathFinder:
         return RoutingPath(routing_path_block_ids, section_id, list_item_id, list_name)
 
     def _get_block_ids_dependent_on_when_rules(
-        self, section: ImmutableDict
+        self, section: ImmutableDict[str, Any]
     ) -> list[str]:
+        """NB: Does not support repeating sections"""
         block_ids_dependent_on_when_rules: list[str] = []
 
-        for section_id in self.schema.get_section_ids_dependent_on_when_rules(section):
-            block_ids_dependent_on_when_rules.extend(self.routing_path(section_id))
+        if section_when_rule_dependencies := self.schema.section_when_rule_dependencies.get(
+            section["id"]
+        ):
+            for section_id in section_when_rule_dependencies:
+                block_ids_dependent_on_when_rules.extend(self.routing_path(section_id))
 
         return block_ids_dependent_on_when_rules
 

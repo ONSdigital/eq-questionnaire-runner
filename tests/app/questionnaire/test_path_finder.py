@@ -539,47 +539,41 @@ def test_new_remove_answer_and_block_if_routing_backwards(list_store):
 
 
 @pytest.mark.parametrize(
-    "skip_age_answer, skip_confirmation_answer, schema, section_id, expected_route",
+    "skip_age_answer, skip_confirmation_answer, section_id, expected_route",
     (
         (
             "Yes",
             None,
-            "test_new_routing_and_skipping_section_dependencies",
             "skip-confirmation-section",
             ["security", "skip-confirmation"],
         ),
         (
             "Yes",
             None,
-            "test_new_routing_and_skipping_section_dependencies",
             "primary-person",
             ["name-block", "reason-no-confirmation"],
         ),
         (
             "No",
             None,
-            "test_new_routing_and_skipping_section_dependencies",
             "skip-confirmation-section",
             ["security"],
         ),
         (
             "No",
             None,
-            "test_new_routing_and_skipping_section_dependencies",
             "primary-person",
             ["name-block", "age", "reason-no-confirmation"],
         ),
         (
             "Yes",
             "Yes",
-            "test_new_routing_and_skipping_section_dependencies",
             "primary-person",
             ["name-block"],
         ),
         (
             "Yes",
             "No",
-            "test_new_routing_and_skipping_section_dependencies",
             "primary-person",
             ["name-block", "age"],
         ),
@@ -587,62 +581,21 @@ def test_new_remove_answer_and_block_if_routing_backwards(list_store):
             # this means the confirmation answer will not be on the path, so the primary person section will asked why there was no confirmation
             "No",
             "Yes",
-            "test_new_routing_and_skipping_section_dependencies",
-            "primary-person",
-            ["name-block", "age", "reason-no-confirmation"],
-        ),
-        (
-            "Yes",
-            None,
-            "test_routing_and_skipping_section_dependencies",
-            "skip-confirmation-section",
-            ["security", "skip-confirmation"],
-        ),
-        (
-            "Yes",
-            None,
-            "test_routing_and_skipping_section_dependencies",
-            "primary-person",
-            ["name-block", "reason-no-confirmation"],
-        ),
-        (
-            "No",
-            None,
-            "test_routing_and_skipping_section_dependencies",
-            "skip-confirmation-section",
-            ["security"],
-        ),
-        (
-            "No",
-            None,
-            "test_routing_and_skipping_section_dependencies",
-            "primary-person",
-            ["name-block", "age", "reason-no-confirmation"],
-        ),
-        (
-            "Yes",
-            "Yes",
-            "test_routing_and_skipping_section_dependencies",
-            "primary-person",
-            ["name-block"],
-        ),
-        (
-            "Yes",
-            "No",
-            "test_routing_and_skipping_section_dependencies",
-            "primary-person",
-            ["name-block", "age"],
-        ),
-        (
-            "No",
-            "Yes",
-            "test_routing_and_skipping_section_dependencies",
             "primary-person",
             ["name-block", "age", "reason-no-confirmation"],
         ),
     ),
 )
-def test_routing_path_block_ids_dependent_on_when_rules(
+@pytest.mark.parametrize(
+    "schema",
+    (
+        [
+            "test_new_routing_and_skipping_section_dependencies",
+            "test_routing_and_skipping_section_dependencies",
+        ]
+    ),
+)
+def test_routing_path_block_ids_dependent_on_other_sections_when_rules(
     list_store,
     skip_age_answer,
     skip_confirmation_answer,
@@ -650,7 +603,7 @@ def test_routing_path_block_ids_dependent_on_when_rules(
     section_id,
     expected_route,
 ):
-    # Given
+    # Given a schema which has when rules in a section which has dependencies on other sections answers
     schema = load_schema_from_name(schema)
     answer_store = AnswerStore()
     answer_store.add_or_update(
@@ -670,6 +623,8 @@ def test_routing_path_block_ids_dependent_on_when_rules(
         answer_store.add_or_update(
             Answer(answer_id="skip-confirmation-answer", value=skip_confirmation_answer)
         )
+        answer_store.add_or_update(Answer(answer_id="security-answer", value="Yes"))
+
         progress.append(
             {
                 "section_id": "skip-confirmation-section",
@@ -681,18 +636,18 @@ def test_routing_path_block_ids_dependent_on_when_rules(
 
     progress_store = ProgressStore(progress)
 
-    # When
+    # When I build the path
     path_finder = PathFinder(
         schema,
         answer_store,
         list_store,
         progress_store,
-        {},
-        {},
+        metadata={},
+        response_metadata={},
     )
     routing_path = path_finder.routing_path(section_id=section_id)
 
-    # Then
+    # Then the path is built correctly
     expected_routing_path = RoutingPath(
         expected_route,
         section_id=section_id,
@@ -701,36 +656,33 @@ def test_routing_path_block_ids_dependent_on_when_rules(
 
 
 @pytest.mark.parametrize(
-    "skip_age_answer, schema, expected_route",
+    "skip_age_answer, expected_route",
     (
         (
             "Yes",
-            "test_new_routing_and_skipping_section_dependencies",
             ["repeating-sex"],
         ),
         (
             "No",
-            "test_new_routing_and_skipping_section_dependencies",
-            ["repeating-sex", "repeating-age"],
-        ),
-        (
-            "Yes",
-            "test_routing_and_skipping_section_dependencies",
-            ["repeating-sex"],
-        ),
-        (
-            "No",
-            "test_routing_and_skipping_section_dependencies",
             ["repeating-sex", "repeating-age"],
         ),
     ),
 )
-def test_routing_path_block_ids_dependent_on_when_rules_repeating(
+@pytest.mark.parametrize(
+    "schema",
+    (
+        [
+            "test_new_routing_and_skipping_section_dependencies",
+            "test_routing_and_skipping_section_dependencies",
+        ]
+    ),
+)
+def test_routing_path_block_ids_dependent_on_other_sections_when_rules_repeating(
     skip_age_answer,
     schema,
     expected_route,
 ):
-    # Given
+    # Given a schema with repeating sections which has when rules dependent on another section
     schema = load_schema_from_name(schema)
     answer_store = AnswerStore()
     answer_store.add_or_update(
@@ -764,20 +716,20 @@ def test_routing_path_block_ids_dependent_on_when_rules_repeating(
         ]
     )
 
-    # When
+    # When I build the path
     path_finder = PathFinder(
         schema,
         answer_store,
         list_store,
         progress_store,
-        {},
-        {},
+        metadata={},
+        response_metadata={},
     )
     routing_path = path_finder.routing_path(
         section_id="household-personal-details-section", list_item_id="lCIZsS"
     )
 
-    # Then
+    # Then the path is built correctly
     expected_routing_path = RoutingPath(
         expected_route,
         section_id="household-personal-details-section",
