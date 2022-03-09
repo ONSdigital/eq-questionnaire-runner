@@ -308,7 +308,7 @@ class Router:
 
     def get_enabled_section_keys(
         self,
-    ) -> Generator[tuple[str, Optional[str]], None, None]:
+    ) -> Generator[SectionKeyType, None, None]:
         for section_id in self.enabled_section_ids:
             repeating_list = self._schema.get_repeating_list_for_section(section_id)
 

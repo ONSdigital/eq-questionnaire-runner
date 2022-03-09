@@ -185,6 +185,7 @@ class Question(BlockHandler):
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
         self.questionnaire_store_updater.update_answers(self.form.data)
+        self.questionnaire_store_updater.update_progress_for_dependant_sections()
         if self.questionnaire_store_updater.is_dirty():
             self._routing_path = self.router.routing_path(
                 section_id=self._current_location.section_id,
