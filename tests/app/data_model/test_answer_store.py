@@ -92,7 +92,7 @@ def test_remove_all_answers(basic_answer_store):
 
 def test_remove_answer_with_list_item_id(basic_answer_store):
     len_before_remove = len(basic_answer_store)
-    basic_answer_store.remove_answer("answer1", "abc123")
+    basic_answer_store.remove_answer("answer1", list_item_id="abc123")
     assert len(basic_answer_store) == len_before_remove - 1
 
 

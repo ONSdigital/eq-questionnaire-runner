@@ -219,6 +219,12 @@ def test_remove_completed_location():
             "status": CompletionStatus.COMPLETED,
             "block_ids": ["three", "four"],
         },
+        {
+            "section_id": "s3",
+            "list_item_id": None,
+            "status": CompletionStatus.COMPLETED,
+            "block_ids": ["one"],
+        },
     ]
     store = ProgressStore(completed)
 
@@ -226,48 +232,21 @@ def test_remove_completed_location():
     repeating_location = Location(
         section_id="s2", block_id="three", list_name="people", list_item_id="abc123"
     )
+    last_and_final_location = Location(section_id="s3", block_id="one")
 
     store.remove_completed_location(non_repeating_location)
     store.remove_completed_location(repeating_location)
+    store.remove_completed_location(last_and_final_location)
 
     assert store.get_completed_block_ids(section_id="s1") == ["two"]
     assert store.get_completed_block_ids(section_id="s2", list_item_id="abc123") == [
         "four"
     ]
+    assert store.get_completed_block_ids(section_id="s3") == []
 
-    assert store.is_dirty
-
-
-def test_remove_final_completed_location_removes_section():
-    completed = [
-        {
-            "section_id": "s1",
-            "list_item_id": None,
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["one"],
-        },
-        {
-            "section_id": "s2",
-            "list_item_id": "abc123",
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["three"],
-        },
-    ]
-    store = ProgressStore(completed)
-
-    non_repeating_location = Location(section_id="s1", block_id="one")
-    repeating_location = Location(
-        section_id="s2", block_id="three", list_name="people", list_item_id="abc123"
-    )
-
-    store.remove_completed_location(non_repeating_location)
-    store.remove_completed_location(repeating_location)
-
-    assert ("s1", None) not in store
-    assert store.get_completed_block_ids(section_id="s1") == []
-
-    assert ("s2", "abc123") not in store
-    assert store.get_completed_block_ids(section_id="s1", list_item_id="abc123") == []
+    assert store.get_section_status("s1") == CompletionStatus.COMPLETED
+    assert store.get_section_status("s2", "abc123") == CompletionStatus.COMPLETED
+    assert store.get_section_status("s3") == CompletionStatus.IN_PROGRESS
 
     assert store.is_dirty
 

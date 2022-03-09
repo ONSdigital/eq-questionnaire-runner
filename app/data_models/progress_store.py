@@ -170,7 +170,7 @@ class ProgressStore:
 
             self._is_dirty = True
 
-    def remove_completed_location(self, location: Location) -> None:
+    def remove_completed_location(self, location: Location) -> bool:
         section_key = (location.section_id, location.list_item_id)
         if (
             section_key in self._progress
@@ -179,9 +179,12 @@ class ProgressStore:
             self._progress[section_key].block_ids.remove(location.block_id)
 
             if not self._progress[section_key].block_ids:
-                del self._progress[section_key]
+                self._progress[section_key].status = CompletionStatus.IN_PROGRESS
 
             self._is_dirty = True
+            return True
+
+        return False
 
     def remove_progress_for_list_item_id(self, list_item_id: str) -> None:
         """Remove progress associated with a particular list_item_id

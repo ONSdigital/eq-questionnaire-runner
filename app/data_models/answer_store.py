@@ -62,9 +62,10 @@ class AnswerStore:
     def is_dirty(self) -> bool:
         return self._is_dirty
 
-    def add_or_update(self, answer: Answer) -> None:
+    def add_or_update(self, answer: Answer) -> bool:
         """
         Add a new answer into the answer store, or update if it exists.
+        :return: True if answer updated else False
         """
         self._validate(answer)
         key = (answer.answer_id, answer.list_item_id)
@@ -74,6 +75,10 @@ class AnswerStore:
         if existing_answer != answer:
             self._is_dirty = True
             self.answer_map[key] = answer
+
+            return True
+
+        return False
 
     def get_answer(
         self, answer_id: str, list_item_id: Optional[str] = None
@@ -116,14 +121,21 @@ class AnswerStore:
         """
         self.answer_map.clear()
 
-    def remove_answer(self, answer_id: str, list_item_id: Optional[str] = None) -> None:
+    def remove_answer(
+        self, answer_id: str, *, list_item_id: Optional[str] = None
+    ) -> bool:
         """
         Removes answer *in place* from the answer store.
+        :return: True if answer removed else False
         """
 
         if self.answer_map.get((answer_id, list_item_id)):
             del self.answer_map[(answer_id, list_item_id)]
             self._is_dirty = True
+
+            return True
+
+        return False
 
     def remove_all_answers_for_list_item_id(self, list_item_id: str) -> None:
         """Remove all answers associated with a particular list_item_id.
