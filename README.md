@@ -155,7 +155,7 @@ The frontend tests use NodeJS to run. You will need to have node version 14.X to
 
 ``` shell
 brew install nvm
-nvm install 14
+nvm install
 nvm use
 ```
 
