@@ -669,7 +669,7 @@ def content_variant_schema():
                                             "id": "age-answer",
                                             "type": "Unit",
                                             "label": "Your age",
-                                            "mandatory": True
+                                            "mandatory": True,
                                         }
                                     ],
                                 },
