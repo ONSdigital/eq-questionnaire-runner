@@ -1,10 +1,10 @@
-import TotalAnswerPage from "../../../../generated_pages/sum_less_validation_against_total/total-block.page";
-import BreakdownAnswerPage from "../../../../generated_pages/sum_less_validation_against_total/breakdown-block.page";
-import SubmitPage from "../../../../generated_pages/sum_less_validation_against_total/submit.page";
+import TotalAnswerPage from "../../../../generated_pages/validation_sum_against_total_less_than/total-block.page";
+import BreakdownAnswerPage from "../../../../generated_pages/validation_sum_against_total_less_than/breakdown-block.page";
+import SubmitPage from "../../../../generated_pages/validation_sum_against_total_less_than/submit.page";
 
 describe("Feature: Sum of grouped answers validation (less than) against total", () => {
   beforeEach(() => {
-    browser.openQuestionnaire("test_sum_less_validation_against_total.json");
+    browser.openQuestionnaire("test_validation_sum_against_total_less_than.json");
   });
 
   describe("Given I start a grouped answer validation survey and enter 12 into the total", () => {

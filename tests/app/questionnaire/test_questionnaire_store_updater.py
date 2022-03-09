@@ -1,11 +1,13 @@
 import pytest
+from mock import MagicMock, Mock
 from werkzeug.datastructures import MultiDict
 
 from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
-from app.data_models.progress_store import ProgressStore
+from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.location import Location
+from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 
 
@@ -77,8 +79,11 @@ def test_save_empty_answer_removes_existing_answer(
     questionnaire_store_updater.update_answers(form_data)
 
     assert mock_empty_answer_store.remove_answer.call_count == 1
-    answer_key = mock_empty_answer_store.remove_answer.call_args[0]
-    assert answer_key == (answer_id, list_item_id)
+    used_answer_id = mock_empty_answer_store.remove_answer.call_args[0][0]
+    used_list_item_id = mock_empty_answer_store.remove_answer.call_args[1][
+        "list_item_id"
+    ]
+    assert (used_answer_id, used_list_item_id) == (answer_id, list_item_id)
 
 
 def test_default_answers_are_not_saved(
@@ -382,3 +387,394 @@ def test_update_same_name_items(
 
     assert "abcdef" in populated_list_store["people"].same_name_items
     assert "ghijkl" in populated_list_store["people"].same_name_items
+
+
+def get_answer_dependencies(for_list=None):
+    return {
+        "total-employees-answer": {
+            AnswerDependent(
+                section_id="breakdown-section",
+                block_id="employees-breakdown-block",
+                for_list=for_list,
+                answer_id=None,
+            )
+        },
+        "total-turnover-answer": {
+            AnswerDependent(
+                section_id="breakdown-section",
+                block_id="turnover-breakdown-block",
+                for_list=for_list,
+                answer_id=None,
+            )
+        },
+    }
+
+
+@pytest.mark.parametrize(
+    "answer_id,answer_updated,answer_dependencies,expected_output",
+    [
+        (
+            "total-employees-answer",
+            True,
+            get_answer_dependencies(),
+            {("breakdown-section", None): {"employees-breakdown-block"}},
+        ),
+        (
+            "total-turnover-answer",
+            True,
+            get_answer_dependencies(),
+            {("breakdown-section", None): {"turnover-breakdown-block"}},
+        ),
+        (
+            "total-employees-answer",
+            True,
+            get_answer_dependencies(for_list="people"),
+            {
+                ("breakdown-section", "person-1"): {"employees-breakdown-block"},
+                ("breakdown-section", "person-2"): {"employees-breakdown-block"},
+                ("breakdown-section", "person-3"): {"employees-breakdown-block"},
+            },
+        ),
+        (
+            "total-turnover-answer",
+            True,
+            get_answer_dependencies(for_list="people"),
+            {
+                ("breakdown-section", "person-1"): {"turnover-breakdown-block"},
+                ("breakdown-section", "person-2"): {"turnover-breakdown-block"},
+                ("breakdown-section", "person-3"): {"turnover-breakdown-block"},
+            },
+        ),
+        (
+            "total-employees-answer",
+            False,
+            get_answer_dependencies(),
+            {},
+        ),
+    ],
+)
+def test_update_answers_captures_answer_dependencies(
+    mock_empty_answer_store,
+    answer_id,
+    answer_updated,
+    answer_dependencies,
+    expected_output,
+    mock_schema,
+):
+    location = Location(
+        section_id="default-section",
+        block_id="default-block",
+    )
+
+    list_store = ListStore(
+        [
+            {
+                "items": ["person-1", "person-2", "person-3"],
+                "name": "people",
+            }
+        ]
+    )
+
+    mock_schema.get_answer_ids_for_question.return_value = [answer_id]
+    mock_schema.answer_dependencies = answer_dependencies
+
+    mock_empty_answer_store.add_or_update.return_value = answer_updated
+    form_data = MultiDict({answer_id: "some-value"})
+
+    current_question = mock_schema.get_block(location.block_id)["question"]
+    questionnaire_store_updater = get_questionnaire_store_updater(
+        schema=mock_schema,
+        answer_store=mock_empty_answer_store,
+        list_store=list_store,
+        current_location=location,
+        current_question=current_question,
+    )
+
+    questionnaire_store_updater.update_answers(form_data)
+
+    assert (
+        questionnaire_store_updater.dependent_block_id_by_section_key == expected_output
+    )
+
+
+def get_questionnaire_store_updater(
+    *,
+    current_location=None,
+    schema=None,
+    answer_store=None,
+    list_store=None,
+    progress_store=None,
+    current_question=None,
+):
+    answer_store = AnswerStore() if answer_store is None else answer_store
+    list_store = ListStore() if list_store is None else list_store
+    progress_store = ProgressStore() if progress_store is None else progress_store
+    mock_schema = (
+        MagicMock(
+            QuestionnaireSchema({"questionnaire_flow": {"type": "Hub", "options": {}}})
+        )
+        if schema is None
+        else schema
+    )
+    current_location = (
+        Mock(spec=Location) if current_location is None else current_location
+    )
+
+    mock_questionnaire_store = MagicMock(
+        spec=QuestionnaireStore,
+        answer_store=answer_store,
+        list_store=list_store,
+        progress_store=progress_store,
+    )
+    current_question = current_question or {}
+
+    return QuestionnaireStoreUpdater(
+        current_location, mock_schema, mock_questionnaire_store, current_question
+    )
+
+
+@pytest.mark.parametrize(
+    "dependent_section_status",
+    [CompletionStatus.IN_PROGRESS, CompletionStatus.COMPLETED],
+)
+def test_dependent_sections_completed_dependant_blocks_removed_and_status_updated(
+    dependent_section_status,
+):
+    # Given
+    current_location = Location(
+        section_id="company-summary-section", block_id="total-turnover-block"
+    )
+    progress_store = ProgressStore(
+        [
+            {
+                "section_id": "company-summary-section",
+                "block_ids": ["total-turnover-block", "total-employees-block"],
+                "status": "COMPLETED",
+            },
+            {
+                "section_id": "breakdown-section",
+                "block_ids": [
+                    "turnover-breakdown-block",
+                ],
+                "status": dependent_section_status,
+            },
+        ],
+    )
+    questionnaire_store_updater = get_questionnaire_store_updater(
+        current_location=current_location, progress_store=progress_store
+    )
+    dependent_section_key = ("breakdown-section", None)
+    dependent_block_id = "turnover-breakdown-block"
+
+    questionnaire_store_updater.dependent_block_id_by_section_key = {
+        dependent_section_key: {dependent_block_id}
+    }
+
+    assert dependent_block_id in progress_store.get_completed_block_ids(
+        *dependent_section_key
+    )
+
+    # When
+    questionnaire_store_updater.update_progress_for_dependant_sections()
+
+    # Then
+    assert dependent_block_id not in progress_store.get_completed_block_ids(
+        *dependent_section_key
+    )
+    assert (
+        progress_store.get_section_status(*dependent_section_key)
+        == CompletionStatus.IN_PROGRESS
+    )
+
+
+def test_dependent_sections_current_section_status_not_updated(mocker):
+    # Given
+    current_location = Location(
+        section_id="breakdown-section", block_id="total-turnover-block"
+    )
+    progress_store = ProgressStore(
+        [
+            {
+                "section_id": "breakdown-section",
+                "block_ids": [
+                    "total-turnover-block",
+                    "turnover-breakdown-block",
+                ],
+                "status": CompletionStatus.COMPLETED,
+            },
+        ],
+    )
+    questionnaire_store_updater = get_questionnaire_store_updater(
+        current_location=current_location, progress_store=progress_store
+    )
+    dependent_section_key = ("breakdown-section", None)
+    dependent_block_id = "turnover-breakdown-block"
+
+    questionnaire_store_updater.dependent_block_id_by_section_key = {
+        dependent_section_key: {dependent_block_id}
+    }
+
+    questionnaire_store_updater.update_section_status = mocker.Mock()
+    assert dependent_block_id in progress_store.get_completed_block_ids(
+        *dependent_section_key
+    )
+
+    # When
+    questionnaire_store_updater.update_progress_for_dependant_sections()
+
+    # Then
+    assert dependent_block_id not in progress_store.get_completed_block_ids(
+        *dependent_section_key
+    )
+    # Status for current section is handled separately by handle post.
+    assert questionnaire_store_updater.update_section_status.call_count == 0
+
+
+def test_dependent_sections_not_started_skipped(mocker):
+    # Given
+    current_location = Location(
+        section_id="company-summary-section", block_id="total-turnover-block"
+    )
+    progress_store = ProgressStore(
+        [
+            {
+                "section_id": "company-summary-section",
+                "block_ids": ["total-turnover-block", "total-employees-block"],
+                "status": "COMPLETED",
+            }
+        ],
+    )
+    questionnaire_store_updater = get_questionnaire_store_updater(
+        current_location=current_location, progress_store=progress_store
+    )
+
+    dependent_section_key = ("breakdown-section", None)
+    dependent_block_id = "turnover-breakdown-block"
+
+    questionnaire_store_updater.dependent_block_id_by_section_key = {
+        dependent_section_key: {dependent_block_id}
+    }
+
+    questionnaire_store_updater.remove_completed_location = mocker.Mock()
+    questionnaire_store_updater.update_section_status = mocker.Mock()
+
+    # When
+    questionnaire_store_updater.update_progress_for_dependant_sections()
+
+    # Then
+    assert questionnaire_store_updater.remove_completed_location.call_count == 0
+    assert questionnaire_store_updater.update_section_status.call_count == 0
+
+
+def test_dependent_sections_started_but_blocks_incomplete(mocker):
+    # Given
+    current_location = Location(
+        section_id="company-summary-section", block_id="total-employees-block"
+    )
+    progress_store = ProgressStore(
+        [
+            {
+                "section_id": "company-summary-section",
+                "block_ids": ["total-turnover-block", "total-employees-block"],
+                "status": "COMPLETED",
+            },
+            {
+                "section_id": "breakdown-section",
+                "block_ids": [
+                    "turnover-breakdown-block",
+                ],
+                "status": "IN_PROGRESS",
+            },
+        ],
+    )
+    questionnaire_store_updater = get_questionnaire_store_updater(
+        current_location=current_location, progress_store=progress_store
+    )
+
+    dependent_section_key = ("breakdown-section", None)
+    dependent_block_id = "total-employees-block"
+
+    questionnaire_store_updater.dependent_block_id_by_section_key = {
+        dependent_section_key: {dependent_block_id}
+    }
+    questionnaire_store_updater.update_section_status = mocker.Mock()
+
+    assert dependent_block_id not in progress_store.get_completed_block_ids(
+        *dependent_section_key
+    )
+
+    # When
+    questionnaire_store_updater.update_progress_for_dependant_sections()
+
+    # Then
+    assert questionnaire_store_updater.update_section_status.call_count == 0
+
+
+@pytest.mark.parametrize(
+    "dependent_section_status",
+    [CompletionStatus.IN_PROGRESS, CompletionStatus.COMPLETED],
+)
+def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_status_updated(
+    dependent_section_status,
+):
+    # Given
+    current_location = Location(
+        section_id="company-summary-section", block_id="total-turnover-block"
+    )
+    list_store = ListStore(
+        [
+            {
+                "items": ["item-1", "item-2"],
+                "name": "some-list",
+            }
+        ]
+    )
+    progress_store = ProgressStore(
+        [
+            {
+                "section_id": "company-summary-section",
+                "block_ids": ["total-turnover-block", "total-employees-block"],
+                "status": "COMPLETED",
+            },
+            {
+                "section_id": "breakdown-section",
+                "list_item_id": "item-1",
+                "block_ids": [
+                    "turnover-breakdown-block",
+                ],
+                "status": dependent_section_status,
+            },
+            {
+                "section_id": "breakdown-section",
+                "list_item_id": "item-2",
+                "block_ids": [
+                    "turnover-breakdown-block",
+                ],
+                "status": dependent_section_status,
+            },
+        ],
+    )
+    questionnaire_store_updater = get_questionnaire_store_updater(
+        current_location=current_location,
+        progress_store=progress_store,
+        list_store=list_store,
+    )
+
+    questionnaire_store_updater.dependent_block_id_by_section_key = {
+        ("breakdown-section", list_item): {"turnover-breakdown-block"}
+        for list_item in list_store["some-list"]
+    }
+
+    # When
+    questionnaire_store_updater.update_progress_for_dependant_sections()
+
+    # Then
+    for list_item in list_store["some-list"]:
+        section_id, list_item_id = "breakdown-section", list_item
+        assert "turnover-breakdown-block" not in progress_store.get_completed_block_ids(
+            section_id, list_item_id
+        )
+        assert (
+            progress_store.get_section_status(section_id, list_item_id)
+            == CompletionStatus.IN_PROGRESS
+        )
