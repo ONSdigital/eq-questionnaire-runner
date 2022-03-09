@@ -5,8 +5,6 @@ describe("Component: Mutually Exclusive Number With Single Checkbox Override", (
   beforeEach(() => {
     browser.openQuestionnaire("test_mutually_exclusive.json");
     browser.url("/questionnaire/mutually-exclusive-number");
-    // Accept cookies, since they push submit button outside window
-    $(NumberPage.acceptCookies()).click();
   });
 
   describe("Given the user has entered a value for the non-exclusive number answer", () => {

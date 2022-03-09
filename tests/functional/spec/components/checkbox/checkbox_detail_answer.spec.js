@@ -6,8 +6,6 @@ import MutuallyExclusivePage from "../../../generated_pages/checkbox_detail_answ
 describe("Given the checkbox detail_answer questionnaire,", () => {
   beforeEach(() => {
     browser.openQuestionnaire("test_checkbox_detail_answer_textfield.json");
-    // Accept cookies, since they push submit button outside window
-    $(CheckboxVisibleTruePage.acceptCookies()).click();
   });
   it("When a checkbox has a detail_answer with visible set to true, Then the detail answer write-in field should be shown", () => {
     expect($(CheckboxVisibleTruePage.otherDetail()).isDisplayed()).to.be.true;
