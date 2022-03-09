@@ -3,7 +3,7 @@ from collections import abc
 import pytest
 from werkzeug.datastructures import ImmutableDict
 
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
 
 
 def assert_all_dict_values_are_hashable(data):
@@ -388,3 +388,45 @@ def test_doesnt_have_address_lookup_answer():
 
     has_lookup_answer = QuestionnaireSchema.has_address_lookup_answer(question)
     assert not has_lookup_answer
+
+
+def test_answer_dependencies_for_calculated_question_non_repeating(
+    calculated_question_with_dependent_sections_schema_non_repeating,
+):
+    schema = calculated_question_with_dependent_sections_schema_non_repeating
+
+    assert schema.answer_dependencies == {
+        "total-employees-answer": {
+            AnswerDependent(
+                section_id="breakdown-section",
+                block_id="employees-breakdown-block",
+                for_list=None,
+                answer_id=None,
+            )
+        },
+        "total-turnover-answer": {
+            AnswerDependent(
+                section_id="breakdown-section",
+                block_id="turnover-breakdown-block",
+                for_list=None,
+                answer_id=None,
+            )
+        },
+    }
+
+
+def test_answer_dependencies_for_calculated_question_repeating(
+    calculated_question_with_dependent_sections_schema_repeating,
+):
+    schema = calculated_question_with_dependent_sections_schema_repeating
+
+    assert schema.answer_dependencies == {
+        "total-spending-answer": {
+            AnswerDependent(
+                section_id="breakdown-section",
+                block_id="spending-breakdown-block",
+                for_list="people",
+                answer_id=None,
+            )
+        }
+    }
