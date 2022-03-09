@@ -22,13 +22,16 @@
         "format:test-schemas": "prettier \"schemas/test/*/*.json\" --write && eslint --fix \"schemas/test/*/*.json\""
     },
     "devDependencies": {
+        "@babel/core": "^7.17.5",
+        "@babel/plugin-transform-runtime": "^7.17.0",
+        "@babel/preset-env": "^7.16.11",
+        "@babel/register": "^7.17.0",
+        "@babel/runtime": "^7.17.2",
         "@wdio/cli": "^7.16.16",
         "@wdio/local-runner": "^7.16.16",
         "@wdio/mocha-framework": "^7.16.15",
         "@wdio/spec-reporter": "^7.16.14",
         "@wdio/sync": "^7.16.16",
-        "babel-preset-env": "^1.7.0",
-        "babel-register": "^6.26.0",
         "chai": "^4.2.0",
         "chromedriver": "^99.0.0",
         "eslint": "^8.10.0",
