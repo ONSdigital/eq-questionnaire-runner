@@ -4,6 +4,8 @@ import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually
 describe("Component: Mutually Exclusive Checkbox With Single Checkbox Override", () => {
   beforeEach(() => {
     browser.openQuestionnaire("test_mutually_exclusive.json");
+    // Accept cookies, since they push submit button outside window
+    $(MandatoryCheckboxPage.acceptCookies()).click();
   });
 
   describe("Given the user has clicked multiple non-exclusive options", () => {

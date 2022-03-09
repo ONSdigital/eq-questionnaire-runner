@@ -5,6 +5,8 @@ describe("Component: Mutually Exclusive Duration With Single Checkbox Override",
   beforeEach(() => {
     browser.openQuestionnaire("test_mutually_exclusive.json");
     browser.url("/questionnaire/mutually-exclusive-duration");
+    // Accept cookies, since they push submit button outside window
+    $(DurationPage.acceptCookies()).click();
   });
 
   describe("Given the user has entered a value for the non-exclusive duration answer", () => {

@@ -5,6 +5,8 @@ describe("Component: Mutually Exclusive Currency With Single Checkbox Override",
   beforeEach(() => {
     browser.openQuestionnaire("test_mutually_exclusive.json");
     browser.url("/questionnaire/mutually-exclusive-currency");
+    // Accept cookies, since they push submit button outside window
+    $(CurrencyPage.acceptCookies()).click();
   });
 
   describe("Given the user has entered a value for the non-exclusive currency answer", () => {

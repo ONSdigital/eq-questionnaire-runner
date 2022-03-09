@@ -5,6 +5,8 @@ describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Ove
   beforeEach(() => {
     browser.openQuestionnaire("test_mutually_exclusive.json");
     browser.url("/questionnaire/mutually-exclusive-month-year-date");
+    // Accept cookies, since they push submit button outside window
+    $(MonthYearDatePage.acceptCookies()).click();
   });
 
   describe("Given the user has entered a value for the non-exclusive month year date answer", () => {

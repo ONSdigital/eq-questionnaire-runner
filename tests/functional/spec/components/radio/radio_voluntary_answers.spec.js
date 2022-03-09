@@ -5,6 +5,8 @@ describe("Component: Radio", () => {
   describe("Given I start a Voluntary Radio survey", () => {
     before(() => {
       browser.openQuestionnaire("test_radio_voluntary.json");
+      // Accept cookies, since they push submit button outside window
+      $(RadioVoluntaryTruePage.acceptCookies()).click();
     });
 
     it("When I select a voluntary radio option, Then the clear button should be displayed", () => {
