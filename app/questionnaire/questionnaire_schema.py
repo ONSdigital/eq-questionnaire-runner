@@ -216,10 +216,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     ) -> set[str]:
         when_rules = self._get_values_for_key(section, "when")
         rules: Union[dict, list] = next(when_rules, [])
-        section_ids_dependent_on_rules = self._get_section_ids_dependent_on_rules(
-            section["id"], rules
-        )
-        return section_ids_dependent_on_rules
+        return self._get_section_ids_dependent_on_rules(section["id"], rules)
 
     def get_submission(self) -> ImmutableDict:
         schema: ImmutableDict = self.json.get("submission", ImmutableDict({}))

@@ -1,4 +1,4 @@
-from typing import List, Mapping, Optional
+from typing import Mapping, Optional
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -36,7 +36,7 @@ class PathFinder:
         """
         Visits all the blocks in a section and returns a path given a list of answers.
         """
-        routing_path_block_ids: List[str] = []
+        routing_path_block_ids: list[str] = []
         current_location = Location(section_id=section_id, list_item_id=list_item_id)
         section = self.schema.get_section(section_id)
         list_name = self.schema.get_repeating_list_for_section(
@@ -74,13 +74,13 @@ class PathFinder:
     def _get_not_skipped_blocks_in_section(
         self,
         location: Location,
-        routing_path_block_ids: List[str],
+        routing_path_block_ids: list[str],
         section: ImmutableDict,
-        block_ids_dependent_on_when_rule: List[str],
-    ) -> List[Mapping]:
+        block_ids_dependent_on_when_rule: list[str],
+    ) -> list[Mapping]:
         # :TODO: Fix group skipping in its own section. Routing path will be empty and therefore not checked
         if section:
-            not_skipped_blocks: List[Mapping] = []
+            not_skipped_blocks: list[Mapping] = []
             for group in section["groups"]:
 
                 if "skip_conditions" in group:
@@ -105,13 +105,13 @@ class PathFinder:
 
     def _build_routing_path_block_ids(
         self,
-        blocks: List[Mapping],
+        blocks: list[Mapping],
         current_location: Location,
-        block_ids_dependent_on_when_rules: List[str],
-    ) -> List[str]:
+        block_ids_dependent_on_when_rules: list[str],
+    ) -> list[str]:
         # Keep going unless we've hit the last block
 
-        routing_path_block_ids: List[str] = []
+        routing_path_block_ids: list[str] = []
         block_index = 0
         repeating_list = self.schema.get_repeating_list_for_section(
             current_location.section_id

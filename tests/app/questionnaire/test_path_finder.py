@@ -745,7 +745,7 @@ def test_routing_path_block_ids_dependent_on_when_rules_repeating(
 
     answer_store.add_or_update(Answer(answer_id="anyone-else", value="No"))
 
-    list_store = (ListStore([{"items": ["lCIZsS"], "name": "people"}]),)
+    list_store = ListStore([{"items": ["lCIZsS"], "name": "people"}])
 
     progress_store = ProgressStore(
         [
