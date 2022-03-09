@@ -46,7 +46,7 @@ describe("Given the routing and skipping section dependencies questionnaire", ()
     expectPersonalDetailsAgeExistingFalse();
   });
 
-  it("When I answer 'Yes' to skipping the age question and 'Yes' to are you sure in skip question confirmation section, Then in the Primary Person section I am only asked just my name", () => {
+  it("When I answer 'Yes' to skipping the age question and 'Yes' to are you sure in skip question confirmation section, Then in the Primary Person section I am just asked my name", () => {
     answerYesToSkipAgeQuestion();
 
     selectConfirmationSectionAndAnswerSecurityQuestion();
