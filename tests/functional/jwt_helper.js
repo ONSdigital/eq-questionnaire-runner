@@ -1,5 +1,5 @@
 import KJUR from "jsrsasign";
-import { v1 as uuidv1 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import JSONWebKey from "json-web-key";
 import jose from "node-jose";
 import crypto from "crypto";
@@ -88,12 +88,12 @@ export function generateToken(
 
   // Payload
   const oPayload = {
-    tx_id: uuidv1(),
-    jti: uuidv1(),
+    tx_id: uuidv4(),
+    jti: uuidv4(),
     iat: KJUR.jws.IntDate.get("now"),
     exp: KJUR.jws.IntDate.get("now") + 1800,
     user_id: userId,
-    case_id: uuidv1(),
+    case_id: uuidv4(),
     ru_ref: "12346789012A",
     response_id: responseId,
     ru_name: "Apple",
