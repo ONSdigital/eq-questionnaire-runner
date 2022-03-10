@@ -736,6 +736,18 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         return messages
 
+    def _populate_when_rules_section_ids_dependencies(self) -> None:
+        for section in self.get_sections():
+            when_rules = self._get_values_for_key(section, "when")
+            rules: Union[dict, list] = next(when_rules, [])
+
+            if rules_section_ids_dependencies := self._get_rules_section_ids_dependencies(
+                section["id"], rules
+            ):
+                self._when_rules_section_ids_dependencies_map[
+                    section["id"]
+                ] = rules_section_ids_dependencies
+
     def _get_rules_section_ids_dependencies(
         self, current_section_id: str, rules: Union[dict, Sequence]
     ) -> set[str]:
@@ -770,16 +782,3 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 )
 
         return rules_section_ids_dependencies
-
-    def _populate_when_rules_section_ids_dependencies(self) -> None:
-        for section in self.get_sections():
-            when_rules = self._get_values_for_key(section, "when")
-            rules: Union[dict, list] = next(when_rules, [])
-            rules_section_ids_dependencies = self._get_rules_section_ids_dependencies(
-                section["id"], rules
-            )
-
-            if rules_section_ids_dependencies:
-                self._when_rules_section_ids_dependencies_map[
-                    section["id"]
-                ] = rules_section_ids_dependencies
