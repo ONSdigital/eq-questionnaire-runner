@@ -294,9 +294,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return schema
 
     def _is_list_name_in_rule(
-        self, rules: Union[dict, Sequence], list_name: str
+        self, rules: Union[Mapping, Sequence], list_name: str
     ) -> bool:
-        if isinstance(rules, dict) and any(
+        if isinstance(rules, Mapping) and any(
             operator in rules for operator in OPERATION_MAPPING
         ):
             rules = self.get_operands(rules)
@@ -320,7 +320,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 return self._is_list_name_in_rule(rule, list_name)
 
     @staticmethod
-    def get_operands(rules: dict) -> list:
+    def get_operands(rules: Mapping) -> list:
         operator = next(iter(rules))
         operands: list = rules[operator]
         return operands
@@ -332,7 +332,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             ignore_keys = ["question_variants", "content_variants"]
             when_rules = self._get_values_for_key(section, "when", ignore_keys)
 
-            rule: Union[dict, list] = next(when_rules, [])
+            rule: Union[Mapping, list] = next(when_rules, [])
             if self._is_list_name_in_rule(rule, list_name):
                 section_ids.append(section["id"])
         return section_ids
