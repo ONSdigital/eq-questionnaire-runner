@@ -542,43 +542,55 @@ def test_new_remove_answer_and_block_if_routing_backwards(list_store):
     "skip_age_answer, skip_confirmation_answer, section_id, expected_route",
     (
         (
+            # Answering 'Yes' to the skip age question
+            # means in skip-confirmation-section you will get a skip confirmation question
             "Yes",
             None,
             "skip-confirmation-section",
             ["security", "skip-confirmation"],
         ),
         (
+            # Answering 'Yes' to the skip age question but not answering the skip-confirmation question
+            # means in primary-person you will not be asked your age, but will be asked your name and why you didn't confirm skipping
             "Yes",
             None,
             "primary-person",
             ["name-block", "reason-no-confirmation"],
         ),
         (
+            # Answering 'No' to the skip age question
+            # means in skip-confirmation-section you will not get a skip confirmation question
             "No",
             None,
             "skip-confirmation-section",
             ["security"],
         ),
         (
+            # Answering 'No' to the skip age question and not answering the skip-confirmation question
+            # means in primary-person you will be asked your age, name and why you didn't confirm skipping
             "No",
             None,
             "primary-person",
             ["name-block", "age", "reason-no-confirmation"],
         ),
         (
+            # Answering 'Yes' to the skip age question and the skip-confirmation question
+            # means in primary-person you will be asked just your name
             "Yes",
             "Yes",
             "primary-person",
             ["name-block"],
         ),
         (
+            # Answering 'Yes' to the skip age question and 'No' to the skip-confirmation question
+            # means in primary-person you will only be asked your name and age
             "Yes",
             "No",
             "primary-person",
             ["name-block", "age"],
         ),
-        (  # The skipping age question must of changed from Yes to No after answering the confirmation question,
-            # this means the confirmation answer will not be on the path, so the primary person section will asked why there was no confirmation
+        (  # Answering 'Yes' to the skip age question and the skip-confirmation question, but then changing you answer for the skip age question to 'No'
+            # means because confirmation is not longer on the path in primary-person you will be asked your age, name and why you didn't confirm skipping
             "No",
             "Yes",
             "primary-person",
@@ -659,10 +671,14 @@ def test_routing_path_block_ids_dependent_on_other_sections_when_rules(
     "skip_age_answer, expected_route",
     (
         (
+            # Answering 'Yes' to the skip age question
+            # means in all repeating sections you won't be asked their age
             "Yes",
             ["repeating-sex"],
         ),
         (
+            # Answering 'No' to the skip age question
+            # means in all repeating sections you will be asked their age
             "No",
             ["repeating-sex", "repeating-age"],
         ),

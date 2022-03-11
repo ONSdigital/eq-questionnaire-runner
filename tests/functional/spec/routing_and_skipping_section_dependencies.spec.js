@@ -16,134 +16,138 @@ import SkipSectionSummaryPage from "../generated_pages/new_routing_and_skipping_
 
 import HubPage from "../base_pages/hub.page";
 
-describe("Given the routing and skipping section dependencies questionnaire", () => {
+describe("Routing and skipping section dependencies", () => {
   beforeEach("Load the survey", () => {
     browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
   });
 
-  it("When I answer 'No' to skipping the age question, Then in the Primary Person section I am asked my name, age and why I didn't confirm skipping", () => {
-    answerNoToSkipAgeQuestion();
+  describe("Given the routing and skipping section dependencies questionnaire", () => {
+    it("When I answer 'No' to skipping the age question, Then in the Primary Person section I am asked my name, age and why I didn't confirm skipping", () => {
+      answerNoToSkipAgeQuestion();
 
-    selectPrimaryPerson();
-    answerAndSubmitNameQuestion();
-    answerAndSubmitAgeQuestion();
-    answerAndSubmitReasonForNoConfirmationQuestion();
+      selectPrimaryPerson();
+      answerAndSubmitNameQuestion();
+      answerAndSubmitAgeQuestion();
+      answerAndSubmitReasonForNoConfirmationQuestion();
 
-    expectPersonalDetailsName();
-    expectPersonalDetailsAge();
-    expectReasonNoConfirmationAnswer();
+      expectPersonalDetailsName();
+      expectPersonalDetailsAge();
+      expectReasonNoConfirmationAnswer();
+    });
+
+    it("When I answer 'Yes' to skipping the age question, Then in the Primary Person section I am only asked my name and why I didn't confirm skipping", () => {
+      answerYesToSkipAgeQuestion();
+
+      selectPrimaryPerson();
+      answerAndSubmitNameQuestion();
+      answerAndSubmitReasonForNoConfirmationQuestion();
+
+      expectPersonalDetailsName();
+      expectReasonNoConfirmationAnswer();
+      expectPersonalDetailsAgeExistingFalse();
+    });
+
+    it("When I answer 'Yes' to skipping the age question and 'Yes' to are you sure in skip question confirmation section, Then in the Primary Person section I am just asked my name", () => {
+      answerYesToSkipAgeQuestion();
+
+      selectConfirmationSectionAndAnswerSecurityQuestion();
+      answerYesToSkipConfirmationQuestion();
+
+      selectPrimaryPerson();
+      answerAndSubmitNameQuestion();
+
+      expectPersonalDetailsName();
+      expectPersonalDetailsAgeExistingFalse();
+      expectReasonNoConfirmationExistingFalse();
+    });
+
+    it("When I answer 'Yes' to skipping the age question but 'No' to are you sure in skip question confirmation section, Then in the Primary Person section I am only asked my name and age", () => {
+      answerYesToSkipAgeQuestion();
+
+      selectConfirmationSectionAndAnswerSecurityQuestion();
+      answerNoToSkipConfirmationQuestion();
+
+      selectPrimaryPerson();
+      answerAndSubmitNameQuestion();
+      answerAndSubmitAgeQuestion();
+
+      expectPersonalDetailsName();
+      expectPersonalDetailsAge();
+      expectReasonNoConfirmationExistingFalse();
+    });
+
+    it("When I answer 'No' to skipping the age question and populate the household, Then in each repeating section I am not asked their age", () => {
+      answerNoToSkipAgeQuestion();
+
+      addHouseholdMembers();
+
+      $(HubPage.summaryRowLink("household-personal-details-section-1")).click();
+      $(RepeatingSexPage.female()).click();
+      $(RepeatingSexPage.submit()).click();
+      $(RepeatingAgePage.answer()).setValue("45");
+      $(RepeatingAgePage.submit()).click();
+
+      expect($(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Female");
+      expect($(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("45");
+
+      $(HouseHoldPersonalDetailsSectionSummaryPage.submit()).click();
+      $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
+      $(RepeatingSexPage.male()).click();
+      $(RepeatingSexPage.submit()).click();
+      $(RepeatingAgePage.answer()).setValue("10");
+      $(RepeatingAgePage.submit()).click();
+
+      expect($(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
+      expect($(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("10");
+    });
+
+    it("When I answer 'Yes' to skipping the age question and populate the household, Then in each repeating section I am not asked their age", () => {
+      answerYesToSkipAgeQuestion();
+
+      addHouseholdMembers();
+
+      $(HubPage.summaryRowLink("household-personal-details-section-1")).click();
+      $(RepeatingSexPage.female()).click();
+      $(RepeatingSexPage.submit()).click();
+      expect($(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Female");
+      expect($(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).to.be.false;
+
+      $(HouseHoldPersonalDetailsSectionSummaryPage.submit()).click();
+      $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
+      $(RepeatingSexPage.male()).click();
+      $(RepeatingAgePage.submit()).click();
+
+      expect($(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
+      expect($(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).to.be.false;
+    });
   });
 
-  it("When I answer 'Yes' to skipping the age question, Then in the Primary Person section I am only asked my name and why I didn't confirm skipping", () => {
-    answerYesToSkipAgeQuestion();
+  describe("Given the routing and skipping section dependencies questionnaire and I answered 'Yes' to skipping the age question but 'No' to are you sure in skip question confirmation section", () => {
+    it("When I change my answer to skipping age to 'No', removing the 'are you sure' question from the path, Then in the Primary Person section I am asked my name, age and why I didn't confirm skipping", () => {
+      answerYesToSkipAgeQuestion();
 
-    selectPrimaryPerson();
-    answerAndSubmitNameQuestion();
-    answerAndSubmitReasonForNoConfirmationQuestion();
+      selectConfirmationSectionAndAnswerSecurityQuestion();
+      answerNoToSkipConfirmationQuestion();
 
-    expectPersonalDetailsName();
-    expectReasonNoConfirmationAnswer();
-    expectPersonalDetailsAgeExistingFalse();
-  });
+      $(HubPage.summaryRowLink("skip-section")).click();
+      $(SkipSectionSummaryPage.skipAgeAnswerEdit()).click();
+      $(SkipAgePage.no()).click();
+      $(SkipAgePage.submit()).click();
+      $(SkipSectionSummaryPage.submit()).click();
 
-  it("When I answer 'Yes' to skipping the age question and 'Yes' to are you sure in skip question confirmation section, Then in the Primary Person section I am just asked my name", () => {
-    answerYesToSkipAgeQuestion();
+      selectPrimaryPerson();
+      answerAndSubmitNameQuestion();
+      answerAndSubmitAgeQuestion();
 
-    selectConfirmationSectionAndAnswerSecurityQuestion();
-    answerYesToSkipConfirmationQuestion();
+      $(ReasonNoConfirmationPage.iDidButItWasRemovedFromThePathAsIChangedMyAnswerToNoOnTheSkipQuestion()).click();
+      $(ReasonNoConfirmationPage.submit()).click();
 
-    selectPrimaryPerson();
-    answerAndSubmitNameQuestion();
-
-    expectPersonalDetailsName();
-    expectPersonalDetailsAgeExistingFalse();
-    expectReasonNoConfirmationExistingFalse();
-  });
-
-  it("When I answer 'Yes' to skipping the age question but 'No' to are you sure in skip question confirmation section, Then in the Primary Person section I am only asked my name and age", () => {
-    answerYesToSkipAgeQuestion();
-
-    selectConfirmationSectionAndAnswerSecurityQuestion();
-    answerNoToSkipConfirmationQuestion();
-
-    selectPrimaryPerson();
-    answerAndSubmitNameQuestion();
-    answerAndSubmitAgeQuestion();
-
-    expectPersonalDetailsName();
-    expectPersonalDetailsAge();
-    expectReasonNoConfirmationExistingFalse();
-  });
-
-  it("Given I answered 'Yes' to skipping the age question but 'No' to are you sure in skip question confirmation section, When I change my answer to skipping age to 'No', removing the 'are you sure' question from the path, Then in the Primary Person section I am asked my name, age and why I didn't confirm skipping", () => {
-    answerYesToSkipAgeQuestion();
-
-    selectConfirmationSectionAndAnswerSecurityQuestion();
-    answerNoToSkipConfirmationQuestion();
-
-    $(HubPage.summaryRowLink("skip-section")).click();
-    $(SkipSectionSummaryPage.skipAgeAnswerEdit()).click();
-    $(SkipAgePage.no()).click();
-    $(SkipAgePage.submit()).click();
-    $(SkipSectionSummaryPage.submit()).click();
-
-    selectPrimaryPerson();
-    answerAndSubmitNameQuestion();
-    answerAndSubmitAgeQuestion();
-
-    $(ReasonNoConfirmationPage.iDidButItWasRemovedFromThePathAsIChangedMyAnswerToNoOnTheSkipQuestion()).click();
-    $(ReasonNoConfirmationPage.submit()).click();
-
-    expectPersonalDetailsName();
-    expectPersonalDetailsAge();
-    expect($(PrimaryPersonSummaryPage.reasonNoConfirmationAnswer()).getText()).to.contain(
-      "I did, but it was removed from the path as I changed my answer to No on the skip question"
-    );
-  });
-
-  it("When I answer 'No' to skipping the age question and populate the household, Then in each repeating section I am not asked their age", () => {
-    answerNoToSkipAgeQuestion();
-
-    addHouseholdMembers();
-
-    $(HubPage.summaryRowLink("household-personal-details-section-1")).click();
-    $(RepeatingSexPage.female()).click();
-    $(RepeatingSexPage.submit()).click();
-    $(RepeatingAgePage.answer()).setValue("45");
-    $(RepeatingAgePage.submit()).click();
-
-    expect($(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Female");
-    expect($(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("45");
-
-    $(HouseHoldPersonalDetailsSectionSummaryPage.submit()).click();
-    $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
-    $(RepeatingSexPage.male()).click();
-    $(RepeatingSexPage.submit()).click();
-    $(RepeatingAgePage.answer()).setValue("10");
-    $(RepeatingAgePage.submit()).click();
-
-    expect($(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
-    expect($(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("10");
-  });
-
-  it("When I answer 'Yes' to skipping the age question and populate the household, Then in each repeating section I am not asked their age", () => {
-    answerYesToSkipAgeQuestion();
-
-    addHouseholdMembers();
-
-    $(HubPage.summaryRowLink("household-personal-details-section-1")).click();
-    $(RepeatingSexPage.female()).click();
-    $(RepeatingSexPage.submit()).click();
-    expect($(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Female");
-    expect($(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).to.be.false;
-
-    $(HouseHoldPersonalDetailsSectionSummaryPage.submit()).click();
-    $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
-    $(RepeatingSexPage.male()).click();
-    $(RepeatingAgePage.submit()).click();
-
-    expect($(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
-    expect($(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).to.be.false;
+      expectPersonalDetailsName();
+      expectPersonalDetailsAge();
+      expect($(PrimaryPersonSummaryPage.reasonNoConfirmationAnswer()).getText()).to.contain(
+        "I did, but it was removed from the path as I changed my answer to No on the skip question"
+      );
+    });
   });
 });
 

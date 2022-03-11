@@ -44,43 +44,43 @@ class PathFinder:
         )
 
         if section:
-            when_rules_block_ids_dependencies = (
-                self._get_when_rules_block_ids_dependencies(section["id"])
+            when_rules_block_dependencies = self._get_when_rules_block_dependencies(
+                section["id"]
             )
             blocks = self._get_not_skipped_blocks_in_section(
                 current_location,
                 routing_path_block_ids,
                 section,
-                when_rules_block_ids_dependencies,
+                when_rules_block_dependencies,
             )
 
             if blocks:
                 routing_path_block_ids = self._build_routing_path_block_ids(
-                    blocks, current_location, when_rules_block_ids_dependencies
+                    blocks, current_location, when_rules_block_dependencies
                 )
 
         return RoutingPath(routing_path_block_ids, section_id, list_item_id, list_name)
 
-    def _get_when_rules_block_ids_dependencies(self, section_id: str) -> list[str]:
-        """NB: Does not support repeating sections"""
-        when_rules_block_ids_dependencies: list[str] = []
-
-        if when_rules_section_ids_dependencies := self.schema.when_rules_section_ids_dependencies_map.get(
-            section_id
-        ):
-            for section_id_dependency in when_rules_section_ids_dependencies:
-                when_rules_block_ids_dependencies.extend(
-                    self.routing_path(section_id_dependency)
-                )
-
-        return when_rules_block_ids_dependencies
+    def _get_when_rules_block_dependencies(self, section_id: str) -> list[str]:
+        """NB: At present when rules block dependencies does not fully support repeating sections.
+        It is supported when the section is dependent i.e the current section is repeating and building the routing path for sections that are not,
+        It isn't supported if it needs to build the path for repeating sections"""
+        return [
+            block_id
+            for dependent_section in self.schema.when_rules_section_dependencies_map.get(
+                section_id, {}
+            )
+            for block_id in self.routing_path(dependent_section)
+            if self.progress_store.get_section_status(dependent_section)
+            in (CompletionStatus.IN_PROGRESS, CompletionStatus.COMPLETED)
+        ]
 
     def _get_not_skipped_blocks_in_section(
         self,
         location: Location,
         routing_path_block_ids: list[str],
         section: ImmutableDict,
-        when_rules_block_ids_dependencies: list[str],
+        when_rules_block_dependencies: list[str],
     ) -> list[Mapping]:
         # :TODO: Fix group skipping in its own section. Routing path will be empty and therefore not checked
         if section:
@@ -93,7 +93,7 @@ class PathFinder:
                         location,
                         routing_path_block_ids,
                         skip_conditions,
-                        when_rules_block_ids_dependencies,
+                        when_rules_block_dependencies,
                     ):
                         continue
                 not_skipped_blocks.extend(group["blocks"])
@@ -111,7 +111,7 @@ class PathFinder:
         self,
         blocks: list[Mapping],
         current_location: Location,
-        when_rules_block_ids_dependencies: list[str],
+        when_rules_block_dependencies: list[str],
     ) -> list[str]:
         # Keep going unless we've hit the last block
 
@@ -129,7 +129,7 @@ class PathFinder:
                 current_location,
                 routing_path_block_ids,
                 skip_conditions,
-                when_rules_block_ids_dependencies,
+                when_rules_block_dependencies,
             )
 
             if not is_skipping:
@@ -158,7 +158,7 @@ class PathFinder:
                         routing_rules,
                         block_index,
                         routing_path_block_ids,
-                        when_rules_block_ids_dependencies,
+                        when_rules_block_dependencies,
                     )
                     if block_index:
                         continue
@@ -179,11 +179,11 @@ class PathFinder:
         routing_rules,
         block_index,
         routing_path_block_ids,
-        when_rules_block_ids_dependencies,
+        when_rules_block_dependencies,
     ):
-        if when_rules_block_ids_dependencies:
+        if when_rules_block_dependencies:
             routing_path_block_ids = (
-                when_rules_block_ids_dependencies + routing_path_block_ids
+                when_rules_block_dependencies + routing_path_block_ids
             )
 
         when_rule_evaluator = RuleEvaluator(
@@ -236,14 +236,14 @@ class PathFinder:
         this_location,
         routing_path_block_ids,
         skip_conditions,
-        when_rules_block_ids_dependencies,
+        when_rules_block_dependencies,
     ):
         if not skip_conditions:
             return False
 
-        if when_rules_block_ids_dependencies:
+        if when_rules_block_dependencies:
             routing_path_block_ids = (
-                when_rules_block_ids_dependencies + routing_path_block_ids
+                when_rules_block_dependencies + routing_path_block_ids
             )
 
         if isinstance(skip_conditions, dict):
