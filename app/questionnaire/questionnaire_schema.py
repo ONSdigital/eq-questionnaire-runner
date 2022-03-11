@@ -55,7 +55,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._answer_dependencies_map: dict[str, set[AnswerDependent]] = defaultdict(
             set
         )
-
+        self._when_rules_section_dependencies_map: dict[str, set[str]] = {}
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
 
@@ -68,10 +68,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         # Post schema parsing.
         self._populate_answer_dependencies()
+        self._populate_when_rules_section_dependencies()
 
     @cached_property
     def answer_dependencies(self) -> ImmutableDict[str, set[AnswerDependent]]:
         return ImmutableDict(self._answer_dependencies_map)
+
+    @cached_property
+    def when_rules_section_dependencies_map(self) -> ImmutableDict[str, set[str]]:
+        return ImmutableDict(self._when_rules_section_dependencies_map)
 
     @cached_property
     def language_code(self) -> str:
@@ -289,15 +294,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return schema
 
     def _is_list_name_in_rule(
-        self, rules: Union[dict, Sequence], list_name: str
+        self, rules: Union[Mapping, Sequence], list_name: str
     ) -> bool:
-        if isinstance(rules, dict) and any(
+        if isinstance(rules, Mapping) and any(
             operator in rules for operator in OPERATION_MAPPING
         ):
             rules = self.get_operands(rules)
 
         for rule in rules:
-            if not isinstance(rule, dict):
+            if not isinstance(rule, Mapping):
                 continue
 
             # Old rules
@@ -315,7 +320,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 return self._is_list_name_in_rule(rule, list_name)
 
     @staticmethod
-    def get_operands(rules: dict) -> list:
+    def get_operands(rules: Mapping) -> list:
         operator = next(iter(rules))
         operands: list = rules[operator]
         return operands
@@ -327,7 +332,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             ignore_keys = ["question_variants", "content_variants"]
             when_rules = self._get_values_for_key(section, "when", ignore_keys)
 
-            rule: Union[dict, list] = next(when_rules, [])
+            rule: Union[Mapping, list] = next(when_rules, [])
             if self._is_list_name_in_rule(rule, list_name):
                 section_ids.append(section["id"])
         return section_ids
@@ -728,3 +733,50 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             messages.update(self.json["messages"])
 
         return messages
+
+    def _populate_when_rules_section_dependencies(self) -> None:
+        for section in self.get_sections():
+            when_rules = self._get_values_for_key(section, "when")
+            rules: Union[Mapping, list] = next(when_rules, [])
+
+            if rules_section_dependencies := self._get_rules_section_dependencies(
+                section["id"], rules
+            ):
+                self._when_rules_section_dependencies_map[
+                    section["id"]
+                ] = rules_section_dependencies
+
+    def _get_rules_section_dependencies(
+        self, current_section_id: str, rules: Union[Mapping, Sequence]
+    ) -> set[str]:
+        rules_section_dependencies: set[str] = set()
+
+        if isinstance(rules, Mapping) and any(
+            operator in rules for operator in OPERATION_MAPPING
+        ):
+            rules = self.get_operands(rules)
+
+        for rule in rules:
+            if not isinstance(rule, Mapping):
+                continue
+
+            answer_id = None
+
+            if "id" in rule:
+                answer_id = rule["id"]
+            elif rule.get("source") == "answers":
+                answer_id = rule.get("identifier")
+
+            if answer_id:
+                block = self.get_block_for_answer_id(answer_id)  # type: ignore
+                section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
+
+                if section_id != current_section_id:
+                    rules_section_dependencies.add(section_id)  # type: ignore
+
+            if any(operator in rule for operator in OPERATION_MAPPING):
+                rules_section_dependencies.update(
+                    self._get_rules_section_dependencies(current_section_id, rule)
+                )
+
+        return rules_section_dependencies

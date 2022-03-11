@@ -70,6 +70,26 @@ def question_variant_schema():
                         "title": "Group 1",
                         "blocks": [
                             {
+                                "type": "Question",
+                                "id": "when",
+                                "question": {
+                                    "type": "General",
+                                    "id": "when-question",
+                                    "title": "when answer title",
+                                    "answers": [
+                                        {
+                                            "type": "Radio",
+                                            "id": "when-answer",
+                                            "mandatory": True,
+                                            "options": [
+                                                {"label": "Yes", "value": "Yes"},
+                                                {"label": "No", "value": "No"},
+                                            ],
+                                        }
+                                    ],
+                                },
+                            },
+                            {
                                 "id": "block1",
                                 "type": "Question",
                                 "title": "Block 1",
@@ -115,7 +135,7 @@ def question_variant_schema():
                                         },
                                     },
                                 ],
-                            }
+                            },
                         ],
                     }
                 ],
@@ -172,6 +192,26 @@ def list_collector_variant_schema():
                         "id": "group",
                         "title": "List",
                         "blocks": [
+                            {
+                                "type": "Question",
+                                "id": "when",
+                                "question": {
+                                    "type": "General",
+                                    "id": "when-question",
+                                    "title": "when answer title",
+                                    "answers": [
+                                        {
+                                            "type": "Radio",
+                                            "id": "when-answer",
+                                            "mandatory": True,
+                                            "options": [
+                                                {"label": "Yes", "value": "Yes"},
+                                                {"label": "No", "value": "No"},
+                                            ],
+                                        }
+                                    ],
+                                },
+                            },
                             {
                                 "id": "block1",
                                 "type": "ListCollector",
@@ -362,7 +402,7 @@ def list_collector_variant_schema():
                                         },
                                     ],
                                 },
-                            }
+                            },
                         ],
                     }
                 ],
@@ -618,6 +658,23 @@ def content_variant_schema():
                         "title": "Group 1",
                         "blocks": [
                             {
+                                "type": "Question",
+                                "id": "age",
+                                "question": {
+                                    "type": "General",
+                                    "id": "age-question",
+                                    "title": "when answer title",
+                                    "answers": [
+                                        {
+                                            "id": "age-answer",
+                                            "type": "Unit",
+                                            "label": "Your age",
+                                            "mandatory": True,
+                                        }
+                                    ],
+                                },
+                            },
+                            {
                                 "id": "block1",
                                 "type": "Question",
                                 "title": "Block 1",
@@ -649,7 +706,7 @@ def content_variant_schema():
                                         ],
                                     },
                                 ],
-                            }
+                            },
                         ],
                     }
                 ],
