@@ -1,70 +1,40 @@
-import boto3
-from flask import current_app
-from moto import mock_dynamodb2
+import pytest
 
 from app.data_models.app_models import QuestionnaireState
-from app.storage.dynamodb import Dynamodb
 from app.storage.errors import ItemAlreadyExistsError
-from app.storage.storage import StorageModel
-from tests.app.app_context_test_case import AppContextTestCase
 
 
-class TestDynamo(AppContextTestCase):
-    def setUp(self):
-        self._ddb = mock_dynamodb2()
-        self._ddb.start()
+def _assert_item(dynamodb, version):
+    item = dynamodb.get(QuestionnaireState, "someuser")
+    actual_version = item.version if item else None
+    assert actual_version == version
 
-        super().setUp()
 
-        client = boto3.resource("dynamodb", endpoint_url=None)
-        self.ddb = Dynamodb(client)
+def _put_item(dynamodb, version, overwrite=True):
+    model = QuestionnaireState("someuser", "data", "ce_sid", version)
+    dynamodb.put(model, overwrite)
 
-        for config in StorageModel.TABLE_CONFIG_BY_TYPE.values():
-            table_name = current_app.config[config["table_name_key"]]
-            if table_name:
-                client.create_table(  # pylint: disable=no-member
-                    TableName=table_name,
-                    AttributeDefinitions=[
-                        {"AttributeName": config["key_field"], "AttributeType": "S"}
-                    ],
-                    KeySchema=[
-                        {"AttributeName": config["key_field"], "KeyType": "HASH"}
-                    ],
-                    ProvisionedThroughput={
-                        "ReadCapacityUnits": 1,
-                        "WriteCapacityUnits": 1,
-                    },
-                )
 
-    def tearDown(self):
-        super().tearDown()
+@pytest.mark.usefixtures("app")
+def test_get_update(dynamodb):
+    _assert_item(dynamodb, None)
+    _put_item(dynamodb, 1)
+    _assert_item(dynamodb, 1)
+    _put_item(dynamodb, 2)
+    _assert_item(dynamodb, 2)
 
-        self._ddb.stop()
 
-    def test_get_update(self):
-        self._assert_item(None)
-        self._put_item(1)
-        self._assert_item(1)
-        self._put_item(2)
-        self._assert_item(2)
+@pytest.mark.usefixtures("app")
+def test_dont_overwrite(dynamodb):
+    _put_item(dynamodb, 1)
+    with pytest.raises(ItemAlreadyExistsError):
+        _put_item(dynamodb, 1, overwrite=False)
 
-    def test_dont_overwrite(self):
-        self._put_item(1)
-        with self.assertRaises(ItemAlreadyExistsError):
-            self._put_item(1, overwrite=False)
 
-    def test_delete(self):
-        self._put_item(1)
-        self._assert_item(1)
-        model = QuestionnaireState("someuser", "data", "ce_sid", 1)
-        self.ddb.delete(model)
-        self._assert_item(None)
-
-    def _assert_item(self, version):
-        item = self.ddb.get(QuestionnaireState, "someuser")
-        actual_version = item.version if item else None
-        self.assertEqual(actual_version, version)
-
-    def _put_item(self, version, overwrite=True):
-        model = QuestionnaireState("someuser", "data", "ce_sid", version)
-        self.ddb.put(model, overwrite)
+@pytest.mark.usefixtures("app")
+def test_delete(dynamodb):
+    _put_item(dynamodb, 1)
+    _assert_item(dynamodb, 1)
+    model = QuestionnaireState("someuser", "data", "ce_sid", 1)
+    dynamodb.delete(model)
+    _assert_item(dynamodb, None)

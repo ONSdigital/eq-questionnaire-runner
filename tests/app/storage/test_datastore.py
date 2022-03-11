@@ -1,7 +1,6 @@
-import contextlib
 from datetime import datetime, timezone
 
-import mock
+import pytest
 from google.api_core import exceptions
 from google.cloud import datastore as google_datastore
 
@@ -10,99 +9,97 @@ from app.data_models.app_models import (
     QuestionnaireState,
     QuestionnaireStateSchema,
 )
-from app.storage.datastore import Datastore
-from tests.app.app_context_test_case import AppContextTestCase
 
 
-class TestDatastore(AppContextTestCase):
-    def setUp(self):
-        super().setUp()
+@pytest.mark.usefixtures("app")
+def test_get_by_key(datastore, mock_client, questionnaire_state):
+    model_data = QuestionnaireStateSchema().dump(questionnaire_state)
 
-        self.mock_client = mock.Mock()
-        self.mock_client.transaction.return_value = contextlib.suppress()
-        self.ds = Datastore(self.mock_client)
+    m_entity = google_datastore.Entity()
+    m_entity.update(model_data)
+    mock_client.get.return_value = m_entity
 
-    def test_get_by_key(self):
-        model = QuestionnaireState("someuser", "data", "ce_sid", 1)
-        model_data = QuestionnaireStateSchema().dump(model)
+    returned_model = datastore.get(QuestionnaireState, "someuser")
 
-        m_entity = google_datastore.Entity()
-        m_entity.update(model_data)
-        self.mock_client.get.return_value = m_entity
+    assert questionnaire_state.user_id == returned_model.user_id
+    assert questionnaire_state.state_data == returned_model.state_data
+    assert questionnaire_state.version == returned_model.version
+    assert (
+        questionnaire_state.collection_exercise_sid
+        == returned_model.collection_exercise_sid
+    )
+    assert questionnaire_state.submitted_at == returned_model.submitted_at
 
-        returned_model = self.ds.get(QuestionnaireState, "someuser")
 
-        self.assertEqual(model.user_id, returned_model.user_id)
-        self.assertEqual(model.state_data, returned_model.state_data)
-        self.assertEqual(model.version, returned_model.version)
-        self.assertEqual(
-            model.collection_exercise_sid, returned_model.collection_exercise_sid
-        )
-        self.assertEqual(model.submitted_at, returned_model.submitted_at)
+@pytest.mark.usefixtures("app")
+def test_get_not_found(datastore, mock_client):
+    mock_client.get.return_value = None
+    returned_model = datastore.get(QuestionnaireState, "someuser")
+    assert not returned_model
 
-    def test_get_not_found(self):
-        self.mock_client.get.return_value = None
-        returned_model = self.ds.get(QuestionnaireState, "someuser")
-        self.assertFalse(returned_model)
 
-    def test_put(self):
-        model = QuestionnaireState("someuser", "data", "ce_sid", 1)
+@pytest.mark.usefixtures("app")
+def test_put(datastore, mock_client, questionnaire_state):
 
-        self.ds.put(model, True)
+    datastore.put(questionnaire_state, True)
 
-        put_data = self.mock_client.put.call_args[0][0]
+    put_data = mock_client.put.call_args[0][0]
 
-        self.assertEqual(model.user_id, put_data["user_id"])
-        self.assertEqual(model.state_data, put_data["state_data"])
-        self.assertEqual(model.version, put_data["version"])
-        self.assertEqual(
-            model.collection_exercise_sid, put_data["collection_exercise_sid"]
-        )
-        self.assertEqual(model.submitted_at, put_data["submitted_at"])
+    assert questionnaire_state.user_id == put_data["user_id"]
+    assert questionnaire_state.state_data == put_data["state_data"]
+    assert questionnaire_state.version == put_data["version"]
+    assert (
+        questionnaire_state.collection_exercise_sid
+        == put_data["collection_exercise_sid"]
+    )
+    assert questionnaire_state.submitted_at == put_data["submitted_at"]
 
-    def test_put_without_overwrite(self):
-        model = QuestionnaireState("someuser", "data", "ce_sid", 1)
 
-        with self.assertRaises(NotImplementedError) as exception:
-            self.ds.put(model, False)
+@pytest.mark.usefixtures("app")
+def test_put_without_overwrite(datastore, questionnaire_state):
 
-        self.assertEqual(
-            exception.exception.args[0], "Unique key checking not supported"
-        )
+    with pytest.raises(NotImplementedError) as exc:
+        datastore.put(questionnaire_state, False)
 
-    @mock.patch("app.storage.datastore.Entity")
-    def test_put_exclude_indexes(self, mock_entity):
-        model = QuestionnaireState("someuser", "data", "ce_sid", 1)
-        self.ds.put(model)
-        put_call_args = mock_entity.call_args.kwargs
-        self.assertIn("exclude_from_indexes", put_call_args)
-        self.assertEqual(len(put_call_args["exclude_from_indexes"]), 5)
+    assert exc.value.args[0] == "Unique key checking not supported"
 
-    @mock.patch("app.storage.datastore.Entity")
-    def test_put_with_index(self, mock_entity):
-        model = EQSession(
-            "session-id", "user-id", datetime.now(tz=timezone.utc), "session-data"
-        )
-        self.ds.put(model)
-        self.assertNotIn(
-            "expires_at", mock_entity.call_args.kwargs["exclude_from_indexes"]
-        )
 
-    def test_delete(self):
-        model = QuestionnaireState("someuser", "data", "ce_sid", 1)
-        self.ds.delete(model)
+@pytest.mark.usefixtures("app")
+def test_put_exclude_indexes(datastore, mocker, questionnaire_state):
+    mock_entity = mocker.patch("app.storage.datastore.Entity")
 
-        self.assertEqual(self.mock_client.key.call_args[0][1], model.user_id)
+    datastore.put(questionnaire_state)
+    put_call_args = mock_entity.call_args.kwargs
+    assert "exclude_from_indexes" in put_call_args
+    assert len(put_call_args["exclude_from_indexes"]) == 5
 
-        m_key = self.mock_client.key.return_value
 
-        self.mock_client.delete.assert_called_once_with(m_key)
+@pytest.mark.usefixtures("app")
+def test_put_with_index(datastore, mocker):
+    mock_entity = mocker.patch("app.storage.datastore.Entity")
+    model = EQSession(
+        "session-id", "user-id", datetime.now(tz=timezone.utc), "session-data"
+    )
+    datastore.put(model)
+    assert "expires_at" not in mock_entity.call_args.kwargs["exclude_from_indexes"]
 
-    def test_retry(self):
-        model = QuestionnaireState("someuser", "data", "ce_sid", 1)
 
-        self.mock_client.put = mock.Mock(
-            side_effect=[exceptions.InternalServerError("error"), mock.DEFAULT]
-        )
-        self.ds.put(model, True)
-        assert self.mock_client.put.call_count > 1
+@pytest.mark.usefixtures("app")
+def test_delete(datastore, mock_client, questionnaire_state):
+    datastore.delete(questionnaire_state)
+
+    assert mock_client.key.call_args[0][1] == questionnaire_state.user_id
+
+    m_key = mock_client.key.return_value
+
+    mock_client.delete.assert_called_once_with(m_key)
+
+
+@pytest.mark.usefixtures("app")
+def test_retry(datastore, mock_client, mocker, questionnaire_state):
+
+    mock_client.put = mocker.Mock(
+        side_effect=[exceptions.InternalServerError("error"), mocker.DEFAULT]
+    )
+    datastore.put(questionnaire_state, True)
+    assert mock_client.put.call_count > 1
