@@ -1,6 +1,6 @@
 from collections import defaultdict
 from itertools import combinations
-from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
+from typing import Any, Dict, Iterable, List, Mapping, Optional, Tuple, Union
 
 from app.data_models import AnswerValueTypes, QuestionnaireStore
 from app.data_models.answer_store import Answer
@@ -311,7 +311,7 @@ class QuestionnaireStoreUpdater:
             section_key,
             blocks_to_remove,
         ) in self.dependent_block_id_by_section_key.items():
-            if section_key not in self._progress_store.started_section_keys():
+            if section_key not in self.started_section_keys():
                 continue
 
             section_id, list_item_id = section_key
@@ -334,3 +334,6 @@ class QuestionnaireStoreUpdater:
                     section_id=section_id,
                     list_item_id=list_item_id,
                 )
+
+    def started_section_keys(self, section_ids: Optional[Iterable[str]] = None):
+        return self._progress_store.started_section_keys(section_ids)

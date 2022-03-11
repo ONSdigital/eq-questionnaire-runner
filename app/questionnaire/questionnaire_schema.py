@@ -757,7 +757,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             rules = self.get_operands(rules)
 
         for rule in rules:
-            if not isinstance(rule, dict):
+            if not isinstance(rule, Mapping):
                 continue
 
             answer_id = None
