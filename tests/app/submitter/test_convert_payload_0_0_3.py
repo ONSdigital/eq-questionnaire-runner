@@ -40,6 +40,7 @@ def test_convert_answers_to_payload_0_0_3(fake_questionnaire_store):
                                 "type": "Question",
                                 "question": {
                                     "id": "crisps-question",
+                                    "type": "General",
                                     "answers": [{"id": "name", "type": "TextField"}],
                                 },
                             }
@@ -53,6 +54,7 @@ def test_convert_answers_to_payload_0_0_3(fake_questionnaire_store):
                                 "type": "Question",
                                 "question": {
                                     "id": "crisps-question",
+                                    "type": "General",
                                     "answers": [{"id": "address", "type": "TextField"}],
                                 },
                             }
@@ -91,6 +93,7 @@ def test_convert_payload_0_0_3_multiple_answers(fake_questionnaire_store):
         "crisps",
         {
             "id": "crisps-question",
+            "type": "General",
             "answers": [
                 {
                     "id": "crisps-answer",
@@ -129,6 +132,7 @@ def test_radio_answer(fake_questionnaire_store):
         "radio-block",
         {
             "id": "radio-question",
+            "type": "General",
             "answers": [
                 {
                     "type": "Radio",
@@ -165,6 +169,7 @@ def test_number_answer(fake_questionnaire_store):
         "number-block",
         {
             "id": "number-question",
+            "type": "General",
             "answers": [{"id": "number-answer", "type": "Number"}],
         },
     )
@@ -192,6 +197,7 @@ def test_percentage_answer(fake_questionnaire_store):
         "percentage-block",
         {
             "id": "percentage-question",
+            "type": "General",
             "answers": [{"id": "percentage-answer", "type": "Percentage"}],
         },
     )
@@ -221,6 +227,7 @@ def test_textarea_answer(fake_questionnaire_store):
         "textarea-block",
         {
             "id": "textarea-question",
+            "type": "General",
             "answers": [{"id": "textarea-answer", "type": "TextArea"}],
         },
     )
@@ -248,6 +255,7 @@ def test_currency_answer(fake_questionnaire_store):
         "currency-block",
         {
             "id": "currency-question",
+            "type": "General",
             "answers": [{"id": "currency-answer", "type": "Currency"}],
         },
     )
@@ -275,6 +283,7 @@ def test_dropdown_answer(fake_questionnaire_store):
         "dropdown-block",
         {
             "id": "dropdown-question",
+            "type": "General",
             "answers": [
                 {
                     "id": "dropdown-answer",
@@ -318,6 +327,7 @@ def test_date_answer(fake_questionnaire_store):
         "date-block",
         {
             "id": "single-date-question",
+            "type": "General",
             "answers": [{"id": "single-date-answer", "type": "Date"}],
         },
     )
@@ -351,6 +361,7 @@ def test_month_year_date_answer(fake_questionnaire_store):
         "date-block",
         {
             "id": "month-year-question",
+            "type": "General",
             "answers": [{"id": "month-year-answer", "type": "MonthYearDate"}],
         },
     )
@@ -377,7 +388,11 @@ def test_unit_answer(fake_questionnaire_store):
         "section-1",
         "unit-group",
         "unit-block",
-        {"id": "unit-question", "answers": [{"id": "unit-answer", "type": "Unit"}]},
+        {
+            "id": "unit-question",
+            "type": "General",
+            "answers": [{"id": "unit-answer", "type": "Unit"}],
+        },
     )
 
     answer_object = convert_answers(

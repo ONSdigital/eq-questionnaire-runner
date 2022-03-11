@@ -1,10 +1,10 @@
-import TotalAnswerPage from "../../../../generated_pages/sum_multi_validation_against_total/total-block.page";
-import BreakdownAnswerPage from "../../../../generated_pages/sum_multi_validation_against_total/breakdown-block.page";
-import SubmitPage from "../../../../generated_pages/sum_multi_validation_against_total/submit.page";
+import TotalAnswerPage from "../../../../generated_pages/validation_sum_against_total_multiple/total-block.page";
+import BreakdownAnswerPage from "../../../../generated_pages/validation_sum_against_total_multiple/breakdown-block.page";
+import SubmitPage from "../../../../generated_pages/validation_sum_against_total_multiple/submit.page";
 
-describe("Feature: sum validation (Multi Rule Equals)", () => {
+describe("Feature: Sum validation (Multi Rule Equals)", () => {
   beforeEach(() => {
-    browser.openQuestionnaire("test_sum_multi_validation_against_total.json");
+    browser.openQuestionnaire("test_validation_sum_against_total_multiple.json");
   });
 
   describe("Given I start a grouped answer with multi rule validation survey and enter 10 into the total", () => {

@@ -26,6 +26,7 @@ def test_convert_answers_to_payload_0_0_1_with_key_error(fake_questionnaire_stor
 
     question = {
         "id": "question-1",
+        "type": "General",
         "answers": [
             {"id": "LMN", "type": "TextField", "q_code": "001"},
             {"id": "DEF", "type": "TextField", "q_code": "002"},
@@ -55,6 +56,7 @@ def test_answer_with_zero(fake_questionnaire_store):
 
     question = {
         "id": "question-2",
+        "type": "General",
         "answers": [{"id": "GHI", "type": "TextField", "q_code": "003"}],
     }
 
@@ -81,6 +83,7 @@ def test_answer_with_float(fake_questionnaire_store):
 
     question = {
         "id": "question-2",
+        "type": "General",
         "answers": [{"id": "GHI", "type": "TextField", "q_code": "003"}],
     }
 
@@ -108,6 +111,7 @@ def test_answer_with_string(fake_questionnaire_store):
 
     question = {
         "id": "question-2",
+        "type": "General",
         "answers": [{"id": "GHI", "type": "TextField", "q_code": "003"}],
     }
 
@@ -133,7 +137,11 @@ def test_answer_without_qcode(fake_questionnaire_store):
         [Answer("GHI", "String test + !").to_dict()]
     )
 
-    question = {"id": "question-2", "answers": [{"id": "GHI", "type": "TextField"}]}
+    question = {
+        "id": "question-2",
+        "type": "General",
+        "answers": [{"id": "GHI", "type": "TextField"}],
+    }
 
     questionnaire = make_schema("0.0.1", "section-1", "group-1", "block-1", question)
 
@@ -159,6 +167,7 @@ def test_converter_checkboxes_with_q_codes(fake_questionnaire_store):
 
     question = {
         "id": "crisps-question",
+        "type": "General",
         "answers": [
             {
                 "id": "crisps-answer",
@@ -218,6 +227,7 @@ def test_converter_checkboxes_with_q_codes_and_other_value(fake_questionnaire_st
 
     question = {
         "id": "crisps-question",
+        "type": "General",
         "answers": [
             {
                 "id": "crisps-answer",
@@ -279,6 +289,7 @@ def test_converter_checkboxes_with_q_codes_and_empty_other_value(
 
     question = {
         "id": "crisps-question",
+        "type": "General",
         "answers": [
             {
                 "id": "crisps-answer",
@@ -337,6 +348,7 @@ def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(
 
     question = {
         "id": "crisps-question",
+        "type": "General",
         "answers": [
             {
                 "id": "crisps-answer",
@@ -395,6 +407,7 @@ def test_converter_q_codes_for_empty_strings(fake_questionnaire_store):
 
     question = {
         "id": "crisps-question",
+        "type": "General",
         "answers": [
             {"id": "crisps-answer", "type": "TextArea", "options": [], "q_code": "1"},
             {
@@ -433,6 +446,7 @@ def test_radio_answer(fake_questionnaire_store):
 
     question = {
         "id": "radio-question",
+        "type": "General",
         "answers": [
             {
                 "type": "Radio",
@@ -472,6 +486,7 @@ def test_number_answer(fake_questionnaire_store):
 
     question = {
         "id": "number-question",
+        "type": "General",
         "answers": [{"id": "number-answer", "type": "Number", "q_code": "1"}],
     }
 
@@ -502,6 +517,7 @@ def test_percentage_answer(fake_questionnaire_store):
 
     question = {
         "id": "percentage-question",
+        "type": "General",
         "answers": [{"id": "percentage-answer", "type": "Percentage", "q_code": "1"}],
     }
 
@@ -532,6 +548,7 @@ def test_textarea_answer(fake_questionnaire_store):
 
     question = {
         "id": "textarea-question",
+        "type": "General",
         "answers": [{"id": "textarea-answer", "q_code": "1", "type": "TextArea"}],
     }
 
@@ -562,6 +579,7 @@ def test_currency_answer(fake_questionnaire_store):
 
     question = {
         "id": "currency-question",
+        "type": "General",
         "answers": [{"id": "currency-answer", "type": "Currency", "q_code": "1"}],
     }
 
@@ -592,6 +610,7 @@ def test_dropdown_answer(fake_questionnaire_store):
 
     question = {
         "id": "dropdown-question",
+        "type": "General",
         "answers": [
             {
                 "id": "dropdown-answer",
@@ -637,6 +656,7 @@ def test_date_answer(fake_questionnaire_store):
 
     question = {
         "id": "single-date-question",
+        "type": "General",
         "answers": [
             {"id": "single-date-answer", "type": "Date", "q_code": "1"},
             {"id": "month-year-answer", "type": "MonthYearDate", "q_code": "2"},
@@ -671,6 +691,7 @@ def test_unit_answer(fake_questionnaire_store):
 
     question = {
         "id": "unit-question",
+        "type": "General",
         "answers": [{"id": "unit-answer", "type": "Unit", "q_code": "1"}],
     }
 
