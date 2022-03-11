@@ -204,7 +204,7 @@ class Question(BlockHandler):
         section_ids = self._schema.get_section_ids_dependent_on_list(list_name)
 
         section_keys_to_evaluate = (
-            self.questionnaire_store_updater.started_section_keys(
+            self._questionnaire_store.progress_store.started_section_keys(
                 section_ids=section_ids
             )
         )

@@ -614,10 +614,10 @@ def test_routing_path_block_ids_dependent_on_other_sections_when_rules(
     schema,
     section_id,
     expected_route,
+    answer_store,
 ):
     # Given a schema which has when rules in a section which has dependencies on other sections answers
     schema = load_schema_from_name(schema)
-    answer_store = AnswerStore()
     answer_store.add_or_update(
         Answer(answer_id="skip-age-answer", value=skip_age_answer)
     )
@@ -694,13 +694,10 @@ def test_routing_path_block_ids_dependent_on_other_sections_when_rules(
     ),
 )
 def test_routing_path_block_ids_dependent_on_other_sections_when_rules_repeating(
-    skip_age_answer,
-    schema,
-    expected_route,
+    skip_age_answer, schema, expected_route, answer_store
 ):
     # Given a schema with repeating sections which has when rules dependent on another section
     schema = load_schema_from_name(schema)
-    answer_store = AnswerStore()
     answer_store.add_or_update(
         Answer(answer_id="skip-age-answer", value=skip_age_answer)
     )

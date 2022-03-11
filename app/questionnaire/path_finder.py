@@ -71,8 +71,7 @@ class PathFinder:
                 section_id, {}
             )
             for block_id in self.routing_path(dependent_section)
-            if self.progress_store.get_section_status(dependent_section)
-            in (CompletionStatus.IN_PROGRESS, CompletionStatus.COMPLETED)
+            if dependent_section not in self.progress_store.started_section_keys()
         ]
 
     def _get_not_skipped_blocks_in_section(
