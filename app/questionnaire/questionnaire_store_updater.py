@@ -223,14 +223,6 @@ class QuestionnaireStoreUpdater:
         )
         self._progress_store.update_section_status(status, section_id, list_item_id)
 
-    def started_section_keys(
-        self, section_ids: Iterable[str] = None
-    ) -> list[SectionKeyType]:
-        return self._progress_store.section_keys(
-            statuses={CompletionStatus.COMPLETED, CompletionStatus.IN_PROGRESS},
-            section_ids=section_ids,
-        )
-
     def _update_answer(
         self,
         answer_id: str,
@@ -342,3 +334,6 @@ class QuestionnaireStoreUpdater:
                     section_id=section_id,
                     list_item_id=list_item_id,
                 )
+
+    def started_section_keys(self, section_ids: Optional[Iterable[str]] = None):
+        return self._progress_store.started_section_keys(section_ids)
