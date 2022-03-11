@@ -144,10 +144,10 @@ def address_question(answer_store, list_store, schema):
 
 @pytest.mark.usefixtures("app")
 @pytest.mark.parametrize(
-    "question_title,answers,expected_title,expected_len",
+    "question_title, answers, expected_title, expected_len",
     (
-        ("question_title", [MagicMock()], "question_title", 1),
-        ("question_title", [], "question_title", 0),
+        ("Question title", [MagicMock()], "Question title", 1),
+        ("Question title", [], "Question title", 0),
         (
             "",
             [{"type": "Number", "id": "age-answer", "mandatory": True, "label": "Age"}],
@@ -195,7 +195,7 @@ def test_create_question(
 
 @pytest.mark.usefixtures("app")
 @pytest.mark.parametrize(
-    "concatenation_type,concatenation_character",
+    "concatenation_type, concatenation_character",
     (
         ("Newline", "<br>"),
         ("Space", " "),
@@ -225,7 +225,7 @@ def test_concatenate_textfield_answers(
 
 @pytest.mark.usefixtures("app")
 @pytest.mark.parametrize(
-    "concatenation_type,concatenation_character",
+    "concatenation_type, concatenation_character",
     (
         ("Newline", "<br>"),
         ("Space", " "),
@@ -256,7 +256,7 @@ def test_concatenate_textfield_answers_default(
 
 @pytest.mark.usefixtures("app")
 @pytest.mark.parametrize(
-    "concatenation_type,concatenation_character",
+    "concatenation_type, concatenation_character",
     (
         ("Newline", "<br>"),
         ("Space", " "),
@@ -531,7 +531,7 @@ def test_checkbox_button_detail_answer_empty(answer_store, list_store, mock_sche
 
 @pytest.mark.usefixtures("app")
 @pytest.mark.parametrize(
-    "options,answers,expected_len,expected_value",
+    "options, answers, expected_len, expected_value",
     (
         (
             [
@@ -664,7 +664,7 @@ def test_checkbox_button_other_option_text(answer_store, list_store, mock_schema
 
 @pytest.mark.usefixtures("app")
 @pytest.mark.parametrize(
-    "answer_type,options,answers,expected",
+    "answer_type, options, answers, expected",
     (
         (
             "Radio",
@@ -699,7 +699,7 @@ def test_checkbox_button_other_option_text(answer_store, list_store, mock_schema
         ),
     ),
 )
-def test_radio_answer_with_detail_answers_returns_corrrect_type(
+def test_radio_answer_with_detail_answers_returns_correct_value(
     answer_type, options, answers, expected, answer_store, list_store, mock_schema
 ):
     # Given
@@ -740,7 +740,7 @@ def test_radio_answer_with_detail_answers_returns_corrrect_type(
 
 @pytest.mark.usefixtures("app")
 @pytest.mark.parametrize(
-    "answer_type,options,answers,expected",
+    "answer_type, options, answers, expected",
     (
         (
             "Dropdown",
@@ -862,7 +862,7 @@ def test_dynamic_checkbox_answer_options(
 
 @pytest.mark.usefixtures("app")
 @pytest.mark.parametrize(
-    "answer_type,answer_store_value,expected",
+    "answer_type, answer_store_value, expected",
     (
         (
             "Radio",
@@ -943,7 +943,7 @@ def test_dynamic_answer_options(
 
 @pytest.mark.usefixtures("app")
 @pytest.mark.parametrize(
-    "answer_schema,answer_store,expected",
+    "answer_schema, answer_store, expected",
     (
         (
             {
