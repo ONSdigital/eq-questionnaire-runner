@@ -1793,7 +1793,7 @@ caniuse-lite@^1.0.30001313:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001314.tgz#65c7f9fb7e4594fca0a333bec1d8939662377596"
   integrity sha512-0zaSO+TnCHtHJIbpLroX7nsD+vYuOVjl3uzFbJO1wMVbuveJA0RK2WcQA9ZUIOiO0/ArMiMgHJLxfEZhQiC0kw==
 
-chai@^4.2.0:
+chai@^4.3.6:
   version "4.3.6"
   resolved "https://registry.yarnpkg.com/chai/-/chai-4.3.6.tgz#ffe4ba2d9fa9d6680cc0b370adae709ec9011e9c"
   integrity sha512-bbcp3YfHCUzMOvKqsztczerVgBKSsEijCySNlHHbX3VG1nskvqjz5Rfso1gGwD6w6oOV3eI60pKuMOV5MV7p3Q==
@@ -2395,7 +2395,7 @@ eslint-plugin-es@^3.0.0:
     eslint-utils "^2.0.0"
     regexpp "^3.0.0"
 
-eslint-plugin-import@^2.20.2:
+eslint-plugin-import@^2.25.4:
   version "2.25.4"
   resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.25.4.tgz#322f3f916a4e9e991ac7af32032c25ce313209f1"
   integrity sha512-/KJBASVFxpu0xg1kIBn9AUa8hQVnszpwgE7Ld0lKAlx7Ie87yzEzCgSkekt+le/YVhiaosO4Y14GDAOc41nfxA==
@@ -3459,7 +3459,7 @@ jsonfile@^6.0.1:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
-jsrsasign@^10.2.0:
+jsrsasign@^10.5.10:
   version "10.5.10"
   resolved "https://registry.yarnpkg.com/jsrsasign/-/jsrsasign-10.5.10.tgz#82379cabc27a5a765e1ede3c754a3ab801070a82"
   integrity sha512-iwLwWdJVfMjC9ShDvkn1fco9qrjF9J8r4tzeIcgevmSq9Uy+7nSusKQtXCHaY1flffI46DhYuG8wkjn0Ie4HCQ==
@@ -3547,7 +3547,7 @@ livereload-js@^3.3.1:
   resolved "https://registry.yarnpkg.com/livereload-js/-/livereload-js-3.3.3.tgz#3e4f5699f741fdf8be6dc9c46c523e4fc1abbd0d"
   integrity sha512-a7Jipme3XIBIryJluWP5LQrEAvhobDPyScBe+q+MYwxBiMT2Ck7msy4tAdF8TAa33FMdJqX4guP81Yhiu6BkmQ==
 
-livereload@^0.9.1:
+livereload@^0.9.3:
   version "0.9.3"
   resolved "https://registry.yarnpkg.com/livereload/-/livereload-0.9.3.tgz#a714816375ed52471408bede8b49b2ee6a0c55b1"
   integrity sha512-q7Z71n3i4X0R9xthAryBdNGVGAO2R5X+/xXpmKeuPMrteg+W2U8VusTKV3YiJbXZwKsOlFlHe+go6uSNjfxrZw==
@@ -3882,7 +3882,7 @@ node-fetch@2.6.7:
   dependencies:
     whatwg-url "^5.0.0"
 
-node-forge@^1.0.0, node-forge@^1.2.1:
+node-forge@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-1.2.1.tgz#82794919071ef2eb5c509293325cec8afd0fd53c"
   integrity sha512-Fcvtbb+zBcZXbTTVwqGA5W+MKBj56UjVRevvchv5XrcyXbmNdesfZL37nlcWOfpgHhgmxApw3tQbTr4CqNmX4w==
@@ -4226,7 +4226,7 @@ prelude-ls@^1.2.1:
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
 
-prettier@^2.0.5:
+prettier@^2.5.1:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.5.1.tgz#fff75fa9d519c54cf0fce328c1017d94546bc56a"
   integrity sha512-vBZcPRUR5MZJwoyi3ZoyQlc1rXeEck8KgeC9AwwOn+exuxLxq5toTRDTSaVrXHxelDMHy9zlicw8u66yxoSUFg==
@@ -5092,7 +5092,7 @@ webdriver@7.17.3:
     ky "^0.30.0"
     lodash.merge "^4.6.1"
 
-webdriverio@7.17.4, webdriverio@^7.16.16:
+webdriverio@7.17.4, webdriverio@^7.17.4:
   version "7.17.4"
   resolved "https://registry.yarnpkg.com/webdriverio/-/webdriverio-7.17.4.tgz#4261cf9631822d4d391bfb6953fb5a8e89f7e377"
   integrity sha512-p7u2q7NJL7Et8FdSroq/Ltoi3KkKxERE79Srh9lFr6yRNPFqb46dJf/g4nljLhburnGkbNdYN15JWgyWYnnj9g==
