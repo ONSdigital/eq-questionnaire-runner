@@ -5,12 +5,9 @@ from app.views.contexts.summary.answer import Answer
 
 @pytest.mark.usefixtures("app")
 def test_create_answer():
-    answer_schema = {"id": "answer-id", "label": "Answer Label", "type": "date"}
-    user_answer = "An answer"
-
     answer = Answer(
-        answer_schema=answer_schema,
-        answer_value=user_answer,
+        answer_schema={"id": "answer-id", "label": "Answer Label", "type": "date"},
+        answer_value="An answer",
         block_id="house-type",
         list_name="answer-list",
         list_item_id="answer-item-id",
@@ -30,14 +27,10 @@ def test_create_answer():
 
 @pytest.mark.usefixtures("app")
 def test_date_answer_type():
-    # Given
-    answer_schema = {"id": "answer-id", "label": "", "type": "date"}
-    user_answer = None
-
     # When
     answer = Answer(
-        answer_schema=answer_schema,
-        answer_value=user_answer,
+        answer_schema={"id": "answer-id", "label": "", "type": "date"},
+        answer_value=None,
         block_id="house-type",
         list_name="answer-list",
         list_item_id="answer-item-id",

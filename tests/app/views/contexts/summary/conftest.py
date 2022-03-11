@@ -30,5 +30,5 @@ def dynamic_answer_options_schema():
 
 
 @pytest.fixture
-def schema(mocker):
+def mock_schema(mocker):
     return mocker.MagicMock()
