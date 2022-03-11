@@ -611,13 +611,13 @@ def test_routing_path_block_ids_dependent_on_other_sections_when_rules(
     list_store,
     skip_age_answer,
     skip_confirmation_answer,
-    schema,
+    schema_name,
     section_id,
     expected_route,
     answer_store,
 ):
     # Given a schema which has when rules in a section which has dependencies on other sections answers
-    schema = load_schema_from_name(schema)
+    schema = load_schema_from_name(schema_name)
     answer_store.add_or_update(
         Answer(answer_id="skip-age-answer", value=skip_age_answer)
     )
@@ -685,7 +685,7 @@ def test_routing_path_block_ids_dependent_on_other_sections_when_rules(
     ),
 )
 @pytest.mark.parametrize(
-    "schema",
+    "schema_name",
     (
         [
             "test_new_routing_and_skipping_section_dependencies",
@@ -694,10 +694,10 @@ def test_routing_path_block_ids_dependent_on_other_sections_when_rules(
     ),
 )
 def test_routing_path_block_ids_dependent_on_other_sections_when_rules_repeating(
-    skip_age_answer, schema, expected_route, answer_store
+    skip_age_answer, schema_name, expected_route, answer_store
 ):
     # Given a schema with repeating sections which has when rules dependent on another section
-    schema = load_schema_from_name(schema)
+    schema = load_schema_from_name(schema_name)
     answer_store.add_or_update(
         Answer(answer_id="skip-age-answer", value=skip_age_answer)
     )
