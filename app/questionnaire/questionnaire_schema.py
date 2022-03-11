@@ -751,7 +751,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     ) -> set[str]:
         rules_section_dependencies: set[str] = set()
 
-        if isinstance(rules, dict) and any(
+        if isinstance(rules, Mapping) and any(
             operator in rules for operator in OPERATION_MAPPING
         ):
             rules = self.get_operands(rules)
