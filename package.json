@@ -45,7 +45,7 @@
         "eslint-plugin-standard": "^4.0.1",
         "json-web-key": "^0.4.0",
         "jsrsasign": "^10.2.0",
-        "lint-staged": "^10.2.7",
+        "lint-staged": "^12.3.5",
         "livereload": "^0.9.1",
         "node-forge": "^1.0.0",
         "node-jose": "^2.1.0",
