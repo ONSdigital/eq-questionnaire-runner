@@ -599,7 +599,7 @@ def test_new_remove_answer_and_block_if_routing_backwards(list_store):
     ),
 )
 @pytest.mark.parametrize(
-    "schema",
+    "schema_name",
     (
         [
             "test_new_routing_and_skipping_section_dependencies",
