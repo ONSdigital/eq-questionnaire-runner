@@ -1,59 +1,38 @@
-from unittest import TestCase
-
-from mock import MagicMock, patch
-
 from app.questionnaire.location import Location
 from app.views.contexts.summary.block import Block
 
 
-def build_block_schema(question_schema):
+def test_create_block(mocker):
+    # Given
     block_schema = {
         "id": "block_id",
         "title": "A section title",
         "number": "1",
-        "question": question_schema,
+        "question": {"id": "mock_question_schema"},
     }
-    return block_schema
+    location = Location(section_id="a-section")
 
+    question = mocker.MagicMock()
+    question.serialize = mocker.MagicMock(return_value="A Question")
 
-def get_mock_question(placeholder):
-    """Returns a mocked question, which returns `placeholder` from the serialize method"""
-    question = MagicMock()
-    question.serialize = MagicMock(return_value=placeholder)
-    return question
+    # When
+    mocker.patch(
+        "app.views.contexts.summary.block.Question",
+        return_value=question,
+    )
+    block = Block(
+        block_schema,
+        answer_store=mocker.MagicMock(),
+        list_store=mocker.MagicMock(),
+        metadata=mocker.MagicMock(),
+        response_metadata=mocker.MagicMock(),
+        schema=mocker.MagicMock(),
+        location=location,
+        return_to="final-summary",
+    )
 
-
-class TestSection(TestCase):
-    def setUp(self):
-        self.answer_store = MagicMock()
-        self.list_store = MagicMock()
-        self.metadata = MagicMock()
-        self.response_metadata = MagicMock()
-        self.schema = MagicMock()
-
-    def test_create_block(self):
-        # Given
-        block_schema = build_block_schema({"id": "mock_question_schema"})
-        location = Location(section_id="a-section")
-
-        # When
-        with patch(
-            "app.views.contexts.summary.block.Question",
-            return_value=get_mock_question("A Question"),
-        ):
-            block = Block(
-                block_schema,
-                answer_store=self.answer_store,
-                list_store=self.list_store,
-                metadata=self.metadata,
-                response_metadata=self.response_metadata,
-                schema=self.schema,
-                location=location,
-                return_to="final-summary",
-            )
-
-        # Then
-        self.assertEqual(block.id, "block_id")
-        self.assertEqual(block.title, "A section title")
-        self.assertEqual(block.number, "1")
-        self.assertEqual(block.question, "A Question")
+    # Then
+    assert block.id == "block_id"
+    assert block.title == "A section title"
+    assert block.number == "1"
+    assert block.question == "A Question"
