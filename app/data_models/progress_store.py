@@ -214,3 +214,11 @@ class ProgressStore:
     def clear(self) -> None:
         self._progress.clear()
         self._is_dirty = True
+
+    def started_section_keys(
+        self, section_ids: Optional[Iterable[str]] = None
+    ) -> list[SectionKeyType]:
+        return self.section_keys(
+            statuses={CompletionStatus.COMPLETED, CompletionStatus.IN_PROGRESS},
+            section_ids=section_ids,
+        )
