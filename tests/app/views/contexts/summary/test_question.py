@@ -38,7 +38,7 @@ def get_value_source_resolver(answer_store, list_store, schema, response_metadat
 def get_question_schema(answer_schema):
     return {
         "id": "question_id",
-        "title": "question_title",
+        "title": "Question title",
         "type": "General",
         "answers": [answer_schema],
     }
@@ -291,7 +291,7 @@ def test_concatenate_number_and_checkbox_answers(
 
     question_schema = {
         "id": "question_id",
-        "title": "question_title",
+        "title": "Question title",
         "type": "General",
         "answers": [age_answer_schema, checkbox_answer_schema],
         "summary": {"concatenation_type": concatenation_type},
@@ -327,7 +327,7 @@ def test_merge_date_range_answers(answer_store, list_store, mock_schema):
 
     question_schema = {
         "id": "question_id",
-        "title": "question_title",
+        "title": "Question title",
         "type": "DateRange",
         "answers": [
             {"id": "answer_1", "label": "From", "type": "date"},
@@ -368,7 +368,7 @@ def test_merge_multiple_date_range_answers(answer_store, list_store, mock_schema
 
     question_schema = {
         "id": "question_id",
-        "title": "question_title",
+        "title": "Question title",
         "type": "DateRange",
         "answers": [
             {"id": "answer_1", "label": "From", "type": "date"},
@@ -411,7 +411,7 @@ def test_create_question_with_multiple_answers(answer_store, list_store, mock_sc
 
     question_schema = {
         "id": "question_id",
-        "title": "question_title",
+        "title": "Question title",
         "type": "GENERAL",
         "answers": [
             {"id": "answer_1", "label": "First name", "type": "text"},
@@ -448,7 +448,7 @@ def test_checkbox_button_options(answer_store, list_store, mock_schema):
 
     question_schema = {
         "id": "question_id",
-        "title": "question_title",
+        "title": "Question title",
         "type": "GENERAL",
         "answers": [
             {
@@ -490,7 +490,7 @@ def test_checkbox_button_detail_answer_empty(answer_store, list_store, mock_sche
 
     question_schema = {
         "id": "question_id",
-        "title": "question_title",
+        "title": "Question title",
         "type": "GENERAL",
         "answers": [
             {
@@ -582,7 +582,7 @@ def test_checkbox_answer_with_detail_answer_returns_the_value(
 
     question_schema = {
         "id": "question_id",
-        "title": "question_title",
+        "title": "Question title",
         "type": "GENERAL",
         "answers": [
             {
@@ -623,7 +623,7 @@ def test_checkbox_button_other_option_text(answer_store, list_store, mock_schema
 
     question_schema = {
         "id": "question_id",
-        "title": "question_title",
+        "title": "Question title",
         "type": "GENERAL",
         "answers": [
             {
@@ -708,7 +708,7 @@ def test_radio_answer_with_detail_answers_returns_correct_value(
 
     question_schema = {
         "id": "question_id",
-        "title": "question_title",
+        "title": "Question title",
         "type": "GENERAL",
         "answers": [
             {
@@ -780,7 +780,7 @@ def test_answer_types_selected_option_label(
 
     question_schema = {
         "id": "question_id",
-        "title": "question_title",
+        "title": "Question title",
         "type": "GENERAL",
         "answers": [
             {
@@ -906,32 +906,17 @@ def test_dynamic_answer_options(
 
     answer_store = AnswerStore([{"answer_id": answer_id, "value": answer_store_value}])
     response_metadata = {"started_at": "2021-01-01T09:00:00.220038+00:00"}
-    rule_evaluator = RuleEvaluator(
-        schema=mock_schema,
-        answer_store=answer_store,
-        list_store=list_store,
-        metadata={},
-        response_metadata=response_metadata,
-        location=None,
-    )
-    value_source_resolver = ValueSourceResolver(
-        answer_store=answer_store,
-        list_store=list_store,
-        metadata={},
-        response_metadata=response_metadata,
-        schema=mock_schema,
-        location=None,
-        list_item_id=None,
-        routing_path_block_ids=None,
-        use_default_answer=True,
-    )
     # When
     question = Question(
         question_schema,
         answer_store=answer_store,
         schema=mock_schema,
-        rule_evaluator=rule_evaluator,
-        value_source_resolver=value_source_resolver,
+        rule_evaluator=get_rule_evaluator(
+            answer_store, list_store, mock_schema, response_metadata
+        ),
+        value_source_resolver=get_value_source_resolver(
+            answer_store, list_store, mock_schema, response_metadata
+        ),
         location=None,
         block_id="house-type",
         return_to=None,
