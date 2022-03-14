@@ -6,7 +6,7 @@ from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 
 
 @pytest.mark.parametrize(
-    "number,currency,expected",
+    "number, currency, expected",
     (
         ("11", "GBP", "£11.00"),
         ("11.99", "GBP", "£11.99"),
@@ -20,7 +20,7 @@ def test_format_currency(number, currency, expected, transformer):
 
 
 @pytest.mark.parametrize(
-    "number,expected",
+    "number, expected",
     (
         (123, "123"),
         ("123.4", "123.4"),
@@ -56,7 +56,7 @@ def test_format_list(transformer):
 
 
 @pytest.mark.parametrize(
-    "name,expected",
+    "name, expected",
     (
         ("Alice Aardvark", "Alice Aardvark’s"),
         ("Dave Dixon Davies", "Dave Dixon Davies’"),
@@ -69,7 +69,7 @@ def test_format_possessive(name, expected, transformer):
 
 
 @pytest.mark.parametrize(
-    "name,expected",
+    "name, expected",
     (
         ("Alice Aardvark", "Alice Aardvark"),
         ("Dave Dixon Davies", "Dave Dixon Davies"),
@@ -82,7 +82,7 @@ def test_format_possessive_non_english_does_nothing(name, expected, transformer)
 
 
 @pytest.mark.parametrize(
-    "date_start,date_end,expected",
+    "date_start, date_end, expected",
     (
         ("2016-06-10", "2019-06-10", "3 years"),
         ("2018-06-10", "2019-06-10", "1 year"),
@@ -108,7 +108,7 @@ def test_calculate_difference(date_start, date_end, expected):
 
 
 @pytest.mark.parametrize(
-    "token,expected",
+    "token, expected",
     (
         ("", "MilkEggsFlourWater"),
         (" ", "Milk Eggs Flour Water"),
@@ -121,7 +121,7 @@ def test_concatenate_list(token, expected, transformer):
 
 
 @pytest.mark.parametrize(
-    "first,second,expected",
+    "first, second, expected",
     (
         (1, 2, 3),
         (-2, -1, -3),
@@ -134,7 +134,7 @@ def test_add_int(first, second, expected, transformer):
 
 
 @pytest.mark.parametrize(
-    "first,second,expected",
+    "first, second, expected",
     (
         ("1.5", "2.5", "4"),
         ("-2.5", "-1.1", "-3.6"),
@@ -147,7 +147,7 @@ def test_add_decimal(first, second, expected, transformer):
 
 
 @pytest.mark.parametrize(
-    "language,number_to_format,determiner,expected",
+    "language, number_to_format, determiner, expected",
     (
         ("en", 1, "a_or_an", "a 1st"),
         ("en", 2, "a_or_an", "a 2nd"),
@@ -274,7 +274,7 @@ def test_list_has_items(transformer):
 
 
 @pytest.mark.parametrize(
-    "first,middle,last,include_middle_names,expected",
+    "first, middle, last, include_middle_names, expected",
     (
         ("Joe", None, "Bloggs", True, "Joe Bloggs"),
         ("Joe", None, "Bloggs", True, "Joe Bloggs"),
@@ -292,7 +292,7 @@ def test_format_name(first, middle, last, include_middle_names, expected, transf
 
 
 @pytest.mark.parametrize(
-    "address,subject,reference,expected",
+    "address, subject, reference, expected",
     (
         (
             "test@email.com",
@@ -333,7 +333,7 @@ def test_telephone_number_link(transformer):
 
 
 @pytest.mark.parametrize(
-    "item_list,expected",
+    "item_list, expected",
     (
         (["Alice Aardvark", "Bob Berty Brown", "Dave Dixon Davies"], 3),
         ([], 0),
@@ -345,7 +345,7 @@ def test_list_item_count(item_list, expected, transformer):
 
 
 @pytest.mark.parametrize(
-    "ref_date,weeks_prior,day_range,first_day_of_week,expected",
+    "ref_date, weeks_prior, day_range, first_day_of_week, expected",
     [
         # All weekdays as reference date
         ("2021-09-26", -1, 7, "MONDAY", ("2021-09-13", "2021-09-19")),
@@ -415,7 +415,7 @@ def test_date_range_bounds_kwarg_default_monday(transformer):
 
 
 @pytest.mark.parametrize(
-    "date_range,expected",
+    "date_range, expected",
     [
         (
             ("2021-09-01", "2021-09-15"),
@@ -441,7 +441,7 @@ def test_format_date_range(transformer, date_range, expected):
 
 
 @pytest.mark.parametrize(
-    "answer_id,value,expected",
+    "answer_id, value, expected",
     [
         (
             "mandatory-radio-answer",

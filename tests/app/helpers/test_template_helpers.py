@@ -196,7 +196,7 @@ def test_service_links_context(
 
 
 @pytest.mark.parametrize(
-    "survey_config,expected",
+    "survey_config, expected",
     [
         (
             SurveyConfig(),
@@ -227,7 +227,7 @@ def test_contact_us_url_context(
 
 
 @pytest.mark.parametrize(
-    "survey_config,expected",
+    "survey_config, expected",
     [
         (SurveyConfig(), "Save and sign out"),
         (CensusSurveyConfig(), "Save and complete later"),
@@ -248,7 +248,7 @@ def test_sign_out_button_text_context(
 
 
 @pytest.mark.parametrize(
-    "survey_config,expected",
+    "survey_config, expected",
     [
         (SurveyConfig(), "https://surveys.ons.gov.uk/cookies/"),
         (
@@ -296,7 +296,7 @@ def test_account_service_my_account_url_context(
 
 
 @pytest.mark.parametrize(
-    "survey_config,expected",
+    "survey_config, expected",
     [
         (SurveyConfig(), None),
         (
@@ -313,7 +313,7 @@ def test_account_service_my_todo_url_context(
 
 
 @pytest.mark.parametrize(
-    "survey_config,expected",
+    "survey_config, expected",
     [
         (SurveyConfig(), None),
         (
@@ -339,7 +339,7 @@ def test_account_service_log_out_url_context(
 
 
 @pytest.mark.parametrize(
-    "theme,language,expected",
+    "theme, language, expected",
     [
         ("default", "en", SurveyConfig),
         ("default", "cy", SurveyConfig),
@@ -443,7 +443,7 @@ def test_context_set_from_app_config(app):
 
 
 @pytest.mark.parametrize(
-    "theme,language,expected",
+    "theme, language, expected",
     [
         ("default", "en", None),
         ("business", "en", None),
@@ -468,7 +468,7 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
 
 
 @pytest.mark.parametrize(
-    "theme,language,expected",
+    "theme, language, expected",
     [
         ("default", "en", "ONS Business Surveys"),
         ("business", "en", "ONS Business Surveys"),
@@ -495,7 +495,7 @@ def test_correct_survey_title_in_context(
 
 
 @pytest.mark.parametrize(
-    "theme,language,expected",
+    "theme, language, expected",
     [
         ("default", "en", []),
         ("business", "en", []),

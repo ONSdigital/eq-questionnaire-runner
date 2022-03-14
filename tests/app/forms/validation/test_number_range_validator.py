@@ -6,7 +6,7 @@ from app.forms.validators import NumberRange
 
 
 @pytest.mark.parametrize(
-    "minimum,maximum,value,min_excl,max_excl,error_type,error_dict",
+    "minimum, maximum, value, min_excl, max_excl, error_type, error_dict",
     (
         (0, None, -10, False, False, "NUMBER_TOO_SMALL", {"min": 0}),
         (
@@ -65,7 +65,7 @@ def test_number_range_validator_raises_ValidationError(
 
 
 @pytest.mark.parametrize(
-    "minimum,maximum,value",
+    "minimum, maximum, value",
     (
         (0, 10, 10),
         (0, 9999999999, 0),

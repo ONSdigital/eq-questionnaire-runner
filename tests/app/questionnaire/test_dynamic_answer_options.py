@@ -78,7 +78,7 @@ def test_dynamic_answer_options(rule_evaluator, value_source_resolver):
 
 
 @pytest.mark.parametrize(
-    "checkbox_answer,expected_output",
+    "checkbox_answer, expected_output",
     [
         (
             ["Body"],

@@ -5,7 +5,7 @@ from app.forms.validators import ResponseRequired
 
 
 @pytest.mark.parametrize(
-    "message,raw_data",
+    "message, raw_data",
     (
         ("test_response_empty_invalid", [""]),
         ("test_response_blank_invalid", ["                           "]),
@@ -25,7 +25,7 @@ def test_response_invalid_raises_StopValidation(
 
 
 @pytest.mark.parametrize(
-    "message,raw_data,strip_whitespace",
+    "message, raw_data, strip_whitespace",
     (
         ("test_required_empty", ["Here is some valid input"], True),
         (

@@ -8,7 +8,7 @@ from app.questionnaire.when_rules import evaluate_date_rule, evaluate_goto
 
 
 @pytest.mark.parametrize(
-    "date,condition,comparison,expected",
+    "date, condition, comparison, expected",
     (
         (
             datetime.now(tz=timezone.utc).strftime("%Y-%m-%d"),

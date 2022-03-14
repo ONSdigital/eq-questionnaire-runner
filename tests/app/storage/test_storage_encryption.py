@@ -5,7 +5,7 @@ from app.utilities.json import json_loads
 
 
 @pytest.mark.parametrize(
-    "user_id,user_ik,pepper",
+    "user_id, user_ik, pepper",
     (
         (None, "key", "pepper"),
         ("1", None, "pepper"),
@@ -18,7 +18,7 @@ def test_encrypted_storage_missing_required_args(user_id, user_ik, pepper):
 
 
 @pytest.mark.parametrize(
-    "storage1,storage2,storage3",
+    "storage1, storage2, storage3",
     (
         (
             ("user1", "user_ik_1", "pepper"),

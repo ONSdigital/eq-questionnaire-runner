@@ -6,7 +6,7 @@ from app.forms.validators import MutuallyExclusiveCheck, format_message_with_tit
 
 
 @pytest.mark.parametrize(
-    "answer_permutations,is_mandatory,is_only_checkboxes,error_type",
+    "answer_permutations, is_mandatory, is_only_checkboxes, error_type",
     (
         ([[], []], True, True, "MANDATORY_CHECKBOX"),
         ([None, []], True, True, "MANDATORY_CHECKBOX"),
@@ -39,7 +39,7 @@ def test_mutually_exclusive_mandatory_checkbox_raises_ValidationError(
 
 
 @pytest.mark.parametrize(
-    "answer_permutations,is_mandatory",
+    "answer_permutations, is_mandatory",
     (
         ([["British, Irish"], []], True),
         (["123", []], True),
