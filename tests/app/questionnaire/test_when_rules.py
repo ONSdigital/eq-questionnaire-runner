@@ -426,7 +426,7 @@ def test_skip_conditions(
     routing_path_block_ids = []
 
     condition = path_finder.evaluate_skip_conditions(
-        current_location, routing_path_block_ids, skip_conditions
+        current_location, routing_path_block_ids, skip_conditions, []
     )
 
     assert condition is expected

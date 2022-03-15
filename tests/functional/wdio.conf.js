@@ -140,7 +140,7 @@ exports.config = {
   mochaOpts: {
     ui: "bdd",
     timeout: 60000,
-    compilers: ["js:babel-register"],
+    compilers: ["js:@babel/register"],
   },
   //
   // =====
@@ -190,13 +190,13 @@ exports.config = {
    * @param {String} commandName hook command name
    * @param {Array} args arguments that command would receive
    */
-  before: function (capabilities, specs) {
+  before: async function (capabilities, specs) {
     const chai = require("chai");
     const JwtHelper = require("./jwt_helper");
 
     global.expect = chai.expect;
 
-    browser.addCommand(
+    await browser.addCommand(
       "openQuestionnaire",
       async function (
         schema,
