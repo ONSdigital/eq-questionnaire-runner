@@ -103,3 +103,13 @@ class TestThankYou(IntegrationTestCase):
         self.assertInUrl("thank-you")
         self.assertInBody("Back to surveys")
         self.assertInBody(ACCOUNT_SERVICE_TODO_PATH)
+
+    def test_answer_availability_text(self):
+        self.launchSurvey("test_thank_you")
+        self.post({"answer": "Yes"})
+        self.post()
+
+        self.assertInUrl("thank-you")
+        self.assertInBody(
+            "For security, your answers will only be available to view for another 45 minutes"
+        )
