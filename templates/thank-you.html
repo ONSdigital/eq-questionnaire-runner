@@ -47,6 +47,9 @@
     <a href="https://www.ons.gov.uk/surveys">https://www.ons.gov.uk/surveys</a></p>
   {% endif %}
 
+  {% set countdown_expired_text = _("For security, you can no longer view or get a copy of your answers") %}
+  {% set countdown_text = _("For security, your answers will only be available to view for another ") %}
+
   {% if content.view_submitted_response.enabled and not content.view_submitted_response.expired %}
     <h1 data-qa="view-submitted-response-title">{{ _("Get a copy of your answers") }}</h1>
     <p
@@ -58,21 +61,22 @@
           "minutesTextPlural": _("minutes"),
           "secondsTextSingular": _("second"),
           "secondsTextPlural": _("seconds"),
-          "countdownText": _("For security, your answers will only be available to view for another"),
-          "nojsText": _("For security, your answers will only be available to view for another ") + content.view_submitted_response.expiry_minutes|string + _(" minutes"),
+          "countdownText": countdown_text,
+          "nojsText": countdown_text + _("45 minutes"),
           "redirectUrl":  url_for("post_submission.get_thank_you"),
-          "countdownExpiredText": _("For security, you can no longer view or get a copy of your answers"),
+          "countdownExpiredText": countdown_expired_text,
           "sessionExpiresAt": content.view_submitted_response.expires_at
       }) }}
     {% endif %}
-  {% else %}
-    {% call onsPanel({
-        "id": "view-submitted-response-guidance",
-        "classes": "ons-u-mb-m"
-      }) %}
-      {{ _("For security, you can no longer view or get a copy of your answers") }}
-    {% endcall %}
   {% endif %}
+ {% if content.view_submitted_response.enabled and content.view_submitted_response.expired %}
+  {% call onsPanel({
+      "id": "view-submitted-response-guidance",
+      "classes": "ons-u-mb-m"
+    }) %}
+    {{ countdown_expired_text }}
+  {% endcall %}
+{% endif %}
 
   {% if content.show_feedback_call_to_action %}
     {% include 'partials/feedback-call-to-action.html' %}

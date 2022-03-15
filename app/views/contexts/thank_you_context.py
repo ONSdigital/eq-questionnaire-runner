@@ -1,11 +1,14 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Mapping, Optional
 
-from flask import current_app, url_for
+from flask import url_for
 from flask_babel import lazy_gettext
 
 from app.data_models.session_data import SessionData
-from app.globals import has_view_submitted_response_expired
+from app.globals import (
+    get_view_submitted_response_expiration_time,
+    has_view_submitted_response_expired,
+)
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.email_form_context import build_email_form_context
 from app.views.contexts.submission_metadata_context import (
@@ -45,21 +48,13 @@ def build_thank_you_context(
 
 
 def build_view_submitted_response_context(schema, submitted_at):
-
     view_submitted_response = {"enabled": schema.is_view_submitted_response_enabled}
 
     if schema.is_view_submitted_response_enabled:
-        view_submitted_expiry_seconds = current_app.config[
-            "VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS"
-        ]
-        response_expires_at = submitted_at + timedelta(
-            seconds=view_submitted_expiry_seconds
-        )
         expired = has_view_submitted_response_expired(submitted_at)
-        view_submitted_response["expired"] = expired
-        view_submitted_response["expires_at"] = response_expires_at
-        view_submitted_response["expiry_minutes"] = int(
-            view_submitted_expiry_seconds / 60
+        view_submitted_response.update(
+            expired=expired,
+            expires_at=get_view_submitted_response_expiration_time(submitted_at),
         )
         if not expired:
             view_submitted_response["url"] = url_for(
