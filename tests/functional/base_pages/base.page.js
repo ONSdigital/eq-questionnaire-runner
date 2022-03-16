@@ -19,6 +19,10 @@ export default class BasePage {
     return '[data-qa="guidance"]';
   }
 
+  acceptCookies() {
+    return ".ons-js-accept-cookies";
+  }
+
   submit() {
     return '[data-qa="btn-submit"]';
   }

@@ -8,7 +8,7 @@ if [ -z ${1+x} ]; then
   exit 1
 fi
 
-CDN_URL=${CDN_URL:-"https://cdn.eq.gcp.onsdigital.uk"}
+CDN_URL=${CDN_URL:-"https://cdn.ons.gov.uk"}
 PRINT_STYLE_SHEET_FILE_PATH_PATH=${PRINT_STYLE_SHEET_FILE_PATH_PATH:-"templates/assets/styles"}
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -17,7 +17,7 @@ cd "${DIR}"/.. || exit
 
 echo "Loading print style sheets from CDN for DS Version ${1}"
 
-PATH_TO_FETCH="${CDN_URL}/design-system/${1}/css/print.css"
+PATH_TO_FETCH="${CDN_URL}/sdc/design-system/${1}/css/print.css"
 
 mkdir -p "${PRINT_STYLE_SHEET_FILE_PATH_PATH}"
 FILE_LOCATION="${PRINT_STYLE_SHEET_FILE_PATH_PATH}/print.css"
