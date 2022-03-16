@@ -105,9 +105,14 @@ def get_answer_store(user: User) -> AnswerStore:
     return questionnaire_store.answer_store
 
 
-def has_view_submitted_response_expired(submitted_at: datetime) -> bool:
-    return (
-        datetime.now(timezone.utc) - submitted_at
-    ).total_seconds() > current_app.config[
+def get_view_submitted_response_expiration_time(submitted_at: datetime) -> datetime:
+    view_submitted_expiry_seconds = current_app.config[
         "VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS"
     ]
+    return submitted_at + timedelta(seconds=view_submitted_expiry_seconds)
+
+
+def has_view_submitted_response_expired(submitted_at: datetime) -> bool:
+    return datetime.now(tz=timezone.utc) > get_view_submitted_response_expiration_time(
+        submitted_at
+    )
