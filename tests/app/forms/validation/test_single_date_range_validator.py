@@ -7,7 +7,7 @@ from app.questionnaire.rules.utils import parse_datetime
 
 
 @pytest.mark.parametrize(
-    "validator,data,error_type,error_message",
+    "validator, data, error_type, error_message",
     (
         (
             SingleDatePeriodCheck(minimum_date=parse_datetime("2016-03-31")),

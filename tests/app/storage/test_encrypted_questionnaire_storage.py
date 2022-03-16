@@ -9,7 +9,7 @@ from tests.app.conftest import RESPONSE_EXPIRY
 
 @pytest.mark.usefixtures("app")
 @pytest.mark.parametrize(
-    "user_id,user_ik,pepper",
+    "user_id, user_ik, pepper",
     (
         (None, "key", "pepper"),
         ("1", None, "pepper"),

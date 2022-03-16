@@ -255,7 +255,7 @@ def test_routing_path_with_conditional_value_not_in_metadata(answer_store, list_
 
 
 @pytest.mark.parametrize(
-    "schema,expected_routing_path_ids",
+    "schema, expected_routing_path_ids",
     (
         ("test_new_skip_condition_block", ["do-you-want-to-skip"]),
         ("test_skip_condition_block", ["do-you-want-to-skip", "a-non-skipped-block"]),

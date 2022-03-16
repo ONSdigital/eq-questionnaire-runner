@@ -4,7 +4,7 @@ from app.questionnaire.plural_forms import DEFAULT_LANGUAGE_CODE, get_plural_for
 
 
 @pytest.mark.parametrize(
-    "count,language,expected",
+    "count, language, expected",
     (
         (1, DEFAULT_LANGUAGE_CODE, "one"),
         (0, DEFAULT_LANGUAGE_CODE, "other"),
