@@ -27,7 +27,7 @@ def test_number_validator_raises_StopValidation(
 
 
 @pytest.mark.parametrize(
-    "decimals,error",
+    "decimals, error",
     (
         (2, error_messages["INVALID_DECIMAL"] % {"max": 2}),
         (0, error_messages["INVALID_INTEGER"]),

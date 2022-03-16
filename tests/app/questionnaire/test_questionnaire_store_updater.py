@@ -411,7 +411,7 @@ def get_answer_dependencies(for_list=None):
 
 
 @pytest.mark.parametrize(
-    "answer_id,answer_updated,answer_dependencies,expected_output",
+    "answer_id, answer_updated, answer_dependencies, expected_output",
     [
         (
             "total-employees-answer",

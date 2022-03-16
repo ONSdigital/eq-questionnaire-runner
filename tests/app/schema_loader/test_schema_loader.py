@@ -5,7 +5,7 @@ from app.utilities.schema import load_schema_from_name
 
 @pytest.mark.usefixtures("app")
 @pytest.mark.parametrize(
-    "schema_name,language_code",
+    "schema_name, language_code",
     (
         ("test_checkbox", None),
         ("test_dates", None),

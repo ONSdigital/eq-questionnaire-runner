@@ -15,7 +15,7 @@ from app.questionnaire.when_rules import (
 
 
 @pytest.mark.parametrize(
-    "when_rule,answers,expected",
+    "when_rule, answers, expected",
     (
         ({"value": "singleAnswer", "condition": "contains"}, ["singleAnswer"], True),
         (
@@ -100,7 +100,7 @@ def test_evaluate_rule(when_rule, answers, expected):
 
 
 @pytest.mark.parametrize(
-    "goto,answers,metadata,expected",
+    "goto, answers, metadata, expected",
     (
         (
             {
@@ -338,7 +338,7 @@ def test_go_to(
 
 
 @pytest.mark.parametrize(
-    "skip_conditions,answers,expected",
+    "skip_conditions, answers, expected",
     (
         (
             [
@@ -433,7 +433,7 @@ def test_skip_conditions(
 
 
 @pytest.mark.parametrize(
-    "when_rules,answers,expected",
+    "when_rules, answers, expected",
     (([{"id": "my_answers", "condition": "not set"}], {}, True),),
 )
 def test_evaluate_not_set_when_rules_should_return_true(
@@ -462,7 +462,7 @@ def test_evaluate_not_set_when_rules_should_return_true(
 
 
 @pytest.mark.parametrize(
-    "lhs_answer,comparison,rhs_answer,expected",
+    "lhs_answer, comparison, rhs_answer, expected",
     (
         ("medium", "equals", "medium", True),
         ("medium", "equals", "low", False),
@@ -523,7 +523,7 @@ def test_when_rule_comparing_answer_values(
 
 
 @pytest.mark.parametrize(
-    "list_item_id,expected",
+    "list_item_id, expected",
     (
         ("abc123", True),
         ("123abc", False),
@@ -579,7 +579,7 @@ def test_evaluate_when_rule_raises_if_bad_when_condition(
 
 
 @pytest.mark.parametrize(
-    "when_rules,expected",
+    "when_rules, expected",
     (
         ([{"list": "people", "condition": "less than", "value": 2}], True),
         ([{"list": "people", "condition": "equals", "value": 1}], True),
@@ -608,7 +608,7 @@ def test_evaluate_when_rule_with_list_rules(
 
 
 @pytest.mark.parametrize(
-    "routing_path,is_on_answer_path,expected",
+    "routing_path, is_on_answer_path, expected",
     (
         (
             RoutingPath(
@@ -716,7 +716,7 @@ def test_routing_ignores_answers_not_on_path(
 
 
 @pytest.mark.parametrize(
-    "when_rule_comparison_id,expected",
+    "when_rule_comparison_id, expected",
     (
         (
             "list_item_id",

@@ -13,7 +13,7 @@ def test_string_to_datetime(operation_helper):
 
 
 @pytest.mark.parametrize(
-    "answer_id,value,expected",
+    "answer_id, value, expected",
     [
         (
             "mandatory-radio-answer",

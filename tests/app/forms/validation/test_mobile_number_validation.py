@@ -6,7 +6,7 @@ from app.forms.validators import MobileNumberCheck, sanitise_mobile_number
 
 
 @pytest.mark.parametrize(
-    "unsanitized_number,expected",
+    "unsanitized_number, expected",
     (
         ("0.7.7.0.0.9.0.0.1.1.1.", "7700900111"),
         ("0447700\t900222", "7700900222"),

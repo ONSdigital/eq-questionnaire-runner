@@ -6,7 +6,7 @@ from app.forms.validators import SumCheck, format_playback_value
 
 
 @pytest.mark.parametrize(
-    "conditions,calculation_total,target_total,error_type",
+    "conditions, calculation_total, target_total, error_type",
     (
         (["equals"], 10, 11.5, "TOTAL_SUM_NOT_EQUALS"),
         (["less than", "equals"], 20, 11.5, "TOTAL_SUM_NOT_LESS_THAN_OR_EQUALS"),

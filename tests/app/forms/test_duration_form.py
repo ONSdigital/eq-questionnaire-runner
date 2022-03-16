@@ -45,7 +45,7 @@ def test_zero():
 
 
 @pytest.mark.parametrize(
-    "mandatory,years,months,valid,error",
+    "mandatory, years, months, valid, error",
     (
         (False, "5", "4", True, None),
         (True, "5", "4", True, None),
