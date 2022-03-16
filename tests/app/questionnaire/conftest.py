@@ -1152,3 +1152,8 @@ def calculated_question_with_dependent_sections_schema_repeating():
     return load_schema_from_name(
         "test_validation_sum_against_total_repeating_with_dependent_section"
     )
+
+
+@pytest.fixture
+def calculated_summary_schema():
+    return load_schema_from_name("test_calculated_summary")
