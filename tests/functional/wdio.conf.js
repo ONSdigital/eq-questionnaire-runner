@@ -58,7 +58,7 @@ exports.config = {
       "goog:chromeOptions": {
         args: [
           process.env.EQ_RUN_FUNCTIONAL_TESTS_HEADLESS ? "--headless" : "--start-maximized",
-          "--window-size=1280,1100",
+          "--window-size=1380,1200",
           "--no-sandbox",
           "--disable-gpu",
           "--disable-extensions",
