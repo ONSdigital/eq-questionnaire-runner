@@ -21,6 +21,8 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
   describe("Given the user has added some members to the household and is on the Hub", () => {
     before("Open survey and add household members", () => {
       browser.openQuestionnaire("test_repeating_sections_with_hub_and_spoke.json");
+      // Accept cookies, since they push submit button outside window
+      $(HubPage.acceptCookies()).click();
       // Ensure we are on the Hub
       expect(browser.getUrl()).to.contain(HubPage.url());
       // Ensure the first section is not started
