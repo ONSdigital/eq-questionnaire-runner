@@ -104,7 +104,7 @@ class TestThankYou(IntegrationTestCase):
         self.assertInBody("Back to surveys")
         self.assertInBody(ACCOUNT_SERVICE_TODO_PATH)
 
-    def test_answer_availability_text(self):
+    def test_view_answers_after_submission_guidance(self):
         self.launchSurvey("test_thank_you")
         self.post({"answer": "Yes"})
         self.post()
