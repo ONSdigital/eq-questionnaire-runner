@@ -265,9 +265,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             self._answer_dependencies_map[source_answer_id] |= dependents
 
     def _update_answer_dependencies_for_answers(
-        self, answer_dependents: list[str], block_id: str
+        self, answer_ids: list[str], block_id: str
     ) -> None:
-        for answer_id in answer_dependents:
+        for answer_id in answer_ids:
             self._answer_dependencies_map[answer_id] |= {
                 self._get_answer_dependent_for_block_id(block_id)
             }
