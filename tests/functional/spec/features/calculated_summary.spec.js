@@ -192,9 +192,28 @@ describe("Feature: Calculated Summary", () => {
       expect($(NumberTotalPlaybackPage.sixthNumberAnswer()).getText()).to.contain("45.67");
     });
 
-    it("Given I confirm the total, When I get to the summary, Then I can complete the survey", () => {
+    it("Given I confirm the total and am on the summary, When I edit and change an answer, Then I must re-confirm the calculated summary page which is dependent on the change before I can return to the summary", () => {
       $(NumberTotalPlaybackPage.submit()).click();
       expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+
+      $(SubmitPage.thirdNumberAnswerEdit()).click();
+      $(ThirdNumberBlockPage.thirdNumber()).setValue(3.5);
+      $(ThirdNumberBlockPage.submit()).click();
+      $(ThirdAndAHalfNumberBlockPage.submit()).click();
+      $(SkipFourthBlockPage.submit()).click();
+      $(FifthNumberBlockPage.submit()).click();
+      $(SixthNumberBlockPage.submit()).click();
+
+      expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
+        "We calculate the total of currency values entered to be £9.41. Is this correct?"
+      );
+
+      $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
+
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    });
+
+    it("Given I am on the summary, When I submit the questionnaire, Then I should see the thank you page", () => {
       $(SubmitPage.submit()).click();
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
     });

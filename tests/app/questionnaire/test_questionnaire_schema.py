@@ -430,3 +430,134 @@ def test_answer_dependencies_for_calculated_question_repeating(
             )
         }
     }
+
+
+def test_answer_dependencies_for_calculated_summary(
+    calculated_summary_schema,
+):
+    schema = calculated_summary_schema
+
+    expected_dependencies = {
+        "first-number-answer": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="currency-total-playback-skipped-fourth",
+                for_list=None,
+                answer_id=None,
+            ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="currency-total-playback-with-fourth",
+                for_list=None,
+                answer_id=None,
+            ),
+        },
+        "second-number-answer": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="currency-total-playback-skipped-fourth",
+                for_list=None,
+                answer_id=None,
+            ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="currency-total-playback-with-fourth",
+                for_list=None,
+                answer_id=None,
+            ),
+        },
+        "second-number-answer-also-in-total": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="currency-total-playback-skipped-fourth",
+                for_list=None,
+                answer_id=None,
+            ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="currency-total-playback-with-fourth",
+                for_list=None,
+                answer_id=None,
+            ),
+        },
+        "third-number-answer": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="currency-total-playback-skipped-fourth",
+                for_list=None,
+                answer_id=None,
+            ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="currency-total-playback-with-fourth",
+                for_list=None,
+                answer_id=None,
+            ),
+        },
+        "fourth-number-answer": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="currency-total-playback-with-fourth",
+                for_list=None,
+                answer_id=None,
+            )
+        },
+        "fourth-and-a-half-number-answer-also-in-total": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="currency-total-playback-with-fourth",
+                for_list=None,
+                answer_id=None,
+            )
+        },
+        "second-number-answer-unit-total": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="unit-total-playback",
+                for_list=None,
+                answer_id=None,
+            )
+        },
+        "third-and-a-half-number-answer-unit-total": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="unit-total-playback",
+                for_list=None,
+                answer_id=None,
+            )
+        },
+        "fifth-percent-answer": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="percentage-total-playback",
+                for_list=None,
+                answer_id=None,
+            )
+        },
+        "sixth-percent-answer": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="percentage-total-playback",
+                for_list=None,
+                answer_id=None,
+            )
+        },
+        "fifth-number-answer": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="number-total-playback",
+                for_list=None,
+                answer_id=None,
+            )
+        },
+        "sixth-number-answer": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="number-total-playback",
+                for_list=None,
+                answer_id=None,
+            )
+        },
+    }
+
+    assert schema.answer_dependencies == expected_dependencies

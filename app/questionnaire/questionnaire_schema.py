@@ -227,14 +227,19 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return answers_by_id
 
     def _populate_answer_dependencies(self) -> None:
-        for question in self._get_flattened_questions():
-            if question["type"] == "Calculated":
-                self._update_answer_dependencies_for_calculations(
-                    question["calculations"],
+        for block in self.get_blocks():
+            if block["type"] == "CalculatedSummary":
+                self._update_answer_dependencies_for_answers(
+                    block["calculation"]["answers_to_calculate"], block["id"]
                 )
+                continue
+            for question in self.get_all_questions_for_block(block):
+                if question["type"] == "Calculated":
+                    self._update_answer_dependencies_for_calculations(
+                        question["calculations"],
+                    )
 
-    def _get_answer_dependent_for_answer_id(self, answer_id: str) -> AnswerDependent:
-        block_id: str = self.get_block_for_answer_id(answer_id)["id"]  # type: ignore
+    def _get_answer_dependent_for_block_id(self, block_id: str) -> AnswerDependent:
         section_id: str = self.get_section_id_for_block_id(block_id)  # type: ignore
         for_list = self.get_repeating_list_for_section(section_id)
 
@@ -251,12 +256,21 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for calculation in calculations:
             if not (source_answer_id := calculation.get("answer_id")):
                 continue
-
             dependents = {
-                self._get_answer_dependent_for_answer_id(answer_id)
+                self._get_answer_dependent_for_block_id(
+                    self.get_block_for_answer_id(answer_id)["id"]  # type: ignore
+                )
                 for answer_id in calculation["answers_to_calculate"]
             }
             self._answer_dependencies_map[source_answer_id] |= dependents
+
+    def _update_answer_dependencies_for_answers(
+        self, answer_ids: list[str], block_id: str
+    ) -> None:
+        for answer_id in answer_ids:
+            self._answer_dependencies_map[answer_id] |= {
+                self._get_answer_dependent_for_block_id(block_id)
+            }
 
     def _get_flattened_questions(self) -> list[ImmutableDict[str, Any]]:
         return [
