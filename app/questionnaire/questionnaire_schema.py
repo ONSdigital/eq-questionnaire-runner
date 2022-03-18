@@ -229,10 +229,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _populate_answer_dependencies(self) -> None:
         for block in self.get_blocks():
             if block["type"] == "CalculatedSummary":
-                self._update_answer_dependents_for_block_id(
+                self._update_answer_dependencies_for_answers(
                     block["calculation"]["answers_to_calculate"], block["id"]
                 )
-            elif question := block.get("question"):
+                continue
+            for question in self.get_all_questions_for_block(block):
                 if question["type"] == "Calculated":
                     self._update_answer_dependencies_for_calculations(
                         question["calculations"],
@@ -263,7 +264,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             }
             self._answer_dependencies_map[source_answer_id] |= dependents
 
-    def _update_answer_dependents_for_block_id(
+    def _update_answer_dependencies_for_answers(
         self, answer_dependents: list[str], block_id: str
     ) -> None:
         for answer_id in answer_dependents:
