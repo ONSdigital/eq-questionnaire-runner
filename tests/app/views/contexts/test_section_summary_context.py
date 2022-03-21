@@ -2,7 +2,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from app.data_models.answer_store import AnswerStore
+from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire.location import Location
@@ -10,141 +10,122 @@ from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import SectionSummaryContext
-from tests.app.views.contexts import SummaryContextTestCase
+from tests.app.views.contexts import assert_summary_context
 
 
-class TestSectionSummaryContext(SummaryContextTestCase):
-    def setUp(self):
-        super().setUp()
-        self.block_type = "SectionSummary"
-        self.schema = load_schema_from_name("test_section_summary")
-        self.language = "en"
-        self.metadata = {}
-        self.response_metadata = {}
-        self.answer_store = AnswerStore()
-        self.list_store = ListStore()
-        self.progress_store = ProgressStore()
+def get_dict_address(d, args):
+    for arg in args:
+        d = d[arg]
+    return d
 
-    def test_build_summary_rendering_context(self):
-        section_summary_context = SectionSummaryContext(
-            self.language,
-            self.schema,
-            self.answer_store,
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-            self.response_metadata,
-            current_location=Location(section_id="property-details-section"),
-            routing_path=MagicMock(),
-        )
 
-        single_section_context = section_summary_context()
+def test_build_summary_rendering_context(
+    test_section_summary_schema, answer_store, list_store, progress_store, mocker
+):
+    section_summary_context = SectionSummaryContext(
+        "en",
+        test_section_summary_schema,
+        answer_store,
+        list_store,
+        progress_store,
+        {},
+        {},
+        current_location=Location(section_id="property-details-section"),
+        routing_path=mocker.MagicMock(),
+    )
 
-        self.assert_summary_context(single_section_context)
+    single_section_context = section_summary_context()
 
-    def test_build_view_context_for_section_summary(self):
-        summary_context = SectionSummaryContext(
-            self.language,
-            self.schema,
-            self.answer_store,
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-            self.response_metadata,
-            current_location=Location(
-                section_id="property-details-section",
-                block_id="property-details-summary",
-            ),
-            routing_path=MagicMock(),
-        )
-        context = summary_context()
+    assert_summary_context(single_section_context)
 
-        self.assertIn("summary", context)
-        self.assert_summary_context(context)
-        self.assertEqual(len(context["summary"]), 6)
-        self.assertTrue("title" in context["summary"])
 
-    def test_custom_section_summary_title(self):
-        answers = [{"answer_id": "house-type-answer", "value": "Semi-detached"}]
-        summary_context = SectionSummaryContext(
-            self.language,
-            self.schema,
-            AnswerStore(answers),
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-            self.response_metadata,
-            current_location=Location(section_id="house-details-section"),
-            routing_path=MagicMock(),
-        )
-        context = summary_context()
-        self.assertEqual(
-            "Household Summary - Semi-detached", context["summary"]["title"]
-        )
+def test_build_view_context_for_section_summary(
+    test_section_summary_schema, answer_store, list_store, progress_store, mocker
+):
+    summary_context = SectionSummaryContext(
+        "en",
+        test_section_summary_schema,
+        answer_store,
+        list_store,
+        progress_store,
+        {},
+        {},
+        current_location=Location(
+            section_id="property-details-section",
+            block_id="property-details-summary",
+        ),
+        routing_path=mocker.MagicMock(),
+    )
+    context = summary_context()
 
-    def test_custom_section_summary_page_title(self):
-        summary_context = SectionSummaryContext(
-            self.language,
-            self.schema,
-            AnswerStore([]),
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-            self.response_metadata,
-            current_location=Location(section_id="property-details-section"),
-            routing_path=MagicMock(),
-        )
-        context = summary_context()
-        self.assertEqual(
-            "Custom section summary title", context["summary"]["page_title"]
-        )
+    assert "summary" in context
+    assert_summary_context(context)
+    assert len(context["summary"]) == 6
+    assert "title" in context["summary"]
 
-    def test_section_summary_page_title_placeholder_text_replaced(self):
-        answers = [{"answer_id": "house-type-answer", "value": "Semi-detached"}]
-        summary_context = SectionSummaryContext(
-            self.language,
-            self.schema,
-            AnswerStore(answers),
-            self.progress_store,
-            self.list_store,
-            self.metadata,
-            self.response_metadata,
-            current_location=Location(section_id="house-details-section"),
-            routing_path=MagicMock(),
-        )
-        context = summary_context()
-        self.assertEqual(context["summary"]["page_title"], "Household Summary - …")
 
-    def test_section_summary_page_title_placeholder_text_plural_replaced(self):
-        answers = [{"answer_id": "number-of-people-answer", "value": 3}]
-        summary_context = SectionSummaryContext(
-            self.language,
-            self.schema,
-            AnswerStore(answers),
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-            self.response_metadata,
-            current_location=Location(section_id="household-count-section"),
-            routing_path=MagicMock(),
-        )
-        context = summary_context()
-        self.assertEqual(context["summary"]["page_title"], "… people live here")
+@pytest.mark.parametrize(
+    "answers, location, dict_path, expected_title",
+    (
+        (
+            [Answer(answer_id="house-type-answer", value="Semi-detached")],
+            Location(section_id="house-details-section"),
+            ("summary", "title"),
+            "Household Summary - Semi-detached",
+        ),
+        (
+            [],
+            Location(section_id="property-details-section"),
+            ("summary", "page_title"),
+            "Custom section summary title",
+        ),
+        (
+            [Answer(answer_id="house-type-answer", value="Semi-detached")],
+            Location(section_id="house-details-section"),
+            ("summary", "page_title"),
+            "Household Summary - …",
+        ),
+        (
+            [Answer(answer_id="number-of-people-answer", value=3)],
+            Location(section_id="household-count-section"),
+            ("summary", "page_title"),
+            "… people live here",
+        ),
+        (
+            [],
+            Location(section_id="property-details-section"),
+            ("summary", "title"),
+            "Property Details Section",
+        ),
+    ),
+)
+def test_custom_section(
+    answers,
+    location,
+    dict_path,
+    expected_title,
+    test_section_summary_schema,
+    answer_store,
+    list_store,
+    progress_store,
+    mocker,
+):
+    for answer in answers:
+        answer_store.add_or_update(answer)
 
-    def test_section_summary_title_is_section_title(self):
-        summary_context = SectionSummaryContext(
-            self.language,
-            self.schema,
-            self.answer_store,
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-            self.response_metadata,
-            routing_path=MagicMock(),
-            current_location=Location(section_id="property-details-section"),
-        )
-        context = summary_context()
-        self.assertEqual(context["summary"]["title"], "Property Details Section")
+    summary_context = SectionSummaryContext(
+        "en",
+        test_section_summary_schema,
+        answer_store,
+        list_store,
+        progress_store,
+        {},
+        {},
+        current_location=location,
+        routing_path=mocker.MagicMock(),
+    )
+    context = summary_context()
+    assert get_dict_address(context, dict_path) == expected_title
 
 
 @pytest.mark.usefixtures("app")

@@ -1,5 +1,3 @@
-from unittest.mock import MagicMock, Mock, patch
-
 import pytest
 
 from app.data_models.answer_store import Answer, AnswerStore
@@ -9,237 +7,115 @@ from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
-from app.views.contexts import SectionSummaryContext
 from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
-from tests.app.views.contexts import SummaryContextTestCase
+from app.views.contexts.section_summary_context import SectionSummaryContext
+from tests.app.views.contexts import assert_summary_context
 
 
-class TestCalculatedSummaryContext(SummaryContextTestCase):
-    def setUp(self):
-        super().setUp()
-        self.schema = load_schema_from_name("test_calculated_summary")
-        answers = [
-            {"value": 1, "answer_id": "first-number-answer"},
-            {"value": 2, "answer_id": "second-number-answer"},
-            {"value": 3, "answer_id": "second-number-answer-unit-total"},
-            {"value": 4, "answer_id": "second-number-answer-also-in-total"},
-            {"value": 5, "answer_id": "third-number-answer"},
-            {"value": 6, "answer_id": "third-and-a-half-number-answer-unit-total"},
-            {"value": "No", "answer_id": "skip-fourth-block-answer"},
-            {"value": 7, "answer_id": "fourth-number-answer"},
-            {"value": 8, "answer_id": "fourth-and-a-half-number-answer-also-in-total"},
-            {"value": 9, "answer_id": "fifth-percent-answer"},
-            {"value": 10, "answer_id": "fifth-number-answer"},
-            {"value": 11, "answer_id": "sixth-percent-answer"},
-            {"value": 12, "answer_id": "sixth-number-answer"},
-        ]
-        self.block_type = "CalculatedSummary"
-        self.language = "en"
-        self.metadata = {}
-        self.response_metadata = {}
-        self.answer_store = AnswerStore(answers)
-        self.list_store = ListStore()
-        self.progress_store = ProgressStore()
-
-    @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
-    def test_build_view_context_for_currency_calculated_summary_no_skip(self):
-        current_location = Location(
-            section_id="default-section", block_id="currency-total-playback-with-fourth"
-        )
-
-        calculated_summary_context = CalculatedSummaryContext(
+# pylint: disable=too-many-locals
+@pytest.mark.usefixtures("app")
+@pytest.mark.parametrize(
+    "block_id, locale, language, title, value, block_len, answers",
+    (
+        (
+            "currency-total-playback-with-fourth",
+            "en_GB",
             "en",
-            self.schema,
-            self.answer_store,
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-            self.response_metadata,
-        )
-
-        context = calculated_summary_context.build_view_context_for_calculated_summary(
-            current_location
-        )
-
-        self.assertTrue("summary" in context, "Key value summary missing from context")
-        self.assert_summary_context(context)
-        self.assertEqual(len(context["summary"]), 6)
-        context_summary = context["summary"]
-        self.assertTrue("title" in context_summary)
-        self.assertEqual(
-            context_summary["title"],
             "We calculate the total of currency values entered to be £27.00. Is this correct? (With Fourth)",
-        )
-
-        self.assertTrue("calculated_question" in context_summary)
-        self.assertEqual(len(context_summary["groups"][0]["blocks"]), 5)
-        self.assertEqual(
-            context_summary["calculated_question"]["title"],
-            "Grand total of previous values",
-        )
-        self.assertEqual(
-            context_summary["calculated_question"]["answers"][0]["value"], "£27.00"
-        )
-
-    @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
-    def test_build_view_context_for_currency_calculated_summary_with_skip(self):
-        current_location = Location(
-            section_id="default-section",
-            block_id="currency-total-playback-skipped-fourth",
-        )
-
-        skip_answer = Answer("skip-fourth-block-answer", "Yes")
-        self.answer_store.add_or_update(skip_answer)
-
-        calculated_summary_context = CalculatedSummaryContext(
+            "£27.00",
+            5,
+            [],
+        ),
+        (
+            "currency-total-playback-skipped-fourth",
+            "en_GB",
             "en",
-            self.schema,
-            self.answer_store,
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-            self.response_metadata,
-        )
-
-        context = calculated_summary_context.build_view_context_for_calculated_summary(
-            current_location
-        )
-
-        self.assertIn("summary", context)
-        self.assert_summary_context(context)
-        self.assertEqual(len(context["summary"]), 6)
-        context_summary = context["summary"]
-        self.assertTrue("title" in context_summary)
-        self.assertEqual(len(context_summary["groups"][0]["blocks"]), 3)
-        self.assertEqual(
-            context_summary["title"],
             "We calculate the total of currency values entered to be £12.00. Is this correct? (Skipped Fourth)",
-        )
-
-        self.assertTrue("calculated_question" in context_summary)
-        self.assertEqual(
-            context_summary["calculated_question"]["title"],
-            "Grand total of previous values",
-        )
-        self.assertEqual(
-            context_summary["calculated_question"]["answers"][0]["value"], "£12.00"
-        )
-
-    @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="cy"))
-    def test_build_view_context_for_unit_calculated_summary(self):
-        current_location = Location(
-            section_id="default-section", block_id="unit-total-playback"
-        )
-
-        calculated_summary_context = CalculatedSummaryContext(
+            "£12.00",
+            3,
+            [Answer("skip-fourth-block-answer", "Yes")],
+        ),
+        (
+            "unit-total-playback",
             "cy",
-            self.schema,
-            self.answer_store,
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-            self.response_metadata,
-        )
-
-        context = calculated_summary_context.build_view_context_for_calculated_summary(
-            current_location
-        )
-
-        self.assertIn("summary", context)
-        self.assert_summary_context(context)
-        self.assertEqual(len(context["summary"]), 6)
-        context_summary = context["summary"]
-        self.assertTrue("title" in context_summary)
-        self.assertEqual(
-            context_summary["title"],
+            "cy",
             "We calculate the total of unit values entered to be 9 cm. Is this correct?",
-        )
-
-        self.assertTrue("calculated_question" in context_summary)
-        self.assertEqual(
-            context_summary["calculated_question"]["title"],
-            "Grand total of previous values",
-        )
-        self.assertEqual(
-            context_summary["calculated_question"]["answers"][0]["value"], "9 cm"
-        )
-
-    def test_build_view_context_for_percentage_calculated_summary(self):
-        current_location = Location(
-            section_id="default-section", block_id="percentage-total-playback"
-        )
-
-        calculated_summary_context = CalculatedSummaryContext(
+            "9 cm",
+            2,
+            [],
+        ),
+        (
+            "percentage-total-playback",
+            "en_GB",
             "en",
-            self.schema,
-            self.answer_store,
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-            self.response_metadata,
-        )
-
-        context = calculated_summary_context.build_view_context_for_calculated_summary(
-            current_location
-        )
-
-        self.assertIn("summary", context)
-        self.assert_summary_context(context)
-        self.assertEqual(len(context["summary"]), 6)
-        context_summary = context["summary"]
-        self.assertTrue("title" in context_summary)
-        self.assertEqual(
-            context_summary["title"],
             "We calculate the total of percentage values entered to be 20%. Is this correct?",
-        )
-
-        self.assertTrue("calculated_question" in context_summary)
-        self.assertEqual(
-            context_summary["calculated_question"]["title"],
-            "Grand total of previous values",
-        )
-        self.assertEqual(
-            context_summary["calculated_question"]["answers"][0]["value"], "20%"
-        )
-
-    @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="cy"))
-    def test_build_view_context_for_number_calculated_summary(self):
-        current_location = Location(
-            section_id="default-section", block_id="number-total-playback"
-        )
-
-        calculated_summary_context = CalculatedSummaryContext(
+            "20%",
+            2,
+            [],
+        ),
+        (
+            "number-total-playback",
             "cy",
-            self.schema,
-            self.answer_store,
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-            self.response_metadata,
-        )
-
-        context = calculated_summary_context.build_view_context_for_calculated_summary(
-            current_location
-        )
-
-        self.assertIn("summary", context)
-        self.assert_summary_context(context)
-        self.assertEqual(len(context["summary"]), 6)
-        context_summary = context["summary"]
-        self.assertTrue("title" in context_summary)
-        self.assertEqual(
-            context_summary["title"],
+            "cy",
             "We calculate the total of number values entered to be 22. Is this correct?",
-        )
+            "22",
+            2,
+            [],
+        ),
+    ),
+)
+def test_build_view_context_for_currency_calculated_summary_no_skip(
+    block_id,
+    locale,
+    language,
+    title,
+    value,
+    block_len,
+    answers,
+    summary_context_schema,
+    summary_context_answers,
+    list_store,
+    progress_store,
+    mocker,
+):
+    mocker.patch(
+        "app.jinja_filters.flask_babel.get_locale",
+        mocker.MagicMock(return_value=locale),
+    )
 
-        self.assertTrue("calculated_question" in context_summary)
-        self.assertEqual(
-            context_summary["calculated_question"]["title"],
-            "Grand total of previous values",
-        )
-        self.assertEqual(
-            context_summary["calculated_question"]["answers"][0]["value"], "22"
-        )
+    current_location = Location(section_id="default-section", block_id=block_id)
+
+    calculated_summary_context = CalculatedSummaryContext(
+        language,
+        summary_context_schema,
+        summary_context_answers,
+        list_store,
+        progress_store,
+        {},
+        {},
+    )
+
+    context = calculated_summary_context.build_view_context_for_calculated_summary(
+        current_location
+    )
+
+    for answer in answers:
+        summary_context_answers.add_or_update(answer)
+
+    assert "summary" in context, "Key value summary missing from context"
+    assert_summary_context(context)
+    assert len(context["summary"]) == 6
+    context_summary = context["summary"]
+    assert "title" in context_summary
+    assert context_summary["title"] == title
+
+    assert "calculated_question" in context_summary
+    assert len(context_summary["groups"][0]["blocks"]) == block_len
+    assert (
+        context_summary["calculated_question"]["title"]
+        == "Grand total of previous values"
+    )
+    assert context_summary["calculated_question"]["answers"][0]["value"] == value
 
 
 @pytest.mark.usefixtures("app")
@@ -439,7 +315,7 @@ def test_context_for_driving_question_summary():
 
 
 @pytest.mark.usefixtures("app")
-def test_titles_for_repeating_section_summary(people_answer_store):
+def test_titles_for_repeating_section_summary(people_answer_store, mocker):
     schema = load_schema_from_name("test_repeating_sections_with_hub_and_spoke")
 
     section_summary_context = SectionSummaryContext(
@@ -460,7 +336,7 @@ def test_titles_for_repeating_section_summary(people_answer_store):
             list_name="people",
             list_item_id="PlwgoG",
         ),
-        routing_path=MagicMock(),
+        routing_path=mocker.MagicMock(),
     )
 
     context = section_summary_context()
@@ -486,7 +362,7 @@ def test_titles_for_repeating_section_summary(people_answer_store):
             list_name="people",
             list_item_id="UHPLbX",
         ),
-        routing_path=MagicMock(),
+        routing_path=mocker.MagicMock(),
     )
 
     context = section_summary_context()
