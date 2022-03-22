@@ -1,5 +1,9 @@
+from datetime import datetime, timezone
+
+import pytest
 from pytest import fixture
 
+from app.data_models import SessionData, SessionStore
 from app.helpers.template_helpers import ContextHelper
 
 
@@ -192,3 +196,28 @@ def expected_footer_nisra_theme():
             "alt": "NISRA - Northern Ireland Statistics and Research Agency",
         },
     }
+
+
+@pytest.fixture()
+def session_data():
+    return SessionData(
+        tx_id="123",
+        schema_name="test_checkbox",
+        display_address="68 Abingdon Road, Goathill",
+        period_str=None,
+        language_code="cy",
+        launch_language_code="en",
+        survey_url=None,
+        ru_name=None,
+        ru_ref=None,
+        submitted_at=datetime.now(timezone.utc).isoformat(),
+        response_id="321",
+        case_id="789",
+    )
+
+
+@pytest.fixture()
+def session_store(session_data):
+    store = SessionStore("user_ik", "pepper", "eq_session_id")
+    store.session_data = session_data
+    return store
