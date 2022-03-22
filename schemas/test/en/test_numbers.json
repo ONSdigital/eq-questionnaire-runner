@@ -290,6 +290,67 @@
                                 "title": "Please enter test values (none mandatory)",
                                 "type": "General"
                             }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "detail-answer-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "detail-answer",
+                                        "label": {
+                                            "text": "Less or equal than {maximum}",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "maximum",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "format_number",
+                                                            "arguments": {
+                                                                "number": {
+                                                                    "source": "answers",
+                                                                    "identifier": "set-maximum"
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "1",
+                                                "value": "1"
+                                            },
+                                            {
+                                                "label": "2",
+                                                "value": "2"
+                                            },
+                                            {
+                                                "label": "Other",
+                                                "value": "Other",
+                                                "detail_answer": {
+                                                    "mandatory": false,
+                                                    "id": "other-answer",
+                                                    "label": "Please specify other",
+                                                    "type": "Number",
+                                                    "maximum": {
+                                                        "value": {
+                                                            "source": "answers",
+                                                            "identifier": "set-maximum"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "detail-answer-question",
+                                "title": "Please enter test values for detail answer",
+                                "type": "General"
+                            }
                         }
                     ],
                     "id": "test"

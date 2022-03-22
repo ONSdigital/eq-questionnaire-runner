@@ -561,3 +561,32 @@ def test_answer_dependencies_for_calculated_summary(
     }
 
     assert schema.answer_dependencies == expected_dependencies
+
+
+def test_answer_dependencies_for_min_max(numbers_schema):
+    schema = numbers_schema
+
+    assert schema.answer_dependencies == {
+        "set-minimum": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="test-min-max-block",
+                for_list=None,
+                answer_id=None,
+            )
+        },
+        "set-maximum": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="detail-answer-block",
+                for_list=None,
+                answer_id=None,
+            ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="test-min-max-block",
+                for_list=None,
+                answer_id=None,
+            ),
+        },
+    }
