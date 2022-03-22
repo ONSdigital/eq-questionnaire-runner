@@ -298,25 +298,6 @@
                                 "answers": [
                                     {
                                         "id": "detail-answer",
-                                        "label": {
-                                            "text": "Less or equal than {maximum}",
-                                            "placeholders": [
-                                                {
-                                                    "placeholder": "maximum",
-                                                    "transforms": [
-                                                        {
-                                                            "transform": "format_number",
-                                                            "arguments": {
-                                                                "number": {
-                                                                    "source": "answers",
-                                                                    "identifier": "set-maximum"
-                                                                }
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        },
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -344,11 +325,29 @@
                                                 }
                                             }
                                         ],
-                                        "type": "Radio"
+                                        "type": "Checkbox"
                                     }
                                 ],
                                 "id": "detail-answer-question",
-                                "title": "Please enter test values for detail answer",
+                                "title": {
+                                    "text": "Please enter test values for detail answer Less or equal than {maximum}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "maximum",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_number",
+                                                    "arguments": {
+                                                        "number": {
+                                                            "source": "answers",
+                                                            "identifier": "set-maximum"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
                                 "type": "General"
                             }
                         }

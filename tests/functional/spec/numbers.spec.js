@@ -8,7 +8,6 @@ describe("Number validation", () => {
     browser.openQuestionnaire("test_numbers.json");
   });
   describe("Given I am completing the test numbers questionnaire,", () => {
-
     it("When I am on the set minimum and maximum page, Then each field has a label", () => {
       expect($(SetMinMax.setMinimumLabelDescription()).getText()).to.contain("This is a description of the minimum value");
       expect($(SetMinMax.setMaximumLabelDescription()).getText()).to.contain("This is a description of the maximum value");
