@@ -231,7 +231,6 @@ def test_calculated_summary_answers():
         {"value": 10, "answer_id": "fifth-number-answer"},
         {"value": 11, "answer_id": "sixth-percent-answer"},
         {"value": 12, "answer_id": "sixth-number-answer"},
-        {"value": 12, "answer_id": "sixth-number-answer"},
     ]
     return AnswerStore(answers)
 

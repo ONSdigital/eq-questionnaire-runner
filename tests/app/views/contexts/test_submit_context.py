@@ -38,8 +38,8 @@ def test_custom_submission_content(
         answer_store,
         list_store,
         progress_store,
-        {},
-        {},
+        metadata={},
+        response_metadata={},
     )
 
     context = submit_questionnaire_context()
@@ -52,7 +52,7 @@ def test_custom_submission_content(
 
 
 @pytest.mark.usefixtures("app")
-def test_context(answer_store, list_store, progress_store):
+def test_questionnaire_context(answer_store, list_store, progress_store):
     schema = load_schema_from_name("test_submit_with_summary")
     submit_questionnaire_context = SubmitQuestionnaireContext(
         "en",
@@ -60,8 +60,8 @@ def test_context(answer_store, list_store, progress_store):
         answer_store,
         list_store,
         progress_store,
-        {},
-        {},
+        metadata={},
+        response_metadata={},
     )
 
     context = submit_questionnaire_context()

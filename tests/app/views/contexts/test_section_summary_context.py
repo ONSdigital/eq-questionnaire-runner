@@ -13,12 +13,6 @@ from app.views.contexts import SectionSummaryContext
 from tests.app.views.contexts import assert_summary_context
 
 
-def get_dict_address(d, args):
-    for arg in args:
-        d = d[arg]
-    return d
-
-
 def test_build_summary_rendering_context(
     test_section_summary_schema, answer_store, list_store, progress_store, mocker
 ):

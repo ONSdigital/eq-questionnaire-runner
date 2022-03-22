@@ -139,14 +139,6 @@ def gb_locale(mocker):
 
 
 @pytest.fixture
-def cy_locale(mocker):
-    mocker.patch(
-        "app.jinja_filters.flask_babel.get_locale",
-        mocker.MagicMock(return_value="cy"),
-    )
-
-
-@pytest.fixture
 def datastore(mock_client):
     return Datastore(mock_client)
 
