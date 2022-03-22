@@ -216,7 +216,7 @@ def test_calculated_summary_schema():
 
 
 @pytest.fixture
-def summary_context_answers():
+def test_calculated_summary_answers():
     answers = [
         {"value": 1, "answer_id": "first-number-answer"},
         {"value": 2, "answer_id": "second-number-answer"},

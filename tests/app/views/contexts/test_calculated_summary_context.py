@@ -73,7 +73,7 @@ def test_build_view_context_for_currency_calculated_summary(
     total_blocks,
     answers,
     test_calculated_summary_schema,
-    summary_context_answers,
+    test_calculated_summary_answers,
     list_store,
     progress_store,
     mocker,
@@ -88,7 +88,7 @@ def test_build_view_context_for_currency_calculated_summary(
     calculated_summary_context = CalculatedSummaryContext(
         language,
         test_calculated_summary_schema,
-        summary_context_answers,
+        test_calculated_summary_answers,
         list_store,
         progress_store,
         metadata={},
@@ -100,7 +100,7 @@ def test_build_view_context_for_currency_calculated_summary(
     )
 
     for answer in answers:
-        summary_context_answers.add_or_update(answer)
+        test_calculated_summary_answers.add_or_update(answer)
 
     assert "summary" in context
     assert_summary_context(context)
