@@ -211,7 +211,7 @@ def fake_session_data():
 
 
 @pytest.fixture
-def summary_context_schema():
+def test_calculated_summary_schema():
     return load_schema_from_name("test_calculated_summary")
 
 

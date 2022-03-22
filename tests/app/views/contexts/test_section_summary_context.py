@@ -28,8 +28,8 @@ def test_build_summary_rendering_context(
         answer_store,
         list_store,
         progress_store,
-        {},
-        {},
+        metadata={},
+        response_metadata={},
         current_location=Location(section_id="property-details-section"),
         routing_path=mocker.MagicMock(),
     )
@@ -48,8 +48,8 @@ def test_build_view_context_for_section_summary(
         answer_store,
         list_store,
         progress_store,
-        {},
-        {},
+        metadata={},
+        response_metadata={},
         current_location=Location(
             section_id="property-details-section",
             block_id="property-details-summary",
@@ -65,36 +65,36 @@ def test_build_view_context_for_section_summary(
 
 
 @pytest.mark.parametrize(
-    "answers, location, dict_path, expected_title",
+    "answers, location, title_key, expected_title",
     (
         (
             [Answer(answer_id="house-type-answer", value="Semi-detached")],
             Location(section_id="house-details-section"),
-            ("summary", "title"),
+            "title",
             "Household Summary - Semi-detached",
         ),
         (
             [],
             Location(section_id="property-details-section"),
-            ("summary", "page_title"),
+            "page_title",
             "Custom section summary title",
         ),
         (
             [Answer(answer_id="house-type-answer", value="Semi-detached")],
             Location(section_id="house-details-section"),
-            ("summary", "page_title"),
+            "page_title",
             "Household Summary - …",
         ),
         (
             [Answer(answer_id="number-of-people-answer", value=3)],
             Location(section_id="household-count-section"),
-            ("summary", "page_title"),
+            "page_title",
             "… people live here",
         ),
         (
             [],
             Location(section_id="property-details-section"),
-            ("summary", "title"),
+            "title",
             "Property Details Section",
         ),
     ),
@@ -102,7 +102,7 @@ def test_build_view_context_for_section_summary(
 def test_custom_section(
     answers,
     location,
-    dict_path,
+    title_key,
     expected_title,
     test_section_summary_schema,
     answer_store,
@@ -119,13 +119,13 @@ def test_custom_section(
         answer_store,
         list_store,
         progress_store,
-        {},
-        {},
+        metadata={},
+        response_metadata={},
         current_location=location,
         routing_path=mocker.MagicMock(),
     )
     context = summary_context()
-    assert get_dict_address(context, dict_path) == expected_title
+    assert context["summary"][title_key] == expected_title
 
 
 @pytest.mark.usefixtures("app")
@@ -228,8 +228,8 @@ def test_context_for_driving_question_summary_empty_list():
         AnswerStore([{"answer_id": "anyone-usually-live-at-answer", "value": "No"}]),
         ListStore(),
         ProgressStore(),
-        {},
-        {},
+        metadata={},
+        response_metadata={},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(["anyone-usually-live-at"], section_id="section"),
     )
@@ -279,8 +279,8 @@ def test_context_for_driving_question_summary():
         ),
         ListStore([{"items": ["PlwgoG"], "name": "people"}]),
         ProgressStore(),
-        {},
-        {},
+        metadata={},
+        response_metadata={},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
             ["anyone-usually-live-at", "anyone-else-live-at"], section_id="section"
@@ -339,8 +339,8 @@ def test_titles_for_repeating_section_summary(people_answer_store):
             ]
         ),
         ProgressStore(),
-        {},
-        {},
+        metadata={},
+        response_metadata={},
         current_location=Location(
             section_id="personal-details-section",
             list_name="people",
@@ -364,8 +364,8 @@ def test_titles_for_repeating_section_summary(people_answer_store):
             ]
         ),
         ProgressStore(),
-        {},
-        {},
+        metadata={},
+        response_metadata={},
         current_location=Location(
             block_id="personal-summary",
             section_id="personal-details-section",

@@ -15,7 +15,7 @@ from tests.app.views.contexts import assert_summary_context
 # pylint: disable=too-many-locals
 @pytest.mark.usefixtures("app")
 @pytest.mark.parametrize(
-    "block_id, locale, language, title, value, block_len, answers",
+    "block_id, locale, language, title, value, total_blocks, answers",
     (
         (
             "currency-total-playback-with-fourth",
@@ -64,15 +64,15 @@ from tests.app.views.contexts import assert_summary_context
         ),
     ),
 )
-def test_build_view_context_for_currency_calculated_summary_no_skip(
+def test_build_view_context_for_currency_calculated_summary(
     block_id,
     locale,
     language,
     title,
     value,
-    block_len,
+    total_blocks,
     answers,
-    summary_context_schema,
+    test_calculated_summary_schema,
     summary_context_answers,
     list_store,
     progress_store,
@@ -87,12 +87,12 @@ def test_build_view_context_for_currency_calculated_summary_no_skip(
 
     calculated_summary_context = CalculatedSummaryContext(
         language,
-        summary_context_schema,
+        test_calculated_summary_schema,
         summary_context_answers,
         list_store,
         progress_store,
-        {},
-        {},
+        metadata={},
+        response_metadata={},
     )
 
     context = calculated_summary_context.build_view_context_for_calculated_summary(
@@ -102,7 +102,7 @@ def test_build_view_context_for_currency_calculated_summary_no_skip(
     for answer in answers:
         summary_context_answers.add_or_update(answer)
 
-    assert "summary" in context, "Key value summary missing from context"
+    assert "summary" in context
     assert_summary_context(context)
     assert len(context["summary"]) == 6
     context_summary = context["summary"]
@@ -110,7 +110,7 @@ def test_build_view_context_for_currency_calculated_summary_no_skip(
     assert context_summary["title"] == title
 
     assert "calculated_question" in context_summary
-    assert len(context_summary["groups"][0]["blocks"]) == block_len
+    assert len(context_summary["groups"][0]["blocks"]) == total_blocks
     assert (
         context_summary["calculated_question"]["title"]
         == "Grand total of previous values"
@@ -218,8 +218,8 @@ def test_context_for_driving_question_summary_empty_list():
         AnswerStore([{"answer_id": "anyone-usually-live-at-answer", "value": "No"}]),
         ListStore(),
         ProgressStore(),
-        {},
-        {},
+        metadata={},
+        response_metadata={},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(["anyone-usually-live-at"], section_id="section"),
     )
@@ -269,8 +269,8 @@ def test_context_for_driving_question_summary():
         ),
         ListStore([{"items": ["PlwgoG"], "name": "people"}]),
         ProgressStore(),
-        {},
-        {},
+        metadata={},
+        response_metadata={},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
             ["anyone-usually-live-at", "anyone-else-live-at"], section_id="section"
@@ -329,8 +329,8 @@ def test_titles_for_repeating_section_summary(people_answer_store, mocker):
             ]
         ),
         ProgressStore(),
-        {},
-        {},
+        metadata={},
+        response_metadata={},
         current_location=Location(
             section_id="personal-details-section",
             list_name="people",
@@ -354,8 +354,8 @@ def test_titles_for_repeating_section_summary(people_answer_store, mocker):
             ]
         ),
         ProgressStore(),
-        {},
-        {},
+        metadata={},
+        response_metadata={},
         current_location=Location(
             block_id="personal-summary",
             section_id="personal-details-section",
