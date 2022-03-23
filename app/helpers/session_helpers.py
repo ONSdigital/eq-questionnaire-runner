@@ -1,5 +1,5 @@
 from functools import wraps
-from typing import Any, Callable, Mapping
+from typing import Any, Callable
 
 from flask_login import current_user
 
