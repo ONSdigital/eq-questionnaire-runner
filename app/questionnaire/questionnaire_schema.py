@@ -249,9 +249,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                             )
 
     def _update_answer_dependencies_for_calculated_summary(
-        self, answer_ids: list[str], block_id: str
+        self, calculated_summary_answer_ids: list[str], block_id: str
     ) -> None:
-        for answer_id in answer_ids:
+        for answer_id in calculated_summary_answer_ids:
             self._answer_dependencies_map[answer_id] |= {
                 self._get_answer_dependent_for_block_id(block_id)
             }
@@ -275,10 +275,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self, answer: Mapping, block_id: str
     ) -> None:
         for key in ["minimum", "maximum"]:
-            if answer.get(key) and isinstance(answer[key]["value"], dict):
-                self._update_answer_dependencies_for_value_source(
-                    answer[key]["value"], block_id
-                )
+            value = answer.get(key, {}).get("value")
+            if isinstance(value, dict):
+                self._update_answer_dependencies_for_value_source(value, block_id)
 
     def _update_answer_dependencies_for_value_source(
         self, value_source: dict, block_id: str

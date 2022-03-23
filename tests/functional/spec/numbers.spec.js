@@ -66,7 +66,7 @@ describe("Number validation", () => {
       expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
-    it("When I edit and change a question which has dependent answer, Then I must re-answer if required and re-submit before I can return to the summary", () => {
+    it("When I edit and change the maximum value, Then I must re-validate and submit any dependent answers before I can return to the summary", () => {
       $(SubmitPage.setMaximumEdit()).click();
       $(SetMinMax.setMaximum()).setValue("1019");
       $(SetMinMax.submit()).click();
@@ -77,6 +77,20 @@ describe("Number validation", () => {
 
       $(DetailAnswer.otherDetail()).setValue("1019");
       $(DetailAnswer.submit()).click();
+
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    });
+
+    it("When I edit and change the minimum value, Then I must re-validate and submit any dependent answers again before I can return to the summary", () => {
+      $(SubmitPage.setMinimumEdit()).click();
+      $(SetMinMax.setMinimum()).setValue("11");
+      $(SetMinMax.submit()).click();
+      $(TestMinMax.submit()).click();
+
+      expect($(TestMinMax.errorNumber(1)).getText()).to.contain("Enter an answer more than 11");
+
+      $(TestMinMax.testRangeExclusive()).setValue("12");
+      $(TestMinMax.submit()).click();
 
       expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
