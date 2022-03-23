@@ -13,7 +13,7 @@ def with_questionnaire_store(function: Callable) -> Any:
     May error unless there is a `current_user`."""
 
     @wraps(function)
-    def wrapped_function(*args: tuple, **kwargs: Mapping) -> Any:
+    def wrapped_function(*args: Any, **kwargs: Any) -> Any:
         questionnaire_store = get_questionnaire_store(
             current_user.user_id, current_user.user_ik
         )
