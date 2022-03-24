@@ -1,3 +1,5 @@
+# pylint: disable=redefined-outer-name
+
 from datetime import datetime, timedelta, timezone
 
 import fakeredis
@@ -70,15 +72,17 @@ def expires_at():
 
 
 @pytest.fixture(name="session_store")
-def fixture_session_store():
-    return SessionStore("user_ik", "pepper", "eq_session_id")
+def fixture_session_store(session_data):
+    session_store = SessionStore("user_ik", "pepper", "eq_session_id")
+    session_store.session_data = session_data
+    return session_store
 
 
 @pytest.fixture
 def session_data():
     return SessionData(
         tx_id="tx_id",
-        schema_name="some_schema_name",
+        schema_name="test_checkbox",
         period_str="period_str",
         language_code=None,
         launch_language_code=None,

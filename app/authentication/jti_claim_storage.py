@@ -4,7 +4,7 @@ from flask import current_app
 from structlog import get_logger
 
 from app.data_models.app_models import UsedJtiClaim
-from app.helpers.uuid_helper import is_valid_uuid
+from app.helpers.uuid_helper import is_valid_uuid4
 from app.storage.errors import ItemAlreadyExistsError
 
 logger = get_logger()
@@ -30,7 +30,7 @@ def use_jti_claim(jti_claim: str, expires_at: datetime) -> None:
     """
     if jti_claim is None:
         raise ValueError
-    if not is_valid_uuid(jti_claim):
+    if not is_valid_uuid4(jti_claim):
         logger.info("jti claim is invalid", jti_claim=jti_claim)
         raise TypeError
 
