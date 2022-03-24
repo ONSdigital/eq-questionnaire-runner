@@ -5,7 +5,7 @@ import pytest
 from freezegun import freeze_time
 
 from app.forms.validators import sanitise_mobile_number
-from app.helpers.uuid_helper import is_valid_uuid
+from app.helpers.uuid_helper import is_valid_uuid4
 from app.utilities.json import json_loads
 from app.views.handlers.individual_response import (
     GB_ENG_REGION_CODE,
@@ -59,8 +59,8 @@ def validate_uuids_in_payload(payload):
     individual_case_id = payload["fulfilmentRequest"].pop("individualCaseId")
     case_id = payload["fulfilmentRequest"].pop("caseId")
 
-    assert is_valid_uuid(individual_case_id, version=4) is True
-    assert is_valid_uuid(case_id, version=4) is True
+    assert is_valid_uuid4(individual_case_id) is True
+    assert is_valid_uuid4(case_id) is True
 
 
 @freeze_time(datetime.now(tz=timezone.utc).isoformat())
