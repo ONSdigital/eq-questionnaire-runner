@@ -15,7 +15,7 @@ from tests.app.views.contexts import assert_summary_context
 # pylint: disable=too-many-locals
 @pytest.mark.usefixtures("app")
 @pytest.mark.parametrize(
-    "block_id, locale, language, title, value, total_blocks, answers",
+    "block_id, locale, language, title, value, total_blocks",
     (
         (
             "currency-total-playback-with-fourth",
@@ -24,7 +24,6 @@ from tests.app.views.contexts import assert_summary_context
             "We calculate the total of currency values entered to be £27.00. Is this correct? (With Fourth)",
             "£27.00",
             5,
-            [],
         ),
         (
             "currency-total-playback-skipped-fourth",
@@ -33,7 +32,6 @@ from tests.app.views.contexts import assert_summary_context
             "We calculate the total of currency values entered to be £12.00. Is this correct? (Skipped Fourth)",
             "£12.00",
             3,
-            [Answer("skip-fourth-block-answer", "Yes")],
         ),
         (
             "unit-total-playback",
@@ -42,7 +40,6 @@ from tests.app.views.contexts import assert_summary_context
             "We calculate the total of unit values entered to be 9 cm. Is this correct?",
             "9 cm",
             2,
-            [],
         ),
         (
             "percentage-total-playback",
@@ -51,7 +48,6 @@ from tests.app.views.contexts import assert_summary_context
             "We calculate the total of percentage values entered to be 20%. Is this correct?",
             "20%",
             2,
-            [],
         ),
         (
             "number-total-playback",
@@ -60,7 +56,6 @@ from tests.app.views.contexts import assert_summary_context
             "We calculate the total of number values entered to be 22. Is this correct?",
             "22",
             2,
-            [],
         ),
     ),
 )
@@ -71,7 +66,6 @@ def test_build_view_context_for_currency_calculated_summary(
     title,
     value,
     total_blocks,
-    answers,
     test_calculated_summary_schema,
     test_calculated_summary_answers,
     list_store,
@@ -98,9 +92,6 @@ def test_build_view_context_for_currency_calculated_summary(
     context = calculated_summary_context.build_view_context_for_calculated_summary(
         current_location
     )
-
-    for answer in answers:
-        test_calculated_summary_answers.add_or_update(answer)
 
     assert "summary" in context
     assert_summary_context(context)
