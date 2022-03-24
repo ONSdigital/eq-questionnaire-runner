@@ -7,6 +7,7 @@ from app.data_models.progress_store import ProgressStore
 from app.data_models.session_data import SessionData
 from app.forms.questionnaire_form import QuestionnaireForm
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.utilities.schema import load_schema_from_name
 
 
 @pytest.fixture
@@ -207,3 +208,33 @@ def fake_session_data():
         response_id="response_id",
         case_id="case_id",
     )
+
+
+@pytest.fixture
+def test_calculated_summary_schema():
+    return load_schema_from_name("test_calculated_summary")
+
+
+@pytest.fixture
+def test_calculated_summary_answers():
+    answers = [
+        {"value": 1, "answer_id": "first-number-answer"},
+        {"value": 2, "answer_id": "second-number-answer"},
+        {"value": 3, "answer_id": "second-number-answer-unit-total"},
+        {"value": 4, "answer_id": "second-number-answer-also-in-total"},
+        {"value": 5, "answer_id": "third-number-answer"},
+        {"value": 6, "answer_id": "third-and-a-half-number-answer-unit-total"},
+        {"value": "No", "answer_id": "skip-fourth-block-answer"},
+        {"value": 7, "answer_id": "fourth-number-answer"},
+        {"value": 8, "answer_id": "fourth-and-a-half-number-answer-also-in-total"},
+        {"value": 9, "answer_id": "fifth-percent-answer"},
+        {"value": 10, "answer_id": "fifth-number-answer"},
+        {"value": 11, "answer_id": "sixth-percent-answer"},
+        {"value": 12, "answer_id": "sixth-number-answer"},
+    ]
+    return AnswerStore(answers)
+
+
+@pytest.fixture
+def test_section_summary_schema():
+    return load_schema_from_name("test_section_summary")
