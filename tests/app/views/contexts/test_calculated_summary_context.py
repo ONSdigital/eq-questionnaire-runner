@@ -1,6 +1,6 @@
 import pytest
 
-from app.data_models.answer_store import Answer, AnswerStore
+from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire.location import Location
