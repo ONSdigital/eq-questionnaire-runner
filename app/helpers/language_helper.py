@@ -13,15 +13,13 @@ LANGUAGE_TEXT = {
 }
 
 
-def handle_language():
+def handle_language() -> None:
     session_store = get_session_store()
-    if session_store:
-        launch_language = (
-            session_store.session_data.launch_language_code or DEFAULT_LANGUAGE_CODE
-        )
+    if session_store and (session_data := session_store.session_data):
+        launch_language = session_data.launch_language_code or DEFAULT_LANGUAGE_CODE
         # pylint: disable=assigning-non-slot
         g.allowed_languages = get_allowed_languages(
-            session_store.session_data.schema_name, launch_language
+            session_data.schema_name, launch_language
         )
         request_language = request.args.get("language_code")
         if request_language and request_language in g.allowed_languages:
