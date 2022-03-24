@@ -280,7 +280,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 self._update_answer_dependencies_for_value_source(value, block_id)
 
     def _update_answer_dependencies_for_value_source(
-        self, value_source: dict, block_id: str
+        self, value_source: Mapping, block_id: str
     ) -> None:
         if value_source["source"] == "answers":
             self._answer_dependencies_map[value_source["identifier"]] |= {
