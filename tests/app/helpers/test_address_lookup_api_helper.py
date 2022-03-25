@@ -6,7 +6,7 @@ from jwcrypto import jwt
 
 from app.helpers import get_address_lookup_api_auth_token
 from app.helpers.address_lookup_api_helper import get_jwk_from_secret
-from app.helpers.uuid_helper import is_valid_uuid
+from app.helpers.uuid_helper import is_valid_uuid4
 from app.utilities.json import json_loads
 
 TIME_TO_FREEZE = datetime.now(timezone.utc).replace(second=0, microsecond=0)
@@ -32,4 +32,4 @@ def test_get_address_lookup_api_auth_token(app: Flask):
 
         assert claims["iss"] == "eq"
         assert claims["exp"] == expiry_time
-        assert is_valid_uuid(claims["jti"])
+        assert is_valid_uuid4(claims["jti"])

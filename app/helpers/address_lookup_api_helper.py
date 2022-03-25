@@ -6,13 +6,13 @@ from jwcrypto import jwk, jwt
 from jwcrypto.common import base64url_encode
 
 
-def get_jwk_from_secret(secret):
+def get_jwk_from_secret(secret: str) -> jwk.JWK:
     return jwk.JWK(kty="oct", k=base64url_encode(secret.encode("utf-8")))
 
 
-def get_address_lookup_api_auth_token():
+def get_address_lookup_api_auth_token() -> str:
     if current_app.config["ADDRESS_LOOKUP_API_AUTH_ENABLED"]:
-        secret = current_app.eq["secret_store"].get_secret_by_name(
+        secret = current_app.eq["secret_store"].get_secret_by_name(  # type: ignore
             "ADDRESS_LOOKUP_API_AUTH_TOKEN_SECRET"
         )
         session_timeout = current_app.config["EQ_SESSION_TIMEOUT_SECONDS"]
@@ -31,5 +31,6 @@ def get_address_lookup_api_auth_token():
         )
         key = get_jwk_from_secret(secret)
         token.make_signed_token(key)
+        serialised_token: str = token.serialize()
 
-        return token.serialize()
+        return serialised_token

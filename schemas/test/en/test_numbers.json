@@ -290,6 +290,66 @@
                                 "title": "Please enter test values (none mandatory)",
                                 "type": "General"
                             }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "detail-answer-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "detail-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "1",
+                                                "value": "1"
+                                            },
+                                            {
+                                                "label": "2",
+                                                "value": "2"
+                                            },
+                                            {
+                                                "label": "Other",
+                                                "value": "Other",
+                                                "detail_answer": {
+                                                    "mandatory": false,
+                                                    "id": "other-answer",
+                                                    "label": "Please specify other",
+                                                    "type": "Number",
+                                                    "maximum": {
+                                                        "value": {
+                                                            "source": "answers",
+                                                            "identifier": "set-maximum"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "detail-answer-question",
+                                "title": {
+                                    "text": "Please enter test values for detail answer Less or equal than {maximum}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "maximum",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_number",
+                                                    "arguments": {
+                                                        "number": {
+                                                            "source": "answers",
+                                                            "identifier": "set-maximum"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General"
+                            }
                         }
                     ],
                     "id": "test"
