@@ -1157,3 +1157,8 @@ def calculated_question_with_dependent_sections_schema_repeating():
 @pytest.fixture
 def calculated_summary_schema():
     return load_schema_from_name("test_calculated_summary")
+
+
+@pytest.fixture
+def numbers_schema():
+    return load_schema_from_name("test_numbers")
