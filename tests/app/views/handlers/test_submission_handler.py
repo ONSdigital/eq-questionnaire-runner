@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
-import pytest
 
+import pytest
 from freezegun import freeze_time
 
 from app.data_models.session_store import SessionStore
