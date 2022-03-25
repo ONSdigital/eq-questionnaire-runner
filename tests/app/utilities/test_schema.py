@@ -141,6 +141,10 @@ def test_load_schema_from_url_200():
     assert loaded_schema.json == mock_schema.json
     assert loaded_schema.language_code == mock_schema.language_code
 
+    cache_info = load_schema_from_url.cache_info()
+    assert cache_info.currsize == 1
+    assert cache_info.hits == 0
+
 
 @responses.activate
 def test_load_schema_from_url_404():
@@ -151,6 +155,32 @@ def test_load_schema_from_url_404():
 
     with pytest.raises(NotFound):
         load_schema_from_url(survey_url=TEST_SCHEMA_URL, language_code="en")
+
+    cache_info = load_schema_from_url.cache_info()
+    assert cache_info.currsize == 0
+    assert cache_info.hits == 0
+
+
+@responses.activate
+def test_load_schema_from_url_uses_cache():
+    load_schema_from_url.cache_clear()
+
+    mock_schema = QuestionnaireSchema({}, language_code="cy")
+    responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)
+
+    # First load: Add to cache, no hits
+    load_schema_from_url(survey_url=TEST_SCHEMA_URL, language_code="cy")
+
+    cache_info = load_schema_from_url.cache_info()
+    assert cache_info.currsize == 1
+    assert cache_info.hits == 0
+
+    # Second load: Read from cache, 1 hit
+    load_schema_from_url(survey_url=TEST_SCHEMA_URL, language_code="cy")
+
+    cache_info = load_schema_from_url.cache_info()
+    assert cache_info.currsize == 1
+    assert cache_info.hits == 1
 
 
 @responses.activate
