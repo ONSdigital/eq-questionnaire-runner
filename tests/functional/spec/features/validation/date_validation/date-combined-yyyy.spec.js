@@ -12,7 +12,7 @@ describe("Feature: Combined question level and single validation for MM-YYYY dat
         $(DateRangePage.dateRangeFromYear()).setValue(2014);
         $(DateRangePage.dateRangeToYear()).setValue(2021);
         $(DateRangePage.submit()).click();
-        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a date after 2014");
+        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a date after 2015");
         expect($(DateRangePage.errorNumber(2)).getText()).to.contain("Enter a date before 2021");
       });
 
