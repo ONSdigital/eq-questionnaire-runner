@@ -88,13 +88,13 @@ def load_schema_from_metadata(metadata):
 
         start = time.time()
         schema = load_schema_from_url(survey_url, metadata.get("language_code"))
-        duration = time.time() - start
+        duration_in_milliseconds = (time.time() - start) * 1_000
 
         cache_info = (
             load_schema_from_url.cache_info()  # pylint: disable=no-value-for-parameter
         )
         logger.info(
-            f"load_schema_from_url took {duration} seconds",
+            f"load_schema_from_url took {duration_in_milliseconds:.6f} milliseconds",
             survey_url=survey_url,
             currsize=cache_info.currsize,
             hits=cache_info.hits,
@@ -174,9 +174,10 @@ def load_schema_from_url(survey_url, language_code):
 
     req = requests.get(constructed_survey_url)
     schema_response = req.content.decode()
+    response_duration_in_milliseconds = req.elapsed.total_seconds() * 1000
 
     logger.info(
-        f"schema request took {req.elapsed.total_seconds()} seconds",
+        f"schema request took {response_duration_in_milliseconds:.2f} milliseconds",
     )
 
     if req.status_code == 404:
