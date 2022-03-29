@@ -8,7 +8,7 @@ describe("Feature: Combined question level and single validation for MM-YYYY dat
 
   describe("Period Validation", () => {
     describe("Given I enter dates", () => {
-      it("When I enter a single dates that are too early/late, Then I should see a single validation errors", () => {
+      it("When I enter dates that are too early and too late, Then I should see two validation errors", () => {
         $(DateRangePage.dateRangeFromYear()).setValue(2015);
         $(DateRangePage.dateRangeToYear()).setValue(2021);
         $(DateRangePage.submit()).click();
