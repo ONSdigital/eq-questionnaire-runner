@@ -1,4 +1,5 @@
 import os
+import time
 from functools import lru_cache
 from glob import glob
 from pathlib import Path
@@ -80,10 +81,27 @@ def get_allowed_languages(schema_name, launch_language):
 
 
 def load_schema_from_metadata(metadata):
-    if metadata.get("survey_url"):
-        return load_schema_from_url(
-            metadata["survey_url"], metadata.get("language_code")
+    if survey_url := metadata.get("survey_url"):
+        # :TODO: Remove before production uses survey_url
+        # This is temporary and is only for development/integration purposes.
+        # This should not be used in production.
+
+        start = time.time()
+        schema = load_schema_from_url(survey_url, metadata.get("language_code"))
+        duration_in_milliseconds = (time.time() - start) * 1_000
+
+        cache_info = (
+            load_schema_from_url.cache_info()  # pylint: disable=no-value-for-parameter
         )
+        logger.info(
+            f"load_schema_from_url took {duration_in_milliseconds:.6f} milliseconds",
+            survey_url=survey_url,
+            currsize=cache_info.currsize,
+            hits=cache_info.hits,
+            misses=cache_info.misses,
+            pid=os.getpid(),
+        )
+        return schema
 
     return load_schema_from_name(
         metadata.get("schema_name"), language_code=metadata.get("language_code")
@@ -149,14 +167,24 @@ def _load_schema_file(schema_name, language_code):
 @lru_cache(maxsize=None)
 def load_schema_from_url(survey_url, language_code):
     language_code = language_code or DEFAULT_LANGUAGE_CODE
+    pid = os.getpid()
     logger.info(
-        "loading schema from URL", survey_url=survey_url, language_code=language_code
+        "loading schema from URL",
+        survey_url=survey_url,
+        language_code=language_code,
+        pid=pid,
     )
 
     constructed_survey_url = f"{survey_url}?language={language_code}"
 
     req = requests.get(constructed_survey_url)
     schema_response = req.content.decode()
+    response_duration_in_milliseconds = req.elapsed.total_seconds() * 1000
+
+    logger.info(
+        f"schema request took {response_duration_in_milliseconds:.2f} milliseconds",
+        pid=pid,
+    )
 
     if req.status_code == 404:
         logger.error("no schema exists", survey_url=constructed_survey_url)
