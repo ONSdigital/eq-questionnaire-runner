@@ -1,6 +1,5 @@
 # coding: utf-8
 from datetime import datetime, timezone
-from unittest.mock import MagicMock, patch
 
 import pytest
 import simplejson as json
@@ -25,11 +24,6 @@ from app.jinja_filters import (
     should_wrap_with_fieldset,
     strip_tags,
 )
-
-
-@pytest.fixture
-def mock_autoescape_context():
-    return Mock(autoescape=True)
 
 
 @pytest.mark.parametrize(
@@ -57,6 +51,10 @@ def test_strip_tags(tagged_string, expected):
 )
 def test_get_currency_symbol(currency, symbol):
     assert get_currency_symbol(currency) == symbol
+
+
+def test_get_formatted_currency_with_no_value():
+    assert get_formatted_currency("") == ""
 
 
 @pytest.mark.usefixtures("gb_locale")
@@ -482,19 +480,19 @@ def test_other_config_non_dropdown_input_type(answer_schema_textfield):
     assert other.otherType == "input"
 
 
-def test_other_config_dropdown_input_type(answer_schema_dropdown):
-    other = OtherConfig(MagicMock(), answer_schema_dropdown)
+def test_other_config_dropdown_input_type(answer_schema_dropdown, mocker):
+    other = OtherConfig(mocker.MagicMock(), answer_schema_dropdown)
     assert other.otherType == "select"
 
 
-def test_other_config_dropdown_has_options_attribute(answer_schema_dropdown):
-    other = OtherConfig(MagicMock(), answer_schema_dropdown)
+def test_other_config_dropdown_has_options_attribute(answer_schema_dropdown, mocker):
+    other = OtherConfig(mocker.MagicMock(), answer_schema_dropdown)
     assert hasattr(other, "options")
     assert not hasattr(other, "value")
 
 
-def test_other_config_non_dropdown_has_value_attribute(answer_schema_textfield):
-    other = OtherConfig(MagicMock(), answer_schema_textfield)
+def test_other_config_non_dropdown_has_value_attribute(answer_schema_textfield, mocker):
+    other = OtherConfig(mocker.MagicMock(), answer_schema_textfield)
     assert hasattr(other, "value")
     assert not hasattr(other, "options")
 
