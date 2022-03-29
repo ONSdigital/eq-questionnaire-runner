@@ -9,7 +9,7 @@ describe("Feature: Combined question level and single validation for MM-YYYY dat
   describe("Period Validation", () => {
     describe("Given I enter dates", () => {
       it("When I enter a single dates that are too early/late, Then I should see single validation errors", () => {
-        $(DateRangePage.dateRangeFromYear()).setValue(2014);
+        $(DateRangePage.dateRangeFromYear()).setValue(2015);
         $(DateRangePage.dateRangeToYear()).setValue(2021);
         $(DateRangePage.submit()).click();
         expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a date after 2015");
@@ -17,8 +17,8 @@ describe("Feature: Combined question level and single validation for MM-YYYY dat
       });
 
       it("When I enter a range too large, Then I should see a range validation error", () => {
-        $(DateRangePage.dateRangeFromYear()).setValue(2015);
-        $(DateRangePage.dateRangeToYear()).setValue(2019);
+        $(DateRangePage.dateRangeFromYear()).setValue(2016);
+        $(DateRangePage.dateRangeToYear()).setValue(2020);
         $(DateRangePage.submit()).click();
         expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period less than or equal to 3 years");
       });
