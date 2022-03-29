@@ -99,6 +99,7 @@ def load_schema_from_metadata(metadata):
             currsize=cache_info.currsize,
             hits=cache_info.hits,
             misses=cache_info.misses,
+            pid=os.getpid(),
         )
         return schema
 
@@ -166,8 +167,12 @@ def _load_schema_file(schema_name, language_code):
 @lru_cache(maxsize=None)
 def load_schema_from_url(survey_url, language_code):
     language_code = language_code or DEFAULT_LANGUAGE_CODE
+    pid = os.getpid()
     logger.info(
-        "loading schema from URL", survey_url=survey_url, language_code=language_code
+        "loading schema from URL",
+        survey_url=survey_url,
+        language_code=language_code,
+        pid=pid,
     )
 
     constructed_survey_url = f"{survey_url}?language={language_code}"
@@ -178,6 +183,7 @@ def load_schema_from_url(survey_url, language_code):
 
     logger.info(
         f"schema request took {response_duration_in_milliseconds:.2f} milliseconds",
+        pid=pid,
     )
 
     if req.status_code == 404:
