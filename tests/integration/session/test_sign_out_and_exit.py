@@ -14,9 +14,18 @@ DEFAULT_ACCOUNT_SERVICE_LOG_OUT_URL = (
 
 
 class TestSaveAndSignOut(IntegrationTestCase):
+    def test_sign_out_button_link(self):
+        self.launchSurvey("test_textfield")
+        self.assertEqual("/sign-out?todo=True", self.getSignOutButton()["href"])
+
+    def test_sign_out_url(self):
+        self.launchSurvey("test_textfield")
+        self.saveAndSignOut()
+        self.assertEqualUrl("/sign-out?todo=True")
+
     def test_sign_out_button_text(self):
         self.launchSurvey("test_textfield")
-        self.assertEqual("Save and sign out", self.getSignOutButton().text.strip())
+        self.assertEqual("Save and exit survey", self.getSignOutButton().text.strip())
 
     def test_sign_out_button_displayed_pre_submission(self):
         self.launchSurvey("test_textfield")

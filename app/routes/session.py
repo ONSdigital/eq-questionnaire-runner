@@ -132,7 +132,16 @@ def get_sign_out():
     """
     Signs the user out of eQ and redirects to the log out url.
     """
-    log_out_url = get_survey_config().account_service_log_out_url
+    todo = request.args.get("todo", "").upper() == "TRUE"
+    survey_config = get_survey_config()
+    if todo:
+        log_out_url = (
+            survey_config.account_service_todo_url
+            or survey_config.account_service_log_out_url
+        )
+    else:
+        # Future implementation when "todo" is not hardcoded on the template level
+        log_out_url = survey_config.account_service_log_out_url
 
     # Check for GET as we don't want to log out for HEAD requests
     if request.method == "GET":
