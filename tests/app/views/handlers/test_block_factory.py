@@ -26,7 +26,7 @@ def test_get_handler_invalid_block(mocker):
         ("Question", True, "people", InvalidLocationException),
     ),
 )
-def test_get_handler_invalid_block_raises_ValueError(
+def test_get_handler_invalid_block_raises_value_error(
     block_type, is_block_in_repeating_section, list_name, exc, mocker
 ):
     schema = mocker.Mock()
