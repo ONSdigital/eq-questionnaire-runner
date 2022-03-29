@@ -9,9 +9,8 @@ from app.views.handlers.view_submitted_response_pdf import ViewSubmittedResponse
 from .conftest import set_storage_data
 
 
-def test_pdf_not_downloadable(
-    app, storage, schema, language  # pylint:disable=unused-argument
-):
+@pytest.mark.usefixtures("app")
+def test_pdf_not_downloadable(storage, schema, language):
     submitted_at = datetime.now(timezone.utc) - timedelta(minutes=46)
     set_storage_data(storage, submitted_at=submitted_at)
 
@@ -25,9 +24,8 @@ def test_pdf_not_downloadable(
         )
 
 
-def test_filename_uses_schema_name(
-    app, storage, schema, language  # pylint:disable=unused-argument
-):
+@pytest.mark.usefixtures("app")
+def test_filename_uses_schema_name(storage, schema, language):
     submitted_at = datetime.now(timezone.utc)
     set_storage_data(storage, submitted_at=submitted_at)
 
