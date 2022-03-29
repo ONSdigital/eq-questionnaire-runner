@@ -72,30 +72,35 @@ def test_schema_cache_on_function_call():
     load_schema_from_name("test_language", "en")
     cache_info = _load_schema_from_name.cache_info()
     assert cache_info.currsize == 1
+    assert cache_info.misses == 1
     assert cache_info.hits == 0
 
     # same schema in same language loads from cache
     load_schema_from_name("test_language", "en")
     cache_info = _load_schema_from_name.cache_info()
     assert cache_info.currsize == 1
+    assert cache_info.misses == 1
     assert cache_info.hits == 1
 
     # same schema in same language as keyword argument loads from cache
     load_schema_from_name("test_language", language_code="en")
     cache_info = _load_schema_from_name.cache_info()
     assert cache_info.currsize == 1
+    assert cache_info.misses == 1
     assert cache_info.hits == 2
 
     # same schema in different language adds to cache
     load_schema_from_name("test_language", "cy")
     cache_info = _load_schema_from_name.cache_info()
     assert cache_info.currsize == 2
+    assert cache_info.misses == 2
     assert cache_info.hits == 2
 
     # loading a different schema adds to cache
     load_schema_from_name("test_textfield", "en")
     cache_info = _load_schema_from_name.cache_info()
     assert cache_info.currsize == 3
+    assert cache_info.misses == 3
     assert cache_info.hits == 2
 
 
@@ -107,6 +112,7 @@ def test_schema_cache_on_app_start_up():
     _load_schema_from_name.cache_clear()
     cache_info = _load_schema_from_name.cache_info()
     assert cache_info.currsize == 0
+    assert cache_info.misses == 0
     assert cache_info.hits == 0
 
     # create app and load schemas into cache
@@ -121,12 +127,14 @@ def test_schema_cache_on_app_start_up():
     )
     cache_info = _load_schema_from_name.cache_info()
     assert cache_info.currsize > 0 and cache_info.currsize == total_schemas
+    assert cache_info.misses == total_schemas
     assert cache_info.hits == 0
 
     # loads schema again to fetch from cache
     cache_questionnaire_schemas()
     cache_info = _load_schema_from_name.cache_info()
     assert cache_info.currsize == total_schemas
+    assert cache_info.misses == total_schemas
     assert cache_info.hits == total_schemas
 
 
@@ -141,6 +149,11 @@ def test_load_schema_from_url_200():
     assert loaded_schema.json == mock_schema.json
     assert loaded_schema.language_code == mock_schema.language_code
 
+    cache_info = load_schema_from_url.cache_info()
+    assert cache_info.currsize == 1
+    assert cache_info.misses == 1
+    assert cache_info.hits == 0
+
 
 @responses.activate
 def test_load_schema_from_url_404():
@@ -151,6 +164,35 @@ def test_load_schema_from_url_404():
 
     with pytest.raises(NotFound):
         load_schema_from_url(survey_url=TEST_SCHEMA_URL, language_code="en")
+
+    cache_info = load_schema_from_url.cache_info()
+    assert cache_info.currsize == 0
+    assert cache_info.misses == 1
+    assert cache_info.hits == 0
+
+
+@responses.activate
+def test_load_schema_from_url_uses_cache():
+    load_schema_from_url.cache_clear()
+
+    mock_schema = QuestionnaireSchema({}, language_code="cy")
+    responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)
+
+    # First load: Add to cache, no hits
+    load_schema_from_url(survey_url=TEST_SCHEMA_URL, language_code="cy")
+
+    cache_info = load_schema_from_url.cache_info()
+    assert cache_info.currsize == 1
+    assert cache_info.misses == 1
+    assert cache_info.hits == 0
+
+    # Second load: Read from cache, 1 hit
+    load_schema_from_url(survey_url=TEST_SCHEMA_URL, language_code="cy")
+
+    cache_info = load_schema_from_url.cache_info()
+    assert cache_info.currsize == 1
+    assert cache_info.misses == 1
+    assert cache_info.hits == 1
 
 
 @responses.activate
