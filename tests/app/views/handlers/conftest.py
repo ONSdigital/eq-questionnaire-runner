@@ -1,11 +1,13 @@
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from unittest.mock import Mock
 
 import pytest
 from freezegun import freeze_time
 
+from app.data_models import QuestionnaireStore
 from app.data_models.session_data import SessionData
+from app.data_models.session_store import SessionStore
 from app.questionnaire import QuestionnaireSchema
 
 time_to_freeze = datetime.now(timezone.utc).replace(second=0, microsecond=0)
@@ -37,7 +39,7 @@ case_ref = "1000000000000001"
 region_code = "GB_WLS"
 
 
-@pytest.fixture()
+@pytest.fixture
 @freeze_time(time_to_freeze)
 def session_data():
     return SessionData(
@@ -56,7 +58,7 @@ def session_data():
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def confirmation_email_fulfilment_schema():
     return QuestionnaireSchema(
         {
@@ -93,7 +95,7 @@ def set_storage_data(
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def session_data_feedback():
     return SessionData(
         tx_id=tx_id,
@@ -110,12 +112,12 @@ def session_data_feedback():
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def schema_feedback():
     return QuestionnaireSchema({"survey_id": survey_id, "data_version": data_version})
 
 
-@pytest.fixture()
+@pytest.fixture
 def metadata():
     return {
         "tx_id": tx_id,
@@ -137,8 +139,51 @@ def metadata():
     }
 
 
-@pytest.fixture()
+@pytest.fixture
 def response_metadata():
     return {
         "started_at": started_at,
     }
+
+
+@pytest.fixture
+def submission_payload_expires_at():
+    return datetime.now(timezone.utc) + timedelta(seconds=5)
+
+
+@pytest.fixture
+def submission_payload_session_data():
+    return SessionData(
+        tx_id="tx_id",
+        schema_name="schema_name",
+        response_id="response_id",
+        period_str="period_str",
+        language_code="cy",
+        launch_language_code="en",
+        survey_url=None,
+        ru_name="ru_name",
+        ru_ref="ru_ref",
+        case_id="0123456789000000",
+    )
+
+
+@pytest.fixture
+def submission_payload_session_store(
+    submission_payload_session_data,
+    submission_payload_expires_at,
+):  # pylint: disable=redefined-outer-name
+    return SessionStore("user_ik", "pepper", "eq_session_id").create(
+        "eq_session_id",
+        "user_id",
+        submission_payload_session_data,
+        submission_payload_expires_at,
+    )
+
+
+@pytest.fixture
+def mock_questionnaire_store(mocker):
+    storage_ = mocker.Mock()
+    storage_.get_user_data = mocker.Mock(return_value=("{}", "ce_id", 1, None))
+    questionnaire_store = QuestionnaireStore(storage_)
+    questionnaire_store.metadata = {"tx_id": "tx_id", "case_id": "case_id"}
+    return questionnaire_store
