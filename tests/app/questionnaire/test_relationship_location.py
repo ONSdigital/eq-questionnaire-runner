@@ -1,56 +1,47 @@
+import pytest
+
 from app.questionnaire.relationship_location import RelationshipLocation
-from tests.app.app_context_test_case import AppContextTestCase
 
 
-class TestRelationshipLocation(AppContextTestCase):
-    def test_location_url(self):
-        location = RelationshipLocation(
-            section_id="household",
-            block_id="relationships",
-            list_item_id="id1",
-            to_list_item_id="id2",
-            list_name="household",
-        )
-        location_url = location.url()
+@pytest.mark.usefixtures("app")
+def test_location_url():
+    location = RelationshipLocation(
+        section_id="household",
+        block_id="relationships",
+        list_item_id="id1",
+        to_list_item_id="id2",
+        list_name="household",
+    )
+    location_url = location.url()
 
-        self.assertEqual(
-            location_url,
-            "http://test.localdomain/questionnaire/relationships/household/id1/to/id2/",
-        )
-
-    def test_create_location_from_dict(self):
-        location_dict = {
+    assert (
+        location_url
+        == "http://test.localdomain/questionnaire/relationships/household/id1/to/id2/",
+    )
+    assert (
+        location.for_json()
+        == {
             "section_id": "household",
             "block_id": "relationships",
             "list_item_id": "id1",
             "to_list_item_id": "id2",
             "list_name": "household",
-        }
+        },
+    )
 
-        location = RelationshipLocation(**location_dict)
 
-        self.assertEqual(location.section_id, "household")
-        self.assertEqual(location.block_id, "relationships")
-        self.assertEqual(location.list_item_id, "id1")
-        self.assertEqual(location.to_list_item_id, "id2")
+def test_create_location_from_dict():
+    location_dict = {
+        "section_id": "household",
+        "block_id": "relationships",
+        "list_item_id": "id1",
+        "to_list_item_id": "id2",
+        "list_name": "household",
+    }
 
-    def test_for_json(self):
-        location = RelationshipLocation(
-            section_id="household",
-            block_id="relationships",
-            list_item_id="id1",
-            to_list_item_id="id2",
-            list_name="household",
-        )
-        json = location.for_json()
+    location = RelationshipLocation(**location_dict)
 
-        self.assertEqual(
-            json,
-            {
-                "section_id": "household",
-                "block_id": "relationships",
-                "list_item_id": "id1",
-                "to_list_item_id": "id2",
-                "list_name": "household",
-            },
-        )
+    assert location.section_id == "household"
+    assert location.block_id == "relationships"
+    assert location.list_item_id == "id1"
+    assert location.to_list_item_id == "id2"
