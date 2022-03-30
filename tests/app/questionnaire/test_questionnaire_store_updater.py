@@ -3,7 +3,7 @@ from mock import MagicMock, Mock
 from werkzeug.datastructures import MultiDict
 
 from app.data_models import QuestionnaireStore
-from app.data_models.answer_store import AnswerStore
+from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.location import Location
@@ -495,6 +495,101 @@ def test_update_answers_captures_answer_dependencies(
     assert (
         questionnaire_store_updater.dependent_block_id_by_section_key == expected_output
     )
+
+
+@pytest.mark.parametrize(
+    "answer_dependent_answer_id, updated_answer_value, expected_output",
+    [
+        (  # when the answer dependent has an answer_id, then the dependent answer should be removed from the answer store
+            "second-answer",
+            "answer updated",
+            AnswerStore(
+                [
+                    {
+                        "answer_id": "first-answer",
+                        "value": "answer updated",
+                        "list_item_id": None,
+                    }
+                ]
+            ),
+        ),
+        (  # when the answer dependent does not have an answer_id, then no answers should be removed from the store
+            None,
+            "answer updated",
+            AnswerStore(
+                [
+                    {
+                        "answer_id": "first-answer",
+                        "value": "answer updated",
+                        "list_item_id": None,
+                    },
+                    {
+                        "answer_id": "second-answer",
+                        "value": "second answer",
+                        "list_item_id": None,
+                    },
+                ]
+            ),
+        ),
+        (  # When the answer dependent has an answer_id, but the answer dependency value is not changed, then the answer store should not change
+            "second-answer",
+            "original answer",
+            AnswerStore(
+                [
+                    {
+                        "answer_id": "first-answer",
+                        "value": "original answer",
+                        "list_item_id": None,
+                    },
+                    {
+                        "answer_id": "second-answer",
+                        "value": "second answer",
+                        "list_item_id": None,
+                    },
+                ]
+            ),
+        ),
+    ],
+)
+def test_dependent_answer_store(
+    mock_schema, answer_dependent_answer_id, updated_answer_value, expected_output
+):
+    answer_store = AnswerStore()
+    answer_store.add_or_update(
+        Answer(answer_id="first-answer", value="original answer")
+    )
+    answer_store.add_or_update(Answer(answer_id="second-answer", value="second answer"))
+
+    mock_schema.get_answer_ids_for_question.return_value = ["first-answer"]
+    mock_schema.answer_dependencies = {
+        "first-answer": {
+            AnswerDependent(
+                section_id="section",
+                block_id="second-block",
+                for_list=None,
+                answer_id=answer_dependent_answer_id,
+            )
+        },
+    }
+
+    form_data = MultiDict({"first-answer": updated_answer_value})
+
+    location = Location(
+        section_id="section",
+        block_id="first-block",
+    )
+    current_question = mock_schema.get_block(location.block_id)["question"]
+    questionnaire_store_updater = get_questionnaire_store_updater(
+        schema=mock_schema,
+        answer_store=answer_store,
+        list_store=ListStore(),
+        current_location=location,
+        current_question=current_question,
+    )
+
+    questionnaire_store_updater.update_answers(form_data)
+
+    assert answer_store == expected_output
 
 
 def get_questionnaire_store_updater(

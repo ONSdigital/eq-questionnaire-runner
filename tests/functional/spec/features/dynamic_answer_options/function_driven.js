@@ -166,7 +166,7 @@ testCases.forEach((testCase) => {
 
 describe(`Feature: Dynamically generated answer options driven by a function with static options`, () => {
   describe("Given a dynamic answer options questionnaire with static options", () => {
-    beforeEach("Open questionnaire", () => {
+    before("Open questionnaire", () => {
       openQuestionnaireAndSetUp("test_dynamic_answer_options_function_driven_with_static_options.json");
     });
 
@@ -200,6 +200,14 @@ describe(`Feature: Dynamically generated answer options driven by a function wit
       expect($(SubmitPage.dynamicRadioAnswer()).getText()).to.equal("I did not work");
       expect($(SubmitPage.dynamicDropdownAnswer()).getText()).to.equal("I did not work");
       expect($(SubmitPage.dynamicMutuallyExclusiveStaticAnswer()).getText()).to.equal("I did not work");
+    });
+
+    it("When I edit and change the answer which the dynamic options is dependent on, then my selected answer is removed", () => {
+      $(SubmitPage.referenceDateAnswerEdit()).click();
+      $(ReferenceDatePage.day()).setValue("2");
+      $(ReferenceDatePage.submit()).click();
+
+      expect($(DynamicCheckboxPage.answerByIndex(7)).isSelected()).to.be.false;
     });
   });
 });

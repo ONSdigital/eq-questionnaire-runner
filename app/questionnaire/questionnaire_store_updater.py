@@ -275,9 +275,8 @@ class QuestionnaireStoreUpdater:
                 list_item_ids = [None]
 
             for list_item_id in list_item_ids:
-                if dependency.answer_id:  # pragma: no cover
-                    # :TODO: Remove answer. Required for dynamic options
-                    raise NotImplementedError
+                if dependency.answer_id:
+                    self._answer_store.remove_answer(dependency.answer_id)
 
                 self.dependent_block_id_by_section_key[
                     (dependency.section_id, list_item_id)

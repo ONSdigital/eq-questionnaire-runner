@@ -241,10 +241,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     continue
 
                 for answer in question.get("answers", []):
-                    self._update_answer_dependencies_for_min_max(answer, block["id"])
+                    self._update_answer_dependencies_for_answer(answer, block["id"])
                     for option in answer.get("options", []):
                         if "detail_answer" in option:
-                            self._update_answer_dependencies_for_min_max(
+                            self._update_answer_dependencies_for_answer(
                                 option["detail_answer"], block["id"]
                             )
 
@@ -271,7 +271,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             }
             self._answer_dependencies_map[source_answer_id] |= dependents
 
-    def _update_answer_dependencies_for_min_max(
+    def _update_answer_dependencies_for_answer(
         self, answer: Mapping, block_id: str
     ) -> None:
         for key in ["minimum", "maximum"]:
@@ -279,15 +279,33 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             if isinstance(value, dict):
                 self._update_answer_dependencies_for_value_source(value, block_id)
 
+        if dynamic_options_values := answer.get("dynamic_options", {}).get("values"):
+            self._update_answer_dependencies_for_dynamic_options(
+                dynamic_options_values, block_id, answer["id"]
+            )
+
+    def _update_answer_dependencies_for_dynamic_options(
+        self, dynamic_options_values: dict, block_id: str, answer_id: str
+    ) -> None:
+        value_source_dicts = self._get_dictionaries_for_key(
+            "source", dynamic_options_values
+        )
+        for value_source in value_source_dicts:
+            self._update_answer_dependencies_for_value_source(
+                value_source, block_id, answer_id
+            )
+
     def _update_answer_dependencies_for_value_source(
-        self, value_source: Mapping, block_id: str
+        self, value_source: Mapping, block_id: str, answer_id: Optional[str] = None
     ) -> None:
         if value_source["source"] == "answers":
             self._answer_dependencies_map[value_source["identifier"]] |= {
-                self._get_answer_dependent_for_block_id(block_id)  # type: ignore
+                self._get_answer_dependent_for_block_id(block_id, answer_id)  # type: ignore
             }
 
-    def _get_answer_dependent_for_block_id(self, block_id: str) -> AnswerDependent:
+    def _get_answer_dependent_for_block_id(
+        self, block_id: str, answer_id: Optional[str] = None
+    ) -> AnswerDependent:
         section_id: str = self.get_section_id_for_block_id(block_id)  # type: ignore
         for_list = self.get_repeating_list_for_section(section_id)
 
@@ -295,6 +313,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             block_id=block_id,
             section_id=section_id,
             for_list=for_list,
+            answer_id=answer_id,
         )
 
     def _get_flattened_questions(self) -> list[ImmutableDict[str, Any]]:
@@ -736,6 +755,16 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                         yield from self._get_values_for_key(d, key, ignore_keys)
             except AttributeError:
                 continue
+
+    def _get_dictionaries_for_key(self, key: str, dictionary: dict) -> Generator:
+        if key in dictionary:
+            yield dictionary
+
+        for _, v in dictionary.items():
+            if isinstance(v, tuple):
+                for d in v:
+                    if isinstance(d, dict):
+                        yield from self._get_dictionaries_for_key(key, d)
 
     def _get_parent_section_id_for_block(self, block_id: str) -> str:
         parent_block_id = self._parent_id_map[block_id]
