@@ -132,7 +132,7 @@ def get_sign_out():
     """
     Signs the user out of eQ and redirects to the log out url.
     """
-    todo = request.args.get("todo", "").upper() == "TRUE"
+    todo = request.args.get("todo", "FALSE").upper() == "TRUE"
     survey_config = get_survey_config()
     if todo:
         log_out_url = (
