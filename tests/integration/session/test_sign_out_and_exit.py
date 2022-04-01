@@ -21,7 +21,7 @@ class TestSaveAndSignOut(IntegrationTestCase):
     def test_sign_out_url(self):
         self.launchSurvey("test_textfield")
         self.saveAndSignOut()
-        self.assertEqualUrl("/sign-out?todo=True")
+        self.assertInRedirect("/surveys/todo")
 
     def test_sign_out_button_text(self):
         self.launchSurvey("test_textfield")
@@ -91,6 +91,11 @@ class TestExitPostSubmissionWithHubDefaultTheme(IntegrationTestCase):
 class TestCensusSignOut(IntegrationTestCase):
     def setUp(self):
         self._set_up_app(setting_overrides={"SURVEY_TYPE": "census"})
+
+    def test_sign_out_url(self):
+        self.launchSurvey(schema_name="test_individual_response")
+        self.saveAndSignOut()
+        self.assertInRedirect("census.gov.uk")
 
     def test_sign_out_button_text(self):
         self.launchSurvey(schema_name="test_individual_response")
