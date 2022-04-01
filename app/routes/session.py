@@ -140,7 +140,6 @@ def get_sign_out():
             or survey_config.account_service_log_out_url
         )
     else:
-        # Future implementation when "todo" is not hardcoded on the template level
         log_out_url = survey_config.account_service_log_out_url
 
     # Check for GET as we don't want to log out for HEAD requests
