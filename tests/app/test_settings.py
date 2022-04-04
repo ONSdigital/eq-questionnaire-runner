@@ -1,47 +1,47 @@
-import unittest
 from datetime import datetime
+
+import pytest
 
 from app import settings
 
 
-class TestSettings(unittest.TestCase):
-    def test_ensure_min_returns_min(self):
-        minimum = 1000
-        value = 1
-        self.assertEqual(minimum, settings.ensure_min(value, minimum))
+@pytest.mark.parametrize(
+    "value, minimum, expected",
+    (
+        (1, 1000, 1000),
+        (1000, 10000, 10000),
+    ),
+)
+def test_ensure_min_returns(value, minimum, expected):
+    assert settings.ensure_min(value, minimum) == expected
 
-    def test_ensure_min_returns_value(self):
-        minimum = 1000
-        value = 10000
-        self.assertEqual(value, settings.ensure_min(value, minimum))
 
-    def test_get_application_version_from_file(self):
-        self.assertIsNotNone(settings.read_file(".application-version"))
+@pytest.mark.parametrize(
+    "file, expected",
+    (
+        (".application-version", True),
+        (".missing-application-version", False),
+        (None, False),
+        ("", False),
+    ),
+)
+def test_read_files(file, expected):
+    assert bool(settings.read_file(file)) is expected
 
-    def test_missing_get_application_version_from_file(self):
-        self.assertEqual(None, settings.read_file(".missing-application-version"))
 
-    def test_none_filename_does_not_attempt_to_load_file(self):
-        self.assertEqual(None, settings.read_file(None))
+def test_invalid_key_raises_exception():
+    with pytest.raises(Exception) as exception:
+        settings.get_env_or_fail("MISSING_ENVIRONMENT_VARIABLE")
 
-    def test_invalid_key_raises_exception(self):
-        with self.assertRaises(Exception) as exception:
-            settings.get_env_or_fail("MISSING_ENVIRONMENT_VARIABLE")
-
-        self.assertEqual(
-            "Setting 'MISSING_ENVIRONMENT_VARIABLE' Missing", str(exception.exception)
-        )
-
-    def test_utcoffset_or_fail_raises_exception(self):
-        datetime_without_offset = datetime.fromisoformat("2021-04-28T14:00:00")
-
-        with self.assertRaises(Exception) as exception:
-            settings.utcoffset_or_fail(datetime_without_offset, "DATETIME_VAR")
-
-        self.assertEqual(
-            "'DATETIME_VAR' datetime offset missing", str(exception.exception)
+        assert "Setting 'MISSING_ENVIRONMENT_VARIABLE' Missing" == str(
+            exception.exception
         )
 
 
-if __name__ == "__main__":
-    unittest.main()
+def test_utcoffset_or_fail_raises_exception():
+    datetime_without_offset = datetime.fromisoformat("2021-04-28T14:00:00")
+
+    with pytest.raises(Exception) as exception:
+        settings.utcoffset_or_fail(datetime_without_offset, "DATETIME_VAR")
+
+        assert "'DATETIME_VAR' datetime offset missing" == str(exception.exception)

@@ -1,5 +1,6 @@
 import SetMinMax from "../generated_pages/numbers/set-min-max-block.page.js";
 import TestMinMax from "../generated_pages/numbers/test-min-max-block.page.js";
+import DetailAnswer from "../generated_pages/numbers/detail-answer-block.page";
 import SubmitPage from "../generated_pages/numbers/submit.page";
 import IntroductionPage from "../generated_pages/introduction/introduction.page";
 import IntroInterstitialPage from "../generated_pages/introduction/general-business-information-completed.page";
@@ -41,6 +42,8 @@ describe("Save sign out / Exit", () => {
     $(TestMinMax.testMax()).setValue("1000");
     $(TestMinMax.testPercent()).setValue("100");
     $(TestMinMax.submit()).click();
+    $(DetailAnswer.answer1()).click();
+    $(DetailAnswer.submit()).click();
 
     $(SubmitPage.submit()).click();
     expect(browser.getUrl()).to.contain("thank-you");

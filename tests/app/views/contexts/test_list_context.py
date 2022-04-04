@@ -16,8 +16,8 @@ def test_build_list_collector_context(
         people_answer_store,
         people_list_store,
         None,
-        {},
-        {},
+        metadata={},
+        response_metadata={},
     )
 
     list_context = list_context(list_collector_block["summary"], for_list="people")
@@ -35,8 +35,8 @@ def test_build_list_summary_context_no_summary_block(
         people_answer_store,
         people_list_store,
         None,
-        {},
-        {},
+        metadata={},
+        response_metadata={},
     )
 
     list_context = list_context(None, for_list="people")
@@ -71,8 +71,8 @@ def test_build_list_summary_context(
         people_answer_store,
         people_list_store,
         None,
-        {},
-        {},
+        metadata={},
+        response_metadata={},
     )
 
     list_context = list_context(

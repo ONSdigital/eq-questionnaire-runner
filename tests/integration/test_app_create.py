@@ -27,8 +27,8 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
     @contextmanager
     def override_settings(self):
-        """Required because although the settings are overriden on the application
-        by passing _setting_overrides in, there are many funtions which use the
+        """Required because although the settings are overridden on the application
+        by passing _setting_overrides in, there are many functions which use the
         imported settings object - this does not get the overrides merged in. This
         helper does that.
 
@@ -102,7 +102,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
                 "/",
                 headers={
                     "X-Forwarded-Proto": "https"
-                },  # set protocal so that talisman sets HSTS headers
+                },  # set protocol so that talisman sets HSTS headers
             ).headers
 
             self.assertEqual(
@@ -131,7 +131,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
                 "/",
                 headers={
                     "X-Forwarded-Proto": "https"
-                },  # set protocal so that talisman sets HSTS headers
+                },  # set protocol so that talisman sets HSTS headers
             ).headers
 
             csp_policy_parts = headers["Content-Security-Policy"].split("; ")

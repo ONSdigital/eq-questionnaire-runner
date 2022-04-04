@@ -227,22 +227,34 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return answers_by_id
 
     def _populate_answer_dependencies(self) -> None:
-        for question in self._get_flattened_questions():
-            if question["type"] == "Calculated":
-                self._update_answer_dependencies_for_calculations(
-                    question["calculations"],
+        for block in self.get_blocks():
+            if block["type"] == "CalculatedSummary":
+                self._update_answer_dependencies_for_calculated_summary(
+                    block["calculation"]["answers_to_calculate"], block["id"]
                 )
+                continue
+            for question in self.get_all_questions_for_block(block):
+                if question["type"] == "Calculated":
+                    self._update_answer_dependencies_for_calculations(
+                        question["calculations"],
+                    )
+                    continue
 
-    def _get_answer_dependent_for_answer_id(self, answer_id: str) -> AnswerDependent:
-        block_id: str = self.get_block_for_answer_id(answer_id)["id"]  # type: ignore
-        section_id: str = self.get_section_id_for_block_id(block_id)  # type: ignore
-        for_list = self.get_repeating_list_for_section(section_id)
+                for answer in question.get("answers", []):
+                    self._update_answer_dependencies_for_min_max(answer, block["id"])
+                    for option in answer.get("options", []):
+                        if "detail_answer" in option:
+                            self._update_answer_dependencies_for_min_max(
+                                option["detail_answer"], block["id"]
+                            )
 
-        return AnswerDependent(
-            block_id=block_id,
-            section_id=section_id,
-            for_list=for_list,
-        )
+    def _update_answer_dependencies_for_calculated_summary(
+        self, calculated_summary_answer_ids: list[str], block_id: str
+    ) -> None:
+        for answer_id in calculated_summary_answer_ids:
+            self._answer_dependencies_map[answer_id] |= {
+                self._get_answer_dependent_for_block_id(block_id)
+            }
 
     def _update_answer_dependencies_for_calculations(
         self,
@@ -251,12 +263,39 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for calculation in calculations:
             if not (source_answer_id := calculation.get("answer_id")):
                 continue
-
             dependents = {
-                self._get_answer_dependent_for_answer_id(answer_id)
+                self._get_answer_dependent_for_block_id(
+                    self.get_block_for_answer_id(answer_id)["id"]  # type: ignore
+                )
                 for answer_id in calculation["answers_to_calculate"]
             }
             self._answer_dependencies_map[source_answer_id] |= dependents
+
+    def _update_answer_dependencies_for_min_max(
+        self, answer: Mapping, block_id: str
+    ) -> None:
+        for key in ["minimum", "maximum"]:
+            value = answer.get(key, {}).get("value")
+            if isinstance(value, dict):
+                self._update_answer_dependencies_for_value_source(value, block_id)
+
+    def _update_answer_dependencies_for_value_source(
+        self, value_source: Mapping, block_id: str
+    ) -> None:
+        if value_source["source"] == "answers":
+            self._answer_dependencies_map[value_source["identifier"]] |= {
+                self._get_answer_dependent_for_block_id(block_id)  # type: ignore
+            }
+
+    def _get_answer_dependent_for_block_id(self, block_id: str) -> AnswerDependent:
+        section_id: str = self.get_section_id_for_block_id(block_id)  # type: ignore
+        for_list = self.get_repeating_list_for_section(section_id)
+
+        return AnswerDependent(
+            block_id=block_id,
+            section_id=section_id,
+            for_list=for_list,
+        )
 
     def _get_flattened_questions(self) -> list[ImmutableDict[str, Any]]:
         return [
