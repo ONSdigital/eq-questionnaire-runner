@@ -12,6 +12,7 @@ import CurrencyTotalPlaybackPageSkippedFourth from "../../generated_pages/calcul
 import UnitTotalPlaybackPage from "../../generated_pages/calculated_summary/unit-total-playback.page.js";
 import PercentageTotalPlaybackPage from "../../generated_pages/calculated_summary/percentage-total-playback.page.js";
 import NumberTotalPlaybackPage from "../../generated_pages/calculated_summary/number-total-playback.page.js";
+import CalculatedSummaryTotalConfirmation from "../../generated_pages/calculated_summary/calculated-summary-total-confirmation.page";
 import SubmitPage from "../../generated_pages/calculated_summary/submit.page";
 import ThankYouPage from "../../base_pages/thank-you.page.js";
 
@@ -54,7 +55,7 @@ describe("Feature: Calculated Summary", () => {
       expect(browserUrl).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
     });
 
-    it("Given I complete every question, When i get to the currency summary, Then I should see the correct total", () => {
+    it("Given I complete every question, When I get to the currency summary, Then I should see the correct total", () => {
       // Totals and titles should be shown
       expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £20.71. Is this correct?"
@@ -87,7 +88,7 @@ describe("Feature: Calculated Summary", () => {
       expect($$(NumberTotalPlaybackPage.sixthNumberAnswer())).to.be.empty;
     });
 
-    it("Given change an answer, When i get to the currency summary, Then I should see the new total", () => {
+    it("Given change an answer, When I get to the currency summary, Then I should see the new total", () => {
       $(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswerEdit()).click();
       $(FourthNumberBlockPage.fourthNumber()).setValue(19.01);
       $(FourthNumberBlockPage.submit()).click();
@@ -104,25 +105,22 @@ describe("Feature: Calculated Summary", () => {
       expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£40.71");
     });
 
-    it("Given I leave an answer empty, When i get to the currency summary, Then I should see no answer provided and new total", () => {
-      $(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswerEdit()).click();
-      $(FourthNumberBlockPage.fourthNumber()).setValue("");
-      $(FourthNumberBlockPage.submit()).click();
+    it("Given I leave an answer empty, When I get to the currency summary, Then I should see no answer provided and new total", () => {
+      $(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotalEdit()).click();
       $(FourthAndAHalfNumberBlockPage.fourthAndAHalfNumberAlsoInTotal()).setValue("");
       $(FourthAndAHalfNumberBlockPage.submit()).click();
-
       $(FifthNumberBlockPage.submit()).click();
       $(SixthNumberBlockPage.submit()).click();
 
       expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
       expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of currency values entered to be £9.36. Is this correct?"
+        "We calculate the total of currency values entered to be £28.37. Is this correct?"
       );
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£9.36");
-      expect($(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswer()).getText()).to.contain("No answer provided");
+      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£28.37");
+      expect($(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).to.contain("No answer provided");
     });
 
-    it("Given I skip the fourth page, When i get to the playback, Then I can should not see it in the total", () => {
+    it("Given I skip the fourth page, When I get to the playback, Then I can should not see it in the total", () => {
       $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
       $(ThirdNumberBlockPage.submit()).click();
       $(ThirdAndAHalfNumberBlockPage.submit()).click();
@@ -144,7 +142,7 @@ describe("Feature: Calculated Summary", () => {
       expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryAnswer()).getText()).to.contain("£9.36");
     });
 
-    it("Given I complete every question, When i get to the unit summary, Then I should see the correct total", () => {
+    it("Given I complete every question, When I get to the unit summary, Then I should see the correct total", () => {
       // Totals and titles should be shown
       $(CurrencyTotalPlaybackPageWithFourth.submit()).click();
       expect($(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
@@ -160,7 +158,7 @@ describe("Feature: Calculated Summary", () => {
       expect($(UnitTotalPlaybackPage.thirdAndAHalfNumberAnswerUnitTotal()).getText()).to.contain("678 cm");
     });
 
-    it("Given I complete every question, When i get to the percentage summary, Then I should see the correct total", () => {
+    it("Given I complete every question, When I get to the percentage summary, Then I should see the correct total", () => {
       // Totals and titles should be shown
       $(UnitTotalPlaybackPage.submit()).click();
       expect($(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
@@ -176,7 +174,7 @@ describe("Feature: Calculated Summary", () => {
       expect($(PercentageTotalPlaybackPage.sixthPercentAnswer()).getText()).to.contain("23%");
     });
 
-    it("Given I complete every question, When i get to the number summary, Then I should see the correct total", () => {
+    it("Given I complete every question, When I get to the number summary, Then I should see the correct total", () => {
       // Totals and titles should be shown
       $(UnitTotalPlaybackPage.submit()).click();
       expect($(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
@@ -192,8 +190,23 @@ describe("Feature: Calculated Summary", () => {
       expect($(NumberTotalPlaybackPage.sixthNumberAnswer()).getText()).to.contain("45.67");
     });
 
-    it("Given I confirm the total and am on the summary, When I edit and change an answer, Then I must re-confirm the calculated summary page which is dependent on the change before I can return to the summary", () => {
+    it("Given I complete every calculated summary, When I go to the next page, Then I should the see the piped calculated summary total for each summary", () => {
       $(NumberTotalPlaybackPage.submit()).click();
+
+      const content = $("h1 + ul").getText();
+      const textsToAssert = [
+        "Total currency values (if Q4 not skipped): £28.37",
+        "Total currency values (if Q4 skipped)): £9.36",
+        "Total unit values: 1,467",
+        "Total percentage values: 79",
+        "Total number values: 124.58",
+      ];
+
+      textsToAssert.forEach((text) => expect(content).to.contain(text));
+    });
+
+    it("Given I confirm the totals and am on the summary, When I edit and change an answer, Then I must re-confirm the calculated summary page which is dependent on the change before I can return to the summary", () => {
+      $(CalculatedSummaryTotalConfirmation.submit()).click();
       expect(browser.getUrl()).to.contain(SubmitPage.pageName);
 
       $(SubmitPage.thirdNumberAnswerEdit()).click();

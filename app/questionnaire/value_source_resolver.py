@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Mapping, Optional, Union
+from typing import Any, Callable, Iterable, Mapping, Optional, Union
 
 from markupsafe import Markup
 
@@ -16,6 +16,7 @@ ValueSourceEscapedTypes = Union[
     Markup,
     list[Markup],
 ]
+IntOrDecimal = Union[int, Decimal]
 
 
 @dataclass
@@ -53,7 +54,7 @@ class ValueSourceResolver:
             return answer.value
 
     def _resolve_list_item_id_for_value_source(
-        self, value_source: dict
+        self, value_source: Mapping
     ) -> Optional[str]:
         list_item_id: Optional[str] = None
 
@@ -83,7 +84,7 @@ class ValueSourceResolver:
         )
 
     def _resolve_answer_value_source(
-        self, value_source: dict
+        self, value_source: Mapping
     ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
         list_item_id = self._resolve_list_item_id_for_value_source(value_source)
         answer_id = value_source["identifier"]
@@ -92,7 +93,7 @@ class ValueSourceResolver:
             answer_id=answer_id, list_item_id=list_item_id
         )
 
-        if isinstance(answer_value, dict):
+        if isinstance(answer_value, Mapping):
             answer_value = (
                 answer_value.get(value_source["selector"])
                 if "selector" in value_source
@@ -104,7 +105,9 @@ class ValueSourceResolver:
 
         return answer_value
 
-    def _resolve_list_value_source(self, value_source: dict) -> Union[int, str, list]:
+    def _resolve_list_value_source(
+        self, value_source: Mapping
+    ) -> Union[int, str, list]:
         identifier = value_source["identifier"]
         list_model: ListModel = self.list_store[identifier]
 
@@ -114,8 +117,37 @@ class ValueSourceResolver:
 
         return list(list_model)
 
+    def _resolve_calculated_summary_value_source(
+        self, value_source: Mapping
+    ) -> IntOrDecimal:
+        """Calculates the value for the 'calculation' used by the provided Calculated Summary.
+
+        The caller is responsible for ensuring the provided Calculated Summary and its answers are on the path.
+        """
+        calculated_summary_block: Mapping[str, Any] = self.schema.get_block(value_source["identifier"])  # type: ignore
+        calculation = calculated_summary_block["calculation"]
+        answers_to_calculate = calculation["answers_to_calculate"]
+        operator = self.get_calculation_operator(calculation["calculation_type"])
+        list_item_id = self._resolve_list_item_id_for_value_source(value_source)
+
+        values = [
+            self._get_answer_value(answer_id=answer_id, list_item_id=list_item_id)
+            for answer_id in answers_to_calculate
+        ]
+        total: IntOrDecimal = operator([value for value in values if value])  # type: ignore
+        return total
+
+    @staticmethod
+    def get_calculation_operator(
+        calculation_type: str,
+    ) -> Callable[[Iterable[IntOrDecimal]], IntOrDecimal]:
+        if calculation_type == "sum":
+            return sum
+
+        raise NotImplementedError(f"Invalid calculation_type: {calculation_type}")
+
     def resolve(
-        self, value_source: dict
+        self, value_source: Mapping
     ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
         source = value_source["source"]
 
@@ -135,3 +167,6 @@ class ValueSourceResolver:
 
         if source == "response_metadata":
             return self.response_metadata.get(value_source.get("identifier"))
+
+        if source == "calculated_summary":
+            return self._resolve_calculated_summary_value_source(value_source)
