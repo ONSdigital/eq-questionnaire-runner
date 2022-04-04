@@ -1162,3 +1162,13 @@ def calculated_summary_schema():
 @pytest.fixture
 def numbers_schema():
     return load_schema_from_name("test_numbers")
+
+
+@pytest.fixture
+def dynamic_radio_options_from_checkbox_schema():
+    return load_schema_from_name("test_dynamic_radio_options_from_checkbox")
+
+
+@pytest.fixture
+def dynamic_answer_options_function_driven_schema():
+    return load_schema_from_name("test_dynamic_answer_options_function_driven")

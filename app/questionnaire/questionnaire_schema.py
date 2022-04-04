@@ -253,7 +253,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     ) -> None:
         for answer_id in calculated_summary_answer_ids:
             self._answer_dependencies_map[answer_id] |= {
-                self._get_answer_dependent_for_block_id(block_id)
+                self._get_answer_dependent_for_block_id(block_id=block_id)
             }
 
     def _update_answer_dependencies_for_calculations(
@@ -285,12 +285,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             )
 
     def _update_answer_dependencies_for_dynamic_options(
-        self, dynamic_options_values: dict, block_id: str, answer_id: str
+        self, dynamic_options_values: Mapping, block_id: str, answer_id: str
     ) -> None:
-        value_source_dicts = self._get_dictionaries_for_key(
+        value_sources = self._get_dictionaries_with_key(
             "source", dynamic_options_values
         )
-        for value_source in value_source_dicts:
+        for value_source in value_sources:
             self._update_answer_dependencies_for_value_source(
                 value_source, block_id, answer_id
             )
@@ -300,7 +300,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     ) -> None:
         if value_source["source"] == "answers":
             self._answer_dependencies_map[value_source["identifier"]] |= {
-                self._get_answer_dependent_for_block_id(block_id, answer_id)  # type: ignore
+                self._get_answer_dependent_for_block_id(block_id=block_id, answer_id=answer_id)  # type: ignore
             }
 
     def _get_answer_dependent_for_block_id(
@@ -756,15 +756,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             except AttributeError:
                 continue
 
-    def _get_dictionaries_for_key(self, key: str, dictionary: dict) -> Generator:
+    def _get_dictionaries_with_key(self, key: str, dictionary: Mapping) -> Generator:
         if key in dictionary:
             yield dictionary
 
-        for _, v in dictionary.items():
-            if isinstance(v, tuple):
-                for d in v:
-                    if isinstance(d, dict):
-                        yield from self._get_dictionaries_for_key(key, d)
+        for value in dictionary.values():
+            for element in value:
+                if isinstance(element, Mapping):
+                    yield from self._get_dictionaries_with_key(key, element)
 
     def _get_parent_section_id_for_block(self, block_id: str) -> str:
         parent_block_id = self._parent_id_map[block_id]

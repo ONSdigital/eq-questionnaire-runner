@@ -202,12 +202,31 @@ describe(`Feature: Dynamically generated answer options driven by a function wit
       expect($(SubmitPage.dynamicMutuallyExclusiveStaticAnswer()).getText()).to.equal("I did not work");
     });
 
-    it("When I edit and change the answer which the dynamic options is dependent on, then my selected answer is removed", () => {
+    it("When I edit and change the reference date which the other questions are dependent on, then all dependent answers are removed", () => {
       $(SubmitPage.referenceDateAnswerEdit()).click();
       $(ReferenceDatePage.day()).setValue("2");
       $(ReferenceDatePage.submit()).click();
 
       expect($(DynamicCheckboxPage.answerByIndex(7)).isSelected()).to.be.false;
+
+      $(DynamicCheckboxPage.answerByIndex(7)).click();
+      $(DynamicCheckboxPage.submit()).click();
+
+      expect($(DynamicRadioPage.answerByIndex(7)).isSelected()).to.be.false;
+
+      $(DynamicRadioPage.answerByIndex(7)).click();
+      $(DynamicRadioPage.submit()).click();
+
+      expect($(DynamicDropdownPage.answer()).getText()).to.contain("Select an answer");
+
+      $(DynamicDropdownPage.answer()).selectByAttribute("value", "I did not work");
+      $(DynamicDropdownPage.submit()).click();
+
+      // The Mutually exclusive answer is not removed as it is a different answer_id to the dependent, however the block must be re-submitted
+      expect($(DynamicMutuallyExclusivePage.staticIDidNotWork()).isSelected()).to.be.true;
+      $(DynamicMutuallyExclusivePage.submit()).click();
+
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
   });
 });

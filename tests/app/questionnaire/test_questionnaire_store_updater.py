@@ -551,7 +551,7 @@ def test_update_answers_captures_answer_dependencies(
         ),
     ],
 )
-def test_dependent_answer_store(
+def test_update_answers_with_answer_dependents(
     mock_schema, answer_dependent_answer_id, updated_answer_value, expected_output
 ):
     answer_store = AnswerStore()
@@ -586,10 +586,65 @@ def test_dependent_answer_store(
         current_location=location,
         current_question=current_question,
     )
-
     questionnaire_store_updater.update_answers(form_data)
 
     assert answer_store == expected_output
+
+
+def test_update_repeating_answers_with_answer_dependents(mock_schema):
+    # Given repeating dependent answers
+    answer_store = AnswerStore()
+    answer_store.add_or_update(
+        Answer(answer_id="first-answer", value="original answer")
+    )
+    answer_store.add_or_update(
+        Answer(answer_id="second-answer", value="second answer", list_item_id="abc123")
+    )
+    answer_store.add_or_update(
+        Answer(answer_id="second-answer", value="second answer", list_item_id="xyz456")
+    )
+    list_store = ListStore([{"items": ["abc123", "xyz456"], "name": "list-name"}])
+
+    mock_schema.get_answer_ids_for_question.return_value = ["first-answer"]
+    mock_schema.answer_dependencies = {
+        "first-answer": {
+            AnswerDependent(
+                section_id="section",
+                block_id="second-block",
+                for_list="list-name",
+                answer_id="second-answer",
+            )
+        },
+    }
+
+    form_data = MultiDict({"first-answer": "answer updated"})
+
+    location = Location(
+        section_id="section",
+        block_id="first-block",
+    )
+    current_question = mock_schema.get_block(location.block_id)["question"]
+    questionnaire_store_updater = get_questionnaire_store_updater(
+        schema=mock_schema,
+        answer_store=answer_store,
+        list_store=list_store,
+        current_location=location,
+        current_question=current_question,
+    )
+
+    # when the questionnaire store is updated
+    questionnaire_store_updater.update_answers(form_data)
+
+    # Then all repeating dependent answers should be removed from the answer store
+    assert answer_store == AnswerStore(
+        [
+            {
+                "answer_id": "first-answer",
+                "value": "answer updated",
+                "list_item_id": None,
+            }
+        ]
+    )
 
 
 def get_questionnaire_store_updater(
