@@ -150,3 +150,8 @@ def datastore(mock_client):
 @pytest.fixture
 def current_location():
     return Location(section_id="some-section", block_id="some-block")
+
+
+@pytest.fixture
+def mock_autoescape_context(mocker):
+    return mocker.Mock(autoescape=True)
