@@ -1,24 +1,18 @@
-import unittest
-
 from app import settings
 from app.setup import get_minimized_asset
 
 
-class TestAppInit(unittest.TestCase):
-    def test_get_minimized_asset_with_env(self):
-        settings.EQ_MINIMIZE_ASSETS = True
-        self.assertEqual("some.min.css", get_minimized_asset("some.css"))
-        self.assertEqual("some.min.js", get_minimized_asset("some.js"))
-
-    def test_get_minimized_asset_without_env(self):
-        settings.EQ_MINIMIZE_ASSETS = False
-
-        filename = "some.css"
-        self.assertEqual(filename, get_minimized_asset(filename))
-
-        filename = "some.js"
-        self.assertEqual(filename, get_minimized_asset(filename))
+def test_get_minimized_asset_with_env():
+    settings.EQ_MINIMIZE_ASSETS = True
+    assert "some.min.css" == get_minimized_asset("some.css")
+    assert "some.min.js" == get_minimized_asset("some.js")
 
 
-if __name__ == "__main__":
-    unittest.main()
+def test_get_minimized_asset_without_env():
+    settings.EQ_MINIMIZE_ASSETS = False
+
+    filename = "some.css"
+    assert filename == get_minimized_asset(filename)
+
+    filename = "some.js"
+    assert filename == get_minimized_asset(filename)

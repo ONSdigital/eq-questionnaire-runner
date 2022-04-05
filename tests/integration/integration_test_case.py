@@ -14,7 +14,7 @@ from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
 from app.setup import create_app
 from app.utilities.json import json_loads
 from application import configure_logging
-from tests.app.app_context_test_case import MockDatastore
+from tests.integration.app_context_test_case import MockDatastore
 from tests.integration.create_token import TokenGenerator
 
 EQ_USER_AUTHENTICATION_RRM_PRIVATE_KEY_KID = "709eb42cfee5570058ce0711f730bfbb7d4c8ade"
@@ -255,7 +255,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
     def saveAndSignOut(self):
         """
-        Sign out of eQ using the `Save and sign out` button and do not follow redirects since the redirect is external
+        Sign out of eQ using the `Save and exit survey` button and do not follow redirects since the redirect is external
         """
         return self.get(self.getSignOutButton()["href"], follow_redirects=False)
 

@@ -1,6 +1,5 @@
 # coding: utf-8
 from datetime import datetime, timezone
-from unittest.mock import MagicMock, patch
 
 import pytest
 import simplejson as json
@@ -25,288 +24,286 @@ from app.jinja_filters import (
     should_wrap_with_fieldset,
     strip_tags,
 )
-from tests.app.app_context_test_case import AppContextTestCase
 
 
-class TestJinjaFilters(AppContextTestCase):  # pylint: disable=too-many-public-methods
-    def setUp(self):
-        self.autoescape_context = Mock(autoescape=True)
-        super().setUp()
+@pytest.mark.parametrize(
+    "tagged_string, expected",
+    (
+        ("Hello <b>world</b>", "Hello world"),
+        ("Hello &lt;i&gt;world&lt;/i&gt;", "Hello &lt;i&gt;world&lt;/i&gt;"),
+        ("Hello <b>&lt;i&gt;world&lt;/i&gt;</b>", "Hello &lt;i&gt;world&lt;/i&gt;"),
+    ),
+)
+def test_strip_tags(tagged_string, expected):
+    assert strip_tags(tagged_string) == expected
 
-    def test_strip_tags(self):
-        self.assertEqual(strip_tags("Hello <b>world</b>"), "Hello world")
-        self.assertEqual(
-            strip_tags("Hello &lt;i&gt;world&lt;/i&gt;"),
-            "Hello &lt;i&gt;world&lt;/i&gt;",
+
+@pytest.mark.usefixtures("gb_locale")
+@pytest.mark.parametrize(
+    "currency, symbol",
+    (
+        ("GBP", "£"),
+        ("EUR", "€"),
+        ("USD", "US$"),
+        ("JPY", "JP¥"),
+        ("", ""),
+    ),
+)
+def test_get_currency_symbol(currency, symbol):
+    assert get_currency_symbol(currency) == symbol
+
+
+def test_get_formatted_currency_with_no_value():
+    assert get_formatted_currency("") == ""
+
+
+@pytest.mark.usefixtures("gb_locale")
+@pytest.mark.parametrize(
+    "number, formatted_number",
+    (
+        (123, "123"),
+        ("123.4", "123.4"),
+        ("123.40", "123.4"),
+        ("1000", "1,000"),
+        ("10000", "10,000"),
+        ("100000000", "100,000,000"),
+        (0, "0"),
+        (0.00, "0"),
+        ("", ""),
+        (None, ""),
+        (Undefined(), ""),
+    ),
+)
+def test_format_number(number, formatted_number):
+    assert format_number(number) == formatted_number
+
+
+def test_format_date_time_in_bst(mock_autoescape_context, app):
+    # Given a date after BST started
+    date_time = datetime(2018, 3, 29, 23, 59, 0, tzinfo=timezone.utc)
+
+    # When
+    with app.test_request_context("/"):
+        format_value = format_datetime(mock_autoescape_context, date_time)
+
+    # Then
+    assert format_value == "<span class='date'>30 March 2018 at 00:59</span>"
+
+
+@pytest.mark.parametrize(
+    "date_time, formatted_datetime",
+    (
+        (
+            datetime(2018, 10, 28, 00, 15, 0, tzinfo=timezone.utc),
+            "28 October 2018 at 01:15",
+        ),
+        # Clocks go back on 29th Oct 2018
+        (
+            datetime(2018, 10, 29, 00, 15, 0, tzinfo=timezone.utc),
+            "29 October 2018 at 00:15",
+        ),
+    ),
+)
+def test_format_date_time_in_gmt(
+    app, mock_autoescape_context, date_time, formatted_datetime
+):
+    date_time = date_time.replace(tzinfo=timezone.utc)
+    with app.test_request_context("/"):
+        assert (
+            format_datetime(mock_autoescape_context, date_time)
+            == f"<span class='date'>{formatted_datetime}</span>"
         )
-        self.assertEqual(
-            strip_tags("Hello <b>&lt;i&gt;world&lt;/i&gt;</b>"),
-            "Hello &lt;i&gt;world&lt;/i&gt;",
-        )
 
-    @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
-    def test_get_currency_symbol(self):
-        self.assertEqual(get_currency_symbol("GBP"), "£")
-        self.assertEqual(get_currency_symbol("EUR"), "€")
-        self.assertEqual(get_currency_symbol("USD"), "US$")
-        self.assertEqual(get_currency_symbol("JPY"), "JP¥")
-        self.assertEqual(get_currency_symbol(""), "")
 
-    @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
-    def test_format_number(self):
-        self.assertEqual(format_number(123), "123")
-        self.assertEqual(format_number("123.4"), "123.4")
-        self.assertEqual(format_number("123.40"), "123.4")
-        self.assertEqual(format_number("1000"), "1,000")
-        self.assertEqual(format_number("10000"), "10,000")
-        self.assertEqual(format_number("100000000"), "100,000,000")
-        self.assertEqual(format_number(0), "0")
-        self.assertEqual(format_number(0.00), "0")
-        self.assertEqual(format_number(""), "")
-        self.assertEqual(format_number(None), "")
-        self.assertEqual(format_number(Undefined()), "")
+@pytest.mark.parametrize(
+    "percentage, formatted_percentage",
+    (
+        ("100", "100%"),
+        (100, "100%"),
+        (4.5, "4.5%"),
+    ),
+)
+def test_format_percentage(percentage, formatted_percentage):
+    assert format_percentage(percentage) == formatted_percentage
 
-    def test_format_date_time_in_bst(self):
-        # Given a date after BST started
-        date_time = datetime(2018, 3, 29, 23, 59, 0, tzinfo=timezone.utc)
 
-        # When
-        with self.app_request_context("/"):
-            format_value = format_datetime(self.autoescape_context, date_time)
+@pytest.mark.usefixtures("app")
+@pytest.mark.parametrize(
+    "unit, value, length, formatted_unit, language",
+    (
+        ("length-meter", 100, "short", "100 m", "en_GB"),
+        ("length-centimeter", 100, "short", "100 cm", "en_GB"),
+        ("length-mile", 100, "short", "100 mi", "en_GB"),
+        ("length-kilometer", 100, "short", "100 km", "en_GB"),
+        ("area-square-meter", 100, "short", "100 m²", "en_GB"),
+        ("area-square-centimeter", 100, "short", "100 cm²", "en_GB"),
+        ("area-square-kilometer", 100, "short", "100 km²", "en_GB"),
+        ("area-square-mile", 100, "short", "100 sq mi", "en_GB"),
+        ("area-hectare", 100, "short", "100 ha", "en_GB"),
+        ("area-acre", 100, "short", "100 ac", "en_GB"),
+        ("volume-cubic-meter", 100, "short", "100 m³", "en_GB"),
+        ("volume-cubic-centimeter", 100, "short", "100 cm³", "en_GB"),
+        ("volume-liter", 100, "short", "100 l", "en_GB"),
+        ("volume-hectoliter", 100, "short", "100 hl", "en_GB"),
+        ("volume-megaliter", 100, "short", "100 Ml", "en_GB"),
+        ("duration-hour", 100, "short", "100 hrs", "en_GB"),
+        ("duration-hour", 100, "long", "100 hours", "en_GB"),
+        ("duration-year", 100, "long", "100 years", "en_GB"),
+        ("duration-hour", 100, "short", "100 awr", "cy"),
+        ("duration-year", 100, "short", "100 bl", "cy"),
+        ("duration-hour", 100, "long", "100 awr", "cy"),
+        ("duration-year", 100, "long", "100 mlynedd", "cy"),
+    ),
+)
+def test_format_unit(unit, value, length, formatted_unit, language, mocker):
+    mocker.patch(
+        "app.jinja_filters.flask_babel.get_locale", mocker.Mock(return_value=language)
+    )
+    assert format_unit(unit, value, length=length) == formatted_unit
 
-        # Then
-        self.assertEqual(
-            format_value, "<span class='date'>30 March 2018 at 00:59</span>"
-        )
 
-    def test_format_date_time_in_gmt(self):
-        # Given
-        test_data = {
-            datetime(
-                2018, 10, 28, 00, 15, 0, tzinfo=timezone.utc
-            ): "28 October 2018 at 01:15",
-            # Clocks go back on 29th Oct 2018
-            datetime(
-                2018, 10, 29, 00, 15, 0, tzinfo=timezone.utc
-            ): "29 October 2018 at 00:15",
-        }
-        for date_time, expected_value in test_data.items():
-            with self.subTest(
-                date_time=date_time,
-                expected_value=expected_value,
-            ):
-                date_time = date_time.replace(tzinfo=timezone.utc)
-                # When
-                with self.app_request_context("/"):
-                    format_value = format_datetime(self.autoescape_context, date_time)
+@pytest.mark.usefixtures("app")
+@pytest.mark.parametrize(
+    "unit, length, formatted_unit, language",
+    (
+        ("length-meter", "short", "m", "en_GB"),
+        ("length-centimeter", "short", "cm", "en_GB"),
+        ("length-mile", "short", "mi", "en_GB"),
+        ("length-kilometer", "short", "km", "en_GB"),
+        ("area-square-meter", "short", "m²", "en_GB"),
+        ("area-square-centimeter", "short", "cm²", "en_GB"),
+        ("area-square-kilometer", "short", "km²", "en_GB"),
+        ("area-square-mile", "short", "sq mi", "en_GB"),
+        ("area-hectare", "short", "ha", "en_GB"),
+        ("area-acre", "short", "ac", "en_GB"),
+        ("volume-cubic-meter", "short", "m³", "en_GB"),
+        ("volume-cubic-centimeter", "short", "cm³", "en_GB"),
+        ("volume-liter", "short", "l", "en_GB"),
+        ("volume-hectoliter", "short", "hl", "en_GB"),
+        ("volume-megaliter", "short", "Ml", "en_GB"),
+        ("duration-hour", "short", "hr", "en_GB"),
+        ("duration-year", "short", "yr", "en_GB"),
+        ("length-meter", "long", "metres", "en_GB"),
+        ("length-centimeter", "long", "centimetres", "en_GB"),
+        ("length-mile", "long", "miles", "en_GB"),
+        ("length-kilometer", "long", "kilometres", "en_GB"),
+        ("area-square-meter", "long", "square metres", "en_GB"),
+        ("area-square-centimeter", "long", "square centimetres", "en_GB"),
+        ("area-square-kilometer", "long", "square kilometres", "en_GB"),
+        ("area-square-mile", "long", "square miles", "en_GB"),
+        ("area-hectare", "long", "hectares", "en_GB"),
+        ("area-acre", "long", "acres", "en_GB"),
+        ("volume-cubic-meter", "long", "cubic metres", "en_GB"),
+        ("volume-cubic-centimeter", "long", "cubic centimetres", "en_GB"),
+        ("volume-liter", "long", "litres", "en_GB"),
+        ("volume-hectoliter", "long", "hectolitres", "en_GB"),
+        ("volume-megaliter", "long", "megalitres", "en_GB"),
+        ("duration-hour", "long", "hours", "en_GB"),
+        ("duration-year", "long", "years", "en_GB"),
+        ("duration-hour", "short", "awr", "cy"),
+        ("duration-hour", "long", "awr", "cy"),
+        ("duration-year", "short", "bl", "cy"),
+        ("duration-year", "long", "flynedd", "cy"),
+    ),
+)
+def test_format_unit_input_label(unit, length, formatted_unit, language, mocker):
+    mocker.patch(
+        "app.jinja_filters.flask_babel.get_locale", mocker.Mock(return_value=language)
+    )
+    assert format_unit_input_label(unit, unit_length=length) == formatted_unit
 
-                # Then
-                self.assertEqual(
-                    format_value, f"<span class='date'>{expected_value}</span>"
-                )
 
-    def test_format_percentage(self):
-        self.assertEqual(format_percentage("100"), "100%")
-        self.assertEqual(format_percentage(100), "100%")
-        self.assertEqual(format_percentage(4.5), "4.5%")
+@pytest.mark.parametrize(
+    "duration, formatted_duration",
+    (
+        ({"years": 5, "months": 4}, "5 years 4 months"),
+        ({"years": 5, "months": 0}, "5 years"),
+        ({"years": 0, "months": 4}, "4 months"),
+        ({"years": 1, "months": 1}, "1 year 1 month"),
+        ({"years": 0, "months": 0}, "0 months"),
+        ({"years": 5}, "5 years"),
+        ({"years": 1}, "1 year"),
+        ({"years": 0}, "0 years"),
+        ({"months": 5}, "5 months"),
+        ({"months": 1}, "1 month"),
+        ({"months": 0}, "0 months"),
+    ),
+)
+def test_format_duration(duration, formatted_duration, app):
+    with app.test_request_context("/"):
+        assert format_duration(duration) == formatted_duration
 
-    @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
-    def test_format_unit(self):
-        self.assertEqual(format_unit("length-meter", 100), "100 m")
-        self.assertEqual(format_unit("length-centimeter", 100), "100 cm")
-        self.assertEqual(format_unit("length-mile", 100), "100 mi")
-        self.assertEqual(format_unit("length-kilometer", 100), "100 km")
-        self.assertEqual(format_unit("area-square-meter", 100), "100 m²")
-        self.assertEqual(format_unit("area-square-centimeter", 100), "100 cm²")
-        self.assertEqual(format_unit("area-square-kilometer", 100), "100 km²")
-        self.assertEqual(format_unit("area-square-mile", 100), "100 sq mi")
-        self.assertEqual(format_unit("area-hectare", 100), "100 ha")
-        self.assertEqual(format_unit("area-acre", 100), "100 ac")
-        self.assertEqual(format_unit("volume-cubic-meter", 100), "100 m³")
-        self.assertEqual(format_unit("volume-cubic-centimeter", 100), "100 cm³")
-        self.assertEqual(format_unit("volume-liter", 100), "100 l")
-        self.assertEqual(format_unit("volume-hectoliter", 100), "100 hl")
-        self.assertEqual(format_unit("volume-megaliter", 100), "100 Ml")
-        self.assertEqual(format_unit("duration-hour", 100), "100 hrs")
-        self.assertEqual(format_unit("duration-hour", 100, "long"), "100 hours")
-        self.assertEqual(format_unit("duration-year", 100, "long"), "100 years")
 
-    @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="cy"))
-    def test_format_unit_welsh(self):
-        self.assertEqual(format_unit("duration-hour", 100), "100 awr")
-        self.assertEqual(format_unit("duration-year", 100), "100 bl")
-        self.assertEqual(format_unit("duration-hour", 100, "long"), "100 awr")
-        self.assertEqual(format_unit("duration-year", 100, "long"), "100 mlynedd")
+@pytest.mark.parametrize(
+    "answer, width",
+    (
+        ({}, 10),
+        ({"maximum": {"value": 1}}, 1),
+        ({"maximum": {"value": 123456}}, 6),
+        ({"maximum": {"value": 12345678901}}, 15),
+        ({"minimum": {"value": -123456}, "maximum": {"value": 1234}}, 7),
+        ({"decimal_places": 2, "maximum": {"value": 123456}}, 8),
+        (
+            {"maximum": {"value": 123456789012345678901123456789012345678901234567890}},
+            None,
+        ),
+    ),
+)
+def test_get_width_for_number(answer, width):
+    assert get_width_for_number(answer) == width
 
-    @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
-    def test_format_unit_input_label_short(self):
-        self.assertEqual(format_unit_input_label("length-meter"), "m")
-        self.assertEqual(format_unit_input_label("length-centimeter"), "cm")
-        self.assertEqual(format_unit_input_label("length-mile"), "mi")
-        self.assertEqual(format_unit_input_label("length-kilometer"), "km")
-        self.assertEqual(format_unit_input_label("area-square-meter"), "m²")
-        self.assertEqual(format_unit_input_label("area-square-centimeter"), "cm²")
-        self.assertEqual(format_unit_input_label("area-square-kilometer"), "km²")
-        self.assertEqual(format_unit_input_label("area-square-mile"), "sq mi")
-        self.assertEqual(format_unit_input_label("area-hectare"), "ha")
-        self.assertEqual(format_unit_input_label("area-acre"), "ac")
-        self.assertEqual(format_unit_input_label("volume-cubic-meter"), "m³")
-        self.assertEqual(format_unit_input_label("volume-cubic-centimeter"), "cm³")
-        self.assertEqual(format_unit_input_label("volume-liter"), "l")
-        self.assertEqual(format_unit_input_label("volume-hectoliter"), "hl")
-        self.assertEqual(format_unit_input_label("volume-megaliter"), "Ml")
-        self.assertEqual(format_unit_input_label("duration-hour"), "hr")
-        self.assertEqual(format_unit_input_label("duration-year"), "yr")
 
-    @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
-    def test_format_unit_input_label_long(self):
-        self.assertEqual(format_unit_input_label("length-meter", "long"), "metres")
-        self.assertEqual(
-            format_unit_input_label("length-centimeter", "long"), "centimetres"
-        )
-        self.assertEqual(format_unit_input_label("length-mile", "long"), "miles")
-        self.assertEqual(
-            format_unit_input_label("length-kilometer", "long"), "kilometres"
-        )
-        self.assertEqual(
-            format_unit_input_label("area-square-meter", "long"), "square metres"
-        )
-        self.assertEqual(
-            format_unit_input_label("area-square-centimeter", "long"),
-            "square centimetres",
-        )
-        self.assertEqual(
-            format_unit_input_label("area-square-kilometer", "long"),
-            "square kilometres",
-        )
-        self.assertEqual(
-            format_unit_input_label("area-square-mile", "long"), "square miles"
-        )
-        self.assertEqual(format_unit_input_label("area-hectare", "long"), "hectares")
-        self.assertEqual(format_unit_input_label("area-acre", "long"), "acres")
-        self.assertEqual(
-            format_unit_input_label("volume-cubic-meter", "long"), "cubic metres"
-        )
-        self.assertEqual(
-            format_unit_input_label("volume-cubic-centimeter", "long"),
-            "cubic centimetres",
-        )
-        self.assertEqual(format_unit_input_label("volume-liter", "long"), "litres")
-        self.assertEqual(
-            format_unit_input_label("volume-hectoliter", "long"), "hectolitres"
-        )
-        self.assertEqual(
-            format_unit_input_label("volume-megaliter", "long"), "megalitres"
-        )
-        self.assertEqual(format_unit_input_label("duration-hour", "long"), "hours")
-        self.assertEqual(format_unit_input_label("duration-year", "long"), "years")
-
-    @patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="cy"))
-    def test_format_unit_input_label_welsh(self):
-        self.assertEqual(format_unit_input_label("duration-hour"), "awr")
-        self.assertEqual(format_unit_input_label("duration-hour", "long"), "awr")
-        self.assertEqual(format_unit_input_label("duration-year"), "bl")
-        self.assertEqual(format_unit_input_label("duration-year", "long"), "flynedd")
-
-    def test_format_year_month_duration(self):
-        with self.app_request_context("/"):
-            self.assertEqual(
-                format_duration({"years": 5, "months": 4}), "5 years 4 months"
-            )
-            self.assertEqual(format_duration({"years": 5, "months": 0}), "5 years")
-            self.assertEqual(format_duration({"years": 0, "months": 4}), "4 months")
-            self.assertEqual(
-                format_duration({"years": 1, "months": 1}), "1 year 1 month"
-            )
-            self.assertEqual(format_duration({"years": 0, "months": 0}), "0 months")
-
-    def test_format_year_duration(self):
-        with self.app_request_context("/"):
-            self.assertEqual(format_duration({"years": 5}), "5 years")
-            self.assertEqual(format_duration({"years": 1}), "1 year")
-            self.assertEqual(format_duration({"years": 0}), "0 years")
-
-    def test_format_month_duration(self):
-        with self.app_request_context("/"):
-            self.assertEqual(format_duration({"months": 5}), "5 months")
-            self.assertEqual(format_duration({"months": 1}), "1 month")
-            self.assertEqual(format_duration({"months": 0}), "0 months")
-
-    def test_get_formatted_currency_with_no_value(self):
-        self.assertEqual(get_formatted_currency(""), "")
-
-    def test_get_width_for_number_no_maximum(self):
-        self.assertEqual(get_width_for_number({}), 10)
-
-    def test_get_width_for_number_single_digit(self):
-        answer = {"maximum": {"value": 1}}
-        self.assertEqual(get_width_for_number(answer), 1)
-
-    def test_get_width_for_number_multiple_digits(self):
-        answer = {"maximum": {"value": 123456}}
-        self.assertEqual(get_width_for_number(answer), 6)
-
-    def test_get_width_for_number_roundup(self):
-        answer = {"maximum": {"value": 12345678901}}
-        self.assertEqual(get_width_for_number(answer), 15)
-
-    def test_get_width_for_number_min_value_longer_than_maximum(self):
-        answer = {"minimum": {"value": -123456}, "maximum": {"value": 1234}}
-        self.assertEqual(get_width_for_number(answer), 7)
-
-    def test_get_width_for_number_decimal_places(self):
-        answer = {"decimal_places": 2, "maximum": {"value": 123456}}
-        self.assertEqual(get_width_for_number(answer), 8)
-
-    def test_get_width_for_number_large_number(self):
-        answer = {
-            "maximum": {"value": 123456789012345678901123456789012345678901234567890}
-        }
-        self.assertIsNone(get_width_for_number(answer))
-
-    def test_should_wrap_with_fieldset_daterange(self):
-        question = {"type": "DateRange"}
-        self.assertFalse(should_wrap_with_fieldset(question))
-
-    def test_should_wrap_with_fieldset_mutually_exclusive(self):
-        question = {"type": "MutuallyExclusive", "answers": []}
-        self.assertTrue(should_wrap_with_fieldset(question))
-
-    def test_should_wrap_with_fieldset_multiple_answers(self):
-        question = {
-            "type": "General",
-            "answers": [{"type": "TextField"}, {"type": "TextField"}],
-        }
-        self.assertTrue(should_wrap_with_fieldset(question))
-
-    def test_should_wrap_with_fieldset_single_answer(self):
-        for answer_type in [
-            "Radio",
-            "Date",
-            "MonthYearDate",
-            "Duration",
-            "Address",
-            "Relationship",
-            "Checkbox",
-        ]:
-            question = {"type": "General", "answers": [{"type": answer_type}]}
-            self.assertTrue(should_wrap_with_fieldset(question))
-
-    def test_should_wrap_with_fieldset_single_answer_with_label(self):
-        for answer_type in [
-            "Radio",
-            "Date",
-            "MonthYearDate",
-            "Duration",
-            "Address",
-            "Relationship",
-            "Checkbox",
-        ]:
-            question = {
+@pytest.mark.parametrize(
+    "question, expected",
+    (
+        ({"type": "DateRange"}, False),
+        ({"type": "MutuallyExclusive", "answers": []}, True),
+        ({"type": "General", "answers": [{"type": "Radio"}]}, True),
+        ({"type": "General", "answers": [{"type": "Date"}]}, True),
+        ({"type": "General", "answers": [{"type": "MonthYearDate"}]}, True),
+        ({"type": "General", "answers": [{"type": "Duration"}]}, True),
+        ({"type": "General", "answers": [{"type": "Address"}]}, True),
+        ({"type": "General", "answers": [{"type": "Relationship"}]}, True),
+        ({"type": "General", "answers": [{"type": "Checkbox"}]}, True),
+        ({"type": "General", "answers": [{"type": "Radio", "label": "Label"}]}, False),
+        ({"type": "General", "answers": [{"type": "Date", "label": "Label"}]}, False),
+        (
+            {
                 "type": "General",
-                "answers": [{"type": answer_type, "label": "Label"}],
-            }
-            self.assertFalse(should_wrap_with_fieldset(question))
+                "answers": [{"type": "MonthYearDate", "label": "Label"}],
+            },
+            False,
+        ),
+        (
+            {"type": "General", "answers": [{"type": "Duration", "label": "Label"}]},
+            False,
+        ),
+        (
+            {"type": "General", "answers": [{"type": "Address", "label": "Label"}]},
+            False,
+        ),
+        (
+            {
+                "type": "General",
+                "answers": [{"type": "Relationship", "label": "Label"}],
+            },
+            False,
+        ),
+        (
+            {"type": "General", "answers": [{"type": "Checkbox", "label": "Label"}]},
+            False,
+        ),
+        (
+            {
+                "type": "General",
+                "answers": [{"type": "TextField"}, {"type": "TextField"}],
+            },
+            True,
+        ),
+    ),
+)
+def test_should_wrap_with_fieldset(question, expected):
+    assert should_wrap_with_fieldset(question) == expected
 
 
 def test_map_list_collector_config_no_actions():
@@ -434,29 +431,30 @@ def test_map_list_collector_config():
     assert output == expected
 
 
-def test_format_address_fields():
-    address_fields = {
-        "line": "7 Evelyn Street",
-        "town": "Barry",
-        "postcode": "CF63 4JG",
-    }
-
-    assert (
-        get_formatted_address(address_fields) == "7 Evelyn Street<br>Barry<br>CF63 4JG"
-    )
-
-
-def test_format_address_fields_with_uprn():
-    address_fields = {
-        "line": "7 Evelyn Street",
-        "town": "Barry",
-        "postcode": "CF63 4JG",
-        "uprn": "64037876",
-    }
-
-    assert (
-        get_formatted_address(address_fields) == "7 Evelyn Street<br>Barry<br>CF63 4JG"
-    )
+@pytest.mark.parametrize(
+    "address_fields, formatted_address",
+    (
+        (
+            {
+                "line": "7 Evelyn Street",
+                "town": "Barry",
+                "postcode": "CF63 4JG",
+            },
+            "7 Evelyn Street<br>Barry<br>CF63 4JG",
+        ),
+        (
+            {
+                "line": "7 Evelyn Street",
+                "town": "Barry",
+                "postcode": "CF63 4JG",
+                "uprn": "64037876",
+            },
+            "7 Evelyn Street<br>Barry<br>CF63 4JG",
+        ),
+    ),
+)
+def test_get_formatted_address(address_fields, formatted_address):
+    assert get_formatted_address(address_fields) == formatted_address
 
 
 @pytest.mark.parametrize(
@@ -482,19 +480,19 @@ def test_other_config_non_dropdown_input_type(answer_schema_textfield):
     assert other.otherType == "input"
 
 
-def test_other_config_dropdown_input_type(answer_schema_dropdown):
-    other = OtherConfig(MagicMock(), answer_schema_dropdown)
+def test_other_config_dropdown_input_type(answer_schema_dropdown, mocker):
+    other = OtherConfig(mocker.MagicMock(), answer_schema_dropdown)
     assert other.otherType == "select"
 
 
-def test_other_config_dropdown_has_options_attribute(answer_schema_dropdown):
-    other = OtherConfig(MagicMock(), answer_schema_dropdown)
+def test_other_config_dropdown_has_options_attribute(answer_schema_dropdown, mocker):
+    other = OtherConfig(mocker.MagicMock(), answer_schema_dropdown)
     assert hasattr(other, "options")
     assert not hasattr(other, "value")
 
 
-def test_other_config_non_dropdown_has_value_attribute(answer_schema_textfield):
-    other = OtherConfig(MagicMock(), answer_schema_textfield)
+def test_other_config_non_dropdown_has_value_attribute(answer_schema_textfield, mocker):
+    other = OtherConfig(mocker.MagicMock(), answer_schema_textfield)
     assert hasattr(other, "value")
     assert not hasattr(other, "options")
 
@@ -517,7 +515,7 @@ def test_other_config_visibility(
     assert other.open is expected_visibility
 
 
-@patch("app.jinja_filters.flask_babel.get_locale", Mock(return_value="en_GB"))
+@pytest.mark.usefixtures("gb_locale")
 def test_calculated_summary_config():
     expected = [
         SummaryRow(
