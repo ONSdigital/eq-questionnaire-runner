@@ -17,6 +17,14 @@ class BusinessSurveyConfig(
     footer_legal_links: Iterable[Mapping] = field(default_factory=list)
 
     def __post_init__(self):
+        if self.schema:
+            self.data_layer: Iterable[Mapping] = [
+                {
+                    "form_type": self.schema.form_type,
+                    "survey_id": self.schema.json["survey_id"],
+                    "title": self.schema.json["title"],
+                }
+            ]
         self.base_url = self._stripped_base_url
         super().__post_init__()
 

@@ -11,6 +11,7 @@ from flask_login import current_user
 
 from app.globals import get_session_store
 from app.helpers.language_helper import get_languages_context
+from app.questionnaire import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config import (
     BusinessSurveyConfig,
@@ -20,6 +21,7 @@ from app.survey_config import (
     SurveyConfig,
     WelshCensusSurveyConfig,
 )
+from app.utilities.schema import load_schema_from_session_data
 
 
 class ContextHelper:
@@ -145,7 +147,9 @@ class ContextHelper:
 
 
 @lru_cache
-def survey_config_mapping(*, theme: str, language: str, base_url: str) -> SurveyConfig:
+def survey_config_mapping(
+    *, theme: str, language: str, base_url: str, schema: QuestionnaireSchema
+) -> SurveyConfig:
     survey_type_to_config: dict[str, Type[SurveyConfig]] = {
         "default": BusinessSurveyConfig,
         "business": BusinessSurveyConfig,
@@ -158,6 +162,7 @@ def survey_config_mapping(*, theme: str, language: str, base_url: str) -> Survey
 
     return survey_type_to_config[theme](
         base_url=base_url,
+        schema=schema,
     )
 
 
@@ -165,6 +170,7 @@ def get_survey_config(
     *,
     theme: Optional[str] = None,
     language: Optional[str] = None,
+    schema: Optional[QuestionnaireSchema] = None,
 ) -> SurveyConfig:
     # The fallback to assigning SURVEY_TYPE to theme is only being added until
     # business feedback on the differentiation between theme and SURVEY_TYPE.
@@ -178,13 +184,21 @@ def get_survey_config(
         theme=theme,
         language=language,
         base_url=base_url,
+        schema=schema,
     )
 
 
 def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     language = get_locale().language
+    session_store = get_session_store()
+    if session_store:
+        # pylint: disable=assigning-non-slot
+        schema = load_schema_from_session_data(session_store.session_data)
+    else:
+        schema = None
     survey_config = get_survey_config(
         language=language,
+        schema=schema,
     )
     is_post_submission = request.blueprint == "post_submission"
     include_csrf_token = bool(

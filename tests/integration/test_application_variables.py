@@ -23,7 +23,9 @@ class TestApplicationVariables(IntegrationTestCase):
         self.get("/questionnaire/name-block/")
         self.assertStatusOK()
         self.assertInHead("gtm.start")
-        self.assertInHead("dataLayer = []")
+        self.assertInHead(
+            'dataLayer = [{"form_type": null, "survey_id": "001", "title": "Other input fields"}]'
+        )
         self.assertInBody("https://www.googletagmanager.com")
         self.assertInHead(settings.EQ_GOOGLE_TAG_MANAGER_AUTH)
         self.assertInHead(settings.EQ_GOOGLE_TAG_MANAGER_ID)
