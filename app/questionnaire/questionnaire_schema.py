@@ -241,11 +241,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     continue
 
                 for answer in question.get("answers", []):
-                    self._update_answer_dependencies_for_answer(answer, block["id"])
+                    self._update_answer_dependencies_for_answer(
+                        answer, block_id=block["id"]
+                    )
                     for option in answer.get("options", []):
                         if "detail_answer" in option:
                             self._update_answer_dependencies_for_answer(
-                                option["detail_answer"], block["id"]
+                                option["detail_answer"], block_id=block["id"]
                             )
 
     def _update_answer_dependencies_for_calculated_summary(
@@ -265,38 +267,40 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 continue
             dependents = {
                 self._get_answer_dependent_for_block_id(
-                    self.get_block_for_answer_id(answer_id)["id"]  # type: ignore
+                    block_id=self.get_block_for_answer_id(answer_id)["id"]  # type: ignore
                 )
                 for answer_id in calculation["answers_to_calculate"]
             }
             self._answer_dependencies_map[source_answer_id] |= dependents
 
     def _update_answer_dependencies_for_answer(
-        self, answer: Mapping, block_id: str
+        self, answer: Mapping, *, block_id: str
     ) -> None:
         for key in ["minimum", "maximum"]:
             value = answer.get(key, {}).get("value")
             if isinstance(value, dict):
-                self._update_answer_dependencies_for_value_source(value, block_id)
+                self._update_answer_dependencies_for_value_source(
+                    value, block_id=block_id
+                )
 
         if dynamic_options_values := answer.get("dynamic_options", {}).get("values"):
             self._update_answer_dependencies_for_dynamic_options(
-                dynamic_options_values, block_id, answer["id"]
+                dynamic_options_values, block_id=block_id, answer_id=answer["id"]
             )
 
     def _update_answer_dependencies_for_dynamic_options(
-        self, dynamic_options_values: Mapping, block_id: str, answer_id: str
+        self, dynamic_options_values: Mapping, *, block_id: str, answer_id: str
     ) -> None:
         value_sources = self._get_dictionaries_with_key(
             "source", dynamic_options_values
         )
         for value_source in value_sources:
             self._update_answer_dependencies_for_value_source(
-                value_source, block_id, answer_id
+                value_source, block_id=block_id, answer_id=answer_id
             )
 
     def _update_answer_dependencies_for_value_source(
-        self, value_source: Mapping, block_id: str, answer_id: Optional[str] = None
+        self, value_source: Mapping, *, block_id: str, answer_id: Optional[str] = None
     ) -> None:
         if value_source["source"] == "answers":
             self._answer_dependencies_map[value_source["identifier"]] |= {
@@ -304,7 +308,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             }
 
     def _get_answer_dependent_for_block_id(
-        self, block_id: str, answer_id: Optional[str] = None
+        self, *, block_id: str, answer_id: Optional[str] = None
     ) -> AnswerDependent:
         section_id: str = self.get_section_id_for_block_id(block_id)  # type: ignore
         for_list = self.get_repeating_list_for_section(section_id)
@@ -756,7 +760,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             except AttributeError:
                 continue
 
-    def _get_dictionaries_with_key(self, key: str, dictionary: Mapping) -> Generator:
+    def _get_dictionaries_with_key(
+        self, key: str, dictionary: Mapping
+    ) -> Generator[Mapping, None, None]:
         if key in dictionary:
             yield dictionary
 

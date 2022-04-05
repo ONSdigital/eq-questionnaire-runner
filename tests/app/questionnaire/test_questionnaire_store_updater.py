@@ -3,7 +3,7 @@ from mock import MagicMock, Mock
 from werkzeug.datastructures import MultiDict
 
 from app.data_models import QuestionnaireStore
-from app.data_models.answer_store import Answer, AnswerStore
+from app.data_models.answer_store import Answer, AnswerDict, AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.location import Location
@@ -603,7 +603,6 @@ def test_update_repeating_answers_with_answer_dependents(mock_schema):
                 answer_id="second-answer", value="second answer", list_item_id="xyz456"
             ),
         ]
-    )
     )
     list_store = ListStore([{"items": ["abc123", "xyz456"], "name": "list-name"}])
 
