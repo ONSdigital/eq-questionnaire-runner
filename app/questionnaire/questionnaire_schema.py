@@ -767,9 +767,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             yield dictionary
 
         for value in dictionary.values():
-            for element in value:
-                if isinstance(element, Mapping):
-                    yield from self._get_dictionaries_with_key(key, element)
+            if isinstance(value, Sequence):
+                for element in value:
+                    if isinstance(element, Mapping):
+                        yield from self._get_dictionaries_with_key(key, element)
 
     def _get_parent_section_id_for_block(self, block_id: str) -> str:
         parent_block_id = self._parent_id_map[block_id]

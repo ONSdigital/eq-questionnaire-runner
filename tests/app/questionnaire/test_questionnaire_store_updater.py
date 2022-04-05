@@ -638,13 +638,7 @@ def test_update_repeating_answers_with_answer_dependents(mock_schema):
 
     # Then all repeating dependent answers should be removed from the answer store
     assert answer_store == AnswerStore(
-        [
-            {
-                "answer_id": "first-answer",
-                "value": "answer updated",
-                "list_item_id": None,
-            }
-        ]
+        [AnswerDict(answer_id="first-answer", value="answer updated")]
     )
 
 
