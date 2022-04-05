@@ -229,7 +229,7 @@ def test_contact_us_url_context(
 @pytest.mark.parametrize(
     "survey_config, expected",
     [
-        (SurveyConfig(), "Save and sign out"),
+        (SurveyConfig(), "Save and exit survey"),
         (CensusSurveyConfig(), "Save and complete later"),
     ],
 )

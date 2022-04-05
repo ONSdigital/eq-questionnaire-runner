@@ -1,5 +1,5 @@
 {% if current_user.is_authenticated and not hide_sign_out_button %}
-    {% set sign_out_url = url_for('session.get_sign_out') %}
+    {% set sign_out_url = url_for('session.get_sign_out', todo=true) %}
 
     {% if save_on_signout %}
         {% do pageConfig | setAttribute("signoutButton", {

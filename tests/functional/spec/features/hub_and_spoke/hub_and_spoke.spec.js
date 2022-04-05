@@ -40,7 +40,7 @@ describe("Feature: Hub and Spoke", () => {
 
       const expectedUrl = browser.getUrl();
 
-      expect(expectedUrl).to.contain("/sign-in/logout");
+      expect(expectedUrl).to.contain("/surveys/todo");
     });
 
     it("When a user views the Hub, Then the page title should be Choose another section to complete", () => {
