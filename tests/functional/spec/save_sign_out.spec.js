@@ -15,7 +15,7 @@ describe("Save sign out / Exit", () => {
     browser.openQuestionnaire("test_introduction.json");
     $(IntroductionPage.exitButton()).click();
 
-    expect(browser.getUrl()).to.contain("/sign-in/logout");
+    expect(browser.getUrl()).to.contain("/surveys/todo");
 
     browser.back();
     expect($("body").getHTML()).to.contain("Sorry, you need to sign in again");
@@ -28,7 +28,7 @@ describe("Save sign out / Exit", () => {
     $(SetMinMax.submit()).click();
     $(TestMinMax.saveSignOut()).click();
 
-    expect(browser.getUrl()).to.contain("/sign-in/logout");
+    expect(browser.getUrl()).to.contain("/surveys/todo");
 
     browser.back();
     expect($("body").getHTML()).to.contain("Sorry, you need to sign in again");
@@ -55,10 +55,10 @@ describe("Save sign out / Exit", () => {
     expect($(IntroductionPage.exitButton()).getText()).to.contain("Exit");
     $(IntroductionPage.getStarted()).click();
 
-    expect($(IntroInterstitialPage.saveSignOut()).getText()).to.contain("Save and sign out");
+    expect($(IntroInterstitialPage.saveSignOut()).getText()).to.contain("Save and exit survey");
     $(IntroInterstitialPage.submit()).click();
 
-    expect($(SubmitPage.saveSignOut()).getText()).to.contain("Save and sign out");
+    expect($(SubmitPage.saveSignOut()).getText()).to.contain("Save and exit survey");
     $(SubmitPage.submit()).click();
 
     expect($(IntroThankYouPagePage.exitButton()).isExisting()).to.be.false;
