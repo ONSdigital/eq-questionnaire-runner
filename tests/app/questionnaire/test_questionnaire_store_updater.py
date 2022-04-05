@@ -3,7 +3,7 @@ from mock import MagicMock, Mock
 from werkzeug.datastructures import MultiDict
 
 from app.data_models import QuestionnaireStore
-from app.data_models.answer_store import Answer, AnswerDict, AnswerStore
+from app.data_models.answer_store import AnswerDict, AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.location import Location
