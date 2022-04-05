@@ -20,9 +20,9 @@ class BusinessSurveyConfig(
         if self.schema:
             self.data_layer: Iterable[Mapping] = [
                 {
-                    "form_type": self.schema.form_type,
-                    "survey_id": self.schema.json["survey_id"],
-                    "title": self.schema.json["title"],
+                    key: self.schema.json[key]
+                    for key in ["form_type", "survey_id", "title"]
+                    if key in self.schema.json
                 }
             ]
         self.base_url = self._stripped_base_url
