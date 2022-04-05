@@ -255,7 +255,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
     def saveAndSignOut(self):
         """
-        Sign out of eQ using the `Save and sign out` button and do not follow redirects since the redirect is external
+        Sign out of eQ using the `Save and exit survey` button and do not follow redirects since the redirect is external
         """
         return self.get(self.getSignOutButton()["href"], follow_redirects=False)
 
