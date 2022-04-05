@@ -2,6 +2,7 @@ from typing import Mapping, Optional
 from uuid import uuid4
 
 from google.cloud import storage  # type: ignore
+from google.cloud.storage.retry import DEFAULT_RETRY
 from pika import BasicProperties, BlockingConnection, URLParameters
 from pika.exceptions import AMQPError, NackError, UnroutableError
 from structlog import get_logger
@@ -35,7 +36,10 @@ class GCSSubmitter:
 
         blob = self.bucket.blob(tx_id)
         blob.metadata = {"tx_id": tx_id, "case_id": case_id}
-        blob.upload_from_string(str(message).encode("utf8"))
+
+        # DEFAULT_RETRY is not idempotent.
+        # However, this behaviour was deemed acceptable for our use case.
+        blob.upload_from_string(str(message).encode("utf8"), retry=DEFAULT_RETRY)
 
         return True
 
@@ -148,7 +152,10 @@ class GCSFeedbackSubmitter:
     def upload(self, metadata: MetadataType, payload: str) -> bool:
         blob = self.bucket.blob(str(uuid4()))
         blob.metadata = metadata
-        blob.upload_from_string(payload.encode("utf8"))
+
+        # DEFAULT_RETRY is not idempotent.
+        # However, this behaviour was deemed acceptable for our use case.
+        blob.upload_from_string(payload.encode("utf8"), retry=DEFAULT_RETRY)
 
         return True
 
