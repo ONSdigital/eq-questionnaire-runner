@@ -593,15 +593,17 @@ def test_update_answers_with_answer_dependents(
 
 def test_update_repeating_answers_with_answer_dependents(mock_schema):
     # Given repeating dependent answers
-    answer_store = AnswerStore()
-    answer_store.add_or_update(
-        Answer(answer_id="first-answer", value="original answer")
+    answer_store = AnswerStore(
+        [
+            AnswerDict(answer_id="first-answer", value="original-answer"),
+            AnswerDict(
+                answer_id="second-answer", value="second answer", list_item_id="abc123"
+            ),
+            AnswerDict(
+                answer_id="second-answer", value="second answer", list_item_id="xyz456"
+            ),
+        ]
     )
-    answer_store.add_or_update(
-        Answer(answer_id="second-answer", value="second answer", list_item_id="abc123")
-    )
-    answer_store.add_or_update(
-        Answer(answer_id="second-answer", value="second answer", list_item_id="xyz456")
     )
     list_store = ListStore([{"items": ["abc123", "xyz456"], "name": "list-name"}])
 
