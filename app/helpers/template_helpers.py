@@ -190,10 +190,10 @@ def get_survey_config(
 
 def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     language = get_locale().language
-    session_store = get_session_store()
-    if session_store:
-        # pylint: disable=assigning-non-slot
-        schema = load_schema_from_session_data(session_store.session_data)
+    if session_store := get_session_store():
+        if session_data := session_store.session_data:
+            # pylint: disable=assigning-non-slot
+            schema = load_schema_from_session_data(session_data)
     else:
         schema = None
     survey_config = get_survey_config(
