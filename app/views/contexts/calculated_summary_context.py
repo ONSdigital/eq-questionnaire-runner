@@ -50,7 +50,7 @@ class CalculatedSummaryContext(Context):
         formatted_total = self._get_formatted_total(
             groups or [],
             current_location=current_location,
-            calculation_type=ValueSourceResolver.get_calculation_operator(
+            calculation_operator=ValueSourceResolver.get_calculation_operator(
                 calculation["calculation_type"]
             ),
         )
@@ -133,7 +133,7 @@ class CalculatedSummaryContext(Context):
 
         return transformed_block
 
-    def _get_formatted_total(self, groups, current_location, calculation_type):
+    def _get_formatted_total(self, groups, current_location, calculation_operator):
         values_to_calculate = []
         answer_format = {"type": None}
         for group in groups:
@@ -158,7 +158,7 @@ class CalculatedSummaryContext(Context):
                     answer_value = answer.get("value") or 0
                     values_to_calculate.append(answer_value)
 
-        calculated_total = calculation_type(values_to_calculate)
+        calculated_total = calculation_operator(values_to_calculate)
         if answer_format["type"] == "currency":
             return get_formatted_currency(calculated_total, answer_format["currency"])
 

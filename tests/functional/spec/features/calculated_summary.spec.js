@@ -190,7 +190,7 @@ describe("Feature: Calculated Summary", () => {
       expect($(NumberTotalPlaybackPage.sixthNumberAnswer()).getText()).to.contain("45.67");
     });
 
-    it("Given I complete every calculated summary, When I go to the next page, Then I should the see the piped calculated summary total for each summary", () => {
+    it("Given I complete every calculated summary, When I go to a page with calculated summary piping, Then I should the see the piped calculated summary total for each summary", () => {
       $(NumberTotalPlaybackPage.submit()).click();
 
       const content = $("h1 + ul").getText();

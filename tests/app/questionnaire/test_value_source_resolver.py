@@ -462,7 +462,7 @@ def test_response_metadata_source():
     "list_item_id",
     [None, "item-1"],
 )
-def test_calculated_summary_source(mocker, list_item_id):
+def test_calculated_summary_value_source(mocker, list_item_id):
     schema = mocker.MagicMock()
     schema.get_block = Mock(
         return_value={

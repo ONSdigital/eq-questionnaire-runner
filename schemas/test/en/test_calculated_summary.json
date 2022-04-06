@@ -6,7 +6,7 @@
     "survey_id": "0",
     "title": "A test schema to demo Calculated Summary",
     "theme": "default",
-    "description": "A schema to showcase Calculated Summary page and usage in value source.",
+    "description": "A schema to showcase Calculated Summary pages and usage in value source.",
     "metadata": [
         {
             "name": "user_id",
