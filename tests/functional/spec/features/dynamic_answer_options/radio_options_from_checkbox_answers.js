@@ -37,5 +37,14 @@ describe("Dynamic radio options from checkbox answers", () => {
       expect($(SubmitPage.mostSeriousInjuryAnswer()).getText()).to.contain("Head");
       expect($(SubmitPage.healedTheQuickestAnswer()).getText()).to.contain("Body");
     });
+
+    it("When I edit and change the answer which the dynamic options is dependent on, then my selected answers are removed", () => {
+      $(SubmitPage.injurySustainedAnswerEdit()).click();
+      $(InjurySustainedPage.arms()).click();
+      $(InjurySustainedPage.submit()).click();
+
+      expect($(MostSeriousInjuryPage.answerByIndex(0)).isSelected()).to.be.false;
+      expect($(MostSeriousInjuryPage.answerByIndex(1)).isSelected()).to.be.false;
+    });
   });
 });

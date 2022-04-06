@@ -162,3 +162,32 @@ class TestQuestionnaireDynamicAnswerOptionsFunctionDriven(IntegrationTestCase):
         )
 
         self.assert_questionnaire_submission()
+
+    def test_dynamic_options_answer_cleared_on_dependency_change(self):
+        # Given I launch a schema and submit an answer for a question which has dynamic options
+        self.launchSurvey(
+            "test_dynamic_answer_options_function_driven_with_static_options"
+        )
+        self.complete_reference_date_question()
+        self.answer_checkbox_question(["2020-12-29", "2020-12-30"])
+        self.previous()
+
+        assert self.is_input_checked("dynamic-checkbox-answer-1")
+        assert self.is_input_checked("dynamic-checkbox-answer-2")
+
+        # When I change the answer which the dynamic options is dependent on
+        self.previous()
+        self.post(
+            {
+                "reference-date-answer-day": "2",
+                "reference-date-answer-month": "1",
+                "reference-date-answer-year": "2021",
+            }
+        )
+
+        # Then the answers provided in the dynamic options question are removed
+        assert not self.is_input_checked("dynamic-checkbox-answer-1")
+        assert not self.is_input_checked("dynamic-checkbox-answer-2")
+
+    def is_input_checked(self, element_id):
+        return self.getHtmlSoup().find("input", {"id": element_id}).has_attr("checked")
