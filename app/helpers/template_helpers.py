@@ -78,7 +78,12 @@ class ContextHelper:
             sign_out_url=self._sign_out_url,
             is_authenticated=current_user.is_authenticated,
         ):
-            return {"itemsList": service_links}
+            return {
+                "toggleServicesButton": {
+                "text": 'Menu',
+                "ariaLabel": 'Toggle services menu'
+            },
+            "itemsList": service_links}
 
         return None
 
