@@ -590,3 +590,61 @@ def test_answer_dependencies_for_min_max(numbers_schema):
             ),
         },
     }
+
+
+def test_answer_dependencies_for_dynamic_options(
+    dynamic_radio_options_from_checkbox_schema,
+):
+    schema = dynamic_radio_options_from_checkbox_schema
+
+    assert schema.answer_dependencies == {
+        "injury-sustained-answer": {
+            AnswerDependent(
+                section_id="injury-sustained-section",
+                block_id="most-serious-injury",
+                for_list=None,
+                answer_id="most-serious-injury-answer",
+            ),
+            AnswerDependent(
+                section_id="injury-sustained-section",
+                block_id="healed-the-quickest",
+                for_list=None,
+                answer_id="healed-the-quickest-answer",
+            ),
+        }
+    }
+
+
+def test_answer_dependencies_for_dynamic_options_function_driven(
+    dynamic_answer_options_function_driven_schema,
+):
+    schema = dynamic_answer_options_function_driven_schema
+
+    assert schema.answer_dependencies == {
+        "reference-date-answer": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="dynamic-mutually-exclusive",
+                for_list=None,
+                answer_id="dynamic-mutually-exclusive-dynamic-answer",
+            ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="dynamic-checkbox",
+                for_list=None,
+                answer_id="dynamic-checkbox-answer",
+            ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="dynamic-dropdown",
+                for_list=None,
+                answer_id="dynamic-dropdown-answer",
+            ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="dynamic-radio",
+                for_list=None,
+                answer_id="dynamic-radio-answer",
+            ),
+        }
+    }
