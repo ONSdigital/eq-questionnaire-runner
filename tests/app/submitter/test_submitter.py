@@ -243,7 +243,8 @@ def test_gcs_submitter_retries_transient_errors(
     function_to_call = getattr(gcs_submitter, entrypoint)
     successful = function_to_call(**data_to_upload)
 
-    # Then
+    # Then the call count should be two since we have 2 side effects,
+    # the 1st request returns a 503 and second request returns a 200.
     assert (
         gcs_blob_with_retry._get_transport().request.call_count  # pylint: disable=protected-access
         == 2
