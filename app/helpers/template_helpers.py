@@ -215,7 +215,7 @@ def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
 
     session_expires_at = (
         session_store.expiration_time.isoformat()
-        if (session_store) and session_store.expiration_time
+        if session_store and session_store.expiration_time
         else None
     )
 
