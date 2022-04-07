@@ -4,7 +4,7 @@ from unittest.mock import Mock
 import pytest
 
 from app.data_models import AnswerStore, ListStore
-from app.data_models.answer import Answer
+from app.data_models.answer import Answer, AnswerDict
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.relationship_location import RelationshipLocation
@@ -455,6 +455,45 @@ def test_response_metadata_source():
             {"source": "response_metadata", "identifier": "started_at"}
         )
         == "2021-10-11T09:40:11.220038+00:00"
+    )
+
+
+@pytest.mark.parametrize(
+    "list_item_id",
+    [None, "item-1"],
+)
+def test_calculated_summary_value_source(mocker, list_item_id):
+    schema = mocker.MagicMock()
+    schema.get_block = Mock(
+        return_value={
+            "id": "number-total",
+            "type": "CalculatedSummary",
+            "calculation": {
+                "calculation_type": "sum",
+                "answers_to_calculate": ["number-answer-1", "number-answer-2"],
+            },
+        },
+    )
+
+    value_source_resolver = get_value_source_resolver(
+        answer_store=AnswerStore(
+            [
+                AnswerDict(
+                    answer_id="number-answer-1", value=10, list_item_id=list_item_id
+                ),
+                AnswerDict(
+                    answer_id="number-answer-2", value=5, list_item_id=list_item_id
+                ),
+            ]
+        ),
+        schema=schema,
+        list_item_id=list_item_id,
+    )
+    assert (
+        value_source_resolver.resolve(
+            {"source": "calculated_summary", "identifier": "number-total"}
+        )
+        == 15
     )
 
 
