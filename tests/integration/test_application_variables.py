@@ -38,6 +38,7 @@ class TestApplicationVariables(IntegrationTestCase):
         self.get("/questionnaire/name-block/")
         self.assertStatusOK()
         self.assertInHead("gtm.start")
+        # form_type is empty so should not be present
         self.assertInHead(
             'dataLayer = [{"survey_id": "001", "title": "Other input fields"}]'
         )
