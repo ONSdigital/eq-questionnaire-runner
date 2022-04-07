@@ -160,6 +160,10 @@ def test_get_page_header_context_census_nisra(app: Flask):
             BusinessSurveyConfig(),
             True,
             {
+                "toggleServicesButton": {
+                    "text": "Menu",
+                    "ariaLabel": "Toggle services menu",
+                },
                 "itemsList": [
                     {
                         "title": "My account",
