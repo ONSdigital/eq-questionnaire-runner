@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "A test schema to validate a sum of answers are Equal to a given total",
+    "title": "A test schema to demo Calculated Summary",
     "theme": "default",
-    "description": "A survey that tests grouped and calculated answers against a total",
+    "description": "A schema to showcase Calculated Summary pages and usage in value source.",
     "metadata": [
         {
             "name": "user_id",
@@ -351,6 +351,114 @@
                                 "calculation_type": "sum",
                                 "answers_to_calculate": ["fifth-number-answer", "sixth-number-answer"],
                                 "title": "Grand total of previous values"
+                            }
+                        },
+                        {
+                            "type": "Interstitial",
+                            "id": "calculated-summary-total-confirmation",
+                            "content": {
+                                "title": "You have provided the following grand totals.",
+                                "contents": [
+                                    {
+                                        "list": [
+                                            {
+                                                "text": "Total currency values (if Q4 not skipped): <em>{total}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "total",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_currency",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "source": "calculated_summary",
+                                                                        "identifier": "currency-total-playback-with-fourth"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Total currency values (if Q4 skipped)): <em>{total}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "total",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_currency",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "source": "calculated_summary",
+                                                                        "identifier": "currency-total-playback-skipped-fourth"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Total unit values: <em>{total}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "total",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_number",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "source": "calculated_summary",
+                                                                        "identifier": "unit-total-playback"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Total percentage values: <em>{total}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "total",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_number",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "source": "calculated_summary",
+                                                                        "identifier": "percentage-total-playback"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Total number values: <em>{total}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "total",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_number",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "source": "calculated_summary",
+                                                                        "identifier": "number-total-playback"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
                             }
                         }
                     ]
