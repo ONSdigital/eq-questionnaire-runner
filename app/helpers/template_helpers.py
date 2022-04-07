@@ -190,12 +190,13 @@ def get_survey_config(
 
 def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     language = get_locale().language
+    schema, session_expires_at = None, None
     if session_store := get_session_store():
         if session_data := session_store.session_data:
-            # pylint: disable=assigning-non-slot
             schema = load_schema_from_session_data(session_data)
-    else:
-        schema = None
+
+        if session_expiry := session_store.expiration_time:
+            session_expires_at = session_expiry.isoformat()
     survey_config = get_survey_config(
         language=language,
         schema=schema,
@@ -214,9 +215,7 @@ def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     template = f"{template.lower()}.html"
 
     session_expires_at = (
-        session_store.expiration_time.isoformat()
-        if session_store and session_store.expiration_time
-        else None
+        session_expires_at if session_store and session_store.expiration_time else None
     )
 
     return flask_render_template(
