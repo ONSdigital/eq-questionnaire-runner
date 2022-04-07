@@ -126,16 +126,13 @@ class ValueSourceResolver:
         """
         calculated_summary_block: Mapping[str, Any] = self.schema.get_block(value_source["identifier"])  # type: ignore
         calculation = calculated_summary_block["calculation"]
-        answers_to_calculate = calculation["answers_to_calculate"]
         operator = self.get_calculation_operator(calculation["calculation_type"])
         list_item_id = self._resolve_list_item_id_for_value_source(value_source)
-
         values = [
             self._get_answer_value(answer_id=answer_id, list_item_id=list_item_id)
-            for answer_id in answers_to_calculate
+            for answer_id in calculation["answers_to_calculate"]
         ]
-        total: IntOrDecimal = operator([value for value in values if value])  # type: ignore
-        return total
+        return operator([value for value in values if value])  # type: ignore
 
     @staticmethod
     def get_calculation_operator(
