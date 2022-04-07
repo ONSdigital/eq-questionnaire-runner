@@ -197,6 +197,7 @@ def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
 
         if session_expiry := session_store.expiration_time:
             session_expires_at = session_expiry.isoformat()
+
     survey_config = get_survey_config(
         language=language,
         schema=schema,
@@ -213,10 +214,6 @@ def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     ).context
 
     template = f"{template.lower()}.html"
-
-    session_expires_at = (
-        session_expires_at if session_store and session_store.expiration_time else None
-    )
 
     return flask_render_template(
         template,
