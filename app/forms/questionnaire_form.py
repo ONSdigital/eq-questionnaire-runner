@@ -259,7 +259,9 @@ class QuestionnaireForm(FlaskForm):
 
         validator = SumCheck(messages=messages, currency=currency)
 
-        calculation_type = self._get_calculation_type(calculation["calculation_type"])
+        calculation_type = ValueSourceResolver.get_calculation_operator(
+            calculation["calculation_type"]
+        )
 
         formatted_values = self._get_formatted_calculation_values(
             calculation["answers_to_calculate"]
@@ -360,13 +362,6 @@ class QuestionnaireForm(FlaskForm):
             if "maximum" in limits:
                 maximum = limits["maximum"]
         return minimum, maximum
-
-    @staticmethod
-    def _get_calculation_type(calculation_type: str) -> Callable:
-        if calculation_type == "sum":
-            return sum
-
-        raise Exception(f"Invalid calculation_type: {calculation_type}")
 
     def _get_formatted_calculation_values(
         self, answers_list: Sequence[str]

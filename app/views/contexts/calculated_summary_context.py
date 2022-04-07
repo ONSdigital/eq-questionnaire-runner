@@ -9,6 +9,7 @@ from app.jinja_filters import (
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.schema_utils import get_answer_ids_in_block
+from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.questionnaire.variants import choose_question_to_display, transform_variants
 from app.views.contexts.context import Context
 from app.views.contexts.summary.group import Group
@@ -42,11 +43,16 @@ class CalculatedSummaryContext(Context):
         calculated_section = self._build_calculated_summary_section(
             block, current_location
         )
+        calculation = block["calculation"]
 
         groups = self.build_groups_for_section(calculated_section)
 
         formatted_total = self._get_formatted_total(
-            groups or [], current_location=current_location
+            groups or [],
+            current_location=current_location,
+            calculation_operator=ValueSourceResolver.get_calculation_operator(
+                calculation["calculation_type"]
+            ),
         )
 
         context = {
@@ -54,7 +60,7 @@ class CalculatedSummaryContext(Context):
                 "groups": groups,
                 "answers_are_editable": True,
                 "calculated_question": self._get_calculated_question(
-                    block["calculation"], formatted_total
+                    calculation, formatted_total
                 ),
                 "title": block.get("title") % dict(total=formatted_total),
                 "collapsible": block.get("collapsible", False),
@@ -127,8 +133,8 @@ class CalculatedSummaryContext(Context):
 
         return transformed_block
 
-    def _get_formatted_total(self, groups, current_location):
-        calculated_total = 0
+    def _get_formatted_total(self, groups, current_location, calculation_operator):
+        values_to_calculate = []
         answer_format = {"type": None}
         for group in groups:
             for block in group["blocks"]:
@@ -150,8 +156,9 @@ class CalculatedSummaryContext(Context):
                             "currency": answer.get("currency"),
                         }
                     answer_value = answer.get("value") or 0
-                    calculated_total += answer_value
+                    values_to_calculate.append(answer_value)
 
+        calculated_total = calculation_operator(values_to_calculate)
         if answer_format["type"] == "currency":
             return get_formatted_currency(calculated_total, answer_format["currency"])
 
