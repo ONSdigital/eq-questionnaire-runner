@@ -418,7 +418,7 @@ To add a new dependency, use `pipenv install [package-name]`, which not only ins
 NB: both the Pipfile and Pipfile.lock files are required in source control to accurately pin dependencies.
 
 ### JavaScript
-To add a new dependency, use `yarn install [package-name]` and just run `yarn` if you need to install all the packages needed for locally.
+To add a new dependency, use `yarn add [package-name]` and just run `yarn` if you need to install all the packages needed for locally.
 
 
 ## Testing design system changes (locally) without pushing to actual CDN
