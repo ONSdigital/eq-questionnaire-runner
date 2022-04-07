@@ -80,8 +80,8 @@ class ContextHelper:
         ):
             return {
                 "toggleServicesButton": {
-                    "text": 'Menu',
-                    "ariaLabel": 'Toggle services menu'
+                    "text": "Menu",
+                    "ariaLabel": "Toggle services menu"
                 },
                 "itemsList": service_links
             }
