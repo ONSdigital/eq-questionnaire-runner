@@ -418,13 +418,18 @@ To add a new dependency, use `pipenv install [package-name]`, which not only ins
 NB: both the Pipfile and Pipfile.lock files are required in source control to accurately pin dependencies.
 
 ### JavaScript
-To add a new dependency, use `yarn add [package-name]` and just run `yarn` if you need to install all the packages needed for locally.
+To add a new dependency, use `yarn add [package-name]` and `yarn` to install all the packages locally.
 
 
-## Testing design system changes (locally) without pushing to actual CDN
+## Testing Design System changes (locally) without pushing to actual CDN
 
-### On DS Repo
+### On [Design System](https://github.com/ONSdigital/design-system) Repo
 Checkout branch with new changes on
+
+You will need to install the Design System dependencies and browser-sync installed to do this so run these commands if you haven't:
+
+- yarn
+- yarn add browser-sync
 
 Then in the console run:
 - yarn cdn-bundle
@@ -433,10 +438,10 @@ Then in the console run:
 
 You should now see output indicating that files are being served from `localhost:3000`
 
-Now switch to the EQ-Questionnaire-Runner Repo
+Now switch to the eQ Questionnaire Runner Repo
 
-### On EQ-Questionnaire-Runner Repo
-Checkout branch you want to test on, usually `master`
+### On eQ Questionnaire Runner Repo
+Checkout branch you want to test on
 
 Edit your .development.env with following:
 
@@ -445,14 +450,13 @@ CDN_URL=http://localhost:3000
 CDN_ASSETS_PATH=
 ```
 
-Edit the Makefile to remove `build` from the run command. Should now look like this:
+Edit the Makefile to remove `load-design-system-templates` from the build command. Should now look like this:
 
 ```
-run: link-development-env
-	pipenv run flask run
+build: load-schemas translate
 ```
 
-Run `make build` in the terminal to make sure you have the Design System templates loaded
+Run `make load-design-system-templates` in the terminal to make sure you have the Design System templates loaded
 
 Then edit the first line in the `templates/layout/_template.njk` file to remove the version number. Should now look like this:
 
