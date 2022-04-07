@@ -412,6 +412,54 @@ Refer to our [profiling document](doc/profiling.md).
 
 ## Updating / Installing dependencies
 
+### Python
 To add a new dependency, use `pipenv install [package-name]`, which not only installs the package but Pipenv will also go to the trouble of updating the Pipfile as well.
 
 NB: both the Pipfile and Pipfile.lock files are required in source control to accurately pin dependencies.
+
+### JavaScript
+To add a new dependency, use `yarn install [package-name]` and just run `yarn` if you need to install all the packages needed for locally.
+
+
+## Testing design system changes (locally) without pushing to actual CDN
+
+### On DS Repo
+Checkout branch with new changes on
+
+Then in the console run:
+- yarn cdn-bundle
+- cd build
+- browser-sync start --cwd -s --http
+
+You should now see output indicating that files are being served from `localhost:3000`
+
+Now switch to the EQ-Questionnaire-Runner Repo
+
+### On EQ-Questionnaire-Runner Repo
+Checkout branch you want to test on, usually `master`
+
+Edit your .development.env with following:
+
+```
+CDN_URL=http://localhost:3000
+CDN_ASSETS_PATH=
+```
+
+Edit the Makefile to remove `build` from the run command. Should now look like this:
+
+```
+run: link-development-env
+	pipenv run flask run
+```
+
+Run `make build` in the terminal to make sure you have the Design System templates loaded
+
+Then edit the first line in the `templates/layout/_template.njk` file to remove the version number. Should now look like this:
+
+```
+{% set release_version = "" %}
+```
+
+Then spin up launcher and runner with `make dev-compose-up` and `make run`
+
+Now when navigating to localhost:8000 and launching a schema, this will now be using the local cdn with the changes from the Design System branch
