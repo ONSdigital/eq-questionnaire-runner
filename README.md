@@ -436,7 +436,7 @@ Then in the console run:
 - cd build
 - browser-sync start --cwd -s --http
 
-You should now see output indicating that files are being served from `localhost:3000`
+You should now see output indicating that files are being served from `localhost:3000`. So main.css for example will now be served on `http://localhost:3000//css/main.css`
 
 Now switch to the eQ Questionnaire Runner Repo
 
