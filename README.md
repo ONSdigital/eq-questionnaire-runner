@@ -450,7 +450,7 @@ To add a new dependency, use `yarn add [package-name]` and `yarn` to install all
 ### On [Design System](https://github.com/ONSdigital/design-system) Repo
 Checkout branch with new changes on
 
-You will need to install the Design System dependencies and browser-sync installed to do this so run these commands if you haven't:
+You will need to install the Design System dependencies and browser-sync to do this so run these commands if you haven't:
 
 ``` shell
 yarn
