@@ -457,10 +457,10 @@ Then in the terminal run:
 ``` shell
 yarn cdn-bundle
 cd build
-browser-sync start --cwd -s --http
+browser-sync start --cwd -s --http --port 5678
 ```
 
-You should now see output indicating that files are being served from `localhost:3000`. So main.css for example will now be served on `http://localhost:3000//css/main.css`
+You should now see output indicating that files are being served from `localhost:5678`. So main.css for example will now be served on `http://localhost:5678//css/main.css`
 
 Now switch to the eQ Questionnaire Runner Repo
 
@@ -470,7 +470,7 @@ Checkout branch you want to test on
 Edit your .development.env with following:
 
 ``` shell
-CDN_URL=http://localhost:3000
+CDN_URL=http://localhost:5678
 CDN_ASSETS_PATH=
 ```
 
