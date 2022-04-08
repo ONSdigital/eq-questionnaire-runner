@@ -192,49 +192,70 @@ The functional tests use a set of selectors that are generated from each of the 
 
 To run the functional tests first runner needs to be spin up with:
 
-`RUNNER_ENV_FILE=.functional-tests.env make run`
+``` shell
+RUNNER_ENV_FILE=.functional-tests.env make run
+```
 
 This will set the correct environment variables for running the functional tests.
 
 Then you can run:
 
-`make test-functional`
+``` shell
+make test-functional
+```
 
 This will delete the `tests/functional/generated_pages` directory and regenerate all the files in it from the schemas.
 
 You can also individually run the `generate_pages` and `test_functional` yarn scripts:
 
-`yarn generate_pages; yarn test_functional`
+``` shell
+yarn generate_pages
+yarn test_functional
+```
+
 
 To generate the pages manually you can run the `generate_pages` scripts with the schema directory. Run it from the `tests/functional` directory as follows:
 
-`./generate_pages.py ../../schemas/test/en/ ./generated_pages -r "../../base_pages"`
+``` shell
+./generate_pages.py ../../schemas/test/en/ ./generated_pages -r "../../base_pages"
+```
 
 To generate a spec file with the imports included, you can use the `generate_pages.py` script on a single schema with the `-s` argument.
 
-`./generate_pages.py ../../schemas/test/en/test_multiple_piping.json ./temp_directory -r "../../base_pages" -s spec/test_multiple_piping.spec.js`
+``` shell
+./generate_pages.py ../../schemas/test/en/test_multiple_piping.json ./temp_directory -r "../../base_pages" -s spec/test_multiple_piping.spec.js
+```
 
 If you have already built the generated pages, then the functional tests can be executed with:
 
-`yarn test_functional`
+``` shell
+yarn test_functional
+```
 
 This can be limited to a single spec using:
 
-`yarn test_functional --spec save_sign_out.spec.js`
+``` shell
+yarn test_functional --spec save_sign_out.spec.js
+```
 
 To run a single test, add `.only` into the name of any `describe` or `it` function:
 
 `describe.only('Skip Conditions', function() {...}` or
+
 `it.only('Given this is a test', function() {...}`
 
 Test suites are configured in the `wdio.conf.js` file.
 An individual test suite can be run using:
 
-`yarn test_functional --suite <suite>`
+``` shell
+yarn test_functional --suite <suite>
+```
 
 To run the tests against a remote deployment you will need to specify the environment variable of EQ_FUNCTIONAL_TEST_ENV eg:
 
-`EQ_FUNCTIONAL_TEST_ENV=https://staging-new-surveys.dev.eq.ons.digital/ yarn test_functional`
+``` shell
+EQ_FUNCTIONAL_TEST_ENV=https://staging-new-surveys.dev.eq.ons.digital/ yarn test_functional
+```
 
 ---
 
@@ -410,6 +431,8 @@ python token_generator.py
 
 Refer to our [profiling document](doc/profiling.md).
 
+---
+
 ## Updating / Installing dependencies
 
 ### Python
@@ -420,6 +443,7 @@ NB: both the Pipfile and Pipfile.lock files are required in source control to ac
 ### JavaScript
 To add a new dependency, use `yarn add [package-name]` and `yarn` to install all the packages locally.
 
+---
 
 ## Testing Design System changes (locally) without pushing to actual CDN
 
@@ -428,13 +452,18 @@ Checkout branch with new changes on
 
 You will need to install the Design System dependencies and browser-sync installed to do this so run these commands if you haven't:
 
-- yarn
-- yarn add browser-sync
+``` shell
+yarn
+yarn add browser-sync
+```
 
 Then in the console run:
-- yarn cdn-bundle
-- cd build
-- browser-sync start --cwd -s --http
+
+``` shell
+yarn cdn-bundle
+cd build
+browser-sync start --cwd -s --http
+```
 
 You should now see output indicating that files are being served from `localhost:3000`. So main.css for example will now be served on `http://localhost:3000//css/main.css`
 
@@ -445,14 +474,14 @@ Checkout branch you want to test on
 
 Edit your .development.env with following:
 
-```
+``` shell
 CDN_URL=http://localhost:3000
 CDN_ASSETS_PATH=
 ```
 
 Edit the Makefile to remove `load-design-system-templates` from the build command. Should now look like this:
 
-```
+``` shell
 build: load-schemas translate
 ```
 
@@ -460,7 +489,7 @@ Run `make load-design-system-templates` in the terminal to make sure you have th
 
 Then edit the first line in the `templates/layout/_template.njk` file to remove the version number. Should now look like this:
 
-```
+``` shell
 {% set release_version = "" %}
 ```
 
