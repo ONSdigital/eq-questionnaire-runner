@@ -451,6 +451,7 @@ To add a new dependency, use `yarn add [package-name]` and `yarn` to install all
 Checkout branch with new changes on
 
 You will need to install the Design System dependencies to do this so run `yarn` in the terminal if you haven't
+You will also need to install gulp
 
 Then in the terminal run:
 
