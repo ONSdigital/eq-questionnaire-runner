@@ -3,6 +3,9 @@ import uuid
 from unittest.mock import MagicMock
 
 import pytest
+from google.cloud.storage import Blob
+from google.resumable_media import InvalidResponse
+from requests import Response
 
 from app.data_models import QuestionnaireStore
 from app.data_models.answer import Answer
@@ -110,5 +113,30 @@ def patch_url_parameters(mocker):
 
 
 @pytest.fixture
-def patch_client(mocker):
+def patch_gcs_client(mocker):
     return mocker.patch("app.submitter.submitter.storage.Client")
+
+
+@pytest.fixture
+def gcs_blob_with_retry(mocker):
+    blob = Blob(name="some-blob", bucket=mocker.Mock())
+
+    response_503 = Response()
+    response_503.status_code = 503
+
+    response_200 = Response()
+    response_200._content = (  # pylint: disable=protected-access
+        b'{"some-key":"some-value"}'
+    )
+    response_200.status_code = 200
+
+    mock_transport_request = mocker.Mock(
+        side_effect=[InvalidResponse(response_503), response_200]
+    )
+    mock_transport = mocker.Mock()
+    mock_transport.request = mock_transport_request
+    blob._get_transport = mocker.Mock(  # pylint: disable=protected-access
+        return_value=mock_transport
+    )
+
+    return blob
