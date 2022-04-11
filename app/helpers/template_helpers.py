@@ -82,8 +82,8 @@ class ContextHelper:
         ):
             return {
                 "toggleServicesButton": {
-                    "text": "Menu",
-                    "ariaLabel": "Toggle services menu",
+                    "text": lazy_gettext("Menu"),
+                    "ariaLabel": lazy_gettext("Toggle services menu"),
                 },
                 "itemsList": service_links,
             }
