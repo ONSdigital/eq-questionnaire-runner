@@ -466,7 +466,8 @@ You should now see output indicating that files are being served from `localhost
 Now switch to the eQ Questionnaire Runner Repo
 
 ### On eQ Questionnaire Runner Repo
-Checkout branch you want to test on
+In a separate terminal window/tab:
+Checkout the runner branch you want to test on
 
 Edit your .development.env with following:
 
