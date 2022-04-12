@@ -5,6 +5,7 @@ on:
     branches:
       - "master"
       - "branch-v*"
+      - "bug_fix_*"
 
 jobs:
   python-dependencies:
