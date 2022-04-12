@@ -54,7 +54,9 @@ def build_view_submitted_response_context(schema, submitted_at):
         expired = has_view_submitted_response_expired(submitted_at)
         view_submitted_response.update(
             expired=expired,
-            expires_at=get_view_submitted_response_expiration_time(submitted_at),
+            expires_at=get_view_submitted_response_expiration_time(
+                submitted_at
+            ).isoformat(),
         )
         if not expired:
             view_submitted_response["url"] = url_for(
