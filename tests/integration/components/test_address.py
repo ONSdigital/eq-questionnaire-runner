@@ -104,14 +104,14 @@ class TestLookupAddressFields(IntegrationTestCase):
         self.post(
             {
                 "address-mandatory-line1": "first address",
-                "address-mandatory-uprn": "123456789",
+                "address-mandatory-uprn": "0123456789",
             }
         )
 
         self.post({})
 
         # Then
-        self.assertNotInBody("123456789")
+        self.assertNotInBody("0123456789")
 
     def test_auth_token_not_in_page(self):
         self.assertNotInBody("data-authorization-token")

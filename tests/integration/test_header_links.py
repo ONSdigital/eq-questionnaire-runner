@@ -1,4 +1,4 @@
-from tests.integration.create_token import ACCOUNT_SERVICE_URL
+from tests.integration.create_token import ACCOUNT_SERVICE_URL, RAS_URL
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -25,6 +25,29 @@ class TestHeaderLinks(IntegrationTestCase):
         self.assertIsNone(sign_out_link)
         self.assertNotInBody("Sign out")
 
+    def assert_help_link_exist(self):
+        help_link = self.getLinkById("header-link-help")
+        self.assertIsNotNone(help_link)
+        self.assertEqual(help_link.text, "Help")
+        self.assertEqual(
+            help_link["href"],
+            f"{RAS_URL}/surveys/surveys-help?survey_ref=001&ru_ref=123456789012A",
+        )
+
+    def assert_help_link_exist_not_authenticated(self):
+        help_link = self.getLinkById("header-link-help")
+        self.assertIsNotNone(help_link)
+        self.assertEqual(help_link.text, "Help")
+        self.assertEqual(
+            help_link["href"],
+            f"{RAS_URL}/help",
+        )
+
+    def assert_help_link_does_not_exist(self):
+        help_link = self.getLinkById("header-link-help")
+        self.assertIsNone(help_link)
+        self.assertNotInBody("Help")
+
 
 class TestHeaderLinksPreSubmission(TestHeaderLinks):
     def test_links_in_header_when_valid_session(self):
@@ -37,6 +60,7 @@ class TestHeaderLinksPreSubmission(TestHeaderLinks):
         # Then
         self.assert_my_account_link_exist()
         self.assert_sign_out_link_exist()
+        self.assert_help_link_exist()
 
     def test_links_not_in_header_when_no_session(self):
         # Given
@@ -48,6 +72,7 @@ class TestHeaderLinksPreSubmission(TestHeaderLinks):
         # Then
         self.assert_my_account_link_does_not_exist()
         self.assert_sign_out_link_does_not_exist()
+        self.assert_help_link_exist_not_authenticated()
 
 
 class TestHeaderLinksPostSubmission(TestHeaderLinks):
@@ -64,6 +89,7 @@ class TestHeaderLinksPostSubmission(TestHeaderLinks):
         # Then
         self.assert_my_account_link_exist()
         self.assert_sign_out_link_exist()
+        self.assert_help_link_exist()
 
     def test_links_not_in_header_when_no_session(self):
         # Given
@@ -75,6 +101,7 @@ class TestHeaderLinksPostSubmission(TestHeaderLinks):
         # Then
         self.assert_my_account_link_does_not_exist()
         self.assert_sign_out_link_does_not_exist()
+        self.assert_help_link_exist_not_authenticated()
 
 
 class TestHeaderLinksPostSignOut(TestHeaderLinks):
@@ -83,6 +110,7 @@ class TestHeaderLinksPostSignOut(TestHeaderLinks):
         self.launchSurvey("test_thank_you")
         self.assert_my_account_link_exist()
         self.assert_sign_out_link_exist()
+        self.assert_help_link_exist()
 
         # When I sign out and go back to previous url since we will be redirected
         current_url = self.last_url
@@ -93,3 +121,4 @@ class TestHeaderLinksPostSignOut(TestHeaderLinks):
         self.assertInBody("Sorry, you need to sign in again")
         self.assert_my_account_link_does_not_exist()
         self.assert_sign_out_link_does_not_exist()
+        self.assert_help_link_exist_not_authenticated()
