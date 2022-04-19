@@ -170,7 +170,7 @@ def test_rabbitmq_submitter_metadata_is_sent_in_header_when_message_sent(
     assert headers["case_id"] == "98765"
 
 
-def test_gcs_submitter_sends_message(patch_client):
+def test_gcs_submitter_sends_message(patch_gcs_client):
     gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
     # When
     published = gcs_submitter.send_message(
@@ -180,7 +180,7 @@ def test_gcs_submitter_sends_message(patch_client):
     )
 
     # Then
-    bucket = patch_client.return_value.get_bucket.return_value
+    bucket = patch_gcs_client.return_value.get_bucket.return_value
     blob = bucket.blob.return_value
     assert isinstance(blob.metadata, dict)
 
@@ -193,7 +193,7 @@ def test_gcs_submitter_sends_message(patch_client):
     assert published is True
 
 
-def test_gcs_submitter_adds_metadata_when_sends_message(patch_client):
+def test_gcs_submitter_adds_metadata_when_sends_message(patch_gcs_client):
     gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
     # When
     gcs_submitter.send_message(
@@ -203,7 +203,7 @@ def test_gcs_submitter_adds_metadata_when_sends_message(patch_client):
     )
 
     # Then
-    bucket = patch_client.return_value.get_bucket.return_value
+    bucket = patch_gcs_client.return_value.get_bucket.return_value
     blob = bucket.blob.return_value
 
     assert blob.metadata == {
@@ -212,7 +212,47 @@ def test_gcs_submitter_adds_metadata_when_sends_message(patch_client):
     }
 
 
-def test_gcs_feedback_submitter_uploads_feedback(patch_client):
+@pytest.mark.parametrize(
+    "submitter, entrypoint, data_to_upload",
+    [
+        (
+            GCSSubmitter,
+            "send_message",
+            {"message": "some message", "tx_id": "123", "case_id": "456"},
+        ),
+        (
+            GCSFeedbackSubmitter,
+            "upload",
+            {
+                "metadata": {"some-data": "some-value"},
+                "payload": json_dumps({"some-data": "some-value"}),
+            },
+        ),
+    ],
+)
+def test_gcs_submitter_retries_transient_errors(
+    patch_gcs_client, gcs_blob_with_retry, submitter, entrypoint, data_to_upload
+):
+    # Given
+    gcs_submitter = submitter(bucket_name="test_bucket")
+
+    # When
+    bucket = patch_gcs_client.return_value.get_bucket.return_value
+    bucket.blob.return_value = gcs_blob_with_retry
+
+    function_to_call = getattr(gcs_submitter, entrypoint)
+    successful = function_to_call(**data_to_upload)
+
+    # Then the call count should be two since we have 2 side effects,
+    # the 1st request returns a 503 and second request returns a 200.
+    assert (
+        gcs_blob_with_retry._get_transport().request.call_count  # pylint: disable=protected-access
+        == 2
+    )
+    assert successful is True
+
+
+def test_gcs_feedback_submitter_uploads_feedback(patch_gcs_client):
     # Given
     feedback = GCSFeedbackSubmitter(bucket_name="feedback")
 
@@ -236,7 +276,7 @@ def test_gcs_feedback_submitter_uploads_feedback(patch_client):
     feedback_upload = feedback.upload(metadata, json_dumps(payload))
 
     # Then
-    bucket = patch_client.return_value.get_bucket.return_value
+    bucket = patch_gcs_client.return_value.get_bucket.return_value
     blob = bucket.blob.return_value
 
     assert blob.metadata["feedback_count"] == 1
