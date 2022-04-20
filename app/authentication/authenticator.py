@@ -128,7 +128,7 @@ def _create_session_data_from_metadata(metadata: Mapping[str, Any]) -> SessionDa
         period_str=metadata.get("period_str"),
         language_code=metadata.get("language_code"),
         launch_language_code=metadata.get("language_code"),
-        survey_url=metadata.get("survey_url"),
+        schema_url=metadata.get("schema_url"),
         ru_name=metadata.get("ru_name"),
         ru_ref=metadata.get("ru_ref"),
         response_id=metadata.get("response_id"),
