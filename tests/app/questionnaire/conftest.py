@@ -15,6 +15,7 @@ from app.questionnaire.placeholder_renderer import (
     find_pointers_containing,
 )
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
+from app.questionnaire.router import Router
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
 
@@ -1065,6 +1066,11 @@ def mock_empty_schema(mocker):
 @pytest.fixture
 def mock_empty_answer_store(mocker):
     return mocker.MagicMock(spec=AnswerStore)
+
+
+@pytest.fixture
+def mock_router(mocker):
+    return mocker.MagicMock(spec=Router)
 
 
 @pytest.fixture
