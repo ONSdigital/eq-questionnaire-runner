@@ -154,5 +154,3 @@ PRINT_STYLE_SHEET_FILE_PATH = os.getenv(
 )
 
 ONS_URL = os.getenv("ONS_URL", "https://www.ons.gov.uk")
-
-RAS_URL = os.getenv("RAS_URL", "https://surveys.ons.gov.uk")

@@ -6,7 +6,7 @@ from flask_babel import lazy_gettext
 from flask_login import current_user
 
 from app.globals import get_metadata
-from app.settings import RAS_URL
+from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config.link import HeaderLink, Link
 from app.survey_config.survey_config import SurveyConfig
 
@@ -18,7 +18,6 @@ class BusinessSurveyConfig(
     survey_title: str = "ONS Business Surveys"
     footer_links: Iterable[MutableMapping] = field(default_factory=list)
     footer_legal_links: Iterable[Mapping] = field(default_factory=list)
-    account_service_help_url: str = f"{RAS_URL}/help"
 
     def __post_init__(self):
         self.base_url = self._stripped_base_url
@@ -32,11 +31,6 @@ class BusinessSurveyConfig(
                     if key in self.schema.json
                 }
             ]
-
-            if current_user and current_user.is_authenticated:
-                ru_ref = get_metadata(current_user).get("ru_ref")
-                survey_id = self.schema.json["survey_id"]
-                self.account_service_help_url = f"{RAS_URL}/surveys/surveys-help?survey_ref={survey_id}&ru_ref={ru_ref}"
 
         if not self.account_service_log_out_url:
             self.account_service_log_out_url: str = f"{self.base_url}/sign-in/logout"
@@ -66,6 +60,13 @@ class BusinessSurveyConfig(
     def get_service_links(
         self, sign_out_url: str, *, is_authenticated: bool
     ) -> Optional[list[dict]]:
+        if self.schema and is_authenticated:
+            ru_ref = get_metadata(current_user).get("ru_ref")  # type: ignore
+            survey_id = self.schema.json["survey_id"]
+            self.account_service_help_url = f"{ACCOUNT_SERVICE_BASE_URL}/surveys/surveys-help?survey_ref={survey_id}&ru_ref={ru_ref}"
+        else:
+            self.account_service_help_url = f"{ACCOUNT_SERVICE_BASE_URL}/help"
+
         return (
             [
                 HeaderLink(
