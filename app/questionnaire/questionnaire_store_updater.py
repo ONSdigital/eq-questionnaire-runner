@@ -334,14 +334,13 @@ class QuestionnaireStoreUpdater:
         self._remove_dependent_blocks_from_progress_store()
 
         for section in self.dependent_sections:
+            is_path_complete = section.is_complete
 
             if section.is_complete is None:
                 routing_path = self._router.routing_path(
                     section.section_id, list_item_id=section.list_id
                 )
                 is_path_complete = self._router.is_path_complete(routing_path)
-            else:
-                is_path_complete = section.is_complete
 
             self.update_section_status(
                 is_complete=is_path_complete,
