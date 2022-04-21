@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-04-19 08:30+0100\n"
+"POT-Creation-Date: 2022-04-20 14:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -382,7 +382,7 @@ msgstr ""
 msgid "Crown copyright and database rights 2020 OS 100019153."
 msgstr ""
 
-#: app/survey_config/survey_config.py:45
+#: app/survey_config/survey_config.py:42
 msgid "Save and exit survey"
 msgstr ""
 
@@ -1131,8 +1131,8 @@ msgstr ""
 #: templates/layouts/_base.html:72
 msgid ""
 "We use <a href='{cookie_settings_url}'>cookies to collect information</a>"
-" about how you use census.gov.uk. We use this information to make the "
-"website work as well as possible and improve our services."
+" about how you use surveys.ons.gov.uk. We use this information to make "
+"the website work as well as possible and improve our services."
 msgstr ""
 
 #: templates/layouts/_base.html:73
