@@ -60,7 +60,7 @@ class Question:
                 block_id=block_id,
                 list_item_id=self.list_item_id,
                 return_to=return_to,
-                return_to_answer_id=answer_id,
+                return_to_answer_id=answer_id if return_to else None,
                 _anchor=answer_id,
             )
 
