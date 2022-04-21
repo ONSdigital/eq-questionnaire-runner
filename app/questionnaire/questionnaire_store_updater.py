@@ -38,7 +38,7 @@ class QuestionnaireStoreUpdater:
         self.dependent_block_id_by_section_key: Mapping[
             SectionKeyType, set[str]
         ] = defaultdict(set)
-        self.dependent_sections: set[tuple] = set()
+        self.dependent_sections: set[DependentSection] = set()
 
     def save(self):
         if self.is_dirty():
@@ -334,13 +334,14 @@ class QuestionnaireStoreUpdater:
         self._remove_dependent_blocks_from_progress_store()
 
         for section in self.dependent_sections:
-            is_path_complete = section.is_complete
 
-            if is_path_complete is None:
+            if section.is_complete is None:
                 routing_path = self._router.routing_path(
                     section.section_id, list_item_id=section.list_id
                 )
                 is_path_complete = self._router.is_path_complete(routing_path)
+            else:
+                is_path_complete = section.is_complete
 
             self.update_section_status(
                 is_complete=is_path_complete,
