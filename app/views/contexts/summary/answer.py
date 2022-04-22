@@ -45,6 +45,6 @@ class Answer:
             block_id=block_id,
             list_item_id=list_item_id,
             return_to=return_to,
-            return_to_answer_id=self.id,
+            return_to_answer_id=self.id if return_to else None,
             _anchor=self.id,
         )
