@@ -3,9 +3,7 @@ from typing import Iterable, Mapping, MutableMapping, Optional
 from warnings import warn
 
 from flask_babel import lazy_gettext
-from flask_login import current_user
 
-from app.globals import get_metadata
 from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config.link import HeaderLink, Link
 from app.survey_config.survey_config import SurveyConfig
@@ -58,22 +56,21 @@ class BusinessSurveyConfig(
         ]
 
     def get_service_links(
-        self, sign_out_url: str, *, is_authenticated: bool
+        self, sign_out_url: str, *, is_authenticated: bool, ru_ref: Optional[str]
     ) -> Optional[list[dict]]:
         if self.schema and is_authenticated:
-            ru_ref = get_metadata(current_user).get("ru_ref")  # type: ignore
             survey_id = self.schema.json["survey_id"]
             self.account_service_help_url = f"{ACCOUNT_SERVICE_BASE_URL}/surveys/surveys-help?survey_ref={survey_id}&ru_ref={ru_ref}"
         else:
             self.account_service_help_url = f"{ACCOUNT_SERVICE_BASE_URL}/help"
-
+        help_link = HeaderLink(
+            lazy_gettext("Help"),
+            self.account_service_help_url,
+            id="header-link-help",
+        ).__dict__
         return (
             [
-                HeaderLink(
-                    lazy_gettext("Help"),
-                    self.account_service_help_url,
-                    id="header-link-help",
-                ).__dict__,
+                help_link,
                 HeaderLink(
                     lazy_gettext("My account"),
                     self.account_service_my_account_url,
@@ -84,13 +81,7 @@ class BusinessSurveyConfig(
                 ).__dict__,
             ]
             if is_authenticated
-            else [
-                HeaderLink(
-                    lazy_gettext("Help"),
-                    self.account_service_help_url,
-                    id="header-link-help",
-                ).__dict__
-            ]
+            else [help_link]
         )
 
     @property
