@@ -16,6 +16,17 @@ from app.views.contexts.summary.group import Group
 
 
 class CalculatedSummaryContext(Context):
+    def get_return_to(self, section_id: str):
+        # :TODO: Add support for returning to the calculated summary that was used
+        has_section_summary = bool(self._schema.get_summary_for_section(section_id))
+        if has_section_summary:
+            return "section-summary"
+
+        if not self._schema.is_flow_hub:
+            return "final-summary"
+
+        return None
+
     def build_groups_for_section(self, section):
         routing_path = self._router.routing_path(section["id"])
 
@@ -32,7 +43,7 @@ class CalculatedSummaryContext(Context):
                 self._schema,
                 location,
                 self._language,
-                return_to="final-summary",
+                return_to=self.get_return_to(section["id"]),
             ).serialize()
             for group in section["groups"]
         ]
