@@ -27,7 +27,6 @@ class SurveyConfig:
     account_service_my_account_url: Optional[str] = None
     account_service_todo_url: Optional[str] = None
     account_service_log_out_url: Optional[str] = None
-    account_service_help_url: Optional[str] = None
     title_logo: Optional[str] = None
     title_logo_alt: Optional[str] = None
     accessibility_url: str = f"{ONS_URL}/help/accessibility/"

@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Iterable, Mapping, MutableMapping, Optional
+from urllib.parse import urlencode
 from warnings import warn
 
 from flask_babel import lazy_gettext
@@ -58,8 +59,11 @@ class BusinessSurveyConfig(
         self, *, is_authenticated: bool, ru_ref: Optional[str]
     ) -> str:
         if self.schema and is_authenticated and ru_ref:
-            survey_id = self.schema.json["survey_id"]
-            return f"{self.base_url}/surveys/surveys-help?survey_ref={survey_id}&ru_ref={ru_ref}"
+            request_data = {
+                "survey_ref": self.schema.json["survey_id"],
+                "ru_ref": ru_ref,
+            }
+            return f"{self.base_url}/surveys/surveys-help?{urlencode(request_data)}"
 
         return f"{self.base_url}/help"
 

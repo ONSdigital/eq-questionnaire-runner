@@ -56,7 +56,6 @@ class ContextHelper:
             "account_service_my_account_url": self._survey_config.account_service_my_account_url,
             "account_service_log_out_url": self._survey_config.account_service_log_out_url,
             "account_service_todo_url": self._survey_config.account_service_todo_url,
-            "account_service_help_url": self._survey_config.account_service_help_url,
             "contact_us_url": self._survey_config.contact_us_url,
             "thank_you_url": url_for("post_submission.get_thank_you"),
             "cookie_settings_url": self._survey_config.cookie_settings_url,
