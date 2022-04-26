@@ -12,7 +12,7 @@ import CurrencyTotalPlaybackPageSkippedFourth from "../../generated_pages/calcul
 import UnitTotalPlaybackPage from "../../generated_pages/calculated_summary/unit-total-playback.page.js";
 import PercentageTotalPlaybackPage from "../../generated_pages/calculated_summary/percentage-total-playback.page.js";
 import NumberTotalPlaybackPage from "../../generated_pages/calculated_summary/number-total-playback.page.js";
-import CalculatedSummaryTotalConfirmation from "../../generated_pages/calculated_summary/calculated-summary-total-confirmation.page";
+import CalculatedSummaryTotalConfirmation from "../../generated_pages/calculated_summary/calculated-summary-total-confirmation.page.js";
 import SubmitPage from "../../generated_pages/calculated_summary/submit.page";
 import ThankYouPage from "../../base_pages/thank-you.page.js";
 

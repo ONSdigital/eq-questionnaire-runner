@@ -75,12 +75,20 @@ class ContextHelper:
         }
 
     @property
-    def service_links_context(self) -> Optional[dict[str, list[dict]]]:
+    def service_links_context(
+        self,
+    ) -> Optional[dict[str, Union[dict[str, str], list[dict]]]]:
         if service_links := self._survey_config.get_service_links(
             sign_out_url=self._sign_out_url,
             is_authenticated=current_user.is_authenticated,
         ):
-            return {"itemsList": service_links}
+            return {
+                "toggleServicesButton": {
+                    "text": lazy_gettext("Menu"),
+                    "ariaLabel": "Toggle services menu",
+                },
+                "itemsList": service_links,
+            }
 
         return None
 
