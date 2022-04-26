@@ -1,4 +1,4 @@
-from tests.integration.create_token import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_URL
+from tests.integration.create_token import ACCOUNT_SERVICE_URL
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -31,7 +31,7 @@ class TestHeaderLinks(IntegrationTestCase):
         self.assertEqual(help_link.text, "Help")
         self.assertEqual(
             help_link["href"],
-            f"{ACCOUNT_SERVICE_BASE_URL}/surveys/surveys-help?survey_ref=001&ru_ref=123456789012A",
+            f"{ACCOUNT_SERVICE_URL}/surveys/surveys-help?survey_ref=001&ru_ref=123456789012A",
         )
 
     def assert_help_link_exist_not_authenticated(self):
@@ -40,7 +40,16 @@ class TestHeaderLinks(IntegrationTestCase):
         self.assertEqual(help_link.text, "Help")
         self.assertEqual(
             help_link["href"],
-            f"{ACCOUNT_SERVICE_BASE_URL}/help",
+            "https://surveys.ons.gov.uk/help",
+        )
+
+    def assert_help_link_exist_not_authenticated_after_sign_out(self):
+        help_link = self.getLinkById("header-link-help")
+        self.assertIsNotNone(help_link)
+        self.assertEqual(help_link.text, "Help")
+        self.assertEqual(
+            help_link["href"],
+            f"{ACCOUNT_SERVICE_URL}/help",
         )
 
     def assert_help_link_does_not_exist(self):
@@ -121,4 +130,4 @@ class TestHeaderLinksPostSignOut(TestHeaderLinks):
         self.assertInBody("Sorry, you need to sign in again")
         self.assert_my_account_link_does_not_exist()
         self.assert_sign_out_link_does_not_exist()
-        self.assert_help_link_exist_not_authenticated()
+        self.assert_help_link_exist_not_authenticated_after_sign_out()

@@ -6,7 +6,6 @@ from sdc.crypto.encrypter import encrypt
 from app.keys import KEY_PURPOSE_AUTHENTICATION
 
 ACCOUNT_SERVICE_URL = "http://upstream.url"
-ACCOUNT_SERVICE_BASE_URL = "https://surveys.ons.gov.uk"
 
 PAYLOAD = {
     "user_id": "integration-test",

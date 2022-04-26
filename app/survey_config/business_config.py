@@ -4,7 +4,6 @@ from warnings import warn
 
 from flask_babel import lazy_gettext
 
-from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config.link import HeaderLink, Link
 from app.survey_config.survey_config import SurveyConfig
 
@@ -55,38 +54,45 @@ class BusinessSurveyConfig(
             ).__dict__,
         ]
 
+    def _get_account_service_help_url(
+        self, *, is_authenticated: bool, ru_ref: Optional[str]
+    ) -> str:
+        if self.schema and is_authenticated and ru_ref:
+            survey_id = self.schema.json["survey_id"]
+            return f"{self.base_url}/surveys/surveys-help?survey_ref={survey_id}&ru_ref={ru_ref}"
+
+        return f"{self.base_url}/help"
+
     def get_service_links(
         self, sign_out_url: str, *, is_authenticated: bool, ru_ref: Optional[str]
     ) -> Optional[list[dict]]:
+        links = [
+            HeaderLink(
+                lazy_gettext("Help"),
+                self._get_account_service_help_url(
+                    is_authenticated=is_authenticated, ru_ref=ru_ref
+                ),
+                id="header-link-help",
+            ).__dict__
+        ]
 
-        if self.schema and is_authenticated and ru_ref:
-            survey_id = self.schema.json["survey_id"]
-            self.account_service_help_url = f"{ACCOUNT_SERVICE_BASE_URL}/surveys/surveys-help?survey_ref={survey_id}&ru_ref={ru_ref}"
+        if is_authenticated:
+            links.extend(
+                [
+                    HeaderLink(
+                        lazy_gettext("My account"),
+                        self.account_service_my_account_url,
+                        id="header-link-my-account",
+                    ).__dict__,
+                    HeaderLink(
+                        lazy_gettext("Sign out"),
+                        sign_out_url,
+                        id="header-link-sign-out",
+                    ).__dict__,
+                ]
+            )
 
-        else:
-            self.account_service_help_url = f"{ACCOUNT_SERVICE_BASE_URL}/help"
-
-        help_link = HeaderLink(
-            lazy_gettext("Help"),
-            self.account_service_help_url,
-            id="header-link-help",
-        ).__dict__
-
-        return (
-            [
-                help_link,
-                HeaderLink(
-                    lazy_gettext("My account"),
-                    self.account_service_my_account_url,
-                    id="header-link-my-account",
-                ).__dict__,
-                HeaderLink(
-                    lazy_gettext("Sign out"), sign_out_url, id="header-link-sign-out"
-                ).__dict__,
-            ]
-            if is_authenticated
-            else [help_link]
-        )
+        return links
 
     @property
     def _stripped_base_url(self) -> str:
