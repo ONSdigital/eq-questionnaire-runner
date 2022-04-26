@@ -4,6 +4,7 @@ from typing import Iterable, Mapping, MutableMapping, Optional, Union
 from flask_babel import lazy_gettext
 from flask_babel.speaklater import LazyString
 
+from app.questionnaire import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL, ONS_URL
 
 
@@ -11,6 +12,7 @@ from app.settings import ACCOUNT_SERVICE_BASE_URL, ONS_URL
 class SurveyConfig:
     """Valid options for defining survey-based configuration."""
 
+    schema: Optional[QuestionnaireSchema] = None
     page_header_logo: Optional[str] = "ons-logo-en"
     page_header_logo_alt: Optional[LazyString] = lazy_gettext(
         "Office for National Statistics logo"

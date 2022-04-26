@@ -20,6 +20,15 @@ class BusinessSurveyConfig(
         self.base_url = self._stripped_base_url
         super().__post_init__()
 
+        if self.schema:
+            self.data_layer: list[dict] = [
+                {
+                    key: self.schema.json[key]
+                    for key in ["form_type", "survey_id", "title"]
+                    if key in self.schema.json
+                }
+            ]
+
         if not self.account_service_log_out_url:
             self.account_service_log_out_url: str = f"{self.base_url}/sign-in/logout"
 
