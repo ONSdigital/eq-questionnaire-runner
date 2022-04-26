@@ -58,16 +58,20 @@ class BusinessSurveyConfig(
     def get_service_links(
         self, sign_out_url: str, *, is_authenticated: bool, ru_ref: Optional[str]
     ) -> Optional[list[dict]]:
-        if self.schema and is_authenticated:
+
+        if self.schema and is_authenticated and ru_ref:
             survey_id = self.schema.json["survey_id"]
             self.account_service_help_url = f"{ACCOUNT_SERVICE_BASE_URL}/surveys/surveys-help?survey_ref={survey_id}&ru_ref={ru_ref}"
+
         else:
             self.account_service_help_url = f"{ACCOUNT_SERVICE_BASE_URL}/help"
+
         help_link = HeaderLink(
             lazy_gettext("Help"),
             self.account_service_help_url,
             id="header-link-help",
         ).__dict__
+
         return (
             [
                 help_link,
