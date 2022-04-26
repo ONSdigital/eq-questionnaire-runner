@@ -76,7 +76,9 @@ class ContextHelper:
         }
 
     @property
-    def service_links_context(self) -> Optional[dict[str, Union[dict[str, str], list[dict]]]]:
+    def service_links_context(
+        self,
+    ) -> Optional[dict[str, Union[dict[str, str], list[dict]]]]:
         metadata = get_metadata(current_user)
         if service_links := self._survey_config.get_service_links(
             sign_out_url=self._sign_out_url,
