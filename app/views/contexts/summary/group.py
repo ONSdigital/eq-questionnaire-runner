@@ -1,3 +1,5 @@
+from typing import Optional
+
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.views.contexts.summary.block import Block
 
@@ -15,6 +17,7 @@ class Group:
         location,
         language,
         return_to,
+        return_to_block_id: Optional[str] = None,
     ):
         self.id = group_schema["id"]
         self.title = group_schema.get("title")
@@ -29,6 +32,7 @@ class Group:
             schema=schema,
             location=location,
             return_to=return_to,
+            return_to_block_id=return_to_block_id,
         )
         self.placeholder_renderer = PlaceholderRenderer(
             language=language,
@@ -51,6 +55,7 @@ class Group:
         schema,
         location,
         return_to,
+        return_to_block_id,
     ):
         blocks = []
 
@@ -67,6 +72,7 @@ class Group:
                             schema=schema,
                             location=location,
                             return_to=return_to,
+                            return_to_block_id=return_to_block_id,
                         ).serialize()
                     ]
                 )

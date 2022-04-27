@@ -104,40 +104,5 @@ def test_build_view_context_for_currency_calculated_summary(
     answer_change_link = context_summary["groups"][0]["blocks"][0]["question"][
         "answers"
     ][0]["link"]
-    assert "return_to=final-summary" in answer_change_link
-
-
-@pytest.mark.parametrize(
-    "has_section_summary",
-    ([True, False]),
-)
-@pytest.mark.parametrize(
-    "is_hub_enabled",
-    ([True, False]),
-)
-def test_get_return_to(
-    has_section_summary,
-    is_hub_enabled,
-    mocker,
-):
-    schema = mocker.MagicMock()
-    schema.is_flow_hub = is_hub_enabled
-    schema.get_summary_for_section = mocker.Mock(return_value=has_section_summary)
-
-    calculated_summary_context = CalculatedSummaryContext(
-        "en",
-        schema,
-        answer_store=mocker.MagicMock(),
-        list_store=mocker.MagicMock(),
-        progress_store=mocker.MagicMock(),
-        metadata={},
-        response_metadata={},
-    )
-
-    return_to = calculated_summary_context.get_return_to("some-section")
-    if has_section_summary:
-        assert return_to == "section-summary"
-    elif not is_hub_enabled:
-        assert return_to == "final-summary"
-    else:
-        assert return_to is None
+    assert "return_to=calculated-summary" in answer_change_link
+    assert f"return_to_block_id={block_id}" in answer_change_link

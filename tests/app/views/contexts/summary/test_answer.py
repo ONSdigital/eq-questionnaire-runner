@@ -16,6 +16,7 @@ def test_create_answer(return_to):
         list_name="answer-list",
         list_item_id="answer-item-id",
         return_to=return_to,
+        return_to_block_id=None,
     )
 
     assert answer.id == "answer-id"
@@ -42,6 +43,7 @@ def test_date_answer_type():
         list_name="answer-list",
         list_item_id="answer-item-id",
         return_to="section-summary",
+        return_to_block_id=None,
     )
 
     # Then

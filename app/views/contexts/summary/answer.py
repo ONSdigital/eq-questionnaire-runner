@@ -11,6 +11,7 @@ class Answer:
         list_name,
         list_item_id,
         return_to,
+        return_to_block_id,
     ):
         self.id = answer_schema["id"]
         self.label = answer_schema.get("label")
@@ -24,6 +25,7 @@ class Answer:
             list_name=list_name,
             list_item_id=list_item_id,
             return_to=return_to,
+            return_to_block_id=return_to_block_id,
         )
 
     def serialize(self):
@@ -38,7 +40,9 @@ class Answer:
             "link": self.link,
         }
 
-    def _build_link(self, *, block_id, list_name, list_item_id, return_to):
+    def _build_link(
+        self, *, block_id, list_name, list_item_id, return_to, return_to_block_id
+    ):
         return url_for(
             "questionnaire.block",
             list_name=list_name,
@@ -46,5 +50,6 @@ class Answer:
             list_item_id=list_item_id,
             return_to=return_to,
             return_to_answer_id=self.id if return_to else None,
+            return_to_block_id=return_to_block_id,
             _anchor=self.id,
         )

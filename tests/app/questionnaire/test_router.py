@@ -506,6 +506,31 @@ class TestRouterNextLocation(RouterTestCase):
 
         assert expected_location_url == next_location
 
+    @pytest.mark.usefixtures("app")
+    def test_return_to_calculated_summary(self):
+        self.schema = load_schema_from_name("test_calculated_summary")
+
+        current_location = Location(
+            section_id="default-section", block_id="fifth-number-block"
+        )
+
+        routing_path = RoutingPath(
+            ["sixth-number-block"],
+            section_id="default-section",
+        )
+        next_location_url = self.router.get_next_location_url(
+            current_location,
+            routing_path,
+            return_to="calculated-summary",
+            return_to_block_id="currency-total-playback-skipped-fourth",
+        )
+        expected_location_url = Location(
+            section_id="default-section",
+            block_id="currency-total-playback-skipped-fourth",
+        ).url()
+
+        assert expected_location_url == next_location_url
+
 
 class TestRouterNextLocationLinearFlow(RouterTestCase):
     @pytest.mark.usefixtures("app")
@@ -630,6 +655,31 @@ class TestRouterPreviousLocation(RouterTestCase):
         )
         expected_location_url = Location(
             section_id="default-section", block_id="mandatory-checkbox"
+        ).url()
+
+        assert expected_location_url == previous_location_url
+
+    @pytest.mark.usefixtures("app")
+    def test_return_to_calculated_summary(self):
+        self.schema = load_schema_from_name("test_calculated_summary")
+
+        current_location = Location(
+            section_id="default-section", block_id="fifth-number-block"
+        )
+
+        routing_path = RoutingPath(
+            ["sixth-number-block"],
+            section_id="default-section",
+        )
+        previous_location_url = self.router.get_previous_location_url(
+            current_location,
+            routing_path,
+            return_to="calculated-summary",
+            return_to_block_id="currency-total-playback-skipped-fourth",
+        )
+        expected_location_url = Location(
+            section_id="default-section",
+            block_id="currency-total-playback-skipped-fourth",
         ).url()
 
         assert expected_location_url == previous_location_url
