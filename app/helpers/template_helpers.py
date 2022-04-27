@@ -9,7 +9,7 @@ from flask import url_for
 from flask_babel import LazyString, get_locale, lazy_gettext
 from flask_login import current_user
 
-from app.globals import get_session_store
+from app.globals import get_metadata, get_session_store
 from app.helpers.language_helper import get_languages_context
 from app.questionnaire import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL
@@ -78,9 +78,11 @@ class ContextHelper:
     def service_links_context(
         self,
     ) -> Optional[dict[str, Union[dict[str, str], list[dict]]]]:
+        metadata = get_metadata(current_user)
         if service_links := self._survey_config.get_service_links(
             sign_out_url=self._sign_out_url,
             is_authenticated=current_user.is_authenticated,
+            ru_ref=metadata.get("ru_ref") if metadata else None,  # type: ignore
         ):
             return {
                 "toggleServicesButton": {
