@@ -1,4 +1,4 @@
-from tests.integration.create_token import ACCOUNT_SERVICE_URL
+from tests.integration.create_token import ACCOUNT_SERVICE_URL, BASE_URL
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -40,7 +40,7 @@ class TestHeaderLinks(IntegrationTestCase):
         self.assertEqual(help_link.text, "Help")
         self.assertEqual(
             help_link["href"],
-            "https://surveys.ons.gov.uk/help",
+            f"{BASE_URL}/help",
         )
 
     def assert_help_link_exist_not_authenticated_after_sign_out(self):
