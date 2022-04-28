@@ -92,25 +92,18 @@ describe("Feature: Calculated Summary", () => {
       $(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswerEdit()).click();
       $(FourthNumberBlockPage.fourthNumber()).setValue(19.01);
       $(FourthNumberBlockPage.submit()).click();
-      $(FourthAndAHalfNumberBlockPage.fourthAndAHalfNumberAlsoInTotal()).setValue(12.34);
-      $(FourthAndAHalfNumberBlockPage.submit()).click();
-
-      $(FifthNumberBlockPage.submit()).click();
-      $(SixthNumberBlockPage.submit()).click();
 
       expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
       expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of currency values entered to be £40.71. Is this correct?"
+        "We calculate the total of currency values entered to be £30.71. Is this correct?"
       );
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£40.71");
+      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£30.71");
     });
 
     it("Given I leave an answer empty, When I get to the currency summary, Then I should see no answer provided and new total", () => {
       $(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotalEdit()).click();
       $(FourthAndAHalfNumberBlockPage.fourthAndAHalfNumberAlsoInTotal()).setValue("");
       $(FourthAndAHalfNumberBlockPage.submit()).click();
-      $(FifthNumberBlockPage.submit()).click();
-      $(SixthNumberBlockPage.submit()).click();
 
       expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
       expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
@@ -121,9 +114,11 @@ describe("Feature: Calculated Summary", () => {
     });
 
     it("Given I skip the fourth page, When I get to the playback, Then I can should not see it in the total", () => {
-      $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
-      $(ThirdNumberBlockPage.submit()).click();
-      $(ThirdAndAHalfNumberBlockPage.submit()).click();
+      $(CurrencyTotalPlaybackPageWithFourth.previous()).click();
+      $(SixthNumberBlockPage.previous()).click();
+      $(FifthNumberBlockPage.previous()).click();
+      $(FourthAndAHalfNumberBlockPage.previous()).click();
+      $(FourthNumberBlockPage.previous()).click();
 
       $(SkipFourthBlockPage.yes()).click();
       $(SkipFourthBlockPage.submit()).click();
