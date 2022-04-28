@@ -166,6 +166,11 @@ def test_get_page_header_context_census_nisra(app: Flask):
                 },
                 "itemsList": [
                     {
+                        "title": "Help",
+                        "url": "https://surveys.ons.gov.uk/help",
+                        "id": "header-link-help",
+                    },
+                    {
                         "title": "My account",
                         "url": "https://surveys.ons.gov.uk/my-account",
                         "id": "header-link-my-account",
