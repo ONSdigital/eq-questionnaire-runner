@@ -61,7 +61,11 @@ class BusinessSurveyConfig(
         if self.schema and is_authenticated and ru_ref:
             request_data = {
                 "survey_ref": self.schema.json["survey_id"],
-                "ru_ref": ru_ref,
+                # This is a temporary fix to send upstream only the first 11 characters of the ru_ref.
+                # The ru_ref currently is concatenated with the check letter. Which upstream currently do not support.
+                # The first 11 characters represents the reporting unit reference.
+                # The 12th character is the check letter identifier.
+                "ru_ref": ru_ref[:11],
             }
             return f"{self.base_url}/surveys/surveys-help?{urlencode(request_data)}"
 
