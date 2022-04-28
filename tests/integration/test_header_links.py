@@ -32,7 +32,7 @@ class TestHeaderLinks(IntegrationTestCase):
         self.assertEqual(help_link.text, "Help")
         self.assertEqual(
             help_link["href"],
-            f"{ACCOUNT_SERVICE_URL}/surveys/surveys-help?survey_ref=001&ru_ref=123456789012A",
+            f"{ACCOUNT_SERVICE_URL}/surveys/surveys-help?survey_ref=001&ru_ref=12345678901",
         )
 
     def assert_help_link_exist_not_authenticated(self):
