@@ -4,6 +4,7 @@ import pytest
 from flask import Flask, current_app
 
 from app.helpers.template_helpers import ContextHelper, get_survey_config
+from app.questionnaire import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config import (
     BusinessSurveyConfig,
@@ -158,6 +159,23 @@ def test_get_page_header_context_census_nisra(app: Flask):
         ),
         (
             BusinessSurveyConfig(),
+            False,
+            {
+                "toggleServicesButton": {
+                    "text": "Menu",
+                    "ariaLabel": "Toggle services menu",
+                },
+                "itemsList": [
+                    {
+                        "title": "Help",
+                        "url": "https://surveys.ons.gov.uk/help",
+                        "id": "header-link-help",
+                    }
+                ],
+            },
+        ),
+        (
+            BusinessSurveyConfig(schema=QuestionnaireSchema({"survey_id": "001"})),
             True,
             {
                 "toggleServicesButton": {
@@ -165,6 +183,11 @@ def test_get_page_header_context_census_nisra(app: Flask):
                     "ariaLabel": "Toggle services menu",
                 },
                 "itemsList": [
+                    {
+                        "title": "Help",
+                        "url": "https://surveys.ons.gov.uk/surveys/surveys-help?survey_ref=001&ru_ref=63782964754",
+                        "id": "header-link-help",
+                    },
                     {
                         "title": "My account",
                         "url": "https://surveys.ons.gov.uk/my-account",
@@ -184,10 +207,15 @@ def test_service_links_context(
     app: Flask, mocker, survey_config, is_authenticated, expected
 ):
     with app.app_context():
-        current_user = mocker.patch(
-            "flask_login.utils._get_user", return_value=mocker.MagicMock()
-        )
-        current_user.is_authenticated = is_authenticated
+        mocked_current_user = mocker.Mock()
+        mocked_current_user.is_authenticated = is_authenticated
+        mocker.patch("flask_login.utils._get_user", return_value=mocked_current_user)
+
+        if is_authenticated:
+            mocker.patch(
+                "app.helpers.template_helpers.get_metadata",
+                return_value={"ru_ref": "63782964754U"},
+            )
 
         result = ContextHelper(
             language="en",
