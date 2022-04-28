@@ -51,7 +51,6 @@ class Question:
     def _build_answers(
         self, *, answer_store, question_schema, block_id, list_name, return_to
     ):
-
         if self.summary:
             answer_id = f"{self.id}-concatenated-answer"
             link = url_for(
@@ -61,7 +60,7 @@ class Question:
                 list_item_id=self.list_item_id,
                 return_to=return_to,
                 return_to_answer_id=answer_id if return_to else None,
-                _anchor=answer_id,
+                _anchor=question_schema.get("answers")[0]["id"],
             )
 
             return [
