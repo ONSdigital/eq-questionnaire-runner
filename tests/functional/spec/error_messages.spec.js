@@ -70,6 +70,18 @@ describe("Error Messages", () => {
     expect($(AboutYou.textareaErrorItem()).getText()).to.equal("Enter an answer");
   });
 
+  it("Given a question has multiple errors, When the errors are displayed, Then the error messages are in a numbered list", () => {
+    $(AboutYou.submit()).click();
+    expect($(AboutYou.errorList()).isDisplayed()).to.be.true;
+  });
+
+  it("Given a question has 1 error, When the error is displayed, Then error message isn't in a numbered list", () => {
+    answerAllButOne();
+
+    $(AboutYou.submit()).click();
+    expect($(AboutYou.singleErrorLink()).isDisplayed()).to.be.true;
+  });
+
   it("Given a question has 1 error, When the error is displayed, Then error header is correct", () => {
     answerAllButOne();
 
