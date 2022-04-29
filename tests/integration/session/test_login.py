@@ -104,31 +104,31 @@ class TestLoginWithGetRequest(IntegrationTestCase):
 
         self.assertStatusForbidden()
 
-    def test_login_token_with_survey_url_should_redirect_to_survey(self):
-        survey_url = "http://eq-survey-register.url/my-test-schema"
+    def test_login_token_with_schema_url_should_redirect_to_survey(self):
+        schema_url = "http://eq-survey-register.url/my-test-schema"
 
         # Given
-        token = self.token_generator.create_token_with_survey_url(
-            "test_textarea", survey_url
+        token = self.token_generator.create_token_with_schema_url(
+            "test_textarea", schema_url
         )
 
         # When
-        with HTTMock(self.survey_url_mock):
+        with HTTMock(self.schema_url_mock):
             self.get(url=f"/session?token={token}")
 
         self.assertStatusOK()
         self.assertInUrl("/questionnaire")
 
-    def test_login_token_with_incorrect_survey_url_results_in_404(self):
-        survey_url = "http://eq-survey-register.url/my-test-schema-not-found"
+    def test_login_token_with_incorrect_schema_url_results_in_404(self):
+        schema_url = "http://eq-survey-register.url/my-test-schema-not-found"
 
         # Given
-        token = self.token_generator.create_token_with_survey_url(
-            "test_textarea", survey_url
+        token = self.token_generator.create_token_with_schema_url(
+            "test_textarea", schema_url
         )
 
         # When
-        with HTTMock(self.survey_url_mock_404):
+        with HTTMock(self.schema_url_mock_404):
             self.get(url=f"/session?token={token}")
 
         # Then
@@ -136,7 +136,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
 
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema")
-    def survey_url_mock(_url, _request):
+    def schema_url_mock(_url, _request):
         schema_path = SCHEMA_PATH_MAP["test"]["en"]["test_textarea"]
 
         with open(schema_path, encoding="utf8") as json_data:
@@ -144,7 +144,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
 
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema-not-found")
-    def survey_url_mock_404(_url, _request):
+    def schema_url_mock_404(_url, _request):
         return response(404)
 
 
@@ -233,31 +233,31 @@ class TestLoginWithPostRequest(IntegrationTestCase):
 
         self.assertStatusForbidden()
 
-    def test_login_token_with_survey_url_should_redirect_to_survey(self):
-        survey_url = "http://eq-survey-register.url/my-test-schema"
+    def test_login_token_with_schema_url_should_redirect_to_survey(self):
+        schema_url = "http://eq-survey-register.url/my-test-schema"
 
         # Given
-        token = self.token_generator.create_token_with_survey_url(
-            "test_textarea", survey_url
+        token = self.token_generator.create_token_with_schema_url(
+            "test_textarea", schema_url
         )
 
         # When
-        with HTTMock(self.survey_url_mock):
+        with HTTMock(self.schema_url_mock):
             self.post(url=f"/session?token={token}")
 
         self.assertStatusOK()
         self.assertInUrl("/questionnaire")
 
-    def test_login_token_with_incorrect_survey_url_results_in_404(self):
-        survey_url = "http://eq-survey-register.url/my-test-schema-not-found"
+    def test_login_token_with_incorrect_schema_url_results_in_404(self):
+        schema_url = "http://eq-survey-register.url/my-test-schema-not-found"
 
         # Given
-        token = self.token_generator.create_token_with_survey_url(
-            "test_textarea", survey_url
+        token = self.token_generator.create_token_with_schema_url(
+            "test_textarea", schema_url
         )
 
         # When
-        with HTTMock(self.survey_url_mock_404):
+        with HTTMock(self.schema_url_mock_404):
             self.post(url=f"/session?token={token}")
 
         # Then
@@ -273,7 +273,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
 
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema")
-    def survey_url_mock(_url, _request):
+    def schema_url_mock(_url, _request):
         schema_path = SCHEMA_PATH_MAP["test"]["en"]["test_textarea"]
 
         with open(schema_path, encoding="utf8") as json_data:
@@ -281,5 +281,5 @@ class TestLoginWithPostRequest(IntegrationTestCase):
 
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema-not-found")
-    def survey_url_mock_404(_url, _request):
+    def schema_url_mock_404(_url, _request):
         return response(404)
