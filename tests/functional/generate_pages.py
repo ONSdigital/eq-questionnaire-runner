@@ -153,6 +153,14 @@ ANSWER_ERROR_GETTER = Template(
 """
 )
 
+ANSWER_NUMBERED_ERROR_LIST_GETTER = r"""  errorList() { return `ol[data-qa="error-list"]`; }
+
+"""
+
+ANSWER_SINGLE_ERROR_LINK_GETTER = r"""  singleErrorLink() { return `p[data-qa="error-list"]`; }
+
+"""
+
 ANSWER_LABEL_DESCRIPTION_GETTER = Template(
     r"""  ${answerName}LabelDescription() {
     return `#${answerId}-label-description-hint`;
@@ -447,6 +455,8 @@ def process_question(question, page_spec, num_questions, page_name):
     }
     page_spec.write(QUESTION_ERROR_PANEL.substitute(question_context))
     page_spec.write(QUESTION_TITLE.substitute(question_context))
+    page_spec.write(ANSWER_NUMBERED_ERROR_LIST_GETTER)
+    page_spec.write(ANSWER_SINGLE_ERROR_LINK_GETTER)
 
 
 def process_calculated_summary(answers, page_spec):

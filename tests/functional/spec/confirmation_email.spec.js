@@ -54,7 +54,7 @@ describe("Email confirmation", () => {
       expect($(ConfirmationEmailSentPage.confirmationText()).getText()).to.equal("A confirmation email has been sent to name@example.com");
     });
 
-    it("when I go to the confirmation email page and submit without providing an email address, Then I get an error message", () => {
+    it("When I go to the confirmation email page and submit without providing an email address, Then I get an error message", () => {
       $(ConfirmationEmailSentPage.sendAnotherEmail()).click();
       $(ConfirmationEmailPage.submit()).click();
       expect(browser.getUrl()).to.contain("confirmation-email/send");
@@ -62,7 +62,7 @@ describe("Email confirmation", () => {
       expect($(ConfirmationEmailPage.errorPanel()).getText()).to.equal("Enter an email address");
     });
 
-    it("when I submit the form without providing a correctly formatted email address, Then I get an error message", () => {
+    it("When I submit the form without providing a correctly formatted email address, Then I get an error message", () => {
       $(ConfirmationEmailPage.email()).setValue("incorrect-format");
       $(ConfirmationEmailPage.submit()).click();
       expect(browser.getUrl()).to.contain("confirmation-email/send");

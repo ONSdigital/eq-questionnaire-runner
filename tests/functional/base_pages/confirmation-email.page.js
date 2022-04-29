@@ -10,7 +10,7 @@ class ConfirmationEmailSentPage extends BasePage {
   }
 
   errorPanel() {
-    return `[data-qa=error-body] div.ons-panel__body > ol`;
+    return `[data-qa=error-body] div.ons-panel__body > [data-qa=error-list]`;
   }
 
   feedback() {
