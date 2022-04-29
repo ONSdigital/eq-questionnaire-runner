@@ -60,7 +60,7 @@ class Question:
                 list_item_id=self.list_item_id,
                 return_to=return_to,
                 return_to_answer_id=answer_id if return_to else None,
-                _anchor=question_schema.get("answers")[0]["id"],
+                _anchor=question_schema["answers"][0]["id"],
             )
 
             return [
