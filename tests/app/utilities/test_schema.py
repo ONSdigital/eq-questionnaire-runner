@@ -3,7 +3,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 import responses
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import InternalServerError, NotFound
 
 from app.questionnaire import QuestionnaireSchema
 from app.setup import create_app
@@ -156,6 +156,20 @@ def test_load_schema_from_url_200():
 
 
 @responses.activate
+def test_load_schema_from_url_connection_error():
+    load_schema_from_url.cache_clear()
+
+    responses.add(responses.GET, "", json={"error": "not found"}, status=0)
+    with pytest.raises(ConnectionError):
+        load_schema_from_url(survey_url=TEST_SCHEMA_URL, language_code="en")
+
+    cache_info = load_schema_from_url.cache_info()
+    assert cache_info.currsize == 0
+    assert cache_info.misses == 1
+    assert cache_info.hits == 0
+
+
+@responses.activate
 def test_load_schema_from_url_404():
     load_schema_from_url.cache_clear()
 
@@ -163,6 +177,22 @@ def test_load_schema_from_url_404():
     responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=404)
 
     with pytest.raises(NotFound):
+        load_schema_from_url(survey_url=TEST_SCHEMA_URL, language_code="en")
+
+    cache_info = load_schema_from_url.cache_info()
+    assert cache_info.currsize == 0
+    assert cache_info.misses == 1
+    assert cache_info.hits == 0
+
+
+@responses.activate
+def test_load_schema_from_url_403():
+    load_schema_from_url.cache_clear()
+
+    mock_schema = QuestionnaireSchema({})
+    responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=403)
+
+    with pytest.raises(InternalServerError):
         load_schema_from_url(survey_url=TEST_SCHEMA_URL, language_code="en")
 
     cache_info = load_schema_from_url.cache_info()

@@ -6,8 +6,9 @@ from pathlib import Path
 from typing import Mapping, Optional
 
 import requests
+from requests.adapters import HTTPAdapter, Retry
 from structlog import get_logger
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import InternalServerError, NotFound
 
 from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
@@ -177,7 +178,44 @@ def load_schema_from_url(survey_url, language_code):
 
     constructed_survey_url = f"{survey_url}?language={language_code}"
 
-    req = requests.get(constructed_survey_url)
+    session = requests.Session()
+
+    retries = Retry(
+        total=3,
+        allowed_methods=frozenset({"GET"}),
+        backoff_factor=0.1,
+        status_forcelist=[
+            408,
+            429,
+            500,
+            501,
+            502,
+            503,
+            504,
+            505,
+            506,
+            507,
+            509,
+            510,
+            511,
+        ],
+    )  # Codes to retry according to Google Docs
+
+    session.mount("https://", HTTPAdapter(max_retries=retries))
+
+    try:
+        req = session.get(constructed_survey_url, timeout=3)
+    except Exception as exc:
+        raise ConnectionError from exc
+
+    if req.status_code == 404:
+        logger.error("no schema exists", survey_url=constructed_survey_url)
+        raise NotFound
+
+    if req.status_code not in [200, 404]:
+        logger.error(f"Status code {req.status_code}")
+        raise InternalServerError
+
     schema_response = req.content.decode()
     response_duration_in_milliseconds = req.elapsed.total_seconds() * 1000
 
@@ -185,10 +223,6 @@ def load_schema_from_url(survey_url, language_code):
         f"schema request took {response_duration_in_milliseconds:.2f} milliseconds",
         pid=pid,
     )
-
-    if req.status_code == 404:
-        logger.error("no schema exists", survey_url=constructed_survey_url)
-        raise NotFound
 
     return QuestionnaireSchema(json_loads(schema_response), language_code)
 
