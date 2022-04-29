@@ -41,7 +41,7 @@ class CalculatedSummaryContext(Context):
     def build_view_context_for_calculated_summary(self, current_location):
         block = self._schema.get_block(current_location.block_id)
 
-        return_to_block_id = block.get("id")
+        return_to_block_id = block["id"]
 
         calculated_section = self._build_calculated_summary_section(
             block, current_location
