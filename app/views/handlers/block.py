@@ -103,7 +103,7 @@ class BlockHandler:
             self._routing_path,
             self._return_to,
             self._return_to_answer_id,
-            self._return_to_block_id,         
+            self._return_to_block_id,
         )
 
     def handle_post(self):
