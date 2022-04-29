@@ -62,7 +62,6 @@ class Question:
         return_to,
         return_to_block_id,
     ):
-
         if self.summary:
             answer_id = f"{self.id}-concatenated-answer"
             link = url_for(
@@ -72,7 +71,7 @@ class Question:
                 list_item_id=self.list_item_id,
                 return_to=return_to,
                 return_to_answer_id=answer_id if return_to else None,
-                _anchor=answer_id,
+                _anchor=question_schema["answers"][0]["id"],
             )
 
             return [
