@@ -144,7 +144,7 @@ def test_load_schema_from_url_200():
 
     mock_schema = QuestionnaireSchema({}, language_code="cy")
     responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)
-    loaded_schema = load_schema_from_url(survey_url=TEST_SCHEMA_URL, language_code="cy")
+    loaded_schema = load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="cy")
 
     assert loaded_schema.json == mock_schema.json
     assert loaded_schema.language_code == mock_schema.language_code
@@ -177,7 +177,7 @@ def test_load_schema_from_url_404():
     responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=404)
 
     with pytest.raises(NotFound):
-        load_schema_from_url(survey_url=TEST_SCHEMA_URL, language_code="en")
+        load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
 
     cache_info = load_schema_from_url.cache_info()
     assert cache_info.currsize == 0
@@ -209,7 +209,7 @@ def test_load_schema_from_url_uses_cache():
     responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)
 
     # First load: Add to cache, no hits
-    load_schema_from_url(survey_url=TEST_SCHEMA_URL, language_code="cy")
+    load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="cy")
 
     cache_info = load_schema_from_url.cache_info()
     assert cache_info.currsize == 1
@@ -217,7 +217,7 @@ def test_load_schema_from_url_uses_cache():
     assert cache_info.hits == 0
 
     # Second load: Read from cache, 1 hit
-    load_schema_from_url(survey_url=TEST_SCHEMA_URL, language_code="cy")
+    load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="cy")
 
     cache_info = load_schema_from_url.cache_info()
     assert cache_info.currsize == 1
@@ -226,10 +226,10 @@ def test_load_schema_from_url_uses_cache():
 
 
 @responses.activate
-def test_load_schema_from_metadata_with_survey_url():
+def test_load_schema_from_metadata_with_schema_url():
     load_schema_from_url.cache_clear()
 
-    metadata = {"survey_url": TEST_SCHEMA_URL, "language_code": "cy"}
+    metadata = {"schema_url": TEST_SCHEMA_URL, "language_code": "cy"}
     mock_schema = QuestionnaireSchema({}, language_code="cy")
     responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)
     loaded_schema = load_schema_from_metadata(metadata=metadata)

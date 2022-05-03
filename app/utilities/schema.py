@@ -82,13 +82,13 @@ def get_allowed_languages(schema_name, launch_language):
 
 
 def load_schema_from_metadata(metadata):
-    if survey_url := metadata.get("survey_url"):
-        # :TODO: Remove before production uses survey_url
+    if schema_url := metadata.get("schema_url"):
+        # :TODO: Remove before production uses schema_url
         # This is temporary and is only for development/integration purposes.
         # This should not be used in production.
 
         start = time.time()
-        schema = load_schema_from_url(survey_url, metadata.get("language_code"))
+        schema = load_schema_from_url(schema_url, metadata.get("language_code"))
         duration_in_milliseconds = (time.time() - start) * 1_000
 
         cache_info = (
@@ -96,7 +96,7 @@ def load_schema_from_metadata(metadata):
         )
         logger.info(
             f"load_schema_from_url took {duration_in_milliseconds:.6f} milliseconds",
-            survey_url=survey_url,
+            schema_url=schema_url,
             currsize=cache_info.currsize,
             hits=cache_info.hits,
             misses=cache_info.misses,
@@ -166,17 +166,17 @@ def _load_schema_file(schema_name, language_code):
 
 
 @lru_cache(maxsize=None)
-def load_schema_from_url(survey_url, language_code):
+def load_schema_from_url(schema_url, language_code):
     language_code = language_code or DEFAULT_LANGUAGE_CODE
     pid = os.getpid()
     logger.info(
         "loading schema from URL",
-        survey_url=survey_url,
+        schema_url=schema_url,
         language_code=language_code,
         pid=pid,
     )
 
-    constructed_survey_url = f"{survey_url}?language={language_code}"
+    constructed_schema_url = f"{schema_url}?language={language_code}"
 
     session = requests.Session()
 

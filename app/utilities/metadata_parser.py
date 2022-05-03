@@ -92,7 +92,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     case_id = VALIDATORS["uuid"]()  # type:ignore
     account_service_log_out_url = VALIDATORS["url"](required=False)  # type:ignore
     roles = fields.List(fields.String(), required=False)
-    survey_url = VALIDATORS["url"](required=False)  # type:ignore
+    schema_url = VALIDATORS["url"](required=False)  # type:ignore
     language_code = VALIDATORS["string"](required=False)  # type:ignore
     channel = VALIDATORS["string"](
         required=False, validate=validate.Length(min=1)
