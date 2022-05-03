@@ -161,7 +161,7 @@ def test_load_schema_from_url_connection_error():
 
     responses.add(responses.GET, "", json={"error": "not found"}, status=0)
     with pytest.raises(ConnectionError):
-        load_schema_from_url(survey_url=TEST_SCHEMA_URL, language_code="en")
+        load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
 
     cache_info = load_schema_from_url.cache_info()
     assert cache_info.currsize == 0
@@ -193,7 +193,7 @@ def test_load_schema_from_url_403():
     responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=403)
 
     with pytest.raises(InternalServerError):
-        load_schema_from_url(survey_url=TEST_SCHEMA_URL, language_code="en")
+        load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
 
     cache_info = load_schema_from_url.cache_info()
     assert cache_info.currsize == 0
