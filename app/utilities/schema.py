@@ -176,7 +176,7 @@ def load_schema_from_url(schema_url, language_code):
         pid=pid,
     )
 
-    constructed_survey_url = f"{schema_url}?language={language_code}"
+    constructed_schema_url = f"{schema_url}?language={language_code}"
 
     session = requests.Session()
 
@@ -204,12 +204,12 @@ def load_schema_from_url(schema_url, language_code):
     session.mount("https://", HTTPAdapter(max_retries=retries))
 
     try:
-        req = session.get(constructed_survey_url, timeout=3)
+        req = session.get(constructed_schema_url, timeout=3)
     except Exception as exc:
         raise ConnectionError from exc
 
     if req.status_code == 404:
-        logger.error("no schema exists", survey_url=constructed_survey_url)
+        logger.error("no schema exists", schema_url=constructed_schema_url)
         raise NotFound
 
     if req.status_code != 200:
