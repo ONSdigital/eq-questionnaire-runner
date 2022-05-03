@@ -176,7 +176,7 @@ def load_schema_from_url(schema_url, language_code):
         pid=pid,
     )
 
-    constructed_schema_url = f"{schema_url}?language={language_code}"
+    constructed_survey_url = f"{schema_url}?language={language_code}"
 
     session = requests.Session()
 
@@ -212,8 +212,8 @@ def load_schema_from_url(schema_url, language_code):
         logger.error("no schema exists", survey_url=constructed_survey_url)
         raise NotFound
 
-    if req.status_code not in [200, 404]:
-        logger.error(f"Status code {req.status_code}")
+    if req.status_code != 200:
+        logger.error(f"status code {req.status_code}")
         raise InternalServerError
 
     schema_response = req.content.decode()
