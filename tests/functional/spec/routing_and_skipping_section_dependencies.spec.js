@@ -10,6 +10,8 @@ import RepeatingAgePage from "../generated_pages/new_routing_and_skipping_sectio
 import RepeatingSexPage from "../generated_pages/new_routing_and_skipping_section_dependencies/repeating-sex.page";
 import SecurityPage from "../generated_pages/new_routing_and_skipping_section_dependencies/security.page";
 import SkipAgePage from "../generated_pages/new_routing_and_skipping_section_dependencies/skip-age.page";
+import SkipEnableSectionPage from "../generated_pages/new_routing_and_skipping_section_dependencies/skip-household-section.page";
+import EnableSectionPage from "../generated_pages/new_routing_and_skipping_section_dependencies/enable-section.page";
 import SkipConfirmationPage from "../generated_pages/new_routing_and_skipping_section_dependencies/skip-confirmation.page";
 import SkipConfirmationSectionSummaryPage from "../generated_pages/new_routing_and_skipping_section_dependencies/skip-confirmation-section-summary.page";
 import SkipSectionSummaryPage from "../generated_pages/new_routing_and_skipping_section_dependencies/skip-section-summary.page";
@@ -122,6 +124,28 @@ describe("Routing and skipping section dependencies", () => {
     });
   });
 
+  describe("Given the routing and skipping section dependencies questionnaire", () => {
+    it("When I answer 'No' to skipping the section question and 'Yes' to enable section question, Then the household summary will be visible on the hub", () => {
+      answerNoToSkipEnableQuestionAndYesToEnableSection();
+
+      expect($(HubPage.summaryRowLink("household-section")).isExisting()).to.be.true;
+    });
+    it("When I answer 'No' to skipping the section question and 'No' to enable section question, Then the household summary will not be visible on the hub", () => {
+      answerNoToSkipEnableQuestionAndNoToEnableSection();
+
+      expect($(HubPage.summaryRowLink("household-section")).isExisting()).to.be.false;
+    });
+  });
+
+  describe("Given the routing and skipping section dependencies questionnaire and I answered 'No' to skipping the section question and 'Yes' to enable section question", () => {
+    it("When I change my answer to skipping section question to 'No', Then the household summary will not be visible on the hub", () => {
+      answerNoToSkipEnableQuestionAndYesToEnableSection();
+      changeSkipEnableQuestionToYes();
+
+      expect($(HubPage.summaryRowLink("household-section")).isExisting()).to.be.false;
+    });
+  });
+
   describe("Given the routing and skipping section dependencies questionnaire and I answered 'Yes' to skipping the age question but 'No' to are you sure in skip question confirmation section", () => {
     it("When I change my answer to skipping age to 'No', removing the 'are you sure' question from the path, Then in the Primary Person section I am asked my name, age and why I didn't confirm skipping", () => {
       answerYesToSkipAgeQuestion();
@@ -182,6 +206,10 @@ const answerYesToSkipAgeQuestion = () => {
   $(HubPage.summaryRowLink("skip-section")).click();
   $(SkipAgePage.yes()).click();
   $(SkipAgePage.submit()).click();
+  $(SkipEnableSectionPage.no()).click();
+  $(SkipEnableSectionPage.submit()).click();
+  $(EnableSectionPage.yes()).click();
+  $(EnableSectionPage.submit()).click();
   $(SkipSectionSummaryPage.submit()).click();
 };
 
@@ -189,6 +217,10 @@ const answerNoToSkipAgeQuestion = () => {
   $(HubPage.summaryRowLink("skip-section")).click();
   $(SkipAgePage.no()).click();
   $(SkipAgePage.submit()).click();
+  $(SkipEnableSectionPage.no()).click();
+  $(SkipEnableSectionPage.submit()).click();
+  $(EnableSectionPage.yes()).click();
+  $(EnableSectionPage.submit()).click();
   $(SkipSectionSummaryPage.submit()).click();
 };
 
@@ -202,6 +234,36 @@ const answerYesToSkipConfirmationQuestion = () => {
   $(SkipConfirmationPage.yes()).click();
   $(SkipConfirmationPage.submit()).click();
   $(SkipConfirmationSectionSummaryPage.submit()).click();
+};
+
+const answerNoToSkipEnableQuestionAndYesToEnableSection = () => {
+  $(HubPage.summaryRowLink("skip-section")).click();
+  $(SkipAgePage.no()).click();
+  $(SkipAgePage.submit()).click();
+  $(SkipEnableSectionPage.no()).click();
+  $(SkipEnableSectionPage.submit()).click();
+  $(EnableSectionPage.yes()).click();
+  $(EnableSectionPage.submit()).click();
+  $(SkipSectionSummaryPage.submit()).click();
+};
+
+const answerNoToSkipEnableQuestionAndNoToEnableSection = () => {
+  $(HubPage.summaryRowLink("skip-section")).click();
+  $(SkipAgePage.no()).click();
+  $(SkipAgePage.submit()).click();
+  $(SkipEnableSectionPage.no()).click();
+  $(SkipEnableSectionPage.submit()).click();
+  $(EnableSectionPage.no()).click();
+  $(EnableSectionPage.submit()).click();
+  $(SkipSectionSummaryPage.submit()).click();
+};
+
+const changeSkipEnableQuestionToYes = () => {
+  $(HubPage.summaryRowLink("skip-section")).click();
+  $(SkipSectionSummaryPage.skipHouseholdSectionAnswerEdit()).click();
+  $(SkipEnableSectionPage.yes()).click();
+  $(SkipEnableSectionPage.submit()).click();
+  $(SkipSectionSummaryPage.submit()).click();
 };
 
 const answerAndSubmitNameQuestion = () => {
