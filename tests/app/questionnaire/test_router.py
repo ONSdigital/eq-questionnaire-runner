@@ -515,9 +515,10 @@ class TestRouterNextLocation(RouterTestCase):
         )
 
         routing_path = RoutingPath(
-            ["sixth-number-block"],
+            ["sixth-number-block", "currency-total-playback-skipped-fourth"],
             section_id="default-section",
         )
+
         next_location_url = self.router.get_next_location_url(
             current_location,
             routing_path,
@@ -532,7 +533,16 @@ class TestRouterNextLocation(RouterTestCase):
         assert expected_location_url == next_location_url
 
     @pytest.mark.usefixtures("app")
-    def test_return_to_calculated_summary_invalid_return_to_block_id(self):
+    @pytest.mark.parametrize(
+        "return_to_block_id",
+        [
+            "non-valid-block",
+            None,
+        ],
+    )
+    def test_return_to_calculated_summary_incorrect_return_to_block_id(
+        self, return_to_block_id
+    ):
         self.schema = load_schema_from_name("test_calculated_summary")
 
         current_location = Location(
@@ -540,46 +550,20 @@ class TestRouterNextLocation(RouterTestCase):
         )
 
         routing_path = RoutingPath(
-            ["sixth-number-block", "fifth-number-block"],
+            ["fifth-number-block", "sixth-number-block"],
             section_id="default-section",
         )
         next_location_url = self.router.get_next_location_url(
             current_location,
             routing_path,
             return_to="calculated-summary",
-            return_to_block_id="non-valid-block",
-        )
-        expected_location_url = Location(
-            section_id="default-section",
-            block_id="sixth-number-block",
-        ).url()
-
-        assert expected_location_url == next_location_url
-
-    @pytest.mark.usefixtures("app")
-    def test_return_to_calculated_summary_empty_return_to_block_id(self):
-        self.schema = load_schema_from_name("test_calculated_summary")
-
-        current_location = Location(
-            section_id="default-section", block_id="fifth-number-block"
+            return_to_block_id=return_to_block_id,
         )
 
-        routing_path = RoutingPath(
-            ["sixth-number-block", "fifth-number-block"],
-            section_id="default-section",
+        assert (
+            "/questionnaire/sixth-number-block/?return_to=calculated-summary"
+            == next_location_url
         )
-        next_location_url = self.router.get_next_location_url(
-            current_location,
-            routing_path,
-            return_to="calculated-summary",
-            return_to_block_id="",
-        )
-        expected_location_url = Location(
-            section_id="default-section",
-            block_id="sixth-number-block",
-        ).url()
-
-        assert expected_location_url == next_location_url
 
 
 class TestRouterNextLocationLinearFlow(RouterTestCase):
@@ -718,7 +702,7 @@ class TestRouterPreviousLocation(RouterTestCase):
         )
 
         routing_path = RoutingPath(
-            ["sixth-number-block"],
+            ["sixth-number-block", "currency-total-playback-skipped-fourth"],
             section_id="default-section",
         )
         previous_location_url = self.router.get_previous_location_url(

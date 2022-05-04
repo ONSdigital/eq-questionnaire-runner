@@ -130,6 +130,7 @@ class Router:
         if return_to_url := self._get_return_to_location_url(
             location,
             return_to,
+            routing_path,
             is_section_complete=is_section_complete,
             return_to_answer_id=return_to_answer_id,
             return_to_block_id=return_to_block_id,
@@ -169,14 +170,10 @@ class Router:
         Returns the previous 'location' to visit given a set of user answers or returns to the summary if
         the `return_to` var is set and the section is complete.
         """
-        is_section_complete = self._progress_store.is_section_complete(
-            location.section_id, location.list_item_id
-        )
-
         if return_to_url := self._get_return_to_location_url(
             location,
             return_to,
-            is_section_complete=is_section_complete,
+            routing_path,
             return_to_answer_id=return_to_answer_id,
             return_to_block_id=return_to_block_id,
         ):
@@ -212,6 +209,7 @@ class Router:
         self,
         location: Location,
         return_to: Optional[str],
+        routing_path: RoutingPath,
         is_section_complete: Optional[bool] = None,
         return_to_answer_id: Optional[str] = None,
         return_to_block_id: Optional[str] = None,
@@ -220,12 +218,18 @@ class Router:
         if not return_to:
             return None
 
-        if return_to == "calculated-summary":
-            if return_to_block_id:
-                if self._schema.is_block_valid(return_to_block_id):
-                    return url_for("questionnaire.block", block_id=return_to_block_id)
-                return None
+        if return_to == "calculated-summary" and return_to_block_id:
+            if (
+                self._schema.is_block_valid(return_to_block_id)
+                and return_to_block_id in routing_path.block_ids
+            ):
+                return url_for("questionnaire.block", block_id=return_to_block_id)
             return None
+
+        if is_section_complete is None:
+            is_section_complete = self._progress_store.is_section_complete(
+                location.section_id, location.list_item_id
+            )
 
         if not is_section_complete:
             return None
