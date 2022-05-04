@@ -123,17 +123,20 @@ class Router:
         Get the next location in the section. If the section is complete, determine where to go next,
         whether it be a summary, the hub or the next incomplete location.
         """
+        is_section_complete = self._progress_store.is_section_complete(
+            location.section_id, location.list_item_id
+        )
+
         if return_to_url := self._get_return_to_location_url(
             location,
             return_to,
+            is_section_complete=is_section_complete,
             return_to_answer_id=return_to_answer_id,
             return_to_block_id=return_to_block_id,
         ):
             return return_to_url
 
-        if self._progress_store.is_section_complete(
-            location.section_id, location.list_item_id
-        ):
+        if is_section_complete:
             return self._get_next_location_url_for_complete_section(location)
 
         # Due to backwards routing you can be on the last block of the path but with an in_progress section
@@ -166,9 +169,14 @@ class Router:
         Returns the previous 'location' to visit given a set of user answers or returns to the summary if
         the `return_to` var is set and the section is complete.
         """
+        is_section_complete = self._progress_store.is_section_complete(
+            location.section_id, location.list_item_id
+        )
+
         if return_to_url := self._get_return_to_location_url(
             location,
             return_to,
+            is_section_complete=is_section_complete,
             return_to_answer_id=return_to_answer_id,
             return_to_block_id=return_to_block_id,
         ):
@@ -203,24 +211,23 @@ class Router:
     def _get_return_to_location_url(
         self,
         location: Location,
-        return_to: str,
+        return_to: Optional[str],
+        is_section_complete: Optional[bool] = None,
         return_to_answer_id: Optional[str] = None,
         return_to_block_id: Optional[str] = None,
     ) -> Optional[str]:
-
+        # pylint: disable=too-many-return-statements
         if not return_to:
             return None
 
-        if (
-            return_to == "calculated-summary"
-            and return_to_block_id
-            and self._schema.is_block_valid(return_to_block_id)
-        ):
-            return url_for("questionnaire.block", block_id=return_to_block_id)
+        if return_to == "calculated-summary":
+            if return_to_block_id:
+                if self._schema.is_block_valid(return_to_block_id):
+                    return url_for("questionnaire.block", block_id=return_to_block_id)
+                return None
+            return None
 
-        if not self._progress_store.is_section_complete(
-            location.section_id, location.list_item_id
-        ):
+        if not is_section_complete:
             return None
 
         if return_to == "section-summary":
