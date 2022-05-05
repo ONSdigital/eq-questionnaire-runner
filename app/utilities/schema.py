@@ -23,6 +23,18 @@ LANGUAGE_CODES = ("en", "cy")
 
 LANGUAGES_MAP = {"test_language": [["en", "cy"]]}
 
+ALLOWED_METHODS = {"GET"}
+BACKOFF_MAX = 0.2
+RETRIES_TOTAL = 3
+STATUS_CODES = [
+    408,
+    429,
+    500,
+    502,
+    503,
+    504,
+]
+
 
 @lru_cache(maxsize=None)
 def get_schema_list(language_code: str = DEFAULT_LANGUAGE_CODE) -> dict[str, list]:
@@ -181,25 +193,12 @@ def load_schema_from_url(schema_url, language_code):
     session = requests.Session()
 
     retries = Retry(
-        total=3,
-        allowed_methods=frozenset({"GET"}),
-        backoff_factor=0.1,
-        status_forcelist=[
-            408,
-            429,
-            500,
-            501,
-            502,
-            503,
-            504,
-            505,
-            506,
-            507,
-            509,
-            510,
-            511,
-        ],
-    )  # Codes to retry according to Google Docs
+        total=RETRIES_TOTAL,
+        allowed_methods=ALLOWED_METHODS,
+        status_forcelist=STATUS_CODES,
+    )  # Codes to retry according to Google Docs https://cloud.google.com/storage/docs/retry-strategy#retryable
+
+    retries.BACKOFF_MAX = BACKOFF_MAX
 
     session.mount("http://", HTTPAdapter(max_retries=retries))
     session.mount("https://", HTTPAdapter(max_retries=retries))
