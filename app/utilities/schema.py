@@ -201,6 +201,7 @@ def load_schema_from_url(schema_url, language_code):
         ],
     )  # Codes to retry according to Google Docs
 
+    session.mount("http://", HTTPAdapter(max_retries=retries))
     session.mount("https://", HTTPAdapter(max_retries=retries))
 
     try:
