@@ -214,15 +214,11 @@ class Router:
         return_to_answer_id: Optional[str] = None,
         return_to_block_id: Optional[str] = None,
     ) -> Optional[str]:
-        # pylint: disable=too-many-return-statements
         if not return_to:
             return None
 
-        if return_to == "calculated-summary" and return_to_block_id:
-            if (
-                self._schema.is_block_valid(return_to_block_id)
-                and return_to_block_id in routing_path.block_ids
-            ):
+        if return_to == "calculated-summary":
+            if return_to_block_id and return_to_block_id in routing_path.block_ids:
                 return url_for("questionnaire.block", block_id=return_to_block_id)
             return None
 
