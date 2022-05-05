@@ -6,9 +6,9 @@ from pathlib import Path
 from typing import Mapping, Optional
 
 import requests
+from requests import RequestException
 from requests.adapters import HTTPAdapter, Retry
 from structlog import get_logger
-from werkzeug.exceptions import InternalServerError, NotFound
 
 from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
@@ -205,26 +205,22 @@ def load_schema_from_url(schema_url, language_code):
 
     try:
         req = session.get(constructed_schema_url, timeout=3)
-    except Exception as exc:
+    except RequestException as exc:
         raise ConnectionError from exc
 
-    if req.status_code == 404:
-        logger.error("no schema exists", schema_url=constructed_schema_url)
-        raise NotFound
+    if req.status_code == 200:
+        schema_response = req.content.decode()
+        response_duration_in_milliseconds = req.elapsed.total_seconds() * 1000
 
-    if req.status_code != 200:
-        logger.error(f"status code {req.status_code}")
-        raise InternalServerError
+        logger.info(
+            f"schema request took {response_duration_in_milliseconds:.2f} milliseconds",
+            pid=pid,
+        )
 
-    schema_response = req.content.decode()
-    response_duration_in_milliseconds = req.elapsed.total_seconds() * 1000
+        return QuestionnaireSchema(json_loads(schema_response), language_code)
 
-    logger.info(
-        f"schema request took {response_duration_in_milliseconds:.2f} milliseconds",
-        pid=pid,
-    )
-
-    return QuestionnaireSchema(json_loads(schema_response), language_code)
+    logger.error(f"status code {req.status_code}")
+    raise Exception
 
 
 def cache_questionnaire_schemas():
