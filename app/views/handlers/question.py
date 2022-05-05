@@ -101,7 +101,10 @@ class Question(BlockHandler):
                 return location_url
 
         return self.router.get_next_location_url(
-            self._current_location, self._routing_path, self._return_to
+            self._current_location,
+            self._routing_path,
+            self._return_to,
+            self._return_to_answer_id,
         )
 
     def _get_answers_for_question(self, question_json) -> dict[str, Any]:

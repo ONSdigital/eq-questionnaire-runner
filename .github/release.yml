@@ -2,10 +2,10 @@ changelog:
   categories:
     - title: ⚠️ Breaking Changes
       labels:
-        - Breaking Changes
+        - Breaking Change
     - title: New Features
       labels:
-        - New Features
+        - New Feature
     - title: Enhancements
       labels:
         - Enhancement

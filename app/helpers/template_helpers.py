@@ -9,8 +9,9 @@ from flask import url_for
 from flask_babel import LazyString, get_locale, lazy_gettext
 from flask_login import current_user
 
-from app.globals import get_session_store
+from app.globals import get_metadata, get_session_store
 from app.helpers.language_helper import get_languages_context
+from app.questionnaire import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config import (
     BusinessSurveyConfig,
@@ -20,6 +21,7 @@ from app.survey_config import (
     SurveyConfig,
     WelshCensusSurveyConfig,
 )
+from app.utilities.schema import load_schema_from_session_data
 
 
 class ContextHelper:
@@ -73,12 +75,22 @@ class ContextHelper:
         }
 
     @property
-    def service_links_context(self) -> Optional[dict[str, list[dict]]]:
+    def service_links_context(
+        self,
+    ) -> Optional[dict[str, Union[dict[str, str], list[dict]]]]:
+        metadata = get_metadata(current_user)
         if service_links := self._survey_config.get_service_links(
             sign_out_url=self._sign_out_url,
             is_authenticated=current_user.is_authenticated,
+            ru_ref=metadata.get("ru_ref") if metadata else None,  # type: ignore
         ):
-            return {"itemsList": service_links}
+            return {
+                "toggleServicesButton": {
+                    "text": lazy_gettext("Menu"),
+                    "ariaLabel": "Toggle services menu",
+                },
+                "itemsList": service_links,
+            }
 
         return None
 
@@ -145,7 +157,9 @@ class ContextHelper:
 
 
 @lru_cache
-def survey_config_mapping(*, theme: str, language: str, base_url: str) -> SurveyConfig:
+def survey_config_mapping(
+    *, theme: str, language: str, base_url: str, schema: QuestionnaireSchema
+) -> SurveyConfig:
     survey_type_to_config: dict[str, Type[SurveyConfig]] = {
         "default": BusinessSurveyConfig,
         "business": BusinessSurveyConfig,
@@ -158,6 +172,7 @@ def survey_config_mapping(*, theme: str, language: str, base_url: str) -> Survey
 
     return survey_type_to_config[theme](
         base_url=base_url,
+        schema=schema,
     )
 
 
@@ -165,6 +180,7 @@ def get_survey_config(
     *,
     theme: Optional[str] = None,
     language: Optional[str] = None,
+    schema: Optional[QuestionnaireSchema] = None,
 ) -> SurveyConfig:
     # The fallback to assigning SURVEY_TYPE to theme is only being added until
     # business feedback on the differentiation between theme and SURVEY_TYPE.
@@ -178,13 +194,23 @@ def get_survey_config(
         theme=theme,
         language=language,
         base_url=base_url,
+        schema=schema,
     )
 
 
 def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     language = get_locale().language
+    schema, session_expires_at = None, None
+    if session_store := get_session_store():
+        if session_data := session_store.session_data:
+            schema = load_schema_from_session_data(session_data)
+
+        if session_expiry := session_store.expiration_time:
+            session_expires_at = session_expiry.isoformat()
+
     survey_config = get_survey_config(
         language=language,
+        schema=schema,
     )
     is_post_submission = request.blueprint == "post_submission"
     include_csrf_token = bool(
@@ -198,12 +224,6 @@ def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     ).context
 
     template = f"{template.lower()}.html"
-
-    session_expires_at = (
-        session_store.expiration_time.isoformat()
-        if (session_store := get_session_store()) and session_store.expiration_time
-        else None
-    )
 
     return flask_render_template(
         template,

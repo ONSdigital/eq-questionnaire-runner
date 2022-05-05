@@ -34,7 +34,7 @@ describe("Summary Anchor Scrolling", () => {
       $(InsuranceAddressPage.submit()).click();
       $(AddressDurationPage.submit()).click();
       expect($(PropertyDetailsSummaryPage.summaryRowState("name-question-concatenated-answer-edit")).getAttribute("href")).to.contain(
-        "name/?return_to=section-summary&return_to_answer_id=name-question-concatenated-answer#name-question-concatenated-answer"
+        "name/?return_to=section-summary&return_to_answer_id=name-question-concatenated-answer#first-name"
       );
     });
 
