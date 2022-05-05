@@ -159,7 +159,6 @@ def test_load_schema_from_url_200():
 def test_load_schema_from_url_connection_error():
     load_schema_from_url.cache_clear()
 
-    responses.add(responses.GET, "", json={"error": "not found"}, status=0)
     with pytest.raises(ConnectionError):
         load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
 
