@@ -56,9 +56,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             set
         )
         self._when_rules_section_dependencies_by_section: dict[str, set[str]] = {}
-        self._when_rules_section_dependencies_by_answer: dict[
-            str, set[str]
-        ] = defaultdict(set)
+        self._when_rules_section_dependencies_by_answer: dict[str, set[str]] = defaultdict(set)
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
 
