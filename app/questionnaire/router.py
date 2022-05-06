@@ -223,6 +223,7 @@ class Router:
                     "questionnaire.block",
                     list_item_id=location.list_item_id,
                     block_id=return_to_block_id,
+                    _anchor=return_to_answer_id,
                 )
             return None
 

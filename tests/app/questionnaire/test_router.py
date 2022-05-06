@@ -530,10 +530,17 @@ class TestRouterNextLocation(RouterTestCase):
             return_to="calculated-summary",
             return_to_block_id="currency-total-playback-skipped-fourth",
         )
-        expected_location_url = Location(
+        expected_location = Location(
             section_id="default-section",
             block_id="currency-total-playback-skipped-fourth",
-        ).url()
+        )
+
+        expected_location_url = url_for(
+            "questionnaire.block",
+            list_item_id=expected_location.list_item_id,
+            block_id=expected_location.block_id,
+            _anchor="first-number-answer",
+        )
 
         assert expected_location_url == next_location_url
 
@@ -563,6 +570,30 @@ class TestRouterNextLocation(RouterTestCase):
             routing_path,
             return_to="calculated-summary",
             return_to_block_id=return_to_block_id,
+        )
+
+        assert (
+            "/questionnaire/sixth-number-block/?return_to=calculated-summary"
+            == next_location_url
+        )
+
+    @pytest.mark.usefixtures("app")
+    def test_return_to_calculated_summary_return_to_block_id_not_on_path(self):
+        self.schema = load_schema_from_name("test_calculated_summary")
+
+        current_location = Location(
+            section_id="default-section", block_id="fifth-number-block"
+        )
+
+        routing_path = RoutingPath(
+            ["fifth-number-block", "sixth-number-block"],
+            section_id="default-section",
+        )
+        next_location_url = self.router.get_next_location_url(
+            current_location,
+            routing_path,
+            return_to="calculated-summary",
+            return_to_block_id="fourth-number-block",
         )
 
         assert (
@@ -721,10 +752,18 @@ class TestRouterPreviousLocation(RouterTestCase):
             return_to_answer_id="first-number-answer",
             return_to_block_id="currency-total-playback-skipped-fourth",
         )
-        expected_location_url = Location(
+
+        expected_location = Location(
             section_id="default-section",
             block_id="currency-total-playback-skipped-fourth",
-        ).url()
+        )
+
+        expected_location_url = url_for(
+            "questionnaire.block",
+            list_item_id=expected_location.list_item_id,
+            block_id=expected_location.block_id,
+            _anchor="first-number-answer",
+        )
 
         assert expected_location_url == previous_location_url
 

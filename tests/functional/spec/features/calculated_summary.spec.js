@@ -94,6 +94,12 @@ describe("Feature: Calculated Summary", () => {
       );
     });
 
+    it("Given I edit an answer from the calculated summary page and click the Previous button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", () => {
+      $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
+      $(ThirdNumberBlockPage.previous()).click();
+      expect(browser.getUrl()).to.contain("/questionnaire/currency-total-playback-with-fourth/#third-number-answer");
+    });
+
     it("Given I edit an answer from the calculated summary page and click the Submit button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", () => {
       $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
       $(ThirdNumberBlockPage.submit()).click();
