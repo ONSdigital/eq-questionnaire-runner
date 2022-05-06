@@ -375,6 +375,10 @@ class QuestionnaireStoreUpdater:
                 section_id != self._current_location.section_id
                 or list_item_id != self._current_location.list_item_id
             ):
+                dependent = DependentSection(section_id, list_item_id, None)
+                if dependent in self.dependent_sections:
+                    self.dependent_sections.remove(dependent)
+
                 self.dependent_sections.add(
                     DependentSection(section_id, list_item_id, False)
                 )
