@@ -5,10 +5,10 @@ from app.views.contexts.summary.answer import Answer
 
 @pytest.mark.usefixtures("app")
 @pytest.mark.parametrize(
-    "return_to",
-    ["section-summary", None],
+    "return_to, return_to_block_id",
+    [("section-summary", None), (None, None)],
 )
-def test_create_answer(return_to):
+def test_create_answer(return_to, return_to_block_id):
     answer = Answer(
         answer_schema={"id": "answer-id", "label": "Answer Label", "type": "date"},
         answer_value="An answer",
@@ -16,7 +16,7 @@ def test_create_answer(return_to):
         list_name="answer-list",
         list_item_id="answer-item-id",
         return_to=return_to,
-        return_to_block_id=None,
+        return_to_block_id=return_to_block_id,
     )
 
     assert answer.id == "answer-id"

@@ -515,13 +515,18 @@ class TestRouterNextLocation(RouterTestCase):
         )
 
         routing_path = RoutingPath(
-            ["sixth-number-block", "currency-total-playback-skipped-fourth"],
+            [
+                "fifth-number-block",
+                "sixth-number-block",
+                "currency-total-playback-skipped-fourth",
+            ],
             section_id="default-section",
         )
 
         next_location_url = self.router.get_next_location_url(
             current_location,
             routing_path,
+            return_to_answer_id="first-number-answer",
             return_to="calculated-summary",
             return_to_block_id="currency-total-playback-skipped-fourth",
         )
@@ -540,7 +545,7 @@ class TestRouterNextLocation(RouterTestCase):
             None,
         ],
     )
-    def test_return_to_calculated_summary_incorrect_return_to_block_id(
+    def test_return_to_calculated_summary_invalid_return_to_block_id(
         self, return_to_block_id
     ):
         self.schema = load_schema_from_name("test_calculated_summary")
@@ -702,13 +707,18 @@ class TestRouterPreviousLocation(RouterTestCase):
         )
 
         routing_path = RoutingPath(
-            ["sixth-number-block", "currency-total-playback-skipped-fourth"],
+            [
+                "fifth-number-block",
+                "sixth-number-block",
+                "currency-total-playback-skipped-fourth",
+            ],
             section_id="default-section",
         )
         previous_location_url = self.router.get_previous_location_url(
             current_location,
             routing_path,
             return_to="calculated-summary",
+            return_to_answer_id="first-number-answer",
             return_to_block_id="currency-total-playback-skipped-fourth",
         )
         expected_location_url = Location(

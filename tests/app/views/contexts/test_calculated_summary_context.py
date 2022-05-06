@@ -8,7 +8,7 @@ from tests.app.views.contexts import assert_summary_context
 # pylint: disable=too-many-locals
 @pytest.mark.usefixtures("app")
 @pytest.mark.parametrize(
-    "block_id, locale, language, title, value, total_blocks",
+    "block_id, locale, language, title, value, total_blocks, return_to_answer_id",
     (
         (
             "currency-total-playback-with-fourth",
@@ -17,6 +17,7 @@ from tests.app.views.contexts import assert_summary_context
             "We calculate the total of currency values entered to be £27.00. Is this correct? (With Fourth)",
             "£27.00",
             5,
+            "first-number-answer",
         ),
         (
             "currency-total-playback-skipped-fourth",
@@ -25,6 +26,7 @@ from tests.app.views.contexts import assert_summary_context
             "We calculate the total of currency values entered to be £12.00. Is this correct? (Skipped Fourth)",
             "£12.00",
             3,
+            "first-number-answer",
         ),
         (
             "unit-total-playback",
@@ -33,6 +35,7 @@ from tests.app.views.contexts import assert_summary_context
             "We calculate the total of unit values entered to be 9 cm. Is this correct?",
             "9 cm",
             2,
+            "second-number-answer-unit-total",
         ),
         (
             "percentage-total-playback",
@@ -41,6 +44,7 @@ from tests.app.views.contexts import assert_summary_context
             "We calculate the total of percentage values entered to be 20%. Is this correct?",
             "20%",
             2,
+            "fifth-percent-answer",
         ),
         (
             "number-total-playback",
@@ -49,6 +53,7 @@ from tests.app.views.contexts import assert_summary_context
             "We calculate the total of number values entered to be 22. Is this correct?",
             "22",
             2,
+            "fifth-number-answer",
         ),
     ),
 )
@@ -64,6 +69,7 @@ def test_build_view_context_for_currency_calculated_summary(
     list_store,
     progress_store,
     mocker,
+    return_to_answer_id,
 ):
     mocker.patch(
         "app.jinja_filters.flask_babel.get_locale",
@@ -105,4 +111,5 @@ def test_build_view_context_for_currency_calculated_summary(
         "answers"
     ][0]["link"]
     assert "return_to=calculated-summary" in answer_change_link
+    assert f"return_to_answer_id={return_to_answer_id}" in answer_change_link
     assert f"return_to_block_id={block_id}" in answer_change_link

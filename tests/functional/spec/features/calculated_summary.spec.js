@@ -88,13 +88,13 @@ describe("Feature: Calculated Summary", () => {
       expect($$(NumberTotalPlaybackPage.sixthNumberAnswer())).to.be.empty;
     });
 
-    it("When I reach the calculated summary page, Then the Change link url should contain return_to and return_to_block_id and query params", () => {
+    it("Given I reach the calculated summary page, Then the Change link url should contain return_to, return_to_answer_id and return_to_block_id query params", () => {
       expect($(CurrencyTotalPlaybackPageWithFourth.firstNumberAnswerEdit()).getAttribute("href")).to.contain(
         "/questionnaire/first-number-block/?return_to=calculated-summary&return_to_answer_id=first-number-answer&return_to_block_id=currency-total-playback-with-fourth#first-number-answer"
       );
     });
 
-    it("When I edit an answer from the calculated summary page and click the Submit button, Then I am taken to the calculated summary page and the browser url should contain an anchor referencing the answer id of the answer I am changing", () => {
+    it("Given I edit an answer from the calculated summary page and click the Submit button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", () => {
       $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
       $(ThirdNumberBlockPage.submit()).click();
       expect(browser.getUrl()).to.contain("/questionnaire/currency-total-playback-with-fourth/#third-number-answer");

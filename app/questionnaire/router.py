@@ -219,7 +219,11 @@ class Router:
 
         if return_to == "calculated-summary":
             if return_to_block_id and return_to_block_id in routing_path:
-                return url_for("questionnaire.block", block_id=return_to_block_id)
+                return url_for(
+                    "questionnaire.block",
+                    list_item_id=location.list_item_id,
+                    block_id=return_to_block_id,
+                )
             return None
 
         if is_section_complete is None:
