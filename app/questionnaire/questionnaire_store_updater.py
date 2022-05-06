@@ -333,7 +333,7 @@ class QuestionnaireStoreUpdater:
     def update_progress_for_dependent_sections(self) -> None:
         """Section progress is not updated for the current location as it is handled by `handle_post` on block handlers. """
 
-        self._remove_dependent_blocks_from_progress_store()
+        self._remove_dependent_blocks_and_capture_dependent_sections()
 
         for section in self.dependent_sections:
             is_path_complete = section.is_complete
@@ -350,7 +350,7 @@ class QuestionnaireStoreUpdater:
                 list_item_id=section.list_id,
             )
 
-    def _remove_dependent_blocks_from_progress_store(self) -> None:
+    def _remove_dependent_blocks_and_capture_dependent_sections(self) -> None:
         """Removes dependent blocks from the progress store."""
 
         for (
