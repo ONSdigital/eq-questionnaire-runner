@@ -9,8 +9,8 @@ from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
 from app.questionnaire.questionnaire_store_updater import (
-    QuestionnaireStoreUpdater,
     DependentSection,
+    QuestionnaireStoreUpdater,
 )
 
 
