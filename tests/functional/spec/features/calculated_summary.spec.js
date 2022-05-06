@@ -8,6 +8,7 @@ import FourthAndAHalfNumberBlockPage from "../../generated_pages/calculated_summ
 import FifthNumberBlockPage from "../../generated_pages/calculated_summary/fifth-number-block.page.js";
 import SixthNumberBlockPage from "../../generated_pages/calculated_summary/sixth-number-block.page.js";
 import CurrencyTotalPlaybackPageWithFourth from "../../generated_pages/calculated_summary/currency-total-playback-with-fourth.page.js";
+import SetMinMaxBlockPage from "../../generated_pages/calculated_summary/set-min-max-block.page.js";
 import CurrencyTotalPlaybackPageSkippedFourth from "../../generated_pages/calculated_summary/currency-total-playback-skipped-fourth.page.js";
 import UnitTotalPlaybackPage from "../../generated_pages/calculated_summary/unit-total-playback.page.js";
 import PercentageTotalPlaybackPage from "../../generated_pages/calculated_summary/percentage-total-playback.page.js";
@@ -222,10 +223,22 @@ describe("Feature: Calculated Summary", () => {
       textsToAssert.forEach((text) => expect(content).to.contain(text));
     });
 
-    it("Given I confirm the totals and am on the summary, When I edit and change an answer, Then I must re-confirm the calculated summary page which is dependent on the change before I can return to the summary", () => {
+    it("Given I have a min/max question based on a calculated summary total, When I enter an invalid answer, Then I should see an error messages on the page", () => {
       $(CalculatedSummaryTotalConfirmation.submit()).click();
-      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
+      $(SetMinMaxBlockPage.setMinimum()).setValue(8.0);
+      $(SetMinMaxBlockPage.setMaximum()).setValue(10.0);
+      $(SetMinMaxBlockPage.submit()).click();
+      expect($(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer more than or equal to £9.36");
+      expect($(SetMinMaxBlockPage.errorNumber(2)).getText()).to.contain("Enter an answer less than or equal to £9.36");
+      $(SetMinMaxBlockPage.setMinimum()).setValue(10.0);
+      $(SetMinMaxBlockPage.setMaximum()).setValue(7.0);
+      $(SetMinMaxBlockPage.submit()).click();
+    });
 
+
+    it("Given I confirm the totals and am on the summary, When I edit and change an answer, Then I must re-confirm the dependant calculated summary page and min max question page before I can return to the summary", () => {
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
       $(SubmitPage.thirdNumberAnswerEdit()).click();
       $(ThirdNumberBlockPage.thirdNumber()).setValue(3.5);
       $(ThirdNumberBlockPage.submit()).click();
@@ -239,7 +252,14 @@ describe("Feature: Calculated Summary", () => {
       );
 
       $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
-
+      $(UnitTotalPlaybackPage.submit()).click();
+      $(PercentageTotalPlaybackPage.submit()).click();
+      $(NumberTotalPlaybackPage.submit()).click();
+      $(CalculatedSummaryTotalConfirmation.submit()).click();
+      expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
+      $(SetMinMaxBlockPage.setMinimum()).setValue(100.0);
+      $(SetMinMaxBlockPage.setMaximum()).setValue(1.0);
+      $(SetMinMaxBlockPage.submit()).click();
       expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
