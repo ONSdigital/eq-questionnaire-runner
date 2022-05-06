@@ -1132,6 +1132,11 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
         ("breakdown-section", list_item): {"turnover-breakdown-block"}
         for list_item in list_store["some-list"]
     }
+    questionnaire_store_updater.dependent_sections.add(
+        DependentSection(
+            section_id="breakdown-section", list_id="item-1", is_complete=None
+        )
+    )
 
     # When
     questionnaire_store_updater.update_progress_for_dependent_sections()
@@ -1146,69 +1151,11 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
             progress_store.get_section_status(section_id, list_item_id)
             == CompletionStatus.IN_PROGRESS
         )
-
-
-def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_status_updated_duplicates_avoided(
-    mock_router,
-):
-    # Given
-    current_location = Location(
-        section_id="company-summary-section", block_id="total-turnover-block"
-    )
-    list_store = ListStore(
-        [
-            {
-                "items": ["item-1", "item-2"],
-                "name": "some-list",
-            }
-        ]
-    )
-    progress_store = ProgressStore(
-        [
-            {
-                "section_id": "breakdown-section",
-                "list_item_id": "item-1",
-                "block_ids": [
-                    "turnover-breakdown-block",
-                ],
-                "status": CompletionStatus.IN_PROGRESS,
-            },
-            {
-                "section_id": "breakdown-section",
-                "list_item_id": "item-2",
-                "block_ids": [
-                    "turnover-breakdown-block",
-                ],
-                "status": CompletionStatus.IN_PROGRESS,
-            },
-        ],
-    )
-    questionnaire_store_updater = get_questionnaire_store_updater(
-        current_location=current_location,
-        progress_store=progress_store,
-        list_store=list_store,
-        router=mock_router,
-    )
-
-    questionnaire_store_updater.dependent_block_id_by_section_key = {
-        ("breakdown-section", list_item): {"turnover-breakdown-block"}
-        for list_item in list_store["some-list"]
-    }
-    questionnaire_store_updater.dependent_sections.add(
-        DependentSection(
-            section_id="breakdown-section", list_id="item-1", is_complete=None
-        )
-    )
-
-    # When
-    questionnaire_store_updater.update_progress_for_dependent_sections()
-
-    # Then
-    assert questionnaire_store_updater.dependent_sections == {
-        DependentSection(
-            section_id="breakdown-section", list_id="item-1", is_complete=False
-        ),
-        DependentSection(
-            section_id="breakdown-section", list_id="item-2", is_complete=False
-        ),
-    }
+        assert questionnaire_store_updater.dependent_sections == {
+            DependentSection(
+                section_id=section_id, list_id="item-1", is_complete=False
+            ),
+            DependentSection(
+                section_id=section_id, list_id="item-2", is_complete=False
+            ),
+        }
