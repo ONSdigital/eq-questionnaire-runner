@@ -546,14 +546,17 @@ class TestRouterNextLocation(RouterTestCase):
 
     @pytest.mark.usefixtures("app")
     @pytest.mark.parametrize(
-        "return_to_block_id",
+        "return_to_block_id, expected_url",
         [
-            "non-valid-block",
-            None,
+            (
+                "non-valid-block",
+                "/questionnaire/sixth-number-block/?return_to=calculated-summary&return_to_block_id=non-valid-block",
+            ),
+            (None, "/questionnaire/sixth-number-block/?return_to=calculated-summary"),
         ],
     )
     def test_return_to_calculated_summary_invalid_return_to_block_id(
-        self, return_to_block_id
+        self, return_to_block_id, expected_url
     ):
         self.schema = load_schema_from_name("test_calculated_summary")
 
@@ -572,10 +575,7 @@ class TestRouterNextLocation(RouterTestCase):
             return_to_block_id=return_to_block_id,
         )
 
-        assert (
-            "/questionnaire/sixth-number-block/?return_to=calculated-summary"
-            == next_location_url
-        )
+        assert expected_url == next_location_url
 
     @pytest.mark.usefixtures("app")
     def test_return_to_calculated_summary_return_to_block_id_not_on_path(self):
@@ -597,7 +597,7 @@ class TestRouterNextLocation(RouterTestCase):
         )
 
         assert (
-            "/questionnaire/sixth-number-block/?return_to=calculated-summary"
+            "/questionnaire/sixth-number-block/?return_to=calculated-summary&return_to_block_id=fourth-number-block"
             == next_location_url
         )
 

@@ -150,6 +150,7 @@ class Router:
             routing_path,
             return_to=return_to,
             return_to_answer_id=return_to_answer_id,
+            return_to_block_id=return_to_block_id,
         )
 
     def _get_next_location_url_for_complete_section(self, location: Location) -> str:
@@ -197,6 +198,7 @@ class Router:
                 list_name=routing_path.list_name,
                 list_item_id=routing_path.list_item_id,
                 return_to=return_to,
+                return_to_block_id=return_to_block_id,
                 _anchor=return_to_answer_id,
             )
 
@@ -218,7 +220,7 @@ class Router:
             return None
 
         if return_to == "calculated-summary":
-            if return_to_block_id and return_to_block_id in routing_path:
+            if return_to_block_id in routing_path:
                 return url_for(
                     "questionnaire.block",
                     list_item_id=location.list_item_id,
