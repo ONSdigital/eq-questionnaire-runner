@@ -293,7 +293,9 @@ class QuestionnaireStoreUpdater:
     def _capture_section_dependencies_for_answer(self, answer_id: str) -> None:
         """Captures a unique list of section ids that are dependents of the provided answer id."""
 
-        answer_id_section_dependents = self._schema.when_rules_section_dependencies_by_answer
+        answer_id_section_dependents = (
+            self._schema.when_rules_section_dependencies_by_answer
+        )
 
         if section_ids := answer_id_section_dependents.get(answer_id):
 
