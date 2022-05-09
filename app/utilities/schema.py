@@ -23,7 +23,6 @@ LANGUAGE_CODES = ("en", "cy")
 
 LANGUAGES_MAP = {"test_language": [["en", "cy"]]}
 
-ALLOWED_METHODS = {"GET"}
 BACKOFF_MAX = 0.2
 RETRIES_TOTAL = 3
 STATUS_CODES = [
@@ -194,7 +193,6 @@ def load_schema_from_url(schema_url, language_code):
 
     retries = Retry(
         total=RETRIES_TOTAL,
-        allowed_methods=ALLOWED_METHODS,
         status_forcelist=STATUS_CODES,
     )  # Codes to retry according to Google Docs https://cloud.google.com/storage/docs/retry-strategy#retryable
 
