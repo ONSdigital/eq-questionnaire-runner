@@ -23,9 +23,9 @@ LANGUAGE_CODES = ("en", "cy")
 
 LANGUAGES_MAP = {"test_language": [["en", "cy"]]}
 
-BACKOFF_MAX = 0.2
-RETRIES_TOTAL = 3
-STATUS_CODES = [
+SCHEMA_REQUEST_MAX_BACKOFF = 0.2
+SCHEMA_REQUEST_MAX_RETRIES = 3
+SCHEMA_REQUEST_RETRY_STATUS_CODES = [
     408,
     429,
     500,
@@ -192,11 +192,11 @@ def load_schema_from_url(schema_url, language_code):
     session = requests.Session()
 
     retries = Retry(
-        total=RETRIES_TOTAL,
-        status_forcelist=STATUS_CODES,
-    )  # Codes to retry according to Google Docs https://cloud.google.com/storage/docs/retry-strategy#retryable
+        total=SCHEMA_REQUEST_MAX_RETRIES,
+        status_forcelist=SCHEMA_REQUEST_RETRY_STATUS_CODES,
+    )  # Codes to retry according to Google Docs https://cloud.google.com/storage/docs/retry-strategy#client-libraries
 
-    retries.BACKOFF_MAX = BACKOFF_MAX
+    retries.BACKOFF_MAX = SCHEMA_REQUEST_MAX_BACKOFF
 
     session.mount("http://", HTTPAdapter(max_retries=retries))
     session.mount("https://", HTTPAdapter(max_retries=retries))
@@ -217,8 +217,13 @@ def load_schema_from_url(schema_url, language_code):
 
         return QuestionnaireSchema(json_loads(schema_response), language_code)
 
-    logger.error(f"status code {req.status_code}")
-    raise Exception
+    logger.error(
+        "got a non-200 response for schema url request",
+        status_code=req.status_code,
+        schema_url=constructed_schema_url,
+    )
+
+    raise Exception("failed to load schema from url")
 
 
 def cache_questionnaire_schemas():
