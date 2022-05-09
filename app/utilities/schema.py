@@ -15,6 +15,7 @@ from app.questionnaire.questionnaire_schema import (
     QuestionnaireSchema,
 )
 from app.utilities.json import json_load, json_loads
+from app.utilities.schema_request_failed_exception import SchemaRequestFailed
 
 logger = get_logger()
 
@@ -204,7 +205,11 @@ def load_schema_from_url(schema_url, language_code):
     try:
         req = session.get(constructed_schema_url, timeout=3)
     except RequestException as exc:
-        raise ConnectionError from exc
+        logger.exception(
+            "schema request errored",
+            schema_url=constructed_schema_url,
+        )
+        raise SchemaRequestFailed("schema request failed") from exc
 
     if req.status_code == 200:
         schema_response = req.content.decode()
@@ -223,7 +228,7 @@ def load_schema_from_url(schema_url, language_code):
         schema_url=constructed_schema_url,
     )
 
-    raise Exception("failed to load schema from url")
+    raise SchemaRequestFailed("failed to load schema from url")
 
 
 def cache_questionnaire_schemas():

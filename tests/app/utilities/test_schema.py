@@ -3,6 +3,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 import responses
+from requests import RequestException
 
 from app.questionnaire import QuestionnaireSchema
 from app.setup import create_app
@@ -17,6 +18,7 @@ from app.utilities.schema import (
     load_schema_from_name,
     load_schema_from_url,
 )
+from app.utilities.schema_request_failed_exception import SchemaRequestFailed
 
 TEST_SCHEMA_URL = "http://test.domain/schema.json"
 
@@ -154,19 +156,6 @@ def test_load_schema_from_url_200():
     assert cache_info.hits == 0
 
 
-@responses.activate
-def test_load_schema_from_url_connection_error():
-    load_schema_from_url.cache_clear()
-
-    with pytest.raises(ConnectionError):
-        load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
-
-    cache_info = load_schema_from_url.cache_info()
-    assert cache_info.currsize == 0
-    assert cache_info.misses == 1
-    assert cache_info.hits == 0
-
-
 @pytest.mark.parametrize(
     "status_code",
     [401, 403, 404, 501, 511],
@@ -179,13 +168,24 @@ def test_from_url_non_200(status_code):
         responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=status_code
     )
 
-    with pytest.raises(Exception):
+    with pytest.raises(SchemaRequestFailed) as excinfo:
         load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
 
     cache_info = load_schema_from_url.cache_info()
     assert cache_info.currsize == 0
     assert cache_info.misses == 1
     assert cache_info.hits == 0
+
+    assert str(excinfo.value) == "failed to load schema from url"
+
+
+@responses.activate
+def test_from_url_request_failed():
+    responses.add(responses.GET, TEST_SCHEMA_URL, body=RequestException())
+    with pytest.raises(SchemaRequestFailed) as excinfo:
+        load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
+
+    assert str(excinfo.value) == "schema request failed"
 
 
 @responses.activate
