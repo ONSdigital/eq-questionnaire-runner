@@ -55,6 +55,10 @@ describe("Feature: Calculated Summary", () => {
       expect(browserUrl).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
     });
 
+    it("Given I have completed all questions, When I am on the calculated summary, Then the page title should use the calculation's title", () => {
+      expect(browser.getTitle()).to.equal("Grand total of previous values - A test schema to demo Calculated Summary");
+    });
+
     it("Given I complete every question, When I get to the currency summary, Then I should see the correct total", () => {
       // Totals and titles should be shown
       expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
