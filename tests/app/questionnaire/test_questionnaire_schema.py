@@ -5,6 +5,63 @@ from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
 
+WHEN_RULES_SECTION_DEPENDENCIES_SCHEMA = {
+    "sections": [
+        {
+            "id": "skip-confirmation-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "skip-confirmation",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "skip-confirmation-answer",
+                                        "options": [
+                                            {"label": "No", "value": "No"},
+                                        ],
+                                    }
+                                ],
+                                "id": "skip-confirmation-question",
+                                "type": "General",
+                            },
+                        },
+                    ],
+                    "id": "skip-confirmation-group",
+                }
+            ],
+        },
+        {
+            "id": "confirmation-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "confirmation-question",
+                            "question": {},
+                        }
+                    ],
+                    "id": "confirmation-group",
+                    "skip_conditions": {
+                        "when": {
+                            "==": [
+                                {
+                                    "source": "answers",
+                                    "identifier": "skip-confirmation-answer",
+                                },
+                                "No",
+                            ]
+                        },
+                    },
+                },
+            ],
+        },
+    ]
+}
+
 
 def assert_all_dict_values_are_hashable(data):
     for value in data.values():
@@ -650,85 +707,15 @@ def test_answer_dependencies_for_dynamic_options_function_driven(
     }
 
 
-@pytest.fixture()
-def when_rules_section_dependencies_schema():
-    return {
-        "sections": [
-            {
-                "id": "skip-confirmation-section",
-                "groups": [
-                    {
-                        "blocks": [
-                            {
-                                "type": "Question",
-                                "id": "skip-confirmation",
-                                "question": {
-                                    "answers": [
-                                        {
-                                            "id": "skip-confirmation-answer",
-                                            "options": [
-                                                {"label": "No", "value": "No"},
-                                            ],
-                                        }
-                                    ],
-                                    "id": "skip-confirmation-question",
-                                    "type": "General",
-                                },
-                            },
-                        ],
-                        "id": "skip-confirmation-group",
-                    }
-                ],
-            },
-            {
-                "id": "confirmation-section",
-                "groups": [
-                    {
-                        "blocks": [
-                            {
-                                "type": "Question",
-                                "id": "confirmation-question",
-                                "question": {},
-                            }
-                        ],
-                        "id": "confirmation-group",
-                        "skip_conditions": {
-                            "when": {
-                                "==": [
-                                    {
-                                        "source": "answers",
-                                        "identifier": "skip-confirmation-answer",
-                                    },
-                                    "No",
-                                ]
-                            },
-                        },
-                    },
-                ],
-            },
-        ]
-    }
-
-
-def test_when_rules_section_dependencies_by_section(
-    when_rules_section_dependencies_schema,
-):
-    schema = QuestionnaireSchema(when_rules_section_dependencies_schema)
-    when_rules_section_dependencies_by_section = (
-        schema.when_rules_section_dependencies_by_section
-    )
+def test_when_rules_section_dependencies_by_section():
+    schema = QuestionnaireSchema(WHEN_RULES_SECTION_DEPENDENCIES_SCHEMA)
     assert {
         "confirmation-section": {"skip-confirmation-section"}
-    } == when_rules_section_dependencies_by_section
+    } == schema.when_rules_section_dependencies_by_section
 
 
-def test_when_rules_section_dependencies_by_answer(
-    when_rules_section_dependencies_schema,
-):
-    schema = QuestionnaireSchema(when_rules_section_dependencies_schema)
-    when_rules_section_dependencies_by_answer = (
-        schema.when_rules_section_dependencies_by_answer
-    )
+def test_when_rules_section_dependencies_by_answer():
+    schema = QuestionnaireSchema(WHEN_RULES_SECTION_DEPENDENCIES_SCHEMA)
     assert {
         "skip-confirmation-answer": {"confirmation-section"}
-    } == when_rules_section_dependencies_by_answer
+    } == schema.when_rules_section_dependencies_by_answer
