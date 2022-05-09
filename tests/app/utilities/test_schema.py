@@ -167,12 +167,17 @@ def test_load_schema_from_url_connection_error():
     assert cache_info.hits == 0
 
 
+@pytest.mark.parametrize(
+    "status_code",
+    [401, 403, 404, 501, 511],
+)
 @responses.activate
-def test_load_schema_from_url_404():
+def test_from_url_non_200(status_code):
     load_schema_from_url.cache_clear()
-
     mock_schema = QuestionnaireSchema({})
-    responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=404)
+    responses.add(
+        responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=status_code
+    )
 
     with pytest.raises(Exception):
         load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
