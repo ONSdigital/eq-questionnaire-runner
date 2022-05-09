@@ -185,7 +185,7 @@ class CalculatedSummaryContext(Context):
 
     @staticmethod
     def _get_calculated_question(calculation_question, formatted_total):
-        calculation_title = calculation_question.get("title")
+        calculation_title = calculation_question["title"]
 
         return {
             "title": calculation_title,
