@@ -9,7 +9,7 @@ from app.views.contexts.summary.answer import Answer
     [
         ("section-summary", None),
         (None, None),
-        ("section-summary", "house-type"),
+        ("calculated-summary", "total"),
         ("section-summary", None),
     ],
 )
