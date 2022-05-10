@@ -596,6 +596,8 @@ class TestRouterNextLocation(RouterTestCase):
             return_to_block_id="fourth-number-block",
         )
 
+        # return_to_block_id is still passed here as although it is not currently on the path it may be in future once incomplete questions are
+        # answered so needs to be preserved
         assert (
             "/questionnaire/sixth-number-block/?return_to=calculated-summary&return_to_block_id=fourth-number-block"
             == next_location_url
