@@ -9,8 +9,7 @@ from app.views.contexts.summary.answer import Answer
     [
         ("section-summary", None),
         (None, None),
-        ("section-summary", "house-type"),
-        ("section-summary", None),
+        ("calculated-summary", "total"),
     ],
 )
 def test_create_answer(return_to, return_to_block_id):
