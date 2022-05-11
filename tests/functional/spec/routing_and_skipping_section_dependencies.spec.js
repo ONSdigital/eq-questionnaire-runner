@@ -125,7 +125,7 @@ describe("Routing and skipping section dependencies", () => {
   });
 
   describe("Given the routing and skipping section dependencies questionnaire", () => {
-    it("When I answer 'No' to skipping the section question and 'Yes' to enable section question, Then the household summary will be visible on the hub", () => {
+    it("When I answer 'No' to skipping the section question and 'Yes' to enable the section question, Then the household summary will be visible on the hub", () => {
       answerNoToSkipEnableQuestionAndYesToEnableSection();
 
       expect($(HubPage.summaryRowLink("household-section")).isExisting()).to.be.true;
