@@ -138,7 +138,7 @@ describe("Routing and skipping section dependencies", () => {
   });
 
   describe("Given the routing and skipping section dependencies questionnaire and I answered 'No' to skipping the section question and 'Yes' to enable the section question", () => {
-    it("When I change my answer to skipping section question to 'No', Then the household summary will not be visible on the hub", () => {
+    it("When I change my answer to skipping the section question to 'No', Then the household summary will not be visible on the hub", () => {
       answerNoToSkipEnableQuestionAndYesToEnableSection();
       changeSkipEnableQuestionToYes();
 
