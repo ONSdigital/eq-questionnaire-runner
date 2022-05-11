@@ -99,7 +99,7 @@
                                 "answers": [
                                     {
                                         "id": "enable-section-answer",
-                                        "label": "Depending on the answer it will enable or disable household summary section",
+                                        "label": "Depending on the answer it will enable or disable the household summary section",
                                         "mandatory": true,
                                         "options": [
                                             {
