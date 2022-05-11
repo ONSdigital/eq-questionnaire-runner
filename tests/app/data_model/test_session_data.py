@@ -1,3 +1,5 @@
+import pytest
+
 from app.data_models import SessionData
 
 
@@ -15,7 +17,7 @@ def test_session_data_default_properties():
             case_id="789",
         )
     except TypeError:
-        assert False, "Error occurred when creating session data"
+        return pytest.fail("An error occurred when creating session data")
 
     assert session_data.case_ref is None
     assert session_data.account_service_base_url is None
