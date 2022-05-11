@@ -94,7 +94,7 @@
                             "id": "enable-section",
                             "question": {
                                 "id": "enable-section-question",
-                                "title": "Do you want to enable household summary section?",
+                                "title": "Do you want to enable the household summary section?",
                                 "type": "General",
                                 "answers": [
                                     {
