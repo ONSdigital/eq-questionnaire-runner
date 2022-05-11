@@ -202,7 +202,7 @@ def fake_session_data():
         period_str="period_str",
         language_code=None,
         launch_language_code=None,
-        survey_url=None,
+        schema_url=None,
         ru_name="ru_name",
         ru_ref="ru_ref",
         response_id="response_id",

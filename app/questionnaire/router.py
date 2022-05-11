@@ -116,6 +116,7 @@ class Router:
         location: Location,
         routing_path: RoutingPath,
         return_to: Optional[str] = None,
+        return_to_answer_id: Optional[str] = None,
     ) -> str:
         """
         Get the next location in the section. If the section is complete, determine where to go next,
@@ -125,7 +126,9 @@ class Router:
             location.section_id, location.list_item_id
         ):
             if return_to and (
-                return_to_url := self._get_return_to_location_url(location, return_to)
+                return_to_url := self._get_return_to_location_url(
+                    location, return_to, return_to_answer_id
+                )
             ):
                 return return_to_url
 
@@ -136,7 +139,12 @@ class Router:
         if is_last_block_on_path:
             return self._get_first_incomplete_location_in_section(routing_path).url()
 
-        return self.get_next_block_url(location, routing_path, return_to=return_to)
+        return self.get_next_block_url(
+            location,
+            routing_path,
+            return_to=return_to,
+            return_to_answer_id=return_to_answer_id,
+        )
 
     def _get_next_location_url_for_complete_section(self, location: Location) -> str:
         if self._schema.show_summary_on_completion_for_section(location.section_id):
