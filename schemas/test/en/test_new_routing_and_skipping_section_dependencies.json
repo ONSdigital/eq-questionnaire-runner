@@ -64,7 +64,7 @@
                             "id": "skip-household-section",
                             "question": {
                                 "id": "skip-household-section-question",
-                                "title": "Do you want to skip question about skipping household summary section?",
+                                "title": "Do you want to skip the question about skipping the household summary section?",
                                 "type": "General",
                                 "answers": [
                                     {
