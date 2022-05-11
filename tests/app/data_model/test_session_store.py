@@ -1,8 +1,11 @@
+from datetime import datetime, timezone
+
 import pytest
 from flask import current_app
 from jwcrypto import jwe
 from jwcrypto.common import base64url_encode
 
+from app.data_models import SessionData
 from app.data_models.app_models import EQSession
 from app.data_models.session_store import SessionStore
 from app.utilities.json import json_dumps
@@ -149,6 +152,44 @@ def test_session_store_stores_none_for_trading_as_if_not_present(
         session_store = SessionStore("user_ik", "pepper", "eq_session_id")
 
         assert session_store.session_data.trad_as is None
+
+
+def test_load_existing_session_does_not_error_when_session_data_contains_survey_url(
+    app, app_session_store
+):
+    session_data_with_survey_url = SessionData(
+        tx_id="123",
+        schema_name="some_schema_name",
+        display_address="68 Abingdon Road, Goathill",
+        period_str=None,
+        language_code="cy",
+        launch_language_code="en",
+        survey_url="some-url",
+        ru_name=None,
+        ru_ref=None,
+        submitted_at=datetime.now(timezone.utc).isoformat(),
+        response_id="321",
+        case_id="789",
+    )
+
+    with app.test_request_context():
+        # Given a session store with session data that has a survey url
+        app_session_store.session_store.create(
+            eq_session_id="eq_session_id",
+            user_id="test",
+            session_data=session_data_with_survey_url,
+            expires_at=app_session_store.expires_at,
+        ).save()
+
+        # When a SessionStore is loaded (Session matching 'eq_session_id' exists at this point)
+        loaded_session_store = SessionStore("user_ik", "pepper", "eq_session_id")
+
+        # Then
+        assert (
+            loaded_session_store.session_data.__dict__
+            == session_data_with_survey_url.__dict__
+        )
+        assert loaded_session_store.session_data.survey_url is None
 
 
 @pytest.mark.usefixtures("app")
