@@ -25,7 +25,8 @@ LANGUAGE_CODES = ("en", "cy")
 LANGUAGES_MAP = {"test_language": [["en", "cy"]]}
 
 SCHEMA_REQUEST_MAX_BACKOFF = 0.2
-SCHEMA_REQUEST_MAX_RETRIES = 3
+SCHEMA_REQUEST_MAX_RETRIES = 2  # Totals no. of request should be 3.
+SCHEMA_REQUEST_TIMEOUT = 3
 SCHEMA_REQUEST_RETRY_STATUS_CODES = [
     408,
     429,
@@ -203,7 +204,7 @@ def load_schema_from_url(schema_url, language_code):
     session.mount("https://", HTTPAdapter(max_retries=retries))
 
     try:
-        req = session.get(constructed_schema_url, timeout=3)
+        req = session.get(constructed_schema_url, timeout=SCHEMA_REQUEST_TIMEOUT)
     except RequestException as exc:
         logger.exception(
             "schema request errored",
