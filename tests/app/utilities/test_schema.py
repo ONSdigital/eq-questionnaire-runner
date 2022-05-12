@@ -184,7 +184,7 @@ def test_from_url_non_200(status_code):
 
 
 @responses.activate
-def test_from_url_request_failed():
+def test_load_schema_from_url_request_failed():
     responses.add(responses.GET, TEST_SCHEMA_URL, body=RequestException())
     with pytest.raises(SchemaRequestFailed) as exc:
         load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
