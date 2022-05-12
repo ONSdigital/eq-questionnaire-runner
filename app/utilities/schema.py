@@ -35,9 +35,11 @@ SCHEMA_REQUEST_RETRY_STATUS_CODES = [
     504,
 ]
 
+
 class SchemaRequestFailed(Exception):
     def __str__(self) -> str:
         return str("schema request failed")
+
 
 @lru_cache(maxsize=None)
 def get_schema_list(language_code: str = DEFAULT_LANGUAGE_CODE) -> dict[str, list]:
