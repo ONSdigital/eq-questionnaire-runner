@@ -368,6 +368,8 @@ class Router:
                 self._metadata,
                 self._answer_store,
                 self._list_store,
+                current_location=None,
+                routing_path_block_ids=routing_path_block_ids,
             )
             for condition in enabled
         )
