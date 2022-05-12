@@ -117,21 +117,27 @@ class Router:
         routing_path: RoutingPath,
         return_to: Optional[str] = None,
         return_to_answer_id: Optional[str] = None,
+        return_to_block_id: Optional[str] = None,
     ) -> str:
         """
         Get the next location in the section. If the section is complete, determine where to go next,
         whether it be a summary, the hub or the next incomplete location.
         """
-        if self._progress_store.is_section_complete(
+        is_section_complete = self._progress_store.is_section_complete(
             location.section_id, location.list_item_id
-        ):
-            if return_to and (
-                return_to_url := self._get_return_to_location_url(
-                    location, return_to, return_to_answer_id
-                )
-            ):
-                return return_to_url
+        )
 
+        if return_to_url := self._get_return_to_location_url(
+            location,
+            return_to,
+            routing_path,
+            is_section_complete=is_section_complete,
+            return_to_answer_id=return_to_answer_id,
+            return_to_block_id=return_to_block_id,
+        ):
+            return return_to_url
+
+        if is_section_complete:
             return self._get_next_location_url_for_complete_section(location)
 
         # Due to backwards routing you can be on the last block of the path but with an in_progress section
@@ -144,6 +150,7 @@ class Router:
             routing_path,
             return_to=return_to,
             return_to_answer_id=return_to_answer_id,
+            return_to_block_id=return_to_block_id,
         )
 
     def _get_next_location_url_for_complete_section(self, location: Location) -> str:
@@ -158,21 +165,18 @@ class Router:
         routing_path: RoutingPath,
         return_to: Optional[str] = None,
         return_to_answer_id: Optional[str] = None,
+        return_to_block_id: Optional[str] = None,
     ) -> Optional[str]:
         """
         Returns the previous 'location' to visit given a set of user answers or returns to the summary if
         the `return_to` var is set and the section is complete.
         """
-
-        if return_to and (
-            self._progress_store.is_section_complete(
-                location.section_id, location.list_item_id
-            )
-            and (
-                return_to_url := self._get_return_to_location_url(
-                    location, return_to, return_to_answer_id=return_to_answer_id
-                )
-            )
+        if return_to_url := self._get_return_to_location_url(
+            location,
+            return_to,
+            routing_path,
+            return_to_answer_id=return_to_answer_id,
+            return_to_block_id=return_to_block_id,
         ):
             return return_to_url
 
@@ -194,6 +198,7 @@ class Router:
                 list_name=routing_path.list_name,
                 list_item_id=routing_path.list_item_id,
                 return_to=return_to,
+                return_to_block_id=return_to_block_id,
                 _anchor=return_to_answer_id,
             )
 
@@ -205,14 +210,37 @@ class Router:
     def _get_return_to_location_url(
         self,
         location: Location,
-        return_to: str,
+        return_to: Optional[str],
+        routing_path: RoutingPath,
+        is_section_complete: Optional[bool] = None,
         return_to_answer_id: Optional[str] = None,
+        return_to_block_id: Optional[str] = None,
     ) -> Optional[str]:
+        if not return_to:
+            return None
+
+        if return_to == "calculated-summary":
+            if return_to_block_id in routing_path:
+                return url_for(
+                    "questionnaire.block",
+                    list_item_id=location.list_item_id,
+                    block_id=return_to_block_id,
+                    _anchor=return_to_answer_id,
+                )
+            return None
+
+        if is_section_complete is None:
+            is_section_complete = self._progress_store.is_section_complete(
+                location.section_id, location.list_item_id
+            )
+
+        if not is_section_complete:
+            return None
+
         if return_to == "section-summary":
             return self._get_section_url(
                 location, return_to_answer_id=return_to_answer_id
             )
-
         if return_to == "final-summary" and self.is_questionnaire_complete:
             return url_for(
                 "questionnaire.submit_questionnaire", _anchor=return_to_answer_id

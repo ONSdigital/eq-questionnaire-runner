@@ -55,6 +55,10 @@ describe("Feature: Calculated Summary", () => {
       expect(browserUrl).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
     });
 
+    it("Given I have completed all questions, When I am on the calculated summary, Then the page title should use the calculation's title", () => {
+      expect(browser.getTitle()).to.equal("Grand total of previous values - A test schema to demo Calculated Summary");
+    });
+
     it("Given I complete every question, When I get to the currency summary, Then I should see the correct total", () => {
       // Totals and titles should be shown
       expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
@@ -88,29 +92,40 @@ describe("Feature: Calculated Summary", () => {
       expect($$(NumberTotalPlaybackPage.sixthNumberAnswer())).to.be.empty;
     });
 
-    it("Given change an answer, When I get to the currency summary, Then I should see the new total", () => {
+    it("Given I reach the calculated summary page, Then the Change link url should contain return_to, return_to_answer_id and return_to_block_id query params", () => {
+      expect($(CurrencyTotalPlaybackPageWithFourth.firstNumberAnswerEdit()).getAttribute("href")).to.contain(
+        "/questionnaire/first-number-block/?return_to=calculated-summary&return_to_answer_id=first-number-answer&return_to_block_id=currency-total-playback-with-fourth#first-number-answer"
+      );
+    });
+
+    it("Given I edit an answer from the calculated summary page and click the Previous button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", () => {
+      $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
+      $(ThirdNumberBlockPage.previous()).click();
+      expect(browser.getUrl()).to.contain("/questionnaire/currency-total-playback-with-fourth/#third-number-answer");
+    });
+
+    it("Given I edit an answer from the calculated summary page and click the Submit button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", () => {
+      $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
+      $(ThirdNumberBlockPage.submit()).click();
+      expect(browser.getUrl()).to.contain("/questionnaire/currency-total-playback-with-fourth/#third-number-answer");
+    });
+
+    it("Given I change an answer, When I get to the currency summary, Then I should see the new total", () => {
       $(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswerEdit()).click();
       $(FourthNumberBlockPage.fourthNumber()).setValue(19.01);
       $(FourthNumberBlockPage.submit()).click();
-      $(FourthAndAHalfNumberBlockPage.fourthAndAHalfNumberAlsoInTotal()).setValue(12.34);
-      $(FourthAndAHalfNumberBlockPage.submit()).click();
-
-      $(FifthNumberBlockPage.submit()).click();
-      $(SixthNumberBlockPage.submit()).click();
 
       expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
       expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of currency values entered to be £40.71. Is this correct?"
+        "We calculate the total of currency values entered to be £30.71. Is this correct?"
       );
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£40.71");
+      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£30.71");
     });
 
     it("Given I leave an answer empty, When I get to the currency summary, Then I should see no answer provided and new total", () => {
       $(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotalEdit()).click();
       $(FourthAndAHalfNumberBlockPage.fourthAndAHalfNumberAlsoInTotal()).setValue("");
       $(FourthAndAHalfNumberBlockPage.submit()).click();
-      $(FifthNumberBlockPage.submit()).click();
-      $(SixthNumberBlockPage.submit()).click();
 
       expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
       expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
@@ -121,9 +136,11 @@ describe("Feature: Calculated Summary", () => {
     });
 
     it("Given I skip the fourth page, When I get to the playback, Then I can should not see it in the total", () => {
-      $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
-      $(ThirdNumberBlockPage.submit()).click();
-      $(ThirdAndAHalfNumberBlockPage.submit()).click();
+      $(CurrencyTotalPlaybackPageWithFourth.previous()).click();
+      $(SixthNumberBlockPage.previous()).click();
+      $(FifthNumberBlockPage.previous()).click();
+      $(FourthAndAHalfNumberBlockPage.previous()).click();
+      $(FourthNumberBlockPage.previous()).click();
 
       $(SkipFourthBlockPage.yes()).click();
       $(SkipFourthBlockPage.submit()).click();
