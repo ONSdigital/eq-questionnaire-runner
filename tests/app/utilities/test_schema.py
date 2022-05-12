@@ -165,7 +165,7 @@ def test_load_schema_from_url_200():
     [401, 403, 404, 501, 511],
 )
 @responses.activate
-def test_from_url_non_200(status_code):
+def test_load_schema_from_url_non_200(status_code):
     load_schema_from_url.cache_clear()
     mock_schema = QuestionnaireSchema({})
     responses.add(
