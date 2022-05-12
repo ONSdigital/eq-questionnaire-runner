@@ -270,12 +270,15 @@ def mocked_make_request_with_timeout_fixture(
     response_not_timed_out = HTTPResponse(status=200, headers={}, msg=HTTPMessage())
     response_not_timed_out.drain_conn = Mock(return_value=None)
 
-    patched_make_request = mocker.patch.object(
+    return mocker.patch.object(
         HTTPConnectionPool,
         "_make_request",
-        side_effect=[connect_timeout_error, read_timeout_error, response_not_timed_out],
+        side_effect=[
+            connect_timeout_error,
+            read_timeout_error,
+            response_not_timed_out,
+        ],
     )
-    return patched_make_request
 
 
 def test_load_schema_from_url_retries_timeout_error(mocked_make_request_with_timeout):
