@@ -81,10 +81,7 @@
                                                 "value": "No"
                                             }
                                         ],
-                                        "type": "Radio",
-                                        "validation": {
-                                            "messages": {}
-                                        }
+                                        "type": "Radio"
                                     }
                                 ]
                             }
@@ -111,10 +108,7 @@
                                                 "value": "No"
                                             }
                                         ],
-                                        "type": "Radio",
-                                        "validation": {
-                                            "messages": {}
-                                        }
+                                        "type": "Radio"
                                     }
                                 ]
                             },
