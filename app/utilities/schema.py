@@ -214,7 +214,7 @@ def load_schema_from_url(schema_url, language_code):
             "schema request errored",
             schema_url=constructed_schema_url,
         )
-        raise SchemaRequestFailed("schema request failed") from exc
+        raise SchemaRequestFailed from exc
 
     if req.status_code == 200:
         schema_response = req.content.decode()
