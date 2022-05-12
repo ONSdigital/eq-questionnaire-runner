@@ -22,7 +22,7 @@ from app.utilities.schema import (
     load_schema_from_name,
     load_schema_from_url,
 )
-from app.utilities.schema_request_failed_exception import SchemaRequestFailed
+from app.utilities.schema import SchemaRequestFailed
 
 TEST_SCHEMA_URL = "http://test.domain/schema.json"
 
@@ -172,7 +172,7 @@ def test_from_url_non_200(status_code):
         responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=status_code
     )
 
-    with pytest.raises(SchemaRequestFailed) as excinfo:
+    with pytest.raises(SchemaRequestFailed) as exc:
         load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
 
     cache_info = load_schema_from_url.cache_info()
@@ -180,16 +180,16 @@ def test_from_url_non_200(status_code):
     assert cache_info.misses == 1
     assert cache_info.hits == 0
 
-    assert str(excinfo.value) == "failed to load schema from url"
+    assert str(exc.value) == "schema request failed"
 
 
 @responses.activate
 def test_from_url_request_failed():
     responses.add(responses.GET, TEST_SCHEMA_URL, body=RequestException())
-    with pytest.raises(SchemaRequestFailed) as excinfo:
+    with pytest.raises(SchemaRequestFailed) as exc:
         load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
 
-    assert str(excinfo.value) == "schema request failed"
+    assert str(exc.value) == "schema request failed"
 
 
 @responses.activate
@@ -314,8 +314,8 @@ def test_load_schema_from_url_max_retries(mocker):
     )
     load_schema_from_url.cache_clear()
 
-    with pytest.raises(SchemaRequestFailed) as excinfo:
+    with pytest.raises(SchemaRequestFailed) as exc:
         load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
 
-    assert str(excinfo.value) == "schema request failed"
+    assert str(exc.value) == "schema request failed"
     assert mocked_make_request.call_count == 3

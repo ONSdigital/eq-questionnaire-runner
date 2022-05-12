@@ -15,7 +15,6 @@ from app.questionnaire.questionnaire_schema import (
     QuestionnaireSchema,
 )
 from app.utilities.json import json_load, json_loads
-from app.utilities.schema_request_failed_exception import SchemaRequestFailed
 
 logger = get_logger()
 
@@ -25,7 +24,7 @@ LANGUAGE_CODES = ("en", "cy")
 LANGUAGES_MAP = {"test_language": [["en", "cy"]]}
 
 SCHEMA_REQUEST_MAX_BACKOFF = 0.2
-SCHEMA_REQUEST_MAX_RETRIES = 2  # Totals no. of request should be 3.
+SCHEMA_REQUEST_MAX_RETRIES = 2  # Totals no. of request should be 3. The initial request + SCHEMA_REQUEST_MAX_RETRIES
 SCHEMA_REQUEST_TIMEOUT = 3
 SCHEMA_REQUEST_RETRY_STATUS_CODES = [
     408,
@@ -36,6 +35,9 @@ SCHEMA_REQUEST_RETRY_STATUS_CODES = [
     504,
 ]
 
+class SchemaRequestFailed(Exception):
+    def __str__(self) -> str:
+        return str("schema request failed")
 
 @lru_cache(maxsize=None)
 def get_schema_list(language_code: str = DEFAULT_LANGUAGE_CODE) -> dict[str, list]:
@@ -229,7 +231,7 @@ def load_schema_from_url(schema_url, language_code):
         schema_url=constructed_schema_url,
     )
 
-    raise SchemaRequestFailed("failed to load schema from url")
+    raise SchemaRequestFailed
 
 
 def cache_questionnaire_schemas():
