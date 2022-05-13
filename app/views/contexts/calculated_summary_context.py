@@ -16,18 +16,7 @@ from app.views.contexts.summary.group import Group
 
 
 class CalculatedSummaryContext(Context):
-    def get_return_to(self, section_id: str):
-        # :TODO: Add support for returning to the calculated summary that was used
-        has_section_summary = bool(self._schema.get_summary_for_section(section_id))
-        if has_section_summary:
-            return "section-summary"
-
-        if not self._schema.is_flow_hub:
-            return "final-summary"
-
-        return None
-
-    def build_groups_for_section(self, section):
+    def build_groups_for_section(self, section, return_to_block_id):
         routing_path = self._router.routing_path(section["id"])
 
         location = Location(section["id"])
@@ -43,7 +32,8 @@ class CalculatedSummaryContext(Context):
                 self._schema,
                 location,
                 self._language,
-                return_to=self.get_return_to(section["id"]),
+                return_to="calculated-summary",
+                return_to_block_id=return_to_block_id,
             ).serialize()
             for group in section["groups"]
         ]
@@ -51,12 +41,14 @@ class CalculatedSummaryContext(Context):
     def build_view_context_for_calculated_summary(self, current_location):
         block = self._schema.get_block(current_location.block_id)
 
+        return_to_block_id = block["id"]
+
         calculated_section = self._build_calculated_summary_section(
             block, current_location
         )
         calculation = block["calculation"]
 
-        groups = self.build_groups_for_section(calculated_section)
+        groups = self.build_groups_for_section(calculated_section, return_to_block_id)
 
         formatted_total = self._get_formatted_total(
             groups or [],

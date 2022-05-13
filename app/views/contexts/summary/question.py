@@ -1,3 +1,5 @@
+from typing import Optional
+
 from flask import url_for
 from markupsafe import escape
 
@@ -18,6 +20,7 @@ class Question:
         location,
         block_id,
         return_to,
+        return_to_block_id: Optional[str] = None,
     ):
         self.list_item_id = location.list_item_id if location else None
         self.id = question_schema["id"]
@@ -39,6 +42,7 @@ class Question:
             block_id=block_id,
             list_name=location.list_name if location else None,
             return_to=return_to,
+            return_to_block_id=return_to_block_id,
         )
 
     def get_answer(self, answer_store, answer_id):
@@ -49,7 +53,14 @@ class Question:
         return escape_answer_value(answer.value) if answer else None
 
     def _build_answers(
-        self, *, answer_store, question_schema, block_id, list_name, return_to
+        self,
+        *,
+        answer_store,
+        question_schema,
+        block_id,
+        list_name,
+        return_to,
+        return_to_block_id,
     ):
         if self.summary:
             answer_id = f"{self.id}-concatenated-answer"
@@ -87,6 +98,7 @@ class Question:
                 list_name=list_name,
                 list_item_id=self.list_item_id,
                 return_to=return_to,
+                return_to_block_id=return_to_block_id,
             ).serialize()
             summary_answers.append(summary_answer)
 

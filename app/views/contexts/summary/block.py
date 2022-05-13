@@ -1,3 +1,5 @@
+from typing import Optional
+
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.questionnaire.variants import choose_variant
@@ -16,6 +18,7 @@ class Block:
         schema,
         location,
         return_to,
+        return_to_block_id: Optional[str] = None,
     ):
         self.id = block_schema["id"]
         self.title = block_schema.get("title")
@@ -50,6 +53,7 @@ class Block:
             schema=schema,
             location=location,
             return_to=return_to,
+            return_to_block_id=return_to_block_id,
         )
 
     def get_question(
@@ -63,6 +67,7 @@ class Block:
         schema,
         location,
         return_to,
+        return_to_block_id,
     ):
         """ Taking question variants into account, return the question which was displayed to the user """
 
@@ -86,6 +91,7 @@ class Block:
             location=location,
             block_id=self.id,
             return_to=return_to,
+            return_to_block_id=return_to_block_id,
         ).serialize()
 
     def serialize(self):
