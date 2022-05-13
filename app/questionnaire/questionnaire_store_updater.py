@@ -338,14 +338,11 @@ class QuestionnaireStoreUpdater:
 
         for section in self.dependent_sections:
             is_path_complete = section.is_complete
-            is_started = (
-                self._progress_store.get_section_status(
-                    section.section_id, section.list_id
-                )
-                != "NOT_STARTED"
-            )
 
-            if section.is_complete is None and is_started:
+            if (
+                section.is_complete is None
+                and section.section_id not in self.started_section_keys()
+            ):
                 routing_path = self._router.routing_path(
                     section.section_id, list_item_id=section.list_id
                 )
