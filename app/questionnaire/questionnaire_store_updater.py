@@ -297,21 +297,16 @@ class QuestionnaireStoreUpdater:
             self._schema.when_rules_section_dependencies_by_answer
         )
 
-        if section_ids := answer_id_section_dependents.get(answer_id):
-
-            for section_id in section_ids:
-                if repeating_list := self._schema.get_repeating_list_for_section(
-                    section_id
-                ):
-
-                    for list_id in self._list_store[repeating_list].items:
-                        self.dependent_sections.add(
-                            DependentSection(section_id, list_id, None)
-                        )
-                else:
+        for section_id in answer_id_section_dependents.get(answer_id, {}):
+            if repeating_list := self._schema.get_repeating_list_for_section(
+                section_id
+            ):
+                for list_id in self._list_store[repeating_list].items:
                     self.dependent_sections.add(
-                        DependentSection(section_id, None, None)
+                        DependentSection(section_id, list_id, None)
                     )
+            else:
+                self.dependent_sections.add(DependentSection(section_id, None, None))
 
     def update_answers(
         self, form_data: Mapping[str, Any], list_item_id: Optional[str] = None
@@ -337,15 +332,17 @@ class QuestionnaireStoreUpdater:
         self._remove_dependent_blocks_and_capture_dependent_sections()
 
         for section in self.dependent_sections:
-            is_path_complete = section.is_complete
 
-            if (section.section_id, section.list_id) in self.started_section_keys():
-                if section.is_complete is None:
-                    is_path_complete = self._router.is_path_complete(
-                        self._router.routing_path(
-                            section.section_id, list_item_id=section.list_id
-                        )
+            if (section.section_id, section.list_id) not in self.started_section_keys():
+                continue
+
+            is_path_complete = section.is_complete
+            if is_path_complete is None:
+                is_path_complete = self._router.is_path_complete(
+                    self._router.routing_path(
+                        section.section_id, list_item_id=section.list_id
                     )
+                )
 
             self.update_section_status(
                 is_complete=is_path_complete,
