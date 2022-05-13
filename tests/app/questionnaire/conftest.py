@@ -1178,3 +1178,8 @@ def dynamic_radio_options_from_checkbox_schema():
 @pytest.fixture
 def dynamic_answer_options_function_driven_schema():
     return load_schema_from_name("test_dynamic_answer_options_function_driven")
+
+
+@pytest.fixture
+def skipping_section_dependencies_schema():
+    return load_schema_from_name("test_new_routing_and_skipping_section_dependencies")
