@@ -44,7 +44,7 @@ class PathFinder:
         )
 
         if section:
-            when_rules_block_dependencies = self._get_when_rules_block_dependencies(
+            when_rules_block_dependencies = self.get_when_rules_block_dependencies(
                 section["id"]
             )
             blocks = self._get_not_skipped_blocks_in_section(
@@ -61,7 +61,7 @@ class PathFinder:
 
         return RoutingPath(routing_path_block_ids, section_id, list_item_id, list_name)
 
-    def _get_when_rules_block_dependencies(self, section_id: str) -> list[str]:
+    def get_when_rules_block_dependencies(self, section_id: str) -> list[str]:
         """NB: At present when rules block dependencies does not fully support repeating sections.
         It is supported when the section is dependent i.e the current section is repeating and building the routing path for sections that are not,
         It isn't supported if it needs to build the path for repeating sections"""
