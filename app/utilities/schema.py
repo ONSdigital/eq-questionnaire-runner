@@ -6,8 +6,9 @@ from pathlib import Path
 from typing import Mapping, Optional
 
 import requests
+from requests import RequestException
+from requests.adapters import HTTPAdapter, Retry
 from structlog import get_logger
-from werkzeug.exceptions import NotFound
 
 from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
@@ -21,6 +22,23 @@ SCHEMA_DIR = "schemas"
 LANGUAGE_CODES = ("en", "cy")
 
 LANGUAGES_MAP = {"test_language": [["en", "cy"]]}
+
+SCHEMA_REQUEST_MAX_BACKOFF = 0.2
+SCHEMA_REQUEST_MAX_RETRIES = 2  # Totals no. of request should be 3. The initial request + SCHEMA_REQUEST_MAX_RETRIES
+SCHEMA_REQUEST_TIMEOUT = 3
+SCHEMA_REQUEST_RETRY_STATUS_CODES = [
+    408,
+    429,
+    500,
+    502,
+    503,
+    504,
+]
+
+
+class SchemaRequestFailed(Exception):
+    def __str__(self) -> str:
+        return str("schema request failed")
 
 
 @lru_cache(maxsize=None)
@@ -177,20 +195,45 @@ def load_schema_from_url(schema_url, language_code):
 
     constructed_schema_url = f"{schema_url}?language={language_code}"
 
-    req = requests.get(constructed_schema_url)
-    schema_response = req.content.decode()
-    response_duration_in_milliseconds = req.elapsed.total_seconds() * 1000
+    session = requests.Session()
 
-    logger.info(
-        f"schema request took {response_duration_in_milliseconds:.2f} milliseconds",
-        pid=pid,
+    retries = Retry(
+        total=SCHEMA_REQUEST_MAX_RETRIES,
+        status_forcelist=SCHEMA_REQUEST_RETRY_STATUS_CODES,
+    )  # Codes to retry according to Google Docs https://cloud.google.com/storage/docs/retry-strategy#client-libraries
+
+    retries.BACKOFF_MAX = SCHEMA_REQUEST_MAX_BACKOFF
+
+    session.mount("http://", HTTPAdapter(max_retries=retries))
+    session.mount("https://", HTTPAdapter(max_retries=retries))
+
+    try:
+        req = session.get(constructed_schema_url, timeout=SCHEMA_REQUEST_TIMEOUT)
+    except RequestException as exc:
+        logger.exception(
+            "schema request errored",
+            schema_url=constructed_schema_url,
+        )
+        raise SchemaRequestFailed from exc
+
+    if req.status_code == 200:
+        schema_response = req.content.decode()
+        response_duration_in_milliseconds = req.elapsed.total_seconds() * 1000
+
+        logger.info(
+            f"schema request took {response_duration_in_milliseconds:.2f} milliseconds",
+            pid=pid,
+        )
+
+        return QuestionnaireSchema(json_loads(schema_response), language_code)
+
+    logger.error(
+        "got a non-200 response for schema url request",
+        status_code=req.status_code,
+        schema_url=constructed_schema_url,
     )
 
-    if req.status_code == 404:
-        logger.error("no schema exists", schema_url=constructed_schema_url)
-        raise NotFound
-
-    return QuestionnaireSchema(json_loads(schema_response), language_code)
+    raise SchemaRequestFailed
 
 
 def cache_questionnaire_schemas():
