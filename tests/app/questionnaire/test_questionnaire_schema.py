@@ -5,63 +5,6 @@ from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
 
-WHEN_RULES_SECTION_DEPENDENCIES_SCHEMA = {
-    "sections": [
-        {
-            "id": "skip-confirmation-section",
-            "groups": [
-                {
-                    "blocks": [
-                        {
-                            "type": "Question",
-                            "id": "skip-confirmation",
-                            "question": {
-                                "answers": [
-                                    {
-                                        "id": "skip-confirmation-answer",
-                                        "options": [
-                                            {"label": "No", "value": "No"},
-                                        ],
-                                    }
-                                ],
-                                "id": "skip-confirmation-question",
-                                "type": "General",
-                            },
-                        },
-                    ],
-                    "id": "skip-confirmation-group",
-                }
-            ],
-        },
-        {
-            "id": "confirmation-section",
-            "groups": [
-                {
-                    "blocks": [
-                        {
-                            "type": "Question",
-                            "id": "confirmation-question",
-                            "question": {},
-                        }
-                    ],
-                    "id": "confirmation-group",
-                    "skip_conditions": {
-                        "when": {
-                            "==": [
-                                {
-                                    "source": "answers",
-                                    "identifier": "skip-confirmation-answer",
-                                },
-                                "No",
-                            ]
-                        },
-                    },
-                },
-            ],
-        },
-    ]
-}
-
 
 def assert_all_dict_values_are_hashable(data):
     for value in data.values():
