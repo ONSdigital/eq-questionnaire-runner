@@ -125,6 +125,9 @@ describe("Routing and skipping section dependencies", () => {
   });
 
   describe("Given the routing and skipping section dependencies questionnaire", () => {
+    beforeEach("Load the survey", () => {
+      browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
+    });
     it("When I answer 'No' to skipping the section question and 'Yes' to enable the section question, Then the household summary will be visible on the hub", () => {
       answerNoToSkipEnableQuestionAndYesToEnableSection();
 
@@ -138,6 +141,9 @@ describe("Routing and skipping section dependencies", () => {
   });
 
   describe("Given the routing and skipping section dependencies questionnaire and I answered 'No' to skipping the section question and 'Yes' to enable the section question", () => {
+    before("Load the survey", () => {
+      browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
+    });
     it("When I change my answer to skipping the section question to 'No', Then the household summary will not be visible on the hub", () => {
       answerNoToSkipEnableQuestionAndYesToEnableSection();
       changeSkipEnableQuestionToYes();
