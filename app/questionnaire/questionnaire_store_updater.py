@@ -339,14 +339,13 @@ class QuestionnaireStoreUpdater:
         for section in self.dependent_sections:
             is_path_complete = section.is_complete
 
-            if (
-                section.is_complete is None
-                and section.section_id not in self.started_section_keys()
-            ):
-                routing_path = self._router.routing_path(
-                    section.section_id, list_item_id=section.list_id
-                )
-                is_path_complete = self._router.is_path_complete(routing_path)
+            if section.section_id not in self.started_section_keys():
+                if section.is_complete is None:
+                    is_path_complete = self._router.is_path_complete(
+                        self._router.routing_path(
+                            section.section_id, list_item_id=section.list_id
+                        )
+                    )
 
             self.update_section_status(
                 is_complete=is_path_complete,
