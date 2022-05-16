@@ -479,18 +479,7 @@
                                 "answers": [
                                     {
                                         "id": "set-minimum-answer",
-                                        "label": {
-                                            "placeholders": [
-                                                {
-                                                    "placeholder": "calculated_summary_answer",
-                                                    "value": {
-                                                        "identifier": "currency-total-playback-skipped-fourth",
-                                                        "source": "calculated_summary"
-                                                    }
-                                                }
-                                            ],
-                                            "text": "Set a value greater than £{calculated_summary_answer}"
-                                        },
+                                        "label": "Set a value greater than the total above",
                                         "mandatory": true,
                                         "description": "This is a description of the minimum value",
                                         "type": "Currency",
@@ -506,18 +495,7 @@
                                     {
                                         "id": "set-maximum-answer",
                                         "description": "This is a description of the maximum value",
-                                        "label": {
-                                            "placeholders": [
-                                                {
-                                                    "placeholder": "calculated_summary_answer",
-                                                    "value": {
-                                                        "identifier": "currency-total-playback-skipped-fourth",
-                                                        "source": "calculated_summary"
-                                                    }
-                                                }
-                                            ],
-                                            "text": "Set a value less than £{calculated_summary_answer}"
-                                        },
+                                        "label": "Set a value less than the total above",
                                         "mandatory": true,
                                         "type": "Currency",
                                         "currency": "GBP",
