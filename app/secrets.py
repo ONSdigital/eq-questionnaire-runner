@@ -22,7 +22,6 @@ def validate_required_secrets(secrets: Mapping[str, str], additional_required_se
 
 class SecretStore:
     def __init__(self, secrets: dict) -> None:
-        print(secrets)
         self.secrets = secrets.get("secrets", {})
 
     def get_secret_by_name(self, secret_name: str) -> Any:
