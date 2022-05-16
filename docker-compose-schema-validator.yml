@@ -3,14 +3,14 @@ version: '3'
 
 services:
   ajv-validator:
-    image: onsdigital/eq-questionnaire-validator:${calculated-summary-min-max}-ajv
+    image: onsdigital/eq-questionnaire-validator:calculated-summary-min-max-ajv
     networks:
       - eq-schema
     ports:
       - 5002:5002
 
   py-validator:
-    image: onsdigital/eq-questionnaire-validator:${calculated-summary-min-max}
+    image: onsdigital/eq-questionnaire-validator:calculated-summary-min-max
     networks:
       - eq-schema
     environment:
