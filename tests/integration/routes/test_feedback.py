@@ -5,7 +5,7 @@ from app.settings import EQ_FEEDBACK_LIMIT
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
-# pylint: disable=too-many-public-methods
+# pylint: disable=too-many-public-methods
 class TestFeedback(IntegrationTestCase):
     SEND_FEEDBACK_URL = "/submitted/feedback/send"
     SENT_FEEDBACK_URL = "/submitted/feedback/sent"
