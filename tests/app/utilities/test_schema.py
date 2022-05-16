@@ -1,13 +1,18 @@
 import os
-from unittest.mock import Mock, patch
+from http.client import HTTPMessage
 
 import pytest
 import responses
-from werkzeug.exceptions import NotFound
+from mock import Mock, patch
+from requests import RequestException
+from requests.adapters import ConnectTimeoutError, ReadTimeoutError
+from urllib3.connectionpool import HTTPConnectionPool, HTTPResponse
 
 from app.questionnaire import QuestionnaireSchema
 from app.setup import create_app
 from app.utilities.schema import (
+    SCHEMA_REQUEST_MAX_RETRIES,
+    SchemaRequestFailed,
     _load_schema_from_name,
     cache_questionnaire_schemas,
     get_allowed_languages,
@@ -155,20 +160,36 @@ def test_load_schema_from_url_200():
     assert cache_info.hits == 0
 
 
+@pytest.mark.parametrize(
+    "status_code",
+    [401, 403, 404, 501, 511],
+)
 @responses.activate
-def test_load_schema_from_url_404():
+def test_load_schema_from_url_non_200(status_code):
     load_schema_from_url.cache_clear()
-
     mock_schema = QuestionnaireSchema({})
-    responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=404)
+    responses.add(
+        responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=status_code
+    )
 
-    with pytest.raises(NotFound):
+    with pytest.raises(SchemaRequestFailed) as exc:
         load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
 
     cache_info = load_schema_from_url.cache_info()
     assert cache_info.currsize == 0
     assert cache_info.misses == 1
     assert cache_info.hits == 0
+
+    assert str(exc.value) == "schema request failed"
+
+
+@responses.activate
+def test_load_schema_from_url_request_failed():
+    responses.add(responses.GET, TEST_SCHEMA_URL, body=RequestException())
+    with pytest.raises(SchemaRequestFailed) as exc:
+        load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
+
+    assert str(exc.value) == "schema request failed"
 
 
 @responses.activate
@@ -206,3 +227,98 @@ def test_load_schema_from_metadata_with_schema_url():
 
     assert loaded_schema.json == mock_schema.json
     assert loaded_schema.language_code == mock_schema.language_code
+
+
+@pytest.fixture(name="mocked_response_content")
+def mocked_response_content_fixture(mocker):
+    decodable_content = Mock()
+    decodable_content.decode.return_value = b"{}"
+    mocker.patch("requests.models.Response.content", decodable_content)
+
+
+def get_mocked_make_request(mocker, status_codes):
+    mocked_responses = []
+    for status_code in status_codes:
+        response = HTTPResponse(status=status_code, headers={}, msg=HTTPMessage())
+        response.drain_conn = mocker.Mock(return_value=None)
+
+        mocked_responses.append(response)
+
+    patched_make_request = mocker.patch.object(
+        HTTPConnectionPool,
+        "_make_request",
+        side_effect=mocked_responses,
+    )
+    mocker.patch.object(
+        HTTPResponse,
+        "from_httplib",
+        side_effect=mocked_responses,
+    )
+
+    return patched_make_request
+
+
+@pytest.fixture(name="mocked_make_request_with_timeout")
+def mocked_make_request_with_timeout_fixture(
+    mocker, mocked_response_content  # pylint: disable=unused-argument
+):
+    connect_timeout_error = ConnectTimeoutError("connect timed out")
+    read_timeout_error = ReadTimeoutError(
+        pool=None, message="read timed out", url="test-url"
+    )
+
+    response_not_timed_out = HTTPResponse(status=200, headers={}, msg=HTTPMessage())
+    response_not_timed_out.drain_conn = Mock(return_value=None)
+
+    return mocker.patch.object(
+        HTTPConnectionPool,
+        "_make_request",
+        side_effect=[
+            connect_timeout_error,
+            read_timeout_error,
+            response_not_timed_out,
+        ],
+    )
+
+
+def test_load_schema_from_url_retries_timeout_error(mocked_make_request_with_timeout):
+    load_schema_from_url.cache_clear()
+
+    try:
+        schema = load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
+    except SchemaRequestFailed:
+        return pytest.fail("Schema request unexpectedly failed")
+
+    assert schema.json == QuestionnaireSchema({}).json
+
+    expected_call = SCHEMA_REQUEST_MAX_RETRIES + 1  # Max retries + the initial request
+    assert mocked_make_request_with_timeout.call_count == expected_call
+
+
+@pytest.mark.usefixtures("mocked_response_content")
+def test_load_schema_from_url_retries_transient_error(mocker):
+    mocked_make_request = get_mocked_make_request(mocker, status_codes=[500, 500, 200])
+    load_schema_from_url.cache_clear()
+
+    try:
+        schema = load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
+    except SchemaRequestFailed:
+        return pytest.fail("Schema request unexpectedly failed")
+
+    assert schema.json == QuestionnaireSchema({}).json
+
+    expected_call = SCHEMA_REQUEST_MAX_RETRIES + 1  # Max retries + the initial request
+    assert mocked_make_request.call_count == expected_call
+
+
+def test_load_schema_from_url_max_retries(mocker):
+    mocked_make_request = get_mocked_make_request(
+        mocker, status_codes=[500, 500, 500, 500]
+    )
+    load_schema_from_url.cache_clear()
+
+    with pytest.raises(SchemaRequestFailed) as exc:
+        load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
+
+    assert str(exc.value) == "schema request failed"
+    assert mocked_make_request.call_count == 3
