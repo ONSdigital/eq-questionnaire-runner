@@ -236,7 +236,6 @@ describe("Feature: Calculated Summary", () => {
       $(SetMinMaxBlockPage.submit()).click();
     });
 
-
     it("Given I confirm the totals and am on the summary, When I edit and change an answer, Then I must re-confirm the dependant calculated summary page and min max question page before I can return to the summary", () => {
       expect(browser.getUrl()).to.contain(SubmitPage.pageName);
       $(SubmitPage.thirdNumberAnswerEdit()).click();
