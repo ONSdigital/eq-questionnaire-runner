@@ -10,7 +10,7 @@ from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import AnswerDependent
 from app.questionnaire.router import Router
 
-DependentSection = namedtuple("DependentSection", "section_id list_id is_complete")
+DependentSection = namedtuple("DependentSection", "section_id list_item_id is_complete")
 
 
 class QuestionnaireStoreUpdater:
@@ -301,9 +301,9 @@ class QuestionnaireStoreUpdater:
             if repeating_list := self._schema.get_repeating_list_for_section(
                 section_id
             ):
-                for list_id in self._list_store[repeating_list].items:
+                for list_item_id in self._list_store[repeating_list].items:
                     self.dependent_sections.add(
-                        DependentSection(section_id, list_id, None)
+                        DependentSection(section_id, list_item_id, None)
                     )
             else:
                 self.dependent_sections.add(DependentSection(section_id, None, None))
@@ -333,21 +333,21 @@ class QuestionnaireStoreUpdater:
 
         for section in self.dependent_sections:
 
-            if (section.section_id, section.list_id) not in self.started_section_keys():
+            if (section.section_id, section.list_item_id) not in self.started_section_keys():
                 continue
 
             is_path_complete = section.is_complete
             if is_path_complete is None:
                 is_path_complete = self._router.is_path_complete(
                     self._router.routing_path(
-                        section.section_id, list_item_id=section.list_id
+                        section.section_id, list_item_id=section.list_item_id
                     )
                 )
 
             self.update_section_status(
                 is_complete=is_path_complete,
                 section_id=section.section_id,
-                list_item_id=section.list_id,
+                list_item_id=section.list_item_id,
             )
 
     def _remove_dependent_blocks_and_capture_dependent_sections(self) -> None:

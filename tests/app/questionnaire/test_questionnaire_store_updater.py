@@ -788,10 +788,6 @@ def test_answer_id_section_dependents_repeating(
 
     mock_schema.get_repeating_list_for_section.return_value = "list-name"
     mock_schema.get_answer_ids_for_question.return_value = ["first-answer"]
-    mock_router.is_path_complete.side_effect = [
-        is_list_item_1_path_complete,
-        is_list_item_2_path_complete,
-    ]
     mock_schema.when_rules_section_dependencies_by_answer = {
         "first-answer": {"section-2"}
     }
@@ -800,14 +796,20 @@ def test_answer_id_section_dependents_repeating(
         [
             AnswerDict(answer_id="first-answer", value="original answer"),
             AnswerDict(
-                answer_id="second-answer", value="second answer", list_item_id="abc123"
+                answer_id="second-answer",
+                value="second answer",
+                list_item_id="list-item-id-1",
             ),
             AnswerDict(
-                answer_id="second-answer", value="second answer", list_item_id="xyz456"
+                answer_id="second-answer",
+                value="second answer",
+                list_item_id="list-item-id-2",
             ),
         ]
     )
-    list_store = ListStore([{"items": ["abc123", "xyz456"], "name": "list-name"}])
+    list_store = ListStore(
+        [{"items": ["list-item-id-1", "list-item-id-2"], "name": "list-name"}]
+    )
     form_data = MultiDict({"first-answer": updated_answer_value})
     location = Location(
         section_id="section",
@@ -820,13 +822,13 @@ def test_answer_id_section_dependents_repeating(
                 "section_id": "section-2",
                 "block_ids": ["second-block"],
                 "status": list_item_1_section_status,
-                "list_item_id": "abc123",
+                "list_item_id": "list-item-id-1",
             },
             {
                 "section_id": "section-2",
                 "block_ids": ["second-block"],
                 "status": list_item_2_section_status,
-                "list_item_id": "xyz456",
+                "list_item_id": "list-item-id-2",
             },
         ],
     )
@@ -841,14 +843,29 @@ def test_answer_id_section_dependents_repeating(
         current_question=current_question,
     )
     questionnaire_store_updater.update_answers(form_data)
+
+    # This test case is dependent on the order that the dependent_sections set is iterated over,
+    # however as python sets are unordered we need to check that the first item is equal to our expected
+    # list_item_id so that we can set the correct side effect as per the test case
+    dependent_sections_set = questionnaire_store_updater.dependent_sections.copy()
+    first_item = dependent_sections_set.pop() if dependent_sections_set else None
+    effects = [is_list_item_1_path_complete, is_list_item_2_path_complete]
+    if first_item and first_item.list_item_id != "list-item-id-1":
+        effects = [is_list_item_2_path_complete, is_list_item_1_path_complete]
+    mock_router.is_path_complete.side_effect = effects
+
     questionnaire_store_updater.update_progress_for_dependent_sections()
 
     assert (
-        progress_store.get_section_status(section_id="section-2", list_item_id="abc123")
+        progress_store.get_section_status(
+            section_id="section-2", list_item_id="list-item-id-1"
+        )
         is expected_list_item_1_status
     )
     assert (
-        progress_store.get_section_status(section_id="section-2", list_item_id="xyz456")
+        progress_store.get_section_status(
+            section_id="section-2", list_item_id="list-item-id-2"
+        )
         is expected_list_item_2_status
     )
 
@@ -1134,7 +1151,7 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
     }
     questionnaire_store_updater.dependent_sections.add(
         DependentSection(
-            section_id="breakdown-section", list_id="item-1", is_complete=None
+            section_id="breakdown-section", list_item_id="item-1", is_complete=None
         )
     )
 
@@ -1153,9 +1170,9 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
         )
         assert questionnaire_store_updater.dependent_sections == {
             DependentSection(
-                section_id=section_id, list_id="item-1", is_complete=False
+                section_id=section_id, list_item_id="item-1", is_complete=False
             ),
             DependentSection(
-                section_id=section_id, list_id="item-2", is_complete=False
+                section_id=section_id, list_item_id="item-2", is_complete=False
             ),
         }
