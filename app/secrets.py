@@ -1,4 +1,4 @@
-from typing import Any, Mapping
+from typing import Any, Mapping, Optional
 
 REQUIRED_SECRETS = [
     "EQ_SERVER_SIDE_STORAGE_USER_ID_SALT",
@@ -11,7 +11,7 @@ REQUIRED_SECRETS = [
 
 
 def validate_required_secrets(
-    secrets: Mapping, additional_required_secrets: list[str]
+    secrets: Mapping, additional_required_secrets: Optional[list[str]] = None
 ) -> None:
     all_required_secrets = (
         REQUIRED_SECRETS + additional_required_secrets
