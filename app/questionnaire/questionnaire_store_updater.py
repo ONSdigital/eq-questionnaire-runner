@@ -333,7 +333,10 @@ class QuestionnaireStoreUpdater:
 
         for section in self.dependent_sections:
 
-            if (section.section_id, section.list_item_id) not in self.started_section_keys():
+            if (
+                section.section_id,
+                section.list_item_id,
+            ) not in self.started_section_keys():
                 continue
 
             is_path_complete = section.is_complete
