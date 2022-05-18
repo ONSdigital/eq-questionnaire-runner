@@ -57,6 +57,7 @@ class BlockHandler:
             self._current_location,
             self._schema,
             self._questionnaire_store,
+            self.router,
             self.block.get("question"),
         )
 
