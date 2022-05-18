@@ -1,5 +1,7 @@
 from typing import Mapping, Optional
 
+SecretsType = Mapping[str, Mapping[str, str]]
+
 REQUIRED_SECRETS = [
     "EQ_SERVER_SIDE_STORAGE_USER_ID_SALT",
     "EQ_SERVER_SIDE_STORAGE_USER_IK_SALT",
@@ -8,8 +10,6 @@ REQUIRED_SECRETS = [
     "EQ_RABBITMQ_USERNAME",
     "EQ_RABBITMQ_PASSWORD",
 ]
-
-SecretsType = Mapping[str, Mapping[str, str]]
 
 
 def validate_required_secrets(
