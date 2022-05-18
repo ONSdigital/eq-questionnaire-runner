@@ -378,8 +378,8 @@ class QuestionnaireStoreUpdater:
                 section_id != self._current_location.section_id
                 or list_item_id != self._current_location.list_item_id
             ):
-                # Remove any duplicate session dependents if they exist before setting
-                # the dependent section `is_complete` status to False
+                # Since this section key will be marked as incomplete, any `DependentSection` with is_complete as `None`
+                # can be removed as we do not need to re-evaluate progress as we already know the section would be incomplete.
                 dependent = DependentSection(section_id, list_item_id, None)
                 if dependent in self.dependent_sections:
                     self.dependent_sections.remove(dependent)
