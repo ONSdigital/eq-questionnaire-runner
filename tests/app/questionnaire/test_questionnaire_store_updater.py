@@ -847,8 +847,7 @@ def test_answer_id_section_dependents_repeating(
     # This test case is dependent on the order that the dependent_sections set is iterated over,
     # however as python sets are unordered we need to check that the first item is equal to our expected
     # list_item_id so that we can set the correct side effect as per the test case
-    dependent_sections_set = questionnaire_store_updater.dependent_sections.copy()
-    first_item = dependent_sections_set.pop() if dependent_sections_set else None
+    first_item = next(iter(questionnaire_store_updater.dependent_sections), None)
     effects = [is_list_item_1_path_complete, is_list_item_2_path_complete]
     if first_item and first_item.list_item_id != "list-item-id-1":
         effects = [is_list_item_2_path_complete, is_list_item_1_path_complete]
