@@ -19,11 +19,11 @@ import SkipSectionSummaryPage from "../generated_pages/new_routing_and_skipping_
 import HubPage from "../base_pages/hub.page";
 
 describe("Routing and skipping section dependencies", () => {
-  beforeEach("Load the survey", () => {
-    browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
-  });
-
   describe("Given the routing and skipping section dependencies questionnaire", () => {
+    beforeEach("Load the survey", () => {
+      browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
+    });
+
     it("When I answer 'No' to skipping the age question, Then in the Primary Person section I am asked my name, age and why I didn't confirm skipping", () => {
       answerNoToSkipAgeQuestion();
 
@@ -125,6 +125,9 @@ describe("Routing and skipping section dependencies", () => {
   });
 
   describe("Given the routing and skipping section dependencies questionnaire", () => {
+    beforeEach("Load the survey", () => {
+      browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
+    });
     it("When I answer 'No' to skipping the section question and 'Yes' to enable the section question, Then the household summary will be visible on the hub", () => {
       answerNoToSkipEnableQuestionAndYesToEnableSection();
 
@@ -138,6 +141,9 @@ describe("Routing and skipping section dependencies", () => {
   });
 
   describe("Given the routing and skipping section dependencies questionnaire and I answered 'No' to skipping the section question and 'Yes' to enable the section question", () => {
+    before("Load the survey", () => {
+      browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
+    });
     it("When I change my answer to skipping the section question to 'No', Then the household summary will not be visible on the hub", () => {
       answerNoToSkipEnableQuestionAndYesToEnableSection();
       changeSkipEnableQuestionToYes();
@@ -147,17 +153,17 @@ describe("Routing and skipping section dependencies", () => {
   });
 
   describe("Given the routing and skipping section dependencies questionnaire and I answered 'Yes' to skipping the age question but 'No' to are you sure in skip question confirmation section", () => {
+    before("Load the survey", () => {
+      browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
+    });
+
     it("When I change my answer to skipping age to 'No', removing the 'are you sure' question from the path, Then in the Primary Person section I am asked my name, age and why I didn't confirm skipping", () => {
       answerYesToSkipAgeQuestion();
 
       selectConfirmationSectionAndAnswerSecurityQuestion();
       answerNoToSkipConfirmationQuestion();
 
-      $(HubPage.summaryRowLink("skip-section")).click();
-      $(SkipSectionSummaryPage.skipAgeAnswerEdit()).click();
-      $(SkipAgePage.no()).click();
-      $(SkipAgePage.submit()).click();
-      $(SkipSectionSummaryPage.submit()).click();
+      editNoToSkipAgeQuestion();
 
       selectPrimaryPerson();
       answerAndSubmitNameQuestion();
@@ -171,6 +177,59 @@ describe("Routing and skipping section dependencies", () => {
       expect($(PrimaryPersonSummaryPage.reasonNoConfirmationAnswer()).getText()).to.contain(
         "I did, but it was removed from the path as I changed my answer to No on the skip question"
       );
+    });
+  });
+
+  describe("Given the routing and skipping section dependencies questionnaire and I answered 'Yes' to skipping the age question and complete the Primary Person section", () => {
+    before("Load the survey", () => {
+      browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
+    });
+
+    it("When I change my answer to skipping age to 'No', Then the Primary Person section status is changed to Partially completed", () => {
+      answerYesToSkipAgeQuestion();
+      selectPrimaryPerson();
+      answerAndSubmitNameQuestion();
+      answerAndSubmitReasonForNoConfirmationQuestion();
+      $(PrimaryPersonSummaryPage.submit()).click();
+
+      expect($(HubPage.summaryRowState("primary-person")).getText()).to.equal("Completed");
+
+      editNoToSkipAgeQuestion();
+
+      expect($(HubPage.summaryRowState("primary-person")).getText()).to.equal("Partially completed");
+    });
+
+    it("When I change my answer back to skipping age to 'Yes', Then the Primary Person section status is changed back to Completed", () => {
+      editYesToSkipAgeQuestion();
+
+      expect($(HubPage.summaryRowState("primary-person")).getText()).to.equal("Completed");
+    });
+  });
+
+  describe("Given the routing and skipping section dependencies questionnaire and I answered 'Yes' to skipping the age question and add 2 household members but complete only one", () => {
+    before("Load the survey", () => {
+      browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
+    });
+
+    it("When I change my answer to skipping age to 'No', Then the completed household member status is changed to Partially completed and the other stays as not started", () => {
+      answerYesToSkipAgeQuestion();
+      addHouseholdMembers();
+      $(HubPage.summaryRowLink("household-personal-details-section-1")).click();
+      $(RepeatingSexPage.female()).click();
+      $(RepeatingSexPage.submit()).click();
+      $(HouseHoldPersonalDetailsSectionSummaryPage.submit()).click();
+
+      editNoToSkipAgeQuestion();
+
+      expect($(HubPage.summaryRowState("household-personal-details-section-1")).getText()).to.equal("Partially completed");
+      expect($(HubPage.summaryRowState("household-personal-details-section-2")).getText()).to.equal("Not started");
+    });
+
+    it("When I change my answer back to skipping age to 'Yes', Then the Partially completed household member status is changed back to Completed and the other stays as not started", () => {
+      editYesToSkipAgeQuestion();
+
+      expect($(HubPage.summaryRowState("household-personal-details-section-1")).getText()).to.equal("Completed");
+      expect($(HubPage.summaryRowState("household-personal-details-section-2")).getText()).to.equal("Not started");
     });
   });
 });
@@ -210,6 +269,22 @@ const answerYesToSkipAgeQuestion = () => {
   $(SkipEnableSectionPage.submit()).click();
   $(EnableSectionPage.yes()).click();
   $(EnableSectionPage.submit()).click();
+  $(SkipSectionSummaryPage.submit()).click();
+};
+
+const editNoToSkipAgeQuestion = () => {
+  $(HubPage.summaryRowLink("skip-section")).click();
+  $(SkipSectionSummaryPage.skipAgeAnswerEdit()).click();
+  $(SkipAgePage.no()).click();
+  $(SkipAgePage.submit()).click();
+  $(SkipSectionSummaryPage.submit()).click();
+};
+
+const editYesToSkipAgeQuestion = () => {
+  $(HubPage.summaryRowLink("skip-section")).click();
+  $(SkipSectionSummaryPage.skipAgeAnswerEdit()).click();
+  $(SkipAgePage.yes()).click();
+  $(SkipAgePage.submit()).click();
   $(SkipSectionSummaryPage.submit()).click();
 };
 

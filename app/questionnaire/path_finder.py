@@ -67,7 +67,7 @@ class PathFinder:
         It isn't supported if it needs to build the path for repeating sections"""
         return [
             block_id
-            for dependent_section in self.schema.when_rules_section_dependencies_map.get(
+            for dependent_section in self.schema.when_rules_section_dependencies_by_section.get(
                 section_id, {}
             )
             for block_id in self.routing_path(dependent_section)
