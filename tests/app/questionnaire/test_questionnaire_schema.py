@@ -672,3 +672,36 @@ def test_answer_dependencies_for_dynamic_options_function_driven(
             ),
         }
     }
+
+
+def test_when_rules_section_dependencies_by_section(
+    skipping_section_dependencies_schema,
+):
+    schema = skipping_section_dependencies_schema
+    assert {
+        "household-personal-details-section": {
+            "skip-confirmation-section",
+            "skip-section",
+        },
+        "household-section": {"skip-section"},
+        "primary-person": {"skip-confirmation-section", "skip-section"},
+        "skip-confirmation-section": {"skip-section"},
+    } == schema.when_rules_section_dependencies_by_section
+
+
+def test_when_rules_section_dependencies_by_answer(
+    skipping_section_dependencies_schema,
+):
+    schema = skipping_section_dependencies_schema
+    assert {
+        "enable-section-answer": {"household-section"},
+        "skip-age-answer": {
+            "household-personal-details-section",
+            "primary-person",
+            "skip-confirmation-section",
+        },
+        "skip-confirmation-answer": {
+            "household-personal-details-section",
+            "primary-person",
+        },
+    } == schema.when_rules_section_dependencies_by_answer

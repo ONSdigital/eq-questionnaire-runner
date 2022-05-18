@@ -55,7 +55,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._answer_dependencies_map: dict[str, set[AnswerDependent]] = defaultdict(
             set
         )
-        self._when_rules_section_dependencies_map: dict[str, set[str]] = {}
+        self._when_rules_section_dependencies_by_section: dict[str, set[str]] = {}
+        self._when_rules_section_dependencies_by_answer: dict[
+            str, set[str]
+        ] = defaultdict(set)
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
 
@@ -75,8 +78,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return ImmutableDict(self._answer_dependencies_map)
 
     @cached_property
-    def when_rules_section_dependencies_map(self) -> ImmutableDict[str, set[str]]:
-        return ImmutableDict(self._when_rules_section_dependencies_map)
+    def when_rules_section_dependencies_by_section(
+        self,
+    ) -> ImmutableDict[str, set[str]]:
+        return ImmutableDict(self._when_rules_section_dependencies_by_section)
+
+    @cached_property
+    def when_rules_section_dependencies_by_answer(self) -> ImmutableDict[str, set[str]]:
+        return ImmutableDict(self._when_rules_section_dependencies_by_answer)
 
     @cached_property
     def language_code(self) -> str:
@@ -825,7 +834,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             if rules_section_dependencies := self._get_rules_section_dependencies(
                 section["id"], rules
             ):
-                self._when_rules_section_dependencies_map[
+                self._when_rules_section_dependencies_by_section[
                     section["id"]
                 ] = rules_section_dependencies
 
@@ -855,6 +864,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
 
                 if section_id != current_section_id:
+                    self._when_rules_section_dependencies_by_answer[answer_id].add(
+                        current_section_id
+                    )
                     rules_section_dependencies.add(section_id)  # type: ignore
 
             if any(operator in rule for operator in OPERATION_MAPPING):
