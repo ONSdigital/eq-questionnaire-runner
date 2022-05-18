@@ -1,4 +1,4 @@
-from typing import Any, Mapping, Sequence
+from typing import Any, Mapping
 
 REQUIRED_SECRETS = [
     "EQ_SERVER_SIDE_STORAGE_USER_ID_SALT",
