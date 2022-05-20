@@ -1,5 +1,7 @@
 # coding: utf-8
 import re
+from typing import Any, Mapping, Union, Optional
+from decimal import Decimal
 
 import flask
 import flask_babel
@@ -14,28 +16,28 @@ from app.settings import MAX_NUMBER
 blueprint = flask.Blueprint("filters", __name__)
 
 
-def mark_safe(context, value):
+def mark_safe(context: Any, value: str) -> str:
     return Markup(value) if context.autoescape else value
 
 
-def strip_tags(value):
+def strip_tags(value: str) -> str:
     return escape(Markup(value).striptags())
 
 
 @blueprint.app_template_filter()
-def format_number(value):
+def format_number(value: int) -> numbers:
     if value or value == 0:
         return numbers.format_decimal(value, locale=flask_babel.get_locale())
 
     return ""
 
 
-def get_formatted_address(address_fields):
+def get_formatted_address(address_fields: dict) -> str:
     address_fields.pop("uprn", None)
     return "<br>".join(address_field for address_field in address_fields.values())
 
 
-def get_formatted_currency(value, currency="GBP") -> str:
+def get_formatted_currency(value: Union[float, Decimal], currency: str="GBP") -> Any:
     if value or value == 0:
         return numbers.format_currency(
             number=value, currency=currency, locale=flask_babel.get_locale()
@@ -45,16 +47,16 @@ def get_formatted_currency(value, currency="GBP") -> str:
 
 
 @blueprint.app_template_filter()
-def get_currency_symbol(currency="GBP"):
+def get_currency_symbol(currency: str="GBP") -> numbers:
     return numbers.get_currency_symbol(currency, locale=flask_babel.get_locale())
 
 
 @blueprint.app_template_filter()
-def format_percentage(value):
+def format_percentage(value: str) -> str:
     return f"{value}%"
 
 
-def format_unit(unit, value, length="short"):
+def format_unit(unit: str, value: str, length: str="short") -> units:
     return units.format_unit(
         value=value,
         measurement_unit=unit,
@@ -63,7 +65,7 @@ def format_unit(unit, value, length="short"):
     )
 
 
-def format_unit_input_label(unit, unit_length="short"):
+def format_unit_input_label(unit: str, unit_length: str="short") -> units:
     """
     This function is used to only get the unit of measurement text.  If the unit_length
     is long then only the plural form of the word is returned (e.g., Hours, Years, etc).
@@ -86,7 +88,7 @@ def format_unit_input_label(unit, unit_length="short"):
     ).strip()
 
 
-def format_duration(value):
+def format_duration(value: Mapping) -> str:
     parts = []
 
     if "years" in value and (value["years"] > 0 or len(value) == 1):
@@ -104,14 +106,14 @@ def format_duration(value):
     return " ".join(parts)
 
 
-def get_format_multilined_string(value):
+def get_format_multilined_string(value: str) -> str:
     escaped_value = escape(value)
     new_line_regex = r"(?:\r\n|\r|\n)+"
     value_with_line_break_tag = re.sub(new_line_regex, "<br>", escaped_value)
     return f"{value_with_line_break_tag}"
 
 
-def get_format_date(value):
+def get_format_date(value: str) -> str:
     """Format a datetime string.
 
     :param (jinja2.nodes.EvalContext) context: Evaluation context.
@@ -134,7 +136,7 @@ def get_format_date(value):
 
 @pass_eval_context  # type: ignore
 @blueprint.app_template_filter()
-def format_datetime(context, date_time):
+def format_datetime(context: str, date_time: str) -> str:
     # flask babel on formatting will automatically convert based on the time zone specified in setup.py
     formatted_date = flask_babel.format_date(date_time, format="d MMMM yyyy")
     formatted_time = flask_babel.format_time(date_time, format="HH:mm")
@@ -148,7 +150,7 @@ def format_datetime(context, date_time):
     return mark_safe(context, result)
 
 
-def get_format_date_range(start_date, end_date):
+def get_format_date_range(start_date: str, end_date: str) -> flask_babel:
     return flask_babel.gettext(
         "%(from_date)s to %(to_date)s",
         from_date=get_format_date(start_date),
@@ -157,35 +159,35 @@ def get_format_date_range(start_date, end_date):
 
 
 @blueprint.app_context_processor
-def format_unit_processor():
+def format_unit_processor() -> dict:
     return dict(format_unit=format_unit)
 
 
 @blueprint.app_context_processor
-def format_unit_input_label_processor():
+def format_unit_input_label_processor() -> dict:
     return dict(format_unit_input_label=format_unit_input_label)
 
 
 @blueprint.app_context_processor
-def get_currency_symbol_processor():
+def get_currency_symbol_processor() -> dict:
     return dict(get_currency_symbol=get_currency_symbol)
 
 
 @blueprint.app_template_filter()  # type: ignore
-def setAttribute(dictionary, key, value):
+def setAttribute(dictionary: dict, key: str, value: str) -> dict:
     dictionary[key] = value
     return dictionary
 
 
 @blueprint.app_template_filter()  # type: ignore
-def setAttributes(dictionary, attributes):
+def setAttributes(dictionary: dict, attributes: dict) -> dict:
     for key in attributes:
         dictionary[key] = attributes[key]
     return dictionary
 
 
 @blueprint.app_template_filter()
-def should_wrap_with_fieldset(question):
+def should_wrap_with_fieldset(question: dict) -> Union[Any, bool]:
     # Logic for when to wrap with a fieldset comes from
     # https://ons-design-system.netlify.app/patterns/question/
     if question["type"] == "DateRange":
@@ -212,12 +214,12 @@ def should_wrap_with_fieldset(question):
 
 
 @blueprint.app_context_processor
-def should_wrap_with_fieldset_processor():
+def should_wrap_with_fieldset_processor() -> dict:
     return {"should_wrap_with_fieldset": should_wrap_with_fieldset}
 
 
 @blueprint.app_template_filter()
-def get_width_for_number(answer):
+def get_width_for_number(answer: dict) -> int:
     allowable_widths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 40, 50]
 
     min_value = answer.get("minimum", {}).get("value", 0)
@@ -236,19 +238,19 @@ def get_width_for_number(answer):
 
 
 @blueprint.app_context_processor
-def get_width_for_number_processor():
+def get_width_for_number_processor() -> dict:
     return {"get_width_for_number": get_width_for_number}
 
 
 class LabelConfig:
-    def __init__(self, _for, text, description=None):
+    def __init__(self, _for, text, description=None) -> None:
         self._for = _for
         self.text = text
         self.description = description
 
 
 class SelectConfig:
-    def __init__(self, option, index, answer, form=None):
+    def __init__(self, option, index, answer, form=None) -> None:
         self.id = option.id
         self.name = option.name
         self.value = option.data
@@ -275,7 +277,7 @@ class SelectConfig:
 
 
 class RelationshipRadioConfig(SelectConfig):
-    def __init__(self, option, index, answer):
+    def __init__(self, option, index, answer) -> None:
         super().__init__(option, index, answer)
 
         if self._answer_option:
@@ -295,7 +297,7 @@ class RelationshipRadioConfig(SelectConfig):
 
 
 class OtherConfig:
-    def __init__(self, detail_answer_field, detail_answer_schema):
+    def __init__(self, detail_answer_field, detail_answer_schema) -> None:
         self.id = detail_answer_field.id
         self.name = detail_answer_field.name
 
@@ -320,7 +322,7 @@ class OtherConfig:
 
 
 @blueprint.app_template_filter()  # type: ignore
-def map_select_config(form, answer):
+def map_select_config(form, answer) -> list[SelectConfig]:
     options = form["fields"][answer["id"]]
 
     return [
@@ -330,12 +332,12 @@ def map_select_config(form, answer):
 
 
 @blueprint.app_context_processor
-def map_select_config_processor():
+def map_select_config_processor() -> dict:
     return dict(map_select_config=map_select_config)
 
 
 @blueprint.app_template_filter()  # type: ignore
-def map_relationships_config(form, answer):
+def map_relationships_config(form, answer) -> list[RelationshipRadioConfig]:
     options = form["fields"][answer["id"]]
 
     return [
@@ -344,29 +346,29 @@ def map_relationships_config(form, answer):
 
 
 @blueprint.app_context_processor
-def map_relationships_config_processor():
+def map_relationships_config_processor() -> dict:
     return dict(map_relationships_config=map_relationships_config)
 
 
 class DropdownConfig:
-    def __init__(self, option, select):
+    def __init__(self, option, select) -> None:
         self.value, self.text = option.value, option.label
         self.selected = select.data == self.value
         self.disabled = self.value == "" and select.flags.required
 
 
 @blueprint.app_template_filter()
-def map_dropdown_config(select):
+def map_dropdown_config(select) -> list[DropdownConfig]:
     return [DropdownConfig(choice, select) for choice in select.choices]
 
 
 @blueprint.app_context_processor
-def map_dropdown_config_processor():
+def map_dropdown_config_processor() -> dict:
     return dict(map_dropdown_config=map_dropdown_config)
 
 
 class SummaryAction:
-    def __init__(self, answer, answer_title, edit_link_text, edit_link_aria_label):
+    def __init__(self, answer, answer_title: str, edit_link_text: str, edit_link_aria_label: str) -> None:
         self.text = edit_link_text
         self.ariaLabel = edit_link_aria_label + " " + answer_title
         self.url = answer["link"]
@@ -380,7 +382,7 @@ class SummaryAction:
 
 
 class SummaryRowItemValue:
-    def __init__(self, text, other=None):
+    def __init__(self, text: str, other: Optional[str]=None) -> None:
         self.text = text
 
         if other or other == 0:
@@ -398,7 +400,7 @@ class SummaryRowItem:
         edit_link_text,
         edit_link_aria_label,
         summary_type,
-    ):
+    ) -> None:
 
         if "type" in answer:
             answer_type = answer["type"]
@@ -486,7 +488,7 @@ class SummaryRow:
         no_answer_provided,
         edit_link_text,
         edit_link_aria_label,
-    ):
+    ) -> None:
         self.rowTitle = strip_tags(question["title"])
         self.id = question["id"]
         self.rowItems = []
@@ -520,7 +522,7 @@ def map_summary_item_config(
     edit_link_text,
     edit_link_aria_label,
     calculated_question,
-):
+) -> list[SummaryRow]:
     rows = [
         SummaryRow(
             block["question"],
@@ -542,7 +544,7 @@ def map_summary_item_config(
 
 
 @blueprint.app_context_processor
-def map_summary_item_config_processor():
+def map_summary_item_config_processor() -> dict:
     return dict(map_summary_item_config=map_summary_item_config)
 
 
@@ -554,7 +556,7 @@ def map_list_collector_config(
     edit_link_aria_label=None,
     remove_link_text=None,
     remove_link_aria_label=None,
-):
+) -> list:
     rows = []
 
     for index, list_item in enumerate(list_items, start=1):
@@ -603,5 +605,5 @@ def map_list_collector_config(
 
 
 @blueprint.app_context_processor
-def map_list_collector_config_processor():
+def map_list_collector_config_processor() -> dict:
     return dict(map_list_collector_config=map_list_collector_config)

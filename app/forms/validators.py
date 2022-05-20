@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
-from typing import TYPE_CHECKING, Iterable, List, Mapping, Optional, Sequence, Union
+from typing import TYPE_CHECKING, Iterable, List, Mapping, Optional, Sequence, Union, Any
 
 import flask_babel
 from babel import numbers
@@ -445,7 +445,7 @@ class SumCheck:
 
 def format_playback_value(
     value: Union[float, Decimal], currency: Optional[str] = None
-) -> str:
+) -> Any:
     if currency:
         return get_formatted_currency(value, currency)
 
