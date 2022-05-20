@@ -243,14 +243,14 @@ def get_width_for_number_processor() -> dict:
 
 
 class LabelConfig:
-    def __init__(self, _for, text, description=None) -> None:
+    def __init__(self, _for: str, text: str, description: Optional[str] = None) -> None:
         self._for = _for
         self.text = text
         self.description = description
 
 
 class SelectConfig:
-    def __init__(self, option, index, answer, form=None) -> None:
+    def __init__(self, option, index: int, answer: Mapping, form=None) -> None:
         self.id = option.id
         self.name = option.name
         self.value = option.data
@@ -277,7 +277,7 @@ class SelectConfig:
 
 
 class RelationshipRadioConfig(SelectConfig):
-    def __init__(self, option, index, answer) -> None:
+    def __init__(self, option, index: int, answer: Mapping) -> None:
         super().__init__(option, index, answer)
 
         if self._answer_option:
@@ -297,7 +297,7 @@ class RelationshipRadioConfig(SelectConfig):
 
 
 class OtherConfig:
-    def __init__(self, detail_answer_field, detail_answer_schema) -> None:
+    def __init__(self, detail_answer_field, detail_answer_schema: Mapping) -> None:
         self.id = detail_answer_field.id
         self.name = detail_answer_field.name
 
@@ -322,7 +322,7 @@ class OtherConfig:
 
 
 @blueprint.app_template_filter()  # type: ignore
-def map_select_config(form, answer) -> list[SelectConfig]:
+def map_select_config(form: Mapping, answer: Mapping) -> list[SelectConfig]:
     options = form["fields"][answer["id"]]
 
     return [
@@ -337,7 +337,7 @@ def map_select_config_processor() -> dict:
 
 
 @blueprint.app_template_filter()  # type: ignore
-def map_relationships_config(form, answer) -> list[RelationshipRadioConfig]:
+def map_relationships_config(form: Mapping, answer:Mapping) -> list[RelationshipRadioConfig]:
     options = form["fields"][answer["id"]]
 
     return [
@@ -550,12 +550,12 @@ def map_summary_item_config_processor() -> dict:
 
 @blueprint.app_template_filter()  # type: ignore
 def map_list_collector_config(
-    list_items,
-    icon,
-    edit_link_text=None,
-    edit_link_aria_label=None,
-    remove_link_text=None,
-    remove_link_aria_label=None,
+    list_items: list,
+    icon: str,
+    edit_link_text: Optional[str] = None,
+    edit_link_aria_label = None,
+    remove_link_text: Optional[str] = None,
+    remove_link_aria_label= None,
 ) -> list:
     rows = []
 
