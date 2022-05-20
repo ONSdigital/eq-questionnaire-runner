@@ -843,14 +843,19 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             if not isinstance(rule, Mapping):
                 continue
 
-            answer_id = None
+            answer_id_list: list = []
+            identifier: str = rule.get("identifier", "")
 
             if "id" in rule:
-                answer_id = rule["id"]
+                answer_id_list.append(rule["id"])
             elif rule.get("source") == "answers":
-                answer_id = rule.get("identifier")
+                answer_id_list.append(identifier)
+            elif rule.get("source") == "calculated_summary":
+                calculated_summary_block = self.get_block(identifier)
+                calculated_summary_answer_ids = calculated_summary_block["calculation"]["answers_to_calculate"]  # type: ignore
+                answer_id_list.extend(iter(calculated_summary_answer_ids))
 
-            if answer_id:
+            for answer_id in answer_id_list:
                 block = self.get_block_for_answer_id(answer_id)  # type: ignore
                 section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
 
