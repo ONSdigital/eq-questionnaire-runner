@@ -250,7 +250,7 @@ class LabelConfig:
 
 
 class SelectConfig:
-    def __init__(self, option, index: int, answer: Mapping, form=None) -> None:
+    def __init__(self, option, index: int, answer: Mapping, form: Optional[Mapping] = None) -> None:
         self.id = option.id
         self.name = option.name
         self.value = option.data
@@ -394,12 +394,12 @@ class SummaryRowItem:
         self,
         question,
         answer,
-        multiple_answers,
-        answers_are_editable,
-        no_answer_provided,
-        edit_link_text,
-        edit_link_aria_label,
-        summary_type,
+        multiple_answers: bool,
+        answers_are_editable: bool,
+        no_answer_provided: str,
+        edit_link_text: str,
+        edit_link_aria_label: str,
+        summary_type: str,
     ) -> None:
 
         if "type" in answer:
@@ -484,7 +484,7 @@ class SummaryRow:
         self,
         question,
         summary_type,
-        answers_are_editable,
+        answers_are_editable: bool,
         no_answer_provided,
         edit_link_text,
         edit_link_aria_label,
@@ -516,12 +516,12 @@ class SummaryRow:
 @blueprint.app_template_filter()  # type: ignore
 def map_summary_item_config(
     group,
-    summary_type,
-    answers_are_editable,
-    no_answer_provided,
-    edit_link_text,
-    edit_link_aria_label,
-    calculated_question,
+    summary_type: str,
+    answers_are_editable: bool,
+    no_answer_provided: bool,
+    edit_link_text: str,
+    edit_link_aria_label: str,
+    calculated_question: str,
 ) -> list[SummaryRow]:
     rows = [
         SummaryRow(
