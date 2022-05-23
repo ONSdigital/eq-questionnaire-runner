@@ -57,7 +57,7 @@ def test_format_percentage(value, expected, transformer):
     "unit, value, length, expected",
     (
         ("centimeter", "123", "short", "123 cm"),
-        ("kilometer", "123", "long", "123 kilometers"),
+        ("kilometer", "123", "long", "123 kilometer"),
         ("mile", "123", "short", "123 mi"),
     ),
 )
