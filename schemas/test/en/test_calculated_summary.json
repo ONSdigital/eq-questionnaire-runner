@@ -464,17 +464,17 @@
                         {
                             "type": "Question",
                             "id": "set-min-max-block",
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
                                         {
-                                            "id": "skip-fourth-block-answer",
-                                            "condition": "equals",
-                                            "value": "No"
-                                        }
+                                            "identifier": "skip-fourth-block-answer",
+                                            "source": "answers"
+                                        },
+                                        "No"
                                     ]
                                 }
-                            ],
+                            },
                             "question": {
                                 "answers": [
                                     {
