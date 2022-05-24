@@ -62,8 +62,8 @@ def test_format_percentage(value, expected, transformer):
         ("mile", "123", "narrow", "123mi"),
     ),
 )
-def test_format_unit(unit, value, length, expected, transformer):
-    assert transformer().format_unit(unit, value, length) == expected
+def test_format_unit(unit, value, unit_length, expected, transformer):
+    assert transformer().format_unit(unit, value, unit_length) == expected
 
 
 def test_format_list(transformer):

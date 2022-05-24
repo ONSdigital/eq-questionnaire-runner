@@ -168,7 +168,7 @@
                                         "id": "training-percentage",
                                         "mandatory": false,
                                         "decimal_places": 0,
-                                        "type": "Number",
+                                        "type": "Percentage",
                                         "label": "Percentage of company budget",
                                         "default": 0
                                     }
@@ -224,7 +224,7 @@
                                         "id": "average-distance",
                                         "mandatory": false,
                                         "decimal_places": 0,
-                                        "type": "Number",
+                                        "type": "Unit",
                                         "label": "Average commuting distance",
                                         "default": 0
                                     }
