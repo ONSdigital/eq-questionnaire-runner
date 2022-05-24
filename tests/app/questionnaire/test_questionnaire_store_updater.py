@@ -8,14 +8,19 @@ from app.data_models.list_store import ListStore
 from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
-from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
+from app.questionnaire.questionnaire_store_updater import (
+    DependentSection,
+    QuestionnaireStoreUpdater,
+)
 
 
+# pylint: disable=too-many-locals
 def test_save_answers_with_form_data(
     mock_location,
     mock_empty_schema,
     mock_empty_answer_store,
     mock_questionnaire_store,
+    mock_router,
 ):
     answer_id = "answer"
     answer_value = "1000"
@@ -26,7 +31,11 @@ def test_save_answers_with_form_data(
 
     current_question = mock_empty_schema.get_block(mock_location.block_id)["question"]
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        mock_location, mock_empty_schema, mock_questionnaire_store, current_question
+        mock_location,
+        mock_empty_schema,
+        mock_questionnaire_store,
+        mock_router,
+        current_question,
     )
     questionnaire_store_updater.update_answers(form_data)
 
@@ -41,9 +50,7 @@ def test_save_answers_with_form_data(
 
 
 def test_save_empty_answer_removes_existing_answer(
-    mock_empty_schema,
-    mock_empty_answer_store,
-    mock_questionnaire_store,
+    mock_empty_schema, mock_empty_answer_store, mock_questionnaire_store, mock_router
 ):
     answer_id = "answer"
     answer_value = "1000"
@@ -62,7 +69,11 @@ def test_save_empty_answer_removes_existing_answer(
 
     current_question = mock_empty_schema.get_block(location.block_id)["question"]
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        location, mock_empty_schema, mock_questionnaire_store, current_question
+        location,
+        mock_empty_schema,
+        mock_questionnaire_store,
+        mock_router,
+        current_question,
     )
     questionnaire_store_updater.update_answers(form_data)
 
@@ -91,6 +102,7 @@ def test_default_answers_are_not_saved(
     mock_empty_schema,
     mock_empty_answer_store,
     mock_questionnaire_store,
+    mock_router,
 ):
     answer_id = "answer"
     default_value = 0
@@ -105,7 +117,11 @@ def test_default_answers_are_not_saved(
 
     current_question = {"answers": [{"id": "answer", "default": default_value}]}
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        mock_location, mock_empty_schema, mock_questionnaire_store, current_question
+        mock_location,
+        mock_empty_schema,
+        mock_questionnaire_store,
+        mock_router,
+        current_question,
     )
     questionnaire_store_updater.update_answers(form_data)
 
@@ -117,6 +133,7 @@ def test_empty_answers(
     mock_empty_schema,
     mock_empty_answer_store,
     mock_questionnaire_store,
+    mock_router,
 ):
     string_answer_id = "string-answer"
     checkbox_answer_id = "checkbox-answer"
@@ -142,7 +159,11 @@ def test_empty_answers(
         ]
     }
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        mock_location, mock_empty_schema, mock_questionnaire_store, current_question
+        mock_location,
+        mock_empty_schema,
+        mock_questionnaire_store,
+        mock_router,
+        current_question,
     )
     questionnaire_store_updater.update_answers(form_data)
 
@@ -152,8 +173,7 @@ def test_empty_answers(
 def test_remove_all_answers_with_list_item_id(
     mock_location,
     mock_empty_schema,
-    mock_empty_answer_store,
-    mock_questionnaire_store,
+    mock_router,
     mocker,
 ):
     mock_empty_answer_store = AnswerStore(
@@ -173,7 +193,7 @@ def test_remove_all_answers_with_list_item_id(
     )
 
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        mock_location, mock_empty_schema, mock_questionnaire_store, None
+        mock_location, mock_empty_schema, mock_questionnaire_store, mock_router, None
     )
     questionnaire_store_updater.remove_list_item_and_answers("abc", "abcdef")
 
@@ -184,8 +204,7 @@ def test_remove_all_answers_with_list_item_id(
 def test_remove_primary_person(
     mock_location,
     mock_empty_schema,
-    mock_empty_answer_store,
-    mock_questionnaire_store,
+    mock_router,
     populated_list_store,
     mocker,
 ):
@@ -206,7 +225,7 @@ def test_remove_primary_person(
     )
 
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        mock_location, mock_empty_schema, mock_questionnaire_store, None
+        mock_location, mock_empty_schema, mock_questionnaire_store, mock_router, None
     )
 
     questionnaire_store_updater.remove_primary_person("people")
@@ -216,7 +235,7 @@ def test_add_primary_person(
     mock_location,
     mock_empty_schema,
     mock_empty_answer_store,
-    mock_questionnaire_store,
+    mock_router,
     populated_list_store,
     mocker,
 ):
@@ -230,7 +249,7 @@ def test_add_primary_person(
     )
 
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        mock_location, mock_empty_schema, mock_questionnaire_store, None
+        mock_location, mock_empty_schema, mock_questionnaire_store, mock_router, None
     )
     questionnaire_store_updater.add_primary_person("people")
 
@@ -240,7 +259,7 @@ def test_remove_completed_relationship_locations_for_list_name(
     mock_empty_schema,
     mock_empty_answer_store,
     mock_empty_progress_store,
-    mock_questionnaire_store,
+    mock_router,
     populated_list_store,
     mocker,
 ):
@@ -256,7 +275,7 @@ def test_remove_completed_relationship_locations_for_list_name(
         progress_store=mock_empty_progress_store,
     )
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        mock_location, mock_empty_schema, mock_questionnaire_store, None
+        mock_location, mock_empty_schema, mock_questionnaire_store, mock_router, None
     )
 
     patch_method = "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater._get_relationship_collectors_by_list_name"
@@ -278,7 +297,7 @@ def test_remove_completed_relationship_locations_for_list_name_no_locations(
     mock_empty_schema,
     mock_empty_answer_store,
     mock_empty_progress_store,
-    mock_questionnaire_store,
+    mock_router,
     populated_list_store,
     mocker,
 ):
@@ -295,7 +314,7 @@ def test_remove_completed_relationship_locations_for_list_name_no_locations(
         progress_store=mock_empty_progress_store,
     )
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        mock_location, mock_empty_schema, mock_questionnaire_store, None
+        mock_location, mock_empty_schema, mock_questionnaire_store, mock_router, None
     )
 
     questionnaire_store_updater.remove_completed_relationship_locations_for_list_name(
@@ -313,7 +332,7 @@ def test_update_relationship_question_completeness_no_relationship_collectors(
     mock_empty_schema,
     mock_empty_answer_store,
     mock_empty_progress_store,
-    mock_questionnaire_store,
+    mock_router,
     populated_list_store,
     mocker,
 ):
@@ -325,7 +344,7 @@ def test_update_relationship_question_completeness_no_relationship_collectors(
         progress_store=mock_empty_progress_store,
     )
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        mock_location, mock_empty_schema, mock_questionnaire_store, None
+        mock_location, mock_empty_schema, mock_questionnaire_store, mock_router, None
     )
 
     assert (
@@ -339,8 +358,7 @@ def test_update_relationship_question_completeness_no_relationship_collectors(
 def test_update_same_name_items(
     mock_location,
     mock_empty_schema,
-    mock_empty_answer_store,
-    mock_questionnaire_store,
+    mock_router,
     populated_list_store,
     mocker,
 ):
@@ -378,7 +396,7 @@ def test_update_same_name_items(
     )
 
     questionnaire_store_updater = QuestionnaireStoreUpdater(
-        mock_location, mock_empty_schema, mock_questionnaire_store, None
+        mock_location, mock_empty_schema, mock_questionnaire_store, mock_router, None
     )
 
     questionnaire_store_updater.update_same_name_items(
@@ -455,6 +473,7 @@ def get_answer_dependencies(for_list=None):
 )
 def test_update_answers_captures_answer_dependencies(
     mock_empty_answer_store,
+    mock_router,
     answer_id,
     answer_updated,
     answer_dependencies,
@@ -486,6 +505,7 @@ def test_update_answers_captures_answer_dependencies(
         schema=mock_schema,
         answer_store=mock_empty_answer_store,
         list_store=list_store,
+        router=mock_router,
         current_location=location,
         current_question=current_question,
     )
@@ -532,7 +552,11 @@ def test_update_answers_captures_answer_dependencies(
     ],
 )
 def test_update_answers_with_answer_dependents(
-    mock_schema, answer_dependent_answer_id, updated_answer_value, expected_output
+    mock_schema,
+    mock_router,
+    answer_dependent_answer_id,
+    updated_answer_value,
+    expected_output,
 ):
 
     answer_store = AnswerStore(
@@ -568,6 +592,7 @@ def test_update_answers_with_answer_dependents(
         schema=mock_schema,
         answer_store=answer_store,
         list_store=ListStore(),
+        router=mock_router,
         current_location=location,
         current_question=current_question,
     )
@@ -576,7 +601,7 @@ def test_update_answers_with_answer_dependents(
     assert answer_store == expected_output
 
 
-def test_update_repeating_answers_with_answer_dependents(mock_schema):
+def test_update_repeating_answers_with_answer_dependents(mock_schema, mock_router):
     # Given repeating dependent answers
     answer_store = AnswerStore(
         [
@@ -614,6 +639,7 @@ def test_update_repeating_answers_with_answer_dependents(mock_schema):
         schema=mock_schema,
         answer_store=answer_store,
         list_store=list_store,
+        router=mock_router,
         current_location=location,
         current_question=current_question,
     )
@@ -627,6 +653,222 @@ def test_update_repeating_answers_with_answer_dependents(mock_schema):
     )
 
 
+@pytest.mark.parametrize(
+    "section_status, updated_answer_value, is_path_complete, expected_status",
+    [
+        (  # When an answer is changed which causes the path of a dependent section to be incomplete, Then that sections is update to IN_PROGRESS
+            "COMPLETED",
+            "answer updated",
+            False,
+            "IN_PROGRESS",
+        ),
+        (  # When an answer is changed which causes the path of a dependent section to be complete, Then that sections is update to COMPLETED
+            "IN_PROGRESS",
+            "answer updated",
+            True,
+            "COMPLETED",
+        ),
+        (  # When an answer is not changed, Then a dependent section status should not change
+            "IN_PROGRESS",
+            "original answer",
+            False,
+            "IN_PROGRESS",
+        ),
+        (  # When an answer is not changed, Then a dependent section status should not change
+            "COMPLETED",
+            "original answer",
+            True,
+            "COMPLETED",
+        ),
+    ],
+)
+def test_answer_id_section_dependents(
+    section_status,
+    updated_answer_value,
+    is_path_complete,
+    expected_status,
+    mock_schema,
+    mock_router,
+):
+    mock_schema.get_answer_ids_for_question.return_value = ["first-answer"]
+    mock_schema.get_repeating_list_for_section.return_value = None
+    mock_schema.when_rules_section_dependencies_by_answer = {
+        "first-answer": {"section-2"}
+    }
+    mock_router.is_path_complete.return_value = is_path_complete
+
+    answer_store = AnswerStore(
+        [
+            AnswerDict(answer_id="first-answer", value="original answer"),
+            AnswerDict(answer_id="second-answer", value="second answer"),
+        ]
+    )
+    form_data = MultiDict({"first-answer": updated_answer_value})
+    location = Location(
+        section_id="section",
+        block_id="first-block",
+    )
+    progress_store = ProgressStore(
+        [
+            {
+                "section_id": "section-2",
+                "block_ids": ["second-block"],
+                "status": section_status,
+            }
+        ],
+    )
+    current_question = mock_schema.get_block(location.block_id)["question"]
+    questionnaire_store_updater = get_questionnaire_store_updater(
+        schema=mock_schema,
+        answer_store=answer_store,
+        progress_store=progress_store,
+        router=mock_router,
+        current_location=location,
+        current_question=current_question,
+    )
+    questionnaire_store_updater.update_answers(form_data)
+    questionnaire_store_updater.update_progress_for_dependent_sections()
+
+    assert progress_store.get_section_status(section_id="section-2") is expected_status
+
+
+@pytest.mark.parametrize(
+    "list_item_1_section_status, list_item_2_section_status, updated_answer_value, "
+    "is_list_item_1_path_complete, is_list_item_2_path_complete, expected_list_item_1_status, expected_list_item_2_status",
+    [
+        (  # When an answer is changed which causes repeating dependent section to be incomplete, Then those repeating sections are updated to IN_PROGRESS
+            "COMPLETED",
+            "COMPLETED",
+            "answer updated",
+            False,
+            False,
+            "IN_PROGRESS",
+            "IN_PROGRESS",
+        ),
+        (  # When an answer is changed which causes repeating dependent section to be complete, Then those repeating sections are updated to COMPLETED
+            "IN_PROGRESS",
+            "IN_PROGRESS",
+            "answer updated",
+            True,
+            True,
+            "COMPLETED",
+            "COMPLETED",
+        ),
+        (  # When an answer is changed which causes repeating section paths to change, Then those repeating sections statuses are updated correctly
+            "COMPLETED",
+            "IN_PROGRESS",
+            "answer updated",
+            False,
+            True,
+            "IN_PROGRESS",
+            "COMPLETED",
+        ),
+        (  # When an answer is not changed, Then a repeating dependent section status should not change
+            "COMPLETED",
+            "IN_PROGRESS",
+            "original answer",
+            True,
+            False,
+            "COMPLETED",
+            "IN_PROGRESS",
+        ),
+    ],
+)
+def test_answer_id_section_dependents_repeating(
+    list_item_1_section_status,
+    list_item_2_section_status,
+    updated_answer_value,
+    is_list_item_1_path_complete,
+    is_list_item_2_path_complete,
+    expected_list_item_1_status,
+    expected_list_item_2_status,
+    mock_schema,
+    mock_router,
+):
+
+    mock_schema.get_repeating_list_for_section.return_value = "list-name"
+    mock_schema.get_answer_ids_for_question.return_value = ["first-answer"]
+    mock_schema.when_rules_section_dependencies_by_answer = {
+        "first-answer": {"section-2"}
+    }
+
+    answer_store = AnswerStore(
+        [
+            AnswerDict(answer_id="first-answer", value="original answer"),
+            AnswerDict(
+                answer_id="second-answer",
+                value="second answer",
+                list_item_id="list-item-id-1",
+            ),
+            AnswerDict(
+                answer_id="second-answer",
+                value="second answer",
+                list_item_id="list-item-id-2",
+            ),
+        ]
+    )
+    list_store = ListStore(
+        [{"items": ["list-item-id-1", "list-item-id-2"], "name": "list-name"}]
+    )
+    form_data = MultiDict({"first-answer": updated_answer_value})
+    location = Location(
+        section_id="section",
+        block_id="first-block",
+    )
+
+    progress_store = ProgressStore(
+        [
+            {
+                "section_id": "section-2",
+                "block_ids": ["second-block"],
+                "status": list_item_1_section_status,
+                "list_item_id": "list-item-id-1",
+            },
+            {
+                "section_id": "section-2",
+                "block_ids": ["second-block"],
+                "status": list_item_2_section_status,
+                "list_item_id": "list-item-id-2",
+            },
+        ],
+    )
+    current_question = mock_schema.get_block(location.block_id)["question"]
+    questionnaire_store_updater = get_questionnaire_store_updater(
+        schema=mock_schema,
+        answer_store=answer_store,
+        list_store=list_store,
+        progress_store=progress_store,
+        router=mock_router,
+        current_location=location,
+        current_question=current_question,
+    )
+    questionnaire_store_updater.update_answers(form_data)
+
+    # This test case is dependent on the order that the dependent_sections set is iterated over,
+    # however as python sets are unordered we need to check that the first item is equal to our expected
+    # list_item_id so that we can set the correct side effect as per the test case
+    first_item = next(iter(questionnaire_store_updater.dependent_sections), None)
+    effects = [is_list_item_1_path_complete, is_list_item_2_path_complete]
+    if first_item and first_item.list_item_id != "list-item-id-1":
+        effects = [is_list_item_2_path_complete, is_list_item_1_path_complete]
+    mock_router.is_path_complete.side_effect = effects
+
+    questionnaire_store_updater.update_progress_for_dependent_sections()
+
+    assert (
+        progress_store.get_section_status(
+            section_id="section-2", list_item_id="list-item-id-1"
+        )
+        is expected_list_item_1_status
+    )
+    assert (
+        progress_store.get_section_status(
+            section_id="section-2", list_item_id="list-item-id-2"
+        )
+        is expected_list_item_2_status
+    )
+
+
 def get_questionnaire_store_updater(
     *,
     current_location=None,
@@ -634,6 +876,7 @@ def get_questionnaire_store_updater(
     answer_store=None,
     list_store=None,
     progress_store=None,
+    router=None,
     current_question=None,
 ):
     answer_store = AnswerStore() if answer_store is None else answer_store
@@ -659,7 +902,11 @@ def get_questionnaire_store_updater(
     current_question = current_question or {}
 
     return QuestionnaireStoreUpdater(
-        current_location, mock_schema, mock_questionnaire_store, current_question
+        current_location,
+        mock_schema,
+        mock_questionnaire_store,
+        router,
+        current_question,
     )
 
 
@@ -668,7 +915,7 @@ def get_questionnaire_store_updater(
     [CompletionStatus.IN_PROGRESS, CompletionStatus.COMPLETED],
 )
 def test_dependent_sections_completed_dependant_blocks_removed_and_status_updated(
-    dependent_section_status,
+    dependent_section_status, mock_router
 ):
     # Given
     current_location = Location(
@@ -691,7 +938,9 @@ def test_dependent_sections_completed_dependant_blocks_removed_and_status_update
         ],
     )
     questionnaire_store_updater = get_questionnaire_store_updater(
-        current_location=current_location, progress_store=progress_store
+        current_location=current_location,
+        progress_store=progress_store,
+        router=mock_router,
     )
     dependent_section_key = ("breakdown-section", None)
     dependent_block_id = "turnover-breakdown-block"
@@ -705,7 +954,7 @@ def test_dependent_sections_completed_dependant_blocks_removed_and_status_update
     )
 
     # When
-    questionnaire_store_updater.update_progress_for_dependant_sections()
+    questionnaire_store_updater.update_progress_for_dependent_sections()
 
     # Then
     assert dependent_block_id not in progress_store.get_completed_block_ids(
@@ -750,7 +999,7 @@ def test_dependent_sections_current_section_status_not_updated(mocker):
     )
 
     # When
-    questionnaire_store_updater.update_progress_for_dependant_sections()
+    questionnaire_store_updater.update_progress_for_dependent_sections()
 
     # Then
     assert dependent_block_id not in progress_store.get_completed_block_ids(
@@ -760,7 +1009,7 @@ def test_dependent_sections_current_section_status_not_updated(mocker):
     assert questionnaire_store_updater.update_section_status.call_count == 0
 
 
-def test_dependent_sections_not_started_skipped(mocker):
+def test_dependent_sections_not_started_skipped(mock_router, mocker):
     # Given
     current_location = Location(
         section_id="company-summary-section", block_id="total-turnover-block"
@@ -775,7 +1024,9 @@ def test_dependent_sections_not_started_skipped(mocker):
         ],
     )
     questionnaire_store_updater = get_questionnaire_store_updater(
-        current_location=current_location, progress_store=progress_store
+        current_location=current_location,
+        progress_store=progress_store,
+        router=mock_router,
     )
 
     dependent_section_key = ("breakdown-section", None)
@@ -789,14 +1040,14 @@ def test_dependent_sections_not_started_skipped(mocker):
     questionnaire_store_updater.update_section_status = mocker.Mock()
 
     # When
-    questionnaire_store_updater.update_progress_for_dependant_sections()
+    questionnaire_store_updater.update_progress_for_dependent_sections()
 
     # Then
     assert questionnaire_store_updater.remove_completed_location.call_count == 0
     assert questionnaire_store_updater.update_section_status.call_count == 0
 
 
-def test_dependent_sections_started_but_blocks_incomplete(mocker):
+def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
     # Given
     current_location = Location(
         section_id="company-summary-section", block_id="total-employees-block"
@@ -818,7 +1069,9 @@ def test_dependent_sections_started_but_blocks_incomplete(mocker):
         ],
     )
     questionnaire_store_updater = get_questionnaire_store_updater(
-        current_location=current_location, progress_store=progress_store
+        current_location=current_location,
+        progress_store=progress_store,
+        router=mock_router,
     )
 
     dependent_section_key = ("breakdown-section", None)
@@ -834,7 +1087,7 @@ def test_dependent_sections_started_but_blocks_incomplete(mocker):
     )
 
     # When
-    questionnaire_store_updater.update_progress_for_dependant_sections()
+    questionnaire_store_updater.update_progress_for_dependent_sections()
 
     # Then
     assert questionnaire_store_updater.update_section_status.call_count == 0
@@ -845,7 +1098,7 @@ def test_dependent_sections_started_but_blocks_incomplete(mocker):
     [CompletionStatus.IN_PROGRESS, CompletionStatus.COMPLETED],
 )
 def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_status_updated(
-    dependent_section_status,
+    dependent_section_status, mock_router
 ):
     # Given
     current_location = Location(
@@ -888,15 +1141,21 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
         current_location=current_location,
         progress_store=progress_store,
         list_store=list_store,
+        router=mock_router,
     )
 
     questionnaire_store_updater.dependent_block_id_by_section_key = {
         ("breakdown-section", list_item): {"turnover-breakdown-block"}
         for list_item in list_store["some-list"]
     }
+    questionnaire_store_updater.dependent_sections.add(
+        DependentSection(
+            section_id="breakdown-section", list_item_id="item-1", is_complete=None
+        )
+    )
 
     # When
-    questionnaire_store_updater.update_progress_for_dependant_sections()
+    questionnaire_store_updater.update_progress_for_dependent_sections()
 
     # Then
     for list_item in list_store["some-list"]:
@@ -908,3 +1167,11 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
             progress_store.get_section_status(section_id, list_item_id)
             == CompletionStatus.IN_PROGRESS
         )
+        assert questionnaire_store_updater.dependent_sections == {
+            DependentSection(
+                section_id=section_id, list_item_id="item-1", is_complete=False
+            ),
+            DependentSection(
+                section_id=section_id, list_item_id="item-2", is_complete=False
+            ),
+        }
