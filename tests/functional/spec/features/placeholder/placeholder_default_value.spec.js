@@ -41,7 +41,7 @@ describe("Placeholder default value check", () => {
     $(EmployeesTrainingInterstitialPage.submit()).click();
     $(TrainingPercentageBlockPage.trainingPercentage()).setValue("10");
     $(TrainingPercentageBlockPage.submit()).click();
-    expect($("#main-content > p").getText()).to.contain("The percentage of the company budget you spend on training is 10%",);
+    expect($("#main-content > p").getText()).to.contain("The percentage of the company budget you spend on training is 10%");
   });
   it("Given a commuting distance question with default answer, When I enter an amount and click submit, Then the interstitial page shows amount entered", () => {
     $(EmployeesNumberBlockPage.submit()).click();
@@ -52,6 +52,6 @@ describe("Placeholder default value check", () => {
     $(TrainingPercentageInterstitialPage.submit()).click();
     $(AverageDistanceBlockPage.averageDistance()).setValue("100");
     $(AverageDistanceBlockPage.submit()).click();
-    expect($("#main-content > p").getText()).to.contain("The average commuting distance of an employee is 100 miles",);
+    expect($("#main-content > p").getText()).to.contain("The average commuting distance of an employee is 100 miles");
   });
 });
