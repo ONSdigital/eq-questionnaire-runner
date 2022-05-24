@@ -402,10 +402,13 @@ class Router:
             for condition in enabled
         )
 
-    def get_next_block_url(self, location: Location, routing_path: RoutingPath, **kwargs: Optional[str]
+    def get_next_block_url(
+        self, location: Location, routing_path: RoutingPath, **kwargs: Optional[str]
     ) -> str:
         next_block_id = routing_path[routing_path.index(location.block_id) + 1]
-        if next_block_id not in self._progress_store.get_completed_block_ids(location.section_id):
+        if next_block_id not in self._progress_store.get_completed_block_ids(
+            location.section_id
+        ):
 
             return url_for(
                 "questionnaire.block",
