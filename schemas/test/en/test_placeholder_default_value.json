@@ -158,6 +158,120 @@
                                 ]
                             },
                             "type": "Interstitial"
+                        },
+                        {
+                            "type": "Question",
+                            "id": "training-percentage-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "training-percentage",
+                                        "mandatory": false,
+                                        "decimal_places": 0,
+                                        "type": "Number",
+                                        "label": "Percentage of company budget",
+                                        "default": 0
+                                    }
+                                ],
+                                "id": "training-percentage-question",
+                                "title": "What percentage of the company budget you spend on training ?",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Leave the text box blank to see the default value on the next page"
+                                        }
+                                    ]
+                                },
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "id": "training-percentage-interstitial",
+                            "content": {
+                                "title": "Percentage of budget spent on training interstitial",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "The percentage of the company budget you spend on training is <em>{answer_percentage}</em>",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "answer_percentage",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "format_percentage",
+                                                            "arguments": {
+                                                                "value": {
+                                                                    "source": "answers",
+                                                                    "identifier": "training-percentage"
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "type": "Interstitial"
+                        },
+                        {
+                            "type": "Question",
+                            "id": "average-distance-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "average-distance",
+                                        "mandatory": false,
+                                        "decimal_places": 0,
+                                        "type": "Number",
+                                        "label": "Average commuting distance",
+                                        "default": 0
+                                    }
+                                ],
+                                "id": "average-distance-question",
+                                "title": "What is the average commuting distance of an employee (in miles) ?",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Leave the text box blank to see the default value on the next page"
+                                        }
+                                    ]
+                                },
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "id": "average-distance-interstitial",
+                            "content": {
+                                "title": "Average commuting distance interstitial",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "The average commuting distance of an employee is <em>{answer_distance}</em>",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "answer_distance",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "format_unit",
+                                                            "arguments": {
+                                                                "value": {
+                                                                    "source": "answers",
+                                                                    "identifier": "average-distance"
+                                                                },
+                                                                "unit": "mile",
+                                                                "length": "long"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "type": "Interstitial"
                         }
                     ],
                     "id": "employee-count",

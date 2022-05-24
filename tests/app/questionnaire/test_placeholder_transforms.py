@@ -57,13 +57,13 @@ def test_format_percentage(value, expected, transformer):
     "unit, value, length, expected",
     (
         ("centimeter", "123", "short", "123 cm"),
-        ("kilometer", "123", "long", "123 kilometer"),
+        ("kilometer", "123", "long", "123 kilometre"),
         ("mile", "123", "short", "123 mi"),
+        ("mile", "123", "narrow", "123mi"),
     ),
 )
-def test_format_unit(unit, value, length, expected, transformer, mocker):
-    with mocker.patch("flask_babel.get_locale", return_value="en"):
-        assert transformer().format_unit(unit, value, length) == expected
+def test_format_unit(unit, value, length, expected, transformer):
+    assert transformer().format_unit(unit, value, length) == expected
 
 
 def test_format_list(transformer):

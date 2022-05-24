@@ -3,7 +3,6 @@ from decimal import Decimal
 from typing import TYPE_CHECKING, Any, Optional, Sequence, Sized, Union
 from urllib.parse import quote
 
-import flask_babel
 from babel import units
 from babel.dates import format_datetime
 from babel.numbers import format_currency, format_decimal
@@ -138,15 +137,14 @@ class PlaceholderTransforms:
     def format_percentage(value: Union[int, Decimal, str]) -> str:
         return f"{value}%"
 
-    @staticmethod
     def format_unit(
-        unit: str, value: Union[int, Decimal, str], length: str = "short"
+        self, unit: str, value: Union[int, Decimal, str], length: str = "short"
     ) -> Any:  # babel units module not typed hence no specific return value
         return units.format_unit(
             value=value,
             measurement_unit=unit,
             length=length,
-            locale=flask_babel.get_locale(),
+            locale=self.locale,
         )
 
     @staticmethod
