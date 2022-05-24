@@ -223,8 +223,9 @@
                                     {
                                         "id": "average-distance",
                                         "mandatory": false,
-                                        "decimal_places": 0,
+                                        "unit": "mile",
                                         "type": "Unit",
+                                        "unit_length": "long",
                                         "label": "Average commuting distance",
                                         "default": 0
                                     }
