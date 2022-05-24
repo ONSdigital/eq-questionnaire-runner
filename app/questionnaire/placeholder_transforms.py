@@ -1,6 +1,6 @@
 from datetime import date, datetime, timezone
 from decimal import Decimal
-from typing import TYPE_CHECKING, Any, Optional, Sequence, Sized, Union
+from typing import TYPE_CHECKING, Optional, Sequence, Sized, Union
 from urllib.parse import quote
 
 from babel import units
@@ -138,8 +138,11 @@ class PlaceholderTransforms:
         return f"{value}%"
 
     def format_unit(
-        self, unit: str, value: Union[int, Decimal, str], length: str = "short"
-    ) -> Any:  # babel units module not typed hence no specific return value
+        self,
+        unit: str,
+        value: Union[int, Decimal, str],
+        length: Optional[str] = "short",
+    ) -> units.format_unit:
         return units.format_unit(
             value=value,
             measurement_unit=unit,
