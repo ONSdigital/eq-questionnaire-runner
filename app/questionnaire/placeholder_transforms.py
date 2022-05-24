@@ -141,12 +141,12 @@ class PlaceholderTransforms:
         self,
         unit: str,
         value: Union[int, Decimal, str],
-        length: Optional[str] = "short",
+        unit_length: Optional[str] = "short",
     ) -> units.format_unit:
         return units.format_unit(
             value=value,
             measurement_unit=unit,
-            length=length,
+            length=unit_length,
             locale=self.locale,
         )
 

@@ -261,7 +261,7 @@
                                                                     "identifier": "average-distance"
                                                                 },
                                                                 "unit": "mile",
-                                                                "length": "long"
+                                                                "unit_length": "long"
                                                             }
                                                         }
                                                     ]

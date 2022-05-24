@@ -412,7 +412,7 @@
                                                                         "source": "calculated_summary",
                                                                         "identifier": "unit-total-playback"
                                                                     },
-                                                                    "length": "short",
+                                                                    "unit_length": "short",
                                                                     "unit": "centimeter"
                                                                 }
                                                             }

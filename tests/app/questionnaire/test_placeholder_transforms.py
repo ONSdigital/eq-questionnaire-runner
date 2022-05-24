@@ -54,7 +54,7 @@ def test_format_percentage(value, expected, transformer):
 
 
 @pytest.mark.parametrize(
-    "unit, value, length, expected",
+    "unit, value, unit_length, expected",
     (
         ("centimeter", "123", "short", "123 cm"),
         ("kilometer", "123", "long", "123 kilometre"),
