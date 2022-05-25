@@ -19,7 +19,6 @@ class TestCase {
 
     it("When the timeout modal is displayed, and I click the “Continue survey” button, Then my session will be extended", () => {
       this.checkTimeoutModal();
-      $(TimeoutModalPage.acceptCookies()).click();
       $(TimeoutModalPage.submit()).click();
       expect($(TimeoutModalPage.timer()).getText()).to.equal("");
       browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
@@ -39,6 +38,7 @@ class TestCase {
   }
 
   checkTimeoutModal() {
+    $(TimeoutModalPage.acceptCookies()).click();
     $(TimeoutModalPage.timer()).waitForDisplayed({ timeout: 70000 });
     expect($(TimeoutModalPage.timer()).getText()).to.equal(
       "To protect your information, your progress will be saved and you will be signed out in 59 seconds."
