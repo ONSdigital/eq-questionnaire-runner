@@ -67,7 +67,7 @@
 
     {%- set mutuallyExclusive = {
       "or": _("Or"),
-      "exclusiveOptions": map_select_config(form, question.answers[-1])[0],
+      "exclusiveOptions": map_select_config(form, question.answers[-1]),
       "deselectionMessage": deselectionMessage,
       "deselectGroupAdjective": deselectGroupAdjective,
       "deselectExclusiveOptionAdjective": _("deselected")
