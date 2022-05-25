@@ -6,10 +6,6 @@ class TimeoutModalBasePage {
   submit() {
     return ".ons-js-modal-btn";
   }
-
-  acceptCookies() {
-    return ".ons-js-accept-cookies";
-  }
 }
 
 export default TimeoutModalBasePage;

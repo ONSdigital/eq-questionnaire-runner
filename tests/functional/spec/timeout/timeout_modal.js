@@ -1,4 +1,5 @@
 import { TimeoutModalPage } from "../../base_pages/timeout-modal.page.js";
+import TimeoutModalInterstitial from "../../generated_pages/timeout_modal/timeout-modal-interstitial.page.js";
 
 class TestCase {
   testCase(page) {
@@ -38,7 +39,7 @@ class TestCase {
   }
 
   checkTimeoutModal() {
-    $(TimeoutModalPage.acceptCookies()).click();
+    $(TimeoutModalInterstitial.acceptCookies()).click();
     $(TimeoutModalPage.timer()).waitForDisplayed({ timeout: 70000 });
     expect($(TimeoutModalPage.timer()).getText()).to.equal(
       "To protect your information, your progress will be saved and you will be signed out in 59 seconds."
