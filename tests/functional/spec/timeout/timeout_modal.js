@@ -1,5 +1,4 @@
 import { TimeoutModalPage } from "../../base_pages/timeout-modal.page.js";
-import TimeoutModalInterstitial from "../../generated_pages/timeout_modal/timeout-modal-interstitial.page.js";
 
 class TestCase {
   testCase(page) {
@@ -19,9 +18,8 @@ class TestCase {
     }).timeout(140000);
 
     it("When the timeout modal is displayed, and I click the “Continue survey” button, Then my session will be extended", () => {
-      $(TimeoutModalInterstitial.acceptCookies()).click();
       this.checkTimeoutModal();
-      browser.pause(1000);
+      expect($(TimeoutModalPage.timer()).isFocused());
       $(TimeoutModalPage.submit()).click();
       expect($(TimeoutModalPage.timer()).getText()).to.equal("");
       browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
