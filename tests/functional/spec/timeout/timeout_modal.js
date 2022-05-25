@@ -20,6 +20,7 @@ class TestCase {
     it("When the timeout modal is displayed, and I click the “Continue survey” button, Then my session will be extended", () => {
       this.checkTimeoutModal();
       expect($(TimeoutModalPage.timer()).isFocused());
+      $(TimeoutModalPage.submit()).waitForDisplayed({ timeout: 70000 })
       $(TimeoutModalPage.submit()).scrollIntoView();
       $(TimeoutModalPage.submit()).click();
       expect($(TimeoutModalPage.timer()).getText()).to.equal("");
