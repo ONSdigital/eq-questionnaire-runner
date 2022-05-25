@@ -19,6 +19,7 @@ class TestCase {
     }).timeout(140000);
 
     it("When the timeout modal is displayed, and I click the “Continue survey” button, Then my session will be extended", () => {
+      $(TimeoutModalInterstitial.acceptCookies()).click();
       this.checkTimeoutModal();
       $(TimeoutModalPage.submit()).click();
       expect($(TimeoutModalPage.timer()).getText()).to.equal("");
@@ -39,7 +40,6 @@ class TestCase {
   }
 
   checkTimeoutModal() {
-    $(TimeoutModalInterstitial.acceptCookies()).click();
     $(TimeoutModalPage.timer()).waitForDisplayed({ timeout: 70000 });
     expect($(TimeoutModalPage.timer()).getText()).to.equal(
       "To protect your information, your progress will be saved and you will be signed out in 59 seconds."
