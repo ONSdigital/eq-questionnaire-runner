@@ -46,6 +46,7 @@ def test_format_number(number, expected, transformer):
         ("123.40", "123.40%"),
         ("1000", "1000%"),
         (0, "0%"),
+        (0.00, "0%"),
         ("", "%"),
     ),
 )
