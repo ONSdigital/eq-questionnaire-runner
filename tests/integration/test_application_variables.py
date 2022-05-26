@@ -23,7 +23,9 @@ class TestApplicationVariables(IntegrationTestCase):
         self.get("/questionnaire/feedback/")
         self.assertStatusOK()
         self.assertInHead("gtm.start")
-        self.assertRegexPage(
+        self.assertInHead(
+            f'dataLayer = [{{"tx_id": "{actual["METADATA"]["tx_id"]}"}}, {{"form_type": "H", "survey_id": "0", "title": "Feedback test schema"}}]'
+        )
             r'dataLayer = \[\{"tx_id"\: "[a-z0-9-]{36}"\}\, \{"form_type"\: "H"\, "survey_id"\: "0"\, "title"\: "Feedback test schema"\}\]'
         )
         self.assertInBody("https://www.googletagmanager.com")
