@@ -23,8 +23,8 @@ class TestApplicationVariables(IntegrationTestCase):
         self.get("/questionnaire/feedback/")
         self.assertStatusOK()
         self.assertInHead("gtm.start")
-        self.assertInHead(
-            'dataLayer = [{"form_type": "H", "survey_id": "0", "title": "Feedback test schema"}]'
+        self.assertRegexPage(
+            r'dataLayer = \[\{"tx_id"\: "[a-z0-9-]{36}"\}\, \{"form_type"\: "H"\, "survey_id"\: "0"\, "title"\: "Feedback test schema"\}\]'
         )
         self.assertInBody("https://www.googletagmanager.com")
         self.assertInHead(settings.EQ_GOOGLE_TAG_MANAGER_AUTH)
@@ -39,8 +39,8 @@ class TestApplicationVariables(IntegrationTestCase):
         self.assertStatusOK()
         self.assertInHead("gtm.start")
         # form_type is empty so should not be present
-        self.assertInHead(
-            'dataLayer = [{"survey_id": "001", "title": "Other input fields"}]'
+        self.assertRegexPage(
+            r'dataLayer = \[\{"tx_id"\: "[a-z0-9-]{36}"\}\, \{"survey_id"\: "001"\, "title"\: "Other input fields"\}\]'
         )
 
     def test_google_analytics_data_layer_is_set_to_nisra_false(self):
@@ -51,7 +51,9 @@ class TestApplicationVariables(IntegrationTestCase):
         self.get("/questionnaire/individual-confirmation/")
         self.assertStatusOK()
         self.assertInHead("gtm.start")
-        self.assertInHead('dataLayer = [{"nisra": false}]')
+        self.assertRegexPage(
+            r'dataLayer = \[\{"nisra"\: false\}\, \{"tx_id"\: "[a-z0-9-]{36}"\}\]'
+        )
 
     def test_livereload_script_rendered(self):
         self.launchSurvey("test_textfield")

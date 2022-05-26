@@ -3,7 +3,9 @@ from typing import Iterable, Mapping, MutableMapping, Optional, Union
 
 from flask_babel import lazy_gettext
 from flask_babel.speaklater import LazyString
+from flask_login import current_user
 
+from app.globals import get_metadata
 from app.questionnaire import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL, ONS_URL
 
@@ -40,13 +42,18 @@ class SurveyConfig:
     footer_legal_links: Optional[Iterable[Mapping]] = None
     survey_title: Optional[LazyString] = None
     design_system_theme: Optional[str] = None
-    data_layer: Iterable[Union[Mapping]] = field(default_factory=list, compare=False)
+    data_layer: list[dict[str, Union[str, bool]]] = field(
+        default_factory=list, compare=False
+    )
     sign_out_button_text: str = lazy_gettext("Save and exit survey")
     contact_us_url: str = field(init=False)
     cookie_settings_url: str = field(init=False)
     privacy_and_data_protection_url: str = field(init=False)
 
     def __post_init__(self):
+        if current_user and get_metadata(current_user):
+            if tx_id := get_metadata(current_user).get("tx_id"):
+                self.data_layer.append({"tx_id": tx_id})
         self.contact_us_url: str = f"{self.base_url}/contact-us/"
         self.cookie_settings_url: str = f"{self.base_url}/cookies/"
         self.privacy_and_data_protection_url: str = (

@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Iterable, Mapping, MutableMapping
+from typing import Iterable, Mapping, MutableMapping, Union
 
 from flask_babel import lazy_gettext
 from flask_babel.speaklater import LazyString
@@ -57,7 +57,7 @@ class CensusSurveyConfig(
         ],
         compare=False,
     )
-    data_layer: Iterable[Mapping] = field(
+    data_layer: list[dict[str, Union[str, bool]]] = field(
         default_factory=lambda: [{"nisra": False}], compare=False
     )
     survey_title: LazyString = lazy_gettext("Census 2021")
@@ -109,7 +109,7 @@ class WelshCensusSurveyConfig(
         compare=False,
         hash=False,
     )
-    data_layer: Iterable[Mapping] = field(
+    data_layer: list[dict[str, Union[str, bool]]] = field(
         default_factory=lambda: [{"nisra": False}], compare=False
     )
 
@@ -164,6 +164,6 @@ class CensusNISRASurveyConfig(
     )
     powered_by_logo: str = "nisra-logo-black-en"
     powered_by_logo_alt: str = "NISRA - Northern Ireland Statistics and Research Agency"
-    data_layer: Iterable[Mapping] = field(
+    data_layer: list[dict[str, Union[str, bool]]] = field(
         default_factory=lambda: [{"nisra": True}], compare=False
     )
