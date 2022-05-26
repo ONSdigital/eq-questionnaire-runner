@@ -44,7 +44,7 @@ class TestApplicationVariables(IntegrationTestCase):
         self.assertStatusOK()
         self.assertInHead("gtm.start")
         # form_type is empty so should not be present
-        self.assertRegexPage(
+        self.assertInHead(
             f'dataLayer = [{{"tx_id": "{actual["METADATA"]["tx_id"]}"}}, {{"survey_id": "001", "title": "Other input fields"}}]'
         )
 
@@ -58,7 +58,7 @@ class TestApplicationVariables(IntegrationTestCase):
         self.get("/questionnaire/individual-confirmation/")
         self.assertStatusOK()
         self.assertInHead("gtm.start")
-        self.assertRegexPage(
+        self.assertInHead(
             f'dataLayer = [{{"nisra": false}}, {{"tx_id": "{actual["METADATA"]["tx_id"]}"}}]'
         )
 
