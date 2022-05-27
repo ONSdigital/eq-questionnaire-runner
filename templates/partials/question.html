@@ -67,10 +67,10 @@
 
     {%- set mutuallyExclusive = {
       "or": _("Or"),
-      "checkbox": map_select_config(form, question.answers[-1])[0],
+      "exclusiveOptions": map_select_config(form, question.answers[-1]),
       "deselectionMessage": deselectionMessage,
       "deselectGroupAdjective": deselectGroupAdjective,
-      "deselectCheckboxAdjective": _("deselected")
+      "deselectExclusiveOptionAdjective": _("deselected")
     } -%}
 
     {% include 'partials/answer.html' %}
