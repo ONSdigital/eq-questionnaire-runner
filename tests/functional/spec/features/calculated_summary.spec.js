@@ -223,15 +223,22 @@ describe("Feature: Calculated Summary", () => {
       textsToAssert.forEach((text) => expect(content).to.contain(text));
     });
 
-    it("Given I have a min/max question based on a calculated summary total, When I enter an invalid answer, Then I should see an error messages on the page", () => {
+    it("Given I have an answer minimum based on a calculated summary total, When I enter an invalid answer, Then I should see an error message on the page", () => {
       $(CalculatedSummaryTotalConfirmation.submit()).click();
       expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
       $(SetMinMaxBlockPage.setMinimum()).setValue(8.0);
-      $(SetMinMaxBlockPage.setMaximum()).setValue(10.0);
       $(SetMinMaxBlockPage.submit()).click();
       expect($(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer more than or equal to £9.36");
-      expect($(SetMinMaxBlockPage.errorNumber(2)).getText()).to.contain("Enter an answer less than or equal to £9.36");
       $(SetMinMaxBlockPage.setMinimum()).setValue(10.0);
+      $(SetMinMaxBlockPage.submit()).click();
+    });
+
+    it("Given I have an answer maximum based on a calculated summary total, When I enter an invalid answer, Then I should see an error message on the page", () => {
+      $(SubmitPage.submit()).click();
+      expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
+      $(SetMinMaxBlockPage.setMaximum()).setValue(10.0);
+      $(SetMinMaxBlockPage.submit()).click();
+      expect($(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer less than or equal to £9.36");
       $(SetMinMaxBlockPage.setMaximum()).setValue(7.0);
       $(SetMinMaxBlockPage.submit()).click();
     });
@@ -256,8 +263,62 @@ describe("Feature: Calculated Summary", () => {
       $(NumberTotalPlaybackPage.submit()).click();
       $(CalculatedSummaryTotalConfirmation.submit()).click();
       expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
-      $(SetMinMaxBlockPage.setMinimum()).setValue(100.0);
-      $(SetMinMaxBlockPage.setMaximum()).setValue(1.0);
+      $(SetMinMaxBlockPage.setMinimum()).setValue(10.0);
+      $(SetMinMaxBlockPage.setMaximum()).setValue(9.0);
+      $(SetMinMaxBlockPage.submit()).click();
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    });
+
+    it("Given I confirm the totals and am on the summary, When I edit and change an answer that has a dependent minimum value from a calculated summary total, And the minimum value has been changed, Then I must re-validate before I get to the summary", () => {
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      $(SubmitPage.thirdNumberAnswerEdit()).click();
+      $(ThirdNumberBlockPage.thirdNumber()).setValue(10.0);
+      $(ThirdNumberBlockPage.submit()).click();
+      $(ThirdAndAHalfNumberBlockPage.submit()).click();
+      $(SkipFourthBlockPage.submit()).click();
+      $(FifthNumberBlockPage.submit()).click();
+      $(SixthNumberBlockPage.submit()).click();
+
+      expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
+        "We calculate the total of currency values entered to be £15.91. Is this correct?"
+      );
+
+      $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
+      $(UnitTotalPlaybackPage.submit()).click();
+      $(PercentageTotalPlaybackPage.submit()).click();
+      $(NumberTotalPlaybackPage.submit()).click();
+      $(CalculatedSummaryTotalConfirmation.submit()).click();
+      expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
+      $(SetMinMaxBlockPage.submit()).click();
+      expect($(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer more than or equal to £15.91");
+      $(SetMinMaxBlockPage.setMinimum()).setValue(16.0);
+      $(SetMinMaxBlockPage.submit()).click();
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    });
+
+    it("Given I confirm the totals and am on the summary, When I edit and change an answer that has a dependent maximum value from a calculated summary total, And the maximum value has been changed, Then I must re-validate before I get to the summary", () => {
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      $(SubmitPage.thirdNumberAnswerEdit()).click();
+      $(ThirdNumberBlockPage.thirdNumber()).setValue(1.0);
+      $(ThirdNumberBlockPage.submit()).click();
+      $(ThirdAndAHalfNumberBlockPage.submit()).click();
+      $(SkipFourthBlockPage.submit()).click();
+      $(FifthNumberBlockPage.submit()).click();
+      $(SixthNumberBlockPage.submit()).click();
+
+      expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
+        "We calculate the total of currency values entered to be £6.91. Is this correct?"
+      );
+
+      $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
+      $(UnitTotalPlaybackPage.submit()).click();
+      $(PercentageTotalPlaybackPage.submit()).click();
+      $(NumberTotalPlaybackPage.submit()).click();
+      $(CalculatedSummaryTotalConfirmation.submit()).click();
+      expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
+      $(SetMinMaxBlockPage.submit()).click();
+      expect($(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer less than or equal to £6.91");
+      $(SetMinMaxBlockPage.setMaximum()).setValue(6.0);
       $(SetMinMaxBlockPage.submit()).click();
       expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
