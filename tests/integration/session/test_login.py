@@ -119,7 +119,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
         self.assertStatusOK()
         self.assertInUrl("/questionnaire")
 
-    def test_login_token_with_incorrect_schema_url_results_in_404(self):
+    def test_login_token_with_incorrect_schema_url_results_in_500(self):
         schema_url = "http://eq-survey-register.url/my-test-schema-not-found"
 
         # Given
@@ -128,11 +128,11 @@ class TestLoginWithGetRequest(IntegrationTestCase):
         )
 
         # When
-        with HTTMock(self.schema_url_mock_404):
+        with HTTMock(self.schema_url_mock_500):
             self.get(url=f"/session?token={token}")
 
         # Then
-        self.assertStatusNotFound()
+        self.assertException()
 
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema")
@@ -144,8 +144,8 @@ class TestLoginWithGetRequest(IntegrationTestCase):
 
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema-not-found")
-    def schema_url_mock_404(_url, _request):
-        return response(404)
+    def schema_url_mock_500(_url, _request):
+        return response(500)
 
 
 class TestLoginWithPostRequest(IntegrationTestCase):
@@ -257,11 +257,11 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         )
 
         # When
-        with HTTMock(self.schema_url_mock_404):
+        with HTTMock(self.schema_url_mock_500):
             self.post(url=f"/session?token={token}")
 
         # Then
-        self.assertStatusNotFound()
+        self.assertException()
 
     def test_login_without_case_id_in_token_is_unauthorised(self):
         # Given
@@ -281,5 +281,5 @@ class TestLoginWithPostRequest(IntegrationTestCase):
 
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema-not-found")
-    def schema_url_mock_404(_url, _request):
-        return response(404)
+    def schema_url_mock_500(_url, _request):
+        return response(500)

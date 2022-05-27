@@ -371,6 +371,11 @@ class Router:
             return True
 
         enabled = section["enabled"]
+
+        routing_path_block_ids = self._path_finder.get_when_rules_block_dependencies(
+            section["id"]
+        )
+
         if isinstance(enabled, dict):
             when_rule_evaluator = RuleEvaluator(
                 self._schema,
@@ -379,7 +384,7 @@ class Router:
                 self._metadata,
                 self._response_metadata,
                 location=None,
-                routing_path_block_ids=None,
+                routing_path_block_ids=routing_path_block_ids,
             )
 
             return bool(when_rule_evaluator.evaluate(enabled["when"]))
@@ -391,6 +396,8 @@ class Router:
                 self._metadata,
                 self._answer_store,
                 self._list_store,
+                current_location=None,
+                routing_path_block_ids=routing_path_block_ids,
             )
             for condition in enabled
         )
