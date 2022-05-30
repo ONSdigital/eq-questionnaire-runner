@@ -1,8 +1,7 @@
 # coding: utf-8
 import re
-from typing import Any, Mapping, Union, Optional
 from decimal import Decimal
-from wtforms import SelectFieldBase
+from typing import Any, Mapping, Optional, Union
 
 import flask
 import flask_babel
@@ -10,6 +9,7 @@ from babel import numbers, units
 from flask import current_app
 from jinja2 import pass_eval_context
 from markupsafe import Markup, escape
+from wtforms import SelectFieldBase
 
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import MAX_NUMBER
@@ -29,7 +29,9 @@ def strip_tags(value: str) -> str:
 def format_number(value: int) -> str:
     formatted_number: str
     if value or value == 0:
-        formatted_number = numbers.format_decimal(value, locale=flask_babel.get_locale())
+        formatted_number = numbers.format_decimal(
+            value, locale=flask_babel.get_locale()
+        )
         return formatted_number
 
     return ""
@@ -40,7 +42,7 @@ def get_formatted_address(address_fields: dict) -> str:
     return "<br>".join(address_field for address_field in address_fields.values())
 
 
-def get_formatted_currency(value: Union[float, Decimal], currency: str="GBP") -> Any:
+def get_formatted_currency(value: Union[float, Decimal], currency: str = "GBP") -> Any:
     if value or value == 0:
         return numbers.format_currency(
             number=value, currency=currency, locale=flask_babel.get_locale()
@@ -50,8 +52,10 @@ def get_formatted_currency(value: Union[float, Decimal], currency: str="GBP") ->
 
 
 @blueprint.app_template_filter()
-def get_currency_symbol(currency: str="GBP") -> str:
-    currency_symbol: str = numbers.get_currency_symbol(currency, locale=flask_babel.get_locale())
+def get_currency_symbol(currency: str = "GBP") -> str:
+    currency_symbol: str = numbers.get_currency_symbol(
+        currency, locale=flask_babel.get_locale()
+    )
     return currency_symbol
 
 
@@ -60,7 +64,7 @@ def format_percentage(value: str) -> str:
     return f"{value}%"
 
 
-def format_unit(unit: str, value: str, length: str="short") -> str:
+def format_unit(unit: str, value: str, length: str = "short") -> str:
     formatted_unit: str = units.format_unit(
         value=value,
         measurement_unit=unit,
@@ -70,7 +74,7 @@ def format_unit(unit: str, value: str, length: str="short") -> str:
     return formatted_unit
 
 
-def format_unit_input_label(unit: str, unit_length: str="short") -> str:
+def format_unit_input_label(unit: str, unit_length: str = "short") -> str:
     """
     This function is used to only get the unit of measurement text.  If the unit_length
     is long then only the plural form of the word is returned (e.g., Hours, Years, etc).
@@ -259,7 +263,13 @@ class LabelConfig:
 
 
 class SelectConfig:
-    def __init__(self, option: SelectFieldBase._Option, index: int, answer: Mapping, form: Optional[Mapping] = None) -> None:
+    def __init__(
+        self,
+        option: SelectFieldBase._Option,
+        index: int,
+        answer: Mapping,
+        form: Optional[Mapping] = None,
+    ) -> None:
         self.id = option.id
         self.name = option.name
         self.value = option.data
@@ -286,7 +296,9 @@ class SelectConfig:
 
 
 class RelationshipRadioConfig(SelectConfig):
-    def __init__(self, option: SelectFieldBase._Option, index: int, answer: Mapping) -> None:
+    def __init__(
+        self, option: SelectFieldBase._Option, index: int, answer: Mapping
+    ) -> None:
         super().__init__(option, index, answer)
 
         if self._answer_option:
@@ -306,7 +318,11 @@ class RelationshipRadioConfig(SelectConfig):
 
 
 class OtherConfig:
-    def __init__(self, detail_answer_field: SelectFieldBase._Option, detail_answer_schema: Mapping) -> None:
+    def __init__(
+        self,
+        detail_answer_field: SelectFieldBase._Option,
+        detail_answer_schema: Mapping,
+    ) -> None:
         self.id = detail_answer_field.id
         self.name = detail_answer_field.name
 
@@ -346,7 +362,9 @@ def map_select_config_processor() -> dict:
 
 
 @blueprint.app_template_filter()  # type: ignore
-def map_relationships_config(form: Mapping, answer:Mapping) -> list[RelationshipRadioConfig]:
+def map_relationships_config(
+    form: Mapping, answer: Mapping
+) -> list[RelationshipRadioConfig]:
     options = form["fields"][answer["id"]]
 
     return [
@@ -360,7 +378,9 @@ def map_relationships_config_processor() -> dict:
 
 
 class DropdownConfig:
-    def __init__(self, option: SelectFieldBase._Option, select: SelectFieldBase._Option) -> None:
+    def __init__(
+        self, option: SelectFieldBase._Option, select: SelectFieldBase._Option
+    ) -> None:
         self.value, self.text = option.value, option.label
         self.selected = select.data == self.value
         self.disabled = self.value == "" and select.flags.required
@@ -377,7 +397,13 @@ def map_dropdown_config_processor() -> dict:
 
 
 class SummaryAction:
-    def __init__(self, answer: SelectFieldBase._Option, answer_title: str, edit_link_text: str, edit_link_aria_label: str) -> None:
+    def __init__(
+        self,
+        answer: SelectFieldBase._Option,
+        answer_title: str,
+        edit_link_text: str,
+        edit_link_aria_label: str,
+    ) -> None:
         self.text = edit_link_text
         self.ariaLabel = edit_link_aria_label + " " + answer_title
         self.url = answer["link"]
@@ -391,7 +417,7 @@ class SummaryAction:
 
 
 class SummaryRowItemValue:
-    def __init__(self, text: str, other: Optional[str]=None) -> None:
+    def __init__(self, text: str, other: Optional[str] = None) -> None:
         self.text = text
 
         if other or other == 0:
@@ -546,9 +572,7 @@ def map_summary_item_config(
     ]
 
     if summary_type == "CalculatedSummary":
-        rows.append(
-            SummaryRow(calculated_question, summary_type, False, "", "", "")
-        )
+        rows.append(SummaryRow(calculated_question, summary_type, False, "", "", ""))
 
     return rows
 
