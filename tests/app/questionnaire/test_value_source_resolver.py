@@ -395,16 +395,13 @@ def test_list_source_with_id_selector_same_name_items():
         ),
     )
 
-    assert (
-        value_source_resolver.resolve(
-            {
-                "source": "list",
-                "identifier": "some-list",
-                "selector": "same_name_items",
-            }
-        )
-        == get_list_items(3)
-    )
+    assert value_source_resolver.resolve(
+        {
+            "source": "list",
+            "identifier": "some-list",
+            "selector": "same_name_items",
+        }
+    ) == get_list_items(3)
 
 
 @pytest.mark.parametrize(

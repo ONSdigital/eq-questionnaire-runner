@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Iterable, Mapping, MutableMapping, Union
+from typing import Iterable, Mapping, MutableMapping
 
 from flask_babel import lazy_gettext
 from flask_babel.speaklater import LazyString
@@ -57,11 +57,16 @@ class CensusSurveyConfig(
         ],
         compare=False,
     )
-    data_layer: list[dict[str, Union[str, bool]]] = field(
-        default_factory=lambda: [{"nisra": False}], compare=False
-    )
+
     survey_title: LazyString = lazy_gettext("Census 2021")
     sign_out_button_text: str = lazy_gettext("Save and complete later")
+
+    def get_data_layer(  # pylint: disable=unused-argument, no-self-use
+        self, tx_id=None
+    ) -> list[dict]:
+        if tx_id:
+            return [{"nisra": False}, {"tx_id": tx_id}]
+        return [{"nisra": False}]
 
 
 @dataclass
@@ -109,9 +114,12 @@ class WelshCensusSurveyConfig(
         compare=False,
         hash=False,
     )
-    data_layer: list[dict[str, Union[str, bool]]] = field(
-        default_factory=lambda: [{"nisra": False}], compare=False
-    )
+
+    def get_data_layer(  # pylint: disable=unused-argument, no-self-use
+        self, tx_id=None
+    ) -> list[dict]:
+
+        return [{"nisra": False}, {"tx_id": tx_id}] if tx_id else [{"nisra": False}]
 
 
 @dataclass
@@ -164,6 +172,8 @@ class CensusNISRASurveyConfig(
     )
     powered_by_logo: str = "nisra-logo-black-en"
     powered_by_logo_alt: str = "NISRA - Northern Ireland Statistics and Research Agency"
-    data_layer: list[dict[str, Union[str, bool]]] = field(
-        default_factory=lambda: [{"nisra": True}], compare=False
-    )
+
+    def get_data_layer(  # pylint: disable=unused-argument, no-self-use
+        self, tx_id=None
+    ) -> list[dict]:
+        return [{"nisra": True}, {"tx_id": tx_id}] if tx_id else [{"nisra": True}]

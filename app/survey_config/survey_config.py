@@ -3,9 +3,7 @@ from typing import Iterable, Mapping, MutableMapping, Optional, Union
 
 from flask_babel import lazy_gettext
 from flask_babel.speaklater import LazyString
-from flask_login import current_user
 
-from app.globals import get_metadata
 from app.questionnaire import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL, ONS_URL
 
@@ -51,9 +49,6 @@ class SurveyConfig:
     privacy_and_data_protection_url: str = field(init=False)
 
     def __post_init__(self):
-        if current_user and get_metadata(current_user):
-            if tx_id := get_metadata(current_user).get("tx_id"):
-                self.data_layer.append({"tx_id": tx_id})
         self.contact_us_url: str = f"{self.base_url}/contact-us/"
         self.cookie_settings_url: str = f"{self.base_url}/cookies/"
         self.privacy_and_data_protection_url: str = (
@@ -68,3 +63,11 @@ class SurveyConfig:
         ru_ref: Optional[str],
     ) -> Optional[list[dict]]:
         return None
+
+    def get_data_layer(  # pylint: disable=unused-argument, no-self-use
+        self, tx_id=None
+    ) -> Optional[list[dict]]:
+        if tx_id:
+            return [{"tx_id": tx_id}]
+
+        return []
