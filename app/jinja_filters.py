@@ -26,9 +26,11 @@ def strip_tags(value: str) -> str:
 
 
 @blueprint.app_template_filter()
-def format_number(value: int) -> numbers:
+def format_number(value: int) -> str:
+    formatted_number: str
     if value or value == 0:
-        return numbers.format_decimal(value, locale=flask_babel.get_locale())
+        formatted_number = numbers.format_decimal(value, locale=flask_babel.get_locale())
+        return formatted_number
 
     return ""
 
@@ -48,8 +50,9 @@ def get_formatted_currency(value: Union[float, Decimal], currency: str="GBP") ->
 
 
 @blueprint.app_template_filter()
-def get_currency_symbol(currency: str="GBP") -> numbers:
-    return numbers.get_currency_symbol(currency, locale=flask_babel.get_locale())
+def get_currency_symbol(currency: str="GBP") -> str:
+    currency_symbol: str = numbers.get_currency_symbol(currency, locale=flask_babel.get_locale())
+    return currency_symbol
 
 
 @blueprint.app_template_filter()
@@ -57,16 +60,17 @@ def format_percentage(value: str) -> str:
     return f"{value}%"
 
 
-def format_unit(unit: str, value: str, length: str="short") -> units:
-    return units.format_unit(
+def format_unit(unit: str, value: str, length: str="short") -> str:
+    formatted_unit: str = units.format_unit(
         value=value,
         measurement_unit=unit,
         length=length,
         locale=flask_babel.get_locale(),
     )
+    return formatted_unit
 
 
-def format_unit_input_label(unit: str, unit_length: str="short") -> units:
+def format_unit_input_label(unit: str, unit_length: str="short") -> str:
     """
     This function is used to only get the unit of measurement text.  If the unit_length
     is long then only the plural form of the word is returned (e.g., Hours, Years, etc).
@@ -74,19 +78,23 @@ def format_unit_input_label(unit: str, unit_length: str="short") -> units:
     :param (str) unit unit of measurement
     :param (str) unit_length length of unit text, can be one of short/long/narrow
     """
+    unit_label: str
     if unit_length == "long":
-        return units.format_unit(
+        unit_label = units.format_unit(
             value=2,
             measurement_unit=unit,
             length=unit_length,
             locale=flask_babel.get_locale(),
         ).replace("2 ", "")
-    return units.format_unit(
-        value="",
-        measurement_unit=unit,
-        length=unit_length,
-        locale=flask_babel.get_locale(),
-    ).strip()
+    else:
+        unit_label = units.format_unit(
+            value="",
+            measurement_unit=unit,
+            length=unit_length,
+            locale=flask_babel.get_locale(),
+        ).strip()
+
+    return unit_label
 
 
 def format_duration(value: Mapping) -> str:
