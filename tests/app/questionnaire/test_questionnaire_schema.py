@@ -451,6 +451,12 @@ def test_answer_dependencies_for_calculated_summary(
                 for_list=None,
                 answer_id=None,
             ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="set-min-max-block",
+                for_list=None,
+                answer_id=None,
+            ),
         },
         "second-number-answer": {
             AnswerDependent(
@@ -462,6 +468,12 @@ def test_answer_dependencies_for_calculated_summary(
             AnswerDependent(
                 section_id="default-section",
                 block_id="currency-total-playback-with-fourth",
+                for_list=None,
+                answer_id=None,
+            ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="set-min-max-block",
                 for_list=None,
                 answer_id=None,
             ),
@@ -479,6 +491,12 @@ def test_answer_dependencies_for_calculated_summary(
                 for_list=None,
                 answer_id=None,
             ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="set-min-max-block",
+                for_list=None,
+                answer_id=None,
+            ),
         },
         "third-number-answer": {
             AnswerDependent(
@@ -490,6 +508,12 @@ def test_answer_dependencies_for_calculated_summary(
             AnswerDependent(
                 section_id="default-section",
                 block_id="currency-total-playback-with-fourth",
+                for_list=None,
+                answer_id=None,
+            ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="set-min-max-block",
                 for_list=None,
                 answer_id=None,
             ),
