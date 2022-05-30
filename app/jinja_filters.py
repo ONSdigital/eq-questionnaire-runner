@@ -486,9 +486,9 @@ class SummaryRow:
         question: SelectFieldBase._Option,
         summary_type: SelectFieldBase._Option,
         answers_are_editable: bool,
-        no_answer_provided,
-        edit_link_text,
-        edit_link_aria_label,
+        no_answer_provided: str,
+        edit_link_text: str,
+        edit_link_aria_label: str,
     ) -> None:
         self.rowTitle = strip_tags(question["title"])
         self.id = question["id"]
@@ -520,10 +520,11 @@ def map_summary_item_config(
     summary_type: str,
     answers_are_editable: bool,
     no_answer_provided: str,
-    edit_link_text,
-    edit_link_aria_label,
-    calculated_question,
+    edit_link_text: str,
+    edit_link_aria_label: str,
+    calculated_question: SelectFieldBase._Option,
 ) -> list[SummaryRow]:
+
     rows = [
         SummaryRow(
             block["question"],
@@ -538,7 +539,7 @@ def map_summary_item_config(
 
     if summary_type == "CalculatedSummary":
         rows.append(
-            SummaryRow(calculated_question, summary_type, False, None, None, None)
+            SummaryRow(calculated_question, summary_type, False, "", "", "")
         )
 
     return rows
@@ -553,10 +554,10 @@ def map_summary_item_config_processor() -> dict:
 def map_list_collector_config(
     list_items: list,
     icon: str,
-    edit_link_text: Optional[str] = None,
-    edit_link_aria_label = None,
-    remove_link_text: Optional[str] = None,
-    remove_link_aria_label = None,
+    edit_link_text: Optional[str] = "",
+    edit_link_aria_label: str = "",
+    remove_link_text: Optional[str] = "",
+    remove_link_aria_label: str = "",
 ) -> list:
     rows = []
 
