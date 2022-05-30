@@ -2,6 +2,7 @@
 import re
 from typing import Any, Mapping, Union, Optional
 from decimal import Decimal
+from wtforms import SelectFieldBase
 
 import flask
 import flask_babel
@@ -250,7 +251,7 @@ class LabelConfig:
 
 
 class SelectConfig:
-    def __init__(self, option, index: int, answer: Mapping, form: Optional[Mapping] = None) -> None:
+    def __init__(self, option: SelectFieldBase._Option, index: int, answer: Mapping, form: Optional[Mapping] = None) -> None:
         self.id = option.id
         self.name = option.name
         self.value = option.data
@@ -277,7 +278,7 @@ class SelectConfig:
 
 
 class RelationshipRadioConfig(SelectConfig):
-    def __init__(self, option, index: int, answer: Mapping) -> None:
+    def __init__(self, option: SelectFieldBase._Option, index: int, answer: Mapping) -> None:
         super().__init__(option, index, answer)
 
         if self._answer_option:
@@ -297,7 +298,7 @@ class RelationshipRadioConfig(SelectConfig):
 
 
 class OtherConfig:
-    def __init__(self, detail_answer_field, detail_answer_schema: Mapping) -> None:
+    def __init__(self, detail_answer_field: SelectFieldBase._Option, detail_answer_schema: Mapping) -> None:
         self.id = detail_answer_field.id
         self.name = detail_answer_field.name
 
@@ -351,14 +352,14 @@ def map_relationships_config_processor() -> dict:
 
 
 class DropdownConfig:
-    def __init__(self, option, select) -> None:
+    def __init__(self, option: SelectFieldBase._Option, select: SelectFieldBase._Option) -> None:
         self.value, self.text = option.value, option.label
         self.selected = select.data == self.value
         self.disabled = self.value == "" and select.flags.required
 
 
 @blueprint.app_template_filter()
-def map_dropdown_config(select) -> list[DropdownConfig]:
+def map_dropdown_config(select: SelectFieldBase._Option) -> list[DropdownConfig]:
     return [DropdownConfig(choice, select) for choice in select.choices]
 
 
@@ -368,7 +369,7 @@ def map_dropdown_config_processor() -> dict:
 
 
 class SummaryAction:
-    def __init__(self, answer, answer_title: str, edit_link_text: str, edit_link_aria_label: str) -> None:
+    def __init__(self, answer: SelectFieldBase._Option, answer_title: str, edit_link_text: str, edit_link_aria_label: str) -> None:
         self.text = edit_link_text
         self.ariaLabel = edit_link_aria_label + " " + answer_title
         self.url = answer["link"]
@@ -392,8 +393,8 @@ class SummaryRowItemValue:
 class SummaryRowItem:
     def __init__(  # noqa: C901, R0912 pylint: disable=too-complex, too-many-branches
         self,
-        question,
-        answer,
+        question: SelectFieldBase._Option,
+        answer: SelectFieldBase._Option,
         multiple_answers: bool,
         answers_are_editable: bool,
         no_answer_provided: str,
@@ -482,8 +483,8 @@ class SummaryRowItem:
 class SummaryRow:
     def __init__(
         self,
-        question,
-        summary_type,
+        question: SelectFieldBase._Option,
+        summary_type: SelectFieldBase._Option,
         answers_are_editable: bool,
         no_answer_provided,
         edit_link_text,
@@ -515,13 +516,13 @@ class SummaryRow:
 
 @blueprint.app_template_filter()  # type: ignore
 def map_summary_item_config(
-    group,
+    group: SelectFieldBase._Option,
     summary_type: str,
     answers_are_editable: bool,
-    no_answer_provided: bool,
-    edit_link_text: str,
-    edit_link_aria_label: str,
-    calculated_question: str,
+    no_answer_provided: str,
+    edit_link_text,
+    edit_link_aria_label,
+    calculated_question,
 ) -> list[SummaryRow]:
     rows = [
         SummaryRow(
@@ -555,7 +556,7 @@ def map_list_collector_config(
     edit_link_text: Optional[str] = None,
     edit_link_aria_label = None,
     remove_link_text: Optional[str] = None,
-    remove_link_aria_label= None,
+    remove_link_aria_label = None,
 ) -> list:
     rows = []
 
