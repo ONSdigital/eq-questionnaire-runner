@@ -69,7 +69,7 @@ class Block:
         return_to,
         return_to_block_id,
     ):
-        """Taking question variants into account, return the question which was displayed to the user"""
+        """ Taking question variants into account, return the question which was displayed to the user """
 
         variant = choose_variant(
             block_schema,
