@@ -1,10 +1,6 @@
 import EmployeesNumberBlockPage from "../../../generated_pages/placeholder_default_value/employees-number-block.page";
 import EmployeesTrainingBlockPage from "../../../generated_pages/placeholder_default_value/employees-training-block.page";
-import TrainingPercentageBlockPage from "../../../generated_pages/placeholder_default_value/training-percentage-block.page";
-import AverageDistanceBlockPage from "../../../generated_pages/placeholder_default_value/average-distance-block.page";
 import EmployeesNumberInterstitialPage from "../../../generated_pages/placeholder_default_value/employees-number-interstitial.page";
-import EmployeesTrainingInterstitialPage from "../../../generated_pages/placeholder_default_value/employees-training-interstitial.page";
-import TrainingPercentageInterstitialPage from "../../../generated_pages/placeholder_default_value/training-percentage-interstitial.page";
 
 describe("Placeholder default value check", () => {
   beforeEach("Load the survey", () => {
@@ -33,25 +29,5 @@ describe("Placeholder default value check", () => {
     $(EmployeesTrainingBlockPage.employeesAvgTraining()).setValue("100");
     $(EmployeesTrainingBlockPage.submit()).click();
     expect($("#main-content > p").getText()).to.contain("The average training budget per employee is £100.00");
-  });
-  it("Given a budget percentage question with default answer, When I enter an amount and click submit, Then the interstitial page shows amount entered", () => {
-    $(EmployeesNumberBlockPage.submit()).click();
-    $(EmployeesNumberInterstitialPage.submit()).click();
-    $(EmployeesTrainingBlockPage.submit()).click();
-    $(EmployeesTrainingInterstitialPage.submit()).click();
-    $(TrainingPercentageBlockPage.trainingPercentage()).setValue("10");
-    $(TrainingPercentageBlockPage.submit()).click();
-    expect($("#main-content > p").getText()).to.contain("The percentage of the company budget you spend on training is 10%");
-  });
-  it("Given a commuting distance question with default answer, When I enter an amount and click submit, Then the interstitial page shows amount entered", () => {
-    $(EmployeesNumberBlockPage.submit()).click();
-    $(EmployeesNumberInterstitialPage.submit()).click();
-    $(EmployeesTrainingBlockPage.submit()).click();
-    $(EmployeesTrainingInterstitialPage.submit()).click();
-    $(TrainingPercentageBlockPage.submit()).click();
-    $(TrainingPercentageInterstitialPage.submit()).click();
-    $(AverageDistanceBlockPage.averageDistance()).setValue("100");
-    $(AverageDistanceBlockPage.submit()).click();
-    expect($("#main-content > p").getText()).to.contain("The average commuting distance of an employee is 100 miles");
   });
 });
