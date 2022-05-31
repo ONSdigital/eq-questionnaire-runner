@@ -1,4 +1,5 @@
 from time import sleep
+from datetime import date
 
 from app import settings
 from tests.integration.routes.test_view_submitted_response import (
@@ -38,7 +39,7 @@ class TestViewSubmissionResponsePDF(ViewSubmittedResponseBase):
 
         # Check filename is set as expected
         self.assertIn(
-            "filename=test_view_submitted_response.pdf",
+            f"filename=test_view_submitted_response-{str(date.today())}.pdf",
             self.last_response_headers["Content-Disposition"],
         )
 
