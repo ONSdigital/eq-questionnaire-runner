@@ -142,13 +142,14 @@ class PlaceholderTransforms:
         unit: str,
         value: Union[int, Decimal, str],
         unit_length: str = "short",
-    ) -> units.format_unit:
-        return units.format_unit(
+    ) -> str:
+        formatted_unit: str = units.format_unit(
             value=value,
             measurement_unit=unit,
             length=unit_length,
             locale=self.locale,
         )
+        return formatted_unit
 
     @staticmethod
     def calculate_date_difference(first_date: str, second_date: str) -> str:

@@ -46,8 +46,9 @@ def test_format_number(number, expected, transformer):
         ("123.40", "123.40%"),
         ("1000", "1000%"),
         (0, "0%"),
-        (0.00, "0%"),
+        (0.00, "0.0%"),
         ("", "%"),
+        (Decimal("0.123"), "0.123%"),
     ),
 )
 def test_format_percentage(value, expected, transformer):
@@ -61,6 +62,7 @@ def test_format_percentage(value, expected, transformer):
         ("kilometer", "123", "long", "123 kilometre"),
         ("mile", "123", "short", "123 mi"),
         ("mile", "123", "narrow", "123mi"),
+        ("mile", "123", None, "123 mile"),
     ),
 )
 def test_format_unit(unit, value, unit_length, expected, transformer):

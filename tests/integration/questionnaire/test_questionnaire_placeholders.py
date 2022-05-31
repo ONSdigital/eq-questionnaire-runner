@@ -51,6 +51,14 @@ class TestPlaceholders(IntegrationTestCase):
 
         self.post({"add-item-question": "Yes"})
 
+        self.post({"training-percentage": 1})
+
+        self.post()
+
+        self.post({"average-distance": 1})
+
+        self.post()
+
         self.assertInUrl(SUBMIT_URL_PATH)
         self.assertInBody(
             "For Integration Testing (Integration Tests), please enter the total retail turnover"
@@ -75,6 +83,14 @@ class TestPlaceholders(IntegrationTestCase):
         self.post({"total-items-answer": 1})
 
         self.post({"add-item-question": "No"})
+
+        self.post({"training-percentage": 1})
+
+        self.post()
+
+        self.post({"average-distance": 1})
+
+        self.post()
 
         self.assertInUrl(SUBMIT_URL_PATH)
         self.assertInBody(
