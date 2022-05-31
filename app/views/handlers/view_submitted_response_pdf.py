@@ -57,8 +57,6 @@ class ViewSubmittedResponsePDF(ViewSubmittedResponse):
         if self._questionnaire_store.submitted_at is not None:
             return f"{self._metadata['schema_name']}-{self._questionnaire_store.submitted_at.date()}.pdf"
 
-        return f"{self._metadata['schema_name']}"
-
     def get_pdf(self) -> io.BytesIO:
         """
         Generates a PDF document from the rendered ViewSubmittedResponse html.
