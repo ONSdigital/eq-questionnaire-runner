@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, date
 
 import pytest
 
@@ -33,4 +33,4 @@ def test_filename_uses_schema_name(storage, schema, language):
     questionnaire_store.set_metadata({"schema_name": "test_view_submitted_response"})
     pdf = ViewSubmittedResponsePDF(schema, questionnaire_store, language)
 
-    assert pdf.filename == "test_view_submitted_response.pdf"
+    assert pdf.filename == f"test_view_submitted_response-{str(date.today())}.pdf"
