@@ -406,14 +406,12 @@
                                                         "placeholder": "total",
                                                         "transforms": [
                                                             {
-                                                                "transform": "format_unit",
+                                                                "transform": "format_number",
                                                                 "arguments": {
-                                                                    "value": {
+                                                                    "number": {
                                                                         "source": "calculated_summary",
                                                                         "identifier": "unit-total-playback"
-                                                                    },
-                                                                    "unit_length": "short",
-                                                                    "unit": "centimeter"
+                                                                    }
                                                                 }
                                                             }
                                                         ]
@@ -427,9 +425,9 @@
                                                         "placeholder": "total",
                                                         "transforms": [
                                                             {
-                                                                "transform": "format_percentage",
+                                                                "transform": "format_number",
                                                                 "arguments": {
-                                                                    "value": {
+                                                                    "number": {
                                                                         "source": "calculated_summary",
                                                                         "identifier": "percentage-total-playback"
                                                                     }
