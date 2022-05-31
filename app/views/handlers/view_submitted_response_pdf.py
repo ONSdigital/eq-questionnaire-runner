@@ -54,7 +54,10 @@ class ViewSubmittedResponsePDF(ViewSubmittedResponse):
     @property
     def filename(self) -> str:
         """The name to use for the PDF file"""
-        return f"{self._metadata['schema_name']}-{self._questionnaire_store.submitted_at.date()}.pdf"
+        if self._questionnaire_store.submitted_at is not None:
+            return f"{self._metadata['schema_name']}-{self._questionnaire_store.submitted_at.date()}.pdf"
+        else:
+            return f"{self._metadata['schema_name']}"
 
     def get_pdf(self) -> io.BytesIO:
         """
