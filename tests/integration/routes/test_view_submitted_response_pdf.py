@@ -1,5 +1,5 @@
-from time import sleep
 from datetime import date
+from time import sleep
 
 from app import settings
 from tests.integration.routes.test_view_submitted_response import (
