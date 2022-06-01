@@ -39,7 +39,7 @@ class TestViewSubmissionResponsePDF(ViewSubmittedResponseBase):
 
         # Check filename is set as expected
         self.assertIn(
-            f"filename=test-view-submitted-response-{date.today().strftime('%Y-%m-%d')}.pdf",
+            f"filename=test-view-submitted-response-{date.today()}.pdf",
             self.last_response_headers["Content-Disposition"],
         )
 
