@@ -505,7 +505,7 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
         ("default", "en", "ONS Business Surveys"),
         ("business", "en", "ONS Business Surveys"),
         ("health", "en", None),
-        ("social", "en", None),
+        ("social", "en", "ONS Social Surveys"),
         ("northernireland", "en", "ONS Business Surveys"),
         ("census", "en", "Census 2021"),
         ("census", "cy", "Census 2021"),
