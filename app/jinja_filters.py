@@ -27,7 +27,7 @@ def strip_tags(value: str) -> str:
 
 
 @blueprint.app_template_filter()
-def format_number(value: int) -> str:
+def format_number(value: Union[int, Decimal]) -> str:
     formatted_number: str
     if value or value == 0:
         formatted_number = numbers.format_decimal(
