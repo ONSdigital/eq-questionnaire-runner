@@ -2,6 +2,7 @@
 import re
 from decimal import Decimal
 from typing import Any, Mapping, Optional, Union
+from datetime import datetime
 
 import flask
 import flask_babel
@@ -149,7 +150,7 @@ def get_format_date(value: str) -> str:
 
 @pass_eval_context  # type: ignore
 @blueprint.app_template_filter()
-def format_datetime(context: str, date_time: str) -> str:
+def format_datetime(context: str, date_time: datetime) -> str:
     # flask babel on formatting will automatically convert based on the time zone specified in setup.py
     formatted_date = flask_babel.format_date(date_time, format="d MMMM yyyy")
     formatted_time = flask_babel.format_time(date_time, format="HH:mm")
