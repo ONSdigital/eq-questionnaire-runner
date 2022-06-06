@@ -11,9 +11,9 @@ from app.survey_config import (
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
     NorthernIrelandBusinessSurveyConfig,
+    SocialSurveyConfig,
     SurveyConfig,
     WelshCensusSurveyConfig,
-    SocialSurveyConfig,
 )
 
 
@@ -434,26 +434,39 @@ def test_get_survey_config(
 
 
 @pytest.mark.parametrize(
-    "survey_config_type",
-    [SurveyConfig, BusinessSurveyConfig],
+    "survey_config_type, base_url",
+    [
+        (SurveyConfig, "http://localhost"),
+        (BusinessSurveyConfig, "http://localhost"),
+        (SocialSurveyConfig, "https://rh.ons.gov.uk"),
+    ],
 )
 def test_survey_config_base_url_provided_used_in_links(
-    app: Flask, survey_config_type: Type[SurveyConfig]
+    app: Flask, survey_config_type: Type[SurveyConfig], base_url: str
 ):
-    base_url = "http://localhost"
+    base_url = base_url
     with app.app_context():
         result = survey_config_type(base_url=base_url)
 
-    assert result.base_url == "http://localhost"
+    assert result.base_url == base_url
 
-    urls_to_check = [
-        result.account_service_my_account_url,
-        result.account_service_log_out_url,
-        result.account_service_todo_url,
-        result.cookie_settings_url,
-        result.contact_us_url,
-        result.privacy_and_data_protection_url,
-    ]
+    if survey_config_type in [SurveyConfig, BusinessSurveyConfig]:
+        urls_to_check = [
+            result.account_service_my_account_url,
+            result.account_service_log_out_url,
+            result.account_service_todo_url,
+            result.cookie_settings_url,
+            result.contact_us_url,
+            result.privacy_and_data_protection_url,
+        ]
+    else:
+        urls_to_check = [
+            result.account_service_log_out_url,
+            result.account_service_todo_url,
+            result.cookie_settings_url,
+            result.contact_us_url,
+            result.privacy_and_data_protection_url,
+        ]
 
     for url in urls_to_check:
         if url:
