@@ -43,11 +43,12 @@ def get_formatted_address(address_fields: dict) -> str:
     return "<br>".join(address_field for address_field in address_fields.values())
 
 
-def get_formatted_currency(value: Union[float, Decimal], currency: str = "GBP") -> Any:
+def get_formatted_currency(value: Union[float, Decimal], currency: str = "GBP") -> str:
     if value or value == 0:
-        return numbers.format_currency(
+        formatted_currency: str = numbers.format_currency(
             number=value, currency=currency, locale=flask_babel.get_locale()
         )
+        return formatted_currency
 
     return ""
 

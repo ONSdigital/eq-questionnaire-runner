@@ -5,7 +5,6 @@ from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
 from typing import (
     TYPE_CHECKING,
-    Any,
     Iterable,
     List,
     Mapping,
@@ -454,7 +453,7 @@ class SumCheck:
 
 def format_playback_value(
     value: Union[float, Decimal], currency: Optional[str] = None
-) -> Any:
+) -> str:
     if currency:
         return get_formatted_currency(value, currency)
 
