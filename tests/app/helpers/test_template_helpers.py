@@ -44,6 +44,20 @@ def test_footer_context_business_theme(app: Flask, expected_footer_business_them
     assert result == expected_footer_business_theme
 
 
+def test_footer_context_social_theme(app: Flask, expected_footer_social_theme):
+    with app.test_client():
+        survey_config = SocialSurveyConfig()
+
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["footer"]
+
+    assert result == expected_footer_social_theme
+
+
 def test_footer_warning_in_context_census_theme(app: Flask):
     with app.app_context():
         expected = "Make sure you <a href='/sign-out'>leave this page</a> or close your browser if using a shared device"
@@ -93,6 +107,26 @@ def test_get_page_header_context_business(app: Flask):
 
     with app.app_context():
         survey_config = SurveyConfig()
+
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["page_header"]
+
+    assert result == expected
+
+
+def test_get_page_header_context_social(app: Flask):
+    expected = {
+        "logo": "ons-logo-en",
+        "logoAlt": "Office for National Statistics logo",
+        "title": "ONS Social Surveys",
+    }
+
+    with app.app_context():
+        survey_config = SocialSurveyConfig()
 
         result = ContextHelper(
             language="en",

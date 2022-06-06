@@ -136,6 +136,50 @@ def expected_footer_business_theme(footer_context):
 
 
 @fixture
+def expected_footer_social_theme(footer_context):
+    social = {
+        "rows": [
+            {
+                "itemsList": [
+                    {
+                        "text": "What we do",
+                        "url": "https://www.ons.gov.uk/aboutus/whatwedo/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Contact us",
+                        "url": "https://rh.ons.gov.uk/contact-us/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Accessibility",
+                        "url": "https://www.ons.gov.uk/help/accessibility/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
+        "legal": [
+            {
+                "itemsList": [
+                    {
+                        "text": "Cookies",
+                        "url": "https://rh.ons.gov.uk/cookies/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Privacy and data protection",
+                        "url": "https://rh.ons.gov.uk/privacy-and-data-protection/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
+    }
+    return {**footer_context, **social}
+
+
+@fixture
 def expected_footer_nisra_theme():
     return {
         "lang": "en",
