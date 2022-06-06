@@ -13,6 +13,7 @@ from app.survey_config import (
     NorthernIrelandBusinessSurveyConfig,
     SurveyConfig,
     WelshCensusSurveyConfig,
+    SocialSurveyConfig,
 )
 
 
@@ -201,6 +202,23 @@ def test_get_page_header_context_census_nisra(app: Flask):
                 ],
             },
         ),
+        (
+            SocialSurveyConfig(),
+            False,
+            {
+                "toggleServicesButton": {
+                    "text": "Menu",
+                    "ariaLabel": "Toggle services menu",
+                },
+                "itemsList": [
+                    {
+                        "title": "Help",
+                        "url": "https://rh.ons.gov.uk/help",
+                        "id": "header-link-help",
+                    }
+                ],
+            },
+        ),
     ],
 )
 def test_service_links_context(
@@ -241,6 +259,10 @@ def test_service_links_context(
         (
             NorthernIrelandBusinessSurveyConfig(),
             "https://surveys.ons.gov.uk/contact-us/",
+        ),
+        (
+            SocialSurveyConfig(),
+            "https://rh.ons.gov.uk/contact-us/",
         ),
     ],
 )
@@ -291,6 +313,10 @@ def test_sign_out_button_text_context(
             NorthernIrelandBusinessSurveyConfig(),
             "https://surveys.ons.gov.uk/cookies/",
         ),
+        (
+            SocialSurveyConfig(),
+            "https://rh.ons.gov.uk/cookies/",
+        ),
     ],
 )
 def test_cookie_settings_url_context(
@@ -315,6 +341,7 @@ def test_cookie_settings_url_context(
             BusinessSurveyConfig(),
             "https://surveys.ons.gov.uk/my-account",
         ),
+        (SocialSurveyConfig(), None),
     ],
 )
 def test_account_service_my_account_url_context(
@@ -334,6 +361,10 @@ def test_account_service_my_account_url_context(
         (
             BusinessSurveyConfig(),
             "https://surveys.ons.gov.uk/surveys/todo",
+        ),
+        (
+            SocialSurveyConfig(),
+            None,
         ),
     ],
 )
@@ -358,6 +389,10 @@ def test_account_service_my_todo_url_context(
         (
             NorthernIrelandBusinessSurveyConfig(),
             "https://surveys.ons.gov.uk/sign-in/logout",
+        ),
+        (
+            SocialSurveyConfig(),
+            "https://rh.ons.gov.uk/sign-in/logout",
         ),
     ],
 )
