@@ -8,7 +8,7 @@ import flask
 import flask_babel
 from babel import numbers, units
 from flask import current_app
-from jinja2 import pass_eval_context
+from jinja2 import pass_eval_context, nodes
 from markupsafe import Markup, escape
 from wtforms import SelectFieldBase
 
@@ -18,7 +18,7 @@ from app.settings import MAX_NUMBER
 blueprint = flask.Blueprint("filters", __name__)
 
 
-def mark_safe(context: Any, value: str) -> str:
+def mark_safe(context: nodes.EvalContext, value: str) -> Union[Markup, str]:
     return Markup(value) if context.autoescape else value
 
 
@@ -151,7 +151,7 @@ def get_format_date(value: str) -> str:
 
 @pass_eval_context  # type: ignore
 @blueprint.app_template_filter()
-def format_datetime(context: str, date_time: datetime) -> str:
+def format_datetime(context: nodes.EvalContext, date_time: str) -> str:
     # flask babel on formatting will automatically convert based on the time zone specified in setup.py
     formatted_date = flask_babel.format_date(date_time, format="d MMMM yyyy")
     formatted_time = flask_babel.format_time(date_time, format="HH:mm")
