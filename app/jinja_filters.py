@@ -2,7 +2,7 @@
 import re
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Mapping, Optional, Union
+from typing import Mapping, Optional, Union
 
 import flask
 import flask_babel
@@ -103,7 +103,7 @@ def format_unit_input_label(unit: str, unit_length: str = "short") -> str:
     return unit_label
 
 
-def format_duration(value: Mapping) -> str:
+def format_duration(value: Mapping[str, int]) -> str:
     parts = []
 
     if "years" in value and (value["years"] > 0 or len(value) == 1):
