@@ -444,7 +444,6 @@ def test_get_survey_config(
 def test_survey_config_base_url_provided_used_in_links(
     app: Flask, survey_config_type: Type[SurveyConfig], base_url: str
 ):
-    base_url = base_url
     with app.app_context():
         result = survey_config_type(base_url=base_url)
 
