@@ -187,3 +187,7 @@ def mock_questionnaire_store(mocker):
     questionnaire_store = QuestionnaireStore(storage_)
     questionnaire_store.metadata = {"tx_id": "tx_id", "case_id": "case_id"}
     return questionnaire_store
+
+@pytest.fixture
+def schema():
+    return QuestionnaireSchema({"post_submission": {"view_response": True}, "title": "Test View Submitted Response"})
