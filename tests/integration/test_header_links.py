@@ -84,6 +84,18 @@ class TestHeaderLinksPreSubmission(TestHeaderLinks):
         self.assert_sign_out_link_does_not_exist()
         self.assert_help_link_exist_not_authenticated()
 
+    def test_links_not_in_header_when_using_social_survey(self):
+        # Given
+        self.launchSurvey("test_language")
+
+        # When
+        self.assertStatusOK()
+
+        # Then
+        self.assert_my_account_link_does_not_exist()
+        self.assert_sign_out_link_does_not_exist()
+        self.assert_help_link_does_not_exist()
+
 
 class TestHeaderLinksPostSubmission(TestHeaderLinks):
     def test_links_in_header_when_valid_session(self):

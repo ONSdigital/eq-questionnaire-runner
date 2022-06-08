@@ -236,39 +236,11 @@ def test_get_page_header_context_census_nisra(app: Flask):
                 ],
             },
         ),
-        (
-            SocialSurveyConfig(),
-            False,
-            {
-                "toggleServicesButton": {
-                    "text": "Menu",
-                    "ariaLabel": "Toggle services menu",
-                },
-                "itemsList": [
-                    {
-                        "title": "Help",
-                        "url": "https://rh.ons.gov.uk/help",
-                        "id": "header-link-help",
-                    }
-                ],
-            },
-        ),
+        (SocialSurveyConfig(), False, None),
         (
             SocialSurveyConfig(schema=QuestionnaireSchema({"survey_id": "001"})),
             True,
-            {
-                "toggleServicesButton": {
-                    "text": "Menu",
-                    "ariaLabel": "Toggle services menu",
-                },
-                "itemsList": [
-                    {
-                        "title": "Help",
-                        "url": "https://rh.ons.gov.uk/surveys/surveys-help?survey_ref=001&ru_ref=63782964754",
-                        "id": "header-link-help",
-                    },
-                ],
-            },
+            None,
         ),
     ],
 )

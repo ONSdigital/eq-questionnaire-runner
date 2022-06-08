@@ -104,6 +104,24 @@ class TestThankYou(IntegrationTestCase):
         self.assertInBody("Back to surveys")
         self.assertInBody(ACCOUNT_SERVICE_TODO_PATH)
 
+        # Social survey
+        self.launchSurvey("test_language")
+        self.post()
+        self.post({"first-name": "Kevin", "last-name": "Bacon"})
+        self.post(
+            {
+                "date-of-birth-answer-day": 1,
+                "date-of-birth-answer-month": 2,
+                "date-of-birth-answer-year": 1999,
+            }
+        )
+        self.post({"number-of-people-answer": 0})
+        self.post({"confirm-count": "Yes"})
+        self.post()
+        self.assertInUrl("thank-you")
+        self.assertNotInBody("Back to surveys")
+        self.assertNotInBody(ACCOUNT_SERVICE_TODO_PATH)
+
     def test_view_answers_after_submission_guidance(self):
         self.launchSurvey("test_thank_you")
         self.post({"answer": "Yes"})
