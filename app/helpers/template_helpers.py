@@ -98,13 +98,12 @@ class ContextHelper:
     def data_layer_context(
         self,
     ) -> Union[list[dict], None, list]:
-        if metadata := get_metadata(current_user):
-            if tx_id := metadata.get("tx_id"):
-                return self._survey_config.get_data_layer(
-                    tx_id=tx_id,
-                )
-
-        return self._survey_config.get_data_layer()
+        tx_id = (
+            get_metadata(current_user).get("tx_id")  # type: ignore
+            if get_metadata(current_user)
+            else None
+        )
+        return self._survey_config.get_data_layer(_tx_id=tx_id)
 
     @property
     def page_header_context(self) -> dict[str, Union[bool, str, LazyString]]:

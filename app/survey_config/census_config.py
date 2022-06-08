@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Iterable, Mapping, MutableMapping
+from typing import Iterable, Mapping, MutableMapping, Optional
 
 from flask_babel import lazy_gettext
 from flask_babel.speaklater import LazyString
@@ -60,13 +60,14 @@ class CensusSurveyConfig(
 
     survey_title: LazyString = lazy_gettext("Census 2021")
     sign_out_button_text: str = lazy_gettext("Save and complete later")
+    _is_nisra: bool = False
 
-    def get_data_layer(  # pylint: disable=unused-argument, no-self-use
-        self, tx_id=None
-    ) -> list[dict]:
-        if tx_id:
-            return [{"nisra": False}, {"tx_id": tx_id}]
-        return [{"nisra": False}]
+    def get_data_layer(self, _tx_id: Optional[str] = None) -> list[dict]:
+        return (
+            [{"nisra": self._is_nisra}, {"tx_id": _tx_id}]
+            if _tx_id
+            else [{"nisra": self._is_nisra}]
+        )
 
 
 @dataclass
@@ -114,12 +115,6 @@ class WelshCensusSurveyConfig(
         compare=False,
         hash=False,
     )
-
-    def get_data_layer(  # pylint: disable=unused-argument, no-self-use
-        self, tx_id=None
-    ) -> list[dict]:
-
-        return [{"nisra": False}, {"tx_id": tx_id}] if tx_id else [{"nisra": False}]
 
 
 @dataclass
@@ -172,8 +167,4 @@ class CensusNISRASurveyConfig(
     )
     powered_by_logo: str = "nisra-logo-black-en"
     powered_by_logo_alt: str = "NISRA - Northern Ireland Statistics and Research Agency"
-
-    def get_data_layer(  # pylint: disable=unused-argument, no-self-use
-        self, tx_id=None
-    ) -> list[dict]:
-        return [{"nisra": True}, {"tx_id": tx_id}] if tx_id else [{"nisra": True}]
+    _is_nisra: bool = True
