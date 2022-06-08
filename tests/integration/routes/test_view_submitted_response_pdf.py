@@ -1,6 +1,8 @@
 from datetime import date
 from time import sleep
 
+from freezegun import freeze_time
+
 from app import settings
 from tests.integration.routes.test_view_submitted_response import (
     ViewSubmittedResponseBase,
@@ -20,6 +22,7 @@ class TestViewSubmissionResponsePDF(ViewSubmittedResponseBase):
         # Then a 404 page is returned
         self.assertStatusNotFound()
 
+    @freeze_time("2022-06-01T15:34:54+00:00")
     def test_download_when_submitted_response_enabled_but_not_expired(self):
         # Given I launch and complete a questionnaire that has view-submitted-response enabled and has not expired
         self._launch_and_complete_questionnaire()
@@ -39,7 +42,7 @@ class TestViewSubmissionResponsePDF(ViewSubmittedResponseBase):
 
         # Check filename is set as expected
         self.assertIn(
-            f"filename=test-view-submitted-response-{date.today()}.pdf",
+            f"filename=test-view-submitted-response-2022-06-01.pdf",
             self.last_response_headers["Content-Disposition"],
         )
 
