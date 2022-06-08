@@ -488,6 +488,8 @@ def test_get_survey_config(
     "survey_config_type, base_url",
     [
         (SocialSurveyConfig, "https://rh.ons.gov.uk"),
+        (SurveyConfig, "http://localhost"),
+        (BusinessSurveyConfig, "http://localhost"),
     ],
 )
 def test_survey_config_base_url_provided_used_in_links(
