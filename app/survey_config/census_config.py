@@ -62,12 +62,12 @@ class CensusSurveyConfig(
     sign_out_button_text: str = lazy_gettext("Save and complete later")
     _is_nisra: bool = False
 
-    def get_data_layer(self, _tx_id: Optional[str] = None) -> list[dict]:
+    def get_data_layer(self, tx_id: Optional[str] = None) -> list[dict]:
         data_layer: list[Union[dict[str, bool], dict[str, str]]] = [
             {"nisra": self._is_nisra}
         ]
-        if _tx_id:
-            data_layer.append({"tx_id": _tx_id})
+        if tx_id:
+            data_layer.append({"tx_id": tx_id})
 
         return data_layer
 

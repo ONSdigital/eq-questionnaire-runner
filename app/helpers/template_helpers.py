@@ -100,7 +100,7 @@ class ContextHelper:
     ) -> Union[list[dict], None, list]:
         metadata = get_metadata(current_user)
         tx_id = metadata.get("tx_id") if metadata else None
-        return self._survey_config.get_data_layer(_tx_id=tx_id)
+        return self._survey_config.get_data_layer(tx_id=tx_id)
 
     @property
     def page_header_context(self) -> dict[str, Union[bool, str, LazyString]]:
