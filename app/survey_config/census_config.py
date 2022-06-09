@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Iterable, Mapping, MutableMapping, Optional
+from typing import Iterable, Mapping, MutableMapping, Optional, Union
 
 from flask_babel import lazy_gettext
 from flask_babel.speaklater import LazyString
@@ -63,11 +63,13 @@ class CensusSurveyConfig(
     _is_nisra: bool = False
 
     def get_data_layer(self, _tx_id: Optional[str] = None) -> list[dict]:
-        return (
-            [{"nisra": self._is_nisra}, {"tx_id": _tx_id}]
-            if _tx_id
-            else [{"nisra": self._is_nisra}]
-        )
+        data_layer: list[Union[dict[str, bool], dict[str, str]]] = [
+            {"nisra": self._is_nisra}
+        ]
+        if _tx_id:
+            data_layer.append({"tx_id": _tx_id})
+
+        return data_layer
 
 
 @dataclass
