@@ -1,7 +1,7 @@
 # coding: utf-8
 import re
 from decimal import Decimal
-from typing import Mapping, Optional, Union
+from typing import Mapping, Optional, Union, Any
 
 import flask
 import flask_babel
@@ -322,7 +322,7 @@ class OtherConfig:
     def __init__(
         self,
         detail_answer_field: SelectFieldBase._Option,
-        detail_answer_schema: Mapping,
+        detail_answer_schema: Mapping[str, str],
     ) -> None:
         self.id = detail_answer_field.id
         self.name = detail_answer_field.name
