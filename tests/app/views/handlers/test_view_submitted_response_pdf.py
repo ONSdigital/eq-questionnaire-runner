@@ -35,4 +35,4 @@ def test_filename_uses_schema_name(storage, schema, language):
     questionnaire_store.set_metadata({"schema_name": "test_view_submitted_response"})
     pdf = ViewSubmittedResponsePDF(schema, questionnaire_store, language)
 
-    assert pdf.filename == f"test-view-submitted-response-2022-06-01.pdf"
+    assert pdf.filename == "test-view-submitted-response-2022-06-01.pdf"
