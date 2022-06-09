@@ -104,20 +104,11 @@ class TestThankYou(IntegrationTestCase):
         self.assertInBody("Back to surveys")
         self.assertInBody(ACCOUNT_SERVICE_TODO_PATH)
 
-        # Social survey
-        self.launchSurvey("test_language")
+    def test_back_to_surveys_link_not_on_thank_you_theme_social(self):
+        self.launchSurvey("test_theme_social")
         self.post()
-        self.post({"first-name": "Kevin", "last-name": "Bacon"})
-        self.post(
-            {
-                "date-of-birth-answer-day": 1,
-                "date-of-birth-answer-month": 2,
-                "date-of-birth-answer-year": 1999,
-            }
-        )
-        self.post({"number-of-people-answer": 0})
-        self.post({"confirm-count": "Yes"})
         self.post()
+
         self.assertInUrl("thank-you")
         self.assertNotInBody("Back to surveys")
         self.assertNotInBody(ACCOUNT_SERVICE_TODO_PATH)

@@ -86,7 +86,7 @@ class TestHeaderLinksPreSubmission(TestHeaderLinks):
 
     def test_links_not_in_header_when_using_social_survey(self):
         # Given
-        self.launchSurvey("test_language")
+        self.launchSurvey("test_theme_social")
 
         # When
         self.assertStatusOK()
