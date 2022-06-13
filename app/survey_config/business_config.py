@@ -93,7 +93,7 @@ class BusinessSurveyConfig(
 
         return links
 
-    def get_data_layer(self, tx_id: Optional[str] = None) -> Optional[list[dict]]:
+    def get_data_layer(self, tx_id: Optional[str] = None) -> list[dict]:
         data_layer = [{"tx_id": tx_id}] if tx_id else []
         if self.schema:
             data_layer.append(

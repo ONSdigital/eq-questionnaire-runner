@@ -66,7 +66,7 @@ class SurveyConfig:
 
     def get_data_layer(  # pylint: disable=no-self-use
         self, tx_id: Optional[str] = None
-    ) -> Optional[list[dict]]:
+    ) -> list[dict]:
         if tx_id:
             return [{"tx_id": tx_id}]
 

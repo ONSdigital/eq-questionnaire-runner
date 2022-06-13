@@ -97,7 +97,7 @@ class ContextHelper:
     @property
     def data_layer_context(
         self,
-    ) -> Union[list[dict], None, list]:
+    ) -> Union[list[dict], list]:
         metadata = get_metadata(current_user)
         tx_id = metadata.get("tx_id") if metadata else None
         return self._survey_config.get_data_layer(tx_id=tx_id)
