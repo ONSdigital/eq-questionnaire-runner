@@ -1,7 +1,7 @@
 # coding: utf-8
 import re
 from decimal import Decimal
-from typing import Mapping, Optional, Union, Any
+from typing import Mapping, Optional, Union, Callable
 
 import flask
 import flask_babel
@@ -37,7 +37,7 @@ def format_number(value: Union[int, Decimal]) -> str:
     return ""
 
 
-def get_formatted_address(address_fields: dict) -> str:
+def get_formatted_address(address_fields: dict[str, str]) -> str:
     address_fields.pop("uprn", None)
     return "<br>".join(address_field for address_field in address_fields.values())
 
@@ -173,35 +173,35 @@ def get_format_date_range(start_date: Markup, end_date: Markup) -> flask_babel:
 
 
 @blueprint.app_context_processor
-def format_unit_processor() -> dict:
+def format_unit_processor() -> dict[str, Callable[[Union[int, Decimal], str, str], str]]:
     return dict(format_unit=format_unit)
 
 
 @blueprint.app_context_processor
-def format_unit_input_label_processor() -> dict:
+def format_unit_input_label_processor() -> dict[str, Callable]:
     return dict(format_unit_input_label=format_unit_input_label)
 
 
 @blueprint.app_context_processor
-def get_currency_symbol_processor() -> dict:
+def get_currency_symbol_processor() -> dict[str, Callable]:
     return dict(get_currency_symbol=get_currency_symbol)
 
 
 @blueprint.app_template_filter()  # type: ignore
-def setAttribute(dictionary: dict, key: str, value: str) -> dict:
+def setAttribute(dictionary: dict[str, str], key: str, value: str) -> dict[str, str]:
     dictionary[key] = value
     return dictionary
 
 
 @blueprint.app_template_filter()  # type: ignore
-def setAttributes(dictionary: dict, attributes: dict) -> dict:
+def setAttributes(dictionary: dict[str, str], attributes: dict[str, str]) -> dict[str, str]:
     for key in attributes:
         dictionary[key] = attributes[key]
     return dictionary
 
 
 @blueprint.app_template_filter()
-def should_wrap_with_fieldset(question: dict) -> bool:
+def should_wrap_with_fieldset(question: dict[str, str]) -> bool:
     # Logic for when to wrap with a fieldset comes from
     # https://ons-design-system.netlify.app/patterns/question/
     if question["type"] == "DateRange":
@@ -228,12 +228,12 @@ def should_wrap_with_fieldset(question: dict) -> bool:
 
 
 @blueprint.app_context_processor
-def should_wrap_with_fieldset_processor() -> dict:
+def should_wrap_with_fieldset_processor() -> dict[str, Callable]:
     return {"should_wrap_with_fieldset": should_wrap_with_fieldset}
 
 
 @blueprint.app_template_filter()
-def get_width_for_number(answer: dict) -> int:
+def get_width_for_number(answer: Mapping[str, int]) -> int:
     allowable_widths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 40, 50]
 
     min_value = answer.get("minimum", {}).get("value", 0)
@@ -252,7 +252,7 @@ def get_width_for_number(answer: dict) -> int:
 
 
 @blueprint.app_context_processor
-def get_width_for_number_processor() -> dict:
+def get_width_for_number_processor() -> dict[str, Callable]:
     return {"get_width_for_number": get_width_for_number}
 
 
@@ -268,8 +268,8 @@ class SelectConfig:
         self,
         option: SelectFieldBase._Option,
         index: int,
-        answer: Mapping,
-        form: Optional[Mapping] = None,
+        answer: Mapping[str, Union[int, slice]],
+        form: Optional[Mapping[str, Union[int, slice]]] = None,
     ) -> None:
         self.id = option.id
         self.name = option.name
@@ -298,7 +298,7 @@ class SelectConfig:
 
 class RelationshipRadioConfig(SelectConfig):
     def __init__(
-        self, option: SelectFieldBase._Option, index: int, answer: Mapping
+        self, option: SelectFieldBase._Option, index: int, answer: Mapping[str, Union[int, slice]]
     ) -> None:
         super().__init__(option, index, answer)
 
@@ -348,7 +348,7 @@ class OtherConfig:
 
 
 @blueprint.app_template_filter()  # type: ignore
-def map_select_config(form: Mapping, answer: Mapping) -> list[SelectConfig]:
+def map_select_config(form: Mapping[str, str], answer: Mapping[str, Union[int, slice]]) -> list[SelectConfig]:
     options = form["fields"][answer["id"]]
 
     return [
@@ -358,13 +358,13 @@ def map_select_config(form: Mapping, answer: Mapping) -> list[SelectConfig]:
 
 
 @blueprint.app_context_processor
-def map_select_config_processor() -> dict:
+def map_select_config_processor() -> dict[str, Callable]:
     return dict(map_select_config=map_select_config)
 
 
 @blueprint.app_template_filter()  # type: ignore
 def map_relationships_config(
-    form: Mapping, answer: Mapping
+    form: Mapping[str, str], answer: Mapping[str, Union[int, slice]]
 ) -> list[RelationshipRadioConfig]:
     options = form["fields"][answer["id"]]
 
@@ -374,7 +374,7 @@ def map_relationships_config(
 
 
 @blueprint.app_context_processor
-def map_relationships_config_processor() -> dict:
+def map_relationships_config_processor() -> dict[str, Callable]:
     return dict(map_relationships_config=map_relationships_config)
 
 
@@ -393,7 +393,7 @@ def map_dropdown_config(select: SelectFieldBase._Option) -> list[DropdownConfig]
 
 
 @blueprint.app_context_processor
-def map_dropdown_config_processor() -> dict:
+def map_dropdown_config_processor() -> dict[str, Callable]:
     return dict(map_dropdown_config=map_dropdown_config)
 
 
@@ -579,7 +579,7 @@ def map_summary_item_config(
 
 
 @blueprint.app_context_processor
-def map_summary_item_config_processor() -> dict:
+def map_summary_item_config_processor() -> dict[str, Callable]:
     return dict(map_summary_item_config=map_summary_item_config)
 
 
@@ -640,5 +640,5 @@ def map_list_collector_config(
 
 
 @blueprint.app_context_processor
-def map_list_collector_config_processor() -> dict:
+def map_list_collector_config_processor() -> dict[str, Callable]:
     return dict(map_list_collector_config=map_list_collector_config)
