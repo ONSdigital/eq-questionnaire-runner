@@ -53,7 +53,7 @@ class TestHeaderLinks(IntegrationTestCase):
             f"{ACCOUNT_SERVICE_URL}/help",
         )
 
-    def assert_help_link_does_not_exist_authenticated_after_sign_out(self):
+    def assert_help_link_does_not_exist_not_authenticated_after_sign_out(self):
         help_link = self.getLinkById("header-link-help")
         self.assertIsNone(help_link)
 
@@ -88,7 +88,7 @@ class TestHeaderLinksPreSubmission(TestHeaderLinks):
         self.assert_sign_out_link_does_not_exist()
         self.assert_help_link_exist_not_authenticated()
 
-    def test_links_in_header_when_valid_session_theme_social(self):
+    def test_links_not_in_header_when_valid_session_theme_social(self):
         # Given
         self.launchSurvey("test_theme_social")
 
@@ -129,7 +129,7 @@ class TestHeaderLinksPostSubmission(TestHeaderLinks):
         self.assert_sign_out_link_does_not_exist()
         self.assert_help_link_exist_not_authenticated()
 
-    def test_links_in_header_when_valid_session_theme_social(self):
+    def test_links_not_in_header_when_valid_session_theme_social(self):
         # Given
         self.launchSurvey("test_theme_social")
         self.post()
@@ -180,4 +180,4 @@ class TestHeaderLinksPostSignOut(TestHeaderLinks):
         self.assertInBody("Sorry, you need to sign in again")
         self.assert_my_account_link_does_not_exist()
         self.assert_sign_out_link_does_not_exist()
-        self.assert_help_link_does_not_exist_authenticated_after_sign_out()
+        self.assert_help_link_does_not_exist_not_authenticated_after_sign_out()
