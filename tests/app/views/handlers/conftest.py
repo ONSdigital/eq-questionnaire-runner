@@ -79,7 +79,7 @@ def schema():
     return QuestionnaireSchema(
         {
             "post_submission": {"view_response": True},
-            "title": "Test View Submitted Response",
+            "title": "Test schema - View Submitted Response",
         }
     )
 
