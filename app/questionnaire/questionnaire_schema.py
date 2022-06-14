@@ -289,7 +289,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             value = answer.get(key, {}).get("value")
             if isinstance(value, dict):
                 self._update_answer_dependencies_for_value_source(
-                    value, block_id=block_id
+                    value,
+                    block_id=block_id,
                 )
 
         if dynamic_options_values := answer.get("dynamic_options", {}).get("values"):
@@ -315,6 +316,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             self._answer_dependencies_map[value_source["identifier"]] |= {
                 self._get_answer_dependent_for_block_id(block_id=block_id, answer_id=answer_id)  # type: ignore
             }
+        if value_source["source"] == "calculated_summary":
+            identifier = value_source["identifier"]
+            calculated_summary_block = self.get_block(identifier)
+            answer_ids_for_block = calculated_summary_block["calculation"]["answers_to_calculate"]  # type: ignore
+            for answer_id_for_block in answer_ids_for_block:
+                self._answer_dependencies_map[answer_id_for_block] |= {
+                    self._get_answer_dependent_for_block_id(block_id=block_id, answer_id=answer_id)  # type: ignore
+                }
 
     def _get_answer_dependent_for_block_id(
         self, *, block_id: str, answer_id: Optional[str] = None
