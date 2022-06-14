@@ -58,6 +58,7 @@ def test_format_percentage(value, expected, transformer):
 @pytest.mark.parametrize(
     "unit, value, unit_length, expected",
     (
+        ("millimeter", Decimal(0.123), "short", "0.123 mm"),
         ("centimeter", "123", "short", "123 cm"),
         ("kilometer", "123", "long", "123 kilometre"),
         ("mile", "123", "short", "123 mi"),
@@ -66,10 +67,7 @@ def test_format_percentage(value, expected, transformer):
     ),
 )
 def test_format_unit(unit, value, unit_length, expected, transformer):
-    if unit_length:
-        assert transformer().format_unit(unit, value, unit_length) == expected
-    else:
-        assert transformer().format_unit(unit, value) == expected
+    assert transformer().format_unit(unit, value, unit_length) == expected
 
 
 def test_format_list(transformer):
