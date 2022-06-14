@@ -5,21 +5,23 @@
 
 {% set page_title = _("We’ve received your answers") %}
 {% set hide_sign_out_button = content.hide_sign_out_button %}
-{% set breadcrumbs = {
-  "ariaLabel": 'Back to surveys',
-  "itemsList": [
-    {
-      "url": account_service_todo_url,
-      "id": "back-to-surveys",
-      "text": _("Back to surveys"),
-      "attributes": {
-        "data-ga": 'click',
-        "data-ga-category": 'Navigation',
-        "data-ga-action": 'Back to surveys link click'
+{% if account_service_todo_url %}
+  {% set breadcrumbs = {
+    "ariaLabel": 'Back to surveys',
+    "itemsList": [
+      {
+        "url": account_service_todo_url,
+        "id": "back-to-surveys",
+        "text": _("Back to surveys"),
+        "attributes": {
+          "data-ga": 'click',
+          "data-ga-category": 'Navigation',
+          "data-ga-action": 'Back to surveys link click'
+        }
       }
-    }
-  ]
-} %}
+    ]
+  } %}
+{% endif %}
 {% block main %}
 
   {% call onsPanel({
