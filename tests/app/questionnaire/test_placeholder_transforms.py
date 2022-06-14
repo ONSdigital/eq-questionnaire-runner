@@ -62,11 +62,14 @@ def test_format_percentage(value, expected, transformer):
         ("kilometer", "123", "long", "123 kilometre"),
         ("mile", "123", "short", "123 mi"),
         ("mile", "123", "narrow", "123mi"),
-        ("mile", "123", None, "123 mile"),
+        ("mile", "123", None, "123 mi"),
     ),
 )
 def test_format_unit(unit, value, unit_length, expected, transformer):
-    assert transformer().format_unit(unit, value, unit_length) == expected
+    if unit_length:
+        assert transformer().format_unit(unit, value, unit_length) == expected
+    else:
+        assert transformer().format_unit(unit, value) == expected
 
 
 def test_format_list(transformer):
