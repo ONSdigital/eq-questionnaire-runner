@@ -201,7 +201,7 @@ def setAttributes(dictionary: dict[str, str], attributes: dict[str, str]) -> dic
 
 
 @blueprint.app_template_filter()
-def should_wrap_with_fieldset(question: dict[str, str]) -> bool:
+def should_wrap_with_fieldset(question: dict[str, list]) -> bool:
     # Logic for when to wrap with a fieldset comes from
     # https://ons-design-system.netlify.app/patterns/question/
     if question["type"] == "DateRange":
