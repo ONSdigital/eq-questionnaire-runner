@@ -54,12 +54,11 @@ class ViewSubmittedResponsePDF(ViewSubmittedResponse):
     @property
     def filename(self) -> str:
         """The name to use for the PDF file"""
-        if self._questionnaire_store.submitted_at:
-            formatted_title = (
-                self._schema.json["title"].lower().replace(" ", "-").replace("--", "-")
-            )
-            formatted_date = self._questionnaire_store.submitted_at.date().isoformat()
-            return f"{formatted_title}-{formatted_date}.pdf"
+        formatted_title = (
+            self._schema.json["title"].lower().replace(" ", "-").replace("--", "-")
+        )
+        formatted_date = self._questionnaire_store.submitted_at.date().isoformat()  # type: ignore
+        return f"{formatted_title}-{formatted_date}.pdf"
 
     def get_pdf(self) -> io.BytesIO:
         """
