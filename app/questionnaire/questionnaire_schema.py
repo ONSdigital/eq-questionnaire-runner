@@ -853,13 +853,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 continue
 
             answer_id_list: list = []
-            identifier: str = rule.get("identifier", "")
+            identifier: Optional[str] = rule.get("identifier")
+            source: Optional[str] = rule.get("source")
 
             if "id" in rule:
                 answer_id_list.append(rule["id"])
-            elif rule.get("source") == "answers":
+            elif source == "answers" and identifier:
                 answer_id_list.append(identifier)
-            elif rule.get("source") == "calculated_summary":
+            elif source == "calculated_summary" and identifier:
                 calculated_summary_block = self.get_block(identifier)
                 calculated_summary_answer_ids = calculated_summary_block["calculation"]["answers_to_calculate"]  # type: ignore
                 answer_id_list.extend(iter(calculated_summary_answer_ids))
