@@ -853,7 +853,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 continue
 
             answer_id_list: list = []
-            identifier: str = rule.get("identifier", "")
+            identifier: str = rule.get("identifier")
 
             if "id" in rule:
                 answer_id_list.append(rule["id"])
