@@ -1,5 +1,4 @@
 from collections import abc
-from app.utilities.schema import load_schema_from_name
 
 import pytest
 from werkzeug.datastructures import ImmutableDict
