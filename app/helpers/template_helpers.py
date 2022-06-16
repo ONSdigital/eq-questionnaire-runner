@@ -18,6 +18,7 @@ from app.survey_config import (
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
     NorthernIrelandBusinessSurveyConfig,
+    SocialSurveyConfig,
     SurveyConfig,
     WelshCensusSurveyConfig,
 )
@@ -164,7 +165,7 @@ def survey_config_mapping(
         "default": BusinessSurveyConfig,
         "business": BusinessSurveyConfig,
         "health": SurveyConfig,
-        "social": SurveyConfig,
+        "social": SocialSurveyConfig,
         "northernireland": NorthernIrelandBusinessSurveyConfig,
         "census": (WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig),
         "census-nisra": CensusNISRASurveyConfig,
