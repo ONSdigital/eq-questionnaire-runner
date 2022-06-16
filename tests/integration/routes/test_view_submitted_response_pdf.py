@@ -41,7 +41,7 @@ class TestViewSubmissionResponsePDF(ViewSubmittedResponseBase):
 
         # Check filename is set as expected
         self.assertIn(
-            "filename=test-view-submitted-response-2022-06-01.pdf",
+            "filename=test-schema-view-submitted-response-2022-06-01.pdf",
             self.last_response_headers["Content-Disposition"],
         )
 
