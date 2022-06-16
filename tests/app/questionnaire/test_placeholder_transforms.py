@@ -47,7 +47,6 @@ def test_format_number(number, expected, transformer):
         ("1000", "1000%"),
         (0, "0%"),
         (0.00, "0.0%"),
-        ("", "%"),
         (Decimal("0.123"), "0.123%"),
     ),
 )
