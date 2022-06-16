@@ -356,7 +356,7 @@ class OtherConfig:
 
 @blueprint.app_template_filter()  # type: ignore
 def map_select_config(
-    form: Optional[Mapping[str, str]], answer: Mapping[str, Union[int, slice]]
+    form: Optional[Mapping[str, Union[int, slice]]], answer: Mapping[str, Union[int, slice]]
 ) -> list[SelectConfig]:
     options = form["fields"][answer["id"]]
 
