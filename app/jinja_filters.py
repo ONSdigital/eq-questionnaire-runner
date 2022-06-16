@@ -1,7 +1,7 @@
 # coding: utf-8
 import re
 from decimal import Decimal
-from typing import Mapping, Optional, Union, Callable
+from typing import Callable, Mapping, Optional, Union
 
 import flask
 import flask_babel
@@ -173,7 +173,9 @@ def get_format_date_range(start_date: Markup, end_date: Markup) -> flask_babel:
 
 
 @blueprint.app_context_processor
-def format_unit_processor() -> dict[str, Callable[[Union[int, Decimal], str, str], str]]:
+def format_unit_processor() -> dict[
+    str, Callable[[Union[int, Decimal], str, str], str]
+]:
     return dict(format_unit=format_unit)
 
 
@@ -194,7 +196,9 @@ def setAttribute(dictionary: dict[str, str], key: str, value: str) -> dict[str, 
 
 
 @blueprint.app_template_filter()  # type: ignore
-def setAttributes(dictionary: dict[str, str], attributes: dict[str, str]) -> dict[str, str]:
+def setAttributes(
+    dictionary: dict[str, str], attributes: dict[str, str]
+) -> dict[str, str]:
     for key in attributes:
         dictionary[key] = attributes[key]
     return dictionary
@@ -298,7 +302,10 @@ class SelectConfig:
 
 class RelationshipRadioConfig(SelectConfig):
     def __init__(
-        self, option: SelectFieldBase._Option, index: int, answer: Mapping[str, Union[int, slice]]
+        self,
+        option: SelectFieldBase._Option,
+        index: int,
+        answer: Mapping[str, Union[int, slice]],
     ) -> None:
         super().__init__(option, index, answer)
 
@@ -348,7 +355,9 @@ class OtherConfig:
 
 
 @blueprint.app_template_filter()  # type: ignore
-def map_select_config(form: Mapping[str, str], answer: Mapping[str, Union[int, slice]]) -> list[SelectConfig]:
+def map_select_config(
+    form: Mapping[str, str], answer: Mapping[str, Union[int, slice]]
+) -> list[SelectConfig]:
     options = form["fields"][answer["id"]]
 
     return [
