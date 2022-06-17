@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import defaultdict, namedtuple
 from itertools import combinations
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Tuple, Union
 
@@ -8,6 +8,9 @@ from app.data_models.progress_store import CompletionStatus, SectionKeyType
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import AnswerDependent
+from app.questionnaire.router import Router
+
+DependentSection = namedtuple("DependentSection", "section_id list_item_id is_complete")
 
 
 class QuestionnaireStoreUpdater:
@@ -20,6 +23,7 @@ class QuestionnaireStoreUpdater:
         current_location: Location,
         schema: QuestionnaireSchema,
         questionnaire_store: QuestionnaireStore,
+        router: Router,
         current_question: Mapping[str, Any],
     ):
         self._current_location = current_location
@@ -29,10 +33,12 @@ class QuestionnaireStoreUpdater:
         self._answer_store = self._questionnaire_store.answer_store
         self._list_store = self._questionnaire_store.list_store
         self._progress_store = self._questionnaire_store.progress_store
+        self._router = router
 
         self.dependent_block_id_by_section_key: Mapping[
             SectionKeyType, set[str]
         ] = defaultdict(set)
+        self.dependent_sections: set[DependentSection] = set()
 
     def save(self):
         if self.is_dirty():
@@ -252,7 +258,7 @@ class QuestionnaireStoreUpdater:
             )
         )
 
-    def _capture_dependencies_for_answer(self, answer_id: str) -> None:
+    def _capture_block_dependencies_for_answer(self, answer_id: str) -> None:
         """Captures a unique list of block ids that are dependents of the provided answer id.
 
         The block_ids are mapped to the section key. Dependencies in a repeating section use the list items
@@ -284,6 +290,24 @@ class QuestionnaireStoreUpdater:
                     (dependency.section_id, list_item_id)
                 ].add(dependency.block_id)
 
+    def _capture_section_dependencies_for_answer(self, answer_id: str) -> None:
+        """Captures a unique list of section ids that are dependents of the provided answer id."""
+
+        answer_id_section_dependents = (
+            self._schema.when_rules_section_dependencies_by_answer
+        )
+
+        for section_id in answer_id_section_dependents.get(answer_id, {}):
+            if repeating_list := self._schema.get_repeating_list_for_section(
+                section_id
+            ):
+                for list_item_id in self._list_store[repeating_list].items:
+                    self.dependent_sections.add(
+                        DependentSection(section_id, list_item_id, None)
+                    )
+            else:
+                self.dependent_sections.add(DependentSection(section_id, None, None))
+
     def update_answers(
         self, form_data: Mapping[str, Any], list_item_id: Optional[str] = None
     ) -> None:
@@ -298,16 +322,40 @@ class QuestionnaireStoreUpdater:
 
             answer_updated = self._update_answer(answer_id, list_item_id, answer_value)
             if answer_updated:
-                self._capture_dependencies_for_answer(answer_id)
+                self._capture_section_dependencies_for_answer(answer_id)
+                self._capture_block_dependencies_for_answer(answer_id)
 
-    def update_progress_for_dependant_sections(self) -> None:
+    def update_progress_for_dependent_sections(self) -> None:
         """Removes dependent blocks from the progress store and updates the progress to IN_PROGRESS.
+        Section progress is not updated for the current location as it is handled by `handle_post` on block handlers."""
 
-        Section progress is not updated for the current location as it is handled by `handle_post` on block handlers.
+        self._remove_dependent_blocks_and_capture_dependent_sections()
 
-        When updating the progress store, the routing path is not re-evaluated because
-        removing previously completed blocks means the section can't be complete.
-        """
+        for section in self.dependent_sections:
+
+            if (
+                section.section_id,
+                section.list_item_id,
+            ) not in self.started_section_keys():
+                continue
+
+            is_path_complete = section.is_complete
+            if is_path_complete is None:
+                is_path_complete = self._router.is_path_complete(
+                    self._router.routing_path(
+                        section.section_id, list_item_id=section.list_item_id
+                    )
+                )
+
+            self.update_section_status(
+                is_complete=is_path_complete,
+                section_id=section.section_id,
+                list_item_id=section.list_item_id,
+            )
+
+    def _remove_dependent_blocks_and_capture_dependent_sections(self) -> None:
+        """Removes dependent blocks from the progress store."""
+
         for (
             section_key,
             blocks_to_remove,
@@ -330,10 +378,14 @@ class QuestionnaireStoreUpdater:
                 section_id != self._current_location.section_id
                 or list_item_id != self._current_location.list_item_id
             ):
-                self.update_section_status(
-                    is_complete=False,
-                    section_id=section_id,
-                    list_item_id=list_item_id,
+                # Since this section key will be marked as incomplete, any `DependentSection` with is_complete as `None`
+                # can be removed as we do not need to re-evaluate progress as we already know the section would be incomplete.
+                dependent = DependentSection(section_id, list_item_id, None)
+                if dependent in self.dependent_sections:
+                    self.dependent_sections.remove(dependent)
+
+                self.dependent_sections.add(
+                    DependentSection(section_id, list_item_id, False)
                 )
 
     def started_section_keys(self, section_ids: Optional[Iterable[str]] = None):

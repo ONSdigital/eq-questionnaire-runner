@@ -104,6 +104,15 @@ class TestThankYou(IntegrationTestCase):
         self.assertInBody("Back to surveys")
         self.assertInBody(ACCOUNT_SERVICE_TODO_PATH)
 
+    def test_back_to_surveys_link_not_on_thank_you_theme_social(self):
+        self.launchSurvey("test_theme_social")
+        self.post()
+        self.post()
+
+        self.assertInUrl("thank-you")
+        self.assertNotInBody("Back to surveys")
+        self.assertNotInBody(ACCOUNT_SERVICE_TODO_PATH)
+
     def test_view_answers_after_submission_guidance(self):
         self.launchSurvey("test_thank_you")
         self.post({"answer": "Yes"})
