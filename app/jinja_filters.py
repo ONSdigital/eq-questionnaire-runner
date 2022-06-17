@@ -16,6 +16,7 @@ from app.settings import MAX_NUMBER
 
 blueprint = flask.Blueprint("filters", __name__)
 FormType = Mapping[str, Mapping[str, Any]]
+AnswerType = Mapping[str, Any]
 
 
 def mark_safe(context: nodes.EvalContext, value: str) -> Union[Markup, str]:
@@ -238,7 +239,7 @@ def should_wrap_with_fieldset_processor() -> dict[str, Callable]:
 
 
 @blueprint.app_template_filter()
-def get_width_for_number(answer: Mapping[str, int]) -> int:
+def get_width_for_number(answer: AnswerType) -> int:
     allowable_widths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 40, 50]
 
     min_value = answer.get("minimum", {}).get("value", 0)
@@ -273,7 +274,7 @@ class SelectConfig:
         self,
         option: SelectFieldBase._Option,
         index: int,
-        answer: Mapping[str, Any],
+        answer: AnswerType,
         form: Optional[FormType] = None,
     ) -> None:
         self.id = option.id
@@ -306,7 +307,7 @@ class RelationshipRadioConfig(SelectConfig):
         self,
         option: SelectFieldBase._Option,
         index: int,
-        answer: Mapping[str, Any],
+        answer: AnswerType,
     ) -> None:
         super().__init__(option, index, answer)
 
@@ -357,7 +358,7 @@ class OtherConfig:
 
 @blueprint.app_template_filter()  # type: ignore
 def map_select_config(
-    form: FormType, answer: Mapping[str, Any]
+    form: FormType, answer: AnswerType
 ) -> list[SelectConfig]:
     options = form["fields"][answer["id"]]
 
