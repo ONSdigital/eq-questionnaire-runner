@@ -1,7 +1,7 @@
 # coding: utf-8
 import re
 from decimal import Decimal
-from typing import Callable, Mapping, Optional, Union
+from typing import Callable, Mapping, Optional, Union, Any
 
 import flask
 import flask_babel
@@ -15,6 +15,7 @@ from app.questionnaire.rules.utils import parse_datetime
 from app.settings import MAX_NUMBER
 
 blueprint = flask.Blueprint("filters", __name__)
+FormType = Mapping[str, Mapping[str, Any]]
 
 
 def mark_safe(context: nodes.EvalContext, value: str) -> Union[Markup, str]:
@@ -272,8 +273,8 @@ class SelectConfig:
         self,
         option: SelectFieldBase._Option,
         index: int,
-        answer: Mapping[str, Union[int, slice]],
-        form: Optional[Mapping[str, Union[int, slice]]] = None,
+        answer: Mapping[str, Any],
+        form: Optional[FormType] = None,
     ) -> None:
         self.id = option.id
         self.name = option.name
@@ -305,7 +306,7 @@ class RelationshipRadioConfig(SelectConfig):
         self,
         option: SelectFieldBase._Option,
         index: int,
-        answer: Mapping[str, Union[int, slice]],
+        answer: Mapping[str, Any],
     ) -> None:
         super().__init__(option, index, answer)
 
@@ -356,7 +357,7 @@ class OtherConfig:
 
 @blueprint.app_template_filter()  # type: ignore
 def map_select_config(
-    form: Optional[Mapping[str, Union[int, slice]]], answer: Mapping[str, Union[int, slice]]
+    form: FormType, answer: Mapping[str, Any]
 ) -> list[SelectConfig]:
     options = form["fields"][answer["id"]]
 
