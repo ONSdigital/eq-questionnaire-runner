@@ -1221,6 +1221,86 @@ def test_get_calculation_total_with_no_input(app, answer_store, list_store):
         ] % {"total": "10"}
 
 
+def test_sum_calculated_field_value_source_answer(app, answer_store, list_store):
+    answer_total = Answer(answer_id="total-answer", value=10)
+
+    answer_store.add_or_update(answer_total)
+
+    with app.test_request_context():
+        schema = load_schema_from_name("test_validation_sum_against_value_source")
+
+        question_schema = schema.get_block("breakdown-block").get("question")
+
+        form_data = MultiDict(
+            {
+                "breakdown-1": "",
+                "breakdown-2": "5",
+                "breakdown-3": "4",
+                "breakdown-4": "1",
+            }
+        )
+
+        expected_form_data = {
+            "csrf_token": None,
+            "breakdown-1": None,
+            "breakdown-2": Decimal("5"),
+            "breakdown-3": Decimal("4"),
+            "breakdown-4": Decimal("1"),
+        }
+        form = generate_form(
+            schema,
+            question_schema,
+            answer_store,
+            list_store,
+            metadata={},
+            response_metadata={},
+            form_data=form_data,
+        )
+
+        form.validate()
+        assert form.data == expected_form_data
+
+
+def test_sum_calculated_field_value_source_calculated_summary(app, answer_store, list_store):
+    answer_total = Answer(answer_id="number-total-playback", value=10)
+
+    answer_store.add_or_update(answer_total)
+
+    with app.test_request_context():
+        schema = load_schema_from_name("test_validation_sum_against_value_source")
+
+        question_schema = schema.get_block("second-breakdown-block").get("question")
+
+        form_data = MultiDict(
+            {
+                "second-breakdown-1": "",
+                "second-breakdown-2": "5",
+                "second-breakdown-3": "4",
+                "second-breakdown-4": "1",
+            }
+        )
+
+        expected_form_data = {
+            "csrf_token": None,
+            "second-breakdown-1": None,
+            "second-breakdown-2": Decimal("5"),
+            "second-breakdown-3": Decimal("4"),
+            "second-breakdown-4": Decimal("1"),
+        }
+        form = generate_form(
+            schema,
+            question_schema,
+            answer_store,
+            list_store,
+            metadata={},
+            response_metadata={},
+            form_data=form_data,
+        )
+
+        form.validate()
+        assert form.data == expected_form_data
+
+
 def test_multi_calculation(app, answer_store, list_store):
     answer_total = Answer(answer_id="total-answer", value=10)
 

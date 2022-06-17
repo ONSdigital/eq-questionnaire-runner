@@ -245,7 +245,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             for question in self.get_all_questions_for_block(block):
                 if question["type"] == "Calculated":
                     self._update_answer_dependencies_for_calculations(
-                        question["calculations"],
+                        question["calculations"], block["id"]
                     )
                     continue
 
@@ -268,19 +268,25 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             }
 
     def _update_answer_dependencies_for_calculations(
-        self,
-        calculations: tuple[ImmutableDict[str, Any]],
+        self, calculations: tuple[ImmutableDict[str, Any]], block_id: str
     ) -> None:
         for calculation in calculations:
             if not (source_answer_id := calculation.get("answer_id")):
-                continue
+                if not (value := calculation.get("value")):
+                    continue
+                if isinstance(value, dict):
+                    self._update_answer_dependencies_for_value_source(
+                        value,
+                        block_id=block_id,
+                    )
+
             dependents = {
                 self._get_answer_dependent_for_block_id(
                     block_id=self.get_block_for_answer_id(answer_id)["id"]  # type: ignore
                 )
                 for answer_id in calculation["answers_to_calculate"]
             }
-            self._answer_dependencies_map[source_answer_id] |= dependents
+            self._answer_dependencies_map[source_answer_id] |= dependents  # type: ignore
 
     def _update_answer_dependencies_for_answer(
         self, answer: Mapping, *, block_id: str
