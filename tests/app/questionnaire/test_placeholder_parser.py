@@ -1,4 +1,4 @@
-from unittest.mock import Mock
+from mock import Mock
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore

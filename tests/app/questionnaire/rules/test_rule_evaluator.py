@@ -1,9 +1,9 @@
 from datetime import datetime, timezone
 from typing import Mapping, Optional, Union
-from unittest.mock import Mock
 
 import pytest
 from freezegun import freeze_time
+from mock import Mock
 
 from app.data_models import AnswerStore, ListStore
 from app.data_models.answer import Answer
