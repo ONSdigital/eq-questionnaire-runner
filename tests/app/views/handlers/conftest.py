@@ -76,7 +76,12 @@ def language():
 
 @pytest.fixture
 def schema():
-    return QuestionnaireSchema({"post_submission": {"view_response": True}})
+    return QuestionnaireSchema(
+        {
+            "post_submission": {"view_response": True},
+            "title": "Test schema - View Submitted Response",
+        }
+    )
 
 
 @pytest.fixture
