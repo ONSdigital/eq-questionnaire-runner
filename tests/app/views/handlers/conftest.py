@@ -1,9 +1,9 @@
 import uuid
 from datetime import datetime, timedelta, timezone
-from unittest.mock import Mock
 
 import pytest
 from freezegun import freeze_time
+from mock import Mock
 
 from app.data_models import QuestionnaireStore
 from app.data_models.session_data import SessionData
