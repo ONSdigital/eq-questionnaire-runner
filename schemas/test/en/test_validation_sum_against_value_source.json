@@ -43,6 +43,7 @@
                             "question": {
                                 "id": "total-question",
                                 "title": "Total",
+                                "description": ["Enter a number to breakdown in subsequent questions and calculated summary."],
                                 "type": "General",
                                 "answers": [
                                     {
@@ -64,7 +65,8 @@
                             "id": "breakdown-block",
                             "question": {
                                 "id": "breakdown-question",
-                                "title": "Breakdown validated against ”answers” value source",
+                                "title": "Breakdown validated against answers value source",
+                                "description": ["This is a breakdown of the total number from the previous question."],
                                 "type": "Calculated",
                                 "calculations": [
                                     {
@@ -124,7 +126,8 @@
                             "id": "second-breakdown-block",
                             "question": {
                                 "id": "second-breakdown-question",
-                                "title": "Breakdown validated against ”calculated_summary” value source",
+                                "title": "Breakdown validated against calculated summary value source",
+                                "description": ["This is a breakdown of the grand total from the previous calculated summary."],
                                 "type": "Calculated",
                                 "calculations": [
                                     {
