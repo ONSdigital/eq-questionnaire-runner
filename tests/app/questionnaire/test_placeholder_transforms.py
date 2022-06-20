@@ -38,6 +38,37 @@ def test_format_number(number, expected, transformer):
     assert transformer().format_number(number) == expected
 
 
+@pytest.mark.parametrize(
+    "value, expected",
+    (
+        (123, "123%"),
+        ("123.4", "123.4%"),
+        ("123.40", "123.40%"),
+        ("1000", "1000%"),
+        (0, "0%"),
+        (0.00, "0.0%"),
+        (Decimal("0.123"), "0.123%"),
+    ),
+)
+def test_format_percentage(value, expected, transformer):
+    assert transformer().format_percentage(value) == expected
+
+
+@pytest.mark.parametrize(
+    "unit, value, unit_length, expected",
+    (
+        ("millimeter", Decimal(0.123), "short", "0.123 mm"),
+        ("centimeter", "123", "short", "123 cm"),
+        ("kilometer", "123", "long", "123 kilometre"),
+        ("mile", "123", "short", "123 mi"),
+        ("mile", "123", "narrow", "123mi"),
+        ("mile", "123", None, "123 mi"),
+    ),
+)
+def test_format_unit(unit, value, unit_length, expected, transformer):
+    assert transformer().format_unit(unit, value, unit_length) == expected
+
+
 def test_format_list(transformer):
     transform = transformer()
     names = ["Alice Aardvark", "Bob Berty Brown", "Dave Dixon Davies"]

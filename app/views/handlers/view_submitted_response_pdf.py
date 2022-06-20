@@ -1,4 +1,5 @@
 import io
+import re
 
 import pdfkit
 from flask import current_app
@@ -54,7 +55,11 @@ class ViewSubmittedResponsePDF(ViewSubmittedResponse):
     @property
     def filename(self) -> str:
         """The name to use for the PDF file"""
-        return f"{self._metadata['schema_name']}.pdf"
+        formatted_title = re.sub(
+            "[^0-9a-zA-Z]+", "-", self._schema.json["title"].lower()
+        )
+        formatted_date = self._questionnaire_store.submitted_at.date().isoformat()  # type: ignore
+        return f"{formatted_title}-{formatted_date}.pdf"
 
     def get_pdf(self) -> io.BytesIO:
         """
