@@ -67,7 +67,9 @@ def format_percentage(value: Union[int, Decimal]) -> str:
     return f"{value}%"
 
 
-def format_unit(unit: Union[int, Decimal], value: Union[int, Decimal], length: str = "short") -> str:
+def format_unit(
+    unit: Union[int, Decimal], value: Union[int, Decimal], length: str = "short"
+) -> str:
     formatted_unit: str = units.format_unit(
         value=value,
         measurement_unit=unit,
