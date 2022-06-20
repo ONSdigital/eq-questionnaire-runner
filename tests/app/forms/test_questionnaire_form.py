@@ -1261,7 +1261,9 @@ def test_sum_calculated_field_value_source_answer(app, answer_store, list_store)
         assert form.data == expected_form_data
 
 
-def test_sum_calculated_field_value_source_calculated_summary(app, answer_store, list_store):
+def test_sum_calculated_field_value_source_calculated_summary(
+    app, answer_store, list_store
+):
     answer_total = Answer(answer_id="number-total-playback", value=10)
 
     answer_store.add_or_update(answer_total)
