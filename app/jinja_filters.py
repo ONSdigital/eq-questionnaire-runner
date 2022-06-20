@@ -594,13 +594,13 @@ def map_summary_item_config_processor() -> dict[str, Callable]:
 
 @blueprint.app_template_filter()  # type: ignore
 def map_list_collector_config(
-    list_items: list,
+    list_items: list[dict[str, Union[str, int]]],
     icon: str,
     edit_link_text: str = "",
     edit_link_aria_label: str = "",
     remove_link_text: str = "",
     remove_link_aria_label: str = "",
-) -> list:
+) -> list[dict[str, list[dict[str, Any]]]]:
     rows = []
 
     for index, list_item in enumerate(list_items, start=1):
