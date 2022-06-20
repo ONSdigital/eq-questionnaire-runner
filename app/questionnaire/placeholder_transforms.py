@@ -3,6 +3,7 @@ from decimal import Decimal
 from typing import TYPE_CHECKING, Optional, Sequence, Sized, Union
 from urllib.parse import quote
 
+from babel import units
 from babel.dates import format_datetime
 from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
@@ -131,6 +132,25 @@ class PlaceholderTransforms:
             return formatted_decimal
 
         return ""
+
+    @staticmethod
+    def format_percentage(value: Union[int, Decimal, str]) -> str:
+        return f"{value}%"
+
+    def format_unit(
+        self,
+        unit: str,
+        value: Union[int, Decimal, str],
+        unit_length: Optional[str] = None,
+    ) -> str:
+        length = unit_length or "short"
+        formatted_unit: str = units.format_unit(
+            value=value,
+            measurement_unit=unit,
+            length=length,
+            locale=self.locale,
+        )
+        return formatted_unit
 
     @staticmethod
     def calculate_date_difference(first_date: str, second_date: str) -> str:
