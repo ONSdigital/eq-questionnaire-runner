@@ -588,23 +588,51 @@ def test_correct_survey_title_in_context(
 
 
 @pytest.mark.parametrize(
-    "theme, language, expected",
+    "theme, language, schema, expected",
     [
-        ("default", "en", []),
-        ("business", "en", []),
-        ("health", "en", []),
-        ("social", "en", []),
-        ("northernireland", "en", []),
-        ("census", "en", [{"nisra": False}]),
-        ("census", "cy", [{"nisra": False}]),
-        ("census-nisra", "en", [{"nisra": True}]),
+        (
+            "default",
+            "en",
+            QuestionnaireSchema({"survey_id": "001"}),
+            [{"survey_id": "001"}],
+        ),
+        (
+            "default",
+            "en",
+            QuestionnaireSchema({"survey_id": "001", "form_type": "test"}),
+            [{"form_type": "test", "survey_id": "001"}],
+        ),
+        (
+            "business",
+            "en",
+            QuestionnaireSchema(
+                {"survey_id": "001", "form_type": "test", "title": "test_title"}
+            ),
+            [{"form_type": "test", "survey_id": "001", "title": "test_title"}],
+        ),
+        ("health", "en", QuestionnaireSchema({"survey_id": "001"}), []),
+        ("social", "en", QuestionnaireSchema({"survey_id": "001"}), []),
+        (
+            "northernireland",
+            "en",
+            QuestionnaireSchema({"survey_id": "001"}),
+            [{"survey_id": "001"}],
+        ),
+        ("census", "en", QuestionnaireSchema({"survey_id": "001"}), [{"nisra": False}]),
+        ("census", "cy", QuestionnaireSchema({"survey_id": "001"}), [{"nisra": False}]),
+        (
+            "census-nisra",
+            QuestionnaireSchema({"survey_id": "001"}),
+            "en",
+            [{"nisra": True}],
+        ),
     ],
 )
 def test_correct_data_layer_in_context(
-    app: Flask, theme: str, language: str, expected: str
+    app: Flask, theme: str, language: str, schema: QuestionnaireSchema, expected: str
 ):
     with app.app_context():
-        survey_config = get_survey_config(theme=theme, language=language)
+        survey_config = get_survey_config(theme=theme, language=language, schema=schema)
 
         result = ContextHelper(
             language="en",
