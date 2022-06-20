@@ -23,7 +23,7 @@ def mark_safe(context: nodes.EvalContext, value: str) -> Union[Markup, str]:
     return Markup(value) if context.autoescape else value
 
 
-def strip_tags(value: str) -> str:
+def strip_tags(value: str) -> Markup:
     return escape(Markup(value).striptags())
 
 
