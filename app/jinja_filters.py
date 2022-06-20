@@ -131,7 +131,7 @@ def get_format_multilined_string(value: str) -> str:
     return f"{value_with_line_break_tag}"
 
 
-def get_format_date(value: str) -> str:
+def get_format_date(value: Markup) -> str:
     """Format a datetime string.
 
     :param (jinja2.nodes.EvalContext) context: Evaluation context.
