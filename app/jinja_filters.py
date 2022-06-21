@@ -171,9 +171,9 @@ def format_datetime(
     return mark_safe(context, result)
 
 
-def get_format_date_range(start_date: Markup, end_date: Markup) -> str:
-    date_range: str
-    date_range == flask_babel.gettext(
+def get_format_date_range(start_date: Markup, end_date: Markup) -> Markup:
+    date_range: Markup
+    date_range = flask_babel.gettext(
         "%(from_date)s to %(to_date)s",
         from_date=get_format_date(start_date),
         to_date=get_format_date(end_date),
