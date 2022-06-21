@@ -63,33 +63,40 @@ class BusinessSurveyConfig(
         return f"{self.base_url}/help"
 
     def get_service_links(
-        self, sign_out_url: str, *, is_authenticated: bool, ru_ref: Optional[str]
+        self,
+        sign_out_url: str,
+        *,
+        is_authenticated: bool,
+        theme: bool,
+        ru_ref: Optional[str],
     ) -> Optional[list[dict]]:
-        links = [
-            HeaderLink(
-                lazy_gettext("Help"),
-                self._get_account_service_help_url(
-                    is_authenticated=is_authenticated, ru_ref=ru_ref
-                ),
-                id="header-link-help",
-            ).__dict__
-        ]
+        links = []
+        if theme:
+            links = [
+                HeaderLink(
+                    lazy_gettext("Help"),
+                    self._get_account_service_help_url(
+                        is_authenticated=is_authenticated, ru_ref=ru_ref
+                    ),
+                    id="header-link-help",
+                ).__dict__
+            ]
 
-        if is_authenticated:
-            links.extend(
-                [
-                    HeaderLink(
-                        lazy_gettext("My account"),
-                        self.account_service_my_account_url,
-                        id="header-link-my-account",
-                    ).__dict__,
-                    HeaderLink(
-                        lazy_gettext("Sign out"),
-                        sign_out_url,
-                        id="header-link-sign-out",
-                    ).__dict__,
-                ]
-            )
+            if is_authenticated:
+                links.extend(
+                    [
+                        HeaderLink(
+                            lazy_gettext("My account"),
+                            self.account_service_my_account_url,
+                            id="header-link-my-account",
+                        ).__dict__,
+                        HeaderLink(
+                            lazy_gettext("Sign out"),
+                            sign_out_url,
+                            id="header-link-sign-out",
+                        ).__dict__,
+                    ]
+                )
 
         return links
 

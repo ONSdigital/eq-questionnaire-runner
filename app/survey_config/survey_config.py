@@ -60,6 +60,7 @@ class SurveyConfig:
         sign_out_url: str,
         *,
         is_authenticated: bool,
+        theme: bool,
         ru_ref: Optional[str],
     ) -> Optional[list[dict]]:
         return None

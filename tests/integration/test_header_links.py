@@ -86,7 +86,7 @@ class TestHeaderLinksPreSubmission(TestHeaderLinks):
         # Then
         self.assert_my_account_link_does_not_exist()
         self.assert_sign_out_link_does_not_exist()
-        self.assert_help_link_exist_not_authenticated()
+        self.assert_help_link_does_not_exist()
 
     def test_links_not_in_header_when_valid_session_theme_social(self):
         # Given
@@ -127,7 +127,7 @@ class TestHeaderLinksPostSubmission(TestHeaderLinks):
         # Then
         self.assert_my_account_link_does_not_exist()
         self.assert_sign_out_link_does_not_exist()
-        self.assert_help_link_exist_not_authenticated()
+        self.assert_help_link_does_not_exist()
 
     def test_links_not_in_header_when_valid_session_theme_social(self):
         # Given
