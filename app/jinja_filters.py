@@ -155,7 +155,7 @@ def get_format_date(value: Markup) -> str:
 
 @pass_eval_context  # type: ignore
 @blueprint.app_template_filter()
-def format_datetime(context: nodes.EvalContext, date_time: datetime) -> str:
+def format_datetime(context: nodes.EvalContext, date_time: datetime) -> Union[str, Markup]:
     # flask babel on formatting will automatically convert based on the time zone specified in setup.py
     formatted_date = flask_babel.format_date(date_time, format="d MMMM yyyy")
     formatted_time = flask_babel.format_time(date_time, format="HH:mm")
@@ -169,7 +169,7 @@ def format_datetime(context: nodes.EvalContext, date_time: datetime) -> str:
     return mark_safe(context, result)
 
 
-def get_format_date_range(start_date: Markup, end_date: Markup) -> flask_babel:
+def get_format_date_range(start_date: Markup, end_date: Markup) -> Any:
     return flask_babel.gettext(
         "%(from_date)s to %(to_date)s",
         from_date=get_format_date(start_date),
@@ -242,7 +242,7 @@ def should_wrap_with_fieldset_processor() -> dict[str, Callable]:
 
 
 @blueprint.app_template_filter()
-def get_width_for_number(answer: AnswerType) -> int:
+def get_width_for_number(answer: AnswerType) -> Optional[int]:
     allowable_widths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 40, 50]
 
     min_value = answer.get("minimum", {}).get("value", 0)
