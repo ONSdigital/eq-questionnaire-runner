@@ -1,7 +1,7 @@
 from typing import Mapping, Optional, Union
-from unittest.mock import Mock
 
 import pytest
+from mock import Mock
 
 from app.data_models import AnswerStore, ListStore
 from app.data_models.answer import Answer, AnswerDict

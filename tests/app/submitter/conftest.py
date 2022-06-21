@@ -1,10 +1,10 @@
 # pylint: disable=redefined-outer-name
 import uuid
-from unittest.mock import MagicMock
 
 import pytest
 from google.cloud.storage import Blob
 from google.resumable_media import InvalidResponse
+from mock import MagicMock
 from requests import Response
 
 from app.data_models import QuestionnaireStore

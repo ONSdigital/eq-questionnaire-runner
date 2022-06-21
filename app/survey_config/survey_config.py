@@ -40,7 +40,9 @@ class SurveyConfig:
     footer_legal_links: Optional[Iterable[Mapping]] = None
     survey_title: Optional[LazyString] = None
     design_system_theme: Optional[str] = None
-    data_layer: Iterable[Union[Mapping]] = field(default_factory=list, compare=False)
+    data_layer: list[dict[str, Union[str, bool]]] = field(
+        default_factory=list, compare=False
+    )
     sign_out_button_text: str = lazy_gettext("Save and exit survey")
     contact_us_url: str = field(init=False)
     cookie_settings_url: str = field(init=False)
@@ -61,3 +63,11 @@ class SurveyConfig:
         ru_ref: Optional[str],
     ) -> Optional[list[dict]]:
         return None
+
+    def get_data_layer(  # pylint: disable=no-self-use
+        self, tx_id: Optional[str] = None
+    ) -> list[dict]:
+        if tx_id:
+            return [{"tx_id": tx_id}]
+
+        return []

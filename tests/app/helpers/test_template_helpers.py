@@ -11,6 +11,7 @@ from app.survey_config import (
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
     NorthernIrelandBusinessSurveyConfig,
+    SocialSurveyConfig,
     SurveyConfig,
     WelshCensusSurveyConfig,
 )
@@ -41,6 +42,20 @@ def test_footer_context_business_theme(app: Flask, expected_footer_business_them
         ).context["footer"]
 
     assert result == expected_footer_business_theme
+
+
+def test_footer_context_social_theme(app: Flask, expected_footer_social_theme):
+    with app.test_client():
+        survey_config = SocialSurveyConfig()
+
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["footer"]
+
+    assert result == expected_footer_social_theme
 
 
 def test_footer_warning_in_context_census_theme(app: Flask):
@@ -92,6 +107,26 @@ def test_get_page_header_context_business(app: Flask):
 
     with app.app_context():
         survey_config = SurveyConfig()
+
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["page_header"]
+
+    assert result == expected
+
+
+def test_get_page_header_context_social(app: Flask):
+    expected = {
+        "logo": "ons-logo-en",
+        "logoAlt": "Office for National Statistics logo",
+        "title": "ONS Social Surveys",
+    }
+
+    with app.app_context():
+        survey_config = SocialSurveyConfig()
 
         result = ContextHelper(
             language="en",
@@ -201,6 +236,12 @@ def test_get_page_header_context_census_nisra(app: Flask):
                 ],
             },
         ),
+        (SocialSurveyConfig(), False, None),
+        (
+            SocialSurveyConfig(schema=QuestionnaireSchema({"survey_id": "001"})),
+            True,
+            None,
+        ),
     ],
 )
 def test_service_links_context(
@@ -241,6 +282,10 @@ def test_service_links_context(
         (
             NorthernIrelandBusinessSurveyConfig(),
             "https://surveys.ons.gov.uk/contact-us/",
+        ),
+        (
+            SocialSurveyConfig(),
+            "https://rh.ons.gov.uk/contact-us/",
         ),
     ],
 )
@@ -291,6 +336,10 @@ def test_sign_out_button_text_context(
             NorthernIrelandBusinessSurveyConfig(),
             "https://surveys.ons.gov.uk/cookies/",
         ),
+        (
+            SocialSurveyConfig(),
+            "https://rh.ons.gov.uk/cookies/",
+        ),
     ],
 )
 def test_cookie_settings_url_context(
@@ -315,6 +364,7 @@ def test_cookie_settings_url_context(
             BusinessSurveyConfig(),
             "https://surveys.ons.gov.uk/my-account",
         ),
+        (SocialSurveyConfig(), None),
     ],
 )
 def test_account_service_my_account_url_context(
@@ -334,6 +384,10 @@ def test_account_service_my_account_url_context(
         (
             BusinessSurveyConfig(),
             "https://surveys.ons.gov.uk/surveys/todo",
+        ),
+        (
+            SocialSurveyConfig(),
+            None,
         ),
     ],
 )
@@ -359,6 +413,10 @@ def test_account_service_my_todo_url_context(
             NorthernIrelandBusinessSurveyConfig(),
             "https://surveys.ons.gov.uk/sign-in/logout",
         ),
+        (
+            SocialSurveyConfig(),
+            "https://rh.ons.gov.uk/sign-in/logout",
+        ),
     ],
 )
 def test_account_service_log_out_url_context(
@@ -379,8 +437,8 @@ def test_account_service_log_out_url_context(
         ("business", "cy", BusinessSurveyConfig),
         ("health", "en", SurveyConfig),
         ("health", "cy", SurveyConfig),
-        ("social", "en", SurveyConfig),
-        ("social", "cy", SurveyConfig),
+        ("social", "en", SocialSurveyConfig),
+        ("social", "cy", SocialSurveyConfig),
         ("northernireland", "en", NorthernIrelandBusinessSurveyConfig),
         ("northernireland", "cy", NorthernIrelandBusinessSurveyConfig),
         ("census", "en", CensusSurveyConfig),
@@ -399,17 +457,20 @@ def test_get_survey_config(
 
 
 @pytest.mark.parametrize(
-    "survey_config_type",
-    [SurveyConfig, BusinessSurveyConfig],
+    "survey_config_type, base_url",
+    [
+        (SocialSurveyConfig, "https://rh.ons.gov.uk"),
+        (SurveyConfig, "http://localhost"),
+        (BusinessSurveyConfig, "http://localhost"),
+    ],
 )
 def test_survey_config_base_url_provided_used_in_links(
-    app: Flask, survey_config_type: Type[SurveyConfig]
+    app: Flask, survey_config_type: Type[SurveyConfig], base_url: str
 ):
-    base_url = "http://localhost"
     with app.app_context():
         result = survey_config_type(base_url=base_url)
 
-    assert result.base_url == "http://localhost"
+    assert result.base_url == base_url
 
     urls_to_check = [
         result.account_service_my_account_url,
@@ -505,7 +566,7 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
         ("default", "en", "ONS Business Surveys"),
         ("business", "en", "ONS Business Surveys"),
         ("health", "en", None),
-        ("social", "en", None),
+        ("social", "en", "ONS Social Surveys"),
         ("northernireland", "en", "ONS Business Surveys"),
         ("census", "en", "Census 2021"),
         ("census", "cy", "Census 2021"),
@@ -527,23 +588,51 @@ def test_correct_survey_title_in_context(
 
 
 @pytest.mark.parametrize(
-    "theme, language, expected",
+    "theme, language, schema, expected",
     [
-        ("default", "en", []),
-        ("business", "en", []),
-        ("health", "en", []),
-        ("social", "en", []),
-        ("northernireland", "en", []),
-        ("census", "en", [{"nisra": False}]),
-        ("census", "cy", [{"nisra": False}]),
-        ("census-nisra", "en", [{"nisra": True}]),
+        (
+            "default",
+            "en",
+            QuestionnaireSchema({"survey_id": "001"}),
+            [{"survey_id": "001"}],
+        ),
+        (
+            "default",
+            "en",
+            QuestionnaireSchema({"survey_id": "001", "form_type": "test"}),
+            [{"form_type": "test", "survey_id": "001"}],
+        ),
+        (
+            "business",
+            "en",
+            QuestionnaireSchema(
+                {"survey_id": "001", "form_type": "test", "title": "test_title"}
+            ),
+            [{"form_type": "test", "survey_id": "001", "title": "test_title"}],
+        ),
+        ("health", "en", QuestionnaireSchema({"survey_id": "001"}), []),
+        ("social", "en", QuestionnaireSchema({"survey_id": "001"}), []),
+        (
+            "northernireland",
+            "en",
+            QuestionnaireSchema({"survey_id": "001"}),
+            [{"survey_id": "001"}],
+        ),
+        ("census", "en", QuestionnaireSchema({"survey_id": "001"}), [{"nisra": False}]),
+        ("census", "cy", QuestionnaireSchema({"survey_id": "001"}), [{"nisra": False}]),
+        (
+            "census-nisra",
+            QuestionnaireSchema({"survey_id": "001"}),
+            "en",
+            [{"nisra": True}],
+        ),
     ],
 )
 def test_correct_data_layer_in_context(
-    app: Flask, theme: str, language: str, expected: str
+    app: Flask, theme: str, language: str, schema: QuestionnaireSchema, expected: str
 ):
     with app.app_context():
-        survey_config = get_survey_config(theme=theme, language=language)
+        survey_config = get_survey_config(theme=theme, language=language, schema=schema)
 
         result = ContextHelper(
             language="en",

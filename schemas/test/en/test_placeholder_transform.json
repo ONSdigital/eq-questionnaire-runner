@@ -226,6 +226,107 @@
                                 "type": "General"
                             },
                             "type": "Question"
+                        },
+                        {
+                            "type": "Question",
+                            "id": "training-percentage-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "training-percentage",
+                                        "mandatory": false,
+                                        "decimal_places": 0,
+                                        "type": "Percentage",
+                                        "label": "Percentage of company budget",
+                                        "default": 0
+                                    }
+                                ],
+                                "id": "training-percentage-question",
+                                "title": "What percentage of the company budget you spend on training ?",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "id": "training-percentage-interstitial",
+                            "content": {
+                                "title": "Percentage of budget spent on training interstitial",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "The percentage of the company budget you spend on training is <em>{answer_percentage}</em>",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "answer_percentage",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "format_percentage",
+                                                            "arguments": {
+                                                                "value": {
+                                                                    "source": "answers",
+                                                                    "identifier": "training-percentage"
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "type": "Interstitial"
+                        },
+                        {
+                            "type": "Question",
+                            "id": "average-distance-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "average-distance",
+                                        "mandatory": false,
+                                        "unit": "mile",
+                                        "type": "Unit",
+                                        "unit_length": "long",
+                                        "label": "Average commuting distance",
+                                        "default": 0
+                                    }
+                                ],
+                                "id": "average-distance-question",
+                                "title": "What is the average commuting distance of an employee (in miles) ?",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "id": "average-distance-interstitial",
+                            "content": {
+                                "title": "Average commuting distance interstitial",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "The average commuting distance of an employee is <em>{answer_distance}</em>",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "answer_distance",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "format_unit",
+                                                            "arguments": {
+                                                                "value": {
+                                                                    "source": "answers",
+                                                                    "identifier": "average-distance"
+                                                                },
+                                                                "unit": "mile",
+                                                                "unit_length": "long"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "type": "Interstitial"
                         }
                     ]
                 }

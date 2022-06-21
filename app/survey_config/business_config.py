@@ -21,15 +21,6 @@ class BusinessSurveyConfig(
         self.base_url = self._stripped_base_url
         super().__post_init__()
 
-        if self.schema:
-            self.data_layer: list[dict] = [
-                {
-                    key: self.schema.json[key]
-                    for key in ["form_type", "survey_id", "title"]
-                    if key in self.schema.json
-                }
-            ]
-
         if not self.account_service_log_out_url:
             self.account_service_log_out_url: str = f"{self.base_url}/sign-in/logout"
 
@@ -101,6 +92,18 @@ class BusinessSurveyConfig(
             )
 
         return links
+
+    def get_data_layer(self, tx_id: Optional[str] = None) -> list[dict]:
+        data_layer = [{"tx_id": tx_id}] if tx_id else []
+        if self.schema:
+            data_layer.append(
+                {
+                    key: self.schema.json[key]
+                    for key in ["form_type", "survey_id", "title"]
+                    if key in self.schema.json
+                }
+            )
+        return data_layer
 
     @property
     def _stripped_base_url(self) -> str:
