@@ -111,7 +111,7 @@ class Router:
     ) -> RoutingPath:
         return self._path_finder.routing_path(section_id, list_item_id)
 
-    def get_next_location_url(
+    def get_next_location_urls(
         self,
         location: Location,
         routing_path: RoutingPath,

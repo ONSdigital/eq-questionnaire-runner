@@ -97,7 +97,7 @@ class AWSReverseProxied:
         return self.app(environ, start_response)
 
 
-def create_apps(  # noqa: C901  pylint: disable=too-complex, too-many-statements
+def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     setting_overrides=None,
 ):
     application = Flask(__name__, template_folder="../templates")
