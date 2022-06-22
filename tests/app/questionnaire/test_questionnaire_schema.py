@@ -705,3 +705,16 @@ def test_when_rules_section_dependencies_by_answer(
             "primary-person",
         },
     } == schema.when_rules_section_dependencies_by_answer
+
+
+def test_when_rules_section_dependencies_calculated_summary(
+    section_dependencies_calculated_summary_schema,
+):
+    schema = section_dependencies_calculated_summary_schema
+
+    assert {
+        "milk-answer": {"dependent-enabled-section", "dependent-question-section"},
+        "eggs-answer": {"dependent-enabled-section", "dependent-question-section"},
+        "bread-answer": {"dependent-enabled-section", "dependent-question-section"},
+        "cheese-answer": {"dependent-enabled-section", "dependent-question-section"},
+    } == schema.when_rules_section_dependencies_by_answer
