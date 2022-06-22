@@ -67,12 +67,11 @@ class BusinessSurveyConfig(
         sign_out_url: str,
         *,
         is_authenticated: bool,
-        theme: bool,
+        cookie_has_theme: bool,
         ru_ref: Optional[str],
     ) -> Optional[list[dict]]:
-        links = []
-        if theme:
-            links = [
+        links = (
+            [
                 HeaderLink(
                     lazy_gettext("Help"),
                     self._get_account_service_help_url(
@@ -81,22 +80,24 @@ class BusinessSurveyConfig(
                     id="header-link-help",
                 ).__dict__
             ]
-
-            if is_authenticated:
-                links.extend(
-                    [
-                        HeaderLink(
-                            lazy_gettext("My account"),
-                            self.account_service_my_account_url,
-                            id="header-link-my-account",
-                        ).__dict__,
-                        HeaderLink(
-                            lazy_gettext("Sign out"),
-                            sign_out_url,
-                            id="header-link-sign-out",
-                        ).__dict__,
-                    ]
-                )
+            if cookie_has_theme
+            else []
+        )
+        if is_authenticated:
+            links.extend(
+                [
+                    HeaderLink(
+                        lazy_gettext("My account"),
+                        self.account_service_my_account_url,
+                        id="header-link-my-account",
+                    ).__dict__,
+                    HeaderLink(
+                        lazy_gettext("Sign out"),
+                        sign_out_url,
+                        id="header-link-sign-out",
+                    ).__dict__,
+                ]
+            )
 
         return links
 
