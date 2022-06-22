@@ -603,10 +603,10 @@ def map_summary_item_config_processor() -> dict[str, Callable]:
 def map_list_collector_config(
     list_items: list[dict[str, Union[str, int]]],
     icon: str,
-    edit_link_text: str = "",
-    edit_link_aria_label: str = "",
-    remove_link_text: str = "",
-    remove_link_aria_label: str = "",
+    edit_link_text: Optional[str] = None,
+    edit_link_aria_label: Optional[str] = None,
+    remove_link_text: Optional[str] = None,
+    remove_link_aria_label: Optional[str] = None,
 ) -> list[dict[str, list[dict[str, Any]]]]:
     rows = []
 
@@ -614,22 +614,30 @@ def map_list_collector_config(
         item_name = list_item.get("item_title")
 
         actions = []
+        edit_link_aria_label_text = None
+        remove_link_aria_label_text = None
 
         if edit_link_text:
+            if edit_link_aria_label:
+                edit_link_aria_label_text = edit_link_aria_label.format(item_name=item_name)
+
             actions.append(
                 {
                     "text": edit_link_text,
-                    "ariaLabel": edit_link_aria_label.format(item_name=item_name),
+                    "ariaLabel": edit_link_aria_label_text,
                     "url": list_item.get("edit_link"),
                     "attributes": {"data-qa": f"list-item-change-{index}-link"},
                 }
             )
 
         if not list_item.get("primary_person") and remove_link_text:
+            if remove_link_aria_label:
+                remove_link_aria_label_text = remove_link_aria_label.format(item_name=item_name)
+
             actions.append(
                 {
                     "text": remove_link_text,
-                    "ariaLabel": remove_link_aria_label.format(item_name=item_name),
+                    "ariaLabel": remove_link_aria_label_text,
                     "url": list_item.get("remove_link"),
                     "attributes": {"data-qa": f"list-item-remove-{index}-link"},
                 }
