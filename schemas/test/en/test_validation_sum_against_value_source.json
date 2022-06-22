@@ -65,7 +65,7 @@
                             "id": "breakdown-block",
                             "question": {
                                 "id": "breakdown-question",
-                                "title": "Breakdown validated against answers value source",
+                                "title": "Breakdown validated against an answer value source",
                                 "description": ["This is a breakdown of the total number from the previous question."],
                                 "type": "Calculated",
                                 "calculations": [
