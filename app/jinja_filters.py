@@ -619,7 +619,9 @@ def map_list_collector_config(
 
         if edit_link_text:
             if edit_link_aria_label:
-                edit_link_aria_label_text = edit_link_aria_label.format(item_name=item_name)
+                edit_link_aria_label_text = edit_link_aria_label.format(
+                    item_name=item_name
+                )
 
             actions.append(
                 {
@@ -632,7 +634,9 @@ def map_list_collector_config(
 
         if not list_item.get("primary_person") and remove_link_text:
             if remove_link_aria_label:
-                remove_link_aria_label_text = remove_link_aria_label.format(item_name=item_name)
+                remove_link_aria_label_text = remove_link_aria_label.format(
+                    item_name=item_name
+                )
 
             actions.append(
                 {
