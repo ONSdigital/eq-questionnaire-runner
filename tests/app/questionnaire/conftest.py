@@ -15,6 +15,7 @@ from app.questionnaire.placeholder_renderer import (
     find_pointers_containing,
 )
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
+from app.questionnaire.router import Router
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
 
@@ -1068,6 +1069,11 @@ def mock_empty_answer_store(mocker):
 
 
 @pytest.fixture
+def mock_router(mocker):
+    return mocker.MagicMock(spec=Router)
+
+
+@pytest.fixture
 def mock_empty_progress_store(mocker):
     progress_store = mocker.MagicMock(spec=ProgressStore)
     progress_store.locations = []
@@ -1172,3 +1178,15 @@ def dynamic_radio_options_from_checkbox_schema():
 @pytest.fixture
 def dynamic_answer_options_function_driven_schema():
     return load_schema_from_name("test_dynamic_answer_options_function_driven")
+
+
+@pytest.fixture
+def skipping_section_dependencies_schema():
+    return load_schema_from_name("test_new_routing_and_skipping_section_dependencies")
+
+
+@pytest.fixture
+def section_dependencies_calculated_summary_schema():
+    return load_schema_from_name(
+        "test_new_routing_and_skipping_section_dependencies_calculated_summary"
+    )

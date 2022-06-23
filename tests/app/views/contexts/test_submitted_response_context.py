@@ -1,9 +1,9 @@
 from datetime import datetime, timedelta, timezone
-from unittest.mock import Mock
 
 import pytest
 from flask import Flask
 from flask_babel import format_datetime
+from mock import Mock
 
 from app.data_models import QuestionnaireStore
 from app.data_models.answer import Answer

@@ -451,6 +451,12 @@ def test_answer_dependencies_for_calculated_summary(
                 for_list=None,
                 answer_id=None,
             ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="set-min-max-block",
+                for_list=None,
+                answer_id=None,
+            ),
         },
         "second-number-answer": {
             AnswerDependent(
@@ -462,6 +468,12 @@ def test_answer_dependencies_for_calculated_summary(
             AnswerDependent(
                 section_id="default-section",
                 block_id="currency-total-playback-with-fourth",
+                for_list=None,
+                answer_id=None,
+            ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="set-min-max-block",
                 for_list=None,
                 answer_id=None,
             ),
@@ -479,6 +491,12 @@ def test_answer_dependencies_for_calculated_summary(
                 for_list=None,
                 answer_id=None,
             ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="set-min-max-block",
+                for_list=None,
+                answer_id=None,
+            ),
         },
         "third-number-answer": {
             AnswerDependent(
@@ -490,6 +508,12 @@ def test_answer_dependencies_for_calculated_summary(
             AnswerDependent(
                 section_id="default-section",
                 block_id="currency-total-playback-with-fourth",
+                for_list=None,
+                answer_id=None,
+            ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="set-min-max-block",
                 for_list=None,
                 answer_id=None,
             ),
@@ -648,3 +672,49 @@ def test_answer_dependencies_for_dynamic_options_function_driven(
             ),
         }
     }
+
+
+def test_when_rules_section_dependencies_by_section(
+    skipping_section_dependencies_schema,
+):
+    schema = skipping_section_dependencies_schema
+    assert {
+        "household-personal-details-section": {
+            "skip-confirmation-section",
+            "skip-section",
+        },
+        "household-section": {"skip-section"},
+        "primary-person": {"skip-confirmation-section", "skip-section"},
+        "skip-confirmation-section": {"skip-section"},
+    } == schema.when_rules_section_dependencies_by_section
+
+
+def test_when_rules_section_dependencies_by_answer(
+    skipping_section_dependencies_schema,
+):
+    schema = skipping_section_dependencies_schema
+    assert {
+        "enable-section-answer": {"household-section"},
+        "skip-age-answer": {
+            "household-personal-details-section",
+            "primary-person",
+            "skip-confirmation-section",
+        },
+        "skip-confirmation-answer": {
+            "household-personal-details-section",
+            "primary-person",
+        },
+    } == schema.when_rules_section_dependencies_by_answer
+
+
+def test_when_rules_section_dependencies_calculated_summary(
+    section_dependencies_calculated_summary_schema,
+):
+    schema = section_dependencies_calculated_summary_schema
+
+    assert {
+        "milk-answer": {"dependent-enabled-section", "dependent-question-section"},
+        "eggs-answer": {"dependent-enabled-section", "dependent-question-section"},
+        "bread-answer": {"dependent-enabled-section", "dependent-question-section"},
+        "cheese-answer": {"dependent-enabled-section", "dependent-question-section"},
+    } == schema.when_rules_section_dependencies_by_answer

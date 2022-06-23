@@ -18,6 +18,7 @@ from app.survey_config import (
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
     NorthernIrelandBusinessSurveyConfig,
+    SocialSurveyConfig,
     SurveyConfig,
     WelshCensusSurveyConfig,
 )
@@ -68,7 +69,7 @@ class ContextHelper:
             "survey_title": self._survey_title,
             "cdn_url": self._cdn_url,
             "address_lookup_api_url": self._address_lookup_api,
-            "data_layer": self._survey_config.data_layer,
+            "data_layer": self.data_layer_context,
             "include_csrf_token": self._include_csrf_token,
             "google_tag_manager_id": self._google_tag_manager_id,
             "google_tag_manager_auth": self._google_tag_manager_auth,
@@ -93,6 +94,14 @@ class ContextHelper:
             }
 
         return None
+
+    @property
+    def data_layer_context(
+        self,
+    ) -> list[dict]:
+        metadata = get_metadata(current_user)
+        tx_id = metadata.get("tx_id") if metadata else None
+        return self._survey_config.get_data_layer(tx_id=tx_id)
 
     @property
     def page_header_context(self) -> dict[str, Union[bool, str, LazyString]]:
@@ -164,7 +173,7 @@ def survey_config_mapping(
         "default": BusinessSurveyConfig,
         "business": BusinessSurveyConfig,
         "health": SurveyConfig,
-        "social": SurveyConfig,
+        "social": SocialSurveyConfig,
         "northernireland": NorthernIrelandBusinessSurveyConfig,
         "census": (WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig),
         "census-nisra": CensusNISRASurveyConfig,
