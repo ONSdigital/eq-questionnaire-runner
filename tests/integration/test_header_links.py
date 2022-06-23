@@ -95,6 +95,25 @@ class TestHeaderLinksPreSubmission(TestHeaderLinks):
         self.assert_sign_out_link_does_not_exist()
         self.assert_help_link_exist_not_authenticated_after_sign_out()
 
+    def test_links_in_header_when_no_session_but_cookie_exists_theme_social(self):
+        # Given
+        self.launchSurvey("test_theme_social")
+        self.assertInUrl("/questionnaire/radio/")
+        self.saveAndSignOut()
+
+        # When
+        self.assertStatusCode(302)
+        self.get("questionnaire/")
+
+        # Then
+        self.assertInUrl("questionnaire/")
+        cookie = self.getCookie()
+        self.assertIsNotNone(cookie.get("theme"))
+        self.assertEqual(cookie.get("theme"), "social")
+        self.assert_my_account_link_does_not_exist()
+        self.assert_sign_out_link_does_not_exist()
+        self.assert_help_link_does_not_exist()
+
     def test_links_not_in_header_when_no_session(self):
         # Given
         self.get("/questionnaire")
