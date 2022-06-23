@@ -1303,6 +1303,41 @@ def test_sum_calculated_field_value_source_calculated_summary(
         assert form.data == expected_form_data
 
 
+def test_sum_calculated_field_value_source_not_equal_validation_error(app, answer_store, list_store):
+    answer_total = Answer(answer_id="total-answer", value=10)
+
+    answer_store.add_or_update(answer_total)
+
+    with app.test_request_context():
+        schema = load_schema_from_name("test_validation_sum_against_value_source")
+
+        question_schema = schema.get_block("breakdown-block").get("question")
+
+        form_data = MultiDict(
+            {
+                "breakdown-1": "",
+                "breakdown-2": "",
+                "breakdown-3": "4",
+                "breakdown-4": "1",
+            }
+        )
+
+        form = generate_form(
+            schema,
+            question_schema,
+            answer_store,
+            list_store,
+            metadata={},
+            response_metadata={},
+            form_data=form_data,
+        )
+
+        form.validate()
+        assert form.question_errors["breakdown-question"] == schema.error_messages[
+            "TOTAL_SUM_NOT_EQUALS"
+        ] % {"total": "10"}
+
+
 def test_multi_calculation(app, answer_store, list_store):
     answer_total = Answer(answer_id="total-answer", value=10)
 
