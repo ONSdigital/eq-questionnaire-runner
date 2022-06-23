@@ -15,9 +15,10 @@ from app.authentication.no_questionnaire_state_exception import (
 from app.authentication.no_token_exception import NoTokenException
 from app.globals import get_metadata
 from app.helpers.language_helper import handle_language
-from app.helpers.template_helpers import render_template
+from app.helpers.template_helpers import render_template, get_survey_config
 from app.submitter.previously_submitted_exception import PreviouslySubmittedException
 from app.submitter.submission_failed import SubmissionFailedException
+from app.survey_config.survey_types import SurveyTypes
 from app.views.handlers.confirm_email import (
     ConfirmationEmailFulfilmentRequestPublicationFailed,
 )
@@ -49,10 +50,23 @@ def log_exception(exception, status_code):
 
 def _render_error_page(status_code, template=None, **kwargs):
     handle_language()
-    template = template or status_code
+    business_survey_config = get_survey_config(theme=SurveyTypes.business.value)
+    other_survey_config = get_survey_config(theme=SurveyTypes.social.value)
+
+    business_logout_url = business_survey_config.account_service_log_out_url
+    other_logout_url = other_survey_config.account_service_log_out_url
+    business_contact_us_url = business_survey_config.contact_us_url
+    other_contact_us_url = other_survey_config.contact_us_url
 
     return (
-        render_template(template=f"errors/{template}", **kwargs),
+        render_template(
+            template=f"errors/{template}",
+            business_logout_url=business_logout_url,
+            other_logout_url=other_logout_url,
+            business_contact_us_url=business_contact_us_url,
+            other_contact_us_url=other_contact_us_url,
+            **kwargs,
+        ),
         status_code,
     )
 

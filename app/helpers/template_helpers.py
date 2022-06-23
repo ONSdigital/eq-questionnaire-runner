@@ -49,6 +49,11 @@ class ContextHelper:
         self._google_tag_manager_auth = current_app.config.get(
             "EQ_GOOGLE_TAG_MANAGER_AUTH"
         )
+        self._survey_type = cookie_session.get("theme")
+        # self._social_account_service_log_out_url = "https://rh.ons.gov.uk/sign-in/logout"
+        # self._business_account_service_log_out_url = "test"
+        self._contact_us_business_social = "https://surveys.onsdigital.uk/contact-us"
+        self._contact_us_other = "https://surveys.onsdigital.uk/contact-us"
 
     @property
     def context(self) -> dict[str, Any]:
@@ -73,6 +78,7 @@ class ContextHelper:
             "include_csrf_token": self._include_csrf_token,
             "google_tag_manager_id": self._google_tag_manager_id,
             "google_tag_manager_auth": self._google_tag_manager_auth,
+            "survey_type": self._survey_type,
         }
 
     @property
@@ -193,6 +199,10 @@ def get_survey_config(
 ) -> SurveyConfig:
     # The fallback to assigning SURVEY_TYPE to theme is only being added until
     # business feedback on the differentiation between theme and SURVEY_TYPE.
+    if session_store := get_session_store():
+        if session_data := session_store.session_data:
+            schema = load_schema_from_session_data(session_data)
+
     language = language or get_locale().language
     theme = theme or get_survey_type()
     base_url = (
@@ -208,19 +218,14 @@ def get_survey_config(
 
 
 def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
+    session_expires_at = None
     language = get_locale().language
-    schema, session_expires_at = None, None
     if session_store := get_session_store():
-        if session_data := session_store.session_data:
-            schema = load_schema_from_session_data(session_data)
-
         if session_expiry := session_store.expiration_time:
             session_expires_at = session_expiry.isoformat()
 
-    survey_config = get_survey_config(
-        language=language,
-        schema=schema,
-    )
+    survey_config = get_survey_config()
+
     is_post_submission = request.blueprint == "post_submission"
     include_csrf_token = bool(
         request.url_rule
