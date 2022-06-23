@@ -80,7 +80,6 @@ class TestHeaderLinksPreSubmission(TestHeaderLinks):
         # Given
         self.launchSurvey("test_thank_you")
         self.assertInUrl("questionnaire/did-you-know/")
-        cookie = self.getCookie()
         self.saveAndSignOut()
 
         # When
@@ -89,6 +88,7 @@ class TestHeaderLinksPreSubmission(TestHeaderLinks):
 
         # Then
         self.assertInUrl("questionnaire/")
+        cookie = self.getCookie()
         self.assertIsNotNone(cookie.get("theme"))
         self.assertEqual(cookie.get("theme"), "default")
         self.assert_my_account_link_does_not_exist()
