@@ -429,7 +429,7 @@ def test_answer_dependencies_for_calculated_question_repeating(
                 answer_id=None,
             )
         },
-        "spending-breakdown-1": {
+        "entertainment-spending-answer": {
             AnswerDependent(
                 section_id="breakdown-section",
                 block_id="second-spending-breakdown-block",

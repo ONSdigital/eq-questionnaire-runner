@@ -3,6 +3,7 @@ import ListCollectorAddPage from "../../../../generated_pages/validation_sum_aga
 import ListCollectorSummaryPage from "../../../../generated_pages/validation_sum_against_total_repeating_with_dependent_section/householders-section-summary.page";
 
 import TotalSpendingPage from "../../../../generated_pages/validation_sum_against_total_repeating_with_dependent_section/total-spending-block.page";
+import EntertainmentSpendingPage from "../../../../generated_pages/validation_sum_against_total_repeating_with_dependent_section/entertainment-spending-block.page";
 import HouseholdOverviewSectionSummary from "../../../../generated_pages/validation_sum_against_total_repeating_with_dependent_section/household-overview-section-summary.page";
 
 import BreakdownDrivingPage from "../../../../generated_pages/validation_sum_against_total_repeating_with_dependent_section/breakdown-driving-block.page";
@@ -30,6 +31,11 @@ const addPersonToHousehold = (firstName, lastName) => {
 const answerAndSubmitTotalSpendingQuestion = (total) => {
   $(TotalSpendingPage.totalSpending()).setValue(total);
   $(TotalSpendingPage.submit()).click();
+};
+
+const answerAndSubmitEntertainmentSpendingQuestion = (total) => {
+  $(EntertainmentSpendingPage.entertainmentSpending()).setValue(total);
+  $(EntertainmentSpendingPage.submit()).click();
 };
 
 const answerAndSubmitSpendingBreakdownQuestion = (breakdown1, breakdown2, breakdown3) => {
@@ -67,7 +73,6 @@ const assertRepeatingSectionOnChange = (repeatIndex, currentBreakdown1, currentB
 
   it("When I update my answers to equal the new total spending, Then I should be able to get to the section summary and the breakdown section should be marked as 'Completed'", () => {
     answerAndSubmitSpendingBreakdownQuestion(newTotal, 0, 0);
-    answerAndSubmitEntertainmentBreakdownQuestion(newTotal, 0, 0);
 
     expect(browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
     $(BreakdownSectionSummary.submit()).click();
@@ -89,6 +94,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
 
       // Complete household overview section
       answerAndSubmitTotalSpendingQuestion(1000);
+      answerAndSubmitEntertainmentSpendingQuestion(500);
       $(HouseholdOverviewSectionSummary.submit()).click();
 
       expect($(HubPage.summaryRowState(householderSectionId)).getText()).to.equal("Completed");
@@ -153,7 +159,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       $(BreakdownDrivingPage.submit()).click();
 
       answerAndSubmitSpendingBreakdownQuestion(1000, 500, 0);
-      answerAndSubmitEntertainmentBreakdownQuestion(250, 250, 500);
+      answerAndSubmitEntertainmentBreakdownQuestion(250, 150, 100);
       $(BreakdownSectionSummary.submit()).click();
       expect($(HubPage.summaryRowState(repeatingSectionId(2))).getText()).to.equal("Completed");
     });

@@ -236,6 +236,29 @@
                                     }
                                 ]
                             }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "entertainment-spending-block",
+                            "question": {
+                                "id": "entertainment-spending-question",
+                                "title": "What is the maximum spending limit on entertainment for a household member per month?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "entertainment-spending-answer",
+                                        "label": "Entertaintment spending",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2,
+                                        "minimum": {
+                                            "value": 0,
+                                            "exclusive": true
+                                        }
+                                    }
+                                ]
+                            }
                         }
                     ]
                 }
@@ -428,7 +451,7 @@
                                         "calculation_type": "sum",
                                         "value": {
                                             "source": "answers",
-                                            "identifier": "spending-breakdown-1"
+                                            "identifier": "entertainment-spending-answer"
                                         },
                                         "answers_to_calculate": [
                                             "second-spending-breakdown-1",
