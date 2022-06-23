@@ -1303,7 +1303,9 @@ def test_sum_calculated_field_value_source_calculated_summary(
         assert form.data == expected_form_data
 
 
-def test_sum_calculated_field_value_source_not_equal_validation_error(app, answer_store, list_store):
+def test_sum_calculated_field_value_source_not_equal_validation_error(
+    app, answer_store, list_store
+):
     answer_total = Answer(answer_id="total-answer", value=10)
 
     answer_store.add_or_update(answer_total)
