@@ -396,6 +396,84 @@
                                     }
                                 ]
                             }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "second-spending-breakdown-block",
+                            "question": {
+                                "id": "second-spending-breakdown-question",
+                                "title": {
+                                    "text": "How do you spend the monthly entertainment budget of <em>{entertainment}</em>?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "entertainment",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_currency",
+                                                    "arguments": {
+                                                        "number": {
+                                                            "source": "answers",
+                                                            "identifier": "spending-breakdown-1"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "Calculated",
+                                "warning": "These answers must add up to the entertainment budget provided in the spending breakdown question",
+                                "calculations": [
+                                    {
+                                        "calculation_type": "sum",
+                                        "value": {
+                                            "source": "answers",
+                                            "identifier": "spending-breakdown-1"
+                                        },
+                                        "answers_to_calculate": [
+                                            "second-spending-breakdown-1",
+                                            "second-spending-breakdown-2",
+                                            "second-spending-breakdown-3",
+                                            "second-spending-breakdown-4"
+                                        ],
+                                        "conditions": ["equals"]
+                                    }
+                                ],
+                                "answers": [
+                                    {
+                                        "id": "second-spending-breakdown-1",
+                                        "label": "Cinema",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "second-spending-breakdown-2",
+                                        "label": "Concerts",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "second-spending-breakdown-3",
+                                        "label": "Sporting events",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "second-spending-breakdown-4",
+                                        "label": "Other",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
                         }
                     ]
                 }

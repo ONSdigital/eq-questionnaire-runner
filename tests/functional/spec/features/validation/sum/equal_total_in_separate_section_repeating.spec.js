@@ -7,6 +7,7 @@ import HouseholdOverviewSectionSummary from "../../../../generated_pages/validat
 
 import BreakdownDrivingPage from "../../../../generated_pages/validation_sum_against_total_repeating_with_dependent_section/breakdown-driving-block.page";
 import SpendingBreakdownPage from "../../../../generated_pages/validation_sum_against_total_repeating_with_dependent_section/spending-breakdown-block.page";
+import EntertainmentBreakdownPage from "../../../../generated_pages/validation_sum_against_total_repeating_with_dependent_section/second-spending-breakdown-block.page";
 import BreakdownSectionSummary from "../../../../generated_pages/validation_sum_against_total_repeating_with_dependent_section/breakdown-section-summary.page";
 
 import HubPage from "../../../../base_pages/hub.page";
@@ -44,6 +45,13 @@ const assertSpendingBreakdownAnswer = (breakdown1, breakdown2, breakdown3) => {
   expect($(SpendingBreakdownPage.spendingBreakdown3()).getValue()).to.equal(breakdown3);
 };
 
+const answerAndSubmitEntertainmentBreakdownQuestion = (breakdown1, breakdown2, breakdown3) => {
+  $(EntertainmentBreakdownPage.secondSpendingBreakdown1()).setValue(breakdown1);
+  $(EntertainmentBreakdownPage.secondSpendingBreakdown2()).setValue(breakdown2);
+  $(EntertainmentBreakdownPage.secondSpendingBreakdown3()).setValue(breakdown3);
+  $(EntertainmentBreakdownPage.submit()).click();
+};
+
 const assertRepeatingSectionOnChange = (repeatIndex, currentBreakdown1, currentBreakdown2, currentBreakdown3, newTotal) => {
   it(`When I click 'Continue with section' on repeating section ${repeatIndex}, Then I should be taken to the spending breakdown question and my previous answers should be prefilled`, () => {
     $(HubPage.summaryRowLink(repeatingSectionId(repeatIndex))).click();
@@ -59,6 +67,7 @@ const assertRepeatingSectionOnChange = (repeatIndex, currentBreakdown1, currentB
 
   it("When I update my answers to equal the new total spending, Then I should be able to get to the section summary and the breakdown section should be marked as 'Completed'", () => {
     answerAndSubmitSpendingBreakdownQuestion(newTotal, 0, 0);
+    answerAndSubmitEntertainmentBreakdownQuestion(newTotal, 0, 0);
 
     expect(browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
     $(BreakdownSectionSummary.submit()).click();
@@ -103,6 +112,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
 
     it("When I enter an answer that is equal to the total for the spending question, Then I should be able to get to the section summary and the repeating section should be marked as 'Completed'", () => {
       answerAndSubmitSpendingBreakdownQuestion(500, 250, 250);
+      answerAndSubmitEntertainmentBreakdownQuestion(250, 150, 100);
 
       expect(browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
       $(BreakdownSectionSummary.submit()).click();
@@ -143,6 +153,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       $(BreakdownDrivingPage.submit()).click();
 
       answerAndSubmitSpendingBreakdownQuestion(1000, 500, 0);
+      answerAndSubmitEntertainmentBreakdownQuestion(250, 250, 500);
       $(BreakdownSectionSummary.submit()).click();
       expect($(HubPage.summaryRowState(repeatingSectionId(2))).getText()).to.equal("Completed");
     });
