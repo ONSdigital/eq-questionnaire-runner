@@ -448,6 +448,65 @@ def test_answer_dependencies_for_calculated_question_repeating(
     }
 
 
+def test_answer_dependencies_for_calculated_question_value_source(
+    calculated_question_with_dependent_sections_schema,
+):
+    schema = calculated_question_with_dependent_sections_schema
+
+    assert schema.answer_dependencies == {
+        None: {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="breakdown-block",
+                for_list=None,
+                answer_id=None,
+            ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="second-breakdown-block",
+                for_list=None,
+                answer_id=None,
+            ),
+        },
+        "breakdown-1": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="number-total-playback",
+                for_list=None,
+                answer_id=None,
+            ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="second-breakdown-block",
+                for_list=None,
+                answer_id=None,
+            ),
+        },
+        "breakdown-2": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="number-total-playback",
+                for_list=None,
+                answer_id=None,
+            ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="second-breakdown-block",
+                for_list=None,
+                answer_id=None,
+            ),
+        },
+        "total-answer": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="breakdown-block",
+                for_list=None,
+                answer_id=None,
+            )
+        },
+    }
+
+
 def test_answer_dependencies_for_calculated_summary(
     calculated_summary_schema,
 ):
