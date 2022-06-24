@@ -89,7 +89,6 @@ class TestHeaderLinksPreSubmission(TestHeaderLinks):
         # Then
         self.assertInUrl("questionnaire/")
         cookie = self.getCookie()
-        self.assertIsNotNone(cookie.get("theme"))
         self.assertEqual(cookie.get("theme"), "default")
         self.assert_my_account_link_does_not_exist()
         self.assert_sign_out_link_does_not_exist()
@@ -108,7 +107,6 @@ class TestHeaderLinksPreSubmission(TestHeaderLinks):
         # Then
         self.assertInUrl("questionnaire/")
         cookie = self.getCookie()
-        self.assertIsNotNone(cookie.get("theme"))
         self.assertEqual(cookie.get("theme"), "social")
         self.assert_my_account_link_does_not_exist()
         self.assert_sign_out_link_does_not_exist()
