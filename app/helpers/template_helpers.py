@@ -83,6 +83,7 @@ class ContextHelper:
         if service_links := self._survey_config.get_service_links(
             sign_out_url=self._sign_out_url,
             is_authenticated=current_user.is_authenticated,
+            cookie_has_theme=bool(cookie_session.get("theme")),
             ru_ref=metadata.get("ru_ref") if metadata else None,  # type: ignore
         ):
             return {
