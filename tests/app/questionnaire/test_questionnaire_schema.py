@@ -421,14 +421,6 @@ def test_answer_dependencies_for_calculated_question_repeating(
     schema = calculated_question_with_dependent_sections_schema_repeating
 
     assert schema.answer_dependencies == {
-        None: {
-            AnswerDependent(
-                section_id="breakdown-section",
-                block_id="second-spending-breakdown-block",
-                for_list="people",
-                answer_id=None,
-            )
-        },
         "entertainment-spending-answer": {
             AnswerDependent(
                 section_id="breakdown-section",
@@ -454,20 +446,6 @@ def test_answer_dependencies_for_calculated_question_value_source(
     schema = calculated_question_with_dependent_sections_schema
 
     assert schema.answer_dependencies == {
-        None: {
-            AnswerDependent(
-                section_id="default-section",
-                block_id="breakdown-block",
-                for_list=None,
-                answer_id=None,
-            ),
-            AnswerDependent(
-                section_id="default-section",
-                block_id="second-breakdown-block",
-                for_list=None,
-                answer_id=None,
-            ),
-        },
         "breakdown-1": {
             AnswerDependent(
                 section_id="default-section",

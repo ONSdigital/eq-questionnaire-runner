@@ -279,6 +279,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                         value,
                         block_id=block_id,
                     )
+                    continue
 
             dependents = {
                 self._get_answer_dependent_for_block_id(
