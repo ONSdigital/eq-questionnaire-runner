@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Mutually Exclusive",
+    "title": "Mutually Exclusive Multiple",
     "theme": "default",
-    "description": "A questionnaire to demo mutually exclusive answers with single checkbox override",
+    "description": "A questionnaire to demo mutually exclusive answers with multiple radio override",
     "metadata": [
         {
             "name": "user_id",
@@ -31,19 +31,19 @@
     },
     "sections": [
         {
-            "id": "mutually-exclusive-checkbox-section",
+            "id": "mutually-exclusive-radio-section",
             "title": "Checkbox",
             "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "id": "mutually-exclusive-mandatory-group",
-                    "title": "Mutually Exclusive With Single Checkbox Override - Mandatory",
+                    "title": "Mutually Exclusive With Multiple Radio Override - Mandatory",
                     "blocks": [
                         {
                             "type": "Question",
-                            "id": "mutually-exclusive-checkbox",
+                            "id": "mutually-exclusive-Radio",
                             "question": {
-                                "id": "mutually-exclusive-checkbox-question",
+                                "id": "mutually-exclusive-Radio-question",
                                 "type": "MutuallyExclusive",
                                 "title": "What is your nationality?",
                                 "warning": "This is important",
@@ -79,12 +79,17 @@
                                     {
                                         "id": "checkbox-exclusive-answer",
                                         "mandatory": false,
-                                        "type": "Checkbox",
+                                        "type": "Radio",
                                         "options": [
                                             {
                                                 "label": "I prefer not to say",
                                                 "description": "Some description",
                                                 "value": "I prefer not to say"
+                                            },
+                                            {
+                                                "label": "I am an alien",
+                                                "description": "Some description",
+                                                "value": "I am an alien"
                                             }
                                         ]
                                     }
@@ -102,7 +107,7 @@
             "groups": [
                 {
                     "id": "mutually-exclusive-mandatory-date-group",
-                    "title": "Mutually Exclusive With Single Checkbox Override - Mandatory",
+                    "title": "Mutually Exclusive With Multiple Radio Override - Mandatory",
                     "blocks": [
                         {
                             "type": "Question",
@@ -122,11 +127,15 @@
                                     {
                                         "id": "mandatory-date-exclusive-answer",
                                         "mandatory": false,
-                                        "type": "Checkbox",
+                                        "type": "Radio",
                                         "options": [
                                             {
                                                 "label": "I prefer not to say",
                                                 "value": "I prefer not to say"
+                                            },
+                                            {
+                                                "label": "I have never worked",
+                                                "value": "I have never worked"
                                             }
                                         ]
                                     }
@@ -144,7 +153,7 @@
             "groups": [
                 {
                     "id": "mutually-exclusive-date-group",
-                    "title": "Mutually Exclusive With Single Checkbox Override - Optional",
+                    "title": "Mutually Exclusive With Multiple Radio Override - Optional",
                     "blocks": [
                         {
                             "type": "Question",
@@ -162,13 +171,17 @@
                                         "type": "Date"
                                     },
                                     {
-                                        "id": "date-exclusive-answer",
+                                        "id": "date-exclusive-answers",
                                         "mandatory": false,
-                                        "type": "Checkbox",
+                                        "type": "Radio",
                                         "options": [
                                             {
                                                 "label": "I prefer not to say",
                                                 "value": "I prefer not to say"
+                                            },
+                                            {
+                                                "label": "I have never worked",
+                                                "value": "I have never worked"
                                             }
                                         ]
                                     }
@@ -186,7 +199,7 @@
             "groups": [
                 {
                     "id": "mutually-exclusive-currency-group",
-                    "title": "Mutually Exclusive With Single Checkbox Override - Optional",
+                    "title": "Mutually Exclusive With Multiple Radio Override - Optional",
                     "blocks": [
                         {
                             "type": "Question",
@@ -207,11 +220,15 @@
                                     {
                                         "id": "currency-exclusive-answer",
                                         "mandatory": false,
-                                        "type": "Checkbox",
+                                        "type": "Radio",
                                         "options": [
                                             {
                                                 "label": "I prefer not to say",
                                                 "value": "I prefer not to say"
+                                            },
+                                            {
+                                                "label": "I have no income",
+                                                "value": "I have no income"
                                             }
                                         ]
                                     }
@@ -229,7 +246,7 @@
             "groups": [
                 {
                     "id": "mutually-exclusive-number-group",
-                    "title": "Mutually Exclusive With Single Checkbox Override - Optional",
+                    "title": "Mutually Exclusive With Multiple Radio Override - Optional",
                     "blocks": [
                         {
                             "type": "Question",
@@ -250,11 +267,15 @@
                                     {
                                         "id": "number-exclusive-answer",
                                         "mandatory": false,
-                                        "type": "Checkbox",
+                                        "type": "Radio",
                                         "options": [
                                             {
                                                 "label": "I prefer not to say",
                                                 "value": "I prefer not to say"
+                                            },
+                                            {
+                                                "label": "I dont have a favourite number",
+                                                "value": "I dont have a favourite number"
                                             }
                                         ]
                                     }
@@ -272,7 +293,7 @@
             "groups": [
                 {
                     "id": "mutually-exclusive-percentage-group",
-                    "title": "Mutually Exclusive With Single Checkbox Override - Optional",
+                    "title": "Mutually Exclusive With Multiple Radio Override - Optional",
                     "blocks": [
                         {
                             "type": "Question",
@@ -295,11 +316,15 @@
                                     {
                                         "id": "percentage-exclusive-answer",
                                         "mandatory": false,
-                                        "type": "Checkbox",
+                                        "type": "Radio",
                                         "options": [
                                             {
                                                 "label": "I prefer not to say",
                                                 "value": "I prefer not to say"
+                                            },
+                                            {
+                                                "label": "My income hasn't changed",
+                                                "value": "My income hasn't changed"
                                             }
                                         ]
                                     }
@@ -317,7 +342,7 @@
             "groups": [
                 {
                     "id": "mutually-exclusive-textfield-group",
-                    "title": "Mutually Exclusive With Single Checkbox Override - Optional",
+                    "title": "Mutually Exclusive With Multiple Radio Override - Optional",
                     "blocks": [
                         {
                             "type": "Question",
@@ -337,11 +362,15 @@
                                     {
                                         "id": "textfield-exclusive-answer",
                                         "mandatory": false,
-                                        "type": "Checkbox",
+                                        "type": "Radio",
                                         "options": [
                                             {
                                                 "label": "I prefer not to say",
                                                 "value": "I prefer not to say"
+                                            },
+                                            {
+                                                "label": "I dont have a favorite colour",
+                                                "value": "I dont have a favorite colour"
                                             }
                                         ]
                                     }
@@ -359,7 +388,7 @@
             "groups": [
                 {
                     "id": "mutually-exclusive-month-year-date-group",
-                    "title": "Mutually Exclusive With Single Checkbox Override - Optional",
+                    "title": "Mutually Exclusive With Multiple Radio Override - Optional",
                     "blocks": [
                         {
                             "type": "Question",
@@ -382,11 +411,15 @@
                                     {
                                         "id": "month-year-date-exclusive-answer",
                                         "mandatory": false,
-                                        "type": "Checkbox",
+                                        "type": "Radio",
                                         "options": [
                                             {
                                                 "label": "I prefer not to say",
                                                 "value": "I prefer not to say"
+                                            },
+                                            {
+                                                "label": "I have never worked",
+                                                "value": "I have never worked"
                                             }
                                         ]
                                     }
@@ -404,7 +437,7 @@
             "groups": [
                 {
                     "id": "mutually-exclusive-year-date-group",
-                    "title": "Mutually Exclusive With Single Checkbox Override - Optional",
+                    "title": "Mutually Exclusive With Multiple Radio Override - Optional",
                     "blocks": [
                         {
                             "type": "Question",
@@ -427,11 +460,15 @@
                                     {
                                         "id": "year-date-exclusive-answer",
                                         "mandatory": false,
-                                        "type": "Checkbox",
+                                        "type": "Radio",
                                         "options": [
                                             {
                                                 "label": "I prefer not to say",
                                                 "value": "I prefer not to say"
+                                            },
+                                            {
+                                                "label": "I have never worked",
+                                                "value": "I have never worked"
                                             }
                                         ]
                                     }
@@ -449,7 +486,7 @@
             "groups": [
                 {
                     "id": "mutually-exclusive-unit-group",
-                    "title": "Mutually Exclusive With Single Checkbox Override - Optional",
+                    "title": "Mutually Exclusive With Multiple Radio Override - Optional",
                     "blocks": [
                         {
                             "type": "Question",
@@ -471,11 +508,15 @@
                                     {
                                         "id": "unit-exclusive-answer",
                                         "mandatory": false,
-                                        "type": "Checkbox",
+                                        "type": "Radio",
                                         "options": [
                                             {
                                                 "label": "I prefer not to say",
                                                 "value": "I prefer not to say"
+                                            },
+                                            {
+                                                "label": "I have never lived in the UK",
+                                                "value": "I have never lived in the UK"
                                             }
                                         ]
                                     }
@@ -493,7 +534,7 @@
             "groups": [
                 {
                     "id": "mutually-exclusive-duration-group",
-                    "title": "Mutually Exclusive With Single Checkbox Override - Optional",
+                    "title": "Mutually Exclusive With Multiple Radio Override - Optional",
                     "blocks": [
                         {
                             "type": "Question",
@@ -513,11 +554,15 @@
                                     {
                                         "id": "duration-exclusive-answer",
                                         "mandatory": false,
-                                        "type": "Checkbox",
+                                        "type": "Radio",
                                         "options": [
                                             {
                                                 "label": "I prefer not to say",
                                                 "value": "I prefer not to say"
+                                            },
+                                            {
+                                                "label": "I have never worked",
+                                                "value": "I have never worked"
                                             }
                                         ]
                                     }
@@ -535,7 +580,7 @@
             "groups": [
                 {
                     "id": "mutually-exclusive-textarea-group",
-                    "title": "Mutually Exclusive With Single Checkbox Override - Optional",
+                    "title": "Mutually Exclusive With Multiple Radio Override - Optional",
                     "blocks": [
                         {
                             "type": "Question",
@@ -554,11 +599,15 @@
                                     {
                                         "id": "textarea-exclusive-answer",
                                         "mandatory": false,
-                                        "type": "Checkbox",
+                                        "type": "Radio",
                                         "options": [
                                             {
                                                 "label": "I prefer not to say",
                                                 "value": "I prefer not to say"
+                                            },
+                                            {
+                                                "label": "I have never worked",
+                                                "value": "I have never worked"
                                             }
                                         ]
                                     }

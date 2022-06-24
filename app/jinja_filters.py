@@ -320,11 +320,11 @@ class OtherConfig:
 
 
 @blueprint.app_template_filter()  # type: ignore
-def map_select_config(form, answer):
-    options = form["fields"][answer["id"]]
+def map_select_config(form, answers):
+    options = form["fields"][answers["id"]]
 
     return [
-        SelectConfig(option, index, answer, form)
+        SelectConfig(option, index, answers, form)
         for index, option in enumerate(options)
     ]
 
