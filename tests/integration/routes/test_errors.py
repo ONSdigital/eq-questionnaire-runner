@@ -27,7 +27,7 @@ class TestErrors(IntegrationTestCase):
         self.assertStatusNotFound()
 
         # Test that my account link does not show
-        self.assertInBody("Help")
+        self.assertNotInBody("Help")
         self.assertNotInBody("My account")
         self.assertNotInBody("Sign out")
 

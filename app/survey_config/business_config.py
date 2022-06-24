@@ -63,18 +63,26 @@ class BusinessSurveyConfig(
         return f"{self.base_url}/help"
 
     def get_service_links(
-        self, sign_out_url: str, *, is_authenticated: bool, ru_ref: Optional[str]
+        self,
+        sign_out_url: str,
+        *,
+        is_authenticated: bool,
+        cookie_has_theme: bool,
+        ru_ref: Optional[str],
     ) -> Optional[list[dict]]:
-        links = [
-            HeaderLink(
-                lazy_gettext("Help"),
-                self._get_account_service_help_url(
-                    is_authenticated=is_authenticated, ru_ref=ru_ref
-                ),
-                id="header-link-help",
-            ).__dict__
-        ]
-
+        links = (
+            [
+                HeaderLink(
+                    lazy_gettext("Help"),
+                    self._get_account_service_help_url(
+                        is_authenticated=is_authenticated, ru_ref=ru_ref
+                    ),
+                    id="header-link-help",
+                ).__dict__
+            ]
+            if cookie_has_theme
+            else []
+        )
         if is_authenticated:
             links.extend(
                 [
