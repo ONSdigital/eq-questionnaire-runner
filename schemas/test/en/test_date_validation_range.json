@@ -47,7 +47,7 @@
                                 "guidance": {
                                     "contents": [
                                         {
-                                            "list": ["Enter a date range between 23 days and 1 month and 20 days apart"]
+                                            "description": "Enter a date range between 23 days and 1 month and 20 days apart"
                                         }
                                     ]
                                 },
