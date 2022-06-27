@@ -180,8 +180,8 @@ class TestErrorPageTemplates(IntegrationTestCase):
             # Then
             self.assertException()
             self.assertInBody(
-                '<p>If you are completing a business survey and you need to speak to someone about your survey,'
-                ' please <a href=\"http://upstream.url/contact-us/\">contact us</a>.</p>'
+                "<p>If you are completing a business survey and you need to speak to someone about your survey,"
+                ' please <a href="http://upstream.url/contact-us/">contact us</a>.</p>'
             )
 
     def test_submission_failed_theme_default(self):
