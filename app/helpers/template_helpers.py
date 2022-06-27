@@ -50,10 +50,6 @@ class ContextHelper:
             "EQ_GOOGLE_TAG_MANAGER_AUTH"
         )
         self._survey_type = cookie_session.get("theme")
-        # self._social_account_service_log_out_url = "https://rh.ons.gov.uk/sign-in/logout"
-        # self._business_account_service_log_out_url = "test"
-        self._contact_us_business_social = "https://surveys.onsdigital.uk/contact-us"
-        self._contact_us_other = "https://surveys.onsdigital.uk/contact-us"
 
     @property
     def context(self) -> dict[str, Any]:
