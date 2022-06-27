@@ -1,4 +1,4 @@
-{% extends 'layouts/_base.html' %}
+{% extends 'errors/_base.html' %}
 
 {% set hide_sign_out_button = True %}
 
@@ -7,7 +7,7 @@
 {% block main %}
 <h1>{{ _("Sorry, there is a problem") }}</h1>
 <p data-qa="retry">{{ _("You can try to <a href='{url}'>submit your survey again</a>").format(url=url_for('questionnaire.get_questionnaire')) }}</p>
-  {% if survey_type and survey_type in SURVEY_TYPES_BUSINESS, SURVEY_TYPES_DEFAULT, SURVEY_TYPES_SOCIAL %}
+  {% if survey_type and (survey_type in SURVEY_TYPES_BUSINESS or survey_type in SURVEY_TYPES_DEFAULT or survey_type in SURVEY_TYPES_SOCIAL) %}
     <p>{{ _("If this problem keeps happening, please <a href='{url}'>contact us</a> for help.").format(url=contact_us_url) }}</p>
   {% else %}
     <p>{{ _("If this problem keeps happening, please see the following help links.") }}</p>

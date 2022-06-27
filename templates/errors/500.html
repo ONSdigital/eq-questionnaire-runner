@@ -1,4 +1,4 @@
-{% extends 'layouts/_base.html' %}
+{% extends 'errors/_base.html' %}
 
 {% set page_title = _("An error has occurred") %}
 
@@ -6,7 +6,7 @@
   <h1>{{ _("Sorry, there is a problem with this service") }}</h1>
   <p>{{ _("Try again later.") }}</p>
   <p>{{ _("If you have started a survey, your answers have been saved.") }}</p>
-  {% if survey_type and survey_type in SURVEY_TYPES_BUSINESS, SURVEY_TYPES_DEFAULT, SURVEY_TYPES_SOCIAL %}
+  {% if survey_type and (survey_type in SURVEY_TYPES_BUSINESS or survey_type in SURVEY_TYPES_DEFAULT or survey_type in SURVEY_TYPES_SOCIAL) %}
     <p>{{ _("<a href='{url}'>Contact us</a> if you need to speak to someone about your survey.").format(url = contact_us_url)  }}</p>
   {% else %}
     <h3>Business surveys</h3>

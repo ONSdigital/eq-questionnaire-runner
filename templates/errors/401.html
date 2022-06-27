@@ -10,10 +10,10 @@
     <li>{{ _("followed a link to a page you are not signed in to") }}</li>
     <li>{{ _("followed a link to a survey that has already been submitted") }}</li>
   </ul>
-  {% if survey_type and survey_type in SURVEY_TYPES_BUSINESS, SURVEY_TYPES_DEFAULT %}
+  {% if survey_type and (survey_type in SURVEY_TYPES_BUSINESS or survey_type in SURVEY_TYPES_DEFAULT) %}
     <p>{{ _("You will need to <a href='{url}'>sign back in</a> to access your account").format(url = business_logout_url) }}</p>
 
-  {% elif survey_type and survey_type in SOCIAL %}
+  {% elif survey_type and survey_type in SURVEY_TYPES_SOCIAL %}
     <p>{{ _("To access this page you need to <a href='{url}'>re-enter your access code</a>.").format(url = other_logout_url) }}</p>
 
   {% else %}
