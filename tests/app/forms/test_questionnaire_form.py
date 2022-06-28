@@ -1095,201 +1095,188 @@ def test_bespoke_message_for_sum_validation(app, answer_store, list_store, mocke
     assert form.question_errors["breakdown-question"] == "Test Message"
 
 
-def test_empty_calculated_field(app, answer_store, list_store):
-
-    answer_total = Answer(answer_id="total-answer", value=10)
-
-    answer_store.add_or_update(answer_total)
-
-    with app.test_request_context():
-        schema = load_schema_from_name("test_validation_sum_against_total_equal")
-
-        question_schema = schema.get_block("breakdown-block").get("question")
-
-        form_data = MultiDict(
+@pytest.mark.parametrize(
+    "schema_name, block, answers, breakdowns, expected_form_data, question, errors_text, value_dict",  # pylint: disable=too-many-locals
+    [
+        [
+            "test_validation_sum_against_total_equal",
+            "breakdown-block",
+            [Answer(answer_id="total-answer", value=10)],
             {
                 "breakdown-1": "",
                 "breakdown-2": "5",
                 "breakdown-3": "4",
                 "breakdown-4": "",
-            }
-        )
-
-        expected_form_data = {
-            "csrf_token": None,
-            "breakdown-1": None,
-            "breakdown-2": Decimal("5"),
-            "breakdown-3": Decimal("4"),
-            "breakdown-4": None,
-        }
-        form = generate_form(
-            schema,
-            question_schema,
-            answer_store,
-            list_store,
-            metadata={},
-            response_metadata={},
-            form_data=form_data,
-        )
-
-        form.validate()
-        assert form.data == expected_form_data
-        assert form.question_errors["breakdown-question"] == schema.error_messages[
-            "TOTAL_SUM_NOT_EQUALS"
-        ] % {"total": "10"}
-
-
-def test_sum_calculated_field(app, answer_store, list_store):
-    answer_total = Answer(answer_id="total-answer", value=10)
-
-    answer_store.add_or_update(answer_total)
-
-    with app.test_request_context():
-        schema = load_schema_from_name("test_validation_sum_against_total_equal")
-
-        question_schema = schema.get_block("breakdown-block").get("question")
-
-        form_data = MultiDict(
+            },
+            {
+                "csrf_token": None,
+                "breakdown-1": None,
+                "breakdown-2": Decimal("5"),
+                "breakdown-3": Decimal("4"),
+                "breakdown-4": None,
+            },
+            "breakdown-question",
+            ["TOTAL_SUM_NOT_EQUALS"],
+            {"total": "10"},
+        ],
+        [
+            "test_validation_sum_against_total_equal",
+            "breakdown-block",
+            [Answer(answer_id="total-answer", value=10)],
             {
                 "breakdown-1": "",
                 "breakdown-2": "5",
                 "breakdown-3": "4",
                 "breakdown-4": "1",
-            }
-        )
-
-        expected_form_data = {
-            "csrf_token": None,
-            "breakdown-1": None,
-            "breakdown-2": Decimal("5"),
-            "breakdown-3": Decimal("4"),
-            "breakdown-4": Decimal("1"),
-        }
-        form = generate_form(
-            schema,
-            question_schema,
-            answer_store,
-            list_store,
-            metadata={},
-            response_metadata={},
-            form_data=form_data,
-        )
-
-        form.validate()
-        assert form.data == expected_form_data
-
-
-def test_get_calculation_total_with_no_input(app, answer_store, list_store):
-    answer_total = Answer(answer_id="total-answer", value=10)
-
-    answer_store.add_or_update(answer_total)
-
-    with app.test_request_context():
-        schema = load_schema_from_name("test_validation_sum_against_total_equal")
-
-        question_schema = schema.get_block("breakdown-block").get("question")
-
-        form_data = MultiDict(
+            },
+            {
+                "csrf_token": None,
+                "breakdown-1": None,
+                "breakdown-2": Decimal("5"),
+                "breakdown-3": Decimal("4"),
+                "breakdown-4": Decimal("1"),
+            },
+            "breakdown-question",
+            None,
+            None,
+        ],
+        [
+            "test_validation_sum_against_total_equal",
+            "breakdown-block",
+            [Answer(answer_id="total-answer", value=10)],
             {
                 "breakdown-1": "",
                 "breakdown-2": "",
                 "breakdown-3": "",
                 "breakdown-4": "",
-            }
-        )
-
-        expected_form_data = {
-            "csrf_token": None,
-            "breakdown-1": None,
-            "breakdown-2": None,
-            "breakdown-3": None,
-            "breakdown-4": None,
-        }
-        form = generate_form(
-            schema,
-            question_schema,
-            answer_store,
-            list_store,
-            metadata={},
-            response_metadata={},
-            form_data=form_data,
-        )
-
-        form.validate()
-        assert form.data == expected_form_data
-        assert form.question_errors["breakdown-question"] == schema.error_messages[
-            "TOTAL_SUM_NOT_EQUALS"
-        ] % {"total": "10"}
-
-
-def test_sum_calculated_field_value_source_answer(app, answer_store, list_store):
-    answer_total = Answer(answer_id="total-answer", value=10)
-
-    answer_store.add_or_update(answer_total)
-
-    with app.test_request_context():
-        schema = load_schema_from_name("test_validation_sum_against_value_source")
-
-        question_schema = schema.get_block("breakdown-block").get("question")
-
-        form_data = MultiDict(
+            },
+            {
+                "csrf_token": None,
+                "breakdown-1": None,
+                "breakdown-2": None,
+                "breakdown-3": None,
+                "breakdown-4": None,
+            },
+            "breakdown-question",
+            ["TOTAL_SUM_NOT_EQUALS"],
+            {"total": "10"},
+        ],
+        [
+            "test_validation_sum_against_value_source",
+            "breakdown-block",
+            [Answer(answer_id="total-answer", value=10)],
             {
                 "breakdown-1": "",
                 "breakdown-2": "5",
                 "breakdown-3": "4",
                 "breakdown-4": "1",
-            }
-        )
-
-        expected_form_data = {
-            "csrf_token": None,
-            "breakdown-1": None,
-            "breakdown-2": Decimal("5"),
-            "breakdown-3": Decimal("4"),
-            "breakdown-4": Decimal("1"),
-        }
-        form = generate_form(
-            schema,
-            question_schema,
-            answer_store,
-            list_store,
-            metadata={},
-            response_metadata={},
-            form_data=form_data,
-        )
-
-        form.validate()
-        assert form.data == expected_form_data
-
-
-def test_sum_calculated_field_value_source_calculated_summary(
-    app, answer_store, list_store
-):
-    answer_total = Answer(answer_id="number-total-playback", value=10)
-
-    answer_store.add_or_update(answer_total)
-
-    with app.test_request_context():
-        schema = load_schema_from_name("test_validation_sum_against_value_source")
-
-        question_schema = schema.get_block("second-breakdown-block").get("question")
-
-        form_data = MultiDict(
+            },
+            {
+                "csrf_token": None,
+                "breakdown-1": None,
+                "breakdown-2": Decimal("5"),
+                "breakdown-3": Decimal("4"),
+                "breakdown-4": Decimal("1"),
+            },
+            "breakdown-question",
+            None,
+            None,
+        ],
+        [
+            "test_validation_sum_against_value_source",
+            "second-breakdown-block",
+            [
+                Answer(answer_id="breakdown-1", value=5),
+                Answer(answer_id="breakdown-2", value=5),
+            ],
             {
                 "second-breakdown-1": "",
                 "second-breakdown-2": "5",
                 "second-breakdown-3": "4",
                 "second-breakdown-4": "1",
-            }
-        )
+            },
+            {
+                "csrf_token": None,
+                "second-breakdown-1": None,
+                "second-breakdown-2": Decimal("5"),
+                "second-breakdown-3": Decimal("4"),
+                "second-breakdown-4": Decimal("1"),
+            },
+            "second-breakdown-question",
+            None,
+            None,
+        ],
+        [
+            "test_validation_sum_against_value_source",
+            "breakdown-block",
+            [Answer(answer_id="total-answer", value=10)],
+            {
+                "breakdown-1": "",
+                "breakdown-2": "",
+                "breakdown-3": "4",
+                "breakdown-4": "1",
+            },
+            {
+                "csrf_token": None,
+                "breakdown-1": None,
+                "breakdown-2": None,
+                "breakdown-3": Decimal("4"),
+                "breakdown-4": Decimal("1"),
+            },
+            "breakdown-question",
+            ["TOTAL_SUM_NOT_EQUALS"],
+            {"total": "10"},
+        ],
+        [
+            "test_validation_sum_against_value_source",
+            "second-breakdown-block",
+            [
+                Answer(answer_id="breakdown-1", value=5),
+                Answer(answer_id="breakdown-2", value=5),
+            ],
+            {
+                "second-breakdown-1": "",
+                "second-breakdown-2": "",
+                "second-breakdown-3": "4",
+                "second-breakdown-4": "1",
+            },
+            {
+                "csrf_token": None,
+                "second-breakdown-1": None,
+                "second-breakdown-2": None,
+                "second-breakdown-3": Decimal("4"),
+                "second-breakdown-4": Decimal("1"),
+            },
+            "second-breakdown-question",
+            ["TOTAL_SUM_NOT_EQUALS"],
+            {"total": "10"},
+        ],  # pylint: disable=too-many-locals
+    ],
+)
+def test_calculated_field(
+    app,
+    answer_store,
+    list_store,
+    schema_name,
+    block,
+    answers,
+    breakdowns,
+    expected_form_data,
+    question,
+    errors_text,
+    value_dict,
+):
 
-        expected_form_data = {
-            "csrf_token": None,
-            "second-breakdown-1": None,
-            "second-breakdown-2": Decimal("5"),
-            "second-breakdown-3": Decimal("4"),
-            "second-breakdown-4": Decimal("1"),
-        }
+    for answer in answers:
+        answer_store.add_or_update(answer)
+
+    with app.test_request_context():
+        schema = load_schema_from_name(schema_name)
+
+        question_schema = schema.get_block(block).get("question")
+
+        form_data = MultiDict(breakdowns)
+
         form = generate_form(
             schema,
             question_schema,
@@ -1302,80 +1289,14 @@ def test_sum_calculated_field_value_source_calculated_summary(
 
         form.validate()
         assert form.data == expected_form_data
-
-
-def test_sum_calculated_field_value_source_answer_not_equal_validation_error(
-    app, answer_store, list_store
-):
-    answer_total = Answer(answer_id="total-answer", value=10)
-
-    answer_store.add_or_update(answer_total)
-
-    with app.test_request_context():
-        schema = load_schema_from_name("test_validation_sum_against_value_source")
-
-        question_schema = schema.get_block("breakdown-block").get("question")
-
-        form_data = MultiDict(
-            {
-                "breakdown-1": "",
-                "breakdown-2": "",
-                "breakdown-3": "4",
-                "breakdown-4": "1",
-            }
-        )
-
-        form = generate_form(
-            schema,
-            question_schema,
-            answer_store,
-            list_store,
-            metadata={},
-            response_metadata={},
-            form_data=form_data,
-        )
-
-        form.validate()
-        assert form.question_errors["breakdown-question"] == schema.error_messages[
-            "TOTAL_SUM_NOT_EQUALS"
-        ] % {"total": "10"}
-
-
-def test_sum_calculated_field_value_source_calculated_summary_not_equal_validation_error(
-    app, answer_store, list_store
-):
-
-    answer_store.add_or_update(Answer(answer_id="breakdown-1", value=5))
-    answer_store.add_or_update(Answer(answer_id="breakdown-2", value=5))
-
-    with app.test_request_context():
-        schema = load_schema_from_name("test_validation_sum_against_value_source")
-
-        question_schema = schema.get_block("second-breakdown-block").get("question")
-
-        form_data = MultiDict(
-            {
-                "second-breakdown-1": "",
-                "second-breakdown-2": "",
-                "second-breakdown-3": "4",
-                "second-breakdown-4": "1",
-            }
-        )
-
-        form = generate_form(
-            schema,
-            question_schema,
-            answer_store,
-            list_store,
-            metadata={},
-            response_metadata={},
-            form_data=form_data,
-        )
-
-        form.validate()
-        assert form.question_errors[
-            "second-breakdown-question"
-        ] == schema.error_messages["TOTAL_SUM_NOT_EQUALS"] % {"total": "10"}
+        if errors_text:
+            for error_text in errors_text:
+                assert (
+                    form.question_errors[question]
+                    == schema.error_messages[error_text] % value_dict
+                )
+        else:
+            assert len(form.question_errors) == 0
 
 
 def test_sum_calculated_field_value_source_calculated_summary_repeat_not_equal_validation_error(
