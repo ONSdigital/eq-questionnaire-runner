@@ -14,7 +14,7 @@ from app.forms.validators import (
     ResponseRequired,
     format_message_with_title,
 )
-from app.questionnaire import QuestionnaireSchema, Location
+from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.utilities.schema import load_schema_from_name
 
