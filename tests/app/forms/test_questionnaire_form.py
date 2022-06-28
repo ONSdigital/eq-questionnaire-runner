@@ -5,6 +5,7 @@ import pytest
 from mock import patch
 from werkzeug.datastructures import MultiDict
 
+from app.data_models import ListStore
 from app.data_models.answer_store import Answer, AnswerStore
 from app.forms import error_messages
 from app.forms.questionnaire_form import generate_form
@@ -13,7 +14,7 @@ from app.forms.validators import (
     ResponseRequired,
     format_message_with_title,
 )
-from app.questionnaire import QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema, Location
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.utilities.schema import load_schema_from_name
 
@@ -1378,8 +1379,24 @@ def test_sum_calculated_field_value_source_calculated_summary_not_equal_validati
 
 
 def test_sum_calculated_field_value_source_calculated_summary_repeat_not_equal_validation_error(
-    app, answer_store, list_store
+    app, answer_store, mocker
 ):
+
+    list_store = ListStore([{"name": "people", "items": ["lCIZsS"]}])
+    answer_store.add_or_update(
+        Answer(
+            answer_id="entertainment-spending-answer", value=10, list_item_id="lCIZsS"
+        )
+    )
+    mocker.patch(
+        "app.questionnaire.location",
+        return_value=Location(
+            section_id="breakdown-section",
+            block_id="second-spending-breakdown-block",
+            list_name="people",
+            list_item_id="lCIZsS",
+        ),
+    )
 
     answer_store.add_or_update(
         Answer(answer_id="entertainment-spending-answer", value=10)
