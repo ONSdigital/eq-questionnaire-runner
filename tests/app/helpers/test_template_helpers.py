@@ -2,6 +2,7 @@ from typing import Type
 
 import pytest
 from flask import Flask, current_app
+from flask import session as cookie_session
 
 from app.helpers.template_helpers import ContextHelper, get_survey_config
 from app.questionnaire import QuestionnaireSchema
@@ -185,16 +186,18 @@ def test_get_page_header_context_census_nisra(app: Flask):
 
 
 @pytest.mark.parametrize(
-    "survey_config, is_authenticated, expected",
+    "survey_config, is_authenticated, theme, expected",
     [
         (
             SurveyConfig(),
             True,
             None,
+            None,
         ),
         (
             BusinessSurveyConfig(),
             False,
+            "business",
             {
                 "toggleServicesButton": {
                     "text": "Menu",
@@ -212,6 +215,7 @@ def test_get_page_header_context_census_nisra(app: Flask):
         (
             BusinessSurveyConfig(schema=QuestionnaireSchema({"survey_id": "001"})),
             True,
+            "business",
             {
                 "toggleServicesButton": {
                     "text": "Menu",
@@ -236,21 +240,23 @@ def test_get_page_header_context_census_nisra(app: Flask):
                 ],
             },
         ),
-        (SocialSurveyConfig(), False, None),
+        (SocialSurveyConfig(), False, None, None),
         (
             SocialSurveyConfig(schema=QuestionnaireSchema({"survey_id": "001"})),
             True,
+            "social",
             None,
         ),
     ],
 )
 def test_service_links_context(
-    app: Flask, mocker, survey_config, is_authenticated, expected
+    app: Flask, mocker, survey_config, is_authenticated, theme, expected
 ):
     with app.app_context():
         mocked_current_user = mocker.Mock()
         mocked_current_user.is_authenticated = is_authenticated
         mocker.patch("flask_login.utils._get_user", return_value=mocked_current_user)
+        cookie_session["theme"] = theme
 
         if is_authenticated:
             mocker.patch(
