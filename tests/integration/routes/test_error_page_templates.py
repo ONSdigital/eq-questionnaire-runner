@@ -56,9 +56,6 @@ class TestErrorPageTemplates(IntegrationTestCase):
         self.assertInBody(
             '<p>If you are completing a business survey, you need to sign back in to <a href="https://surveys.ons.gov.uk/sign-in/logout">your account</a>.</p>'
         )
-        self.assertInBody(
-            '<p>If you started your survey using an access code, you need to <a href="https://surveys.ons.gov.uk/sign-in/logout">re-enter your code</a>.</p>'
-        )
 
     def test_403_theme_default(self):
         # Given
