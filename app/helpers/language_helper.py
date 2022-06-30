@@ -1,9 +1,10 @@
-from typing import Optional, Union
+from typing import Any, Mapping, Optional, Union
 from urllib.parse import urlencode
 
 from flask import g, request
+from flask_login import current_user
 
-from app.globals import get_session_store
+from app.globals import get_metadata, get_session_store
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.utilities.schema import get_allowed_languages
 
@@ -13,13 +14,14 @@ LANGUAGE_TEXT = {
 }
 
 
-def handle_language() -> None:
-    session_store = get_session_store()
-    if session_store and (session_data := session_store.session_data):
-        launch_language = session_data.launch_language_code or DEFAULT_LANGUAGE_CODE
+def handle_language(metadata: Optional[Mapping[str, Any]] = None) -> None:
+    metadata = metadata or get_metadata(current_user)
+
+    if session_store := get_session_store():
+        launch_language = metadata.get("launch_language_code") or DEFAULT_LANGUAGE_CODE
         # pylint: disable=assigning-non-slot
         g.allowed_languages = get_allowed_languages(
-            session_data.schema_name, launch_language
+            metadata["schema_name"], launch_language
         )
         request_language = request.args.get("language_code")
         if request_language and request_language in g.allowed_languages:

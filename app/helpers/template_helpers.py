@@ -22,7 +22,7 @@ from app.survey_config import (
     SurveyConfig,
     WelshCensusSurveyConfig,
 )
-from app.utilities.schema import load_schema_from_session_data
+from app.utilities.schema import load_schema_from_metadata
 
 
 class ContextHelper:
@@ -211,12 +211,16 @@ def get_survey_config(
 def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     language = get_locale().language
     schema, session_expires_at = None, None
-    if session_store := get_session_store():
-        if session_data := session_store.session_data:
-            schema = load_schema_from_session_data(session_data)
+    session_store = get_session_store()
 
-        if session_expiry := session_store.expiration_time:
-            session_expires_at = session_expiry.isoformat()
+    if session_store and (language_code := session_store.session_data.language_code):
+        language = language_code
+
+    if metadata := get_metadata(current_user):
+        schema = load_schema_from_metadata(metadata=metadata, language_code=language)
+
+    if session_store and (session_expiry := session_store.expiration_time):
+        session_expires_at = session_expiry.isoformat()
 
     survey_config = get_survey_config(
         language=language,

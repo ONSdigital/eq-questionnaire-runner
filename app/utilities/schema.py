@@ -98,14 +98,15 @@ def get_allowed_languages(schema_name, launch_language):
     return [DEFAULT_LANGUAGE_CODE]
 
 
-def load_schema_from_metadata(metadata):
+def load_schema_from_metadata(metadata, language_code=None):
+    metadata = metadata or {}
     if schema_url := metadata.get("schema_url"):
         # :TODO: Remove before production uses schema_url
         # This is temporary and is only for development/integration purposes.
         # This should not be used in production.
 
         start = time.time()
-        schema = load_schema_from_url(schema_url, metadata.get("language_code"))
+        schema = load_schema_from_url(schema_url, language_code)
         duration_in_milliseconds = (time.time() - start) * 1_000
 
         cache_info = (
@@ -122,12 +123,8 @@ def load_schema_from_metadata(metadata):
         return schema
 
     return load_schema_from_name(
-        metadata.get("schema_name"), language_code=metadata.get("language_code")
+        metadata.get("schema_name"), language_code=language_code
     )
-
-
-def load_schema_from_session_data(session_data):
-    return load_schema_from_metadata(vars(session_data))
 
 
 def load_schema_from_name(schema_name, language_code=DEFAULT_LANGUAGE_CODE):

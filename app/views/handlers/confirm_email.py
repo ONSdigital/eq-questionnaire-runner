@@ -9,12 +9,7 @@ from markupsafe import escape
 from werkzeug.exceptions import BadRequest
 
 from app.cloud_tasks.exceptions import CloudTaskCreationFailed
-from app.data_models import (
-    FulfilmentRequest,
-    QuestionnaireStore,
-    SessionData,
-    SessionStore,
-)
+from app.data_models import FulfilmentRequest, QuestionnaireStore, SessionStore
 from app.forms.questionnaire_form import generate_form
 from app.helpers import url_safe_serializer
 from app.questionnaire import QuestionnaireSchema, QuestionSchemaType
@@ -136,7 +131,7 @@ class ConfirmEmail:
 
     def _publish_fulfilment_request(self):
         fulfilment_request = ConfirmationEmailFulfilmentRequest(
-            self._email, self._session_store.session_data, self._schema
+            self._email, self._questionnaire_store, self._schema
         )
 
         try:
@@ -153,17 +148,17 @@ class ConfirmEmail:
 @dataclass
 class ConfirmationEmailFulfilmentRequest(FulfilmentRequest):
     email_address: str
-    session_data: SessionData
+    questionnaire_store: QuestionnaireStore
     schema: QuestionnaireSchema
 
     def _payload(self) -> Mapping:
         return {
             "fulfilmentRequest": {
                 "email_address": self.email_address,
-                "display_address": self.session_data.display_address,
+                "display_address": self.questionnaire_store.metadata["display_address"],
                 "form_type": self.schema.form_type,
-                "language_code": self.session_data.language_code,
+                "language_code": self.questionnaire_store.metadata["language_code"],
                 "region_code": self.schema.region_code,
-                "tx_id": self.session_data.tx_id,
+                "tx_id": self.questionnaire_store.metadata["tx_id"],
             }
         }

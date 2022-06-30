@@ -1,10 +1,11 @@
 from functools import wraps
 from typing import Any, Callable
 
+from flask_login import current_user
 from werkzeug.exceptions import Unauthorized
 
-from app.globals import get_session_store
-from app.utilities.schema import load_schema_from_session_data
+from app.globals import get_metadata, get_session_store
+from app.utilities.schema import load_schema_from_metadata
 
 
 def with_schema(function: Callable) -> Any:
@@ -27,8 +28,11 @@ def with_schema(function: Callable) -> Any:
         if not session_store:
             raise Unauthorized
 
-        session_data = session_store.session_data
-        schema = load_schema_from_session_data(session_data)
+        metadata = get_metadata(current_user)
+
+        schema = load_schema_from_metadata(
+            metadata=metadata, language_code=session_store.session_data.language_code
+        )
         return function(schema, *args, **kwargs)
 
     return wrapped_function
