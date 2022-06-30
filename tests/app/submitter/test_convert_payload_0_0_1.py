@@ -441,7 +441,10 @@ def test_radio_answer(fake_questionnaire_store):
         RoutingPath(["radio-block"], section_id="section-1", list_item_id=None)
     ]
     fake_questionnaire_store.answer_store = AnswerStore(
-        [Answer("radio-answer", "Coffee").to_dict()]
+        [
+            Answer("radio-answer", "Coffee").to_dict(),
+            Answer("other-answer-mandatory", "Water").to_dict(),
+        ],
     )
 
     question = {
@@ -455,6 +458,17 @@ def test_radio_answer(fake_questionnaire_store):
                 "options": [
                     {"label": "Coffee", "value": "Coffee"},
                     {"label": "Tea", "value": "Tea"},
+                    {
+                        "label": "Other",
+                        "value": "Other",
+                        "detail_answer": {
+                            "mandatory": True,
+                            "id": "other-answer-mandatory",
+                            "label": "Please specify other",
+                            "type": "TextField",
+                            "q_code": "101",
+                        },
+                    },
                 ],
             }
         ],
@@ -472,8 +486,9 @@ def test_radio_answer(fake_questionnaire_store):
     )
 
     # Then
-    assert len(answer_object["data"]) == 1
+    assert len(answer_object["data"]) == 2
     assert answer_object["data"]["1"] == "Coffee"
+    assert answer_object["data"]["101"] == "Water"
 
 
 def test_number_answer(fake_questionnaire_store):

@@ -62,9 +62,12 @@ def convert_answers_to_payload_0_0_1(
                     list_store,
                     current_location=current_location,
                 )
-                for answer in question["answers"]:
-                    if answer["id"] == answer_in_block.answer_id:
+                for answer_id, answer in schema.get_answers_for_question_by_id(
+                    question
+                ).items():
+                    if answer_id == answer_in_block.answer_id:
                         answer_schema = answer
+                        break
 
                 value = answer_in_block.value
 
