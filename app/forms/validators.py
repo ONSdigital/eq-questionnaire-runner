@@ -463,7 +463,10 @@ class MutuallyExclusiveCheck:
         self.question_title = question_title
 
     def __call__(
-        self, answer_values: Iterable, is_mandatory: bool, is_only_checkboxes_or_radios: bool
+        self,
+        answer_values: Iterable,
+        is_mandatory: bool,
+        is_only_checkboxes_or_radios: bool,
     ) -> None:
         total_answered = sum(1 for value in answer_values if value)
         if total_answered > 1:
