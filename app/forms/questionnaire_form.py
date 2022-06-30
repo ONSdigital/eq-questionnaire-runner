@@ -55,6 +55,15 @@ class QuestionnaireForm(FlaskForm):
         self.question_errors: dict[str, str] = {}
         self.options_with_detail_answer: dict = {}
         self.question_title = self.question.get("title", "")
+        self.value_source_resolver = ValueSourceResolver(
+            answer_store=self.answer_store,
+            schema=self.schema,
+            metadata=self.metadata,
+            response_metadata=self.response_metadata,
+            list_store=self.list_store,
+            location=self.location,
+            list_item_id=self.location.list_item_id if self.location else None,
+        )
 
         super().__init__(**kwargs)
 
@@ -176,23 +185,12 @@ class QuestionnaireForm(FlaskForm):
         question: QuestionSchema,
     ) -> Optional[tuple[Union[Calculation, AnswerValueTypes], Optional[str]]]:
 
-        list_item_id = self.location.list_item_id if self.location else None
-        value_source_resolver = ValueSourceResolver(
-            answer_store=self.answer_store,
-            schema=self.schema,
-            metadata=self.metadata,
-            response_metadata=self.response_metadata,
-            list_store=self.list_store,
-            location=self.location,
-            list_item_id=list_item_id,
-        )
-
         calculation_value: Union[Calculation, AnswerValueTypes]
         currency: Optional[str]
 
         if "value" in calculation:
             if isinstance(calculation["value"], dict):
-                calculation_value = value_source_resolver.resolve(calculation["value"])  # type: ignore
+                calculation_value = self.value_source_resolver.resolve(calculation["value"])  # type: ignore
             else:
                 calculation_value = calculation["value"]
             currency = question.get("currency")
