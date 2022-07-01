@@ -152,7 +152,7 @@ class TestErrorPageTemplates(IntegrationTestCase):
         # When
         with patch(
             "app.routes.questionnaire.get_block_handler",
-            side_effect=Exception("You broked it"),
+            side_effect=Exception("You broke it"),
         ):
             self.post({"answer": "test"})
             cookie = self.getCookie()
