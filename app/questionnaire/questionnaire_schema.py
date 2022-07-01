@@ -22,7 +22,7 @@ LIST_COLLECTOR_CHILDREN = [
 
 RELATIONSHIP_CHILDREN = ["UnrelatedQuestion"]
 
-QuestionSchema = Mapping[str, Any]
+QuestionSchemaType = Mapping[str, Any]
 
 
 class InvalidSchemaConfigurationException(Exception):
@@ -644,7 +644,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @classmethod
     def get_answers_for_question_by_id(
-        cls, question: Mapping[str, Any]
+        cls, question: QuestionSchemaType
     ) -> dict[str, dict[str, Any]]:
         answers: dict[str, dict[str, Any]] = {}
 
@@ -657,7 +657,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return answers
 
     @classmethod
-    def get_answer_ids_for_question(cls, question: Mapping[str, Any]) -> list[str]:
+    def get_answer_ids_for_question(cls, question: QuestionSchemaType) -> list[str]:
         return list(cls.get_answers_for_question_by_id(question).keys())
 
     def get_first_answer_id_for_block(self, block_id: str) -> str:
