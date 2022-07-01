@@ -337,6 +337,67 @@ def test_converter_checkboxes_with_q_codes_and_empty_other_value(
     assert answer_object["data"]["4"] == "Other"
 
 
+def test_converter_checkboxes_with_missing_detail_answer_value_in_answer_store(
+    fake_questionnaire_store,
+):
+    full_routing_path = [RoutingPath(["crisps"], section_id="food", list_item_id=None)]
+
+    fake_questionnaire_store.answer_store = AnswerStore(
+        [
+            Answer("crisps-answer", ["Ready salted", "Other"]).to_dict(),
+        ]
+    )
+
+    question = {
+        "id": "crisps-question",
+        "type": "General",
+        "answers": [
+            {
+                "id": "crisps-answer",
+                "type": "Checkbox",
+                "options": [
+                    {"label": "Ready salted", "value": "Ready salted", "q_code": "1"},
+                    {"label": "Sweet chilli", "value": "Sweet chilli", "q_code": "2"},
+                    {
+                        "label": "Cheese and onion",
+                        "value": "Cheese and onion",
+                        "q_code": "3",
+                    },
+                    {
+                        "label": "Other",
+                        "q_code": "4",
+                        "description": "Choose any other flavour",
+                        "value": "Other",
+                        "detail_answer": {
+                            "mandatory": False,
+                            "id": "other-answer-mandatory",
+                            "label": "Please specify other",
+                            "type": "TextField",
+                        },
+                    },
+                ],
+            }
+        ],
+    }
+
+    questionnaire = make_schema(
+        "0.0.1", "section-1", "favourite-food", "crisps", question
+    )
+
+    # When
+    answer_object = convert_answers(
+        QuestionnaireSchema(questionnaire),
+        fake_questionnaire_store,
+        full_routing_path,
+        SUBMITTED_AT,
+    )
+
+    # Then
+    assert len(answer_object["data"]) == 2
+    assert answer_object["data"]["1"] == "Ready salted"
+    assert answer_object["data"]["4"] == "Other"
+
+
 def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(
     fake_questionnaire_store,
 ):
