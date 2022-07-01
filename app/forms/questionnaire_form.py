@@ -147,7 +147,9 @@ class QuestionnaireForm(FlaskForm):
 
         return False
 
-    def validate_mutually_exclusive_question(self, question: QuestionSchemaType) -> bool:
+    def validate_mutually_exclusive_question(
+        self, question: QuestionSchemaType
+    ) -> bool:
         is_mandatory: bool = question["mandatory"]
         messages = (
             question["validation"].get("messages") if "validation" in question else None
