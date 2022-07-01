@@ -1,4 +1,4 @@
 from .location import Location
-from .questionnaire_schema import QuestionnaireSchema, QuestionSchema
+from .questionnaire_schema import QuestionnaireSchema, QuestionSchemaType
 
-__all__ = ["QuestionnaireSchema", "Location", "QuestionSchema"]
+__all__ = ["QuestionnaireSchema", "Location", "QuestionSchemaType"]
