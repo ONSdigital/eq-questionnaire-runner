@@ -129,9 +129,9 @@ def _get_checkbox_answer_data(
         if option:
             if "detail_answer" in option:
                 detail_answer = answer_store.get_answer(option["detail_answer"]["id"])
-                # if the user has selected an option with a detail answer we need to find the detail answer value it refers to.
-                # the detail answer value can be empty, in this case we just use the main value (e.g. other)
-                user_answer = detail_answer.value or user_answer  # type: ignore
+                if detail_answer:
+                    # Ignore mypy type because the answer type can be any non strings, but user_answer is expected to be a string.
+                    user_answer = detail_answer.value  # type: ignore
 
             qcodes_and_values.append((option.get("q_code"), user_answer))
 

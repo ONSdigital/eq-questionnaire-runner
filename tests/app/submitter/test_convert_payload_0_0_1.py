@@ -291,7 +291,7 @@ def test_converter_checkboxes_with_q_codes_and_other_value(
         assert answer_object["data"][detail_answer_q_code_field["q_code"]] == "Bacon"
 
 
-def test_converter_checkboxes_with_q_codes_and_empty_other_value(
+def test_converter_checkboxes_with_missing_detail_answer_value_in_answer_store(
     fake_questionnaire_store,
 ):
     full_routing_path = [RoutingPath(["crisps"], section_id="food", list_item_id=None)]
@@ -299,7 +299,6 @@ def test_converter_checkboxes_with_q_codes_and_empty_other_value(
     fake_questionnaire_store.answer_store = AnswerStore(
         [
             Answer("crisps-answer", ["Ready salted", "Other"]).to_dict(),
-            Answer("other-answer-mandatory", "").to_dict(),
         ]
     )
 
@@ -324,7 +323,7 @@ def test_converter_checkboxes_with_q_codes_and_empty_other_value(
                         "description": "Choose any other flavour",
                         "value": "Other",
                         "detail_answer": {
-                            "mandatory": True,
+                            "mandatory": False,
                             "id": "other-answer-mandatory",
                             "label": "Please specify other",
                             "type": "TextField",
