@@ -16,7 +16,7 @@ from app.data_models import AnswerStore, AnswerValueTypes, ListStore
 from app.forms import error_messages
 from app.forms.field_handlers import DateHandler, FieldHandler, get_field_handler
 from app.forms.validators import DateRangeCheck, MutuallyExclusiveCheck, SumCheck
-from app.questionnaire import Location, QuestionnaireSchema, QuestionSchema
+from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
@@ -37,7 +37,7 @@ class QuestionnaireForm(FlaskForm):
     def __init__(
         self,
         schema: QuestionnaireSchema,
-        question_schema: QuestionSchema,
+        question_schema: QuestionSchemaType,
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: Mapping[str, Any],
@@ -101,7 +101,7 @@ class QuestionnaireForm(FlaskForm):
             and valid_mutually_exclusive_form
         )
 
-    def validate_date_range_question(self, question: QuestionSchema) -> bool:
+    def validate_date_range_question(self, question: QuestionSchemaType) -> bool:
         date_from = question["answers"][0]
         date_to = question["answers"][1]
         if self._has_min_and_max_single_dates(date_from, date_to):
@@ -139,7 +139,7 @@ class QuestionnaireForm(FlaskForm):
 
         return True
 
-    def validate_calculated_question(self, question: QuestionSchema) -> bool:
+    def validate_calculated_question(self, question: QuestionSchemaType) -> bool:
         for calculation in question["calculations"]:
             result = self._get_target_total_and_currency(calculation, question)
             if result:
@@ -156,7 +156,9 @@ class QuestionnaireForm(FlaskForm):
 
         return False
 
-    def validate_mutually_exclusive_question(self, question: QuestionSchema) -> bool:
+    def validate_mutually_exclusive_question(
+        self, question: QuestionSchemaType
+    ) -> bool:
         is_mandatory: bool = question["mandatory"]
         messages = (
             question["validation"].get("messages") if "validation" in question else None
@@ -182,7 +184,7 @@ class QuestionnaireForm(FlaskForm):
     def _get_target_total_and_currency(
         self,
         calculation: Calculation,
-        question: QuestionSchema,
+        question: QuestionSchemaType,
     ) -> Optional[tuple[Union[Calculation, AnswerValueTypes], Optional[str]]]:
 
         calculation_value: Union[Calculation, AnswerValueTypes]
@@ -261,7 +263,7 @@ class QuestionnaireForm(FlaskForm):
     def _validate_calculated_question(
         self,
         calculation: Calculation,
-        question: QuestionSchema,
+        question: QuestionSchemaType,
         target_total: Any,
         currency: Optional[str],
     ) -> bool:
@@ -439,7 +441,7 @@ def _option_value_in_data(
 
 
 def get_answer_fields(
-    question: QuestionSchema,
+    question: QuestionSchemaType,
     data: Union[None, MultiDict[str, Any], Mapping[str, Any]],
     schema: QuestionnaireSchema,
     answer_store: AnswerStore,
@@ -538,7 +540,7 @@ def _get_error_id(id_: str) -> str:
 
 
 def _clear_detail_answer_field(
-    form_data: MultiDict, question_schema: QuestionSchema
+    form_data: MultiDict, question_schema: QuestionSchemaType
 ) -> MultiDict[str, Any]:
     """
     Clears the detail answer field if the parent option is not selected
@@ -556,7 +558,7 @@ def _clear_detail_answer_field(
 
 def generate_form(
     schema: QuestionnaireSchema,
-    question_schema: QuestionSchema,
+    question_schema: QuestionSchemaType,
     answer_store: AnswerStore,
     list_store: ListStore,
     metadata: Mapping[str, Any],
