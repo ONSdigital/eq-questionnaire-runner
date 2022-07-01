@@ -127,6 +127,7 @@ def _get_checkbox_answer_data(
             if "detail_answer" in option:
                 detail_answer = answer_store.get_answer(option["detail_answer"]["id"])
                 if detail_answer:
+                    # Ignore mypy type because the answer type can be any non strings, but user_answer is expected to be a string.
                     user_answer = detail_answer.value  # type: ignore
 
             qcodes_and_values.append((option.get("q_code"), user_answer))
