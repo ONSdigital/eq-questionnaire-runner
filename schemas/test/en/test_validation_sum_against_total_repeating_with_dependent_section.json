@@ -219,7 +219,7 @@
                             "id": "total-spending-block",
                             "question": {
                                 "id": "total-spending-question",
-                                "title": "What is the maximum spending limit for a household member per month?",
+                                "title": "What is the maximum spending limit for a household member per month (excluding entertainment)?",
                                 "type": "General",
                                 "answers": [
                                     {
@@ -395,7 +395,7 @@
                                 "answers": [
                                     {
                                         "id": "spending-breakdown-1",
-                                        "label": "Entertaintment",
+                                        "label": "Housing",
                                         "mandatory": false,
                                         "type": "Currency",
                                         "currency": "GBP",
@@ -403,7 +403,7 @@
                                     },
                                     {
                                         "id": "spending-breakdown-2",
-                                        "label": "Shopping",
+                                        "label": "Transportation",
                                         "mandatory": false,
                                         "type": "Currency",
                                         "currency": "GBP",
@@ -411,7 +411,7 @@
                                     },
                                     {
                                         "id": "spending-breakdown-3",
-                                        "label": "Other",
+                                        "label": "Loans",
                                         "mandatory": false,
                                         "type": "Currency",
                                         "currency": "GBP",
@@ -436,7 +436,7 @@
                                                     "arguments": {
                                                         "number": {
                                                             "source": "answers",
-                                                            "identifier": "spending-breakdown-1"
+                                                            "identifier": "entertainment-spending-answer"
                                                         }
                                                     }
                                                 }
