@@ -1,5 +1,7 @@
 from datetime import datetime, timezone
 
+import pytest
+
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
@@ -215,7 +217,16 @@ def test_converter_checkboxes_with_q_codes(fake_questionnaire_store):
     assert answer_object["data"]["2"] == "Sweet chilli"
 
 
-def test_converter_checkboxes_with_q_codes_and_other_value(fake_questionnaire_store):
+@pytest.mark.parametrize(
+    "detail_answer_q_code_field, expected_data_length",
+    [
+        ({"q_code": "401"}, 3),
+        ({}, 2),
+    ],
+)
+def test_converter_checkboxes_with_q_codes_and_other_value(
+    detail_answer_q_code_field, expected_data_length, fake_questionnaire_store
+):
     full_routing_path = [RoutingPath(["crisps"], section_id="food", list_item_id=None)]
 
     fake_questionnaire_store.answer_store = AnswerStore(
@@ -250,6 +261,7 @@ def test_converter_checkboxes_with_q_codes_and_other_value(fake_questionnaire_st
                             "id": "other-answer-mandatory",
                             "label": "Please specify other",
                             "type": "TextField",
+                            **detail_answer_q_code_field,
                         },
                     },
                 ],
@@ -270,12 +282,16 @@ def test_converter_checkboxes_with_q_codes_and_other_value(fake_questionnaire_st
     )
 
     # Then
-    assert len(answer_object["data"]) == 2
+    assert len(answer_object["data"]) == expected_data_length
     assert answer_object["data"]["1"] == "Ready salted"
     assert answer_object["data"]["4"] == "Bacon"
 
+    # If detail answer has a q_code then that should be used in the data outputted in the payload
+    if detail_answer_q_code_field:
+        assert answer_object["data"][detail_answer_q_code_field["q_code"]] == "Bacon"
 
-def test_converter_checkboxes_with_q_codes_and_empty_other_value(
+
+def test_converter_checkboxes_with_missing_detail_answer_value_in_answer_store(
     fake_questionnaire_store,
 ):
     full_routing_path = [RoutingPath(["crisps"], section_id="food", list_item_id=None)]
@@ -283,7 +299,6 @@ def test_converter_checkboxes_with_q_codes_and_empty_other_value(
     fake_questionnaire_store.answer_store = AnswerStore(
         [
             Answer("crisps-answer", ["Ready salted", "Other"]).to_dict(),
-            Answer("other-answer-mandatory", "").to_dict(),
         ]
     )
 
@@ -308,7 +323,7 @@ def test_converter_checkboxes_with_q_codes_and_empty_other_value(
                         "description": "Choose any other flavour",
                         "value": "Other",
                         "detail_answer": {
-                            "mandatory": True,
+                            "mandatory": False,
                             "id": "other-answer-mandatory",
                             "label": "Please specify other",
                             "type": "TextField",
@@ -441,7 +456,10 @@ def test_radio_answer(fake_questionnaire_store):
         RoutingPath(["radio-block"], section_id="section-1", list_item_id=None)
     ]
     fake_questionnaire_store.answer_store = AnswerStore(
-        [Answer("radio-answer", "Coffee").to_dict()]
+        [
+            Answer("radio-answer", "Coffee").to_dict(),
+            Answer("other-answer-mandatory", "Water").to_dict(),
+        ],
     )
 
     question = {
@@ -455,6 +473,17 @@ def test_radio_answer(fake_questionnaire_store):
                 "options": [
                     {"label": "Coffee", "value": "Coffee"},
                     {"label": "Tea", "value": "Tea"},
+                    {
+                        "label": "Other",
+                        "value": "Other",
+                        "detail_answer": {
+                            "mandatory": True,
+                            "id": "other-answer-mandatory",
+                            "label": "Please specify other",
+                            "type": "TextField",
+                            "q_code": "101",
+                        },
+                    },
                 ],
             }
         ],
@@ -472,8 +501,9 @@ def test_radio_answer(fake_questionnaire_store):
     )
 
     # Then
-    assert len(answer_object["data"]) == 1
+    assert len(answer_object["data"]) == 2
     assert answer_object["data"]["1"] == "Coffee"
+    assert answer_object["data"]["101"] == "Water"
 
 
 def test_number_answer(fake_questionnaire_store):
