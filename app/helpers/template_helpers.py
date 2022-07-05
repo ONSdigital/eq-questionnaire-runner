@@ -22,6 +22,7 @@ from app.survey_config import (
     SurveyConfig,
     WelshCensusSurveyConfig,
 )
+from app.survey_config.survey_types import SurveyTypes
 from app.utilities.schema import load_schema_from_session_data
 
 
@@ -85,7 +86,7 @@ class ContextHelper:
         if service_links := self._survey_config.get_service_links(
             sign_out_url=self._sign_out_url,
             is_authenticated=current_user.is_authenticated,
-            cookie_has_theme=bool(cookie_session.get("theme")),
+            cookie_has_theme=bool(self._survey_type),
             ru_ref=metadata.get("ru_ref") if metadata else None,  # type: ignore
         ):
             return {
@@ -190,7 +191,7 @@ def survey_config_mapping(
 
 def get_survey_config(
     *,
-    theme: Optional[str] = None,
+    theme: Optional[SurveyTypes] = None,
     language: Optional[str] = None,
     schema: Optional[QuestionnaireSchema] = None,
 ) -> SurveyConfig:
@@ -201,13 +202,13 @@ def get_survey_config(
             schema = load_schema_from_session_data(session_data)
 
     language = language or get_locale().language
-    theme = theme or get_survey_type()
+    survey_theme: str = theme.value if theme else get_survey_type()
     base_url = (
         cookie_session.get("account_service_base_url") or ACCOUNT_SERVICE_BASE_URL
     )
 
     return survey_config_mapping(
-        theme=theme,
+        theme=survey_theme,
         language=language,
         base_url=base_url,
         schema=schema,

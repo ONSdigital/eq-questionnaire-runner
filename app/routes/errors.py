@@ -50,8 +50,8 @@ def log_exception(exception, status_code):
 
 def _render_error_page(status_code, template=None, **kwargs):
     handle_language()
-    business_survey_config = get_survey_config(theme=SurveyTypes.business.value)
-    other_survey_config = get_survey_config(theme=SurveyTypes.social.value)
+    business_survey_config = get_survey_config(theme=SurveyTypes.business)
+    other_survey_config = get_survey_config(theme=SurveyTypes.social)
 
     business_logout_url = business_survey_config.account_service_log_out_url
     other_logout_url = other_survey_config.account_service_log_out_url

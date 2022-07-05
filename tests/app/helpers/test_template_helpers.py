@@ -16,6 +16,7 @@ from app.survey_config import (
     SurveyConfig,
     WelshCensusSurveyConfig,
 )
+from app.survey_config.survey_types import SurveyTypes
 
 
 def test_footer_context_census_theme(app: Flask, expected_footer_census_theme):
@@ -437,20 +438,20 @@ def test_account_service_log_out_url_context(
 @pytest.mark.parametrize(
     "theme, language, expected",
     [
-        ("default", "en", SurveyConfig),
-        ("default", "cy", SurveyConfig),
-        ("business", "en", BusinessSurveyConfig),
-        ("business", "cy", BusinessSurveyConfig),
-        ("health", "en", SurveyConfig),
-        ("health", "cy", SurveyConfig),
-        ("social", "en", SocialSurveyConfig),
-        ("social", "cy", SocialSurveyConfig),
-        ("northernireland", "en", NorthernIrelandBusinessSurveyConfig),
-        ("northernireland", "cy", NorthernIrelandBusinessSurveyConfig),
-        ("census", "en", CensusSurveyConfig),
-        ("census", "cy", WelshCensusSurveyConfig),
-        ("census-nisra", "en", CensusNISRASurveyConfig),
-        ("census-nisra", "cy", CensusNISRASurveyConfig),
+        (SurveyTypes.default, "en", SurveyConfig),
+        (SurveyTypes.default, "cy", SurveyConfig),
+        (SurveyTypes.business, "en", BusinessSurveyConfig),
+        (SurveyTypes.business, "cy", BusinessSurveyConfig),
+        (SurveyTypes.health, "en", SurveyConfig),
+        (SurveyTypes.health, "cy", SurveyConfig),
+        (SurveyTypes.social, "en", SocialSurveyConfig),
+        (SurveyTypes.social, "cy", SocialSurveyConfig),
+        (SurveyTypes.northernireland, "en", NorthernIrelandBusinessSurveyConfig),
+        (SurveyTypes.northernireland, "cy", NorthernIrelandBusinessSurveyConfig),
+        (SurveyTypes.census, "en", CensusSurveyConfig),
+        (SurveyTypes.census, "cy", WelshCensusSurveyConfig),
+        (SurveyTypes.census_nisra, "en", CensusNISRASurveyConfig),
+        (SurveyTypes.census_nisra, "cy", CensusNISRASurveyConfig),
         (None, None, BusinessSurveyConfig),
     ],
 )
@@ -544,14 +545,14 @@ def test_context_set_from_app_config(app):
 @pytest.mark.parametrize(
     "theme, language, expected",
     [
-        ("default", "en", None),
-        ("business", "en", None),
-        ("health", "en", None),
-        ("social", "en", None),
-        ("northernireland", "en", None),
-        ("census", "en", "census"),
-        ("census", "cy", "census"),
-        ("census-nisra", "en", "census"),
+        (SurveyTypes.default, "en", None),
+        (SurveyTypes.business, "en", None),
+        (SurveyTypes.health, "en", None),
+        (SurveyTypes.social, "en", None),
+        (SurveyTypes.northernireland, "en", None),
+        (SurveyTypes.census, "en", "census"),
+        (SurveyTypes.census, "cy", "census"),
+        (SurveyTypes.census_nisra, "en", "census"),
     ],
 )
 def test_correct_theme_in_context(app: Flask, theme: str, language: str, expected: str):
@@ -569,14 +570,14 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
 @pytest.mark.parametrize(
     "theme, language, expected",
     [
-        ("default", "en", "ONS Business Surveys"),
-        ("business", "en", "ONS Business Surveys"),
-        ("health", "en", None),
-        ("social", "en", "ONS Social Surveys"),
-        ("northernireland", "en", "ONS Business Surveys"),
-        ("census", "en", "Census 2021"),
-        ("census", "cy", "Census 2021"),
-        ("census-nisra", "en", "Census 2021"),
+        (SurveyTypes.default, "en", "ONS Business Surveys"),
+        (SurveyTypes.business, "en", "ONS Business Surveys"),
+        (SurveyTypes.health, "en", None),
+        (SurveyTypes.social, "en", "ONS Social Surveys"),
+        (SurveyTypes.northernireland, "en", "ONS Business Surveys"),
+        (SurveyTypes.census, "en", "Census 2021"),
+        (SurveyTypes.census, "cy", "Census 2021"),
+        (SurveyTypes.census_nisra, "en", "Census 2021"),
     ],
 )
 def test_correct_survey_title_in_context(
@@ -597,37 +598,47 @@ def test_correct_survey_title_in_context(
     "theme, language, schema, expected",
     [
         (
-            "default",
+            SurveyTypes.default,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
             [{"survey_id": "001"}],
         ),
         (
-            "default",
+            SurveyTypes.default,
             "en",
             QuestionnaireSchema({"survey_id": "001", "form_type": "test"}),
             [{"form_type": "test", "survey_id": "001"}],
         ),
         (
-            "business",
+            SurveyTypes.business,
             "en",
             QuestionnaireSchema(
                 {"survey_id": "001", "form_type": "test", "title": "test_title"}
             ),
             [{"form_type": "test", "survey_id": "001", "title": "test_title"}],
         ),
-        ("health", "en", QuestionnaireSchema({"survey_id": "001"}), []),
-        ("social", "en", QuestionnaireSchema({"survey_id": "001"}), []),
+        (SurveyTypes.health, "en", QuestionnaireSchema({"survey_id": "001"}), []),
+        (SurveyTypes.social, "en", QuestionnaireSchema({"survey_id": "001"}), []),
         (
-            "northernireland",
+            SurveyTypes.northernireland,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
             [{"survey_id": "001"}],
         ),
-        ("census", "en", QuestionnaireSchema({"survey_id": "001"}), [{"nisra": False}]),
-        ("census", "cy", QuestionnaireSchema({"survey_id": "001"}), [{"nisra": False}]),
         (
-            "census-nisra",
+            SurveyTypes.census,
+            "en",
+            QuestionnaireSchema({"survey_id": "001"}),
+            [{"nisra": False}],
+        ),
+        (
+            SurveyTypes.census,
+            "cy",
+            QuestionnaireSchema({"survey_id": "001"}),
+            [{"nisra": False}],
+        ),
+        (
+            SurveyTypes.census_nisra,
             QuestionnaireSchema({"survey_id": "001"}),
             "en",
             [{"nisra": True}],
