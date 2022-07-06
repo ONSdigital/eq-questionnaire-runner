@@ -44,7 +44,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
     });
   });
 
-  describe("Given I start a grouped answer validation survey and enter 12 into the total", () => {
+  describe("Given I have a calculated summary value of 12", () => {
     it("When I continue to second breakdown and enter values equal to calculated summary total, Then I should be able to get to the summary page", () => {
       $(TotalAnswerPage.total()).setValue("12");
       $(TotalAnswerPage.submit()).click();
