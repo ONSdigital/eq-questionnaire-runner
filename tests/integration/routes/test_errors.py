@@ -3,7 +3,7 @@ from mock import Mock, patch
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
-class TestErrors(IntegrationTestCase):
+class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-methods
     example_payload = {
         "user_id": "integration-test",
         "period_str": "April 2016",
@@ -81,7 +81,7 @@ class TestErrors(IntegrationTestCase):
                     self.assertStatusCode(500)
                     self.assertInBody("Sorry, there is a problem with this service")
 
-    def test_401_theme_default(self):
+    def test_401_theme_default_cookie_exists(self):
         # Given
         self.launchSurvey("test_introduction")
         self.assertInUrl("/questionnaire/introduction/")
@@ -99,7 +99,7 @@ class TestErrors(IntegrationTestCase):
             '<p>You will need to <a href="http://upstream.url/sign-in/logout">sign back in</a> to access your account</p>'
         )
 
-    def test_401_theme_social(self):
+    def test_401_theme_social_cookie_exists(self):
         # Given
         self.launchSurvey("test_theme_social")
         self.assertInUrl("/questionnaire/radio/")
@@ -117,7 +117,7 @@ class TestErrors(IntegrationTestCase):
             '<p>To access this page you need to <a href="http://upstream.url/sign-in/logout">re-enter your access code</a>.</p>'
         )
 
-    def test_401_theme_none(self):
+    def test_401_no_cookie(self):
         # Given
         self.launchSurvey("test_introduction")
         self.assertInUrl("/questionnaire/introduction/")
@@ -134,7 +134,7 @@ class TestErrors(IntegrationTestCase):
             '<p>If you are completing a business survey, you need to sign back in to <a href="https://surveys.ons.gov.uk/sign-in/logout">your account</a>.</p>'
         )
 
-    def test_403_theme_default(self):
+    def test_403_theme_default_cookie_exists(self):
         # Given
         self.launchSurvey("test_introduction")
 
@@ -149,7 +149,7 @@ class TestErrors(IntegrationTestCase):
             '<p>For further help, please <a href="http://upstream.url/contact-us/">contact us</a>.</p>'
         )
 
-    def test_403_theme_social(self):
+    def test_403_theme_social_cookie_exists(self):
         # Given
         self.launchSurvey("test_theme_social")
 
@@ -164,7 +164,7 @@ class TestErrors(IntegrationTestCase):
             '<p>For further help, please <a href="http://upstream.url/contact-us/">contact us</a>.</p>'
         )
 
-    def test_403_theme_none(self):
+    def test_403_no_cookie(self):
         # Given
         self.launchSurvey("test_introduction")
 
@@ -178,7 +178,7 @@ class TestErrors(IntegrationTestCase):
             '<p>If you are completing a business survey and you need further help, please <a href="https://surveys.ons.gov.uk/contact-us/">contact us</a>.</p>'
         )
 
-    def test_404_theme_default(self):
+    def test_404_theme_default_cookie_exists(self):
         # Given
         self.launchSurvey("test_introduction")
 
@@ -193,7 +193,7 @@ class TestErrors(IntegrationTestCase):
             '<p>If the web address is correct or you selected a link or button, <a href="http://upstream.url/contact-us/">contact us</a> for more help.</p>'
         )
 
-    def test_404_theme_social(self):
+    def test_404_theme_social_cookie_exists(self):
         # Given
         self.launchSurvey("test_theme_social")
 
@@ -208,7 +208,7 @@ class TestErrors(IntegrationTestCase):
             '<p>If the web address is correct or you selected a link or button, <a href="http://upstream.url/contact-us/">contact us</a> for more help.</p>'
         )
 
-    def test_404_theme_none(self):
+    def test_404_no_cookie(self):
         # Given
         self.launchSurvey("test_introduction")
 
@@ -222,7 +222,22 @@ class TestErrors(IntegrationTestCase):
             "<p>If the web address is correct or you selected a link or button, please see the following help links.</p>"
         )
 
-    def test_500_theme_default(self):
+    def test_404_theme_no_cookie_unauthenticated(self):
+        # Given
+        self.launchSurvey("test_introduction")
+
+        # When
+        self.exit()
+        self.deleteCookie()
+        self.get(url="/abc123")
+
+        # Then
+        self.assertStatusNotFound()
+        self.assertInBody(
+            "<p>If the web address is correct or you selected a link or button, please see the following help links.</p>"
+        )
+
+    def test_500_theme_default_cookie_exists(self):
         # Given
         self.launchSurvey("test_introduction")
 
@@ -241,7 +256,26 @@ class TestErrors(IntegrationTestCase):
                 '<p><a href="http://upstream.url/contact-us/">Contact us</a> if you need to speak to someone about your survey.</p>'
             )
 
-    def test_500_theme_census(self):
+    def test_500_theme_social_cookie_exists(self):
+        # Given
+        self.launchSurvey("test_introduction")
+
+        # When
+        with patch(
+            "app.routes.questionnaire.get_block_handler",
+            side_effect=Exception("You broke it"),
+        ):
+            self.post({"answer": "test"})
+            cookie = self.getCookie()
+
+            # Then
+            self.assertEqual(cookie.get("theme"), "default")
+            self.assertException()
+            self.assertInBody(
+                '<p><a href="http://upstream.url/contact-us/">Contact us</a> if you need to speak to someone about your survey.</p>'
+            )
+
+    def test_500_theme_census_cookie_exists(self):
         # Given
         self.launchSurvey("test_thank_you_census_household")
 
@@ -259,7 +293,7 @@ class TestErrors(IntegrationTestCase):
                 ' please <a href="http://upstream.url/contact-us/">contact us</a>.</p>'
             )
 
-    def test_submission_failed_theme_default(self):
+    def test_submission_failed_theme_default_cookie_exists(self):
         # Given
         submitter = self._application.eq["submitter"]
         submitter.send_message = Mock(return_value=False)
@@ -276,7 +310,7 @@ class TestErrors(IntegrationTestCase):
             '<p>If this problem keeps happening, please <a href="http://upstream.url/contact-us/">contact us</a> for help.</p>'
         )
 
-    def test_submission_failed_theme_social(self):
+    def test_submission_failed_theme_social_cookie_exists(self):
         # Given
         submitter = self._application.eq["submitter"]
         submitter.send_message = Mock(return_value=False)
@@ -293,7 +327,7 @@ class TestErrors(IntegrationTestCase):
             '<p>If this problem keeps happening, please <a href="http://upstream.url/contact-us/">contact us</a> for help.</p>'
         )
 
-    def test_submission_failed_theme_census(self):
+    def test_submission_failed_theme_census_cookie_exists(self):
         # Given
         submitter = self._application.eq["submitter"]
         submitter.send_message = Mock(return_value=False)
