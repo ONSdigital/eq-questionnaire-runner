@@ -222,7 +222,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
             "<p>If the web address is correct or you selected a link or button, please see the following help links.</p>"
         )
 
-    def test_404_theme_no_cookie_unauthenticated(self):
+    def test_404_no_cookie_unauthenticated(self):
         # Given
         self.launchSurvey("test_introduction")
 
