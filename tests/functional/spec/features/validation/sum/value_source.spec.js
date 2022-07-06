@@ -20,7 +20,7 @@ const answerAndSubmitSecondBreakdownQuestion = (breakdown1, breakdown2, breakdow
   $(SecondBreakdownAnswerPage.submit()).click();
 };
 
-describe("Feature: Sum of grouped answers equal to validation against answer value source ", () => {
+describe("Feature: Sum of grouped answers equal to validation against value source ", () => {
   beforeEach(() => {
     browser.openQuestionnaire("test_validation_sum_against_value_source.json");
   });
