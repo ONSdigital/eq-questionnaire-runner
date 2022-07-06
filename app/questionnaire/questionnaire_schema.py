@@ -271,15 +271,21 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self, calculations: tuple[ImmutableDict[str, Any]], block_id: str
     ) -> None:
         for calculation in calculations:
-            if not (source_answer_id := calculation.get("answer_id")):
-                if not (value := calculation.get("value")):
-                    continue
-                if isinstance(value, dict):
-                    self._update_answer_dependencies_for_value_source(
-                        value,
-                        block_id=block_id,
+            if source_answer_id := calculation.get("answer_id"):
+                dependents = {
+                    self._get_answer_dependent_for_block_id(
+                        block_id=self.get_block_for_answer_id(answer_id)["id"]  # type: ignore
                     )
-                    continue
+                    for answer_id in calculation["answers_to_calculate"]
+                }
+                self._answer_dependencies_map[source_answer_id] |= dependents
+
+            elif isinstance(calculation.get("value"), dict):
+                self._update_answer_dependencies_for_value_source(
+                    calculation["value"],
+                    block_id=block_id,
+                )
+                continue
 
             dependents = {
                 self._get_answer_dependent_for_block_id(
