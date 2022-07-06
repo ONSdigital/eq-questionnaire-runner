@@ -45,7 +45,7 @@
                                         "label": "Length in Centimetres",
                                         "mandatory": false,
                                         "type": "Unit",
-                                        "unit": "length-centimetre",
+                                        "unit": "length-centimeter",
                                         "unit_length": "short",
                                         "maximum": {
                                             "value": 1000
@@ -133,7 +133,7 @@
                                         "label": "Centimetres Square",
                                         "mandatory": false,
                                         "type": "Unit",
-                                        "unit": "area-square-centimetre",
+                                        "unit": "area-square-centimeter",
                                         "unit_length": "short"
                                     },
                                     {
@@ -192,7 +192,7 @@
                                         "label": "Cubic Centimetres",
                                         "mandatory": false,
                                         "type": "Unit",
-                                        "unit": "volume-cubic-centimetre",
+                                        "unit": "volume-cubic-centimeter",
                                         "unit_length": "short"
                                     },
                                     {
