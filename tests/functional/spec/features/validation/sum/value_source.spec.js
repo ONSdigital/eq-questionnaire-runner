@@ -20,6 +20,14 @@ const answerAndSubmitSecondBreakdownQuestion = (breakdown1, breakdown2, breakdow
   $(SecondBreakdownAnswerPage.submit()).click();
 };
 
+const answerBothBreakdownQuestions = (array1, array2) => {
+  answerAndSubmitBreakdownQuestion(array1[0], array1[1], array1[2], array1[3]);
+
+  $(TotalPlaybackPage.submit()).click();
+
+  answerAndSubmitSecondBreakdownQuestion(array2[0], array2[1], array2[2], array2[3]);
+};
+
 describe("Feature: Sum of grouped answers equal to validation against value source ", () => {
   beforeEach(() => {
     browser.openQuestionnaire("test_validation_sum_against_value_source.json");
@@ -41,11 +49,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       $(TotalAnswerPage.total()).setValue("12");
       $(TotalAnswerPage.submit()).click();
 
-      answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
-
-      $(TotalPlaybackPage.submit()).click();
-
-      answerAndSubmitSecondBreakdownQuestion("2", "2", "1", "1");
+      answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
       expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
@@ -56,21 +60,13 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       $(TotalAnswerPage.total()).setValue("12");
       $(TotalAnswerPage.submit()).click();
 
-      answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
-
-      $(TotalPlaybackPage.submit()).click();
-
-      answerAndSubmitSecondBreakdownQuestion("2", "2", "1", "1");
+      answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
       $(SubmitPage.totalAnswerEdit()).click();
       $(TotalAnswerPage.total()).setValue("15");
       $(TotalAnswerPage.submit()).click();
 
-      answerAndSubmitBreakdownQuestion("6", "3", "3", "3");
-
-      $(TotalPlaybackPage.submit()).click();
-
-      answerAndSubmitSecondBreakdownQuestion("3", "3", "2", "1");
+      answerBothBreakdownQuestions(["6", "3", "3", "3"], ["3", "3", "2", "1"]);
 
       expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
@@ -81,11 +77,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       $(TotalAnswerPage.total()).setValue("12");
       $(TotalAnswerPage.submit()).click();
 
-      answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
-
-      $(TotalPlaybackPage.submit()).click();
-
-      answerAndSubmitSecondBreakdownQuestion("2", "2", "1", "1");
+      answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
       $(SubmitPage.totalAnswerEdit()).click();
       $(TotalAnswerPage.total()).setValue("15");
@@ -108,21 +100,13 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       $(TotalAnswerPage.total()).setValue("12");
       $(TotalAnswerPage.submit()).click();
 
-      answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
-
-      $(TotalPlaybackPage.submit()).click();
-
-      answerAndSubmitSecondBreakdownQuestion("2", "2", "1", "1");
+      answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
       $(SubmitPage.totalAnswerEdit()).click();
       $(TotalAnswerPage.total()).setValue("15");
       $(TotalAnswerPage.submit()).click();
 
-      answerAndSubmitBreakdownQuestion("6", "3", "3", "3");
-
-      $(TotalPlaybackPage.submit()).click();
-
-      answerAndSubmitSecondBreakdownQuestion("1", "1", "1", "1");
+      answerBothBreakdownQuestions(["6", "3", "3", "3"], ["1", "1", "1", "1"]);
 
       expect(browser.getUrl()).to.contain(SecondBreakdownAnswerPage.pageName);
 
@@ -150,11 +134,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       $(TotalAnswerPage.total()).setValue("5");
       $(TotalAnswerPage.submit()).click();
 
-      answerAndSubmitBreakdownQuestion("2", "1", "1", "1");
-
-      $(TotalPlaybackPage.submit()).click();
-
-      answerAndSubmitSecondBreakdownQuestion("3", "3", "3", "3");
+      answerBothBreakdownQuestions(["2", "1", "1", "1"], ["3", "3", "3", "3"]);
 
       expect($(SecondBreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 3");
     });
