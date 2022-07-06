@@ -89,7 +89,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       expect($(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 15");
 
-      answerAndSubmitBreakdownQuestion("5", "4", "4", "2");
+      answerBothBreakdownQuestions(["5", "4", "4", "2"], ["3", "3", "2", "1"]);
 
       expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
@@ -110,7 +110,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       expect(browser.getUrl()).to.contain(SecondBreakdownAnswerPage.pageName);
 
-      expect($(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 9");
+      expect($(SecondBreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 9");
 
       answerAndSubmitSecondBreakdownQuestion("5", "4", "0", "0");
 
