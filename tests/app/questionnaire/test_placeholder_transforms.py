@@ -58,7 +58,7 @@ def test_format_percentage(value, expected, transformer):
     "unit, value, unit_length, expected",
     (
         ("millimeter", Decimal(0.123), "short", "0.123 mm"),
-        ("centimeter", "123", "short", "123 cm"),
+        ("centimetre", "123", "short", "123 cm"),
         ("kilometer", "123", "long", "123 kilometre"),
         ("mile", "123", "short", "123 mi"),
         ("mile", "123", "narrow", "123mi"),

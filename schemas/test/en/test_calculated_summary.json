@@ -78,7 +78,7 @@
                                         "mandatory": true,
                                         "type": "Unit",
                                         "unit_length": "short",
-                                        "unit": "length-centimeter"
+                                        "unit": "length-centimetre"
                                     },
                                     {
                                         "id": "second-number-answer-also-in-total",
@@ -124,7 +124,7 @@
                                         "mandatory": true,
                                         "type": "Unit",
                                         "unit_length": "short",
-                                        "unit": "length-centimeter"
+                                        "unit": "length-centimetre"
                                     }
                                 ]
                             }
