@@ -156,7 +156,8 @@ class QuestionnaireForm(FlaskForm):
         )
         answers = (getattr(self, answer["id"]).data for answer in question["answers"])
         is_only_checkboxes_or_radios = all(
-            answer["type"] == "Checkbox" or answer["type"] == "Radio" for answer in question["answers"]
+            answer["type"] == "Checkbox" or answer["type"] == "Radio"
+            for answer in question["answers"]
         )
 
         validator = MutuallyExclusiveCheck(
