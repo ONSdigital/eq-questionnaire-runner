@@ -285,15 +285,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     calculation["value"],
                     block_id=block_id,
                 )
-                continue
-
-            dependents = {
-                self._get_answer_dependent_for_block_id(
-                    block_id=self.get_block_for_answer_id(answer_id)["id"]  # type: ignore
-                )
-                for answer_id in calculation["answers_to_calculate"]
-            }
-            self._answer_dependencies_map[source_answer_id] |= dependents  # type: ignore
 
     def _update_answer_dependencies_for_answer(
         self, answer: Mapping, *, block_id: str
