@@ -55,7 +55,6 @@
                                                 "value": "Eggs"
                                             }
                                         ],
-                                        "q_code": "20",
                                         "type": "Radio"
                                     }
                                 ],
@@ -83,7 +82,6 @@
                                                 "value": "Coffee"
                                             }
                                         ],
-                                        "q_code": "20",
                                         "type": "Radio"
                                     }
                                 ],

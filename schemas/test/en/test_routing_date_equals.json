@@ -43,7 +43,6 @@
                                     {
                                         "id": "comparison-date-answer",
                                         "mandatory": true,
-                                        "q_code": "11",
                                         "type": "Date"
                                     }
                                 ],
