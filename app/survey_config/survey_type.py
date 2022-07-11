@@ -1,11 +1,11 @@
 from enum import Enum
 
 
-class SurveyTypes(Enum):
+class SurveyType(Enum):
     business = "business"
     social = "social"
     default = "default"
     health = "health"
-    northernireland = "northernireland"
+    northern_ireland = "northernireland"
     census = "census"
     census_nisra = "census-nisra"

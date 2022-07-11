@@ -22,7 +22,7 @@ from app.survey_config import (
     SurveyConfig,
     WelshCensusSurveyConfig,
 )
-from app.survey_config.survey_types import SurveyTypes
+from app.survey_config.survey_type import SurveyType
 from app.utilities.schema import load_schema_from_session_data
 
 
@@ -171,16 +171,18 @@ class ContextHelper:
 
 @lru_cache
 def survey_config_mapping(
-    *, theme: str, language: str, base_url: str, schema: QuestionnaireSchema
+    *, theme: SurveyType, language: str, base_url: str, schema: QuestionnaireSchema
 ) -> SurveyConfig:
-    survey_type_to_config: dict[str, Type[SurveyConfig]] = {
-        "default": BusinessSurveyConfig,
-        "business": BusinessSurveyConfig,
-        "health": SurveyConfig,
-        "social": SocialSurveyConfig,
-        "northernireland": NorthernIrelandBusinessSurveyConfig,
-        "census": (WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig),
-        "census-nisra": CensusNISRASurveyConfig,
+    survey_type_to_config: dict[SurveyType, Type[SurveyConfig]] = {
+        SurveyType.default: BusinessSurveyConfig,
+        SurveyType.business: BusinessSurveyConfig,
+        SurveyType.health: SurveyConfig,
+        SurveyType.social: SocialSurveyConfig,
+        SurveyType.northern_ireland: NorthernIrelandBusinessSurveyConfig,
+        SurveyType.census: (
+            WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig
+        ),
+        SurveyType.census_nisra: CensusNISRASurveyConfig,
     }
 
     return survey_type_to_config[theme](
@@ -191,7 +193,7 @@ def survey_config_mapping(
 
 def get_survey_config(
     *,
-    theme: Optional[SurveyTypes] = None,
+    theme: Optional[SurveyType] = None,
     language: Optional[str] = None,
     schema: Optional[QuestionnaireSchema] = None,
 ) -> SurveyConfig:
@@ -202,7 +204,7 @@ def get_survey_config(
             schema = load_schema_from_session_data(session_data)
 
     language = language or get_locale().language
-    survey_theme: str = theme.value if theme else get_survey_type()
+    survey_theme = theme if theme else get_survey_type()
     base_url = (
         cookie_session.get("account_service_base_url") or ACCOUNT_SERVICE_BASE_URL
     )
@@ -246,5 +248,5 @@ def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     )
 
 
-def get_survey_type() -> str:
-    return cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
+def get_survey_type() -> SurveyType:
+    return SurveyType[cookie_session.get("theme", current_app.config["SURVEY_TYPE"])]
