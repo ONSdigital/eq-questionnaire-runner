@@ -125,8 +125,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         # When
         current_url = self.last_url
         self.exit()
-        self.deleteCookie()
-        self.get(current_url)
+        self.deleteCookieAndGetUrl(current_url)
 
         # Then
         self.assertStatusUnauthorised()
@@ -139,8 +138,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.launchSurvey("test_introduction")
 
         # When
-        self.get(url="/dump/debug")
-        cookie = self.getCookie()
+        cookie = self.getUrlAndCookie("/dump/debug")
 
         # Then
         self.assertEqual(cookie.get("theme"), "default")
@@ -154,8 +152,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.launchSurvey("test_theme_social")
 
         # When
-        self.get(url="/dump/debug")
-        cookie = self.getCookie()
+        cookie = self.getUrlAndCookie("/dump/debug")
 
         # Then
         self.assertEqual(cookie.get("theme"), "social")
@@ -183,8 +180,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.launchSurvey("test_introduction")
 
         # When
-        self.get(url="/abc123")
-        cookie = self.getCookie()
+        cookie = self.getUrlAndCookie("/abc123")
 
         # Then
         self.assertEqual(cookie.get("theme"), "default")
@@ -198,8 +194,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.launchSurvey("test_theme_social")
 
         # When
-        self.get(url="/abc123")
-        cookie = self.getCookie()
+        cookie = self.getUrlAndCookie("/abc123")
 
         # Then
         self.assertEqual(cookie.get("theme"), "social")
@@ -213,8 +208,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.launchSurvey("test_introduction")
 
         # When
-        self.deleteCookie()
-        self.get(url="/abc123")
+        self.deleteCookieAndGetUrl("/abc123")
 
         # Then
         self.assertStatusNotFound()
@@ -228,8 +222,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
 
         # When
         self.exit()
-        self.deleteCookie()
-        self.get(url="/abc123")
+        self.deleteCookieAndGetUrl("/abc123")
 
         # Then
         self.assertStatusNotFound()
@@ -299,10 +292,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         submitter.send_message = Mock(return_value=False)
 
         # When
-        self.launchSurvey("test_introduction")
-        self.post()
-        self.post()
-        self.post()
+        self.launchAndFailSubmission("test_introduction")
 
         # Then
         self.assertStatusCode(500)
@@ -316,10 +306,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         submitter.send_message = Mock(return_value=False)
 
         # When
-        self.launchSurvey("test_theme_social")
-        self.post()
-        self.post()
-        self.post()
+        self.launchAndFailSubmission("test_theme_social")
 
         # Then
         self.assertStatusCode(500)
@@ -333,9 +320,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         submitter.send_message = Mock(return_value=False)
 
         # When
-        self.launchSurvey("test_thank_you_census_individual")
-        self.post()
-        self.post()
+        self.launchAndFailSubmission("test_thank_you_census_individual")
 
         # Then
         self.assertStatusCode(500)
