@@ -10,6 +10,7 @@ from app.globals import (
     has_view_submitted_response_expired,
 )
 from app.questionnaire import QuestionnaireSchema
+from app.survey_config.survey_type import SurveyType
 from app.views.contexts.email_form_context import build_email_form_context
 from app.views.contexts.submission_metadata_context import (
     build_submission_metadata_context,
@@ -20,10 +21,10 @@ def build_thank_you_context(
     schema: QuestionnaireSchema,
     session_data: SessionData,
     submitted_at: datetime,
-    survey_type: str,
+    survey_type: SurveyType,
     guidance_content: Optional[dict] = None,
 ) -> Mapping:
-    if survey_type == "social":
+    if survey_type.value == "social":
         submission_text = lazy_gettext("Your answers have been submitted.")
     elif session_data.trad_as and session_data.ru_name:
         submission_text = lazy_gettext(

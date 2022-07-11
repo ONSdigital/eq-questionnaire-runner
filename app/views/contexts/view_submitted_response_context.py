@@ -25,7 +25,7 @@ def build_view_submitted_response_context(
         questionnaire_store.submitted_at  # type: ignore
     )
 
-    if survey_type == "social":
+    if survey_type.value == "social":
         submitted_text = lazy_gettext("Answers submitted.")
     elif trad_as := questionnaire_store.metadata.get("trad_as"):
         submitted_text = lazy_gettext(
