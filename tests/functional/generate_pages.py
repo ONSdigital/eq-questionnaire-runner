@@ -177,6 +177,14 @@ ANSWER_GETTER = Template(
 """
 )
 
+ANSWER_SUFFIX_GETTER = Template(
+    r"""  ${answerName}Suffix() {
+    return `#${answerId} + abbr`;
+  }
+
+"""
+)
+
 DYNAMIC_ANSWER_GETTER = Template(
     r"""  answerByIndex(answerIndex) {
     return `#${answerId}-${answerIndex}`;
@@ -409,6 +417,7 @@ def process_answer(answer, page_spec, long_names, page_name):
 
     elif answer["type"] in "Duration":
         page_spec.write(_write_duration_answer(answer["id"], answer["units"], prefix))
+        page_spec.write(_write_duration_suffix(answer["id"], answer["units"], prefix))
     elif answer["type"] == "Address":
         page_spec.write(_write_address_answer(answer["id"], prefix))
     elif answer["type"] in {
@@ -652,6 +661,20 @@ def _write_duration_answer(answer_id, units, prefix):
     for unit in units:
         resp.append(
             ANSWER_GETTER.substitute(
+                {
+                    "answerName": prefix + unit.title(),
+                    "answerId": answer_id + "-" + unit,
+                }
+            )
+        )
+
+    return "".join(resp)
+
+def _write_duration_suffix(answer_id, units, prefix):
+    resp = []
+    for unit in units:
+        resp.append(
+            ANSWER_SUFFIX_GETTER.substitute(
                 {
                     "answerName": prefix + unit.title(),
                     "answerId": answer_id + "-" + unit,
