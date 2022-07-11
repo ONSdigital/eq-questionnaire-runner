@@ -6,6 +6,6 @@ class SurveyType(Enum):
     social = "social"
     default = "default"
     health = "health"
-    northern_ireland = "northernireland"
+    northernireland = "northernireland"
     census = "census"
     census_nisra = "census-nisra"
