@@ -11,13 +11,19 @@ from app.survey_config.survey_config import SurveyConfig
 class SocialSurveyConfig(
     SurveyConfig,
 ):
-    base_url: str = "https://rh.ons.gov.uk"
     survey_title: str = "ONS Social Surveys"
     footer_links: Iterable[MutableMapping] = field(default_factory=list)
     footer_legal_links: Iterable[Mapping] = field(default_factory=list)
 
     def __post_init__(self):
         super().__post_init__()
+
+        self.base_url = "https://rh.ons.gov.uk"
+        self.contact_us_url = f"{self.base_url}/contact-us/"
+        self.cookie_settings_url = f"{self.base_url}/cookies/"
+        self.privacy_and_data_protection_url = (
+            f"{self.base_url}/privacy-and-data-protection/"
+        )
 
         if self.schema:
             self.data_layer: list[dict] = [

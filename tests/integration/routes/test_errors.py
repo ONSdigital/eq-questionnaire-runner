@@ -114,7 +114,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         cookie = self.getCookie()
         self.assertEqual(cookie.get("theme"), "social")
         self.assertInBody(
-            '<p>To access this page you need to <a href="http://upstream.url/sign-in/logout">re-enter your access code</a>.</p>'
+            '<p>To access this page you need to <a href="https://rh.ons.gov.uk/sign-in/logout">re-enter your access code</a>.</p>'
         )
 
     def test_401_no_cookie(self):
@@ -161,7 +161,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.assertEqual(cookie.get("theme"), "social")
         self.assertStatusForbidden()
         self.assertInBody(
-            '<p>For further help, please <a href="http://upstream.url/contact-us/">contact us</a>.</p>'
+            '<p>For further help, please <a href="https://rh.ons.gov.uk/contact-us/">contact us</a>.</p>'
         )
 
     def test_403_no_cookie(self):
@@ -205,7 +205,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.assertEqual(cookie.get("theme"), "social")
         self.assertStatusNotFound()
         self.assertInBody(
-            '<p>If the web address is correct or you selected a link or button, <a href="http://upstream.url/contact-us/">contact us</a> for more help.</p>'
+            '<p>If the web address is correct or you selected a link or button, <a href="https://rh.ons.gov.uk/contact-us/">contact us</a> for more help.</p>'
         )
 
     def test_404_no_cookie(self):
@@ -324,7 +324,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         # Then
         self.assertStatusCode(500)
         self.assertInBody(
-            '<p>If this problem keeps happening, please <a href="http://upstream.url/contact-us/">contact us</a> for help.</p>'
+            '<p>If this problem keeps happening, please <a href="https://rh.ons.gov.uk/contact-us/">contact us</a> for help.</p>'
         )
 
     def test_submission_failed_theme_census_cookie_exists(self):
