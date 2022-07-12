@@ -662,7 +662,7 @@ def _write_duration_answer(answer_id, units, prefix):
         resp.append(
             ANSWER_GETTER.substitute(
                 {
-                    "answerName": prefix + unit.title(),
+                    "answerName": f"{prefix}{unit.title()}",
                     "answerId": f"{answer_id}-{unit}",
                 }
             )
@@ -677,7 +677,7 @@ def _write_duration_suffix(answer_id, units, prefix):
         resp.append(
             ANSWER_SUFFIX_GETTER.substitute(
                 {
-                    "answerName": prefix + unit.title(),
+                    "answerName": f"{prefix}{unit.title()}",
                     "answerId": f"{answer_id}-{unit}",
                 }
             )
