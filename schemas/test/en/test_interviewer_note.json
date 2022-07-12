@@ -54,7 +54,6 @@
                                         "id": "favourite-team-answer",
                                         "label": "Favourite team",
                                         "mandatory": false,
-                                        "q_code": "0",
                                         "type": "TextField"
                                     }
                                 ],

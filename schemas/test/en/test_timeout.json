@@ -47,7 +47,6 @@
                                         "id": "timeout-answer",
                                         "label": "Does the timeout appear?",
                                         "mandatory": false,
-                                        "q_code": "0",
                                         "type": "TextField"
                                     }
                                 ],
