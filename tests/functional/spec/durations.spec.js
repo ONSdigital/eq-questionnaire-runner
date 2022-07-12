@@ -8,12 +8,8 @@ describe("Durations", () => {
 
   it("Given the test_durations survey is selected durations suffixes are visible", () => {
     expect($(DurationPage.yearMonthYearsSuffix()).getText()).to.contain("Years");
-    expect($(DurationPage.yearMonthMonthsSuffix()).getText()).to.contain("Months");
-    expect($(DurationPage.mandatoryYearMonthYearsSuffix()).getText()).to.contain("Years");
     expect($(DurationPage.mandatoryYearMonthMonthsSuffix()).getText()).to.contain("Months");
     expect($(DurationPage.yearYearsSuffix()).getText()).to.contain("Years");
-    expect($(DurationPage.monthMonthsSuffix()).getText()).to.contain("Months");
-    expect($(DurationPage.mandatoryYearYearsSuffix()).getText()).to.contain("Years");
     expect($(DurationPage.mandatoryMonthMonthsSuffix()).getText()).to.contain("Months");
   });
 
