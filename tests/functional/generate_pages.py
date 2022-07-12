@@ -663,7 +663,7 @@ def _write_duration_answer(answer_id, units, prefix):
             ANSWER_GETTER.substitute(
                 {
                     "answerName": prefix + unit.title(),
-                    "answerId": answer_id + "-" + unit,
+                    "answerId": f"{answer_id}-{unit}",
                 }
             )
         )
@@ -678,7 +678,7 @@ def _write_duration_suffix(answer_id, units, prefix):
             ANSWER_SUFFIX_GETTER.substitute(
                 {
                     "answerName": prefix + unit.title(),
-                    "answerId": answer_id + "-" + unit,
+                    "answerId": f"{answer_id}-{unit}",
                 }
             )
         )
