@@ -65,7 +65,6 @@
                                                 "value": "No, I don’t drink any hot drinks"
                                             }
                                         ],
-                                        "q_code": "1",
                                         "id": "conditional-routing-answer",
                                         "label": "Which conditional question should we jump to?",
                                         "mandatory": true,
@@ -117,7 +116,6 @@
                                         "id": "response-any-number-of-cups",
                                         "label": "Number of cups",
                                         "mandatory": true,
-                                        "q_code": "2",
                                         "type": "Number"
                                     }
                                 ]
@@ -135,7 +133,6 @@
                                         "id": "response-not-any-number-of-cups",
                                         "label": "Number of cups",
                                         "mandatory": true,
-                                        "q_code": "2",
                                         "type": "Number"
                                     }
                                 ]

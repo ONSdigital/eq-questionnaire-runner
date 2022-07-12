@@ -48,7 +48,6 @@
                                     {
                                         "id": "block1-answer",
                                         "mandatory": false,
-                                        "q_code": "20",
                                         "type": "TextField",
                                         "label": "Question 1"
                                     }
@@ -85,7 +84,6 @@
                                     {
                                         "id": "block2-answer",
                                         "mandatory": false,
-                                        "q_code": "20",
                                         "type": "TextField",
                                         "label": "Question 2"
                                     }
@@ -103,7 +101,6 @@
                                     {
                                         "id": "block3-answer",
                                         "mandatory": false,
-                                        "q_code": "20",
                                         "type": "TextField",
                                         "label": "Question 3"
                                     }

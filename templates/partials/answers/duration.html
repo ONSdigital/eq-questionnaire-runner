@@ -16,7 +16,9 @@
     "id": years.id,
     "name": years.name,
     "value": years.data if years.data is not none else '',
-    "suffix": _(years.label.text)
+    "suffix": {
+      "text": _(years.label.text)
+    }
   }) %}
 {% endif %}
 
@@ -25,7 +27,9 @@
     "id": months.id,
     "name": months.name,
     "value": months.data if months.data is not none else '',
-    "suffix": _(months.label.text)
+    "suffix": {
+      "text": _(months.label.text)
+    }
   }) %}
 {% endif %}
 
