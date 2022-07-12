@@ -169,7 +169,7 @@ def test_get_page_header_context_census_nisra(app: Flask):
         "titleLogo": "census-logo-en",
         "titleLogoAlt": "Census 2021",
         "customHeaderLogo": True,
-        "mobileLogo": "nisra-logo-mobile",
+        "orgMobileLogo": "nisra-logo-mobile",
     }
 
     with app.app_context():
