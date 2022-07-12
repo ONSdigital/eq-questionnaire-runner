@@ -670,6 +670,7 @@ def _write_duration_answer(answer_id, units, prefix):
 
     return "".join(resp)
 
+
 def _write_duration_suffix(answer_id, units, prefix):
     resp = []
     for unit in units:
