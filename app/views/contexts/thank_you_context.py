@@ -24,7 +24,7 @@ def build_thank_you_context(
     survey_type: SurveyType,
     guidance_content: Optional[dict] = None,
 ) -> Mapping:
-    if survey_type.value == "social":
+    if survey_type is SurveyType.SOCIAL:
         submission_text = lazy_gettext("Your answers have been submitted.")
     elif session_data.trad_as and session_data.ru_name:
         submission_text = lazy_gettext(

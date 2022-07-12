@@ -7,8 +7,8 @@ from app.views.contexts.submission_metadata_context import (
     build_submission_metadata_context,
 )
 
-SURVEY_TYPE_DEFAULT = SurveyType.default
-SURVEY_TYPE_SOCIAL = SurveyType.social
+SURVEY_TYPE_DEFAULT = SurveyType.DEFAULT
+SURVEY_TYPE_SOCIAL = SurveyType.SOCIAL
 SUBMITTED_AT = datetime(2021, 8, 17, 10, 10, 0, tzinfo=timezone.utc)
 TX_ID = "6b6f90e6-6c27-4c76-8295-7a14e2c4a399"
 

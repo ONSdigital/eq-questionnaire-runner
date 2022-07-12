@@ -174,15 +174,15 @@ def survey_config_mapping(
     *, theme: SurveyType, language: str, base_url: str, schema: QuestionnaireSchema
 ) -> SurveyConfig:
     survey_type_to_config: dict[SurveyType, Type[SurveyConfig]] = {
-        SurveyType.default: BusinessSurveyConfig,
-        SurveyType.business: BusinessSurveyConfig,
-        SurveyType.health: SurveyConfig,
-        SurveyType.social: SocialSurveyConfig,
-        SurveyType.northernireland: NorthernIrelandBusinessSurveyConfig,
-        SurveyType.census: (
+        SurveyType.DEFAULT: BusinessSurveyConfig,
+        SurveyType.BUSINESS: BusinessSurveyConfig,
+        SurveyType.HEALTH: SurveyConfig,
+        SurveyType.SOCIAL: SocialSurveyConfig,
+        SurveyType.NORTHERN_IRELAND: NorthernIrelandBusinessSurveyConfig,
+        SurveyType.CENSUS: (
             WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig
         ),
-        SurveyType.census_nisra: CensusNISRASurveyConfig,
+        SurveyType.CENSUS_NISRA: CensusNISRASurveyConfig,
     }
 
     return survey_type_to_config[theme](
@@ -249,4 +249,5 @@ def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
 
 
 def get_survey_type() -> SurveyType:
-    return SurveyType[cookie_session.get("theme", current_app.config["SURVEY_TYPE"])]
+    survey_type = cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
+    return SurveyType(survey_type)
