@@ -52,7 +52,6 @@
                                 "answers": [
                                     {
                                         "id": "number-of-employees-total",
-                                        "q_code": "50",
                                         "label": "Total number of employees",
                                         "mandatory": false,
                                         "type": "Number",
@@ -119,8 +118,7 @@
                                                 "value": "No I need to change this"
                                             }
                                         ],
-                                        "mandatory": true,
-                                        "q_code": "d50"
+                                        "mandatory": true
                                     }
                                 ],
                                 "id": "confirm-zero-employees-question",
@@ -179,7 +177,6 @@
                                         "id": "number-of-employees-male-more-30-hours",
                                         "label": "Number of male employees working more than 30 hours per week",
                                         "mandatory": false,
-                                        "q_code": "51",
                                         "type": "Number",
                                         "maximum": {
                                             "value": {
@@ -192,7 +189,6 @@
                                         "id": "number-of-employees-female-more-30-hours",
                                         "label": "Number of female employees working more than 30 hours per week",
                                         "mandatory": false,
-                                        "q_code": "52",
                                         "type": "Number",
                                         "maximum": {
                                             "value": {

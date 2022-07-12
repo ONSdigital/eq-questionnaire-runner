@@ -465,7 +465,6 @@
                                 "answers": [
                                     {
                                         "id": "carer-answer",
-                                        "q_code": "50",
                                         "label": "Carer",
                                         "mandatory": false,
                                         "type": "Radio",

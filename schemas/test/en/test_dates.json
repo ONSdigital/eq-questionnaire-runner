@@ -46,14 +46,12 @@
                                         "id": "date-range-from-answer",
                                         "label": "Period from",
                                         "mandatory": true,
-                                        "q_code": "11",
                                         "type": "Date"
                                     },
                                     {
                                         "id": "date-range-to-answer",
                                         "label": "Period to",
                                         "mandatory": true,
-                                        "q_code": "12",
                                         "type": "Date"
                                     }
                                 ],
@@ -70,7 +68,6 @@
                                     {
                                         "id": "month-year-answer",
                                         "mandatory": true,
-                                        "q_code": "11",
                                         "type": "MonthYearDate"
                                     }
                                 ],
@@ -88,7 +85,6 @@
                                         "id": "single-date-answer",
                                         "label": "Date",
                                         "mandatory": true,
-                                        "q_code": "11",
                                         "type": "Date"
                                     }
                                 ],
@@ -106,7 +102,6 @@
                                         "id": "non-mandatory-date-answer",
                                         "label": "Date",
                                         "mandatory": false,
-                                        "q_code": "17",
                                         "type": "Date"
                                     }
                                 ],
@@ -124,7 +119,6 @@
                                         "id": "year-date-answer",
                                         "label": "Date",
                                         "mandatory": false,
-                                        "q_code": "18",
                                         "type": "YearDate"
                                     }
                                 ],

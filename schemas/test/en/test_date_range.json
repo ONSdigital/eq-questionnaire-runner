@@ -44,14 +44,12 @@
                                         "id": "date-range-from-answer",
                                         "label": "Period from",
                                         "mandatory": true,
-                                        "q_code": "11",
                                         "type": "Date"
                                     },
                                     {
                                         "id": "date-range-to-answer",
                                         "label": "Period to",
                                         "mandatory": true,
-                                        "q_code": "12",
                                         "type": "Date"
                                     }
                                 ],
