@@ -131,8 +131,10 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.assertStatusUnauthorised()
         self.assertInBody(
             [
-                ('<p>If you are completing a business survey, you need to sign back in to <a href="https://surveys.ons.gov.uk/sign-in/logout">your account</a>.'
-                 '</p>'),
+                (
+                    '<p>If you are completing a business survey, you need to sign back in to <a href="https://surveys.ons.gov.uk/sign-in/logout">your account</a>.'
+                    "</p>"
+                ),
                 '<p>If you started your survey using an access code, you need to <a href="https://rh.ons.gov.uk/sign-in/logout">re-enter your code</a>.</p>',
             ]
         )
@@ -177,10 +179,14 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.assertStatusForbidden()
         self.assertInBody(
             [
-                ('<p>If you are completing a business survey and you need further help, please <a href="https://surveys.ons.gov.uk/contact-us/">contact us</a>.'
-                 '</p>'),
-                ('<p>If you started your survey using an access code and you need further help, please <a href="https://rh.ons.gov.uk/contact-us/">contact us</'
-                 'a>.</p>'),
+                (
+                    '<p>If you are completing a business survey and you need further help, please <a href="https://surveys.ons.gov.uk/contact-us/">contact us</a>.'
+                    "</p>"
+                ),
+                (
+                    '<p>If you started your survey using an access code and you need further help, please <a href="https://rh.ons.gov.uk/contact-us/">contact us</'
+                    "a>.</p>"
+                ),
             ]
         )
 
@@ -344,3 +350,17 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.assertInBody(
             '<p>If you are completing a business survey, please <a href="http://upstream.url/contact-us/">contact us</a>.</p>'
         )
+
+    def launchAndFailSubmission(self, schema):
+        self.launchSurvey(schema)
+        self.post()
+        self.post()
+        self.post()
+
+    def getUrlAndCookie(self, url):
+        self.get(url=url)
+        return self.getCookie()
+
+    def deleteCookieAndGetUrl(self, url):
+        self.deleteCookie()
+        self.get(url=url)

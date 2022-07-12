@@ -455,20 +455,6 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         else:
             self.fail("no redirect found")
 
-    def launchAndFailSubmission(self, schema):
-        self.launchSurvey(schema)
-        self.post()
-        self.post()
-        self.post()
-
-    def getUrlAndCookie(self, url):
-        self.get(url=url)
-        return self.getCookie()
-
-    def deleteCookieAndGetUrl(self, url):
-        self.deleteCookie()
-        self.get(url=url)
-
 
 def decode_flask_cookie(cookie):
     """Decode a Flask cookie."""
