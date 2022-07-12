@@ -51,37 +51,30 @@
                                         "options": [
                                             {
                                                 "label": "None",
-                                                "value": "None",
-                                                "q_code": "0"
+                                                "value": "None"
                                             },
                                             {
                                                 "label": "Ham & Cheese",
-                                                "value": "Ham & Cheese",
-                                                "q_code": "1"
+                                                "value": "Ham & Cheese"
                                             },
                                             {
                                                 "label": "Ham",
-                                                "value": "Ham",
-                                                "q_code": "2"
+                                                "value": "Ham"
                                             },
                                             {
                                                 "label": "Pineapple",
-                                                "value": "Pineapple",
-                                                "q_code": "3"
+                                                "value": "Pineapple"
                                             },
                                             {
                                                 "label": "Tuna",
-                                                "value": "Tuna",
-                                                "q_code": "4"
+                                                "value": "Tuna"
                                             },
                                             {
                                                 "label": "Pepperoni",
-                                                "value": "Pepperoni",
-                                                "q_code": "5"
+                                                "value": "Pepperoni"
                                             },
                                             {
                                                 "label": "Other",
-                                                "q_code": "6",
                                                 "description": "Choose any other topping",
                                                 "value": "Other",
                                                 "detail_answer": {
@@ -146,7 +139,6 @@
                                                 }
                                             }
                                         ],
-                                        "q_code": "20",
                                         "type": "Checkbox"
                                     }
                                 ],

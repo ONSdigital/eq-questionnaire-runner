@@ -69,7 +69,6 @@
                                         "id": "answer-test-guidance-title",
                                         "label": "Text question",
                                         "mandatory": false,
-                                        "q_code": "0",
                                         "type": "TextField"
                                     }
                                 ]
@@ -101,7 +100,6 @@
                                         "id": "answer-test-guidance-description",
                                         "label": "Text question",
                                         "mandatory": false,
-                                        "q_code": "0",
                                         "type": "TextField"
                                     }
                                 ]
@@ -135,7 +133,6 @@
                                         "id": "answer-test-guidance-lists",
                                         "label": "Text question",
                                         "mandatory": false,
-                                        "q_code": "0",
                                         "type": "TextField"
                                     }
                                 ]
@@ -169,7 +166,6 @@
                                         "id": "answer-test-guidance-content-description",
                                         "label": "Text question",
                                         "mandatory": false,
-                                        "q_code": "0",
                                         "type": "TextField"
                                     }
                                 ]
@@ -203,7 +199,6 @@
                                         "id": "answer-test-guidance-content-title",
                                         "label": "Text question",
                                         "mandatory": false,
-                                        "q_code": "0",
                                         "type": "TextField"
                                     }
                                 ]
@@ -237,7 +232,6 @@
                                         "id": "answer-test-guidance-content-list",
                                         "label": "Text question",
                                         "mandatory": false,
-                                        "q_code": "0",
                                         "type": "TextField"
                                     }
                                 ]
@@ -303,7 +297,6 @@
                                         "id": "answer-test-guidance-all",
                                         "label": "Text question",
                                         "mandatory": false,
-                                        "q_code": "0",
                                         "type": "TextField"
                                     }
                                 ]

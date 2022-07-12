@@ -49,7 +49,6 @@
                                         "id": "favourite-breakfast",
                                         "label": "What is your favourite breakfast food",
                                         "mandatory": false,
-                                        "q_code": "0",
                                         "type": "TextField"
                                     }
                                 ],
@@ -79,7 +78,6 @@
                                         "id": "favourite-lunch",
                                         "label": "What is your favourite lunchtime food",
                                         "mandatory": false,
-                                        "q_code": "0",
                                         "type": "TextField"
                                     }
                                 ],
