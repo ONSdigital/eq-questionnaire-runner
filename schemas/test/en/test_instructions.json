@@ -63,7 +63,6 @@
                                         "id": "favourite-lunch",
                                         "label": "What is your favourite lunchtime food",
                                         "mandatory": false,
-                                        "q_code": "0",
                                         "type": "TextField"
                                     }
                                 ],

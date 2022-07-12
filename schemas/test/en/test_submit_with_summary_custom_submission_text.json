@@ -54,7 +54,6 @@
                                         "id": "dessert",
                                         "label": "What is your favourite dessert?",
                                         "mandatory": true,
-                                        "q_code": "30",
                                         "type": "TextField"
                                     }
                                 ]

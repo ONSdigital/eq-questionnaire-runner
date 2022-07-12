@@ -49,7 +49,6 @@
                                         "id": "answer",
                                         "label": "New to the market 2012-2014",
                                         "mandatory": false,
-                                        "q_code": "0",
                                         "type": "Percentage",
                                         "maximum": {
                                             "value": 100

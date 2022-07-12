@@ -66,7 +66,6 @@
                                                 "value": "Implementation of changes to marketing concepts or strategies"
                                             }
                                         ],
-                                        "q_code": "10",
                                         "type": "Checkbox",
                                         "validation": {
                                             "messages": {}
@@ -108,7 +107,6 @@
                                                 "value": "Implementation of changes to marketing concepts or strategies"
                                             }
                                         ],
-                                        "q_code": "20",
                                         "type": "Radio",
                                         "validation": {
                                             "messages": {}
