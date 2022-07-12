@@ -55,17 +55,14 @@
                                             },
                                             {
                                                 "label": "1",
-                                                "value": "1",
-                                                "q_code": "1"
+                                                "value": "1"
                                             },
                                             {
                                                 "label": "2",
-                                                "value": "2",
-                                                "q_code": "2"
+                                                "value": "2"
                                             },
                                             {
                                                 "label": "Other",
-                                                "q_code": "3",
                                                 "description": "Choose any number of toppings",
                                                 "value": "Other",
                                                 "detail_answer": {

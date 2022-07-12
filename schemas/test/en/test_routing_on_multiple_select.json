@@ -58,7 +58,6 @@
                                                 "value": "None"
                                             }
                                         ],
-                                        "q_code": "20",
                                         "type": "Checkbox"
                                     }
                                 ]
@@ -95,7 +94,6 @@
                                         "id": "block2-answer",
                                         "label": "Question 2",
                                         "mandatory": false,
-                                        "q_code": "20",
                                         "type": "TextField"
                                     }
                                 ]
@@ -113,7 +111,6 @@
                                         "id": "block3-answer",
                                         "label": "Question 3",
                                         "mandatory": false,
-                                        "q_code": "20",
                                         "type": "TextField"
                                     }
                                 ]
