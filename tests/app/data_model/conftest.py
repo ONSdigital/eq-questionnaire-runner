@@ -5,7 +5,6 @@ import pytest
 from app.data_models.answer_store import Answer
 from app.data_models.progress_store import CompletionStatus
 from app.data_models.session_store import SessionStore
-from app.data_models.session_data import SessionData
 from app.storage import storage_encryption
 
 
@@ -130,27 +129,12 @@ def questionnaire_store(mocker):
 
 
 @pytest.fixture
-def mock_session_data():
-    return SessionData(
-        tx_id=None,
-        schema_name="some_schema_name",
-        period_str=None,
-        language_code="cy",
-        launch_language_code=None,
-        ru_name=None,
-        ru_ref=None,
-        response_id=None,
-        case_id=None,
-    )
-
-
-@pytest.fixture
-def app_session_store(app, mocker, mock_session_data):
+def app_session_store(app, mocker, session_data):
     app.permanent_session_lifetime = timedelta(seconds=1)
     store = mocker.MagicMock()
     store.session_store = SessionStore("user_ik", "pepper")
     store.expires_at = datetime.now(tz=timezone.utc) + timedelta(seconds=3)
-    store.session_data = mock_session_data
+    store.session_data = session_data
     return store
 
 
