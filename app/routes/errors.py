@@ -16,6 +16,7 @@ from app.authentication.no_token_exception import NoTokenException
 from app.globals import get_metadata
 from app.helpers.language_helper import handle_language
 from app.helpers.template_helpers import get_survey_config, render_template
+from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.submitter.previously_submitted_exception import PreviouslySubmittedException
 from app.submitter.submission_failed import SubmissionFailedException
 from app.survey_config.survey_type import SurveyType
@@ -51,7 +52,9 @@ def log_exception(exception, status_code):
 def _render_error_page(status_code, template=None, **kwargs):
     handle_language()
     business_survey_config = get_survey_config(theme=SurveyType.BUSINESS)
-    other_survey_config = get_survey_config(theme=SurveyType.SOCIAL)
+    other_survey_config = get_survey_config(
+        theme=SurveyType.SOCIAL, base_url=ACCOUNT_SERVICE_BASE_URL_SOCIAL
+    )
 
     business_logout_url = business_survey_config.account_service_log_out_url
     other_logout_url = other_survey_config.account_service_log_out_url

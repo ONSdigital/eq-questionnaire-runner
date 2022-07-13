@@ -3,6 +3,7 @@ from typing import Iterable, Mapping, MutableMapping
 
 from flask_babel import lazy_gettext
 
+from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.survey_config.link import Link
 from app.survey_config.survey_config import SurveyConfig
 
@@ -11,12 +12,12 @@ from app.survey_config.survey_config import SurveyConfig
 class SocialSurveyConfig(
     SurveyConfig,
 ):
-    base_url: str = "https://rh.ons.gov.uk"
     survey_title: str = "ONS Social Surveys"
     footer_links: Iterable[MutableMapping] = field(default_factory=list)
     footer_legal_links: Iterable[Mapping] = field(default_factory=list)
 
     def __post_init__(self):
+        self.base_url = ACCOUNT_SERVICE_BASE_URL_SOCIAL
         super().__post_init__()
 
         if self.schema:

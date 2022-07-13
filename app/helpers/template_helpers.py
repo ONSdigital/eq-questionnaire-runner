@@ -193,6 +193,7 @@ def survey_config_mapping(
 
 def get_survey_config(
     *,
+    base_url: Optional[str] = None,
     theme: Optional[SurveyType] = None,
     language: Optional[str] = None,
     schema: Optional[QuestionnaireSchema] = None,
@@ -206,12 +207,8 @@ def get_survey_config(
     language = language or get_locale().language
     survey_theme = theme if theme else get_survey_type()
 
-    base_url = (
-        "https://rh.ons.gov.uk"
-        if survey_theme == SurveyType.SOCIAL
-        else (
-            cookie_session.get("account_service_base_url") or ACCOUNT_SERVICE_BASE_URL
-        )
+    base_url = base_url or (
+        cookie_session.get("account_service_base_url") or ACCOUNT_SERVICE_BASE_URL
     )
 
     return survey_config_mapping(
