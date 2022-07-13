@@ -41,9 +41,9 @@
                     "blocks": [
                         {
                             "type": "Question",
-                            "id": "mutually-exclusive-Radio",
+                            "id": "mutually-exclusive-radio",
                             "question": {
-                                "id": "mutually-exclusive-Radio-question",
+                                "id": "mutually-exclusive-radio-question",
                                 "type": "MutuallyExclusive",
                                 "title": "What is your nationality?",
                                 "warning": "This is important",
@@ -323,8 +323,8 @@
                                                 "value": "I prefer not to say"
                                             },
                                             {
-                                                "label": "My income hasn't changed",
-                                                "value": "My income hasn't changed"
+                                                "label": "No income change",
+                                                "value": "No income change"
                                             }
                                         ]
                                     }
