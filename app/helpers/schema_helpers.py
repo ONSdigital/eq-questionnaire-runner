@@ -30,8 +30,14 @@ def with_schema(function: Callable) -> Any:
 
         metadata = get_metadata(current_user)
 
+        language_code = (
+            session_store.session_data.language_code
+            if session_store.session_data
+            else None
+        )
+
         schema = load_schema_from_metadata(
-            metadata=metadata, language_code=session_store.session_data.language_code
+            metadata=metadata, language_code=language_code
         )
         return function(schema, *args, **kwargs)
 

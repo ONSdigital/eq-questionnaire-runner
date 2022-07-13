@@ -213,8 +213,8 @@ def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     schema, session_expires_at = None, None
     session_store = get_session_store()
 
-    if session_store and (language_code := session_store.session_data.language_code):
-        language = language_code
+    if session_store and (session_data := session_store.session_data):
+        language = session_data.language_code
 
     if metadata := get_metadata(current_user):
         schema = load_schema_from_metadata(metadata=metadata, language_code=language)
