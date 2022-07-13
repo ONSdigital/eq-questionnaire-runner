@@ -245,7 +245,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             for question in self.get_all_questions_for_block(block):
                 if question["type"] == "Calculated":
                     self._update_answer_dependencies_for_calculations(
-                        question["calculations"], block["id"]
+                        question["calculations"], block_id=block["id"]
                     )
                     continue
 
@@ -268,7 +268,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             }
 
     def _update_answer_dependencies_for_calculations(
-        self, calculations: tuple[ImmutableDict[str, Any]], block_id: str
+        self, calculations: tuple[ImmutableDict[str, Any]], *, block_id: str
     ) -> None:
         for calculation in calculations:
             if source_answer_id := calculation.get("answer_id"):

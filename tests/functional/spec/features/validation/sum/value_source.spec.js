@@ -65,6 +65,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       $(SubmitPage.totalAnswerEdit()).click();
       $(TotalAnswerPage.total()).setValue("15");
       $(TotalAnswerPage.submit()).click();
+      expect($(TotalAnswerPage.singleErrorLink()).isDisplayed()).to.be.false;
 
       answerBothBreakdownQuestions(["6", "3", "3", "3"], ["3", "3", "2", "1"]);
 
@@ -85,7 +86,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       answerAndSubmitBreakdownQuestion("0", "3", "3", "3");
 
-      expect(browser.getUrl()).to.contain(BreakdownAnswerPage.pageName);
+      expect($(BreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.true;
 
       expect($(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 15");
 
@@ -96,7 +97,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
   });
 
   describe("Given I completed both grouped answer validation questions and I am on the summary", () => {
-    it("When I go back from the summary and change the total, Then I must reconfirm the breakdown question based on answer value source with valid answers before I can continue", () => {
+    it("When I go back from the summary and change the total, Then I must reconfirm the breakdown question based on calculated summary value source with valid answers before I can continue", () => {
       $(TotalAnswerPage.total()).setValue("12");
       $(TotalAnswerPage.submit()).click();
 
@@ -108,7 +109,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       answerBothBreakdownQuestions(["6", "3", "3", "3"], ["1", "1", "1", "1"]);
 
-      expect(browser.getUrl()).to.contain(SecondBreakdownAnswerPage.pageName);
+      expect($(SecondBreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.true;
 
       expect($(SecondBreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 9");
 
