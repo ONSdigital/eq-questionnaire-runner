@@ -123,7 +123,7 @@ def before_post_submission_request():
     if not questionnaire_store.submitted_at:
         raise NotFound
 
-    handle_language(metadata=metadata)
+    handle_language(metadata)
 
     g.schema = load_schema_from_metadata(
         metadata=metadata, language_code=session_store.session_data.language_code
