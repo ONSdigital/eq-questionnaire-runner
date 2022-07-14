@@ -209,7 +209,7 @@ def test_get_page_header_context_census_nisra(app: Flask):
                 "itemsList": [
                     {
                         "title": "Help",
-                        "url": "https://surveys.ons.gov.uk/help",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL}/help",
                         "id": "header-link-help",
                     }
                 ],
@@ -227,12 +227,12 @@ def test_get_page_header_context_census_nisra(app: Flask):
                 "itemsList": [
                     {
                         "title": "Help",
-                        "url": "https://surveys.ons.gov.uk/surveys/surveys-help?survey_ref=001&ru_ref=63782964754",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL}/surveys/surveys-help?survey_ref=001&ru_ref=63782964754",
                         "id": "header-link-help",
                     },
                     {
                         "title": "My account",
-                        "url": "https://surveys.ons.gov.uk/my-account",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL}/my-account",
                         "id": "header-link-my-account",
                     },
                     {
@@ -282,19 +282,19 @@ def test_service_links_context(
     [
         (
             SurveyConfig(),
-            "https://surveys.ons.gov.uk/contact-us/",
+            f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
         (
             BusinessSurveyConfig(),
-            "https://surveys.ons.gov.uk/contact-us/",
+            f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
         (
             NorthernIrelandBusinessSurveyConfig(),
-            "https://surveys.ons.gov.uk/contact-us/",
+            f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
         (
             SocialSurveyConfig(),
-            "https://rh.ons.gov.uk/contact-us/",
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/contact-us/",
         ),
     ],
 )
@@ -336,18 +336,18 @@ def test_sign_out_button_text_context(
 @pytest.mark.parametrize(
     "survey_config, expected",
     [
-        (SurveyConfig(), "https://surveys.ons.gov.uk/cookies/"),
+        (SurveyConfig(), f"{ACCOUNT_SERVICE_BASE_URL}/cookies/"),
         (
             BusinessSurveyConfig(),
-            "https://surveys.ons.gov.uk/cookies/",
+            f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
         ),
         (
             NorthernIrelandBusinessSurveyConfig(),
-            "https://surveys.ons.gov.uk/cookies/",
+            f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
         ),
         (
             SocialSurveyConfig(),
-            "https://rh.ons.gov.uk/cookies/",
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cookies/",
         ),
     ],
 )
@@ -371,7 +371,7 @@ def test_cookie_settings_url_context(
         (SurveyConfig(), None),
         (
             BusinessSurveyConfig(),
-            "https://surveys.ons.gov.uk/my-account",
+            f"{ACCOUNT_SERVICE_BASE_URL}/my-account",
         ),
         (SocialSurveyConfig(), None),
     ],
@@ -392,7 +392,7 @@ def test_account_service_my_account_url_context(
         (SurveyConfig(), None),
         (
             BusinessSurveyConfig(),
-            "https://surveys.ons.gov.uk/surveys/todo",
+            f"{ACCOUNT_SERVICE_BASE_URL}/surveys/todo",
         ),
         (
             SocialSurveyConfig(),
@@ -413,18 +413,18 @@ def test_account_service_my_todo_url_context(
         (SurveyConfig(), None),
         (
             BusinessSurveyConfig(),
-            "https://surveys.ons.gov.uk/sign-in/logout",
+            f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
         ),
         (CensusSurveyConfig(), "https://census.gov.uk/en/start"),
         (WelshCensusSurveyConfig(), "https://cyfrifiad.gov.uk/en/start"),
         (CensusNISRASurveyConfig(), "https://census.gov.uk/ni"),
         (
             NorthernIrelandBusinessSurveyConfig(),
-            "https://surveys.ons.gov.uk/sign-in/logout",
+            f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
         ),
         (
             SocialSurveyConfig(),
-            "https://rh.ons.gov.uk/sign-in/logout",
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/sign-in/logout",
         ),
     ],
 )
