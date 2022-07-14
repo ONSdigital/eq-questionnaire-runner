@@ -67,7 +67,10 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       $(TotalAnswerPage.submit()).click();
 
       $(BreakdownAnswerPage.submit()).click();
+
       expect($(BreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.true;
+
+      expect($(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 15");
 
       answerBothBreakdownQuestions(["6", "3", "3", "3"], ["3", "3", "2", "1"]);
 
