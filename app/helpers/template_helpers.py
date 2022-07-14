@@ -205,7 +205,7 @@ def get_survey_config(
             schema = load_schema_from_session_data(session_data)
 
     language = language or get_locale().language
-    survey_theme = theme if theme else get_survey_type()
+    survey_theme = theme or get_survey_type()
 
     base_url = base_url or (
         cookie_session.get("account_service_base_url") or ACCOUNT_SERVICE_BASE_URL
