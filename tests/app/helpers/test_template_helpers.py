@@ -6,7 +6,7 @@ from flask import session as cookie_session
 
 from app.helpers.template_helpers import ContextHelper, get_survey_config
 from app.questionnaire import QuestionnaireSchema
-from app.settings import ACCOUNT_SERVICE_BASE_URL
+from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.survey_config import (
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
@@ -17,6 +17,8 @@ from app.survey_config import (
     WelshCensusSurveyConfig,
 )
 from app.survey_config.survey_type import SurveyType
+
+DEFAULT_URL = "http://localhost"
 
 
 def test_footer_context_census_theme(app: Flask, expected_footer_census_theme):
@@ -466,9 +468,9 @@ def test_get_survey_config(
 @pytest.mark.parametrize(
     "survey_config_type, base_url",
     [
-        (SocialSurveyConfig, "https://rh.ons.gov.uk"),
-        (SurveyConfig, "http://localhost"),
-        (BusinessSurveyConfig, "http://localhost"),
+        (SocialSurveyConfig, ACCOUNT_SERVICE_BASE_URL_SOCIAL),
+        (SurveyConfig, DEFAULT_URL),
+        (BusinessSurveyConfig, DEFAULT_URL),
     ],
 )
 def test_survey_config_base_url_provided_used_in_links(
@@ -494,20 +496,20 @@ def test_survey_config_base_url_provided_used_in_links(
 
 
 def test_survey_config_base_url_duplicate_todo(app: Flask):
-    base_url = "http://localhost/surveys/todo"
+    base_url = f"{DEFAULT_URL}/surveys/todo"
     with app.app_context():
         result = BusinessSurveyConfig(base_url=base_url)
 
-    assert result.base_url == "http://localhost"
+    assert result.base_url == DEFAULT_URL
 
-    assert result.account_service_log_out_url == "http://localhost/sign-in/logout"
-    assert result.account_service_my_account_url == "http://localhost/my-account"
-    assert result.account_service_todo_url == "http://localhost/surveys/todo"
-    assert result.contact_us_url == "http://localhost/contact-us/"
-    assert result.cookie_settings_url == "http://localhost/cookies/"
+    assert result.account_service_log_out_url == f"{DEFAULT_URL}/sign-in/logout"
+    assert result.account_service_my_account_url == f"{DEFAULT_URL}/my-account"
+    assert result.account_service_todo_url == f"{DEFAULT_URL}/surveys/todo"
+    assert result.contact_us_url == f"{DEFAULT_URL}/contact-us/"
+    assert result.cookie_settings_url == f"{DEFAULT_URL}/cookies/"
     assert (
         result.privacy_and_data_protection_url
-        == "http://localhost/privacy-and-data-protection/"
+        == f"{DEFAULT_URL}/privacy-and-data-protection/"
     )
 
 

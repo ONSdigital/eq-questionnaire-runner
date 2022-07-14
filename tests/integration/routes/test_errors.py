@@ -1,10 +1,12 @@
 from mock import Mock, patch
 
+from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
+from tests.integration.create_token import ACCOUNT_SERVICE_URL
 from tests.integration.integration_test_case import IntegrationTestCase
 
-DEFAULT_URL = "http://upstream.url"
-BUSINESS_URL = "https://surveys.ons.gov.uk"
-SOCIAL_URL = "https://rh.ons.gov.uk"
+DEFAULT_URL = ACCOUNT_SERVICE_URL
+BUSINESS_URL = ACCOUNT_SERVICE_BASE_URL
+SOCIAL_URL = ACCOUNT_SERVICE_BASE_URL_SOCIAL
 
 
 class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-methods
