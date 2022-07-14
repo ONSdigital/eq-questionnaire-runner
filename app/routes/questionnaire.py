@@ -95,7 +95,7 @@ def before_questionnaire_request():
         "questionnaire request", method=request.method, url_path=request.full_path
     )
 
-    handle_language(metadata=metadata)
+    handle_language(metadata)
 
     session_store = get_session_store()
     # pylint: disable=assigning-non-slot
