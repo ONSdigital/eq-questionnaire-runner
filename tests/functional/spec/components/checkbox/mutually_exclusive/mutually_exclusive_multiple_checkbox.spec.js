@@ -217,7 +217,7 @@ describe("Component: Mutually Exclusive Checkbox With Multiple Radio Override", 
 
       // Then
       expect($(MandatoryCheckboxPage.errorHeader()).getText()).to.contain("There is a problem with your answer");
-      expect($(MandatoryCheckboxPage.errorNumber(1)).getText()).to.contain("Enter an answer");
+      expect($(MandatoryCheckboxPage.errorNumber(1)).getText()).to.contain("Select at least one answer");
       expect($(MandatoryCheckboxPage.questionErrorPanel()).isExisting()).to.be.true;
     });
   });

@@ -155,17 +155,16 @@ class QuestionnaireForm(FlaskForm):
             question["validation"].get("messages") if "validation" in question else None
         )
         answers = (getattr(self, answer["id"]).data for answer in question["answers"])
-        is_only_checkboxes = all(
-            answer["type"] == "Checkbox" for answer in question["answers"]
+        is_only_checkboxes_or_radios = all(
+            answer["type"] in {"Checkbox", "Radio"} for answer in question["answers"]
         )
-
         validator = MutuallyExclusiveCheck(
             messages=messages,
             question_title=self.question_title,
         )
 
         try:
-            validator(answers, is_mandatory, is_only_checkboxes)
+            validator(answers, is_mandatory, is_only_checkboxes_or_radios)
         except validators.ValidationError as e:
             self.question_errors[question["id"]] = str(e)
 
