@@ -2,6 +2,10 @@ from mock import Mock, patch
 
 from tests.integration.integration_test_case import IntegrationTestCase
 
+DEFAULT_URL = "http://upstream.url"
+BUSINESS_URL = "https://surveys.ons.gov.uk"
+SOCIAL_URL = "https://rh.ons.gov.uk"
+
 
 class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-methods
     example_payload = {
@@ -96,12 +100,12 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         cookie = self.getCookie()
         self.assertEqual(cookie.get("theme"), "default")
         self.assertInBody(
-            '<p>You will need to <a href="http://upstream.url/sign-in/logout">sign back in</a> to access your account</p>'
+            f'<p>You will need to <a href="{DEFAULT_URL}/sign-in/logout">sign back in</a> to access your account</p>'
         )
 
     def test_401_theme_social_cookie_exists(self):
         # Given
-        self.launchSurvey("test_theme_social")
+        self.launchSurvey("test_theme_social", account_service_url=SOCIAL_URL)
         self.assertInUrl("/questionnaire/radio/")
 
         # When
@@ -114,7 +118,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         cookie = self.getCookie()
         self.assertEqual(cookie.get("theme"), "social")
         self.assertInBody(
-            '<p>To access this page you need to <a href="https://rh.ons.gov.uk/sign-in/logout">re-enter your access code</a>.</p>'
+            f'<p>To access this page you need to <a href="{SOCIAL_URL}/sign-in/logout">re-enter your access code</a>.</p>'
         )
 
     def test_401_no_cookie(self):
@@ -132,10 +136,9 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.assertInBody(
             [
                 (
-                    '<p>If you are completing a business survey, you need to sign back in to <a href="https://surveys.ons.gov.uk/sign-in/logout">your account</'
-                    "a>.</p>"
+                    f'<p>If you are completing a business survey, you need to sign back in to <a href="{BUSINESS_URL}/sign-in/logout">your account</a>.</p>'
                 ),
-                '<p>If you started your survey using an access code, you need to <a href="https://rh.ons.gov.uk/sign-in/logout">re-enter your code</a>.</p>',
+                f'<p>If you started your survey using an access code, you need to <a href="{SOCIAL_URL}/sign-in/logout">re-enter your code</a>.</p>',
             ]
         )
 
@@ -150,12 +153,12 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.assertEqual(cookie.get("theme"), "default")
         self.assertStatusForbidden()
         self.assertInBody(
-            '<p>For further help, please <a href="http://upstream.url/contact-us/">contact us</a>.</p>'
+            f'<p>For further help, please <a href="{DEFAULT_URL}/contact-us/">contact us</a>.</p>'
         )
 
     def test_403_theme_social_cookie_exists(self):
         # Given
-        self.launchSurvey("test_theme_social")
+        self.launchSurvey("test_theme_social", account_service_url=SOCIAL_URL)
 
         # When
         cookie = self.getUrlAndCookie("/dump/debug")
@@ -164,7 +167,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.assertEqual(cookie.get("theme"), "social")
         self.assertStatusForbidden()
         self.assertInBody(
-            '<p>For further help, please <a href="https://rh.ons.gov.uk/contact-us/">contact us</a>.</p>'
+            f'<p>For further help, please <a href="{SOCIAL_URL}/contact-us/">contact us</a>.</p>'
         )
 
     def test_403_no_cookie(self):
@@ -180,12 +183,11 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.assertInBody(
             [
                 (
-                    '<p>If you are completing a business survey and you need further help, please <a href="https://surveys.ons.gov.uk/contact-us/">contact us</'
-                    "a>.</p>"
+                    f'<p>If you are completing a business survey and you need further help, please <a href="{BUSINESS_URL}/contact-us/">contact us</a>.</p>'
                 ),
                 (
-                    '<p>If you started your survey using an access code and you need further help, please <a href="https://rh.ons.gov.uk/contact-us/">contact u'
-                    "s</a>.</p>"
+                    f'<p>If you started your survey using an access code and you need further help, please <a href="{SOCIAL_URL}/contact-us/">contact us</a>.</'
+                    "p>"
                 ),
             ]
         )
@@ -201,12 +203,12 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.assertEqual(cookie.get("theme"), "default")
         self.assertStatusNotFound()
         self.assertInBody(
-            '<p>If the web address is correct or you selected a link or button, <a href="http://upstream.url/contact-us/">contact us</a> for more help.</p>'
+            f'<p>If the web address is correct or you selected a link or button, <a href="{DEFAULT_URL}/contact-us/">contact us</a> for more help.</p>'
         )
 
     def test_404_theme_social_cookie_exists(self):
         # Given
-        self.launchSurvey("test_theme_social")
+        self.launchSurvey("test_theme_social", account_service_url=SOCIAL_URL)
 
         # When
         cookie = self.getUrlAndCookie("/abc123")
@@ -215,7 +217,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.assertEqual(cookie.get("theme"), "social")
         self.assertStatusNotFound()
         self.assertInBody(
-            '<p>If the web address is correct or you selected a link or button, <a href="https://rh.ons.gov.uk/contact-us/">contact us</a> for more help.</p>'
+            f'<p>If the web address is correct or you selected a link or button, <a href="{SOCIAL_URL}/contact-us/">contact us</a> for more help.</p>'
         )
 
     def test_404_no_cookie(self):
@@ -230,8 +232,8 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.assertInBody(
             [
                 "<p>If the web address is correct or you selected a link or button, please see the following help links.</p>",
-                '<p>If you are completing a business survey, please <a href="https://surveys.ons.gov.uk/contact-us/">contact us</a>.</p>',
-                '<p>If you started your survey using an access code, please <a href="https://rh.ons.gov.uk/contact-us/">contact us</a>.</p>',
+                f'<p>If you are completing a business survey, please <a href="{BUSINESS_URL}/contact-us/">contact us</a>.</p>',
+                f'<p>If you started your survey using an access code, please <a href="{SOCIAL_URL}/contact-us/">contact us</a>.</p>',
             ]
         )
 
@@ -248,8 +250,8 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.assertInBody(
             [
                 "<p>If the web address is correct or you selected a link or button, please see the following help links.</p>",
-                '<p>If you are completing a business survey, please <a href="https://surveys.ons.gov.uk/contact-us/">contact us</a>.</p>',
-                '<p>If you started your survey using an access code, please <a href="https://rh.ons.gov.uk/contact-us/">contact us</a>.</p>',
+                f'<p>If you are completing a business survey, please <a href="{BUSINESS_URL}/contact-us/">contact us</a>.</p>',
+                f'<p>If you started your survey using an access code, please <a href="{SOCIAL_URL}/contact-us/">contact us</a>.</p>',
             ]
         )
 
@@ -269,7 +271,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
             self.assertEqual(cookie.get("theme"), "default")
             self.assertException()
             self.assertInBody(
-                '<p><a href="http://upstream.url/contact-us/">Contact us</a> if you need to speak to someone about your survey.</p>'
+                f'<p><a href="{DEFAULT_URL}/contact-us/">Contact us</a> if you need to speak to someone about your survey.</p>'
             )
 
     def test_500_theme_social_cookie_exists(self):
@@ -288,7 +290,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
             self.assertEqual(cookie.get("theme"), "default")
             self.assertException()
             self.assertInBody(
-                '<p><a href="http://upstream.url/contact-us/">Contact us</a> if you need to speak to someone about your survey.</p>'
+                f'<p><a href="{DEFAULT_URL}/contact-us/">Contact us</a> if you need to speak to someone about your survey.</p>'
             )
 
     def test_500_theme_census_cookie_exists(self):
@@ -306,7 +308,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
             self.assertException()
             self.assertInBody(
                 "<p>If you are completing a business survey and you need to speak to someone about your survey,"
-                ' please <a href="http://upstream.url/contact-us/">contact us</a>.</p>'
+                f' please <a href="{DEFAULT_URL}/contact-us/">contact us</a>.</p>'
             )
 
     def test_submission_failed_theme_default_cookie_exists(self):
@@ -320,7 +322,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         # Then
         self.assertStatusCode(500)
         self.assertInBody(
-            '<p>If this problem keeps happening, please <a href="http://upstream.url/contact-us/">contact us</a> for help.</p>'
+            f'<p>If this problem keeps happening, please <a href="{DEFAULT_URL}/contact-us/">contact us</a> for help.</p>'
         )
 
     def test_submission_failed_theme_social_cookie_exists(self):
@@ -329,12 +331,15 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         submitter.send_message = Mock(return_value=False)
 
         # When
-        self.launchAndFailSubmission("test_theme_social")
+        self.launchSurvey("test_theme_social", account_service_url=SOCIAL_URL)
+        self.post()
+        self.post()
+        self.post()
 
         # Then
         self.assertStatusCode(500)
         self.assertInBody(
-            '<p>If this problem keeps happening, please <a href="https://rh.ons.gov.uk/contact-us/">contact us</a> for help.</p>'
+            f'<p>If this problem keeps happening, please <a href="{SOCIAL_URL}/contact-us/">contact us</a> for help.</p>'
         )
 
     def test_submission_failed_theme_census_cookie_exists(self):
@@ -348,7 +353,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         # Then
         self.assertStatusCode(500)
         self.assertInBody(
-            '<p>If you are completing a business survey, please <a href="http://upstream.url/contact-us/">contact us</a>.</p>'
+            f'<p>If you are completing a business survey, please <a href="{DEFAULT_URL}/contact-us/">contact us</a>.</p>'
         )
 
     def launchAndFailSubmission(self, schema):

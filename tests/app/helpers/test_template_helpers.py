@@ -48,7 +48,7 @@ def test_footer_context_business_theme(app: Flask, expected_footer_business_them
 
 def test_footer_context_social_theme(app: Flask, expected_footer_social_theme):
     with app.test_client():
-        survey_config = SocialSurveyConfig()
+        survey_config = SocialSurveyConfig(base_url="https://rh.ons.gov.uk")
 
         result = ContextHelper(
             language="en",
@@ -291,7 +291,7 @@ def test_service_links_context(
             "https://surveys.ons.gov.uk/contact-us/",
         ),
         (
-            SocialSurveyConfig(),
+            SocialSurveyConfig(base_url="https://rh.ons.gov.uk"),
             "https://rh.ons.gov.uk/contact-us/",
         ),
     ],
@@ -344,7 +344,7 @@ def test_sign_out_button_text_context(
             "https://surveys.ons.gov.uk/cookies/",
         ),
         (
-            SocialSurveyConfig(),
+            SocialSurveyConfig(base_url="https://rh.ons.gov.uk"),
             "https://rh.ons.gov.uk/cookies/",
         ),
     ],
@@ -421,7 +421,7 @@ def test_account_service_my_todo_url_context(
             "https://surveys.ons.gov.uk/sign-in/logout",
         ),
         (
-            SocialSurveyConfig(),
+            SocialSurveyConfig(base_url="https://rh.ons.gov.uk"),
             "https://rh.ons.gov.uk/sign-in/logout",
         ),
     ],
