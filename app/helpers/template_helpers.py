@@ -107,8 +107,8 @@ class ContextHelper:
     @property
     def page_header_context(self) -> dict[str, Union[bool, str, LazyString]]:
         context: dict[str, Union[bool, str, LazyString]] = {
-            "logo": f"{self._survey_config.page_header_logo}",
-            "logoAlt": f"{self._survey_config.page_header_logo_alt}",
+            "orgLogo": f"{self._survey_config.page_header_logo}",
+            "orgLogoAlt": f"{self._survey_config.page_header_logo_alt}",
         }
 
         if self._survey_title:
@@ -120,7 +120,7 @@ class ContextHelper:
         if self._survey_config.custom_header_logo:
             context["customHeaderLogo"] = self._survey_config.custom_header_logo
         if self._survey_config.mobile_logo:
-            context["mobileLogo"] = self._survey_config.mobile_logo
+            context["orgMobileLogo"] = self._survey_config.mobile_logo
 
         return context
 

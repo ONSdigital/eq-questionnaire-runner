@@ -125,12 +125,12 @@ class CensusNISRASurveyConfig(
 ):
     base_url: str = NIR_BASE_URL
     account_service_log_out_url: str = base_url
-    page_header_logo: str = "nisra-logo-en"
+    page_header_logo: str = "nisra-logo"
     page_header_logo_alt: str = lazy_gettext(
         "Northern Ireland Statistics and Research Agency logo"
     )
     custom_header_logo: bool = True
-    mobile_logo: str = "nisra-logo-en-mobile"
+    mobile_logo: str = "nisra-logo-mobile"
     copyright_declaration: LazyString = lazy_gettext(
         "Crown copyright and database rights 2021 NIMA MOU577.501."
     )
@@ -167,6 +167,6 @@ class CensusNISRASurveyConfig(
         compare=False,
         hash=False,
     )
-    powered_by_logo: str = "nisra-logo-black-en"
+    powered_by_logo: str = "nisra-logo"
     powered_by_logo_alt: str = "NISRA - Northern Ireland Statistics and Research Agency"
     _is_nisra: bool = True
