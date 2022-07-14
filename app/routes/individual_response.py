@@ -60,7 +60,7 @@ def before_individual_response_request():
         "individual-response request", method=request.method, url_path=request.full_path
     )
 
-    handle_language(metadata=metadata)
+    handle_language(metadata)
 
     session_store = get_session_store()
 
