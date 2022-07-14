@@ -65,7 +65,9 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       $(SubmitPage.totalAnswerEdit()).click();
       $(TotalAnswerPage.total()).setValue("15");
       $(TotalAnswerPage.submit()).click();
-      expect($(TotalAnswerPage.singleErrorLink()).isDisplayed()).to.be.false;
+
+      $(BreakdownAnswerPage.submit()).click();
+      expect($(BreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.true;
 
       answerBothBreakdownQuestions(["6", "3", "3", "3"], ["3", "3", "2", "1"]);
 
@@ -97,23 +99,27 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
   });
 
   describe("Given I completed both grouped answer validation questions and I am on the summary", () => {
-    it("When I go back from the summary and change the total, Then I must reconfirm the breakdown question based on calculated summary value source with valid answers before I can continue", () => {
+    it("When I go back from the summary and change the first breakdown question answers so its total changes, Then I must reconfirm the second breakdown question based on calculated summary value source with valid answers before I can continue", () => {
       $(TotalAnswerPage.total()).setValue("12");
       $(TotalAnswerPage.submit()).click();
 
       answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
-      $(SubmitPage.totalAnswerEdit()).click();
-      $(TotalAnswerPage.total()).setValue("15");
-      $(TotalAnswerPage.submit()).click();
+      $(SubmitPage.breakdown1Edit()).click();
 
-      answerBothBreakdownQuestions(["6", "3", "3", "3"], ["1", "1", "1", "1"]);
+      answerAndSubmitBreakdownQuestion("6", "3", "2", "1");
+
+      $(TotalPlaybackPage.submit()).click();
+
+      $(SecondBreakdownAnswerPage.submit()).click();
 
       expect($(SecondBreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.true;
 
       expect($(SecondBreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 9");
 
       answerAndSubmitSecondBreakdownQuestion("5", "4", "0", "0");
+
+      expect($(SecondBreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.false;
 
       expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
