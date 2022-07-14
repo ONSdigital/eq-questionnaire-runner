@@ -100,7 +100,7 @@ def before_questionnaire_request():
     session_store = get_session_store()
     # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
-        metadata, session_store.session_data.language_code
+        metadata=metadata, language_code=session_store.session_data.language_code
     )
 
 

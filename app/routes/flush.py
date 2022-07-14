@@ -61,7 +61,8 @@ def _submit_data(user):
         list_store = questionnaire_store.list_store
         submitted_at = datetime.now(timezone.utc)
         schema = load_schema_from_metadata(
-            metadata, questionnaire_store.metadata["language_code"]
+            metadata=metadata,
+            language_code=questionnaire_store.metadata["language_code"],
         )
 
         router = Router(
