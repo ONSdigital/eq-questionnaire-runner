@@ -31,19 +31,19 @@
     },
     "sections": [
         {
-            "id": "mutually-exclusive-radio-section",
+            "id": "mutually-exclusive-checkbox-section",
             "title": "Checkbox",
             "summary": { "show_on_completion": true },
             "groups": [
                 {
-                    "id": "mutually-exclusive-mandatory-group",
+                    "id": "mutually-exclusive-checkbox-mandatory-group",
                     "title": "Mutually Exclusive With Multiple Radio Override - Mandatory",
                     "blocks": [
                         {
                             "type": "Question",
-                            "id": "mutually-exclusive-radio",
+                            "id": "mutually-exclusive-checkbox",
                             "question": {
-                                "id": "mutually-exclusive-radio-question",
+                                "id": "mutually-exclusive-checkbox-question",
                                 "type": "MutuallyExclusive",
                                 "title": "What is your nationality?",
                                 "warning": "This is important",
