@@ -17,12 +17,12 @@ LANGUAGE_TEXT = {
 def handle_language(metadata: Optional[Mapping[str, Any]] = None) -> None:
     metadata = metadata or get_metadata(current_user)
     session_store = get_session_store()
-
-    language_code = metadata.get("language_code") if metadata else None
     schema_name = metadata.get("schema_name") if metadata else None
 
     if session_store and (session_data := session_store.session_data):
-        launch_language = language_code or DEFAULT_LANGUAGE_CODE
+        launch_language = (
+            session_store.session_data.language_code or DEFAULT_LANGUAGE_CODE
+        )
         # pylint: disable=assigning-non-slot
         g.allowed_languages = get_allowed_languages(schema_name, launch_language)
         request_language = request.args.get("language_code")
