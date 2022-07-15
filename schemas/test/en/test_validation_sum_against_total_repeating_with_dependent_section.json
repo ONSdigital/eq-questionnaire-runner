@@ -219,12 +219,35 @@
                             "id": "total-spending-block",
                             "question": {
                                 "id": "total-spending-question",
-                                "title": "What is the maximum spending limit for a household member per month?",
+                                "title": "What is the maximum spending limit for a household member per month (excluding entertainment)?",
                                 "type": "General",
                                 "answers": [
                                     {
                                         "id": "total-spending-answer",
                                         "label": "Maximum spending",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2,
+                                        "minimum": {
+                                            "value": 0,
+                                            "exclusive": true
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "entertainment-spending-block",
+                            "question": {
+                                "id": "entertainment-spending-question",
+                                "title": "What is the maximum spending limit on entertainment for a household member per month?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "entertainment-spending-answer",
+                                        "label": "Entertaintment spending",
                                         "mandatory": true,
                                         "type": "Currency",
                                         "currency": "GBP",
@@ -372,7 +395,7 @@
                                 "answers": [
                                     {
                                         "id": "spending-breakdown-1",
-                                        "label": "Entertaintment",
+                                        "label": "Housing",
                                         "mandatory": false,
                                         "type": "Currency",
                                         "currency": "GBP",
@@ -380,7 +403,7 @@
                                     },
                                     {
                                         "id": "spending-breakdown-2",
-                                        "label": "Shopping",
+                                        "label": "Transportation",
                                         "mandatory": false,
                                         "type": "Currency",
                                         "currency": "GBP",
@@ -388,6 +411,84 @@
                                     },
                                     {
                                         "id": "spending-breakdown-3",
+                                        "label": "Loans",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "second-spending-breakdown-block",
+                            "question": {
+                                "id": "second-spending-breakdown-question",
+                                "title": {
+                                    "text": "How do you spend the monthly entertainment budget of <em>{entertainment}</em>?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "entertainment",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_currency",
+                                                    "arguments": {
+                                                        "number": {
+                                                            "source": "answers",
+                                                            "identifier": "entertainment-spending-answer"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "Calculated",
+                                "warning": "These answers must add up to the entertainment budget provided in the spending breakdown question",
+                                "calculations": [
+                                    {
+                                        "calculation_type": "sum",
+                                        "value": {
+                                            "source": "answers",
+                                            "identifier": "entertainment-spending-answer"
+                                        },
+                                        "answers_to_calculate": [
+                                            "second-spending-breakdown-1",
+                                            "second-spending-breakdown-2",
+                                            "second-spending-breakdown-3",
+                                            "second-spending-breakdown-4"
+                                        ],
+                                        "conditions": ["equals"]
+                                    }
+                                ],
+                                "answers": [
+                                    {
+                                        "id": "second-spending-breakdown-1",
+                                        "label": "Cinema",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "second-spending-breakdown-2",
+                                        "label": "Concerts",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "second-spending-breakdown-3",
+                                        "label": "Sporting events",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "second-spending-breakdown-4",
                                         "label": "Other",
                                         "mandatory": false,
                                         "type": "Currency",

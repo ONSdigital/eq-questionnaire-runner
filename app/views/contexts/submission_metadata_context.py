@@ -3,10 +3,11 @@ from datetime import datetime
 from flask_babel import format_datetime, lazy_gettext
 
 from app.libs.utils import convert_tx_id
+from app.survey_config.survey_type import SurveyType
 
 
 def build_submission_metadata_context(
-    survey_type: str, submitted_at: datetime, tx_id: str
+    survey_type: SurveyType, submitted_at: datetime, tx_id: str
 ) -> dict:
     submitted_on = {
         "term": lazy_gettext("Submitted on:"),
@@ -23,7 +24,7 @@ def build_submission_metadata_context(
         "term": lazy_gettext("Submission reference:"),
         "descriptions": [{"description": convert_tx_id(tx_id)}],
     }
-    if survey_type == "social":
+    if survey_type is SurveyType.SOCIAL:
         return {
             "data-qa": "metadata",
             "termCol": 3,

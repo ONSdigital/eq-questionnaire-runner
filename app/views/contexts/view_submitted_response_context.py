@@ -7,6 +7,7 @@ from flask_babel import lazy_gettext
 from app.data_models import QuestionnaireStore
 from app.globals import has_view_submitted_response_expired
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.survey_config.survey_type import SurveyType
 from app.views.contexts.submission_metadata_context import (
     build_submission_metadata_context,
 )
@@ -17,14 +18,14 @@ def build_view_submitted_response_context(
     language: str,
     schema: QuestionnaireSchema,
     questionnaire_store: QuestionnaireStore,
-    survey_type: str,
+    survey_type: SurveyType,
 ) -> dict[str, Union[str, datetime, dict]]:
 
     view_submitted_response_expired = has_view_submitted_response_expired(
         questionnaire_store.submitted_at  # type: ignore
     )
 
-    if survey_type == "social":
+    if survey_type is SurveyType.SOCIAL:
         submitted_text = lazy_gettext("Answers submitted.")
     elif trad_as := questionnaire_store.metadata.get("trad_as"):
         submitted_text = lazy_gettext(
