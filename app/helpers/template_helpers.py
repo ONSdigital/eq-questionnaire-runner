@@ -22,8 +22,8 @@ from app.survey_config import (
     SurveyConfig,
     WelshCensusSurveyConfig,
 )
-
-from app.utilities.schema import load_schema_from_session_data
+from app.survey_config.survey_type import SurveyType
+from app.utilities.schema import load_schema_from_metadata
 
 
 class ContextHelper:
@@ -200,11 +200,14 @@ def get_survey_config(
 ) -> SurveyConfig:
     # The fallback to assigning SURVEY_TYPE to theme is only being added until
     # business feedback on the differentiation between theme and SURVEY_TYPE.
+
     if session_store := get_session_store():
         if session_data := session_store.session_data:
-            schema = load_schema_from_session_data(session_data)
+            language = session_data.language_code
 
-    language = language or get_locale().language
+    if metadata := get_metadata(current_user):
+        schema = load_schema_from_metadata(metadata=metadata, language_code=language)
+
     survey_theme = theme or get_survey_type()
 
     base_url = base_url or (
@@ -222,18 +225,9 @@ def get_survey_config(
 def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     session_expires_at = None
     language = get_locale().language
-
-    schema, session_expires_at = None, None
-    session_store = get_session_store()
-
-    if session_store and (session_data := session_store.session_data):
-        language = session_data.language_code
-
-    if metadata := get_metadata(current_user):
-        schema = load_schema_from_metadata(metadata=metadata, language_code=language)
-
-    if session_store and (session_expiry := session_store.expiration_time):
-        session_expires_at = session_expiry.isoformat()
+    if session_store := get_session_store():
+        if session_expiry := session_store.expiration_time:
+            session_expires_at = session_expiry.isoformat()
 
     survey_config = get_survey_config()
 
