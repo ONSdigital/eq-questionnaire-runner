@@ -11,6 +11,7 @@ from app.data_models import QuestionnaireStore
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.submitter import RabbitMQSubmitter
 from app.utilities.metadata_parser import (
     validate_questionnaire_claims,
@@ -40,7 +41,7 @@ def fake_metadata():
             "user_id": "789473423",
             "schema_name": "1_0000",
             "collection_exercise_sid": "test-sid",
-            "account_service_url": "https://rh.ons.gov.uk/",
+            "account_service_url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/",
             "period_id": "2016-02-01",
             "period_str": "2016-01-01",
             "ref_p_start_date": "2016-02-02",

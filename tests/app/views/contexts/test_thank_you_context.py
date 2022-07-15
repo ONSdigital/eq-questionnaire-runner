@@ -2,11 +2,12 @@ from datetime import datetime, timedelta, timezone
 
 from flask import Flask
 
+from app.survey_config.survey_type import SurveyType
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts.thank_you_context import build_thank_you_context
 
-SURVEY_TYPE_DEFAULT = "default"
-SURVEY_TYPE_SOCIAL = "social"
+SURVEY_TYPE_DEFAULT = SurveyType.DEFAULT
+SURVEY_TYPE_SOCIAL = SurveyType.SOCIAL
 SUBMITTED_AT = datetime.now(timezone.utc)
 SCHEMA = load_schema_from_name("test_view_submitted_response", "en")
 
