@@ -335,8 +335,8 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self.assertInSelector(content, "head")
 
     # Extra Helper Assertions
-    def assertInBody(self, content):
-        self.assertInSelector(content, "body")
+    def assertInBody(self, contents):
+        self.assertInSelector(contents, "body")
 
     # Extra Helper Assertions
     def assertNotInHead(self, content):
@@ -346,12 +346,15 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
     def assertNotInBody(self, content):
         self.assertNotInSelector(content, "body")
 
-    def assertInSelector(self, content, selector):
-        data = self.getHtmlSoup().select(selector)
-        message = f"\n{content} not in \n{data}"
+    def assertInSelector(self, contents, selector):
+        contents = contents if isinstance(contents, list) else [contents]
 
-        # intentionally not using assertIn to avoid duplicating the output message
-        self.assertTrue(content in str(data), msg=message)
+        for content in contents:
+            data = self.getHtmlSoup().select(selector)
+            message = f"\n{content} not in \n{data}"
+
+            # intentionally not using assertIn to avoid duplicating the output message
+            self.assertTrue(content in str(data), msg=message)
 
     def assertAnswerInSummary(self, answer, *, answer_id):
         # Get answer using data qa

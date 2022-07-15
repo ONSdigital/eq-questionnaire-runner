@@ -1,10 +1,17 @@
-{% extends 'layouts/_base.html' %}
+{% extends 'errors/_base.html' %}
 
 {% set page_title = _("An error has occurred") %}
 
 {% block main %}
-<h1>{{ _("Sorry, there is a problem with this service") }}</h1>
-<p>{{ _("Try again later.") }}</p>
-<p>{{ _("If you have started a survey, your answers have been saved.") }}</p>
-<p>{{ _("<a href='{url}'>Contact us</a> if you need to speak to someone about your survey.").format(url = contact_us_url)  }}</p>
+  <h1>{{ _("Sorry, there is a problem with this service") }}</h1>
+  <p>{{ _("Try again later.") }}</p>
+  <p>{{ _("If you have started a survey, your answers have been saved.") }}</p>
+  {% if survey_type and (survey_type in SURVEY_TYPES_BUSINESS or survey_type in SURVEY_TYPES_DEFAULT or survey_type in SURVEY_TYPES_SOCIAL) %}
+    <p>{{ _("<a href='{url}'>Contact us</a> if you need to speak to someone about your survey.").format(url = contact_us_url)  }}</p>
+  {% else %}
+    <h3>Business surveys</h3>
+    <p>{{ _("If you are completing a business survey and you need to speak to someone about your survey, please <a href='{url}'>contact us</a>.").format(url=business_contact_us_url) }}</p>
+    <h3>All other surveys</h3>
+    <p>{{ _("If you started your survey using an access code and you need to speak to someone about your survey, please <a href='{url}'>contact us</a>.").format(url=other_contact_us_url) }}</p>
+  {% endif %}
 {% endblock %}

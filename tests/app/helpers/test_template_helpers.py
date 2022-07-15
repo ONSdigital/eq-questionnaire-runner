@@ -6,7 +6,7 @@ from flask import session as cookie_session
 
 from app.helpers.template_helpers import ContextHelper, get_survey_config
 from app.questionnaire import QuestionnaireSchema
-from app.settings import ACCOUNT_SERVICE_BASE_URL
+from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.survey_config import (
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
@@ -16,6 +16,9 @@ from app.survey_config import (
     SurveyConfig,
     WelshCensusSurveyConfig,
 )
+from app.survey_config.survey_type import SurveyType
+
+DEFAULT_URL = "http://localhost"
 
 
 def test_footer_context_census_theme(app: Flask, expected_footer_census_theme):
@@ -206,7 +209,7 @@ def test_get_page_header_context_census_nisra(app: Flask):
                 "itemsList": [
                     {
                         "title": "Help",
-                        "url": "https://surveys.ons.gov.uk/help",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL}/help",
                         "id": "header-link-help",
                     }
                 ],
@@ -224,12 +227,12 @@ def test_get_page_header_context_census_nisra(app: Flask):
                 "itemsList": [
                     {
                         "title": "Help",
-                        "url": "https://surveys.ons.gov.uk/surveys/surveys-help?survey_ref=001&ru_ref=63782964754",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL}/surveys/surveys-help?survey_ref=001&ru_ref=63782964754",
                         "id": "header-link-help",
                     },
                     {
                         "title": "My account",
-                        "url": "https://surveys.ons.gov.uk/my-account",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL}/my-account",
                         "id": "header-link-my-account",
                     },
                     {
@@ -279,19 +282,19 @@ def test_service_links_context(
     [
         (
             SurveyConfig(),
-            "https://surveys.ons.gov.uk/contact-us/",
+            f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
         (
             BusinessSurveyConfig(),
-            "https://surveys.ons.gov.uk/contact-us/",
+            f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
         (
             NorthernIrelandBusinessSurveyConfig(),
-            "https://surveys.ons.gov.uk/contact-us/",
+            f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
         (
             SocialSurveyConfig(),
-            "https://rh.ons.gov.uk/contact-us/",
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/contact-us/",
         ),
     ],
 )
@@ -333,18 +336,18 @@ def test_sign_out_button_text_context(
 @pytest.mark.parametrize(
     "survey_config, expected",
     [
-        (SurveyConfig(), "https://surveys.ons.gov.uk/cookies/"),
+        (SurveyConfig(), f"{ACCOUNT_SERVICE_BASE_URL}/cookies/"),
         (
             BusinessSurveyConfig(),
-            "https://surveys.ons.gov.uk/cookies/",
+            f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
         ),
         (
             NorthernIrelandBusinessSurveyConfig(),
-            "https://surveys.ons.gov.uk/cookies/",
+            f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
         ),
         (
             SocialSurveyConfig(),
-            "https://rh.ons.gov.uk/cookies/",
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cookies/",
         ),
     ],
 )
@@ -368,7 +371,7 @@ def test_cookie_settings_url_context(
         (SurveyConfig(), None),
         (
             BusinessSurveyConfig(),
-            "https://surveys.ons.gov.uk/my-account",
+            f"{ACCOUNT_SERVICE_BASE_URL}/my-account",
         ),
         (SocialSurveyConfig(), None),
     ],
@@ -389,7 +392,7 @@ def test_account_service_my_account_url_context(
         (SurveyConfig(), None),
         (
             BusinessSurveyConfig(),
-            "https://surveys.ons.gov.uk/surveys/todo",
+            f"{ACCOUNT_SERVICE_BASE_URL}/surveys/todo",
         ),
         (
             SocialSurveyConfig(),
@@ -410,18 +413,18 @@ def test_account_service_my_todo_url_context(
         (SurveyConfig(), None),
         (
             BusinessSurveyConfig(),
-            "https://surveys.ons.gov.uk/sign-in/logout",
+            f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
         ),
         (CensusSurveyConfig(), "https://census.gov.uk/en/start"),
         (WelshCensusSurveyConfig(), "https://cyfrifiad.gov.uk/en/start"),
         (CensusNISRASurveyConfig(), "https://census.gov.uk/ni"),
         (
             NorthernIrelandBusinessSurveyConfig(),
-            "https://surveys.ons.gov.uk/sign-in/logout",
+            f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
         ),
         (
             SocialSurveyConfig(),
-            "https://rh.ons.gov.uk/sign-in/logout",
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/sign-in/logout",
         ),
     ],
 )
@@ -437,20 +440,20 @@ def test_account_service_log_out_url_context(
 @pytest.mark.parametrize(
     "theme, language, expected",
     [
-        ("default", "en", SurveyConfig),
-        ("default", "cy", SurveyConfig),
-        ("business", "en", BusinessSurveyConfig),
-        ("business", "cy", BusinessSurveyConfig),
-        ("health", "en", SurveyConfig),
-        ("health", "cy", SurveyConfig),
-        ("social", "en", SocialSurveyConfig),
-        ("social", "cy", SocialSurveyConfig),
-        ("northernireland", "en", NorthernIrelandBusinessSurveyConfig),
-        ("northernireland", "cy", NorthernIrelandBusinessSurveyConfig),
-        ("census", "en", CensusSurveyConfig),
-        ("census", "cy", WelshCensusSurveyConfig),
-        ("census-nisra", "en", CensusNISRASurveyConfig),
-        ("census-nisra", "cy", CensusNISRASurveyConfig),
+        (SurveyType.DEFAULT, "en", SurveyConfig),
+        (SurveyType.DEFAULT, "cy", SurveyConfig),
+        (SurveyType.BUSINESS, "en", BusinessSurveyConfig),
+        (SurveyType.BUSINESS, "cy", BusinessSurveyConfig),
+        (SurveyType.HEALTH, "en", SurveyConfig),
+        (SurveyType.HEALTH, "cy", SurveyConfig),
+        (SurveyType.SOCIAL, "en", SocialSurveyConfig),
+        (SurveyType.SOCIAL, "cy", SocialSurveyConfig),
+        (SurveyType.NORTHERN_IRELAND, "en", NorthernIrelandBusinessSurveyConfig),
+        (SurveyType.NORTHERN_IRELAND, "cy", NorthernIrelandBusinessSurveyConfig),
+        (SurveyType.CENSUS, "en", CensusSurveyConfig),
+        (SurveyType.CENSUS, "cy", WelshCensusSurveyConfig),
+        (SurveyType.CENSUS_NISRA, "en", CensusNISRASurveyConfig),
+        (SurveyType.CENSUS_NISRA, "cy", CensusNISRASurveyConfig),
         (None, None, BusinessSurveyConfig),
     ],
 )
@@ -465,9 +468,9 @@ def test_get_survey_config(
 @pytest.mark.parametrize(
     "survey_config_type, base_url",
     [
-        (SocialSurveyConfig, "https://rh.ons.gov.uk"),
-        (SurveyConfig, "http://localhost"),
-        (BusinessSurveyConfig, "http://localhost"),
+        (SocialSurveyConfig, ACCOUNT_SERVICE_BASE_URL_SOCIAL),
+        (SurveyConfig, DEFAULT_URL),
+        (BusinessSurveyConfig, DEFAULT_URL),
     ],
 )
 def test_survey_config_base_url_provided_used_in_links(
@@ -493,20 +496,20 @@ def test_survey_config_base_url_provided_used_in_links(
 
 
 def test_survey_config_base_url_duplicate_todo(app: Flask):
-    base_url = "http://localhost/surveys/todo"
+    base_url = f"{DEFAULT_URL}/surveys/todo"
     with app.app_context():
         result = BusinessSurveyConfig(base_url=base_url)
 
-    assert result.base_url == "http://localhost"
+    assert result.base_url == DEFAULT_URL
 
-    assert result.account_service_log_out_url == "http://localhost/sign-in/logout"
-    assert result.account_service_my_account_url == "http://localhost/my-account"
-    assert result.account_service_todo_url == "http://localhost/surveys/todo"
-    assert result.contact_us_url == "http://localhost/contact-us/"
-    assert result.cookie_settings_url == "http://localhost/cookies/"
+    assert result.account_service_log_out_url == f"{DEFAULT_URL}/sign-in/logout"
+    assert result.account_service_my_account_url == f"{DEFAULT_URL}/my-account"
+    assert result.account_service_todo_url == f"{DEFAULT_URL}/surveys/todo"
+    assert result.contact_us_url == f"{DEFAULT_URL}/contact-us/"
+    assert result.cookie_settings_url == f"{DEFAULT_URL}/cookies/"
     assert (
         result.privacy_and_data_protection_url
-        == "http://localhost/privacy-and-data-protection/"
+        == f"{DEFAULT_URL}/privacy-and-data-protection/"
     )
 
 
@@ -544,14 +547,14 @@ def test_context_set_from_app_config(app):
 @pytest.mark.parametrize(
     "theme, language, expected",
     [
-        ("default", "en", None),
-        ("business", "en", None),
-        ("health", "en", None),
-        ("social", "en", None),
-        ("northernireland", "en", None),
-        ("census", "en", "census"),
-        ("census", "cy", "census"),
-        ("census-nisra", "en", "census"),
+        (SurveyType.DEFAULT, "en", None),
+        (SurveyType.BUSINESS, "en", None),
+        (SurveyType.HEALTH, "en", None),
+        (SurveyType.SOCIAL, "en", None),
+        (SurveyType.NORTHERN_IRELAND, "en", None),
+        (SurveyType.CENSUS, "en", "census"),
+        (SurveyType.CENSUS, "cy", "census"),
+        (SurveyType.CENSUS_NISRA, "en", "census"),
     ],
 )
 def test_correct_theme_in_context(app: Flask, theme: str, language: str, expected: str):
@@ -569,14 +572,14 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
 @pytest.mark.parametrize(
     "theme, language, expected",
     [
-        ("default", "en", "ONS Business Surveys"),
-        ("business", "en", "ONS Business Surveys"),
-        ("health", "en", None),
-        ("social", "en", "ONS Social Surveys"),
-        ("northernireland", "en", "ONS Business Surveys"),
-        ("census", "en", "Census 2021"),
-        ("census", "cy", "Census 2021"),
-        ("census-nisra", "en", "Census 2021"),
+        (SurveyType.DEFAULT, "en", "ONS Business Surveys"),
+        (SurveyType.BUSINESS, "en", "ONS Business Surveys"),
+        (SurveyType.HEALTH, "en", None),
+        (SurveyType.SOCIAL, "en", "ONS Social Surveys"),
+        (SurveyType.NORTHERN_IRELAND, "en", "ONS Business Surveys"),
+        (SurveyType.CENSUS, "en", "Census 2021"),
+        (SurveyType.CENSUS, "cy", "Census 2021"),
+        (SurveyType.CENSUS_NISRA, "en", "Census 2021"),
     ],
 )
 def test_correct_survey_title_in_context(
@@ -597,37 +600,47 @@ def test_correct_survey_title_in_context(
     "theme, language, schema, expected",
     [
         (
-            "default",
+            SurveyType.DEFAULT,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
             [{"survey_id": "001"}],
         ),
         (
-            "default",
+            SurveyType.DEFAULT,
             "en",
             QuestionnaireSchema({"survey_id": "001", "form_type": "test"}),
             [{"form_type": "test", "survey_id": "001"}],
         ),
         (
-            "business",
+            SurveyType.BUSINESS,
             "en",
             QuestionnaireSchema(
                 {"survey_id": "001", "form_type": "test", "title": "test_title"}
             ),
             [{"form_type": "test", "survey_id": "001", "title": "test_title"}],
         ),
-        ("health", "en", QuestionnaireSchema({"survey_id": "001"}), []),
-        ("social", "en", QuestionnaireSchema({"survey_id": "001"}), []),
+        (SurveyType.HEALTH, "en", QuestionnaireSchema({"survey_id": "001"}), []),
+        (SurveyType.SOCIAL, "en", QuestionnaireSchema({"survey_id": "001"}), []),
         (
-            "northernireland",
+            SurveyType.NORTHERN_IRELAND,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
             [{"survey_id": "001"}],
         ),
-        ("census", "en", QuestionnaireSchema({"survey_id": "001"}), [{"nisra": False}]),
-        ("census", "cy", QuestionnaireSchema({"survey_id": "001"}), [{"nisra": False}]),
         (
-            "census-nisra",
+            SurveyType.CENSUS,
+            "en",
+            QuestionnaireSchema({"survey_id": "001"}),
+            [{"nisra": False}],
+        ),
+        (
+            SurveyType.CENSUS,
+            "cy",
+            QuestionnaireSchema({"survey_id": "001"}),
+            [{"nisra": False}],
+        ),
+        (
+            SurveyType.CENSUS_NISRA,
             QuestionnaireSchema({"survey_id": "001"}),
             "en",
             [{"nisra": True}],

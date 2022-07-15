@@ -22,6 +22,7 @@ from app.survey_config import (
     SurveyConfig,
     WelshCensusSurveyConfig,
 )
+from app.survey_config.survey_type import SurveyType
 from app.utilities.schema import load_schema_from_session_data
 
 
@@ -49,6 +50,7 @@ class ContextHelper:
         self._google_tag_manager_auth = current_app.config.get(
             "EQ_GOOGLE_TAG_MANAGER_AUTH"
         )
+        self._survey_type = cookie_session.get("theme")
 
     @property
     def context(self) -> dict[str, Any]:
@@ -73,6 +75,7 @@ class ContextHelper:
             "include_csrf_token": self._include_csrf_token,
             "google_tag_manager_id": self._google_tag_manager_id,
             "google_tag_manager_auth": self._google_tag_manager_auth,
+            "survey_type": self._survey_type,
         }
 
     @property
@@ -83,7 +86,7 @@ class ContextHelper:
         if service_links := self._survey_config.get_service_links(
             sign_out_url=self._sign_out_url,
             is_authenticated=current_user.is_authenticated,
-            cookie_has_theme=bool(cookie_session.get("theme")),
+            cookie_has_theme=bool(self._survey_type),
             ru_ref=metadata.get("ru_ref") if metadata else None,  # type: ignore
         ):
             return {
@@ -168,16 +171,18 @@ class ContextHelper:
 
 @lru_cache
 def survey_config_mapping(
-    *, theme: str, language: str, base_url: str, schema: QuestionnaireSchema
+    *, theme: SurveyType, language: str, base_url: str, schema: QuestionnaireSchema
 ) -> SurveyConfig:
-    survey_type_to_config: dict[str, Type[SurveyConfig]] = {
-        "default": BusinessSurveyConfig,
-        "business": BusinessSurveyConfig,
-        "health": SurveyConfig,
-        "social": SocialSurveyConfig,
-        "northernireland": NorthernIrelandBusinessSurveyConfig,
-        "census": (WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig),
-        "census-nisra": CensusNISRASurveyConfig,
+    survey_type_to_config: dict[SurveyType, Type[SurveyConfig]] = {
+        SurveyType.DEFAULT: BusinessSurveyConfig,
+        SurveyType.BUSINESS: BusinessSurveyConfig,
+        SurveyType.HEALTH: SurveyConfig,
+        SurveyType.SOCIAL: SocialSurveyConfig,
+        SurveyType.NORTHERN_IRELAND: NorthernIrelandBusinessSurveyConfig,
+        SurveyType.CENSUS: (
+            WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig
+        ),
+        SurveyType.CENSUS_NISRA: CensusNISRASurveyConfig,
     }
 
     return survey_type_to_config[theme](
@@ -188,20 +193,26 @@ def survey_config_mapping(
 
 def get_survey_config(
     *,
-    theme: Optional[str] = None,
+    base_url: Optional[str] = None,
+    theme: Optional[SurveyType] = None,
     language: Optional[str] = None,
     schema: Optional[QuestionnaireSchema] = None,
 ) -> SurveyConfig:
     # The fallback to assigning SURVEY_TYPE to theme is only being added until
     # business feedback on the differentiation between theme and SURVEY_TYPE.
+    if session_store := get_session_store():
+        if session_data := session_store.session_data:
+            schema = load_schema_from_session_data(session_data)
+
     language = language or get_locale().language
-    theme = theme or get_survey_type()
-    base_url = (
+    survey_theme = theme or get_survey_type()
+
+    base_url = base_url or (
         cookie_session.get("account_service_base_url") or ACCOUNT_SERVICE_BASE_URL
     )
 
     return survey_config_mapping(
-        theme=theme,
+        theme=survey_theme,
         language=language,
         base_url=base_url,
         schema=schema,
@@ -209,19 +220,14 @@ def get_survey_config(
 
 
 def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
+    session_expires_at = None
     language = get_locale().language
-    schema, session_expires_at = None, None
     if session_store := get_session_store():
-        if session_data := session_store.session_data:
-            schema = load_schema_from_session_data(session_data)
-
         if session_expiry := session_store.expiration_time:
             session_expires_at = session_expiry.isoformat()
 
-    survey_config = get_survey_config(
-        language=language,
-        schema=schema,
-    )
+    survey_config = get_survey_config()
+
     is_post_submission = request.blueprint == "post_submission"
     include_csrf_token = bool(
         request.url_rule
@@ -244,5 +250,6 @@ def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
     )
 
 
-def get_survey_type() -> str:
-    return cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
+def get_survey_type() -> SurveyType:
+    survey_type = cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
+    return SurveyType(survey_type)

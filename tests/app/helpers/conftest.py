@@ -1,6 +1,8 @@
 from pytest import fixture
 
 from app.helpers.template_helpers import ContextHelper
+from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
+from app.survey_config.census_config import EN_BASE_URL
 
 
 @fixture
@@ -40,22 +42,22 @@ def expected_footer_census_theme(footer_context):
                 "itemsList": [
                     {
                         "text": "Help",
-                        "url": "https://census.gov.uk/help/how-to-answer-questions/online-questions-help/",
+                        "url": f"{EN_BASE_URL}/help/how-to-answer-questions/online-questions-help/",
                         "target": "_blank",
                     },
                     {
                         "text": "Contact us",
-                        "url": "https://census.gov.uk/contact-us/",
+                        "url": f"{EN_BASE_URL}/contact-us/",
                         "target": "_blank",
                     },
                     {
                         "text": "Languages",
-                        "url": "https://census.gov.uk/help/languages-and-accessibility/languages/",
+                        "url": f"{EN_BASE_URL}/help/languages-and-accessibility/languages/",
                         "target": "_blank",
                     },
                     {
                         "text": "BSL and audio videos",
-                        "url": "https://census.gov.uk/help/languages-and-accessibility/accessibility/accessible-videos-with-bsl/",
+                        "url": f"{EN_BASE_URL}/help/languages-and-accessibility/accessibility/accessible-videos-with-bsl/",
                         "target": "_blank",
                     },
                 ]
@@ -66,22 +68,22 @@ def expected_footer_census_theme(footer_context):
                 "itemsList": [
                     {
                         "text": "Cookies",
-                        "url": "https://census.gov.uk/cookies/",
+                        "url": f"{EN_BASE_URL}/cookies/",
                         "target": "_blank",
                     },
                     {
                         "text": "Accessibility statement",
-                        "url": "https://census.gov.uk/accessibility-statement/",
+                        "url": f"{EN_BASE_URL}/accessibility-statement/",
                         "target": "_blank",
                     },
                     {
                         "text": "Privacy and data protection",
-                        "url": "https://census.gov.uk/privacy-and-data-protection/",
+                        "url": f"{EN_BASE_URL}/privacy-and-data-protection/",
                         "target": "_blank",
                     },
                     {
                         "text": "Terms and conditions",
-                        "url": "https://census.gov.uk/terms-and-conditions/",
+                        "url": f"{EN_BASE_URL}/terms-and-conditions/",
                         "target": "_blank",
                     },
                 ]
@@ -104,7 +106,7 @@ def expected_footer_business_theme(footer_context):
                     },
                     {
                         "text": "Contact us",
-                        "url": "https://surveys.ons.gov.uk/contact-us/",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
                         "target": "_blank",
                     },
                     {
@@ -120,12 +122,12 @@ def expected_footer_business_theme(footer_context):
                 "itemsList": [
                     {
                         "text": "Cookies",
-                        "url": "https://surveys.ons.gov.uk/cookies/",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
                         "target": "_blank",
                     },
                     {
                         "text": "Privacy and data protection",
-                        "url": "https://surveys.ons.gov.uk/privacy-and-data-protection/",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL}/privacy-and-data-protection/",
                         "target": "_blank",
                     },
                 ]
@@ -148,7 +150,7 @@ def expected_footer_social_theme(footer_context):
                     },
                     {
                         "text": "Contact us",
-                        "url": "https://rh.ons.gov.uk/contact-us/",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/contact-us/",
                         "target": "_blank",
                     },
                     {
@@ -164,12 +166,12 @@ def expected_footer_social_theme(footer_context):
                 "itemsList": [
                     {
                         "text": "Cookies",
-                        "url": "https://rh.ons.gov.uk/cookies/",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cookies/",
                         "target": "_blank",
                     },
                     {
                         "text": "Privacy and data protection",
-                        "url": "https://rh.ons.gov.uk/privacy-and-data-protection/",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/privacy-and-data-protection/",
                         "target": "_blank",
                     },
                 ]
@@ -194,12 +196,12 @@ def expected_footer_nisra_theme():
                 "itemsList": [
                     {
                         "text": "Help",
-                        "url": "https://census.gov.uk/ni/help/help-with-the-questions/online-questions-help/",
+                        "url": f"{EN_BASE_URL}/ni/help/help-with-the-questions/online-questions-help/",
                         "target": "_blank",
                     },
                     {
                         "text": "Contact us",
-                        "url": "https://census.gov.uk/ni/contact-us/",
+                        "url": f"{EN_BASE_URL}/ni/contact-us/",
                         "target": "_blank",
                     },
                 ]
@@ -210,22 +212,22 @@ def expected_footer_nisra_theme():
                 "itemsList": [
                     {
                         "text": "Cookies",
-                        "url": "https://census.gov.uk/ni/cookies/",
+                        "url": f"{EN_BASE_URL}/ni/cookies/",
                         "target": "_blank",
                     },
                     {
                         "text": "Accessibility statement",
-                        "url": "https://census.gov.uk/ni/accessibility-statement/",
+                        "url": f"{EN_BASE_URL}/ni/accessibility-statement/",
                         "target": "_blank",
                     },
                     {
                         "text": "Privacy and data protection",
-                        "url": "https://census.gov.uk/ni/privacy-and-data-protection/",
+                        "url": f"{EN_BASE_URL}/ni/privacy-and-data-protection/",
                         "target": "_blank",
                     },
                     {
                         "text": "Terms and conditions",
-                        "url": "https://census.gov.uk/ni/terms-and-conditions/",
+                        "url": f"{EN_BASE_URL}/ni/terms-and-conditions/",
                         "target": "_blank",
                     },
                 ]
