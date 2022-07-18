@@ -1,0 +1,63 @@
+{% from 'components/panel/_macro.njk' import onsPanel %}
+
+{% set title= interviewer_note(question.title) if block.interviewer_only else question.title %}
+{% set answers= question.answers %}
+
+<div class="ons-summary__item">
+
+<h4 class="ons-u-mt-m">{{ title }}</h4>
+
+<br>
+
+{% set answers_length = answers|length %}
+
+{% if question.descriptions %}
+  {% set descriptions = question.descriptions %}
+  {% set descriptions_length = descriptions|length %}
+    {% for description in descriptions %}
+      {{ description }}
+    {% endfor %}
+{% endif %}
+
+{% if question.instruction %}
+  <p>{{ question.instruction }}</p>
+{% endif %}
+
+{% if question.guidance %}
+  {% call onsPanel({
+        "classes": "ons-u-mb-l"
+      }) %}
+      {% for guidance in question.guidance %}
+        {% if guidance is string %}
+          <p>{{ guidance }}</p>
+        {% elif guidance|length > 1 %}
+        <ul>
+          {% for item in guidance %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      {% endfor %}
+  {% endcall %}
+{% endif %}
+
+{% if answers_length > 1 %}
+  <p>You can answer with the following options:</p>
+  <ul>
+    {% for answer in answers %}
+      <li>{{ answer }}</li>
+    {% endfor %}
+  </ul>
+{% elif answers_length == 1 %}
+  <p><strong>{{ answers[0] }}</strong></p>
+  {% if question.text_length %}
+    <p>{{ question.text_length }} characters can be added.</p>
+  {% endif %}
+{% endif %}
+
+{% if question.answer_description %}
+{% set description = question.answer_description %}
+    <p>{{ description }}</p>
+{% endif %}
+
+</div>

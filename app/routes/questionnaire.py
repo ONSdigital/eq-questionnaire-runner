@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Union
+from typing import Union, Mapping
 
 import flask_babel
 from flask import Blueprint, g, redirect, request, send_file
@@ -33,6 +33,7 @@ from app.questionnaire.router import Router
 from app.submitter.previously_submitted_exception import PreviouslySubmittedException
 from app.utilities.schema import load_schema_from_session_data
 from app.views.contexts import HubContext
+from app.views.contexts.preview_context import PreviewContext
 from app.views.handlers.block_factory import get_block_handler
 from app.views.handlers.confirm_email import ConfirmEmail
 from app.views.handlers.confirmation_email import (
@@ -179,6 +180,44 @@ def get_questionnaire(schema, questionnaire_store):
         content=context,
         page_title=context["title"],
     )
+
+
+@questionnaire_blueprint.route("/preview", methods=["GET"])
+@with_questionnaire_store
+@with_schema
+def get_preview(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore):
+    submission_schema: Mapping = schema.get_submission()
+    title = submission_schema.get("title") or flask_babel.lazy_gettext(
+        "Check your answers and submit"
+    )
+    submit_button = submission_schema.get("button") or flask_babel.lazy_gettext(
+        "Submit answers"
+    )
+    guidance = submission_schema.get("guidance") or flask_babel.lazy_gettext(
+        "Please submit this survey to complete it"
+    )
+
+    warning = submission_schema.get("warning") or None
+
+    context = {
+        "title": title,
+        "guidance": guidance,
+        "warning": warning,
+        "submit_button": submit_button,
+    }
+
+    preview_context = PreviewContext(
+        language=flask_babel.get_locale().language,
+        schema=schema,
+        answer_store=questionnaire_store.answer_store,
+        list_store=questionnaire_store.list_store,
+        progress_store=questionnaire_store.progress_store,
+        metadata=questionnaire_store.metadata,
+        response_metadata=questionnaire_store.response_metadata,
+    )
+
+    context["summary"] = preview_context()
+    return render_template(template="preview", content=context)
 
 
 @questionnaire_blueprint.route("submit/", methods=["GET", "POST"])
