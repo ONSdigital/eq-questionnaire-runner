@@ -3,10 +3,12 @@ import ListCollectorAddPage from "../../../../generated_pages/validation_sum_aga
 import ListCollectorSummaryPage from "../../../../generated_pages/validation_sum_against_total_repeating_with_dependent_section/householders-section-summary.page";
 
 import TotalSpendingPage from "../../../../generated_pages/validation_sum_against_total_repeating_with_dependent_section/total-spending-block.page";
+import EntertainmentSpendingPage from "../../../../generated_pages/validation_sum_against_total_repeating_with_dependent_section/entertainment-spending-block.page";
 import HouseholdOverviewSectionSummary from "../../../../generated_pages/validation_sum_against_total_repeating_with_dependent_section/household-overview-section-summary.page";
 
 import BreakdownDrivingPage from "../../../../generated_pages/validation_sum_against_total_repeating_with_dependent_section/breakdown-driving-block.page";
 import SpendingBreakdownPage from "../../../../generated_pages/validation_sum_against_total_repeating_with_dependent_section/spending-breakdown-block.page";
+import EntertainmentBreakdownPage from "../../../../generated_pages/validation_sum_against_total_repeating_with_dependent_section/second-spending-breakdown-block.page";
 import BreakdownSectionSummary from "../../../../generated_pages/validation_sum_against_total_repeating_with_dependent_section/breakdown-section-summary.page";
 
 import HubPage from "../../../../base_pages/hub.page";
@@ -31,6 +33,11 @@ const answerAndSubmitTotalSpendingQuestion = (total) => {
   $(TotalSpendingPage.submit()).click();
 };
 
+const answerAndSubmitEntertainmentSpendingQuestion = (total) => {
+  $(EntertainmentSpendingPage.entertainmentSpending()).setValue(total);
+  $(EntertainmentSpendingPage.submit()).click();
+};
+
 const answerAndSubmitSpendingBreakdownQuestion = (breakdown1, breakdown2, breakdown3) => {
   $(SpendingBreakdownPage.spendingBreakdown1()).setValue(breakdown1);
   $(SpendingBreakdownPage.spendingBreakdown2()).setValue(breakdown2);
@@ -42,6 +49,13 @@ const assertSpendingBreakdownAnswer = (breakdown1, breakdown2, breakdown3) => {
   expect($(SpendingBreakdownPage.spendingBreakdown1()).getValue()).to.equal(breakdown1);
   expect($(SpendingBreakdownPage.spendingBreakdown2()).getValue()).to.equal(breakdown2);
   expect($(SpendingBreakdownPage.spendingBreakdown3()).getValue()).to.equal(breakdown3);
+};
+
+const answerAndSubmitEntertainmentBreakdownQuestion = (breakdown1, breakdown2, breakdown3) => {
+  $(EntertainmentBreakdownPage.secondSpendingBreakdown1()).setValue(breakdown1);
+  $(EntertainmentBreakdownPage.secondSpendingBreakdown2()).setValue(breakdown2);
+  $(EntertainmentBreakdownPage.secondSpendingBreakdown3()).setValue(breakdown3);
+  $(EntertainmentBreakdownPage.submit()).click();
 };
 
 const assertRepeatingSectionOnChange = (repeatIndex, currentBreakdown1, currentBreakdown2, currentBreakdown3, newTotal) => {
@@ -80,6 +94,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
 
       // Complete household overview section
       answerAndSubmitTotalSpendingQuestion(1000);
+      answerAndSubmitEntertainmentSpendingQuestion(500);
       $(HouseholdOverviewSectionSummary.submit()).click();
 
       expect($(HubPage.summaryRowState(householderSectionId)).getText()).to.equal("Completed");
@@ -103,6 +118,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
 
     it("When I enter an answer that is equal to the total for the spending question, Then I should be able to get to the section summary and the repeating section should be marked as 'Completed'", () => {
       answerAndSubmitSpendingBreakdownQuestion(500, 250, 250);
+      answerAndSubmitEntertainmentBreakdownQuestion(250, 150, 100);
 
       expect(browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
       $(BreakdownSectionSummary.submit()).click();
@@ -143,6 +159,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       $(BreakdownDrivingPage.submit()).click();
 
       answerAndSubmitSpendingBreakdownQuestion(1000, 500, 0);
+      answerAndSubmitEntertainmentBreakdownQuestion(250, 150, 100);
       $(BreakdownSectionSummary.submit()).click();
       expect($(HubPage.summaryRowState(repeatingSectionId(2))).getText()).to.equal("Completed");
     });

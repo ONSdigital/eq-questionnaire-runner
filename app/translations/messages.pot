@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-04-21 15:17+0100\n"
+"POT-Creation-Date: 2022-06-27 13:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,26 +17,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: app/forms/validators.py:372 app/jinja_filters.py:94
+#: app/forms/validators.py:372 app/jinja_filters.py:115
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:376 app/jinja_filters.py:102
+#: app/forms/validators.py:376 app/jinja_filters.py:123
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/jinja_filters.py:142
+#: app/jinja_filters.py:165
 #, python-format
 msgid "%(date)s at %(time)s"
 msgstr ""
 
-#: app/jinja_filters.py:155
+#: app/jinja_filters.py:179
 #, python-format
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
@@ -203,87 +203,87 @@ msgstr[1] ""
 msgid "Not a valid choice."
 msgstr ""
 
-#: app/helpers/template_helpers.py:85
+#: app/helpers/template_helpers.py:97
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:118
+#: app/helpers/template_helpers.py:138
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:148
+#: app/helpers/template_helpers.py:168
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
 msgstr ""
 
-#: app/questionnaire/placeholder_transforms.py:144
+#: app/questionnaire/placeholder_transforms.py:164
 msgid "{number_of_years} year"
 msgid_plural "{number_of_years} years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:150
+#: app/questionnaire/placeholder_transforms.py:170
 msgid "{number_of_months} month"
 msgid_plural "{number_of_months} months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:155
+#: app/questionnaire/placeholder_transforms.py:175
 msgid "{number_of_days} day"
 msgid_plural "{number_of_days} days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/routes/errors.py:118
+#: app/routes/errors.py:133
 msgid "You have reached the maximum number of individual access codes"
 msgstr ""
 
-#: app/routes/errors.py:121
+#: app/routes/errors.py:136
 msgid ""
 "If you need more individual access codes, please <a "
 "href='{contact_us_url}'>contact us</a>."
 msgstr ""
 
-#: app/routes/errors.py:137
+#: app/routes/errors.py:152
 msgid "You have reached the maximum number of times for submitting feedback"
 msgstr ""
 
-#: app/routes/errors.py:140
+#: app/routes/errors.py:155
 msgid ""
 "If you need to give more feedback, please <a "
 "href='{contact_us_url}'>contact us</a>."
 msgstr ""
 
-#: app/routes/errors.py:172
+#: app/routes/errors.py:187
 msgid "Sorry, there was a problem sending the access code"
 msgstr ""
 
-#: app/routes/errors.py:178
+#: app/routes/errors.py:193
 msgid "You can try to <a href='{retry_url}'>request a new access code again</a>."
 msgstr ""
 
-#: app/routes/errors.py:181 app/routes/errors.py:204 app/routes/errors.py:226
+#: app/routes/errors.py:196 app/routes/errors.py:219 app/routes/errors.py:241
 msgid ""
 "If this problem keeps happening, please <a "
 "href='{contact_us_url}'>contact us</a> for help."
 msgstr ""
 
-#: app/routes/errors.py:200
+#: app/routes/errors.py:215
 msgid "Sorry, there was a problem sending the confirmation email"
 msgstr ""
 
-#: app/routes/errors.py:201
+#: app/routes/errors.py:216
 msgid "You can try to <a href='{retry_url}'>send the email again</a>."
 msgstr ""
 
-#: app/routes/errors.py:222 templates/errors/403.html:3
-#: templates/errors/403.html:6 templates/errors/submission-failed.html:5
+#: app/routes/errors.py:237 templates/errors/403.html:3
+#: templates/errors/403.html:7 templates/errors/submission-failed.html:5
 #: templates/errors/submission-failed.html:8
 msgid "Sorry, there is a problem"
 msgstr ""
 
-#: app/routes/errors.py:223
+#: app/routes/errors.py:238
 msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
 msgstr ""
 
@@ -295,86 +295,90 @@ msgstr ""
 msgid "An individual access code has been sent by text"
 msgstr ""
 
-#: app/survey_config/business_config.py:51
+#: app/survey_config/business_config.py:34
+#: app/survey_config/social_survey_config.py:35
 msgid "What we do"
 msgstr ""
 
-#: app/survey_config/business_config.py:52
-#: app/survey_config/census_config.py:30 app/survey_config/census_config.py:80
-#: app/survey_config/census_config.py:141
+#: app/survey_config/business_config.py:35
+#: app/survey_config/census_config.py:30 app/survey_config/census_config.py:88
+#: app/survey_config/census_config.py:146
+#: app/survey_config/social_survey_config.py:36
 msgid "Contact us"
 msgstr ""
 
-#: app/survey_config/business_config.py:54
+#: app/survey_config/business_config.py:37
+#: app/survey_config/social_survey_config.py:38
 msgid "Accessibility"
 msgstr ""
 
-#: app/survey_config/business_config.py:59
-#: app/survey_config/census_config.py:44 app/survey_config/census_config.py:95
-#: app/survey_config/census_config.py:148
+#: app/survey_config/business_config.py:42
+#: app/survey_config/census_config.py:44 app/survey_config/census_config.py:103
+#: app/survey_config/census_config.py:153
+#: app/survey_config/social_survey_config.py:43
 msgid "Cookies"
 msgstr ""
 
-#: app/survey_config/business_config.py:61
-#: app/survey_config/census_config.py:50 app/survey_config/census_config.py:101
-#: app/survey_config/census_config.py:154
+#: app/survey_config/business_config.py:44
+#: app/survey_config/census_config.py:50 app/survey_config/census_config.py:109
+#: app/survey_config/census_config.py:159
+#: app/survey_config/social_survey_config.py:45
 msgid "Privacy and data protection"
 msgstr ""
 
-#: app/survey_config/business_config.py:72
-#: app/survey_config/business_config.py:88
-#: app/survey_config/census_config.py:27 app/survey_config/census_config.py:77
-#: app/survey_config/census_config.py:138
+#: app/survey_config/business_config.py:76
+#: app/survey_config/census_config.py:27 app/survey_config/census_config.py:85
+#: app/survey_config/census_config.py:143
 msgid "Help"
 msgstr ""
 
-#: app/survey_config/business_config.py:77
+#: app/survey_config/business_config.py:90
 msgid "My account"
 msgstr ""
 
-#: app/survey_config/business_config.py:82
+#: app/survey_config/business_config.py:95
 msgid "Sign out"
 msgstr ""
 
-#: app/survey_config/business_config.py:107
+#: app/survey_config/business_config.py:128
 msgid "Northern Ireland Department of Finance logo"
 msgstr ""
 
-#: app/survey_config/census_config.py:20 app/survey_config/census_config.py:63
+#: app/survey_config/census_config.py:20 app/survey_config/census_config.py:61
 msgid "Census 2021"
 msgstr ""
 
-#: app/survey_config/census_config.py:32 app/survey_config/census_config.py:82
+#: app/survey_config/census_config.py:32 app/survey_config/census_config.py:90
 msgid "Languages"
 msgstr ""
 
-#: app/survey_config/census_config.py:36 app/survey_config/census_config.py:86
+#: app/survey_config/census_config.py:36 app/survey_config/census_config.py:94
 msgid "BSL and audio videos"
 msgstr ""
 
-#: app/survey_config/census_config.py:46 app/survey_config/census_config.py:97
-#: app/survey_config/census_config.py:150
+#: app/survey_config/census_config.py:46 app/survey_config/census_config.py:105
+#: app/survey_config/census_config.py:155
 msgid "Accessibility statement"
 msgstr ""
 
-#: app/survey_config/census_config.py:54 app/survey_config/census_config.py:105
-#: app/survey_config/census_config.py:158
+#: app/survey_config/census_config.py:54 app/survey_config/census_config.py:113
+#: app/survey_config/census_config.py:163
 msgid "Terms and conditions"
 msgstr ""
 
-#: app/survey_config/census_config.py:64
+#: app/survey_config/census_config.py:62
 msgid "Save and complete later"
 msgstr ""
 
-#: app/survey_config/census_config.py:124
+#: app/survey_config/census_config.py:129
 msgid "Northern Ireland Statistics and Research Agency logo"
 msgstr ""
 
-#: app/survey_config/census_config.py:129
+#: app/survey_config/census_config.py:134
 msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
 msgstr ""
 
-#: app/survey_config/census_config.py:132 app/survey_config/survey_config.py:23
+#: app/survey_config/census_config.py:137 app/survey_config/survey_config.py:23
 msgid "Use of address data is subject to the terms and conditions."
 msgstr ""
 
@@ -386,7 +390,7 @@ msgstr ""
 msgid "Crown copyright and database rights 2020 OS 100019153."
 msgstr ""
 
-#: app/survey_config/survey_config.py:42
+#: app/survey_config/survey_config.py:46
 msgid "Save and exit survey"
 msgstr ""
 
@@ -528,7 +532,7 @@ msgstr ""
 
 #: app/views/handlers/confirm_email.py:128
 #: app/views/handlers/confirmation_email.py:68
-#: app/views/handlers/feedback.py:79 app/views/handlers/question.py:160
+#: app/views/handlers/feedback.py:79 app/views/handlers/question.py:165
 msgid "Error: {page_title}"
 msgstr ""
 
@@ -900,61 +904,61 @@ msgstr ""
 msgid "We’ve received your answers"
 msgstr ""
 
-#: templates/thank-you.html:14
+#: templates/thank-you.html:15
 msgid "Back to surveys"
 msgstr ""
 
-#: templates/thank-you.html:31
+#: templates/thank-you.html:33
 msgid "Thank you for completing the {survey_title}"
 msgstr ""
 
-#: templates/thank-you.html:43
+#: templates/thank-you.html:45
 msgid "Your answers will be processed in the next few weeks."
 msgstr ""
 
-#: templates/thank-you.html:44
+#: templates/thank-you.html:46
 msgid "We may contact you to query your answers via phone or secure message."
 msgstr ""
 
-#: templates/thank-you.html:45
+#: templates/thank-you.html:47
 msgid "For more information on how we use this data."
 msgstr ""
 
-#: templates/thank-you.html:49 templates/view-submitted-response.html:66
+#: templates/thank-you.html:51 templates/view-submitted-response.html:66
 msgid "For security, you can no longer view or get a copy of your answers"
 msgstr ""
 
-#: templates/thank-you.html:61
+#: templates/thank-you.html:63
 msgid "For security, your answers will only be available to view for another "
 msgstr ""
 
-#: templates/thank-you.html:62
+#: templates/thank-you.html:64
 msgid "Get a copy of your answers"
 msgstr ""
 
-#: templates/thank-you.html:64
+#: templates/thank-you.html:66
 msgid ""
 "You can <a href='{url}' id='view-submitted-response-link'>save or print "
 "your answers</a> for your records."
 msgstr ""
 
-#: templates/layouts/_base.html:158 templates/thank-you.html:67
+#: templates/layouts/_base.html:158 templates/thank-you.html:71
 msgid "minute"
 msgstr ""
 
-#: templates/layouts/_base.html:159 templates/thank-you.html:68
+#: templates/layouts/_base.html:159 templates/thank-you.html:72
 msgid "minutes"
 msgstr ""
 
-#: templates/layouts/_base.html:160 templates/thank-you.html:69
+#: templates/layouts/_base.html:160 templates/thank-you.html:73
 msgid "second"
 msgstr ""
 
-#: templates/layouts/_base.html:161 templates/thank-you.html:70
+#: templates/layouts/_base.html:161 templates/thank-you.html:74
 msgid "seconds"
 msgstr ""
 
-#: templates/thank-you.html:72
+#: templates/thank-you.html:76
 msgid "For security, your answers will only be available to view for 45 minutes"
 msgstr ""
 
@@ -992,20 +996,50 @@ msgstr ""
 msgid "followed a link to a survey that has already been submitted"
 msgstr ""
 
-#: templates/errors/401.html:13
+#: templates/errors/401.html:14
 msgid "You will need to <a href='{url}'>sign back in</a> to access your account"
 msgstr ""
 
-#: templates/errors/403.html:7
-msgid "You may need to update your browser to a newer version."
+#: templates/errors/401.html:17
+msgid ""
+"To access this page you need to <a href='{url}'>re-enter your access "
+"code</a>."
+msgstr ""
+
+#: templates/errors/401.html:21
+msgid ""
+"If you are completing a business survey, you need to sign back in to <a "
+"href='{url}'>your account</a>."
+msgstr ""
+
+#: templates/errors/401.html:23
+msgid ""
+"If you started your survey using an access code, you need to <a "
+"href='{url}'>re-enter your code</a>."
 msgstr ""
 
 #: templates/errors/403.html:8
-msgid "If the problem still occurs, try using a different browser or device."
+msgid "You may need to update your browser to a newer version."
 msgstr ""
 
 #: templates/errors/403.html:9
+msgid "If the problem still occurs, try using a different browser or device."
+msgstr ""
+
+#: templates/errors/403.html:11
 msgid "For further help, please <a href='{url}'>contact us</a>."
+msgstr ""
+
+#: templates/errors/403.html:14
+msgid ""
+"If you are completing a business survey and you need further help, please"
+" <a href='{url}'>contact us</a>."
+msgstr ""
+
+#: templates/errors/403.html:16
+msgid ""
+"If you started your survey using an access code and you need further "
+"help, please <a href='{url}'>contact us</a>."
 msgstr ""
 
 #: templates/errors/404.html:3 templates/errors/404.html:6
@@ -1020,10 +1054,28 @@ msgstr ""
 msgid "If you pasted the web address, check you copied the whole address."
 msgstr ""
 
-#: templates/errors/404.html:9
+#: templates/errors/404.html:10
 msgid ""
 "If the web address is correct or you selected a link or button, <a "
 "href='{url}'>contact us</a> for more help."
+msgstr ""
+
+#: templates/errors/404.html:12
+msgid ""
+"If the web address is correct or you selected a link or button, please "
+"see the following help links."
+msgstr ""
+
+#: templates/errors/404.html:14 templates/errors/submission-failed.html:15
+msgid ""
+"If you are completing a business survey, please <a href='{url}'>contact "
+"us</a>."
+msgstr ""
+
+#: templates/errors/404.html:16 templates/errors/submission-failed.html:17
+msgid ""
+"If you started your survey using an access code, please <a "
+"href='{url}'>contact us</a>."
 msgstr ""
 
 #: templates/errors/500.html:3
@@ -1042,10 +1094,22 @@ msgstr ""
 msgid "If you have started a survey, your answers have been saved."
 msgstr ""
 
-#: templates/errors/500.html:9
+#: templates/errors/500.html:10
 msgid ""
 "<a href='{url}'>Contact us</a> if you need to speak to someone about your"
 " survey."
+msgstr ""
+
+#: templates/errors/500.html:13
+msgid ""
+"If you are completing a business survey and you need to speak to someone "
+"about your survey, please <a href='{url}'>contact us</a>."
+msgstr ""
+
+#: templates/errors/500.html:15
+msgid ""
+"If you started your survey using an access code and you need to speak to "
+"someone about your survey, please <a href='{url}'>contact us</a>."
 msgstr ""
 
 #: templates/errors/previously-submitted.html:3
@@ -1065,13 +1129,17 @@ msgid "<a href='{url}'>Return to previous page</a>"
 msgstr ""
 
 #: templates/errors/submission-failed.html:9
-msgid "You can try to <a href='{url}'>submit your census again</a>"
+msgid "You can try to <a href='{url}'>submit your survey again</a>"
 msgstr ""
 
-#: templates/errors/submission-failed.html:10
+#: templates/errors/submission-failed.html:11
 msgid ""
 "If this problem keeps happening, please <a href='{url}'>contact us</a> "
 "for help."
+msgstr ""
+
+#: templates/errors/submission-failed.html:13
+msgid "If this problem keeps happening, please see the following help links."
 msgstr ""
 
 #: templates/individual_response/confirmation-post.html:15

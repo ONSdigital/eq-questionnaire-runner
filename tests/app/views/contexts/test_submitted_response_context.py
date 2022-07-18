@@ -9,6 +9,7 @@ from app.data_models import QuestionnaireStore
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.settings import VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS
+from app.survey_config.survey_type import SurveyType
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts.view_submitted_response_context import (
     build_view_submitted_response_context,
@@ -22,7 +23,7 @@ def test_build_view_submitted_response_context_summary(app: Flask):
     with app.app_context():
         questionnaire_store = fake_questionnaire_store()
         context = build_view_submitted_response_context(
-            "en", SCHEMA, questionnaire_store, "default"
+            "en", SCHEMA, questionnaire_store, SurveyType.DEFAULT
         )
 
         assert context["summary"]["answers_are_editable"] is False
@@ -54,7 +55,7 @@ def test_build_view_submitted_response_context_submitted_text(app: Flask):
     with app.app_context():
         questionnaire_store = fake_questionnaire_store()
         context = build_view_submitted_response_context(
-            "en", SCHEMA, questionnaire_store, "default"
+            "en", SCHEMA, questionnaire_store, SurveyType.DEFAULT
         )
 
         assert context["submitted_text"] == "Answers submitted for <span>Apple</span>"
@@ -65,7 +66,7 @@ def test_build_view_submitted_response_context_submitted_text_social(app: Flask)
         questionnaire_store = fake_questionnaire_store()
         questionnaire_store.metadata["trad_as"] = "Apple Inc"
         context = build_view_submitted_response_context(
-            "en", SCHEMA, questionnaire_store, "social"
+            "en", SCHEMA, questionnaire_store, SurveyType.SOCIAL
         )
 
         assert context["submitted_text"] == "Answers submitted."
@@ -76,7 +77,7 @@ def test_build_view_submitted_response_context_submitted_text_with_trad_as(app: 
         questionnaire_store = fake_questionnaire_store()
         questionnaire_store.metadata["trad_as"] = "Apple Inc"
         context = build_view_submitted_response_context(
-            "en", SCHEMA, questionnaire_store, "default"
+            "en", SCHEMA, questionnaire_store, SurveyType.DEFAULT
         )
 
         assert (
@@ -94,7 +95,7 @@ def test_view_submitted_response_expired(
             seconds=VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS
         )
         context = build_view_submitted_response_context(
-            "en", SCHEMA, questionnaire_store, "default"
+            "en", SCHEMA, questionnaire_store, SurveyType.DEFAULT
         )
 
         assert context["view_submitted_response"]["expired"] is True
@@ -106,7 +107,7 @@ def test_build_view_submitted_response_no_submitted_at(app: Flask):
         questionnaire_store = fake_questionnaire_store_no_submitted_at()
         with pytest.raises(Exception):
             build_view_submitted_response_context(
-                "en", SCHEMA, questionnaire_store, "default"
+                "en", SCHEMA, questionnaire_store, SurveyType.DEFAULT
             )
 
 
