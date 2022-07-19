@@ -201,10 +201,6 @@ def get_survey_config(
     # The fallback to assigning SURVEY_TYPE to theme is only being added until
     # business feedback on the differentiation between theme and SURVEY_TYPE.
 
-    if session_store := get_session_store():
-        if session_data := session_store.session_data:
-            language = session_data.language_code
-
     if metadata := get_metadata(current_user):
         schema = load_schema_from_metadata(metadata=metadata, language_code=language)
 
