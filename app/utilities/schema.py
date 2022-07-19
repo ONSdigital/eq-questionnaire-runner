@@ -99,9 +99,10 @@ def get_allowed_languages(schema_name, launch_language):
 
 
 def load_schema_from_metadata(
-    *, metadata: Mapping[str, Any], language_code: str = None
+    metadata: Mapping[str, Any], *, language_code: Optional[str] = None
 ) -> QuestionnaireSchema:
     metadata = metadata or {}
+    language_code = language_code or metadata.get("language_code")
     if schema_url := metadata.get("schema_url"):
         # :TODO: Remove before production uses schema_url
         # This is temporary and is only for development/integration purposes.
