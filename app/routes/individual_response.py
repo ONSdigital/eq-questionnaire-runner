@@ -1,5 +1,5 @@
 from flask import Blueprint, g, redirect, request, url_for
-from flask_babel import lazy_gettext
+from flask_babel import get_locale, lazy_gettext
 from flask_login import current_user, login_required
 from itsdangerous import BadSignature
 from structlog import get_logger
@@ -62,12 +62,10 @@ def before_individual_response_request():
 
     handle_language(metadata)
 
-    session_store = get_session_store()
-
     # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
         metadata=questionnaire_store.metadata,
-        language_code=session_store.session_data.language_code,
+        language_code=get_locale().language,
     )
 
 

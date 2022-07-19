@@ -6,6 +6,7 @@ import flask_babel
 from flask import Blueprint, g, redirect, request, send_file
 from flask import session as cookie_session
 from flask import url_for
+from flask_babel import get_locale
 from flask_login import current_user, login_required
 from itsdangerous import BadSignature
 from structlog import get_logger
@@ -19,7 +20,6 @@ from app.data_models import QuestionnaireStore
 from app.globals import (
     get_metadata,
     get_questionnaire_store,
-    get_session_store,
     get_session_timeout_in_seconds,
 )
 from app.helpers import url_safe_serializer
@@ -97,10 +97,9 @@ def before_questionnaire_request():
 
     handle_language(metadata)
 
-    session_store = get_session_store()
     # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
-        metadata=metadata, language_code=session_store.session_data.language_code
+        metadata=metadata, language_code=get_locale().language
     )
 
 
@@ -114,7 +113,6 @@ def before_post_submission_request():
     if not metadata:
         raise NoQuestionnaireStateException(401)
 
-    session_store = get_session_store()
     # pylint: disable=assigning-non-slot
     questionnaire_store = get_questionnaire_store(
         current_user.user_id, current_user.user_ik
@@ -126,7 +124,7 @@ def before_post_submission_request():
     handle_language(metadata)
 
     g.schema = load_schema_from_metadata(
-        metadata=metadata, language_code=session_store.session_data.language_code
+        metadata=metadata, language_code=get_locale().language
     )
 
     logger.bind(
