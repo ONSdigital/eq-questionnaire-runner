@@ -3,7 +3,7 @@ import time
 from functools import lru_cache
 from glob import glob
 from pathlib import Path
-from typing import Mapping, Optional
+from typing import Any, Mapping, Optional
 
 import requests
 from requests import RequestException
@@ -98,7 +98,9 @@ def get_allowed_languages(schema_name, launch_language):
     return [DEFAULT_LANGUAGE_CODE]
 
 
-def load_schema_from_metadata(*, metadata, language_code=None):
+def load_schema_from_metadata(
+    *, metadata: Mapping[str, Any], language_code: str = None
+) -> QuestionnaireSchema:
     metadata = metadata or {}
     if schema_url := metadata.get("schema_url"):
         # :TODO: Remove before production uses schema_url

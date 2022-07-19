@@ -25,16 +25,11 @@ def with_schema(function: Callable) -> Any:
     @wraps(function)
     def wrapped_function(*args: Any, **kwargs: Any) -> Any:
         session_store = get_session_store()
-        if not session_store:
+        if not session_store or not session_store.session_data:
             raise Unauthorized
 
-        metadata = get_metadata(current_user)
-
-        language_code = (
-            session_store.session_data.language_code
-            if session_store.session_data
-            else None
-        )
+        metadata = get_metadata(current_user) or {}
+        language_code = session_store.session_data.language_code
 
         schema = load_schema_from_metadata(
             metadata=metadata, language_code=language_code
