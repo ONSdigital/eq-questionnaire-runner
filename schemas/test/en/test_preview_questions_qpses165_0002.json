@@ -1,0 +1,1245 @@
+{
+    "language": "en",
+    "mime_type": "application/json/ons/eq",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.1",
+    "survey_id": "165",
+    "form_type": "0002",
+    "legal_basis": "Notice is given under section 1 of the Statistics of Trade Act 1947.",
+    "title": "Quarterly Public Sector Employment Survey",
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "section10da998f-dc75-4b1e-bbb3-9aa15636bf55",
+            "show_on_hub": true,
+            "groups": [
+                {
+                    "id": "group77bf8519-7d30-433b-8472-280d0f93273b",
+                    "title": "Introduction",
+                    "blocks": [
+                        {
+                            "id": "introduction-block",
+                            "type": "Introduction",
+                            "primary_content": [
+                                {
+                                    "id": "primary",
+                                    "title": {
+                                        "text": "You are completing this for {ru_name} {conditional_trad_as}",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "conditional_trad_as",
+                                                "transforms": [
+                                                    {
+                                                        "arguments": {
+                                                            "trad_as": {
+                                                                "source": "metadata",
+                                                                "identifier": "trad_as"
+                                                            }
+                                                        },
+                                                        "transform": "conditional_trad_as"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "placeholder": "ru_name",
+                                                "value": {
+                                                    "source": "metadata",
+                                                    "identifier": "ru_name"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "contents": [
+                                        {
+                                            "description": {
+                                                "text": "If the company details or structure have changed contact us on {telephone_number_link} or email {email_link}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "telephone_number_link",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "telephone_number_link",
+                                                                "arguments": {
+                                                                    "telephone_number": "0300 1234 931"
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "placeholder": "email_link",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "email_link",
+                                                                "arguments": {
+                                                                    "email_address": "surveys@ons.gov.uk",
+                                                                    "email_subject": "Change of details",
+                                                                    "email_subject_append": {
+                                                                        "identifier": "ru_ref",
+                                                                        "source": "metadata"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "description",
+                                    "contents": [
+                                        {
+                                            "list": [
+                                                "Data should relate to all sites in England, Scotland and Wales unless otherwise stated.",
+                                                "You can provide informed estimates if actual figures are not available.",
+                                                "We will treat your data securely and confidentially."
+                                            ]
+                                        },
+                                        {
+                                            "description": "<a href=\"https://www.ons.gov.uk/surveys/informationforbusinesses/businesssurveys/guidancetohelpcompletethequarterlypublicsectoremploymentsurvey\"target=\"_blank\"rel=\"noopener noreferrer\">View detailed guidance for completing this survey (this link opens in a new tab)</a>"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "preview_content": {
+                                "id": "preview",
+                                "title": "Information you need",
+                                "contents": [
+                                    {
+                                        "description": "Explain figures in the comments section to minimise us contacting you and to help us tell an industry story."
+                                    }
+                                ],
+                                "questions": [
+                                    {
+                                        "question": "Permanent employees",
+                                        "contents": [
+                                            {
+                                                "description": "<strong>Include:</strong>"
+                                            },
+                                            {
+                                                "list": [
+                                                    "full-time and part-time employees",
+                                                    "male and female employees",
+                                                    "agency workers paid directly from any of the organisation&#x2019;s payrolls",
+                                                    "those temporarily absent but still on the payrolls, for example on parental leave"
+                                                ]
+                                            },
+                                            {
+                                                "description": "<strong>Exclude:</strong>"
+                                            },
+                                            {
+                                                "list": [
+                                                    "agency workers paid directly from the agency payroll",
+                                                    "self-employed workers",
+                                                    "voluntary workers",
+                                                    "former employees only receiving a pension",
+                                                    "directors who do not receive a salary"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "question": "Permanent full-time equivalent employees",
+                                        "contents": [
+                                            {
+                                                "description": "<strong>Include:</strong>"
+                                            },
+                                            {
+                                                "list": [
+                                                    "male and female employees",
+                                                    "full-time employees, counted as 1 full-time equivalent",
+                                                    "agency workers paid directly from any of the organisation&#x2019;s payrolls",
+                                                    "those temporarily absent but still on the payrolls, for example on parental leave"
+                                                ]
+                                            },
+                                            {
+                                                "description": "<strong>Exclude:</strong>"
+                                            },
+                                            {
+                                                "list": [
+                                                    "paid and unpaid overtime from full-time equivalent calculations",
+                                                    "breaks from full-time equivalent calculations",
+                                                    "agency workers paid directly from the agency payroll",
+                                                    "self-employed workers",
+                                                    "voluntary workers",
+                                                    "former employees only receiving a pension",
+                                                    "directors who do not receive a salary"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "question": "Temporary and casual employees",
+                                        "contents": [
+                                            {
+                                                "description": "<strong>Include:</strong>"
+                                            },
+                                            {
+                                                "list": [
+                                                    "male and female employees",
+                                                    "casual employees only if paid in the pay period in which the reference date lies"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "question": "Temporary and casual full-time equivalent employees",
+                                        "contents": [
+                                            {
+                                                "description": "<strong>Include:</strong>"
+                                            },
+                                            {
+                                                "list": [
+                                                    "male and female employees",
+                                                    "full-time employees, counted as 1 full-time equivalent",
+                                                    "agency workers paid directly from any of the organisation&#x2019;s payrolls",
+                                                    "those temporarily absent but still on the payrolls, for example on parental leave"
+                                                ]
+                                            },
+                                            {
+                                                "description": "<strong>Exclude:</strong>"
+                                            },
+                                            {
+                                                "list": [
+                                                    "paid and unpaid overtime from full-time equivalent calculations",
+                                                    "breaks from full-time equivalent calculations",
+                                                    "agency workers paid directly from the agency payroll",
+                                                    "self-employed workers",
+                                                    "voluntary workers",
+                                                    "former employees only receiving a pension",
+                                                    "directors who do not receive a salary"
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "secondary_content": [
+                                {
+                                    "id": "secondary-content",
+                                    "contents": [
+                                        {
+                                            "title": "How we use your data"
+                                        },
+                                        {
+                                            "description": "The survey collects information on the number of employees in the public sector. Information is published in the quarterly Public Sector Employment Statistical Bulletin and is used to understand the performance of the labour market and UK economy, to provide accountability to Parliament and support policy making."
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "group10da998f-dc75-4b1e-bbb3-9aa15636bf55",
+                    "blocks": [
+                        {
+                            "id": "blockfdc3b1df-0eea-4f25-bf63-5296f1afc3db",
+                            "type": "Question",
+                            "question": {
+                                "id": "questionfdc3b1df-0eea-4f25-bf63-5296f1afc3db",
+                                "title": {
+                                    "text": "On {employment_date}, how many <em>male permanent</em> employees did {ru_name} have?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "employment_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "metadata",
+                                                            "identifier": "employment_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "ru_name",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ru_name"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "<strong>Include:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "agency workers paid directly from any of the organisation&#39;s payrolls",
+                                                "those temporarily absent but still on the payrolls, for example on parental leave"
+                                            ]
+                                        },
+                                        {
+                                            "description": "<strong>Exclude:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "agency workers paid directly from the agency payroll",
+                                                "self-employed workers",
+                                                "voluntary workers",
+                                                "former employees only receiving a pension",
+                                                "directors who do not receive a salary"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "definitions": [
+                                    {
+                                        "title": "What we mean by an &#39;employee&#39;",
+                                        "contents": [
+                                            {
+                                                "description": "This refers to anyone aged 16 years or over that your organisation pays directly from its payroll(s), in return for carrying out a full-time or part-time job or being on a training scheme. Each employee should have a contract of employment."
+                                            },
+                                            {
+                                                "description": "Permanent employees are those who have a contract with no agreed expiry date or a fixed term contract of more than 12 months. This is regardless of the amount of time remaining on the contract."
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer9203bf73-daa3-411f-8345-463508d8f48f",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Number of full-time male permanent employees",
+                                        "q_code": "551",
+                                        "decimal_places": 0
+                                    },
+                                    {
+                                        "id": "answer92be54f5-5d74-4131-a59d-8e46edebf0c8",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Number of part-time male permanent employees",
+                                        "description": "Working less than your organisation&#x2019;s normal weekly hours",
+                                        "q_code": "552",
+                                        "decimal_places": 0
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "blocke9700202-f3c5-40e1-8f66-85a384fc5dd4",
+                                    "when": {
+                                        "and": [
+                                            {
+                                                "==": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "answer9203bf73-daa3-411f-8345-463508d8f48f"
+                                                    },
+                                                    0
+                                                ]
+                                            },
+                                            {
+                                                "==": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "answer92be54f5-5d74-4131-a59d-8e46edebf0c8"
+                                                    },
+                                                    0
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "block6bed6917-5c3b-4e9d-abf6-c69a88d4ff4d"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "block6bed6917-5c3b-4e9d-abf6-c69a88d4ff4d",
+                            "type": "Question",
+                            "question": {
+                                "id": "question6bed6917-5c3b-4e9d-abf6-c69a88d4ff4d",
+                                "title": {
+                                    "text": "On {employment_date}, how many <em>male permanent full-time equivalent</em> employees did {ru_name} have?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "employment_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "metadata",
+                                                            "identifier": "employment_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "ru_name",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ru_name"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "description": [
+                                    "<p>Convert part-time employees hours into those worked by full-time employees. For example, if a part-time employee works 10 hours per week and the full-time working week in your organisation is 37 hours, the part-time employee would equate to 0.27 full-time equivalents (10 divided by 37).</p><p>Use weekly contracted hours as the basis to calculate FTE.</p>"
+                                ],
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "<strong>Include:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "full-time employees, counted as 1 full-time equivalent",
+                                                "agency workers paid directly from any of the organisation&#39;s payrolls",
+                                                "those temporarily absent but still on the payrolls, for example on parental leave"
+                                            ]
+                                        },
+                                        {
+                                            "description": "<strong>Exclude:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "paid and unpaid overtime from full-time equivalent calculations",
+                                                "breaks from full-time equivalent calculations",
+                                                "agency workers paid directly from the agency payroll",
+                                                "self-employed workers",
+                                                "voluntary workers",
+                                                "former employees only receiving a pension",
+                                                "directors who do not receive a salary"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answerd85d1b64-400b-4b24-9b28-bafcb7c00cbe",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Number of full-time equivalent male permanent employees",
+                                        "q_code": "561",
+                                        "minimum": {
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "answer9203bf73-daa3-411f-8345-463508d8f48f"
+                                            },
+                                            "exclusive": false
+                                        },
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "blocke9700202-f3c5-40e1-8f66-85a384fc5dd4",
+                            "type": "Question",
+                            "question": {
+                                "id": "questione9700202-f3c5-40e1-8f66-85a384fc5dd4",
+                                "title": {
+                                    "text": "On {employment_date}, how many <em>female permanent</em> employees did {ru_name} have?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "employment_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "metadata",
+                                                            "identifier": "employment_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "ru_name",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ru_name"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "<strong>Include:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "agency workers paid directly from any of the organisation&#39;s payrolls",
+                                                "those temporarily absent but still on the payrolls, for example on parental leave"
+                                            ]
+                                        },
+                                        {
+                                            "description": "<strong>Exclude:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "agency workers paid directly from the agency payroll",
+                                                "self-employed workers",
+                                                "voluntary workers",
+                                                "former employees only receiving a pension",
+                                                "directors who do not receive a salary"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "definitions": [
+                                    {
+                                        "title": "What we mean by an &#39;employee&#39;",
+                                        "contents": [
+                                            {
+                                                "description": "This refers to anyone aged 16 years or over that your organisation pays directly from its payroll(s), in return for carrying out a full-time or part-time job or being on a training scheme. Each employee should have a contract of employment."
+                                            },
+                                            {
+                                                "description": "Permanent employees are those who have a contract with no agreed expiry date or a fixed term contract of more than 12 months. This is regardless of the amount of time remaining on the contract."
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answerc387dff3-7a99-4f75-b413-b23d77958ef5",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Number of full-time female permanent employees",
+                                        "q_code": "553",
+                                        "decimal_places": 0
+                                    },
+                                    {
+                                        "id": "answera0061fe0-df20-4983-b9ad-3eee2460ff8e",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Number of part-time female permanent employees",
+                                        "description": "Working less than your organisation&#x2019;s normal weekly hours",
+                                        "q_code": "554",
+                                        "decimal_places": 0
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "blockc934e99e-e377-46aa-94fc-4d0d9784d3fc",
+                                    "when": {
+                                        "and": [
+                                            {
+                                                "==": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "answerc387dff3-7a99-4f75-b413-b23d77958ef5"
+                                                    },
+                                                    0
+                                                ]
+                                            },
+                                            {
+                                                "==": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "answera0061fe0-df20-4983-b9ad-3eee2460ff8e"
+                                                    },
+                                                    0
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "blockb769d799-7333-4b39-8773-599aec1c0cf3"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "blockb769d799-7333-4b39-8773-599aec1c0cf3",
+                            "type": "Question",
+                            "question": {
+                                "id": "questionb769d799-7333-4b39-8773-599aec1c0cf3",
+                                "title": {
+                                    "text": "On {employment_date}, how many <em>female permanent full-time equivalent</em> employees did {ru_name} have?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "employment_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "metadata",
+                                                            "identifier": "employment_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "ru_name",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ru_name"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "description": [
+                                    "<p>Convert part-time employees hours into those worked by full-time employees. For example, if a part-time employee works 10 hours per week and the full-time working week in your organisation is 37 hours, the part-time employee would equate to 0.27 full-time equivalents (10 divided by 37).</p><p>Use weekly contracted hours as the basis to calculate FTE.</p>"
+                                ],
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "<strong>Include:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "full-time employees, counted as 1 full-time equivalent",
+                                                "agency workers paid directly from any of the organisation&#39;s payrolls",
+                                                "those temporarily absent but still on the payrolls, for example on parental leave"
+                                            ]
+                                        },
+                                        {
+                                            "description": "<strong>Exclude:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "paid and unpaid overtime from full-time equivalent calculations",
+                                                "breaks from full-time equivalent calculations",
+                                                "agency workers paid directly from the agency payroll",
+                                                "self-employed workers",
+                                                "voluntary workers",
+                                                "former employees only receiving a pension",
+                                                "directors who do not receive a salary"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answerbe02b908-4882-4a93-a089-6bd32a109156",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Number of full-time equivalent female permanent employees",
+                                        "q_code": "562",
+                                        "minimum": {
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "answerc387dff3-7a99-4f75-b413-b23d77958ef5"
+                                            },
+                                            "exclusive": false
+                                        },
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "blockc934e99e-e377-46aa-94fc-4d0d9784d3fc",
+                            "type": "Question",
+                            "question": {
+                                "id": "questionc934e99e-e377-46aa-94fc-4d0d9784d3fc",
+                                "title": {
+                                    "text": "On {employment_date}, how many <em>male temporary and casual</em> employees did {ru_name} have?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "employment_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "metadata",
+                                                            "identifier": "employment_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "ru_name",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ru_name"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Include casual employees only if paid in the pay period in which the reference date lies"
+                                        }
+                                    ]
+                                },
+                                "definitions": [
+                                    {
+                                        "title": "What we mean by a &#39;temporary or casual employee&#39;",
+                                        "contents": [
+                                            {
+                                                "description": "This refers to those who have a fixed term contract of 12 months or less or are employed on a casual basis."
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer26a72c1f-e0bf-4ddb-9284-c18b070636ef",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Number of full-time male temporary and casual employees",
+                                        "q_code": "651",
+                                        "decimal_places": 0
+                                    },
+                                    {
+                                        "id": "answerbc27ce6f-02e7-4524-be3c-6dd39d97b688",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Number of part-time male temporary and casual employees",
+                                        "description": "Working less than your organisation&#x2019;s normal weekly hours",
+                                        "q_code": "652",
+                                        "decimal_places": 0
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "block3c08fed5-337d-4bec-9196-8b196cbd8b5f",
+                                    "when": {
+                                        "and": [
+                                            {
+                                                "==": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "answer26a72c1f-e0bf-4ddb-9284-c18b070636ef"
+                                                    },
+                                                    0
+                                                ]
+                                            },
+                                            {
+                                                "==": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "answerbc27ce6f-02e7-4524-be3c-6dd39d97b688"
+                                                    },
+                                                    0
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "block91a88586-7ddb-4984-a465-1b9c6fbd6e42"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "block91a88586-7ddb-4984-a465-1b9c6fbd6e42",
+                            "type": "Question",
+                            "question": {
+                                "id": "question91a88586-7ddb-4984-a465-1b9c6fbd6e42",
+                                "title": {
+                                    "text": "On {employment_date}, how many<em> male temporary and casual full-time equivalent</em> employees did {ru_name} have?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "employment_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "metadata",
+                                                            "identifier": "employment_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "ru_name",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ru_name"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "description": [
+                                    "<p>Convert part-time employees hours into those worked by full-time employees. For example, if a part-time employee works 10 hours per week and the full-time working week in your organisation is 37 hours, the part-time employee would equate to 0.27 full-time equivalents (10 divided by 37).</p><p>Use weekly contracted hours as the basis to calculate FTE.</p>"
+                                ],
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "<strong>Include:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "full-time employees, counted as 1 full-time equivalent",
+                                                "agency workers paid directly from any of the organisation&#39;s payrolls",
+                                                "those temporarily absent but still on the payrolls, for example on parental leave"
+                                            ]
+                                        },
+                                        {
+                                            "description": "<strong>Exclude:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "paid and unpaid overtime from full-time equivalent calculations",
+                                                "breaks from full-time equivalent calculations",
+                                                "agency workers paid directly from the agency payroll",
+                                                "self-employed workers",
+                                                "voluntary workers",
+                                                "former employees only receiving a pension",
+                                                "directors who do not receive a salary"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer8f0b257f-cf38-47bc-80ce-3402c43ba4f2",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Number of full-time equivalent temporary and casual male employees",
+                                        "q_code": "661",
+                                        "minimum": {
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "answer26a72c1f-e0bf-4ddb-9284-c18b070636ef"
+                                            },
+                                            "exclusive": false
+                                        },
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "block3c08fed5-337d-4bec-9196-8b196cbd8b5f",
+                            "type": "Question",
+                            "question": {
+                                "id": "question3c08fed5-337d-4bec-9196-8b196cbd8b5f",
+                                "title": {
+                                    "text": "On {employment_date}, how many <em>female temporary and casual</em> employees did {ru_name} have?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "employment_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "metadata",
+                                                            "identifier": "employment_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "ru_name",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ru_name"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Include casual employees only if paid in the pay period in which the reference date lies"
+                                        }
+                                    ]
+                                },
+                                "definitions": [
+                                    {
+                                        "title": "What we mean by a &#39;temporary or casual employee&#39;",
+                                        "contents": [
+                                            {
+                                                "description": "This refers to those who have a fixed term contract of 12 months or less or are employed on a casual basis."
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer3b46b9e6-c72a-45a3-89ee-e05fa77f8bd3",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Number of full-time female temporary and casual employees",
+                                        "q_code": "653",
+                                        "decimal_places": 0
+                                    },
+                                    {
+                                        "id": "answer6469cfd9-37a3-443f-97bf-fc519e728fb7",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Number of part-time female temporary and casual employees",
+                                        "description": "Working less than your organisation&#x2019;s normal weekly hours",
+                                        "q_code": "654",
+                                        "decimal_places": 0
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "block817228ff-b7eb-4c5f-ab37-0eca10882112",
+                                    "when": {
+                                        "and": [
+                                            {
+                                                "==": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "answer3b46b9e6-c72a-45a3-89ee-e05fa77f8bd3"
+                                                    },
+                                                    0
+                                                ]
+                                            },
+                                            {
+                                                "==": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "answer6469cfd9-37a3-443f-97bf-fc519e728fb7"
+                                                    },
+                                                    0
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "block0d885a5b-c616-4688-8979-6d58592e8ec7"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "block0d885a5b-c616-4688-8979-6d58592e8ec7",
+                            "type": "Question",
+                            "question": {
+                                "id": "question0d885a5b-c616-4688-8979-6d58592e8ec7",
+                                "title": {
+                                    "text": "On {employment_date}, how many <em>female temporary and casual full-time equivalent</em> employees did {ru_name} have?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "employment_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "metadata",
+                                                            "identifier": "employment_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "ru_name",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ru_name"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "description": [
+                                    "<p>Convert part-time employees hours into those worked by full-time employees. For example, if a part-time employee works 10 hours per week and the full-time working week in your organisation is 37 hours, the part-time employee would equate to 0.27 full-time equivalents (10 divided by 37).</p><p>Use weekly contracted hours as the basis to calculate FTE.</p>"
+                                ],
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "<strong>Include:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "full-time employees, counted as 1 full-time equivalent",
+                                                "agency workers paid directly from any of the organisation&#39;s payrolls",
+                                                "those temporarily absent but still on the payrolls, for example on parental leave"
+                                            ]
+                                        },
+                                        {
+                                            "description": "<strong>Exclude:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "paid and unpaid overtime from full-time equivalent calculations",
+                                                "breaks from full-time equivalent calculations",
+                                                "agency workers paid directly from the agency payroll",
+                                                "self-employed workers",
+                                                "voluntary workers",
+                                                "former employees only receiving a pension",
+                                                "directors who do not receive a salary"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer3c7a469c-cb88-4677-98da-60b9e0fe8c1e",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Number of full-time equivalent temporary and casual female employees",
+                                        "q_code": "662",
+                                        "minimum": {
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "answer3b46b9e6-c72a-45a3-89ee-e05fa77f8bd3"
+                                            },
+                                            "exclusive": false
+                                        },
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "block817228ff-b7eb-4c5f-ab37-0eca10882112",
+                            "type": "Question",
+                            "question": {
+                                "id": "question817228ff-b7eb-4c5f-ab37-0eca10882112",
+                                "title": {
+                                    "text": "On {employment_date}, what was {ru_name}&#39;s total number of employees?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "employment_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "metadata",
+                                                            "identifier": "employment_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "ru_name",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ru_name"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Include permanent, temporary, and casual employees"
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer82ea31a4-c35f-4b2d-ac0a-15b513a498da",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Total number of employees",
+                                        "q_code": "50",
+                                        "decimal_places": 0
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "block46e285e7-5e43-432f-a936-a2e5cfd27317",
+                            "type": "Question",
+                            "question": {
+                                "id": "question46e285e7-5e43-432f-a936-a2e5cfd27317",
+                                "title": {
+                                    "text": "On {employment_date}, what was {ru_name}&#39;s total number of full-time equivalent employees?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "employment_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "metadata",
+                                                            "identifier": "employment_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "ru_name",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ru_name"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "description": [
+                                    "<p>Convert part-time employees hours into those worked by full-time employees. For example, if a part-time employee works 10 hours per week and the full-time working week in your organisation is 37 hours, the part-time employee would equate to 0.27 full-time equivalents (10 divided by 37).</p><p>Use weekly contracted hours as the basis to calculate FTE.</p>"
+                                ],
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "<strong>Include:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "full-time employees, counted as 1 full-time equivalent",
+                                                "agency workers paid directly from any of the organisation&#39;s payrolls",
+                                                "those temporarily absent but still on the payrolls, for example on parental leave"
+                                            ]
+                                        },
+                                        {
+                                            "description": "<strong>Exclude:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "paid and unpaid overtime from full-time equivalent calculations",
+                                                "breaks from full-time equivalent calculations",
+                                                "agency workers paid directly from the agency payroll",
+                                                "self-employed workers",
+                                                "voluntary workers",
+                                                "former employees only receiving a pension",
+                                                "directors who do not receive a salary"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answerc4500969-2565-45b2-81d4-a8295769ecc0",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Total number of full-time equivalents",
+                                        "q_code": "60",
+                                        "maximum": {
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "answer82ea31a4-c35f-4b2d-ac0a-15b513a498da"
+                                            },
+                                            "exclusive": false
+                                        },
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "blockdef0cb09-07a3-46e8-8f1f-a2a772c1e445",
+                            "type": "Question",
+                            "question": {
+                                "id": "questiondef0cb09-07a3-46e8-8f1f-a2a772c1e445",
+                                "title": "Please comment on any significant changes in the number of employees since the previous quarter",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer80338554-f8dd-45c3-9cb7-6ac1ae487d0d",
+                                        "mandatory": false,
+                                        "type": "TextArea",
+                                        "label": "Comments",
+                                        "q_code": "146",
+                                        "max_length": 2000
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ],
+            "summary": {
+                "show_on_completion": false,
+                "collapsible": false
+            }
+        }
+    ],
+    "theme": "default",
+    "navigation": {
+        "visible": false
+    },
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        },
+        {
+            "name": "ru_ref",
+            "type": "string"
+        },
+        {
+            "name": "trad_as",
+            "type": "string",
+            "optional": true
+        },
+        {
+            "name": "ref_p_start_date",
+            "type": "date"
+        },
+        {
+            "name": "ref_p_end_date",
+            "type": "date"
+        },
+        {
+            "name": "employment_date",
+            "type": "date"
+        }
+    ],
+    "post_submission": {
+        "confirmation_email": true,
+        "feedback": true,
+        "view_response": true,
+        "guidance": {
+            "contents": [
+                {
+                    "description": "Your response will help inform decision-makers how best to support the UK population and economy at this challenging time."
+                },
+                {
+                    "description": "<a href=\"https://www.ons.gov.uk/surveys\"target=\"_blank\"rel=\"noopener noreferrer\">Learn more about how we use this data (this link opens in a new tab)</a>"
+                }
+            ]
+        }
+    },
+    "submission": {
+        "button": "Submit",
+        "title": "Check your answers and submit",
+        "warning": "You must submit this survey to complete it",
+        "guidance": "You will have the opportunity to view, save or print a copy of your answers after submitting this survey."
+    }
+}
