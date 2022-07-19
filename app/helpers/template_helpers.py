@@ -51,6 +51,7 @@ class ContextHelper:
             "EQ_GOOGLE_TAG_MANAGER_AUTH"
         )
         self._survey_type = cookie_session.get("theme")
+        self._preview_questions = cookie_session.get("preview_questions")
 
     @property
     def context(self) -> dict[str, Any]:
@@ -76,6 +77,7 @@ class ContextHelper:
             "google_tag_manager_id": self._google_tag_manager_id,
             "google_tag_manager_auth": self._google_tag_manager_auth,
             "survey_type": self._survey_type,
+            "preview_questions": self._preview_questions,
         }
 
     @property

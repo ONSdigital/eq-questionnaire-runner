@@ -41,6 +41,14 @@
   {% endcall %}
 {% endif %}
 
+{% if question.answer_guidance %}
+  {% call onsPanel({
+        "classes": "ons-u-mb-l"
+      }) %}
+          <p>{{ question.answer_guidance }}</p>
+  {% endcall %}
+{% endif %}
+
 {% if answers_length > 1 %}
   <p>You can answer with the following options:</p>
   <ul>
@@ -58,6 +66,11 @@
 {% if question.answer_description %}
 {% set description = question.answer_description %}
     <p>{{ description }}</p>
+{% endif %}
+
+{% if question.answer_guidance %}
+{% set answer_guidance = question.answer_guidance %}
+    <p>{{ answer_guidance }}</p>
 {% endif %}
 
 </div>

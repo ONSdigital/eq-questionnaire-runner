@@ -30,6 +30,9 @@ class PreviewQuestion:
         self.answer_description = self._build_answer_descriptions(
             answers=iter(question_schema["answers"])
         )
+        self.answer_guidance = self._build_answer_guidance(
+            answers=iter(question_schema["answers"])
+        )
 
     def _build_answers(
         self,
@@ -48,6 +51,12 @@ class PreviewQuestion:
         for answer in answers:
             if answer.get("description"):
                 return answer.get("description")
+        return None
+
+    def _build_answer_guidance(self, *, answers):
+        for answer in answers:
+            if guidance := answer.get("guidance"):
+                return guidance.get("show_guidance")
         return None
 
     def _build_descriptions(
@@ -113,4 +122,5 @@ class PreviewQuestion:
             "text_length": self.text_length,
             "instruction": self.instruction,
             "answer_description": self.answer_description,
+            "answer_guidance": self.answer_guidance
         }
