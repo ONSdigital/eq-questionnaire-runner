@@ -30,7 +30,7 @@
       {% for guidance in question.guidance %}
         {% if guidance is string %}
           <p>{{ guidance }}</p>
-        {% elif guidance|length > 1 %}
+        {% else %}
         <ul>
           {% for item in guidance %}
           <li>{{ item }}</li>
