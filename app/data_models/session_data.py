@@ -5,24 +5,10 @@ from typing import Any, Optional
 class SessionData:
     def __init__(
         self,
+        *,
         language_code: Optional[str],
-        tx_id: Optional[str],
-        schema_name: Optional[str],
-        period_str: Optional[str],
-        launch_language_code: Optional[str],
-        ru_name: Optional[str],
-        ru_ref: Optional[str],
-        response_id: Optional[str],
-        case_id: Optional[str],
-        case_ref: Optional[str] = None,
-        account_service_base_url: Optional[str] = None,
-        account_service_log_out_url: Optional[str] = None,
-        trad_as: Optional[str] = None,
-        display_address: Optional[str] = None,
         confirmation_email_count: int = 0,
         feedback_count: int = 0,
-        schema_url: Optional[str] = None,
-        survey_url: Optional[str] = None,  # pylint: disable=unused-argument
         **_: Any,
     ):  # pylint: disable=too-many-locals
         self.language_code = language_code

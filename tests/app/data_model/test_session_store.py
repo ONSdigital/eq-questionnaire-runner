@@ -1,5 +1,3 @@
-from datetime import datetime, timezone
-
 import pytest
 from flask import current_app
 from jwcrypto import jwe
@@ -159,18 +157,8 @@ def test_load_existing_session_does_not_error_when_session_data_contains_survey_
     app, app_session_store
 ):
     session_data_with_survey_url = SessionData(
-        tx_id="123",
-        schema_name="some_schema_name",
-        display_address="68 Abingdon Road, Goathill",
-        period_str=None,
         language_code="cy",
-        launch_language_code="en",
         survey_url="some-url",
-        ru_name=None,
-        ru_ref=None,
-        submitted_at=datetime.now(timezone.utc).isoformat(),
-        response_id="321",
-        case_id="789",
     )
 
     with app.test_request_context():
