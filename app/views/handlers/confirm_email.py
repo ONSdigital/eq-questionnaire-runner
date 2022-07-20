@@ -1,13 +1,15 @@
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Mapping
+from typing import Any, Mapping
 
 from flask import current_app, url_for
+from flask_login import current_user
 from flask_babel import gettext, lazy_gettext
 from itsdangerous import BadSignature
 from markupsafe import escape
 from werkzeug.exceptions import BadRequest
 
+from app.globals import get_metadata
 from app.cloud_tasks.exceptions import CloudTaskCreationFailed
 from app.data_models import FulfilmentRequest, QuestionnaireStore, SessionStore
 from app.forms.questionnaire_form import generate_form
@@ -131,7 +133,7 @@ class ConfirmEmail:
 
     def _publish_fulfilment_request(self):
         fulfilment_request = ConfirmationEmailFulfilmentRequest(
-            self._email, self._questionnaire_store, self._schema
+            self._email, self._questionnaire_store.metadata, self._schema
         )
 
         try:
@@ -148,17 +150,17 @@ class ConfirmEmail:
 @dataclass
 class ConfirmationEmailFulfilmentRequest(FulfilmentRequest):
     email_address: str
-    questionnaire_store: QuestionnaireStore
+    metadata: dict[str, Any]
     schema: QuestionnaireSchema
 
     def _payload(self) -> Mapping:
         return {
             "fulfilmentRequest": {
                 "email_address": self.email_address,
-                "display_address": self.questionnaire_store.metadata["display_address"],
+                "display_address": self.metadata["display_address"],
                 "form_type": self.schema.form_type,
-                "language_code": self.questionnaire_store.metadata["language_code"],
+                "language_code": self.metadata["language_code"],
                 "region_code": self.schema.region_code,
-                "tx_id": self.questionnaire_store.metadata["tx_id"],
+                "tx_id": self.metadata["tx_id"],
             }
         }

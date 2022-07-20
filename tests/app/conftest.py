@@ -102,6 +102,15 @@ def fake_questionnaire_store():
 
 
 @pytest.fixture
+def fake_metadata():
+    return {
+        "tx_id": "tx_id",
+        "language_code": "en",
+        "display_address": "68 Abingdon Road, Goathill",
+    }
+
+
+@pytest.fixture
 def session_data():
     return SessionData(
         tx_id="tx_id",
