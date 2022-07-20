@@ -18,33 +18,31 @@ from app.views.contexts.submission_metadata_context import (
 
 def build_thank_you_context(
     schema: QuestionnaireSchema,
-    questionnaire_store_metadata: dict,
+    metadata: dict,
     submitted_at: datetime,
     survey_type: SurveyType,
     guidance_content: Optional[dict] = None,
 ) -> Mapping:
     if survey_type is SurveyType.SOCIAL:
         submission_text = lazy_gettext("Your answers have been submitted.")
-    elif questionnaire_store_metadata.get(
-        "trad_as"
-    ) and questionnaire_store_metadata.get("ru_name"):
+    elif metadata.get("trad_as") and metadata.get("ru_name"):
         submission_text = lazy_gettext(
             "Your answers have been submitted for <span>{company_name}</span> ({trading_name})"
         ).format(
-            company_name=questionnaire_store_metadata["ru_name"],
-            trading_name=questionnaire_store_metadata["trad_as"],
+            company_name=metadata["ru_name"],
+            trading_name=metadata["trad_as"],
         )
     else:
         submission_text = lazy_gettext(
             "Your answers have been submitted for <span>{company_name}</span>"
-        ).format(company_name=questionnaire_store_metadata["ru_name"])
-    metadata = build_submission_metadata_context(
-        survey_type, submitted_at, questionnaire_store_metadata["tx_id"]  # type: ignore
+        ).format(company_name=metadata["ru_name"])
+    context_metadata = build_submission_metadata_context(
+        survey_type, submitted_at, metadata["tx_id"]  # type: ignore
     )
     return {
         "hide_sign_out_button": True,
         "submission_text": submission_text,
-        "metadata": metadata,
+        "metadata": context_metadata,
         "guidance": guidance_content,
         "view_submitted_response": build_view_submitted_response_context(
             schema, submitted_at
