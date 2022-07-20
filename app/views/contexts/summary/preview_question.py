@@ -122,5 +122,5 @@ class PreviewQuestion:
             "text_length": self.text_length,
             "instruction": self.instruction,
             "answer_description": self.answer_description,
-            "answer_guidance": self.answer_guidance
+            "answer_guidance": self.answer_guidance,
         }

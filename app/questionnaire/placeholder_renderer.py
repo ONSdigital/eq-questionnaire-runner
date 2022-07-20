@@ -27,6 +27,7 @@ class PlaceholderRenderer:
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
         location: Union[None, Location, RelationshipLocation] = None,
+        preview: bool = False,
     ):
         self._language = language
         self._answer_store = answer_store
@@ -35,6 +36,7 @@ class PlaceholderRenderer:
         self._response_metadata = response_metadata
         self._schema = schema
         self._location = location
+        self._preview = preview
 
     def render_pointer(
         self,
@@ -76,6 +78,7 @@ class PlaceholderRenderer:
             list_item_id=list_item_id,
             location=self._location,
             renderer=self,
+            preview=self._preview,
         )
 
         placeholder_data = QuestionnaireSchema.get_mutable_deepcopy(placeholder_data)

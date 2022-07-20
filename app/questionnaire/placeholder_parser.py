@@ -45,6 +45,7 @@ class PlaceholderParser:
         renderer: "PlaceholderRenderer",
         list_item_id: Optional[str] = None,
         location: Union[Location, RelationshipLocation, None] = None,
+        preview: bool = False,
     ):
 
         self._answer_store = answer_store
@@ -70,6 +71,7 @@ class PlaceholderParser:
             response_metadata=self._response_metadata,
             use_default_answer=True,
         )
+        self._preview = preview
 
     def __call__(
         self, placeholder_list: Sequence[Mapping]
@@ -117,9 +119,14 @@ class PlaceholderParser:
 
                 transform_args[arg_key] = resolved_value
 
-            transformed_value = getattr(self._transformer, transform["transform"])(
-                **transform_args
-            )
+            if self._preview:
+                if transform["transform"] == "format_currency":
+                    transformed_value = "(currency)"
+
+            else:
+                transformed_value = getattr(self._transformer, transform["transform"])(
+                    **transform_args
+                )
 
         return transformed_value
 

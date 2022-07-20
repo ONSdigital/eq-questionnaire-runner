@@ -41,6 +41,7 @@ class PreviewGroup:
             metadata=metadata,
             response_metadata=response_metadata,
             schema=schema,
+            preview=True,
         )
 
     @staticmethod
