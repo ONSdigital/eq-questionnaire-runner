@@ -3,13 +3,11 @@ from functools import cached_property
 from typing import Any, Mapping
 
 from flask import current_app, url_for
-from flask_login import current_user
 from flask_babel import gettext, lazy_gettext
 from itsdangerous import BadSignature
 from markupsafe import escape
 from werkzeug.exceptions import BadRequest
 
-from app.globals import get_metadata
 from app.cloud_tasks.exceptions import CloudTaskCreationFailed
 from app.data_models import FulfilmentRequest, QuestionnaireStore, SessionStore
 from app.forms.questionnaire_form import generate_form

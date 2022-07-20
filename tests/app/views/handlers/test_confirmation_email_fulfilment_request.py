@@ -13,7 +13,9 @@ def test_confirmation_email_fulfilment_request_message(
     email_address = "name@example.com"
 
     fulfilment_request = ConfirmationEmailFulfilmentRequest(
-        email_address, fake_questionnaire_store.metadata, confirmation_email_fulfilment_schema
+        email_address,
+        fake_questionnaire_store.metadata,
+        confirmation_email_fulfilment_schema,
     )
 
     confirmation_email_json_message = json_loads(fulfilment_request.message)
