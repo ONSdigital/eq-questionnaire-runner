@@ -131,6 +131,10 @@ class SectionPreviewContext(Context):
                     self._schema,
                     self.current_location,
                     self._language,
+                    self._schema.get_title_for_section(
+                        self.current_location.section_id
+                    ),  # this gets the title of a section for a group since we have 1 to 1 relationship between section and its group(s), group title is not always present/missing in business schemas hence using the section title
+                    # base for this was the code we use for summaries generation, that is how summaries are generated in runner (they use group titles of sections for twisties)
                     return_to,
                 ).serialize()
                 for group in self.section["groups"]

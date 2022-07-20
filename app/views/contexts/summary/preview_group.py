@@ -16,11 +16,12 @@ class PreviewGroup:
         schema,
         location,
         language,
+        section_title,
         return_to,
         return_to_block_id: Optional[str] = None,
     ):
         self.id = group_schema["id"]
-        self.title = group_schema.get("title")
+        self.title = section_title
         self.location = location
         self.blocks = self._build_blocks(
             group_schema=group_schema,
