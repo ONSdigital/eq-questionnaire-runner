@@ -88,17 +88,19 @@ class PlaceholderParser:
         self, placeholder: Mapping
     ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes, TransformedValueTypes]:
         try:
-            return self._parse_transforms(placeholder["transforms"])
+            return self._parse_transforms(placeholder["transforms"], placeholder["placeholder"])
         except KeyError:
             return self._value_source_resolver.resolve(placeholder["value"])
 
     def _parse_transforms(
-        self, transform_list: Sequence[Mapping]
+        self, transform_list: Sequence[Mapping], placeholder: str
     ) -> TransformedValueTypes:
         transformed_value: TransformedValueTypes = None
 
         for transform in transform_list:
             transform_args: MutableMapping[str, Any] = {}
+
+            source_is_metadata = False
 
             for arg_key, arg_value in transform["arguments"].items():
                 resolved_value: Union[
@@ -114,14 +116,15 @@ class PlaceholderParser:
                         resolved_value = transformed_value
                     else:
                         resolved_value = self._value_source_resolver.resolve(arg_value)
+                    if arg_value["source"] == "metadata":
+                        source_is_metadata = True
                 else:
                     resolved_value = arg_value
 
                 transform_args[arg_key] = resolved_value
 
-            if self._preview:
-                if transform["transform"] == "format_currency":
-                    transformed_value = "(currency)"
+            if self._preview and not source_is_metadata:
+                transformed_value = f"({placeholder})"
 
             else:
                 transformed_value = getattr(self._transformer, transform["transform"])(
