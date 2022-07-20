@@ -94,6 +94,7 @@ class PlaceholderParser:
 
     def _parse_transforms(
         self, transform_list: Sequence[Mapping], placeholder: str
+        # Passing placeholder name as a substitute for unresolvable placeholders
     ) -> TransformedValueTypes:
         transformed_value: TransformedValueTypes = None
 
@@ -125,6 +126,9 @@ class PlaceholderParser:
 
             if self._preview and not source_is_metadata:
                 transformed_value = f"({placeholder})"
+                # The issue here is transform sometimes has multiple mixed (and optional) sources, one of them being metadata
+                # Based on the previous answer, metadata or answer is being used as source
+                # This added logic makes it use the placeholder name even though metadata source exists as well
 
             else:
                 transformed_value = getattr(self._transformer, transform["transform"])(
