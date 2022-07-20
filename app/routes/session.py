@@ -86,6 +86,7 @@ def login():
     cookie_session["survey_title"] = g.schema.json["title"]
     cookie_session["expires_in"] = get_session_timeout_in_seconds(g.schema)
     cookie_session["preview_questions"] = True
+    # To make the preview togglable, instead of always on, use the code below, remember to add preview_questions field to top level of schema
     # g.schema.json["preview_questions"]
 
     if account_service_url := claims.get("account_service_url"):
