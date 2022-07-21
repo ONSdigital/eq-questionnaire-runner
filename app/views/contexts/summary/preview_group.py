@@ -1,5 +1,3 @@
-from typing import Optional
-
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.views.contexts.summary.preview_block import PreviewBlock
 
@@ -16,8 +14,6 @@ class PreviewGroup:
         location,
         language,
         section_title,
-        return_to,
-        return_to_block_id: Optional[str] = None,
     ):
         self.id = group_schema["id"]
         self.title = section_title
@@ -30,8 +26,6 @@ class PreviewGroup:
             response_metadata=response_metadata,
             schema=schema,
             location=location,
-            return_to=return_to,
-            return_to_block_id=return_to_block_id,
         )
         self.placeholder_renderer = PlaceholderRenderer(
             language=language,
@@ -53,8 +47,6 @@ class PreviewGroup:
         response_metadata,
         schema,
         location,
-        return_to,
-        return_to_block_id,
     ):
         blocks = []
 
@@ -70,8 +62,6 @@ class PreviewGroup:
                             response_metadata=response_metadata,
                             schema=schema,
                             location=location,
-                            return_to=return_to,
-                            return_to_block_id=return_to_block_id,
                         ).serialize()
                     ]
                 )

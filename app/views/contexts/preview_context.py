@@ -11,14 +11,12 @@ class PreviewContext(Context):
         self, answers_are_editable: bool = False, return_to: Optional[str] = None
     ) -> dict[str, Union[str, list, bool]]:
 
-        groups = list(self._build_all_groups(return_to))
+        groups = list(self.build_all_groups(return_to))
         return {
             "groups": groups,
         }
 
-    def _build_all_groups(
-        self, return_to: Optional[str]
-    ) -> Generator[dict, None, None]:
+    def build_all_groups(self, return_to: Optional[str]) -> Generator[dict, None, None]:
         """NB: Does not support repeating sections"""
 
         for section_id in [section["id"] for section in self._schema.get_sections()]:
@@ -33,7 +31,6 @@ class PreviewContext(Context):
                 metadata=self._metadata,
                 response_metadata=self._response_metadata,
                 current_location=location,
-                routing_path=self._router.routing_path(section_id),
             )
             section: Mapping = self._schema.get_section(section_id) or {}
             if section.get("summary", {}).get("items"):

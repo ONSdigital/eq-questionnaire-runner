@@ -1,7 +1,7 @@
 import io
 import re
-from collections import Generator
-from datetime import datetime
+from typing import Generator
+from datetime import datetime, timezone
 
 import pdfkit
 from flask import current_app
@@ -62,7 +62,7 @@ class ViewPreviewQuestionPDF(ViewSubmittedResponse):
         formatted_title = re.sub(
             "[^0-9a-zA-Z]+", "-", self._schema.json["title"].lower()
         )
-        formatted_date = datetime.now().isoformat()  # type: ignore
+        formatted_date = datetime.now(tz=timezone.utc).isoformat()  # type: ignore
         return f"{formatted_title}-{formatted_date}.pdf"
 
     def get_pdf(self) -> io.BytesIO:
@@ -81,11 +81,6 @@ class ViewPreviewQuestionPDF(ViewSubmittedResponse):
         return io.BytesIO(content_as_bytes)
 
     def get_rendered_html(self) -> str:
-        title = "test"
-        submit_button = "Submit answers"
-        guidance = "Please submit this survey to complete it"
-
-        warning = None
         preview_context = PreviewContext(
             answer_store=self._questionnaire_store.answer_store,
             language=self._language,
@@ -97,10 +92,6 @@ class ViewPreviewQuestionPDF(ViewSubmittedResponse):
         )
 
         context = {
-            "title": "test",
-            "guidance": guidance,
-            "warning": warning,
-            "submit_button": submit_button,
             "summary": preview_context(),
         }
 
@@ -116,4 +107,4 @@ class ViewPreviewQuestionPDF(ViewSubmittedResponse):
             response_metadata={},
             schema=self._schema,
         )
-        return preview_context._build_all_groups(return_to=None)
+        return preview_context.build_all_groups(return_to=None)
