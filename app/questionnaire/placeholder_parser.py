@@ -88,12 +88,16 @@ class PlaceholderParser:
         self, placeholder: Mapping
     ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes, TransformedValueTypes]:
         try:
-            return self._parse_transforms(placeholder["transforms"], placeholder["placeholder"])
+            return self._parse_transforms(
+                placeholder["transforms"], placeholder["placeholder"]
+            )
         except KeyError:
             return self._value_source_resolver.resolve(placeholder["value"])
 
     def _parse_transforms(
-        self, transform_list: Sequence[Mapping], placeholder: str
+        self,
+        transform_list: Sequence[Mapping],
+        placeholder: str
         # Passing placeholder name as a substitute for unresolvable placeholders
     ) -> TransformedValueTypes:
         transformed_value: TransformedValueTypes = None

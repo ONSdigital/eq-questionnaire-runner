@@ -24,7 +24,7 @@ class PreviewQuestion:
 
         self.answers = self._build_answers()
         self.descriptions = self._build_descriptions(question_schema=question_schema)
-        self.guidance = self._build_guidance(question_schema=question_schema)
+        self.guidance = self._build_question_guidance(question_schema=question_schema)
         self.text_length = self._get_length(question_schema=question_schema)
         self.instruction = self._build_instruction(question_schema=question_schema)
         self.answer_description = self._build_answer_descriptions(
@@ -40,23 +40,34 @@ class PreviewQuestion:
         answers = []
         for answer in self.answer_schemas:
             if options := answer.get("options"):
-                for option in options:
-                    answers.append(option["label"])
+                answers.extend(option["label"] for option in options)
             if not options:
                 answers.append(answer["label"])
 
         return answers
 
     def _build_answer_descriptions(self, *, answers):
-        for answer in answers:
-            if answer.get("description"):
-                return answer.get("description")
-        return None
+        return next(
+            (
+                answer.get("description")
+                for answer in answers
+                if answer.get("description")
+            ),
+            None,
+        )
 
     def _build_answer_guidance(self, *, answers):
+
         for answer in answers:
             if guidance := answer.get("guidance"):
-                return guidance.get("show_guidance")
+                guidance_list = []
+                for contents in guidance.get("contents"):
+                    if contents.get("description"):
+                        guidance_list.append(contents.get("description"))
+                    elif contents.get("list"):
+                        guidance_items = list(contents.get("list"))
+                        guidance_list.append(guidance_items)
+                return guidance_list
         return None
 
     def _build_descriptions(
@@ -70,7 +81,7 @@ class PreviewQuestion:
 
         return None
 
-    def _build_guidance(
+    def _build_question_guidance(
         self,
         *,
         question_schema,
@@ -88,6 +99,18 @@ class PreviewQuestion:
             return guidance_list
 
         return None
+
+    def _build_guidance(self, *, schema_element):
+        if not (guidance := schema_element.get("guidance")):
+            return None
+        guidance_list = []
+        for contents in guidance.get("contents"):
+            if contents.get("description"):
+                guidance_list.append(contents.get("description"))
+            elif contents.get("list"):
+                guidance_items = list(contents.get("list"))
+                guidance_list.append(guidance_items)
+        return guidance_list
 
     def _get_length(
         self,

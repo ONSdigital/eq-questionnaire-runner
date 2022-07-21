@@ -45,7 +45,17 @@
   {% call onsPanel({
         "classes": "ons-u-mb-l"
       }) %}
-          <p>{{ question.answer_guidance }}</p>
+      {% for guidance in question.answer_guidance %}
+        {% if guidance is string %}
+          <p>{{ guidance }}</p>
+        {% else %}
+        <ul>
+          {% for item in guidance %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      {% endfor %}
   {% endcall %}
 {% endif %}
 
@@ -66,11 +76,6 @@
 {% if question.answer_description %}
 {% set description = question.answer_description %}
     <p>{{ description }}</p>
-{% endif %}
-
-{% if question.answer_guidance %}
-{% set answer_guidance = question.answer_guidance %}
-    <p>{{ answer_guidance }}</p>
 {% endif %}
 
 </div>

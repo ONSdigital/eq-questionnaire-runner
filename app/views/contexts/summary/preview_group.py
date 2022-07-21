@@ -8,7 +8,6 @@ class PreviewGroup:
     def __init__(
         self,
         group_schema,
-        routing_path,
         answer_store,
         list_store,
         metadata,
@@ -25,7 +24,6 @@ class PreviewGroup:
         self.location = location
         self.blocks = self._build_blocks(
             group_schema=group_schema,
-            routing_path=routing_path,
             answer_store=answer_store,
             list_store=list_store,
             metadata=metadata,
@@ -49,7 +47,6 @@ class PreviewGroup:
     def _build_blocks(
         *,
         group_schema,
-        routing_path,
         answer_store,
         list_store,
         metadata,
@@ -62,7 +59,7 @@ class PreviewGroup:
         blocks = []
 
         for block in group_schema["blocks"]:
-            if block["id"] in routing_path and block["type"] == "Question":
+            if block["id"] and block["type"] == "Question":
                 blocks.extend(
                     [
                         PreviewBlock(

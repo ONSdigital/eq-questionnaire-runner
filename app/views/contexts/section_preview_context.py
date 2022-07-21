@@ -123,7 +123,6 @@ class SectionPreviewContext(Context):
             "groups": [
                 PreviewGroup(
                     group,
-                    self.routing_path,
                     self._answer_store,
                     self._list_store,
                     self._metadata,
