@@ -12,13 +12,8 @@ class PreviewContext(Context):
     ) -> dict[str, Union[str, list, bool]]:
 
         groups = list(self._build_all_groups(return_to))
-        summary_options = self._schema.get_summary_options()
-        collapsible = summary_options.get("collapsible", False)
         return {
             "groups": groups,
-            "answers_are_editable": answers_are_editable,
-            "collapsible": collapsible,
-            "summary_type": "Summary",
         }
 
     def _build_all_groups(

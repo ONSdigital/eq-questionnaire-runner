@@ -187,26 +187,6 @@ def get_questionnaire(schema, questionnaire_store):
 @with_questionnaire_store
 @with_schema
 def get_preview(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore):
-    submission_schema: Mapping = schema.get_submission()
-    title = submission_schema.get("title") or flask_babel.lazy_gettext(
-        "Check your answers and submit"
-    )
-    submit_button = submission_schema.get("button") or flask_babel.lazy_gettext(
-        "Submit answers"
-    )
-    guidance = submission_schema.get("guidance") or flask_babel.lazy_gettext(
-        "Please submit this survey to complete it"
-    )
-
-    warning = submission_schema.get("warning") or None
-
-    context = {
-        "title": title,
-        "guidance": guidance,
-        "warning": warning,
-        "submit_button": submit_button,
-    }
-
     preview_context = PreviewContext(
         language=flask_babel.get_locale().language,
         schema=schema,
@@ -217,8 +197,10 @@ def get_preview(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireS
         response_metadata=questionnaire_store.response_metadata,
     )
 
-    context["summary"] = preview_context()
-    context["pdf_url"] = url_for(".get_preview_questions_pdf")
+    context = {
+        "summary": preview_context(),
+        "pdf_url": url_for(".get_preview_questions_pdf"),
+    }
     return render_template(template="preview", content=context)
 
 
@@ -486,14 +468,6 @@ def get_view_submitted_response_pdf(
 def get_preview_questions_pdf(
     schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
 ) -> Response:
-    """
-    :param schema: The questionnaire schema object.
-    :type schema: QuestionnaireSchema
-    :param questionnaire_store: The questionnaire store object.
-    :type questionnaire_store: QuestionnaireStore
-    :return: A response object with the contents of a file to the client.
-    :rtype: Response
-    """
 
     view_preview_questions_pdf = ViewPreviewQuestionPDF(
         schema,
