@@ -57,18 +57,8 @@ class PreviewQuestion:
         )
 
     def _build_answer_guidance(self, *, answers):
-
         for answer in answers:
-            if guidance := answer.get("guidance"):
-                guidance_list = []
-                for contents in guidance.get("contents"):
-                    if contents.get("description"):
-                        guidance_list.append(contents.get("description"))
-                    elif contents.get("list"):
-                        guidance_items = list(contents.get("list"))
-                        guidance_list.append(guidance_items)
-                return guidance_list
-        return None
+            return self._build_guidance(schema_element=answer)
 
     def _build_descriptions(
         self,
@@ -86,31 +76,19 @@ class PreviewQuestion:
         *,
         question_schema,
     ):
-        if guidance := question_schema.get("guidance"):
+        return self._build_guidance(schema_element=question_schema)
+
+    def _build_guidance(self, *, schema_element):
+        if guidance := schema_element.get("guidance"):
             guidance_list = []
             for contents in guidance.get("contents"):
                 if contents.get("description"):
                     guidance_list.append(contents.get("description"))
                 elif contents.get("list"):
-                    guidance_items = []
-                    for item in contents.get("list"):
-                        guidance_items.append(item)
+                    guidance_items = list(contents.get("list"))
                     guidance_list.append(guidance_items)
             return guidance_list
-
         return None
-
-    def _build_guidance(self, *, schema_element):
-        if not (guidance := schema_element.get("guidance")):
-            return None
-        guidance_list = []
-        for contents in guidance.get("contents"):
-            if contents.get("description"):
-                guidance_list.append(contents.get("description"))
-            elif contents.get("list"):
-                guidance_items = list(contents.get("list"))
-                guidance_list.append(guidance_items)
-        return guidance_list
 
     def _get_length(
         self,

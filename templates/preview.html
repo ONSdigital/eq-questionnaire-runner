@@ -62,7 +62,7 @@
   {%- for group in content.summary.groups -%}
   {%- if group["blocks"] | length -%}
       {%- set item = {
-        "title": group.title or "Missing section title in schema",
+        "title": group.title or "Section title missing in schema",
         "id": group.id,
         "content": "",
         "button": {

@@ -298,6 +298,28 @@
                                         "label": "Text question",
                                         "mandatory": false,
                                         "type": "TextField"
+                                    },
+                                    {
+                                        "guidance": {
+                                            "show_guidance": "Show test guidance.",
+                                            "hide_guidance": "Hide test guidance.",
+                                            "contents": [
+                                                {
+                                                    "description": "The text here is for a description123"
+                                                },
+                                                {
+                                                    "description": "Here’s some more description text"
+                                                },
+                                                {
+                                                    "title": "This text here is the title for the list",
+                                                    "list": ["The text here is for a list", "Another list item", "One more"]
+                                                }
+                                            ]
+                                        },
+                                        "id": "answer-test-guidance-all",
+                                        "label": "Text question",
+                                        "mandatory": false,
+                                        "type": "TextField"
                                     }
                                 ]
                             }
