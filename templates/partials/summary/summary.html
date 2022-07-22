@@ -6,7 +6,7 @@
   {% set summaryGroups = [] %}
   {%- set tableHeader = ["Question", "Answer given"] -%}
   {%- if content.summary.answers_are_editable -%}
-    {{ tableHeader.append( "Change answer" ) }}
+    {{ tableHeader.append( "Change answer" ) or "" }}
   {%- endif -%}
   {%- for group in content.summary.groups if group.blocks -%}
     {% do summaryGroups.append (
