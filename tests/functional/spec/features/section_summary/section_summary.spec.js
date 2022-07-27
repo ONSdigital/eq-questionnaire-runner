@@ -8,6 +8,11 @@ import ListedPage from "../../../generated_pages/section_summary/listed.page.js"
 import NumberOfPeoplePage from "../../../generated_pages/section_summary/number-of-people.page.js";
 import PropertyDetailsSummaryPage from "../../../generated_pages/section_summary/property-details-section-summary.page.js";
 import SubmitPage from "../../../generated_pages/section_summary/submit.page.js";
+import AddressBlockPage from "../../../generated_pages/view_submitted_response/address.page.js";
+import NameBlockPage from "../../../generated_pages/view_submitted_response/name.page.js";
+import ViewSubmittedResponseSubmitPage from "../../../generated_pages/view_submitted_response/submit.page.js";
+import ThankYouPage from "../../../base_pages/thank-you.page";
+import ViewSubmittedResponsePage from "../../../generated_pages/view_submitted_response/view-submitted-response.page.js";
 
 describe("Section Summary", () => {
   describe("Given I start a Test Section Summary survey and complete to Section Summary", () => {
@@ -168,6 +173,23 @@ describe("Section Summary", () => {
       $(HouseType.semiDetached()).click();
       $(HouseType.submit()).click();
       expect($(HouseholdDetailsSummaryPage.heading()).getText()).to.contain("Household Summary - Semi-detached");
+    });
+  });
+  describe("Given I start a questionnaire that has a summary with no change links", () => {
+    it.only("When I then navigate to that summary, then the correct headers should be set", () => {
+      browser.openQuestionnaire("test_view_submitted_response.json");
+      $(NameBlockPage.answer()).setValue("John Smith");
+      $(NameBlockPage.submit()).click();
+      $(AddressBlockPage.answer()).setValue("NP10 8XG");
+      $(AddressBlockPage.submit()).click();
+      $(ViewSubmittedResponseSubmitPage.submit()).click();
+      expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
+      expect($(ThankYouPage.title()).getHTML()).to.contain("Thank you for completing the Test");
+      $(ThankYouPage.savePrintAnswersLink()).click();
+      expect(browser.getUrl()).to.contain(ViewSubmittedResponsePage.pageName);
+      expect($(ViewSubmittedResponsePage.addressDetailsGroupSummaryTableHead()).getHTML()).to.contain("Question");
+      expect($(ViewSubmittedResponsePage.addressDetailsGroupSummaryTableHead()).getHTML()).to.contain("Answer given");
+      expect($(ViewSubmittedResponsePage.addressDetailsGroupSummaryTableHead()).getHTML()).to.not.contain("Change answer");
     });
   });
 });
