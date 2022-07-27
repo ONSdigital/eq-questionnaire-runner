@@ -24,7 +24,7 @@ describe("Section Summary", () => {
       expect($(PropertyDetailsSummaryPage.submit()).getText()).to.contain("Continue");
     });
 
-    it.only("When I get to the section summary page, Then it should have the correct table headers set'", () => {
+    it("When I get to the section summary page, Then it should have the correct table headers set'", () => {
       expect($(PropertyDetailsSummaryPage.propertyDetailsSummaryTableHead()).getHTML()).to.contain("Question");
       expect($(PropertyDetailsSummaryPage.propertyDetailsSummaryTableHead()).getHTML()).to.contain("Answer given");
       expect($(PropertyDetailsSummaryPage.propertyDetailsSummaryTableHead()).getHTML()).to.contain("Change answer");
