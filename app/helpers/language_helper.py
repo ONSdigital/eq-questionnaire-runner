@@ -19,11 +19,9 @@ def handle_language(metadata: Optional[Mapping[str, Any]] = None) -> None:
 
     if session_store and (session_data := session_store.session_data):
         metadata = metadata or get_metadata(current_user) or {}
-        schema_name = metadata.get("schema_name")
+        schema_name = metadata["schema_name"]
 
-        launch_language = (
-            session_store.session_data.language_code or DEFAULT_LANGUAGE_CODE
-        )
+        launch_language = metadata.get("language_code") or DEFAULT_LANGUAGE_CODE
         # pylint: disable=assigning-non-slot
         g.allowed_languages = get_allowed_languages(schema_name, launch_language)
         request_language = request.args.get("language_code")

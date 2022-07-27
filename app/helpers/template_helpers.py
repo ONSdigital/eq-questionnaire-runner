@@ -202,6 +202,7 @@ def get_survey_config(
     # business feedback on the differentiation between theme and SURVEY_TYPE.
 
     if metadata := get_metadata(current_user):
+        language = language or get_locale().language
         schema = load_schema_from_metadata(metadata=metadata, language_code=language)
 
     survey_theme = theme or get_survey_type()

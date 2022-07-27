@@ -15,7 +15,7 @@ class SessionData:
         self.confirmation_email_count = confirmation_email_count
         self.feedback_count = feedback_count
 
-        # :TODO: To be removed when we migrate to get these vars from questionnaire_store.metadata.
+        # :TODO: Will be removed in the next deployment, kept temporarily to support in-flight sessions and potential rollback
         self.tx_id = None
         self.schema_name = None
         self.period_str = None

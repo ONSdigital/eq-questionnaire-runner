@@ -113,7 +113,6 @@ def before_post_submission_request():
     if not metadata:
         raise NoQuestionnaireStateException(401)
 
-    # pylint: disable=assigning-non-slot
     questionnaire_store = get_questionnaire_store(
         current_user.user_id, current_user.user_ik
     )
@@ -123,6 +122,7 @@ def before_post_submission_request():
 
     handle_language(metadata)
 
+    # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
         metadata=metadata, language_code=get_locale().language
     )

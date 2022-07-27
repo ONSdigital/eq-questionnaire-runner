@@ -70,7 +70,7 @@ def test_add_data_to_session(app, app_session_store):
         app_session_store.session_store.save()
 
         session_store = SessionStore("user_ik", "pepper", "eq_session_id")
-        assert session_store.session_data.feedback_count == 9
+        assert session_store.session_data.feedback_count == feedback_count
 
 
 def test_should_not_delete_when_no_session(app, app_session_store):
