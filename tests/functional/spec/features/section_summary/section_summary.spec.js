@@ -176,7 +176,7 @@ describe("Section Summary", () => {
     });
   });
   describe("Given I start a questionnaire that has a summary with no change links", () => {
-    it.only("When I then navigate to that summary, then the correct headers should be set", () => {
+    it("When I then navigate to that summary, then the correct headers should be set", () => {
       browser.openQuestionnaire("test_view_submitted_response.json");
       $(NameBlockPage.answer()).setValue("John Smith");
       $(NameBlockPage.submit()).click();
