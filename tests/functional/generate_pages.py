@@ -221,6 +221,14 @@ SUMMARY_ANSWER_EDIT_GETTER = Template(
 """
 )
 
+SUMMARY_TABLE_HEAD = Template(
+    r"""  ${group_id_camel}SummaryTableHead() {
+    return `#${group_id} thead tr`;
+  }
+
+"""
+)
+
 SUMMARY_TITLE_GETTER = Template(
     r"""  ${group_id_camel}Title() { return `#${group_id} .ons-summary__group-title`; }
 
@@ -603,6 +611,7 @@ def write_summary_spec(page_spec, section, collapsible, answers_are_editable=Fal
                 "group_id": group["id"],
             }
             page_spec.write(SUMMARY_TITLE_GETTER.substitute(group_context))
+            page_spec.write(SUMMARY_TABLE_HEAD.substitute(group_context))
 
 
 def long_names_required(question, num_questions):

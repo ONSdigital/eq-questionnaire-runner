@@ -24,6 +24,12 @@ describe("Section Summary", () => {
       expect($(PropertyDetailsSummaryPage.submit()).getText()).to.contain("Continue");
     });
 
+    it.only("When I get to the section summary page, Then it should have the correct table headers set'", () => {
+      expect($(PropertyDetailsSummaryPage.propertyDetailsSummaryTableHead()).getHTML()).to.contain("Question");
+      expect($(PropertyDetailsSummaryPage.propertyDetailsSummaryTableHead()).getHTML()).to.contain("Answer given");
+      expect($(PropertyDetailsSummaryPage.propertyDetailsSummaryTableHead()).getHTML()).to.contain("Change answer");
+    });
+
     it("When I have selected an answer to edit and edit it, Then I should return to the section summary with new value displayed", () => {
       $(PropertyDetailsSummaryPage.insuranceAddressAnswerEdit()).click();
       $(InsuranceAddressPage.answer()).setValue("Test Address");
