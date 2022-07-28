@@ -15,9 +15,9 @@ from flask_talisman import Talisman
 from flask_wtf.csrf import CSRFProtect
 from google.cloud import datastore
 from htmlmin.main import minify
+from jinja2 import ChainableUndefined
 from sdc.crypto.key_store import KeyStore, validate_required_keys
 from structlog import get_logger
-from jinja2 import ChainableUndefined
 
 from app import settings
 from app.authentication.authenticator import login_manager
