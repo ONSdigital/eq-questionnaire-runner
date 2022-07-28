@@ -17,6 +17,7 @@ from google.cloud import datastore
 from htmlmin.main import minify
 from sdc.crypto.key_store import KeyStore, validate_required_keys
 from structlog import get_logger
+from jinja2 import ChainableUndefined
 
 from app import settings
 from app.authentication.authenticator import login_manager
@@ -238,6 +239,7 @@ def setup_jinja_env(application):
     # Enable whitespace removal
     application.jinja_env.trim_blocks = True
     application.jinja_env.lstrip_blocks = True
+    application.jinja_env.undefined = ChainableUndefined
 
     # Switch off flask default autoescaping as schema content can contain html
     application.jinja_env.autoescape = False
