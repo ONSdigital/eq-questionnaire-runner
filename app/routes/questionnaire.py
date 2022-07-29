@@ -122,7 +122,6 @@ def before_post_submission_request():
 
     handle_language(metadata)
 
-    # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
         metadata=metadata, language_code=get_locale().language
     )
