@@ -107,10 +107,32 @@ def test_get_page_header_context_business(app: Flask):
     expected = {
         "orgLogo": "ons-logo-en",
         "orgLogoAlt": "Office for National Statistics logo",
+        "title": "ONS Business Surveys",
     }
 
     with app.app_context():
-        survey_config = SurveyConfig()
+        cookie_session["theme"] = "business"
+        survey_config = BusinessSurveyConfig()
+
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["page_header"]
+
+    assert result == expected
+
+
+def test_get_page_header_context_business_no_cookie(app: Flask):
+    expected = {
+        "orgLogo": "ons-logo-en",
+        "orgLogoAlt": "Office for National Statistics logo",
+        "title": "ONS Surveys",
+    }
+
+    with app.app_context():
+        survey_config = BusinessSurveyConfig()
 
         result = ContextHelper(
             language="en",
@@ -127,6 +149,27 @@ def test_get_page_header_context_social(app: Flask):
         "orgLogo": "ons-logo-en",
         "orgLogoAlt": "Office for National Statistics logo",
         "title": "ONS Social Surveys",
+    }
+
+    with app.app_context():
+        cookie_session["theme"] = "social"
+        survey_config = SocialSurveyConfig()
+
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["page_header"]
+
+    assert result == expected
+
+
+def test_get_page_header_context_social_no_cookie(app: Flask):
+    expected = {
+        "orgLogo": "ons-logo-en",
+        "orgLogoAlt": "Office for National Statistics logo",
+        "title": "ONS Surveys",
     }
 
     with app.app_context():
@@ -152,6 +195,29 @@ def test_get_page_header_context_census(app: Flask):
     }
 
     with app.app_context():
+        cookie_session["theme"] = "census"
+        survey_config = CensusSurveyConfig()
+
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["page_header"]
+
+    assert result == expected
+
+
+def test_get_page_header_context_census_no_cookie(app: Flask):
+    expected = {
+        "orgLogo": "ons-logo-en",
+        "orgLogoAlt": "Office for National Statistics logo",
+        "titleLogo": "census-logo-en",
+        "titleLogoAlt": "Census 2021",
+        "title": "ONS Surveys",
+    }
+
+    with app.app_context():
         survey_config = CensusSurveyConfig()
 
         result = ContextHelper(
@@ -166,16 +232,17 @@ def test_get_page_header_context_census(app: Flask):
 
 def test_get_page_header_context_census_nisra(app: Flask):
     expected = {
-        "title": "Census 2021",
         "orgLogo": "nisra-logo",
         "orgLogoAlt": "Northern Ireland Statistics and Research Agency logo",
         "titleLogo": "census-logo-en",
         "titleLogoAlt": "Census 2021",
         "customHeaderLogo": True,
         "orgMobileLogo": "nisra-logo-mobile",
+        "title": "Census 2021",
     }
 
     with app.app_context():
+        cookie_session["theme"] = "census"
         survey_config = CensusNISRASurveyConfig()
 
         result = ContextHelper(
