@@ -22,9 +22,24 @@ from app.forms.validators import MutuallyExclusiveCheck, format_message_with_tit
         ),
         (["123", ["I prefer not to say"]], True, True, "MUTUALLY_EXCLUSIVE"),
         (["2018-09-01", ["I prefer not to say"]], True, True, "MUTUALLY_EXCLUSIVE"),
+        (["", None], True, True, "MANDATORY_CHECKBOX"),
+        (
+            [["British, Irish"], "I prefer not to say"],
+            True,
+            True,
+            "MUTUALLY_EXCLUSIVE",
+        ),
+        (
+            ["British, Irish", "I prefer not to say"],
+            True,
+            True,
+            "MUTUALLY_EXCLUSIVE",
+        ),
+        (["123", "I prefer not to say"], True, True, "MUTUALLY_EXCLUSIVE"),
+        (["2018-09-01", "I prefer not to say"], True, True, "MUTUALLY_EXCLUSIVE"),
     ),
 )
-def test_mutually_exclusive_mandatory_checkbox_raises_ValidationError(
+def test_mutually_exclusive_mandatory_answers_raise_validation_error(
     answer_permutations, is_mandatory, is_only_checkboxes_or_radios, error_type
 ):
     validator = MutuallyExclusiveCheck(question_title="")
@@ -50,9 +65,16 @@ def test_mutually_exclusive_mandatory_checkbox_raises_ValidationError(
         ([[], []], False),
         ([None, []], False),
         (["", []], False),
+        (["", None], False),
+        ([None, None], False),
+        ([None, ""], False),
+        ([["British, Irish"], None], True),
+        (["British, Irish", None], True),
+        ([None, "I prefer not to say"], True),
+        (["", "I prefer not to say"], True),
     ),
 )
-def test_mutually_exclusive_mandatory_checkbox(answer_permutations, is_mandatory):
+def test_mutually_exclusive_mandatory_answers(answer_permutations, is_mandatory):
     validator = MutuallyExclusiveCheck(question_title="")
     validator(
         answer_values=iter(answer_permutations),
