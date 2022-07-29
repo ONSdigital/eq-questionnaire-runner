@@ -208,7 +208,6 @@ def fake_questionnaire_store_metadata():
         "schema_name": "some_schema_name",
         "period_str": "period_str",
         "language_code": None,
-        "launch_language_code": None,
         "schema_url": None,
         "ru_name": "ru_name",
         "ru_ref": "ru_ref",
