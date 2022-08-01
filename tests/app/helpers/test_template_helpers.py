@@ -39,7 +39,11 @@ DEFAULT_URL = "http://localhost"
         (expected_footer_business_theme_no_cookie(), None, BusinessSurveyConfig()),
         (expected_footer_social_theme(), SurveyType.SOCIAL, SocialSurveyConfig()),
         (expected_footer_social_theme_no_cookie(), None, SocialSurveyConfig()),
-        (expected_footer_nisra_theme(), SurveyType.CENSUS_NISRA, CensusNISRASurveyConfig()),
+        (
+            expected_footer_nisra_theme(),
+            SurveyType.CENSUS_NISRA,
+            CensusNISRASurveyConfig(),
+        ),
     ],
 )
 def test_footer_context(app: Flask, expected_footer, theme, survey_config):
