@@ -17,7 +17,7 @@ LANGUAGE_TEXT = {
 def handle_language(metadata: Optional[Mapping[str, Any]] = None) -> None:
     session_store = get_session_store()
 
-    if session_store and (session_data := session_store.session_data):
+    if session_store and session_store.session_data:
         metadata = metadata or get_metadata(current_user) or {}
         schema_name = metadata["schema_name"]
 
@@ -26,7 +26,7 @@ def handle_language(metadata: Optional[Mapping[str, Any]] = None) -> None:
         g.allowed_languages = get_allowed_languages(schema_name, launch_language)
         request_language = request.args.get("language_code")
         if request_language and request_language in g.allowed_languages:
-            session_data.language_code = request_language
+            session_store.session_data.language_code = request_language
             session_store.save()
 
 
