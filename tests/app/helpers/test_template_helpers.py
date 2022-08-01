@@ -107,7 +107,7 @@ def test_footer_context_census_nisra_theme(app: Flask, expected_footer_nisra_the
     "theme, survey_config, expected",
     (
         (
-            "business",
+            SurveyType.BUSINESS,
             BusinessSurveyConfig(),
             {
                 "orgLogo": "ons-logo-en",
@@ -125,7 +125,7 @@ def test_footer_context_census_nisra_theme(app: Flask, expected_footer_nisra_the
             },
         ),
         (
-            "social",
+            SurveyType.SOCIAL,
             SocialSurveyConfig(),
             {
                 "orgLogo": "ons-logo-en",
@@ -143,7 +143,7 @@ def test_footer_context_census_nisra_theme(app: Flask, expected_footer_nisra_the
             },
         ),
         (
-            "census",
+            SurveyType.CENSUS,
             CensusSurveyConfig(),
             {
                 "title": "Census 2021",
@@ -165,7 +165,7 @@ def test_footer_context_census_nisra_theme(app: Flask, expected_footer_nisra_the
             },
         ),
         (
-            "census-nisra",
+            SurveyType.CENSUS_NISRA,
             CensusNISRASurveyConfig(),
             {
                 "orgLogo": "nisra-logo",
@@ -204,7 +204,7 @@ def test_footer_context_census_nisra_theme(app: Flask, expected_footer_nisra_the
 def test_get_page_header_context(app: Flask, theme, survey_config, expected):
     with app.app_context():
         if theme:
-            cookie_session["theme"] = "business"
+            cookie_session["theme"] = theme
         config = survey_config
 
         result = ContextHelper(
