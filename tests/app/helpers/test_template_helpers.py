@@ -33,13 +33,13 @@ DEFAULT_URL = "http://localhost"
 @pytest.mark.parametrize(
     "expected_footer, theme, survey_config",
     [
-        (expected_footer_census_theme(), "census", CensusSurveyConfig()),
+        (expected_footer_census_theme(), SurveyType.CENSUS, CensusSurveyConfig()),
         (expected_footer_census_theme_no_cookie(), None, CensusSurveyConfig()),
-        (expected_footer_business_theme(), "business", BusinessSurveyConfig()),
+        (expected_footer_business_theme(), SurveyType.BUSINESS, BusinessSurveyConfig()),
         (expected_footer_business_theme_no_cookie(), None, BusinessSurveyConfig()),
-        (expected_footer_social_theme(), "social", SocialSurveyConfig()),
+        (expected_footer_social_theme(), SurveyType.SOCIAL, SocialSurveyConfig()),
         (expected_footer_social_theme_no_cookie(), None, SocialSurveyConfig()),
-        (expected_footer_nisra_theme(), "census-nisra", CensusNISRASurveyConfig()),
+        (expected_footer_nisra_theme(), SurveyType.CENSUS_NISRA, CensusNISRASurveyConfig()),
     ],
 )
 def test_footer_context(app: Flask, expected_footer, theme, survey_config):
