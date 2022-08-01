@@ -143,7 +143,7 @@ class ContextHelper:
             context["footerWarning"] = self._footer_warning
 
         if self._survey_config.footer_links:
-            if cookie_session.get("theme"):
+            if self._survey_type:
                 context["rows"] = [{"itemsList": self._survey_config.footer_links}]
 
             else:
@@ -157,7 +157,7 @@ class ContextHelper:
                     }
                 ]
 
-        if self._survey_config.footer_legal_links and cookie_session.get("theme"):
+        if self._survey_config.footer_legal_links and self._survey_type:
             context["legal"] = [{"itemsList": self._survey_config.footer_legal_links}]
 
         if (
