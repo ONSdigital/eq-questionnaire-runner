@@ -463,7 +463,10 @@ class MutuallyExclusiveCheck:
         self.question_title = question_title
 
     def __call__(
-        self, answer_values: Iterable, is_mandatory: bool, is_only_checkboxes: bool
+        self,
+        answer_values: Iterable,
+        is_mandatory: bool,
+        is_only_checkboxes_or_radios: bool,
     ) -> None:
         total_answered = sum(1 for value in answer_values if value)
         if total_answered > 1:
@@ -471,7 +474,7 @@ class MutuallyExclusiveCheck:
         if is_mandatory and total_answered < 1:
             message = format_message_with_title(
                 self.messages["MANDATORY_CHECKBOX"]
-                if is_only_checkboxes
+                if is_only_checkboxes_or_radios
                 else self.messages["MANDATORY_QUESTION"],
                 self.question_title,
             )
