@@ -1,7 +1,7 @@
 # pylint: disable=redefined-outer-name
 
 from datetime import datetime, timedelta, timezone
-from unittest.mock import MagicMock
+from mock import MagicMock
 
 import fakeredis
 import pytest
