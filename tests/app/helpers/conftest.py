@@ -21,7 +21,7 @@ def get_context_helper():
     return _context_helper
 
 
-def footer():
+def footer_context():
     return {
         "lang": "en",
         "crest": True,
@@ -88,7 +88,7 @@ def expected_footer_census_theme():
             }
         ],
     }
-    return {**footer(), **census}
+    return {**footer_context(), **census}
 
 
 def expected_footer_census_theme_no_cookie():
@@ -115,7 +115,7 @@ def expected_footer_census_theme_no_cookie():
             }
         ],
     }
-    return {**footer(), **census}
+    return {**footer_context(), **census}
 
 
 def expected_footer_business_theme():
@@ -158,7 +158,7 @@ def expected_footer_business_theme():
             }
         ],
     }
-    return {**footer(), **business}
+    return {**footer_context(), **business}
 
 
 def expected_footer_business_theme_no_cookie():
@@ -180,7 +180,7 @@ def expected_footer_business_theme_no_cookie():
             }
         ],
     }
-    return {**footer(), **business}
+    return {**footer_context(), **business}
 
 
 def expected_footer_social_theme():
@@ -223,7 +223,7 @@ def expected_footer_social_theme():
             }
         ],
     }
-    return {**footer(), **social}
+    return {**footer_context(), **social}
 
 
 def expected_footer_social_theme_no_cookie():
@@ -245,7 +245,7 @@ def expected_footer_social_theme_no_cookie():
             }
         ],
     }
-    return {**footer(), **social}
+    return {**footer_context(), **social}
 
 
 def expected_footer_nisra_theme():
