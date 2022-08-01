@@ -21,7 +21,6 @@ def get_context_helper():
     return _context_helper
 
 
-@fixture(name="footer_context")
 def footer():
     return {
         "lang": "en",
@@ -34,8 +33,7 @@ def footer():
     }
 
 
-@fixture
-def expected_footer_census_theme(footer_context):
+def expected_footer_census_theme():
     census = {
         "rows": [
             {
@@ -90,11 +88,37 @@ def expected_footer_census_theme(footer_context):
             }
         ],
     }
-    return {**footer_context, **census}
+    return {**footer(), **census}
 
 
-@fixture
-def expected_footer_business_theme(footer_context):
+def expected_footer_census_theme_no_cookie():
+    census = {
+        "rows": [
+            {
+                "itemsList": [
+                    {
+                        "text": "Help",
+                        "url": f"{EN_BASE_URL}/help/how-to-answer-questions/online-questions-help/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Languages",
+                        "url": f"{EN_BASE_URL}/help/languages-and-accessibility/languages/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "BSL and audio videos",
+                        "url": f"{EN_BASE_URL}/help/languages-and-accessibility/accessibility/accessible-videos-with-bsl/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
+    }
+    return {**footer(), **census}
+
+
+def expected_footer_business_theme():
     business = {
         "rows": [
             {
@@ -134,11 +158,32 @@ def expected_footer_business_theme(footer_context):
             }
         ],
     }
-    return {**footer_context, **business}
+    return {**footer(), **business}
 
 
-@fixture
-def expected_footer_social_theme(footer_context):
+def expected_footer_business_theme_no_cookie():
+    business = {
+        "rows": [
+            {
+                "itemsList": [
+                    {
+                        "text": "What we do",
+                        "url": "https://www.ons.gov.uk/aboutus/whatwedo/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Accessibility",
+                        "url": "https://www.ons.gov.uk/help/accessibility/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
+    }
+    return {**footer(), **business}
+
+
+def expected_footer_social_theme():
     social = {
         "rows": [
             {
@@ -178,10 +223,31 @@ def expected_footer_social_theme(footer_context):
             }
         ],
     }
-    return {**footer_context, **social}
+    return {**footer(), **social}
 
 
-@fixture
+def expected_footer_social_theme_no_cookie():
+    social = {
+        "rows": [
+            {
+                "itemsList": [
+                    {
+                        "text": "What we do",
+                        "url": "https://www.ons.gov.uk/aboutus/whatwedo/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Accessibility",
+                        "url": "https://www.ons.gov.uk/help/accessibility/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
+    }
+    return {**footer(), **social}
+
+
 def expected_footer_nisra_theme():
     return {
         "lang": "en",

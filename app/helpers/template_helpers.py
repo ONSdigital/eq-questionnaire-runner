@@ -143,9 +143,21 @@ class ContextHelper:
             context["footerWarning"] = self._footer_warning
 
         if self._survey_config.footer_links:
-            context["rows"] = [{"itemsList": self._survey_config.footer_links}]
+            if cookie_session.get("theme"):
+                context["rows"] = [{"itemsList": self._survey_config.footer_links}]
 
-        if self._survey_config.footer_legal_links:
+            else:
+                context["rows"] = [
+                    {
+                        "itemsList": [
+                            footer_link
+                            for footer_link in self._survey_config.footer_links
+                            if "Contact us" not in footer_link.values()
+                        ]
+                    }
+                ]
+
+        if self._survey_config.footer_legal_links and cookie_session.get("theme"):
             context["legal"] = [{"itemsList": self._survey_config.footer_legal_links}]
 
         if (
