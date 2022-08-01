@@ -113,7 +113,7 @@ class ContextHelper:
             "orgLogo": f"{self._survey_config.page_header_logo}",
             "orgLogoAlt": f"{self._survey_config.page_header_logo_alt}",
             "title": self._survey_title
-            if self._survey_title and cookie_session.get("theme")
+            if self._survey_title and self._survey_type
             else "ONS Surveys",
         }
 
