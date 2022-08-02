@@ -1,10 +1,10 @@
 # pylint: disable=redefined-outer-name
 
 from datetime import datetime, timedelta, timezone
-from mock import MagicMock
 
 import fakeredis
 import pytest
+from mock import MagicMock
 
 from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
