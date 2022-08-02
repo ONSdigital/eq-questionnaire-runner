@@ -4,7 +4,6 @@ from typing import Mapping, Optional
 from flask import url_for
 from flask_babel import lazy_gettext
 
-from app.data_models.session_data import SessionData
 from app.globals import (
     get_view_submitted_response_expiration_time,
     has_view_submitted_response_expired,
@@ -19,28 +18,31 @@ from app.views.contexts.submission_metadata_context import (
 
 def build_thank_you_context(
     schema: QuestionnaireSchema,
-    session_data: SessionData,
+    metadata: dict,
     submitted_at: datetime,
     survey_type: SurveyType,
     guidance_content: Optional[dict] = None,
 ) -> Mapping:
     if survey_type is SurveyType.SOCIAL:
         submission_text = lazy_gettext("Your answers have been submitted.")
-    elif session_data.trad_as and session_data.ru_name:
+    elif metadata.get("trad_as") and metadata.get("ru_name"):
         submission_text = lazy_gettext(
             "Your answers have been submitted for <span>{company_name}</span> ({trading_name})"
-        ).format(company_name=session_data.ru_name, trading_name=session_data.trad_as)
+        ).format(
+            company_name=metadata["ru_name"],
+            trading_name=metadata["trad_as"],
+        )
     else:
         submission_text = lazy_gettext(
             "Your answers have been submitted for <span>{company_name}</span>"
-        ).format(company_name=session_data.ru_name)
-    metadata = build_submission_metadata_context(
-        survey_type, submitted_at, session_data.tx_id  # type: ignore
+        ).format(company_name=metadata["ru_name"])
+    context_metadata = build_submission_metadata_context(
+        survey_type, submitted_at, metadata["tx_id"]  # type: ignore
     )
     return {
         "hide_sign_out_button": True,
         "submission_text": submission_text,
-        "metadata": metadata,
+        "metadata": context_metadata,
         "guidance": guidance_content,
         "view_submitted_response": build_view_submitted_response_context(
             schema, submitted_at
@@ -67,10 +69,10 @@ def build_view_submitted_response_context(schema, submitted_at):
 
 
 def build_census_thank_you_context(
-    session_data: SessionData, confirmation_email_form, form_type
+    metadata: dict, confirmation_email_form, form_type
 ) -> Mapping:
     context = {
-        "display_address": session_data.display_address,
+        "display_address": metadata["display_address"],
         "form_type": form_type,
         "hide_sign_out_button": False,
         "sign_out_url": url_for("session.get_sign_out"),
