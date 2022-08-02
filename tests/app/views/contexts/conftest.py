@@ -197,17 +197,23 @@ def response_metadata():
 @pytest.fixture
 def fake_session_data():
     return SessionData(
-        tx_id="tx_id",
-        schema_name="some_schema_name",
-        period_str="period_str",
         language_code=None,
-        launch_language_code=None,
-        schema_url=None,
-        ru_name="ru_name",
-        ru_ref="ru_ref",
-        response_id="response_id",
-        case_id="case_id",
     )
+
+
+@pytest.fixture
+def fake_questionnaire_store_metadata():
+    return {
+        "tx_id": "tx_id",
+        "schema_name": "some_schema_name",
+        "period_str": "period_str",
+        "language_code": None,
+        "schema_url": None,
+        "ru_name": "ru_name",
+        "ru_ref": "ru_ref",
+        "response_id": "response_id",
+        "case_id": "case_id",
+    }
 
 
 @pytest.fixture

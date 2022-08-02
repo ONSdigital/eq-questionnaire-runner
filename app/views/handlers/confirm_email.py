@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Mapping
+from typing import Any, Mapping
 
 from flask import current_app, url_for
 from flask_babel import gettext, lazy_gettext
@@ -136,7 +136,10 @@ class ConfirmEmail:
 
     def _publish_fulfilment_request(self):
         fulfilment_request = ConfirmationEmailFulfilmentRequest(
-            self._email, self._session_store.session_data, self._schema
+            self._email,
+            self._session_store.session_data,
+            self._questionnaire_store.metadata,
+            self._schema,
         )
 
         try:
@@ -154,16 +157,17 @@ class ConfirmEmail:
 class ConfirmationEmailFulfilmentRequest(FulfilmentRequest):
     email_address: str
     session_data: SessionData
+    metadata: Mapping[str, Any]
     schema: QuestionnaireSchema
 
     def _payload(self) -> Mapping:
         return {
             "fulfilmentRequest": {
                 "email_address": self.email_address,
-                "display_address": self.session_data.display_address,
+                "display_address": self.metadata.get("display_address"),
                 "form_type": self.schema.form_type,
                 "language_code": self.session_data.language_code,
                 "region_code": self.schema.region_code,
-                "tx_id": self.session_data.tx_id,
+                "tx_id": self.metadata["tx_id"],
             }
         }

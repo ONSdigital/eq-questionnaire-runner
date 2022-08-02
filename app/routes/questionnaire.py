@@ -6,6 +6,7 @@ import flask_babel
 from flask import Blueprint, g, redirect, request, send_file
 from flask import session as cookie_session
 from flask import url_for
+from flask_babel import get_locale
 from flask_login import current_user, login_required
 from itsdangerous import BadSignature
 from structlog import get_logger
@@ -19,7 +20,6 @@ from app.data_models import QuestionnaireStore
 from app.globals import (
     get_metadata,
     get_questionnaire_store,
-    get_session_store,
     get_session_timeout_in_seconds,
 )
 from app.helpers import url_safe_serializer
@@ -31,7 +31,7 @@ from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
 from app.submitter.previously_submitted_exception import PreviouslySubmittedException
-from app.utilities.schema import load_schema_from_session_data
+from app.utilities.schema import load_schema_from_metadata
 from app.views.contexts import HubContext
 from app.views.handlers.block_factory import get_block_handler
 from app.views.handlers.confirm_email import ConfirmEmail
@@ -95,11 +95,12 @@ def before_questionnaire_request():
         "questionnaire request", method=request.method, url_path=request.full_path
     )
 
-    handle_language()
+    handle_language(metadata)
 
-    session_store = get_session_store()
     # pylint: disable=assigning-non-slot
-    g.schema = load_schema_from_session_data(session_store.session_data)
+    g.schema = load_schema_from_metadata(
+        metadata=metadata, language_code=get_locale().language
+    )
 
 
 @post_submission_blueprint.before_request
@@ -119,14 +120,17 @@ def before_post_submission_request():
     if not questionnaire_store.submitted_at:
         raise NotFound
 
-    handle_language()
+    handle_language(metadata)
 
-    session_store = get_session_store()
-    session_data = session_store.session_data
     # pylint: disable=assigning-non-slot
-    g.schema = load_schema_from_session_data(session_data)
+    g.schema = load_schema_from_metadata(
+        metadata=metadata, language_code=get_locale().language
+    )
 
-    logger.bind(tx_id=session_data.tx_id, schema_name=session_data.schema_name)
+    logger.bind(
+        tx_id=metadata.get("tx_id"),
+        schema_name=metadata.get("schema_name"),
+    )
 
     logger.info(
         "questionnaire request", method=request.method, url_path=request.full_path
