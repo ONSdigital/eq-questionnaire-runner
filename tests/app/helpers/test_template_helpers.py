@@ -104,10 +104,11 @@ def test_footer_context_census_nisra_theme(app: Flask, expected_footer_nisra_the
 
 
 @pytest.mark.parametrize(
-    "theme, survey_config, expected",
+    "theme, survey_title, survey_config, expected",
     (
         (
             SurveyType.BUSINESS,
+            None,
             BusinessSurveyConfig(),
             {
                 "orgLogo": "ons-logo-en",
@@ -116,6 +117,17 @@ def test_footer_context_census_nisra_theme(app: Flask, expected_footer_nisra_the
             },
         ),
         (
+            SurveyType.BUSINESS,
+            "Test",
+            BusinessSurveyConfig(),
+            {
+                "orgLogo": "ons-logo-en",
+                "orgLogoAlt": "Office for National Statistics logo",
+                "title": "Test",
+            },
+        ),
+        (
+            None,
             None,
             BusinessSurveyConfig(),
             {
@@ -126,6 +138,7 @@ def test_footer_context_census_nisra_theme(app: Flask, expected_footer_nisra_the
         ),
         (
             SurveyType.SOCIAL,
+            None,
             SocialSurveyConfig(),
             {
                 "orgLogo": "ons-logo-en",
@@ -134,6 +147,17 @@ def test_footer_context_census_nisra_theme(app: Flask, expected_footer_nisra_the
             },
         ),
         (
+            SurveyType.SOCIAL,
+            "Test",
+            SocialSurveyConfig(),
+            {
+                "orgLogo": "ons-logo-en",
+                "orgLogoAlt": "Office for National Statistics logo",
+                "title": "Test",
+            },
+        ),
+        (
+            None,
             None,
             SocialSurveyConfig(),
             {
@@ -144,6 +168,7 @@ def test_footer_context_census_nisra_theme(app: Flask, expected_footer_nisra_the
         ),
         (
             SurveyType.CENSUS,
+            None,
             CensusSurveyConfig(),
             {
                 "title": "Census 2021",
@@ -154,6 +179,19 @@ def test_footer_context_census_nisra_theme(app: Flask, expected_footer_nisra_the
             },
         ),
         (
+            SurveyType.CENSUS,
+            "Test",
+            CensusSurveyConfig(),
+            {
+                "title": "Test",
+                "orgLogo": "ons-logo-en",
+                "orgLogoAlt": "Office for National Statistics logo",
+                "titleLogo": "census-logo-en",
+                "titleLogoAlt": "Census 2021",
+            },
+        ),
+        (
+            None,
             None,
             CensusSurveyConfig(),
             {
@@ -166,6 +204,7 @@ def test_footer_context_census_nisra_theme(app: Flask, expected_footer_nisra_the
         ),
         (
             SurveyType.CENSUS_NISRA,
+            None,
             CensusNISRASurveyConfig(),
             {
                 "orgLogo": "nisra-logo",
@@ -179,6 +218,7 @@ def test_footer_context_census_nisra_theme(app: Flask, expected_footer_nisra_the
         ),
         (
             None,
+            None,
             CensusNISRASurveyConfig(),
             {
                 "orgLogo": "nisra-logo",
@@ -192,6 +232,7 @@ def test_footer_context_census_nisra_theme(app: Flask, expected_footer_nisra_the
         ),
         (
             None,
+            None,
             SurveyConfig(),
             {
                 "orgLogo": "ons-logo-en",
@@ -201,10 +242,16 @@ def test_footer_context_census_nisra_theme(app: Flask, expected_footer_nisra_the
         ),
     ),
 )
-def test_get_page_header_context(app: Flask, theme, survey_config, expected):
+def test_get_page_header_context(
+    app: Flask, theme, survey_title, survey_config, expected
+):
     with app.app_context():
-        if theme:
-            cookie_session["theme"] = theme
+        for cookie_name, cookie_value in {
+            "theme": theme,
+            "survey_title": survey_title,
+        }.items():
+            if cookie_value:
+                cookie_session[cookie_name] = cookie_value
         config = survey_config
 
         result = ContextHelper(
