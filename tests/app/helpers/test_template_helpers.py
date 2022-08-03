@@ -252,13 +252,12 @@ def test_get_page_header_context(
         }.items():
             if cookie_value:
                 cookie_session[cookie_name] = cookie_value
-        config = survey_config
 
         result = ContextHelper(
             language="en",
             is_post_submission=False,
             include_csrf_token=True,
-            survey_config=config,
+            survey_config=survey_config,
         ).context["page_header"]
 
     assert result == expected
