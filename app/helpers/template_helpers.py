@@ -112,10 +112,11 @@ class ContextHelper:
         context: dict[str, Union[bool, str, LazyString]] = {
             "orgLogo": f"{self._survey_config.page_header_logo}",
             "orgLogoAlt": f"{self._survey_config.page_header_logo_alt}",
+            "title": self._survey_title
+            if self._survey_title and self._survey_type
+            else "ONS Surveys",
         }
 
-        if self._survey_title:
-            context["title"] = self._survey_title
         if self._survey_config.title_logo:
             context["titleLogo"] = self._survey_config.title_logo
         if self._survey_config.title_logo_alt:

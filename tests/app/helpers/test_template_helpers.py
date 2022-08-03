@@ -103,80 +103,155 @@ def test_footer_context_census_nisra_theme(app: Flask, expected_footer_nisra_the
     assert result == expected_footer_nisra_theme
 
 
-def test_get_page_header_context_business(app: Flask):
-    expected = {
-        "orgLogo": "ons-logo-en",
-        "orgLogoAlt": "Office for National Statistics logo",
-    }
-
+@pytest.mark.parametrize(
+    "theme, survey_title, survey_config, expected",
+    (
+        (
+            SurveyType.BUSINESS,
+            None,
+            BusinessSurveyConfig(),
+            {
+                "orgLogo": "ons-logo-en",
+                "orgLogoAlt": "Office for National Statistics logo",
+                "title": "ONS Business Surveys",
+            },
+        ),
+        (
+            SurveyType.BUSINESS,
+            "Test",
+            BusinessSurveyConfig(),
+            {
+                "orgLogo": "ons-logo-en",
+                "orgLogoAlt": "Office for National Statistics logo",
+                "title": "Test",
+            },
+        ),
+        (
+            None,
+            None,
+            BusinessSurveyConfig(),
+            {
+                "orgLogo": "ons-logo-en",
+                "orgLogoAlt": "Office for National Statistics logo",
+                "title": "ONS Surveys",
+            },
+        ),
+        (
+            SurveyType.SOCIAL,
+            None,
+            SocialSurveyConfig(),
+            {
+                "orgLogo": "ons-logo-en",
+                "orgLogoAlt": "Office for National Statistics logo",
+                "title": "ONS Social Surveys",
+            },
+        ),
+        (
+            SurveyType.SOCIAL,
+            "Test",
+            SocialSurveyConfig(),
+            {
+                "orgLogo": "ons-logo-en",
+                "orgLogoAlt": "Office for National Statistics logo",
+                "title": "Test",
+            },
+        ),
+        (
+            None,
+            None,
+            SocialSurveyConfig(),
+            {
+                "orgLogo": "ons-logo-en",
+                "orgLogoAlt": "Office for National Statistics logo",
+                "title": "ONS Surveys",
+            },
+        ),
+        (
+            SurveyType.CENSUS,
+            None,
+            CensusSurveyConfig(),
+            {
+                "title": "Census 2021",
+                "orgLogo": "ons-logo-en",
+                "orgLogoAlt": "Office for National Statistics logo",
+                "titleLogo": "census-logo-en",
+                "titleLogoAlt": "Census 2021",
+            },
+        ),
+        (
+            SurveyType.CENSUS,
+            "Test",
+            CensusSurveyConfig(),
+            {
+                "title": "Test",
+                "orgLogo": "ons-logo-en",
+                "orgLogoAlt": "Office for National Statistics logo",
+                "titleLogo": "census-logo-en",
+                "titleLogoAlt": "Census 2021",
+            },
+        ),
+        (
+            None,
+            None,
+            CensusSurveyConfig(),
+            {
+                "title": "ONS Surveys",
+                "orgLogo": "ons-logo-en",
+                "orgLogoAlt": "Office for National Statistics logo",
+                "titleLogo": "census-logo-en",
+                "titleLogoAlt": "Census 2021",
+            },
+        ),
+        (
+            SurveyType.CENSUS_NISRA,
+            None,
+            CensusNISRASurveyConfig(),
+            {
+                "orgLogo": "nisra-logo",
+                "orgLogoAlt": "Northern Ireland Statistics and Research Agency logo",
+                "titleLogo": "census-logo-en",
+                "titleLogoAlt": "Census 2021",
+                "customHeaderLogo": True,
+                "orgMobileLogo": "nisra-logo-mobile",
+                "title": "Census 2021",
+            },
+        ),
+        (
+            None,
+            None,
+            CensusNISRASurveyConfig(),
+            {
+                "orgLogo": "nisra-logo",
+                "orgLogoAlt": "Northern Ireland Statistics and Research Agency logo",
+                "titleLogo": "census-logo-en",
+                "titleLogoAlt": "Census 2021",
+                "customHeaderLogo": True,
+                "orgMobileLogo": "nisra-logo-mobile",
+                "title": "ONS Surveys",
+            },
+        ),
+        (
+            None,
+            None,
+            SurveyConfig(),
+            {
+                "orgLogo": "ons-logo-en",
+                "orgLogoAlt": "Office for National Statistics logo",
+                "title": "ONS Surveys",
+            },
+        ),
+    ),
+)
+def test_get_page_header_context(
+    app: Flask, theme, survey_title, survey_config, expected
+):
     with app.app_context():
-        survey_config = SurveyConfig()
-
-        result = ContextHelper(
-            language="en",
-            is_post_submission=False,
-            include_csrf_token=True,
-            survey_config=survey_config,
-        ).context["page_header"]
-
-    assert result == expected
-
-
-def test_get_page_header_context_social(app: Flask):
-    expected = {
-        "orgLogo": "ons-logo-en",
-        "orgLogoAlt": "Office for National Statistics logo",
-        "title": "ONS Social Surveys",
-    }
-
-    with app.app_context():
-        survey_config = SocialSurveyConfig()
-
-        result = ContextHelper(
-            language="en",
-            is_post_submission=False,
-            include_csrf_token=True,
-            survey_config=survey_config,
-        ).context["page_header"]
-
-    assert result == expected
-
-
-def test_get_page_header_context_census(app: Flask):
-    expected = {
-        "title": "Census 2021",
-        "orgLogo": "ons-logo-en",
-        "orgLogoAlt": "Office for National Statistics logo",
-        "titleLogo": "census-logo-en",
-        "titleLogoAlt": "Census 2021",
-    }
-
-    with app.app_context():
-        survey_config = CensusSurveyConfig()
-
-        result = ContextHelper(
-            language="en",
-            is_post_submission=False,
-            include_csrf_token=True,
-            survey_config=survey_config,
-        ).context["page_header"]
-
-    assert result == expected
-
-
-def test_get_page_header_context_census_nisra(app: Flask):
-    expected = {
-        "title": "Census 2021",
-        "orgLogo": "nisra-logo",
-        "orgLogoAlt": "Northern Ireland Statistics and Research Agency logo",
-        "titleLogo": "census-logo-en",
-        "titleLogoAlt": "Census 2021",
-        "customHeaderLogo": True,
-        "orgMobileLogo": "nisra-logo-mobile",
-    }
-
-    with app.app_context():
-        survey_config = CensusNISRASurveyConfig()
+        for cookie_name, cookie_value in {
+            "theme": theme,
+            "survey_title": survey_title,
+        }.items():
+            if cookie_value:
+                cookie_session[cookie_name] = cookie_value
 
         result = ContextHelper(
             language="en",
