@@ -148,15 +148,22 @@ class ContextHelper:
                 context["rows"] = [{"itemsList": self._survey_config.footer_links}]
 
             else:
-                context["rows"] = [
-                    {
-                        "itemsList": [
-                            footer_link
-                            for footer_link in self._survey_config.footer_links
-                            if "Contact us" not in footer_link.values()
+                items_list: list[Mapping] = []
+
+                for footer_link in self._survey_config.footer_links:
+                    items_list.extend(
+                        footer_link
+                        for item in [
+                            "What we do",
+                            "Accessibility",
+                            "Help",
+                            "Languages",
+                            "BSL and audio videos",
                         ]
-                    }
-                ]
+                        if item in footer_link.values()
+                    )
+
+                context["rows"] = [{"itemsList": items_list}]
 
         if self._survey_config.footer_legal_links and self._survey_type:
             context["legal"] = [{"itemsList": self._survey_config.footer_legal_links}]
