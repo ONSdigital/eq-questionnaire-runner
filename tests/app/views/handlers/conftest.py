@@ -43,18 +43,7 @@ region_code = "GB_WLS"
 @freeze_time(time_to_freeze)
 def session_data():
     return SessionData(
-        tx_id="123",
-        schema_name="some_schema_name",
-        display_address="68 Abingdon Road, Goathill",
-        period_str=None,
         language_code="cy",
-        launch_language_code="en",
-        schema_url=None,
-        ru_name=None,
-        ru_ref=None,
-        submitted_at=datetime.now(timezone.utc).isoformat(),
-        response_id="321",
-        case_id="789",
     )
 
 
@@ -103,16 +92,7 @@ def set_storage_data(
 @pytest.fixture
 def session_data_feedback():
     return SessionData(
-        tx_id=tx_id,
-        schema_name=schema_name,
-        response_id=response_id,
-        period_str=period_str,
         language_code=language_code,
-        launch_language_code=None,
-        schema_url=None,
-        ru_name=ru_name,
-        ru_ref=ru_ref,
-        case_id=case_id,
         feedback_count=feedback_count,
     )
 
@@ -159,16 +139,7 @@ def submission_payload_expires_at():
 @pytest.fixture
 def submission_payload_session_data():
     return SessionData(
-        tx_id="tx_id",
-        schema_name="schema_name",
-        response_id="response_id",
-        period_str="period_str",
         language_code="cy",
-        launch_language_code="en",
-        schema_url=None,
-        ru_name="ru_name",
-        ru_ref="ru_ref",
-        case_id="0123456789000000",
     )
 
 

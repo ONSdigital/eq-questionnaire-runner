@@ -55,7 +55,7 @@ def login():
     except ValidationError as e:
         raise InvalidTokenException("Invalid runner claims") from e
     # pylint: disable=assigning-non-slot
-    g.schema = load_schema_from_metadata(runner_claims)
+    g.schema = load_schema_from_metadata(metadata=runner_claims)
     schema_metadata = g.schema.json["metadata"]
 
     try:
