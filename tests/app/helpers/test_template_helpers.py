@@ -88,20 +88,6 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             ).context["footer"]["footerWarning"]
 
 
-def test_footer_context_census_nisra_theme(app: Flask, expected_footer_nisra_theme):
-    with app.app_context():
-        survey_config = CensusNISRASurveyConfig()
-
-        result = ContextHelper(
-            language="en",
-            is_post_submission=False,
-            include_csrf_token=True,
-            survey_config=survey_config,
-        ).context["footer"]
-
-    assert result == expected_footer_nisra_theme
-
-
 @pytest.mark.parametrize(
     "theme, survey_title, survey_config, expected",
     (
