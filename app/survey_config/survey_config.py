@@ -65,6 +65,16 @@ class SurveyConfig:
     ) -> Optional[list[dict]]:
         return None
 
+    def get_footer_links(  # pylint: disable=unused-argument, no-self-use
+        self, cookie_has_theme: bool
+    ) -> Optional[list[dict]]:
+        return None
+
+    def get_footer_legal_links(  # pylint: disable=unused-argument, no-self-use
+        self, cookie_has_theme: bool
+    ) -> Optional[list[dict]]:
+        return None
+
     def get_data_layer(  # pylint: disable=no-self-use
         self, tx_id: Optional[str] = None
     ) -> list[dict]:

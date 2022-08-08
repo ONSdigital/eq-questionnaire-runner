@@ -1,5 +1,5 @@
-from dataclasses import dataclass, field
-from typing import Iterable, Mapping, MutableMapping, Optional, Union
+from dataclasses import dataclass
+from typing import Optional, Union
 
 from flask_babel import lazy_gettext
 from flask_babel.speaklater import LazyString
@@ -21,42 +21,6 @@ class CensusSurveyConfig(
     base_url: str = EN_BASE_URL
     account_service_log_out_url: str = f"{base_url}/en/start"
     design_system_theme: str = "census"
-    footer_links: Iterable[MutableMapping] = field(
-        default_factory=lambda: [
-            Link(
-                lazy_gettext("Help"),
-                f"{EN_BASE_URL}/help/how-to-answer-questions/online-questions-help/",
-            ).__dict__,
-            Link(lazy_gettext("Contact us"), f"{EN_BASE_URL}/contact-us/").__dict__,
-            Link(
-                lazy_gettext("Languages"),
-                f"{EN_BASE_URL}/help/languages-and-accessibility/languages/",
-            ).__dict__,
-            Link(
-                lazy_gettext("BSL and audio videos"),
-                f"{EN_BASE_URL}/help/languages-and-accessibility/accessibility/accessible-videos-with-bsl/",
-            ).__dict__,
-        ],
-        compare=False,
-    )
-    footer_legal_links: Iterable[Mapping] = field(
-        default_factory=lambda: [
-            Link(lazy_gettext("Cookies"), f"{EN_BASE_URL}/cookies/").__dict__,
-            Link(
-                lazy_gettext("Accessibility statement"),
-                f"{EN_BASE_URL}/accessibility-statement/",
-            ).__dict__,
-            Link(
-                lazy_gettext("Privacy and data protection"),
-                f"{EN_BASE_URL}/privacy-and-data-protection/",
-            ).__dict__,
-            Link(
-                lazy_gettext("Terms and conditions"),
-                f"{EN_BASE_URL}/terms-and-conditions/",
-            ).__dict__,
-        ],
-        compare=False,
-    )
 
     survey_title: LazyString = lazy_gettext("Census 2021")
     sign_out_button_text: str = lazy_gettext("Save and complete later")
@@ -71,6 +35,60 @@ class CensusSurveyConfig(
 
         return data_layer
 
+    def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
+
+        if cookie_has_theme:
+            return [
+                Link(
+                    lazy_gettext("Help"),
+                    f"{EN_BASE_URL}/help/how-to-answer-questions/online-questions-help/",
+                ).__dict__,
+                Link(lazy_gettext("Contact us"), f"{EN_BASE_URL}/contact-us/").__dict__,
+                Link(
+                    lazy_gettext("Languages"),
+                    f"{EN_BASE_URL}/help/languages-and-accessibility/languages/",
+                ).__dict__,
+                Link(
+                    lazy_gettext("BSL and audio videos"),
+                    f"{EN_BASE_URL}/help/languages-and-accessibility/accessibility/accessible-videos-with-bsl/",
+                ).__dict__,
+            ]
+
+        return [
+            Link(
+                lazy_gettext("Help"),
+                f"{EN_BASE_URL}/help/how-to-answer-questions/online-questions-help/",
+            ).__dict__,
+            Link(
+                lazy_gettext("Languages"),
+                f"{EN_BASE_URL}/help/languages-and-accessibility/languages/",
+            ).__dict__,
+            Link(
+                lazy_gettext("BSL and audio videos"),
+                f"{EN_BASE_URL}/help/languages-and-accessibility/accessibility/accessible-videos-with-bsl/",
+            ).__dict__,
+        ]
+
+    def get_footer_legal_links(self, cookie_has_theme: bool) -> Optional[list[dict]]:
+        if cookie_has_theme:
+            return [
+                Link(lazy_gettext("Cookies"), f"{EN_BASE_URL}/cookies/").__dict__,
+                Link(
+                    lazy_gettext("Accessibility statement"),
+                    f"{EN_BASE_URL}/accessibility-statement/",
+                ).__dict__,
+                Link(
+                    lazy_gettext("Privacy and data protection"),
+                    f"{EN_BASE_URL}/privacy-and-data-protection/",
+                ).__dict__,
+                Link(
+                    lazy_gettext("Terms and conditions"),
+                    f"{EN_BASE_URL}/terms-and-conditions/",
+                ).__dict__,
+            ]
+
+        return []
+
 
 @dataclass
 class WelshCensusSurveyConfig(
@@ -79,13 +97,33 @@ class WelshCensusSurveyConfig(
     title_logo: str = "census-logo-cy"
     base_url: str = CY_BASE_URL
     account_service_log_out_url: str = f"{base_url}/en/start"
-    footer_links: Iterable[MutableMapping] = field(
-        default_factory=lambda: [
+
+    def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
+
+        if cookie_has_theme:
+            return [
+                Link(
+                    lazy_gettext("Help"),
+                    f"{CY_BASE_URL}/help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/",
+                ).__dict__,
+                Link(
+                    lazy_gettext("Contact us"), f"{CY_BASE_URL}/cysylltu-a-ni/"
+                ).__dict__,
+                Link(
+                    lazy_gettext("Languages"),
+                    f"{CY_BASE_URL}/help/ieithoedd-a-hygyrchedd/ieithoedd/",
+                ).__dict__,
+                Link(
+                    lazy_gettext("BSL and audio videos"),
+                    f"{CY_BASE_URL}/help/ieithoedd-a-hygyrchedd/hygyrchedd/fideos-hygyrch-gyda-bsl/",
+                ).__dict__,
+            ]
+
+        return [
             Link(
                 lazy_gettext("Help"),
                 f"{CY_BASE_URL}/help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/",
             ).__dict__,
-            Link(lazy_gettext("Contact us"), f"{CY_BASE_URL}/cysylltu-a-ni/").__dict__,
             Link(
                 lazy_gettext("Languages"),
                 f"{CY_BASE_URL}/help/ieithoedd-a-hygyrchedd/ieithoedd/",
@@ -94,29 +132,27 @@ class WelshCensusSurveyConfig(
                 lazy_gettext("BSL and audio videos"),
                 f"{CY_BASE_URL}/help/ieithoedd-a-hygyrchedd/hygyrchedd/fideos-hygyrch-gyda-bsl/",
             ).__dict__,
-        ],
-        compare=False,
-        hash=False,
-    )
-    footer_legal_links: Iterable[Mapping] = field(
-        default_factory=lambda: [
-            Link(lazy_gettext("Cookies"), f"{CY_BASE_URL}/cwcis/").__dict__,
-            Link(
-                lazy_gettext("Accessibility statement"),
-                f"{CY_BASE_URL}/datganiad-hygyrchedd/",
-            ).__dict__,
-            Link(
-                lazy_gettext("Privacy and data protection"),
-                f"{CY_BASE_URL}/preifatrwydd-a-diogelu-data/",
-            ).__dict__,
-            Link(
-                lazy_gettext("Terms and conditions"),
-                f"{CY_BASE_URL}/telerau-ac-amodau/",
-            ).__dict__,
-        ],
-        compare=False,
-        hash=False,
-    )
+        ]
+
+    def get_footer_legal_links(self, cookie_has_theme: bool) -> list[dict]:
+        if cookie_has_theme:
+            return [
+                Link(lazy_gettext("Cookies"), f"{CY_BASE_URL}/cwcis/").__dict__,
+                Link(
+                    lazy_gettext("Accessibility statement"),
+                    f"{CY_BASE_URL}/datganiad-hygyrchedd/",
+                ).__dict__,
+                Link(
+                    lazy_gettext("Privacy and data protection"),
+                    f"{CY_BASE_URL}/preifatrwydd-a-diogelu-data/",
+                ).__dict__,
+                Link(
+                    lazy_gettext("Terms and conditions"),
+                    f"{CY_BASE_URL}/telerau-ac-amodau/",
+                ).__dict__,
+            ]
+
+        return []
 
 
 @dataclass
@@ -137,36 +173,46 @@ class CensusNISRASurveyConfig(
     copyright_text: LazyString = lazy_gettext(
         "Use of address data is subject to the terms and conditions."
     )
-    footer_links: Iterable[MutableMapping] = field(
-        default_factory=lambda: [
+    powered_by_logo: str = "nisra-logo"
+    powered_by_logo_alt: str = "NISRA - Northern Ireland Statistics and Research Agency"
+    _is_nisra: bool = True
+
+    def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
+
+        if cookie_has_theme:
+            return [
+                Link(
+                    lazy_gettext("Help"),
+                    f"{NIR_BASE_URL}/help/help-with-the-questions/online-questions-help/",
+                ).__dict__,
+                Link(
+                    lazy_gettext("Contact us"), f"{NIR_BASE_URL}/contact-us/"
+                ).__dict__,
+            ]
+
+        return [
             Link(
                 lazy_gettext("Help"),
                 f"{NIR_BASE_URL}/help/help-with-the-questions/online-questions-help/",
             ).__dict__,
-            Link(lazy_gettext("Contact us"), f"{NIR_BASE_URL}/contact-us/").__dict__,
-        ],
-        compare=False,
-        hash=False,
-    )
-    footer_legal_links: Iterable[Mapping] = field(
-        default_factory=lambda: [
-            Link(lazy_gettext("Cookies"), f"{NIR_BASE_URL}/cookies/").__dict__,
-            Link(
-                lazy_gettext("Accessibility statement"),
-                f"{NIR_BASE_URL}/accessibility-statement/",
-            ).__dict__,
-            Link(
-                lazy_gettext("Privacy and data protection"),
-                f"{NIR_BASE_URL}/privacy-and-data-protection/",
-            ).__dict__,
-            Link(
-                lazy_gettext("Terms and conditions"),
-                f"{NIR_BASE_URL}/terms-and-conditions/",
-            ).__dict__,
-        ],
-        compare=False,
-        hash=False,
-    )
-    powered_by_logo: str = "nisra-logo"
-    powered_by_logo_alt: str = "NISRA - Northern Ireland Statistics and Research Agency"
-    _is_nisra: bool = True
+        ]
+
+    def get_footer_legal_links(self, cookie_has_theme: bool) -> Optional[list[dict]]:
+        if cookie_has_theme:
+            return [
+                Link(lazy_gettext("Cookies"), f"{NIR_BASE_URL}/cookies/").__dict__,
+                Link(
+                    lazy_gettext("Accessibility statement"),
+                    f"{NIR_BASE_URL}/accessibility-statement/",
+                ).__dict__,
+                Link(
+                    lazy_gettext("Privacy and data protection"),
+                    f"{NIR_BASE_URL}/privacy-and-data-protection/",
+                ).__dict__,
+                Link(
+                    lazy_gettext("Terms and conditions"),
+                    f"{NIR_BASE_URL}/terms-and-conditions/",
+                ).__dict__,
+            ]
+
+        return []

@@ -143,30 +143,15 @@ class ContextHelper:
         if self._footer_warning:
             context["footerWarning"] = self._footer_warning
 
-        if self._survey_config.footer_links:
-            if self._survey_type:
-                context["rows"] = [{"itemsList": self._survey_config.footer_links}]
+        if footer_links := self._survey_config.get_footer_links(
+            cookie_has_theme=bool(self._survey_type),
+        ):
+            context["rows"] = [{"itemsList": footer_links}]
 
-            else:
-                items_list: list[Mapping] = []
-
-                for footer_link in self._survey_config.footer_links:
-                    items_list.extend(
-                        footer_link
-                        for item in [
-                            "What we do",
-                            "Accessibility",
-                            "Help",
-                            "Languages",
-                            "BSL and audio videos",
-                        ]
-                        if item in footer_link.values()
-                    )
-
-                context["rows"] = [{"itemsList": items_list}]
-
-        if self._survey_config.footer_legal_links and self._survey_type:
-            context["legal"] = [{"itemsList": self._survey_config.footer_legal_links}]
+        if footer_legal_links := self._survey_config.get_footer_legal_links(
+            cookie_has_theme=bool(self._survey_type),
+        ):
+            context["legal"] = [{"itemsList": footer_legal_links}]
 
         if (
             self._survey_config.powered_by_logo

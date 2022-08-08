@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Iterable, Mapping, MutableMapping
+from typing import Iterable, Mapping, MutableMapping, Optional
 
 from flask_babel import lazy_gettext
 
@@ -32,18 +32,34 @@ class SocialSurveyConfig(
         if not self.account_service_log_out_url:
             self.account_service_log_out_url: str = f"{self.base_url}/sign-in/logout"
 
-        self.footer_links = [
+    def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
+
+        if cookie_has_theme:
+            return [
+                Link(lazy_gettext("What we do"), self.what_we_do_url).__dict__,
+                Link(lazy_gettext("Contact us"), self.contact_us_url).__dict__,
+                Link(
+                    lazy_gettext("Accessibility"),
+                    self.accessibility_url,
+                ).__dict__,
+            ]
+
+        return [
             Link(lazy_gettext("What we do"), self.what_we_do_url).__dict__,
-            Link(lazy_gettext("Contact us"), self.contact_us_url).__dict__,
             Link(
                 lazy_gettext("Accessibility"),
                 self.accessibility_url,
             ).__dict__,
         ]
-        self.footer_legal_links = [
-            Link(lazy_gettext("Cookies"), self.cookie_settings_url).__dict__,
-            Link(
-                lazy_gettext("Privacy and data protection"),
-                self.privacy_and_data_protection_url,
-            ).__dict__,
-        ]
+
+    def get_footer_legal_links(self, cookie_has_theme: bool) -> Optional[list[dict]]:
+        if cookie_has_theme:
+            return [
+                Link(lazy_gettext("Cookies"), self.cookie_settings_url).__dict__,
+                Link(
+                    lazy_gettext("Privacy and data protection"),
+                    self.privacy_and_data_protection_url,
+                ).__dict__,
+            ]
+
+        return []
