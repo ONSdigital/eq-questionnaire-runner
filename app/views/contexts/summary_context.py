@@ -14,11 +14,17 @@ class SummaryContext(Context):
         groups = list(self._build_all_groups(return_to))
         summary_options = self._schema.get_summary_options()
         collapsible = summary_options.get("collapsible", False)
+        headers = ["Question", "Answer given"]
+        if answers_are_editable:
+            headers.extend("Change answer")
+        else:
+            headers.extend("")
         return {
             "groups": groups,
             "answers_are_editable": answers_are_editable,
             "collapsible": collapsible,
             "summary_type": "Summary",
+            "headers": headers,
         }
 
     def _build_all_groups(
