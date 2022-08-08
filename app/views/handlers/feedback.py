@@ -86,7 +86,7 @@ class Feedback:
         session_data: SessionData = self._session_store.session_data  # type: ignore
         session_data.feedback_count += 1
 
-        feedback_metadata = FeedbackMetadata(session_data.case_id, session_data.tx_id)  # type: ignore
+        feedback_metadata = FeedbackMetadata(self._questionnaire_store.metadata["case_id"], self._questionnaire_store.metadata["tx_id"])  # type: ignore
 
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
@@ -94,7 +94,7 @@ class Feedback:
             metadata=self._questionnaire_store.metadata,
             response_metadata=self._questionnaire_store.response_metadata,
             schema=self._schema,
-            case_id=session_data.case_id,
+            case_id=self._questionnaire_store.metadata["case_id"],
             submission_language_code=session_data.language_code,
             feedback_count=session_data.feedback_count,
             feedback_text=self.form.data.get("feedback-text"),

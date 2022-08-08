@@ -1,5 +1,3 @@
-from datetime import datetime, timezone
-
 import pytest
 from flask import current_app
 from jwcrypto import jwe
@@ -42,7 +40,8 @@ def test_save(app, app_session_store):
             expires_at=app_session_store.expires_at,
         ).save()
         session_store = SessionStore("user_ik", "pepper", "eq_session_id")
-        assert session_store.session_data.tx_id == "tx_id"
+
+        assert session_store.session_data.confirmation_email_count == 0
 
 
 def test_delete(app, app_session_store):
@@ -66,12 +65,12 @@ def test_add_data_to_session(app, app_session_store):
             session_data=app_session_store.session_data,
             expires_at=app_session_store.expires_at,
         ).save()
-        display_address = "68 Abingdon Road, Goathill"
-        app_session_store.session_store.session_data.display_address = display_address
+        feedback_count = 9
+        app_session_store.session_store.session_data.feedback_count = feedback_count
         app_session_store.session_store.save()
 
         session_store = SessionStore("user_ik", "pepper", "eq_session_id")
-        assert session_store.session_data.display_address == display_address
+        assert session_store.session_data.feedback_count == feedback_count
 
 
 def test_should_not_delete_when_no_session(app, app_session_store):
@@ -158,18 +157,8 @@ def test_load_existing_session_does_not_error_when_session_data_contains_survey_
     app, app_session_store
 ):
     session_data_with_survey_url = SessionData(
-        tx_id="123",
-        schema_name="some_schema_name",
-        display_address="68 Abingdon Road, Goathill",
-        period_str=None,
         language_code="cy",
-        launch_language_code="en",
         survey_url="some-url",
-        ru_name=None,
-        ru_ref=None,
-        submitted_at=datetime.now(timezone.utc).isoformat(),
-        response_id="321",
-        case_id="789",
     )
 
     with app.test_request_context():

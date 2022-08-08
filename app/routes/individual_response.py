@@ -1,5 +1,5 @@
 from flask import Blueprint, g, redirect, request, url_for
-from flask_babel import lazy_gettext
+from flask_babel import get_locale, lazy_gettext
 from flask_login import current_user, login_required
 from itsdangerous import BadSignature
 from structlog import get_logger
@@ -14,7 +14,7 @@ from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store
 from app.helpers.template_helpers import render_template
-from app.utilities.schema import load_schema_from_session_data
+from app.utilities.schema import load_schema_from_metadata
 from app.views.handlers.individual_response import (
     IndividualResponseChangeHandler,
     IndividualResponseHandler,
@@ -60,11 +60,13 @@ def before_individual_response_request():
         "individual-response request", method=request.method, url_path=request.full_path
     )
 
-    handle_language()
+    handle_language(metadata)
 
-    session_store = get_session_store()
     # pylint: disable=assigning-non-slot
-    g.schema = load_schema_from_session_data(session_store.session_data)
+    g.schema = load_schema_from_metadata(
+        metadata=questionnaire_store.metadata,
+        language_code=get_locale().language,
+    )
 
 
 @individual_response_blueprint.route("/", methods=["GET"])
@@ -91,7 +93,6 @@ def request_individual_response(schema, questionnaire_store):
 @with_schema
 def individual_response_how(schema, questionnaire_store, list_item_id):
     language_code = get_session_store().session_data.language_code
-
     individual_response_handler = IndividualResponseHowHandler(
         schema=schema,
         questionnaire_store=questionnaire_store,
@@ -134,7 +135,6 @@ def individual_response_change(schema, questionnaire_store, list_item_id):
 @with_schema
 def individual_response_post_address_confirm(schema, questionnaire_store, list_item_id):
     language_code = get_session_store().session_data.language_code
-
     try:
         individual_response_handler = IndividualResponsePostAddressConfirmHandler(
             schema=schema,
@@ -184,7 +184,6 @@ def individual_response_post_address_confirmation(schema, questionnaire_store):
 @with_schema
 def individual_response_who(schema, questionnaire_store):
     language_code = get_session_store().session_data.language_code
-
     individual_response_handler = IndividualResponseWhoHandler(
         schema=schema,
         questionnaire_store=questionnaire_store,

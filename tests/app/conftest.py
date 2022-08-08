@@ -4,7 +4,9 @@ from datetime import datetime, timedelta, timezone
 
 import fakeredis
 import pytest
+from mock import MagicMock
 
+from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import ProgressStore
@@ -73,9 +75,39 @@ def expires_at():
 
 @pytest.fixture(name="session_store")
 def fixture_session_store(session_data):
-    session_store = SessionStore("user_ik", "pepper", "eq_session_id")
+    session_store = SessionStore(
+        "user_ik",
+        "pepper",
+        "eq_session_id",
+    )
     session_store.session_data = session_data
+    session_store.user_id = "user_id"
     return session_store
+
+
+@pytest.fixture
+def fake_questionnaire_store():
+    storage = MagicMock()
+    storage.get_user_data = MagicMock(return_value=("{}", "ce_sid", 1, None))
+    storage.add_or_update = MagicMock()
+    store = QuestionnaireStore(storage)
+    store.metadata = {
+        "schema_name": "test_checkbox",
+        "display_address": "68 Abingdon Road, Goathill",
+        "tx_id": "tx_id",
+        "language_code": "en",
+    }
+
+    return store
+
+
+@pytest.fixture
+def fake_metadata():
+    return {
+        "tx_id": "tx_id",
+        "language_code": "en",
+        "display_address": "68 Abingdon Road, Goathill",
+    }
 
 
 @pytest.fixture
