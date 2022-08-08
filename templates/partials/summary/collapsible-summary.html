@@ -2,10 +2,6 @@
 {% from "components/summary/_macro.njk" import onsSummary %}
 
 {%- set itemList = [] -%}
-{%- set tableHeader = ["Question", "Answer given"] -%}
-{%- if content.summary.answers_are_editable -%}
-  {{ tableHeader.append( "Change answer" ) or "" }}
-{%- endif -%}
 
 {%- for group in content.summary.groups -%}
   {%- if group["blocks"] | length -%}
