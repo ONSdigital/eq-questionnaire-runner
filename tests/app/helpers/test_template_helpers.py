@@ -22,10 +22,10 @@ from tests.app.helpers.conftest import (
     expected_footer_business_theme_no_cookie,
     expected_footer_census_theme,
     expected_footer_census_theme_no_cookie,
+    expected_footer_census_welsh_theme,
     expected_footer_nisra_theme,
     expected_footer_social_theme,
     expected_footer_social_theme_no_cookie,
-    expected_footer_census_welsh_theme,
 )
 
 DEFAULT_URL = "http://localhost"

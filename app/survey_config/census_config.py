@@ -36,14 +36,20 @@ class CensusSurveyConfig(
         return data_layer
 
     def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
+        links = [
+            Link(
+                lazy_gettext("Help"),
+                f"{EN_BASE_URL}/help/how-to-answer-questions/online-questions-help/",
+            ).__dict__
+        ]
 
         if cookie_has_theme:
-            return [
-                Link(
-                    lazy_gettext("Help"),
-                    f"{EN_BASE_URL}/help/how-to-answer-questions/online-questions-help/",
-                ).__dict__,
-                Link(lazy_gettext("Contact us"), f"{EN_BASE_URL}/contact-us/").__dict__,
+            links.append(
+                Link(lazy_gettext("Contact us"), f"{EN_BASE_URL}/contact-us/").__dict__
+            )
+
+        links.extend(
+            [
                 Link(
                     lazy_gettext("Languages"),
                     f"{EN_BASE_URL}/help/languages-and-accessibility/languages/",
@@ -53,21 +59,9 @@ class CensusSurveyConfig(
                     f"{EN_BASE_URL}/help/languages-and-accessibility/accessibility/accessible-videos-with-bsl/",
                 ).__dict__,
             ]
+        )
 
-        return [
-            Link(
-                lazy_gettext("Help"),
-                f"{EN_BASE_URL}/help/how-to-answer-questions/online-questions-help/",
-            ).__dict__,
-            Link(
-                lazy_gettext("Languages"),
-                f"{EN_BASE_URL}/help/languages-and-accessibility/languages/",
-            ).__dict__,
-            Link(
-                lazy_gettext("BSL and audio videos"),
-                f"{EN_BASE_URL}/help/languages-and-accessibility/accessibility/accessible-videos-with-bsl/",
-            ).__dict__,
-        ]
+        return links
 
     def get_footer_legal_links(self, cookie_has_theme: bool) -> Optional[list[dict]]:
         if cookie_has_theme:
@@ -100,15 +94,21 @@ class WelshCensusSurveyConfig(
 
     def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
 
+        links = [
+            Link(
+                lazy_gettext("Help"),
+                f"{CY_BASE_URL}/help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/",
+            ).__dict__
+        ]
+
         if cookie_has_theme:
-            return [
-                Link(
-                    lazy_gettext("Help"),
-                    f"{CY_BASE_URL}/help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/",
-                ).__dict__,
+            links.append(
                 Link(
                     lazy_gettext("Contact us"), f"{CY_BASE_URL}/cysylltu-a-ni/"
-                ).__dict__,
+                ).__dict__
+            )
+        links.extend(
+            [
                 Link(
                     lazy_gettext("Languages"),
                     f"{CY_BASE_URL}/help/ieithoedd-a-hygyrchedd/ieithoedd/",
@@ -118,21 +118,8 @@ class WelshCensusSurveyConfig(
                     f"{CY_BASE_URL}/help/ieithoedd-a-hygyrchedd/hygyrchedd/fideos-hygyrch-gyda-bsl/",
                 ).__dict__,
             ]
-
-        return [
-            Link(
-                lazy_gettext("Help"),
-                f"{CY_BASE_URL}/help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/",
-            ).__dict__,
-            Link(
-                lazy_gettext("Languages"),
-                f"{CY_BASE_URL}/help/ieithoedd-a-hygyrchedd/ieithoedd/",
-            ).__dict__,
-            Link(
-                lazy_gettext("BSL and audio videos"),
-                f"{CY_BASE_URL}/help/ieithoedd-a-hygyrchedd/hygyrchedd/fideos-hygyrch-gyda-bsl/",
-            ).__dict__,
-        ]
+        )
+        return links
 
     def get_footer_legal_links(self, cookie_has_theme: bool) -> list[dict]:
         if cookie_has_theme:
@@ -179,23 +166,19 @@ class CensusNISRASurveyConfig(
 
     def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
 
-        if cookie_has_theme:
-            return [
-                Link(
-                    lazy_gettext("Help"),
-                    f"{NIR_BASE_URL}/help/help-with-the-questions/online-questions-help/",
-                ).__dict__,
-                Link(
-                    lazy_gettext("Contact us"), f"{NIR_BASE_URL}/contact-us/"
-                ).__dict__,
-            ]
-
-        return [
+        links = [
             Link(
                 lazy_gettext("Help"),
                 f"{NIR_BASE_URL}/help/help-with-the-questions/online-questions-help/",
-            ).__dict__,
+            ).__dict__
         ]
+
+        if cookie_has_theme:
+            links.append(
+                Link(lazy_gettext("Contact us"), f"{NIR_BASE_URL}/contact-us/").__dict__
+            )
+
+        return links
 
     def get_footer_legal_links(self, cookie_has_theme: bool) -> Optional[list[dict]]:
         if cookie_has_theme:

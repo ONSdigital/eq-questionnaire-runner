@@ -33,24 +33,19 @@ class SocialSurveyConfig(
             self.account_service_log_out_url: str = f"{self.base_url}/sign-in/logout"
 
     def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
+        links = [Link(lazy_gettext("What we do"), self.what_we_do_url).__dict__]
 
         if cookie_has_theme:
-            return [
-                Link(lazy_gettext("What we do"), self.what_we_do_url).__dict__,
-                Link(lazy_gettext("Contact us"), self.contact_us_url).__dict__,
-                Link(
-                    lazy_gettext("Accessibility"),
-                    self.accessibility_url,
-                ).__dict__,
-            ]
+            links.append(Link(lazy_gettext("Contact us"), self.contact_us_url).__dict__)
 
-        return [
-            Link(lazy_gettext("What we do"), self.what_we_do_url).__dict__,
+        links.append(
             Link(
                 lazy_gettext("Accessibility"),
                 self.accessibility_url,
-            ).__dict__,
-        ]
+            ).__dict__
+        )
+
+        return links
 
     def get_footer_legal_links(self, cookie_has_theme: bool) -> Optional[list[dict]]:
         if cookie_has_theme:
