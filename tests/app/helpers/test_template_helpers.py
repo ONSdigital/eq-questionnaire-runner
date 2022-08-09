@@ -17,49 +17,54 @@ from app.survey_config import (
     WelshCensusSurveyConfig,
 )
 from app.survey_config.survey_type import SurveyType
+from tests.app.helpers.conftest import (
+    expected_footer_business_theme,
+    expected_footer_business_theme_no_cookie,
+    expected_footer_census_theme,
+    expected_footer_census_theme_no_cookie,
+    expected_footer_census_welsh_theme,
+    expected_footer_nisra_theme,
+    expected_footer_social_theme,
+    expected_footer_social_theme_no_cookie,
+)
 
 DEFAULT_URL = "http://localhost"
 
 
-def test_footer_context_census_theme(app: Flask, expected_footer_census_theme):
+@pytest.mark.parametrize(
+    "theme, survey_config, expected_footer",
+    [
+        (SurveyType.CENSUS, CensusSurveyConfig(), expected_footer_census_theme()),
+        (None, CensusSurveyConfig(), expected_footer_census_theme_no_cookie()),
+        (SurveyType.BUSINESS, BusinessSurveyConfig(), expected_footer_business_theme()),
+        (None, BusinessSurveyConfig(), expected_footer_business_theme_no_cookie()),
+        (SurveyType.SOCIAL, SocialSurveyConfig(), expected_footer_social_theme()),
+        (None, SocialSurveyConfig(), expected_footer_social_theme_no_cookie()),
+        (
+            SurveyType.CENSUS_NISRA,
+            CensusNISRASurveyConfig(),
+            expected_footer_nisra_theme(),
+        ),
+        (
+            SurveyType.CENSUS,
+            WelshCensusSurveyConfig(),
+            expected_footer_census_welsh_theme(),
+        ),
+    ],
+)
+def test_footer_context(app: Flask, theme, survey_config, expected_footer):
     with app.app_context():
-        survey_config = CensusSurveyConfig()
+        if theme:
+            cookie_session["theme"] = theme
+        config = survey_config
         result = ContextHelper(
             language="en",
             is_post_submission=False,
             include_csrf_token=True,
-            survey_config=survey_config,
+            survey_config=config,
         ).context["footer"]
 
-    assert result == expected_footer_census_theme
-
-
-def test_footer_context_business_theme(app: Flask, expected_footer_business_theme):
-    with app.test_client():
-        survey_config = BusinessSurveyConfig()
-
-        result = ContextHelper(
-            language="en",
-            is_post_submission=False,
-            include_csrf_token=True,
-            survey_config=survey_config,
-        ).context["footer"]
-
-    assert result == expected_footer_business_theme
-
-
-def test_footer_context_social_theme(app: Flask, expected_footer_social_theme):
-    with app.test_client():
-        survey_config = SocialSurveyConfig()
-
-        result = ContextHelper(
-            language="en",
-            is_post_submission=False,
-            include_csrf_token=True,
-            survey_config=survey_config,
-        ).context["footer"]
-
-    assert result == expected_footer_social_theme
+    assert result == expected_footer
 
 
 def test_footer_warning_in_context_census_theme(app: Flask):
@@ -87,20 +92,6 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
                 include_csrf_token=True,
                 survey_config=CensusSurveyConfig(),
             ).context["footer"]["footerWarning"]
-
-
-def test_footer_context_census_nisra_theme(app: Flask, expected_footer_nisra_theme):
-    with app.app_context():
-        survey_config = CensusNISRASurveyConfig()
-
-        result = ContextHelper(
-            language="en",
-            is_post_submission=False,
-            include_csrf_token=True,
-            survey_config=survey_config,
-        ).context["footer"]
-
-    assert result == expected_footer_nisra_theme
 
 
 @pytest.mark.parametrize(
