@@ -57,4 +57,4 @@ class SocialSurveyConfig(
                 ).__dict__,
             ]
 
-        return []
+        return None

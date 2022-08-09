@@ -81,7 +81,7 @@ class CensusSurveyConfig(
                 ).__dict__,
             ]
 
-        return []
+        return None
 
 
 @dataclass
@@ -121,7 +121,7 @@ class WelshCensusSurveyConfig(
         )
         return links
 
-    def get_footer_legal_links(self, cookie_has_theme: bool) -> list[dict]:
+    def get_footer_legal_links(self, cookie_has_theme: bool) -> Optional[list[dict]]:
         if cookie_has_theme:
             return [
                 Link(lazy_gettext("Cookies"), f"{CY_BASE_URL}/cwcis/").__dict__,
@@ -139,7 +139,7 @@ class WelshCensusSurveyConfig(
                 ).__dict__,
             ]
 
-        return []
+        return None
 
 
 @dataclass
@@ -198,4 +198,4 @@ class CensusNISRASurveyConfig(
                 ).__dict__,
             ]
 
-        return []
+        return None

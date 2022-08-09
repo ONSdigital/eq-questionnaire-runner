@@ -32,27 +32,27 @@ DEFAULT_URL = "http://localhost"
 
 
 @pytest.mark.parametrize(
-    "expected_footer, theme, survey_config",
+    "theme, survey_config, expected_footer",
     [
-        (expected_footer_census_theme(), SurveyType.CENSUS, CensusSurveyConfig()),
-        (expected_footer_census_theme_no_cookie(), None, CensusSurveyConfig()),
-        (expected_footer_business_theme(), SurveyType.BUSINESS, BusinessSurveyConfig()),
-        (expected_footer_business_theme_no_cookie(), None, BusinessSurveyConfig()),
-        (expected_footer_social_theme(), SurveyType.SOCIAL, SocialSurveyConfig()),
-        (expected_footer_social_theme_no_cookie(), None, SocialSurveyConfig()),
+        (SurveyType.CENSUS, CensusSurveyConfig(), expected_footer_census_theme()),
+        (None, CensusSurveyConfig(), expected_footer_census_theme_no_cookie()),
+        (SurveyType.BUSINESS, BusinessSurveyConfig(), expected_footer_business_theme()),
+        (None, BusinessSurveyConfig(), expected_footer_business_theme_no_cookie()),
+        (SurveyType.SOCIAL, SocialSurveyConfig(), expected_footer_social_theme()),
+        (None, SocialSurveyConfig(), expected_footer_social_theme_no_cookie()),
         (
-            expected_footer_nisra_theme(),
             SurveyType.CENSUS_NISRA,
             CensusNISRASurveyConfig(),
+            expected_footer_nisra_theme(),
         ),
         (
-            expected_footer_census_welsh_theme(),
             SurveyType.CENSUS,
             WelshCensusSurveyConfig(),
+            expected_footer_census_welsh_theme(),
         ),
     ],
 )
-def test_footer_context(app: Flask, expected_footer, theme, survey_config):
+def test_footer_context(app: Flask, theme, survey_config, expected_footer):
     with app.app_context():
         if theme:
             cookie_session["theme"] = theme

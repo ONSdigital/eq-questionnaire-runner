@@ -100,7 +100,7 @@ class BusinessSurveyConfig(
 
         return links
 
-    def get_footer_legal_links(self, cookie_has_theme: bool) -> list[dict]:
+    def get_footer_legal_links(self, cookie_has_theme: bool) -> Optional[list[dict]]:
         if cookie_has_theme:
             return [
                 Link(lazy_gettext("Cookies"), self.cookie_settings_url).__dict__,
@@ -110,7 +110,7 @@ class BusinessSurveyConfig(
                 ).__dict__,
             ]
 
-        return []
+        return None
 
     def get_data_layer(self, tx_id: Optional[str] = None) -> list[dict]:
         data_layer = [{"tx_id": tx_id}] if tx_id else []
