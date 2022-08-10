@@ -14,20 +14,23 @@
   })
 }}
 {% block form_content %}
+  {% if content.summary.title %}
+    <h1>{{content.summary.title}}</h1>
+  {% endif %}
   {% if content.summary.groups %}
     {% set group = content.summary.groups %}
-    <h1>{{content.summary.title}}</h1>
     <div>
       {% include 'partials/summary/summary.html' %}
     </div>
-  {% elif content.summary.custom_summary %}
-    <h1>{{content.summary.title}}</h1>
+  {% endif %}
+  {% if content.summary.custom_summary %}
     {% for summary in content.summary.custom_summary %}
       {% if summary.type == 'List' %}
         {% set add_link = summary.add_link %}
         {% set add_link_text = summary.add_link_text %}
         {% set empty_list_text = summary.empty_list_text %}
         {% set list_title = summary.title %}
+        {% set related_answers = summary.related_answers %}
 
         <div {{'class="ons-u-mb-l"' if not loop.last }} data-qa="{{summary.list_name}}-list-summary">
         {% if summary.list %}

@@ -37,7 +37,7 @@ describe("List Collector Driving Question", () => {
     it("The summary add link returns to the driving question", () => {
       $(AnyoneUsuallyLiveAtPage.no()).click();
       $(AnyoneUsuallyLiveAtPage.submit()).click();
-      $(SectionSummaryPage.peopleListAddLink()).click();
+      $(SectionSummaryPage.anyoneUsuallyLiveAtAnswerEdit()).click();
       expect(browser.getUrl()).to.contain(AnyoneUsuallyLiveAtPage.url());
     });
   });

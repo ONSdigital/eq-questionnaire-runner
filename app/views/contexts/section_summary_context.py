@@ -117,10 +117,12 @@ class SectionSummaryContext(Context):
                 )
             }
 
-            return {**collapsible, **summary_elements}
+        else:
+            summary_elements = {}
 
         return {
             **collapsible,
+            **summary_elements,
             "groups": [
                 Group(
                     group,
@@ -140,12 +142,11 @@ class SectionSummaryContext(Context):
 
     def _title_for_location(self):
         section_id = self.current_location.section_id
-        title = (
+        return (
             self._schema.get_repeating_title_for_section(section_id)
             or self._schema.get_summary_title_for_section(section_id)
             or self._schema.get_title_for_section(section_id)
         )
-        return title
 
     def _custom_summary_elements(self, section_summary):
         for summary_element in section_summary:
@@ -153,7 +154,6 @@ class SectionSummaryContext(Context):
                 yield self._list_summary_element(summary_element)
 
     def _list_summary_element(self, summary) -> Mapping:
-        list_collector_block = None
         edit_block_id, remove_block_id, primary_person_edit_block_id = None, None, None
         current_list = self._list_store[summary["for_list"]]
 
@@ -163,16 +163,9 @@ class SectionSummaryContext(Context):
             )
         )
 
-        list_collector_blocks_on_path = [
-            list_collector_block
-            for list_collector_block in list_collector_blocks
-            if list_collector_block["id"] in self.routing_path.block_ids
-        ]
-
-        if list_collector_blocks_on_path:
-            list_collector_block = list_collector_blocks_on_path[0]
-            edit_block_id = list_collector_block["edit_block"]["id"]
-            remove_block_id = list_collector_block["remove_block"]["id"]
+        list_collector_block = list_collector_blocks[0]
+        edit_block_id = list_collector_block["edit_block"]["id"]
+        remove_block_id = list_collector_block["remove_block"]["id"]
 
         add_link = self._add_link(summary, list_collector_block)
 
@@ -201,6 +194,18 @@ class SectionSummaryContext(Context):
             primary_person_edit_block_id=primary_person_edit_block_id,
         )
 
+        if current_list:
+            related_answers = [
+                self._schema.get_answers_by_answer_id(answer.answer_id)[0]["label"]
+                for answer in self._answer_store
+                if answer.list_item_id == current_list.first
+                and "label"
+                in self._schema.get_answers_by_answer_id(answer.answer_id)[0]
+            ][1:]
+
+        else:
+            related_answers = None
+
         return {
             "title": rendered_summary["title"],
             "type": rendered_summary["type"],
@@ -208,29 +213,19 @@ class SectionSummaryContext(Context):
             "add_link_text": rendered_summary["add_link_text"],
             "empty_list_text": rendered_summary.get("empty_list_text"),
             "list_name": rendered_summary["for_list"],
+            "related_answers": related_answers,
             **list_summary_context,
         }
 
-    def _add_link(self, summary, list_collector_block):
+    @staticmethod
+    def _add_link(summary, list_collector_block):
 
-        if list_collector_block:
-            return url_for(
-                "questionnaire.block",
-                list_name=summary["for_list"],
-                block_id=list_collector_block["add_block"]["id"],
-                return_to="section-summary",
-            )
-
-        driving_question_block = QuestionnaireSchema.get_driving_question_for_list(
-            self.section, summary["for_list"]
+        return url_for(
+            "questionnaire.block",
+            list_name=summary["for_list"],
+            block_id=list_collector_block["add_block"]["id"],
+            return_to="section-summary",
         )
-
-        if driving_question_block:
-            return url_for(
-                "questionnaire.block",
-                block_id=driving_question_block["id"],
-                return_to="section-summary",
-            )
 
     def _get_safe_page_title(self, title):
         return (

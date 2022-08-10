@@ -60,7 +60,12 @@ class Group:
         blocks = []
 
         for block in group_schema["blocks"]:
-            if block["id"] in routing_path and block["type"] == "Question":
+            if block["id"] in routing_path and block["type"] in [
+                "Question",
+                "ListCollectorDrivingQuestion",
+                "ListCollector",
+                "PrimaryPersonListCollector",
+            ]:
                 blocks.extend(
                     [
                         Block(

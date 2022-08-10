@@ -151,60 +151,141 @@ def test_context_for_section_list_summary(people_answer_store):
     context = summary_context()
     expected = {
         "summary": {
+            "title": "People who live here and overnight visitors",
+            "page_title": "People who live here and overnight visitors",
+            "summary_type": "SectionSummary",
             "answers_are_editable": True,
             "collapsible": False,
             "custom_summary": [
                 {
+                    "title": "Household members staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
+                    "type": "List",
                     "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
                     "add_link_text": "Add someone to this household",
                     "empty_list_text": "There are no householders",
+                    "list_name": "people",
+                    "related_answers": ["Last name"],
                     "list": {
-                        "editable": True,
                         "list_items": [
                             {
-                                "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=section-summary",
                                 "item_title": "Toni Morrison",
                                 "primary_person": False,
-                                "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=section-summary",
                                 "list_item_id": "PlwgoG",
+                                "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=section-summary",
+                                "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=section-summary",
                             },
                             {
-                                "edit_link": "/questionnaire/people/UHPLbX/edit-person/?return_to=section-summary",
                                 "item_title": "Barry Pheloung",
                                 "primary_person": False,
-                                "remove_link": "/questionnaire/people/UHPLbX/remove-person/?return_to=section-summary",
                                 "list_item_id": "UHPLbX",
+                                "edit_link": "/questionnaire/people/UHPLbX/edit-person/?return_to=section-summary",
+                                "remove_link": "/questionnaire/people/UHPLbX/remove-person/?return_to=section-summary",
                             },
                         ],
+                        "editable": True,
                     },
-                    "list_name": "people",
-                    "title": "Household members staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
-                    "type": "List",
                 },
                 {
+                    "title": "Visitors staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
+                    "type": "List",
                     "add_link": "/questionnaire/visitors/add-visitor/?return_to=section-summary",
                     "add_link_text": "Add another visitor to this household",
                     "empty_list_text": "There are no visitors",
+                    "list_name": "visitors",
+                    "related_answers": [],
                     "list": {
-                        "editable": True,
                         "list_items": [
                             {
-                                "edit_link": "/questionnaire/visitors/gTrlio/edit-visitor-person/?return_to=section-summary",
                                 "item_title": "",
                                 "primary_person": False,
-                                "remove_link": "/questionnaire/visitors/gTrlio/remove-visitor/?return_to=section-summary",
                                 "list_item_id": "gTrlio",
+                                "edit_link": "/questionnaire/visitors/gTrlio/edit-visitor-person/?return_to=section-summary",
+                                "remove_link": "/questionnaire/visitors/gTrlio/remove-visitor/?return_to=section-summary",
                             }
                         ],
+                        "editable": True,
                     },
-                    "list_name": "visitors",
-                    "title": "Visitors staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
-                    "type": "List",
                 },
             ],
-            "page_title": "People who live here and overnight visitors",
-            "summary_type": "SectionSummary",
-            "title": "People who live here and overnight visitors",
+            "groups": [
+                {
+                    "id": "group",
+                    "title": "Questions",
+                    "blocks": [
+                        {
+                            "id": "primary-person-list-collector",
+                            "title": None,
+                            "number": None,
+                            "question": {
+                                "id": "primary-confirmation-question",
+                                "type": "General",
+                                "title": "Do you live at <em>70 Abingdon Road, Goathill</em>?",
+                                "number": None,
+                                "answers": [
+                                    {
+                                        "id": "you-live-here",
+                                        "label": None,
+                                        "value": None,
+                                        "type": "radio",
+                                        "unit": None,
+                                        "unit_length": None,
+                                        "currency": None,
+                                        "link": "/questionnaire/primary-person-list-collector/?return_to=section-summary&return_to_answer_id=you-live-here#you-"
+                                        "live-here",
+                                    }
+                                ],
+                            },
+                        },
+                        {
+                            "id": "list-collector",
+                            "title": None,
+                            "number": None,
+                            "question": {
+                                "id": "confirmation-question",
+                                "type": "General",
+                                "title": "Does anyone else live at <em>70 Abingdon Road, Goathill</em>?",
+                                "number": None,
+                                "answers": [
+                                    {
+                                        "id": "anyone-else",
+                                        "label": None,
+                                        "value": None,
+                                        "type": "radio",
+                                        "unit": None,
+                                        "unit_length": None,
+                                        "currency": None,
+                                        "link": "/questionnaire/list-collector/?return_to=section-summary&return_to_answer_id=anyone-else#anyone-else",
+                                    }
+                                ],
+                            },
+                        },
+                        {
+                            "id": "visitor-list-collector",
+                            "title": None,
+                            "number": None,
+                            "question": {
+                                "id": "confirmation-visitor-question",
+                                "type": "General",
+                                "title": "Are there any other visitors staying overnight at <em>70 Abingdon Road, Goathill</em>?",
+                                "number": None,
+                                "answers": [
+                                    {
+                                        "id": "any-more-visitors",
+                                        "label": None,
+                                        "value": None,
+                                        "type": "radio",
+                                        "unit": None,
+                                        "unit_length": None,
+                                        "currency": None,
+                                        "link": "/questionnaire/visitor-list-collector/?return_to=section-summary&return_to_answer_id=any-more-visitors#any-mor"
+                                        "e-visitors",
+                                    }
+                                ],
+                            },
+                        },
+                    ],
+                }
+            ],
         }
     }
 
@@ -234,13 +315,51 @@ def test_context_for_driving_question_summary_empty_list():
             "collapsible": False,
             "custom_summary": [
                 {
-                    "add_link": "/questionnaire/anyone-usually-live-at/?return_to=section-summary",
-                    "add_link_text": "Add someone to this household",
+                    "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
+                    "add_link_text": "Add someone to this " "household",
                     "empty_list_text": "There are no householders",
-                    "list": {"editable": False, "list_items": []},
+                    "list": {"editable": True, "list_items": []},
                     "list_name": "people",
+                    "related_answers": None,
                     "title": "Household members",
                     "type": "List",
+                }
+            ],
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "anyone-usually-live-at",
+                            "number": None,
+                            "question": {
+                                "answers": [
+                                    {
+                                        "currency": None,
+                                        "id": "anyone-usually-live-at-answer",
+                                        "label": None,
+                                        "link": "/questionnaire/anyone-usually-live-at/?return_to=section-summary&return_to_answer_id=anyone-usually-live-at-an"
+                                        "swer#anyone-usually-live-at-answer",
+                                        "type": "radio",
+                                        "unit": None,
+                                        "unit_length": None,
+                                        "value": {
+                                            "detail_answer_value": None,
+                                            "label": "No",
+                                        },
+                                    }
+                                ],
+                                "id": "anyone-usually-live-at-question",
+                                "number": None,
+                                "title": "Does anyone "
+                                "usually live at 1 "
+                                "Pleasant Lane?",
+                                "type": "General",
+                            },
+                            "title": None,
+                        }
+                    ],
+                    "id": "group",
+                    "title": "List",
                 }
             ],
             "page_title": "List Collector Driving Question Summary",
@@ -289,23 +408,87 @@ def test_context_for_driving_question_summary():
             "custom_summary": [
                 {
                     "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
-                    "add_link_text": "Add someone to this household",
+                    "add_link_text": "Add someone to this " "household",
                     "empty_list_text": "There are no householders",
                     "list": {
                         "editable": True,
                         "list_items": [
                             {
-                                "item_title": "Toni Morrison",
-                                "primary_person": False,
                                 "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=section-summary",
-                                "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=section-summary",
+                                "item_title": "Toni " "Morrison",
                                 "list_item_id": "PlwgoG",
+                                "primary_person": False,
+                                "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=section-summary",
                             }
                         ],
                     },
                     "list_name": "people",
+                    "related_answers": ["Last name"],
                     "title": "Household members",
                     "type": "List",
+                }
+            ],
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "anyone-usually-live-at",
+                            "number": None,
+                            "question": {
+                                "answers": [
+                                    {
+                                        "currency": None,
+                                        "id": "anyone-usually-live-at-answer",
+                                        "label": None,
+                                        "link": "/questionnaire/anyone-usually-live-at/?return_to=section-summary&return_to_answer_id=anyone-usually-live-at-an"
+                                        "swer#anyone-usually-live-at-answer",
+                                        "type": "radio",
+                                        "unit": None,
+                                        "unit_length": None,
+                                        "value": {
+                                            "detail_answer_value": None,
+                                            "label": "Yes",
+                                        },
+                                    }
+                                ],
+                                "id": "anyone-usually-live-at-question",
+                                "number": None,
+                                "title": "Does anyone "
+                                "usually live at 1 "
+                                "Pleasant Lane?",
+                                "type": "General",
+                            },
+                            "title": None,
+                        },
+                        {
+                            "id": "anyone-else-live-at",
+                            "number": None,
+                            "question": {
+                                "answers": [
+                                    {
+                                        "currency": None,
+                                        "id": "anyone-else-live-at-answer",
+                                        "label": None,
+                                        "link": "/questionnaire/anyone-else-live-at/?return_to=section-summary&return_to_answer_id=anyone-else-live-at-answer#a"
+                                        "nyone-else-live-at-answer",
+                                        "type": "radio",
+                                        "unit": None,
+                                        "unit_length": None,
+                                        "value": None,
+                                    }
+                                ],
+                                "id": "confirmation-question",
+                                "number": None,
+                                "title": "Does anyone else "
+                                "live at 1 Pleasant "
+                                "Lane?",
+                                "type": "General",
+                            },
+                            "title": None,
+                        },
+                    ],
+                    "id": "group",
+                    "title": "List",
                 }
             ],
             "page_title": "List Collector Driving Question Summary",

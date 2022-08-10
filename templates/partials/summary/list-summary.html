@@ -4,11 +4,12 @@
   {% set headers = ["Name of person", "Action"] %}
   {% set rows = map_list_collector_config(
     list.list_items,
-    "person",
+    None,
     _("Change"),
     _("Change details for {item_name}"),
     _("Remove"),
-    _("Remove {item_name}")
+    _("Remove {item_name}"),
+    related_answers
   ) %}
 {% else %}
   {% set headers = ["Name of person"] %}
