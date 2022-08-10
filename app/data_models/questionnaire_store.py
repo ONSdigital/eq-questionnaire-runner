@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from datetime import datetime
-from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Mapping, Optional
+
+from werkzeug.datastructures import ImmutableDict
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
@@ -28,7 +29,7 @@ class QuestionnaireStore:
         self.version = version
         self._metadata: dict[str, Any] = {}
         # self.metadata is a read-only view over self._metadata
-        self.metadata: Mapping[str, Any] = MappingProxyType(self._metadata)
+        self.metadata: Mapping[str, Any] = ImmutableDict(self._metadata)
         self.response_metadata: Mapping[str, Any] = {}
         self.list_store = ListStore()
         self.answer_store = AnswerStore()
@@ -57,7 +58,7 @@ class QuestionnaireStore:
         Metadata should normally be read only.
         """
         self._metadata = to_set
-        self.metadata = MappingProxyType(self._metadata)
+        self.metadata = ImmutableDict(self._metadata)
 
         return self
 

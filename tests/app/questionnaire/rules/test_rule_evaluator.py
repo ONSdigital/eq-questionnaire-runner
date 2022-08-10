@@ -236,14 +236,14 @@ def test_answer_source_with_dict_answer_selector(answer_value, expected_result):
 )
 def test_metadata_source(metadata_value, expected_result):
     rule_evaluator = get_rule_evaluator(
-        metadata={"some-metadata": metadata_value},
+        metadata={"tx_id": metadata_value},
     )
 
     assert (
         rule_evaluator.evaluate(
             rule={
                 Operator.EQUAL: [
-                    {"source": "metadata", "identifier": "some-metadata"},
+                    {"source": "metadata", "identifier": "tx_id"},
                     3,
                 ]
             },

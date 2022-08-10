@@ -5,6 +5,7 @@ from flask_babel import get_locale
 from flask_login import current_user, login_required
 
 from app.authentication.roles import role_required
+from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_metadata, get_questionnaire_store
 from app.helpers.session_helpers import with_questionnaire_store
 from app.questionnaire.router import Router
@@ -88,5 +89,7 @@ def dump_submission(schema, questionnaire_store):
 
     submission_handler = SubmissionHandler(schema, questionnaire_store, routing_path)
 
-    response = {"submission": submission_handler.get_payload()}
+    metadata_proxy = MetadataProxy(questionnaire_store.metadata)
+
+    response = {"submission": submission_handler.get_payload(metadata_proxy.version)}
     return json_dumps(response), 200

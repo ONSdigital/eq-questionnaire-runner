@@ -8,6 +8,7 @@ from werkzeug.exceptions import BadRequest
 from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
 )
+from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_metadata, get_questionnaire_store, get_session_store
 from app.helpers import url_safe_serializer
 from app.helpers.language_helper import handle_language
@@ -43,6 +44,8 @@ def before_individual_response_request():
     if not metadata:
         raise NoQuestionnaireStateException(401)
 
+    metadata_proxy = MetadataProxy(metadata)
+
     questionnaire_store = get_questionnaire_store(
         current_user.user_id, current_user.user_ik
     )
@@ -51,9 +54,9 @@ def before_individual_response_request():
         return redirect(url_for("post_submission.get_thank_you"))
 
     logger.bind(
-        tx_id=metadata["tx_id"],
-        schema_name=metadata["schema_name"],
-        ce_id=metadata["collection_exercise_sid"],
+        tx_id=metadata_proxy.tx_id,
+        schema_name=metadata_proxy.schema_name,
+        ce_id=metadata_proxy.collection_exercise_sid,
     )
 
     logger.info(
@@ -170,9 +173,11 @@ def individual_response_post_address_confirmation(schema, questionnaire_store):
     if request.method == "POST":
         return redirect(url_for("questionnaire.get_questionnaire"))
 
+    metadata_proxy = MetadataProxy(questionnaire_store.metadata)
+
     return render_template(
         template="individual_response/confirmation-post",
-        display_address=questionnaire_store.metadata.get("display_address"),
+        display_address=metadata_proxy.display_address,
         page_title=individual_response_handler.page_title(
             lazy_gettext("An individual access code has been sent by post")
         ),

@@ -9,6 +9,7 @@ from flask import url_for
 from flask_babel import LazyString, get_locale, lazy_gettext
 from flask_login import current_user
 
+from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_metadata, get_session_store
 from app.helpers.language_helper import get_languages_context
 from app.questionnaire import QuestionnaireSchema
@@ -82,12 +83,13 @@ class ContextHelper:
     def service_links_context(
         self,
     ) -> Optional[dict[str, Union[dict[str, str], list[dict]]]]:
-        metadata = get_metadata(current_user)
+        metadata_proxy = MetadataProxy(get_metadata(current_user))
+
         if service_links := self._survey_config.get_service_links(
             sign_out_url=self._sign_out_url,
             is_authenticated=current_user.is_authenticated,
             cookie_has_theme=bool(self._survey_type),
-            ru_ref=metadata.get("ru_ref") if metadata else None,  # type: ignore
+            ru_ref=metadata_proxy.ru_ref,  # type: ignore
         ):
             return {
                 "toggleServicesButton": {
@@ -103,9 +105,8 @@ class ContextHelper:
     def data_layer_context(
         self,
     ) -> list[dict]:
-        metadata = get_metadata(current_user)
-        tx_id = metadata.get("tx_id") if metadata else None
-        return self._survey_config.get_data_layer(tx_id=tx_id)
+        metadata_proxy = MetadataProxy(get_metadata(current_user))
+        return self._survey_config.get_data_layer(tx_id=metadata_proxy.tx_id)
 
     @property
     def page_header_context(self) -> dict[str, Union[bool, str, LazyString]]:

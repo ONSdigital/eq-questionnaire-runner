@@ -17,6 +17,10 @@ from app.utilities.metadata_parser import (
     validate_questionnaire_claims,
     validate_runner_claims,
 )
+from app.utilities.metadata_parser_v2 import (
+    validate_questionnaire_claims_v2,
+    validate_runner_claims_v2,
+)
 
 
 @pytest.fixture
@@ -66,9 +70,81 @@ def fake_metadata():
 
 
 @pytest.fixture
+def fake_metadata_v2():
+    def parse_metadata_v2(claims, schema_metadata):
+        runner_claims = validate_runner_claims_v2(claims)
+        questionnaire_claims = validate_questionnaire_claims_v2(claims, schema_metadata)
+
+        for key, value in questionnaire_claims.items():
+            runner_claims["survey_metadata"]["data"][key] = value
+
+        return runner_claims
+
+    schema_metadata = [
+        {"name": "user_id", "type": "string"},
+        {"name": "period_id", "type": "string"},
+        {"name": "ref_p_start_date", "type": "string"},
+        {"name": "ref_p_end_date", "type": "string"},
+        {"name": "display_address", "type": "string"},
+        {"name": "case_ref", "type": "string"},
+    ]
+
+    metadata = parse_metadata_v2(
+        {
+            "version": "v2",
+            "tx_id": str(uuid.uuid4()),
+            "schema_name": "1_0000",
+            "collection_exercise_sid": "test-sid",
+            "account_service_url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/",
+            "survey_metadata": {
+                "data": {
+                    "period_id": "2016-02-01",
+                    "period_str": "2016-01-01",
+                    "ref_p_start_date": "2016-02-02",
+                    "ref_p_end_date": "2016-03-03",
+                    "ru_ref": "432423423423",
+                    "ru_name": "Apple",
+                    "case_type": "SPG",
+                    "form_type": "I",
+                    "case_ref": "1000000000000001",
+                    "display_address": "68 Abingdon Road, Goathill",
+                    "user_id": "789473423",
+                },
+            },
+            "response_id": "1234567890123456",
+            "case_id": str(uuid.uuid4()),
+            "region_code": "GB-ENG",
+            "channel": "RH",
+            "jti": str(uuid.uuid4()),
+        },
+        schema_metadata,
+    )
+
+    return metadata
+
+
+@pytest.fixture
 def fake_response_metadata():
     response_metadata = {"started_at": "2018-07-04T14:49:33.448608+00:00"}
     return response_metadata
+
+
+@pytest.fixture
+def fake_questionnaire_store_v2(fake_metadata_v2, fake_response_metadata):
+    user_answer = Answer(answer_id="GHI", value=0, list_item_id=None)
+
+    storage = MagicMock()
+    storage.get_user_data = MagicMock(return_value=("{}", "ce_sid", 1, None))
+    storage.add_or_update = MagicMock()
+
+    store = QuestionnaireStore(storage)
+
+    store.answer_store = AnswerStore()
+    store.answer_store.add_or_update(user_answer)
+    store.metadata = fake_metadata_v2
+    store.response_metadata = fake_response_metadata
+
+    return store
 
 
 @pytest.fixture

@@ -17,6 +17,10 @@ from app.utilities.metadata_parser import (
     validate_questionnaire_claims,
     validate_runner_claims,
 )
+from app.utilities.metadata_parser_v2 import (
+    validate_questionnaire_claims_v2,
+    validate_runner_claims_v2,
+)
 from app.utilities.schema import load_schema_from_metadata
 
 logger = get_logger()
@@ -50,39 +54,53 @@ def login():
 
     validate_jti(decrypted_token)
 
-    try:
-        runner_claims = validate_runner_claims(decrypted_token)
-    except ValidationError as e:
-        raise InvalidTokenException("Invalid runner claims") from e
+    runner_claims = get_runner_claims(decrypted_token)
+
     # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(metadata=runner_claims)
     schema_metadata = g.schema.json["metadata"]
 
-    try:
-        questionnaire_claims = validate_questionnaire_claims(
-            decrypted_token, schema_metadata
-        )
-    except ValidationError as e:
-        raise InvalidTokenException("Invalid questionnaire claims") from e
+    questionnaire_claims = get_questionnaire_claims(
+        decrypted_token=decrypted_token, schema_metadata=schema_metadata
+    )
 
-    claims = {**runner_claims, **questionnaire_claims}
+    theme = g.schema.json["theme"]
+    ru_ref = None
+    questionnaire_id = None
+
+    if decrypted_token.get("version"):
+
+        for key, value in questionnaire_claims.items():
+            runner_claims["survey_metadata"]["data"][key] = value
+        claims = runner_claims
+
+        if theme == "social":
+            questionnaire_id = (
+                claims.get("survey_metadata").get("data").get("questionnaire_id")
+            )
+        else:
+            ru_ref = claims.get("survey_metadata").get("data").get("ru_ref")
+    else:
+        claims = {**runner_claims, **questionnaire_claims}
+        ru_ref = claims["ru_ref"]
 
     schema_name = claims["schema_name"]
     tx_id = claims["tx_id"]
-    ru_ref = claims["ru_ref"]
     case_id = claims["case_id"]
 
     logger.bind(
         schema_name=schema_name,
         tx_id=tx_id,
-        ru_ref=ru_ref,
+        questionnaire_id=questionnaire_id or None,
+        ru_ref=ru_ref or None,
         case_id=case_id,
     )
+
     logger.info("decrypted token and parsed metadata")
 
     store_session(claims)
 
-    cookie_session["theme"] = g.schema.json["theme"]
+    cookie_session["theme"] = theme
     cookie_session["survey_title"] = g.schema.json["title"]
     cookie_session["expires_in"] = get_session_timeout_in_seconds(g.schema)
 
@@ -150,3 +168,27 @@ def get_sign_out():
 @session_blueprint.route("/signed-out", methods=["GET"])
 def get_signed_out():
     return render_template(template="signed-out")
+
+
+def get_runner_claims(decrypted_token):
+    try:
+        return (
+            validate_runner_claims_v2(decrypted_token)
+            if decrypted_token.get("version")
+            else validate_runner_claims(decrypted_token)
+        )
+
+    except ValidationError as e:
+        raise InvalidTokenException("Invalid runner claims") from e
+
+
+def get_questionnaire_claims(decrypted_token, schema_metadata):
+    try:
+        return (
+            validate_questionnaire_claims_v2(decrypted_token, schema_metadata)
+            if decrypted_token.get("version")
+            else validate_questionnaire_claims(decrypted_token, schema_metadata)
+        )
+
+    except ValidationError as e:
+        raise InvalidTokenException("Invalid questionnaire claims") from e

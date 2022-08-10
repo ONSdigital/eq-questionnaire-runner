@@ -96,7 +96,6 @@ def test_questionnaire_store_deletes(questionnaire_store, basic_input):
 
     # Then
     assert "a-test-section" not in store.progress_store
-    assert store.metadata.copy() == {}
     assert len(store.answer_store) == 0
     assert store.response_metadata == {}
 

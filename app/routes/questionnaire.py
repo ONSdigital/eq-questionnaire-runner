@@ -17,6 +17,7 @@ from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
 )
 from app.data_models import QuestionnaireStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import (
     get_metadata,
     get_questionnaire_store,
@@ -78,6 +79,8 @@ def before_questionnaire_request():
     if not metadata:
         raise NoQuestionnaireStateException(401)
 
+    metadata_proxy = MetadataProxy(metadata)
+
     questionnaire_store = get_questionnaire_store(
         current_user.user_id, current_user.user_ik
     )
@@ -86,9 +89,9 @@ def before_questionnaire_request():
         return redirect(url_for("post_submission.get_thank_you"))
 
     logger.bind(
-        tx_id=metadata["tx_id"],
-        schema_name=metadata["schema_name"],
-        ce_id=metadata["collection_exercise_sid"],
+        tx_id=metadata_proxy.tx_id,
+        schema_name=metadata_proxy.schema_name,
+        ce_id=metadata_proxy.collection_exercise_sid,
     )
 
     logger.info(
@@ -127,9 +130,11 @@ def before_post_submission_request():
         metadata=metadata, language_code=get_locale().language
     )
 
+    metadata_proxy = MetadataProxy(metadata)
+
     logger.bind(
-        tx_id=metadata.get("tx_id"),
-        schema_name=metadata.get("schema_name"),
+        tx_id=metadata_proxy.tx_id,
+        schema_name=metadata_proxy.schema_name,
     )
 
     logger.info(

@@ -5,6 +5,7 @@ from flask import url_for
 from flask_babel import lazy_gettext
 
 from app.data_models import QuestionnaireStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import has_view_submitted_response_expired
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.survey_config.survey_type import SurveyType
@@ -24,22 +25,25 @@ def build_view_submitted_response_context(
     view_submitted_response_expired = has_view_submitted_response_expired(
         questionnaire_store.submitted_at  # type: ignore
     )
+    metadata_proxy = MetadataProxy(questionnaire_store.metadata)
+    trad_as = metadata_proxy.trad_as
+    ru_name = metadata_proxy.ru_name
 
     if survey_type is SurveyType.SOCIAL:
         submitted_text = lazy_gettext("Answers submitted.")
-    elif trad_as := questionnaire_store.metadata.get("trad_as"):
+    elif trad_as and ru_name:
         submitted_text = lazy_gettext(
             "Answers submitted for <span>{ru_name}</span> ({trad_as})"
-        ).format(ru_name=questionnaire_store.metadata["ru_name"], trad_as=trad_as)
+        ).format(ru_name=ru_name, trad_as=trad_as)
     else:
         submitted_text = lazy_gettext(
             "Answers submitted for <span>{ru_name}</span>"
-        ).format(ru_name=questionnaire_store.metadata["ru_name"])
+        ).format(ru_name=metadata_proxy.ru_name)
 
     metadata = build_submission_metadata_context(
         survey_type,
         questionnaire_store.submitted_at,  # type: ignore
-        questionnaire_store.metadata["tx_id"],
+        metadata_proxy.tx_id,
     )
     context = {
         "hide_sign_out_button": True,

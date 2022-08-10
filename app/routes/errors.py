@@ -13,6 +13,7 @@ from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
 )
 from app.authentication.no_token_exception import NoTokenException
+from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_metadata
 from app.helpers.language_helper import handle_language
 from app.helpers.template_helpers import get_survey_config, render_template
@@ -35,9 +36,10 @@ errors_blueprint = Blueprint("errors", __name__)
 
 
 def log_exception(exception, status_code):
-    metadata = get_metadata(current_user)
-    if metadata:
-        logger.bind(tx_id=metadata["tx_id"])
+    metadata_proxy = MetadataProxy(get_metadata(current_user))
+
+    if metadata_proxy.metadata:
+        logger.bind(tx_id=metadata_proxy.tx_id)
 
     log = logger.warning if status_code < 500 else logger.error
 

@@ -10,6 +10,7 @@ from requests import RequestException
 from requests.adapters import HTTPAdapter, Retry
 from structlog import get_logger
 
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,
@@ -102,8 +103,10 @@ def load_schema_from_metadata(
     metadata: Mapping[str, Any], *, language_code: Optional[str] = None
 ) -> QuestionnaireSchema:
     metadata = metadata or {}
-    language_code = language_code or metadata.get("language_code")
-    if schema_url := metadata.get("schema_url"):
+    metadata_proxy = MetadataProxy(metadata)
+
+    language_code = language_code or metadata_proxy.language_code
+    if schema_url := metadata_proxy.schema_url:
         # :TODO: Remove before production uses schema_url
         # This is temporary and is only for development/integration purposes.
         # This should not be used in production.
@@ -126,7 +129,7 @@ def load_schema_from_metadata(
         return schema
 
     return load_schema_from_name(
-        metadata.get("schema_name"), language_code=language_code
+        metadata_proxy.schema_name, language_code=language_code
     )
 
 

@@ -26,6 +26,46 @@ PAYLOAD = {
     "display_address": "68 Abingdon Road, Goathill",
 }
 
+PAYLOAD_V2_BUISNESS = {
+    "version": "v2",
+    "survey_metadata": {
+        "data": {
+            "user_id": "integration-test",
+            "period_str": "April 2016",
+            "period_id": "201604",
+            "ru_ref": "123456789012A",
+            "ru_name": "Integration Testing",
+            "ref_p_start_date": "2016-04-01",
+            "ref_p_end_date": "2016-04-30",
+            "trad_as": "Integration Tests",
+            "employment_date": "1983-06-02",
+            "display_address": "68 Abingdon Road, Goathill",
+        }
+    },
+    "collection_exercise_sid": "789",
+    "response_id": "1234567890123456",
+    "language_code": "en",
+    "roles": [],
+    "account_service_url": ACCOUNT_SERVICE_URL,
+}
+
+PAYLOAD_V2_SOCIAL = {
+    "version": "v2",
+    "survey_metadata": {
+        "data": {
+            "case_ref": "1000000000000001",
+            "case_type": "B",
+            "questionnaire_id": str(uuid4()),
+        },
+        "receipting_keys": ["questionnaire_id"],
+    },
+    "collection_exercise_sid": "789",
+    "response_id": "1234567890123456",
+    "language_code": "en",
+    "roles": [],
+    "account_service_url": ACCOUNT_SERVICE_URL,
+}
+
 
 class TokenGenerator:
     def __init__(self, key_store, upstream_kid, sr_public_kid):
@@ -51,8 +91,62 @@ class TokenGenerator:
 
         return payload_vars
 
+    @staticmethod
+    def _get_payload_with_params_v2_business(
+        schema_name, schema_url=None, **extra_payload
+    ):
+        payload_vars = PAYLOAD_V2_BUISNESS.copy()
+        payload_vars["tx_id"] = str(uuid4())
+        payload_vars["schema_name"] = schema_name
+        if schema_url:
+            payload_vars["schema_url"] = schema_url
+
+        payload_vars["iat"] = time.time()
+        payload_vars["exp"] = payload_vars["iat"] + float(3600)  # one hour from now
+        payload_vars["jti"] = str(uuid4())
+        payload_vars["case_id"] = str(uuid4())
+
+        for key, value in extra_payload.items():
+            payload_vars[key] = value
+
+        return payload_vars
+
+    @staticmethod
+    def _get_payload_with_params_v2_social(
+        schema_name, schema_url=None, **extra_payload
+    ):
+        payload_vars = PAYLOAD_V2_SOCIAL.copy()
+        payload_vars["tx_id"] = str(uuid4())
+        payload_vars["schema_name"] = schema_name
+        if schema_url:
+            payload_vars["schema_url"] = schema_url
+
+        payload_vars["iat"] = time.time()
+        payload_vars["exp"] = payload_vars["iat"] + float(3600)  # one hour from now
+        payload_vars["jti"] = str(uuid4())
+        payload_vars["case_id"] = str(uuid4())
+
+        for key, value in extra_payload.items():
+            payload_vars[key] = value
+
+        return payload_vars
+
     def create_token(self, schema_name, **extra_payload):
         payload_vars = self._get_payload_with_params(schema_name, None, **extra_payload)
+
+        return self.generate_token(payload_vars)
+
+    def create_token_v2_business(self, schema_name, **extra_payload):
+        payload_vars = self._get_payload_with_params_v2_business(
+            schema_name, None, **extra_payload
+        )
+
+        return self.generate_token(payload_vars)
+
+    def create_token_v2_social(self, schema_name, **extra_payload):
+        payload_vars = self._get_payload_with_params_v2_social(
+            schema_name, None, **extra_payload
+        )
 
         return self.generate_token(payload_vars)
 
@@ -71,6 +165,16 @@ class TokenGenerator:
     def create_token_without_trad_as(self, schema_name, **extra_payload):
         payload_vars = self._get_payload_with_params(schema_name, None, **extra_payload)
         del payload_vars["trad_as"]
+
+        return self.generate_token(payload_vars)
+
+    def create_token_v2_social_token_invalid_receipting_key(
+        self, schema_name, **extra_payload
+    ):
+        payload_vars = self._get_payload_with_params_v2_social(
+            schema_name, None, **extra_payload
+        )
+        del payload_vars["survey_metadata"]["data"]["questionnaire_id"]
 
         return self.generate_token(payload_vars)
 

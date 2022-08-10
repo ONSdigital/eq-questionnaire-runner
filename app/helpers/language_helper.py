@@ -4,6 +4,7 @@ from urllib.parse import urlencode
 from flask import g, request
 from flask_login import current_user
 
+from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_metadata, get_session_store
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.utilities.schema import get_allowed_languages
@@ -19,9 +20,10 @@ def handle_language(metadata: Optional[Mapping[str, Any]] = None) -> None:
 
     if session_store and session_store.session_data:
         metadata = metadata or get_metadata(current_user) or {}
-        schema_name = metadata["schema_name"]
+        metadata_proxy = MetadataProxy(metadata)
+        schema_name = metadata_proxy.schema_name
 
-        launch_language = metadata.get("language_code") or DEFAULT_LANGUAGE_CODE
+        launch_language = metadata_proxy.language_code or DEFAULT_LANGUAGE_CODE
         # pylint: disable=assigning-non-slot
         g.allowed_languages = get_allowed_languages(schema_name, launch_language)
         request_language = request.args.get("language_code")

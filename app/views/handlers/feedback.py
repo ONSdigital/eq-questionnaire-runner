@@ -8,6 +8,7 @@ from sdc.crypto.encrypter import encrypt
 from werkzeug.datastructures import MultiDict
 
 from app.data_models import QuestionnaireStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.forms.questionnaire_form import QuestionnaireForm, generate_form
@@ -86,7 +87,8 @@ class Feedback:
         session_data: SessionData = self._session_store.session_data  # type: ignore
         session_data.feedback_count += 1
 
-        feedback_metadata = FeedbackMetadata(self._questionnaire_store.metadata["case_id"], self._questionnaire_store.metadata["tx_id"])  # type: ignore
+        metadata_proxy = MetadataProxy(self._questionnaire_store.metadata)
+        feedback_metadata = FeedbackMetadata(metadata_proxy.case_id, metadata_proxy.tx_id)  # type: ignore
 
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
@@ -94,7 +96,7 @@ class Feedback:
             metadata=self._questionnaire_store.metadata,
             response_metadata=self._questionnaire_store.response_metadata,
             schema=self._schema,
-            case_id=self._questionnaire_store.metadata["case_id"],
+            case_id=metadata_proxy.case_id,
             submission_language_code=session_data.language_code,
             feedback_count=session_data.feedback_count,
             feedback_text=self.form.data.get("feedback-text"),
@@ -257,6 +259,7 @@ class FeedbackPayload:
         feedback_type: str,
     ):
         self.metadata = metadata
+        self.metadata_proxy = MetadataProxy(metadata)
         self.response_metadata = response_metadata
         self.case_id = case_id
         self.schema = schema
@@ -277,11 +280,10 @@ class FeedbackPayload:
             "submission_language_code": (
                 self.submission_language_code or DEFAULT_LANGUAGE_CODE
             ),
-            "tx_id": self.metadata["tx_id"],
+            "tx_id": self.metadata_proxy.tx_id,
             "type": "uk.gov.ons.edc.eq:feedback",
-            "launch_language_code": self.metadata.get(
-                "language_code", DEFAULT_LANGUAGE_CODE
-            ),
+            "launch_language_code": self.metadata_proxy.language_code
+            or DEFAULT_LANGUAGE_CODE,
             "version": "0.0.1",
         }
 

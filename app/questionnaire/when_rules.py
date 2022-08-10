@@ -5,6 +5,7 @@ from typing import Optional
 from dateutil.relativedelta import relativedelta
 
 from app.data_models.answer import AnswerValueTypes
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire.rules.utils import parse_datetime
 
 MAX_REPEATS = 25
@@ -315,7 +316,8 @@ def get_answer_value(
 
 
 def get_metadata_value(metadata, key):
-    return metadata.get(key)
+    metadata_proxy = MetadataProxy(metadata)
+    return metadata_proxy.get_metadata_value(key)
 
 
 def get_list_count(list_store, list_name):

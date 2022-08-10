@@ -11,6 +11,7 @@ from structlog import get_logger
 
 from app.authentication.no_token_exception import NoTokenException
 from app.authentication.user import User
+from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.globals import (
@@ -108,9 +109,9 @@ def load_user(extend_session: bool = True) -> Optional[User]:
         user_ik = cookie_session.get(USER_IK)
         user = User(user_id, user_ik)
 
-        metadata = get_metadata(user)
+        metadata_proxy = MetadataProxy(get_metadata(user))
 
-        if metadata and (tx_id := metadata.get("tx_id")):
+        if tx_id := metadata_proxy.tx_id:
             logger.bind(tx_id=tx_id)
 
         if extend_session:
