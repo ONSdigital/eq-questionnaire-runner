@@ -313,18 +313,7 @@ def test_context_for_driving_question_summary_empty_list():
         "summary": {
             "answers_are_editable": True,
             "collapsible": False,
-            "custom_summary": [
-                {
-                    "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
-                    "add_link_text": "Add someone to this " "household",
-                    "empty_list_text": "There are no householders",
-                    "list": {"editable": True, "list_items": []},
-                    "list_name": "people",
-                    "related_answers": None,
-                    "title": "Household members",
-                    "type": "List",
-                }
-            ],
+            "custom_summary": [None],
             "groups": [
                 {
                     "blocks": [

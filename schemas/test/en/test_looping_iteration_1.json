@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Test ListCollectorDrivingQuestion",
+    "title": "Test Looping Iteration 1",
     "theme": "default",
-    "description": "A questionnaire to test ListCollectorDrivingQuestion",
+    "description": "A questionnaire to test looping iteration 1",
     "metadata": [
         {
             "name": "user_id",
@@ -52,16 +52,16 @@
                     "blocks": [
                         {
                             "type": "ListCollectorDrivingQuestion",
-                            "id": "anyone-usually-live-at",
+                            "id": "any-companies-or-branches",
                             "for_list": "companies",
                             "question": {
                                 "type": "General",
-                                "id": "anyone-usually-live-at-question",
+                                "id": "any-companies-or-branches-question",
                                 "title": "Do any companies or branches within your United Kingdom group undertake general insurance business?",
                                 "answers": [
                                     {
                                         "type": "Radio",
-                                        "id": "any-companies-or-branches",
+                                        "id": "any-companies-or-branches-answer",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -89,7 +89,7 @@
                                         "section": "End",
                                         "when": [
                                             {
-                                                "id": "any-companies-or-branches",
+                                                "id": "any-companies-or-branches-answer",
                                                 "condition": "equals",
                                                 "value": "No"
                                             }
@@ -108,12 +108,12 @@
                             "type": "ListCollector",
                             "for_list": "companies",
                             "question": {
-                                "id": "confirmation-question",
+                                "id": "any-other-companies-or-branches-question",
                                 "type": "General",
                                 "title": "Do you need to add any other UK companies or branches that undertake general insurance business?",
                                 "answers": [
                                     {
-                                        "id": "anyone-else-live-at-answer",
+                                        "id": "any-other-companies-or-branches-answer",
                                         "mandatory": true,
                                         "type": "Radio",
                                         "options": [
@@ -242,10 +242,10 @@
                             "summary": {
                                 "title": "Companies or UK branches",
                                 "item_title": {
-                                    "text": "{person_name}",
+                                    "text": "{company_name}",
                                     "placeholders": [
                                         {
-                                            "placeholder": "person_name",
+                                            "placeholder": "company_name",
                                             "value": {
                                                 "source": "answers",
                                                 "identifier": "company-or-branch-name"
