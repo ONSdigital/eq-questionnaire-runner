@@ -223,6 +223,55 @@ class SectionSummaryContext(Context):
                 **list_summary_context,
             }
 
+        if current_list.primary_person:
+            list_collector_block = list_collector_blocks[0]
+            remove_block_id = list_collector_block["remove_block"]["id"]
+            add_link = self._add_link(summary, list_collector_block)
+
+            primary_person_block = self._schema.get_list_collector_for_list(
+                self.section, for_list=summary["for_list"], primary=True
+            )
+            # get_list_collector_for_list always returns a list at this point
+            primary_person_edit_block_id = primary_person_block["add_or_edit_block"][  # type: ignore
+                "id"
+            ]
+            edit_block_id = primary_person_block["add_or_edit_block"]["id"]  # type: ignore
+
+            rendered_summary = self._placeholder_renderer.render(
+                summary, self.current_location.list_item_id
+            )
+
+            list_collector_block = list_collector_block or list_collector_blocks[0]
+
+            list_summary_context = self.list_context(
+                list_collector_block["summary"],
+                for_list=list_collector_block["for_list"],
+                return_to="section-summary",
+                edit_block_id=edit_block_id,
+                remove_block_id=remove_block_id,
+                primary_person_edit_block_id=primary_person_edit_block_id,
+                for_list_item_ids=current_list.primary_person,
+            )
+
+            related_answers = [
+                self._schema.get_answers_by_answer_id(answer.answer_id)[0]["label"]
+                for answer in self._answer_store
+                if answer.list_item_id == current_list.first
+                and "label"
+                in self._schema.get_answers_by_answer_id(answer.answer_id)[0]
+            ][1:]
+
+            return {
+                "title": rendered_summary["title"],
+                "type": rendered_summary["type"],
+                "add_link": add_link,
+                "add_link_text": rendered_summary["add_link_text"],
+                "empty_list_text": rendered_summary.get("empty_list_text"),
+                "list_name": rendered_summary["for_list"],
+                "related_answers": related_answers,
+                **list_summary_context,
+            }
+
     @staticmethod
     def _add_link(summary, list_collector_block):
 
