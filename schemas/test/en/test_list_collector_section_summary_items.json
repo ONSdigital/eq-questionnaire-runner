@@ -48,7 +48,6 @@
             "groups": [
                 {
                     "id": "group",
-                    "title": "List",
                     "blocks": [
                         {
                             "type": "ListCollectorDrivingQuestion",
