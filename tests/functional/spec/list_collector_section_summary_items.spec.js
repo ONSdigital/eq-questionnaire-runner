@@ -31,7 +31,7 @@ describe("List Collector Section Summary Items", () => {
         "Do you need to add any other UK companies or branches that undertake general insurance business?"
       );
     });
-    it("When I add my own item and relevant data, Then when I answer no I should get to the section summary page.", () => {
+    it("When I add my own item and relevant data, Then after I answer no on additional items page I should get to the section summary page.", () => {
       $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
       $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
       $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Company A");
@@ -42,18 +42,7 @@ describe("List Collector Section Summary Items", () => {
       $(AnyCompaniesOrBranchesPage.submit()).click();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
     });
-    it("When I add my own item and relevant data, Then when I answer no I should get to the section summary page.", () => {
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
-      $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Company A");
-      $(AnyCompaniesOrBranchesAddPage.registrationNumber()).setValue("0123456789");
-      $(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioYes()).click();
-      $(AnyCompaniesOrBranchesAddPage.submit()).click();
-      $(AnyCompaniesOrBranchesPage.no()).click();
-      $(AnyCompaniesOrBranchesPage.submit()).click();
-      expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
-    });
-    it("When I add my own item and relevant data, Then when I answer yes I should be able to choose an item from the same pre-defined list and add relevant data about it.", () => {
+    it("When I add my own item and relevant data, Then after I answer yes on additional items page I should be able to choose an item from the same pre-defined list and add relevant data about it.", () => {
       $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
       $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
       $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Company A");
@@ -98,7 +87,7 @@ describe("List Collector Section Summary Items", () => {
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.false;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.false;
     });
-    it("When I decide to not add item and relevant data, Then when I change my decision I should be able to add the item.", () => {
+    it("When I decide not to add an item and relevant data and I change my answer to yes, Then I should be able to add the item.", () => {
       $(AnyCompaniesOrBranchesDrivingQuestionPage.no()).click();
       $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
@@ -118,7 +107,7 @@ describe("List Collector Section Summary Items", () => {
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.true;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.true;
     });
-    it("When I decide to add item and relevant data, Then when I change my decision I should be able to see the item after I change my decision again.", () => {
+    it("When I decide to add an item and relevant data and I decide to remove it, Then I should be able to see the item again after I decide to add more items.", () => {
       $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
       $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
       $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Company A");

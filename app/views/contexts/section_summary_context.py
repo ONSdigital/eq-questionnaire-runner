@@ -169,8 +169,14 @@ class SectionSummaryContext(Context):
             if list_collector_block["id"] in self.routing_path.block_ids
         ]
 
+        list_collector_block = (
+            list_collector_blocks_on_path[0]
+            if list_collector_blocks_on_path
+            else list_collector_blocks[0]
+        )
+
         if list_collector_blocks_on_path:
-            list_collector_block = list_collector_blocks_on_path[0]
+
             edit_block_id = list_collector_block["edit_block"]["id"]
             remove_block_id = list_collector_block["remove_block"]["id"]
             add_link = self._add_link(summary, list_collector_block)
@@ -180,16 +186,14 @@ class SectionSummaryContext(Context):
                 if primary_person_block := self._schema.get_list_collector_for_list(
                     self.section, for_list=summary["for_list"], primary=True
                 ):
-                    primary_person_edit_block_id = primary_person_block[
-                        "add_or_edit_block"
-                    ]["id"]
-                    edit_block_id = primary_person_block["add_or_edit_block"]["id"]
+                    (
+                        primary_person_edit_block_id,
+                        edit_block_id,
+                    ) = self._get_add_or_edit_blocks_primary(primary_person_block)
 
             rendered_summary = self._placeholder_renderer.render(
                 summary, self.current_location.list_item_id
             )
-
-            list_collector_block = list_collector_block or list_collector_blocks[0]
 
             list_summary_context = self.list_context(
                 list_collector_block["summary"],
@@ -201,13 +205,7 @@ class SectionSummaryContext(Context):
             )
 
             if current_list:
-                related_answers = [
-                    self._schema.get_answers_by_answer_id(answer.answer_id)[0]["label"]
-                    for answer in self._answer_store
-                    if answer.list_item_id == current_list.first
-                    and "label"
-                    in self._schema.get_answers_by_answer_id(answer.answer_id)[0]
-                ][1:]
+                related_answers = self._get_related_answers(current_list.first)
 
             else:
                 related_answers = None
@@ -224,24 +222,21 @@ class SectionSummaryContext(Context):
             }
 
         if current_list.primary_person:
-            list_collector_block = list_collector_blocks[0]
             remove_block_id = list_collector_block["remove_block"]["id"]
             add_link = self._add_link(summary, list_collector_block)
 
             primary_person_block = self._schema.get_list_collector_for_list(
                 self.section, for_list=summary["for_list"], primary=True
             )
-            # get_list_collector_for_list always returns a list at this point
-            primary_person_edit_block_id = primary_person_block["add_or_edit_block"][  # type: ignore
-                "id"
-            ]
-            edit_block_id = primary_person_block["add_or_edit_block"]["id"]  # type: ignore
+
+            (
+                primary_person_edit_block_id,
+                edit_block_id,
+            ) = self._get_add_or_edit_blocks_primary(primary_person_block)
 
             rendered_summary = self._placeholder_renderer.render(
                 summary, self.current_location.list_item_id
             )
-
-            list_collector_block = list_collector_block or list_collector_blocks[0]
 
             list_summary_context = self.list_context(
                 list_collector_block["summary"],
@@ -253,13 +248,7 @@ class SectionSummaryContext(Context):
                 for_list_item_ids=current_list.primary_person,
             )
 
-            related_answers = [
-                self._schema.get_answers_by_answer_id(answer.answer_id)[0]["label"]
-                for answer in self._answer_store
-                if answer.list_item_id == current_list.first
-                and "label"
-                in self._schema.get_answers_by_answer_id(answer.answer_id)[0]
-            ][1:]
+            related_answers = self._get_related_answers(current_list.first)
 
             return {
                 "title": rendered_summary["title"],
@@ -286,3 +275,18 @@ class SectionSummaryContext(Context):
         return (
             safe_content(self._schema.get_single_string_value(title)) if title else ""
         )
+
+    def _get_related_answers(self, list_item):
+        return [
+            self._schema.get_answers_by_answer_id(answer.answer_id)[0]["label"]
+            for answer in self._answer_store
+            if answer.list_item_id == list_item
+            and "label" in self._schema.get_answers_by_answer_id(answer.answer_id)[0]
+        ][1:]
+
+    @staticmethod
+    def _get_add_or_edit_blocks_primary(primary_person_block):
+        primary_person_edit_block_id = primary_person_block["add_or_edit_block"]["id"]
+        edit_block_id = primary_person_block["add_or_edit_block"]["id"]
+
+        return primary_person_edit_block_id, edit_block_id
