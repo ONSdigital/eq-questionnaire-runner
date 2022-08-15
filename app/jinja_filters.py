@@ -665,29 +665,23 @@ def map_list_collector_config(
             }
         )
         if related_answers:
-            rows.extend(
+            rows[index - 1]["rowItems"].extend(
                 {
-                    "rowItems": [
+                    "iconType": None,
+                    "actions": [
                         {
-                            "iconType": None,
-                            "actions": [
-                                {
-                                    "text": edit_link_text,
-                                    "ariaLabel": edit_link_aria_label_text,
-                                    "url": list_item.get("edit_link"),
-                                    "attributes": {
-                                        "data-qa": f"list-item-change-{index}-link"
-                                    },
-                                }
-                            ],
-                            "rowTitle": answer,
-                            "id": list_item.get("list_item_id"),
-                            "rowTitleAttributes": {
-                                "data-qa": f"list-item-{index}-label",
-                                "data-list-item-id": list_item.get("list_item_id"),
-                            },
+                            "text": edit_link_text,
+                            "ariaLabel": edit_link_aria_label_text,
+                            "url": list_item.get("edit_link"),
+                            "attributes": {"data-qa": f"list-item-change-{index}-link"},
                         }
-                    ]
+                    ],
+                    "rowTitle": answer,
+                    "id": list_item.get("list_item_id"),
+                    "rowTitleAttributes": {
+                        "data-qa": f"list-item-{index}-label",
+                        "data-list-item-id": list_item.get("list_item_id"),
+                    },
                 }
                 for answer in related_answers
             )
