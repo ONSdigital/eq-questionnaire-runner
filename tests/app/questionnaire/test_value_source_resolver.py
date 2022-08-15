@@ -351,6 +351,28 @@ def test_metadata_source(metadata_identifier, expected_result):
 
 
 @pytest.mark.parametrize(
+    "metadata_identifier, expected_result",
+    [
+        ("region_code", "GB-ENG"),
+        ("display_address", "68 Abingdon Road, Goathill"),
+        ("language_code", None),
+    ],
+)
+def test_metadata_source_v2_metadata_structure(metadata_identifier, expected_result):
+    value_source_resolver = get_value_source_resolver(
+        metadata={
+            "region_code": "GB-ENG",
+            "survey_metadata": {
+                "data": {"display_address": "68 Abingdon Road, Goathill"}
+            },
+        },
+    )
+
+    source = {"source": "metadata", "identifier": metadata_identifier}
+    assert value_source_resolver.resolve(source) == expected_result
+
+
+@pytest.mark.parametrize(
     "list_count",
     [0, 1, 5, 10],
 )
