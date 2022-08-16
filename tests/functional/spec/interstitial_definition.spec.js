@@ -23,15 +23,5 @@ describe("Component: Interstitial Definition", () => {
       expect($(InterstitialDefinitionPage.definitionTitle(2)).isDisplayed()).to.be.true;
       expect($(InterstitialDefinitionPage.definitionContent(2)).isDisplayed()).to.be.false;
     });
-
-    it("When I click on the hide content button, then the page is displayed correctly", () => {
-      $(InterstitialDefinitionPage.definitionButton(1)).click();
-
-      expect($(InterstitialDefinitionPage.definitionTitle(1)).isDisplayed()).to.be.true;
-      expect($(InterstitialDefinitionPage.definitionContent(1)).isDisplayed()).to.be.false;
-
-      expect($(InterstitialDefinitionPage.definitionTitle(2)).isDisplayed()).to.be.true;
-      expect($(InterstitialDefinitionPage.definitionContent(2)).isDisplayed()).to.be.false;
-    });
   });
 });
