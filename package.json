@@ -54,5 +54,8 @@
         "wdio-chromedriver-service": "^7.2.8",
         "webdriverio": "^7.17.4"
     },
-    "prettier": {}
+    "prettier": {},
+    "dependencies": {
+        "typescript": "^4.7.4"
+    }
 }
