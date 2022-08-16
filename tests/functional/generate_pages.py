@@ -95,12 +95,6 @@ DEFINITION_CONTENT_GETTER = Template(
 """
 )
 
-DEFINITION_BUTTON_GETTER = Template(
-    r"""  definitionButton(definitionIndex) { return `[data-qa='${definitionId}-${definitionIndex}-button']`; }
-
-"""
-)
-
 GUIDANCE_PANEL_GETTER = Template(
     r"""  guidancePanel(guidanceIndex) { return `[data-qa='${guidanceId}-${guidanceIndex}']`; }
 
@@ -544,7 +538,6 @@ def process_view_submitted_response(schema_data, require_path, dir_out, spec_fil
 def process_definition(context, page_spec):
     page_spec.write(DEFINITION_TITLE_GETTER.safe_substitute(context))
     page_spec.write(DEFINITION_CONTENT_GETTER.safe_substitute(context))
-    page_spec.write(DEFINITION_BUTTON_GETTER.safe_substitute(context))
 
 
 def process_guidance(context, page_spec):
