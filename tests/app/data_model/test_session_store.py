@@ -3,7 +3,6 @@ from flask import current_app
 from jwcrypto import jwe
 from jwcrypto.common import base64url_encode
 
-from app.data_models import SessionData
 from app.data_models.app_models import EQSession
 from app.data_models.session_store import SessionStore
 from app.utilities.json import json_dumps
@@ -120,7 +119,7 @@ def test_session_store_ignores_multiple_new_values_in_session_data(
         assert hasattr(session_store.session_data, "second_additional_value") is False
 
 
-def test_session_store_stores_trading_as_value_if_present(
+def test_session_store_stores_language_code_value_if_present(
     app, app_session_store, session_data
 ):
     with app.test_request_context():
@@ -133,13 +132,13 @@ def test_session_store_stores_trading_as_value_if_present(
 
         session_store = SessionStore("user_ik", "pepper", "eq_session_id")
 
-        assert hasattr(session_store.session_data, "trad_as") is True
+        assert hasattr(session_store.session_data, "language_code") is True
 
 
-def test_session_store_stores_none_for_trading_as_if_not_present(
+def test_session_store_stores_none_for_language_code_value_if_not_present(
     app, app_session_store, session_data
 ):
-    session_data.trad_as = None
+    session_data.language_code = None
     with app.test_request_context():
         app_session_store.session_store.create(
             eq_session_id="eq_session_id",
@@ -150,35 +149,7 @@ def test_session_store_stores_none_for_trading_as_if_not_present(
 
         session_store = SessionStore("user_ik", "pepper", "eq_session_id")
 
-        assert session_store.session_data.trad_as is None
-
-
-def test_load_existing_session_does_not_error_when_session_data_contains_survey_url(
-    app, app_session_store
-):
-    session_data_with_survey_url = SessionData(
-        language_code="cy",
-        survey_url="some-url",
-    )
-
-    with app.test_request_context():
-        # Given a session store with session data that has a survey url
-        app_session_store.session_store.create(
-            eq_session_id="eq_session_id",
-            user_id="test",
-            session_data=session_data_with_survey_url,
-            expires_at=app_session_store.expires_at,
-        ).save()
-
-        # When a SessionStore is loaded (Session matching 'eq_session_id' exists at this point)
-        loaded_session_store = SessionStore("user_ik", "pepper", "eq_session_id")
-
-        # Then
-        assert (
-            loaded_session_store.session_data.__dict__
-            == session_data_with_survey_url.__dict__
-        )
-        assert loaded_session_store.session_data.survey_url is None
+        assert session_store.session_data.language_code is None
 
 
 @pytest.mark.usefixtures("app")
@@ -197,7 +168,8 @@ def test_legacy_load(app_session_store_encoded):
     )
 
     assert (
-        session_store.session_data.tx_id == app_session_store_encoded.session_data.tx_id
+        session_store.session_data.confirmation_email_count
+        == app_session_store_encoded.session_data.confirmation_email_count
     )
 
 
@@ -215,7 +187,8 @@ def test_load(app_session_store_encoded):
         app_session_store_encoded.session_id,
     )
     assert (
-        session_store.session_data.tx_id == app_session_store_encoded.session_data.tx_id
+        session_store.session_data.confirmation_email_count
+        == app_session_store_encoded.session_data.confirmation_email_count
     )
 
 
