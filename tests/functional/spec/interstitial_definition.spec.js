@@ -14,7 +14,7 @@ describe("Component: Interstitial Definition", () => {
       expect($(InterstitialDefinitionPage.definitionContent(2)).isDisplayed()).to.be.false;
     });
 
-    it("When I click on a definition title, the content and button is display for just that definition", () => {
+    it("When I click on a definition title, the content is displayed for just that definition", () => {
       $(InterstitialDefinitionPage.definitionTitle(1)).click();
 
       expect($(InterstitialDefinitionPage.definitionTitle(1)).isDisplayed()).to.be.true;
