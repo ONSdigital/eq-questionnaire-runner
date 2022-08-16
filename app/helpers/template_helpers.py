@@ -143,11 +143,15 @@ class ContextHelper:
         if self._footer_warning:
             context["footerWarning"] = self._footer_warning
 
-        if self._survey_config.footer_links:
-            context["rows"] = [{"itemsList": self._survey_config.footer_links}]
+        if footer_links := self._survey_config.get_footer_links(
+            cookie_has_theme=bool(self._survey_type),
+        ):
+            context["rows"] = [{"itemsList": footer_links}]
 
-        if self._survey_config.footer_legal_links:
-            context["legal"] = [{"itemsList": self._survey_config.footer_legal_links}]
+        if footer_legal_links := self._survey_config.get_footer_legal_links(
+            cookie_has_theme=bool(self._survey_type),
+        ):
+            context["legal"] = [{"itemsList": footer_legal_links}]
 
         if (
             self._survey_config.powered_by_logo

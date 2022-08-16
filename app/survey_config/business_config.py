@@ -30,22 +30,6 @@ class BusinessSurveyConfig(
         if not self.account_service_todo_url:
             self.account_service_todo_url: str = f"{self.base_url}/surveys/todo"
 
-        self.footer_links = [
-            Link(lazy_gettext("What we do"), self.what_we_do_url).__dict__,
-            Link(lazy_gettext("Contact us"), self.contact_us_url).__dict__,
-            Link(
-                lazy_gettext("Accessibility"),
-                self.accessibility_url,
-            ).__dict__,
-        ]
-        self.footer_legal_links = [
-            Link(lazy_gettext("Cookies"), self.cookie_settings_url).__dict__,
-            Link(
-                lazy_gettext("Privacy and data protection"),
-                self.privacy_and_data_protection_url,
-            ).__dict__,
-        ]
-
     def _get_account_service_help_url(
         self, *, is_authenticated: bool, ru_ref: Optional[str]
     ) -> str:
@@ -100,6 +84,33 @@ class BusinessSurveyConfig(
             )
 
         return links
+
+    def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
+        links = [Link(lazy_gettext("What we do"), self.what_we_do_url).__dict__]
+
+        if cookie_has_theme:
+            links.append(Link(lazy_gettext("Contact us"), self.contact_us_url).__dict__)
+
+        links.append(
+            Link(
+                lazy_gettext("Accessibility"),
+                self.accessibility_url,
+            ).__dict__
+        )
+
+        return links
+
+    def get_footer_legal_links(self, cookie_has_theme: bool) -> Optional[list[dict]]:
+        if cookie_has_theme:
+            return [
+                Link(lazy_gettext("Cookies"), self.cookie_settings_url).__dict__,
+                Link(
+                    lazy_gettext("Privacy and data protection"),
+                    self.privacy_and_data_protection_url,
+                ).__dict__,
+            ]
+
+        return None
 
     def get_data_layer(self, tx_id: Optional[str] = None) -> list[dict]:
         data_layer = [{"tx_id": tx_id}] if tx_id else []

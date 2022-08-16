@@ -2,7 +2,7 @@ from pytest import fixture
 
 from app.helpers.template_helpers import ContextHelper
 from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
-from app.survey_config.census_config import EN_BASE_URL
+from app.survey_config.census_config import CY_BASE_URL, EN_BASE_URL
 
 
 @fixture
@@ -21,8 +21,7 @@ def get_context_helper():
     return _context_helper
 
 
-@fixture(name="footer_context")
-def footer():
+def footer_context():
     return {
         "lang": "en",
         "crest": True,
@@ -34,8 +33,7 @@ def footer():
     }
 
 
-@fixture
-def expected_footer_census_theme(footer_context):
+def expected_footer_census_theme():
     census = {
         "rows": [
             {
@@ -90,11 +88,37 @@ def expected_footer_census_theme(footer_context):
             }
         ],
     }
-    return {**footer_context, **census}
+    return {**footer_context(), **census}
 
 
-@fixture
-def expected_footer_business_theme(footer_context):
+def expected_footer_census_theme_no_cookie():
+    census = {
+        "rows": [
+            {
+                "itemsList": [
+                    {
+                        "text": "Help",
+                        "url": f"{EN_BASE_URL}/help/how-to-answer-questions/online-questions-help/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Languages",
+                        "url": f"{EN_BASE_URL}/help/languages-and-accessibility/languages/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "BSL and audio videos",
+                        "url": f"{EN_BASE_URL}/help/languages-and-accessibility/accessibility/accessible-videos-with-bsl/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
+    }
+    return {**footer_context(), **census}
+
+
+def expected_footer_business_theme():
     business = {
         "rows": [
             {
@@ -134,11 +158,32 @@ def expected_footer_business_theme(footer_context):
             }
         ],
     }
-    return {**footer_context, **business}
+    return {**footer_context(), **business}
 
 
-@fixture
-def expected_footer_social_theme(footer_context):
+def expected_footer_business_theme_no_cookie():
+    business = {
+        "rows": [
+            {
+                "itemsList": [
+                    {
+                        "text": "What we do",
+                        "url": "https://www.ons.gov.uk/aboutus/whatwedo/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Accessibility",
+                        "url": "https://www.ons.gov.uk/help/accessibility/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
+    }
+    return {**footer_context(), **business}
+
+
+def expected_footer_social_theme():
     social = {
         "rows": [
             {
@@ -178,10 +223,31 @@ def expected_footer_social_theme(footer_context):
             }
         ],
     }
-    return {**footer_context, **social}
+    return {**footer_context(), **social}
 
 
-@fixture
+def expected_footer_social_theme_no_cookie():
+    social = {
+        "rows": [
+            {
+                "itemsList": [
+                    {
+                        "text": "What we do",
+                        "url": "https://www.ons.gov.uk/aboutus/whatwedo/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Accessibility",
+                        "url": "https://www.ons.gov.uk/help/accessibility/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
+    }
+    return {**footer_context(), **social}
+
+
 def expected_footer_nisra_theme():
     return {
         "lang": "en",
@@ -237,4 +303,68 @@ def expected_footer_nisra_theme():
             "logo": "nisra-logo",
             "alt": "NISRA - Northern Ireland Statistics and Research Agency",
         },
+    }
+
+
+def expected_footer_census_welsh_theme():
+    return {
+        "lang": "en",
+        "crest": True,
+        "newTabWarning": "The following links open in a new tab",
+        "copyrightDeclaration": {
+            "copyright": "Crown copyright and database rights 2020 OS 100019153.",
+            "text": "Use of address data is subject to the terms and conditions.",
+        },
+        "rows": [
+            {
+                "itemsList": [
+                    {
+                        "text": "Help",
+                        "url": f"{CY_BASE_URL}/help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Contact us",
+                        "url": f"{CY_BASE_URL}/cysylltu-a-ni/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Languages",
+                        "url": f"{CY_BASE_URL}/help/ieithoedd-a-hygyrchedd/ieithoedd/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "BSL and audio videos",
+                        "url": f"{CY_BASE_URL}/help/ieithoedd-a-hygyrchedd/hygyrchedd/fideos-hygyrch-gyda-bsl/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
+        "legal": [
+            {
+                "itemsList": [
+                    {
+                        "text": "Cookies",
+                        "url": f"{CY_BASE_URL}/cwcis/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Accessibility statement",
+                        "url": f"{CY_BASE_URL}/datganiad-hygyrchedd/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Privacy and data protection",
+                        "url": f"{CY_BASE_URL}/preifatrwydd-a-diogelu-data/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Terms and conditions",
+                        "url": f"{CY_BASE_URL}/telerau-ac-amodau/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
     }
