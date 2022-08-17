@@ -68,6 +68,7 @@ class CalculatedSummaryContext(Context):
                 "title": block.get("title") % dict(total=formatted_total),
                 "collapsible": block.get("collapsible", False),
                 "summary_type": "CalculatedSummary",
+                "headers": ["Question", "Answer given", "Change answer"],
             }
         }
 

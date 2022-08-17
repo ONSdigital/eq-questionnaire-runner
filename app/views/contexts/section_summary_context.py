@@ -58,6 +58,7 @@ class SectionSummaryContext(Context):
                 "page_title": page_title,
                 "summary_type": "SectionSummary",
                 "answers_are_editable": True,
+                "headers": ["Question", "Answer given", "Change answer"],
                 **summary,
             }
         }
