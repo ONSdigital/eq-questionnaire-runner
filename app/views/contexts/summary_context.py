@@ -17,8 +17,7 @@ class SummaryContext(Context):
         headers = ["Question", "Answer given"]
         if answers_are_editable:
             headers.extend("Change answer")
-        else:
-            headers.extend("")
+
         return {
             "groups": groups,
             "answers_are_editable": answers_are_editable,
