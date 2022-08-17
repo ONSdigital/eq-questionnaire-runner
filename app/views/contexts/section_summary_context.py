@@ -153,7 +153,7 @@ class SectionSummaryContext(Context):
             if summary_element["type"] == "List":
                 yield self._list_summary_element(summary_element)
 
-    def _list_summary_element(self, summary) -> Mapping:
+    def _list_summary_element(self, summary: dict[str, str]) -> Mapping[str, Any]:
         edit_block_id, remove_block_id, primary_person_edit_block_id = None, None, None
         current_list = self._list_store[summary["for_list"]]
 
@@ -232,7 +232,10 @@ class SectionSummaryContext(Context):
             (
                 primary_person_edit_block_id,
                 edit_block_id,
-            ) = self._get_add_or_edit_blocks_primary(primary_person_block)
+            ) = self._get_add_or_edit_blocks_primary(
+                primary_person_block  # type: ignore
+            )
+            # primary person block always exists at this point, type hint conflicts with schema's get_list_collector_for_list return type (Optional)
 
             rendered_summary = self._placeholder_renderer.render(
                 summary, self.current_location.list_item_id
@@ -262,7 +265,9 @@ class SectionSummaryContext(Context):
             }
 
     @staticmethod
-    def _add_link(summary, list_collector_block):
+    def _add_link(
+        summary: dict[str, str], list_collector_block: Mapping[str, Any]
+    ) -> str:
 
         return url_for(
             "questionnaire.block",
@@ -276,7 +281,7 @@ class SectionSummaryContext(Context):
             safe_content(self._schema.get_single_string_value(title)) if title else ""
         )
 
-    def _get_related_answers(self, list_item):
+    def _get_related_answers(self, list_item: str) -> list[str]:
         return [
             self._schema.get_answers_by_answer_id(answer.answer_id)[0]["label"]
             for answer in self._answer_store
@@ -285,7 +290,9 @@ class SectionSummaryContext(Context):
         ][1:]
 
     @staticmethod
-    def _get_add_or_edit_blocks_primary(primary_person_block):
+    def _get_add_or_edit_blocks_primary(
+        primary_person_block: Mapping[str, Any]
+    ) -> tuple[str, str]:
         primary_person_edit_block_id = primary_person_block["add_or_edit_block"]["id"]
         edit_block_id = primary_person_block["add_or_edit_block"]["id"]
 
