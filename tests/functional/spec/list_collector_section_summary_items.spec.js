@@ -9,7 +9,7 @@ describe("List Collector Section Summary Items", () => {
     beforeEach(() => {
       browser.openQuestionnaire("test_list_collector_section_summary_items.json");
     });
-    it("When I answer yes to the driving question, Then I should be able to add my own item and the relevant data about it and get to the relevant page.", () => {
+    it("When I answer yes to the driving question, Then I should be able to add my own item and the relevant data about it and get to the list collector question page.", () => {
       $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
       $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
       $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Company A");
