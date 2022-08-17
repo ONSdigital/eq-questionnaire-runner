@@ -63,8 +63,6 @@ class Group:
             if block["id"] in routing_path and block["type"] in [
                 "Question",
                 "ListCollectorDrivingQuestion",
-                "ListCollector",
-                "PrimaryPersonListCollector",
             ]:
                 blocks.extend(
                     [
