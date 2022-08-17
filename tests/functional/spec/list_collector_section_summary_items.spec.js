@@ -42,7 +42,7 @@ describe("List Collector Section Summary Items", () => {
       $(AnyCompaniesOrBranchesPage.submit()).click();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
     });
-    it("When I add my own item and relevant data, Then after I answer yes on additional items page I should be able to choose an item from the same pre-defined list and add relevant data about it.", () => {
+    it("When I add my own item and relevant data, Then after I answer yes on additional items page I should be able to choose an item from the items list and add relevant data about it.", () => {
       $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
       $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
       $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Company A");
