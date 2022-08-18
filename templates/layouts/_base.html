@@ -64,7 +64,7 @@
     <input id="csrf_token" name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
   {% endif %}
 
-  {% if cookie_settings_url %}
+  {% if cookie_settings_url and cookie_address %}
     {{
       onsCookiesBanner({
         "secondaryButtonUrl": cookie_settings_url,

@@ -61,8 +61,12 @@ class ContextHelper:
             "account_service_todo_url": self._survey_config.account_service_todo_url,
             "contact_us_url": self._survey_config.contact_us_url,
             "thank_you_url": url_for("post_submission.get_thank_you"),
-            "cookie_settings_url": self._survey_config.cookie_settings_url,
-            "cookie_address": self._survey_config.cookie_address,
+            "cookie_settings_url": self._survey_config.cookie_settings_url
+            if cookie_session
+            else None,
+            "cookie_address": self._survey_config.cookie_address
+            if cookie_session
+            else None,
             "page_header": self.page_header_context,
             "service_links": self.service_links_context,
             "footer": self.footer_context,

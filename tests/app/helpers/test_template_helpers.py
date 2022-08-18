@@ -400,27 +400,33 @@ def test_sign_out_button_text_context(
 
 
 @pytest.mark.parametrize(
-    "survey_config, expected",
+    "survey_config, cookie_present, expected",
     [
-        (SurveyConfig(), f"{ACCOUNT_SERVICE_BASE_URL}/cookies/"),
+        (SurveyConfig(), True, f"{ACCOUNT_SERVICE_BASE_URL}/cookies/"),
         (
             BusinessSurveyConfig(),
+            True,
             f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
         ),
         (
             NorthernIrelandBusinessSurveyConfig(),
+            True,
             f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
         ),
         (
             SocialSurveyConfig(),
+            True,
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cookies/",
         ),
+        (SurveyConfig(), False, None),
     ],
 )
 def test_cookie_settings_url_context(
-    app: Flask, survey_config: SurveyConfig, expected: str
+    app: Flask, survey_config: SurveyConfig, cookie_present: bool, expected: str
 ):
     with app.app_context():
+        if cookie_present:
+            cookie_session["dummy_key"] = "dummy_value"
         result = ContextHelper(
             language="en",
             is_post_submission=False,
@@ -432,25 +438,33 @@ def test_cookie_settings_url_context(
 
 
 @pytest.mark.parametrize(
-    "survey_config, expected",
+    "survey_config, cookie_present, expected",
     [
-        (SurveyConfig(), f"{ACCOUNT_SERVICE_BASE_URL.replace('https://', '')}"),
+        (SurveyConfig(), True, f"{ACCOUNT_SERVICE_BASE_URL.replace('https://', '')}"),
         (
             BusinessSurveyConfig(),
+            True,
             f"{ACCOUNT_SERVICE_BASE_URL.replace('https://', '')}",
         ),
         (
             NorthernIrelandBusinessSurveyConfig(),
+            True,
             f"{ACCOUNT_SERVICE_BASE_URL.replace('https://', '')}",
         ),
         (
             SocialSurveyConfig(),
+            True,
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL.replace('https://', '')}",
         ),
+        (SurveyConfig(), False, None),
     ],
 )
-def test_cookie_address_context(app: Flask, survey_config: SurveyConfig, expected: str):
+def test_cookie_address_context(
+    app: Flask, survey_config: SurveyConfig, cookie_present: bool, expected: str
+):
     with app.app_context():
+        if cookie_present:
+            cookie_session["dummy_key"] = "dummy_value"
         result = ContextHelper(
             language="en",
             is_post_submission=False,
