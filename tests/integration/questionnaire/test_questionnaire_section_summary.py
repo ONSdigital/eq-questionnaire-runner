@@ -20,4 +20,4 @@ class TestQuestionnaireCalculatedSummary(IntegrationTestCase):
         self.get("/submitted/view-response/")
         self.assertInBody("<th>Question</th>")
         self.assertInBody("<th>Answer given</th>")
-        self.assertNotInBody("<th>Answer given</th>")
+        self.assertNotInBody("<th>Change answer</th>")
