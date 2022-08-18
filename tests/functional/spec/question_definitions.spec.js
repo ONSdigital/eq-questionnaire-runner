@@ -13,7 +13,9 @@ describe("Component: Definition", () => {
       $(DefinitionPage.definitionTitle("1")).click();
 
       // Then
-      expect($(DefinitionPage.definitionContent(1)).getText()).to.contain("A typical photovoltaic system employs solar panels, each comprising a number of solar cells, which generate electrical power.");
+      expect($(DefinitionPage.definitionContent(1)).getText()).to.contain(
+        "A typical photovoltaic system employs solar panels, each comprising a number of solar cells, which generate electrical power."
+      );
     });
 
     it("When I click the title link twice, then the description should not be visible", () => {
