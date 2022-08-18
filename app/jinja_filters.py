@@ -541,7 +541,6 @@ class SummaryRow:
         edit_link_text: str,
         edit_link_aria_label: str,
     ) -> None:
-        self.rowTitle = strip_tags(question["title"])
         self.id = question["id"]
         self.rowItems = []
 
