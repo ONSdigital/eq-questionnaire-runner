@@ -44,6 +44,7 @@
             "groups": [
                 {
                     "id": "confirmation-block",
+                    "title": "Confirmation Question Test",
                     "blocks": [
                         {
                             "id": "number-of-employees-total-block",
