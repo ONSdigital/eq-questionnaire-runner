@@ -29,12 +29,6 @@ describe("Section Summary", () => {
       expect($(PropertyDetailsSummaryPage.submit()).getText()).to.contain("Continue");
     });
 
-    it("When I get to the section summary page, Then it should have the correct table headers set'", () => {
-      expect($(PropertyDetailsSummaryPage.propertyDetailsSummaryTableHead()).getHTML()).to.contain("Question");
-      expect($(PropertyDetailsSummaryPage.propertyDetailsSummaryTableHead()).getHTML()).to.contain("Answer given");
-      expect($(PropertyDetailsSummaryPage.propertyDetailsSummaryTableHead()).getHTML()).to.contain("Change answer");
-    });
-
     it("When I have selected an answer to edit and edit it, Then I should return to the section summary with new value displayed", () => {
       $(PropertyDetailsSummaryPage.insuranceAddressAnswerEdit()).click();
       $(InsuranceAddressPage.answer()).setValue("Test Address");
@@ -173,23 +167,6 @@ describe("Section Summary", () => {
       $(HouseType.semiDetached()).click();
       $(HouseType.submit()).click();
       expect($(HouseholdDetailsSummaryPage.heading()).getText()).to.contain("Household Summary - Semi-detached");
-    });
-  });
-  describe("Given I start a questionnaire that has a summary with no change links", () => {
-    it("When I then navigate to that summary, then there should not be a header set for change links", () => {
-      browser.openQuestionnaire("test_view_submitted_response.json");
-      $(NameBlockPage.answer()).setValue("John Smith");
-      $(NameBlockPage.submit()).click();
-      $(AddressBlockPage.answer()).setValue("NP10 8XG");
-      $(AddressBlockPage.submit()).click();
-      $(ViewSubmittedResponseSubmitPage.submit()).click();
-      expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
-      expect($(ThankYouPage.title()).getHTML()).to.contain("Thank you for completing the Test");
-      $(ThankYouPage.savePrintAnswersLink()).click();
-      expect(browser.getUrl()).to.contain(ViewSubmittedResponsePage.pageName);
-      expect($(ViewSubmittedResponsePage.addressDetailsGroupSummaryTableHead()).getHTML()).to.contain("Question");
-      expect($(ViewSubmittedResponsePage.addressDetailsGroupSummaryTableHead()).getHTML()).to.contain("Answer given");
-      expect($(ViewSubmittedResponsePage.addressDetailsGroupSummaryTableHead()).getHTML()).to.not.contain("Change answer");
     });
   });
 });
