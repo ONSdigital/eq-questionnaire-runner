@@ -30,8 +30,8 @@ describe("Collapsible Summary", () => {
       expect($(SubmitPage.collapsibleSummary()).getText()).to.contain("Property Details");
       expect($(SubmitPage.collapsibleSummary()).getText()).to.contain("House Details");
 
-      expect($(SubmitPage.insuranceAddressQuestion()).isDisplayed()).to.be.false;
-      expect($(SubmitPage.numberOfPeopleQuestion()).isDisplayed()).to.be.false;
+      expect($(SubmitPage.insuranceAddressQuestion()).getText()).to.contain("");
+      expect($(SubmitPage.numberOfPeopleQuestion()).getText()).to.contain("");
     });
 
     it("When I click the Show all button, Then the summary should be expanded and questions should be displayed", () => {
