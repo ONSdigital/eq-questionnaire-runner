@@ -8,11 +8,6 @@ import ListedPage from "../../../generated_pages/section_summary/listed.page.js"
 import NumberOfPeoplePage from "../../../generated_pages/section_summary/number-of-people.page.js";
 import PropertyDetailsSummaryPage from "../../../generated_pages/section_summary/property-details-section-summary.page.js";
 import SubmitPage from "../../../generated_pages/section_summary/submit.page.js";
-import AddressBlockPage from "../../../generated_pages/view_submitted_response/address.page.js";
-import NameBlockPage from "../../../generated_pages/view_submitted_response/name.page.js";
-import ViewSubmittedResponseSubmitPage from "../../../generated_pages/view_submitted_response/submit.page.js";
-import ThankYouPage from "../../../base_pages/thank-you.page";
-import ViewSubmittedResponsePage from "../../../generated_pages/view_submitted_response/view-submitted-response.page.js";
 
 describe("Section Summary", () => {
   describe("Given I start a Test Section Summary survey and complete to Section Summary", () => {
