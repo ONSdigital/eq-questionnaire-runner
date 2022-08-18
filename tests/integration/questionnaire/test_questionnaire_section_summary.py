@@ -8,9 +8,9 @@ class TestQuestionnaireCalculatedSummary(IntegrationTestCase):
         self.post()
         self.post()
         self.post()
-        self.assertInBody(
-            "<tr><th>Question</th><th>Answer given</th><th>Change answer</th></tr>"
-        )
+        self.assertInBody("<th>Question</th>")
+        self.assertInBody("<th>Answer given</th>")
+        self.assertInBody("<th>Change answer</th>")
 
     def test_calculated_summary_headers_without_change_link(self):
         self.launchSurvey("test_view_submitted_response")
@@ -18,4 +18,6 @@ class TestQuestionnaireCalculatedSummary(IntegrationTestCase):
         self.post()
         self.post()
         self.get("/submitted/view-response/")
-        self.assertInBody("<tr><th>Question</th><th>Answer given</th></tr>")
+        self.assertInBody("<th>Question</th>")
+        self.assertInBody("<th>Answer given</th>")
+        self.assertNotInBody("<th>Answer given</th>")
