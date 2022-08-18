@@ -434,6 +434,36 @@ def test_cookie_settings_url_context(
 @pytest.mark.parametrize(
     "survey_config, expected",
     [
+        (SurveyConfig(), f"{ACCOUNT_SERVICE_BASE_URL.replace('https://', '')}"),
+        (
+            BusinessSurveyConfig(),
+            f"{ACCOUNT_SERVICE_BASE_URL.replace('https://', '')}",
+        ),
+        (
+            NorthernIrelandBusinessSurveyConfig(),
+            f"{ACCOUNT_SERVICE_BASE_URL.replace('https://', '')}",
+        ),
+        (
+            SocialSurveyConfig(),
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL.replace('https://', '')}",
+        ),
+    ],
+)
+def test_cookie_address_context(app: Flask, survey_config: SurveyConfig, expected: str):
+    with app.app_context():
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["cookie_address"]
+
+    assert result == expected
+
+
+@pytest.mark.parametrize(
+    "survey_config, expected",
+    [
         (SurveyConfig(), None),
         (
             BusinessSurveyConfig(),
