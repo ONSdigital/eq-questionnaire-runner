@@ -216,6 +216,18 @@
                                     }
                                 ],
                                 "id": "number-of-employees-split-question",
+                                "title": {
+                                    "text": "Of the <em>{number_of_employees_total}</em> total employees employed, how many male and female employees worked the following hours?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "number_of_employees_total",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "number-of-employees-total"
+                                            }
+                                        }
+                                    ]
+                                },
                                 "type": "General"
                             }
                         }
