@@ -40,10 +40,8 @@ def convert_answers_v2(
       {
         'tx_id': '0f534ffc-9442-414c-b39f-a756b4adc6cb',
         'type' : 'uk.gov.ons.edc.eq:surveyresponse',
-        'version' : {
-            'version': 'v2',
-            'data_version': '0.0.1',
-        },
+        'version' 'v2',
+        'data_version': '0.0.1',
         'origin' : 'uk.gov.ons.edc.eq',
         'survey_id': '021',
         'flushed': true|false
@@ -86,10 +84,8 @@ def convert_answers_v2(
         "case_id": metadata_proxy.case_id,
         "tx_id": metadata_proxy.tx_id,
         "type": "uk.gov.ons.edc.eq:surveyresponse",
-        "version": {
-            "data_version": schema.json["data_version"],
-            "version": metadata_proxy.version,
-        },
+        "version": metadata_proxy.version,
+        "data_version": schema.json["data_version"],
         "origin": "uk.gov.ons.edc.eq",
         "collection_exercise_sid": metadata_proxy.collection_exercise_sid,
         "schema_name": metadata_proxy.schema_name,
