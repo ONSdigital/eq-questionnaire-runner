@@ -7,7 +7,7 @@ describe("Component: Definition", () => {
     });
 
     it("When I click the title link, then the description should be visible", () => {
-      expect($(DefinitionPage.definitionContent(1)).getText()).to.contain("");
+      expect($(DefinitionPage.definitionContent(1)).getText()).to.equal("");
 
       // When
       $(DefinitionPage.definitionTitle("1")).click();
@@ -19,14 +19,14 @@ describe("Component: Definition", () => {
     });
 
     it("When I click the title link twice, then the description should not be visible", () => {
-      expect($(DefinitionPage.definitionContent(1)).getText()).to.contain("");
+      expect($(DefinitionPage.definitionContent(1)).getText()).to.equal("");
 
       // When
       $(DefinitionPage.definitionTitle("1")).click();
       $(DefinitionPage.definitionTitle("1")).click();
 
       // Then
-      expect($(DefinitionPage.definitionContent(1)).getText()).to.contain("");
+      expect($(DefinitionPage.definitionContent(1)).getText()).to.equal("");
     });
   });
 });
