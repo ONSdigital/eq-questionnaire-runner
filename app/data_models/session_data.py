@@ -11,8 +11,3 @@ class SessionData:
         self.language_code = language_code
         self.confirmation_email_count = confirmation_email_count
         self.feedback_count = feedback_count
-
-    def __len__(self) -> int:
-        return len(
-            [self.language_code, self.confirmation_email_count, self.feedback_count]
-        )
