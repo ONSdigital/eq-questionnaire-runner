@@ -1,5 +1,7 @@
 from copy import deepcopy
 
+from flask_babel import lazy_gettext
+
 from app.jinja_filters import (
     format_number,
     format_percentage,
@@ -68,7 +70,11 @@ class CalculatedSummaryContext(Context):
                 "title": block.get("title") % dict(total=formatted_total),
                 "collapsible": block.get("collapsible", False),
                 "summary_type": "CalculatedSummary",
-                "headers": ["Question", "Answer given", "Change answer"],
+                "headers": [
+                    lazy_gettext("Question"),
+                    lazy_gettext("Answer given"),
+                    lazy_gettext("Change answer"),
+                ],
             }
         }
 
