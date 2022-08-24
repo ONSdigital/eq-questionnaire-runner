@@ -31,7 +31,7 @@ def build_view_submitted_response_context(
 
     if survey_type is SurveyType.SOCIAL:
         submitted_text = lazy_gettext("Answers submitted.")
-    elif trad_as and ru_name:
+    elif trad_as:
         submitted_text = lazy_gettext(
             "Answers submitted for <span>{ru_name}</span> ({trad_as})"
         ).format(ru_name=ru_name, trad_as=trad_as)

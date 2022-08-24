@@ -8,7 +8,6 @@ from marshmallow import (
     Schema,
     ValidationError,
     fields,
-    post_load,
     pre_load,
     validate,
     validates_schema,
@@ -16,7 +15,6 @@ from marshmallow import (
 from structlog import get_logger
 
 from app.questionnaire.rules.utils import parse_iso_8601_datetime
-from app.utilities.schema import get_schema_name_from_params
 
 logger = get_logger()
 
@@ -91,18 +89,17 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     """Metadata which is required for the operation of runner itself"""
 
     jti = VALIDATORS["uuid"]()  # type:ignore
+    tx_id = VALIDATORS["uuid"]()  # type:ignore
+    case_id = VALIDATORS["uuid"]()  # type:ignore
     collection_exercise_sid = VALIDATORS["string"](
         validate=validate.Length(min=1)
     )  # type:ignore
-    tx_id = VALIDATORS["uuid"]()  # type:ignore
-    response_id = VALIDATORS["string"](required=True)  # type:ignore
-    survey_metadata = fields.Nested(SurveyMetadata)
     version = VALIDATORS["string"](required=True)  # type:ignore
-    account_service_url = VALIDATORS["url"](required=True)  # type:ignore
-    case_id = VALIDATORS["uuid"]()  # type:ignore
-    account_service_log_out_url = VALIDATORS["url"](required=False)  # type:ignore
-    roles = fields.List(fields.String(), required=False)
+    schema_name = VALIDATORS["string"](required=False)  # type:ignore
     schema_url = VALIDATORS["url"](required=False)  # type:ignore
+    response_id = VALIDATORS["string"](required=True)  # type:ignore
+    account_service_url = VALIDATORS["url"](required=True)  # type:ignore
+
     language_code = VALIDATORS["string"](required=False)  # type:ignore
     channel = VALIDATORS["string"](
         required=False, validate=validate.Length(min=1)
@@ -111,17 +108,12 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         required=False,
         validate=lambda x: parse_iso_8601_datetime(x) > datetime.now(tz=timezone.utc),
     )  # type:ignore
-
-    # Either schema_name OR the three census parameters are required. Should be required after census.
-    schema_name = VALIDATORS["string"](required=True)  # type:ignore
-
     region_code = VALIDATORS["string"](
         required=False, validate=RegionCode()
     )  # type:ignore
 
-    # The following two parameters are for business schemas
-    form_type = VALIDATORS["string"](required=False)  # type:ignore
-    eq_id = VALIDATORS["string"](required=False)  # type:ignore
+    roles = fields.List(fields.String(), required=False)
+    survey_metadata = fields.Nested(SurveyMetadata)
 
     @validates_schema
     def validate_receipting_keys(self, data, **kwargs):
@@ -135,19 +127,13 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
                         "Receipting key(s) not set in Survey Metadata"
                     )
 
-    @post_load
-    def update_schema_name(self, data, **kwargs):
+    @validates_schema
+    def validate_schema_name_is_set(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
-        """Function to transform parameters into a business schema"""
-        if data.get("schema_name"):
-            logger.info(
-                "Using schema_name claim to specify schema, overriding eq_id and form_type"
+        if data and not data.get("schema_name") or data.get("schema_url"):
+            raise ValidationError(
+                "Neither schema_name or schema_url has been set in metadata"
             )
-        else:
-            data["schema_name"] = get_schema_name_from_params(
-                data.get("eq_id"), data.get("form_type")
-            )
-        return data
 
 
 def validate_questionnaire_claims_v2(claims, questionnaire_specific_metadata):

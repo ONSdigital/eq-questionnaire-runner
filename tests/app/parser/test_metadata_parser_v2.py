@@ -25,6 +25,13 @@ def test_empty_strings_are_not_valid(fake_metadata_runner_v2):
         validate_runner_claims_v2(fake_metadata_runner_v2)
 
 
+def test_empty_schema_name_and_schema_url_not_valid(fake_metadata_runner_v2):
+    del fake_metadata_runner_v2["schema_name"]
+
+    with pytest.raises(ValidationError):
+        validate_runner_claims_v2(fake_metadata_runner_v2)
+
+
 def test_validation_does_not_change_metadata(
     fake_metadata_full_v2_business, fake_questionnaire_metadata_requirements_full
 ):

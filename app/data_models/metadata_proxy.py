@@ -3,13 +3,12 @@ from typing import Any, Mapping, Optional
 
 class MetadataProxy:
     def __init__(self, metadata: Optional[Mapping[str, Any]]):
-        self.metadata: Optional[Mapping[str, Any]] = metadata
+        self.metadata = metadata
         self.tx_id = self.get_metadata_value("tx_id")
         self.ru_ref = self.get_metadata_value("ru_ref")
         self.schema_name = self.get_metadata_value("schema_name")
         self.period_str = self.get_metadata_value("period_str")
         self.language_code = self.get_metadata_value("language_code")
-        self.launch_language_code = self.get_metadata_value("launch_language_code")
         self.ru_name = self.get_metadata_value("ru_name")
         self.response_id = self.get_metadata_value("response_id")
         self.case_id = self.get_metadata_value("case_id")
