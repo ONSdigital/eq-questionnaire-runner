@@ -137,4 +137,3 @@ class TestQuestionnaireSubmitWithSummary(IntegrationTestCase):
         self.assertInBody("<th>Question</th>")
         self.assertInBody("<th>Answer given</th>")
         self.assertInBody("<th>Change answer</th>")
-
