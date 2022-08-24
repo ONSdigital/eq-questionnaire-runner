@@ -789,6 +789,7 @@ def test_when_rules_section_dependencies_calculated_summary(
         ),
         ({"==": ({"source": "answers", "identifier": "answer"}, 123)}, True),
         ({">": ({"source": "answers", "identifier": "answer"}, 123)}, True),
+        ({"or": ({"source": "answers", "identifier": "answer"}, "No I need to correct this")}, True),
     ),
 )
 def test_has_operator_returns_correct_value(rule, expected_result):
