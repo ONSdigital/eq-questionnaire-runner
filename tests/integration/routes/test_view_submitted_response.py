@@ -58,6 +58,9 @@ class TestViewSubmissionResponse(ViewSubmittedResponseBase):
         self.assertInBody("NP10 8XG")
         self.assertIsNotNone(self.get_print_button())
         self.assertIsNotNone(self.get_download_button())
+        self.assertInBody("<th>Question</th>")
+        self.assertInBody("<th>Answer given</th>")
+        self.assertNotInBody("<th>Change answer</th>")
 
     def test_not_enabled(self):
         # Given I launch and complete a questionnaire that does not have view-submitted-response enabled
@@ -82,13 +85,3 @@ class TestViewSubmissionResponse(ViewSubmittedResponseBase):
 
         # Then the page is displayed correctly
         self.assert_expired_content()
-
-    def test_summary_headers_without_change_link(self):
-        self.launchSurvey("test_view_submitted_response")
-        self.post()
-        self.post()
-        self.post()
-        self.get("/submitted/view-response/")
-        self.assertInBody("<th>Question</th>")
-        self.assertInBody("<th>Answer given</th>")
-        self.assertNotInBody("<th>Change answer</th>")
