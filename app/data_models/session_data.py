@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Optional
 
 
 class SessionData:
@@ -7,6 +7,7 @@ class SessionData:
         language_code: Optional[str] = None,
         confirmation_email_count: int = 0,
         feedback_count: int = 0,
+        **_: Any,
     ):
         self.language_code = language_code
         self.confirmation_email_count = confirmation_email_count

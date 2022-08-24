@@ -81,6 +81,43 @@ def test_should_not_delete_when_no_session(app, app_session_store):
         assert context.app.eq["storage"].client.delete_call_count == 0
 
 
+def test_session_store_ignores_new_values_in_session_data(
+    app, app_session_store, session_data
+):
+    session_data.additional_value = "some cool new value you do not know about yet"
+
+    with app.test_request_context():
+        app_session_store.session_store.create(
+            eq_session_id="eq_session_id",
+            user_id="test",
+            session_data=app_session_store.session_data,
+            expires_at=app_session_store.expires_at,
+        ).save()
+
+        session_store = SessionStore("user_ik", "pepper", "eq_session_id")
+
+        assert hasattr(session_store.session_data, "additional_value") is False
+
+
+def test_session_store_ignores_multiple_new_values_in_session_data(
+    app, app_session_store, session_data
+):
+    session_data.additional_value = "some cool new value you do not know about yet"
+    session_data.second_additional_value = "some other not so cool value"
+
+    with app.test_request_context():
+        app_session_store.session_store.create(
+            eq_session_id="eq_session_id",
+            user_id="test",
+            session_data=session_data,
+            expires_at=app_session_store.expires_at,
+        ).save()
+
+        session_store = SessionStore("user_ik", "pepper", "eq_session_id")
+        assert hasattr(session_store.session_data, "additional_value") is False
+        assert hasattr(session_store.session_data, "second_additional_value") is False
+
+
 def test_session_store_stores_language_code_value_if_present(
     app, app_session_store, session_data
 ):
