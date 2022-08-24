@@ -100,7 +100,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
         self.get(url=f"/session?token={token}")
 
         # Then
-        self.assertException()
+        self.assertStatusForbidden()
 
     def test_login_with_valid_v2_social_token_no_schema_name(self):
         # Given
@@ -110,7 +110,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
         self.get(url=f"/session?token={token}")
 
         # Then
-        self.assertException()
+        self.assertStatusForbidden()
 
     def test_http_head_request_to_login_returns_successfully_and_get_still_works(self):
         # Given

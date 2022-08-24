@@ -94,7 +94,9 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     collection_exercise_sid = VALIDATORS["string"](
         validate=validate.Length(min=1)
     )  # type:ignore
-    version = VALIDATORS["string"](required=True)  # type:ignore
+    version = VALIDATORS["string"](
+        required=True, validate=validate.OneOf(["v2"])
+    )  # type:ignore
     schema_name = VALIDATORS["string"](required=False)  # type:ignore
     schema_url = VALIDATORS["url"](required=False)  # type:ignore
     response_id = VALIDATORS["string"](required=True)  # type:ignore
@@ -113,7 +115,15 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     )  # type:ignore
 
     roles = fields.List(fields.String(), required=False)
-    survey_metadata = fields.Nested(SurveyMetadata)
+    survey_metadata = fields.Nested(SurveyMetadata, required=False)
+
+    @validates_schema
+    def validate_schema_name_is_set(self, data, **kwargs):
+        # pylint: disable=no-self-use, unused-argument
+        if data and not data.get("schema_name") or data.get("schema_url"):
+            raise ValidationError(
+                "Neither schema_name or schema_url has been set in metadata"
+            )
 
     @validates_schema
     def validate_receipting_keys(self, data, **kwargs):
@@ -124,16 +134,8 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
             for receipting_key in receipting_keys:
                 if receipting_key not in data.get("survey_metadata").get("data"):
                     raise ValidationError(
-                        "Receipting key(s) not set in Survey Metadata"
+                        f"Receipting key: {receipting_key} not set in Survey Metadata"
                     )
-
-    @validates_schema
-    def validate_schema_name_is_set(self, data, **kwargs):
-        # pylint: disable=no-self-use, unused-argument
-        if data and not data.get("schema_name") or data.get("schema_url"):
-            raise ValidationError(
-                "Neither schema_name or schema_url has been set in metadata"
-            )
 
 
 def validate_questionnaire_claims_v2(claims, questionnaire_specific_metadata):
