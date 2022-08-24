@@ -6,9 +6,8 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.location import Location
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema, has_operator
 from app.questionnaire.routing_path import RoutingPath
-from app.questionnaire.rules.operator import OPERATION_MAPPING
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.when_rules import evaluate_goto, evaluate_when_rules
 
@@ -309,12 +308,9 @@ class PathFinder:
                 "identifier" in rule
                 and rule["identifier"] in answer_ids_for_current_block
             ):
-                if (
-                    "identifier" in rule
-                    and rule["identifier"] in answer_ids_for_current_block
-                ):
-                    self.answer_store.remove_answer(rule["identifier"])
-            if any(operator in rule for operator in OPERATION_MAPPING):
+                self.answer_store.remove_answer(rule["identifier"])
+
+            if has_operator(rule):
                 return self._remove_current_blocks_answers_for_new_backwards_routing(
                     rule, answer_ids_for_current_block
                 )

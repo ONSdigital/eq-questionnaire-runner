@@ -3,7 +3,11 @@ from collections import abc
 import pytest
 from werkzeug.datastructures import ImmutableDict
 
-from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import (
+    AnswerDependent,
+    QuestionnaireSchema,
+    has_operator,
+)
 
 
 def assert_all_dict_values_are_hashable(data):
@@ -771,3 +775,22 @@ def test_when_rules_section_dependencies_calculated_summary(
         "bread-answer": {"dependent-enabled-section", "dependent-question-section"},
         "cheese-answer": {"dependent-enabled-section", "dependent-question-section"},
     } == schema.when_rules_section_dependencies_by_answer
+
+
+@pytest.mark.parametrize(
+    "rule, expected_result",
+    (
+        ([], False),
+        ("This is a string", False),
+        ({"key": "value"}, False),
+        (
+            {"invalid-operator": ({"source": "answers", "identifier": "answer"}, 123)},
+            False,
+        ),
+        ({"==": ({"source": "answers", "identifier": "answer"}, 123)}, True),
+        ({">": ({"source": "answers", "identifier": "answer"}, 123)}, True),
+    ),
+)
+def test_has_operator_returns_correct_value(rule, expected_result):
+    result = has_operator(rule)
+    assert result == expected_result
