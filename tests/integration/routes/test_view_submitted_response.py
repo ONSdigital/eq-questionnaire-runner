@@ -82,3 +82,13 @@ class TestViewSubmissionResponse(ViewSubmittedResponseBase):
 
         # Then the page is displayed correctly
         self.assert_expired_content()
+
+    def test_summary_headers_without_change_link(self):
+        self.launchSurvey("test_view_submitted_response")
+        self.post()
+        self.post()
+        self.post()
+        self.get("/submitted/view-response/")
+        self.assertInBody("<th>Question</th>")
+        self.assertInBody("<th>Answer given</th>")
+        self.assertNotInBody("<th>Change answer</th>")
