@@ -54,7 +54,7 @@ class SurveyConfig:
         self.cookie_settings_url: str = f"{self.base_url}/cookies/"
         self.cookie_domain: str = self.cookie_settings_url.split("://")[-1].split("/")[
             0
-        ]
+        ]  # get the FQDN of the cookie settings URL
         self.privacy_and_data_protection_url: str = (
             f"{self.base_url}/privacy-and-data-protection/"
         )
