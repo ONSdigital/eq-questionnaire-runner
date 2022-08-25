@@ -3,7 +3,8 @@ from datetime import datetime, timezone
 import pytest
 
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.submitter.converter import DataVersionError, convert_answers
+from app.submitter.converter import convert_answers
+from app.submitter.converter_v2 import DataVersionError
 
 SUBMITTED_AT = datetime.now(timezone.utc)
 

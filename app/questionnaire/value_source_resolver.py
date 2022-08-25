@@ -157,7 +157,7 @@ class ValueSourceResolver:
 
         if source == "metadata":
             metadata_proxy = MetadataProxy(metadata=self.metadata)
-            identifier: str = value_source.get("identifier", "")
+            identifier = value_source["identifier"]
             return metadata_proxy.get_metadata_value(identifier)  # type: ignore
 
         if source == "location" and value_source.get("identifier") == "list_item_id":

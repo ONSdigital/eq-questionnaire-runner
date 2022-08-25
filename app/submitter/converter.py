@@ -10,21 +10,11 @@ from app.questionnaire.questionnaire_schema import (
     QuestionnaireSchema,
 )
 from app.questionnaire.routing_path import RoutingPath
-from app.submitter.convert_payload_0_0_1 import convert_answers_to_payload_0_0_1
-from app.submitter.convert_payload_0_0_3 import convert_answers_to_payload_0_0_3
+from app.submitter.converter_v2 import get_payload_data
 
 logger = get_logger()
 
 MetadataType = Mapping[str, Union[str, int, list]]
-
-
-class DataVersionError(Exception):
-    def __init__(self, version: str):
-        super().__init__()
-        self.version = version
-
-    def __str__(self) -> str:
-        return f"Data version {self.version} not supported"
 
 
 def convert_answers(
@@ -96,21 +86,15 @@ def convert_answers(
 
     optional_properties = get_optional_payload_properties(metadata, response_metadata)
 
-    if schema.json["data_version"] == "0.0.3":
-        payload["data"] = {
-            "answers": convert_answers_to_payload_0_0_3(
-                answer_store, list_store, schema, routing_path
-            ),
-            "lists": list_store.serialize(),
-        }
-    elif schema.json["data_version"] == "0.0.1":
-        payload["data"] = convert_answers_to_payload_0_0_1(
-            metadata, response_metadata, answer_store, list_store, schema, routing_path
-        )
-    else:
-        raise DataVersionError(schema.json["data_version"])
-
-    logger.info("converted answer ready for submission")
+    payload["data"] = get_payload_data(
+        data_version=schema.json["data_version"],
+        answer_store=answer_store,
+        list_store=list_store,
+        schema=schema,
+        routing_path=routing_path,
+        metadata=metadata,
+        response_metadata=response_metadata,
+    )
 
     return payload | optional_properties
 

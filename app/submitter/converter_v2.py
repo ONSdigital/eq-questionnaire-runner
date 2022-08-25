@@ -1,9 +1,9 @@
 from datetime import datetime
-from typing import Any, Mapping, Union
+from typing import Any, Mapping, OrderedDict, Union
 
 from structlog import get_logger
 
-from app.data_models import QuestionnaireStore
+from app.data_models import AnswerStore, ListStore, QuestionnaireStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
@@ -35,32 +35,8 @@ def convert_answers_v2(
     flushed: bool = False,
 ) -> dict[str, Any]:
     """
-    Create the JSON answer format for down stream processing in the following format:
-    ```
-      {
-        'tx_id': '0f534ffc-9442-414c-b39f-a756b4adc6cb',
-        'type' : 'uk.gov.ons.edc.eq:surveyresponse',
-        'version' 'v2',
-        'data_version': '0.0.1',
-        'origin' : 'uk.gov.ons.edc.eq',
-        'survey_id': '021',
-        'flushed': true|false
-        'collection_exercise_sid': 'hfjdskf',
-        'schema_name': 'yui789',
-        'started_at': '2016-03-06T15:28:05Z',
-        'submitted_at': '2016-03-07T15:28:05Z',
-        'launch_language_code': 'en',
-        'channel': 'RH',
-        'survey_metadata': {
-          'user_id': '789473423',
-          'ru_ref': '432423423423',
-          'period': '2016-02-01'
-        },
-        'data': [
-            ...
-        ],
-      }
-    ```
+    Create the JSON answer format for down stream processing, the format can be found here:
+    https://github.com/ONSdigital/ons-schema-definitions/docs/eq_runner_to_downstream_payload_v2.m
 
     Args:
         schema: QuestionnaireSchema instance with populated schema json
@@ -103,19 +79,15 @@ def convert_answers_v2(
 
     payload["survey_metadata"].update(optional_survey_metadata_properties)
 
-    if schema.json["data_version"] == "0.0.3":
-        payload["data"] = {
-            "answers": convert_answers_to_payload_0_0_3(
-                answer_store, list_store, schema, routing_path
-            ),
-            "lists": list_store.serialize(),
-        }
-    elif schema.json["data_version"] == "0.0.1":
-        payload["data"] = convert_answers_to_payload_0_0_1(
-            metadata, response_metadata, answer_store, list_store, schema, routing_path
-        )
-    else:
-        raise DataVersionError(schema.json["data_version"])
+    payload["data"] = get_payload_data(
+        data_version=schema.json["data_version"],
+        answer_store=answer_store,
+        list_store=list_store,
+        schema=schema,
+        routing_path=routing_path,
+        metadata=metadata,
+        response_metadata=response_metadata,
+    )
 
     logger.info("converted answer ready for submission")
 
@@ -147,3 +119,27 @@ def get_optional_survey_metadata_properties(metadata: MetadataType) -> MetadataT
             survey_metadata[key] = value
 
     return survey_metadata
+
+
+def get_payload_data(
+    data_version: str,
+    answer_store: AnswerStore,
+    list_store: ListStore,
+    schema: QuestionnaireSchema,
+    routing_path: RoutingPath,
+    metadata: Mapping,
+    response_metadata: Mapping,
+) -> Union[OrderedDict[str, Any], dict[str, Union[list[Any]]]]:
+    if data_version == "0.0.1":
+        return convert_answers_to_payload_0_0_1(
+            metadata, response_metadata, answer_store, list_store, schema, routing_path
+        )
+    if data_version == "0.0.3":
+        return {
+            "answers": convert_answers_to_payload_0_0_3(
+                answer_store, list_store, schema, routing_path
+            ),
+            "lists": list_store.serialize(),
+        }
+
+    raise DataVersionError(schema.json["data_version"])
