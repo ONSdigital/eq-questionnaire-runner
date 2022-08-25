@@ -54,6 +54,13 @@ class ContextHelper:
 
     @property
     def context(self) -> dict[str, Any]:
+        options: dict = {}
+        if self._survey_type:
+            options |= {
+                "cookie_settings_url": self._survey_config.cookie_settings_url,
+                "cookie_domain": self._survey_config.cookie_domain,
+            }
+
         return {
             "sign_out_button_text": self._survey_config.sign_out_button_text,
             "account_service_my_account_url": self._survey_config.account_service_my_account_url,
@@ -61,12 +68,6 @@ class ContextHelper:
             "account_service_todo_url": self._survey_config.account_service_todo_url,
             "contact_us_url": self._survey_config.contact_us_url,
             "thank_you_url": url_for("post_submission.get_thank_you"),
-            "cookie_settings_url": self._survey_config.cookie_settings_url
-            if cookie_session
-            else None,
-            "cookie_address": self._survey_config.cookie_address
-            if cookie_session
-            else None,
             "page_header": self.page_header_context,
             "service_links": self.service_links_context,
             "footer": self.footer_context,
@@ -81,6 +82,7 @@ class ContextHelper:
             "google_tag_manager_id": self._google_tag_manager_id,
             "google_tag_manager_auth": self._google_tag_manager_auth,
             "survey_type": self._survey_type,
+            **options,
         }
 
     @property

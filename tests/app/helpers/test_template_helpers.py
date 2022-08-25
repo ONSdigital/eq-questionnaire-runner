@@ -426,13 +426,14 @@ def test_cookie_settings_url_context(
 ):
     with app.app_context():
         if cookie_present:
-            cookie_session["dummy_key"] = "dummy_value"
-        result = ContextHelper(
+            cookie_session["theme"] = "dummy_value"
+        context_helper = ContextHelper(
             language="en",
             is_post_submission=False,
             include_csrf_token=True,
             survey_config=survey_config,
-        ).context["cookie_settings_url"]
+        )
+        result = context_helper.context.get("cookie_settings_url")
 
     assert result == expected
 
@@ -459,18 +460,20 @@ def test_cookie_settings_url_context(
         (SurveyConfig(), False, None),
     ],
 )
-def test_cookie_address_context(
+def test_cookie_domain_context(
     app: Flask, survey_config: SurveyConfig, cookie_present: bool, expected: str
 ):
     with app.app_context():
         if cookie_present:
-            cookie_session["dummy_key"] = "dummy_value"
-        result = ContextHelper(
+            cookie_session["theme"] = "dummy_value"
+        context_helper = ContextHelper(
             language="en",
             is_post_submission=False,
             include_csrf_token=True,
             survey_config=survey_config,
-        ).context["cookie_address"]
+        )
+
+        result = context_helper.context.get("cookie_domain")
 
     assert result == expected
 
