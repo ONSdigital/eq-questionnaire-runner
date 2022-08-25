@@ -890,6 +890,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
 
 def has_operator(rule: Any) -> bool:
-    return isinstance(rule, dict) and any(
+    return isinstance(rule, Mapping) and any(
         operator in rule for operator in OPERATION_MAPPING
     )
