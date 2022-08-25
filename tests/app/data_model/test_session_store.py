@@ -118,7 +118,7 @@ def test_session_store_ignores_multiple_new_values_in_session_data(
         assert hasattr(session_store.session_data, "second_additional_value") is False
 
 
-def test_session_store_stores_language_code_value_if_present(
+def test_session_store_stores_language_code_present(
     app, app_session_store, session_data
 ):
     with app.test_request_context():
@@ -134,7 +134,7 @@ def test_session_store_stores_language_code_value_if_present(
         assert hasattr(session_store.session_data, "language_code") is True
 
 
-def test_session_store_stores_none_for_language_code_value_if_not_present(
+def test_session_store_stores_none_for_language_code_value(
     app, app_session_store, session_data
 ):
     session_data.language_code = None
