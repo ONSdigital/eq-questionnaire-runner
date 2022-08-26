@@ -439,33 +439,26 @@ def test_cookie_settings_url_context(
 
 
 @pytest.mark.parametrize(
-    "survey_config, cookie_present, expected",
+    "survey_config, address",
     [
-        (SurveyConfig(), True, f"{ACCOUNT_SERVICE_BASE_URL.replace('https://', '')}"),
+        (SurveyConfig(), ACCOUNT_SERVICE_BASE_URL),
         (
             BusinessSurveyConfig(),
-            True,
-            f"{ACCOUNT_SERVICE_BASE_URL.replace('https://', '')}",
+            ACCOUNT_SERVICE_BASE_URL,
         ),
         (
             NorthernIrelandBusinessSurveyConfig(),
-            True,
-            f"{ACCOUNT_SERVICE_BASE_URL.replace('https://', '')}",
+            ACCOUNT_SERVICE_BASE_URL,
         ),
         (
             SocialSurveyConfig(),
-            True,
-            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL.replace('https://', '')}",
+            ACCOUNT_SERVICE_BASE_URL_SOCIAL,
         ),
-        (SurveyConfig(), False, None),
     ],
 )
-def test_cookie_domain_context(
-    app: Flask, survey_config: SurveyConfig, cookie_present: bool, expected: str
-):
+def test_cookie_domain_context(app: Flask, survey_config: SurveyConfig, address: str):
     with app.app_context():
-        if cookie_present:
-            cookie_session["theme"] = "dummy_value"
+        cookie_session["theme"] = "dummy_value"
         context_helper = ContextHelper(
             language="en",
             is_post_submission=False,
@@ -473,9 +466,33 @@ def test_cookie_domain_context(
             survey_config=survey_config,
         )
 
+        expected = address.replace("https://", "")
         result = context_helper.context.get("cookie_domain")
 
     assert result == expected
+
+
+@pytest.mark.parametrize(
+    "survey_config",
+    [
+        (SurveyConfig()),
+        (BusinessSurveyConfig(),),
+        (NorthernIrelandBusinessSurveyConfig(),),
+        (SocialSurveyConfig(),),
+    ],
+)
+def test_cookie_domain_context_cookie_not_provided(
+    app: Flask, survey_config: SurveyConfig
+):
+    with app.app_context():
+        context_helper = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        )
+
+    assert "cookie_domain" not in context_helper.context
 
 
 @pytest.mark.parametrize(
