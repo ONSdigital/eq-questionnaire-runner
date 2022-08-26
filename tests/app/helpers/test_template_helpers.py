@@ -475,10 +475,10 @@ def test_cookie_domain_context(app: Flask, survey_config: SurveyConfig, address:
 @pytest.mark.parametrize(
     "survey_config",
     [
-        (SurveyConfig()),
-        (BusinessSurveyConfig(),),
-        (NorthernIrelandBusinessSurveyConfig(),),
-        (SocialSurveyConfig(),),
+        SurveyConfig(),
+        BusinessSurveyConfig(),
+        NorthernIrelandBusinessSurveyConfig(),
+        SocialSurveyConfig(),
     ],
 )
 def test_cookie_domain_context_cookie_not_provided(
