@@ -118,20 +118,20 @@ def test_session_store_ignores_multiple_new_values_in_session_data(
         assert hasattr(session_store.session_data, "second_additional_value") is False
 
 
-def test_session_store_stores_language_code_present(
-    app, app_session_store, session_data
+def test_session_store_stores_language_code_value(
+    app, app_session_store, session_data_with_language_code
 ):
     with app.test_request_context():
         app_session_store.session_store.create(
             eq_session_id="eq_session_id",
             user_id="test",
-            session_data=session_data,
+            session_data=session_data_with_language_code,
             expires_at=app_session_store.expires_at,
         ).save()
 
         session_store = SessionStore("user_ik", "pepper", "eq_session_id")
 
-        assert hasattr(session_store.session_data, "language_code") is True
+        assert session_store.session_data.language_code == "en"
 
 
 def test_session_store_stores_none_for_language_code_value(

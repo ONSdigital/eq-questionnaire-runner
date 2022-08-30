@@ -118,6 +118,13 @@ def session_data():
 
 
 @pytest.fixture
+def session_data_with_language_code():
+    return SessionData(
+        language_code="en",
+    )
+
+
+@pytest.fixture
 def mock_get_metadata(mocker):
     return mocker.patch("app.authentication.roles.get_metadata")
 
