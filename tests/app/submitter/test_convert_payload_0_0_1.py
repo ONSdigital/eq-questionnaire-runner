@@ -7,7 +7,7 @@ from app.data_models.answer_store import AnswerStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
 from app.submitter.convert_payload_0_0_1 import convert_answers_to_payload_0_0_1
-from app.submitter.converter import convert_answers
+from app.submitter.converter_v2 import convert_answers_v2, get_payload_data
 from tests.app.submitter.schema import make_schema
 
 SUBMITTED_AT = datetime.now(timezone.utc)
@@ -17,8 +17,10 @@ def create_answer(answer_id, value):
     return {"answer_id": answer_id, "value": value}
 
 
-def test_convert_answers_to_payload_0_0_1_with_key_error(fake_questionnaire_store):
-    fake_questionnaire_store.answer_store = AnswerStore(
+def test_convert_answers_v2_to_payload_0_0_1_with_key_error(
+    fake_questionnaire_store_v2,
+):
+    fake_questionnaire_store_v2.answer_store = AnswerStore(
         [
             Answer("ABC", "2016-01-01").to_dict(),
             Answer("DEF", "2016-03-30").to_dict(),
@@ -42,10 +44,10 @@ def test_convert_answers_to_payload_0_0_1_with_key_error(fake_questionnaire_stor
         RoutingPath(["block-1"], section_id="section-1", list_item_id=None)
     ]
     answer_object = convert_answers_to_payload_0_0_1(
-        fake_questionnaire_store.metadata,
-        fake_questionnaire_store.response_metadata,
-        fake_questionnaire_store.answer_store,
-        fake_questionnaire_store.list_store,
+        fake_questionnaire_store_v2.metadata,
+        fake_questionnaire_store_v2.response_metadata,
+        fake_questionnaire_store_v2.answer_store,
+        fake_questionnaire_store_v2.list_store,
         QuestionnaireSchema(questionnaire),
         full_routing_path,
     )
@@ -53,8 +55,8 @@ def test_convert_answers_to_payload_0_0_1_with_key_error(fake_questionnaire_stor
     assert len(answer_object) == 1
 
 
-def test_answer_with_zero(fake_questionnaire_store):
-    fake_questionnaire_store.answer_store = AnswerStore([Answer("GHI", 0).to_dict()])
+def test_answer_with_zero(fake_questionnaire_store_v2):
+    fake_questionnaire_store_v2.answer_store = AnswerStore([Answer("GHI", 0).to_dict()])
 
     question = {
         "id": "question-2",
@@ -68,18 +70,23 @@ def test_answer_with_zero(fake_questionnaire_store):
         RoutingPath(["block-1"], section_id="section-1", list_item_id=None)
     ]
 
-    answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire),
-        fake_questionnaire_store,
+    schema = QuestionnaireSchema(questionnaire)
+
+    data_payload = get_payload_data(
+        schema.json.get("data_version"),
+        fake_questionnaire_store_v2.answer_store,
+        fake_questionnaire_store_v2.list_store,
+        schema,
         full_routing_path,
-        SUBMITTED_AT,
+        fake_questionnaire_store_v2.metadata,
+        fake_questionnaire_store_v2.response_metadata,
     )
 
-    assert answer_object["data"]["003"] == "0"
+    assert data_payload["003"] == "0"
 
 
-def test_answer_with_float(fake_questionnaire_store):
-    fake_questionnaire_store.answer_store = AnswerStore(
+def test_answer_with_float(fake_questionnaire_store_v2):
+    fake_questionnaire_store_v2.answer_store = AnswerStore(
         [Answer("GHI", 10.02).to_dict()]
     )
 
@@ -95,19 +102,24 @@ def test_answer_with_float(fake_questionnaire_store):
         RoutingPath(["block-1"], section_id="section-1", list_item_id=None)
     ]
 
-    answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire),
-        fake_questionnaire_store,
+    schema = QuestionnaireSchema(questionnaire)
+
+    data_payload = get_payload_data(
+        schema.json.get("data_version"),
+        fake_questionnaire_store_v2.answer_store,
+        fake_questionnaire_store_v2.list_store,
+        schema,
         full_routing_path,
-        SUBMITTED_AT,
+        fake_questionnaire_store_v2.metadata,
+        fake_questionnaire_store_v2.response_metadata,
     )
 
     # Check the converter correctly
-    assert answer_object["data"]["003"] == "10.02"
+    assert data_payload["003"] == "10.02"
 
 
-def test_answer_with_string(fake_questionnaire_store):
-    fake_questionnaire_store.answer_store = AnswerStore(
+def test_answer_with_string(fake_questionnaire_store_v2):
+    fake_questionnaire_store_v2.answer_store = AnswerStore(
         [Answer("GHI", "String test + !").to_dict()]
     )
 
@@ -123,19 +135,24 @@ def test_answer_with_string(fake_questionnaire_store):
         RoutingPath(["block-1"], section_id="section-1", list_item_id=None)
     ]
 
-    answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire),
-        fake_questionnaire_store,
+    schema = QuestionnaireSchema(questionnaire)
+
+    data_payload = get_payload_data(
+        schema.json.get("data_version"),
+        fake_questionnaire_store_v2.answer_store,
+        fake_questionnaire_store_v2.list_store,
+        schema,
         full_routing_path,
-        SUBMITTED_AT,
+        fake_questionnaire_store_v2.metadata,
+        fake_questionnaire_store_v2.response_metadata,
     )
 
     # Check the converter correctly
-    assert answer_object["data"]["003"] == "String test + !"
+    assert data_payload["003"] == "String test + !"
 
 
-def test_answer_without_qcode(fake_questionnaire_store):
-    fake_questionnaire_store.answer_store = AnswerStore(
+def test_answer_without_qcode(fake_questionnaire_store_v2):
+    fake_questionnaire_store_v2.answer_store = AnswerStore(
         [Answer("GHI", "String test + !").to_dict()]
     )
 
@@ -151,19 +168,24 @@ def test_answer_without_qcode(fake_questionnaire_store):
         RoutingPath(["block-1"], section_id="section-1", list_item_id=None)
     ]
 
-    answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire),
-        fake_questionnaire_store,
+    schema = QuestionnaireSchema(questionnaire)
+
+    data_payload = get_payload_data(
+        schema.json.get("data_version"),
+        fake_questionnaire_store_v2.answer_store,
+        fake_questionnaire_store_v2.list_store,
+        schema,
         full_routing_path,
-        SUBMITTED_AT,
+        fake_questionnaire_store_v2.metadata,
+        fake_questionnaire_store_v2.response_metadata,
     )
 
-    assert not answer_object["data"]
+    assert not data_payload
 
 
-def test_converter_checkboxes_with_q_codes(fake_questionnaire_store):
+def test_converter_checkboxes_with_q_codes(fake_questionnaire_store_v2):
     full_routing_path = [RoutingPath(["crisps"], section_id="food", list_item_id=None)]
-    fake_questionnaire_store.answer_store = AnswerStore(
+    fake_questionnaire_store_v2.answer_store = AnswerStore(
         [Answer("crisps-answer", ["Ready salted", "Sweet chilli"]).to_dict()]
     )
 
@@ -204,17 +226,22 @@ def test_converter_checkboxes_with_q_codes(fake_questionnaire_store):
     )
 
     # When
-    answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire),
-        fake_questionnaire_store,
+    schema = QuestionnaireSchema(questionnaire)
+
+    data_payload = get_payload_data(
+        schema.json.get("data_version"),
+        fake_questionnaire_store_v2.answer_store,
+        fake_questionnaire_store_v2.list_store,
+        schema,
         full_routing_path,
-        SUBMITTED_AT,
+        fake_questionnaire_store_v2.metadata,
+        fake_questionnaire_store_v2.response_metadata,
     )
 
     # Then
-    assert len(answer_object["data"]) == 2
-    assert answer_object["data"]["1"] == "Ready salted"
-    assert answer_object["data"]["2"] == "Sweet chilli"
+    assert len(data_payload) == 2
+    assert data_payload["1"] == "Ready salted"
+    assert data_payload["2"] == "Sweet chilli"
 
 
 @pytest.mark.parametrize(
@@ -225,11 +252,11 @@ def test_converter_checkboxes_with_q_codes(fake_questionnaire_store):
     ],
 )
 def test_converter_checkboxes_with_q_codes_and_other_value(
-    detail_answer_q_code_field, expected_data_length, fake_questionnaire_store
+    detail_answer_q_code_field, expected_data_length, fake_questionnaire_store_v2
 ):
     full_routing_path = [RoutingPath(["crisps"], section_id="food", list_item_id=None)]
 
-    fake_questionnaire_store.answer_store = AnswerStore(
+    fake_questionnaire_store_v2.answer_store = AnswerStore(
         [
             Answer("crisps-answer", ["Ready salted", "Other"]).to_dict(),
             Answer("other-answer-mandatory", "Bacon").to_dict(),
@@ -274,29 +301,34 @@ def test_converter_checkboxes_with_q_codes_and_other_value(
     )
 
     # When
-    answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire),
-        fake_questionnaire_store,
+    schema = QuestionnaireSchema(questionnaire)
+
+    data_payload = get_payload_data(
+        schema.json.get("data_version"),
+        fake_questionnaire_store_v2.answer_store,
+        fake_questionnaire_store_v2.list_store,
+        schema,
         full_routing_path,
-        SUBMITTED_AT,
+        fake_questionnaire_store_v2.metadata,
+        fake_questionnaire_store_v2.response_metadata,
     )
 
     # Then
-    assert len(answer_object["data"]) == expected_data_length
-    assert answer_object["data"]["1"] == "Ready salted"
-    assert answer_object["data"]["4"] == "Bacon"
+    assert len(data_payload) == expected_data_length
+    assert data_payload["1"] == "Ready salted"
+    assert data_payload["4"] == "Bacon"
 
     # If detail answer has a q_code then that should be used in the data outputted in the payload
     if detail_answer_q_code_field:
-        assert answer_object["data"][detail_answer_q_code_field["q_code"]] == "Bacon"
+        assert data_payload[detail_answer_q_code_field["q_code"]] == "Bacon"
 
 
 def test_converter_checkboxes_with_missing_detail_answer_value_in_answer_store(
-    fake_questionnaire_store,
+    fake_questionnaire_store_v2,
 ):
     full_routing_path = [RoutingPath(["crisps"], section_id="food", list_item_id=None)]
 
-    fake_questionnaire_store.answer_store = AnswerStore(
+    fake_questionnaire_store_v2.answer_store = AnswerStore(
         [
             Answer("crisps-answer", ["Ready salted", "Other"]).to_dict(),
         ]
@@ -339,25 +371,30 @@ def test_converter_checkboxes_with_missing_detail_answer_value_in_answer_store(
     )
 
     # When
-    answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire),
-        fake_questionnaire_store,
+    schema = QuestionnaireSchema(questionnaire)
+
+    data_payload = get_payload_data(
+        schema.json.get("data_version"),
+        fake_questionnaire_store_v2.answer_store,
+        fake_questionnaire_store_v2.list_store,
+        schema,
         full_routing_path,
-        SUBMITTED_AT,
+        fake_questionnaire_store_v2.metadata,
+        fake_questionnaire_store_v2.response_metadata,
     )
 
     # Then
-    assert len(answer_object["data"]) == 2
-    assert answer_object["data"]["1"] == "Ready salted"
-    assert answer_object["data"]["4"] == "Other"
+    assert len(data_payload) == 2
+    assert data_payload["1"] == "Ready salted"
+    assert data_payload["4"] == "Other"
 
 
 def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(
-    fake_questionnaire_store,
+    fake_questionnaire_store_v2,
 ):
     full_routing_path = [RoutingPath(["crisps"], section_id="food", list_item_id=None)]
 
-    fake_questionnaire_store.answer_store = AnswerStore(
+    fake_questionnaire_store_v2.answer_store = AnswerStore(
         [Answer("crisps-answer", ["Ready salted", "Sweet chilli"]).to_dict()]
     )
 
@@ -399,21 +436,26 @@ def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(
     )
 
     # When
-    answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire),
-        fake_questionnaire_store,
+    schema = QuestionnaireSchema(questionnaire)
+
+    data_payload = get_payload_data(
+        schema.json.get("data_version"),
+        fake_questionnaire_store_v2.answer_store,
+        fake_questionnaire_store_v2.list_store,
+        schema,
         full_routing_path,
-        SUBMITTED_AT,
+        fake_questionnaire_store_v2.metadata,
+        fake_questionnaire_store_v2.response_metadata,
     )
 
     # Then
-    assert len(answer_object["data"]) == 1
-    assert answer_object["data"]["0"], "['Ready salted' == 'Sweet chilli']"
+    assert len(data_payload) == 1
+    assert data_payload["0"], "['Ready salted' == 'Sweet chilli']"
 
 
-def test_converter_q_codes_for_empty_strings(fake_questionnaire_store):
+def test_converter_q_codes_for_empty_strings(fake_questionnaire_store_v2):
     full_routing_path = [RoutingPath(["crisps"], section_id="food", list_item_id=None)]
-    fake_questionnaire_store.answer_store = AnswerStore(
+    fake_questionnaire_store_v2.answer_store = AnswerStore(
         [
             Answer("crisps-answer", "").to_dict(),
             Answer("other-crisps-answer", "Ready salted").to_dict(),
@@ -439,23 +481,28 @@ def test_converter_q_codes_for_empty_strings(fake_questionnaire_store):
     )
 
     # When
-    answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire),
-        fake_questionnaire_store,
+    schema = QuestionnaireSchema(questionnaire)
+
+    data_payload = get_payload_data(
+        schema.json.get("data_version"),
+        fake_questionnaire_store_v2.answer_store,
+        fake_questionnaire_store_v2.list_store,
+        schema,
         full_routing_path,
-        SUBMITTED_AT,
+        fake_questionnaire_store_v2.metadata,
+        fake_questionnaire_store_v2.response_metadata,
     )
 
     # Then
-    assert len(answer_object["data"]) == 1
-    assert answer_object["data"]["2"] == "Ready salted"
+    assert len(data_payload) == 1
+    assert data_payload["2"] == "Ready salted"
 
 
-def test_radio_answer(fake_questionnaire_store):
+def test_radio_answer(fake_questionnaire_store_v2):
     full_routing_path = [
         RoutingPath(["radio-block"], section_id="section-1", list_item_id=None)
     ]
-    fake_questionnaire_store.answer_store = AnswerStore(
+    fake_questionnaire_store_v2.answer_store = AnswerStore(
         [
             Answer("radio-answer", "Coffee").to_dict(),
             Answer("other-answer-mandatory", "Water").to_dict(),
@@ -493,24 +540,29 @@ def test_radio_answer(fake_questionnaire_store):
     )
 
     # When
-    answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire),
-        fake_questionnaire_store,
+    schema = QuestionnaireSchema(questionnaire)
+
+    data_payload = get_payload_data(
+        schema.json.get("data_version"),
+        fake_questionnaire_store_v2.answer_store,
+        fake_questionnaire_store_v2.list_store,
+        schema,
         full_routing_path,
-        SUBMITTED_AT,
+        fake_questionnaire_store_v2.metadata,
+        fake_questionnaire_store_v2.response_metadata,
     )
 
     # Then
-    assert len(answer_object["data"]) == 2
-    assert answer_object["data"]["1"] == "Coffee"
-    assert answer_object["data"]["101"] == "Water"
+    assert len(data_payload) == 2
+    assert data_payload["1"] == "Coffee"
+    assert data_payload["101"] == "Water"
 
 
-def test_number_answer(fake_questionnaire_store):
+def test_number_answer(fake_questionnaire_store_v2):
     full_routing_path = [
         RoutingPath(["number-block"], section_id="section-1", list_item_id=None)
     ]
-    fake_questionnaire_store.answer_store = AnswerStore(
+    fake_questionnaire_store_v2.answer_store = AnswerStore(
         [Answer("number-answer", 0.9999).to_dict()]
     )
 
@@ -525,23 +577,28 @@ def test_number_answer(fake_questionnaire_store):
     )
 
     # When
-    answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire),
-        fake_questionnaire_store,
+    schema = QuestionnaireSchema(questionnaire)
+
+    data_payload = get_payload_data(
+        schema.json.get("data_version"),
+        fake_questionnaire_store_v2.answer_store,
+        fake_questionnaire_store_v2.list_store,
+        schema,
         full_routing_path,
-        SUBMITTED_AT,
+        fake_questionnaire_store_v2.metadata,
+        fake_questionnaire_store_v2.response_metadata,
     )
 
     # Then
-    assert len(answer_object["data"]) == 1
-    assert answer_object["data"]["1"] == "0.9999"
+    assert len(data_payload) == 1
+    assert data_payload["1"] == "0.9999"
 
 
-def test_percentage_answer(fake_questionnaire_store):
+def test_percentage_answer(fake_questionnaire_store_v2):
     full_routing_path = [
         RoutingPath(["percentage-block"], section_id="section-1", list_item_id=None)
     ]
-    fake_questionnaire_store.answer_store = AnswerStore(
+    fake_questionnaire_store_v2.answer_store = AnswerStore(
         [Answer("percentage-answer", 100).to_dict()]
     )
 
@@ -556,23 +613,28 @@ def test_percentage_answer(fake_questionnaire_store):
     )
 
     # When
-    answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire),
-        fake_questionnaire_store,
+    schema = QuestionnaireSchema(questionnaire)
+
+    data_payload = get_payload_data(
+        schema.json.get("data_version"),
+        fake_questionnaire_store_v2.answer_store,
+        fake_questionnaire_store_v2.list_store,
+        schema,
         full_routing_path,
-        SUBMITTED_AT,
+        fake_questionnaire_store_v2.metadata,
+        fake_questionnaire_store_v2.response_metadata,
     )
 
     # Then
-    assert len(answer_object["data"]) == 1
-    assert answer_object["data"]["1"] == "100"
+    assert len(data_payload) == 1
+    assert data_payload["1"] == "100"
 
 
-def test_textarea_answer(fake_questionnaire_store):
+def test_textarea_answer(fake_questionnaire_store_v2):
     full_routing_path = [
         RoutingPath(["textarea-block"], section_id="section-1", list_item_id=None)
     ]
-    fake_questionnaire_store.answer_store = AnswerStore(
+    fake_questionnaire_store_v2.answer_store = AnswerStore(
         [Answer("textarea-answer", "example text.").to_dict()]
     )
 
@@ -587,23 +649,28 @@ def test_textarea_answer(fake_questionnaire_store):
     )
 
     # When
-    answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire),
-        fake_questionnaire_store,
+    schema = QuestionnaireSchema(questionnaire)
+
+    data_payload = get_payload_data(
+        schema.json.get("data_version"),
+        fake_questionnaire_store_v2.answer_store,
+        fake_questionnaire_store_v2.list_store,
+        schema,
         full_routing_path,
-        SUBMITTED_AT,
+        fake_questionnaire_store_v2.metadata,
+        fake_questionnaire_store_v2.response_metadata,
     )
 
     # Then
-    assert len(answer_object["data"]) == 1
-    assert answer_object["data"]["1"] == "example text."
+    assert len(data_payload) == 1
+    assert data_payload["1"] == "example text."
 
 
-def test_currency_answer(fake_questionnaire_store):
+def test_currency_answer(fake_questionnaire_store_v2):
     full_routing_path = [
         RoutingPath(["currency-block"], section_id="section-1", list_item_id=None)
     ]
-    fake_questionnaire_store.answer_store = AnswerStore(
+    fake_questionnaire_store_v2.answer_store = AnswerStore(
         [Answer("currency-answer", 99.99).to_dict()]
     )
 
@@ -618,23 +685,28 @@ def test_currency_answer(fake_questionnaire_store):
     )
 
     # When
-    answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire),
-        fake_questionnaire_store,
+    schema = QuestionnaireSchema(questionnaire)
+
+    data_payload = get_payload_data(
+        schema.json.get("data_version"),
+        fake_questionnaire_store_v2.answer_store,
+        fake_questionnaire_store_v2.list_store,
+        schema,
         full_routing_path,
-        SUBMITTED_AT,
+        fake_questionnaire_store_v2.metadata,
+        fake_questionnaire_store_v2.response_metadata,
     )
 
     # Then
-    assert len(answer_object["data"]) == 1
-    assert answer_object["data"]["1"] == "99.99"
+    assert len(data_payload) == 1
+    assert data_payload["1"] == "99.99"
 
 
-def test_dropdown_answer(fake_questionnaire_store):
+def test_dropdown_answer(fake_questionnaire_store_v2):
     full_routing_path = [
         RoutingPath(["dropdown-block"], section_id="section-1", list_item_id=None)
     ]
-    fake_questionnaire_store.answer_store = AnswerStore(
+    fake_questionnaire_store_v2.answer_store = AnswerStore(
         [Answer("dropdown-answer", "Liverpool").to_dict()]
     )
 
@@ -660,24 +732,29 @@ def test_dropdown_answer(fake_questionnaire_store):
     )
 
     # When
-    answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire),
-        fake_questionnaire_store,
+    schema = QuestionnaireSchema(questionnaire)
+
+    data_payload = get_payload_data(
+        schema.json.get("data_version"),
+        fake_questionnaire_store_v2.answer_store,
+        fake_questionnaire_store_v2.list_store,
+        schema,
         full_routing_path,
-        SUBMITTED_AT,
+        fake_questionnaire_store_v2.metadata,
+        fake_questionnaire_store_v2.response_metadata,
     )
 
     # Then
-    assert len(answer_object["data"]) == 1
-    assert answer_object["data"]["1"] == "Liverpool"
+    assert len(data_payload) == 1
+    assert data_payload["1"] == "Liverpool"
 
 
-def test_date_answer(fake_questionnaire_store):
+def test_date_answer(fake_questionnaire_store_v2):
     full_routing_path = [
         RoutingPath(["date-block"], section_id="section-1", list_item_id=None)
     ]
 
-    fake_questionnaire_store.answer_store = AnswerStore(
+    fake_questionnaire_store_v2.answer_store = AnswerStore(
         [
             create_answer("single-date-answer", "1990-02-01"),
             create_answer("month-year-answer", "1990-01"),
@@ -698,24 +775,29 @@ def test_date_answer(fake_questionnaire_store):
     )
 
     # When
-    answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire),
-        fake_questionnaire_store,
+    schema = QuestionnaireSchema(questionnaire)
+
+    data_payload = get_payload_data(
+        schema.json.get("data_version"),
+        fake_questionnaire_store_v2.answer_store,
+        fake_questionnaire_store_v2.list_store,
+        schema,
         full_routing_path,
-        SUBMITTED_AT,
+        fake_questionnaire_store_v2.metadata,
+        fake_questionnaire_store_v2.response_metadata,
     )
 
     # Then
-    assert len(answer_object["data"]) == 2
-    assert answer_object["data"]["1"] == "01/02/1990"
-    assert answer_object["data"]["2"] == "01/1990"
+    assert len(data_payload) == 2
+    assert data_payload["1"] == "01/02/1990"
+    assert data_payload["2"] == "01/1990"
 
 
-def test_unit_answer(fake_questionnaire_store):
+def test_unit_answer(fake_questionnaire_store_v2):
     full_routing_path = [
         RoutingPath(["unit-block"], section_id="section-1", list_item_id=None)
     ]
-    fake_questionnaire_store.answer_store = AnswerStore(
+    fake_questionnaire_store_v2.answer_store = AnswerStore(
         [Answer("unit-answer", 10).to_dict()]
     )
 
@@ -730,13 +812,18 @@ def test_unit_answer(fake_questionnaire_store):
     )
 
     # When
-    answer_object = convert_answers(
-        QuestionnaireSchema(questionnaire),
-        fake_questionnaire_store,
+    schema = QuestionnaireSchema(questionnaire)
+
+    data_payload = get_payload_data(
+        schema.json.get("data_version"),
+        fake_questionnaire_store_v2.answer_store,
+        fake_questionnaire_store_v2.list_store,
+        schema,
         full_routing_path,
-        SUBMITTED_AT,
+        fake_questionnaire_store_v2.metadata,
+        fake_questionnaire_store_v2.response_metadata,
     )
 
     # Then
-    assert len(answer_object["data"]) == 1
-    assert answer_object["data"]["1"] == "10"
+    assert len(data_payload) == 1
+    assert data_payload["1"] == "10"

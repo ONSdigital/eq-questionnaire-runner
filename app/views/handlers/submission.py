@@ -50,8 +50,8 @@ class SubmissionHandler:
         self._questionnaire_store.submitted_at = self.submitted_at
         self._questionnaire_store.save()
 
-    def get_payload(self, is_version_2):
-        if is_version_2:
+    def get_payload(self, version):
+        if version == "v2":
             payload = convert_answers_v2(
                 self._schema,
                 self._questionnaire_store,

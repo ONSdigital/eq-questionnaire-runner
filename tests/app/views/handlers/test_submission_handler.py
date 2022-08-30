@@ -24,8 +24,7 @@ def test_submission_language_code_uses_session_data_language_if_present(
         QuestionnaireSchema({}), mock_questionnaire_store, {}
     )
     assert (
-        submission_handler.get_payload(is_version_2=None)["submission_language_code"]
-        == "cy"
+        submission_handler.get_payload(version=None)["submission_language_code"] == "cy"
     )
 
 
@@ -56,8 +55,7 @@ def test_submission_language_code_uses_default_language_if_session_data_language
         QuestionnaireSchema({}), mock_questionnaire_store, {}
     )
     assert (
-        submission_handler.get_payload(is_version_2=None)["submission_language_code"]
-        == "en"
+        submission_handler.get_payload(version=None)["submission_language_code"] == "en"
     )
 
 
