@@ -19,7 +19,7 @@ describe("Given I start a survey,", () => {
     browser.refresh();
     expect($(InitialPage.acceptCookies()).isDisplayed()).to.be.false;
   });
-  it("When I sign out on the page, Then go back the cookie banner should be displayed", () => {
+  it("When I sign out and click the browser back button, Then the cookie banner should be displayed", () => {
     $(InitialPage.saveSignOut()).click();
     browser.back();
     expect($(InitialPage.acceptCookies()).isDisplayed()).to.be.true;
