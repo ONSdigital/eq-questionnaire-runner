@@ -394,6 +394,24 @@ msgstr ""
 msgid "Save and exit survey"
 msgstr ""
 
+#: app/views/contexts/calculated_summary_context.py:72
+#: app/views/contexts/section_summary_context.py:62
+#: app/views/contexts/summary_context.py:18
+msgid "Question"
+msgstr ""
+
+#: app/views/contexts/calculated_summary_context.py:72
+#: app/views/contexts/section_summary_context.py:62
+#: app/views/contexts/summary_context.py:18
+msgid "Answer given"
+msgstr ""
+
+#: app/views/contexts/calculated_summary_context.py:72
+#: app/views/contexts/section_summary_context.py:62
+#: app/views/contexts/summary_context.py:20
+msgid "Change answer"
+msgstr ""
+
 #: app/views/contexts/hub_context.py:14
 msgid "Completed"
 msgstr ""
@@ -1516,18 +1534,18 @@ msgid "Start survey"
 msgstr ""
 
 #: templates/partials/summary/collapsible-summary.html:37
-#: templates/partials/summary/summary.html:19
+#: templates/partials/summary/summary.html:20
 msgid "No answer provided"
 msgstr ""
 
 #: templates/partials/summary/collapsible-summary.html:38
 #: templates/partials/summary/list-summary.html:8
-#: templates/partials/summary/summary.html:20
+#: templates/partials/summary/summary.html:21
 msgid "Change"
 msgstr ""
 
 #: templates/partials/summary/collapsible-summary.html:39
-#: templates/partials/summary/summary.html:21
+#: templates/partials/summary/summary.html:22
 msgid "Change your answer for:"
 msgstr ""
 
