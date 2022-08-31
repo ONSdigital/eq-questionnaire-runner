@@ -131,20 +131,7 @@ def _create_session_data_from_metadata(metadata: Mapping[str, Any]) -> SessionDa
     """
 
     return SessionData(
-        tx_id=metadata.get("tx_id"),
-        schema_name=metadata.get("schema_name"),
-        period_str=metadata.get("period_str"),
         language_code=metadata.get("language_code"),
-        launch_language_code=metadata.get("language_code"),
-        schema_url=metadata.get("schema_url"),
-        ru_name=metadata.get("ru_name"),
-        ru_ref=metadata.get("ru_ref"),
-        response_id=metadata.get("response_id"),
-        case_id=metadata["case_id"],
-        case_ref=metadata.get("case_ref"),
-        trad_as=metadata.get("trad_as"),
-        account_service_base_url=metadata.get("account_service_url"),
-        account_service_log_out_url=metadata.get("account_service_log_out_url"),
     )
 
 
