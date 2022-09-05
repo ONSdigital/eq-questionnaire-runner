@@ -402,7 +402,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 return self._is_list_name_in_rule(rule, list_name)
 
     @staticmethod
-    def get_operands(rules: Union[Mapping, Sequence]) -> list:
+    def get_operands(rules: Mapping) -> list:
         operator = next(iter(rules))
         operands: list = rules[operator]
         return operands
