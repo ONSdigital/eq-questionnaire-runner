@@ -3,11 +3,7 @@ from collections import abc
 import pytest
 from werkzeug.datastructures import ImmutableDict
 
-from app.questionnaire.questionnaire_schema import (
-    AnswerDependent,
-    QuestionnaireSchema,
-    has_operator,
-)
+from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
 
 
 def assert_all_dict_values_are_hashable(data):
@@ -801,5 +797,5 @@ def test_when_rules_section_dependencies_calculated_summary(
     ),
 )
 def test_has_operator_returns_correct_value(rule, expected_result):
-    result = has_operator(rule)
+    result = QuestionnaireSchema.has_operator(rule)
     assert result == expected_result

@@ -5,7 +5,7 @@ from typing import Generator, Iterable, Mapping, Optional, Sequence, Union
 from app.data_models import AnswerStore, ListStore
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
-from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE, has_operator
+from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.operations import Operations
 from app.questionnaire.rules.operator import Operator
@@ -81,7 +81,7 @@ class RuleEvaluator:
         if isinstance(operand, dict) and "source" in operand:
             return self.value_source_resolver.resolve(operand)
 
-        if has_operator(operand):
+        if QuestionnaireSchema.has_operator(operand):
             return self._evaluate(operand)  # type: ignore
 
         return operand

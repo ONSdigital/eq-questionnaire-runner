@@ -17,7 +17,6 @@ from babel.dates import format_datetime
 from dateutil.relativedelta import relativedelta
 
 from app.questionnaire import QuestionnaireSchema
-from app.questionnaire.questionnaire_schema import has_operator
 from app.questionnaire.rules.helpers import ValueTypes, casefold
 from app.questionnaire.rules.operator import OPERATION_MAPPING
 from app.questionnaire.rules.utils import parse_datetime
@@ -192,7 +191,7 @@ class Operations:
     ) -> list[Union[ValueSourceTypes, date]]:
         resolved_operands = []
         for operand in operands:
-            if has_operator(operand):
+            if QuestionnaireSchema.has_operator(operand):
                 operator_name = next(iter(operand))  # type: ignore
                 resolved_nested_operands = self._resolve_self_reference(
                     self_reference_value, operand[operator_name]  # type: ignore
