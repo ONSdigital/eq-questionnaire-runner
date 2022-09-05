@@ -52,24 +52,25 @@ def convert_answers_v2(
     answer_store = questionnaire_store.answer_store
     list_store = questionnaire_store.list_store
 
-    metadata_proxy = MetadataProxy(metadata)
+    metadata_proxy = MetadataProxy.from_dict(dict(metadata))
 
     survey_id = schema.json["survey_id"]
 
     payload = {
-        "case_id": metadata_proxy.case_id,
-        "tx_id": metadata_proxy.tx_id,
+        "case_id": metadata_proxy["case_id"],
+        "tx_id": metadata_proxy["tx_id"],
         "type": "uk.gov.ons.edc.eq:surveyresponse",
         "version": metadata_proxy.version,
         "data_version": schema.json["data_version"],
         "origin": "uk.gov.ons.edc.eq",
-        "collection_exercise_sid": metadata_proxy.collection_exercise_sid,
-        "schema_name": metadata_proxy.schema_name,
+        "collection_exercise_sid": metadata_proxy["collection_exercise_sid"],
+        "schema_name": metadata_proxy["schema_name"],
         "survey_id": survey_id,
         "flushed": flushed,
         "submitted_at": submitted_at.isoformat(),
         "survey_metadata": metadata["survey_metadata"]["data"],
-        "launch_language_code": metadata_proxy.language_code or DEFAULT_LANGUAGE_CODE,
+        "launch_language_code": metadata_proxy["language_code"]
+        or DEFAULT_LANGUAGE_CODE,
     }
 
     optional_survey_metadata_properties = get_optional_survey_metadata_properties(
@@ -99,10 +100,10 @@ def get_optional_payload_properties(
 ) -> MetadataType:
     payload = {}
 
-    metadata_proxy = MetadataProxy(metadata)
+    metadata_proxy = MetadataProxy.from_dict(dict(metadata))
 
     for key in ["channel", "region_code"]:
-        if value := metadata_proxy.get_metadata_value(key):
+        if value := metadata_proxy[key]:
             payload[key] = value
     if started_at := response_metadata.get("started_at"):
         payload["started_at"] = started_at
@@ -111,11 +112,11 @@ def get_optional_payload_properties(
 
 
 def get_optional_survey_metadata_properties(metadata: MetadataType) -> MetadataType:
-    metadata_proxy = MetadataProxy(metadata)
+    metadata_proxy = MetadataProxy.from_dict(dict(metadata))
     survey_metadata = {}
 
     for key in ["form_type", "case_ref", "case_type"]:
-        if value := metadata_proxy.get_metadata_value(key):
+        if value := metadata_proxy[key]:
             survey_metadata[key] = value
 
     return survey_metadata

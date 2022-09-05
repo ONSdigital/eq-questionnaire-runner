@@ -20,9 +20,10 @@ def requires_schema(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         # pylint: disable=assigning-non-slot
-        metadata = get_metadata(current_user)
+        metadata = dict(get_metadata(current_user))
+        metadata_proxy = MetadataProxy.from_dict(metadata)
         g.schema = load_schema_from_metadata(
-            metadata=metadata, language_code=get_locale().language
+            metadata_proxy=metadata_proxy, language_code=get_locale().language
         )
         result = func(g.schema, *args, **kwargs)
         return result
@@ -89,7 +90,7 @@ def dump_submission(schema, questionnaire_store):
 
     submission_handler = SubmissionHandler(schema, questionnaire_store, routing_path)
 
-    metadata_proxy = MetadataProxy(questionnaire_store.metadata)
+    metadata_proxy = MetadataProxy.from_dict(questionnaire_store.metadata)
 
-    response = {"submission": submission_handler.get_payload(metadata_proxy.version)}
+    response = {"submission": submission_handler.get_payload(metadata_proxy["version"])}
     return json_dumps(response), 200

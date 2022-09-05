@@ -66,13 +66,13 @@ def convert_answers(
     response_metadata = questionnaire_store.response_metadata
     answer_store = questionnaire_store.answer_store
     list_store = questionnaire_store.list_store
-    metadata_proxy = MetadataProxy(metadata)
+    metadata_proxy = MetadataProxy.from_dict(dict(metadata))
 
     survey_id = schema.json["survey_id"]
 
     payload = {
-        "case_id": metadata_proxy.case_id,
-        "tx_id": metadata_proxy.tx_id,
+        "case_id": metadata_proxy["case_id"],
+        "tx_id": metadata_proxy["tx_id"],
         "type": "uk.gov.ons.edc.eq:surveyresponse",
         "version": schema.json["data_version"],
         "origin": "uk.gov.ons.edc.eq",
@@ -81,7 +81,8 @@ def convert_answers(
         "submitted_at": submitted_at.isoformat(),
         "collection": build_collection(metadata),
         "metadata": build_metadata(metadata),
-        "launch_language_code": metadata_proxy.language_code or DEFAULT_LANGUAGE_CODE,
+        "launch_language_code": metadata_proxy["language_code"]
+        or DEFAULT_LANGUAGE_CODE,
     }
 
     optional_properties = get_optional_payload_properties(metadata, response_metadata)
@@ -100,33 +101,33 @@ def convert_answers(
 
 
 def build_collection(metadata: MetadataType) -> MetadataType:
-    metadata_proxy = MetadataProxy(metadata)
+    metadata_proxy = MetadataProxy.from_dict(dict(metadata))
 
     collection_metadata = {
-        "exercise_sid": metadata_proxy.collection_exercise_sid,
-        "schema_name": metadata_proxy.schema_name,
-        "period": metadata_proxy.period_id,
+        "exercise_sid": metadata_proxy["collection_exercise_sid"],
+        "schema_name": metadata_proxy["schema_name"],
+        "period": metadata_proxy["period_id"],
     }
 
-    if form_type := metadata_proxy.form_type:
+    if form_type := metadata_proxy["form_type"]:
         collection_metadata["instrument_id"] = form_type
 
     return collection_metadata
 
 
 def build_metadata(metadata: MetadataType) -> MetadataType:
-    metadata_proxy = MetadataProxy(metadata)
+    metadata_proxy = MetadataProxy.from_dict(dict(metadata))
 
     downstream_metadata = {
-        "user_id": metadata_proxy.user_id,
-        "ru_ref": metadata_proxy.ru_ref,
+        "user_id": metadata_proxy["user_id"],
+        "ru_ref": metadata_proxy["ru_ref"],
     }
 
-    if ref_p_start_date := metadata_proxy.ref_p_start_date:
+    if ref_p_start_date := metadata_proxy["ref_p_start_date"]:
         downstream_metadata["ref_period_start_date"] = ref_p_start_date
-    if ref_p_end_date := metadata_proxy.ref_p_end_date:
+    if ref_p_end_date := metadata_proxy["ref_p_end_date"]:
         downstream_metadata["ref_period_end_date"] = ref_p_end_date
-    if display_address := metadata_proxy.display_address:
+    if display_address := metadata_proxy["display_address"]:
         downstream_metadata["display_address"] = display_address
 
     return downstream_metadata
@@ -137,10 +138,10 @@ def get_optional_payload_properties(
 ) -> MetadataType:
     payload = {}
 
-    metadata_proxy = MetadataProxy(metadata)
+    metadata_proxy = MetadataProxy.from_dict(dict(metadata))
 
     for key in ["channel", "case_type", "form_type", "region_code", "case_ref"]:
-        if value := metadata_proxy.get_metadata_value(key):
+        if value := metadata_proxy[key]:
             payload[key] = value
     if started_at := response_metadata.get("started_at"):
         payload["started_at"] = started_at

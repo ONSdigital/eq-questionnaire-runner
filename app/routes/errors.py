@@ -36,10 +36,9 @@ errors_blueprint = Blueprint("errors", __name__)
 
 
 def log_exception(exception, status_code):
-    metadata_proxy = MetadataProxy(get_metadata(current_user))
-
-    if metadata_proxy.metadata:
-        logger.bind(tx_id=metadata_proxy.tx_id)
+    if get_metadata(current_user):
+        metadata_proxy = MetadataProxy.from_dict(dict(get_metadata(current_user)))
+        logger.bind(tx_id=metadata_proxy["tx_id"])
 
     log = logger.warning if status_code < 500 else logger.error
 

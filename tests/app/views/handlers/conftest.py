@@ -121,6 +121,7 @@ def metadata():
         "channel": channel,
         "case_ref": case_ref,
         "region_code": region_code,
+        "case_id": case_id,
     }
 
 
@@ -134,6 +135,7 @@ def metadata_v2():
         "response_id": response_id,
         "channel": channel,
         "region_code": region_code,
+        "account_service_url": "account_service_url",
         "survey_metadata": {
             "data": {
                 "period_id": period_id,
@@ -197,6 +199,8 @@ def mock_questionnaire_store(mocker):
         "collection_exercise_sid": collection_exercise_sid,
         "period_id": period_id,
         "schema_name": schema_name,
+        "account_service_url": "account_service_url",
+        "response_id": "response_id",
     }
     return questionnaire_store
 

@@ -3,8 +3,10 @@ from datetime import datetime, timezone
 from flask import Flask
 from flask import session as cookie_session
 from flask.wrappers import Request
+from mock import Mock
 
 from app.authentication.authenticator import load_user, request_load_user, user_loader
+from app.data_models.metadata_proxy import MetadataProxy
 from app.settings import USER_IK
 
 
@@ -22,6 +24,9 @@ def test_check_session_with_user_id_in_session(
         # Given
         session_store.create("eq_session_id", "user_id", session_data, expires_at)
         cookie_session[USER_IK] = "user_ik"
+
+        metadata_proxy = MetadataProxy
+        metadata_proxy.from_dict = Mock(return_value={"tx_id": "tx_id"})
 
         # When
         user = load_user()

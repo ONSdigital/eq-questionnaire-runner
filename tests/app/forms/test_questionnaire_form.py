@@ -302,6 +302,11 @@ def test_date_combined_single_validation(app, answer_store, list_store):
         metadata = {
             "ref_p_start_date": "2017-01-21",
             "ref_p_end_date": "2017-02-21",
+            "response_id": "1",
+            "account_service_url": "account_service_url",
+            "tx_id": "tx_id",
+            "collection_exercise_sid": "collection_exercise_sid",
+            "case_id": "case_id",
         }
 
         response_metadata = {}
@@ -352,6 +357,11 @@ def test_date_combined_range_too_small_validation(app, answer_store, list_store)
         metadata = {
             "ref_p_start_date": "2017-01-20",
             "ref_p_end_date": "2017-02-20",
+            "response_id": "1",
+            "account_service_url": "account_service_url",
+            "tx_id": "tx_id",
+            "collection_exercise_sid": "collection_exercise_sid",
+            "case_id": "case_id",
         }
 
         expected_form_data = {
@@ -396,6 +406,11 @@ def test_date_combined_range_too_large_validation(app, answer_store, list_store)
         metadata = {
             "ref_p_start_date": "2017-01-20",
             "ref_p_end_date": "2017-02-20",
+            "response_id": "1",
+            "account_service_url": "account_service_url",
+            "tx_id": "tx_id",
+            "collection_exercise_sid": "collection_exercise_sid",
+            "case_id": "case_id",
         }
 
         response_metadata = {}
@@ -440,6 +455,11 @@ def test_date_mm_yyyy_combined_single_validation(app, answer_store, list_store):
         metadata = {
             "ref_p_start_date": "2017-01-01",
             "ref_p_end_date": "2017-02-12",
+            "response_id": "1",
+            "account_service_url": "account_service_url",
+            "tx_id": "tx_id",
+            "collection_exercise_sid": "collection_exercise_sid",
+            "case_id": "case_id",
         }
 
         response_metadata = {}
@@ -490,6 +510,11 @@ def test_date_mm_yyyy_combined_range_too_small_validation(
         metadata = {
             "ref_p_start_date": "2017-01-01",
             "ref_p_end_date": "2017-02-12",
+            "response_id": "1",
+            "account_service_url": "account_service_url",
+            "tx_id": "tx_id",
+            "collection_exercise_sid": "collection_exercise_sid",
+            "case_id": "case_id",
         }
 
         expected_form_data = {
@@ -534,6 +559,11 @@ def test_date_mm_yyyy_combined_range_too_large_validation(
         metadata = {
             "ref_p_start_date": "2017-01-01",
             "ref_p_end_date": "2017-02-12",
+            "response_id": "1",
+            "account_service_url": "account_service_url",
+            "tx_id": "tx_id",
+            "collection_exercise_sid": "collection_exercise_sid",
+            "case_id": "case_id",
         }
 
         response_metadata = {}
@@ -573,6 +603,11 @@ def test_date_yyyy_combined_single_validation(app, answer_store, list_store):
         metadata = {
             "ref_p_start_date": "2017-01-01",
             "ref_p_end_date": "2017-02-12",
+            "response_id": "1",
+            "account_service_url": "account_service_url",
+            "tx_id": "tx_id",
+            "collection_exercise_sid": "collection_exercise_sid",
+            "case_id": "case_id",
         }
 
         expected_form_data = {
@@ -614,6 +649,11 @@ def test_date_yyyy_combined_range_too_small_validation(app, answer_store, list_s
         metadata = {
             "ref_p_start_date": "2017-01-01",
             "ref_p_end_date": "2017-02-12",
+            "response_id": "1",
+            "account_service_url": "account_service_url",
+            "tx_id": "tx_id",
+            "collection_exercise_sid": "collection_exercise_sid",
+            "case_id": "case_id",
         }
 
         expected_form_data = {
@@ -651,6 +691,11 @@ def test_date_yyyy_combined_range_too_large_validation(app, answer_store, list_s
         metadata = {
             "ref_p_start_date": "2017-01-01",
             "ref_p_end_date": "2017-02-12",
+            "response_id": "1",
+            "account_service_url": "account_service_url",
+            "tx_id": "tx_id",
+            "collection_exercise_sid": "collection_exercise_sid",
+            "case_id": "case_id",
         }
 
         expected_form_data = {
@@ -694,7 +739,14 @@ def test_date_raises_ValueError_when_any_date_range_parts_are_falsy(
             }
         )
 
-        metadata = {"ref_p_start_date": "2017-01-21"}
+        metadata = {
+            "ref_p_start_date": "2017-01-21",
+            "response_id": "1",
+            "account_service_url": "account_service_url",
+            "tx_id": "tx_id",
+            "collection_exercise_sid": "collection_exercise_sid",
+            "case_id": "case_id",
+        }
 
         response_metadata = {}
 

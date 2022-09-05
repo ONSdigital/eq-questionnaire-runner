@@ -83,13 +83,17 @@ class ContextHelper:
     def service_links_context(
         self,
     ) -> Optional[dict[str, Union[dict[str, str], list[dict]]]]:
-        metadata_proxy = MetadataProxy(get_metadata(current_user))
+
+        ru_ref = None
+        if get_metadata(current_user):
+            metadata_proxy = MetadataProxy.from_dict(dict(get_metadata(current_user)))
+            ru_ref = metadata_proxy["ru_ref"]
 
         if service_links := self._survey_config.get_service_links(
             sign_out_url=self._sign_out_url,
             is_authenticated=current_user.is_authenticated,
             cookie_has_theme=bool(self._survey_type),
-            ru_ref=metadata_proxy.ru_ref,  # type: ignore
+            ru_ref=ru_ref,
         ):
             return {
                 "toggleServicesButton": {
@@ -105,8 +109,11 @@ class ContextHelper:
     def data_layer_context(
         self,
     ) -> list[dict]:
-        metadata_proxy = MetadataProxy(get_metadata(current_user))
-        return self._survey_config.get_data_layer(tx_id=metadata_proxy.tx_id)
+        tx_id = None
+        if get_metadata(current_user):
+            metadata_proxy = MetadataProxy.from_dict(dict(get_metadata(current_user)))
+            tx_id = metadata_proxy["tx_id"]
+        return self._survey_config.get_data_layer(tx_id=tx_id)
 
     @property
     def page_header_context(self) -> dict[str, Union[bool, str, LazyString]]:
@@ -208,8 +215,11 @@ def get_survey_config(
     # business feedback on the differentiation between theme and SURVEY_TYPE.
 
     if metadata := get_metadata(current_user):
+        metadata_proxy = MetadataProxy.from_dict(dict(metadata))
         language = language or get_locale().language
-        schema = load_schema_from_metadata(metadata=metadata, language_code=language)
+        schema = load_schema_from_metadata(
+            metadata_proxy=metadata_proxy, language_code=language
+        )
 
     survey_theme = theme or get_survey_type()
 

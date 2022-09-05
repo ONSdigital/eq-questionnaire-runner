@@ -156,9 +156,9 @@ class ValueSourceResolver:
             return self._resolve_list_value_source(value_source)
 
         if source == "metadata":
-            metadata_proxy = MetadataProxy(metadata=self.metadata)
+            metadata_proxy = MetadataProxy.from_dict(dict(self.metadata))
             identifier = value_source["identifier"]
-            return metadata_proxy.get_metadata_value(identifier)  # type: ignore
+            return metadata_proxy[identifier]  # type: ignore
 
         if source == "location" and value_source.get("identifier") == "list_item_id":
             # This does not use the location object because

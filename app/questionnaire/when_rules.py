@@ -316,8 +316,8 @@ def get_answer_value(
 
 
 def get_metadata_value(metadata, key):
-    metadata_proxy = MetadataProxy(metadata)
-    return metadata_proxy.get_metadata_value(key)
+    metadata_proxy = MetadataProxy.from_dict(dict(metadata))
+    return metadata_proxy[key]
 
 
 def get_list_count(list_store, list_name):

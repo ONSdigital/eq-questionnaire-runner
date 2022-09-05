@@ -21,14 +21,16 @@ class SubmissionHandler:
         self._questionnaire_store = questionnaire_store
         self._full_routing_path = full_routing_path
         self._session_store = get_session_store()
-        self._metadata_proxy = MetadataProxy(questionnaire_store.metadata)
+        self._metadata_proxy = MetadataProxy.from_dict(
+            dict(questionnaire_store.metadata)
+        )
 
     @cached_property
     def submitted_at(self):
         return datetime.now(timezone.utc).replace(microsecond=0)
 
     def submit_questionnaire(self):
-        payload = self.get_payload(self._metadata_proxy.version)
+        payload = self.get_payload(self._metadata_proxy["version"])
 
         message = json_dumps(payload)
 
@@ -37,8 +39,8 @@ class SubmissionHandler:
         )
         submitted = current_app.eq["submitter"].send_message(
             encrypted_message,
-            case_id=self._metadata_proxy.case_id,
-            tx_id=self._metadata_proxy.tx_id,
+            case_id=self._metadata_proxy["case_id"],
+            tx_id=self._metadata_proxy["tx_id"],
         )
 
         if not submitted:
@@ -72,5 +74,5 @@ class SubmissionHandler:
 
     def _store_display_address_in_session(self):
         session_data = self._session_store.session_data
-        session_data.display_address = self._metadata_proxy.display_address
+        session_data.display_address = self._metadata_proxy["display_address"]
         self._session_store.save()

@@ -42,9 +42,9 @@ def flush_data():
     if roles and "flusher" in roles:
         user = _get_user(decrypted_token["response_id"])
 
-        metadata_proxy = MetadataProxy(get_metadata(user))
+        metadata_proxy = MetadataProxy.from_dict(dict(get_metadata(user)))
 
-        if tx_id := metadata_proxy.tx_id:
+        if tx_id := metadata_proxy["tx_id"]:
             logger.bind(tx_id=tx_id)
         if _submit_data(user):
             return Response(status=200)
@@ -59,11 +59,12 @@ def _submit_data(user):
         questionnaire_store = get_questionnaire_store(user.user_id, user.user_ik)
         answer_store = questionnaire_store.answer_store
         metadata = questionnaire_store.metadata
+        metadata_proxy = MetadataProxy.from_dict(dict(metadata))
         response_metadata = questionnaire_store.response_metadata
         progress_store = questionnaire_store.progress_store
         list_store = questionnaire_store.list_store
         submitted_at = datetime.now(timezone.utc)
-        schema = load_schema_from_metadata(metadata=metadata)
+        schema = load_schema_from_metadata(metadata_proxy=metadata_proxy)
 
         router = Router(
             schema,
@@ -89,12 +90,12 @@ def _submit_data(user):
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
         )
 
-        metadata_proxy = MetadataProxy(metadata)
+        metadata_proxy = MetadataProxy.from_dict(dict(metadata))
 
         sent = current_app.eq["submitter"].send_message(
             encrypted_message,
-            tx_id=metadata_proxy.tx_id,
-            case_id=metadata_proxy.case_id,
+            tx_id=metadata_proxy["tx_id"],
+            case_id=metadata_proxy["case_id"],
         )
 
         if not sent:

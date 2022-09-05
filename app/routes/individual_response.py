@@ -44,7 +44,7 @@ def before_individual_response_request():
     if not metadata:
         raise NoQuestionnaireStateException(401)
 
-    metadata_proxy = MetadataProxy(metadata)
+    metadata_proxy = MetadataProxy.from_dict(dict(metadata))
 
     questionnaire_store = get_questionnaire_store(
         current_user.user_id, current_user.user_ik
@@ -54,20 +54,20 @@ def before_individual_response_request():
         return redirect(url_for("post_submission.get_thank_you"))
 
     logger.bind(
-        tx_id=metadata_proxy.tx_id,
-        schema_name=metadata_proxy.schema_name,
-        ce_id=metadata_proxy.collection_exercise_sid,
+        tx_id=metadata_proxy["tx_id"],
+        schema_name=metadata_proxy["schema_name"],
+        ce_id=metadata_proxy["collection_exercise_sid"],
     )
 
     logger.info(
         "individual-response request", method=request.method, url_path=request.full_path
     )
 
-    handle_language(metadata)
+    handle_language(metadata_proxy)
 
     # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
-        metadata=questionnaire_store.metadata,
+        metadata_proxy=metadata_proxy,
         language_code=get_locale().language,
     )
 
@@ -173,11 +173,11 @@ def individual_response_post_address_confirmation(schema, questionnaire_store):
     if request.method == "POST":
         return redirect(url_for("questionnaire.get_questionnaire"))
 
-    metadata_proxy = MetadataProxy(questionnaire_store.metadata)
+    metadata_proxy = MetadataProxy.from_dict(questionnaire_store.metadata)
 
     return render_template(
         template="individual_response/confirmation-post",
-        display_address=metadata_proxy.display_address,
+        display_address=metadata_proxy["display_address"],
         page_title=individual_response_handler.page_title(
             lazy_gettext("An individual access code has been sent by post")
         ),

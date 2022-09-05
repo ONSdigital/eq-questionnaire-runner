@@ -19,7 +19,15 @@ DUMMY_MOBILE_NUMBER = "07700900258"
 
 @freeze_time(datetime.now(tz=timezone.utc).isoformat())
 def test_sms_fulfilment_request_payload():
-    metadata = {"region_code": "GB-ENG", "case_id": str(uuid4())}
+    metadata = {
+        "region_code": "GB-ENG",
+        "case_id": str(uuid4()),
+        "tx_id": "tx_id",
+        "response_id": "response_id",
+        "account_service_url": "account_service_url",
+        "collection_exercise_sid": "collection_exercise_sid",
+    }
+
     fulfilment_request = IndividualResponseFulfilmentRequest(
         metadata, DUMMY_MOBILE_NUMBER
     )
@@ -39,7 +47,14 @@ def test_sms_fulfilment_request_payload():
 
 @freeze_time(datetime.now(tz=timezone.utc).isoformat())
 def test_postal_fulfilment_request_message():
-    metadata = {"region_code": "GB-ENG", "case_id": str(uuid4())}
+    metadata = {
+        "region_code": "GB-ENG",
+        "case_id": str(uuid4()),
+        "tx_id": "tx_id",
+        "response_id": "response_id",
+        "account_service_url": "account_service_url",
+        "collection_exercise_sid": "collection_exercise_sid",
+    }
     fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
 
     postal_json_message = json_loads(fulfilment_request.message)
@@ -65,7 +80,15 @@ def validate_uuids_in_payload(payload):
 
 @freeze_time(datetime.now(tz=timezone.utc).isoformat())
 def test_individual_case_id_not_present_when_case_type_spg():
-    metadata = {"region_code": "GB-ENG", "case_id": str(uuid4()), "case_type": "SPG"}
+    metadata = {
+        "region_code": "GB-ENG",
+        "case_id": str(uuid4()),
+        "case_type": "SPG",
+        "tx_id": "tx_id",
+        "response_id": "response_id",
+        "account_service_url": "account_service_url",
+        "collection_exercise_sid": "collection_exercise_sid",
+    }
     fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
 
     json_message = json_loads(fulfilment_request.message)
@@ -74,7 +97,15 @@ def test_individual_case_id_not_present_when_case_type_spg():
 
 @freeze_time(datetime.now(tz=timezone.utc).isoformat())
 def test_individual_case_id_not_present_when_case_type_ce():
-    metadata = {"region_code": "GB-ENG", "case_id": str(uuid4()), "case_type": "CE"}
+    metadata = {
+        "region_code": "GB-ENG",
+        "case_id": str(uuid4()),
+        "case_type": "CE",
+        "tx_id": "tx_id",
+        "response_id": "response_id",
+        "account_service_url": "account_service_url",
+        "collection_exercise_sid": "collection_exercise_sid",
+    }
     fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
 
     json_message = json_loads(fulfilment_request.message)
@@ -90,7 +121,15 @@ def test_individual_case_id_not_present_when_case_type_ce():
     ],
 )
 def test_fulfilment_code_for_sms(region_code, expected_fulfilment_code):
-    metadata = {"region_code": region_code, "case_id": str(uuid4()), "case_type": "SPG"}
+    metadata = {
+        "region_code": region_code,
+        "case_id": str(uuid4()),
+        "case_type": "SPG",
+        "tx_id": "tx_id",
+        "response_id": "response_id",
+        "account_service_url": "account_service_url",
+        "collection_exercise_sid": "collection_exercise_sid",
+    }
     fulfilment_request = IndividualResponseFulfilmentRequest(
         metadata, DUMMY_MOBILE_NUMBER
     )
@@ -110,7 +149,15 @@ def test_fulfilment_code_for_sms(region_code, expected_fulfilment_code):
     ],
 )
 def test_fulfilment_code_for_postal(region_code, expected_fulfilment_code):
-    metadata = {"region_code": region_code, "case_id": str(uuid4()), "case_type": "SPG"}
+    metadata = {
+        "region_code": region_code,
+        "case_id": str(uuid4()),
+        "case_type": "SPG",
+        "tx_id": "tx_id",
+        "response_id": "response_id",
+        "account_service_url": "account_service_url",
+        "collection_exercise_sid": "collection_exercise_sid",
+    }
     fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
     json_message = json_loads(fulfilment_request.message)
 

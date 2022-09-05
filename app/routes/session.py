@@ -11,6 +11,7 @@ from werkzeug.exceptions import Unauthorized
 
 from app.authentication.authenticator import decrypt_token, store_session
 from app.authentication.jti_claim_storage import JtiTokenUsed, use_jti_claim
+from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_session_store, get_session_timeout_in_seconds
 from app.helpers.template_helpers import get_survey_config, render_template
 from app.utilities.metadata_parser import (
@@ -56,8 +57,10 @@ def login():
 
     runner_claims = get_runner_claims(decrypted_token)
 
+    metadata_proxy = MetadataProxy.from_dict(dict(runner_claims))
+
     # pylint: disable=assigning-non-slot
-    g.schema = load_schema_from_metadata(metadata=runner_claims)
+    g.schema = load_schema_from_metadata(metadata_proxy=metadata_proxy)
     schema_metadata = g.schema.json["metadata"]
 
     questionnaire_claims = get_questionnaire_claims(
@@ -69,7 +72,6 @@ def login():
     questionnaire_id = None
 
     if decrypted_token.get("version"):
-
         for key, value in questionnaire_claims.items():
             runner_claims["survey_metadata"]["data"][key] = value
         claims = runner_claims

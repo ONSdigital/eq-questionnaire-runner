@@ -937,14 +937,14 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
 
 class IndividualResponseFulfilmentRequest(FulfilmentRequest):
     def __init__(self, metadata: Mapping, mobile_number: Optional[str] = None):
-        self._metadata_proxy = MetadataProxy(metadata)
+        self._metadata_proxy = MetadataProxy.from_dict(dict(metadata))
         self._mobile_number = mobile_number
         self._fulfilment_type = "sms" if self._mobile_number else "postal"
 
     def _get_individual_case_id_mapping(self) -> Mapping:
         return (
             {}
-            if self._metadata_proxy.case_type in ["SPG", "CE"]
+            if self._metadata_proxy["case_type"] in ["SPG", "CE"]
             else {"individualCaseId": str(uuid4())}
         )
 
@@ -976,7 +976,7 @@ class IndividualResponseFulfilmentRequest(FulfilmentRequest):
             "fulfilmentRequest": {
                 **self._get_individual_case_id_mapping(),
                 "fulfilmentCode": self._get_fulfilment_code(),
-                "caseId": self._metadata_proxy.case_id,
+                "caseId": self._metadata_proxy["case_id"],
                 "contact": self._get_contact_mapping(),
             }
         }

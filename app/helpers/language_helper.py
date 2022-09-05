@@ -1,4 +1,4 @@
-from typing import Any, Mapping, Optional, Union
+from typing import Optional, Union
 from urllib.parse import urlencode
 
 from flask import g, request
@@ -15,15 +15,15 @@ LANGUAGE_TEXT = {
 }
 
 
-def handle_language(metadata: Optional[Mapping[str, Any]] = None) -> None:
+def handle_language(metadata_proxy: MetadataProxy = None) -> None:
     session_store = get_session_store()
 
     if session_store and session_store.session_data:
-        metadata = metadata or get_metadata(current_user) or {}
-        metadata_proxy = MetadataProxy(metadata)
-        schema_name = metadata_proxy.schema_name
+        if not metadata_proxy:
+            metadata_proxy = MetadataProxy.from_dict(dict(get_metadata(current_user)))
+        schema_name = metadata_proxy["schema_name"]
 
-        launch_language = metadata_proxy.language_code or DEFAULT_LANGUAGE_CODE
+        launch_language = metadata_proxy["language_code"] or DEFAULT_LANGUAGE_CODE
         # pylint: disable=assigning-non-slot
         g.allowed_languages = get_allowed_languages(schema_name, launch_language)
         request_language = request.args.get("language_code")

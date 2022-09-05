@@ -5,7 +5,7 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
-from app.submitter.converter_v2 import convert_answers_v2, get_payload_data
+from app.submitter.converter_v2 import get_payload_data
 from app.utilities.json import json_dumps, json_loads
 from app.utilities.schema import load_schema_from_name
 from tests.app.submitter.schema import make_schema

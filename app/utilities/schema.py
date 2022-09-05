@@ -3,7 +3,7 @@ import time
 from functools import lru_cache
 from glob import glob
 from pathlib import Path
-from typing import Any, Mapping, Optional
+from typing import Mapping, Optional
 
 import requests
 from requests import RequestException
@@ -100,13 +100,11 @@ def get_allowed_languages(schema_name, launch_language):
 
 
 def load_schema_from_metadata(
-    metadata: Mapping[str, Any], *, language_code: Optional[str] = None
+    metadata_proxy: MetadataProxy, *, language_code: Optional[str] = None
 ) -> QuestionnaireSchema:
-    metadata = metadata or {}
-    metadata_proxy = MetadataProxy(metadata)
+    language_code = metadata_proxy["language_code"] or language_code
 
-    language_code = language_code or metadata_proxy.language_code
-    if schema_url := metadata_proxy.schema_url:
+    if schema_url := metadata_proxy["schema_url"]:
         # :TODO: Remove before production uses schema_url
         # This is temporary and is only for development/integration purposes.
         # This should not be used in production.
@@ -129,7 +127,7 @@ def load_schema_from_metadata(
         return schema
 
     return load_schema_from_name(
-        metadata_proxy.schema_name, language_code=language_code
+        metadata_proxy["schema_name"], language_code=language_code
     )
 
 

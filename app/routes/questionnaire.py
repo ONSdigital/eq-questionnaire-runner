@@ -75,11 +75,11 @@ def before_questionnaire_request():
             "The Questionnaire has been previously submitted"
         )
 
-    metadata = get_metadata(current_user)
+    metadata = dict(get_metadata(current_user))
     if not metadata:
         raise NoQuestionnaireStateException(401)
 
-    metadata_proxy = MetadataProxy(metadata)
+    metadata_proxy = MetadataProxy.from_dict(metadata)
 
     questionnaire_store = get_questionnaire_store(
         current_user.user_id, current_user.user_ik
@@ -90,19 +90,19 @@ def before_questionnaire_request():
 
     logger.bind(
         tx_id=metadata_proxy.tx_id,
-        schema_name=metadata_proxy.schema_name,
-        ce_id=metadata_proxy.collection_exercise_sid,
+        schema_name=metadata_proxy["schema_name"],
+        ce_id=metadata_proxy["collection_exercise_sid"],
     )
 
     logger.info(
         "questionnaire request", method=request.method, url_path=request.full_path
     )
 
-    handle_language(metadata)
+    handle_language(metadata_proxy)
 
     # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
-        metadata=metadata, language_code=get_locale().language
+        metadata_proxy=metadata_proxy, language_code=get_locale().language
     )
 
 
@@ -112,7 +112,7 @@ def before_post_submission_request():
     if request.method == "OPTIONS":
         return None
 
-    metadata = get_metadata(current_user)
+    metadata = dict(get_metadata(current_user))
     if not metadata:
         raise NoQuestionnaireStateException(401)
 
@@ -123,18 +123,17 @@ def before_post_submission_request():
     if not questionnaire_store.submitted_at:
         raise NotFound
 
-    handle_language(metadata)
+    metadata_proxy = MetadataProxy.from_dict(metadata)
+    handle_language(metadata_proxy)
 
     # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
-        metadata=metadata, language_code=get_locale().language
+        metadata_proxy=metadata_proxy, language_code=get_locale().language
     )
 
-    metadata_proxy = MetadataProxy(metadata)
-
     logger.bind(
-        tx_id=metadata_proxy.tx_id,
-        schema_name=metadata_proxy.schema_name,
+        tx_id=metadata_proxy["tx_id"],
+        schema_name=metadata_proxy["schema_name"],
     )
 
     logger.info(

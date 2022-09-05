@@ -162,15 +162,15 @@ class ConfirmationEmailFulfilmentRequest(FulfilmentRequest):
     schema: QuestionnaireSchema
 
     def _payload(self) -> Mapping:
-        metadata_proxy = MetadataProxy(self.metadata)
+        metadata_proxy = MetadataProxy.from_dict(dict(self.metadata))
 
         return {
             "fulfilmentRequest": {
                 "email_address": self.email_address,
-                "display_address": metadata_proxy.display_address,
+                "display_address": metadata_proxy["display_address"],
                 "form_type": self.schema.form_type,
                 "language_code": self.session_data.language_code,
                 "region_code": self.schema.region_code,
-                "tx_id": metadata_proxy.tx_id,
+                "tx_id": metadata_proxy["tx_id"],
             }
         }

@@ -343,7 +343,14 @@ def test_answer_source_default_answer(use_default_answer):
 )
 def test_metadata_source(metadata_identifier, expected_result):
     value_source_resolver = get_value_source_resolver(
-        metadata={"region_code": "GB-ENG"},
+        metadata={
+            "tx_id": "tx_id",
+            "account_service_url": "account_service_url",
+            "case_id": "case_id",
+            "collection_exercise_sid": "collection_exercise_sid",
+            "response_id": "response_id",
+            "region_code": "GB-ENG",
+        },
     )
 
     source = {"source": "metadata", "identifier": metadata_identifier}
@@ -361,7 +368,13 @@ def test_metadata_source(metadata_identifier, expected_result):
 def test_metadata_source_v2_metadata_structure(metadata_identifier, expected_result):
     value_source_resolver = get_value_source_resolver(
         metadata={
+            "version": "v2",
             "region_code": "GB-ENG",
+            "tx_id": "tx_id",
+            "account_service_url": "account_service_url",
+            "case_id": "case_id",
+            "collection_exercise_sid": "collection_exercise_sid",
+            "response_id": "response_id",
             "survey_metadata": {
                 "data": {"display_address": "68 Abingdon Road, Goathill"}
             },

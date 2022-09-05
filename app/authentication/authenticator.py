@@ -109,9 +109,10 @@ def load_user(extend_session: bool = True) -> Optional[User]:
         user_ik = cookie_session.get(USER_IK)
         user = User(user_id, user_ik)
 
-        metadata_proxy = MetadataProxy(get_metadata(user))
+        metadata = get_metadata(user)
+        metadata_proxy = MetadataProxy.from_dict(dict(metadata))
 
-        if tx_id := metadata_proxy.tx_id:
+        if tx_id := metadata_proxy["tx_id"]:
             logger.bind(tx_id=tx_id)
 
         if extend_session:

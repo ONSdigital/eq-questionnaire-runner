@@ -7,7 +7,7 @@ from app.data_models.answer_store import AnswerStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
 from app.submitter.convert_payload_0_0_1 import convert_answers_to_payload_0_0_1
-from app.submitter.converter_v2 import convert_answers_v2, get_payload_data
+from app.submitter.converter_v2 import get_payload_data
 from tests.app.submitter.schema import make_schema
 
 SUBMITTED_AT = datetime.now(timezone.utc)

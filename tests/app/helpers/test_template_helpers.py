@@ -3,7 +3,9 @@ from typing import Type
 import pytest
 from flask import Flask, current_app
 from flask import session as cookie_session
+from mock import Mock
 
+from app.data_models.metadata_proxy import MetadataProxy
 from app.helpers.template_helpers import ContextHelper, get_survey_config
 from app.questionnaire import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
@@ -57,6 +59,12 @@ def test_footer_context(app: Flask, theme, survey_config, expected_footer):
         if theme:
             cookie_session["theme"] = theme
         config = survey_config
+
+        metadata_proxy = MetadataProxy
+        metadata_proxy.from_dict = Mock(
+            return_value={"ru_ref": "63782964754", "tx_id": "tx_id"}
+        )
+
         result = ContextHelper(
             language="en",
             is_post_submission=False,

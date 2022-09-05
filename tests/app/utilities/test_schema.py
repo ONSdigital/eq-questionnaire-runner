@@ -8,6 +8,7 @@ from requests import RequestException
 from requests.adapters import ConnectTimeoutError, ReadTimeoutError
 from urllib3.connectionpool import HTTPConnectionPool, HTTPResponse
 
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
 from app.setup import create_app
 from app.utilities.schema import (
@@ -220,10 +221,19 @@ def test_load_schema_from_url_uses_cache():
 def test_load_schema_from_metadata_with_schema_url():
     load_schema_from_url.cache_clear()
 
-    metadata = {"schema_url": TEST_SCHEMA_URL, "language_code": "cy"}
+    metadata = {
+        "schema_url": TEST_SCHEMA_URL,
+        "language_code": "cy",
+        "tx_id": "tx_id",
+        "account_service_url": "account_service_url",
+        "case_id": "case_id",
+        "collection_exercise_sid": "collection_exercise_sid",
+        "response_id": "response_id",
+    }
     mock_schema = QuestionnaireSchema({}, language_code="cy")
     responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)
-    loaded_schema = load_schema_from_metadata(metadata=metadata)
+    metadata_proxy = MetadataProxy.from_dict(metadata)
+    loaded_schema = load_schema_from_metadata(metadata_proxy=metadata_proxy)
 
     assert loaded_schema.json == mock_schema.json
     assert loaded_schema.language_code == mock_schema.language_code
@@ -234,11 +244,21 @@ def test_load_schema_from_metadata_with_schema_url_and_override_language_code():
     load_schema_from_url.cache_clear()
     language_code = "en"
 
-    metadata = {"schema_url": TEST_SCHEMA_URL, "language_code": "cy"}
+    metadata = {
+        "schema_url": TEST_SCHEMA_URL,
+        "language_code": "cy",
+        "tx_id": "tx_id",
+        "account_service_url": "account_service_url",
+        "case_id": "case_id",
+        "collection_exercise_sid": "collection_exercise_sid",
+        "response_id": "response_id",
+    }
+
     mock_schema = QuestionnaireSchema({}, language_code="cy")
     responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)
+    metadata_proxy = MetadataProxy.from_dict(metadata)
     loaded_schema = load_schema_from_metadata(
-        metadata=metadata, language_code=language_code
+        metadata_proxy=metadata_proxy, language_code=language_code
     )
 
     assert loaded_schema.json == mock_schema.json
