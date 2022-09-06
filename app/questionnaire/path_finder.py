@@ -302,7 +302,7 @@ class PathFinder:
     def _remove_current_blocks_answers_for_new_backwards_routing(
         self, rules: dict, answer_ids_for_current_block: list[str]
     ) -> None:
-        if isinstance(rules, Mapping) and QuestionnaireSchema.has_operator(rules):
+        if QuestionnaireSchema.has_operator(rules):
             operands = self.schema.get_operands(rules)
 
             for rule in operands:
