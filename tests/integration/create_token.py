@@ -26,7 +26,7 @@ PAYLOAD = {
     "display_address": "68 Abingdon Road, Goathill",
 }
 
-PAYLOAD_V2_BUISNESS = {
+PAYLOAD_V2_BUSINESS = {
     "version": "v2",
     "survey_metadata": {
         "data": {
@@ -95,7 +95,7 @@ class TokenGenerator:
     def _get_payload_with_params_v2_business(
         schema_name, schema_url=None, **extra_payload
     ):
-        payload_vars = PAYLOAD_V2_BUISNESS.copy()
+        payload_vars = PAYLOAD_V2_BUSINESS.copy()
         payload_vars["tx_id"] = str(uuid4())
         payload_vars["schema_name"] = schema_name
         if schema_url:
