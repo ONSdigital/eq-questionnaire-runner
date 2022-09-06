@@ -81,8 +81,8 @@ class RuleEvaluator:
         if isinstance(operand, dict) and "source" in operand:
             return self.value_source_resolver.resolve(operand)
 
-        if QuestionnaireSchema.has_operator(operand):
-            return self._evaluate(operand)  # type: ignore
+        if QuestionnaireSchema.has_operator(operand) and isinstance(operand, dict):
+            return self._evaluate(operand)
 
         return operand
 
