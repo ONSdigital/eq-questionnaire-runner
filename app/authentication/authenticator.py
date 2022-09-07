@@ -13,7 +13,12 @@ from app.authentication.no_token_exception import NoTokenException
 from app.authentication.user import User
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
-from app.globals import create_session_store, get_questionnaire_store, get_session_store
+from app.globals import (
+    create_session_store,
+    get_metadata,
+    get_questionnaire_store,
+    get_session_store,
+)
 from app.keys import KEY_PURPOSE_AUTHENTICATION
 from app.settings import EQ_SESSION_ID, USER_IK
 
@@ -103,8 +108,10 @@ def load_user(extend_session: bool = True) -> Optional[User]:
         user_ik = cookie_session.get(USER_IK)
         user = User(user_id, user_ik)
 
-        if session_store.session_data and session_store.session_data.tx_id:
-            logger.bind(tx_id=session_store.session_data.tx_id)
+        metadata = get_metadata(user)
+
+        if metadata and (tx_id := metadata.get("tx_id")):
+            logger.bind(tx_id=tx_id)
 
         if extend_session:
             _extend_session_expiry(session_store)
@@ -123,20 +130,7 @@ def _create_session_data_from_metadata(metadata: Mapping[str, Any]) -> SessionDa
     """
 
     return SessionData(
-        tx_id=metadata.get("tx_id"),
-        schema_name=metadata.get("schema_name"),
-        period_str=metadata.get("period_str"),
         language_code=metadata.get("language_code"),
-        launch_language_code=metadata.get("language_code"),
-        schema_url=metadata.get("schema_url"),
-        ru_name=metadata.get("ru_name"),
-        ru_ref=metadata.get("ru_ref"),
-        response_id=metadata.get("response_id"),
-        case_id=metadata["case_id"],
-        case_ref=metadata.get("case_ref"),
-        trad_as=metadata.get("trad_as"),
-        account_service_base_url=metadata.get("account_service_url"),
-        account_service_log_out_url=metadata.get("account_service_log_out_url"),
     )
 
 

@@ -30,15 +30,15 @@ describe("Collapsible Summary", () => {
       expect($(SubmitPage.collapsibleSummary()).getText()).to.contain("Property Details");
       expect($(SubmitPage.collapsibleSummary()).getText()).to.contain("House Details");
 
-      expect($(SubmitPage.insuranceAddressQuestion()).isDisplayed()).to.be.false;
-      expect($(SubmitPage.numberOfPeopleQuestion()).isDisplayed()).to.be.false;
+      expect($(SubmitPage.insuranceAddressQuestion()).getText()).to.equal("");
+      expect($(SubmitPage.numberOfPeopleQuestion()).getText()).to.equal("");
     });
 
     it("When I click the Show all button, Then the summary should be expanded and questions should be displayed", () => {
       $(SubmitPage.summaryShowAllButton()).click();
 
-      expect($(SubmitPage.insuranceAddressQuestion()).isDisplayed()).to.be.true;
-      expect($(SubmitPage.numberOfPeopleQuestion()).isDisplayed()).to.be.true;
+      expect($(SubmitPage.insuranceAddressQuestion()).getText()).to.contain("What is the address you would like to insure?");
+      expect($(SubmitPage.numberOfPeopleQuestion()).getText()).to.contain("Title");
     });
   });
 });

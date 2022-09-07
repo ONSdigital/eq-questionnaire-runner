@@ -3,8 +3,10 @@ from functools import cached_property
 
 from flask import session as cookie_session
 from flask_babel import gettext
+from flask_login import current_user
 
 from app.data_models.session_store import SessionStore
+from app.globals import get_metadata
 from app.helpers.template_helpers import get_survey_type
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.thank_you_context import (
@@ -51,11 +53,13 @@ class ThankYou:
             return None
 
     def get_context(self):
+        metadata = get_metadata(current_user) or {}
+
         if not self._is_census_theme:
             guidance_content = self._schema.get_post_submission().get("guidance")
             return build_thank_you_context(
                 self._schema,
-                self._session_store.session_data,
+                metadata,
                 self._submitted_at,
                 get_survey_type(),
                 guidance_content,
@@ -66,7 +70,7 @@ class ThankYou:
         )
 
         return build_census_thank_you_context(
-            self._session_store.session_data,
+            metadata,
             confirmation_email_form,
             self._schema.form_type,
         )

@@ -23,7 +23,7 @@ from app.survey_config import (
     WelshCensusSurveyConfig,
 )
 from app.survey_config.survey_type import SurveyType
-from app.utilities.schema import load_schema_from_session_data
+from app.utilities.schema import load_schema_from_metadata
 
 
 class ContextHelper:
@@ -54,14 +54,13 @@ class ContextHelper:
 
     @property
     def context(self) -> dict[str, Any]:
-        return {
+        context = {
             "sign_out_button_text": self._survey_config.sign_out_button_text,
             "account_service_my_account_url": self._survey_config.account_service_my_account_url,
             "account_service_log_out_url": self._survey_config.account_service_log_out_url,
             "account_service_todo_url": self._survey_config.account_service_todo_url,
             "contact_us_url": self._survey_config.contact_us_url,
             "thank_you_url": url_for("post_submission.get_thank_you"),
-            "cookie_settings_url": self._survey_config.cookie_settings_url,
             "page_header": self.page_header_context,
             "service_links": self.service_links_context,
             "footer": self.footer_context,
@@ -77,6 +76,11 @@ class ContextHelper:
             "google_tag_manager_auth": self._google_tag_manager_auth,
             "survey_type": self._survey_type,
         }
+        if self._survey_type:
+            context["cookie_settings_url"] = self._survey_config.cookie_settings_url
+            context["cookie_domain"] = self._survey_config.cookie_domain
+
+        return context
 
     @property
     def service_links_context(
@@ -112,10 +116,11 @@ class ContextHelper:
         context: dict[str, Union[bool, str, LazyString]] = {
             "orgLogo": f"{self._survey_config.page_header_logo}",
             "orgLogoAlt": f"{self._survey_config.page_header_logo_alt}",
+            "title": self._survey_title
+            if self._survey_title and self._survey_type
+            else "ONS Surveys",
         }
 
-        if self._survey_title:
-            context["title"] = self._survey_title
         if self._survey_config.title_logo:
             context["titleLogo"] = self._survey_config.title_logo
         if self._survey_config.title_logo_alt:
@@ -142,11 +147,15 @@ class ContextHelper:
         if self._footer_warning:
             context["footerWarning"] = self._footer_warning
 
-        if self._survey_config.footer_links:
-            context["rows"] = [{"itemsList": self._survey_config.footer_links}]
+        if footer_links := self._survey_config.get_footer_links(
+            cookie_has_theme=bool(self._survey_type),
+        ):
+            context["rows"] = [{"itemsList": footer_links}]
 
-        if self._survey_config.footer_legal_links:
-            context["legal"] = [{"itemsList": self._survey_config.footer_legal_links}]
+        if footer_legal_links := self._survey_config.get_footer_legal_links(
+            cookie_has_theme=bool(self._survey_type),
+        ):
+            context["legal"] = [{"itemsList": footer_legal_links}]
 
         if (
             self._survey_config.powered_by_logo
@@ -200,11 +209,11 @@ def get_survey_config(
 ) -> SurveyConfig:
     # The fallback to assigning SURVEY_TYPE to theme is only being added until
     # business feedback on the differentiation between theme and SURVEY_TYPE.
-    if session_store := get_session_store():
-        if session_data := session_store.session_data:
-            schema = load_schema_from_session_data(session_data)
 
-    language = language or get_locale().language
+    if metadata := get_metadata(current_user):
+        language = language or get_locale().language
+        schema = load_schema_from_metadata(metadata=metadata, language_code=language)
+
     survey_theme = theme or get_survey_type()
 
     base_url = base_url or (

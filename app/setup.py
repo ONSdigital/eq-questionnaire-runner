@@ -442,7 +442,11 @@ def setup_babel(application):
     @application.babel.localeselector
     def get_locale():  # pylint: disable=unused-variable
         session = get_session_store()
-        return session.session_data.language_code if session else None
+
+        if session and (session_data := session.session_data):
+            return session_data.language_code
+
+        return None
 
     @application.babel.timezoneselector
     def get_timezone():  # pylint: disable=unused-variable

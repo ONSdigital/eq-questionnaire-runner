@@ -1,14 +1,15 @@
 from functools import wraps
 
 from flask import Blueprint, g
+from flask_babel import get_locale
 from flask_login import current_user, login_required
 
 from app.authentication.roles import role_required
-from app.globals import get_questionnaire_store, get_session_store
+from app.globals import get_metadata, get_questionnaire_store
 from app.helpers.session_helpers import with_questionnaire_store
 from app.questionnaire.router import Router
 from app.utilities.json import json_dumps
-from app.utilities.schema import load_schema_from_session_data
+from app.utilities.schema import load_schema_from_metadata
 from app.views.handlers.submission import SubmissionHandler
 
 dump_blueprint = Blueprint("dump", __name__)
@@ -17,9 +18,11 @@ dump_blueprint = Blueprint("dump", __name__)
 def requires_schema(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        session = get_session_store()
         # pylint: disable=assigning-non-slot
-        g.schema = load_schema_from_session_data(session.session_data)
+        metadata = get_metadata(current_user)
+        g.schema = load_schema_from_metadata(
+            metadata=metadata, language_code=get_locale().language
+        )
         result = func(g.schema, *args, **kwargs)
         return result
 
