@@ -192,7 +192,7 @@ class Operations:
         resolved_operands = []
         for operand in operands:
             if isinstance(operand, dict) and QuestionnaireSchema.has_operator(operand):
-                operator_name = next(iter(operand))  # type: ignore
+                operator_name = next(iter(operand))
                 resolved_nested_operands = self._resolve_self_reference(
                     self_reference_value, operand[operator_name]
                 )
