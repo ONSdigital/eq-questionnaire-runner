@@ -302,22 +302,19 @@ class PathFinder:
     def _remove_current_blocks_answers_for_new_backwards_routing(
         self, rules: dict, answer_ids_for_current_block: list[str]
     ) -> None:
-        if QuestionnaireSchema.has_operator(rules):
-            operands = self.schema.get_operands(rules)
+        operands = self.schema.get_operands(rules)
 
-            for rule in operands:
-                if isinstance(rule, dict) and (
-                    "identifier" in rule
-                    and rule["identifier"] in answer_ids_for_current_block
-                ):
-                    self.answer_store.remove_answer(rule["identifier"])
+        for rule in operands:
+            if isinstance(rule, dict) and (
+                "identifier" in rule
+                and rule["identifier"] in answer_ids_for_current_block
+            ):
+                self.answer_store.remove_answer(rule["identifier"])
 
-                if QuestionnaireSchema.has_operator(rule):
-                    return (
-                        self._remove_current_blocks_answers_for_new_backwards_routing(
-                            rule, answer_ids_for_current_block
-                        )
-                    )
+            if QuestionnaireSchema.has_operator(rule):
+                return self._remove_current_blocks_answers_for_new_backwards_routing(
+                    rule, answer_ids_for_current_block
+                )
 
 
 def should_goto_new(rule, when_rule_evaluator):
