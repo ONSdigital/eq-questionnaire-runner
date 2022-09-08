@@ -138,8 +138,7 @@ def test_converter_language_code_not_set_in_payload(
         fake_questionnaire_schema, fake_questionnaire_store_v2, {}, SUBMITTED_AT
     )
 
-    with pytest.raises(KeyError):
-        assert fake_questionnaire_store_v2.metadata["language_code"]
+    assert fake_questionnaire_store_v2.metadata["language_code"] is None
 
     assert answer_object["launch_language_code"] == "en"
 

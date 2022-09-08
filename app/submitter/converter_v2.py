@@ -52,25 +52,22 @@ def convert_answers_v2(
     answer_store = questionnaire_store.answer_store
     list_store = questionnaire_store.list_store
 
-    metadata_proxy = MetadataProxy.from_dict(dict(metadata))
-
     survey_id = schema.json["survey_id"]
 
     payload = {
-        "case_id": metadata_proxy["case_id"],
-        "tx_id": metadata_proxy["tx_id"],
+        "case_id": metadata["case_id"],
+        "tx_id": metadata["tx_id"],
         "type": "uk.gov.ons.edc.eq:surveyresponse",
-        "version": metadata_proxy.version,
+        "version": metadata["version"],
         "data_version": schema.json["data_version"],
         "origin": "uk.gov.ons.edc.eq",
-        "collection_exercise_sid": metadata_proxy["collection_exercise_sid"],
-        "schema_name": metadata_proxy["schema_name"],
+        "collection_exercise_sid": metadata["collection_exercise_sid"],
+        "schema_name": metadata["schema_name"],
         "survey_id": survey_id,
         "flushed": flushed,
         "submitted_at": submitted_at.isoformat(),
-        "survey_metadata": metadata["survey_metadata"]["data"],
-        "launch_language_code": metadata_proxy["language_code"]
-        or DEFAULT_LANGUAGE_CODE,
+        "survey_metadata": dict(metadata["survey_metadata"].data),
+        "launch_language_code": metadata["language_code"] or DEFAULT_LANGUAGE_CODE,
     }
 
     optional_survey_metadata_properties = get_optional_survey_metadata_properties(
@@ -96,14 +93,12 @@ def convert_answers_v2(
 
 
 def get_optional_payload_properties(
-    metadata: MetadataType, response_metadata: Mapping
+    metadata: MetadataProxy, response_metadata: Mapping
 ) -> MetadataType:
     payload = {}
 
-    metadata_proxy = MetadataProxy.from_dict(dict(metadata))
-
     for key in ["channel", "region_code"]:
-        if value := metadata_proxy[key]:
+        if value := metadata[key]:
             payload[key] = value
     if started_at := response_metadata.get("started_at"):
         payload["started_at"] = started_at
@@ -111,12 +106,11 @@ def get_optional_payload_properties(
     return payload
 
 
-def get_optional_survey_metadata_properties(metadata: MetadataType) -> MetadataType:
-    metadata_proxy = MetadataProxy.from_dict(dict(metadata))
+def get_optional_survey_metadata_properties(metadata: MetadataProxy) -> MetadataType:
     survey_metadata = {}
 
     for key in ["form_type", "case_ref", "case_type"]:
-        if value := metadata_proxy[key]:
+        if value := metadata[key]:
             survey_metadata[key] = value
 
     return survey_metadata
@@ -128,7 +122,7 @@ def get_payload_data(
     list_store: ListStore,
     schema: QuestionnaireSchema,
     routing_path: RoutingPath,
-    metadata: Mapping,
+    metadata: MetadataProxy,
     response_metadata: Mapping,
 ) -> Union[OrderedDict[str, Any], dict[str, Union[list[Any]]]]:
     if data_version == "0.0.1":

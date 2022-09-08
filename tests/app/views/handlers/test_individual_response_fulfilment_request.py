@@ -4,6 +4,7 @@ from uuid import uuid4
 import pytest
 from freezegun import freeze_time
 
+from app.data_models.metadata_proxy import MetadataProxy
 from app.forms.validators import sanitise_mobile_number
 from app.helpers.uuid_helper import is_valid_uuid4
 from app.utilities.json import json_loads
@@ -19,14 +20,14 @@ DUMMY_MOBILE_NUMBER = "07700900258"
 
 @freeze_time(datetime.now(tz=timezone.utc).isoformat())
 def test_sms_fulfilment_request_payload():
-    metadata = {
-        "region_code": "GB-ENG",
-        "case_id": str(uuid4()),
-        "tx_id": "tx_id",
-        "response_id": "response_id",
-        "account_service_url": "account_service_url",
-        "collection_exercise_sid": "collection_exercise_sid",
-    }
+    metadata = MetadataProxy(
+        region_code="GB-ENG",
+        case_id=str(uuid4()),
+        tx_id="tx_id",
+        response_id="response_id",
+        account_service_url="account_service_url",
+        collection_exercise_sid="collection_exercise_sid",
+    )
 
     fulfilment_request = IndividualResponseFulfilmentRequest(
         metadata, DUMMY_MOBILE_NUMBER
@@ -55,7 +56,10 @@ def test_postal_fulfilment_request_message():
         "account_service_url": "account_service_url",
         "collection_exercise_sid": "collection_exercise_sid",
     }
-    fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
+
+    metadata_proxy = MetadataProxy.from_dict(metadata)
+
+    fulfilment_request = IndividualResponseFulfilmentRequest(metadata_proxy)
 
     postal_json_message = json_loads(fulfilment_request.message)
     payload = postal_json_message["payload"]
@@ -89,7 +93,10 @@ def test_individual_case_id_not_present_when_case_type_spg():
         "account_service_url": "account_service_url",
         "collection_exercise_sid": "collection_exercise_sid",
     }
-    fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
+
+    metadata_proxy = MetadataProxy.from_dict(metadata)
+
+    fulfilment_request = IndividualResponseFulfilmentRequest(metadata_proxy)
 
     json_message = json_loads(fulfilment_request.message)
     assert "individualCaseId" not in json_message["payload"]["fulfilmentRequest"]
@@ -106,7 +113,10 @@ def test_individual_case_id_not_present_when_case_type_ce():
         "account_service_url": "account_service_url",
         "collection_exercise_sid": "collection_exercise_sid",
     }
-    fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
+
+    metadata_proxy = MetadataProxy.from_dict(metadata)
+
+    fulfilment_request = IndividualResponseFulfilmentRequest(metadata_proxy)
 
     json_message = json_loads(fulfilment_request.message)
     assert "individualCaseId" not in json_message["payload"]["fulfilmentRequest"]
@@ -130,8 +140,11 @@ def test_fulfilment_code_for_sms(region_code, expected_fulfilment_code):
         "account_service_url": "account_service_url",
         "collection_exercise_sid": "collection_exercise_sid",
     }
+
+    metadata_proxy = MetadataProxy.from_dict(metadata)
+
     fulfilment_request = IndividualResponseFulfilmentRequest(
-        metadata, DUMMY_MOBILE_NUMBER
+        metadata_proxy, DUMMY_MOBILE_NUMBER
     )
     json_message = json_loads(fulfilment_request.message)
     assert (
@@ -158,7 +171,11 @@ def test_fulfilment_code_for_postal(region_code, expected_fulfilment_code):
         "account_service_url": "account_service_url",
         "collection_exercise_sid": "collection_exercise_sid",
     }
-    fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
+
+    metadata_proxy = MetadataProxy.from_dict(metadata)
+
+    fulfilment_request = IndividualResponseFulfilmentRequest(metadata_proxy)
+
     json_message = json_loads(fulfilment_request.message)
 
     assert (

@@ -10,6 +10,7 @@ from requests import Response
 from app.data_models import QuestionnaireStore
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.submitter import RabbitMQSubmitter
@@ -141,7 +142,7 @@ def fake_questionnaire_store_v2(fake_metadata_v2, fake_response_metadata):
 
     store.answer_store = AnswerStore()
     store.answer_store.add_or_update(user_answer)
-    store.metadata = fake_metadata_v2
+    store.metadata = MetadataProxy.from_dict(fake_metadata_v2)
     store.response_metadata = fake_response_metadata
 
     return store
@@ -159,7 +160,7 @@ def fake_questionnaire_store(fake_metadata, fake_response_metadata):
 
     store.answer_store = AnswerStore()
     store.answer_store.add_or_update(user_answer)
-    store.metadata = fake_metadata
+    store.metadata = MetadataProxy.from_dict(fake_metadata)
     store.response_metadata = fake_response_metadata
 
     return store

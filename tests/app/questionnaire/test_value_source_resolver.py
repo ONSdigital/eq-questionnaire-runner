@@ -5,6 +5,7 @@ from mock import Mock
 
 from app.data_models import AnswerStore, ListStore
 from app.data_models.answer import Answer, AnswerDict
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.relationship_location import RelationshipLocation
@@ -34,7 +35,7 @@ def get_value_source_resolver(
     schema: QuestionnaireSchema = None,
     answer_store: AnswerStore = AnswerStore(),
     list_store: ListStore = ListStore(),
-    metadata: Optional[dict] = None,
+    metadata: MetadataProxy = None,
     response_metadata: Mapping = None,
     location: Union[Location, RelationshipLocation] = Location(
         section_id="test-section", block_id="test-block"
@@ -343,14 +344,14 @@ def test_answer_source_default_answer(use_default_answer):
 )
 def test_metadata_source(metadata_identifier, expected_result):
     value_source_resolver = get_value_source_resolver(
-        metadata={
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "case_id": "case_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "response_id": "response_id",
-            "region_code": "GB-ENG",
-        },
+        metadata=MetadataProxy(
+            tx_id="tx_id",
+            account_service_url="account_service_url",
+            case_id="case_id",
+            collection_exercise_sid="collection_exercise_sid",
+            response_id="response_id",
+            region_code="GB-ENG",
+        )
     )
 
     source = {"source": "metadata", "identifier": metadata_identifier}
@@ -366,8 +367,8 @@ def test_metadata_source(metadata_identifier, expected_result):
     ],
 )
 def test_metadata_source_v2_metadata_structure(metadata_identifier, expected_result):
-    value_source_resolver = get_value_source_resolver(
-        metadata={
+    metadata_proxy = MetadataProxy.from_dict(
+        {
             "version": "v2",
             "region_code": "GB-ENG",
             "tx_id": "tx_id",
@@ -380,6 +381,8 @@ def test_metadata_source_v2_metadata_structure(metadata_identifier, expected_res
             },
         },
     )
+
+    value_source_resolver = get_value_source_resolver(metadata=metadata_proxy)
 
     source = {"source": "metadata", "identifier": metadata_identifier}
     assert value_source_resolver.resolve(source) == expected_result

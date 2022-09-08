@@ -4,7 +4,6 @@ from typing import Mapping, Optional
 from flask import url_for
 from flask_babel import lazy_gettext
 
-from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import (
     get_view_submitted_response_expiration_time,
     has_view_submitted_response_expired,
@@ -25,7 +24,7 @@ def build_thank_you_context(
     guidance_content: Optional[dict] = None,
 ) -> Mapping:
 
-    metadata_proxy = MetadataProxy.from_dict(dict(metadata))
+    metadata_proxy = metadata
     if survey_type is SurveyType.SOCIAL:
         submission_text = lazy_gettext("Your answers have been submitted.")
     elif (trad_as := metadata_proxy["trad_as"]) and (
@@ -77,7 +76,7 @@ def build_census_thank_you_context(
     metadata: dict, confirmation_email_form, form_type
 ) -> Mapping:
 
-    metadata_proxy = MetadataProxy.from_dict(dict(metadata))
+    metadata_proxy = metadata
 
     context = {
         "display_address": metadata_proxy["display_address"],

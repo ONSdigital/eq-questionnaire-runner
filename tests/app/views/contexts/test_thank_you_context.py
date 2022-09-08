@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, timezone
 
 from flask import Flask
 
+from app.data_models.metadata_proxy import MetadataProxy
 from app.survey_config.survey_type import SurveyType
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts.thank_you_context import build_thank_you_context
@@ -22,11 +23,13 @@ def test_social_survey_context(fake_questionnaire_store_metadata, app: Flask):
         assert len(context["metadata"]["itemsList"]) == 1
 
 
-def test_default_survey_context(fake_questionnaire_store_metadata, app: Flask):
+def test_default_survey_context(app: Flask):
     with app.app_context():
-        fake_questionnaire_store_metadata["ru_name"] = "ESSENTIAL ENTERPRISE LTD"
+        metadata = MetadataProxy.from_dict(
+            {"ru_name": "ESSENTIAL ENTERPRISE LTD", "tx_id": "tx_id"}
+        )
         context = build_thank_you_context(
-            SCHEMA, fake_questionnaire_store_metadata, SUBMITTED_AT, SURVEY_TYPE_DEFAULT
+            SCHEMA, metadata, SUBMITTED_AT, SURVEY_TYPE_DEFAULT
         )
 
         assert (
@@ -36,14 +39,14 @@ def test_default_survey_context(fake_questionnaire_store_metadata, app: Flask):
         assert len(context["metadata"]["itemsList"]) == 2
 
 
-def test_default_survey_context_with_trad_as(
-    fake_questionnaire_store_metadata, app: Flask
-):
+def test_default_survey_context_with_trad_as(app: Flask):
     with app.app_context():
-        fake_questionnaire_store_metadata["ru_name"] = "ESSENTIAL ENTERPRISE LTD"
-        fake_questionnaire_store_metadata["trad_as"] = "EE"
+        metadata = MetadataProxy.from_dict(
+            {"ru_name": "ESSENTIAL ENTERPRISE LTD", "trad_as": "EE", "tx_id": "tx_id"}
+        )
+
         context = build_thank_you_context(
-            SCHEMA, fake_questionnaire_store_metadata, SUBMITTED_AT, SURVEY_TYPE_DEFAULT
+            SCHEMA, metadata, SUBMITTED_AT, SURVEY_TYPE_DEFAULT
         )
 
         assert (

@@ -115,8 +115,8 @@ def fake_questionnaire_store():
     storage = Mock()
     storage.get_user_data = Mock(return_value=("{}", "ce_sid", 1, None))
     questionnaire_store = QuestionnaireStore(storage)
+    questionnaire_store._metadata = Mock(return_value={"tx_id": "tx_id"})
     questionnaire_store.submitted_at = SUBMITTED_AT
-    questionnaire_store.metadata = {"tx_id": "123456789", "ru_name": "Apple"}
     questionnaire_store.answer_store = AnswerStore(
         [
             Answer("name-answer", "John Smith", None).to_dict(),

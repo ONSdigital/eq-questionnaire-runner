@@ -7,6 +7,7 @@ from mock import Mock
 
 from app.data_models import AnswerStore, ListStore
 from app.data_models.answer import Answer
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.operator import Operator
@@ -236,7 +237,13 @@ def test_answer_source_with_dict_answer_selector(answer_value, expected_result):
 )
 def test_metadata_source(metadata_value, expected_result):
     rule_evaluator = get_rule_evaluator(
-        metadata={"tx_id": metadata_value},
+        metadata={
+            "tx_id": metadata_value,
+            "account_service_url": "account_service_url",
+            "response_id": "response_id",
+            "collection_exercise_sid": "collection_exercise_sid",
+            "case_id": "case_id",
+        },
     )
 
     assert (
@@ -517,7 +524,15 @@ def test_nested_rules(operator, operands, expected_result):
                 },
             ]
         ),
-        metadata={"region_code": "GB-NIR", "language_code": "en"},
+        metadata={
+            "region_code": "GB-NIR",
+            "language_code": "en",
+            "tx_id": "tx_id",
+            "account_service_url": "account_service_url",
+            "response_id": "response_id",
+            "collection_exercise_sid": "collection_exercise_sid",
+            "case_id": "case_id",
+        },
         list_store=ListStore(
             [
                 {
@@ -556,6 +571,9 @@ def test_nested_rules(operator, operands, expected_result):
     ],
 )
 def test_comparison_operator_rule_with_nonetype_operands(operator_name, operands):
+    metadata_proxy = MetadataProxy
+    metadata_proxy.from_dict = Mock(return_value={"some-metadata": None})
+
     rule_evaluator = get_rule_evaluator()
     assert rule_evaluator.evaluate(rule={operator_name: operands}) is False
 
@@ -575,6 +593,9 @@ def test_comparison_operator_rule_with_nonetype_operands(operator_name, operands
     "operator_name", [Operator.ALL_IN, Operator.ANY_IN, Operator.IN]
 )
 def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
+    metadata_proxy = MetadataProxy
+    metadata_proxy.from_dict = Mock(return_value={"some-metadata": [None]})
+
     rule_evaluator = get_rule_evaluator()
     assert (
         rule_evaluator.evaluate(

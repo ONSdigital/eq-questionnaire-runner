@@ -19,7 +19,7 @@ def test_questionnaire_store_json_loads(
     # When
     store = QuestionnaireStore(questionnaire_store.storage)
     # Then
-    assert store.metadata.copy() == basic_input["METADATA"]
+    assert store.metadata["test"] == basic_input["METADATA"]["test"]
     assert store.response_metadata == basic_input["RESPONSE_METADATA"]
     assert store.answer_store == AnswerStore(basic_input["ANSWERS"])
     assert not hasattr(store, "NOT_A_LEGAL_TOP_LEVEL_KEY")
@@ -44,7 +44,7 @@ def test_questionnaire_store_missing_keys(questionnaire_store, basic_input):
     # When
     store = QuestionnaireStore(questionnaire_store.storage)
     # Then
-    assert store.metadata.copy() == basic_input["METADATA"]
+    assert store.metadata["test"] == basic_input["METADATA"]["test"]
     assert store.response_metadata == basic_input["RESPONSE_METADATA"]
     assert store.answer_store == AnswerStore(basic_input["ANSWERS"])
     assert not store.progress_store.serialize()

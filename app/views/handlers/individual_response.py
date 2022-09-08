@@ -936,8 +936,8 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
 
 
 class IndividualResponseFulfilmentRequest(FulfilmentRequest):
-    def __init__(self, metadata: Mapping, mobile_number: Optional[str] = None):
-        self._metadata_proxy = MetadataProxy.from_dict(dict(metadata))
+    def __init__(self, metadata: MetadataProxy, mobile_number: Optional[str] = None):
+        self._metadata_proxy = metadata
         self._mobile_number = mobile_number
         self._fulfilment_type = "sms" if self._mobile_number else "postal"
 

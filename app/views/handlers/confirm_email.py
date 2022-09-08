@@ -15,7 +15,7 @@ from app.data_models import (
     SessionData,
     SessionStore,
 )
-from app.data_models.metadata_proxy import MetadataProxy
+
 from app.forms.questionnaire_form import generate_form
 from app.helpers import url_safe_serializer
 from app.questionnaire import QuestionnaireSchema, QuestionSchemaType
@@ -162,7 +162,7 @@ class ConfirmationEmailFulfilmentRequest(FulfilmentRequest):
     schema: QuestionnaireSchema
 
     def _payload(self) -> Mapping:
-        metadata_proxy = MetadataProxy.from_dict(dict(self.metadata))
+        metadata_proxy = self.metadata
 
         return {
             "fulfilmentRequest": {

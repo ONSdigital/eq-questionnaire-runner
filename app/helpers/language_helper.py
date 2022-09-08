@@ -20,7 +20,7 @@ def handle_language(metadata_proxy: MetadataProxy = None) -> None:
 
     if session_store and session_store.session_data:
         if not metadata_proxy:
-            metadata_proxy = MetadataProxy.from_dict(dict(get_metadata(current_user)))
+            metadata_proxy = get_metadata(current_user)
         schema_name = metadata_proxy["schema_name"]
 
         launch_language = metadata_proxy["language_code"] or DEFAULT_LANGUAGE_CODE

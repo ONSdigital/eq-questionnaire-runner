@@ -1,6 +1,7 @@
+from copy import deepcopy
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import MutableMapping, Optional
+from typing import Optional, Mapping
 from uuid import uuid4
 
 from werkzeug.datastructures import ImmutableDict
@@ -14,17 +15,17 @@ class SurveyMetadata:
     receipting_keys: Optional[tuple] = None
 
     def __getitem__(self, key):
-        return getattr(self.data, key) if key in self.data else None
+        return self.data.get(key)
 
 
 # pylint: disable=too-many-locals
 @dataclass(frozen=True)
 class MetadataProxy:
-    tx_id: uuid4
-    account_service_url: str
-    case_id: uuid4
-    collection_exercise_sid: uuid4
-    response_id: str
+    tx_id: uuid4 = None
+    account_service_url: str = None
+    case_id: uuid4 = None
+    collection_exercise_sid: uuid4 = None
+    response_id: str = None
     survey_metadata: SurveyMetadata = None
     schema_url: str = None
     schema_name: str = None
@@ -35,32 +36,37 @@ class MetadataProxy:
     version: Optional[str] = None
 
     def __getitem__(self, key):
-        if key in self.survey_metadata.data:
+        if self.survey_metadata and key in self.survey_metadata.data:
             return self.survey_metadata.data[key]
-        return getattr(self, key, None)
+        if key:
+            return getattr(self, key, None)
 
     @classmethod
-    def from_dict(cls, metadata: MutableMapping):
-        tx_id = metadata.pop("tx_id")
-        account_service_url = metadata.pop("account_service_url")
-        case_id = metadata.pop("case_id")
-        collection_exercise_sid = metadata.pop("collection_exercise_sid")
-        response_id = metadata.pop("response_id")
-        response_expires_at = metadata.pop("response_expires_at", None)
-        language_code = metadata.pop("language_code", None)
-        schema_name = metadata.pop("schema_name", None)
-        schema_url = metadata.pop("schema_url", None)
-        channel = metadata.pop("channel", None)
-        region_code = metadata.pop("region_code", None)
-        version = metadata.pop("version", None)
+    def from_dict(cls, metadata: Mapping):
+        _metadata = deepcopy(dict(metadata))
+
+        tx_id = _metadata.pop("tx_id", None)
+        account_service_url = _metadata.pop("account_service_url", None)
+        case_id = _metadata.pop("case_id", None)
+        collection_exercise_sid = _metadata.pop("collection_exercise_sid", None)
+        response_id = _metadata.pop("response_id", None)
+        response_expires_at = _metadata.pop("response_expires_at", None)
+        language_code = _metadata.pop("language_code", None)
+        schema_name = _metadata.pop("schema_name", None)
+        schema_url = _metadata.pop("schema_url", None)
+        channel = _metadata.pop("channel", None)
+        region_code = _metadata.pop("region_code", None)
+        version = _metadata.pop("version", None)
 
         if version == "v2":
             serialized_metadata: ImmutableDict = QuestionnaireSchema.serialize(
-                metadata.pop("survey_metadata", {})
+                _metadata.pop("survey_metadata", {})
             )
             survey_metadata = SurveyMetadata(**serialized_metadata)
         else:
-            serialized_metadata: ImmutableDict = QuestionnaireSchema.serialize(metadata)
+            serialized_metadata: ImmutableDict = QuestionnaireSchema.serialize(
+                _metadata
+            )
             survey_metadata = SurveyMetadata(data=serialized_metadata)
 
         return cls(

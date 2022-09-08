@@ -1,7 +1,9 @@
 from decimal import Decimal
 
 import pytest
+from mock import Mock
 
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 
 
@@ -490,6 +492,10 @@ def test_option_label_from_value_with_placeholder_label(
     option_label_from_value_schema,
 ):
     label_renderer = placeholder_renderer
+
+    metadata_proxy = MetadataProxy
+    metadata_proxy.from_dict = Mock(return_value={"trad_as": "ESSENTIAL SERVICES LTD"})
+
     placeholder_transform = PlaceholderTransforms(
         language="en", schema=option_label_from_value_schema, renderer=label_renderer
     )

@@ -57,7 +57,7 @@ def login():
 
     runner_claims = get_runner_claims(decrypted_token)
 
-    metadata_proxy = MetadataProxy.from_dict(dict(runner_claims))
+    metadata_proxy = MetadataProxy.from_dict(runner_claims)
 
     # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(metadata_proxy=metadata_proxy)

@@ -102,7 +102,7 @@ def get_allowed_languages(schema_name, launch_language):
 def load_schema_from_metadata(
     metadata_proxy: MetadataProxy, *, language_code: Optional[str] = None
 ) -> QuestionnaireSchema:
-    language_code = metadata_proxy["language_code"] or language_code
+    language_code = language_code or metadata_proxy["language_code"]
 
     if schema_url := metadata_proxy["schema_url"]:
         # :TODO: Remove before production uses schema_url

@@ -9,7 +9,6 @@ from flask import url_for
 from flask_babel import LazyString, get_locale, lazy_gettext
 from flask_login import current_user
 
-from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_metadata, get_session_store
 from app.helpers.language_helper import get_languages_context
 from app.questionnaire import QuestionnaireSchema
@@ -86,7 +85,7 @@ class ContextHelper:
 
         ru_ref = None
         if get_metadata(current_user):
-            metadata_proxy = MetadataProxy.from_dict(dict(get_metadata(current_user)))
+            metadata_proxy = get_metadata(current_user)
             ru_ref = metadata_proxy["ru_ref"]
 
         if service_links := self._survey_config.get_service_links(
@@ -111,7 +110,7 @@ class ContextHelper:
     ) -> list[dict]:
         tx_id = None
         if get_metadata(current_user):
-            metadata_proxy = MetadataProxy.from_dict(dict(get_metadata(current_user)))
+            metadata_proxy = get_metadata(current_user)
             tx_id = metadata_proxy["tx_id"]
         return self._survey_config.get_data_layer(tx_id=tx_id)
 
@@ -215,7 +214,7 @@ def get_survey_config(
     # business feedback on the differentiation between theme and SURVEY_TYPE.
 
     if metadata := get_metadata(current_user):
-        metadata_proxy = MetadataProxy.from_dict(dict(metadata))
+        metadata_proxy = metadata
         language = language or get_locale().language
         schema = load_schema_from_metadata(
             metadata_proxy=metadata_proxy, language_code=language

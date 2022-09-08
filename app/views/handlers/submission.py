@@ -5,7 +5,6 @@ from flask import current_app
 from flask import session as cookie_session
 from sdc.crypto.encrypter import encrypt
 
-from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_session_store
 from app.keys import KEY_PURPOSE_SUBMISSION
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
@@ -21,9 +20,7 @@ class SubmissionHandler:
         self._questionnaire_store = questionnaire_store
         self._full_routing_path = full_routing_path
         self._session_store = get_session_store()
-        self._metadata_proxy = MetadataProxy.from_dict(
-            dict(questionnaire_store.metadata)
-        )
+        self._metadata_proxy = questionnaire_store.metadata
 
     @cached_property
     def submitted_at(self):

@@ -3,6 +3,7 @@ from mock import MagicMock
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.data_models.session_data import SessionData
 from app.forms.questionnaire_form import QuestionnaireForm
@@ -203,17 +204,21 @@ def fake_session_data():
 
 @pytest.fixture
 def fake_questionnaire_store_metadata():
-    return {
-        "tx_id": "tx_id",
-        "schema_name": "some_schema_name",
-        "period_str": "period_str",
-        "language_code": None,
-        "schema_url": None,
-        "ru_name": "ru_name",
-        "ru_ref": "ru_ref",
-        "response_id": "response_id",
-        "case_id": "case_id",
-    }
+    return MetadataProxy.from_dict(
+        {
+            "tx_id": "tx_id",
+            "schema_name": "some_schema_name",
+            "period_str": "period_str",
+            "language_code": None,
+            "schema_url": None,
+            "ru_name": "ru_name",
+            "ru_ref": "ru_ref",
+            "response_id": "response_id",
+            "case_id": "case_id",
+            "account_service_url": "account_service_url",
+            "collection_exercise_sid": "collection_exercise_sid",
+        }
+    )
 
 
 @pytest.fixture

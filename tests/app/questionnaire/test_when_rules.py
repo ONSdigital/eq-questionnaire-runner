@@ -3,6 +3,7 @@ import pytest
 
 from app.data_models.answer_store import Answer
 from app.data_models.list_store import ListStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire.location import Location
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.relationship_location import RelationshipLocation
@@ -359,16 +360,18 @@ def test_evaluate_rule(when_rule, answers, expected):
             [
                 {"answer_id": "my_answer", "value": "Yes"},
             ],
-            {
-                "tx_id": "tx_id",
-                "account_service_url": "account_service_url",
-                "case_id": "case_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "response_id": "response_id",
-                "region_code": "GB-ENG",
-                "version": "v2",
-                "survey_metadata": {"data": {"sexual_identity": True}},
-            },
+            MetadataProxy.from_dict(
+                {
+                    "tx_id": "tx_id",
+                    "account_service_url": "account_service_url",
+                    "case_id": "case_id",
+                    "collection_exercise_sid": "collection_exercise_sid",
+                    "response_id": "response_id",
+                    "region_code": "GB-ENG",
+                    "version": "v2",
+                    "survey_metadata": {"data": {"sexual_identity": True}},
+                }
+            ),
             True,
         ),
         (
@@ -382,16 +385,18 @@ def test_evaluate_rule(when_rule, answers, expected):
             [
                 {"answer_id": "my_answer", "value": "Yes"},
             ],
-            {
-                "tx_id": "tx_id",
-                "account_service_url": "account_service_url",
-                "case_id": "case_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "response_id": "response_id",
-                "region_code": "GB-ENG",
-                "version": "v2",
-                "survey_metadata": {"data": {"sexual_identity": True}},
-            },
+            MetadataProxy.from_dict(
+                {
+                    "tx_id": "tx_id",
+                    "account_service_url": "account_service_url",
+                    "case_id": "case_id",
+                    "collection_exercise_sid": "collection_exercise_sid",
+                    "response_id": "response_id",
+                    "region_code": "GB-ENG",
+                    "version": "v2",
+                    "survey_metadata": {"data": {"sexual_identity": True}},
+                }
+            ),
             False,
         ),
         (
@@ -408,16 +413,18 @@ def test_evaluate_rule(when_rule, answers, expected):
             [
                 {"answer_id": "my_answer", "value": "Yes"},
             ],
-            {
-                "tx_id": "tx_id",
-                "account_service_url": "account_service_url",
-                "case_id": "case_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "response_id": "response_id",
-                "region_code": "GB-ENG",
-                "version": "v2",
-                "survey_metadata": {"data": {}},
-            },
+            MetadataProxy.from_dict(
+                {
+                    "tx_id": "tx_id",
+                    "account_service_url": "account_service_url",
+                    "case_id": "case_id",
+                    "collection_exercise_sid": "collection_exercise_sid",
+                    "response_id": "response_id",
+                    "region_code": "GB-ENG",
+                    "version": "v2",
+                    "survey_metadata": {"data": {}},
+                }
+            ),
             False,
         ),
     ),

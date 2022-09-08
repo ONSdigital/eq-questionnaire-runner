@@ -3,10 +3,9 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, Mapping, Optional
 
-from werkzeug.datastructures import ImmutableDict
-
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire.rules.utils import parse_iso_8601_datetime
 from app.utilities.json import json_dumps, json_loads
@@ -29,7 +28,7 @@ class QuestionnaireStore:
         self.version = version
         self._metadata: dict[str, Any] = {}
         # self.metadata is a read-only view over self._metadata
-        self.metadata: Mapping[str, Any] = ImmutableDict(self._metadata)
+        self.metadata: MetadataProxy = MetadataProxy.from_dict(self._metadata)
         self.response_metadata: Mapping[str, Any] = {}
         self.list_store = ListStore()
         self.answer_store = AnswerStore()
@@ -58,7 +57,7 @@ class QuestionnaireStore:
         Metadata should normally be read only.
         """
         self._metadata = to_set
-        self.metadata = ImmutableDict(self._metadata)
+        self.metadata = MetadataProxy.from_dict(self._metadata)
 
         return self
 

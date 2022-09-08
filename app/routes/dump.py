@@ -5,7 +5,6 @@ from flask_babel import get_locale
 from flask_login import current_user, login_required
 
 from app.authentication.roles import role_required
-from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_metadata, get_questionnaire_store
 from app.helpers.session_helpers import with_questionnaire_store
 from app.questionnaire.router import Router
@@ -20,10 +19,9 @@ def requires_schema(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         # pylint: disable=assigning-non-slot
-        metadata = dict(get_metadata(current_user))
-        metadata_proxy = MetadataProxy.from_dict(metadata)
+        metadata = get_metadata(current_user)
         g.schema = load_schema_from_metadata(
-            metadata_proxy=metadata_proxy, language_code=get_locale().language
+            metadata_proxy=metadata, language_code=get_locale().language
         )
         result = func(g.schema, *args, **kwargs)
         return result
@@ -90,7 +88,7 @@ def dump_submission(schema, questionnaire_store):
 
     submission_handler = SubmissionHandler(schema, questionnaire_store, routing_path)
 
-    metadata_proxy = MetadataProxy.from_dict(questionnaire_store.metadata)
+    metadata_proxy = questionnaire_store.metadata
 
     response = {"submission": submission_handler.get_payload(metadata_proxy["version"])}
     return json_dumps(response), 200

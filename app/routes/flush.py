@@ -6,7 +6,6 @@ from sdc.crypto.encrypter import encrypt
 from structlog import get_logger
 
 from app.authentication.user import User
-from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_answer_store, get_metadata, get_questionnaire_store
 from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
 from app.questionnaire.router import Router
@@ -42,7 +41,7 @@ def flush_data():
     if roles and "flusher" in roles:
         user = _get_user(decrypted_token["response_id"])
 
-        metadata_proxy = MetadataProxy.from_dict(dict(get_metadata(user)))
+        metadata_proxy = get_metadata(user)
 
         if tx_id := metadata_proxy["tx_id"]:
             logger.bind(tx_id=tx_id)
@@ -59,12 +58,11 @@ def _submit_data(user):
         questionnaire_store = get_questionnaire_store(user.user_id, user.user_ik)
         answer_store = questionnaire_store.answer_store
         metadata = questionnaire_store.metadata
-        metadata_proxy = MetadataProxy.from_dict(dict(metadata))
         response_metadata = questionnaire_store.response_metadata
         progress_store = questionnaire_store.progress_store
         list_store = questionnaire_store.list_store
         submitted_at = datetime.now(timezone.utc)
-        schema = load_schema_from_metadata(metadata_proxy=metadata_proxy)
+        schema = load_schema_from_metadata(metadata_proxy=metadata)
 
         router = Router(
             schema,
@@ -90,12 +88,10 @@ def _submit_data(user):
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
         )
 
-        metadata_proxy = MetadataProxy.from_dict(dict(metadata))
-
         sent = current_app.eq["submitter"].send_message(
             encrypted_message,
-            tx_id=metadata_proxy["tx_id"],
-            case_id=metadata_proxy["case_id"],
+            tx_id=metadata["tx_id"],
+            case_id=metadata["case_id"],
         )
 
         if not sent:
