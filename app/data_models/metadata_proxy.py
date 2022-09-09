@@ -21,10 +21,10 @@ class SurveyMetadata:
 # pylint: disable=too-many-locals
 @dataclass(frozen=True)
 class MetadataProxy:
-    tx_id: uuid4 = None
+    tx_id: str = None
     account_service_url: str = None
-    case_id: uuid4 = None
-    collection_exercise_sid: uuid4 = None
+    case_id: str = None
+    collection_exercise_sid: str = None
     response_id: str = None
     survey_metadata: SurveyMetadata = None
     schema_url: str = None

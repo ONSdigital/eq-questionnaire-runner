@@ -83,10 +83,11 @@ class ContextHelper:
         self,
     ) -> Optional[dict[str, Union[dict[str, str], list[dict]]]]:
 
-        ru_ref = None
-        if get_metadata(current_user):
-            metadata_proxy = get_metadata(current_user)
-            ru_ref = metadata_proxy["ru_ref"]
+        ru_ref = (
+            metadata["ru_ref"]
+            if (metadata := get_metadata(current_user))
+            else None
+        )
 
         if service_links := self._survey_config.get_service_links(
             sign_out_url=self._sign_out_url,
@@ -108,10 +109,12 @@ class ContextHelper:
     def data_layer_context(
         self,
     ) -> list[dict]:
-        tx_id = None
-        if get_metadata(current_user):
-            metadata_proxy = get_metadata(current_user)
-            tx_id = metadata_proxy["tx_id"]
+        tx_id = (
+            metadata["tx_id"]
+            if (metadata := get_metadata(current_user))
+            else None
+        )
+
         return self._survey_config.get_data_layer(tx_id=tx_id)
 
     @property
@@ -214,10 +217,9 @@ def get_survey_config(
     # business feedback on the differentiation between theme and SURVEY_TYPE.
 
     if metadata := get_metadata(current_user):
-        metadata_proxy = metadata
         language = language or get_locale().language
         schema = load_schema_from_metadata(
-            metadata_proxy=metadata_proxy, language_code=language
+            metadata_proxy=metadata, language_code=language
         )
 
     survey_theme = theme or get_survey_type()

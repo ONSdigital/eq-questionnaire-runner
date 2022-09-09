@@ -12,6 +12,7 @@ from app.utilities import safe_content
 from .context import Context
 from .list_context import ListContext
 from .summary import Group
+from ...data_models.metadata_proxy import MetadataProxy
 
 
 class SectionSummaryContext(Context):
@@ -22,7 +23,7 @@ class SectionSummaryContext(Context):
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: Mapping[str, Any],
+        metadata: MetadataProxy,
         response_metadata: Mapping,
         routing_path: RoutingPath,
         current_location: Location,

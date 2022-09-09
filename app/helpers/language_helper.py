@@ -15,11 +15,11 @@ LANGUAGE_TEXT = {
 }
 
 
-def handle_language(metadata_proxy: MetadataProxy = None) -> None:
+def handle_language(metadata_proxy: MetadataProxy = MetadataProxy()) -> None:
     session_store = get_session_store()
 
     if session_store and session_store.session_data:
-        if not metadata_proxy:
+        if not metadata_proxy["schema_name"]:
             metadata_proxy = get_metadata(current_user)
         schema_name = metadata_proxy["schema_name"]
 

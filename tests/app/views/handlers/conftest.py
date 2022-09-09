@@ -6,6 +6,7 @@ from freezegun import freeze_time
 from mock import Mock
 
 from app.data_models import QuestionnaireStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.questionnaire import QuestionnaireSchema
@@ -104,7 +105,7 @@ def schema_feedback():
 
 @pytest.fixture
 def metadata():
-    return {
+    return MetadataProxy.from_dict({
         "tx_id": tx_id,
         "user_id": user_id,
         "schema_name": schema_name,
@@ -122,11 +123,11 @@ def metadata():
         "case_ref": case_ref,
         "region_code": region_code,
         "case_id": case_id,
-    }
+    })
 
 
 def metadata_v2():
-    return {
+    return MetadataProxy.from_dict({
         "version": "v2",
         "tx_id": "tx_id",
         "case_id": case_id,
@@ -151,7 +152,7 @@ def metadata_v2():
                 "user_id": user_id,
             }
         },
-    }
+    })
 
 
 @pytest.fixture
@@ -191,7 +192,7 @@ def mock_questionnaire_store(mocker):
     storage_ = mocker.Mock()
     storage_.get_user_data = mocker.Mock(return_value=("{}", "ce_id", 1, None))
     questionnaire_store = QuestionnaireStore(storage_)
-    questionnaire_store.metadata = {
+    questionnaire_store.metadata = MetadataProxy.from_dict({
         "tx_id": "tx_id",
         "case_id": "case_id",
         "ru_ref": ru_ref,
@@ -201,7 +202,7 @@ def mock_questionnaire_store(mocker):
         "schema_name": schema_name,
         "account_service_url": "account_service_url",
         "response_id": "response_id",
-    }
+    })
     return questionnaire_store
 
 

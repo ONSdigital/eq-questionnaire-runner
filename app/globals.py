@@ -92,10 +92,10 @@ def create_session_store(
     )
 
 
-def get_metadata(user: User) -> Union[None, MetadataProxy]:
+def get_metadata(user: User) -> MetadataProxy:
     if user.is_anonymous:
         logger.debug("anonymous user requesting metadata get instance")
-        return None
+        return MetadataProxy()
 
     questionnaire_store = get_questionnaire_store(user.user_id, user.user_ik)
     return questionnaire_store.metadata

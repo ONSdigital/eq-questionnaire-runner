@@ -6,6 +6,7 @@ from mock import Mock
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.router import Router
@@ -18,7 +19,7 @@ class RouterTestCase:
     answer_store = AnswerStore()
     list_store = ListStore()
     progress_store = ProgressStore()
-    metadata = {}
+    metadata = MetadataProxy()
     response_metadata = {}
 
     @cached_property

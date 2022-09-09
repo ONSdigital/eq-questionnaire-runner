@@ -4,6 +4,7 @@ from typing import Any, Mapping, Optional, Union
 
 from app.data_models import AnswerStore, ListStore
 from app.data_models.answer import AnswerValueTypes, ListAnswer
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.routing_path import RoutingPath
@@ -14,7 +15,7 @@ MetadataType = Mapping[str, Union[str, int, list]]
 
 # pylint: disable=too-many-locals,too-many-nested-blocks
 def convert_answers_to_payload_0_0_1(
-    metadata: MetadataType,
+    metadata: MetadataProxy,
     response_metadata: MetadataType,
     answer_store: AnswerStore,
     list_store: ListStore,

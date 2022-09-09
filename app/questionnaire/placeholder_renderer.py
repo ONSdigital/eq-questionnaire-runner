@@ -5,6 +5,7 @@ from jsonpointer import resolve_pointer, set_pointer
 from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.questionnaire.plural_forms import get_plural_form_key
@@ -23,7 +24,7 @@ class PlaceholderRenderer:
         language: str,
         answer_store: AnswerStore,
         list_store: ListStore,
-        metadata: Mapping,
+        metadata: MetadataProxy,
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
         location: Union[None, Location, RelationshipLocation] = None,

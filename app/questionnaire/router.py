@@ -3,6 +3,7 @@ from typing import Generator, Mapping, Optional, Union
 from flask import url_for
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import SectionKeyType
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
@@ -19,7 +20,7 @@ class Router:
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: Mapping[str, Union[str, int, list]],
+        metadata: MetadataProxy,
         response_metadata: Mapping,
     ):
         self._schema = schema

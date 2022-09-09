@@ -1,6 +1,7 @@
 # pylint: disable=redefined-outer-name
 import pytest
 
+from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import CompletionStatus
 from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_name
@@ -14,7 +15,7 @@ def router(schema, answer_store, list_store, progress_store):
         answer_store,
         list_store,
         progress_store,
-        metadata={},
+        metadata=MetadataProxy(),
         response_metadata={},
     )
 

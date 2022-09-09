@@ -338,7 +338,7 @@ def test_service_links_context(
         if is_authenticated:
             mocker.patch(
                 "app.helpers.template_helpers.get_metadata",
-                return_value={"ru_ref": "63782964754U"},
+                return_value={"ru_ref": "63782964754U", "tx_id": "tx_id"},
             )
 
         result = ContextHelper(

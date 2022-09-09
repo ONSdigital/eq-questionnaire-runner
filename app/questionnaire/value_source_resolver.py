@@ -7,6 +7,7 @@ from markupsafe import Markup
 from app.data_models.answer import AnswerValueTypes, escape_answer_value
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListModel, ListStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.relationship_location import RelationshipLocation
@@ -23,7 +24,7 @@ IntOrDecimal = Union[int, Decimal]
 class ValueSourceResolver:
     answer_store: AnswerStore
     list_store: ListStore
-    metadata: Mapping
+    metadata: MetadataProxy
     response_metadata: Mapping
     schema: QuestionnaireSchema
     location: Union[None, Location, RelationshipLocation]
@@ -155,9 +156,8 @@ class ValueSourceResolver:
             return self._resolve_list_value_source(value_source)
 
         if source == "metadata":
-            metadata_proxy = self.metadata
             identifier = value_source["identifier"]
-            return metadata_proxy[identifier]  # type: ignore
+            return self.metadata[identifier]  # type: ignore
 
         if source == "location" and value_source.get("identifier") == "list_item_id":
             # This does not use the location object because

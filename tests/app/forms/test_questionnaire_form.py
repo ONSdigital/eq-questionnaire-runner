@@ -7,6 +7,7 @@ from werkzeug.datastructures import MultiDict
 
 from app.data_models import ListStore
 from app.data_models.answer_store import Answer, AnswerStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.forms import error_messages
 from app.forms.questionnaire_form import generate_form
 from app.forms.validators import (
@@ -38,7 +39,7 @@ def test_form_ids_match_block_answer_ids(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
         )
 
@@ -73,7 +74,7 @@ def test_form_date_range_populates_data(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -108,7 +109,7 @@ def test_date_range_matching_dates_raises_question_error(app, answer_store, list
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -151,7 +152,7 @@ def test_date_range_to_precedes_from_raises_question_error(
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -193,7 +194,7 @@ def test_date_range_too_large_period_raises_question_error(
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -234,7 +235,7 @@ def test_date_range_too_small_period_raises_question_error(
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -273,7 +274,7 @@ def test_date_range_valid_period(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -299,7 +300,7 @@ def test_date_combined_single_validation(app, answer_store, list_store):
             }
         )
 
-        metadata = {
+        metadata = MetadataProxy.from_dict({
             "ref_p_start_date": "2017-01-21",
             "ref_p_end_date": "2017-02-21",
             "response_id": "1",
@@ -307,7 +308,7 @@ def test_date_combined_single_validation(app, answer_store, list_store):
             "tx_id": "tx_id",
             "collection_exercise_sid": "collection_exercise_sid",
             "case_id": "case_id",
-        }
+        })
 
         response_metadata = {}
 
@@ -354,7 +355,7 @@ def test_date_combined_range_too_small_validation(app, answer_store, list_store)
             }
         )
 
-        metadata = {
+        metadata = MetadataProxy.from_dict({
             "ref_p_start_date": "2017-01-20",
             "ref_p_end_date": "2017-02-20",
             "response_id": "1",
@@ -362,7 +363,7 @@ def test_date_combined_range_too_small_validation(app, answer_store, list_store)
             "tx_id": "tx_id",
             "collection_exercise_sid": "collection_exercise_sid",
             "case_id": "case_id",
-        }
+        })
 
         expected_form_data = {
             "csrf_token": None,
@@ -403,7 +404,7 @@ def test_date_combined_range_too_large_validation(app, answer_store, list_store)
             }
         )
 
-        metadata = {
+        metadata = MetadataProxy.from_dict({
             "ref_p_start_date": "2017-01-20",
             "ref_p_end_date": "2017-02-20",
             "response_id": "1",
@@ -411,7 +412,7 @@ def test_date_combined_range_too_large_validation(app, answer_store, list_store)
             "tx_id": "tx_id",
             "collection_exercise_sid": "collection_exercise_sid",
             "case_id": "case_id",
-        }
+        })
 
         response_metadata = {}
 
@@ -452,7 +453,7 @@ def test_date_mm_yyyy_combined_single_validation(app, answer_store, list_store):
             }
         )
 
-        metadata = {
+        metadata = MetadataProxy.from_dict({
             "ref_p_start_date": "2017-01-01",
             "ref_p_end_date": "2017-02-12",
             "response_id": "1",
@@ -460,7 +461,7 @@ def test_date_mm_yyyy_combined_single_validation(app, answer_store, list_store):
             "tx_id": "tx_id",
             "collection_exercise_sid": "collection_exercise_sid",
             "case_id": "case_id",
-        }
+        })
 
         response_metadata = {}
 
@@ -507,7 +508,7 @@ def test_date_mm_yyyy_combined_range_too_small_validation(
             }
         )
 
-        metadata = {
+        metadata = MetadataProxy.from_dict({
             "ref_p_start_date": "2017-01-01",
             "ref_p_end_date": "2017-02-12",
             "response_id": "1",
@@ -515,7 +516,7 @@ def test_date_mm_yyyy_combined_range_too_small_validation(
             "tx_id": "tx_id",
             "collection_exercise_sid": "collection_exercise_sid",
             "case_id": "case_id",
-        }
+        })
 
         expected_form_data = {
             "csrf_token": None,
@@ -556,7 +557,7 @@ def test_date_mm_yyyy_combined_range_too_large_validation(
             }
         )
 
-        metadata = {
+        metadata = MetadataProxy.from_dict({
             "ref_p_start_date": "2017-01-01",
             "ref_p_end_date": "2017-02-12",
             "response_id": "1",
@@ -564,7 +565,7 @@ def test_date_mm_yyyy_combined_range_too_large_validation(
             "tx_id": "tx_id",
             "collection_exercise_sid": "collection_exercise_sid",
             "case_id": "case_id",
-        }
+        })
 
         response_metadata = {}
 
@@ -600,7 +601,7 @@ def test_date_yyyy_combined_single_validation(app, answer_store, list_store):
             {"date-range-from-year": "2015", "date-range-to-year": "2021"}
         )
 
-        metadata = {
+        metadata = MetadataProxy.from_dict({
             "ref_p_start_date": "2017-01-01",
             "ref_p_end_date": "2017-02-12",
             "response_id": "1",
@@ -608,7 +609,7 @@ def test_date_yyyy_combined_single_validation(app, answer_store, list_store):
             "tx_id": "tx_id",
             "collection_exercise_sid": "collection_exercise_sid",
             "case_id": "case_id",
-        }
+        })
 
         expected_form_data = {
             "csrf_token": None,
@@ -646,7 +647,7 @@ def test_date_yyyy_combined_range_too_small_validation(app, answer_store, list_s
             {"date-range-from-year": "2016", "date-range-to-year": "2017"}
         )
 
-        metadata = {
+        metadata = MetadataProxy.from_dict({
             "ref_p_start_date": "2017-01-01",
             "ref_p_end_date": "2017-02-12",
             "response_id": "1",
@@ -654,7 +655,7 @@ def test_date_yyyy_combined_range_too_small_validation(app, answer_store, list_s
             "tx_id": "tx_id",
             "collection_exercise_sid": "collection_exercise_sid",
             "case_id": "case_id",
-        }
+        })
 
         expected_form_data = {
             "csrf_token": None,
@@ -688,7 +689,7 @@ def test_date_yyyy_combined_range_too_large_validation(app, answer_store, list_s
             {"date-range-from-year": "2016", "date-range-to-year": "2020"}
         )
 
-        metadata = {
+        metadata = MetadataProxy.from_dict({
             "ref_p_start_date": "2017-01-01",
             "ref_p_end_date": "2017-02-12",
             "response_id": "1",
@@ -696,7 +697,7 @@ def test_date_yyyy_combined_range_too_large_validation(app, answer_store, list_s
             "tx_id": "tx_id",
             "collection_exercise_sid": "collection_exercise_sid",
             "case_id": "case_id",
-        }
+        })
 
         expected_form_data = {
             "csrf_token": None,
@@ -720,7 +721,7 @@ def test_date_yyyy_combined_range_too_large_validation(app, answer_store, list_s
         ] % {"max": "3 years"}
 
 
-def test_date_raises_ValueError_when_any_date_range_parts_are_falsy(
+def test_date_raises_KeyError_when_any_date_range_parts_are_falsy(
     app, answer_store, list_store
 ):
     with app.test_request_context():
@@ -739,29 +740,28 @@ def test_date_raises_ValueError_when_any_date_range_parts_are_falsy(
             }
         )
 
-        metadata = {
+        metadata = MetadataProxy.from_dict({
             "ref_p_start_date": "2017-01-21",
             "response_id": "1",
             "account_service_url": "account_service_url",
             "tx_id": "tx_id",
             "collection_exercise_sid": "collection_exercise_sid",
             "case_id": "case_id",
-        }
+        })
 
         response_metadata = {}
 
-        form = generate_form(
-            schema,
-            question_schema,
-            answer_store,
-            list_store,
-            metadata,
-            response_metadata,
-            form_data=form_data,
-        )
+        with pytest.raises(KeyError):
+            form = generate_form(
+                schema,
+                question_schema,
+                answer_store,
+                list_store,
+                metadata,
+                response_metadata,
+                form_data=form_data,
+            )
 
-        with pytest.raises(ValueError):
-            form.validate()
 
 
 def test_bespoke_message_for_date_validation_range(
@@ -807,7 +807,7 @@ def test_bespoke_message_for_date_validation_range(
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -864,7 +864,7 @@ def test_invalid_minimum_period_limit_and_single_date_periods(
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -924,7 +924,7 @@ def test_invalid_maximum_period_limit_and_single_date_periods(
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -985,7 +985,7 @@ def test_period_limits_minimum_not_set_and_single_date_periods(
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1043,7 +1043,7 @@ def test_invalid_date_range_and_single_date_periods(
             }
         )
 
-        metadata = {"schema_name": "test_date_validation_range"}
+        metadata = MetadataProxy.from_dict({"schema_name": "test_date_validation_range"})
 
         form = generate_form(
             schema,
@@ -1095,7 +1095,7 @@ def test_invalid_calculation_type(app, answer_store, list_store, mocker):
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1133,7 +1133,7 @@ def test_bespoke_message_for_sum_validation(app, answer_store, list_store, mocke
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1334,7 +1334,7 @@ def test_calculated_field(
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1389,7 +1389,7 @@ def test_sum_calculated_field_value_source_calculated_summary_repeat_not_equal_v
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1425,7 +1425,7 @@ def test_multi_calculation(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1441,7 +1441,7 @@ def test_multi_calculation(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1457,7 +1457,7 @@ def test_multi_calculation(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1491,7 +1491,7 @@ def test_generate_form_with_title_and_no_answer_label(app, answer_store, list_st
                 question_schema,
                 answer_store,
                 list_store,
-                metadata={},
+                metadata=MetadataProxy(),
                 response_metadata={},
                 form_data=form_data,
             )
@@ -1511,7 +1511,7 @@ def test_form_errors_are_correctly_mapped(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
         )
 
@@ -1534,7 +1534,7 @@ def test_form_subfield_errors_are_correctly_mapped(app, answer_store, list_store
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
         )
 
@@ -1569,7 +1569,7 @@ def test_detail_answer_mandatory_only_checked_if_option_selected(
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=MultiDict({"mandatory-checkbox-answer": "Your choice"}),
         )
@@ -1583,7 +1583,7 @@ def test_detail_answer_mandatory_only_checked_if_option_selected(
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             data={"mandatory-checkbox-answer": "Ham"},
         )
@@ -1607,7 +1607,7 @@ def test_answer_with_detail_answer_errors_are_correctly_mapped(
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=MultiDict({"radio-mandatory-answer": "Other"}),
         )
@@ -1638,7 +1638,7 @@ def test_answer_errors_are_interpolated(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=MultiDict({"set-minimum": "-1"}),
         )
@@ -1663,7 +1663,7 @@ def test_mandatory_mutually_exclusive_question_raises_error_when_not_answered(
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=MultiDict(),
         )
@@ -1693,7 +1693,7 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
             language="en",
             answer_store=answer_store,
             list_store=list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             schema=schema,
         )
@@ -1704,7 +1704,7 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
             rendered_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=MultiDict(),
         )
@@ -1739,7 +1739,7 @@ def test_mutually_exclusive_question_raises_error_when_both_answered(
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1761,7 +1761,7 @@ def test_date_range_form(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
         )
 
@@ -1796,7 +1796,7 @@ def test_date_range_form_with_data(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1834,7 +1834,7 @@ def test_form_for_radio_other_not_selected(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1863,7 +1863,7 @@ def test_form_for_radio_other_selected(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata={},
+            metadata=MetadataProxy(),
             response_metadata={},
             form_data=form_data,
         )

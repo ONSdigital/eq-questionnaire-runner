@@ -3,6 +3,7 @@ from typing import Any, Mapping
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
@@ -17,7 +18,7 @@ class Context(ABC):
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: Mapping[str, Any],
+        metadata: MetadataProxy,
         response_metadata: Mapping,
     ):
         self._language = language

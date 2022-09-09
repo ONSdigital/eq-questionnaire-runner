@@ -30,7 +30,7 @@ def role_required(role: str) -> Callable:
         @wraps(func)
         def role_required_wrapper(*args: tuple, **kwargs: dict) -> Any:
             metadata = get_metadata(current_user)
-            roles: list = (metadata.get("roles", []) or []) if metadata else []
+            roles: list = (metadata["roles"] or []) if metadata else []
             if current_user.is_authenticated and role in roles:
                 return func(*args, **kwargs)
             raise Forbidden

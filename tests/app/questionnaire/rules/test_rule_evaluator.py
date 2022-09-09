@@ -38,7 +38,7 @@ def get_rule_evaluator(
     schema: QuestionnaireSchema = None,
     answer_store: AnswerStore = AnswerStore(),
     list_store: ListStore = ListStore(),
-    metadata: Optional[dict] = None,
+    metadata: Optional[MetadataProxy] = None,
     response_metadata: Mapping = None,
     location: Union[Location, RelationshipLocation] = Location(
         section_id="test-section", block_id="test-block"
@@ -237,14 +237,14 @@ def test_answer_source_with_dict_answer_selector(answer_value, expected_result):
 )
 def test_metadata_source(metadata_value, expected_result):
     rule_evaluator = get_rule_evaluator(
-        metadata={
+        metadata=MetadataProxy.from_dict({
             "tx_id": metadata_value,
             "account_service_url": "account_service_url",
             "response_id": "response_id",
             "collection_exercise_sid": "collection_exercise_sid",
             "case_id": "case_id",
         },
-    )
+    ))
 
     assert (
         rule_evaluator.evaluate(
@@ -571,9 +571,6 @@ def test_nested_rules(operator, operands, expected_result):
     ],
 )
 def test_comparison_operator_rule_with_nonetype_operands(operator_name, operands):
-    metadata_proxy = MetadataProxy
-    metadata_proxy.from_dict = Mock(return_value={"some-metadata": None})
-
     rule_evaluator = get_rule_evaluator()
     assert rule_evaluator.evaluate(rule={operator_name: operands}) is False
 
