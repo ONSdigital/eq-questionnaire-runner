@@ -431,7 +431,7 @@ def test_remove_answer_and_block_if_routing_backwards(list_store):
 
     number_of_employees_answer = Answer(answer_id="number-of-employees-total", value=0)
     confirm_zero_answer = Answer(
-        answer_id="confirm-zero-employees-answer", value="No I need to change this"
+        answer_id="confirm-zero-employees-answer", value="No I need to correct this"
     )
     answer_store = AnswerStore({})
     answer_store.add_or_update(number_of_employees_answer)
@@ -497,7 +497,9 @@ def test_new_remove_answer_and_block_if_routing_backwards(list_store):
     answer_store = AnswerStore()
     route_backwards_answer = Answer(answer_id="route-backwards-answer", value="Yes")
     number_of_employees_answer = Answer(answer_id="number-of-employees-total", value=0)
-    confirm_zero_answer = Answer(answer_id="confirm-zero-employees-answer", value="No")
+    confirm_zero_answer = Answer(
+        answer_id="confirm-zero-employees-answer", value="No I need to correct this"
+    )
     answer_store.add_or_update(route_backwards_answer)
     answer_store.add_or_update(number_of_employees_answer)
     answer_store.add_or_update(confirm_zero_answer)
