@@ -22,7 +22,7 @@ describe("Feature: Confirmation Question", () => {
     it("When I answer 'No' to the confirmation question, Then I should be routed back to the source question", () => {
       browser.openQuestionnaire("test_confirmation_question.json");
       $(NumberOfEmployeesTotalBlockPage.submit()).click();
-      $(ConfirmZeroEmployeesBlockPage.noINeedToChangeThis()).click();
+      $(ConfirmZeroEmployeesBlockPage.noINeedToCorrectThis()).click();
       $(ConfirmZeroEmployeesBlockPage.submit()).click();
       expect(browser.getUrl()).to.contain(NumberOfEmployeesTotalBlockPage.pageName);
     });

@@ -129,8 +129,8 @@
                                                 "value": "Yes"
                                             },
                                             {
-                                                "label": "No",
-                                                "value": "No"
+                                                "label": "No I need to correct this",
+                                                "value": "No I need to correct this"
                                             }
                                         ],
                                         "mandatory": true
@@ -150,7 +150,7 @@
                                                         "source": "answers",
                                                         "identifier": "confirm-zero-employees-answer"
                                                     },
-                                                    "No"
+                                                    "No I need to correct this"
                                                 ]
                                             },
                                             {
