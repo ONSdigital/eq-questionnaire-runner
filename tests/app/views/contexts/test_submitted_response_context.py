@@ -114,7 +114,9 @@ def fake_questionnaire_store():
     storage = Mock()
     storage.get_user_data = Mock(return_value=("{}", "ce_sid", 1, None))
     questionnaire_store = QuestionnaireStore(storage)
-    questionnaire_store.metadata = MetadataProxy.from_dict({"tx_id": "tx_id", "ru_name": "Apple"})
+    questionnaire_store.metadata = MetadataProxy.from_dict(
+        {"tx_id": "tx_id", "ru_name": "Apple"}
+    )
     questionnaire_store.submitted_at = SUBMITTED_AT
     questionnaire_store.answer_store = AnswerStore(
         [
@@ -129,7 +131,9 @@ def fake_questionnaire_store_with_trad_as():
     storage = Mock()
     storage.get_user_data = Mock(return_value=("{}", "ce_sid", 1, None))
     questionnaire_store = QuestionnaireStore(storage)
-    questionnaire_store.metadata = MetadataProxy.from_dict({"tx_id": "tx_id", "ru_name": "Apple", "trad_as": "Apple Inc"})
+    questionnaire_store.metadata = MetadataProxy.from_dict(
+        {"tx_id": "tx_id", "ru_name": "Apple", "trad_as": "Apple Inc"}
+    )
     questionnaire_store.submitted_at = SUBMITTED_AT
     questionnaire_store.answer_store = AnswerStore()
     return questionnaire_store

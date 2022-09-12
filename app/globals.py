@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from typing import Optional, Union
+from typing import Optional
 
 from flask import current_app, g
 from flask import session as cookie_session

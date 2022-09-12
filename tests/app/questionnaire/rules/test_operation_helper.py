@@ -1,7 +1,5 @@
 import pytest
-from mock import Mock
 
-from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire.rules.operations import DateOffset
 
 
@@ -26,9 +24,6 @@ def test_string_to_datetime(operation_helper):
     ],
 )
 def test_get_option_label_from_value(operation_helper, answer_id, value, expected):
-    metadata_proxy = MetadataProxy
-    metadata_proxy.from_dict = Mock(return_value={"trad_as": "ESSENTIAL SERVICES LTD"})
-
     actual = operation_helper.get_option_label_from_value(value, answer_id)
 
     assert actual == expected

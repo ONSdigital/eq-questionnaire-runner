@@ -15,7 +15,6 @@ from app.data_models import (
     SessionData,
     SessionStore,
 )
-
 from app.forms.questionnaire_form import generate_form
 from app.helpers import url_safe_serializer
 from app.questionnaire import QuestionnaireSchema, QuestionSchemaType

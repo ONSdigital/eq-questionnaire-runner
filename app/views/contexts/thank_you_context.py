@@ -4,6 +4,7 @@ from typing import Mapping, Optional
 from flask import url_for
 from flask_babel import lazy_gettext
 
+from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import (
     get_view_submitted_response_expiration_time,
     has_view_submitted_response_expired,
@@ -18,18 +19,14 @@ from app.views.contexts.submission_metadata_context import (
 
 def build_thank_you_context(
     schema: QuestionnaireSchema,
-    metadata: dict,
+    metadata: MetadataProxy,
     submitted_at: datetime,
     survey_type: SurveyType,
     guidance_content: Optional[dict] = None,
 ) -> Mapping:
-
-    metadata_proxy = metadata
     if survey_type is SurveyType.SOCIAL:
         submission_text = lazy_gettext("Your answers have been submitted.")
-    elif (trad_as := metadata_proxy["trad_as"]) and (
-        ru_name := metadata_proxy["ru_name"]
-    ):
+    elif (trad_as := metadata["trad_as"]) and (ru_name := metadata["ru_name"]):
         submission_text = lazy_gettext(
             "Your answers have been submitted for <span>{company_name}</span> ({trading_name})"
         ).format(
@@ -39,9 +36,9 @@ def build_thank_you_context(
     else:
         submission_text = lazy_gettext(
             "Your answers have been submitted for <span>{company_name}</span>"
-        ).format(company_name=metadata_proxy["ru_name"])
+        ).format(company_name=metadata["ru_name"])
     context_metadata = build_submission_metadata_context(
-        survey_type, submitted_at, metadata_proxy["tx_id"]  # type: ignore
+        survey_type, submitted_at, metadata["tx_id"]  # type: ignore
     )
     return {
         "hide_sign_out_button": True,
@@ -73,13 +70,11 @@ def build_view_submitted_response_context(schema, submitted_at):
 
 
 def build_census_thank_you_context(
-    metadata: dict, confirmation_email_form, form_type
+    metadata: MetadataProxy, confirmation_email_form, form_type
 ) -> Mapping:
 
-    metadata_proxy = metadata
-
     context = {
-        "display_address": metadata_proxy["display_address"],
+        "display_address": metadata["display_address"],
         "form_type": form_type,
         "hide_sign_out_button": False,
         "sign_out_url": url_for("session.get_sign_out"),

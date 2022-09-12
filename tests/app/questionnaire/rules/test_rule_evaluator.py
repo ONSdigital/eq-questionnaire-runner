@@ -526,15 +526,17 @@ def test_nested_rules(operator, operands, expected_result):
                 },
             ]
         ),
-        metadata=MetadataProxy.from_dict({
-            "region_code": "GB-NIR",
-            "language_code": "en",
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "region_code": "GB-NIR",
+                "language_code": "en",
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         list_store=ListStore(
             [
                 {
@@ -743,7 +745,7 @@ def test_date_value(rule, expected_result):
                 }
             ]
         ),
-        metadata=MetadataProxy.from_dict({"some-metadata": current_date_as_yyyy_mm_dd})
+        metadata=MetadataProxy.from_dict({"some-metadata": current_date_as_yyyy_mm_dd}),
     )
 
     assert (

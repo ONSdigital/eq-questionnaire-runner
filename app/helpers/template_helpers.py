@@ -84,9 +84,7 @@ class ContextHelper:
     ) -> Optional[dict[str, Union[dict[str, str], list[dict]]]]:
 
         ru_ref = (
-            metadata["ru_ref"]
-            if (metadata := get_metadata(current_user))
-            else None
+            metadata["ru_ref"] if (metadata := get_metadata(current_user)) else None
         )
 
         if service_links := self._survey_config.get_service_links(
@@ -109,11 +107,7 @@ class ContextHelper:
     def data_layer_context(
         self,
     ) -> list[dict]:
-        tx_id = (
-            metadata["tx_id"]
-            if (metadata := get_metadata(current_user))
-            else None
-        )
+        tx_id = metadata["tx_id"] if (metadata := get_metadata(current_user)) else None
 
         return self._survey_config.get_data_layer(tx_id=tx_id)
 

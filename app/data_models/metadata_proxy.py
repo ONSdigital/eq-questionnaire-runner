@@ -1,8 +1,7 @@
 from copy import deepcopy
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Optional, Mapping
-from uuid import uuid4
+from typing import Mapping, Optional
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -85,5 +84,5 @@ class MetadataProxy:
             region_code=region_code,
             version=version,
             survey_metadata=survey_metadata,
-            roles=roles
+            roles=roles,
         )

@@ -3,10 +3,8 @@ from datetime import datetime, timezone
 from flask import Flask
 from flask import session as cookie_session
 from flask.wrappers import Request
-from mock import Mock
 
 from app.authentication.authenticator import load_user, request_load_user, user_loader
-from app.data_models.metadata_proxy import MetadataProxy
 from app.settings import USER_IK
 
 

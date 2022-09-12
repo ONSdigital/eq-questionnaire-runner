@@ -1,4 +1,4 @@
-from typing import Generator, Mapping, Optional, Union
+from typing import Generator, Mapping, Optional
 
 from flask import url_for
 

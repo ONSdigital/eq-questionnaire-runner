@@ -1,11 +1,11 @@
-# pylint: disable=redefined-outer-name
+# pylint: disable=redefined-outer-name, too-many-lines
 
 import pytest
-from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.list_store import ListStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
@@ -51,7 +51,15 @@ def parser(answer_store, location, mock_schema, mock_renderer):
         language="en",
         answer_store=answer_store,
         list_store=ListStore(),
-        metadata={},
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=mock_schema,
         location=location,
@@ -918,7 +926,16 @@ def placeholder_renderer(option_label_from_value_schema):
         language="en",
         answer_store=answer_store,
         list_store=ListStore(),
-        metadata=ImmutableDict({"trad_as": "ESSENTIAL SERVICES LTD"}),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+                "trad_as": "ESSENTIAL SERVICES LTD",
+            }
+        ),
         response_metadata={},
         schema=option_label_from_value_schema,
     )
@@ -931,7 +948,15 @@ def mock_renderer(mock_schema):
         language="en",
         answer_store=AnswerStore(),
         list_store=ListStore(),
-        metadata=ImmutableDict({}),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=mock_schema,
     )

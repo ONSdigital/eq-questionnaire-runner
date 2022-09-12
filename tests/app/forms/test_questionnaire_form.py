@@ -828,7 +828,7 @@ def test_date_raises_ValueError_when_any_date_range_parts_are_falsy(
         response_metadata = {}
 
         with pytest.raises(ValueError):
-            form = generate_form(
+            generate_form(
                 schema,
                 question_schema,
                 answer_store,

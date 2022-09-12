@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Any, Mapping, Optional
+from typing import Mapping, Optional
 
 from flask import url_for
 
@@ -9,10 +9,10 @@ from app.questionnaire.location import Location
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities import safe_content
 
+from ...data_models.metadata_proxy import MetadataProxy
 from .context import Context
 from .list_context import ListContext
 from .summary import Group
-from ...data_models.metadata_proxy import MetadataProxy
 
 
 class SectionSummaryContext(Context):
