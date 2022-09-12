@@ -105,54 +105,58 @@ def schema_feedback():
 
 @pytest.fixture
 def metadata():
-    return MetadataProxy.from_dict({
-        "tx_id": tx_id,
-        "user_id": user_id,
-        "schema_name": schema_name,
-        "collection_exercise_sid": collection_exercise_sid,
-        "period_id": period_id,
-        "period_str": period_str,
-        "ref_p_start_date": ref_p_start_date,
-        "ref_p_end_date": ref_p_end_date,
-        "ru_ref": ru_ref,
-        "response_id": response_id,
-        "form_type": form_type,
-        "display_address": display_address,
-        "case_type": case_type,
-        "channel": channel,
-        "case_ref": case_ref,
-        "region_code": region_code,
-        "case_id": case_id,
-    })
+    return MetadataProxy.from_dict(
+        {
+            "tx_id": tx_id,
+            "user_id": user_id,
+            "schema_name": schema_name,
+            "collection_exercise_sid": collection_exercise_sid,
+            "period_id": period_id,
+            "period_str": period_str,
+            "ref_p_start_date": ref_p_start_date,
+            "ref_p_end_date": ref_p_end_date,
+            "ru_ref": ru_ref,
+            "response_id": response_id,
+            "form_type": form_type,
+            "display_address": display_address,
+            "case_type": case_type,
+            "channel": channel,
+            "case_ref": case_ref,
+            "region_code": region_code,
+            "case_id": case_id,
+        }
+    )
 
 
 def metadata_v2():
-    return MetadataProxy.from_dict({
-        "version": "v2",
-        "tx_id": "tx_id",
-        "case_id": case_id,
-        "schema_name": schema_name,
-        "collection_exercise_sid": collection_exercise_sid,
-        "response_id": response_id,
-        "channel": channel,
-        "region_code": region_code,
-        "account_service_url": "account_service_url",
-        "survey_metadata": {
-            "data": {
-                "period_id": period_id,
-                "period_str": period_str,
-                "ref_p_start_date": ref_p_start_date,
-                "ref_p_end_date": ref_p_end_date,
-                "ru_ref": ru_ref,
-                "ru_name": ru_name,
-                "case_type": case_type,
-                "form_type": form_type,
-                "case_ref": case_ref,
-                "display_address": display_address,
-                "user_id": user_id,
-            }
-        },
-    })
+    return MetadataProxy.from_dict(
+        {
+            "version": "v2",
+            "tx_id": "tx_id",
+            "case_id": case_id,
+            "schema_name": schema_name,
+            "collection_exercise_sid": collection_exercise_sid,
+            "response_id": response_id,
+            "channel": channel,
+            "region_code": region_code,
+            "account_service_url": "account_service_url",
+            "survey_metadata": {
+                "data": {
+                    "period_id": period_id,
+                    "period_str": period_str,
+                    "ref_p_start_date": ref_p_start_date,
+                    "ref_p_end_date": ref_p_end_date,
+                    "ru_ref": ru_ref,
+                    "ru_name": ru_name,
+                    "case_type": case_type,
+                    "form_type": form_type,
+                    "case_ref": case_ref,
+                    "display_address": display_address,
+                    "user_id": user_id,
+                }
+            },
+        }
+    )
 
 
 @pytest.fixture
@@ -192,17 +196,19 @@ def mock_questionnaire_store(mocker):
     storage_ = mocker.Mock()
     storage_.get_user_data = mocker.Mock(return_value=("{}", "ce_id", 1, None))
     questionnaire_store = QuestionnaireStore(storage_)
-    questionnaire_store.metadata = MetadataProxy.from_dict({
-        "tx_id": "tx_id",
-        "case_id": "case_id",
-        "ru_ref": ru_ref,
-        "user_id": user_id,
-        "collection_exercise_sid": collection_exercise_sid,
-        "period_id": period_id,
-        "schema_name": schema_name,
-        "account_service_url": "account_service_url",
-        "response_id": "response_id",
-    })
+    questionnaire_store.metadata = MetadataProxy.from_dict(
+        {
+            "tx_id": "tx_id",
+            "case_id": "case_id",
+            "ru_ref": ru_ref,
+            "user_id": user_id,
+            "collection_exercise_sid": collection_exercise_sid,
+            "period_id": period_id,
+            "schema_name": schema_name,
+            "account_service_url": "account_service_url",
+            "response_id": "response_id",
+        }
+    )
     return questionnaire_store
 
 

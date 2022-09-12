@@ -15,7 +15,15 @@ def router(schema, answer_store, list_store, progress_store):
         answer_store,
         list_store,
         progress_store,
-        metadata=MetadataProxy(),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
     )
 
@@ -48,7 +56,15 @@ def test_get_not_started_row_for_section(
         list_store=list_store,
         schema=schema,
         answer_store=answer_store,
-        metadata={},
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
     )
 
@@ -91,7 +107,15 @@ def test_get_completed_row_for_section(
         list_store=list_store,
         schema=schema,
         answer_store=answer_store,
-        metadata={},
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
     )
 
@@ -113,7 +137,15 @@ def test_get_context(progress_store, answer_store, list_store, router):
         list_store=list_store,
         schema=schema,
         answer_store=answer_store,
-        metadata={},
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
     )
 
@@ -142,7 +174,15 @@ def test_get_context_custom_content_incomplete(
         list_store=list_store,
         schema=schema,
         answer_store=answer_store,
-        metadata={},
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
     )
 
@@ -171,7 +211,15 @@ def test_get_context_custom_content_complete(
         list_store=list_store,
         schema=schema,
         answer_store=answer_store,
-        metadata={},
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
     )
 
@@ -200,7 +248,15 @@ def test_get_context_no_list_items_survey_incomplete_individual_response_disable
         list_store=list_store,
         schema=schema,
         answer_store=answer_store,
-        metadata={},
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
     )
 

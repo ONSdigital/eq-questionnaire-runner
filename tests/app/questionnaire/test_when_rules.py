@@ -109,14 +109,16 @@ def test_evaluate_rule(when_rule, answers, expected):
                 "when": [{"id": "my_answer", "condition": "equals", "value": "Yes"}],
             },
             [{"answer_id": "my_answer", "value": "Yes"}],
-            MetadataProxy.from_dict({
-                "tx_id": "tx_id",
-                "account_service_url": "account_service_url",
-                "case_id": "case_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "response_id": "response_id",
-                "region_code": "GB-ENG",
-            }),
+            MetadataProxy.from_dict(
+                {
+                    "tx_id": "tx_id",
+                    "account_service_url": "account_service_url",
+                    "case_id": "case_id",
+                    "collection_exercise_sid": "collection_exercise_sid",
+                    "response_id": "response_id",
+                    "region_code": "GB-ENG",
+                }
+            ),
             True,
         ),
         (
@@ -125,14 +127,16 @@ def test_evaluate_rule(when_rule, answers, expected):
                 "when": [{"id": "my_answer", "condition": "equals", "value": "Yes"}],
             },
             [{"answer_id": "my_answer", "value": "No"}],
-            MetadataProxy.from_dict({
-                "tx_id": "tx_id",
-                "account_service_url": "account_service_url",
-                "case_id": "case_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "response_id": "response_id",
-                "region_code": "GB-ENG",
-            }),
+            MetadataProxy.from_dict(
+                {
+                    "tx_id": "tx_id",
+                    "account_service_url": "account_service_url",
+                    "case_id": "case_id",
+                    "collection_exercise_sid": "collection_exercise_sid",
+                    "response_id": "response_id",
+                    "region_code": "GB-ENG",
+                }
+            ),
             False,
         ),
         (
@@ -143,14 +147,16 @@ def test_evaluate_rule(when_rule, answers, expected):
                 ],
             },
             [{"answer_id": "my_answer", "value": "No"}],
-            MetadataProxy.from_dict({
-                "tx_id": "tx_id",
-                "account_service_url": "account_service_url",
-                "case_id": "case_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "response_id": "response_id",
-                "region_code": "GB-ENG",
-            }),
+            MetadataProxy.from_dict(
+                {
+                    "tx_id": "tx_id",
+                    "account_service_url": "account_service_url",
+                    "case_id": "case_id",
+                    "collection_exercise_sid": "collection_exercise_sid",
+                    "response_id": "response_id",
+                    "region_code": "GB-ENG",
+                }
+            ),
             False,
         ),
         (
@@ -165,14 +171,16 @@ def test_evaluate_rule(when_rule, answers, expected):
                 ],
             },
             [{"answer_id": "my_answer", "value": "No"}],
-            MetadataProxy.from_dict({
-                "tx_id": "tx_id",
-                "account_service_url": "account_service_url",
-                "case_id": "case_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "response_id": "response_id",
-                "region_code": "GB-ENG",
-            }),
+            MetadataProxy.from_dict(
+                {
+                    "tx_id": "tx_id",
+                    "account_service_url": "account_service_url",
+                    "case_id": "case_id",
+                    "collection_exercise_sid": "collection_exercise_sid",
+                    "response_id": "response_id",
+                    "region_code": "GB-ENG",
+                }
+            ),
             False,
         ),
         (
@@ -183,14 +191,16 @@ def test_evaluate_rule(when_rule, answers, expected):
                 ],
             },
             [{"answer_id": "my_answers", "value": ["answer1", "answer2", "answer3"]}],
-            MetadataProxy.from_dict({
-                "tx_id": "tx_id",
-                "account_service_url": "account_service_url",
-                "case_id": "case_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "response_id": "response_id",
-                "region_code": "GB-ENG",
-            }),
+            MetadataProxy.from_dict(
+                {
+                    "tx_id": "tx_id",
+                    "account_service_url": "account_service_url",
+                    "case_id": "case_id",
+                    "collection_exercise_sid": "collection_exercise_sid",
+                    "response_id": "response_id",
+                    "region_code": "GB-ENG",
+                }
+            ),
             True,
         ),
         (
@@ -205,14 +215,16 @@ def test_evaluate_rule(when_rule, answers, expected):
                 ],
             },
             [{"answer_id": "my_answers", "value": ["answer2", "answer3"]}],
-            MetadataProxy.from_dict({
-                "tx_id": "tx_id",
-                "account_service_url": "account_service_url",
-                "case_id": "case_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "response_id": "response_id",
-                "region_code": "GB-ENG",
-            }),
+            MetadataProxy.from_dict(
+                {
+                    "tx_id": "tx_id",
+                    "account_service_url": "account_service_url",
+                    "case_id": "case_id",
+                    "collection_exercise_sid": "collection_exercise_sid",
+                    "response_id": "response_id",
+                    "region_code": "GB-ENG",
+                }
+            ),
             True,
         ),
         (
@@ -227,14 +239,16 @@ def test_evaluate_rule(when_rule, answers, expected):
                 ],
             },
             [{"answer_id": "my_answers", "value": ["answer1", "answer4"]}],
-            MetadataProxy.from_dict({
-                "tx_id": "tx_id",
-                "account_service_url": "account_service_url",
-                "case_id": "case_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "response_id": "response_id",
-                "region_code": "GB-ENG",
-            }),
+            MetadataProxy.from_dict(
+                {
+                    "tx_id": "tx_id",
+                    "account_service_url": "account_service_url",
+                    "case_id": "case_id",
+                    "collection_exercise_sid": "collection_exercise_sid",
+                    "response_id": "response_id",
+                    "region_code": "GB-ENG",
+                }
+            ),
             True,
         ),
         (
@@ -249,14 +263,16 @@ def test_evaluate_rule(when_rule, answers, expected):
                 ],
             },
             [{"answer_id": "my_answers", "value": ["answer1", "answer2", "answer3"]}],
-            MetadataProxy.from_dict({
-                "tx_id": "tx_id",
-                "account_service_url": "account_service_url",
-                "case_id": "case_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "response_id": "response_id",
-                "region_code": "GB-ENG",
-            }),
+            MetadataProxy.from_dict(
+                {
+                    "tx_id": "tx_id",
+                    "account_service_url": "account_service_url",
+                    "case_id": "case_id",
+                    "collection_exercise_sid": "collection_exercise_sid",
+                    "response_id": "response_id",
+                    "region_code": "GB-ENG",
+                }
+            ),
             True,
         ),
         (
@@ -271,14 +287,16 @@ def test_evaluate_rule(when_rule, answers, expected):
                 ],
             },
             [{"answer_id": "my_answers", "value": "answer2"}],
-            MetadataProxy.from_dict({
-                "tx_id": "tx_id",
-                "account_service_url": "account_service_url",
-                "case_id": "case_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "response_id": "response_id",
-                "region_code": "GB-ENG",
-            }),
+            MetadataProxy.from_dict(
+                {
+                    "tx_id": "tx_id",
+                    "account_service_url": "account_service_url",
+                    "case_id": "case_id",
+                    "collection_exercise_sid": "collection_exercise_sid",
+                    "response_id": "response_id",
+                    "region_code": "GB-ENG",
+                }
+            ),
             True,
         ),
         (
@@ -293,14 +311,16 @@ def test_evaluate_rule(when_rule, answers, expected):
                 ],
             },
             [{"answer_id": "my_answers", "value": "answer3"}],
-            MetadataProxy.from_dict({
-                "tx_id": "tx_id",
-                "account_service_url": "account_service_url",
-                "case_id": "case_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "response_id": "response_id",
-                "region_code": "GB-ENG",
-            }),
+            MetadataProxy.from_dict(
+                {
+                    "tx_id": "tx_id",
+                    "account_service_url": "account_service_url",
+                    "case_id": "case_id",
+                    "collection_exercise_sid": "collection_exercise_sid",
+                    "response_id": "response_id",
+                    "region_code": "GB-ENG",
+                }
+            ),
             True,
         ),
         (
@@ -318,14 +338,16 @@ def test_evaluate_rule(when_rule, answers, expected):
                 {"answer_id": "my_answer", "value": "Yes"},
                 {"answer_id": "my_other_answer", "value": "2"},
             ],
-            MetadataProxy.from_dict({
-                "tx_id": "tx_id",
-                "account_service_url": "account_service_url",
-                "case_id": "case_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "response_id": "response_id",
-                "region_code": "GB-ENG",
-            }),
+            MetadataProxy.from_dict(
+                {
+                    "tx_id": "tx_id",
+                    "account_service_url": "account_service_url",
+                    "case_id": "case_id",
+                    "collection_exercise_sid": "collection_exercise_sid",
+                    "response_id": "response_id",
+                    "region_code": "GB-ENG",
+                }
+            ),
             True,
         ),
         (
@@ -339,14 +361,16 @@ def test_evaluate_rule(when_rule, answers, expected):
             [
                 {"answer_id": "my_answer", "value": "No"},
             ],
-            MetadataProxy.from_dict({
-                "tx_id": "tx_id",
-                "account_service_url": "account_service_url",
-                "case_id": "case_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "response_id": "response_id",
-                "region_code": "GB-ENG",
-            }),
+            MetadataProxy.from_dict(
+                {
+                    "tx_id": "tx_id",
+                    "account_service_url": "account_service_url",
+                    "case_id": "case_id",
+                    "collection_exercise_sid": "collection_exercise_sid",
+                    "response_id": "response_id",
+                    "region_code": "GB-ENG",
+                }
+            ),
             False,
         ),
         (

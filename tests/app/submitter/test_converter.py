@@ -22,7 +22,6 @@ def test_convert_answers_flushed_flag_default_is_false(
 def test_ref_period_end_date_is_not_in_output(
     fake_questionnaire_schema, fake_questionnaire_store
 ):
-    fake_questionnaire_store.metadata["ref_p_end_date"] = None
     answer_object = convert_answers(
         fake_questionnaire_schema, fake_questionnaire_store, {}, SUBMITTED_AT
     )

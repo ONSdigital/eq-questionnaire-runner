@@ -221,15 +221,17 @@ def test_load_schema_from_url_uses_cache():
 def test_load_schema_from_metadata_with_schema_url():
     load_schema_from_url.cache_clear()
 
-    metadata = MetadataProxy.from_dict({
-        "schema_url": TEST_SCHEMA_URL,
-        "language_code": "cy",
-        "tx_id": "tx_id",
-        "account_service_url": "account_service_url",
-        "case_id": "case_id",
-        "collection_exercise_sid": "collection_exercise_sid",
-        "response_id": "response_id",
-    })
+    metadata = MetadataProxy.from_dict(
+        {
+            "schema_url": TEST_SCHEMA_URL,
+            "language_code": "cy",
+            "tx_id": "tx_id",
+            "account_service_url": "account_service_url",
+            "case_id": "case_id",
+            "collection_exercise_sid": "collection_exercise_sid",
+            "response_id": "response_id",
+        }
+    )
     mock_schema = QuestionnaireSchema({}, language_code="cy")
     responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)
     loaded_schema = load_schema_from_metadata(metadata_proxy=metadata)

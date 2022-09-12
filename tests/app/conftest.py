@@ -92,23 +92,27 @@ def fake_questionnaire_store():
     storage.get_user_data = MagicMock(return_value=("{}", "ce_sid", 1, None))
     storage.add_or_update = MagicMock()
     store = QuestionnaireStore(storage)
-    store.metadata = MetadataProxy.from_dict({
-        "schema_name": "test_checkbox",
-        "display_address": "68 Abingdon Road, Goathill",
-        "tx_id": "tx_id",
-        "language_code": "en",
-    })
+    store.metadata = MetadataProxy.from_dict(
+        {
+            "schema_name": "test_checkbox",
+            "display_address": "68 Abingdon Road, Goathill",
+            "tx_id": "tx_id",
+            "language_code": "en",
+        }
+    )
 
     return store
 
 
 @pytest.fixture
 def fake_metadata():
-    return MetadataProxy.from_dict({
-        "tx_id": "tx_id",
-        "language_code": "en",
-        "display_address": "68 Abingdon Road, Goathill",
-    })
+    return MetadataProxy.from_dict(
+        {
+            "tx_id": "tx_id",
+            "language_code": "en",
+            "display_address": "68 Abingdon Road, Goathill",
+        }
+    )
 
 
 @pytest.fixture

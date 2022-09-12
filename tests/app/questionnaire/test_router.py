@@ -19,7 +19,17 @@ class RouterTestCase:
     answer_store = AnswerStore()
     list_store = ListStore()
     progress_store = ProgressStore()
-    metadata = MetadataProxy()
+    metadata = (
+        MetadataProxy.from_dict(
+            {
+                "response_id": "1",
+                "account_service_url": "account_service_url",
+                "tx_id": "tx_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
+    )
     response_metadata = {}
 
     @cached_property

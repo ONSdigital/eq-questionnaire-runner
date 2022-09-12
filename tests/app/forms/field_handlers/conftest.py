@@ -2,6 +2,7 @@ import pytest
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.forms.field_handlers.select_handlers import Choice, ChoiceWithDetailAnswer
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
@@ -28,7 +29,15 @@ def rule_evaluator():
     evaluator = RuleEvaluator(
         answer_store=AnswerStore(),
         list_store=ListStore(),
-        metadata={},
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata=get_mock_response_metadata(),
         schema=get_mock_schema(),
         location=None,
@@ -42,7 +51,15 @@ def value_source_resolver():
     resolver = ValueSourceResolver(
         answer_store=AnswerStore(),
         list_store=ListStore(),
-        metadata={},
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata=get_mock_response_metadata(),
         schema=get_mock_schema(),
         location=None,

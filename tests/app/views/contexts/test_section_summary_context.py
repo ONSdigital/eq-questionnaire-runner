@@ -3,6 +3,7 @@ from mock import MagicMock
 
 from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.list_store import ListStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
@@ -21,7 +22,15 @@ def test_build_summary_rendering_context(
         answer_store,
         list_store,
         progress_store,
-        metadata={},
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         current_location=Location(section_id="property-details-section"),
         routing_path=mocker.MagicMock(),

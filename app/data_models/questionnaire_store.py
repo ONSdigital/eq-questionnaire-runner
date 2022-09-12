@@ -28,7 +28,7 @@ class QuestionnaireStore:
         self.version = version
         self._metadata: dict[str, Any] = {}
         # self.metadata is a read-only view over self._metadata
-        self.metadata: MetadataProxy = MetadataProxy.from_dict(self._metadata)
+        self.metadata: Optional[MetadataProxy] = MetadataProxy.from_dict(self._metadata) if self._metadata else None
         self.response_metadata: Mapping[str, Any] = {}
         self.list_store = ListStore()
         self.answer_store = AnswerStore()

@@ -237,14 +237,16 @@ def test_answer_source_with_dict_answer_selector(answer_value, expected_result):
 )
 def test_metadata_source(metadata_value, expected_result):
     rule_evaluator = get_rule_evaluator(
-        metadata=MetadataProxy.from_dict({
-            "tx_id": metadata_value,
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        },
-    ))
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": metadata_value,
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            },
+        )
+    )
 
     assert (
         rule_evaluator.evaluate(
@@ -524,7 +526,7 @@ def test_nested_rules(operator, operands, expected_result):
                 },
             ]
         ),
-        metadata={
+        metadata=MetadataProxy.from_dict({
             "region_code": "GB-NIR",
             "language_code": "en",
             "tx_id": "tx_id",
@@ -532,7 +534,7 @@ def test_nested_rules(operator, operands, expected_result):
             "response_id": "response_id",
             "collection_exercise_sid": "collection_exercise_sid",
             "case_id": "case_id",
-        },
+        }),
         list_store=ListStore(
             [
                 {
@@ -571,7 +573,17 @@ def test_nested_rules(operator, operands, expected_result):
     ],
 )
 def test_comparison_operator_rule_with_nonetype_operands(operator_name, operands):
-    rule_evaluator = get_rule_evaluator()
+    rule_evaluator = get_rule_evaluator(
+        metadata=MetadataProxy.from_dict(
+            {
+                "response_id": "1",
+                "account_service_url": "account_service_url",
+                "tx_id": "tx_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
+    )
     assert rule_evaluator.evaluate(rule={operator_name: operands}) is False
 
 
@@ -590,10 +602,17 @@ def test_comparison_operator_rule_with_nonetype_operands(operator_name, operands
     "operator_name", [Operator.ALL_IN, Operator.ANY_IN, Operator.IN]
 )
 def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
-    metadata_proxy = MetadataProxy
-    metadata_proxy.from_dict = Mock(return_value={"some-metadata": [None]})
-
-    rule_evaluator = get_rule_evaluator()
+    rule_evaluator = get_rule_evaluator(
+        metadata=MetadataProxy.from_dict(
+            {
+                "response_id": "1",
+                "account_service_url": "account_service_url",
+                "tx_id": "tx_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
+    )
     assert (
         rule_evaluator.evaluate(
             rule={operator_name: operands},
@@ -724,7 +743,7 @@ def test_date_value(rule, expected_result):
                 }
             ]
         ),
-        metadata={"some-metadata": current_date_as_yyyy_mm_dd},
+        metadata=MetadataProxy.from_dict({"some-metadata": current_date_as_yyyy_mm_dd})
     )
 
     assert (

@@ -9,8 +9,10 @@ import requests
 from requests import RequestException
 from requests.adapters import HTTPAdapter, Retry
 from structlog import get_logger
+from flask_login import current_user
 
 from app.data_models.metadata_proxy import MetadataProxy
+from app.globals import get_metadata
 from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,
@@ -100,7 +102,7 @@ def get_allowed_languages(schema_name, launch_language):
 
 
 def load_schema_from_metadata(
-    metadata_proxy: MetadataProxy, *, language_code: Optional[str] = None
+    metadata_proxy: Optional[MetadataProxy], *, language_code: Optional[str] = None
 ) -> QuestionnaireSchema:
     language_code = language_code or metadata_proxy["language_code"]
 

@@ -121,11 +121,11 @@ def before_post_submission_request():
     if not questionnaire_store.submitted_at:
         raise NotFound
 
-    handle_language(metadata)
+    handle_language(questionnaire_store.metadata)
 
     # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
-        metadata_proxy=metadata, language_code=get_locale().language
+        metadata_proxy=questionnaire_store.metadata, language_code=get_locale().language
     )
 
     logger.bind(

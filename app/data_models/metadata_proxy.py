@@ -21,11 +21,11 @@ class SurveyMetadata:
 # pylint: disable=too-many-locals
 @dataclass(frozen=True)
 class MetadataProxy:
-    tx_id: str = None
-    account_service_url: str = None
-    case_id: str = None
-    collection_exercise_sid: str = None
-    response_id: str = None
+    tx_id: str
+    account_service_url: str
+    case_id: str
+    collection_exercise_sid: str
+    response_id: str
     survey_metadata: SurveyMetadata = None
     schema_url: str = None
     schema_name: str = None
@@ -34,6 +34,7 @@ class MetadataProxy:
     channel: Optional[str] = None
     region_code: Optional[str] = None
     version: Optional[str] = None
+    roles: Optional[list] = None
 
     def __getitem__(self, key):
         if self.survey_metadata and key in self.survey_metadata.data:
@@ -57,6 +58,7 @@ class MetadataProxy:
         channel = _metadata.pop("channel", None)
         region_code = _metadata.pop("region_code", None)
         version = _metadata.pop("version", None)
+        roles = _metadata.pop("roles", None)
 
         if version == "v2":
             serialized_metadata: ImmutableDict = QuestionnaireSchema.serialize(
@@ -83,4 +85,5 @@ class MetadataProxy:
             region_code=region_code,
             version=version,
             survey_metadata=survey_metadata,
+            roles=roles
         )

@@ -230,7 +230,9 @@ def test_routing_path_empty_routing_rules(answer_store, list_store):
     assert routing_path == expected_path
 
 
-def test_routing_path_with_conditional_value_not_in_metadata(mocker, answer_store, list_store):
+def test_routing_path_with_conditional_value_not_in_metadata(
+    mocker, answer_store, list_store
+):
     schema = load_schema_from_name("test_metadata_routing")
     section_id = schema.get_section_id_for_block_id("block1")
     expected_path = RoutingPath(

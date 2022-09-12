@@ -31,14 +31,16 @@ def test_metadata_placeholder(mock_renderer):
         language="en",
         answer_store=AnswerStore(),
         list_store=ListStore(),
-        metadata=MetadataProxy.from_dict({
-            "period_str": period_str,
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "period_str": period_str,
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
@@ -76,13 +78,15 @@ def test_previous_answer_transform_placeholder(mock_renderer):
         language="en",
         answer_store=answer_store,
         list_store=ListStore(),
-        metadata=MetadataProxy.from_dict({
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
@@ -115,14 +119,16 @@ def test_metadata_transform_placeholder(mock_renderer):
         language="en",
         answer_store=AnswerStore(),
         list_store=ListStore(),
-        metadata=MetadataProxy.from_dict({
-            "ref_p_start_date": "2019-02-11",
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "ref_p_start_date": "2019-02-11",
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
@@ -156,14 +162,16 @@ def test_response_metadata_transform_placeholder(mock_renderer):
         language="en",
         answer_store=AnswerStore(),
         list_store=ListStore(),
-        metadata=MetadataProxy.from_dict({
-            "ref_p_start_date": "2019-02-11",
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "ref_p_start_date": "2019-02-11",
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={"started_at": "2019-02-11"},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
@@ -201,13 +209,15 @@ def test_multiple_answer_transform_placeholder(mock_renderer):
             ]
         ),
         list_store=ListStore(),
-        metadata=MetadataProxy.from_dict({
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
@@ -240,15 +250,17 @@ def test_first_non_empty_item_transform_placeholder(mock_renderer):
         language="en",
         answer_store=AnswerStore(),
         list_store=ListStore(),
-        metadata=MetadataProxy.from_dict({
-            "ru_name": "ru_name",
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-            "trad_as": None,
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "ru_name": "ru_name",
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+                "trad_as": None,
+            }
+        ),
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
@@ -283,13 +295,15 @@ def test_format_list_answer_transform_placeholder(mock_renderer):
             [{"answer_id": "checkbox-answer", "value": ["Ham", "Cheese"]}]
         ),
         list_store=ListStore(),
-        metadata=MetadataProxy.from_dict({
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
@@ -329,13 +343,15 @@ def test_placeholder_parser_escapes_answers(mock_renderer):
             ]
         ),
         list_store=ListStore(),
-        metadata=MetadataProxy.from_dict({
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
@@ -379,14 +395,16 @@ def test_multiple_metadata_transform_placeholder(mock_renderer):
         language="en",
         answer_store=AnswerStore(),
         list_store=ListStore(),
-        metadata=MetadataProxy.from_dict({
-            "ref_p_start_date": "2019-02-11",
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "ref_p_start_date": "2019-02-11",
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
@@ -420,15 +438,17 @@ def test_multiple_metadata_list_transform_placeholder(mock_renderer):
         language="en",
         answer_store=AnswerStore(),
         list_store=ListStore(),
-        metadata=MetadataProxy.from_dict({
-            "ref_p_start_date": "2019-02-11",
-            "ref_p_end_date": "2019-10-11",
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "ref_p_start_date": "2019-02-11",
+                "ref_p_end_date": "2019-10-11",
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
@@ -464,13 +484,15 @@ def test_checkbox_transform_placeholder(mock_renderer):
             ]
         ),
         list_store=ListStore(),
-        metadata=MetadataProxy.from_dict({
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
@@ -509,14 +531,16 @@ def test_mixed_transform_placeholder(mock_renderer):
             [{"answer_id": "date-of-birth-answer", "value": "1999-01-01"}]
         ),
         list_store=ListStore(),
-        metadata=MetadataProxy.from_dict({
-            "second-date": "2019-02-02",
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "second-date": "2019-02-02",
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
@@ -551,13 +575,15 @@ def test_mixed_transform_placeholder_value(mock_renderer):
             [{"answer_id": "date-of-birth-answer", "value": "1999-01-01"}]
         ),
         list_store=ListStore(),
-        metadata=MetadataProxy.from_dict({
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
@@ -583,13 +609,15 @@ def test_list_source_count(mock_renderer):
         language="en",
         answer_store=AnswerStore(),
         list_store=list_store,
-        metadata=MetadataProxy.from_dict({
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
@@ -626,13 +654,15 @@ def test_list_source_count_in_transform(mock_renderer):
         language="en",
         answer_store=AnswerStore(),
         list_store=list_store,
-        metadata=MetadataProxy.from_dict({
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
@@ -674,13 +704,15 @@ def test_chain_transform_placeholder(mock_renderer):
             ]
         ),
         list_store=ListStore(),
-        metadata=MetadataProxy.from_dict({
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
@@ -722,13 +754,15 @@ def test_placeholder_resolves_answer_value_based_on_first_item_in_list(mock_rend
         language="en",
         answer_store=answer_store,
         list_store=list_store,
-        metadata=MetadataProxy.from_dict({
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
@@ -758,13 +792,15 @@ def test_placeholder_resolves_list_item_value_based_on_first_item_in_list(
         language="en",
         answer_store=AnswerStore(),
         list_store=list_store,
-        metadata=MetadataProxy.from_dict({
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
@@ -800,13 +836,15 @@ def test_placeholder_resolves_same_name_items(mock_renderer):
         language="en",
         answer_store=AnswerStore(),
         list_store=list_store,
-        metadata=MetadataProxy.from_dict({
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
@@ -908,13 +946,15 @@ def test_placeholder_resolves_name_is_duplicate_chain(mock_schema, mock_renderer
         language="en",
         answer_store=answer_store,
         list_store=list_store,
-        metadata=MetadataProxy.from_dict({
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=mock_schema,
         list_item_id="abc123",
@@ -929,13 +969,15 @@ def test_placeholder_resolves_name_is_duplicate_chain(mock_schema, mock_renderer
         language="en",
         answer_store=answer_store,
         list_store=list_store,
-        metadata=MetadataProxy.from_dict({
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=mock_schema,
         list_item_id="cde456",
@@ -1033,13 +1075,15 @@ def test_placeholder_resolves_list_has_items_chain(mock_schema, mock_renderer):
         language="en",
         answer_store=answer_store,
         list_store=list_store,
-        metadata=MetadataProxy.from_dict({
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=mock_schema,
         list_item_id="abc123",
@@ -1054,13 +1098,15 @@ def test_placeholder_resolves_list_has_items_chain(mock_schema, mock_renderer):
         language="en",
         answer_store=answer_store,
         list_store=list_store,
-        metadata=MetadataProxy.from_dict({
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=mock_schema,
         list_item_id="cde456",
@@ -1090,13 +1136,15 @@ def test_placeholder_default_value(default_placeholder_value_schema, mock_render
         language="en",
         answer_store=AnswerStore(),
         list_store=ListStore(),
-        metadata=MetadataProxy.from_dict({
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "response_id": "response_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "case_id": "case_id",
-        }),
+        metadata=MetadataProxy.from_dict(
+            {
+                "tx_id": "tx_id",
+                "account_service_url": "account_service_url",
+                "response_id": "response_id",
+                "collection_exercise_sid": "collection_exercise_sid",
+                "case_id": "case_id",
+            }
+        ),
         response_metadata={},
         schema=default_placeholder_value_schema,
         renderer=mock_renderer,

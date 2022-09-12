@@ -25,9 +25,6 @@ def test_check_session_with_user_id_in_session(
         session_store.create("eq_session_id", "user_id", session_data, expires_at)
         cookie_session[USER_IK] = "user_ik"
 
-        metadata_proxy = MetadataProxy
-        metadata_proxy.from_dict = Mock(return_value={"tx_id": "tx_id"})
-
         # When
         user = load_user()
 
@@ -69,9 +66,6 @@ def test_load_user(
         )
         cookie_session[USER_IK] = "user_ik"
 
-        metadata_proxy = MetadataProxy
-        metadata_proxy.from_dict = Mock(return_value={"tx_id": "tx_id"})
-
         # When
         user = user_loader(None)
 
@@ -95,9 +89,6 @@ def test_request_load_user(
         # Given
         session_store.create("eq_session_id", "user_id", session_data, expires_at)
         cookie_session[USER_IK] = "user_ik"
-
-        metadata_proxy = MetadataProxy
-        metadata_proxy.from_dict = Mock(return_value={"tx_id": "tx_id"})
 
         # When
         user = request_load_user(mocker.Mock(Request))
@@ -150,9 +141,6 @@ def test_valid_user_does_not_extend_session_expiry_when_expiry_less_than_60_seco
         cookie_session[USER_IK] = "user_ik"
         cookie_session["expires_in"] = 5
 
-        metadata_proxy = MetadataProxy
-        metadata_proxy.from_dict = Mock(return_value={"tx_id": "tx_id"})
-
         # When
         user = user_loader(None)
 
@@ -178,9 +166,6 @@ def test_valid_user_extends_session_expiry_when_expiry_greater_than_60_seconds_d
         session_store.create("eq_session_id", "user_id", session_data, expires_at)
         cookie_session[USER_IK] = "user_ik"
         cookie_session["expires_in"] = 600
-
-        metadata_proxy = MetadataProxy
-        metadata_proxy.from_dict = Mock(return_value={"tx_id": "tx_id"})
 
         # When
         user = user_loader(None)
