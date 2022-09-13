@@ -937,14 +937,14 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
 
 class IndividualResponseFulfilmentRequest(FulfilmentRequest):
     def __init__(self, metadata: MetadataProxy, mobile_number: Optional[str] = None):
-        self._metadata_proxy = metadata
+        self._metadata = metadata
         self._mobile_number = mobile_number
         self._fulfilment_type = "sms" if self._mobile_number else "postal"
 
     def _get_individual_case_id_mapping(self) -> Mapping:
         return (
             {}
-            if self._metadata_proxy["case_type"] in ["SPG", "CE"]
+            if self._metadata["case_type"] in ["SPG", "CE"]
             else {"individualCaseId": str(uuid4())}
         )
 
@@ -968,7 +968,7 @@ class IndividualResponseFulfilmentRequest(FulfilmentRequest):
                 GB_NIR_REGION_CODE: "P_UAC_UACIPA4",
             },
         }
-        if region_code := self._metadata_proxy["region_code"]:
+        if region_code := self._metadata["region_code"]:
             return fulfilment_codes[self._fulfilment_type][region_code]
 
     def _payload(self) -> Mapping:
@@ -976,7 +976,7 @@ class IndividualResponseFulfilmentRequest(FulfilmentRequest):
             "fulfilmentRequest": {
                 **self._get_individual_case_id_mapping(),
                 "fulfilmentCode": self._get_fulfilment_code(),
-                "caseId": self._metadata_proxy["case_id"],
+                "caseId": self._metadata["case_id"],
                 "contact": self._get_contact_mapping(),
             }
         }

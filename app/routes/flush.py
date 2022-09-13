@@ -41,9 +41,9 @@ def flush_data():
     if roles and "flusher" in roles:
         user = _get_user(decrypted_token["response_id"])
 
-        metadata_proxy = get_metadata(user)
+        metadata = get_metadata(user)
 
-        if metadata_proxy and (tx_id := metadata_proxy["tx_id"]):
+        if metadata and (tx_id := metadata["tx_id"]):
             logger.bind(tx_id=tx_id)
         if _submit_data(user):
             return Response(status=200)
@@ -62,7 +62,7 @@ def _submit_data(user):
         progress_store = questionnaire_store.progress_store
         list_store = questionnaire_store.list_store
         submitted_at = datetime.now(timezone.utc)
-        schema = load_schema_from_metadata(metadata_proxy=metadata)
+        schema = load_schema_from_metadata(metadata=metadata)
 
         router = Router(
             schema,

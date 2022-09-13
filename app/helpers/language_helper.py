@@ -15,15 +15,15 @@ LANGUAGE_TEXT = {
 }
 
 
-def handle_language(metadata_proxy: Optional[MetadataProxy] = None) -> None:
+def handle_language(metadata: Optional[MetadataProxy] = None) -> None:
     session_store = get_session_store()
 
     if session_store and session_store.session_data:
-        if not metadata_proxy:
-            metadata_proxy = get_metadata(current_user)
+        if not metadata:
+            metadata = get_metadata(current_user)
 
-        schema_name = metadata_proxy["schema_name"] if metadata_proxy else None
-        language_code = metadata_proxy["language_code"] if metadata_proxy else None
+        schema_name = metadata["schema_name"] if metadata else None
+        language_code = metadata["language_code"] if metadata else None
 
         launch_language = language_code or DEFAULT_LANGUAGE_CODE
         # pylint: disable=assigning-non-slot

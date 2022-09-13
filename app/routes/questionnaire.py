@@ -99,7 +99,7 @@ def before_questionnaire_request():
 
     # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
-        metadata_proxy=metadata, language_code=get_locale().language
+        metadata=metadata, language_code=get_locale().language
     )
 
 
@@ -124,7 +124,7 @@ def before_post_submission_request():
 
     # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
-        metadata_proxy=questionnaire_store.metadata, language_code=get_locale().language
+        metadata=questionnaire_store.metadata, language_code=get_locale().language
     )
 
     logger.bind(

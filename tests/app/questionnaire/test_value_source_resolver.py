@@ -367,7 +367,7 @@ def test_metadata_source(metadata_identifier, expected_result):
     ],
 )
 def test_metadata_source_v2_metadata_structure(metadata_identifier, expected_result):
-    metadata_proxy = MetadataProxy.from_dict(
+    metadata = MetadataProxy.from_dict(
         {
             "version": "v2",
             "region_code": "GB-ENG",
@@ -382,7 +382,7 @@ def test_metadata_source_v2_metadata_structure(metadata_identifier, expected_res
         },
     )
 
-    value_source_resolver = get_value_source_resolver(metadata=metadata_proxy)
+    value_source_resolver = get_value_source_resolver(metadata=metadata)
 
     source = {"source": "metadata", "identifier": metadata_identifier}
     assert value_source_resolver.resolve(source) == expected_result

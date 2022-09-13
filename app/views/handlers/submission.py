@@ -20,14 +20,14 @@ class SubmissionHandler:
         self._questionnaire_store = questionnaire_store
         self._full_routing_path = full_routing_path
         self._session_store = get_session_store()
-        self._metadata_proxy = questionnaire_store.metadata
+        self._metadata = questionnaire_store.metadata
 
     @cached_property
     def submitted_at(self):
         return datetime.now(timezone.utc).replace(microsecond=0)
 
     def submit_questionnaire(self):
-        payload = self.get_payload(self._metadata_proxy["version"])
+        payload = self.get_payload(self._metadata["version"])
 
         message = json_dumps(payload)
 
@@ -36,8 +36,8 @@ class SubmissionHandler:
         )
         submitted = current_app.eq["submitter"].send_message(
             encrypted_message,
-            case_id=self._metadata_proxy["case_id"],
-            tx_id=self._metadata_proxy["tx_id"],
+            case_id=self._metadata["case_id"],
+            tx_id=self._metadata["tx_id"],
         )
 
         if not submitted:

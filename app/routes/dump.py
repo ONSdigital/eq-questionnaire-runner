@@ -21,7 +21,7 @@ def requires_schema(func):
         # pylint: disable=assigning-non-slot
         metadata = get_metadata(current_user)
         g.schema = load_schema_from_metadata(
-            metadata_proxy=metadata, language_code=get_locale().language
+            metadata=metadata, language_code=get_locale().language
         )
         result = func(g.schema, *args, **kwargs)
         return result
@@ -88,7 +88,7 @@ def dump_submission(schema, questionnaire_store):
 
     submission_handler = SubmissionHandler(schema, questionnaire_store, routing_path)
 
-    metadata_proxy = questionnaire_store.metadata
+    metadata = questionnaire_store.metadata
 
-    response = {"submission": submission_handler.get_payload(metadata_proxy["version"])}
+    response = {"submission": submission_handler.get_payload(metadata["version"])}
     return json_dumps(response), 200

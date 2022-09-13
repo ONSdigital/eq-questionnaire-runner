@@ -64,7 +64,7 @@ def before_individual_response_request():
 
     # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
-        metadata_proxy=metadata,
+        metadata=metadata,
         language_code=get_locale().language,
     )
 
@@ -170,11 +170,11 @@ def individual_response_post_address_confirmation(schema, questionnaire_store):
     if request.method == "POST":
         return redirect(url_for("questionnaire.get_questionnaire"))
 
-    metadata_proxy = questionnaire_store.metadata
+    metadata = questionnaire_store.metadata
 
     return render_template(
         template="individual_response/confirmation-post",
-        display_address=metadata_proxy["display_address"],
+        display_address=metadata["display_address"],
         page_title=individual_response_handler.page_title(
             lazy_gettext("An individual access code has been sent by post")
         ),

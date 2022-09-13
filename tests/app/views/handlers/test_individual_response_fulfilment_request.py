@@ -57,9 +57,9 @@ def test_postal_fulfilment_request_message():
         "collection_exercise_sid": "collection_exercise_sid",
     }
 
-    metadata_proxy = MetadataProxy.from_dict(metadata)
+    metadata = MetadataProxy.from_dict(metadata)
 
-    fulfilment_request = IndividualResponseFulfilmentRequest(metadata_proxy)
+    fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
 
     postal_json_message = json_loads(fulfilment_request.message)
     payload = postal_json_message["payload"]
@@ -94,9 +94,9 @@ def test_individual_case_id_not_present_when_case_type_spg():
         "collection_exercise_sid": "collection_exercise_sid",
     }
 
-    metadata_proxy = MetadataProxy.from_dict(metadata)
+    metadata = MetadataProxy.from_dict(metadata)
 
-    fulfilment_request = IndividualResponseFulfilmentRequest(metadata_proxy)
+    fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
 
     json_message = json_loads(fulfilment_request.message)
     assert "individualCaseId" not in json_message["payload"]["fulfilmentRequest"]
@@ -114,9 +114,9 @@ def test_individual_case_id_not_present_when_case_type_ce():
         "collection_exercise_sid": "collection_exercise_sid",
     }
 
-    metadata_proxy = MetadataProxy.from_dict(metadata)
+    metadata = MetadataProxy.from_dict(metadata)
 
-    fulfilment_request = IndividualResponseFulfilmentRequest(metadata_proxy)
+    fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
 
     json_message = json_loads(fulfilment_request.message)
     assert "individualCaseId" not in json_message["payload"]["fulfilmentRequest"]
@@ -141,10 +141,10 @@ def test_fulfilment_code_for_sms(region_code, expected_fulfilment_code):
         "collection_exercise_sid": "collection_exercise_sid",
     }
 
-    metadata_proxy = MetadataProxy.from_dict(metadata)
+    metadata = MetadataProxy.from_dict(metadata)
 
     fulfilment_request = IndividualResponseFulfilmentRequest(
-        metadata_proxy, DUMMY_MOBILE_NUMBER
+        metadata, DUMMY_MOBILE_NUMBER
     )
     json_message = json_loads(fulfilment_request.message)
     assert (
@@ -172,9 +172,9 @@ def test_fulfilment_code_for_postal(region_code, expected_fulfilment_code):
         "collection_exercise_sid": "collection_exercise_sid",
     }
 
-    metadata_proxy = MetadataProxy.from_dict(metadata)
+    metadata = MetadataProxy.from_dict(metadata)
 
-    fulfilment_request = IndividualResponseFulfilmentRequest(metadata_proxy)
+    fulfilment_request = IndividualResponseFulfilmentRequest(metadata)
 
     json_message = json_loads(fulfilment_request.message)
 
