@@ -17,6 +17,7 @@
     "name": years.name,
     "value": years.data if years.data is not none else '',
     "suffix": {
+      "id": years.id ~ "-type",
       "text": _(years.label.text)
     }
   }) %}
@@ -28,6 +29,7 @@
     "name": months.name,
     "value": months.data if months.data is not none else '',
     "suffix": {
+      "id": months.id ~ "-type",
       "text": _(months.label.text)
     }
   }) %}

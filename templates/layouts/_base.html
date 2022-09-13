@@ -64,12 +64,12 @@
     <input id="csrf_token" name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
   {% endif %}
 
-  {% if cookie_settings_url %}
+  {% if cookie_settings_url and cookie_domain %}
     {{
       onsCookiesBanner({
         "secondaryButtonUrl": cookie_settings_url,
         "statementTitle": _('Tell us whether you accept cookies'),
-        "statementText": _("We use <a href='{cookie_settings_url}'>cookies to collect information</a> about how you use surveys.ons.gov.uk. We use this information to make the website work as well as possible and improve our services.").format(cookie_settings_url=cookie_settings_url),
+        "statementText": _("We use <a href='{cookie_settings_url}'>cookies to collect information</a> about how you use {cookie_domain}. We use this information to make the website work as well as possible and improve our services.").format(cookie_settings_url=cookie_settings_url, cookie_domain=cookie_domain),
         "confirmationText": _("You’ve accepted all cookies. You can <a href='{cookie_settings_url}'>change your cookie preferences</a> at any time.").format(cookie_settings_url=cookie_settings_url),
         "primaryButtonText": _('Accept all cookies'),
         "secondaryButtonText": _('Set cookie preferences'),

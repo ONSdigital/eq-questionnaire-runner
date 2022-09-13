@@ -94,7 +94,7 @@ def test_build_view_context_for_currency_calculated_summary(
 
     assert "summary" in context
     assert_summary_context(context)
-    assert len(context["summary"]) == 6
+    assert len(context["summary"]) == 7
     context_summary = context["summary"]
     assert "title" in context_summary
     assert context_summary["title"] == title

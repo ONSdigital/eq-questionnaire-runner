@@ -2,6 +2,7 @@ from functools import cached_property
 from typing import Mapping, Optional
 
 from flask import url_for
+from flask_babel import lazy_gettext
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.questionnaire import QuestionnaireSchema
@@ -59,6 +60,11 @@ class SectionSummaryContext(Context):
                 "page_title": page_title,
                 "summary_type": "SectionSummary",
                 "answers_are_editable": True,
+                "headers": [
+                    lazy_gettext("Question"),
+                    lazy_gettext("Answer given"),
+                    lazy_gettext("Change answer"),
+                ],
                 **summary,
             }
         }

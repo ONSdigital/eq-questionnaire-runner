@@ -9,7 +9,7 @@ from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.operations import Operations
-from app.questionnaire.rules.operator import OPERATION_MAPPING, Operator
+from app.questionnaire.rules.operator import Operator
 from app.questionnaire.value_source_resolver import (
     ValueSourceResolver,
     ValueSourceTypes,
@@ -82,9 +82,7 @@ class RuleEvaluator:
         if isinstance(operand, dict) and "source" in operand:
             return self.value_source_resolver.resolve(operand)
 
-        if isinstance(operand, dict) and any(
-            operator in operand for operator in OPERATION_MAPPING
-        ):
+        if QuestionnaireSchema.has_operator(operand) and isinstance(operand, dict):
             return self._evaluate(operand)
 
         return operand
