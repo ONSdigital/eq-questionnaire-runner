@@ -40,7 +40,7 @@ class PlaceholderParser:
         language: str,
         answer_store: AnswerStore,
         list_store: ListStore,
-        metadata: MetadataProxy,
+        metadata: Optional[MetadataProxy],
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
         renderer: "PlaceholderRenderer",

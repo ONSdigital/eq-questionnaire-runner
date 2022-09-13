@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Mapping, Union
+from typing import Any, Mapping, Optional, Union
 
 from structlog import get_logger
 
@@ -62,80 +62,85 @@ def convert_answers(
     Returns:
         Data payload
     """
-    metadata = questionnaire_store.metadata
-    response_metadata = questionnaire_store.response_metadata
-    answer_store = questionnaire_store.answer_store
-    list_store = questionnaire_store.list_store
+    if metadata := questionnaire_store.metadata:
+        response_metadata = questionnaire_store.response_metadata
+        answer_store = questionnaire_store.answer_store
+        list_store = questionnaire_store.list_store
 
-    survey_id = schema.json["survey_id"]
+        survey_id = schema.json["survey_id"]
 
-    payload = {
-        "case_id": metadata["case_id"],
-        "tx_id": metadata["tx_id"],
-        "type": "uk.gov.ons.edc.eq:surveyresponse",
-        "version": schema.json["data_version"],
-        "origin": "uk.gov.ons.edc.eq",
-        "survey_id": survey_id,
-        "flushed": flushed,
-        "submitted_at": submitted_at.isoformat(),
-        "collection": build_collection(metadata),
-        "metadata": build_metadata(metadata),
-        "launch_language_code": metadata["language_code"] or DEFAULT_LANGUAGE_CODE,
-    }
+        payload = {
+            "case_id": metadata["case_id"],
+            "tx_id": metadata["tx_id"],
+            "type": "uk.gov.ons.edc.eq:surveyresponse",
+            "version": schema.json["data_version"],
+            "origin": "uk.gov.ons.edc.eq",
+            "survey_id": survey_id,
+            "flushed": flushed,
+            "submitted_at": submitted_at.isoformat(),
+            "collection": build_collection(metadata),
+            "metadata": build_metadata(metadata),
+            "launch_language_code": metadata["language_code"] or DEFAULT_LANGUAGE_CODE,
+        }
 
-    optional_properties = get_optional_payload_properties(metadata, response_metadata)
+        optional_properties = get_optional_payload_properties(
+            metadata, response_metadata
+        )
 
-    payload["data"] = get_payload_data(
-        data_version=schema.json["data_version"],
-        answer_store=answer_store,
-        list_store=list_store,
-        schema=schema,
-        routing_path=routing_path,
-        metadata=metadata,
-        response_metadata=response_metadata,
-    )
+        payload["data"] = get_payload_data(
+            data_version=schema.json["data_version"],
+            answer_store=answer_store,
+            list_store=list_store,
+            schema=schema,
+            routing_path=routing_path,
+            metadata=metadata,
+            response_metadata=response_metadata,
+        )
 
-    return payload | optional_properties
-
-
-def build_collection(metadata: MetadataProxy) -> MetadataType:
-    collection_metadata = {
-        "exercise_sid": metadata["collection_exercise_sid"],
-        "schema_name": metadata["schema_name"],
-        "period": metadata["period_id"],
-    }
-
-    if form_type := metadata["form_type"]:
-        collection_metadata["instrument_id"] = form_type
-
-    return collection_metadata
+        return payload | optional_properties
 
 
-def build_metadata(metadata: MetadataProxy) -> MetadataType:
-    downstream_metadata = {
-        "user_id": metadata["user_id"],
-        "ru_ref": metadata["ru_ref"],
-    }
+def build_collection(metadata: Optional[MetadataProxy]) -> MetadataType:
+    if metadata:
+        collection_metadata = {
+            "exercise_sid": metadata["collection_exercise_sid"],
+            "schema_name": metadata["schema_name"],
+            "period": metadata["period_id"],
+        }
 
-    if ref_p_start_date := metadata["ref_p_start_date"]:
-        downstream_metadata["ref_period_start_date"] = ref_p_start_date
-    if ref_p_end_date := metadata["ref_p_end_date"]:
-        downstream_metadata["ref_period_end_date"] = ref_p_end_date
-    if display_address := metadata["display_address"]:
-        downstream_metadata["display_address"] = display_address
+        if form_type := metadata["form_type"]:
+            collection_metadata["instrument_id"] = form_type
 
-    return downstream_metadata
+        return collection_metadata  # type: ignore
+
+
+def build_metadata(metadata: Optional[MetadataProxy]) -> MetadataType:
+    if metadata:
+        downstream_metadata = {
+            "user_id": metadata["user_id"],
+            "ru_ref": metadata["ru_ref"],
+        }
+
+        if ref_p_start_date := metadata["ref_p_start_date"]:
+            downstream_metadata["ref_period_start_date"] = ref_p_start_date
+        if ref_p_end_date := metadata["ref_p_end_date"]:
+            downstream_metadata["ref_period_end_date"] = ref_p_end_date
+        if display_address := metadata["display_address"]:
+            downstream_metadata["display_address"] = display_address
+
+        return downstream_metadata  # type: ignore
 
 
 def get_optional_payload_properties(
-    metadata: MetadataProxy, response_metadata: Mapping
+    metadata: Optional[MetadataProxy], response_metadata: Mapping
 ) -> MetadataType:
     payload = {}
 
-    for key in ["channel", "case_type", "form_type", "region_code", "case_ref"]:
-        if value := metadata[key]:
-            payload[key] = value
-    if started_at := response_metadata.get("started_at"):
-        payload["started_at"] = started_at
+    if metadata:
+        for key in ["channel", "case_type", "form_type", "region_code", "case_ref"]:
+            if value := metadata[key]:
+                payload[key] = value
+        if started_at := response_metadata.get("started_at"):
+            payload["started_at"] = started_at
 
     return payload

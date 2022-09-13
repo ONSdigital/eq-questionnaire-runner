@@ -211,7 +211,24 @@ def fake_questionnaire_store_metadata():
             "period_str": "period_str",
             "language_code": None,
             "schema_url": None,
-            "ru_name": "ru_name",
+            "ru_name": "ESSENTIAL ENTERPRISE LTD",
+            "ru_ref": "ru_ref",
+            "response_id": "response_id",
+            "case_id": "case_id",
+            "account_service_url": "account_service_url",
+            "collection_exercise_sid": "collection_exercise_sid",
+        }
+    )
+
+
+@pytest.fixture
+def fake_questionnaire_store_metadata_with_trad_as():
+    return MetadataProxy.from_dict(
+        {
+            "tx_id": "tx_id",
+            "schema_name": "some_schema_name",
+            "ru_name": "ESSENTIAL ENTERPRISE LTD",
+            "trad_as": "EE",
             "ru_ref": "ru_ref",
             "response_id": "response_id",
             "case_id": "case_id",

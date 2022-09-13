@@ -1,19 +1,20 @@
+from __future__ import annotations
+
+from collections import abc
 from copy import deepcopy
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Mapping, Optional
+from typing import Any, Mapping, Optional
 
 from werkzeug.datastructures import ImmutableDict
-
-from app.questionnaire import QuestionnaireSchema
 
 
 @dataclass(frozen=True)
 class SurveyMetadata:
-    data: ImmutableDict = field(default_factory=dict)
+    data: ImmutableDict = field(default_factory=dict)  # type: ignore
     receipting_keys: Optional[tuple] = None
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: str) -> Optional[Any]:
         return self.data.get(key)
 
 
@@ -25,24 +26,24 @@ class MetadataProxy:
     case_id: str
     collection_exercise_sid: str
     response_id: str
-    survey_metadata: SurveyMetadata = None
-    schema_url: str = None
-    schema_name: str = None
-    language_code: str = None
+    survey_metadata: Optional[SurveyMetadata] = None
+    schema_url: Optional[str] = None
+    schema_name: Optional[str] = None
+    language_code: Optional[str] = None
     response_expires_at: Optional[datetime] = None
     channel: Optional[str] = None
     region_code: Optional[str] = None
     version: Optional[str] = None
     roles: Optional[list] = None
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: str) -> Optional[Any]:
         if self.survey_metadata and key in self.survey_metadata.data:
             return self.survey_metadata.data[key]
         if key:
             return getattr(self, key, None)
 
     @classmethod
-    def from_dict(cls, metadata: Mapping):
+    def from_dict(cls, metadata: Mapping) -> MetadataProxy:
         _metadata = deepcopy(dict(metadata))
 
         tx_id = _metadata.pop("tx_id", None)
@@ -60,14 +61,10 @@ class MetadataProxy:
         roles = _metadata.pop("roles", None)
 
         if version == "v2":
-            serialized_metadata: ImmutableDict = QuestionnaireSchema.serialize(
-                _metadata.pop("survey_metadata", {})
-            )
+            serialized_metadata = cls.serialize(_metadata.pop("survey_metadata", {}))
             survey_metadata = SurveyMetadata(**serialized_metadata)
         else:
-            serialized_metadata: ImmutableDict = QuestionnaireSchema.serialize(
-                _metadata
-            )
+            serialized_metadata = cls.serialize(_metadata)
             survey_metadata = SurveyMetadata(data=serialized_metadata)
 
         return cls(
@@ -86,3 +83,13 @@ class MetadataProxy:
             survey_metadata=survey_metadata,
             roles=roles,
         )
+
+    @classmethod
+    def serialize(cls, data: Any) -> Any:
+        if isinstance(data, abc.Hashable):
+            return data
+        if isinstance(data, list):
+            return tuple((cls.serialize(item) for item in data))
+        if isinstance(data, dict):
+            key_value_tuples = {k: cls.serialize(v) for k, v in data.items()}
+            return ImmutableDict(key_value_tuples)

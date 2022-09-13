@@ -24,7 +24,7 @@ IntOrDecimal = Union[int, Decimal]
 class ValueSourceResolver:
     answer_store: AnswerStore
     list_store: ListStore
-    metadata: MetadataProxy
+    metadata: Optional[MetadataProxy]
     response_metadata: Mapping
     schema: QuestionnaireSchema
     location: Union[None, Location, RelationshipLocation]

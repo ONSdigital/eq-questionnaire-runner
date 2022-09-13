@@ -21,7 +21,7 @@ class PathFinder:
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: MetadataProxy,
+        metadata: Optional[MetadataProxy],
         response_metadata: Mapping,
     ):
         self.answer_store = answer_store

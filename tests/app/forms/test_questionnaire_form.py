@@ -827,16 +827,18 @@ def test_date_raises_ValueError_when_any_date_range_parts_are_falsy(
 
         response_metadata = {}
 
+        form = generate_form(
+            schema,
+            question_schema,
+            answer_store,
+            list_store,
+            metadata,
+            response_metadata,
+            form_data=form_data,
+        )
+
         with pytest.raises(ValueError):
-            generate_form(
-                schema,
-                question_schema,
-                answer_store,
-                list_store,
-                metadata,
-                response_metadata,
-                form_data=form_data,
-            )
+            form.validate()
 
 
 def test_bespoke_message_for_date_validation_range(

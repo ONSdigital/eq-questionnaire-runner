@@ -24,9 +24,9 @@ def build_view_submitted_response_context(
     view_submitted_response_expired = has_view_submitted_response_expired(
         questionnaire_store.submitted_at  # type: ignore
     )
-    metadata_proxy = questionnaire_store.metadata
-    trad_as = metadata_proxy["trad_as"]
-    ru_name = metadata_proxy["ru_name"]
+    metadata = questionnaire_store.metadata
+    trad_as = metadata["trad_as"] if metadata else None
+    ru_name = metadata["ru_name"] if metadata else None
 
     if survey_type is SurveyType.SOCIAL:
         submitted_text = lazy_gettext("Answers submitted.")
@@ -37,12 +37,12 @@ def build_view_submitted_response_context(
     else:
         submitted_text = lazy_gettext(
             "Answers submitted for <span>{ru_name}</span>"
-        ).format(ru_name=metadata_proxy["ru_name"])
+        ).format(ru_name=ru_name)
 
     metadata = build_submission_metadata_context(
         survey_type,
         questionnaire_store.submitted_at,  # type: ignore
-        metadata_proxy["tx_id"],
+        metadata["tx_id"] if metadata else None,
     )
     context = {
         "hide_sign_out_button": True,

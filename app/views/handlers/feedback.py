@@ -87,31 +87,32 @@ class Feedback:
         session_data: SessionData = self._session_store.session_data  # type: ignore
         session_data.feedback_count += 1
 
-        metadata_proxy = self._questionnaire_store.metadata
+        metadata = self._questionnaire_store.metadata
+        case_id = metadata["case_id"] if metadata else None
+        tx_id = metadata["tx_id"] if metadata else None
 
-        feedback_metadata = FeedbackMetadata(metadata_proxy["case_id"], metadata_proxy["tx_id"])  # type: ignore
+        feedback_metadata = FeedbackMetadata(case_id, tx_id)  # type: ignore
 
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
         feedback_message = FeedbackPayload(
-            metadata=self._questionnaire_store.metadata,
+            metadata=metadata,
             response_metadata=self._questionnaire_store.response_metadata,
             schema=self._schema,
-            case_id=metadata_proxy["case_id"],
+            case_id=case_id,
             submission_language_code=session_data.language_code,
             feedback_count=session_data.feedback_count,
             feedback_text=self.form.data.get("feedback-text"),
             feedback_type=self.form.data.get("feedback-type"),
         )
-        message = feedback_message()
-        metadata = feedback_metadata()
-        message.update(metadata)
+
+        feedback_message().update(feedback_metadata())
         encrypted_message = encrypt(
-            message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION  # type: ignore
+            feedback_message(), current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION  # type: ignore
         )
 
         if not current_app.eq["feedback_submitter"].upload(  # type: ignore
-            metadata, encrypted_message
+            feedback_metadata, encrypted_message
         ):
             raise FeedbackUploadFailed()
 
@@ -250,7 +251,7 @@ class FeedbackPayload:
 
     def __init__(
         self,
-        metadata: MetadataProxy,
+        metadata: Optional[MetadataProxy],
         response_metadata: Mapping[str, Union[str, int, list]],
         schema: QuestionnaireSchema,
         case_id: Optional[str],
@@ -280,10 +281,11 @@ class FeedbackPayload:
             "submission_language_code": (
                 self.submission_language_code or DEFAULT_LANGUAGE_CODE
             ),
-            "tx_id": self.metadata["tx_id"],
+            "tx_id": self.metadata["tx_id"] if self.metadata else None,
             "type": "uk.gov.ons.edc.eq:feedback",
             "launch_language_code": self.metadata["language_code"]
-            or DEFAULT_LANGUAGE_CODE,
+            if self.metadata
+            else DEFAULT_LANGUAGE_CODE,
             "version": "0.0.1",
         }
 

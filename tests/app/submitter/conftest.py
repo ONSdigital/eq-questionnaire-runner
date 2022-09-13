@@ -167,6 +167,31 @@ def fake_questionnaire_store(fake_metadata, fake_response_metadata):
 
 
 @pytest.fixture
+def fake_questionnaire_store_no_ref_p_end_date():
+    user_answer = Answer(answer_id="GHI", value=0, list_item_id=None)
+
+    storage = MagicMock()
+    storage.get_user_data = MagicMock(return_value=("{}", "ce_sid", 1, None))
+    storage.add_or_update = MagicMock()
+
+    store = QuestionnaireStore(storage)
+
+    store.answer_store = AnswerStore()
+    store.answer_store.add_or_update(user_answer)
+    store.metadata = MetadataProxy.from_dict(
+        {
+            "response_id": "1",
+            "account_service_url": "account_service_url",
+            "tx_id": "tx_id",
+            "collection_exercise_sid": "collection_exercise_sid",
+            "case_id": "case_id",
+        }
+    )
+
+    return store
+
+
+@pytest.fixture
 def fake_questionnaire_schema():
     questionnaire = {"survey_id": "021", "data_version": "0.0.3"}
 

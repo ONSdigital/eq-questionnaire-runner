@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 from flask_babel import format_datetime, lazy_gettext
 
@@ -7,7 +8,7 @@ from app.survey_config.survey_type import SurveyType
 
 
 def build_submission_metadata_context(
-    survey_type: SurveyType, submitted_at: datetime, tx_id: str
+    survey_type: SurveyType, submitted_at: datetime, tx_id: Optional[str]
 ) -> dict:
     submitted_on = {
         "term": lazy_gettext("Submitted on:"),
@@ -20,9 +21,10 @@ def build_submission_metadata_context(
             }
         ],
     }
+
     submission_reference = {
         "term": lazy_gettext("Submission reference:"),
-        "descriptions": [{"description": convert_tx_id(tx_id)}],
+        "descriptions": [{"description": convert_tx_id(tx_id) if tx_id else None}],
     }
     if survey_type is SurveyType.SOCIAL:
         return {

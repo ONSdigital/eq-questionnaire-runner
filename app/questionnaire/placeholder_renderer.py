@@ -24,7 +24,7 @@ class PlaceholderRenderer:
         language: str,
         answer_store: AnswerStore,
         list_store: ListStore,
-        metadata: MetadataProxy,
+        metadata: Optional[MetadataProxy],
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
         location: Union[None, Location, RelationshipLocation] = None,
@@ -59,8 +59,7 @@ class PlaceholderRenderer:
         if source == "list":
             return len(self._list_store[source_id])
 
-        metadata_source_id: str = self._metadata[source_id]
-        return metadata_source_id
+        return self._metadata[source_id] if self._metadata else None
 
     def render_placeholder(
         self,

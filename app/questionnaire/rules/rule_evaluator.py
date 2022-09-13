@@ -23,7 +23,7 @@ class RuleEvaluator:
     schema: QuestionnaireSchema
     answer_store: AnswerStore
     list_store: ListStore
-    metadata: MetadataProxy
+    metadata: Optional[MetadataProxy]
     response_metadata: Mapping
     location: Union[None, Location, RelationshipLocation]
     routing_path_block_ids: Optional[list] = None

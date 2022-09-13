@@ -124,6 +124,7 @@ def metadata():
             "case_ref": case_ref,
             "region_code": region_code,
             "case_id": case_id,
+            "language_code": language_code,
         }
     )
 

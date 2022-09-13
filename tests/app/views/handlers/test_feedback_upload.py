@@ -59,7 +59,7 @@ def test_feedback_payload(
             "feedback_type": feedback_type,
         },
         "form_type": form_type,
-        "launch_language_code": "en",
+        "launch_language_code": language_code,
         "metadata": {
             "display_address": display_address,
             "ref_period_end_date": ref_p_end_date,

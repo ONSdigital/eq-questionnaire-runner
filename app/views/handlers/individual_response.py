@@ -968,8 +968,8 @@ class IndividualResponseFulfilmentRequest(FulfilmentRequest):
                 GB_NIR_REGION_CODE: "P_UAC_UACIPA4",
             },
         }
-        region_code = self._metadata_proxy.region_code
-        return fulfilment_codes[self._fulfilment_type][region_code]
+        if region_code := self._metadata_proxy["region_code"]:
+            return fulfilment_codes[self._fulfilment_type][region_code]
 
     def _payload(self) -> Mapping:
         return {
