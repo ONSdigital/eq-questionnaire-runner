@@ -1,6 +1,7 @@
 import pytest
+from werkzeug.datastructures import ImmutableDict
 
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.metadata_proxy import MetadataProxy, SurveyMetadata
 
 METADATA_V1 = {
     "schema_name": "1_0000",
@@ -52,3 +53,12 @@ def test_metadata_proxy_returns_value_for_valid_key(
     resolved_metadata_proxy_value, metadata_var
 ):
     assert resolved_metadata_proxy_value == metadata_var
+
+
+def test_survey_metadata_returns_valid_key():
+    expected_values = {"key": "value"}
+    data = ImmutableDict(expected_values)
+
+    survey_metadata = SurveyMetadata(data=data)
+
+    assert survey_metadata["key"] == expected_values["key"]
