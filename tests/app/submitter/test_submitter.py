@@ -222,7 +222,7 @@ def test_gcs_submitter_adds_receipting_keys_to_metadata_when_set(patch_gcs_clien
         message={"test_data"},
         tx_id="123",
         case_id="456",
-        receipting_keys=receipting_keys
+        receipting_keys=receipting_keys,
     )
 
     # Then
@@ -247,7 +247,12 @@ def test_gcs_submitter_adds_receipting_keys_to_metadata_when_set(patch_gcs_clien
         (
             GCSSubmitter,
             "send_message",
-            {"message": "some message", "tx_id": "123", "case_id": "456", "receipting_keys": "(questionnaire_id,)"},
+            {
+                "message": "some message",
+                "tx_id": "123",
+                "case_id": "456",
+                "receipting_keys": "(questionnaire_id,)",
+            },
         ),
         (
             GCSFeedbackSubmitter,

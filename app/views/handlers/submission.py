@@ -41,7 +41,7 @@ class SubmissionHandler:
             encrypted_message,
             case_id=self._metadata["case_id"],
             tx_id=self._metadata["tx_id"],
-            receipting_keys=receipting_keys
+            receipting_keys=receipting_keys,
         )
 
         if not submitted:

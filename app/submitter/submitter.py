@@ -14,14 +14,16 @@ MetadataType = Mapping[str, str]
 
 class LogSubmitter:
     @staticmethod
-    def send_message(message: str, tx_id: str, case_id: str, receipting_keys: Optional[tuple] = None) -> bool:
+    def send_message(
+        message: str, tx_id: str, case_id: str, receipting_keys: Optional[tuple] = None
+    ) -> bool:
         logger.info("sending message")
         logger.info(
             "message payload",
             message=message,
             case_id=case_id,
             tx_id=tx_id,
-            receipting_keys=receipting_keys
+            receipting_keys=receipting_keys,
         )
 
         return True
@@ -32,7 +34,13 @@ class GCSSubmitter:
         client = storage.Client()
         self.bucket = client.get_bucket(bucket_name)
 
-    def send_message(self, message: str, tx_id: str, case_id: str, receipting_keys: Optional[tuple] = None) -> bool:
+    def send_message(
+        self,
+        message: str,
+        tx_id: str,
+        case_id: str,
+        receipting_keys: Optional[tuple] = None,
+    ) -> bool:
         logger.info("sending message")
 
         blob = self.bucket.blob(tx_id)

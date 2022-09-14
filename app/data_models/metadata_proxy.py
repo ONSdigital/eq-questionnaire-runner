@@ -40,7 +40,11 @@ class MetadataProxy:
         if self.survey_metadata and key in self.survey_metadata.data:
             return self.survey_metadata.data[key]
 
-        if key == "receipting_keys" and self.survey_metadata and self.survey_metadata.receipting_keys:
+        if (
+            key == "receipting_keys"
+            and self.survey_metadata
+            and self.survey_metadata.receipting_keys
+        ):
             return self.survey_metadata.receipting_keys
 
         if key:
