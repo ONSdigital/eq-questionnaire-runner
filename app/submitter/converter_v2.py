@@ -54,7 +54,7 @@ def convert_answers_v2(
 
         survey_id = schema.json["survey_id"]
 
-        payload = {
+        payload: dict = {
             "case_id": metadata["case_id"],
             "tx_id": metadata["tx_id"],
             "type": "uk.gov.ons.edc.eq:surveyresponse",
@@ -63,7 +63,6 @@ def convert_answers_v2(
             "origin": "uk.gov.ons.edc.eq",
             "collection_exercise_sid": metadata["collection_exercise_sid"],
             "schema_name": metadata["schema_name"],
-            "survey_id": survey_id,
             "flushed": flushed,
             "submitted_at": submitted_at.isoformat(),
             "launch_language_code": metadata["language_code"] or DEFAULT_LANGUAGE_CODE,
@@ -78,6 +77,7 @@ def convert_answers_v2(
 
         if metadata["survey_metadata"] and metadata["survey_metadata"].data:
             payload["survey_metadata"] = dict(metadata["survey_metadata"].data)
+            payload["survey_metadata"]["survey_id"] = survey_id
             payload["survey_metadata"].update(optional_survey_metadata_properties)  # type: ignore
 
         payload["data"] = get_payload_data(
