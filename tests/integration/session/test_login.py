@@ -43,7 +43,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
 
     def test_login_with_valid_v2_business_token_should_redirect_to_survey(self):
         # Given
-        token = self.token_generator.create_token_v2_business("test_checkbox")
+        token = self.token_generator.create_token_v2(schema_name="test_checkbox")
 
         # When
         self.get(url=f"/session?token={token}")
@@ -54,7 +54,9 @@ class TestLoginWithGetRequest(IntegrationTestCase):
 
     def test_login_with_valid_v2_social_token_should_redirect_to_survey(self):
         # Given
-        token = self.token_generator.create_token_v2_social("test_social_claims")
+        token = self.token_generator.create_token_v2(
+            schema_name="test_theme_social", theme="social"
+        )
 
         # When
         self.get(url=f"/session?token={token}")
@@ -94,7 +96,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
 
     def test_login_with_valid_v2_business_token_no_schema_name(self):
         # Given
-        token = self.token_generator.create_token_v2_business("")
+        token = self.token_generator.create_token_v2(schema_name="")
 
         # When
         self.get(url=f"/session?token={token}")
@@ -104,7 +106,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
 
     def test_login_with_valid_v2_social_token_no_schema_name(self):
         # Given
-        token = self.token_generator.create_token_v2_social("")
+        token = self.token_generator.create_token_v2(schema_name="")
 
         # When
         self.get(url=f"/session?token={token}")
@@ -279,7 +281,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         self,
     ):
         # flag_1 should be a boolean
-        token = self.token_generator.create_token_v2_business(
+        token = self.token_generator.create_token_v2(
             "test_metadata_routing", flag_1=123
         )
 
@@ -290,7 +292,9 @@ class TestLoginWithPostRequest(IntegrationTestCase):
     def test_v2_social_login_with_invalid_questionnaire_claims_should_be_forbidden(
         self,
     ):
-        token = self.token_generator.create_token_v2_social("test_theme_social")
+        token = self.token_generator.create_token_v2(
+            schema_name="test_address", theme="social"
+        )
 
         self.post(url=f"/session?token={token}")
 
@@ -299,7 +303,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
     def test_v2_social_login_with_invalid_receipting_key_should_be_forbidden(self):
         token = (
             self.token_generator.create_token_v2_social_token_invalid_receipting_key(
-                "test_social_claims"
+                "test_theme_social"
             )
         )
 

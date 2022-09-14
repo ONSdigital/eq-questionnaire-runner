@@ -116,17 +116,15 @@ class TokenGenerator:
 
         return self.generate_token(payload_vars)
 
-    def create_token_v2_business(self, schema_name, **extra_payload):
-        payload_vars = self._get_payload_with_params_v2(
-            schema_name, PAYLOAD_V2_BUSINESS, None, **extra_payload
-        )
-
-        return self.generate_token(payload_vars)
-
-    def create_token_v2_social(self, schema_name, **extra_payload):
-        payload_vars = self._get_payload_with_params_v2(
-            schema_name, PAYLOAD_V2_SOCIAL, None, **extra_payload
-        )
+    def create_token_v2(self, schema_name, theme="default", **extra_payload):
+        if theme == "social":
+            payload_vars = self._get_payload_with_params_v2(
+                schema_name, PAYLOAD_V2_SOCIAL, None, **extra_payload
+            )
+        else:
+            payload_vars = self._get_payload_with_params_v2(
+                schema_name, PAYLOAD_V2_BUSINESS, None, **extra_payload
+            )
 
         return self.generate_token(payload_vars)
 

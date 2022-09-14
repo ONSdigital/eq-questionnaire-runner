@@ -107,7 +107,11 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
 
     def test_401_theme_social_cookie_exists(self):
         # Given
-        self.launchSurvey("test_theme_social", account_service_url=SOCIAL_URL)
+        self.launchSurveyV2(
+            schema_name="test_theme_social",
+            theme="social",
+            account_service_url=SOCIAL_URL,
+        )
         self.assertInUrl("/questionnaire/radio/")
 
         # When
@@ -160,7 +164,11 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
 
     def test_403_theme_social_cookie_exists(self):
         # Given
-        self.launchSurvey("test_theme_social", account_service_url=SOCIAL_URL)
+        self.launchSurveyV2(
+            schema_name="test_theme_social",
+            theme="social",
+            account_service_url=SOCIAL_URL,
+        )
 
         # When
         cookie = self.getUrlAndCookie("/dump/debug")
@@ -210,7 +218,11 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
 
     def test_404_theme_social_cookie_exists(self):
         # Given
-        self.launchSurvey("test_theme_social", account_service_url=SOCIAL_URL)
+        self.launchSurveyV2(
+            schema_name="test_theme_social",
+            theme="social",
+            account_service_url=SOCIAL_URL,
+        )
 
         # When
         cookie = self.getUrlAndCookie("/abc123")
@@ -333,7 +345,11 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         submitter.send_message = Mock(return_value=False)
 
         # When
-        self.launchSurvey("test_theme_social", account_service_url=SOCIAL_URL)
+        self.launchSurveyV2(
+            schema_name="test_theme_social",
+            theme="social",
+            account_service_url=SOCIAL_URL,
+        )
         self.post()
         self.post()
         self.post()

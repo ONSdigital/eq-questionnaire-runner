@@ -131,13 +131,15 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         )
         self.get("/session?token=" + token)
 
-    def launchSurveyV2(self, schema_name="test_dates", **payload_kwargs):
+    def launchSurveyV2(
+        self, theme="default", schema_name="test_dates", **payload_kwargs
+    ):
         """
         Launch a survey as an authenticated user and follow re-directs
         :param schema_name: The name of the schema to load
         """
-        token = self.token_generator.create_token(
-            schema_name=schema_name, **payload_kwargs
+        token = self.token_generator.create_token_v2(
+            theme=theme, schema_name=schema_name, **payload_kwargs
         )
         self.get("/session?token=" + token)
 
