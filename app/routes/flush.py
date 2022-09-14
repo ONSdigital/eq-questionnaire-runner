@@ -88,10 +88,13 @@ def _submit_data(user):
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
         )
 
+        receipting_keys = metadata["receipting_keys"]
+
         sent = current_app.eq["submitter"].send_message(
             encrypted_message,
             tx_id=metadata["tx_id"],
             case_id=metadata["case_id"],
+            receipting_keys=receipting_keys,
         )
 
         if not sent:

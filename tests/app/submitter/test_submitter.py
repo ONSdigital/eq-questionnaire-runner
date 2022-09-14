@@ -212,6 +212,30 @@ def test_gcs_submitter_adds_metadata_when_sends_message(patch_gcs_client):
     }
 
 
+def test_gcs_submitter_adds_receipting_keys_to_metadata_when_set(patch_gcs_client):
+    gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
+
+    receipting_keys = ("questionnaire_id",)
+
+    # When
+    gcs_submitter.send_message(
+        message={"test_data"},
+        tx_id="123",
+        case_id="456",
+        receipting_keys=receipting_keys
+    )
+
+    # Then
+    bucket = patch_gcs_client.return_value.get_bucket.return_value
+    blob = bucket.blob.return_value
+
+    assert blob.metadata == {
+        "tx_id": "123",
+        "case_id": "456",
+        "questionnaire_id": "questionnaire_id",
+    }
+
+
 @pytest.mark.parametrize(
     "submitter, entrypoint, data_to_upload",
     [
@@ -219,6 +243,11 @@ def test_gcs_submitter_adds_metadata_when_sends_message(patch_gcs_client):
             GCSSubmitter,
             "send_message",
             {"message": "some message", "tx_id": "123", "case_id": "456"},
+        ),
+        (
+            GCSSubmitter,
+            "send_message",
+            {"message": "some message", "tx_id": "123", "case_id": "456", "receipting_keys": "(questionnaire_id,)"},
         ),
         (
             GCSFeedbackSubmitter,

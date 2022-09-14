@@ -34,10 +34,14 @@ class SubmissionHandler:
         encrypted_message = encrypt(
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
         )
+
+        receipting_keys = self._metadata["receipting_keys"]
+
         submitted = current_app.eq["submitter"].send_message(
             encrypted_message,
             case_id=self._metadata["case_id"],
             tx_id=self._metadata["tx_id"],
+            receipting_keys=receipting_keys
         )
 
         if not submitted:
