@@ -68,20 +68,16 @@ def login():
     )
 
     theme = g.schema.json["theme"]
-    ru_ref = None
     questionnaire_id = None
 
-    if decrypted_token.get("version"):
-        for key, value in questionnaire_claims.items():
-            runner_claims["survey_metadata"]["data"][key] = value
-        claims = runner_claims
+    if decrypted_token.get("version") == "v2":
+        runner_claims["survey_metadata"]["data"] = questionnaire_claims
 
-        if theme == "social":
-            questionnaire_id = (
-                claims.get("survey_metadata").get("data").get("questionnaire_id")
-            )
-        else:
-            ru_ref = claims.get("survey_metadata").get("data").get("ru_ref")
+        data = runner_claims.get("survey_metadata").get("data", {})
+        ru_ref = data.get("ru_ref")
+        questionnaire_id = data.get("questionnaire_id")
+
+        claims = runner_claims
     else:
         claims = {**runner_claims, **questionnaire_claims}
         ru_ref = claims["ru_ref"]
@@ -93,10 +89,14 @@ def login():
     logger.bind(
         schema_name=schema_name,
         tx_id=tx_id,
-        questionnaire_id=questionnaire_id or None,
-        ru_ref=ru_ref or None,
         case_id=case_id,
     )
+
+    if ru_ref:
+        logger.bind(ru_ref=ru_ref)
+
+    if questionnaire_id:
+        logger.bind(questionnaire_id=questionnaire_id)
 
     logger.info("decrypted token and parsed metadata")
 
@@ -188,7 +188,7 @@ def get_questionnaire_claims(decrypted_token, schema_metadata):
     try:
         return (
             validate_questionnaire_claims_v2(decrypted_token, schema_metadata)
-            if decrypted_token.get("version")
+            if decrypted_token.get("version") == "v2"
             else validate_questionnaire_claims(decrypted_token, schema_metadata)
         )
 

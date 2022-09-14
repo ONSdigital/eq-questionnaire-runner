@@ -15,44 +15,10 @@ from marshmallow import (
 from structlog import get_logger
 
 from app.questionnaire.rules.utils import parse_iso_8601_datetime
+from app.utilities.parse_utilities import DateString, RegionCode, UUIDString
 from app.utilities.schema import get_schema_name_from_params
 
 logger = get_logger()
-
-
-class RegionCode(validate.Regexp):
-    """A region code defined as per ISO 3166-2:GB
-    Currently, this does not validate the subdivision, but only checks length
-    """
-
-    def __init__(self, *args, **kwargs):
-        super().__init__("^GB-[A-Z]{3}$", *args, **kwargs)
-
-
-class UUIDString(fields.UUID):
-    """Currently, runner cannot handle UUID objects in metadata
-    Since all metadata is serialized and deserialized to JSON.
-    This custom field deserializes UUIDs to strings.
-    """
-
-    def _deserialize(self, *args, **kwargs):  # pylint: disable=arguments-differ
-        return str(super()._deserialize(*args, **kwargs))
-
-
-class DateString(fields.DateTime):
-    """Currently, runner cannot handle Date objects in metadata
-    Since all metadata is serialized and deserialized to JSON.
-    This custom field deserializes Dates to strings.
-    """
-
-    def _deserialize(self, *args, **kwargs):  # pylint: disable=arguments-differ
-        date = super()._deserialize(*args, **kwargs)
-
-        if self.format == "iso8601":
-            return date.isoformat()
-
-        return date.strftime(self.format)
-
 
 VALIDATORS = {
     "date": functools.partial(DateString, format="%Y-%m-%d", required=True),

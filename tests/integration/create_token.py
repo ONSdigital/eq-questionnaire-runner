@@ -92,30 +92,10 @@ class TokenGenerator:
         return payload_vars
 
     @staticmethod
-    def _get_payload_with_params_v2_business(
-        schema_name, schema_url=None, **extra_payload
+    def _get_payload_with_params_v2(
+        schema_name, payload, schema_url=None, **extra_payload
     ):
-        payload_vars = PAYLOAD_V2_BUSINESS.copy()
-        payload_vars["tx_id"] = str(uuid4())
-        payload_vars["schema_name"] = schema_name
-        if schema_url:
-            payload_vars["schema_url"] = schema_url
-
-        payload_vars["iat"] = time.time()
-        payload_vars["exp"] = payload_vars["iat"] + float(3600)  # one hour from now
-        payload_vars["jti"] = str(uuid4())
-        payload_vars["case_id"] = str(uuid4())
-
-        for key, value in extra_payload.items():
-            payload_vars[key] = value
-
-        return payload_vars
-
-    @staticmethod
-    def _get_payload_with_params_v2_social(
-        schema_name, schema_url=None, **extra_payload
-    ):
-        payload_vars = PAYLOAD_V2_SOCIAL.copy()
+        payload_vars = payload.copy()
         payload_vars["tx_id"] = str(uuid4())
         payload_vars["schema_name"] = schema_name
         if schema_url:
@@ -137,15 +117,15 @@ class TokenGenerator:
         return self.generate_token(payload_vars)
 
     def create_token_v2_business(self, schema_name, **extra_payload):
-        payload_vars = self._get_payload_with_params_v2_business(
-            schema_name, None, **extra_payload
+        payload_vars = self._get_payload_with_params_v2(
+            schema_name, PAYLOAD_V2_BUSINESS, None, **extra_payload
         )
 
         return self.generate_token(payload_vars)
 
     def create_token_v2_social(self, schema_name, **extra_payload):
-        payload_vars = self._get_payload_with_params_v2_social(
-            schema_name, None, **extra_payload
+        payload_vars = self._get_payload_with_params_v2(
+            schema_name, PAYLOAD_V2_SOCIAL, None, **extra_payload
         )
 
         return self.generate_token(payload_vars)
@@ -171,8 +151,8 @@ class TokenGenerator:
     def create_token_v2_social_token_invalid_receipting_key(
         self, schema_name, **extra_payload
     ):
-        payload_vars = self._get_payload_with_params_v2_social(
-            schema_name, None, **extra_payload
+        payload_vars = self._get_payload_with_params_v2(
+            schema_name, PAYLOAD_V2_SOCIAL, None, **extra_payload
         )
         del payload_vars["survey_metadata"]["data"]["questionnaire_id"]
 
