@@ -82,7 +82,7 @@ export function generateToken(
     kid: "709eb42cfee5570058ce0711f730bfbb7d4c8ade",
   };
 
-  let payload = {}
+  let payload = {};
   // Payload
   if (theme === "social") {
     payload = {
@@ -103,10 +103,10 @@ export function generateToken(
           questionnaire_id: "1000000000000001",
           case_type: "B",
         },
-        receipting_keys: ["questionnaire_id"]
+        receipting_keys: ["questionnaire_id"],
       },
       version: "v2",
-    }
+    };
   } else {
     payload = {
       tx_id: uuidv4(),
@@ -133,14 +133,13 @@ export function generateToken(
           return_by: "2017-03-01",
           ru_name: "Apple",
           trad_as: "Apple",
-        }
+        },
       },
       version: "v2",
-    }
+    };
   }
 
-
-  const oPayload = payload
+  const oPayload = payload;
 
   if (includeLogoutUrl) {
     oPayload.account_service_log_out_url = "http://localhost:8000";

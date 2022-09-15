@@ -212,8 +212,7 @@ exports.config = {
           includeLogoutUrl = false,
         } = {}
       ) {
-        const token = await JwtHelper.generateToken(schema,
-          {
+        const token = await JwtHelper.generateToken(schema, {
           theme,
           userId,
           collectionId,
