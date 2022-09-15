@@ -136,8 +136,10 @@ def validate_questionnaire_claims_v2(claims, questionnaire_specific_metadata):
         "QuestionnaireMetadataSchema", (Schema, StripWhitespaceMixin), dynamic_fields
     )(unknown=EXCLUDE)
 
+    claims = claims.get("survey_metadata", {}).get("data", {})
+
     # The load method performs validation.
-    return questionnaire_metadata_schema.load(claims["survey_metadata"]["data"])
+    return questionnaire_metadata_schema.load(claims)
 
 
 def validate_runner_claims_v2(claims: Dict):
