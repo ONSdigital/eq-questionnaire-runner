@@ -96,7 +96,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     def validate_receipting_keys(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
         if data and (
-            receipting_keys := data.get("survey_metadata").get("receipting_keys")
+            receipting_keys := data.get("survey_metadata", {}).get("receipting_keys", {})
         ):
             for receipting_key in receipting_keys:
                 if receipting_key not in data.get("survey_metadata").get("data"):

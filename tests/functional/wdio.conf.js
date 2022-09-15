@@ -201,6 +201,7 @@ exports.config = {
       async function (
         schema,
         {
+          theme = "default",
           userId = JwtHelper.getRandomString(10),
           collectionId = JwtHelper.getRandomString(10),
           responseId = JwtHelper.getRandomString(16),
@@ -208,11 +209,12 @@ exports.config = {
           periodStr = "May 2016",
           region = "GB-ENG",
           language = "en",
-          sexualIdentity = false,
           includeLogoutUrl = false,
         } = {}
       ) {
-        const token = await JwtHelper.generateToken(schema, {
+        const token = await JwtHelper.generateToken(schema,
+          {
+          theme,
           userId,
           collectionId,
           responseId,
@@ -220,7 +222,6 @@ exports.config = {
           periodStr,
           regionCode: region,
           languageCode: language,
-          sexualIdentity,
           includeLogoutUrl,
         });
         this.url(`/session?token=${token}`);

@@ -8,7 +8,7 @@ import ThankYouSubmitPage from "../generated_pages/thank_you/submit.page";
 describe("Thank You Social", () => {
   describe("Given I launch a social themed questionnaire", () => {
     beforeEach(() => {
-      browser.openQuestionnaire("test_theme_social.json");
+      browser.openQuestionnaire("test_theme_social.json", {theme: "social"});
     });
 
     it("When I navigate to the thank you page, Then I should see social theme content", () => {
