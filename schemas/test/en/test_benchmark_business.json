@@ -25,7 +25,7 @@
             "title": "Quarterly Stocks Survey",
             "groups": [
                 {
-                    "id": "groupquestionnaire-introduction",
+                    "id": "group-questionnaire-introduction",
                     "title": "Introduction",
                     "blocks": [
                         {
