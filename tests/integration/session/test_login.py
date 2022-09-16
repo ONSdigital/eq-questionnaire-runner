@@ -106,7 +106,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
 
     def test_login_with_valid_v2_social_token_no_schema_name(self):
         # Given
-        token = self.token_generator.create_token_v2(schema_name="")
+        token = self.token_generator.create_token_v2(schema_name="", theme="social")
 
         # When
         self.get(url=f"/session?token={token}")

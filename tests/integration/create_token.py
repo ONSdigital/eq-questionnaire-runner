@@ -54,7 +54,6 @@ PAYLOAD_V2_SOCIAL = {
     "survey_metadata": {
         "data": {
             "case_ref": "1000000000000001",
-            "case_type": "B",
             "questionnaire_id": str(uuid4()),
         },
         "receipting_keys": ["questionnaire_id"],

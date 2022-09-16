@@ -52,9 +52,14 @@ def before_individual_response_request():
 
     logger.bind(
         tx_id=metadata["tx_id"],
-        schema_name=metadata["schema_name"],
         ce_id=metadata["collection_exercise_sid"],
     )
+
+    if schema_name := metadata["schema_name"]:
+        logger.bind(schema_name=schema_name)
+
+    if schema_url := metadata["schema_url"]:
+        logger.bind(schema_url=schema_url)
 
     logger.info(
         "individual-response request", method=request.method, url_path=request.full_path

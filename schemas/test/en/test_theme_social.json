@@ -13,10 +13,6 @@
             "type": "string"
         },
         {
-            "name": "case_type",
-            "type": "string"
-        },
-        {
             "name": "questionnaire_id",
             "type": "string"
         }

@@ -87,9 +87,14 @@ def before_questionnaire_request():
 
     logger.bind(
         tx_id=metadata["tx_id"],
-        schema_name=metadata["schema_name"],
         ce_id=metadata["collection_exercise_sid"],
     )
+
+    if schema_name := metadata["schema_name"]:
+        logger.bind(schema_name=schema_name)
+
+    if schema_url := metadata["schema_url"]:
+        logger.bind(schema_url=schema_url)
 
     logger.info(
         "questionnaire request", method=request.method, url_path=request.full_path
@@ -127,10 +132,13 @@ def before_post_submission_request():
         metadata=questionnaire_store.metadata, language_code=get_locale().language
     )
 
-    logger.bind(
-        tx_id=metadata["tx_id"],
-        schema_name=metadata["schema_name"],
-    )
+    logger.bind(tx_id=metadata["tx_id"])
+
+    if schema_name := metadata["schema_name"]:
+        logger.bind(schema_name=schema_name)
+
+    if schema_url := metadata["schema_url"]:
+        logger.bind(schema_url=schema_url)
 
     logger.info(
         "questionnaire request", method=request.method, url_path=request.full_path

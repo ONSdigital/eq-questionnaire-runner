@@ -82,15 +82,19 @@ def login():
         claims = {**runner_claims, **questionnaire_claims}
         ru_ref = claims["ru_ref"]
 
-    schema_name = claims["schema_name"]
     tx_id = claims["tx_id"]
     case_id = claims["case_id"]
 
     logger.bind(
-        schema_name=schema_name,
         tx_id=tx_id,
         case_id=case_id,
     )
+
+    if schema_name := metadata["schema_name"]:
+        logger.bind(schema_name=schema_name)
+
+    if schema_url := metadata["schema_url"]:
+        logger.bind(schema_url=schema_url)
 
     if ru_ref:
         logger.bind(ru_ref=ru_ref)
