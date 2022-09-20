@@ -59,7 +59,7 @@ def before_individual_response_request():
         logger.bind(schema_name=schema_name)
 
     if schema_url := metadata["schema_url"]:
-        logger.bind(schema_url=schema_url)
+        logger.bind(schema_url=schema_url)  # pragma: no cover
 
     logger.info(
         "individual-response request", method=request.method, url_path=request.full_path

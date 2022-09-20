@@ -61,6 +61,7 @@ export function getRandomString(length) {
 export function generateToken(
   schema,
   {
+    version,
     theme,
     userId,
     collectionId,
@@ -82,9 +83,10 @@ export function generateToken(
     kid: "709eb42cfee5570058ce0711f730bfbb7d4c8ade",
   };
 
-  let payload = {};
   // Payload
-  if (theme === "social") {
+  let payload = {};
+
+  if (version === "v2") {
     payload = {
       tx_id: uuidv4(),
       jti: uuidv4(),
@@ -97,14 +99,7 @@ export function generateToken(
       region_code: regionCode,
       language_code: languageCode,
       account_service_url: "http://localhost:8000",
-      survey_metadata: {
-        data: {
-          case_ref: "1000000000000001",
-          questionnaire_id: "1000000000000001",
-          case_type: "B",
-        },
-        receipting_keys: ["questionnaire_id"],
-      },
+      survey_metadata: getSurveyMetadata(theme, userId, displayAddress, periodId, periodStr),
       version: "v2",
     };
   } else {
@@ -113,29 +108,24 @@ export function generateToken(
       jti: uuidv4(),
       iat: KJUR.jws.IntDate.get("now"),
       exp: KJUR.jws.IntDate.get("now") + 1800,
+      user_id: userId,
       case_id: uuidv4(),
+      ru_ref: "12346789012A",
       response_id: responseId,
+      ru_name: "Apple",
+      trad_as: "Apple",
       schema_name: `${schemaParts[1]}_${schemaParts[2]}`,
       collection_exercise_sid: collectionId,
+      period_id: periodId,
+      period_str: periodStr,
+      ref_p_start_date: "2017-01-01",
+      ref_p_end_date: "2017-02-01",
+      employment_date: "2016-06-10",
+      return_by: "2017-03-01",
+      display_address: displayAddress,
       region_code: regionCode,
       language_code: languageCode,
       account_service_url: "http://localhost:8000",
-      survey_metadata: {
-        data: {
-          user_id: userId,
-          display_address: displayAddress,
-          ru_ref: "12346789012A",
-          period_id: periodId,
-          period_str: periodStr,
-          ref_p_start_date: "2017-01-01",
-          ref_p_end_date: "2017-02-01",
-          employment_date: "2016-06-10",
-          return_by: "2017-03-01",
-          ru_name: "Apple",
-          trad_as: "Apple",
-        },
-      },
-      version: "v2",
     };
   }
 
@@ -179,4 +169,38 @@ export function generateToken(
 
       return token;
     });
+}
+
+function getSurveyMetadata(theme, userId, displayAddress, periodId, periodStr) {
+  let surveyMetadata = {};
+
+  if (theme === "social") {
+    surveyMetadata = {
+      data: {
+        case_ref: "1000000000000001",
+        questionnaire_id: "1000000000000001",
+      },
+      receipting_keys: ["questionnaire_id"],
+    };
+  } else {
+    surveyMetadata = {
+      survey_metadata: {
+        data: {
+          user_id: userId,
+          display_address: displayAddress,
+          ru_ref: "12346789012A",
+          period_id: periodId,
+          period_str: periodStr,
+          ref_p_start_date: "2017-01-01",
+          ref_p_end_date: "2017-02-01",
+          employment_date: "2016-06-10",
+          return_by: "2017-03-01",
+          ru_name: "Apple",
+          trad_as: "Apple",
+        },
+      },
+    };
+  }
+
+  return surveyMetadata;
 }

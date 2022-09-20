@@ -73,10 +73,11 @@ class TokenGenerator:
         self._sr_public_kid = sr_public_kid
 
     @staticmethod
-    def _get_payload_with_params(schema_name, schema_url=None, **extra_payload):
+    def _get_payload_with_params(schema_name=None, schema_url=None, **extra_payload):
         payload_vars = PAYLOAD.copy()
         payload_vars["tx_id"] = str(uuid4())
-        payload_vars["schema_name"] = schema_name
+        if schema_name:
+            payload_vars["schema_name"] = schema_name
         if schema_url:
             payload_vars["schema_url"] = schema_url
 

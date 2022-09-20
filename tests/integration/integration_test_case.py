@@ -127,15 +127,6 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         self.get(f"/session?token={token}")
 
-    def launchSurveyWithSchemaUrl(
-        self, schema_name="test_dates", schema_url=None, **payload_kwargs
-    ):
-        token = self.token_generator.create_token_with_schema_url(
-            schema_name=schema_name, schema_url=schema_url, **payload_kwargs
-        )
-
-        self.get(f"/session?token={token}")
-
     def launchSurveyV2(
         self, theme="default", schema_name="test_dates", **payload_kwargs
     ):

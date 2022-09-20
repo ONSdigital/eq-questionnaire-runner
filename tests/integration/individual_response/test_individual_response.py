@@ -1,12 +1,11 @@
 # pylint: disable=too-many-lines
 from datetime import datetime
-from unittest.mock import MagicMock, patch, Mock
+from unittest.mock import MagicMock
 
 from freezegun import freeze_time
 
 from app import settings
 from app.publisher.exceptions import PublicationFailed
-from app.utilities.schema import load_schema_from_name
 from tests.integration.integration_test_case import IntegrationTestCase
 from tests.integration.questionnaire import THANK_YOU_URL_PATH
 
@@ -24,17 +23,10 @@ class IndividualResponseTestCase(IntegrationTestCase):
 
         super().setUp()
 
-        schema_json = load_schema_from_name("test_individual_response")
-
-        with patch(
-            "app.utilities.schema.load_schema_from_metadata",
-            return_value=schema_json,
-        ):
-            self.launchSurveyWithSchemaUrl(
-                schema_name="test_individual_response",
-                schema_url="https://eq-survey-register.url/test_individual_response",
-                region_code="GB-ENG",
-            )
+        self.launchSurvey(
+            schema_name="test_individual_response",
+            region_code="GB-ENG",
+        )
 
     @property
     def individual_section_link(self):
