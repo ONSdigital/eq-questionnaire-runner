@@ -173,7 +173,7 @@ ANSWER_GETTER = Template(
 
 ANSWER_SUFFIX_GETTER = Template(
     r"""  ${answerName}Suffix() {
-    return `#${answerId} + abbr`;
+    return `#${answerId} + span`;
   }
 
 """
