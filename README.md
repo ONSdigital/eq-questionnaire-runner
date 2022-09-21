@@ -487,7 +487,7 @@ Run `make load-design-system-templates` in the terminal to make sure you have th
 Then edit the first line in the `templates/layout/_template.njk` file to remove the version number. Should now look like this:
 
 ``` shell
-{% set release_version = "" %}
+{% set release_version = '' %}
 ```
 
 Then spin up launcher and runner with `make dev-compose-up` and `make run`

@@ -43,7 +43,7 @@
             "title": "Questions",
             "groups": [
                 {
-                    "id": "confirmation-block-1",
+                    "id": "confirmation-block",
                     "title": "Confirmation Question Test",
                     "blocks": [
                         {
@@ -167,13 +167,7 @@
                                     }
                                 }
                             ]
-                        }
-                    ]
-                },
-                {
-                    "id": "confirmation-block-2",
-                    "title": "Of the total employees employed, how many male and female employees worked the following hours?",
-                    "blocks": [
+                        },
                         {
                             "id": "number-of-employees-split-block",
                             "type": "Question",
