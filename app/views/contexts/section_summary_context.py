@@ -2,7 +2,6 @@ from functools import cached_property
 from typing import Any, Mapping, Optional
 
 from flask import url_for
-from flask_babel import lazy_gettext
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.questionnaire import QuestionnaireSchema

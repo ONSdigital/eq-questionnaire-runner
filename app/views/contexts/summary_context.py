@@ -1,7 +1,5 @@
 from typing import Generator, Mapping, Optional, Union
 
-from flask_babel import lazy_gettext
-
 from app.questionnaire.location import Location
 
 from .context import Context

@@ -1,7 +1,5 @@
 from copy import deepcopy
 
-from flask_babel import lazy_gettext
-
 from app.jinja_filters import (
     format_number,
     format_percentage,
