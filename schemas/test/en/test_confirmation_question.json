@@ -114,8 +114,8 @@
                                                 "value": "Yes this is correct"
                                             },
                                             {
-                                                "label": "No I need to change this",
-                                                "value": "No I need to change this"
+                                                "label": "No I need to correct this",
+                                                "value": "No I need to correct this"
                                             }
                                         ],
                                         "mandatory": true
@@ -153,7 +153,7 @@
                                     "goto": {
                                         "when": [
                                             {
-                                                "value": "No I need to change this",
+                                                "value": "No I need to correct this",
                                                 "id": "confirm-zero-employees-answer",
                                                 "condition": "equals"
                                             }

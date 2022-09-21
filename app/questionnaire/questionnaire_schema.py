@@ -380,9 +380,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _is_list_name_in_rule(
         self, rules: Union[Mapping, Sequence], list_name: str
     ) -> bool:
-        if isinstance(rules, Mapping) and any(
-            operator in rules for operator in OPERATION_MAPPING
-        ):
+        if isinstance(rules, Mapping) and QuestionnaireSchema.has_operator(rules):
             rules = self.get_operands(rules)
 
         for rule in rules:
@@ -400,7 +398,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 )
 
             # Nested rules
-            if any(operator in rule for operator in OPERATION_MAPPING):
+            if QuestionnaireSchema.has_operator(rule):
                 return self._is_list_name_in_rule(rule, list_name)
 
     @staticmethod
@@ -770,6 +768,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             if answer["type"] == "Address" and "lookup_options" in answer
         )
 
+    @staticmethod
+    def has_operator(rule: Any) -> bool:
+        return isinstance(rule, Mapping) and any(
+            operator in rule for operator in OPERATION_MAPPING
+        )
+
     def _get_values_for_key(
         self, block: Mapping, key: str, ignore_keys: Optional[list[str]] = None
     ) -> Generator:
@@ -853,9 +857,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     ) -> set[str]:
         rules_section_dependencies: set[str] = set()
 
-        if isinstance(rules, Mapping) and any(
-            operator in rules for operator in OPERATION_MAPPING
-        ):
+        if isinstance(rules, Mapping) and QuestionnaireSchema.has_operator(rules):
             rules = self.get_operands(rules)
 
         for rule in rules:
@@ -885,7 +887,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     )
                     rules_section_dependencies.add(section_id)  # type: ignore
 
-            if any(operator in rule for operator in OPERATION_MAPPING):
+            if QuestionnaireSchema.has_operator(rule):
                 rules_section_dependencies.update(
                     self._get_rules_section_dependencies(current_section_id, rule)
                 )

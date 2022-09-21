@@ -4,7 +4,6 @@
     {% if save_on_signout %}
         {% do pageConfig | setAttribute("signoutButton", {
             "text": sign_out_button_text,
-            "name": "btn-save-sign-out",
             "url": sign_out_url,
             "attributes": {
                 "data-qa": "btn-save-sign-out",
@@ -19,7 +18,6 @@
     {% else %}
         {% do pageConfig | setAttribute("signoutButton", {
             "text": _("Exit"),
-            "name": "btn-exit",
             "url": sign_out_url,
             "attributes": {
                 "data-qa": "btn-exit",
