@@ -59,11 +59,6 @@ class SectionSummaryContext(Context):
                 "page_title": page_title,
                 "summary_type": "SectionSummary",
                 "answers_are_editable": True,
-                "headers": [
-                    lazy_gettext("Question"),
-                    lazy_gettext("Answer given"),
-                    lazy_gettext("Change answer"),
-                ],
                 **summary,
             }
         }

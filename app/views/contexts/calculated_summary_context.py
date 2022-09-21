@@ -70,11 +70,6 @@ class CalculatedSummaryContext(Context):
                 "title": block.get("title") % dict(total=formatted_total),
                 "collapsible": block.get("collapsible", False),
                 "summary_type": "CalculatedSummary",
-                "headers": [
-                    lazy_gettext("Question"),
-                    lazy_gettext("Answer given"),
-                    lazy_gettext("Change answer"),
-                ],
             }
         }
 
