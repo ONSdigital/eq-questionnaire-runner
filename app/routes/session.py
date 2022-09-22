@@ -180,7 +180,7 @@ def get_runner_claims(decrypted_token):
     try:
         return (
             validate_runner_claims_v2(decrypted_token)
-            if decrypted_token.get("version")
+            if decrypted_token.get("version") == "v2"
             else validate_runner_claims(decrypted_token)
         )
 
