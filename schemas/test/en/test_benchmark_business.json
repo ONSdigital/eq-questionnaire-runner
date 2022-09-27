@@ -106,9 +106,9 @@
                             "secondary_content": [
                                 {
                                     "id": "secondary-content",
-                                    "title": "How we use your data",
                                     "contents": [
                                         {
+                                            "title": "How we use your data",
                                             "list": [
                                                 "The information supplied is used to estimate changes in stock levels which are used in the compilation of Gross Domestic Product (GDP), the total UK economic activity.",
                                                 "GDP is used to measure the UK&apos;s financial health and prosperity over time and in comparison to other countries.",

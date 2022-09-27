@@ -226,9 +226,9 @@
                             "secondary_content": [
                                 {
                                     "id": "how-we-use-your-data",
-                                    "title": "How we use your data",
                                     "contents": [
                                         {
+                                            "title": "How we use your data",
                                             "list": [
                                                 "You cannot appeal your selection. Your business was selected to give us a comprehensive view of the UK economy",
                                                 "The data from you business is essential is it helps us calculate the GDP of the UK",
