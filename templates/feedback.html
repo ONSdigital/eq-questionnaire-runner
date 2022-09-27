@@ -13,9 +13,10 @@
       "id": "top-previous",
       "text": _("Back"),
       "attributes": {
-        "data-ga": 'click',
+        "data-ga": 'previous-link',
         "data-ga-category": 'Navigation',
-        "data-ga-action": 'Previous link click'
+        "data-ga-action": 'Previous',
+        "data-ga-label": "Submit Button click"
       }
     }
   ]
@@ -36,10 +37,13 @@
   {{
     onsButton({
       "text": _("Send feedback"),
-      "submitType": 'timer',
+      "variants": 'timer',
       "classes": "ons-u-mt-xl",
       "attributes": {
-        "data-qa": "btn-submit"
+        "data-qa": "btn-submit",
+        "data-ga-category": "Submit button",
+        "data-ga-action": "Send feedback",
+        "data-ga-label": "Send feedback button click"
       }
     })
   }}

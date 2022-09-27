@@ -33,29 +33,26 @@
       onsButton({
         "type": 'button',
         "text": _('Print answers'),
-        "buttonStyle": "print",
-        "variants": ['small', 'secondary'],
+        "variants": ['small', 'secondary', 'print'],
         "attributes": {
           "data-qa": "btn-print",
-          "data-ga-category": "Print Button",
-          "data-ga-action": "Open Print Dialogue",
-          "data-ga-label": "Print Button click"
+          "data-ga-category": "Print button",
+          "data-ga-action": "Open print Dialogue",
+          "data-ga-label": "Print button click"
         }
       })
     }}
     {{
       onsButton({
-        "buttonStyle": 'download',
         "text": _('Save answers as PDF'),
-        "submitType": "timer",
-        "variants": ['small', 'secondary'],
+        "variants": ['small', 'secondary', 'timer', 'download'],
         "url": content.pdf_url,
         "removeDownloadAttribute": true,
         "attributes": {
           "data-qa": "btn-pdf",
-          "data-ga-category": "PDF Button",
+          "data-ga-category": "PDF button",
           "data-ga-action": "Download PDF",
-          "data-ga-label": "PDF Button click"
+          "data-ga-label": "PDF button click"
         }
       })
     }}
@@ -69,7 +66,7 @@
       "id": "view-submitted-guidance",
       "classes": "ons-u-mb-m"
      }) %}
-    {{ _("For security, you can no longer view or get a copy of your answers") }}
+      {{ _("For security, you can no longer view or get a copy of your answers") }}
     {% endcall %}
   {% endif %}
 {% endblock %}

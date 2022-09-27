@@ -8,8 +8,8 @@
   <h1 data-qa="calculated-summary-title">{{content.summary.title}}</h1>
 
   {% call onsPanel({
-      "classes": "ons-u-mb-l"
-    }) %}
+    "classes": "ons-u-mb-l"
+  }) %}
     <p>{{ _("Please review your answers and confirm these are correct") }}</p>
   {% endcall %}
 
@@ -22,9 +22,12 @@
   {{
     onsButton({
       "text": _("Yes, I confirm these are correct"),
-      "submitType": 'timer',
+      "variants": 'timer',
       "attributes": {
-        "data-qa": "btn-submit"
+        "data-qa": "btn-submit",
+        "data-ga-category": "Submit button",
+        "data-ga-action": "Confirm",
+        "data-ga-label": "Confirm button click"
       }
     })
   }}

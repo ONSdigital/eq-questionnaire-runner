@@ -11,10 +11,15 @@
     {{
         onsButton({
             "text": _("Request separate census"),
-            "submitType": 'timer',
+            "variants": 'timer',
             "classes": 'ons-u-mb-m ons-u-mt-s',
             "url": next_location_url,
-            "attributes": {'data-qa': 'btn-submit'}
+            "attributes": {
+                'data-qa': 'btn-submit',
+                "data-ga-category": "Submit Button",
+                "data-ga-action": "Submit",
+                "data-ga-label": "Submit Button click"
+            }
         })
     }}
 {% endblock %}

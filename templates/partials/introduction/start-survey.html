@@ -3,8 +3,14 @@
 {{
   onsButton({
     "text": _("Start survey"),
-    "submitType": 'timer',
+    "variants": 'timer',
     "classes": "qa-btn-get-started",
-    "name": "action[start_questionnaire]"
+    "name": "action[start_questionnaire]",
+    "attributes": {
+      "data-qa": "btn-submit",
+      "data-ga-category": "Submit button",
+      "data-ga-action": "Start survey",
+      "data-ga-label": "Start button click"
+    }
   })
 }}
