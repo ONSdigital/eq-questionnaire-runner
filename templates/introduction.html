@@ -14,13 +14,8 @@
     {% block intro_content %}
         {% if content.block.primary_content %}
             {% for content_block in content.block.primary_content %}
-                <div id="{{ content_block.id }}" class="ons-u-mb-s">
-                    {% if content_block.title %}
-                        <h1>{{ content_block.title }}</h1>
-                    {% endif %}
-                    {% set contents = content_block.contents %}
-                    {% include 'partials/contents.html' %}
-                </div>
+                {% set titleTag = 'h1' %}
+                {% include 'partials/introduction/basic.html' %}
             {% endfor %}
         {% endif %}
 
@@ -40,13 +35,8 @@
 
         {% if content.block.secondary_content %}
             {% for content_block in content.block.secondary_content %}
-                <div id="{{ content_block.id }}" class="ons-u-mb-s">
-                    {% if content_block.title %}
-                        <h2>{{ content_block.title }}</h2>
-                    {% endif %}
-                    {% set contents = content_block.contents %}
-                    {% include 'partials/contents.html' %}
-                </div>
+                {% set titleTag = 'h2' %}
+                {% include 'partials/introduction/basic.html' %}
             {% endfor %}
         {% endif %}
     {% endblock intro_content %}
