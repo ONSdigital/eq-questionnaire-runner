@@ -12,31 +12,43 @@
 {% block main %}
 
     {% block intro_content %}
-      {% if content.block.primary_content %}
-          {% for content_block in content.block.primary_content %}
-              {% include 'partials/introduction/basic.html' %}
-          {% endfor %}
-      {% endif %}
+        {% if content.block.primary_content %}
+            {% for content_block in content.block.primary_content %}
+                <div id="{{content_block.id}}" class="ons-u-mb-s">
+                    {% if content_block.title %}
+                        <h1>{{ content_block.title }}</h1>
+                    {% endif %}
+                    {% set contents = content_block.contents %}
+                    {% include 'partials/contents.html' %}
+                </div>
+            {% endfor %}
+        {% endif %}
 
-      {%- if legal_basis -%}
-          <h2 class="ons-u-mb-xs" data-qa="legal-response">{{ _("Your response is legally required") }}</h2>
-          <p class="ons-u-mb-m" data-qa="legal-basis">{{ legal_basis }}</p>
-      {%- endif -%}
+        {%- if legal_basis -%}
+            <h2 class="ons-u-mb-xs" data-qa="legal-response">{{ _("Your response is legally required") }}</h2>
+            <p class="ons-u-mb-m" data-qa="legal-basis">{{ legal_basis }}</p>
+        {%- endif -%}
 
-      {% block start_survey %}
-          {% include 'partials/introduction/start-survey.html' %}
-      {% endblock start_survey %}
+        {% block start_survey %}
+            {% include 'partials/introduction/start-survey.html' %}
+        {% endblock start_survey %}
 
-      {% if content.block.preview_content %}
-          {% set intro = content.block.preview_content %}
-          {% include 'partials/introduction/preview.html' %}
-      {% endif %}
+        {% if content.block.preview_content %}
+            {% set intro = content.block.preview_content %}
+            {% include 'partials/introduction/preview.html' %}
+        {% endif %}
 
-      {% if content.block.secondary_content %}
-          {% for content_block in content.block.secondary_content %}
-              {% include 'partials/introduction/basic.html' %}
-          {% endfor %}
-      {% endif %}
+        {% if content.block.secondary_content %}
+            {% for content_block in content.block.secondary_content %}
+                <div id="{{content_block.id}}" class="ons-u-mb-s">
+                    {% if content_block.title %}
+                        <h2>{{ content_block.title }}</h2>
+                    {% endif %}
+                    {% set contents = content_block.contents %}
+                    {% include 'partials/contents.html' %}
+                </div>
+            {% endfor %}
+        {% endif %}
     {% endblock intro_content %}
 
 {% endblock %}
