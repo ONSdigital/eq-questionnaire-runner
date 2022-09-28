@@ -43,7 +43,7 @@ def flush_data():
 
         metadata = get_metadata(user)
 
-        if metadata and (tx_id := metadata["tx_id"]):
+        if metadata and (tx_id := metadata.tx_id):
             logger.bind(tx_id=tx_id)
         if _submit_data(user):
             return Response(status=200)
@@ -88,12 +88,16 @@ def _submit_data(user):
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
         )
 
-        receipting_keys = metadata["receipting_keys"]
+        receipting_keys = (
+            metadata.survey_metadata.receipting_keys
+            if metadata.survey_metadata
+            else None
+        )
 
         sent = current_app.eq["submitter"].send_message(
             encrypted_message,
-            tx_id=metadata["tx_id"],
-            case_id=metadata["case_id"],
+            tx_id=metadata.tx_id,
+            case_id=metadata.case_id,
             receipting_keys=receipting_keys,
         )
 

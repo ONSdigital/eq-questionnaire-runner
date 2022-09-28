@@ -86,14 +86,14 @@ def before_questionnaire_request():
         return redirect(url_for("post_submission.get_thank_you"))
 
     logger.bind(
-        tx_id=metadata["tx_id"],
-        ce_id=metadata["collection_exercise_sid"],
+        tx_id=metadata.tx_id,
+        ce_id=metadata.collection_exercise_sid,
     )
 
-    if schema_name := metadata["schema_name"]:
+    if schema_name := metadata.schema_name:
         logger.bind(schema_name=schema_name)
 
-    if schema_url := metadata["schema_url"]:
+    if schema_url := metadata.schema_url:
         logger.bind(schema_url=schema_url)
 
     logger.info(
@@ -129,15 +129,15 @@ def before_post_submission_request():
 
     # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
-        metadata=questionnaire_store.metadata, language_code=get_locale().language
+        metadata=metadata, language_code=get_locale().language
     )
 
-    logger.bind(tx_id=metadata["tx_id"])
+    logger.bind(tx_id=metadata.tx_id)
 
-    if schema_name := metadata["schema_name"]:
+    if schema_name := metadata.schema_name:
         logger.bind(schema_name=schema_name)
 
-    if schema_url := metadata["schema_url"]:
+    if schema_url := metadata.schema_url:
         logger.bind(schema_url=schema_url)  # pragma: no cover
 
     logger.info(

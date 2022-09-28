@@ -23,9 +23,7 @@ def test_submission_language_code_uses_session_data_language_if_present(
     submission_handler = SubmissionHandler(
         QuestionnaireSchema({}), mock_questionnaire_store, {}
     )
-    assert (
-        submission_handler.get_payload(version=None)["submission_language_code"] == "cy"
-    )
+    assert submission_handler.get_payload()["submission_language_code"] == "cy"
 
 
 @pytest.mark.usefixtures("app")
@@ -54,9 +52,7 @@ def test_submission_language_code_uses_default_language_if_session_data_language
     submission_handler = SubmissionHandler(
         QuestionnaireSchema({}), mock_questionnaire_store, {}
     )
-    assert (
-        submission_handler.get_payload(version=None)["submission_language_code"] == "en"
-    )
+    assert submission_handler.get_payload()["submission_language_code"] == "en"
 
 
 @freeze_time(datetime.now(timezone.utc).replace(second=0, microsecond=0))
@@ -124,7 +120,7 @@ def test_submission_payload_structure_v1(
             mock_questionnaire_store,
             full_routing_path=[],
         )
-        payload = submission_handler.get_payload(None)
+        payload = submission_handler.get_payload()
 
         assert expected_payload == payload
 
@@ -178,6 +174,6 @@ def test_submission_payload_structure_v2(
             mock_questionnaire_store_v2,
             full_routing_path=[],
         )
-        payload = submission_handler.get_payload("v2")
+        payload = submission_handler.get_payload()
 
         assert expected_payload == payload

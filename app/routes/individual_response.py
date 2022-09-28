@@ -51,14 +51,14 @@ def before_individual_response_request():
         return redirect(url_for("post_submission.get_thank_you"))
 
     logger.bind(
-        tx_id=metadata["tx_id"],
-        ce_id=metadata["collection_exercise_sid"],
+        tx_id=metadata.tx_id,
+        ce_id=metadata.collection_exercise_sid,
     )
 
-    if schema_name := metadata["schema_name"]:
+    if schema_name := metadata.schema_name:
         logger.bind(schema_name=schema_name)
 
-    if schema_url := metadata["schema_url"]:
+    if schema_url := metadata.schema_url:
         logger.bind(schema_url=schema_url)  # pragma: no cover
 
     logger.info(

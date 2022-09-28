@@ -27,7 +27,7 @@ class SubmissionHandler:
         return datetime.now(timezone.utc).replace(microsecond=0)
 
     def submit_questionnaire(self):
-        payload = self.get_payload(self._metadata["version"])
+        payload = self.get_payload()
 
         message = json_dumps(payload)
 
@@ -52,8 +52,8 @@ class SubmissionHandler:
         self._questionnaire_store.submitted_at = self.submitted_at
         self._questionnaire_store.save()
 
-    def get_payload(self, version):
-        if version == "v2":
+    def get_payload(self):
+        if self._metadata["version"] == "v2":
             payload = convert_answers_v2(
                 self._schema,
                 self._questionnaire_store,

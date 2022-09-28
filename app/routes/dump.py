@@ -88,7 +88,5 @@ def dump_submission(schema, questionnaire_store):
 
     submission_handler = SubmissionHandler(schema, questionnaire_store, routing_path)
 
-    metadata = questionnaire_store.metadata
-
-    response = {"submission": submission_handler.get_payload(metadata["version"])}
+    response = {"submission": submission_handler.get_payload()}
     return json_dumps(response), 200
