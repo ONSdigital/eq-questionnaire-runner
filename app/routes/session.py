@@ -14,6 +14,7 @@ from app.authentication.jti_claim_storage import JtiTokenUsed, use_jti_claim
 from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_session_store, get_session_timeout_in_seconds
 from app.helpers.template_helpers import get_survey_config, render_template
+from app.survey_config.version import Version
 from app.utilities.metadata_parser import (
     validate_questionnaire_claims,
     validate_runner_claims,
@@ -70,7 +71,7 @@ def login():
     theme = g.schema.json["theme"]
     questionnaire_id = None
 
-    if decrypted_token.get("version") == "v2":
+    if decrypted_token.get("version") == Version.V2.value:
         runner_claims["survey_metadata"]["data"] = questionnaire_claims
 
         data = runner_claims.get("survey_metadata").get("data", {})
@@ -180,7 +181,7 @@ def get_runner_claims(decrypted_token):
     try:
         return (
             validate_runner_claims_v2(decrypted_token)
-            if decrypted_token.get("version") == "v2"
+            if decrypted_token.get("version") == Version.V2.value
             else validate_runner_claims(decrypted_token)
         )
 
@@ -192,7 +193,7 @@ def get_questionnaire_claims(decrypted_token, schema_metadata):
     try:
         return (
             validate_questionnaire_claims_v2(decrypted_token, schema_metadata)
-            if decrypted_token.get("version") == "v2"
+            if decrypted_token.get("version") == Version.V2.value
             else validate_questionnaire_claims(decrypted_token, schema_metadata)
         )
 

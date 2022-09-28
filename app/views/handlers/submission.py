@@ -11,6 +11,7 @@ from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.submitter.converter import convert_answers
 from app.submitter.converter_v2 import convert_answers_v2
 from app.submitter.submission_failed import SubmissionFailedException
+from app.survey_config.version import Version
 from app.utilities.json import json_dumps
 
 
@@ -53,7 +54,7 @@ class SubmissionHandler:
         self._questionnaire_store.save()
 
     def get_payload(self):
-        if self._metadata["version"] == "v2":
+        if self._metadata["version"] is Version.V2.value:
             payload = convert_answers_v2(
                 self._schema,
                 self._questionnaire_store,
