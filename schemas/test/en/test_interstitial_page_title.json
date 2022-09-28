@@ -24,10 +24,6 @@
         {
             "name": "ru_name",
             "type": "string"
-        },
-        {
-            "name": "case_id",
-            "type": "string"
         }
     ],
     "questionnaire_flow": {
@@ -46,14 +42,14 @@
                                 "title": {
                                     "placeholders": [
                                         {
-                                            "placeholder": "case_id",
+                                            "placeholder": "ru_name",
                                             "value": {
-                                                "identifier": "case_id",
+                                                "identifier": "ru_name",
                                                 "source": "metadata"
                                             }
                                         }
                                     ],
-                                    "text": "This is the content title <em>{case_id}</em>"
+                                    "text": "This is the content title <em>{ru_name}</em>"
                                 },
                                 "contents": [
                                     {
