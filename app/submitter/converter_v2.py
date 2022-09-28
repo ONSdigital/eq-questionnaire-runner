@@ -69,17 +69,13 @@ def convert_answers_v2(
         "launch_language_code": metadata["language_code"] or DEFAULT_LANGUAGE_CODE,  # type: ignore
     }
 
-    optional_survey_metadata_properties = get_optional_survey_metadata_properties(
-        metadata  # type: ignore
-    )
     optional_properties = get_optional_payload_properties(
         metadata, response_metadata  # type: ignore
     )
 
-    if metadata["survey_metadata"] and metadata["survey_metadata"].data:  # type: ignore
-        payload["survey_metadata"] = dict(metadata["survey_metadata"].data)  # type: ignore
-        payload["survey_metadata"]["survey_id"] = survey_id
-        payload["survey_metadata"].update(optional_survey_metadata_properties)  # type: ignore
+    payload["survey_metadata"] = {"survey_id": survey_id}
+    if metadata.survey_metadata:  # type: ignore
+        payload["survey_metadata"].update(metadata.survey_metadata.data)  # type: ignore
 
     payload["data"] = get_payload_data(
         data_version=schema.json["data_version"],
@@ -108,16 +104,6 @@ def get_optional_payload_properties(
         payload["started_at"] = started_at
 
     return payload
-
-
-def get_optional_survey_metadata_properties(metadata: MetadataProxy) -> MetadataType:
-    survey_metadata = {}
-
-    for key in ["form_type", "case_ref", "case_type"]:
-        if value := metadata[key]:
-            survey_metadata[key] = value
-
-    return survey_metadata
 
 
 def get_payload_data(
