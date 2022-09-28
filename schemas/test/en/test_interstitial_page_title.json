@@ -7,11 +7,6 @@
     "title": "Interstitial Page Titles",
     "theme": "default",
     "description": "A questionnaire to demo interstitial pages titles.",
-    "messages": {
-        "NUMBER_TOO_LARGE": "Number is too large",
-        "NUMBER_TOO_SMALL": "Number cannot be less than zero",
-        "INVALID_NUMBER": "Please enter an integer"
-    },
     "metadata": [
         {
             "name": "user_id",
@@ -37,7 +32,7 @@
                 {
                     "blocks": [
                         {
-                            "id": "breakfast-interstitial",
+                            "id": "interstitial-page",
                             "content": {
                                 "title": {
                                     "placeholders": [
@@ -49,19 +44,19 @@
                                             }
                                         }
                                     ],
-                                    "text": "This is the content title <em>{ru_name}</em>"
+                                    "text": "Your RU name: <em>{ru_name}</em>"
                                 },
                                 "contents": [
                                     {
-                                        "description": "You have successfully completed the breakfast section. Next we want to know about your lunch."
+                                        "description": "You have successfully completed the section."
                                     }
                                 ]
                             },
                             "type": "Interstitial"
                         }
                     ],
-                    "id": "favourite-foods",
-                    "title": "Favourite food"
+                    "id": "interstitial-page-titles",
+                    "title": "Interstitial page titles"
                 }
             ]
         }
