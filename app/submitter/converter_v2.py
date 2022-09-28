@@ -47,52 +47,53 @@ def convert_answers_v2(
     Returns:
         Data payload
     """
-    if metadata := questionnaire_store.metadata:
-        response_metadata = questionnaire_store.response_metadata
-        answer_store = questionnaire_store.answer_store
-        list_store = questionnaire_store.list_store
+    # type ignores added as metadata will exist at this point
+    metadata = questionnaire_store.metadata
+    response_metadata = questionnaire_store.response_metadata
+    answer_store = questionnaire_store.answer_store
+    list_store = questionnaire_store.list_store
 
-        survey_id = schema.json["survey_id"]
+    survey_id = schema.json["survey_id"]
 
-        payload: dict = {
-            "case_id": metadata["case_id"],
-            "tx_id": metadata["tx_id"],
-            "type": "uk.gov.ons.edc.eq:surveyresponse",
-            "version": metadata["version"],
-            "data_version": schema.json["data_version"],
-            "origin": "uk.gov.ons.edc.eq",
-            "collection_exercise_sid": metadata["collection_exercise_sid"],
-            "schema_name": metadata["schema_name"],
-            "flushed": flushed,
-            "submitted_at": submitted_at.isoformat(),
-            "launch_language_code": metadata["language_code"] or DEFAULT_LANGUAGE_CODE,
-        }
+    payload: dict = {
+        "case_id": metadata.case_id,  # type: ignore
+        "tx_id": metadata.tx_id,  # type: ignore
+        "type": "uk.gov.ons.edc.eq:surveyresponse",
+        "version": metadata.version,  # type: ignore
+        "data_version": schema.json["data_version"],
+        "origin": "uk.gov.ons.edc.eq",
+        "collection_exercise_sid": metadata.collection_exercise_sid,  # type: ignore
+        "schema_name": metadata.schema_name,  # type: ignore
+        "flushed": flushed,
+        "submitted_at": submitted_at.isoformat(),
+        "launch_language_code": metadata["language_code"] or DEFAULT_LANGUAGE_CODE,  # type: ignore
+    }
 
-        optional_survey_metadata_properties = get_optional_survey_metadata_properties(
-            metadata
-        )
-        optional_properties = get_optional_payload_properties(
-            metadata, response_metadata
-        )
+    optional_survey_metadata_properties = get_optional_survey_metadata_properties(
+        metadata  # type: ignore
+    )
+    optional_properties = get_optional_payload_properties(
+        metadata, response_metadata  # type: ignore
+    )
 
-        if metadata["survey_metadata"] and metadata["survey_metadata"].data:
-            payload["survey_metadata"] = dict(metadata["survey_metadata"].data)
-            payload["survey_metadata"]["survey_id"] = survey_id
-            payload["survey_metadata"].update(optional_survey_metadata_properties)  # type: ignore
+    if metadata["survey_metadata"] and metadata["survey_metadata"].data:  # type: ignore
+        payload["survey_metadata"] = dict(metadata["survey_metadata"].data)  # type: ignore
+        payload["survey_metadata"]["survey_id"] = survey_id
+        payload["survey_metadata"].update(optional_survey_metadata_properties)  # type: ignore
 
-        payload["data"] = get_payload_data(
-            data_version=schema.json["data_version"],
-            answer_store=answer_store,
-            list_store=list_store,
-            schema=schema,
-            routing_path=routing_path,
-            metadata=metadata,
-            response_metadata=response_metadata,
-        )
+    payload["data"] = get_payload_data(
+        data_version=schema.json["data_version"],
+        answer_store=answer_store,
+        list_store=list_store,
+        schema=schema,
+        routing_path=routing_path,
+        metadata=metadata,  # type: ignore
+        response_metadata=response_metadata,
+    )
 
-        logger.info("converted answer ready for submission")
+    logger.info("converted answer ready for submission")
 
-        return payload | optional_properties
+    return payload | optional_properties
 
 
 def get_optional_payload_properties(

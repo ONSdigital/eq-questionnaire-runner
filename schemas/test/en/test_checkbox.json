@@ -24,6 +24,10 @@
         {
             "name": "ru_name",
             "type": "string"
+        },
+        {
+            "name": "ru_ref",
+            "type": "string"
         }
     ],
     "questionnaire_flow": {

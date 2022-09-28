@@ -270,18 +270,19 @@ class FeedbackPayload:
         self.feedback_type = feedback_type
 
     def __call__(self) -> dict[str, Any]:
+        # type ignores added as metadata will exist at this point
         payload = {
             "origin": "uk.gov.ons.edc.eq",
             "case_id": self.case_id,
             "submitted_at": datetime.now(tz=timezone.utc).isoformat(),
             "flushed": False,
-            "collection": build_collection(self.metadata),
-            "metadata": build_metadata(self.metadata),
+            "collection": build_collection(self.metadata),  # type: ignore
+            "metadata": build_metadata(self.metadata),  # type: ignore
             "survey_id": self.schema.json["survey_id"],
             "submission_language_code": (
                 self.submission_language_code or DEFAULT_LANGUAGE_CODE
             ),
-            "tx_id": self.metadata["tx_id"] if self.metadata else None,
+            "tx_id": self.metadata.tx_id if self.metadata else None,
             "type": "uk.gov.ons.edc.eq:feedback",
             "launch_language_code": self.metadata["language_code"]
             if self.metadata
@@ -290,7 +291,7 @@ class FeedbackPayload:
         }
 
         optional_properties = get_optional_payload_properties(
-            self.metadata, self.response_metadata
+            self.metadata, self.response_metadata  # type: ignore
         )
 
         payload["data"] = {
