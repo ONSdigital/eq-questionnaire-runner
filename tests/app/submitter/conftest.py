@@ -14,12 +14,9 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.submitter import RabbitMQSubmitter
-from app.utilities.metadata_parser import (
-    validate_questionnaire_claims,
-    validate_runner_claims,
-)
+from app.utilities.metadata_parser import validate_runner_claims
 from app.utilities.metadata_parser_v2 import (
-    validate_questionnaire_claims_v2,
+    validate_questionnaire_claims,
     validate_runner_claims_v2,
 )
 
@@ -74,7 +71,9 @@ def fake_metadata():
 def fake_metadata_v2():
     def parse_metadata_v2(claims, schema_metadata):
         runner_claims = validate_runner_claims_v2(claims)
-        questionnaire_claims = validate_questionnaire_claims_v2(claims, schema_metadata)
+        questionnaire_claims = validate_questionnaire_claims(
+            claims["survey_metadata"]["data"], schema_metadata
+        )
 
         for key, value in questionnaire_claims.items():
             runner_claims["survey_metadata"]["data"][key] = value

@@ -142,41 +142,6 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         )
 
 
-def validate_questionnaire_claims(claims, questionnaire_specific_metadata):
-    """Validate any survey specific claims required for a questionnaire"""
-    dynamic_fields = {}
-
-    for metadata_field in questionnaire_specific_metadata:
-        field_arguments = {}
-        validators = []
-
-        if metadata_field.get("optional"):
-            field_arguments["required"] = False
-
-        if any(
-            length_limit in metadata_field
-            for length_limit in ("min_length", "max_length", "length")
-        ):
-            validators.append(
-                validate.Length(
-                    min=metadata_field.get("min_length"),
-                    max=metadata_field.get("max_length"),
-                    equal=metadata_field.get("length"),
-                )
-            )
-
-        dynamic_fields[metadata_field["name"]] = VALIDATORS[metadata_field["type"]](
-            validate=validators, **field_arguments
-        )
-
-    questionnaire_metadata_schema = type(
-        "QuestionnaireMetadataSchema", (Schema, StripWhitespaceMixin), dynamic_fields
-    )(unknown=EXCLUDE)
-
-    # The load method performs validation.
-    return questionnaire_metadata_schema.load(claims)
-
-
 def validate_runner_claims(claims: Dict):
     """Validate claims required for runner to function"""
     runner_metadata_schema = RunnerMetadataSchema(unknown=EXCLUDE)

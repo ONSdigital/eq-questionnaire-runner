@@ -4,10 +4,8 @@ import pytest
 from freezegun import freeze_time
 from marshmallow import ValidationError
 
-from app.utilities.metadata_parser import (
-    validate_questionnaire_claims,
-    validate_runner_claims,
-)
+from app.utilities.metadata_parser import validate_runner_claims
+from app.utilities.metadata_parser_v2 import validate_questionnaire_claims
 
 
 def test_spaces_are_stripped_from_string_fields(fake_metadata_runner):

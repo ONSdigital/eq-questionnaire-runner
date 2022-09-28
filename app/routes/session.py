@@ -15,12 +15,9 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_session_store, get_session_timeout_in_seconds
 from app.helpers.template_helpers import get_survey_config, render_template
 from app.survey_config.version import Version
-from app.utilities.metadata_parser import (
-    validate_questionnaire_claims,
-    validate_runner_claims,
-)
+from app.utilities.metadata_parser import validate_runner_claims
 from app.utilities.metadata_parser_v2 import (
-    validate_questionnaire_claims_v2,
+    validate_questionnaire_claims,
     validate_runner_claims_v2,
 )
 from app.utilities.schema import load_schema_from_metadata
@@ -191,11 +188,12 @@ def get_runner_claims(decrypted_token):
 
 def get_questionnaire_claims(decrypted_token, schema_metadata):
     try:
-        return (
-            validate_questionnaire_claims_v2(decrypted_token, schema_metadata)
-            if decrypted_token.get("version") == Version.V2.value
-            else validate_questionnaire_claims(decrypted_token, schema_metadata)
-        )
+        if decrypted_token.get("version") == Version.V2.value:
+            claims = decrypted_token.get("survey_metadata", {}).get("data", {})
+        else:
+            claims = decrypted_token
+
+        return validate_questionnaire_claims(claims, schema_metadata)
 
     except ValidationError as e:
         raise InvalidTokenException("Invalid questionnaire claims") from e
