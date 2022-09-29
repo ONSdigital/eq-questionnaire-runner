@@ -43,6 +43,7 @@ class SubmissionHandler:
             case_id=self._metadata["case_id"],
             tx_id=self._metadata["tx_id"],
             receipting_keys=receipting_keys,
+            metadata=self._questionnaire_store.metadata,
         )
 
         if not submitted:

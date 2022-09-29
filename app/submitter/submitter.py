@@ -7,6 +7,8 @@ from pika import BasicProperties, BlockingConnection, URLParameters
 from pika.exceptions import AMQPError, NackError, UnroutableError
 from structlog import get_logger
 
+from app.data_models.metadata_proxy import MetadataProxy
+
 logger = get_logger()
 
 MetadataType = Mapping[str, str]
@@ -15,7 +17,11 @@ MetadataType = Mapping[str, str]
 class LogSubmitter:
     @staticmethod
     def send_message(
-        message: str, tx_id: str, case_id: str, receipting_keys: Optional[tuple] = None
+        message: str,
+        tx_id: str,
+        case_id: str,
+        receipting_keys: Optional[tuple] = None,
+        metadata: Optional[MetadataProxy] = None,
     ) -> bool:
         logger.info("sending message")
         logger.info(
@@ -24,6 +30,7 @@ class LogSubmitter:
             case_id=case_id,
             tx_id=tx_id,
             receipting_keys=receipting_keys,
+            metadata=metadata,
         )
 
         return True
@@ -40,6 +47,7 @@ class GCSSubmitter:
         tx_id: str,
         case_id: str,
         receipting_keys: Optional[tuple] = None,
+        questionnaire_store_metadata: Optional[MetadataProxy] = None,
     ) -> bool:
         logger.info("sending message")
 
@@ -48,7 +56,7 @@ class GCSSubmitter:
 
         if receipting_keys:
             for item in receipting_keys:
-                metadata[item] = item
+                metadata[item] = questionnaire_store_metadata[item]  # type: ignore
 
         blob.metadata = metadata
 
