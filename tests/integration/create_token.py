@@ -117,16 +117,14 @@ class TokenGenerator:
         return self.generate_token(payload_vars)
 
     def create_token_v2(self, schema_name, theme="default", **extra_payload):
-        if theme == "social":
-            payload_vars = self._get_payload_with_params_v2(
-                schema_name, PAYLOAD_V2_SOCIAL, None, **extra_payload
-            )
-        else:
-            payload_vars = self._get_payload_with_params_v2(
-                schema_name, PAYLOAD_V2_BUSINESS, None, **extra_payload
-            )
+        payload_for_theme = (
+            PAYLOAD_V2_SOCIAL if theme == "social" else PAYLOAD_V2_BUSINESS
+        )
+        payload = self._get_payload_with_params_v2(
+            schema_name, payload_for_theme, None, **extra_payload
+        )
 
-        return self.generate_token(payload_vars)
+        return self.generate_token(payload)
 
     def create_token_without_jti(self, schema_name, **extra_payload):
         payload_vars = self._get_payload_with_params(schema_name, None, **extra_payload)
