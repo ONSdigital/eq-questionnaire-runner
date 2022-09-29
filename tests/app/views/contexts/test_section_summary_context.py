@@ -152,6 +152,7 @@ def test_context_for_section_list_summary(people_answer_store):
     expected = {
         "summary": {
             "answers_are_editable": True,
+            "headers": ["Question", "Answer given", "Change answer"],
             "collapsible": False,
             "custom_summary": [
                 {
@@ -237,6 +238,7 @@ def test_context_for_driving_question_summary_empty_list():
     expected = {
         "summary": {
             "answers_are_editable": True,
+            "headers": ["Question", "Answer given", "Change answer"],
             "collapsible": False,
             "custom_summary": [None],
             "page_title": "List Collector Driving Question Summary",
@@ -281,6 +283,7 @@ def test_context_for_driving_question_summary():
     expected = {
         "summary": {
             "answers_are_editable": True,
+            "headers": ["Question", "Answer given", "Change answer"],
             "collapsible": False,
             "custom_summary": [
                 {

@@ -191,9 +191,7 @@ class Operations:
     ) -> list[Union[ValueSourceTypes, date]]:
         resolved_operands = []
         for operand in operands:
-            if isinstance(operand, dict) and any(
-                operator in operand for operator in OPERATION_MAPPING
-            ):
+            if isinstance(operand, dict) and QuestionnaireSchema.has_operator(operand):
                 operator_name = next(iter(operand))
                 resolved_nested_operands = self._resolve_self_reference(
                     self_reference_value, operand[operator_name]
@@ -201,7 +199,6 @@ class Operations:
                 resolved_value = getattr(self, OPERATION_MAPPING[operator_name])(
                     *resolved_nested_operands
                 )
-
             else:
                 resolved_value = (
                     self_reference_value if operand == SELF_REFERENCE_KEY else operand

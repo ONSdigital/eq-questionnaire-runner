@@ -43,7 +43,6 @@ class SubmissionHandler:
 
         cookie_session["submitted"] = True
 
-        self._store_display_address_in_session()
         self._questionnaire_store.submitted_at = self.submitted_at
         self._questionnaire_store.save()
 
@@ -58,8 +57,3 @@ class SubmissionHandler:
             self._session_store.session_data.language_code or DEFAULT_LANGUAGE_CODE
         )
         return payload
-
-    def _store_display_address_in_session(self):
-        session_data = self._session_store.session_data
-        session_data.display_address = self._metadata.get("display_address")
-        self._session_store.save()
