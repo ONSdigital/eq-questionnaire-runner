@@ -53,7 +53,7 @@ def test_build_view_context_for_section_summary(
 
     assert "summary" in context
     assert_summary_context(context)
-    assert len(context["summary"]) == 7
+    assert len(context["summary"]) == 8
     assert "title" in context["summary"]
 
 
