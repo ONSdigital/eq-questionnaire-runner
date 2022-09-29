@@ -3,7 +3,11 @@ from datetime import datetime, timezone
 from freezegun import freeze_time
 
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
-from app.views.handlers.feedback import FeedbackMetadata, FeedbackPayload
+from app.views.handlers.feedback import (
+    FeedbackMetadata,
+    FeedbackPayload,
+    FeedbackPayloadV2,
+)
 
 from .conftest import (
     case_id,
@@ -19,9 +23,11 @@ from .conftest import (
     form_type,
     language_code,
     period_id,
+    period_str,
     ref_p_end_date,
     ref_p_start_date,
     region_code,
+    ru_name,
     ru_ref,
     schema_name,
     started_at,
@@ -81,6 +87,61 @@ def test_feedback_payload(
         "channel": channel,
         "region_code": region_code,
         "case_ref": case_ref,
+    }
+
+    assert expected_payload == feedback_payload()
+
+
+@freeze_time(datetime.now(tz=timezone.utc).isoformat())
+def test_feedback_payload_v2(
+    session_data_feedback, schema_feedback, metadata_v2, response_metadata
+):
+    feedback_payload = FeedbackPayloadV2(
+        metadata=metadata_v2,
+        response_metadata=response_metadata,
+        schema=schema_feedback,
+        case_id=case_id,
+        submission_language_code=language_code,
+        feedback_count=session_data_feedback.feedback_count,
+        feedback_text=feedback_text,
+        feedback_type=feedback_type,
+    )
+
+    expected_payload = {
+        "case_id": case_id,
+        "channel": channel,
+        "collection_exercise_sid": collection_exercise_sid,
+        "data": {
+            "feedback_count": str(feedback_count),
+            "feedback_text": feedback_text,
+            "feedback_type": feedback_type,
+        },
+        "data_version": data_version,
+        "flushed": False,
+        "launch_language_code": None,
+        "origin": "uk.gov.ons.edc.eq",
+        "region_code": region_code,
+        "schema_name": schema_name,
+        "started_at": started_at,
+        "submission_language_code": language_code,
+        "submitted_at": datetime.now(tz=timezone.utc).isoformat(),
+        "survey_metadata": {
+            "survey_id": survey_id,
+            "case_ref": case_ref,
+            "case_type": case_type,
+            "display_address": display_address,
+            "form_type": form_type,
+            "period_id": period_id,
+            "period_str": period_str,
+            "ref_p_end_date": ref_p_end_date,
+            "ref_p_start_date": ref_p_start_date,
+            "ru_name": ru_name,
+            "ru_ref": ru_ref,
+            "user_id": user_id,
+        },
+        "tx_id": tx_id,
+        "type": "uk.gov.ons.edc.eq:feedback",
+        "version": "v2",
     }
 
     assert expected_payload == feedback_payload()

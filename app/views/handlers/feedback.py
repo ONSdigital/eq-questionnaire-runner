@@ -17,11 +17,13 @@ from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,
 )
+from app.submitter import converter_v2
 from app.submitter.converter import (
     build_collection,
     build_metadata,
     get_optional_payload_properties,
 )
+from app.survey_config.version import Version
 from app.views.contexts.feedback_form_context import build_feedback_context
 
 
@@ -95,16 +97,29 @@ class Feedback:
 
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
-        feedback_message = FeedbackPayload(
-            metadata=metadata,
-            response_metadata=self._questionnaire_store.response_metadata,
-            schema=self._schema,
-            case_id=case_id,
-            submission_language_code=session_data.language_code,
-            feedback_count=session_data.feedback_count,
-            feedback_text=self.form.data.get("feedback-text"),
-            feedback_type=self.form.data.get("feedback-type"),
-        )
+        # type ignore as metadata will exist at this point
+        if metadata.version is Version.V2.value:  # type: ignore
+            feedback_message = FeedbackPayloadV2(
+                metadata=metadata,  # type: ignore
+                response_metadata=self._questionnaire_store.response_metadata,
+                schema=self._schema,
+                case_id=case_id,
+                submission_language_code=session_data.language_code,
+                feedback_count=session_data.feedback_count,
+                feedback_text=self.form.data.get("feedback-text"),
+                feedback_type=self.form.data.get("feedback-type"),
+            )
+        else:
+            feedback_message = FeedbackPayload(
+                metadata=metadata,  # type: ignore
+                response_metadata=self._questionnaire_store.response_metadata,
+                schema=self._schema,
+                case_id=case_id,
+                submission_language_code=session_data.language_code,
+                feedback_count=session_data.feedback_count,
+                feedback_text=self.form.data.get("feedback-text"),
+                feedback_type=self.form.data.get("feedback-type"),
+            )
 
         feedback_message().update(feedback_metadata())
         encrypted_message = encrypt(
@@ -251,7 +266,7 @@ class FeedbackPayload:
 
     def __init__(
         self,
-        metadata: Optional[MetadataProxy],
+        metadata: MetadataProxy,
         response_metadata: Mapping[str, Union[str, int, list]],
         schema: QuestionnaireSchema,
         case_id: Optional[str],
@@ -291,6 +306,83 @@ class FeedbackPayload:
         }
 
         optional_properties = get_optional_payload_properties(
+            self.metadata, self.response_metadata  # type: ignore
+        )
+
+        payload["data"] = {
+            "feedback_text": self.feedback_text,
+            "feedback_type": self.feedback_type,
+            "feedback_count": str(self.feedback_count),
+        }
+
+        return payload | optional_properties
+
+
+class FeedbackPayloadV2:
+    """
+    Create the feedback payload object for down stream processing in the following format:
+    v0.0.1: https://github.com/ONSdigital/ons-schema-definitions/blob/main/examples/eq_runner_to_downstream/payload_v2/business/feedback_0_0_1.json
+    v0.0.3: https://github.com/ONSdigital/ons-schema-definitions/blob/main/examples/eq_runner_to_downstream/payload_v2/business/feedback_0_0_3.json
+    ```
+    :param metadata: Questionnaire metadata
+    :param response_metadata: Response metadata
+    :param schema: QuestionnaireSchema class with populated schema json
+    :param case_id: Questionnaire case id
+    :param submission_language_code: Language being used at the point of feedback submission
+    :param feedback_count: Number of feedback submissions attempted by the user
+    :param feedback_text: Feedback text input by the user
+    :param feedback_type: Type of feedback selected by the user
+
+
+    :return payload: Feedback payload object
+    """
+
+    def __init__(
+        self,
+        metadata: MetadataProxy,
+        response_metadata: Mapping[str, Union[str, int, list]],
+        schema: QuestionnaireSchema,
+        case_id: Optional[str],
+        submission_language_code: Optional[str],
+        feedback_count: int,
+        feedback_text: str,
+        feedback_type: str,
+    ):
+        self.metadata = metadata
+        self.response_metadata = response_metadata
+        self.case_id = case_id
+        self.schema = schema
+        self.submission_language_code = submission_language_code
+        self.feedback_count = feedback_count
+        self.feedback_text = feedback_text
+        self.feedback_type = feedback_type
+
+    def __call__(self) -> dict[str, Any]:
+        # type ignores added as metadata will exist at this point
+        payload = {
+            "tx_id": self.metadata.tx_id if self.metadata else None,
+            "type": "uk.gov.ons.edc.eq:feedback",
+            "version": "v2",
+            "data_version": self.schema.json["data_version"],
+            "origin": "uk.gov.ons.edc.eq",
+            "flushed": False,
+            "submitted_at": datetime.now(tz=timezone.utc).isoformat(),
+            "launch_language_code": self.metadata["language_code"]
+            if self.metadata
+            else DEFAULT_LANGUAGE_CODE,
+            "submission_language_code": (
+                self.submission_language_code or DEFAULT_LANGUAGE_CODE
+            ),
+            "collection_exercise_sid": self.metadata.collection_exercise_sid,
+            "schema_name": self.metadata.schema_name,
+            "case_id": self.case_id,
+            "survey_metadata": {"survey_id": self.schema.json["survey_id"]},
+        }
+
+        if self.metadata.survey_metadata:  # type: ignore
+            payload["survey_metadata"] |= self.metadata.survey_metadata.data  # type: ignore
+
+        optional_properties = converter_v2.get_optional_payload_properties(
             self.metadata, self.response_metadata  # type: ignore
         )
 

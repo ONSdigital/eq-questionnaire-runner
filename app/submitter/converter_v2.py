@@ -36,7 +36,7 @@ def convert_answers_v2(
 ) -> dict[str, Any]:
     """
     Create the JSON answer format for down stream processing, the format can be found here:
-    https://github.com/ONSdigital/ons-schema-definitions/docs/eq_runner_to_downstream_payload_v2.m
+    https://github.com/ONSdigital/ons-schema-definitions/blob/main/docs/eq_runner_to_downstream_payload_v2.md
 
     Args:
         schema: QuestionnaireSchema instance with populated schema json
