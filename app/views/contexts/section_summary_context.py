@@ -108,7 +108,20 @@ class SectionSummaryContext(Context):
         summary = self.section.get("summary", {})
         collapsible = {"collapsible": summary.get("collapsible", False)}
 
+        show_non_item_answers = summary.get("show_non_item_answers", False)
+
         if summary.get("items"):
+            if not show_non_item_answers:
+                summary_elements = {
+                    "custom_summary": list(
+                        self._custom_summary_elements(
+                            self.section["summary"]["items"],
+                        )
+                    )
+                }
+
+                return collapsible | summary_elements
+
             summary_elements = {
                 "custom_summary": list(
                     self._custom_summary_elements(
@@ -121,6 +134,7 @@ class SectionSummaryContext(Context):
             summary_elements = {}
 
         return {
+            **{"show_non_item_answers": show_non_item_answers},
             **collapsible,
             **summary_elements,
             "groups": [
@@ -204,11 +218,9 @@ class SectionSummaryContext(Context):
                 primary_person_edit_block_id=primary_person_edit_block_id,
             )
 
-            if current_list:
-                related_answers = self._get_related_answers(current_list.first)
-
-            else:
-                related_answers = None
+            related_answers = (
+                self._get_related_answers(current_list.first) if current_list else None
+            )
 
             return {
                 "title": rendered_summary["title"],
@@ -281,13 +293,17 @@ class SectionSummaryContext(Context):
             safe_content(self._schema.get_single_string_value(title)) if title else ""
         )
 
-    def _get_related_answers(self, list_item: str) -> list[str]:
-        return [
-            self._schema.get_answers_by_answer_id(answer.answer_id)[0]["label"]
-            for answer in self._answer_store
-            if answer.list_item_id == list_item
-            and "label" in self._schema.get_answers_by_answer_id(answer.answer_id)[0]
-        ][1:]
+    def _get_related_answers(self, list_id: str) -> list[str]:
+        section = self.section["id"]
+
+        # pylint: disable=protected-access
+        if related_answers := self._schema._get_related_answers_for_section(section):
+            return [
+                self._schema.get_answers_by_answer_id(answer.answer_id)[0]["label"]
+                for answer in self._answer_store
+                if answer.answer_id in related_answers
+                and answer.list_item_id == list_id
+            ]
 
     @staticmethod
     def _get_add_or_edit_blocks_primary(

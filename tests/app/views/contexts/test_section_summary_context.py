@@ -53,7 +53,7 @@ def test_build_view_context_for_section_summary(
 
     assert "summary" in context
     assert_summary_context(context)
-    assert len(context["summary"]) == 6
+    assert len(context["summary"]) == 7
     assert "title" in context["summary"]
 
 
@@ -178,7 +178,7 @@ def test_context_for_section_list_summary(people_answer_store):
                         ],
                     },
                     "list_name": "people",
-                    "related_answers": ["Last name"],
+                    "related_answers": None,
                     "title": "Household members staying overnight "
                     "on 13 October 2019 at 70 Abingdon "
                     "Road, Goathill",
@@ -201,14 +201,13 @@ def test_context_for_section_list_summary(people_answer_store):
                         ],
                     },
                     "list_name": "visitors",
-                    "related_answers": [],
+                    "related_answers": None,
                     "title": "Visitors staying overnight on 13 "
                     "October 2019 at 70 Abingdon Road, "
                     "Goathill",
                     "type": "List",
                 },
             ],
-            "groups": [{"blocks": [], "id": "group", "title": "Questions"}],
             "page_title": "People who live here and overnight visitors",
             "summary_type": "SectionSummary",
             "title": "People who live here and overnight visitors",
@@ -240,43 +239,6 @@ def test_context_for_driving_question_summary_empty_list():
             "answers_are_editable": True,
             "collapsible": False,
             "custom_summary": [None],
-            "groups": [
-                {
-                    "blocks": [
-                        {
-                            "id": "anyone-usually-live-at",
-                            "number": None,
-                            "question": {
-                                "answers": [
-                                    {
-                                        "currency": None,
-                                        "id": "anyone-usually-live-at-answer",
-                                        "label": None,
-                                        "link": "/questionnaire/anyone-usually-live-at/?return_to=section-summary&return_to_answer_id=anyone-usually-live-at-an"
-                                        "swer#anyone-usually-live-at-answer",
-                                        "type": "radio",
-                                        "unit": None,
-                                        "unit_length": None,
-                                        "value": {
-                                            "detail_answer_value": None,
-                                            "label": "No",
-                                        },
-                                    }
-                                ],
-                                "id": "anyone-usually-live-at-question",
-                                "number": None,
-                                "title": "Does anyone "
-                                "usually live at 1 "
-                                "Pleasant Lane?",
-                                "type": "General",
-                            },
-                            "title": None,
-                        }
-                    ],
-                    "id": "group",
-                    "title": "List",
-                }
-            ],
             "page_title": "List Collector Driving Question Summary",
             "summary_type": "SectionSummary",
             "title": "List Collector Driving Question Summary",
@@ -338,46 +300,9 @@ def test_context_for_driving_question_summary():
                         ],
                     },
                     "list_name": "people",
-                    "related_answers": ["Last name"],
+                    "related_answers": None,
                     "title": "Household members",
                     "type": "List",
-                }
-            ],
-            "groups": [
-                {
-                    "blocks": [
-                        {
-                            "id": "anyone-usually-live-at",
-                            "number": None,
-                            "question": {
-                                "answers": [
-                                    {
-                                        "currency": None,
-                                        "id": "anyone-usually-live-at-answer",
-                                        "label": None,
-                                        "link": "/questionnaire/anyone-usually-live-at/?return_to=section-summary&return_to_answer_id=anyone-usually-live-at-an"
-                                        "swer#anyone-usually-live-at-answer",
-                                        "type": "radio",
-                                        "unit": None,
-                                        "unit_length": None,
-                                        "value": {
-                                            "detail_answer_value": None,
-                                            "label": "Yes",
-                                        },
-                                    }
-                                ],
-                                "id": "anyone-usually-live-at-question",
-                                "number": None,
-                                "title": "Does anyone "
-                                "usually live at 1 "
-                                "Pleasant Lane?",
-                                "type": "General",
-                            },
-                            "title": None,
-                        }
-                    ],
-                    "id": "group",
-                    "title": "List",
                 }
             ],
             "page_title": "List Collector Driving Question Summary",
