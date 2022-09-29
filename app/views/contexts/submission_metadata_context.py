@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 from flask_babel import format_datetime, lazy_gettext
 
