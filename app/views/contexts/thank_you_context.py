@@ -38,7 +38,7 @@ def build_thank_you_context(
             "Your answers have been submitted for <span>{company_name}</span>"
         ).format(company_name=metadata["ru_name"])
     context_metadata = build_submission_metadata_context(
-        survey_type, submitted_at, metadata["tx_id"]  # type: ignore
+        survey_type, submitted_at, metadata.tx_id
     )
     return {
         "hide_sign_out_button": True,

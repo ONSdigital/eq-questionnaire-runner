@@ -42,7 +42,7 @@ def build_view_submitted_response_context(
     metadata = build_submission_metadata_context(
         survey_type,
         questionnaire_store.submitted_at,  # type: ignore
-        metadata["tx_id"] if metadata else None,
+        metadata.tx_id if metadata else None,  # type: ignore
     )
     context = {
         "hide_sign_out_button": True,
