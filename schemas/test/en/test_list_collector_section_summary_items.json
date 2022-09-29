@@ -44,10 +44,11 @@
                         "empty_list_text": "No UK company or branch added"
                     }
                 ],
-                "related_answers": [{
-                    "source": "answers",
-                    "identifier": "registration-number"
-                },
+                "related_answers": [
+                    {
+                        "source": "answers",
+                        "identifier": "registration-number"
+                    },
                     {
                         "source": "answers",
                         "identifier": "authorised-insurer-radio"
