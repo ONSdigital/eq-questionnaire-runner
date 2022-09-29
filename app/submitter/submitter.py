@@ -1,4 +1,4 @@
-from typing import Mapping, Optional
+from typing import Mapping, Optional, Sequence
 from uuid import uuid4
 
 from google.cloud import storage  # type: ignore
@@ -20,7 +20,7 @@ class LogSubmitter:
         message: str,
         tx_id: str,
         case_id: str,
-        receipting_keys: Optional[tuple] = None,
+        receipting_keys: Optional[Sequence] = None,
         metadata: Optional[MetadataProxy] = None,
     ) -> bool:
         logger.info("sending message")
