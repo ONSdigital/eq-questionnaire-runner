@@ -4,6 +4,7 @@ import pytest
 from flask import Flask, current_app
 from flask import session as cookie_session
 
+from app.data_models.metadata_proxy import MetadataProxy
 from app.helpers.template_helpers import ContextHelper, get_survey_config
 from app.questionnaire import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
@@ -331,7 +332,9 @@ def test_service_links_context(
         if is_authenticated:
             mocker.patch(
                 "app.helpers.template_helpers.get_metadata",
-                return_value={"ru_ref": "63782964754U", "tx_id": "tx_id"},
+                return_value=MetadataProxy.from_dict(
+                    {"ru_ref": "63782964754U", "tx_id": "tx_id"}
+                ),
             )
 
         result = ContextHelper(
