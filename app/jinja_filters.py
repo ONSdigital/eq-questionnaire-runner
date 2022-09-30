@@ -607,7 +607,8 @@ def map_list_collector_config(
     edit_link_aria_label: Optional[str] = None,
     remove_link_text: Optional[str] = None,
     remove_link_aria_label: Optional[str] = None,
-    related_answers: Optional[list] = None,
+    related_answers: Optional[dict] = None,
+    answer_title: Optional[str] = None,
 ) -> list[dict[str, list[dict[str, Any]]]]:
     rows = []
 
@@ -648,22 +649,43 @@ def map_list_collector_config(
                 }
             )
 
-        rows.append(
-            {
-                "rowItems": [
-                    {
-                        "iconType": icon,
-                        "actions": actions,
-                        "rowTitle": item_name,
-                        "id": list_item.get("list_item_id"),
-                        "rowTitleAttributes": {
-                            "data-qa": f"list-item-{index}-label",
-                            "data-list-item-id": list_item.get("list_item_id"),
-                        },
-                    }
-                ]
-            }
-        )
+        if answer_title:
+            rows.append(
+                {
+                    "rowItems": [
+                        {
+                            "iconType": icon,
+                            "actions": actions,
+                            "rowTitle": answer_title,
+                            "valueList": [{"text": item_name}],
+                            "id": list_item.get("list_item_id"),
+                            "rowTitleAttributes": {
+                                "data-qa": f"list-item-{index}-label",
+                                "data-list-item-id": list_item.get("list_item_id"),
+                            },
+                        }
+                    ]
+                }
+            )
+
+        else:
+            rows.append(
+                {
+                    "rowItems": [
+                        {
+                            "iconType": icon,
+                            "actions": actions,
+                            "rowTitle": item_name,
+                            "id": list_item.get("list_item_id"),
+                            "rowTitleAttributes": {
+                                "data-qa": f"list-item-{index}-label",
+                                "data-list-item-id": list_item.get("list_item_id"),
+                            },
+                        }
+                    ]
+                }
+            )
+
         if related_answers:
             rows[index - 1]["rowItems"].extend(
                 {
@@ -676,6 +698,9 @@ def map_list_collector_config(
                             "attributes": {"data-qa": f"list-item-change-{index}-link"},
                         }
                     ],
+                    "valueList": [
+                        {"text": related_answers[list_item["list_item_id"]][answer]}
+                    ],
                     "rowTitle": answer,
                     "id": list_item.get("list_item_id"),
                     "rowTitleAttributes": {
@@ -683,7 +708,7 @@ def map_list_collector_config(
                         "data-list-item-id": list_item.get("list_item_id"),
                     },
                 }
-                for answer in related_answers
+                for answer in related_answers[list_item["list_item_id"]]
             )
 
     return rows

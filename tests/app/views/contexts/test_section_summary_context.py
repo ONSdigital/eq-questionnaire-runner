@@ -152,12 +152,12 @@ def test_context_for_section_list_summary(people_answer_store):
     expected = {
         "summary": {
             "answers_are_editable": True,
-            "headers": ["Question", "Answer given", "Change answer"],
             "collapsible": False,
             "custom_summary": [
                 {
                     "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
                     "add_link_text": "Add someone to this " "household",
+                    "answer_title": "First name",
                     "empty_list_text": "There are no householders",
                     "list": {
                         "editable": True,
@@ -188,6 +188,7 @@ def test_context_for_section_list_summary(people_answer_store):
                 {
                     "add_link": "/questionnaire/visitors/add-visitor/?return_to=section-summary",
                     "add_link_text": "Add another visitor to this " "household",
+                    "answer_title": "First name",
                     "empty_list_text": "There are no visitors",
                     "list": {
                         "editable": True,
@@ -209,6 +210,7 @@ def test_context_for_section_list_summary(people_answer_store):
                     "type": "List",
                 },
             ],
+            "headers": ["Question", "Answer given", "Change answer"],
             "page_title": "People who live here and overnight visitors",
             "summary_type": "SectionSummary",
             "title": "People who live here and overnight visitors",
@@ -283,12 +285,12 @@ def test_context_for_driving_question_summary():
     expected = {
         "summary": {
             "answers_are_editable": True,
-            "headers": ["Question", "Answer given", "Change answer"],
             "collapsible": False,
             "custom_summary": [
                 {
                     "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
                     "add_link_text": "Add someone to this " "household",
+                    "answer_title": "First name",
                     "empty_list_text": "There are no householders",
                     "list": {
                         "editable": True,
@@ -308,12 +310,12 @@ def test_context_for_driving_question_summary():
                     "type": "List",
                 }
             ],
+            "headers": ["Question", "Answer given", "Change answer"],
             "page_title": "List Collector Driving Question Summary",
             "summary_type": "SectionSummary",
             "title": "List Collector Driving Question Summary",
         }
     }
-
     assert context == expected
 
 

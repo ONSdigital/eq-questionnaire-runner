@@ -10,6 +10,7 @@ from app.questionnaire.location import Location
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities import safe_content
 
+from ...data_models.list_store import ListModel
 from .context import Context
 from .list_context import ListContext
 from .summary import Group
@@ -225,8 +226,12 @@ class SectionSummaryContext(Context):
             )
 
             related_answers = (
-                self._get_related_answers(current_list.first) if current_list else None
+                self._get_related_answers(current_list) if current_list else None
             )
+
+            answer_title = list_collector_block["add_block"]["question"]["answers"][0][
+                "label"
+            ]
 
             return {
                 "title": rendered_summary["title"],
@@ -236,6 +241,7 @@ class SectionSummaryContext(Context):
                 "empty_list_text": rendered_summary.get("empty_list_text"),
                 "list_name": rendered_summary["for_list"],
                 "related_answers": related_answers,
+                "answer_title": answer_title,
                 **list_summary_context,
             }
 
@@ -269,7 +275,11 @@ class SectionSummaryContext(Context):
                 for_list_item_ids=current_list.primary_person,
             )
 
-            related_answers = self._get_related_answers(current_list.first)
+            related_answers = self._get_related_answers(current_list)
+
+            answer_title = list_collector_block["add_block"]["question"]["answers"][0][
+                "label"
+            ]
 
             return {
                 "title": rendered_summary["title"],
@@ -279,6 +289,7 @@ class SectionSummaryContext(Context):
                 "empty_list_text": rendered_summary.get("empty_list_text"),
                 "list_name": rendered_summary["for_list"],
                 "related_answers": related_answers,
+                "answer_title": answer_title,
                 **list_summary_context,
             }
 
@@ -299,17 +310,28 @@ class SectionSummaryContext(Context):
             safe_content(self._schema.get_single_string_value(title)) if title else ""
         )
 
-    def _get_related_answers(self, list_id: str) -> list[str]:
+    def _get_related_answers(self, current_list: ListModel) -> dict[str, dict]:
         section = self.section["id"]
 
         # pylint: disable=protected-access
         if related_answers := self._schema._get_related_answers_for_section(section):
-            return [
-                self._schema.get_answers_by_answer_id(answer.answer_id)[0]["label"]
-                for answer in self._answer_store
-                if answer.answer_id in related_answers
-                and answer.list_item_id == list_id
-            ]
+            related_answers_dict = {}
+            for list_id in current_list:
+                keys = [
+                    self._schema.get_answers_by_answer_id(answer.answer_id)[0]["label"]
+                    for answer in self._answer_store
+                    if answer.answer_id in related_answers
+                    and answer.list_item_id == list_id
+                ]
+                values = [
+                    answer.value
+                    for answer in self._answer_store
+                    if answer.answer_id in related_answers
+                    and answer.list_item_id == list_id
+                ]
+                related_answers_dict[list_id] = dict(zip(keys, values))
+
+            return related_answers_dict
 
     @staticmethod
     def _get_add_or_edit_blocks_primary(
