@@ -48,7 +48,7 @@ class Data(Schema, StripWhitespaceMixin):
 
 
 class SurveyMetadata(Schema, StripWhitespaceMixin):
-    data = fields.Nested(Data, unknown=INCLUDE)
+    data = fields.Nested(Data, unknown=INCLUDE, validate=validate.Length(min=1))
     receipting_keys = fields.List(fields.String)
 
 

@@ -63,7 +63,7 @@ def fake_metadata_runner_v2():
         "account_service_url": "https://ras.ons.gov.uk",
         "case_id": str(uuid.uuid4()),
         "version": "v2",
-        "survey_metadata": {"data": {}},
+        "survey_metadata": {"data": {"key": "value"}},
     }
 
 

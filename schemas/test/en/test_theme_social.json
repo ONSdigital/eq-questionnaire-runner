@@ -17,6 +17,9 @@
             "type": "string"
         }
     ],
+    "post_submission": {
+        "feedback": true
+    },
     "questionnaire_flow": {
         "type": "Linear",
         "options": {

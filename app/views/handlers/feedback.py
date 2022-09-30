@@ -98,7 +98,7 @@ class Feedback:
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
         # type ignore as metadata will exist at this point
-        if metadata.version is Version.V2.value:  # type: ignore
+        if metadata.version == Version.V2.value:  # type: ignore
             feedback_message = FeedbackPayloadV2(
                 metadata=metadata,  # type: ignore
                 response_metadata=self._questionnaire_store.response_metadata,
@@ -125,6 +125,10 @@ class Feedback:
         encrypted_message = encrypt(
             feedback_message(), current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION  # type: ignore
         )
+
+        if metadata.version == Version.V2.value and metadata.survey_metadata.receipting_keys:  # type: ignore
+            receipting_keys: dict = {item: metadata[item] for item in metadata.survey_metadata.receipting_keys}  # type: ignore
+            feedback_metadata = FeedbackMetadata(case_id, tx_id, **receipting_keys)  # type: ignore
 
         if not current_app.eq["feedback_submitter"].upload(  # type: ignore
             feedback_metadata, encrypted_message
@@ -206,9 +210,12 @@ class Feedback:
 
 
 class FeedbackMetadata:
-    def __init__(self, case_id: str, tx_id: str):
+    def __init__(self, case_id: str, tx_id: str, **kwargs: dict):
         self.case_id = case_id
         self.tx_id = tx_id
+
+        for key, value in kwargs.items():
+            setattr(self, key, value)
 
     def __call__(self) -> dict[str, str]:
         return vars(self)
