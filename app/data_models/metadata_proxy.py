@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from collections import abc
 from copy import deepcopy
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -9,6 +8,7 @@ from typing import Any, Mapping, Optional
 from werkzeug.datastructures import ImmutableDict
 
 from app.authentication.auth_payload_version import AuthPayloadVersion
+from app.utilities.serialize import serialize
 
 TOP_LEVEL_METADATA_KEYS = [
     "tx_id",
@@ -83,10 +83,4 @@ class MetadataProxy:
 
     @classmethod
     def serialize(cls, data: Any) -> Any:
-        if isinstance(data, abc.Hashable):
-            return data
-        if isinstance(data, list):
-            return tuple((cls.serialize(item) for item in data))
-        if isinstance(data, dict):
-            key_value_tuples = {k: cls.serialize(v) for k, v in data.items()}
-            return ImmutableDict(key_value_tuples)
+        return serialize(data)
