@@ -221,6 +221,85 @@ def test_context_for_section_list_summary(people_answer_store):
 
 
 @pytest.mark.usefixtures("app")
+def test_context_for_section_summary_with_list_summary(companies_answer_store):
+    schema = load_schema_from_name("test_list_collector_section_summary_items")
+
+    summary_context = SectionSummaryContext(
+        language=DEFAULT_LANGUAGE_CODE,
+        schema=schema,
+        answer_store=companies_answer_store,
+        list_store=ListStore(
+            [
+                {"items": ["PlwgoG", "UHPLbX"], "name": "companies"},
+            ]
+        ),
+        progress_store=ProgressStore(),
+        metadata={"display_address": "70 Abingdon Road, Goathill"},
+        response_metadata={},
+        current_location=Location(section_id="section"),
+        routing_path=RoutingPath(
+            [
+                "primary-person-list-collector",
+                "list-collector",
+                "visitor-list-collector",
+            ],
+            section_id="section",
+        ),
+    )
+    context = summary_context()
+    expected = {
+        "summary": {
+            "answers_are_editable": True,
+            "collapsible": False,
+            "custom_summary": [
+                {
+                    "add_link": "/questionnaire/any-companies-or-branches/?return_to=section-summary",
+                    "add_link_text": "Add another UK company or " "branch",
+                    "answer_title": "Name of UK company or branch",
+                    "empty_list_text": "No UK company or branch " "added",
+                    "list": {
+                        "editable": False,
+                        "list_items": [
+                            {
+                                "item_title": "company " "a",
+                                "list_item_id": "PlwgoG",
+                                "primary_person": False,
+                            },
+                            {
+                                "item_title": "company " "b",
+                                "list_item_id": "UHPLbX",
+                                "primary_person": False,
+                            },
+                        ],
+                    },
+                    "list_name": "companies",
+                    "related_answers": {
+                        "PlwgoG": {
+                            "Is this UK company or branch an authorised insurer?": "Yes",
+                            "Registration number": 123,
+                        },
+                        "UHPLbX": {
+                            "Is this UK company or branch an authorised insurer?": "No",
+                            "Registration number": 456,
+                        },
+                    },
+                    "title": "Companies or UK branches",
+                    "type": "List",
+                }
+            ],
+            "groups": [{"blocks": [], "id": "group", "title": None}],
+            "headers": ["Question", "Answer given", "Change answer"],
+            "page_title": "General insurance business",
+            "show_non_item_answers": True,
+            "summary_type": "SectionSummary",
+            "title": "General insurance business",
+        }
+    }
+
+    assert context == expected
+
+
+@pytest.mark.usefixtures("app")
 def test_context_for_driving_question_summary_empty_list():
     schema = load_schema_from_name("test_list_collector_driving_question")
 
@@ -453,3 +532,29 @@ def test_primary_links_for_section_summary(people_answer_store):
 
     assert "/edit-person/" in list_items[0]["edit_link"]
     assert "/edit-person/" in list_items[1]["edit_link"]
+
+
+@pytest.mark.parametrize(
+    "add_block",
+    (
+        {
+            "add_block": {
+                "question_variants": [
+                    {"question": {"answers": [{"label": "answer_title"}]}}
+                ]
+            }
+        },
+        {
+            "add_block": {
+                "question_variants": [{"answers": [{"label": "answer_title"}]}]
+            }
+        },
+    ),
+)
+def test_answer_titles_for_variants(add_block):
+    assert (
+        SectionSummaryContext._get_answer_title(  # pylint: disable=protected-access
+            add_block
+        )
+        == "answer_title"
+    )

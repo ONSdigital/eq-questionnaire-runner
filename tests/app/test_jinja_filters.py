@@ -431,6 +431,105 @@ def test_map_list_collector_config():
     assert output == expected
 
 
+def test_map_list_collector_config_with_related_answers_and_answer_title():
+    list_items = [
+        {
+            "remove_link": "/nonprimary/remove",
+            "edit_link": "/nonprimary/change",
+            "primary_person": False,
+            "item_title": "Joe Bloggs",
+            "id": "nonprimary",
+            "list_item_id": "VHoiow",
+        },
+    ]
+
+    output = map_list_collector_config(
+        list_items,
+        "icon",
+        "edit_link_text",
+        "edit_link_aria_label",
+        "remove_link_text",
+        "remove_link_aria_label",
+        {
+            "VHoiow": {
+                "Registration number": 123,
+                "Is this UK company or branch an authorised insurer?": "Yes",
+            }
+        },
+        "answer_title",
+    )
+
+    expected = [
+        {
+            "rowItems": [
+                {
+                    "actions": [
+                        {
+                            "ariaLabel": "edit_link_aria_label",
+                            "attributes": {"data-qa": "list-item-change-1-link"},
+                            "text": "edit_link_text",
+                            "url": "/nonprimary/change",
+                        },
+                        {
+                            "ariaLabel": "remove_link_aria_label",
+                            "attributes": {"data-qa": "list-item-remove-1-link"},
+                            "text": "remove_link_text",
+                            "url": "/nonprimary/remove",
+                        },
+                    ],
+                    "iconType": "icon",
+                    "id": "VHoiow",
+                    "rowTitle": "answer_title",
+                    "rowTitleAttributes": {
+                        "data-list-item-id": "VHoiow",
+                        "data-qa": "list-item-1-label",
+                    },
+                    "valueList": [{"text": "Joe Bloggs"}],
+                },
+                {
+                    "actions": [
+                        {
+                            "ariaLabel": "edit_link_aria_label",
+                            "attributes": {"data-qa": "list-item-change-1-link"},
+                            "text": "edit_link_text",
+                            "url": "/nonprimary/change",
+                        }
+                    ],
+                    "iconType": None,
+                    "id": "VHoiow",
+                    "rowTitle": "Registration number",
+                    "rowTitleAttributes": {
+                        "data-list-item-id": "VHoiow",
+                        "data-qa": "list-item-1-label",
+                    },
+                    "valueList": [{"text": 123}],
+                },
+                {
+                    "actions": [
+                        {
+                            "ariaLabel": "edit_link_aria_label",
+                            "attributes": {"data-qa": "list-item-change-1-link"},
+                            "text": "edit_link_text",
+                            "url": "/nonprimary/change",
+                        }
+                    ],
+                    "iconType": None,
+                    "id": "VHoiow",
+                    "rowTitle": "Is this UK company or branch an authorised "
+                    "insurer?",
+                    "rowTitleAttributes": {
+                        "data-list-item-id": "VHoiow",
+                        "data-qa": "list-item-1-label",
+                    },
+                    "valueList": [{"text": "Yes"}],
+                },
+            ]
+        }
+    ]
+
+    assert output == expected
+
+
 @pytest.mark.parametrize(
     "address_fields, formatted_address",
     (
