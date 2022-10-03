@@ -229,9 +229,7 @@ class SectionSummaryContext(Context):
                 self._get_related_answers(current_list) if current_list else None
             )
 
-            answer_title = list_collector_block["add_block"]["question"]["answers"][0][
-                "label"
-            ]
+            answer_title = self._get_answer_title(list_collector_block)
 
             return {
                 "title": rendered_summary["title"],
@@ -310,6 +308,15 @@ class SectionSummaryContext(Context):
             safe_content(self._schema.get_single_string_value(title)) if title else ""
         )
 
+    @staticmethod
+    def _get_add_or_edit_blocks_primary(
+        primary_person_block: Mapping[str, Any]
+    ) -> tuple[str, str]:
+        primary_person_edit_block_id = primary_person_block["add_or_edit_block"]["id"]
+        edit_block_id = primary_person_block["add_or_edit_block"]["id"]
+
+        return primary_person_edit_block_id, edit_block_id
+
     def _get_related_answers(self, current_list: ListModel) -> dict[str, dict]:
         section = self.section["id"]
 
@@ -334,10 +341,10 @@ class SectionSummaryContext(Context):
             return related_answers_dict
 
     @staticmethod
-    def _get_add_or_edit_blocks_primary(
-        primary_person_block: Mapping[str, Any]
-    ) -> tuple[str, str]:
-        primary_person_edit_block_id = primary_person_block["add_or_edit_block"]["id"]
-        edit_block_id = primary_person_block["add_or_edit_block"]["id"]
+    def _get_answer_title(list_collector_block: Mapping[str, Any]) -> str:
+        if variants := list_collector_block["add_block"].get("question_variants"):
+            if question := variants[0].get("question"):
+                return question["answers"][0]["label"]
+            return variants[0]["answers"][0]["label"]
 
-        return primary_person_edit_block_id, edit_block_id
+        return list_collector_block["add_block"]["question"]["answers"][0]["label"]
