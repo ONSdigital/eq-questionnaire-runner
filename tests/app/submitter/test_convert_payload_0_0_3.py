@@ -1,4 +1,7 @@
+# pylint: disable=too-many-lines
 from datetime import datetime, timezone
+
+import pytest
 
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
@@ -8,12 +11,20 @@ from app.questionnaire.routing_path import RoutingPath
 from app.submitter.converter_v2 import get_payload_data
 from app.utilities.json import json_dumps, json_loads
 from app.utilities.schema import load_schema_from_name
+from tests.app.submitter.conftest import METADATA_V1, METADATA_V2
 from tests.app.submitter.schema import make_schema
 
 SUBMITTED_AT = datetime.now(timezone.utc)
 
 
-def test_convert_answers_v2_to_payload_0_0_3(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_convert_answers_v2_to_payload_0_0_3(fake_questionnaire_store_v2, metadata):
     full_routing_path = [
         RoutingPath(["about you", "where you live"], section_id="household-section")
     ]
@@ -74,7 +85,7 @@ def test_convert_answers_v2_to_payload_0_0_3(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -84,7 +95,14 @@ def test_convert_answers_v2_to_payload_0_0_3(fake_questionnaire_store_v2):
     assert data_payload["answers"][1].value, "62 Somewhere"
 
 
-def test_convert_payload_0_0_3_multiple_answers(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_convert_payload_0_0_3_multiple_answers(fake_questionnaire_store_v2, metadata):
     full_routing_path = [RoutingPath(["crisps"], section_id="section-1")]
     answers = AnswerStore(
         [Answer("crisps-answer", ["Ready salted", "Sweet chilli"]).to_dict()]
@@ -122,7 +140,7 @@ def test_convert_payload_0_0_3_multiple_answers(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -131,7 +149,14 @@ def test_convert_payload_0_0_3_multiple_answers(fake_questionnaire_store_v2):
     assert data_payload["answers"][0].value == ["Ready salted", "Sweet chilli"]
 
 
-def test_radio_answer(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_radio_answer(fake_questionnaire_store_v2, metadata):
     full_routing_path = [RoutingPath(["radio-block"], section_id="section-1")]
     answers = AnswerStore([Answer("radio-answer", "Coffee").to_dict()])
     fake_questionnaire_store_v2.answer_store = answers
@@ -165,7 +190,7 @@ def test_radio_answer(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -173,7 +198,14 @@ def test_radio_answer(fake_questionnaire_store_v2):
     assert data_payload["answers"][0].value == "Coffee"
 
 
-def test_number_answer(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_number_answer(fake_questionnaire_store_v2, metadata):
     full_routing_path = [RoutingPath(["number-block"], section_id="section-1")]
     answers = AnswerStore([Answer("number-answer", 1.755).to_dict()])
     fake_questionnaire_store_v2.answer_store = answers
@@ -198,7 +230,7 @@ def test_number_answer(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -206,7 +238,14 @@ def test_number_answer(fake_questionnaire_store_v2):
     assert data_payload["answers"][0].value == 1.755
 
 
-def test_percentage_answer(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_percentage_answer(fake_questionnaire_store_v2, metadata):
     full_routing_path = [RoutingPath(["percentage-block"], section_id="section-1")]
     answers = AnswerStore([Answer("percentage-answer", 99).to_dict()])
     fake_questionnaire_store_v2.answer_store = answers
@@ -231,7 +270,7 @@ def test_percentage_answer(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -239,7 +278,14 @@ def test_percentage_answer(fake_questionnaire_store_v2):
     assert data_payload["answers"][0].value == 99
 
 
-def test_textarea_answer(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_textarea_answer(fake_questionnaire_store_v2, metadata):
     full_routing_path = [RoutingPath(["textarea-block"], section_id="section-1")]
     answers = AnswerStore(
         [Answer("textarea-answer", "This is an example text!").to_dict()]
@@ -266,7 +312,7 @@ def test_textarea_answer(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -274,7 +320,14 @@ def test_textarea_answer(fake_questionnaire_store_v2):
     assert data_payload["answers"][0].value == "This is an example text!"
 
 
-def test_currency_answer(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_currency_answer(fake_questionnaire_store_v2, metadata):
     full_routing_path = [RoutingPath(["currency-block"], section_id="section-1")]
     answers = AnswerStore([Answer("currency-answer", 100).to_dict()])
     fake_questionnaire_store_v2.answer_store = answers
@@ -299,7 +352,7 @@ def test_currency_answer(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -307,7 +360,14 @@ def test_currency_answer(fake_questionnaire_store_v2):
     assert data_payload["answers"][0].value == 100
 
 
-def test_dropdown_answer(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_dropdown_answer(fake_questionnaire_store_v2, metadata):
     full_routing_path = [RoutingPath(["dropdown-block"], section_id="section-1")]
     answers = AnswerStore([Answer("dropdown-answer", "Rugby is better!").to_dict()])
     fake_questionnaire_store_v2.answer_store = answers
@@ -342,7 +402,7 @@ def test_dropdown_answer(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -351,7 +411,14 @@ def test_dropdown_answer(fake_questionnaire_store_v2):
     assert data_payload["answers"][0].value == "Rugby is better!"
 
 
-def test_date_answer(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_date_answer(fake_questionnaire_store_v2, metadata):
     full_routing_path = [RoutingPath(["date-block"], section_id="section-1")]
     answers = AnswerStore(
         [
@@ -381,7 +448,7 @@ def test_date_answer(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -390,7 +457,14 @@ def test_date_answer(fake_questionnaire_store_v2):
     assert data_payload["answers"][0].value == "01-01-1990"
 
 
-def test_month_year_date_answer(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_month_year_date_answer(fake_questionnaire_store_v2, metadata):
     full_routing_path = [RoutingPath(["date-block"], section_id="section-1")]
     answers = AnswerStore(
         [
@@ -420,7 +494,7 @@ def test_month_year_date_answer(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -429,7 +503,14 @@ def test_month_year_date_answer(fake_questionnaire_store_v2):
     assert data_payload["answers"][0].value == "01-1990"
 
 
-def test_unit_answer(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_unit_answer(fake_questionnaire_store_v2, metadata):
     full_routing_path = [RoutingPath(["unit-block"], section_id="section-1")]
     answers = AnswerStore([Answer("unit-answer", 10).to_dict()])
     fake_questionnaire_store_v2.answer_store = answers
@@ -454,7 +535,7 @@ def test_unit_answer(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -462,7 +543,14 @@ def test_unit_answer(fake_questionnaire_store_v2):
     assert data_payload["answers"][0].value == 10
 
 
-def test_primary_person_list_item_conversion(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_primary_person_list_item_conversion(fake_questionnaire_store_v2, metadata):
     routing_path = [
         RoutingPath(
             ["primary-person-list-collector", "list-collector"], section_id="section-1"
@@ -501,7 +589,7 @@ def test_primary_person_list_item_conversion(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -512,7 +600,14 @@ def test_primary_person_list_item_conversion(fake_questionnaire_store_v2):
     )
 
 
-def test_list_item_conversion(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_list_item_conversion(fake_questionnaire_store_v2, metadata):
     routing_path = [
         RoutingPath(
             ["list-collector", "next-interstitial", "another-list-collector-block"],
@@ -547,7 +642,7 @@ def test_list_item_conversion(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -560,7 +655,14 @@ def test_list_item_conversion(fake_questionnaire_store_v2):
     )
 
 
-def test_list_item_conversion_empty_list(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_list_item_conversion_empty_list(fake_questionnaire_store_v2, metadata):
     """Test that the list store is populated with an empty list for lists which
     do not have answers yet."""
     routing_path = [
@@ -588,7 +690,7 @@ def test_list_item_conversion_empty_list(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -603,7 +705,16 @@ def test_list_item_conversion_empty_list(fake_questionnaire_store_v2):
     )
 
 
-def test_default_answers_not_present_when_not_answered(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_default_answers_not_present_when_not_answered(
+    fake_questionnaire_store_v2, metadata
+):
     """Test that default values aren't submitted downstream when an answer with
     a default value is not present in the answer store."""
     schema = load_schema_from_name("test_default")
@@ -625,7 +736,7 @@ def test_default_answers_not_present_when_not_answered(fake_questionnaire_store_
         fake_questionnaire_store_v2.list_store,
         schema,
         routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -685,7 +796,16 @@ def test_list_structure_in_payload_is_as_expected(fake_questionnaire_store_v2):
     assert data_dict[0]["primary_person"] == "xJlKBy"
 
 
-def test_primary_person_not_in_payload_when_not_answered(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_primary_person_not_in_payload_when_not_answered(
+    fake_questionnaire_store_v2, metadata
+):
     routing_path = [
         RoutingPath(
             ["list-collector", "next-interstitial", "another-list-collector-block"],
@@ -720,7 +840,7 @@ def test_primary_person_not_in_payload_when_not_answered(fake_questionnaire_stor
         fake_questionnaire_store_v2.list_store,
         schema,
         routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -729,7 +849,14 @@ def test_primary_person_not_in_payload_when_not_answered(fake_questionnaire_stor
     assert "primary_person" not in data_dict[0]
 
 
-def test_relationships_in_payload(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_relationships_in_payload(fake_questionnaire_store_v2, metadata):
     routing_path = [
         RoutingPath(
             ["list-collector", "relationships"],
@@ -788,7 +915,7 @@ def test_relationships_in_payload(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -812,7 +939,14 @@ def test_relationships_in_payload(fake_questionnaire_store_v2):
     assert expected_relationships_answer == relationships_answer["value"]
 
 
-def test_no_relationships_in_payload(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_no_relationships_in_payload(fake_questionnaire_store_v2, metadata):
     routing_path = [
         RoutingPath(
             ["list-collector", "relationships"],
@@ -856,7 +990,7 @@ def test_no_relationships_in_payload(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -866,7 +1000,14 @@ def test_no_relationships_in_payload(fake_questionnaire_store_v2):
     assert "relationship-answer" not in answers
 
 
-def test_unrelated_block_answers_in_payload(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_unrelated_block_answers_in_payload(fake_questionnaire_store_v2, metadata):
     routing_path = [
         RoutingPath(
             ["list-collector", "relationships"],
@@ -941,7 +1082,7 @@ def test_unrelated_block_answers_in_payload(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -973,8 +1114,15 @@ def test_unrelated_block_answers_in_payload(fake_questionnaire_store_v2):
     assert expected_relationships_answer == relationships_answer["value"]
 
 
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
 def test_unrelated_block_answers_not_on_path_not_in_payload(
-    fake_questionnaire_store_v2,
+    fake_questionnaire_store_v2, metadata
 ):
     routing_path = [
         RoutingPath(
@@ -1045,7 +1193,7 @@ def test_unrelated_block_answers_not_on_path_not_in_payload(
         fake_questionnaire_store_v2.list_store,
         schema,
         routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -1057,7 +1205,16 @@ def test_unrelated_block_answers_not_on_path_not_in_payload(
     assert ("related-to-anyone-else-answer", "person1") not in answers
 
 
-def test_relationship_answers_not_on_path_in_payload(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_relationship_answers_not_on_path_in_payload(
+    fake_questionnaire_store_v2, metadata
+):
     routing_path = [
         RoutingPath(
             ["list-collector", "relationships"],
@@ -1137,7 +1294,7 @@ def test_relationship_answers_not_on_path_in_payload(fake_questionnaire_store_v2
         fake_questionnaire_store_v2.list_store,
         schema,
         routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 

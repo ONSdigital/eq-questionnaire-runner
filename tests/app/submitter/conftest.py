@@ -15,10 +15,8 @@ from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.submitter import RabbitMQSubmitter
 
-
-@pytest.fixture
-def fake_metadata():
-    return {
+METADATA_V1 = MetadataProxy.from_dict(
+    {
         "tx_id": str(uuid.uuid4()),
         "user_id": "789473423",
         "schema_name": "1_0000",
@@ -41,11 +39,10 @@ def fake_metadata():
         "case_ref": "1000000000000001",
         "jti": str(uuid.uuid4()),
     }
+)
 
-
-@pytest.fixture
-def fake_metadata_v2():
-    return {
+METADATA_V2 = MetadataProxy.from_dict(
+    {
         "version": "v2",
         "tx_id": str(uuid.uuid4()),
         "schema_name": "1_0000",
@@ -72,6 +69,17 @@ def fake_metadata_v2():
         "channel": "RH",
         "jti": str(uuid.uuid4()),
     }
+)
+
+
+@pytest.fixture
+def fake_metadata():
+    return METADATA_V1
+
+
+@pytest.fixture
+def fake_metadata_v2():
+    return METADATA_V2
 
 
 @pytest.fixture
@@ -92,7 +100,7 @@ def fake_questionnaire_store_v2(fake_metadata_v2, fake_response_metadata):
 
     store.answer_store = AnswerStore()
     store.answer_store.add_or_update(user_answer)
-    store.metadata = MetadataProxy.from_dict(fake_metadata_v2)
+    store.metadata = fake_metadata_v2
     store.response_metadata = fake_response_metadata
 
     return store
@@ -110,7 +118,7 @@ def fake_questionnaire_store(fake_metadata, fake_response_metadata):
 
     store.answer_store = AnswerStore()
     store.answer_store.add_or_update(user_answer)
-    store.metadata = MetadataProxy.from_dict(fake_metadata)
+    store.metadata = fake_metadata
     store.response_metadata = fake_response_metadata
 
     return store

@@ -8,6 +8,7 @@ from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
 from app.submitter.convert_payload_0_0_1 import convert_answers_to_payload_0_0_1
 from app.submitter.converter_v2 import get_payload_data
+from tests.app.submitter.conftest import METADATA_V1, METADATA_V2
 from tests.app.submitter.schema import make_schema
 
 SUBMITTED_AT = datetime.now(timezone.utc)
@@ -17,8 +18,15 @@ def create_answer(answer_id, value):
     return {"answer_id": answer_id, "value": value}
 
 
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
 def test_convert_answers_v2_to_payload_0_0_1_with_key_error(
-    fake_questionnaire_store_v2,
+    fake_questionnaire_store_v2, metadata
 ):
     fake_questionnaire_store_v2.answer_store = AnswerStore(
         [
@@ -44,7 +52,7 @@ def test_convert_answers_v2_to_payload_0_0_1_with_key_error(
         RoutingPath(["block-1"], section_id="section-1", list_item_id=None)
     ]
     answer_object = convert_answers_to_payload_0_0_1(
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
         fake_questionnaire_store_v2.answer_store,
         fake_questionnaire_store_v2.list_store,
@@ -55,7 +63,14 @@ def test_convert_answers_v2_to_payload_0_0_1_with_key_error(
     assert len(answer_object) == 1
 
 
-def test_answer_with_zero(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_answer_with_zero(fake_questionnaire_store_v2, metadata):
     fake_questionnaire_store_v2.answer_store = AnswerStore([Answer("GHI", 0).to_dict()])
 
     question = {
@@ -78,14 +93,21 @@ def test_answer_with_zero(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
     assert data_payload["003"] == "0"
 
 
-def test_answer_with_float(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_answer_with_float(fake_questionnaire_store_v2, metadata):
     fake_questionnaire_store_v2.answer_store = AnswerStore(
         [Answer("GHI", 10.02).to_dict()]
     )
@@ -110,7 +132,7 @@ def test_answer_with_float(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -118,7 +140,14 @@ def test_answer_with_float(fake_questionnaire_store_v2):
     assert data_payload["003"] == "10.02"
 
 
-def test_answer_with_string(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_answer_with_string(fake_questionnaire_store_v2, metadata):
     fake_questionnaire_store_v2.answer_store = AnswerStore(
         [Answer("GHI", "String test + !").to_dict()]
     )
@@ -143,7 +172,7 @@ def test_answer_with_string(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -151,7 +180,14 @@ def test_answer_with_string(fake_questionnaire_store_v2):
     assert data_payload["003"] == "String test + !"
 
 
-def test_answer_without_qcode(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_answer_without_qcode(fake_questionnaire_store_v2, metadata):
     fake_questionnaire_store_v2.answer_store = AnswerStore(
         [Answer("GHI", "String test + !").to_dict()]
     )
@@ -176,14 +212,21 @@ def test_answer_without_qcode(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
     assert not data_payload
 
 
-def test_converter_checkboxes_with_q_codes(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_converter_checkboxes_with_q_codes(fake_questionnaire_store_v2, metadata):
     full_routing_path = [RoutingPath(["crisps"], section_id="food", list_item_id=None)]
     fake_questionnaire_store_v2.answer_store = AnswerStore(
         [Answer("crisps-answer", ["Ready salted", "Sweet chilli"]).to_dict()]
@@ -234,7 +277,7 @@ def test_converter_checkboxes_with_q_codes(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -245,14 +288,19 @@ def test_converter_checkboxes_with_q_codes(fake_questionnaire_store_v2):
 
 
 @pytest.mark.parametrize(
-    "detail_answer_q_code_field, expected_data_length",
+    "detail_answer_q_code_field, expected_data_length, metadata",
     [
-        ({"q_code": "401"}, 3),
-        ({}, 2),
+        ({"q_code": "401"}, 3, METADATA_V1),
+        ({}, 2, METADATA_V1),
+        ({"q_code": "401"}, 3, METADATA_V2),
+        ({}, 2, METADATA_V2),
     ],
 )
 def test_converter_checkboxes_with_q_codes_and_other_value(
-    detail_answer_q_code_field, expected_data_length, fake_questionnaire_store_v2
+    detail_answer_q_code_field,
+    expected_data_length,
+    metadata,
+    fake_questionnaire_store_v2,
 ):
     full_routing_path = [RoutingPath(["crisps"], section_id="food", list_item_id=None)]
 
@@ -309,7 +357,7 @@ def test_converter_checkboxes_with_q_codes_and_other_value(
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -323,8 +371,15 @@ def test_converter_checkboxes_with_q_codes_and_other_value(
         assert data_payload[detail_answer_q_code_field["q_code"]] == "Bacon"
 
 
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
 def test_converter_checkboxes_with_missing_detail_answer_value_in_answer_store(
-    fake_questionnaire_store_v2,
+    fake_questionnaire_store_v2, metadata
 ):
     full_routing_path = [RoutingPath(["crisps"], section_id="food", list_item_id=None)]
 
@@ -379,7 +434,7 @@ def test_converter_checkboxes_with_missing_detail_answer_value_in_answer_store(
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -389,8 +444,15 @@ def test_converter_checkboxes_with_missing_detail_answer_value_in_answer_store(
     assert data_payload["4"] == "Other"
 
 
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
 def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(
-    fake_questionnaire_store_v2,
+    fake_questionnaire_store_v2, metadata
 ):
     full_routing_path = [RoutingPath(["crisps"], section_id="food", list_item_id=None)]
 
@@ -444,7 +506,7 @@ def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -453,7 +515,14 @@ def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(
     assert data_payload["0"], "['Ready salted' == 'Sweet chilli']"
 
 
-def test_converter_q_codes_for_empty_strings(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_converter_q_codes_for_empty_strings(fake_questionnaire_store_v2, metadata):
     full_routing_path = [RoutingPath(["crisps"], section_id="food", list_item_id=None)]
     fake_questionnaire_store_v2.answer_store = AnswerStore(
         [
@@ -489,7 +558,7 @@ def test_converter_q_codes_for_empty_strings(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -498,7 +567,14 @@ def test_converter_q_codes_for_empty_strings(fake_questionnaire_store_v2):
     assert data_payload["2"] == "Ready salted"
 
 
-def test_radio_answer(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_radio_answer(fake_questionnaire_store_v2, metadata):
     full_routing_path = [
         RoutingPath(["radio-block"], section_id="section-1", list_item_id=None)
     ]
@@ -548,7 +624,7 @@ def test_radio_answer(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -594,7 +670,14 @@ def test_number_answer(fake_questionnaire_store_v2):
     assert data_payload["1"] == "0.9999"
 
 
-def test_percentage_answer(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_percentage_answer(fake_questionnaire_store_v2, metadata):
     full_routing_path = [
         RoutingPath(["percentage-block"], section_id="section-1", list_item_id=None)
     ]
@@ -621,7 +704,7 @@ def test_percentage_answer(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -630,7 +713,14 @@ def test_percentage_answer(fake_questionnaire_store_v2):
     assert data_payload["1"] == "100"
 
 
-def test_textarea_answer(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_textarea_answer(fake_questionnaire_store_v2, metadata):
     full_routing_path = [
         RoutingPath(["textarea-block"], section_id="section-1", list_item_id=None)
     ]
@@ -657,7 +747,7 @@ def test_textarea_answer(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -666,7 +756,14 @@ def test_textarea_answer(fake_questionnaire_store_v2):
     assert data_payload["1"] == "example text."
 
 
-def test_currency_answer(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_currency_answer(fake_questionnaire_store_v2, metadata):
     full_routing_path = [
         RoutingPath(["currency-block"], section_id="section-1", list_item_id=None)
     ]
@@ -693,7 +790,7 @@ def test_currency_answer(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -702,7 +799,14 @@ def test_currency_answer(fake_questionnaire_store_v2):
     assert data_payload["1"] == "99.99"
 
 
-def test_dropdown_answer(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_dropdown_answer(fake_questionnaire_store_v2, metadata):
     full_routing_path = [
         RoutingPath(["dropdown-block"], section_id="section-1", list_item_id=None)
     ]
@@ -740,7 +844,7 @@ def test_dropdown_answer(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -749,7 +853,14 @@ def test_dropdown_answer(fake_questionnaire_store_v2):
     assert data_payload["1"] == "Liverpool"
 
 
-def test_date_answer(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_date_answer(fake_questionnaire_store_v2, metadata):
     full_routing_path = [
         RoutingPath(["date-block"], section_id="section-1", list_item_id=None)
     ]
@@ -783,7 +894,7 @@ def test_date_answer(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 
@@ -793,7 +904,14 @@ def test_date_answer(fake_questionnaire_store_v2):
     assert data_payload["2"] == "01/1990"
 
 
-def test_unit_answer(fake_questionnaire_store_v2):
+@pytest.mark.parametrize(
+    "metadata",
+    (
+        METADATA_V1,
+        METADATA_V2,
+    ),
+)
+def test_unit_answer(fake_questionnaire_store_v2, metadata):
     full_routing_path = [
         RoutingPath(["unit-block"], section_id="section-1", list_item_id=None)
     ]
@@ -820,7 +938,7 @@ def test_unit_answer(fake_questionnaire_store_v2):
         fake_questionnaire_store_v2.list_store,
         schema,
         full_routing_path,
-        fake_questionnaire_store_v2.metadata,
+        metadata,
         fake_questionnaire_store_v2.response_metadata,
     )
 

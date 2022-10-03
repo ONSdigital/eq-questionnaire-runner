@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 
 import pytest
 
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.submitter.converter import convert_answers
 from app.submitter.converter_v2 import DataVersionError
@@ -72,11 +73,9 @@ def test_started_at_should_not_be_set_in_payload_if_absent_in_response_metadata(
     fake_questionnaire_schema,
     fake_questionnaire_store,
     fake_response_metadata,
-    fake_metadata,
 ):
     del fake_response_metadata["started_at"]
 
-    fake_questionnaire_store.set_metadata(fake_metadata)
     fake_questionnaire_store.response_metadata = fake_response_metadata
 
     answer_object = convert_answers(
@@ -129,10 +128,10 @@ def test_display_address_should_be_set_in_payload_metadata(
 
 
 def test_instrument_id_is_not_in_payload_collection_if_form_type_absent_in_metadata(
-    fake_questionnaire_schema, fake_questionnaire_store, fake_metadata
+    fake_questionnaire_schema, fake_questionnaire_store
 ):
-    del fake_metadata["form_type"]
-    fake_questionnaire_store.set_metadata(fake_metadata)
+    fake_questionnaire_store.metadata = MetadataProxy.from_dict({"form_type": None})
+
     payload = convert_answers(
         fake_questionnaire_schema, fake_questionnaire_store, {}, SUBMITTED_AT
     )
@@ -167,12 +166,8 @@ def test_converter_raises_runtime_error_for_unsupported_version(
 
 
 def test_converter_language_code_not_set_in_payload(
-    fake_questionnaire_schema,
-    fake_questionnaire_store,
-    fake_response_metadata,
-    fake_metadata,
+    fake_questionnaire_schema, fake_questionnaire_store, fake_response_metadata
 ):
-    fake_questionnaire_store.set_metadata(fake_metadata)
     fake_questionnaire_store.response_metadata = fake_response_metadata
 
     answer_object = convert_answers(
@@ -188,11 +183,9 @@ def test_converter_language_code_set_in_payload(
     fake_questionnaire_schema,
     fake_questionnaire_store,
     fake_response_metadata,
-    fake_metadata,
 ):
-    fake_metadata["language_code"] = "ga"
-    fake_questionnaire_store.set_metadata(fake_metadata)
     fake_questionnaire_store.response_metadata = fake_response_metadata
+    fake_questionnaire_store.metadata = MetadataProxy.from_dict({"language_code": "ga"})
 
     answer_object = convert_answers(
         fake_questionnaire_schema, fake_questionnaire_store, {}, SUBMITTED_AT
