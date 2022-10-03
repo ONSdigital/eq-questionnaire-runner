@@ -85,11 +85,11 @@ export function generateToken(
 
   // Payload
   let payload = {};
-  let tx_id = uuidv4()
-  let jti = uuidv4()
-  let iat = KJUR.jws.IntDate.get("now")
-  let exp = KJUR.jws.IntDate.get("now") + 1800
-  let case_id = uuidv4()
+  const tx_id = uuidv4();
+  const jti = uuidv4();
+  const iat = KJUR.jws.IntDate.get("now");
+  const exp = KJUR.jws.IntDate.get("now") + 1800;
+  const case_id = uuidv4();
 
   if (version === "v2") {
     payload = {
@@ -109,7 +109,7 @@ export function generateToken(
     };
   } else {
     payload = {
-      tx_id:tx_id,
+      tx_id: tx_id,
       jti: jti,
       iat: iat,
       exp: exp,
