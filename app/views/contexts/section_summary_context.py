@@ -175,6 +175,7 @@ class SectionSummaryContext(Context):
                 yield self._list_summary_element(summary_element)
 
     def _list_summary_element(self, summary: dict[str, str]) -> Mapping[str, Any]:
+        list_collector_block = None
         edit_block_id, remove_block_id, primary_person_edit_block_id = None, None, None
         current_list = self._list_store[summary["for_list"]]
 
@@ -184,19 +185,20 @@ class SectionSummaryContext(Context):
             )
         )
 
+        add_link = self._add_link(summary, list_collector_block)
+
         list_collector_blocks_on_path = [
             list_collector_block
             for list_collector_block in list_collector_blocks
             if list_collector_block["id"] in self.routing_path.block_ids
         ]
 
-        list_collector_block = (
-            list_collector_blocks_on_path[0]
-            if list_collector_blocks_on_path
-            else list_collector_blocks[0]
-        )
-
         if list_collector_blocks_on_path:
+            list_collector_block = (
+                list_collector_blocks_on_path[0]
+                if list_collector_blocks_on_path
+                else list_collector_blocks[0]
+            )
 
             edit_block_id = list_collector_block["edit_block"]["id"]
             remove_block_id = list_collector_block["remove_block"]["id"]
@@ -244,8 +246,6 @@ class SectionSummaryContext(Context):
             }
 
         if current_list.primary_person:
-            remove_block_id = list_collector_block["remove_block"]["id"]
-            add_link = self._add_link(summary, list_collector_block)
 
             primary_person_block = self._schema.get_list_collector_for_list(
                 self.section, for_list=summary["for_list"], primary=True
@@ -259,49 +259,62 @@ class SectionSummaryContext(Context):
             )
             # primary person block always exists at this point, type hint conflicts with schema's get_list_collector_for_list return type (Optional)
 
-            rendered_summary = self._placeholder_renderer.render(
-                summary, self.current_location.list_item_id
-            )
-
-            list_summary_context = self.list_context(
-                list_collector_block["summary"],
-                for_list=list_collector_block["for_list"],
-                return_to="section-summary",
-                edit_block_id=edit_block_id,
-                remove_block_id=remove_block_id,
-                primary_person_edit_block_id=primary_person_edit_block_id,
-                for_list_item_ids=current_list.primary_person,
-            )
-
-            related_answers = self._get_related_answers(current_list)
-
-            answer_title = list_collector_block["add_block"]["question"]["answers"][0][
-                "label"
-            ]
-
-            return {
-                "title": rendered_summary["title"],
-                "type": rendered_summary["type"],
-                "add_link": add_link,
-                "add_link_text": rendered_summary["add_link_text"],
-                "empty_list_text": rendered_summary.get("empty_list_text"),
-                "list_name": rendered_summary["for_list"],
-                "related_answers": related_answers,
-                "answer_title": answer_title,
-                **list_summary_context,
-            }
-
-    @staticmethod
-    def _add_link(
-        summary: dict[str, str], list_collector_block: Mapping[str, Any]
-    ) -> str:
-
-        return url_for(
-            "questionnaire.block",
-            list_name=summary["for_list"],
-            block_id=list_collector_block["add_block"]["id"],
-            return_to="section-summary",
+        rendered_summary = self._placeholder_renderer.render(
+            summary, self.current_location.list_item_id
         )
+
+        add_link = self._add_link(summary, list_collector_block)
+
+        list_collector_block = list_collector_blocks[0]
+
+        list_summary_context = self.list_context(
+            list_collector_block["summary"],
+            for_list=list_collector_block["for_list"],
+            return_to="section-summary",
+            edit_block_id=edit_block_id,
+            remove_block_id=remove_block_id,
+            primary_person_edit_block_id=primary_person_edit_block_id,
+            for_list_item_ids=current_list.primary_person,
+        )
+
+        related_answers = self._get_related_answers(current_list)
+
+        answer_title = list_collector_block["add_block"]["question"]["answers"][0][
+            "label"
+        ]
+
+        return {
+            "title": rendered_summary["title"],
+            "type": rendered_summary["type"],
+            "add_link": add_link,
+            "add_link_text": rendered_summary["add_link_text"],
+            "empty_list_text": rendered_summary.get("empty_list_text"),
+            "list_name": rendered_summary["for_list"],
+            "related_answers": related_answers,
+            "answer_title": answer_title,
+            **list_summary_context,
+        }
+
+    def _add_link(self, summary, list_collector_block):
+
+        if list_collector_block:
+            return url_for(
+                "questionnaire.block",
+                list_name=summary["for_list"],
+                block_id=list_collector_block["add_block"]["id"],
+                return_to="section-summary",
+            )
+
+        driving_question_block = QuestionnaireSchema.get_driving_question_for_list(
+            self.section, summary["for_list"]
+        )
+
+        if driving_question_block:
+            return url_for(
+                "questionnaire.block",
+                block_id=driving_question_block["id"],
+                return_to="section-summary",
+            )
 
     def _get_safe_page_title(self, title):
         return (

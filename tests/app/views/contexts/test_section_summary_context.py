@@ -240,9 +240,21 @@ def test_context_for_driving_question_summary_empty_list():
     expected = {
         "summary": {
             "answers_are_editable": True,
-            "headers": ["Question", "Answer given", "Change answer"],
             "collapsible": False,
-            "custom_summary": [None],
+            "custom_summary": [
+                {
+                    "add_link": "/questionnaire/anyone-usually-live-at/?return_to=section-summary",
+                    "add_link_text": "Add someone to this " "household",
+                    "answer_title": "First name",
+                    "empty_list_text": "There are no householders",
+                    "list": {"editable": False, "list_items": []},
+                    "list_name": "people",
+                    "related_answers": None,
+                    "title": "Household members",
+                    "type": "List",
+                }
+            ],
+            "headers": ["Question", "Answer given", "Change answer"],
             "page_title": "List Collector Driving Question Summary",
             "summary_type": "SectionSummary",
             "title": "List Collector Driving Question Summary",

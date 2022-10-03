@@ -425,6 +425,17 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     ) -> Generator[ImmutableDict, None, None]:
         return (block for group in section["groups"] for block in group["blocks"])
 
+    @classmethod
+    def get_driving_question_for_list(
+        cls, section: Mapping, list_name: str
+    ) -> Optional[ImmutableDict]:
+        for block in cls.get_blocks_for_section(section):
+            if (
+                block["type"] == "ListCollectorDrivingQuestion"
+                and list_name == block["for_list"]
+            ):
+                return block
+
     def get_remove_block_id_for_list(self, list_name: str) -> Optional[str]:
         for block in self.get_blocks():
             if block["type"] == "ListCollector" and block["for_list"] == list_name:

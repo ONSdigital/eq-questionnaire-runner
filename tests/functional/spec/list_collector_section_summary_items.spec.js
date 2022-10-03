@@ -93,8 +93,8 @@ describe("List Collector Section Summary Items", () => {
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.false;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.false;
-      expect($(SectionSummaryPage.companiesListAddLink()).isExisting()).to.be.false;
-      $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
+      expect($(SectionSummaryPage.companiesListAddLink()).isExisting()).to.be.true;
+      $(SectionSummaryPage.companiesListAddLink()).click();
       $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
       $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
       $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Company A");
