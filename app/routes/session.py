@@ -175,13 +175,15 @@ def get_signed_out():
 
 
 def get_runner_claims(decrypted_token):
-    try:
-        return (
-            validate_runner_claims_v2(decrypted_token)
-            if decrypted_token.get("version") == Version.V2.value
-            else validate_runner_claims(decrypted_token)
-        )
+    if decrypted_token.get("version"):
+        if decrypted_token.get("version") == Version.V2.value:
+            try:
+                return validate_runner_claims_v2(decrypted_token)
+            except ValidationError as e:
+                raise InvalidTokenException("Invalid runner claims") from e
 
+    try:
+        return validate_runner_claims(decrypted_token)
     except ValidationError as e:
         raise InvalidTokenException("Invalid runner claims") from e
 
