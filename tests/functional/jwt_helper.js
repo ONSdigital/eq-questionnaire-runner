@@ -85,14 +85,19 @@ export function generateToken(
 
   // Payload
   let payload = {};
+  let tx_id = uuidv4()
+  let jti = uuidv4()
+  let iat = KJUR.jws.IntDate.get("now")
+  let exp = KJUR.jws.IntDate.get("now") + 1800
+  let case_id = uuidv4()
 
   if (version === "v2") {
     payload = {
-      tx_id: uuidv4(),
-      jti: uuidv4(),
-      iat: KJUR.jws.IntDate.get("now"),
-      exp: KJUR.jws.IntDate.get("now") + 1800,
-      case_id: uuidv4(),
+      tx_id: tx_id,
+      jti: jti,
+      iat: iat,
+      exp: exp,
+      case_id: case_id,
       response_id: responseId,
       schema_name: `${schemaParts[1]}_${schemaParts[2]}`,
       collection_exercise_sid: collectionId,
@@ -104,12 +109,12 @@ export function generateToken(
     };
   } else {
     payload = {
-      tx_id: uuidv4(),
-      jti: uuidv4(),
-      iat: KJUR.jws.IntDate.get("now"),
-      exp: KJUR.jws.IntDate.get("now") + 1800,
+      tx_id:tx_id,
+      jti: jti,
+      iat: iat,
+      exp: exp,
       user_id: userId,
-      case_id: uuidv4(),
+      case_id: case_id,
       ru_ref: "12346789012A",
       response_id: responseId,
       ru_name: "Apple",
