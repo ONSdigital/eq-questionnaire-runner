@@ -1,5 +1,5 @@
 from enum import Enum
 
 
-class Version(Enum):
+class AuthPayloadVersion(Enum):
     V2 = "v2"

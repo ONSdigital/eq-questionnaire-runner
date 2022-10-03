@@ -8,7 +8,7 @@ from typing import Any, Mapping, Optional
 
 from werkzeug.datastructures import ImmutableDict
 
-from app.survey_config.version import Version
+from app.authentication.auth_payload_version import AuthPayloadVersion
 
 TOP_LEVEL_METADATA_KEYS = [
     "tx_id",
@@ -50,7 +50,7 @@ class MetadataProxy:
     response_expires_at: Optional[datetime] = None
     channel: Optional[str] = None
     region_code: Optional[str] = None
-    version: Optional[Version] = None
+    version: Optional[AuthPayloadVersion] = None
     roles: Optional[list] = None
 
     def __getitem__(self, key: str) -> Optional[Any]:

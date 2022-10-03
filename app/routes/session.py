@@ -9,12 +9,12 @@ from sdc.crypto.exceptions import InvalidTokenException
 from structlog import get_logger
 from werkzeug.exceptions import Unauthorized
 
+from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.authentication.authenticator import decrypt_token, store_session
 from app.authentication.jti_claim_storage import JtiTokenUsed, use_jti_claim
 from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_session_store, get_session_timeout_in_seconds
 from app.helpers.template_helpers import get_survey_config, render_template
-from app.survey_config.version import Version
 from app.utilities.metadata_parser import validate_runner_claims
 from app.utilities.metadata_parser_v2 import (
     validate_questionnaire_claims,
@@ -68,7 +68,7 @@ def login():
     theme = g.schema.json["theme"]
     questionnaire_id = None
 
-    if decrypted_token.get("version") == Version.V2.value:
+    if decrypted_token.get("version") == AuthPayloadVersion.V2.value:
         runner_claims["survey_metadata"]["data"] = questionnaire_claims
 
         data = runner_claims.get("survey_metadata").get("data", {})
@@ -176,7 +176,7 @@ def get_signed_out():
 
 def get_runner_claims(decrypted_token):
     if decrypted_token.get("version"):
-        if decrypted_token.get("version") == Version.V2.value:
+        if decrypted_token.get("version") == AuthPayloadVersion.V2.value:
             try:
                 return validate_runner_claims_v2(decrypted_token)
             except ValidationError as e:
@@ -190,7 +190,7 @@ def get_runner_claims(decrypted_token):
 
 def get_questionnaire_claims(decrypted_token, schema_metadata):
     try:
-        if decrypted_token.get("version") == Version.V2.value:
+        if decrypted_token.get("version") == AuthPayloadVersion.V2.value:
             claims = decrypted_token.get("survey_metadata", {}).get("data", {})
         else:
             claims = decrypted_token
