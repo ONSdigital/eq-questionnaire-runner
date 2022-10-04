@@ -4,7 +4,7 @@ from flask import Blueprint, g, jsonify, redirect, request
 from flask import session as cookie_session
 from flask import url_for
 from flask_login import login_required, logout_user
-from marshmallow import ValidationError
+from marshmallow import INCLUDE, ValidationError
 from sdc.crypto.exceptions import InvalidTokenException
 from structlog import get_logger
 from werkzeug.exceptions import Unauthorized
@@ -69,7 +69,8 @@ def login():
     questionnaire_id = None
 
     if decrypted_token.get("version") == AuthPayloadVersion.V2.value:
-        data = runner_claims.get("survey_metadata").get("data", {})
+        runner_claims["survey_metadata"]["data"] = questionnaire_claims
+        data = runner_claims.get("survey_metadata", {}).get("data", {})
         ru_ref = data.get("ru_ref")
         questionnaire_id = data.get("questionnaire_id")
         claims = runner_claims
@@ -189,10 +190,11 @@ def get_questionnaire_claims(decrypted_token, schema_metadata):
     try:
         if decrypted_token.get("version") == AuthPayloadVersion.V2.value:
             claims = decrypted_token.get("survey_metadata", {}).get("data", {})
-        else:
-            claims = decrypted_token
+            return validate_questionnaire_claims(
+                claims, schema_metadata, include_extra_params=INCLUDE
+            )
 
-        return validate_questionnaire_claims(claims, schema_metadata)
+        return validate_questionnaire_claims(decrypted_token, schema_metadata)
 
     except ValidationError as e:
         raise InvalidTokenException("Invalid questionnaire claims") from e
