@@ -259,29 +259,49 @@ class SectionSummaryContext(Context):
             )
             # primary person block always exists at this point, type hint conflicts with schema's get_list_collector_for_list return type (Optional)
 
+            rendered_summary = self._placeholder_renderer.render(
+                summary, self.current_location.list_item_id
+            )
+
+            add_link = self._add_link(summary, list_collector_block)
+
+            list_collector_block = list_collector_blocks[0]
+
+            list_summary_context = self.list_context(
+                list_collector_block["summary"],
+                for_list=list_collector_block["for_list"],
+                return_to="section-summary",
+                edit_block_id=edit_block_id,
+                remove_block_id=remove_block_id,
+                primary_person_edit_block_id=primary_person_edit_block_id,
+                for_list_item_ids=current_list.primary_person,
+            )
+
+            related_answers = self._get_related_answers(current_list)
+
+            answer_title = list_collector_block["add_block"]["question"]["answers"][0][
+                "label"
+            ]
+
+            return {
+                "title": rendered_summary["title"],
+                "type": rendered_summary["type"],
+                "add_link": add_link,
+                "add_link_text": rendered_summary["add_link_text"],
+                "empty_list_text": rendered_summary.get("empty_list_text"),
+                "list_name": rendered_summary["for_list"],
+                "related_answers": related_answers,
+                "answer_title": answer_title,
+                **list_summary_context,
+            }
+
+        list_summary_context = self.list_context(
+            None, for_list=None, return_to="section-summary"
+        )
+
         rendered_summary = self._placeholder_renderer.render(
             summary, self.current_location.list_item_id
         )
-
-        add_link = self._add_link(summary, list_collector_block)
-
-        list_collector_block = list_collector_blocks[0]
-
-        list_summary_context = self.list_context(
-            list_collector_block["summary"],
-            for_list=list_collector_block["for_list"],
-            return_to="section-summary",
-            edit_block_id=edit_block_id,
-            remove_block_id=remove_block_id,
-            primary_person_edit_block_id=primary_person_edit_block_id,
-            for_list_item_ids=current_list.primary_person,
-        )
-
-        related_answers = self._get_related_answers(current_list)
-
-        answer_title = list_collector_block["add_block"]["question"]["answers"][0][
-            "label"
-        ]
 
         return {
             "title": rendered_summary["title"],
@@ -290,8 +310,6 @@ class SectionSummaryContext(Context):
             "add_link_text": rendered_summary["add_link_text"],
             "empty_list_text": rendered_summary.get("empty_list_text"),
             "list_name": rendered_summary["for_list"],
-            "related_answers": related_answers,
-            "answer_title": answer_title,
             **list_summary_context,
         }
 

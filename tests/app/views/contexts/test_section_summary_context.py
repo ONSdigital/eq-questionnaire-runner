@@ -234,14 +234,12 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
             ]
         ),
         progress_store=ProgressStore(),
-        metadata={"display_address": "70 Abingdon Road, Goathill"},
+        metadata={},
         response_metadata={},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
             [
-                "primary-person-list-collector",
-                "list-collector",
-                "visitor-list-collector",
+                "any-other-companies-or-branches",
             ],
             section_id="section",
         ),
@@ -253,22 +251,26 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
             "collapsible": False,
             "custom_summary": [
                 {
-                    "add_link": "/questionnaire/any-companies-or-branches/?return_to=section-summary",
+                    "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
                     "add_link_text": "Add another UK company or " "branch",
                     "answer_title": "Name of UK company or branch",
                     "empty_list_text": "No UK company or branch " "added",
                     "list": {
-                        "editable": False,
+                        "editable": True,
                         "list_items": [
                             {
+                                "edit_link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary",
                                 "item_title": "company " "a",
                                 "list_item_id": "PlwgoG",
                                 "primary_person": False,
+                                "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
                             },
                             {
+                                "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
                                 "item_title": "company " "b",
                                 "list_item_id": "UHPLbX",
                                 "primary_person": False,
+                                "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
                             },
                         ],
                     },
@@ -324,11 +326,9 @@ def test_context_for_driving_question_summary_empty_list():
                 {
                     "add_link": "/questionnaire/anyone-usually-live-at/?return_to=section-summary",
                     "add_link_text": "Add someone to this " "household",
-                    "answer_title": "First name",
                     "empty_list_text": "There are no householders",
                     "list": {"editable": False, "list_items": []},
                     "list_name": "people",
-                    "related_answers": None,
                     "title": "Household members",
                     "type": "List",
                 }
