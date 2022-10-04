@@ -16,6 +16,7 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_session_store, get_session_timeout_in_seconds
 from app.helpers.template_helpers import get_survey_config, render_template
 from app.utilities.metadata_parser import validate_runner_claims
+from app.routes.errors import _render_error_page
 from app.utilities.metadata_parser_v2 import (
     validate_questionnaire_claims,
     validate_runner_claims_v2,
@@ -138,7 +139,7 @@ def get_session_expired():
     if request.method == "GET":
         logout_user()
 
-    return render_template("errors/401")
+    return _render_error_page(200, template="401")
 
 
 @session_blueprint.route("/session-expiry", methods=["GET", "PATCH"])
