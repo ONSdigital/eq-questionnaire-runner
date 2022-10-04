@@ -69,16 +69,13 @@ def login():
     questionnaire_id = None
 
     if decrypted_token.get("version") == AuthPayloadVersion.V2.value:
-        runner_claims["survey_metadata"]["data"] = questionnaire_claims
-
         data = runner_claims.get("survey_metadata").get("data", {})
         ru_ref = data.get("ru_ref")
         questionnaire_id = data.get("questionnaire_id")
-
         claims = runner_claims
     else:
+        ru_ref = runner_claims["ru_ref"]
         claims = {**runner_claims, **questionnaire_claims}
-        ru_ref = claims["ru_ref"]
 
     tx_id = claims["tx_id"]
     case_id = claims["case_id"]
