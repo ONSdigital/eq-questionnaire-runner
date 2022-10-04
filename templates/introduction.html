@@ -14,7 +14,7 @@
     {% block intro_content %}
         {% if content.block.primary_content %}
             {% for content_block in content.block.primary_content %}
-                {% set titleTag = 'h1' %}
+                {% set title_tag = 'h1' %}
                 {% include 'partials/introduction/basic.html' %}
             {% endfor %}
         {% endif %}
@@ -35,7 +35,7 @@
 
         {% if content.block.secondary_content %}
             {% for content_block in content.block.secondary_content %}
-                {% set titleTag = 'h2' %}
+                {% set title_tag = 'h2' %}
                 {% include 'partials/introduction/basic.html' %}
             {% endfor %}
         {% endif %}
