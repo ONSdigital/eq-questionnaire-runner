@@ -55,7 +55,7 @@ class MetadataProxy:
 
     def __getitem__(self, key: str) -> Optional[Any]:
         if self.survey_metadata and key in self.survey_metadata.data:
-            return self.survey_metadata.data[key]
+            return self.survey_metadata[key]
 
         return getattr(self, key, None)
 
