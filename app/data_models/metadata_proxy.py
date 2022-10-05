@@ -62,9 +62,13 @@ class MetadataProxy:
     @classmethod
     def from_dict(cls, metadata: Mapping) -> MetadataProxy:
         _metadata = deepcopy(dict(metadata))
-        version = _metadata.pop("version", None)
+        version = (
+            AuthPayloadVersion(_metadata.pop("version"))
+            if "version" in _metadata
+            else None
+        )
 
-        if version == AuthPayloadVersion.V2.value:
+        if version is AuthPayloadVersion.V2:
             serialized_metadata = cls.serialize(_metadata.pop("survey_metadata", {}))
             survey_metadata = SurveyMetadata(**serialized_metadata)
         else:
