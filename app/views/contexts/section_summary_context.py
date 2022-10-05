@@ -176,7 +176,13 @@ class SectionSummaryContext(Context):
 
     def _list_summary_element(self, summary: dict[str, str]) -> Mapping[str, Any]:
         list_collector_block = None
-        edit_block_id, remove_block_id, primary_person_edit_block_id = None, None, None
+        (
+            edit_block_id,
+            remove_block_id,
+            primary_person_edit_block_id,
+            related_answers,
+            answer_title,
+        ) = (None, None, None, None, None)
         current_list = self._list_store[summary["for_list"]]
 
         list_collector_blocks = list(
@@ -193,12 +199,17 @@ class SectionSummaryContext(Context):
             if list_collector_block["id"] in self.routing_path.block_ids
         ]
 
+        list_collector_block = (
+            list_collector_blocks_on_path[0]
+            if list_collector_blocks_on_path
+            else list_collector_blocks[0]
+        )
+
+        rendered_summary = self._placeholder_renderer.render(
+            summary, self.current_location.list_item_id
+        )
+
         if list_collector_blocks_on_path:
-            list_collector_block = (
-                list_collector_blocks_on_path[0]
-                if list_collector_blocks_on_path
-                else list_collector_blocks[0]
-            )
 
             edit_block_id = list_collector_block["edit_block"]["id"]
             remove_block_id = list_collector_block["remove_block"]["id"]
@@ -213,10 +224,6 @@ class SectionSummaryContext(Context):
                         primary_person_edit_block_id,
                         edit_block_id,
                     ) = self._get_add_or_edit_blocks_primary(primary_person_block)
-
-            rendered_summary = self._placeholder_renderer.render(
-                summary, self.current_location.list_item_id
-            )
 
             list_summary_context = self.list_context(
                 list_collector_block["summary"],
@@ -259,48 +266,14 @@ class SectionSummaryContext(Context):
             )
             # primary person block always exists at this point, type hint conflicts with schema's get_list_collector_for_list return type (Optional)
 
-            rendered_summary = self._placeholder_renderer.render(
-                summary, self.current_location.list_item_id
-            )
-
-            add_link = self._add_link(summary, list_collector_block)
-
-            list_collector_block = list_collector_blocks[0]
-
-            list_summary_context = self.list_context(
-                list_collector_block["summary"],
-                for_list=list_collector_block["for_list"],
-                return_to="section-summary",
-                edit_block_id=edit_block_id,
-                remove_block_id=remove_block_id,
-                primary_person_edit_block_id=primary_person_edit_block_id,
-                for_list_item_ids=current_list.primary_person,
-            )
-
-            related_answers = self._get_related_answers(current_list)
-
-            answer_title = list_collector_block["add_block"]["question"]["answers"][0][
-                "label"
-            ]
-
-            return {
-                "title": rendered_summary["title"],
-                "type": rendered_summary["type"],
-                "add_link": add_link,
-                "add_link_text": rendered_summary["add_link_text"],
-                "empty_list_text": rendered_summary.get("empty_list_text"),
-                "list_name": rendered_summary["for_list"],
-                "related_answers": related_answers,
-                "answer_title": answer_title,
-                **list_summary_context,
-            }
-
         list_summary_context = self.list_context(
-            None, for_list=None, return_to="section-summary"
-        )
-
-        rendered_summary = self._placeholder_renderer.render(
-            summary, self.current_location.list_item_id
+            list_collector_block["summary"],
+            for_list=list_collector_block["for_list"],
+            return_to="section-summary",
+            edit_block_id=edit_block_id,
+            remove_block_id=remove_block_id,
+            primary_person_edit_block_id=primary_person_edit_block_id,
+            for_list_item_ids=current_list.primary_person,
         )
 
         return {
@@ -310,6 +283,8 @@ class SectionSummaryContext(Context):
             "add_link_text": rendered_summary["add_link_text"],
             "empty_list_text": rendered_summary.get("empty_list_text"),
             "list_name": rendered_summary["for_list"],
+            "related_answers": related_answers,
+            "answer_title": answer_title,
             **list_summary_context,
         }
 
