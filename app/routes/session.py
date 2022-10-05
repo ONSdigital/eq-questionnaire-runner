@@ -67,16 +67,17 @@ def login():
     )
 
     theme = g.schema.json["theme"]
-    questionnaire_id = None
 
     if metadata.version is AuthPayloadVersion.V2:
-        runner_claims["survey_metadata"]["data"] = questionnaire_claims
-        data = runner_claims.get("survey_metadata", {}).get("data", {})
-        ru_ref = data.get("ru_ref")
-        questionnaire_id = data.get("questionnaire_id")
+        if questionnaire_claims:
+            runner_claims["survey_metadata"]["data"] = questionnaire_claims
+
+        ru_ref = questionnaire_claims.get("ru_ref")
+        questionnaire_id = questionnaire_claims.get("questionnaire_id")
         claims = runner_claims
     else:
         ru_ref = runner_claims["ru_ref"]
+        questionnaire_id = None
         claims = {**runner_claims, **questionnaire_claims}
 
     tx_id = claims["tx_id"]

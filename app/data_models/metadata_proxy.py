@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Mapping, Optional
 
@@ -28,7 +28,7 @@ TOP_LEVEL_METADATA_KEYS = [
 
 @dataclass(frozen=True)
 class SurveyMetadata:
-    data: ImmutableDict = field(default_factory=dict)  # type: ignore
+    data: ImmutableDict
     receipting_keys: Optional[tuple] = None
 
     def __getitem__(self, key: str) -> Optional[Any]:

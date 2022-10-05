@@ -3,6 +3,7 @@ from uuid import uuid4
 
 from sdc.crypto.encrypter import encrypt
 
+from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.keys import KEY_PURPOSE_AUTHENTICATION
 
 ACCOUNT_SERVICE_URL = "http://upstream.url"
@@ -27,7 +28,7 @@ PAYLOAD = {
 }
 
 PAYLOAD_V2_BUSINESS = {
-    "version": "v2",
+    "version": AuthPayloadVersion.V2.value,
     "survey_metadata": {
         "data": {
             "user_id": "integration-test",
@@ -50,7 +51,7 @@ PAYLOAD_V2_BUSINESS = {
 }
 
 PAYLOAD_V2_SOCIAL = {
-    "version": "v2",
+    "version": AuthPayloadVersion.V2.value,
     "survey_metadata": {
         "data": {
             "case_ref": "1000000000000001",
