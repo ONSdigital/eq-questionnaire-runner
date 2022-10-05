@@ -69,7 +69,7 @@ def login():
     theme = g.schema.json["theme"]
     questionnaire_id = None
 
-    if decrypted_token.get("version") == AuthPayloadVersion.V2.value:
+    if metadata.version is AuthPayloadVersion.V2:
         runner_claims["survey_metadata"]["data"] = questionnaire_claims
         data = runner_claims.get("survey_metadata", {}).get("data", {})
         ru_ref = data.get("ru_ref")

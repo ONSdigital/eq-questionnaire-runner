@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 import pytest
 from freezegun import freeze_time
 
+from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.data_models.session_store import SessionStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.utilities.schema import load_schema_from_name
@@ -134,7 +135,7 @@ def test_submission_payload_structure_v2(
         "case_id": "case_id",
         "tx_id": "tx_id",
         "type": "uk.gov.ons.edc.eq:surveyresponse",
-        "version": "v2",
+        "version": AuthPayloadVersion.V2.value,
         "data_version": "0.0.3",
         "origin": "uk.gov.ons.edc.eq",
         "collection_exercise_sid": "ce_sid",

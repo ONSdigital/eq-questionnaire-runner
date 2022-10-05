@@ -55,7 +55,7 @@ class SubmissionHandler:
         self._questionnaire_store.save()
 
     def get_payload(self):
-        if self._metadata["version"] is AuthPayloadVersion.V2.value:
+        if self._metadata["version"] is AuthPayloadVersion.V2:
             payload = convert_answers_v2(
                 self._schema,
                 self._questionnaire_store,

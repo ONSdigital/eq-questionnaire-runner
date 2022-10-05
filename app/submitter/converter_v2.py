@@ -3,6 +3,7 @@ from typing import Any, Mapping, OrderedDict, Union
 
 from structlog import get_logger
 
+from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.data_models import AnswerStore, ListStore, QuestionnaireStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire.questionnaire_schema import (
@@ -59,7 +60,7 @@ def convert_answers_v2(
         "case_id": metadata.case_id,  # type: ignore
         "tx_id": metadata.tx_id,  # type: ignore
         "type": "uk.gov.ons.edc.eq:surveyresponse",
-        "version": metadata.version,  # type: ignore
+        "version": AuthPayloadVersion.V2.value,  # type: ignore
         "data_version": schema.json["data_version"],
         "origin": "uk.gov.ons.edc.eq",
         "collection_exercise_sid": metadata.collection_exercise_sid,  # type: ignore

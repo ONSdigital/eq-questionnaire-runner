@@ -98,7 +98,7 @@ class Feedback:
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
         # type ignore as metadata will exist at this point
-        if metadata.version == AuthPayloadVersion.V2.value:  # type: ignore
+        if metadata.version is AuthPayloadVersion.V2:  # type: ignore
             feedback_message = FeedbackPayloadV2(
                 metadata=metadata,  # type: ignore
                 response_metadata=self._questionnaire_store.response_metadata,
@@ -126,7 +126,7 @@ class Feedback:
             feedback_message(), current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION  # type: ignore
         )
 
-        if metadata.version == AuthPayloadVersion.V2.value and metadata.survey_metadata.receipting_keys:  # type: ignore
+        if metadata.version is AuthPayloadVersion.V2 and metadata.survey_metadata.receipting_keys:  # type: ignore
             receipting_keys: dict = {item: metadata[item] for item in metadata.survey_metadata.receipting_keys}  # type: ignore
             feedback_metadata = FeedbackMetadata(case_id, tx_id, **receipting_keys)  # type: ignore
 
