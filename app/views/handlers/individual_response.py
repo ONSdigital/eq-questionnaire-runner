@@ -976,7 +976,7 @@ class IndividualResponseFulfilmentRequest(FulfilmentRequest):
             "fulfilmentRequest": {
                 **self._get_individual_case_id_mapping(),
                 "fulfilmentCode": self._get_fulfilment_code(),
-                "caseId": self._metadata["case_id"],
+                "caseId": self._metadata.case_id,
                 "contact": self._get_contact_mapping(),
             }
         }

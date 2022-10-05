@@ -161,7 +161,7 @@ def test_case_id_should_be_set_in_payload(fake_questionnaire_schema, version):
             fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
         )
 
-    assert answer_object["case_id"] == questionnaire_store.metadata["case_id"]
+    assert answer_object["case_id"] == questionnaire_store.metadata.case_id
 
 
 @pytest.mark.parametrize(

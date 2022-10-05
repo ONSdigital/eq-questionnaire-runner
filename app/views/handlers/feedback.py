@@ -90,8 +90,8 @@ class Feedback:
         session_data.feedback_count += 1
 
         metadata = self._questionnaire_store.metadata
-        case_id = metadata["case_id"] if metadata else None
-        tx_id = metadata["tx_id"] if metadata else None
+        case_id = metadata.case_id if metadata else None
+        tx_id = metadata.tx_id if metadata else None
 
         feedback_metadata = FeedbackMetadata(case_id, tx_id)  # type: ignore
 

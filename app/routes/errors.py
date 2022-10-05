@@ -36,7 +36,7 @@ errors_blueprint = Blueprint("errors", __name__)
 
 def log_exception(exception, status_code):
     if metadata := get_metadata(current_user):
-        logger.bind(tx_id=metadata["tx_id"])
+        logger.bind(tx_id=metadata.tx_id)
 
     log = logger.warning if status_code < 500 else logger.error
 

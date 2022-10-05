@@ -109,7 +109,7 @@ def load_user(extend_session: bool = True) -> Optional[User]:
         user = User(user_id, user_ik)
 
         if metadata := get_metadata(user):
-            logger.bind(tx_id=metadata["tx_id"])
+            logger.bind(tx_id=metadata.tx_id)
 
         if extend_session:
             _extend_session_expiry(session_store)
