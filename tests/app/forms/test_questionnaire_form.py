@@ -1679,15 +1679,7 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
             rendered_schema,
             answer_store,
             list_store,
-            metadata=MetadataProxy.from_dict(
-                {
-                    "response_id": "1",
-                    "account_service_url": "account_service_url",
-                    "tx_id": "tx_id",
-                    "collection_exercise_sid": "collection_exercise_sid",
-                    "case_id": "case_id",
-                }
-            ),
+            metadata=get_metadata_from_dict(MANDATORY_METADATA),
             response_metadata={},
             form_data=MultiDict(),
         )
