@@ -148,6 +148,13 @@ class TestLoginWithGetRequest(IntegrationTestCase):
 
         self.assertStatusForbidden()
 
+    def test_login_with_invalid_version_should_be_forbidden(self):
+        token = self.token_generator.create_token_invalid_version("test_checkbox")
+
+        self.get(url=f"/session?token={token}")
+
+        self.assertStatusForbidden()
+
     def test_login_token_with_schema_url_should_redirect_to_survey(self):
         schema_url = "http://eq-survey-register.url/my-test-schema"
 

@@ -127,6 +127,15 @@ class TokenGenerator:
 
         return self.generate_token(payload)
 
+    def create_token_invalid_version(self, schema_name, **extra_payload):
+        payload = self._get_payload_with_params_v2(
+            schema_name, PAYLOAD_V2_BUSINESS, None, **extra_payload
+        )
+
+        payload["version"] = "v3"
+
+        return self.generate_token(payload)
+
     def create_token_without_jti(self, schema_name, **extra_payload):
         payload_vars = self._get_payload_with_params(schema_name, None, **extra_payload)
         del payload_vars["jti"]

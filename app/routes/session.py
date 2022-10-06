@@ -66,8 +66,6 @@ def login():
         decrypted_token=decrypted_token, schema_metadata=schema_metadata
     )
 
-    theme = g.schema.json["theme"]
-
     if metadata.version is AuthPayloadVersion.V2:
         if questionnaire_claims:
             runner_claims["survey_metadata"]["data"] = questionnaire_claims
@@ -104,7 +102,7 @@ def login():
 
     store_session(claims)
 
-    cookie_session["theme"] = theme
+    cookie_session["theme"] = g.schema.json["theme"]
     cookie_session["survey_title"] = g.schema.json["title"]
     cookie_session["expires_in"] = get_session_timeout_in_seconds(g.schema)
 
@@ -192,7 +190,7 @@ def get_questionnaire_claims(decrypted_token, schema_metadata):
         if decrypted_token.get("version") == AuthPayloadVersion.V2.value:
             claims = decrypted_token.get("survey_metadata", {}).get("data", {})
             return validate_questionnaire_claims(
-                claims, schema_metadata, include_extra_params=INCLUDE
+                claims, schema_metadata, unknown=INCLUDE
             )
 
         return validate_questionnaire_claims(decrypted_token, schema_metadata)
