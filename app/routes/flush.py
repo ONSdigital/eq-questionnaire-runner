@@ -99,6 +99,7 @@ def _submit_data(user):
             tx_id=metadata.tx_id,
             case_id=metadata.case_id,
             receipting_keys=receipting_keys,
+            metadata=metadata,
         )
 
         if not sent:

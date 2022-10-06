@@ -8,7 +8,7 @@ from typing import Any, Mapping, Optional
 from werkzeug.datastructures import ImmutableDict
 
 from app.authentication.auth_payload_version import AuthPayloadVersion
-from app.utilities.serialize import serialize
+from app.utilities.make_immutable import make_immutable
 
 TOP_LEVEL_METADATA_KEYS = [
     "tx_id",
@@ -87,4 +87,4 @@ class MetadataProxy:
 
     @classmethod
     def serialize(cls, data: Any) -> Any:
-        return serialize(data)
+        return make_immutable(data)

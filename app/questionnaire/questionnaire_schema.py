@@ -10,7 +10,7 @@ from werkzeug.datastructures import ImmutableDict
 from app.data_models.answer import Answer
 from app.forms import error_messages
 from app.questionnaire.rules.operator import OPERATION_MAPPING
-from app.utilities.serialize import serialize
+from app.utilities.make_immutable import make_immutable
 
 DEFAULT_LANGUAGE_CODE = "en"
 
@@ -121,7 +121,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @classmethod
     def serialize(cls, data: Any) -> Any:
-        return serialize(data)
+        return make_immutable(data)
 
     @classmethod
     def get_mutable_deepcopy(cls, data: Any) -> Any:
