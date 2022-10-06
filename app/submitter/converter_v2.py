@@ -28,6 +28,10 @@ class DataVersionError(Exception):
         return f"Data version {self.version} not supported"
 
 
+class NoMetadataException(Exception):
+    pass
+
+
 def convert_answers_v2(
     schema: QuestionnaireSchema,
     questionnaire_store: QuestionnaireStore,
@@ -48,8 +52,10 @@ def convert_answers_v2(
     Returns:
         Data payload
     """
-    # type ignores added as metadata will exist at this point
     metadata = questionnaire_store.metadata
+    if not metadata:
+        raise NoMetadataException
+
     response_metadata = questionnaire_store.response_metadata
     answer_store = questionnaire_store.answer_store
     list_store = questionnaire_store.list_store
@@ -57,26 +63,24 @@ def convert_answers_v2(
     survey_id = schema.json["survey_id"]
 
     payload: dict = {
-        "case_id": metadata.case_id,  # type: ignore
-        "tx_id": metadata.tx_id,  # type: ignore
+        "case_id": metadata.case_id,
+        "tx_id": metadata.tx_id,
         "type": "uk.gov.ons.edc.eq:surveyresponse",
-        "version": AuthPayloadVersion.V2.value,  # type: ignore
+        "version": AuthPayloadVersion.V2.value,
         "data_version": schema.json["data_version"],
         "origin": "uk.gov.ons.edc.eq",
-        "collection_exercise_sid": metadata.collection_exercise_sid,  # type: ignore
-        "schema_name": metadata.schema_name,  # type: ignore
+        "collection_exercise_sid": metadata.collection_exercise_sid,
+        "schema_name": metadata.schema_name,
         "flushed": flushed,
         "submitted_at": submitted_at.isoformat(),
-        "launch_language_code": metadata["language_code"] or DEFAULT_LANGUAGE_CODE,  # type: ignore
+        "launch_language_code": metadata["language_code"] or DEFAULT_LANGUAGE_CODE,
     }
 
-    optional_properties = get_optional_payload_properties(
-        metadata, response_metadata  # type: ignore
-    )
+    optional_properties = get_optional_payload_properties(metadata, response_metadata)
 
     payload["survey_metadata"] = {"survey_id": survey_id}
-    if metadata.survey_metadata:  # type: ignore
-        payload["survey_metadata"].update(metadata.survey_metadata.data)  # type: ignore
+    if metadata.survey_metadata:
+        payload["survey_metadata"].update(metadata.survey_metadata.data)
 
     payload["data"] = get_payload_data(
         data_version=schema.json["data_version"],
@@ -84,7 +88,7 @@ def convert_answers_v2(
         list_store=list_store,
         schema=schema,
         routing_path=routing_path,
-        metadata=metadata,  # type: ignore
+        metadata=metadata,
         response_metadata=response_metadata,
     )
 

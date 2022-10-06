@@ -10,7 +10,7 @@ from app.questionnaire.questionnaire_schema import (
     QuestionnaireSchema,
 )
 from app.questionnaire.routing_path import RoutingPath
-from app.submitter.converter_v2 import get_payload_data
+from app.submitter.converter_v2 import NoMetadataException, get_payload_data
 
 logger = get_logger()
 
@@ -63,6 +63,9 @@ def convert_answers(
         Data payload
     """
     metadata = questionnaire_store.metadata
+    if not metadata:
+        raise NoMetadataException
+
     response_metadata = questionnaire_store.response_metadata
     answer_store = questionnaire_store.answer_store
     list_store = questionnaire_store.list_store
@@ -71,22 +74,20 @@ def convert_answers(
 
     # type ignores added as metadata will exist at this point
     payload = {
-        "case_id": metadata.case_id,  # type: ignore
-        "tx_id": metadata.tx_id,  # type: ignore
+        "case_id": metadata.case_id,
+        "tx_id": metadata.tx_id,
         "type": "uk.gov.ons.edc.eq:surveyresponse",
         "version": schema.json["data_version"],
         "origin": "uk.gov.ons.edc.eq",
         "survey_id": survey_id,
         "flushed": flushed,
         "submitted_at": submitted_at.isoformat(),
-        "collection": build_collection(metadata),  # type: ignore
-        "metadata": build_metadata(metadata),  # type: ignore
-        "launch_language_code": metadata["language_code"] or DEFAULT_LANGUAGE_CODE,  # type: ignore
+        "collection": build_collection(metadata),
+        "metadata": build_metadata(metadata),
+        "launch_language_code": metadata["language_code"] or DEFAULT_LANGUAGE_CODE,
     }
 
-    optional_properties = get_optional_payload_properties(
-        metadata, response_metadata  # type: ignore
-    )
+    optional_properties = get_optional_payload_properties(metadata, response_metadata)
 
     payload["data"] = get_payload_data(
         data_version=schema.json["data_version"],
@@ -94,7 +95,7 @@ def convert_answers(
         list_store=list_store,
         schema=schema,
         routing_path=routing_path,
-        metadata=metadata,  # type: ignore
+        metadata=metadata,
         response_metadata=response_metadata,
     )
 
