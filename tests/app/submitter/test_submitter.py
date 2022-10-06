@@ -3,7 +3,6 @@ import uuid
 import pytest
 from pika.exceptions import AMQPError, NackError
 
-from app.data_models.metadata_proxy import MetadataProxy
 from app.submitter import GCSFeedbackSubmitter, GCSSubmitter, RabbitMQSubmitter
 from app.utilities.json import json_dumps
 
@@ -216,15 +215,12 @@ def test_gcs_submitter_adds_metadata_when_sends_message(patch_gcs_client):
 def test_gcs_submitter_adds_receipting_keys_to_metadata_when_set(patch_gcs_client):
     gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
 
-    receipting_keys = ("questionnaire_id",)
-
     # When
     gcs_submitter.send_message(
         message={"test_data"},
         tx_id="123",
         case_id="456",
-        receipting_keys=receipting_keys,
-        questionnaire_store_metadata=MetadataProxy.from_dict({"questionnaire_id": "1"}),
+        questionnaire_id="1",
     )
 
     # Then

@@ -36,14 +36,22 @@ class SubmissionHandler:
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
         )
 
-        receipting_keys = self._metadata["receipting_keys"]
+        additional_metadata: dict = {}
+        if (
+            self._metadata.version is AuthPayloadVersion.V2
+            and self._metadata.survey_metadata
+            and self._metadata.survey_metadata.receipting_keys
+        ):
+            additional_metadata = {
+                item: self._metadata[item]
+                for item in self._metadata.survey_metadata.receipting_keys
+            }
 
         submitted = current_app.eq["submitter"].send_message(
             encrypted_message,
             case_id=self._metadata.case_id,
             tx_id=self._metadata.tx_id,
-            receipting_keys=receipting_keys,
-            metadata=self._questionnaire_store.metadata,
+            **additional_metadata,
         )
 
         if not submitted:

@@ -1,4 +1,4 @@
-from typing import Mapping, Optional, Sequence
+from typing import Mapping, Optional
 from uuid import uuid4
 
 from google.cloud import storage  # type: ignore
@@ -6,8 +6,6 @@ from google.cloud.storage.retry import DEFAULT_RETRY
 from pika import BasicProperties, BlockingConnection, URLParameters
 from pika.exceptions import AMQPError, NackError, UnroutableError
 from structlog import get_logger
-
-from app.data_models.metadata_proxy import MetadataProxy
 
 logger = get_logger()
 
@@ -20,8 +18,7 @@ class LogSubmitter:
         message: str,
         tx_id: str,
         case_id: str,
-        receipting_keys: Optional[Sequence] = None,
-        metadata: Optional[MetadataProxy] = None,
+        **kwargs: dict,
     ) -> bool:
         logger.info("sending message")
         logger.info(
@@ -29,8 +26,7 @@ class LogSubmitter:
             message=message,
             case_id=case_id,
             tx_id=tx_id,
-            receipting_keys=receipting_keys,
-            metadata=metadata,
+            kwargs=kwargs,
         )
 
         return True
@@ -46,17 +42,16 @@ class GCSSubmitter:
         message: str,
         tx_id: str,
         case_id: str,
-        receipting_keys: Optional[tuple] = None,
-        questionnaire_store_metadata: Optional[MetadataProxy] = None,
+        **kwargs: dict,
     ) -> bool:
         logger.info("sending message")
 
         blob = self.bucket.blob(tx_id)
-        metadata = {"tx_id": tx_id, "case_id": case_id}
+        metadata: dict = {"tx_id": tx_id, "case_id": case_id}
 
-        if receipting_keys:
-            for item in receipting_keys:
-                metadata[item] = questionnaire_store_metadata[item]  # type: ignore
+        if kwargs:
+            for key, value in kwargs.items():
+                metadata[key] = value
 
         blob.metadata = metadata
 
