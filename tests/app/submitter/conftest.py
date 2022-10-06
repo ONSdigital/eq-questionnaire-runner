@@ -21,7 +21,7 @@ METADATA_V1 = MetadataProxy.from_dict(
         "user_id": "789473423",
         "schema_name": "1_0000",
         "collection_exercise_sid": "test-sid",
-        "account_service_url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/",
+        "account_service_url": ACCOUNT_SERVICE_BASE_URL_SOCIAL,
         "period_id": "2016-02-01",
         "period_str": "2016-01-01",
         "ref_p_start_date": "2016-02-02",
@@ -47,7 +47,7 @@ METADATA_V2 = MetadataProxy.from_dict(
         "tx_id": str(uuid.uuid4()),
         "schema_name": "1_0000",
         "collection_exercise_sid": "test-sid",
-        "account_service_url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/",
+        "account_service_url": ACCOUNT_SERVICE_BASE_URL_SOCIAL,
         "survey_metadata": {
             "data": {
                 "period_id": "2016-02-01",
