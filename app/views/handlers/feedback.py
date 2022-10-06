@@ -24,6 +24,7 @@ from app.submitter.converter import (
     build_metadata,
     get_optional_payload_properties,
 )
+from app.submitter.converter_v2 import NoMetadataException
 from app.views.contexts.feedback_form_context import build_feedback_context
 
 
@@ -90,45 +91,48 @@ class Feedback:
         session_data.feedback_count += 1
 
         metadata = self._questionnaire_store.metadata
-        case_id = metadata.case_id if metadata else None
-        tx_id = metadata.tx_id if metadata else None
+        if not metadata:
+            raise NoMetadataException  # pragma: no cover
 
-        feedback_metadata = FeedbackMetadata(case_id, tx_id)  # type: ignore
+        case_id = metadata.case_id
+        tx_id = metadata.tx_id
 
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
-        # type ignore as metadata will exist at this point
-        if metadata.version is AuthPayloadVersion.V2:  # type: ignore
-            feedback_message = FeedbackPayloadV2(
-                metadata=metadata,  # type: ignore
-                response_metadata=self._questionnaire_store.response_metadata,
-                schema=self._schema,
-                case_id=case_id,
-                submission_language_code=session_data.language_code,
-                feedback_count=session_data.feedback_count,
-                feedback_text=self.form.data.get("feedback-text"),
-                feedback_type=self.form.data.get("feedback-type"),
-            )
-        else:
-            feedback_message = FeedbackPayload(
-                metadata=metadata,  # type: ignore
-                response_metadata=self._questionnaire_store.response_metadata,
-                schema=self._schema,
-                case_id=case_id,
-                submission_language_code=session_data.language_code,
-                feedback_count=session_data.feedback_count,
-                feedback_text=self.form.data.get("feedback-text"),
-                feedback_type=self.form.data.get("feedback-type"),
-            )
+        feedback_converter = (
+            FeedbackPayloadV2
+            if metadata.version is AuthPayloadVersion.V2
+            else FeedbackPayload
+        )
+        feedback_message = feedback_converter(
+            metadata=metadata,
+            response_metadata=self._questionnaire_store.response_metadata,
+            schema=self._schema,
+            case_id=case_id,
+            submission_language_code=session_data.language_code,
+            feedback_count=session_data.feedback_count,
+            feedback_text=self.form.data.get("feedback-text"),
+            feedback_type=self.form.data.get("feedback-type"),
+        )
 
-        feedback_message().update(feedback_metadata())
         encrypted_message = encrypt(
             feedback_message(), current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION  # type: ignore
         )
 
-        if metadata.version is AuthPayloadVersion.V2 and metadata.survey_metadata.receipting_keys:  # type: ignore
-            receipting_keys: dict = {item: metadata[item] for item in metadata.survey_metadata.receipting_keys}  # type: ignore
-            feedback_metadata = FeedbackMetadata(case_id, tx_id, **receipting_keys)  # type: ignore
+        additional_metadata: dict = {}
+        if (
+            metadata.version is AuthPayloadVersion.V2
+            and metadata.survey_metadata
+            and metadata.survey_metadata.receipting_keys
+        ):
+            additional_metadata = {
+                item: metadata[item]
+                for item in metadata.survey_metadata.receipting_keys
+            }
+
+        feedback_metadata = FeedbackMetadata(
+            tx_id=tx_id, case_id=case_id, **additional_metadata
+        )
 
         if not current_app.eq["feedback_submitter"].upload(  # type: ignore
             feedback_metadata, encrypted_message
@@ -292,14 +296,13 @@ class FeedbackPayload:
         self.feedback_type = feedback_type
 
     def __call__(self) -> dict[str, Any]:
-        # type ignores added as metadata will exist at this point
         payload = {
             "origin": "uk.gov.ons.edc.eq",
             "case_id": self.case_id,
             "submitted_at": datetime.now(tz=timezone.utc).isoformat(),
             "flushed": False,
-            "collection": build_collection(self.metadata),  # type: ignore
-            "metadata": build_metadata(self.metadata),  # type: ignore
+            "collection": build_collection(self.metadata),
+            "metadata": build_metadata(self.metadata),
             "survey_id": self.schema.json["survey_id"],
             "submission_language_code": (
                 self.submission_language_code or DEFAULT_LANGUAGE_CODE

@@ -10,6 +10,7 @@ from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.settings import VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS
+from app.submitter.converter_v2 import NoMetadataException
 from app.survey_config.survey_type import SurveyType
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts.view_submitted_response_context import (
@@ -119,6 +120,20 @@ def test_summary_headers_without_change_link(
             "en", SCHEMA, questionnaire_store, SurveyType.DEFAULT
         )
         assert context["summary"]["headers"] == ["Question", "Answer given"]
+
+
+def test_no_metadata_raises_error(
+    app: Flask,
+):
+    with app.app_context():
+        questionnaire_store = fake_questionnaire_store()
+
+        questionnaire_store.metadata = None
+
+        with pytest.raises(NoMetadataException):
+            build_view_submitted_response_context(
+                "en", SCHEMA, questionnaire_store, SurveyType.DEFAULT
+            )
 
 
 def fake_questionnaire_store():

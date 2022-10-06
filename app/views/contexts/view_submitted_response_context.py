@@ -7,6 +7,7 @@ from flask_babel import lazy_gettext
 from app.data_models import QuestionnaireStore
 from app.globals import has_view_submitted_response_expired
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.submitter.converter_v2 import NoMetadataException
 from app.survey_config.survey_type import SurveyType
 from app.views.contexts.submission_metadata_context import (
     build_submission_metadata_context,
@@ -24,9 +25,13 @@ def build_view_submitted_response_context(
     view_submitted_response_expired = has_view_submitted_response_expired(
         questionnaire_store.submitted_at  # type: ignore
     )
+
     metadata = questionnaire_store.metadata
-    trad_as = metadata["trad_as"] if metadata else None
-    ru_name = metadata["ru_name"] if metadata else None
+    if not metadata:
+        raise NoMetadataException
+
+    trad_as = metadata["trad_as"]
+    ru_name = metadata["ru_name"]
 
     if survey_type is SurveyType.SOCIAL:
         submitted_text = lazy_gettext("Answers submitted.")
@@ -42,7 +47,7 @@ def build_view_submitted_response_context(
     metadata = build_submission_metadata_context(
         survey_type,
         questionnaire_store.submitted_at,  # type: ignore
-        metadata.tx_id if metadata else None,  # type: ignore
+        metadata.tx_id,
     )
     context = {
         "hide_sign_out_button": True,
@@ -60,7 +65,7 @@ def build_view_submitted_response_context(
             answer_store=questionnaire_store.answer_store,
             list_store=questionnaire_store.list_store,
             progress_store=questionnaire_store.progress_store,
-            metadata=questionnaire_store.metadata,  # type: ignore
+            metadata=questionnaire_store.metadata,
             response_metadata=questionnaire_store.response_metadata,
         )
         context["summary"] = summary_context()
