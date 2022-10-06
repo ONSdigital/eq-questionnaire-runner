@@ -63,20 +63,19 @@ class SubmissionHandler:
         self._questionnaire_store.save()
 
     def get_payload(self):
-        if self._metadata["version"] is AuthPayloadVersion.V2:
-            payload = convert_answers_v2(
-                self._schema,
-                self._questionnaire_store,
-                self._full_routing_path,
-                self.submitted_at,
-            )
-        else:
-            payload = convert_answers(
-                self._schema,
-                self._questionnaire_store,
-                self._full_routing_path,
-                self.submitted_at,
-            )
+        answer_converter = (
+            convert_answers_v2
+            if self._metadata["version"] is AuthPayloadVersion.V2
+            else convert_answers
+        )
+
+        payload = answer_converter(
+            self._schema,
+            self._questionnaire_store,
+            self._full_routing_path,
+            self.submitted_at,
+        )
+
         payload["submission_language_code"] = (
             self._session_store.session_data.language_code or DEFAULT_LANGUAGE_CODE
         )
