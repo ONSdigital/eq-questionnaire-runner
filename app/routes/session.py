@@ -81,22 +81,19 @@ def login():
     tx_id = claims["tx_id"]
     case_id = claims["case_id"]
 
-    logger.bind(
-        tx_id=tx_id,
-        case_id=case_id,
-    )
-
-    if schema_name := metadata["schema_name"]:
-        logger.bind(schema_name=schema_name)
-
-    if schema_url := metadata["schema_url"]:
-        logger.bind(schema_url=schema_url)
-
-    if ru_ref:
-        logger.bind(ru_ref=ru_ref)
-
-    if questionnaire_id:
-        logger.bind(questionnaire_id=questionnaire_id)
+    logger_args = {
+        key: value
+        for key, value in {
+            "tx_id": tx_id,
+            "case_id": case_id,
+            "schema_name": metadata["schema_name"],
+            "schema_url": metadata["schema_url"],
+            "ru_ref": ru_ref,
+            "questionnaire_id": questionnaire_id,
+        }.items()
+        if value
+    }
+    logger.bind(**logger_args)
 
     logger.info("decrypted token and parsed metadata")
 
