@@ -287,6 +287,28 @@ def test_no_metadata_raises_exception(fake_questionnaire_schema, version):
         converter(fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT)
 
 
+@pytest.mark.parametrize(
+    "version",
+    (
+        "v1",
+        "v2",
+    ),
+)
+def test_data_object_set_in_payload(
+    fake_questionnaire_schema, fake_response_metadata, version
+):
+    questionnaire_store = get_questionnaire_store(version)
+    questionnaire_store.response_metadata = fake_response_metadata
+
+    converter = convert_answers_v2 if version == "v2" else convert_answers
+
+    answer_object = converter(
+        fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
+    )
+
+    assert "data" in answer_object
+
+
 def test_instrument_id_is_not_in_payload_collection_if_form_type_absent_in_metadata(
     fake_questionnaire_schema,
 ):
