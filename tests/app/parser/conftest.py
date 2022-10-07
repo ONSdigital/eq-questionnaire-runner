@@ -4,7 +4,14 @@ import uuid
 import pytest
 
 
-@pytest.fixture
+def get_metadata(version):
+    return fake_metadata_runner_v2() if version == "v2" else fake_metadata_runner()
+
+
+def get_metadata_full(version):
+    return fake_metadata_full_v2_business() if version == "v2" else fake_metadata_full()
+
+
 def fake_metadata_runner():
     """Generate the set of claims required for runner to function"""
     return {
@@ -19,19 +26,19 @@ def fake_metadata_runner():
     }
 
 
-@pytest.fixture
-def fake_business_metadata_runner(fake_metadata_runner):
+@pytest.fixture()
+def fake_business_metadata_runner():
     """Generate a set of claims required for runner using business parameters instead of schema_name"""
-    del fake_metadata_runner["schema_name"]
+    metadata = get_metadata("v1")
+    del metadata["schema_name"]
 
-    fake_metadata_runner["eq_id"] = "mbs"
-    fake_metadata_runner["form_type"] = "0253"
+    metadata["eq_id"] = "mbs"
+    metadata["form_type"] = "0253"
 
-    return fake_metadata_runner
+    return metadata
 
 
-@pytest.fixture
-def fake_metadata_full(fake_metadata_runner):
+def fake_metadata_full():
     """Generate a fake set of claims
     These claims should represent all claims known to runner, including common questionnaire
     level claims.
@@ -48,10 +55,9 @@ def fake_metadata_full(fake_metadata_runner):
         "case_id": str(uuid.uuid4()),
     }
 
-    return dict(fake_metadata_runner, **fake_questionnaire_claims)
+    return dict(fake_metadata_runner(), **fake_questionnaire_claims)
 
 
-@pytest.fixture
 def fake_metadata_runner_v2():
     """Generate the set of claims required for runner to function"""
     return {
@@ -67,8 +73,7 @@ def fake_metadata_runner_v2():
     }
 
 
-@pytest.fixture
-def fake_metadata_full_v2_business(fake_metadata_runner_v2):
+def fake_metadata_full_v2_business():
     """Generate a fake set of claims
     These claims should represent all claims known to runner, including common questionnaire
     level claims.
@@ -86,9 +91,11 @@ def fake_metadata_full_v2_business(fake_metadata_runner_v2):
         "form_type": "I",
     }
 
-    fake_metadata_runner_v2["survey_metadata"]["data"] = fake_survey_metadata_claims
+    metadata = fake_metadata_runner_v2()
 
-    return fake_metadata_runner_v2
+    metadata["survey_metadata"]["data"] = fake_survey_metadata_claims
+
+    return metadata
 
 
 @pytest.fixture
