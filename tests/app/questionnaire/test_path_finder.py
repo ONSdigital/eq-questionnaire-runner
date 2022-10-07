@@ -6,6 +6,7 @@ from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
+from tests.app.questionnaire.conftest import get_metadata
 
 
 def test_simple_path(answer_store, list_store):
@@ -20,7 +21,7 @@ def test_simple_path(answer_store, list_store):
             }
         ]
     )
-    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, None, {})
 
     section_id = schema.get_section_id_for_block_id("name-block")
     routing_path = path_finder.routing_path(section_id=section_id)
@@ -34,7 +35,7 @@ def test_introduction_in_path_when_in_schema(answer_store, list_store, progress_
     schema = load_schema_from_name("test_introduction")
     current_section = schema.get_section("introduction-section")
 
-    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, None, {})
 
     routing_path = path_finder.routing_path(section_id=current_section["id"])
     assert "introduction" in routing_path
@@ -45,7 +46,7 @@ def test_introduction_not_in_path_when_not_in_schema(
 ):
     schema = load_schema_from_name("test_checkbox")
     current_section = schema.get_section("default-section")
-    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, None, {})
 
     mocker.patch("app.questionnaire.when_rules.evaluate_when_rules", return_value=False)
     routing_path = path_finder.routing_path(section_id=current_section["id"])
@@ -80,7 +81,7 @@ def test_routing_path_with_conditional_path(schema, answer_store, list_store):
             }
         ]
     )
-    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, None, {})
 
     routing_path = path_finder.routing_path(section_id=section_id)
 
@@ -103,7 +104,7 @@ def test_new_routing_basic_and_conditional_path(
     answer_store.add_or_update(answer_1)
 
     # When
-    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, None, {})
     routing_path = path_finder.routing_path(section_id=section_id)
 
     # Then
@@ -128,7 +129,7 @@ def test_routing_path_with_complete_introduction(answer_store, list_store):
         section_id="introduction-section",
     )
 
-    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, None, {})
     routing_path = path_finder.routing_path(section_id=section_id)
 
     assert routing_path == expected_routing_path
@@ -157,7 +158,7 @@ def test_routing_path(answer_store, list_store):
             }
         ]
     )
-    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, None, {})
     routing_path = path_finder.routing_path(section_id=section_id)
 
     assert routing_path == expected_path
@@ -180,7 +181,7 @@ def test_routing_path_with_repeating_sections(answer_store, list_store):
             }
         ]
     )
-    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, None, {})
 
     repeating_section_id = "personal-details-section"
     routing_path = path_finder.routing_path(
@@ -224,15 +225,13 @@ def test_routing_path_empty_routing_rules(answer_store, list_store):
         ]
     )
 
-    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, None, {})
     routing_path = path_finder.routing_path(section_id=section_id)
 
     assert routing_path == expected_path
 
 
-def test_routing_path_with_conditional_value_not_in_metadata(
-    mocker, answer_store, list_store
-):
+def test_routing_path_with_conditional_value_not_in_metadata(answer_store, list_store):
     schema = load_schema_from_name("test_metadata_routing")
     section_id = schema.get_section_id_for_block_id("block1")
     expected_path = RoutingPath(
@@ -250,12 +249,10 @@ def test_routing_path_with_conditional_value_not_in_metadata(
         ]
     )
 
-    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
-
-    mocker.patch(
-        "app.questionnaire.when_rules.get_metadata_value",
-        return_value=None,
+    path_finder = PathFinder(
+        schema, answer_store, list_store, progress_store, get_metadata(), {}
     )
+
     routing_path = path_finder.routing_path(section_id=section_id)
 
     assert routing_path == expected_path
@@ -290,7 +287,7 @@ def test_new_routing_path_should_skip_block(
     )
 
     # When
-    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, None, {})
     routing_path = path_finder.routing_path(section_id=section_id)
 
     # Then
@@ -329,7 +326,7 @@ def test_routing_path_should_skip_group(schema, answer_store, list_store):
     )
 
     # When
-    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, None, {})
     routing_path = path_finder.routing_path(section_id=section_id)
 
     # Then
@@ -368,7 +365,7 @@ def test_routing_path_should_not_skip_group(schema, answer_store, list_store):
     )
 
     # When
-    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, None, {})
     routing_path = path_finder.routing_path(section_id=section_id)
 
     # Then
@@ -390,7 +387,7 @@ def test_get_routing_path_when_first_block_in_group_skipped(
     )
 
     # When
-    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
+    path_finder = PathFinder(schema, answer_store, list_store, progress_store, None, {})
 
     # Then
     expected_route = RoutingPath(
@@ -663,7 +660,7 @@ def test_routing_path_block_ids_dependent_on_other_sections_when_rules(
         answer_store,
         list_store,
         progress_store,
-        metadata={},
+        metadata=None,
         response_metadata={},
     )
     routing_path = path_finder.routing_path(section_id=section_id)
@@ -744,7 +741,7 @@ def test_routing_path_block_ids_dependent_on_other_sections_when_rules_repeating
         answer_store,
         list_store,
         progress_store,
-        metadata={},
+        metadata=None,
         response_metadata={},
     )
     routing_path = path_finder.routing_path(
