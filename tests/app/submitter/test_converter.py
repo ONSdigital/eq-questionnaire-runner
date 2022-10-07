@@ -27,14 +27,11 @@ def test_convert_answers_v2_flushed_flag_default_is_false(
 ):
     questionnaire_store = get_questionnaire_store(version)
 
-    if version == "v2":
-        answer_object = convert_answers_v2(
-            fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-        )
-    else:
-        answer_object = convert_answers(
-            fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-        )
+    converter = convert_answers_v2 if version == "v2" else convert_answers
+
+    answer_object = converter(
+        fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
+    )
 
     assert not answer_object["flushed"]
 
@@ -51,22 +48,15 @@ def test_convert_answers_v2_flushed_flag_overriden_to_true(
 ):
     questionnaire_store = get_questionnaire_store(version)
 
-    if version == "v2":
-        answer_object = convert_answers_v2(
-            fake_questionnaire_schema,
-            questionnaire_store,
-            {},
-            SUBMITTED_AT,
-            flushed=True,
-        )
-    else:
-        answer_object = convert_answers(
-            fake_questionnaire_schema,
-            questionnaire_store,
-            {},
-            SUBMITTED_AT,
-            flushed=True,
-        )
+    converter = convert_answers_v2 if version == "v2" else convert_answers
+
+    answer_object = converter(
+        fake_questionnaire_schema,
+        questionnaire_store,
+        {},
+        SUBMITTED_AT,
+        flushed=True,
+    )
 
     assert answer_object["flushed"]
 
@@ -83,14 +73,11 @@ def test_started_at_should_be_set_in_payload_if_present_in_response_metadata(
 ):
     questionnaire_store = get_questionnaire_store(version)
 
-    if version == "v2":
-        answer_object = convert_answers_v2(
-            fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-        )
-    else:
-        answer_object = convert_answers(
-            fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-        )
+    converter = convert_answers_v2 if version == "v2" else convert_answers
+
+    answer_object = converter(
+        fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
+    )
 
     assert (
         answer_object["started_at"]
@@ -112,14 +99,11 @@ def test_started_at_should_not_be_set_in_payload_if_absent_in_response_metadata(
     questionnaire_store = get_questionnaire_store(version)
     questionnaire_store.response_metadata = fake_response_metadata
 
-    if version == "v2":
-        answer_object = convert_answers_v2(
-            fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-        )
-    else:
-        answer_object = convert_answers(
-            fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-        )
+    converter = convert_answers_v2 if version == "v2" else convert_answers
+
+    answer_object = converter(
+        fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
+    )
 
     assert "started_at" not in answer_object
 
@@ -134,14 +118,11 @@ def test_started_at_should_not_be_set_in_payload_if_absent_in_response_metadata(
 def test_submitted_at_should_be_set_in_payload(fake_questionnaire_schema, version):
     questionnaire_store = get_questionnaire_store(version)
 
-    if version == "v2":
-        answer_object = convert_answers_v2(
-            fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-        )
-    else:
-        answer_object = convert_answers(
-            fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-        )
+    converter = convert_answers_v2 if version == "v2" else convert_answers
+
+    answer_object = converter(
+        fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
+    )
 
     assert SUBMITTED_AT.isoformat() == answer_object["submitted_at"]
 
@@ -156,14 +137,11 @@ def test_submitted_at_should_be_set_in_payload(fake_questionnaire_schema, versio
 def test_case_id_should_be_set_in_payload(fake_questionnaire_schema, version):
     questionnaire_store = get_questionnaire_store(version)
 
-    if version == "v2":
-        answer_object = convert_answers_v2(
-            fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-        )
-    else:
-        answer_object = convert_answers(
-            fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-        )
+    converter = convert_answers_v2 if version == "v2" else convert_answers
+
+    answer_object = converter(
+        fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
+    )
 
     assert answer_object["case_id"] == questionnaire_store.metadata.case_id
 
@@ -178,19 +156,17 @@ def test_case_id_should_be_set_in_payload(fake_questionnaire_schema, version):
 def test_case_ref_should_be_set_in_payload(fake_questionnaire_schema, version):
     questionnaire_store = get_questionnaire_store(version)
 
-    if version == "v2":
-        answer_object = convert_answers_v2(
-            fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-        )
+    converter = convert_answers_v2 if version == "v2" else convert_answers
 
+    answer_object = converter(
+        fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
+    )
+
+    if version == "v2":
         assert answer_object["survey_metadata"][
             "case_ref"
         ], questionnaire_store.metadata["survey_metadata"]["data"]["case_ref"]
     else:
-        answer_object = convert_answers(
-            fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-        )
-
         assert answer_object["case_ref"], questionnaire_store.metadata["case_ref"]
 
 
@@ -206,19 +182,17 @@ def test_display_address_should_be_set_in_payload_metadata(
 ):
     questionnaire_store = get_questionnaire_store(version)
 
-    if version == "v2":
-        payload = convert_answers_v2(
-            fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-        )
+    converter = convert_answers_v2 if version == "v2" else convert_answers
 
+    payload = converter(
+        fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
+    )
+
+    if version == "v2":
         assert payload["survey_metadata"][
             "display_address"
         ], questionnaire_store.metadata["survey_metadata"]["data"]["display_address"]
     else:
-        payload = convert_answers(
-            fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-        )
-
         assert payload["metadata"]["display_address"], questionnaire_store.metadata[
             "display_address"
         ]
@@ -235,22 +209,15 @@ def test_converter_raises_runtime_error_for_unsupported_version(version):
     questionnaire_store = get_questionnaire_store(version)
     questionnaire = {"survey_id": "021", "data_version": "-0.0.1"}
 
-    if version == "v2":
-        with pytest.raises(DataVersionError) as err:
-            convert_answers_v2(
-                QuestionnaireSchema(questionnaire),
-                questionnaire_store,
-                {},
-                SUBMITTED_AT,
-            )
-    else:
-        with pytest.raises(DataVersionError) as err:
-            convert_answers(
-                QuestionnaireSchema(questionnaire),
-                questionnaire_store,
-                {},
-                SUBMITTED_AT,
-            )
+    converter = convert_answers_v2 if version == "v2" else convert_answers
+
+    with pytest.raises(DataVersionError) as err:
+        converter(
+            QuestionnaireSchema(questionnaire),
+            questionnaire_store,
+            {},
+            SUBMITTED_AT,
+        )
 
     assert "Data version -0.0.1 not supported" in str(err.value)
 
@@ -268,14 +235,11 @@ def test_converter_language_code_not_set_in_payload(
     questionnaire_store = get_questionnaire_store(version)
     questionnaire_store.response_metadata = fake_response_metadata
 
-    if version == "v2":
-        answer_object = convert_answers_v2(
-            fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-        )
-    else:
-        answer_object = convert_answers(
-            fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-        )
+    converter = convert_answers_v2 if version == "v2" else convert_answers
+
+    answer_object = converter(
+        fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
+    )
 
     assert questionnaire_store.metadata["language_code"] is None
 
@@ -296,14 +260,11 @@ def test_converter_language_code_set_in_payload(
     questionnaire_store.metadata = MetadataProxy.from_dict({"language_code": "ga"})
     questionnaire_store.response_metadata = fake_response_metadata
 
-    if version == "v2":
-        answer_object = convert_answers_v2(
-            fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-        )
-    else:
-        answer_object = convert_answers(
-            fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-        )
+    converter = convert_answers_v2 if version == "v2" else convert_answers
+
+    answer_object = converter(
+        fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
+    )
 
     assert answer_object["launch_language_code"] == "ga"
 
@@ -320,16 +281,10 @@ def test_no_metadata_raises_exception(fake_questionnaire_schema, version):
 
     questionnaire_store.metadata = None
 
-    if version == "v2":
-        with pytest.raises(NoMetadataException):
-            convert_answers_v2(
-                fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-            )
-    else:
-        with pytest.raises(NoMetadataException):
-            convert_answers(
-                fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
-            )
+    converter = convert_answers_v2 if version == "v2" else convert_answers
+
+    with pytest.raises(NoMetadataException):
+        converter(fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT)
 
 
 def test_instrument_id_is_not_in_payload_collection_if_form_type_absent_in_metadata(
