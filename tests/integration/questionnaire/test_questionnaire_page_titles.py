@@ -99,9 +99,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         self.launchSurvey("test_interstitial_page_title")
         # When
         # Then
-        self.assertEqualPageTitle(
-            "This is the content title … - Interstitial Page Titles"
-        )
+        self.assertEqualPageTitle("Your RU name: … - Interstitial Page Titles")
 
     def test_should_have_error_in_page_title_when_fail_validation(self):
         # Given
