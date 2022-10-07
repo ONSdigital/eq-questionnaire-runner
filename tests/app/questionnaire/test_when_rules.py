@@ -3,7 +3,6 @@ import pytest
 
 from app.data_models.answer_store import Answer
 from app.data_models.list_store import ListStore
-from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire.location import Location
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.relationship_location import RelationshipLocation
@@ -13,6 +12,7 @@ from app.questionnaire.when_rules import (
     evaluate_rule,
     evaluate_when_rules,
 )
+from tests.app.questionnaire.conftest import get_metadata
 
 
 @pytest.mark.parametrize(
@@ -109,16 +109,7 @@ def test_evaluate_rule(when_rule, answers, expected):
                 "when": [{"id": "my_answer", "condition": "equals", "value": "Yes"}],
             },
             [{"answer_id": "my_answer", "value": "Yes"}],
-            MetadataProxy.from_dict(
-                {
-                    "tx_id": "tx_id",
-                    "account_service_url": "account_service_url",
-                    "case_id": "case_id",
-                    "collection_exercise_sid": "collection_exercise_sid",
-                    "response_id": "response_id",
-                    "region_code": "GB-ENG",
-                }
-            ),
+            get_metadata(),
             True,
         ),
         (
@@ -127,16 +118,7 @@ def test_evaluate_rule(when_rule, answers, expected):
                 "when": [{"id": "my_answer", "condition": "equals", "value": "Yes"}],
             },
             [{"answer_id": "my_answer", "value": "No"}],
-            MetadataProxy.from_dict(
-                {
-                    "tx_id": "tx_id",
-                    "account_service_url": "account_service_url",
-                    "case_id": "case_id",
-                    "collection_exercise_sid": "collection_exercise_sid",
-                    "response_id": "response_id",
-                    "region_code": "GB-ENG",
-                }
-            ),
+            get_metadata(),
             False,
         ),
         (
@@ -147,16 +129,7 @@ def test_evaluate_rule(when_rule, answers, expected):
                 ],
             },
             [{"answer_id": "my_answer", "value": "No"}],
-            MetadataProxy.from_dict(
-                {
-                    "tx_id": "tx_id",
-                    "account_service_url": "account_service_url",
-                    "case_id": "case_id",
-                    "collection_exercise_sid": "collection_exercise_sid",
-                    "response_id": "response_id",
-                    "region_code": "GB-ENG",
-                }
-            ),
+            get_metadata(),
             False,
         ),
         (
@@ -171,16 +144,7 @@ def test_evaluate_rule(when_rule, answers, expected):
                 ],
             },
             [{"answer_id": "my_answer", "value": "No"}],
-            MetadataProxy.from_dict(
-                {
-                    "tx_id": "tx_id",
-                    "account_service_url": "account_service_url",
-                    "case_id": "case_id",
-                    "collection_exercise_sid": "collection_exercise_sid",
-                    "response_id": "response_id",
-                    "region_code": "GB-ENG",
-                }
-            ),
+            get_metadata(),
             False,
         ),
         (
@@ -191,16 +155,7 @@ def test_evaluate_rule(when_rule, answers, expected):
                 ],
             },
             [{"answer_id": "my_answers", "value": ["answer1", "answer2", "answer3"]}],
-            MetadataProxy.from_dict(
-                {
-                    "tx_id": "tx_id",
-                    "account_service_url": "account_service_url",
-                    "case_id": "case_id",
-                    "collection_exercise_sid": "collection_exercise_sid",
-                    "response_id": "response_id",
-                    "region_code": "GB-ENG",
-                }
-            ),
+            get_metadata(),
             True,
         ),
         (
@@ -215,16 +170,7 @@ def test_evaluate_rule(when_rule, answers, expected):
                 ],
             },
             [{"answer_id": "my_answers", "value": ["answer2", "answer3"]}],
-            MetadataProxy.from_dict(
-                {
-                    "tx_id": "tx_id",
-                    "account_service_url": "account_service_url",
-                    "case_id": "case_id",
-                    "collection_exercise_sid": "collection_exercise_sid",
-                    "response_id": "response_id",
-                    "region_code": "GB-ENG",
-                }
-            ),
+            get_metadata(),
             True,
         ),
         (
@@ -239,16 +185,7 @@ def test_evaluate_rule(when_rule, answers, expected):
                 ],
             },
             [{"answer_id": "my_answers", "value": ["answer1", "answer4"]}],
-            MetadataProxy.from_dict(
-                {
-                    "tx_id": "tx_id",
-                    "account_service_url": "account_service_url",
-                    "case_id": "case_id",
-                    "collection_exercise_sid": "collection_exercise_sid",
-                    "response_id": "response_id",
-                    "region_code": "GB-ENG",
-                }
-            ),
+            get_metadata(),
             True,
         ),
         (
@@ -263,16 +200,7 @@ def test_evaluate_rule(when_rule, answers, expected):
                 ],
             },
             [{"answer_id": "my_answers", "value": ["answer1", "answer2", "answer3"]}],
-            MetadataProxy.from_dict(
-                {
-                    "tx_id": "tx_id",
-                    "account_service_url": "account_service_url",
-                    "case_id": "case_id",
-                    "collection_exercise_sid": "collection_exercise_sid",
-                    "response_id": "response_id",
-                    "region_code": "GB-ENG",
-                }
-            ),
+            get_metadata(),
             True,
         ),
         (
@@ -287,16 +215,7 @@ def test_evaluate_rule(when_rule, answers, expected):
                 ],
             },
             [{"answer_id": "my_answers", "value": "answer2"}],
-            MetadataProxy.from_dict(
-                {
-                    "tx_id": "tx_id",
-                    "account_service_url": "account_service_url",
-                    "case_id": "case_id",
-                    "collection_exercise_sid": "collection_exercise_sid",
-                    "response_id": "response_id",
-                    "region_code": "GB-ENG",
-                }
-            ),
+            get_metadata(),
             True,
         ),
         (
@@ -311,16 +230,7 @@ def test_evaluate_rule(when_rule, answers, expected):
                 ],
             },
             [{"answer_id": "my_answers", "value": "answer3"}],
-            MetadataProxy.from_dict(
-                {
-                    "tx_id": "tx_id",
-                    "account_service_url": "account_service_url",
-                    "case_id": "case_id",
-                    "collection_exercise_sid": "collection_exercise_sid",
-                    "response_id": "response_id",
-                    "region_code": "GB-ENG",
-                }
-            ),
+            get_metadata(),
             True,
         ),
         (
@@ -338,16 +248,7 @@ def test_evaluate_rule(when_rule, answers, expected):
                 {"answer_id": "my_answer", "value": "Yes"},
                 {"answer_id": "my_other_answer", "value": "2"},
             ],
-            MetadataProxy.from_dict(
-                {
-                    "tx_id": "tx_id",
-                    "account_service_url": "account_service_url",
-                    "case_id": "case_id",
-                    "collection_exercise_sid": "collection_exercise_sid",
-                    "response_id": "response_id",
-                    "region_code": "GB-ENG",
-                }
-            ),
+            get_metadata(),
             True,
         ),
         (
@@ -361,16 +262,7 @@ def test_evaluate_rule(when_rule, answers, expected):
             [
                 {"answer_id": "my_answer", "value": "No"},
             ],
-            MetadataProxy.from_dict(
-                {
-                    "tx_id": "tx_id",
-                    "account_service_url": "account_service_url",
-                    "case_id": "case_id",
-                    "collection_exercise_sid": "collection_exercise_sid",
-                    "response_id": "response_id",
-                    "region_code": "GB-ENG",
-                }
-            ),
+            get_metadata(),
             False,
         ),
         (
@@ -384,14 +276,8 @@ def test_evaluate_rule(when_rule, answers, expected):
             [
                 {"answer_id": "my_answer", "value": "Yes"},
             ],
-            MetadataProxy.from_dict(
+            get_metadata(
                 {
-                    "tx_id": "tx_id",
-                    "account_service_url": "account_service_url",
-                    "case_id": "case_id",
-                    "collection_exercise_sid": "collection_exercise_sid",
-                    "response_id": "response_id",
-                    "region_code": "GB-ENG",
                     "version": "v2",
                     "survey_metadata": {"data": {"sexual_identity": True}},
                 }
@@ -409,14 +295,8 @@ def test_evaluate_rule(when_rule, answers, expected):
             [
                 {"answer_id": "my_answer", "value": "Yes"},
             ],
-            MetadataProxy.from_dict(
+            get_metadata(
                 {
-                    "tx_id": "tx_id",
-                    "account_service_url": "account_service_url",
-                    "case_id": "case_id",
-                    "collection_exercise_sid": "collection_exercise_sid",
-                    "response_id": "response_id",
-                    "region_code": "GB-ENG",
                     "version": "v2",
                     "survey_metadata": {"data": {"sexual_identity": True}},
                 }
@@ -437,18 +317,7 @@ def test_evaluate_rule(when_rule, answers, expected):
             [
                 {"answer_id": "my_answer", "value": "Yes"},
             ],
-            MetadataProxy.from_dict(
-                {
-                    "tx_id": "tx_id",
-                    "account_service_url": "account_service_url",
-                    "case_id": "case_id",
-                    "collection_exercise_sid": "collection_exercise_sid",
-                    "response_id": "response_id",
-                    "region_code": "GB-ENG",
-                    "version": "v2",
-                    "survey_metadata": {"data": {}},
-                }
-            ),
+            get_metadata({"version": "v2", "survey_metadata": {"data": {}}}),
             False,
         ),
     ),
@@ -560,7 +429,7 @@ def test_skip_conditions(
         questionnaire_schema,
         answer_store,
         list_store=list_store,
-        metadata={},
+        metadata=None,
         progress_store=progress_store,
         response_metadata={},
     )
@@ -594,7 +463,7 @@ def test_evaluate_not_set_when_rules_should_return_true(
         evaluate_when_rules(
             when_rules=when_rules,
             schema=questionnaire_schema,
-            metadata={},
+            metadata=None,
             answer_store=answer_store,
             list_store=list_store,
             current_location=current_location,
@@ -654,7 +523,7 @@ def test_when_rule_comparing_answer_values(
         evaluate_when_rules(
             when_rules=when,
             schema=questionnaire_schema,
-            metadata={},
+            metadata=None,
             answer_store=answer_store,
             list_store=list_store,
             current_location=current_location,
@@ -696,7 +565,7 @@ def test_evaluate_when_rule_with_list_item_id(
         evaluate_when_rules(
             when_rules=when_rules,
             schema=schema,
-            metadata={},
+            metadata=None,
             answer_store=answer_store,
             list_store=list_store,
             current_location=current_location,
@@ -713,7 +582,7 @@ def test_evaluate_when_rule_raises_if_bad_when_condition(
         evaluate_when_rules(
             when_rules=when_rules,
             schema=questionnaire_schema,
-            metadata={},
+            metadata=None,
             answer_store=answer_store,
             list_store=list_store,
             current_location=current_location,
@@ -740,7 +609,7 @@ def test_evaluate_when_rule_with_list_rules(
         evaluate_when_rules(
             when_rules=when_rules,
             schema=questionnaire_schema,
-            metadata={},
+            metadata=None,
             answer_store=answer_store,
             list_store=list_store,
             current_location=current_location,
@@ -814,7 +683,7 @@ def test_routing_answer_on_path_when_in_a_repeat(
             evaluate_when_rules(
                 when_rules=when_rules,
                 schema=questionnaire_schema,
-                metadata={},
+                metadata=None,
                 answer_store=answer_store,
                 list_store=list_store,
                 current_location=current_location,
@@ -835,7 +704,7 @@ def test_routing_ignores_answers_not_on_path(
     assert evaluate_when_rules(
         when_rules=when_rules,
         schema=questionnaire_schema,
-        metadata={},
+        metadata=None,
         answer_store=answer_store,
         list_store=list_store,
         current_location=current_location,
@@ -848,7 +717,7 @@ def test_routing_ignores_answers_not_on_path(
             evaluate_when_rules(
                 when_rules=when_rules,
                 schema=questionnaire_schema,
-                metadata={},
+                metadata=None,
                 answer_store=answer_store,
                 list_store=list_store,
                 current_location=current_location,
@@ -904,7 +773,7 @@ def test_primary_person_checks_location(
         evaluate_when_rules(
             when_rules=when_rules,
             schema=questionnaire_schema,
-            metadata={},
+            metadata=None,
             answer_store=answer_store,
             list_store=list_store,
             current_location=current_location,
@@ -937,7 +806,7 @@ def test_when_rule_returns_first_item_in_list(answer_store, questionnaire_schema
     assert evaluate_when_rules(
         when_rules=when_rules,
         schema=questionnaire_schema,
-        metadata={},
+        metadata=None,
         answer_store=answer_store,
         list_store=list_store,
         current_location=current_location,

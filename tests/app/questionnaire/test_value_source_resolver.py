@@ -11,6 +11,7 @@ from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from tests.app.data_model.test_answer import ESCAPED_CONTENT, HTML_CONTENT
+from tests.app.questionnaire.conftest import get_metadata
 
 
 def get_list_items(num: int):
@@ -367,19 +368,14 @@ def test_metadata_source(metadata_identifier, expected_result):
     ],
 )
 def test_metadata_source_v2_metadata_structure(metadata_identifier, expected_result):
-    metadata = MetadataProxy.from_dict(
+    metadata = get_metadata(
         {
             "version": "v2",
             "region_code": "GB-ENG",
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "case_id": "case_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "response_id": "response_id",
             "survey_metadata": {
                 "data": {"display_address": "68 Abingdon Road, Goathill"}
             },
-        },
+        }
     )
 
     value_source_resolver = get_value_source_resolver(metadata=metadata)

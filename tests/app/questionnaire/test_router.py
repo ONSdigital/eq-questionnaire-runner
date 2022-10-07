@@ -6,12 +6,12 @@ from mock import Mock
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
-from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.router import Router
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
+from tests.app.questionnaire.conftest import get_metadata
 
 
 class RouterTestCase:
@@ -19,17 +19,7 @@ class RouterTestCase:
     answer_store = AnswerStore()
     list_store = ListStore()
     progress_store = ProgressStore()
-    metadata = (
-        MetadataProxy.from_dict(
-            {
-                "response_id": "1",
-                "account_service_url": "account_service_url",
-                "tx_id": "tx_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "case_id": "case_id",
-            }
-        ),
-    )
+    metadata = get_metadata()
     response_metadata = {}
 
     @cached_property

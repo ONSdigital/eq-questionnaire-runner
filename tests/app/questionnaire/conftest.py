@@ -20,6 +20,19 @@ from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
 
 
+def get_metadata(extra_metadata: dict = None):
+    extra_metadata = extra_metadata or {}
+    metadata = {
+        "response_id": "1",
+        "account_service_url": "account_service_url",
+        "tx_id": "tx_id",
+        "collection_exercise_sid": "collection_exercise_sid",
+        "case_id": "case_id",
+        **extra_metadata,
+    }
+    return MetadataProxy.from_dict(metadata)
+
+
 @pytest.fixture
 def placeholder_list():
     return [
@@ -51,15 +64,7 @@ def parser(answer_store, location, mock_schema, mock_renderer):
         language="en",
         answer_store=answer_store,
         list_store=ListStore(),
-        metadata=MetadataProxy.from_dict(
-            {
-                "tx_id": "tx_id",
-                "account_service_url": "account_service_url",
-                "response_id": "response_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "case_id": "case_id",
-            }
-        ),
+        metadata=get_metadata(),
         response_metadata={},
         schema=mock_schema,
         location=location,
@@ -926,16 +931,7 @@ def placeholder_renderer(option_label_from_value_schema):
         language="en",
         answer_store=answer_store,
         list_store=ListStore(),
-        metadata=MetadataProxy.from_dict(
-            {
-                "tx_id": "tx_id",
-                "account_service_url": "account_service_url",
-                "response_id": "response_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "case_id": "case_id",
-                "trad_as": "ESSENTIAL SERVICES LTD",
-            }
-        ),
+        metadata=get_metadata({"trad_as": "ESSENTIAL SERVICES LTD"}),
         response_metadata={},
         schema=option_label_from_value_schema,
     )
@@ -948,15 +944,7 @@ def mock_renderer(mock_schema):
         language="en",
         answer_store=AnswerStore(),
         list_store=ListStore(),
-        metadata=MetadataProxy.from_dict(
-            {
-                "tx_id": "tx_id",
-                "account_service_url": "account_service_url",
-                "response_id": "response_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "case_id": "case_id",
-            }
-        ),
+        metadata=get_metadata(),
         response_metadata={},
         schema=mock_schema,
     )

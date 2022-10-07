@@ -12,6 +12,7 @@ from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.operator import Operator
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from tests.app.questionnaire.conftest import get_metadata
 from tests.app.questionnaire.test_value_source_resolver import get_list_items
 
 current_date = datetime.now(timezone.utc).date()
@@ -237,22 +238,14 @@ def test_answer_source_with_dict_answer_selector(answer_value, expected_result):
 )
 def test_metadata_source(metadata_value, expected_result):
     rule_evaluator = get_rule_evaluator(
-        metadata=MetadataProxy.from_dict(
-            {
-                "tx_id": metadata_value,
-                "account_service_url": "account_service_url",
-                "response_id": "response_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "case_id": "case_id",
-            },
-        )
+        metadata=get_metadata({"some_key": metadata_value})
     )
 
     assert (
         rule_evaluator.evaluate(
             rule={
                 Operator.EQUAL: [
-                    {"source": "metadata", "identifier": "tx_id"},
+                    {"source": "metadata", "identifier": "some_key"},
                     3,
                 ]
             },
@@ -526,17 +519,7 @@ def test_nested_rules(operator, operands, expected_result):
                 },
             ]
         ),
-        metadata=MetadataProxy.from_dict(
-            {
-                "region_code": "GB-NIR",
-                "language_code": "en",
-                "tx_id": "tx_id",
-                "account_service_url": "account_service_url",
-                "response_id": "response_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "case_id": "case_id",
-            }
-        ),
+        metadata=get_metadata({"region_code": "GB-NIR", "language_code": "en"}),
         list_store=ListStore(
             [
                 {
@@ -575,17 +558,7 @@ def test_nested_rules(operator, operands, expected_result):
     ],
 )
 def test_comparison_operator_rule_with_nonetype_operands(operator_name, operands):
-    rule_evaluator = get_rule_evaluator(
-        metadata=MetadataProxy.from_dict(
-            {
-                "response_id": "1",
-                "account_service_url": "account_service_url",
-                "tx_id": "tx_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "case_id": "case_id",
-            }
-        ),
-    )
+    rule_evaluator = get_rule_evaluator(metadata=get_metadata())
     assert rule_evaluator.evaluate(rule={operator_name: operands}) is False
 
 
@@ -605,15 +578,7 @@ def test_comparison_operator_rule_with_nonetype_operands(operator_name, operands
 )
 def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
     rule_evaluator = get_rule_evaluator(
-        metadata=MetadataProxy.from_dict(
-            {
-                "response_id": "1",
-                "account_service_url": "account_service_url",
-                "tx_id": "tx_id",
-                "collection_exercise_sid": "collection_exercise_sid",
-                "case_id": "case_id",
-            }
-        ),
+        metadata=get_metadata(),
     )
     assert (
         rule_evaluator.evaluate(
@@ -745,7 +710,7 @@ def test_date_value(rule, expected_result):
                 }
             ]
         ),
-        metadata=MetadataProxy.from_dict({"some-metadata": current_date_as_yyyy_mm_dd}),
+        metadata=get_metadata({"some-metadata": current_date_as_yyyy_mm_dd}),
     )
 
     assert (
