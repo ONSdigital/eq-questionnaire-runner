@@ -135,7 +135,7 @@ class SectionSummaryContext(Context):
             summary_elements = {}
 
         return {
-            **{"show_non_item_answers": show_non_item_answers},
+            "show_non_item_answers": show_non_item_answers,
             **collapsible,
             **summary_elements,
             "groups": [
