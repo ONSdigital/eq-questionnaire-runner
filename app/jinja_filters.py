@@ -599,6 +599,7 @@ def map_summary_item_config_processor() -> dict[str, Callable]:
     return dict(map_summary_item_config=map_summary_item_config)
 
 
+# pylint: disable=too-many-locals
 @blueprint.app_template_filter()  # type: ignore
 def map_list_collector_config(
     list_items: list[dict[str, Union[str, int]]],
@@ -619,20 +620,26 @@ def map_list_collector_config(
         edit_link_aria_label_text = None
         remove_link_aria_label_text = None
 
+        edit_link = {
+            "text": edit_link_text,
+            "ariaLabel": edit_link_aria_label_text,
+            "url": list_item.get("edit_link"),
+            "attributes": {"data-qa": f"list-item-change-{index}-link"},
+        }
+
+        row_title_attributes = {
+            "data-qa": f"list-item-{index}-label",
+            "data-list-item-id": list_item.get("list_item_id"),
+        }
+
         if edit_link_text:
             if edit_link_aria_label:
                 edit_link_aria_label_text = edit_link_aria_label.format(
                     item_name=item_name
                 )
+            edit_link["ariaLabel"] = edit_link_aria_label_text
 
-            actions.append(
-                {
-                    "text": edit_link_text,
-                    "ariaLabel": edit_link_aria_label_text,
-                    "url": list_item.get("edit_link"),
-                    "attributes": {"data-qa": f"list-item-change-{index}-link"},
-                }
-            )
+            actions.append(edit_link)
 
         if not list_item.get("primary_person") and remove_link_text:
             if remove_link_aria_label:
@@ -649,64 +656,31 @@ def map_list_collector_config(
                 }
             )
 
-        if answer_title:
-            rows.append(
-                {
-                    "rowItems": [
-                        {
-                            "iconType": icon,
-                            "actions": actions,
-                            "rowTitle": answer_title,
-                            "valueList": [{"text": item_name}],
-                            "id": list_item.get("list_item_id"),
-                            "rowTitleAttributes": {
-                                "data-qa": f"list-item-{index}-label",
-                                "data-list-item-id": list_item.get("list_item_id"),
-                            },
-                        }
-                    ]
-                }
-            )
+        row_items = {
+            "iconType": icon,
+            "actions": actions,
+            "id": list_item.get("list_item_id"),
+            "rowTitleAttributes": row_title_attributes,
+        }
 
-        else:
-            rows.append(
-                {
-                    "rowItems": [
-                        {
-                            "iconType": icon,
-                            "actions": actions,
-                            "rowTitle": item_name,
-                            "id": list_item.get("list_item_id"),
-                            "rowTitleAttributes": {
-                                "data-qa": f"list-item-{index}-label",
-                                "data-list-item-id": list_item.get("list_item_id"),
-                            },
-                        }
-                    ]
-                }
-            )
+        if answer_title:
+            row_items["valueList"] = [{"text": item_name}]
+
+        row_items["rowTitle"] = answer_title or item_name
+
+        rows.append({"rowItems": [row_items]})
 
         if related_answers:
             rows[index - 1]["rowItems"].extend(
                 {
                     "iconType": None,
-                    "actions": [
-                        {
-                            "text": edit_link_text,
-                            "ariaLabel": edit_link_aria_label_text,
-                            "url": list_item.get("edit_link"),
-                            "attributes": {"data-qa": f"list-item-change-{index}-link"},
-                        }
-                    ],
+                    "actions": [edit_link],
                     "valueList": [
                         {"text": related_answers[list_item["list_item_id"]][answer]}
                     ],
                     "rowTitle": answer,
                     "id": list_item.get("list_item_id"),
-                    "rowTitleAttributes": {
-                        "data-qa": f"list-item-{index}-label",
-                        "data-list-item-id": list_item.get("list_item_id"),
-                    },
+                    "rowTitleAttributes": row_title_attributes,
                 }
                 for answer in related_answers[list_item["list_item_id"]]
             )

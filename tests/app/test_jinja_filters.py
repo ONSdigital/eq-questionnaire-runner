@@ -320,12 +320,12 @@ def test_map_list_collector_config_no_actions():
                 {
                     "actions": [],
                     "iconType": "icon",
-                    "rowTitle": "Mark Bloggs",
                     "id": "one",
                     "rowTitleAttributes": {
-                        "data-qa": "list-item-1-label",
                         "data-list-item-id": "one",
+                        "data-qa": "list-item-1-label",
                     },
+                    "rowTitle": "Mark Bloggs",
                 }
             ]
         },
@@ -334,12 +334,12 @@ def test_map_list_collector_config_no_actions():
                 {
                     "actions": [],
                     "iconType": "icon",
-                    "rowTitle": "Joe Bloggs",
                     "id": "two",
                     "rowTitleAttributes": {
-                        "data-qa": "list-item-2-label",
                         "data-list-item-id": "two",
+                        "data-qa": "list-item-2-label",
                     },
+                    "rowTitle": "Joe Bloggs",
                 }
             ]
         },
@@ -390,12 +390,12 @@ def test_map_list_collector_config():
                         }
                     ],
                     "iconType": "icon",
-                    "rowTitle": "Mark Bloggs (You)",
                     "id": "primary",
                     "rowTitleAttributes": {
-                        "data-qa": "list-item-1-label",
                         "data-list-item-id": "primary",
+                        "data-qa": "list-item-1-label",
                     },
+                    "rowTitle": "Mark Bloggs (You)",
                 }
             ]
         },
@@ -417,12 +417,12 @@ def test_map_list_collector_config():
                         },
                     ],
                     "iconType": "icon",
-                    "rowTitle": "Joe Bloggs",
                     "id": "nonprimary",
                     "rowTitleAttributes": {
-                        "data-qa": "list-item-2-label",
                         "data-list-item-id": "nonprimary",
+                        "data-qa": "list-item-2-label",
                     },
+                    "rowTitle": "Joe Bloggs",
                 }
             ]
         },
@@ -479,11 +479,11 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                     ],
                     "iconType": "icon",
                     "id": "VHoiow",
-                    "rowTitle": "answer_title",
                     "rowTitleAttributes": {
                         "data-list-item-id": "VHoiow",
                         "data-qa": "list-item-1-label",
                     },
+                    "rowTitle": "answer_title",
                     "valueList": [{"text": "Joe Bloggs"}],
                 },
                 {
