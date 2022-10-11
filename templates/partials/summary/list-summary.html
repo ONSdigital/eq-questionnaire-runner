@@ -2,7 +2,6 @@
 
 {% if list.editable %}
   {% if related_answers and answer_title %}
-    {% set headers = ["Question", "Value", "Action"] %}
     {% set rows = map_list_collector_config(
       list.list_items,
       None,
@@ -14,7 +13,6 @@
       answer_title
     ) %}
   {% else %}
-    {% set headers = ["Name of person", "Action"] %}
     {% set rows = map_list_collector_config(
       list.list_items,
       Person,
@@ -25,7 +23,6 @@
     ) %}
   {% endif %}
 {% else %}
-  {% set headers = ["Name of person"] %}
   {% set rows = map_list_collector_config(
     list.list_items,
     "person"
@@ -34,7 +31,6 @@
 
 {% set group_config = {
   "groupTitle": list_title,
-  "headers": headers,
   "rows": rows,
   "placeholderText": empty_list_text,
 } %}
