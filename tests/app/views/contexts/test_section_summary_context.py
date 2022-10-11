@@ -53,7 +53,7 @@ def test_build_view_context_for_section_summary(
 
     assert "summary" in context
     assert_summary_context(context)
-    assert len(context["summary"]) == 8
+    assert len(context["summary"]) == 7
     assert "title" in context["summary"]
 
 
@@ -210,7 +210,6 @@ def test_context_for_section_list_summary(people_answer_store):
                     "type": "List",
                 },
             ],
-            "headers": ["Question", "Answer given", "Change answer"],
             "page_title": "People who live here and overnight visitors",
             "summary_type": "SectionSummary",
             "title": "People who live here and overnight visitors",
@@ -290,7 +289,6 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                 }
             ],
             "groups": [{"blocks": [], "id": "group", "title": None}],
-            "headers": ["Question", "Answer given", "Change answer"],
             "page_title": "General insurance business",
             "show_non_item_answers": True,
             "summary_type": "SectionSummary",
@@ -335,13 +333,11 @@ def test_context_for_driving_question_summary_empty_list():
                     "type": "List",
                 }
             ],
-            "headers": ["Question", "Answer given", "Change answer"],
             "page_title": "List Collector Driving Question Summary",
             "summary_type": "SectionSummary",
             "title": "List Collector Driving Question Summary",
         }
     }
-
     assert context == expected
 
 
@@ -403,7 +399,6 @@ def test_context_for_driving_question_summary():
                     "type": "List",
                 }
             ],
-            "headers": ["Question", "Answer given", "Change answer"],
             "page_title": "List Collector Driving Question Summary",
             "summary_type": "SectionSummary",
             "title": "List Collector Driving Question Summary",
