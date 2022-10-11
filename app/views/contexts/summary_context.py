@@ -1,7 +1,5 @@
 from typing import Generator, Mapping, Optional, Union
 
-from flask_babel import lazy_gettext
-
 from app.questionnaire.location import Location
 
 from .context import Context
@@ -16,16 +14,12 @@ class SummaryContext(Context):
         groups = list(self._build_all_groups(return_to))
         summary_options = self._schema.get_summary_options()
         collapsible = summary_options.get("collapsible", False)
-        headers = [lazy_gettext("Question"), lazy_gettext("Answer given")]
-        if answers_are_editable:
-            headers.append(lazy_gettext("Change answer"))
 
         return {
             "groups": groups,
             "answers_are_editable": answers_are_editable,
             "collapsible": collapsible,
             "summary_type": "Summary",
-            "headers": headers,
         }
 
     def _build_all_groups(

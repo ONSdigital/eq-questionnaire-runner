@@ -111,17 +111,6 @@ def test_build_view_submitted_response_no_submitted_at(app: Flask):
             )
 
 
-def test_summary_headers_without_change_link(
-    app: Flask,
-):
-    with app.app_context():
-        questionnaire_store = fake_questionnaire_store()
-        context = build_view_submitted_response_context(
-            "en", SCHEMA, questionnaire_store, SurveyType.DEFAULT
-        )
-        assert context["summary"]["headers"] == ["Question", "Answer given"]
-
-
 def test_no_metadata_raises_error(
     app: Flask,
 ):

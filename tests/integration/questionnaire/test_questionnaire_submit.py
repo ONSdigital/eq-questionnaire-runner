@@ -127,13 +127,3 @@ class TestQuestionnaireSubmitWithSummary(IntegrationTestCase):
 
         self.post()
         self.assertInUrl(THANK_YOU_URL_PATH)
-
-    def test_summary_headers_with_change_link(self):
-        self.launchSurvey("test_section_summary")
-        self.post()
-        self.post()
-        self.post()
-        self.post()
-        self.assertInBody("<th>Question</th>")
-        self.assertInBody("<th>Answer given</th>")
-        self.assertInBody("<th>Change answer</th>")

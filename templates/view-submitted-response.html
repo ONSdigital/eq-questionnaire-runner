@@ -33,8 +33,7 @@
       onsButton({
         "type": 'button',
         "text": _('Print answers'),
-        "buttonStyle": "print",
-        "variants": ['small', 'secondary'],
+        "variants": ['small', 'secondary', 'print'],
         "attributes": {
           "data-qa": "btn-print"
         }
@@ -42,10 +41,8 @@
     }}
     {{
       onsButton({
-        "buttonStyle": 'download',
         "text": _('Save answers as PDF'),
-        "submitType": "timer",
-        "variants": ['small', 'secondary'],
+        "variants": ['small', 'secondary', 'download', 'timer'],
         "url": content.pdf_url,
         "removeDownloadAttribute": true,
         "attributes": {

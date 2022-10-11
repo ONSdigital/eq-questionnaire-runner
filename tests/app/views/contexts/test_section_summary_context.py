@@ -62,7 +62,7 @@ def test_build_view_context_for_section_summary(
 
     assert "summary" in context
     assert_summary_context(context)
-    assert len(context["summary"]) == 7
+    assert len(context["summary"]) == 6
     assert "title" in context["summary"]
 
 
@@ -161,7 +161,6 @@ def test_context_for_section_list_summary(people_answer_store):
     expected = {
         "summary": {
             "answers_are_editable": True,
-            "headers": ["Question", "Answer given", "Change answer"],
             "collapsible": False,
             "custom_summary": [
                 {
@@ -241,7 +240,6 @@ def test_context_for_driving_question_summary_empty_list():
     expected = {
         "summary": {
             "answers_are_editable": True,
-            "headers": ["Question", "Answer given", "Change answer"],
             "collapsible": False,
             "custom_summary": [
                 {
@@ -296,7 +294,6 @@ def test_context_for_driving_question_summary():
     expected = {
         "summary": {
             "answers_are_editable": True,
-            "headers": ["Question", "Answer given", "Change answer"],
             "collapsible": False,
             "custom_summary": [
                 {
