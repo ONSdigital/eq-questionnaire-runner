@@ -451,10 +451,14 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
         "remove_link_text",
         "remove_link_aria_label",
         {
-            "VHoiow": {
-                "Registration number": 123,
-                "Is this UK company or branch an authorised insurer?": "Yes",
-            }
+            "VHoiow": [
+                ["Registration number", 123, "registrtion-number"],
+                [
+                    "Is this UK company or branch an authorised insurer?",
+                    "Yes",
+                    "authorised-insurer-radio",
+                ],
+            ]
         },
         "answer_title",
     )
@@ -479,11 +483,11 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                     ],
                     "iconType": "icon",
                     "id": "VHoiow",
+                    "rowTitle": "answer_title",
                     "rowTitleAttributes": {
                         "data-list-item-id": "VHoiow",
                         "data-qa": "list-item-1-label",
                     },
-                    "rowTitle": "answer_title",
                     "valueList": [{"text": "Joe Bloggs"}],
                 },
                 {
@@ -492,7 +496,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                             "ariaLabel": "edit_link_aria_label",
                             "attributes": {"data-qa": "list-item-change-1-link"},
                             "text": "edit_link_text",
-                            "url": "/nonprimary/change",
+                            "url": "/nonprimary/change#registrtion-number",
                         }
                     ],
                     "iconType": None,
@@ -510,7 +514,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                             "ariaLabel": "edit_link_aria_label",
                             "attributes": {"data-qa": "list-item-change-1-link"},
                             "text": "edit_link_text",
-                            "url": "/nonprimary/change",
+                            "url": "/nonprimary/change#authorised-insurer-radio",
                         }
                     ],
                     "iconType": None,

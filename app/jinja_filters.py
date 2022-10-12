@@ -674,11 +674,16 @@ def map_list_collector_config(
             rows[index - 1]["rowItems"].extend(
                 {
                     "iconType": None,
-                    "actions": [edit_link],
-                    "valueList": [
-                        {"text": related_answers[list_item["list_item_id"]][answer]}
+                    "actions": [
+                        {
+                            "text": edit_link_text,
+                            "ariaLabel": edit_link_aria_label_text,
+                            "url": f'{list_item.get("edit_link")}#{answer[2]}',
+                            "attributes": {"data-qa": f"list-item-change-{index}-link"},
+                        }
                     ],
-                    "rowTitle": answer,
+                    "valueList": [{"text": answer[1]}],
+                    "rowTitle": answer[0],
                     "id": list_item.get("list_item_id"),
                     "rowTitleAttributes": row_title_attributes,
                 }

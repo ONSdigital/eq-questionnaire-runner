@@ -317,7 +317,7 @@ class SectionSummaryContext(Context):
 
         return primary_person_edit_block_id, edit_block_id
 
-    def _get_related_answers(self, current_list: ListModel) -> dict[str, dict]:
+    def _get_related_answers(self, current_list: ListModel) -> dict[str, list]:
         section = self.section["id"]
 
         # pylint: disable=protected-access
@@ -336,7 +336,15 @@ class SectionSummaryContext(Context):
                     if answer.answer_id in related_answers
                     and answer.list_item_id == list_id
                 ]
-                related_answers_dict[list_id] = dict(zip(keys, values))
+
+                ids = [
+                    answer.answer_id
+                    for answer in self._answer_store
+                    if answer.answer_id in related_answers
+                    and answer.list_item_id == list_id
+                ]
+
+                related_answers_dict[list_id] = list(zip(keys, values, ids))
 
             return related_answers_dict
 
