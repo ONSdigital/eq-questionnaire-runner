@@ -895,8 +895,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return rules_section_dependencies
 
     def _get_related_answers_for_section(self, section_id: str) -> Optional[list[str]]:
-        summary = self.get_section(section_id).get("summary")  # type: ignore
-        if related_answers := summary.get("related_answers"):  # type: ignore
-            return [
-                related_answer.get("identifier") for related_answer in related_answers
-            ]
+        if summary := self.get_section(section_id).get("summary"):  # type: ignore
+            if related_answers := summary.get("related_answers"):
+                return [
+                    related_answer.get("identifier")
+                    for related_answer in related_answers
+                ]
