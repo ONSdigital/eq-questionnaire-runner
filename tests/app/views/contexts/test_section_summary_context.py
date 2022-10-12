@@ -259,14 +259,14 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                         "list_items": [
                             {
                                 "edit_link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary",
-                                "item_title": "company " "a",
+                                "item_title": "company a",
                                 "list_item_id": "PlwgoG",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
                             },
                             {
                                 "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
-                                "item_title": "company " "b",
+                                "item_title": "company b",
                                 "list_item_id": "UHPLbX",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
@@ -275,14 +275,22 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                     },
                     "list_name": "companies",
                     "related_answers": {
-                        "PlwgoG": {
-                            "Is this UK company or branch an authorised insurer?": "Yes",
-                            "Registration number": 123,
-                        },
-                        "UHPLbX": {
-                            "Is this UK company or branch an authorised insurer?": "No",
-                            "Registration number": 456,
-                        },
+                        "PlwgoG": [
+                            ("Registration number", 123, "registration-number"),
+                            (
+                                "Is this UK company or branch an authorised insurer?",
+                                "Yes",
+                                "authorised-insurer-radio",
+                            ),
+                        ],
+                        "UHPLbX": [
+                            ("Registration number", 456, "registration-number"),
+                            (
+                                "Is this UK company or branch an authorised insurer?",
+                                "No",
+                                "authorised-insurer-radio",
+                            ),
+                        ],
                     },
                     "title": "Companies or UK branches",
                     "type": "List",
