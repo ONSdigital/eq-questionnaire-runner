@@ -896,6 +896,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _get_related_answers_for_section(self, section_id: str) -> Optional[list[str]]:
         if summary := self.get_section(section_id).get("summary"):  # type: ignore
+            # section always exists when this method is invoked by _get_related_answers() but get_section() has optional return value
             if related_answers := summary.get("related_answers"):
                 return [
                     related_answer.get("identifier")
