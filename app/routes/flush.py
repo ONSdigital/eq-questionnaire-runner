@@ -13,6 +13,7 @@ from app.submitter.converter import convert_answers
 from app.submitter.submission_failed import SubmissionFailedException
 from app.utilities.json import json_dumps
 from app.utilities.schema import load_schema_from_metadata
+from app.views.handlers.submission import get_additional_metadata
 
 flush_blueprint = Blueprint("flush", __name__)
 
@@ -86,18 +87,13 @@ def _submit_data(user):
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
         )
 
-        receipting_keys = (
-            metadata.survey_metadata.receipting_keys
-            if metadata.survey_metadata
-            else None
-        )
+        additional_metadata = get_additional_metadata(metadata)
 
         sent = current_app.eq["submitter"].send_message(
             encrypted_message,
             tx_id=metadata.tx_id,
             case_id=metadata.case_id,
-            receipting_keys=receipting_keys,
-            metadata=metadata,
+            **additional_metadata,
         )
 
         if not sent:

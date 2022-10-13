@@ -26,6 +26,7 @@ from app.submitter.converter import (
 )
 from app.submitter.converter_v2 import NoMetadataException
 from app.views.contexts.feedback_form_context import build_feedback_context
+from app.views.handlers.submission import get_additional_metadata
 
 
 class FeedbackNotEnabled(Exception):
@@ -119,16 +120,7 @@ class Feedback:
             feedback_message(), current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION  # type: ignore
         )
 
-        additional_metadata: dict = {}
-        if (
-            metadata.version is AuthPayloadVersion.V2
-            and metadata.survey_metadata
-            and metadata.survey_metadata.receipting_keys
-        ):
-            additional_metadata = {
-                item: metadata[item]
-                for item in metadata.survey_metadata.receipting_keys
-            }
+        additional_metadata = get_additional_metadata(metadata)
 
         feedback_metadata = FeedbackMetadata(
             tx_id=tx_id, case_id=case_id, **additional_metadata

@@ -1,11 +1,13 @@
 from datetime import datetime, timezone
 from functools import cached_property
+from typing import Dict
 
 from flask import current_app
 from flask import session as cookie_session
 from sdc.crypto.encrypter import encrypt
 
 from app.authentication.auth_payload_version import AuthPayloadVersion
+from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_session_store
 from app.keys import KEY_PURPOSE_SUBMISSION
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
@@ -13,6 +15,18 @@ from app.submitter.converter import convert_answers
 from app.submitter.converter_v2 import convert_answers_v2
 from app.submitter.submission_failed import SubmissionFailedException
 from app.utilities.json import json_dumps
+
+
+def get_additional_metadata(metadata: MetadataProxy) -> Dict:
+    return (
+        {item: metadata[item] for item in metadata.survey_metadata.receipting_keys}
+        if (
+            metadata.version is AuthPayloadVersion.V2
+            and metadata.survey_metadata
+            and metadata.survey_metadata.receipting_keys
+        )
+        else {}
+    )
 
 
 class SubmissionHandler:
@@ -36,16 +50,7 @@ class SubmissionHandler:
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
         )
 
-        additional_metadata: dict = {}
-        if (
-            self._metadata.version is AuthPayloadVersion.V2
-            and self._metadata.survey_metadata
-            and self._metadata.survey_metadata.receipting_keys
-        ):
-            additional_metadata = {
-                item: self._metadata[item]
-                for item in self._metadata.survey_metadata.receipting_keys
-            }
+        additional_metadata = get_additional_metadata(self._metadata)
 
         submitted = current_app.eq["submitter"].send_message(
             encrypted_message,
