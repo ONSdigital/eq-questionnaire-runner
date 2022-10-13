@@ -15,6 +15,7 @@ MetadataType = Mapping[str, Union[str, int, list]]
 
 # pylint: disable=too-many-locals,too-many-nested-blocks
 def convert_answers_to_payload_0_0_1(
+    *,
     metadata: MetadataProxy,
     response_metadata: MetadataType,
     answer_store: AnswerStore,

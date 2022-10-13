@@ -83,7 +83,6 @@ def convert_answers_v2(
         payload["survey_metadata"].update(metadata.survey_metadata.data)
 
     payload["data"] = get_payload_data(
-        data_version=schema.json["data_version"],
         answer_store=answer_store,
         list_store=list_store,
         schema=schema,
@@ -112,7 +111,6 @@ def get_optional_payload_properties(
 
 
 def get_payload_data(
-    data_version: str,
     answer_store: AnswerStore,
     list_store: ListStore,
     schema: QuestionnaireSchema,
@@ -120,14 +118,19 @@ def get_payload_data(
     metadata: MetadataProxy,
     response_metadata: Mapping,
 ) -> Union[OrderedDict[str, Any], dict[str, Union[list[Any]]]]:
-    if data_version == "0.0.1":
+    if schema.json["data_version"] == "0.0.1":
         return convert_answers_to_payload_0_0_1(
-            metadata, response_metadata, answer_store, list_store, schema, routing_path
+            metadata=metadata,
+            response_metadata=response_metadata,
+            answer_store=answer_store,
+            list_store=list_store,
+            schema=schema,
+            full_routing_path=routing_path,
         )
-    if data_version == "0.0.3":
+    if schema.json["data_version"] == "0.0.3":
         return {
             "answers": convert_answers_to_payload_0_0_3(
-                answer_store, list_store, schema, routing_path
+                answer_store=answer_store, list_store=list_store, schema=schema, full_routing_path=routing_path
             ),
             "lists": list_store.serialize(),
         }

@@ -93,9 +93,7 @@ class TokenGenerator:
         return payload_vars
 
     @staticmethod
-    def _get_payload_with_params_v2(
-        schema_name, payload, **extra_payload
-    ):
+    def _get_payload_with_params_v2(schema_name, payload, **extra_payload):
         payload_vars = payload.copy()
         payload_vars["tx_id"] = str(uuid4())
         payload_vars["schema_name"] = schema_name

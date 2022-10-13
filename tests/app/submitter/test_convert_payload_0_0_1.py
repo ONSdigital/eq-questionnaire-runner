@@ -52,12 +52,12 @@ def test_convert_answers_v2_to_payload_0_0_1_with_key_error(version):
         RoutingPath(["block-1"], section_id="section-1", list_item_id=None)
     ]
     answer_object = convert_answers_to_payload_0_0_1(
-        questionnaire_store.metadata,
-        questionnaire_store.response_metadata,
-        questionnaire_store.answer_store,
-        questionnaire_store.list_store,
-        QuestionnaireSchema(questionnaire),
-        full_routing_path,
+        metadata=questionnaire_store.metadata,
+        response_metadata=questionnaire_store.response_metadata,
+        answer_store=questionnaire_store.answer_store,
+        list_store=questionnaire_store.list_store,
+        schema=QuestionnaireSchema(questionnaire),
+        full_routing_path=full_routing_path,
     )
     assert answer_object["002"] == "2016-03-30"
     assert len(answer_object) == 1
@@ -90,7 +90,6 @@ def test_answer_with_zero(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -129,7 +128,6 @@ def test_answer_with_float(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -171,7 +169,6 @@ def test_answer_with_string(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -213,7 +210,6 @@ def test_answer_without_qcode(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -280,7 +276,6 @@ def test_converter_checkboxes_with_q_codes(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -359,7 +354,6 @@ def test_converter_checkboxes_with_q_codes_and_other_value(
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -436,7 +430,6 @@ def test_converter_checkboxes_with_missing_detail_answer_value_in_answer_store(v
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -508,7 +501,6 @@ def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -562,7 +554,6 @@ def test_converter_q_codes_for_empty_strings(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -630,7 +621,6 @@ def test_radio_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -676,7 +666,6 @@ def test_number_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -721,7 +710,6 @@ def test_percentage_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -766,7 +754,6 @@ def test_textarea_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -811,7 +798,6 @@ def test_currency_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -867,7 +853,6 @@ def test_dropdown_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -919,7 +904,6 @@ def test_date_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -965,7 +949,6 @@ def test_unit_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,

@@ -82,7 +82,6 @@ def test_convert_answers_v2_to_payload_0_0_3(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -139,7 +138,6 @@ def test_convert_payload_0_0_3_multiple_answers(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -191,7 +189,6 @@ def test_radio_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -233,7 +230,6 @@ def test_number_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -275,7 +271,6 @@ def test_percentage_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -319,7 +314,6 @@ def test_textarea_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -361,7 +355,6 @@ def test_currency_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -413,7 +406,6 @@ def test_dropdown_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -461,7 +453,6 @@ def test_date_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -509,7 +500,6 @@ def test_month_year_date_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -552,7 +542,6 @@ def test_unit_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -608,7 +597,6 @@ def test_primary_person_list_item_conversion(version):
     schema = load_schema_from_name("test_list_collector_primary_person")
 
     output = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -663,7 +651,6 @@ def test_list_item_conversion(version):
     schema = load_schema_from_name("test_list_collector")
 
     output = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -713,7 +700,6 @@ def test_list_item_conversion_empty_list(version):
     schema = load_schema_from_name("test_list_collector")
 
     output = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -759,7 +745,6 @@ def test_default_answers_not_present_when_not_answered(version):
     ]
 
     output = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -817,7 +802,6 @@ def test_list_structure_in_payload_is_as_expected(version):
     schema = load_schema_from_name("test_list_collector_primary_person")
 
     output = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -872,7 +856,6 @@ def test_primary_person_not_in_payload_when_not_answered(version):
     schema = load_schema_from_name("test_list_collector")
 
     output = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -949,7 +932,6 @@ def test_relationships_in_payload(version):
     schema = load_schema_from_name("test_relationships")
 
     output = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -1026,7 +1008,6 @@ def test_no_relationships_in_payload(version):
     schema = load_schema_from_name("test_relationships_unrelated")
 
     output = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -1120,7 +1101,6 @@ def test_unrelated_block_answers_in_payload(version):
     schema = load_schema_from_name("test_relationships_unrelated")
 
     output = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -1231,7 +1211,6 @@ def test_unrelated_block_answers_not_on_path_not_in_payload(version):
     schema = load_schema_from_name("test_relationships_unrelated")
 
     output = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,
@@ -1332,7 +1311,6 @@ def test_relationship_answers_not_on_path_in_payload(version):
     schema = load_schema_from_name("test_relationships_unrelated")
 
     output = get_payload_data(
-        schema.json.get("data_version"),
         questionnaire_store.answer_store,
         questionnaire_store.list_store,
         schema,

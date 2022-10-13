@@ -83,13 +83,12 @@ def convert_answers(
         "submitted_at": submitted_at.isoformat(),
         "collection": build_collection(metadata),
         "metadata": build_metadata(metadata),
-        "launch_language_code": metadata["language_code"] or DEFAULT_LANGUAGE_CODE,
+        "launch_language_code": metadata.language_code or DEFAULT_LANGUAGE_CODE,
     }
 
     optional_properties = get_optional_payload_properties(metadata, response_metadata)
 
     payload["data"] = get_payload_data(
-        data_version=schema.json["data_version"],
         answer_store=answer_store,
         list_store=list_store,
         schema=schema,
