@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Mapping, Union
+from typing import Any, Mapping, Optional, Union
 
 from structlog import get_logger
 
@@ -14,7 +14,7 @@ from app.submitter.converter_v2 import NoMetadataException, get_payload_data
 
 logger = get_logger()
 
-MetadataType = Mapping[str, Union[str, int, list]]
+MetadataType = Mapping[str, Optional[Union[str, list]]]
 
 
 def convert_answers(
@@ -110,7 +110,7 @@ def build_collection(metadata: MetadataProxy) -> MetadataType:
     if form_type := metadata["form_type"]:
         collection_metadata["instrument_id"] = form_type
 
-    return collection_metadata  # type: ignore
+    return collection_metadata
 
 
 def build_metadata(metadata: MetadataProxy) -> MetadataType:
@@ -127,7 +127,7 @@ def build_metadata(metadata: MetadataProxy) -> MetadataType:
     if display_address := metadata["display_address"]:
         downstream_metadata["display_address"] = display_address
 
-    return downstream_metadata  # type: ignore
+    return downstream_metadata
 
 
 def get_optional_payload_properties(

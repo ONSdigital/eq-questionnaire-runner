@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Mapping, OrderedDict, Union
+from typing import Any, Mapping, Optional, OrderedDict, Union
 
 from structlog import get_logger
 
@@ -16,7 +16,7 @@ from app.submitter.convert_payload_0_0_3 import convert_answers_to_payload_0_0_3
 
 logger = get_logger()
 
-MetadataType = Mapping[str, Union[str, int, list, dict]]
+MetadataType = Mapping[str, Optional[Union[str, list]]]
 
 
 class DataVersionError(Exception):
