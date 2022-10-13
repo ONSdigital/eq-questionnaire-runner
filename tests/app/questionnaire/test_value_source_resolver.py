@@ -3,6 +3,7 @@ from typing import Mapping, Optional, Union
 import pytest
 from mock import Mock
 
+from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.data_models import AnswerStore, ListStore
 from app.data_models.answer import Answer, AnswerDict
 from app.data_models.metadata_proxy import MetadataProxy
@@ -363,7 +364,7 @@ def test_metadata_source(metadata_identifier, expected_result):
 def test_metadata_source_v2_metadata_structure(metadata_identifier, expected_result):
     metadata = get_metadata(
         {
-            "version": "v2",
+            "version": AuthPayloadVersion.V2,
             "region_code": "GB-ENG",
             "survey_metadata": {
                 "data": {"display_address": "68 Abingdon Road, Goathill"}

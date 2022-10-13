@@ -1,6 +1,7 @@
 # pylint: disable=too-many-lines
 import pytest
 
+from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.data_models.answer_store import Answer
 from app.data_models.list_store import ListStore
 from app.questionnaire.location import Location
@@ -278,7 +279,7 @@ def test_evaluate_rule(when_rule, answers, expected):
             ],
             get_metadata(
                 {
-                    "version": "v2",
+                    "version": AuthPayloadVersion.V2,
                     "survey_metadata": {"data": {"sexual_identity": True}},
                 }
             ),
@@ -297,7 +298,7 @@ def test_evaluate_rule(when_rule, answers, expected):
             ],
             get_metadata(
                 {
-                    "version": "v2",
+                    "version": AuthPayloadVersion.V2,
                     "survey_metadata": {"data": {"sexual_identity": True}},
                 }
             ),
@@ -317,7 +318,9 @@ def test_evaluate_rule(when_rule, answers, expected):
             [
                 {"answer_id": "my_answer", "value": "Yes"},
             ],
-            get_metadata({"version": "v2", "survey_metadata": {"data": {}}}),
+            get_metadata(
+                {"version": AuthPayloadVersion.V2, "survey_metadata": {"data": {}}}
+            ),
             False,
         ),
     ),

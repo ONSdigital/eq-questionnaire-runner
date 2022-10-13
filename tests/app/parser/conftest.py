@@ -3,13 +3,23 @@ import uuid
 
 import pytest
 
+from app.authentication.auth_payload_version import AuthPayloadVersion
+
 
 def get_metadata(version):
-    return fake_metadata_runner_v2() if version == "v2" else fake_metadata_runner()
+    return (
+        fake_metadata_runner_v2()
+        if version is AuthPayloadVersion.V2
+        else fake_metadata_runner()
+    )
 
 
 def get_metadata_full(version):
-    return fake_metadata_full_v2_business() if version == "v2" else fake_metadata_full()
+    return (
+        fake_metadata_full_v2_business()
+        if version is AuthPayloadVersion.V2
+        else fake_metadata_full()
+    )
 
 
 def get_metadata_social():
@@ -33,7 +43,7 @@ def fake_metadata_runner():
 @pytest.fixture()
 def fake_business_metadata_runner():
     """Generate a set of claims required for runner using business parameters instead of schema_name"""
-    metadata = get_metadata("v1")
+    metadata = get_metadata(version=None)
     del metadata["schema_name"]
 
     metadata["eq_id"] = "mbs"
@@ -72,7 +82,7 @@ def fake_metadata_runner_v2():
         "response_id": str(uuid.uuid4()),
         "account_service_url": "https://ras.ons.gov.uk",
         "case_id": str(uuid.uuid4()),
-        "version": "v2",
+        "version": AuthPayloadVersion.V2.value,
         "survey_metadata": {"data": {"key": "value"}},
     }
 

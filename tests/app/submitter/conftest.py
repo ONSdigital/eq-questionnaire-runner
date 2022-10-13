@@ -7,6 +7,7 @@ from google.resumable_media import InvalidResponse
 from mock import MagicMock
 from requests import Response
 
+from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.data_models import QuestionnaireStore
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
@@ -43,7 +44,7 @@ METADATA_V1 = MetadataProxy.from_dict(
 
 METADATA_V2 = MetadataProxy.from_dict(
     {
-        "version": "v2",
+        "version": AuthPayloadVersion.V2.value,
         "tx_id": str(uuid.uuid4()),
         "schema_name": "1_0000",
         "collection_exercise_sid": "test-sid",
@@ -83,7 +84,7 @@ def get_questionnaire_store(version):
 
     store.answer_store = AnswerStore()
     store.answer_store.add_or_update(user_answer)
-    store.metadata = METADATA_V2 if version == "v2" else METADATA_V1
+    store.metadata = METADATA_V2 if version is AuthPayloadVersion.V2 else METADATA_V1
     store.response_metadata = {"started_at": "2018-07-04T14:49:33.448608+00:00"}
 
     return store

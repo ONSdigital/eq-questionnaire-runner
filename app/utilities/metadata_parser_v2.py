@@ -14,6 +14,7 @@ from marshmallow import (
 )
 from structlog import get_logger
 
+from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.questionnaire.rules.utils import parse_iso_8601_datetime
 from app.utilities.metadata_validators import DateString, RegionCode, UUIDString
 
@@ -76,7 +77,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         validate=validate.Length(min=1)
     )  # type:ignore
     version = VALIDATORS["string"](
-        required=True, validate=validate.OneOf(["v2"])
+        required=True, validate=validate.OneOf([AuthPayloadVersion.V2.value])
     )  # type:ignore
     schema_name = VALIDATORS["string"](required=False)  # type:ignore
     schema_url = VALIDATORS["url"](required=False)  # type:ignore

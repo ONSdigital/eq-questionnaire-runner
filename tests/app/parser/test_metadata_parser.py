@@ -4,6 +4,7 @@ import pytest
 from freezegun import freeze_time
 from marshmallow import ValidationError
 
+from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.utilities.metadata_parser import validate_runner_claims
 from app.utilities.metadata_parser_v2 import (
     validate_questionnaire_claims,
@@ -19,15 +20,19 @@ from tests.app.parser.conftest import (
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_spaces_are_stripped_from_string_fields(version):
     metadata = get_metadata(version)
     metadata["collection_exercise_sid"] = "  stripped     "
 
-    validator = validate_runner_claims_v2 if version == "v2" else validate_runner_claims
+    validator = (
+        validate_runner_claims_v2
+        if version is AuthPayloadVersion.V2
+        else validate_runner_claims
+    )
     output = validator(metadata)
 
     assert output["collection_exercise_sid"] == "stripped"
@@ -36,15 +41,19 @@ def test_spaces_are_stripped_from_string_fields(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_empty_strings_are_not_valid(version):
     metadata = get_metadata(version)
     metadata["schema_name"] = ""
 
-    validator = validate_runner_claims_v2 if version == "v2" else validate_runner_claims
+    validator = (
+        validate_runner_claims_v2
+        if version is AuthPayloadVersion.V2
+        else validate_runner_claims
+    )
 
     with pytest.raises(ValidationError):
         validator(metadata)
@@ -53,8 +62,8 @@ def test_empty_strings_are_not_valid(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_validation_does_not_change_metadata(
@@ -64,7 +73,7 @@ def test_validation_does_not_change_metadata(
 
     fake_metadata_copy = deepcopy(metadata)
 
-    if version == "v2":
+    if version is AuthPayloadVersion.V2:
         questionnaire_claims = metadata["survey_metadata"]["data"]
     else:
         questionnaire_claims = metadata
@@ -79,8 +88,8 @@ def test_validation_does_not_change_metadata(
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_validation_no_error_when_optional_field_not_passed(version):
@@ -96,8 +105,8 @@ def test_validation_no_error_when_optional_field_not_passed(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_validation_field_required_by_default(version):
@@ -112,8 +121,8 @@ def test_validation_field_required_by_default(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_minimum_length(version):
@@ -121,7 +130,7 @@ def test_minimum_length(version):
 
     field_specification = [{"name": "some_field", "type": "string", "min_length": 5}]
 
-    if version == "v2":
+    if version is AuthPayloadVersion.V2:
         questionnaire_claims = metadata["survey_metadata"]["data"]
     else:
         questionnaire_claims = metadata
@@ -139,8 +148,8 @@ def test_minimum_length(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_maximum_length(version):
@@ -148,7 +157,7 @@ def test_maximum_length(version):
 
     field_specification = [{"name": "some_field", "type": "string", "max_length": 5}]
 
-    if version == "v2":
+    if version is AuthPayloadVersion.V2:
         questionnaire_claims = metadata["survey_metadata"]["data"]
     else:
         questionnaire_claims = metadata
@@ -166,8 +175,8 @@ def test_maximum_length(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_min_and_max_length(version):
@@ -177,7 +186,7 @@ def test_min_and_max_length(version):
         {"name": "some_field", "type": "string", "min_length": 4, "max_length": 5}
     ]
 
-    if version == "v2":
+    if version is AuthPayloadVersion.V2:
         questionnaire_claims = metadata["survey_metadata"]["data"]
     else:
         questionnaire_claims = metadata
@@ -200,8 +209,8 @@ def test_min_and_max_length(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_length_equals(version):
@@ -209,7 +218,7 @@ def test_length_equals(version):
 
     field_specification = [{"name": "some_field", "type": "string", "length": 4}]
 
-    if version == "v2":
+    if version is AuthPayloadVersion.V2:
         questionnaire_claims = metadata["survey_metadata"]["data"]
     else:
         questionnaire_claims = metadata
@@ -232,14 +241,18 @@ def test_length_equals(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_uuid_deserialisation(version):
     metadata = get_metadata_full(version)
 
-    validator = validate_runner_claims_v2 if version == "v2" else validate_runner_claims
+    validator = (
+        validate_runner_claims_v2
+        if version is AuthPayloadVersion.V2
+        else validate_runner_claims
+    )
     claims = validator(metadata)
 
     assert isinstance(claims["tx_id"], str)
@@ -248,14 +261,18 @@ def test_uuid_deserialisation(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_unknown_claims_are_not_deserialized(version):
     metadata = get_metadata_full(version)
 
-    validator = validate_runner_claims_v2 if version == "v2" else validate_runner_claims
+    validator = (
+        validate_runner_claims_v2
+        if version is AuthPayloadVersion.V2
+        else validate_runner_claims
+    )
     metadata["unknown_key"] = "some value"
     claims = validator(metadata)
     assert "unknown_key" not in claims
@@ -264,14 +281,18 @@ def test_unknown_claims_are_not_deserialized(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_minimum_length_on_runner_metadata(version):
     metadata = get_metadata_full(version)
 
-    validator = validate_runner_claims_v2 if version == "v2" else validate_runner_claims
+    validator = (
+        validate_runner_claims_v2
+        if version is AuthPayloadVersion.V2
+        else validate_runner_claims
+    )
     validator(metadata)
 
     metadata["collection_exercise_sid"] = ""
@@ -282,8 +303,8 @@ def test_minimum_length_on_runner_metadata(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_deserialisation_iso_8601_dates(version):
@@ -292,7 +313,7 @@ def test_deserialisation_iso_8601_dates(version):
 
     field_specification = [{"name": "birthday", "type": "date"}]
 
-    if version == "v2":
+    if version is AuthPayloadVersion.V2:
         questionnaire_claims = metadata["survey_metadata"]["data"]
     else:
         questionnaire_claims = metadata
@@ -307,10 +328,10 @@ def test_deserialisation_iso_8601_dates(version):
 @pytest.mark.parametrize(
     "date_string, version",
     [
-        ("2021-11-22T15:34:54+00:00", "v1"),
-        ("2021-11-22T15:34:54+00:00", "v2"),
-        ("2021-11-22T15:34:54Z", "v1"),
-        ("2021-11-22T15:34:54Z", "v2"),
+        ("2021-11-22T15:34:54+00:00", None),
+        ("2021-11-22T15:34:54+00:00", AuthPayloadVersion.V2),
+        ("2021-11-22T15:34:54Z", None),
+        ("2021-11-22T15:34:54Z", AuthPayloadVersion.V2),
     ],
 )
 def test_deserialisation_iso_8601_date(date_string, version):
@@ -318,7 +339,11 @@ def test_deserialisation_iso_8601_date(date_string, version):
 
     metadata["response_expires_at"] = date_string
 
-    validator = validate_runner_claims_v2 if version == "v2" else validate_runner_claims
+    validator = (
+        validate_runner_claims_v2
+        if version is AuthPayloadVersion.V2
+        else validate_runner_claims
+    )
     claims = validator(metadata)
 
     assert claims["response_expires_at"] == "2021-11-22T15:34:54+00:00"
@@ -327,8 +352,8 @@ def test_deserialisation_iso_8601_date(date_string, version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_deserialisation_iso_8601_datetime_past_datetime_raises_ValidationError(
@@ -336,7 +361,11 @@ def test_deserialisation_iso_8601_datetime_past_datetime_raises_ValidationError(
 ):
     metadata = get_metadata_full(version)
 
-    validator = validate_runner_claims_v2 if version == "v2" else validate_runner_claims
+    validator = (
+        validate_runner_claims_v2
+        if version is AuthPayloadVersion.V2
+        else validate_runner_claims
+    )
 
     metadata["response_expires_at"] = "1900-11-22T15:34:54+00:00"
     with pytest.raises(ValidationError):
@@ -347,8 +376,8 @@ def test_deserialisation_iso_8601_datetime_past_datetime_raises_ValidationError(
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_deserialisation_iso_8601_datetime_bad_datetime_raises_ValidationError(
@@ -356,7 +385,11 @@ def test_deserialisation_iso_8601_datetime_bad_datetime_raises_ValidationError(
 ):
     metadata = get_metadata_full(version)
 
-    validator = validate_runner_claims_v2 if version == "v2" else validate_runner_claims
+    validator = (
+        validate_runner_claims_v2
+        if version is AuthPayloadVersion.V2
+        else validate_runner_claims
+    )
 
     metadata["response_expires_at"] = "2021-11-22"
     with pytest.raises(ValidationError):
@@ -364,7 +397,7 @@ def test_deserialisation_iso_8601_datetime_bad_datetime_raises_ValidationError(
 
 
 def test_empty_schema_name_and_schema_url_not_valid_v2():
-    metadata = get_metadata_full("v2")
+    metadata = get_metadata_full(AuthPayloadVersion.V2)
     del metadata["schema_name"]
 
     with pytest.raises(ValidationError):

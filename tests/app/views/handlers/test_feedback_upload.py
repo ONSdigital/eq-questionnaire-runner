@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 
 from freezegun import freeze_time
 
+from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.views.handlers.feedback import (
     FeedbackMetadata,
@@ -141,7 +142,7 @@ def test_feedback_payload_v2(
         },
         "tx_id": tx_id,
         "type": "uk.gov.ons.edc.eq:feedback",
-        "version": "v2",
+        "version": AuthPayloadVersion.V2.value,
     }
 
     assert expected_payload == feedback_payload()

@@ -5,6 +5,7 @@ import pytest
 from freezegun import freeze_time
 from mock import Mock
 
+from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.data_models import QuestionnaireStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.session_data import SessionData
@@ -133,7 +134,7 @@ def metadata():
 def metadata_v2():
     return MetadataProxy.from_dict(
         {
-            "version": "v2",
+            "version": AuthPayloadVersion.V2,
             "tx_id": tx_id,
             "case_id": case_id,
             "schema_name": schema_name,
@@ -221,7 +222,7 @@ def mock_questionnaire_store_v2(mocker):
     questionnaire_store = QuestionnaireStore(storage_)
     questionnaire_store.metadata = MetadataProxy.from_dict(
         {
-            "version": "v2",
+            "version": AuthPayloadVersion.V2,
             "tx_id": "tx_id",
             "case_id": case_id,
             "schema_name": schema_name,

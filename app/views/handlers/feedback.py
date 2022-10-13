@@ -362,7 +362,7 @@ class FeedbackPayloadV2:
         payload = {
             "tx_id": self.metadata.tx_id,
             "type": "uk.gov.ons.edc.eq:feedback",
-            "version": "v2",
+            "version": AuthPayloadVersion.V2.value,
             "data_version": self.schema.json["data_version"],
             "origin": "uk.gov.ons.edc.eq",
             "flushed": False,

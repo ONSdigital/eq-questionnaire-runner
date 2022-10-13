@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 
 import pytest
 
+from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.submitter.converter import convert_answers
 from app.submitter.converter_v2 import (
@@ -18,8 +19,8 @@ SUBMITTED_AT = datetime.now(timezone.utc)
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_convert_answers_v2_flushed_flag_default_is_false(
@@ -27,7 +28,9 @@ def test_convert_answers_v2_flushed_flag_default_is_false(
 ):
     questionnaire_store = get_questionnaire_store(version)
 
-    converter = convert_answers_v2 if version == "v2" else convert_answers
+    converter = (
+        convert_answers_v2 if version is AuthPayloadVersion.V2 else convert_answers
+    )
 
     answer_object = converter(
         fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
@@ -39,8 +42,8 @@ def test_convert_answers_v2_flushed_flag_default_is_false(
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_convert_answers_v2_flushed_flag_overriden_to_true(
@@ -48,7 +51,9 @@ def test_convert_answers_v2_flushed_flag_overriden_to_true(
 ):
     questionnaire_store = get_questionnaire_store(version)
 
-    converter = convert_answers_v2 if version == "v2" else convert_answers
+    converter = (
+        convert_answers_v2 if version is AuthPayloadVersion.V2 else convert_answers
+    )
 
     answer_object = converter(
         fake_questionnaire_schema,
@@ -64,8 +69,8 @@ def test_convert_answers_v2_flushed_flag_overriden_to_true(
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_started_at_should_be_set_in_payload_if_present_in_response_metadata(
@@ -73,7 +78,9 @@ def test_started_at_should_be_set_in_payload_if_present_in_response_metadata(
 ):
     questionnaire_store = get_questionnaire_store(version)
 
-    converter = convert_answers_v2 if version == "v2" else convert_answers
+    converter = (
+        convert_answers_v2 if version is AuthPayloadVersion.V2 else convert_answers
+    )
 
     answer_object = converter(
         fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
@@ -88,8 +95,8 @@ def test_started_at_should_be_set_in_payload_if_present_in_response_metadata(
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_started_at_should_not_be_set_in_payload_if_absent_in_response_metadata(
@@ -99,7 +106,9 @@ def test_started_at_should_not_be_set_in_payload_if_absent_in_response_metadata(
     questionnaire_store = get_questionnaire_store(version)
     questionnaire_store.response_metadata = fake_response_metadata
 
-    converter = convert_answers_v2 if version == "v2" else convert_answers
+    converter = (
+        convert_answers_v2 if version is AuthPayloadVersion.V2 else convert_answers
+    )
 
     answer_object = converter(
         fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
@@ -111,14 +120,16 @@ def test_started_at_should_not_be_set_in_payload_if_absent_in_response_metadata(
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_submitted_at_should_be_set_in_payload(fake_questionnaire_schema, version):
     questionnaire_store = get_questionnaire_store(version)
 
-    converter = convert_answers_v2 if version == "v2" else convert_answers
+    converter = (
+        convert_answers_v2 if version is AuthPayloadVersion.V2 else convert_answers
+    )
 
     answer_object = converter(
         fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
@@ -130,14 +141,16 @@ def test_submitted_at_should_be_set_in_payload(fake_questionnaire_schema, versio
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_case_id_should_be_set_in_payload(fake_questionnaire_schema, version):
     questionnaire_store = get_questionnaire_store(version)
 
-    converter = convert_answers_v2 if version == "v2" else convert_answers
+    converter = (
+        convert_answers_v2 if version is AuthPayloadVersion.V2 else convert_answers
+    )
 
     answer_object = converter(
         fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
@@ -149,20 +162,22 @@ def test_case_id_should_be_set_in_payload(fake_questionnaire_schema, version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_case_ref_should_be_set_in_payload(fake_questionnaire_schema, version):
     questionnaire_store = get_questionnaire_store(version)
 
-    converter = convert_answers_v2 if version == "v2" else convert_answers
+    converter = (
+        convert_answers_v2 if version is AuthPayloadVersion.V2 else convert_answers
+    )
 
     answer_object = converter(
         fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
     )
 
-    if version == "v2":
+    if version is AuthPayloadVersion.V2:
         assert answer_object["survey_metadata"][
             "case_ref"
         ], questionnaire_store.metadata["survey_metadata"]["data"]["case_ref"]
@@ -173,8 +188,8 @@ def test_case_ref_should_be_set_in_payload(fake_questionnaire_schema, version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_display_address_should_be_set_in_payload_metadata(
@@ -182,13 +197,15 @@ def test_display_address_should_be_set_in_payload_metadata(
 ):
     questionnaire_store = get_questionnaire_store(version)
 
-    converter = convert_answers_v2 if version == "v2" else convert_answers
+    converter = (
+        convert_answers_v2 if version is AuthPayloadVersion.V2 else convert_answers
+    )
 
     payload = converter(
         fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
     )
 
-    if version == "v2":
+    if version is AuthPayloadVersion.V2:
         assert payload["survey_metadata"][
             "display_address"
         ], questionnaire_store.metadata["survey_metadata"]["data"]["display_address"]
@@ -201,15 +218,17 @@ def test_display_address_should_be_set_in_payload_metadata(
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_converter_raises_runtime_error_for_unsupported_version(version):
     questionnaire_store = get_questionnaire_store(version)
     questionnaire = {"survey_id": "021", "data_version": "-0.0.1"}
 
-    converter = convert_answers_v2 if version == "v2" else convert_answers
+    converter = (
+        convert_answers_v2 if version is AuthPayloadVersion.V2 else convert_answers
+    )
 
     with pytest.raises(DataVersionError) as err:
         converter(
@@ -225,8 +244,8 @@ def test_converter_raises_runtime_error_for_unsupported_version(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_converter_language_code_not_set_in_payload(
@@ -235,7 +254,9 @@ def test_converter_language_code_not_set_in_payload(
     questionnaire_store = get_questionnaire_store(version)
     questionnaire_store.response_metadata = fake_response_metadata
 
-    converter = convert_answers_v2 if version == "v2" else convert_answers
+    converter = (
+        convert_answers_v2 if version is AuthPayloadVersion.V2 else convert_answers
+    )
 
     answer_object = converter(
         fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
@@ -249,8 +270,8 @@ def test_converter_language_code_not_set_in_payload(
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_converter_language_code_set_in_payload(
@@ -260,7 +281,9 @@ def test_converter_language_code_set_in_payload(
     questionnaire_store.metadata = get_metadata({"language_code": "ga"})
     questionnaire_store.response_metadata = fake_response_metadata
 
-    converter = convert_answers_v2 if version == "v2" else convert_answers
+    converter = (
+        convert_answers_v2 if version is AuthPayloadVersion.V2 else convert_answers
+    )
 
     answer_object = converter(
         fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
@@ -272,8 +295,8 @@ def test_converter_language_code_set_in_payload(
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_no_metadata_raises_exception(fake_questionnaire_schema, version):
@@ -281,7 +304,9 @@ def test_no_metadata_raises_exception(fake_questionnaire_schema, version):
 
     questionnaire_store.metadata = None
 
-    converter = convert_answers_v2 if version == "v2" else convert_answers
+    converter = (
+        convert_answers_v2 if version is AuthPayloadVersion.V2 else convert_answers
+    )
 
     with pytest.raises(NoMetadataException):
         converter(fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT)
@@ -290,8 +315,8 @@ def test_no_metadata_raises_exception(fake_questionnaire_schema, version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_data_object_set_in_payload(
@@ -300,7 +325,9 @@ def test_data_object_set_in_payload(
     questionnaire_store = get_questionnaire_store(version)
     questionnaire_store.response_metadata = fake_response_metadata
 
-    converter = convert_answers_v2 if version == "v2" else convert_answers
+    converter = (
+        convert_answers_v2 if version is AuthPayloadVersion.V2 else convert_answers
+    )
 
     answer_object = converter(
         fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT

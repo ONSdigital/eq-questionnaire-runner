@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 
 import pytest
 
+from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
@@ -21,8 +22,8 @@ def create_answer(answer_id, value):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_convert_answers_v2_to_payload_0_0_1_with_key_error(version):
@@ -66,8 +67,8 @@ def test_convert_answers_v2_to_payload_0_0_1_with_key_error(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_answer_with_zero(version):
@@ -104,8 +105,8 @@ def test_answer_with_zero(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_answer_with_float(version):
@@ -143,8 +144,8 @@ def test_answer_with_float(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_answer_with_string(version):
@@ -184,8 +185,8 @@ def test_answer_with_string(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_answer_without_qcode(version):
@@ -224,8 +225,8 @@ def test_answer_without_qcode(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_converter_checkboxes_with_q_codes(version):
@@ -293,10 +294,10 @@ def test_converter_checkboxes_with_q_codes(version):
 @pytest.mark.parametrize(
     "detail_answer_q_code_field, expected_data_length, version",
     [
-        ({"q_code": "401"}, 3, "v1"),
-        ({}, 2, "v1"),
-        ({"q_code": "401"}, 3, "v2"),
-        ({}, 2, "v2"),
+        ({"q_code": "401"}, 3, None),
+        ({}, 2, None),
+        ({"q_code": "401"}, 3, AuthPayloadVersion.V2),
+        ({}, 2, AuthPayloadVersion.V2),
     ],
 )
 def test_converter_checkboxes_with_q_codes_and_other_value(
@@ -375,8 +376,8 @@ def test_converter_checkboxes_with_q_codes_and_other_value(
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_converter_checkboxes_with_missing_detail_answer_value_in_answer_store(version):
@@ -447,8 +448,8 @@ def test_converter_checkboxes_with_missing_detail_answer_value_in_answer_store(v
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(version):
@@ -517,8 +518,8 @@ def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_converter_q_codes_for_empty_strings(version):
@@ -570,8 +571,8 @@ def test_converter_q_codes_for_empty_strings(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_radio_answer(version):
@@ -638,8 +639,8 @@ def test_radio_answer(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_number_answer(version):
@@ -682,8 +683,8 @@ def test_number_answer(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_percentage_answer(version):
@@ -726,8 +727,8 @@ def test_percentage_answer(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_textarea_answer(version):
@@ -770,8 +771,8 @@ def test_textarea_answer(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_currency_answer(version):
@@ -814,8 +815,8 @@ def test_currency_answer(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_dropdown_answer(version):
@@ -869,8 +870,8 @@ def test_dropdown_answer(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_date_answer(version):
@@ -921,8 +922,8 @@ def test_date_answer(version):
 @pytest.mark.parametrize(
     "version",
     (
-        "v1",
-        "v2",
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_unit_answer(version):
