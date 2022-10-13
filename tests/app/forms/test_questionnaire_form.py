@@ -7,7 +7,6 @@ from werkzeug.datastructures import MultiDict
 
 from app.data_models import ListStore
 from app.data_models.answer_store import Answer, AnswerStore
-from app.data_models.metadata_proxy import MetadataProxy
 from app.forms import error_messages
 from app.forms.questionnaire_form import generate_form
 from app.forms.validators import (
@@ -18,14 +17,7 @@ from app.forms.validators import (
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.utilities.schema import load_schema_from_name
-
-MANDATORY_METADATA = {
-    "response_id": "1",
-    "account_service_url": "account_service_url",
-    "tx_id": "tx_id",
-    "collection_exercise_sid": "collection_exercise_sid",
-    "case_id": "case_id",
-}
+from tests.app.questionnaire.conftest import get_metadata
 
 
 def error_exists(answer_id, msg, mapped_errors):
@@ -47,7 +39,7 @@ def test_form_ids_match_block_answer_ids(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
         )
 
@@ -82,7 +74,7 @@ def test_form_date_range_populates_data(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -117,7 +109,7 @@ def test_date_range_matching_dates_raises_question_error(app, answer_store, list
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -160,7 +152,7 @@ def test_date_range_to_precedes_from_raises_question_error(
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -202,7 +194,7 @@ def test_date_range_too_large_period_raises_question_error(
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -243,7 +235,7 @@ def test_date_range_too_small_period_raises_question_error(
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -282,7 +274,7 @@ def test_date_range_valid_period(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -313,7 +305,7 @@ def test_date_combined_single_validation(app, answer_store, list_store):
             "ref_p_end_date": "2017-02-21",
         }
 
-        metadata = get_metadata_from_dict(MANDATORY_METADATA | test_metadata)
+        metadata = get_metadata(test_metadata)
 
         response_metadata = {}
 
@@ -365,7 +357,7 @@ def test_date_combined_range_too_small_validation(app, answer_store, list_store)
             "ref_p_end_date": "2017-02-20",
         }
 
-        metadata = get_metadata_from_dict(MANDATORY_METADATA | test_metadata)
+        metadata = get_metadata(test_metadata)
 
         expected_form_data = {
             "csrf_token": None,
@@ -411,7 +403,7 @@ def test_date_combined_range_too_large_validation(app, answer_store, list_store)
             "ref_p_end_date": "2017-02-20",
         }
 
-        metadata = get_metadata_from_dict(MANDATORY_METADATA | test_metadata)
+        metadata = get_metadata(test_metadata)
 
         response_metadata = {}
 
@@ -457,7 +449,7 @@ def test_date_mm_yyyy_combined_single_validation(app, answer_store, list_store):
             "ref_p_end_date": "2017-02-12",
         }
 
-        metadata = get_metadata_from_dict(MANDATORY_METADATA | test_metadata)
+        metadata = get_metadata(test_metadata)
 
         response_metadata = {}
 
@@ -509,7 +501,7 @@ def test_date_mm_yyyy_combined_range_too_small_validation(
             "ref_p_end_date": "2017-02-12",
         }
 
-        metadata = get_metadata_from_dict(MANDATORY_METADATA | test_metadata)
+        metadata = get_metadata(test_metadata)
 
         expected_form_data = {
             "csrf_token": None,
@@ -555,7 +547,7 @@ def test_date_mm_yyyy_combined_range_too_large_validation(
             "ref_p_end_date": "2017-02-12",
         }
 
-        metadata = get_metadata_from_dict(MANDATORY_METADATA | test_metadata)
+        metadata = get_metadata(test_metadata)
 
         response_metadata = {}
 
@@ -596,7 +588,7 @@ def test_date_yyyy_combined_single_validation(app, answer_store, list_store):
             "ref_p_end_date": "2017-02-12",
         }
 
-        metadata = get_metadata_from_dict(MANDATORY_METADATA | test_metadata)
+        metadata = get_metadata(test_metadata)
 
         expected_form_data = {
             "csrf_token": None,
@@ -639,7 +631,7 @@ def test_date_yyyy_combined_range_too_small_validation(app, answer_store, list_s
             "ref_p_end_date": "2017-02-12",
         }
 
-        metadata = get_metadata_from_dict(MANDATORY_METADATA | test_metadata)
+        metadata = get_metadata(test_metadata)
 
         expected_form_data = {
             "csrf_token": None,
@@ -678,7 +670,7 @@ def test_date_yyyy_combined_range_too_large_validation(app, answer_store, list_s
             "ref_p_end_date": "2017-02-12",
         }
 
-        metadata = get_metadata_from_dict(MANDATORY_METADATA | test_metadata)
+        metadata = get_metadata(test_metadata)
 
         expected_form_data = {
             "csrf_token": None,
@@ -721,7 +713,7 @@ def test_date_raises_ValueError_when_any_date_range_parts_are_falsy(
             }
         )
 
-        metadata = get_metadata_from_dict(MANDATORY_METADATA)
+        metadata = get_metadata()
 
         response_metadata = {}
 
@@ -782,7 +774,7 @@ def test_bespoke_message_for_date_validation_range(
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -839,7 +831,7 @@ def test_invalid_minimum_period_limit_and_single_date_periods(
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -899,7 +891,7 @@ def test_invalid_maximum_period_limit_and_single_date_periods(
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -960,7 +952,7 @@ def test_period_limits_minimum_not_set_and_single_date_periods(
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1025,7 +1017,7 @@ def test_invalid_date_range_and_single_date_periods(
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(metadata),
+            metadata=get_metadata(metadata),
             response_metadata={},
             form_data=form_data,
         )
@@ -1070,7 +1062,7 @@ def test_invalid_calculation_type(app, answer_store, list_store, mocker):
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1108,7 +1100,7 @@ def test_bespoke_message_for_sum_validation(app, answer_store, list_store, mocke
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1309,7 +1301,7 @@ def test_calculated_field(
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1364,7 +1356,7 @@ def test_sum_calculated_field_value_source_calculated_summary_repeat_not_equal_v
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1400,7 +1392,7 @@ def test_multi_calculation(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1416,7 +1408,7 @@ def test_multi_calculation(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1432,7 +1424,7 @@ def test_multi_calculation(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1466,7 +1458,7 @@ def test_generate_form_with_title_and_no_answer_label(app, answer_store, list_st
                 question_schema,
                 answer_store,
                 list_store,
-                metadata=get_metadata_from_dict(MANDATORY_METADATA),
+                metadata=get_metadata(),
                 response_metadata={},
                 form_data=form_data,
             )
@@ -1486,7 +1478,7 @@ def test_form_errors_are_correctly_mapped(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
         )
 
@@ -1509,7 +1501,7 @@ def test_form_subfield_errors_are_correctly_mapped(app, answer_store, list_store
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
         )
 
@@ -1544,7 +1536,7 @@ def test_detail_answer_mandatory_only_checked_if_option_selected(
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=MultiDict({"mandatory-checkbox-answer": "Your choice"}),
         )
@@ -1558,7 +1550,7 @@ def test_detail_answer_mandatory_only_checked_if_option_selected(
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             data={"mandatory-checkbox-answer": "Ham"},
         )
@@ -1582,7 +1574,7 @@ def test_answer_with_detail_answer_errors_are_correctly_mapped(
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=MultiDict({"radio-mandatory-answer": "Other"}),
         )
@@ -1613,7 +1605,7 @@ def test_answer_errors_are_interpolated(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=MultiDict({"set-minimum": "-1"}),
         )
@@ -1638,7 +1630,7 @@ def test_mandatory_mutually_exclusive_question_raises_error_when_not_answered(
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=MultiDict(),
         )
@@ -1668,7 +1660,7 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
             language="en",
             answer_store=answer_store,
             list_store=list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             schema=schema,
         )
@@ -1679,7 +1671,7 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
             rendered_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=MultiDict(),
         )
@@ -1714,7 +1706,7 @@ def test_mutually_exclusive_question_raises_error_when_both_answered(
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1736,7 +1728,7 @@ def test_date_range_form(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
         )
 
@@ -1771,7 +1763,7 @@ def test_date_range_form_with_data(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1809,7 +1801,7 @@ def test_form_for_radio_other_not_selected(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
@@ -1838,14 +1830,10 @@ def test_form_for_radio_other_selected(app, answer_store, list_store):
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata_from_dict(MANDATORY_METADATA),
+            metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
         )
 
         other_text_field = getattr(form, "other-answer-mandatory")
         assert other_text_field.data == "Other text field value"
-
-
-def get_metadata_from_dict(metadata):
-    return MetadataProxy.from_dict(metadata)
