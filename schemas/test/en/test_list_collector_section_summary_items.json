@@ -41,17 +41,17 @@
                         "for_list": "companies",
                         "title": "Companies or UK branches",
                         "add_link_text": "Add another UK company or branch",
-                        "empty_list_text": "No UK company or branch added"
-                    }
-                ],
-                "related_answers": [
-                    {
-                        "source": "answers",
-                        "identifier": "registration-number"
-                    },
-                    {
-                        "source": "answers",
-                        "identifier": "authorised-insurer-radio"
+                        "empty_list_text": "No UK company or branch added",
+                        "related_answers": [
+                            {
+                                "source": "answers",
+                                "identifier": "registration-number"
+                            },
+                            {
+                                "source": "answers",
+                                "identifier": "authorised-insurer-radio"
+                            }
+                        ]
                     }
                 ],
                 "show_non_item_answers": true

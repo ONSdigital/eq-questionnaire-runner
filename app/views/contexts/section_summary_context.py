@@ -321,7 +321,9 @@ class SectionSummaryContext(Context):
         section = self.section["id"]
 
         # pylint: disable=protected-access
-        if related_answers := self._schema._get_related_answers_for_section(section):
+        if related_answers := self._schema._get_related_answers_for_section(
+            section, current_list
+        ):
             related_answers_dict = {}
             for list_id in current_list:
                 keys = [
