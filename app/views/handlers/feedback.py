@@ -309,9 +309,7 @@ class FeedbackPayload:
             ),
             "tx_id": self.metadata.tx_id,
             "type": "uk.gov.ons.edc.eq:feedback",
-            "launch_language_code": self.metadata["language_code"]
-            if self.metadata
-            else DEFAULT_LANGUAGE_CODE,
+            "launch_language_code": self.metadata.language_code or DEFAULT_LANGUAGE_CODE,
             "version": "0.0.1",
         }
 
