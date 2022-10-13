@@ -307,7 +307,7 @@ class FeedbackPayload:
             "submission_language_code": (
                 self.submission_language_code or DEFAULT_LANGUAGE_CODE
             ),
-            "tx_id": self.metadata.tx_id if self.metadata else None,
+            "tx_id": self.metadata.tx_id,
             "type": "uk.gov.ons.edc.eq:feedback",
             "launch_language_code": self.metadata["language_code"]
             if self.metadata
