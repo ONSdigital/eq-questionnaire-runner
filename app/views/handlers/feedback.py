@@ -375,9 +375,7 @@ class FeedbackPayloadV2:
             "origin": "uk.gov.ons.edc.eq",
             "flushed": False,
             "submitted_at": datetime.now(tz=timezone.utc).isoformat(),
-            "launch_language_code": self.metadata["language_code"]
-            if self.metadata
-            else DEFAULT_LANGUAGE_CODE,
+            "launch_language_code": self.metadata.language_code or DEFAULT_LANGUAGE_CODE,
             "submission_language_code": (
                 self.submission_language_code or DEFAULT_LANGUAGE_CODE
             ),
