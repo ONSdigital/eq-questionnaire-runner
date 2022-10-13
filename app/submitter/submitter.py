@@ -47,11 +47,8 @@ class GCSSubmitter:
         logger.info("sending message")
 
         blob = self.bucket.blob(tx_id)
-        metadata: dict = {"tx_id": tx_id, "case_id": case_id}
 
-        if kwargs:
-            for key, value in kwargs.items():
-                metadata[key] = value
+        metadata: dict = {"tx_id": tx_id, "case_id": case_id, **kwargs}
 
         blob.metadata = metadata
 

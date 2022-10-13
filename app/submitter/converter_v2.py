@@ -130,7 +130,10 @@ def get_payload_data(
     if schema.json["data_version"] == "0.0.3":
         return {
             "answers": convert_answers_to_payload_0_0_3(
-                answer_store=answer_store, list_store=list_store, schema=schema, full_routing_path=routing_path
+                answer_store=answer_store,
+                list_store=list_store,
+                schema=schema,
+                full_routing_path=routing_path,
             ),
             "lists": list_store.serialize(),
         }
