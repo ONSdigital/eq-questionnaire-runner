@@ -359,7 +359,6 @@ class FeedbackPayloadV2:
         self.feedback_type = feedback_type
 
     def __call__(self) -> dict[str, Any]:
-        # type ignores added as metadata will exist at this point
         payload = {
             "tx_id": self.metadata.tx_id,
             "type": "uk.gov.ons.edc.eq:feedback",
@@ -380,7 +379,7 @@ class FeedbackPayloadV2:
         }
 
         if self.metadata.survey_metadata:
-            payload["survey_metadata"] |= self.metadata.survey_metadata.data  # type: ignore
+            payload["survey_metadata"] |= self.metadata.survey_metadata.data
 
         optional_properties = converter_v2.get_optional_payload_properties(
             self.metadata, self.response_metadata
