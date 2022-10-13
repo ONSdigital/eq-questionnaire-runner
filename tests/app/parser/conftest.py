@@ -12,6 +12,10 @@ def get_metadata_full(version):
     return fake_metadata_full_v2_business() if version == "v2" else fake_metadata_full()
 
 
+def get_metadata_social():
+    return fake_metadata_full_v2_social()
+
+
 def fake_metadata_runner():
     """Generate the set of claims required for runner to function"""
     return {
@@ -94,6 +98,24 @@ def fake_metadata_full_v2_business():
     metadata = fake_metadata_runner_v2()
 
     metadata["survey_metadata"]["data"] = fake_survey_metadata_claims
+
+    return metadata
+
+
+def fake_metadata_full_v2_social():
+    """Generate a fake set of claims
+    These claims should represent all claims known to runner, including common questionnaire
+    level claims.
+    """
+    fake_survey_metadata_claims = {
+        "case_ref": "1000000000000001",
+        "questionnaire_id": "2000000000000002",
+    }
+
+    metadata = fake_metadata_runner_v2()
+
+    metadata["survey_metadata"]["data"] = fake_survey_metadata_claims
+    metadata["survey_metadata"]["receipting_keys"] = ["questionnaire_id"]
 
     return metadata
 

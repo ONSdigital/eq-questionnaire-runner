@@ -9,7 +9,11 @@ from app.utilities.metadata_parser_v2 import (
     validate_questionnaire_claims,
     validate_runner_claims_v2,
 )
-from tests.app.parser.conftest import get_metadata, get_metadata_full
+from tests.app.parser.conftest import (
+    get_metadata,
+    get_metadata_full,
+    get_metadata_social,
+)
 
 
 @pytest.mark.parametrize(
@@ -362,6 +366,25 @@ def test_deserialisation_iso_8601_datetime_bad_datetime_raises_ValidationError(
 def test_empty_schema_name_and_schema_url_not_valid_v2():
     metadata = get_metadata_full("v2")
     del metadata["schema_name"]
+
+    with pytest.raises(ValidationError):
+        validate_runner_claims_v2(metadata)
+
+
+def test_valid_v2_social_claims():
+    metadata = get_metadata_social()
+
+    fake_metadata_copy = deepcopy(metadata)
+
+    claims = validate_runner_claims_v2(metadata)
+
+    assert claims == fake_metadata_copy
+
+
+def test_invalid_v2_social_claims_missing_receipting_key_raises_error():
+    metadata = get_metadata_social()
+
+    del metadata["survey_metadata"]["data"]["questionnaire_id"]
 
     with pytest.raises(ValidationError):
         validate_runner_claims_v2(metadata)

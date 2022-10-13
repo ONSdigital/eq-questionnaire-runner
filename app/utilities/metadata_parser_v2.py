@@ -51,6 +51,20 @@ class SurveyMetadata(Schema, StripWhitespaceMixin):
     data = fields.Nested(Data, unknown=INCLUDE, validate=validate.Length(min=1))
     receipting_keys = fields.List(fields.String)
 
+    @validates_schema
+    def validate_receipting_keys(self, data, **kwargs):
+        # pylint: disable=no-self-use, unused-argument
+        if data and (receipting_keys := data.get("receipting_keys", {})):
+            missing_receipting_keys: list = []
+            for receipting_key in receipting_keys:
+                if receipting_key not in data.get("data"):
+                    missing_receipting_keys.append(receipting_key)
+
+                if missing_receipting_keys:
+                    raise ValidationError(
+                        f"Receipting keys: {missing_receipting_keys} not set in Survey Metadata"
+                    )
+
 
 class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     """Metadata which is required for the operation of runner itself"""
@@ -91,20 +105,6 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
             raise ValidationError(
                 "Neither schema_name or schema_url has been set in metadata"
             )
-
-    @validates_schema
-    def validate_receipting_keys(self, data, **kwargs):
-        # pylint: disable=no-self-use, unused-argument
-        if data and (
-            receipting_keys := data.get("survey_metadata", {}).get(
-                "receipting_keys", {}
-            )
-        ):
-            for receipting_key in receipting_keys:
-                if receipting_key not in data.get("survey_metadata").get("data"):
-                    raise ValidationError(
-                        f"Receipting key: {receipting_key} not set in Survey Metadata"
-                    )
 
 
 def validate_questionnaire_claims(
