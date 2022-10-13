@@ -8,7 +8,6 @@ from requests import RequestException
 from requests.adapters import ConnectTimeoutError, ReadTimeoutError
 from urllib3.connectionpool import HTTPConnectionPool, HTTPResponse
 
-from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
 from app.setup import create_app
 from app.utilities.schema import (
@@ -24,6 +23,7 @@ from app.utilities.schema import (
     load_schema_from_name,
     load_schema_from_url,
 )
+from tests.app.questionnaire.conftest import get_metadata
 
 TEST_SCHEMA_URL = "http://test.domain/schema.json"
 
@@ -221,16 +221,8 @@ def test_load_schema_from_url_uses_cache():
 def test_load_schema_from_metadata_with_schema_url():
     load_schema_from_url.cache_clear()
 
-    metadata = MetadataProxy.from_dict(
-        {
-            "schema_url": TEST_SCHEMA_URL,
-            "language_code": "cy",
-            "tx_id": "tx_id",
-            "account_service_url": "account_service_url",
-            "case_id": "case_id",
-            "collection_exercise_sid": "collection_exercise_sid",
-            "response_id": "response_id",
-        }
+    metadata = get_metadata(
+        {"schema_url": TEST_SCHEMA_URL, "language_code": "cy"},
     )
     mock_schema = QuestionnaireSchema({}, language_code="cy")
     responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)
@@ -245,9 +237,7 @@ def test_load_schema_from_metadata_with_schema_url_and_override_language_code():
     load_schema_from_url.cache_clear()
     language_code = "en"
 
-    metadata = MetadataProxy.from_dict(
-        {"schema_url": TEST_SCHEMA_URL, "language_code": "cy"}
-    )
+    metadata = get_metadata({"schema_url": TEST_SCHEMA_URL, "language_code": "cy"})
 
     mock_schema = QuestionnaireSchema({}, language_code="cy")
     responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)

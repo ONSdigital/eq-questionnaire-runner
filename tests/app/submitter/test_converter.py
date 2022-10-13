@@ -2,7 +2,6 @@ from datetime import datetime, timezone
 
 import pytest
 
-from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.submitter.converter import convert_answers
 from app.submitter.converter_v2 import (
@@ -10,6 +9,7 @@ from app.submitter.converter_v2 import (
     NoMetadataException,
     convert_answers_v2,
 )
+from tests.app.questionnaire.conftest import get_metadata
 from tests.app.submitter.conftest import get_questionnaire_store
 
 SUBMITTED_AT = datetime.now(timezone.utc)
@@ -257,7 +257,7 @@ def test_converter_language_code_set_in_payload(
     fake_questionnaire_schema, fake_response_metadata, version
 ):
     questionnaire_store = get_questionnaire_store(version)
-    questionnaire_store.metadata = MetadataProxy.from_dict({"language_code": "ga"})
+    questionnaire_store.metadata = get_metadata({"language_code": "ga"})
     questionnaire_store.response_metadata = fake_response_metadata
 
     converter = convert_answers_v2 if version == "v2" else convert_answers
@@ -314,7 +314,7 @@ def test_instrument_id_is_not_in_payload_collection_if_form_type_absent_in_metad
 ):
     questionnaire_store = get_questionnaire_store("v1")
 
-    questionnaire_store.metadata = MetadataProxy.from_dict({"form_type": None})
+    questionnaire_store.metadata = get_metadata({"form_type": None})
 
     payload = convert_answers(
         fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT

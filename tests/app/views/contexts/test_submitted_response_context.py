@@ -8,7 +8,6 @@ from mock import Mock
 from app.data_models import QuestionnaireStore
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
-from app.data_models.metadata_proxy import MetadataProxy
 from app.settings import VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS
 from app.submitter.converter_v2 import NoMetadataException
 from app.survey_config.survey_type import SurveyType
@@ -16,6 +15,7 @@ from app.utilities.schema import load_schema_from_name
 from app.views.contexts.view_submitted_response_context import (
     build_view_submitted_response_context,
 )
+from tests.app.questionnaire.conftest import get_metadata
 
 SUBMITTED_AT = datetime.now(timezone.utc)
 SCHEMA = load_schema_from_name("test_view_submitted_response", "en")
@@ -129,9 +129,7 @@ def fake_questionnaire_store():
     storage = Mock()
     storage.get_user_data = Mock(return_value=("{}", "ce_sid", 1, None))
     questionnaire_store = QuestionnaireStore(storage)
-    questionnaire_store.metadata = MetadataProxy.from_dict(
-        {"tx_id": "tx_id", "ru_name": "Apple"}
-    )
+    questionnaire_store.metadata = get_metadata({"tx_id": "tx_id", "ru_name": "Apple"})
     questionnaire_store.submitted_at = SUBMITTED_AT
     questionnaire_store.answer_store = AnswerStore(
         [
@@ -146,7 +144,7 @@ def fake_questionnaire_store_with_trad_as():
     storage = Mock()
     storage.get_user_data = Mock(return_value=("{}", "ce_sid", 1, None))
     questionnaire_store = QuestionnaireStore(storage)
-    questionnaire_store.metadata = MetadataProxy.from_dict(
+    questionnaire_store.metadata = get_metadata(
         {"tx_id": "tx_id", "ru_name": "Apple", "trad_as": "Apple Inc"}
     )
     questionnaire_store.submitted_at = SUBMITTED_AT
