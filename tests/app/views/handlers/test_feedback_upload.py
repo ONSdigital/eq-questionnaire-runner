@@ -118,7 +118,7 @@ def test_feedback_payload_v2(
         },
         "data_version": data_version,
         "flushed": False,
-        "launch_language_code": None,
+        "launch_language_code": "en",
         "origin": "uk.gov.ons.edc.eq",
         "region_code": region_code,
         "schema_name": schema_name,

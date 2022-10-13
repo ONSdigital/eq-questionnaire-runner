@@ -309,12 +309,13 @@ class FeedbackPayload:
             ),
             "tx_id": self.metadata.tx_id,
             "type": "uk.gov.ons.edc.eq:feedback",
-            "launch_language_code": self.metadata.language_code or DEFAULT_LANGUAGE_CODE,
+            "launch_language_code": self.metadata.language_code
+            or DEFAULT_LANGUAGE_CODE,
             "version": "0.0.1",
         }
 
         optional_properties = get_optional_payload_properties(
-            self.metadata, self.response_metadata  # type: ignore
+            self.metadata, self.response_metadata
         )
 
         payload["data"] = {
@@ -375,7 +376,8 @@ class FeedbackPayloadV2:
             "origin": "uk.gov.ons.edc.eq",
             "flushed": False,
             "submitted_at": datetime.now(tz=timezone.utc).isoformat(),
-            "launch_language_code": self.metadata.language_code or DEFAULT_LANGUAGE_CODE,
+            "launch_language_code": self.metadata.language_code
+            or DEFAULT_LANGUAGE_CODE,
             "submission_language_code": (
                 self.submission_language_code or DEFAULT_LANGUAGE_CODE
             ),
@@ -385,11 +387,11 @@ class FeedbackPayloadV2:
             "survey_metadata": {"survey_id": self.schema.json["survey_id"]},
         }
 
-        if self.metadata.survey_metadata:  # type: ignore
+        if self.metadata.survey_metadata:
             payload["survey_metadata"] |= self.metadata.survey_metadata.data  # type: ignore
 
         optional_properties = converter_v2.get_optional_payload_properties(
-            self.metadata, self.response_metadata  # type: ignore
+            self.metadata, self.response_metadata
         )
 
         payload["data"] = {
