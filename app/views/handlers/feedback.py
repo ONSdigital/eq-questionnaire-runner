@@ -368,7 +368,7 @@ class FeedbackPayloadV2:
     def __call__(self) -> dict[str, Any]:
         # type ignores added as metadata will exist at this point
         payload = {
-            "tx_id": self.metadata.tx_id if self.metadata else None,
+            "tx_id": self.metadata.tx_id,
             "type": "uk.gov.ons.edc.eq:feedback",
             "version": "v2",
             "data_version": self.schema.json["data_version"],
