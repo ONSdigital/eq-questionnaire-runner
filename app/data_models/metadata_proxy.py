@@ -10,6 +10,7 @@ from werkzeug.datastructures import ImmutableDict
 from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.utilities.make_immutable import make_immutable
 
+# "version" is excluded here as it is handled independently
 TOP_LEVEL_METADATA_KEYS = [
     "tx_id",
     "account_service_url",

@@ -41,10 +41,8 @@ def flush_data():
     if roles and "flusher" in roles:
         user = _get_user(decrypted_token["response_id"])
 
-        metadata = get_metadata(user)
-
-        if metadata and (tx_id := metadata.tx_id):
-            logger.bind(tx_id=tx_id)
+        if metadata := get_metadata(user):
+            logger.bind(tx_id=metadata.tx_id)
         if _submit_data(user):
             return Response(status=200)
         return Response(status=404)

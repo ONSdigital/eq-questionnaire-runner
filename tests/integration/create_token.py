@@ -94,13 +94,13 @@ class TokenGenerator:
 
     @staticmethod
     def _get_payload_with_params_v2(
-        schema_name, payload, schema_url=None, **extra_payload
+        schema_name, payload, **extra_payload
     ):
         payload_vars = payload.copy()
         payload_vars["tx_id"] = str(uuid4())
         payload_vars["schema_name"] = schema_name
-        if schema_url:
-            payload_vars["schema_url"] = schema_url
+        if "schema_url" in extra_payload:
+            payload_vars["schema_url"] = extra_payload["schema_url"]
 
         payload_vars["iat"] = time.time()
         payload_vars["exp"] = payload_vars["iat"] + float(3600)  # one hour from now
@@ -122,14 +122,14 @@ class TokenGenerator:
             PAYLOAD_V2_SOCIAL if theme == "social" else PAYLOAD_V2_BUSINESS
         )
         payload = self._get_payload_with_params_v2(
-            schema_name, payload_for_theme, None, **extra_payload
+            schema_name, payload_for_theme, **extra_payload
         )
 
         return self.generate_token(payload)
 
     def create_token_invalid_version(self, schema_name, **extra_payload):
         payload = self._get_payload_with_params_v2(
-            schema_name, PAYLOAD_V2_BUSINESS, None, **extra_payload
+            schema_name, PAYLOAD_V2_BUSINESS, **extra_payload
         )
 
         payload["version"] = "v3"
@@ -158,7 +158,7 @@ class TokenGenerator:
         self, schema_name, **extra_payload
     ):
         payload_vars = self._get_payload_with_params_v2(
-            schema_name, PAYLOAD_V2_SOCIAL, None, **extra_payload
+            schema_name, PAYLOAD_V2_SOCIAL, **extra_payload
         )
         del payload_vars["survey_metadata"]["data"]["questionnaire_id"]
 
