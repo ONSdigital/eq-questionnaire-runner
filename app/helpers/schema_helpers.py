@@ -32,7 +32,7 @@ def with_schema(function: Callable) -> Any:
         language_code = session_store.session_data.language_code
 
         schema = load_schema_from_metadata(
-            metadata=metadata, language_code=language_code
+            metadata=metadata, language_code=language_code  # type: ignore
         )
         return function(schema, *args, **kwargs)
 
