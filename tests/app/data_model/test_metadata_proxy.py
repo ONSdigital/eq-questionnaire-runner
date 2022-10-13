@@ -32,21 +32,21 @@ METADATA_V2 = {
 @pytest.mark.parametrize(
     "resolved_metadata_proxy_value, metadata_var",
     (
-        (MetadataProxy.from_dict(dict(METADATA_V1))["ru_ref"], METADATA_V1["ru_ref"]),
+        (MetadataProxy.from_dict(METADATA_V1)["ru_ref"], METADATA_V1["ru_ref"]),
         (
-            MetadataProxy.from_dict(dict(METADATA_V2))["ru_ref"],
+            MetadataProxy.from_dict(METADATA_V2)["ru_ref"],
             METADATA_V2["survey_metadata"]["data"]["ru_ref"],
         ),
         (
-            MetadataProxy.from_dict(dict(METADATA_V1))["schema_name"],
+            MetadataProxy.from_dict(METADATA_V1)["schema_name"],
             METADATA_V1["schema_name"],
         ),
         (
-            MetadataProxy.from_dict(dict(METADATA_V2))["schema_name"],
+            MetadataProxy.from_dict(METADATA_V2)["schema_name"],
             METADATA_V2["schema_name"],
         ),
-        (MetadataProxy.from_dict(dict(METADATA_V1))["non_existing"], None),
-        (MetadataProxy.from_dict(dict(METADATA_V2))["non_existing"], None),
+        (MetadataProxy.from_dict(METADATA_V1)["non_existing"], None),
+        (MetadataProxy.from_dict(METADATA_V2)["non_existing"], None),
     ),
 )
 def test_metadata_proxy_returns_value_for_valid_key(
