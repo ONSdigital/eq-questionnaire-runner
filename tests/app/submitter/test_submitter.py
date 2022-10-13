@@ -212,15 +212,12 @@ def test_gcs_submitter_adds_metadata_when_sends_message(patch_gcs_client):
     }
 
 
-def test_gcs_submitter_adds_receipting_keys_to_metadata_when_set(patch_gcs_client):
+def test_gcs_submitter_adds_additional_keys_to_metadata_when_set(patch_gcs_client):
     gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
 
     # When
     gcs_submitter.send_message(
-        message={"test_data"},
-        tx_id="123",
-        case_id="456",
-        questionnaire_id="1",
+        message={"test_data"}, tx_id="123", case_id="456", **{"questionnaire_id": "1"}
     )
 
     # Then
