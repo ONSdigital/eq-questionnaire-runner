@@ -72,7 +72,6 @@ def convert_answers(
 
     survey_id = schema.json["survey_id"]
 
-    # type ignores added as metadata will exist at this point
     payload = {
         "case_id": metadata.case_id,
         "tx_id": metadata.tx_id,

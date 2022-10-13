@@ -86,8 +86,8 @@ def login():
         for key, value in {
             "tx_id": tx_id,
             "case_id": case_id,
-            "schema_name": metadata["schema_name"],
-            "schema_url": metadata["schema_url"],
+            "schema_name": metadata.schema_name,
+            "schema_url": metadata.schema_url,
             "ru_ref": ru_ref,
             "questionnaire_id": questionnaire_id,
         }.items()
