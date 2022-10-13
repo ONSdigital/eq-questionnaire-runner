@@ -345,7 +345,7 @@ def test_answer_source_default_answer(use_default_answer):
 )
 def test_metadata_source(metadata_identifier, expected_result):
     value_source_resolver = get_value_source_resolver(
-        metadata=get_metadata({"region_code": "GB_ENG"})
+        metadata=get_metadata({"region_code": "GB-ENG"})
     )
 
     source = {"source": "metadata", "identifier": metadata_identifier}
