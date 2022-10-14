@@ -9,7 +9,7 @@ from werkzeug.datastructures import MultiDict
 
 from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.data_models import QuestionnaireStore
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.forms.questionnaire_form import QuestionnaireForm, generate_form
@@ -24,7 +24,6 @@ from app.submitter.converter import (
     build_metadata,
     get_optional_payload_properties,
 )
-from app.submitter.converter_v2 import NoMetadataException
 from app.views.contexts.feedback_form_context import build_feedback_context
 from app.views.handlers.submission import get_additional_metadata
 

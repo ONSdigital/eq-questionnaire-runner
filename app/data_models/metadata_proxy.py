@@ -10,6 +10,11 @@ from werkzeug.datastructures import ImmutableDict
 from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.utilities.make_immutable import make_immutable
 
+
+class NoMetadataException(Exception):
+    pass
+
+
 # "version" is excluded here as it is handled independently
 TOP_LEVEL_METADATA_KEYS = [
     "tx_id",
@@ -69,9 +74,11 @@ class MetadataProxy:
             else None
         )
 
+        survey_metadata = None
         if version is AuthPayloadVersion.V2:
             serialized_metadata = cls.serialize(_metadata.pop("survey_metadata", {}))
-            survey_metadata = SurveyMetadata(**serialized_metadata)
+            if serialized_metadata:
+                survey_metadata = SurveyMetadata(**serialized_metadata)
         else:
             serialized_metadata = cls.serialize(_metadata)
             survey_metadata = SurveyMetadata(data=serialized_metadata)

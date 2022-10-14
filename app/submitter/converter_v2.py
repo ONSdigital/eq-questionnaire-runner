@@ -5,7 +5,7 @@ from structlog import get_logger
 
 from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.data_models import AnswerStore, ListStore, QuestionnaireStore
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
 from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,
@@ -26,10 +26,6 @@ class DataVersionError(Exception):
 
     def __str__(self) -> str:
         return f"Data version {self.version} not supported"
-
-
-class NoMetadataException(Exception):
-    pass
 
 
 def convert_answers_v2(

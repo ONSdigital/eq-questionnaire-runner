@@ -7,7 +7,7 @@ from markupsafe import Markup
 from app.data_models.answer import AnswerValueTypes, escape_answer_value
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListModel, ListStore
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.relationship_location import RelationshipLocation
@@ -156,8 +156,10 @@ class ValueSourceResolver:
             return self._resolve_list_value_source(value_source)
 
         if source == "metadata":
+            if not self.metadata:
+                raise NoMetadataException
             identifier = value_source["identifier"]
-            return self.metadata[identifier]  # type: ignore
+            return self.metadata[identifier]
 
         if source == "location" and value_source.get("identifier") == "list_item_id":
             # This does not use the location object because

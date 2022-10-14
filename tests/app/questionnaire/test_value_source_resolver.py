@@ -6,7 +6,7 @@ from mock import Mock
 from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.data_models import AnswerStore, ListStore
 from app.data_models.answer import Answer, AnswerDict
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.relationship_location import RelationshipLocation
@@ -351,6 +351,15 @@ def test_metadata_source(metadata_identifier, expected_result):
 
     source = {"source": "metadata", "identifier": metadata_identifier}
     assert value_source_resolver.resolve(source) == expected_result
+
+
+def test_resolve_metadata_source_with_no_metadata_raises_exception():
+    value_source_resolver = get_value_source_resolver(metadata=None)
+
+    source = {"source": "metadata", "identifier": "identifier"}
+
+    with pytest.raises(NoMetadataException):
+        value_source_resolver.resolve(source)
 
 
 @pytest.mark.parametrize(

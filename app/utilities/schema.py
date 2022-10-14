@@ -105,7 +105,7 @@ def load_schema_from_metadata(
 
     language_code = language_code or metadata.language_code
 
-    if metadata and (schema_url := metadata["schema_url"]):
+    if metadata and (schema_url := metadata.schema_url):
         # :TODO: Remove before production uses schema_url
         # This is temporary and is only for development/integration purposes.
         # This should not be used in production.

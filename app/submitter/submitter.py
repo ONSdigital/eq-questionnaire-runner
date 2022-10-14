@@ -1,4 +1,4 @@
-from typing import Mapping, Optional
+from typing import Mapping, Optional, Union
 from uuid import uuid4
 
 from google.cloud import storage  # type: ignore
@@ -18,7 +18,7 @@ class LogSubmitter:
         message: str,
         tx_id: str,
         case_id: str,
-        **kwargs: dict,
+        **kwargs: Mapping[str, Union[str, int]],
     ) -> bool:
         logger.info("sending message")
         logger.info(

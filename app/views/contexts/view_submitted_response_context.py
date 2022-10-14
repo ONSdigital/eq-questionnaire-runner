@@ -5,9 +5,9 @@ from flask import url_for
 from flask_babel import lazy_gettext
 
 from app.data_models import QuestionnaireStore
+from app.data_models.metadata_proxy import NoMetadataException
 from app.globals import has_view_submitted_response_expired
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.submitter.converter_v2 import NoMetadataException
 from app.survey_config.survey_type import SurveyType
 from app.views.contexts.submission_metadata_context import (
     build_submission_metadata_context,

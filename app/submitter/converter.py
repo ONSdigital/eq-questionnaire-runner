@@ -4,13 +4,13 @@ from typing import Any, Mapping, Optional, Union
 from structlog import get_logger
 
 from app.data_models import QuestionnaireStore
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
 from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,
 )
 from app.questionnaire.routing_path import RoutingPath
-from app.submitter.converter_v2 import NoMetadataException, get_payload_data
+from app.submitter.converter_v2 import get_payload_data
 
 logger = get_logger()
 
