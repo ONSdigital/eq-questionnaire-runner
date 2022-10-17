@@ -17,7 +17,7 @@ from app.submitter.submission_failed import SubmissionFailedException
 from app.utilities.json import json_dumps
 
 
-def get_receipting_metadata(metadata: MetadataProxy) -> Dict:
+def get_receipting_metadata(metadata: MetadataProxy) -> dict:
     return (
         {item: metadata[item] for item in metadata.survey_metadata.receipting_keys}
         if (
