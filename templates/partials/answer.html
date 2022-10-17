@@ -5,15 +5,15 @@
 
 {% if render_guidance != False %}
 {%- set answer_guidance %}
-  {% if answer.guidance %}
-    {% with answer_guidance = {
+    {% if answer.guidance %}
+        {% with answer_guidance = {
         'id': answer.id,
         'label': answer.label,
         'schema_item': answer.guidance
       } %}
 {% include 'partials/answer-guidance.html' %}
-    {% endwith %}
-  {% endif %}
+        {% endwith %}
+    {% endif %}
 {% endset -%}
 {% endif %}
 

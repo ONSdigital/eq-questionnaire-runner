@@ -9,22 +9,22 @@
 
 {% block form_content %}
 {% set interstitial_instruction = format_paragraphs(block.content.instruction) %}
-  {% if block.interviewer_only %}
-    <h1 class="question__title">{{ interviewer_note(block.content.title) }}</h1>
-  {% else %}
-    <h1 class="question__title">{{ block.content.title }}</h1>
-  {% endif %}
-  {% if interstitial_instruction %}
-    <div class="question__instruction ons-u-mb-s">
+    {% if block.interviewer_only %}
+        <h1 class="question__title">{{ interviewer_note(block.content.title) }}</h1>
+    {% else %}
+        <h1 class="question__title">{{ block.content.title }}</h1>
+    {% endif %}
+    {% if interstitial_instruction %}
+        <div class="question__instruction ons-u-mb-s">
 {{ interstitial_instruction | safe }}
-    </div>
-  {% endif %}
+        </div>
+    {% endif %}
 {% set contents = block.content.contents %}
 {% include 'partials/contents.html' %}
-  {% if content.individual_response_url %}
+    {% if content.individual_response_url %}
 {% set title = _("If you can’t answer questions for this person") %}
 {% include 'partials/individual-response-guidance.html' %}
-  {% endif %}
+    {% endif %}
 
 {% endblock form_content %}
 

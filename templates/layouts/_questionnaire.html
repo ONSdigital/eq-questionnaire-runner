@@ -7,20 +7,20 @@
 {% set last_viewed_question_guidance = content.last_viewed_question_guidance %}
 
 {% block main %}
-  <button type="submit" class="ons-u-d-no" hidden></button>
+    <button type="submit" class="ons-u-d-no" hidden></button>
 
-  {% block form_errors %}{% endblock %}
+    {% block form_errors %}{% endblock %}
 
-  {% block form_content %}
-    <div class="group">
-      {% if last_viewed_question_guidance %}
+    {% block form_content %}
+        <div class="group">
+            {% if last_viewed_question_guidance %}
 {% include 'partials/last_viewed_question_guidance.html' %}
-      {% endif %}
+            {% endif %}
 {% include 'partials/block.html' %}
-    </div>
-  {% endblock %}
+        </div>
+    {% endblock %}
 
-  {% block submit_button %}
+    {% block submit_button %}
 {{
           onsButton({
               "variants": 'timer',
@@ -30,15 +30,15 @@
               }
           })
       }}
-  {% endblock %}
+    {% endblock %}
 
-  {% block after_submit_button_content %}
-    {% if content.return_to_hub_url %}
-      <p class="ons-u-mt-xl">
-        <a href="{{ content.return_to_hub_url }}"
-           data-ga-action="Choose another section click">{{ _("Choose another section and return to this later") }}</a>
-      </p>
-    {% endif %}
-  {% endblock %}
+    {% block after_submit_button_content %}
+        {% if content.return_to_hub_url %}
+            <p class="ons-u-mt-xl">
+                <a href="{{ content.return_to_hub_url }}"
+                   data-ga-action="Choose another section click">{{ _("Choose another section and return to this later") }}</a>
+            </p>
+        {% endif %}
+    {% endblock %}
 
 {% endblock %}

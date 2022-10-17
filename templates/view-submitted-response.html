@@ -24,9 +24,9 @@
 }%}
 
 {% block main %}
-  <h1 class="ons-u-mt-m">{{ content.submitted_text }}</h1>
+    <h1 class="ons-u-mt-m">{{ content.submitted_text }}</h1>
 {{ onsMetadata(content.metadata)}}
-  {% if not content.view_submitted_response.expired %}
+    {% if not content.view_submitted_response.expired %}
 {{
       onsButton({
         "type": 'button',
@@ -48,15 +48,15 @@
         }
       })
     }}
-    {% block summary %}
-      <div class="ons-u-mt-l ons-u-mb-l">{% include 'partials/summary/summary.html' %}</div>
-    {% endblock summary %}
-  {% else %}
-    {% call onsPanel({
+        {% block summary %}
+            <div class="ons-u-mt-l ons-u-mb-l">{% include 'partials/summary/summary.html' %}</div>
+        {% endblock summary %}
+    {% else %}
+        {% call onsPanel({
       "id": "view-submitted-guidance",
       "classes": "ons-u-mb-m"
      }) %}
 {{ _("For security, you can no longer view or get a copy of your answers") }}
-    {% endcall %}
-  {% endif %}
+        {% endcall %}
+    {% endif %}
 {% endblock %}

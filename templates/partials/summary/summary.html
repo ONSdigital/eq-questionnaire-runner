@@ -5,7 +5,7 @@
 
 {% set summaryGroups = [] %}
 
-  {%- for group in content.summary.groups if group.blocks -%}
+    {%- for group in content.summary.groups if group.blocks -%}
 {% do summaryGroups.append (
       {
         "groups": [
@@ -27,7 +27,7 @@
       }
     )
     %}
-  {%- endfor -%}
+    {%- endfor -%}
 {{ onsSummary({
     "summaries": summaryGroups
   }) }}

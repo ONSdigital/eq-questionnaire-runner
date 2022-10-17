@@ -8,21 +8,21 @@
 
 {% block main %}
 {% set form = content.form %}
-  {% if form.mapped_errors %}
+    {% if form.mapped_errors %}
 {% set error_title = _("There is a problem with your answer") %}
 {% include 'partials/error-panel.html' %}
-  {% endif %}
+    {% endif %}
 
-  <h1 class="question__title ons-u-fs-xxl" data-qa="confirm-email-title">
+    <h1 class="question__title ons-u-fs-xxl" data-qa="confirm-email-title">
 {{ content.question.title }}
-  </h1>
-  <div class="question__description">
-    <p>{{ content.question.description }}</p>
-  </div>
-  {%- for answer in question.answers -%}
+    </h1>
+    <div class="question__description">
+        <p>{{ content.question.description }}</p>
+    </div>
+    {%- for answer in question.answers -%}
 {% set question_title = answer.title %}
 {% include 'partials/answer.html' %}
-  {%- endfor -%}
+    {%- endfor -%}
 
 {{
     onsButton({
@@ -34,7 +34,7 @@
       }
     })
   }}
-  <br>
-  <br>
+    <br>
+    <br>
 
 {% endblock %}

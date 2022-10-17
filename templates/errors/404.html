@@ -3,24 +3,24 @@
 {% set page_title = _("Page not found") %}
 
 {% block main %}
-  <h1>{{ _("Page not found") }}</h1>
-  <p>{{ _("If you entered a web address, check it is correct.") }}</p>
-  <p>{{ _("If you pasted the web address, check you copied the whole address.") }}</p>
-  {% if survey_type and (survey_type in SURVEY_TYPES_BUSINESS or survey_type in SURVEY_TYPES_DEFAULT or survey_type in SURVEY_TYPES_SOCIAL) %}
-    <p>
-      {{ _("If the web address is correct or you selected a link or button, <a href='{url}'>contact us</a> for more help.").format(url=contact_us_url) }}
-    </p>
-  {% else %}
-    <p>
+    <h1>{{ _("Page not found") }}</h1>
+    <p>{{ _("If you entered a web address, check it is correct.") }}</p>
+    <p>{{ _("If you pasted the web address, check you copied the whole address.") }}</p>
+    {% if survey_type and (survey_type in SURVEY_TYPES_BUSINESS or survey_type in SURVEY_TYPES_DEFAULT or survey_type in SURVEY_TYPES_SOCIAL) %}
+        <p>
+            {{ _("If the web address is correct or you selected a link or button, <a href='{url}'>contact us</a> for more help.").format(url=contact_us_url) }}
+        </p>
+    {% else %}
+        <p>
 {{ _("If the web address is correct or you selected a link or button, please see the following help links.") }}
-    </p>
-    <h3>Business surveys</h3>
-    <p>
-      {{ _("If you are completing a business survey, please <a href='{url}'>contact us</a>.").format(url=business_contact_us_url) }}
-    </p>
-    <h3>All other surveys</h3>
-    <p>
-      {{ _("If you started your survey using an access code, please <a href='{url}'>contact us</a>.").format(url=other_contact_us_url) }}
-    </p>
-  {% endif %}
+        </p>
+        <h3>Business surveys</h3>
+        <p>
+            {{ _("If you are completing a business survey, please <a href='{url}'>contact us</a>.").format(url=business_contact_us_url) }}
+        </p>
+        <h3>All other surveys</h3>
+        <p>
+            {{ _("If you started your survey using an access code, please <a href='{url}'>contact us</a>.").format(url=other_contact_us_url) }}
+        </p>
+    {% endif %}
 {% endblock %}

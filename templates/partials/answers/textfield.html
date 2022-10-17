@@ -37,7 +37,7 @@
   }) %}
 {{ onsAutosuggest(config) }}
 {% else %}
-  {% if answer.max_length %}
+    {% if answer.max_length %}
 {% set config = config | setAttribute("charCheckLimit", {
       "limit": answer.max_length,
       "charCountOverLimitSingular": _("{x} character too many"),
@@ -45,6 +45,6 @@
       "charCountSingular": _("You have {x} character remaining"),
       "charCountPlural": _("You have {x} characters remaining")
     }) %}
-  {% endif %}
+    {% endif %}
 {{ onsInput(config) }}
 {% endif %}

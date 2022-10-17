@@ -10,11 +10,11 @@
 
 {% set accordionItems = [] %}
 
-  {% for question in intro.questions %}
+    {% for question in intro.questions %}
 {% set content %}
 {% set contents = question.contents %}
 {% include "partials/contents.html" %}
-  {% endset %}
+    {% endset %}
 
 {% set item = {
       "title": question.question,

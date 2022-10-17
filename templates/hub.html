@@ -3,14 +3,14 @@
 {% from "components/summary/_macro.njk" import onsSummary %}
 
 {% block pre_submit_button_content %}
-  {% if content.individual_response_url %}
+    {% if content.individual_response_url %}
 {% set title = _("If you can’t answer someone else’s questions") %}
 {% include 'partials/individual-response-guidance.html' %}
-  {% endif %}
+    {% endif %}
 {% endblock pre_submit_button_content %}
 
 {% block summary %}
-  {% if content.rows %}
+    {% if content.rows %}
 {{ onsSummary({
         "hub": true,
         "classes": "ons-u-mt-m",
@@ -21,5 +21,5 @@
         }]
       })
     }}
-  {% endif %}
+    {% endif %}
 {% endblock summary %}

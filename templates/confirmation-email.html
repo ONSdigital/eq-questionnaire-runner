@@ -4,11 +4,11 @@
 
 {% block main %}
 {% set form = content.form %}
-  {% if form.mapped_errors %}
+    {% if form.mapped_errors %}
 {% set error_title = _("There is a problem with this page") %}
 {% include 'partials/error-panel.html' %}
-  {% endif %}
+    {% endif %}
 
-  <h1 data-qa="title">{{ _("Send a confirmation email")  }}</h1>
+    <h1 data-qa="title">{{ _("Send a confirmation email")  }}</h1>
 {% include 'partials/email-form.html' %}
 {% endblock %}

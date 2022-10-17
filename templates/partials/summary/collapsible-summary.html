@@ -4,8 +4,8 @@
 {%- set itemList = [] -%}
 
 {%- for group in content.summary.groups -%}
-  {%- if group["blocks"] | length -%}
-    {%- if group.title -%}
+    {%- if group["blocks"] | length -%}
+        {%- if group.title -%}
 {%- set item = {
         "title": group.title,
         "id": group.id,
@@ -43,12 +43,12 @@
             }
           ]
         }) }}
-    {%- endset -%}
+        {%- endset -%}
 
 {%- do item | setAttribute("content", item.content + summary) -%}
 
 {%- do itemList.append(item) -%}
-  {%- endif -%}
+    {%- endif -%}
 {%- endif -%}
 {%- endfor -%}
 
