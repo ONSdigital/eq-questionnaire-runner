@@ -1,6 +1,5 @@
 from datetime import datetime, timezone
 from functools import cached_property
-from typing import Dict
 
 from flask import current_app
 from flask import session as cookie_session
