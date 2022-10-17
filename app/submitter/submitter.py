@@ -26,7 +26,7 @@ class LogSubmitter:
             message=message,
             case_id=case_id,
             tx_id=tx_id,
-            kwargs=kwargs,
+            **kwargs,
         )
 
         return True

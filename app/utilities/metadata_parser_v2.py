@@ -103,7 +103,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     @validates_schema
     def validate_schema_name_is_set(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
-        if data and not data.get("schema_name") or data.get("schema_url"):
+        if data and not (data.get("schema_name") or data.get("schema_url")):
             raise ValidationError(
                 "Neither schema_name or schema_url has been set in metadata"
             )
