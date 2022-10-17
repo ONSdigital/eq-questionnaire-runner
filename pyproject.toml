@@ -2,7 +2,7 @@
 target_version = ['py37']
 
 [tool.djlint]
-indent=2
+indent=4
 max_line_length=88
 preserve_leading_space=true
 preserve_blank_lines=true
