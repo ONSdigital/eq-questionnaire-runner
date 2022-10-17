@@ -25,7 +25,7 @@ from app.submitter.converter import (
     get_optional_payload_properties,
 )
 from app.views.contexts.feedback_form_context import build_feedback_context
-from app.views.handlers.submission import get_additional_metadata
+from app.views.handlers.submission import get_receipting_metadata
 
 
 class FeedbackNotEnabled(Exception):
@@ -119,7 +119,7 @@ class Feedback:
             feedback_message(), current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION  # type: ignore
         )
 
-        additional_metadata = get_additional_metadata(metadata)
+        additional_metadata = get_receipting_metadata(metadata)
 
         feedback_metadata = FeedbackMetadata(
             tx_id=tx_id, case_id=case_id, **additional_metadata

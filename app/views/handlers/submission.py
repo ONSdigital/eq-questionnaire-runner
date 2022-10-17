@@ -17,7 +17,7 @@ from app.submitter.submission_failed import SubmissionFailedException
 from app.utilities.json import json_dumps
 
 
-def get_additional_metadata(metadata: MetadataProxy) -> Dict:
+def get_receipting_metadata(metadata: MetadataProxy) -> Dict:
     return (
         {item: metadata[item] for item in metadata.survey_metadata.receipting_keys}
         if (
@@ -50,7 +50,7 @@ class SubmissionHandler:
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
         )
 
-        additional_metadata = get_additional_metadata(self._metadata)
+        additional_metadata = get_receipting_metadata(self._metadata)
 
         submitted = current_app.eq["submitter"].send_message(
             encrypted_message,
