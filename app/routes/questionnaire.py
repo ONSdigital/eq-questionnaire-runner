@@ -138,7 +138,7 @@ def before_post_submission_request():
         logger.bind(schema_name=schema_name)
 
     if schema_url := metadata.schema_url:
-        logger.bind(schema_url=schema_url)  # pragma: no cover
+        logger.bind(schema_url=schema_url)
 
     logger.info(
         "questionnaire request", method=request.method, url_path=request.full_path
