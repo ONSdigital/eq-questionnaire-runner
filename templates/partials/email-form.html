@@ -4,7 +4,7 @@
 {% set email_field = form.email_field %}
 
 {% if errors %}
-  {% set error = {
+{% set error = {
     "text": errors[0],
     "id": email_field.id ~ '-error',
     "attributes": {

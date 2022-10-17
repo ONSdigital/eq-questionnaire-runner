@@ -8,26 +8,28 @@
 {% set continue_button_text = _("Continue") %}
 
 {% block form_content %}
-  {% set interstitial_instruction = format_paragraphs(block.content.instruction) %}
+{% set interstitial_instruction = format_paragraphs(block.content.instruction) %}
   {% if block.interviewer_only %}
-      <h1 class="question__title">{{ interviewer_note(block.content.title) }}</h1>
+    <h1 class="question__title">{{ interviewer_note(block.content.title) }}</h1>
   {% else %}
-      <h1 class="question__title">{{ block.content.title }}</h1>
+    <h1 class="question__title">{{ block.content.title }}</h1>
   {% endif %}
   {% if interstitial_instruction %}
-      <div class="question__instruction ons-u-mb-s">{{ interstitial_instruction | safe }}</div>
+    <div class="question__instruction ons-u-mb-s">
+{{ interstitial_instruction | safe }}
+    </div>
   {% endif %}
-  {% set contents = block.content.contents %}
-  {% include 'partials/contents.html' %}
+{% set contents = block.content.contents %}
+{% include 'partials/contents.html' %}
   {% if content.individual_response_url %}
-    {% set title = _("If you can’t answer questions for this person") %}
-    {% include 'partials/individual-response-guidance.html' %}
+{% set title = _("If you can’t answer questions for this person") %}
+{% include 'partials/individual-response-guidance.html' %}
   {% endif %}
 
 {% endblock form_content %}
 
 {% block submit_button %}
-    {{
+{{
         onsButton({
             "text": continue_button_text | default(_("Save and continue")),
             "variants": 'timer',

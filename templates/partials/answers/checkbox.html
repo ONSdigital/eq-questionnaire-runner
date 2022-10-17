@@ -10,7 +10,7 @@
 } %}
 
 {% if answer.instruction != None and answer.options|length > 1 %}
-  {% set config = config | setAttribute("checkboxesLabel", answer.instruction or _("Select all that apply")) %}
+{% set config = config | setAttribute("checkboxesLabel", answer.instruction or _("Select all that apply")) %}
 {% endif %}
 
 {{ onsCheckboxes(config) }}

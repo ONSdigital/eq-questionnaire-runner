@@ -1,22 +1,22 @@
 <h2 class="ons-u-mt-m">{{ intro.title }}</h2>
 
 <div class="collapsible__introduction">
-  {% set contents = intro.contents %}
-  {% include "partials/contents.html" %}
+{% set contents = intro.contents %}
+{% include "partials/contents.html" %}
 </div>
 
 {% if intro.questions %}
-  {% from "components/accordion/_macro.njk" import onsAccordion %}
+{% from "components/accordion/_macro.njk" import onsAccordion %}
 
-  {% set accordionItems = [] %}
+{% set accordionItems = [] %}
 
   {% for question in intro.questions %}
-    {% set content %}
-      {% set contents = question.contents %}
-      {% include "partials/contents.html" %}
-    {% endset %}
+{% set content %}
+{% set contents = question.contents %}
+{% include "partials/contents.html" %}
+  {% endset %}
 
-    {% set item = {
+{% set item = {
       "title": question.question,
       "content": content,
       "summaryAttributes": {
@@ -37,10 +37,10 @@
       }
     } %}
 
-    {% do accordionItems.append(item) %}
-  {% endfor %}
+{% do accordionItems.append(item) %}
+{% endfor %}
 
-  {{
+{{
       onsAccordion({
           "id": "intro-questions",
           "classes": "ons-u-mb-s",

@@ -12,16 +12,16 @@
   {% block form_errors %}{% endblock %}
 
   {% block form_content %}
-      <div class="group">
-        {% if last_viewed_question_guidance %}
-          {% include 'partials/last_viewed_question_guidance.html' %}
-        {% endif %}
-        {% include 'partials/block.html' %}
-      </div>
+    <div class="group">
+      {% if last_viewed_question_guidance %}
+{% include 'partials/last_viewed_question_guidance.html' %}
+      {% endif %}
+{% include 'partials/block.html' %}
+    </div>
   {% endblock %}
 
   {% block submit_button %}
-      {{
+{{
           onsButton({
               "variants": 'timer',
               "text": continue_button_text | default(_("Save and continue")),
@@ -34,7 +34,10 @@
 
   {% block after_submit_button_content %}
     {% if content.return_to_hub_url %}
-      <p class="ons-u-mt-xl"><a href="{{ content.return_to_hub_url }}" data-ga-action="Choose another section click">{{ _("Choose another section and return to this later") }}</a></p>
+      <p class="ons-u-mt-xl">
+        <a href="{{ content.return_to_hub_url }}"
+           data-ga-action="Choose another section click">{{ _("Choose another section and return to this later") }}</a>
+      </p>
     {% endif %}
   {% endblock %}
 

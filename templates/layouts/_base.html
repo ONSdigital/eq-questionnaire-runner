@@ -11,7 +11,7 @@
 } %}
 
 {% if previous_location_url %}
-  {% set breadcrumbs = {
+{% set breadcrumbs = {
     "ariaLabel": 'Previous',
     "itemsList": [
       {
@@ -29,9 +29,9 @@
 {% endif %}
 
 {% if survey_title %}
-  {% set full_page_title = page_title ~ " - " ~ survey_title %}
+{% set full_page_title = page_title ~ " - " ~ survey_title %}
 {% else %}
-  {% set full_page_title = page_title %}
+{% set full_page_title = page_title %}
 {% endif %}
 
 {% set pageConfig = {
@@ -48,7 +48,7 @@
 } %}
 
 {% if theme %}
-  {% do pageConfig.update({"theme":theme}) %}
+{% do pageConfig.update({"theme":theme}) %}
 {% endif %}
 
 {% include 'layouts/configs/_save-sign-out-button.html' %}
@@ -56,16 +56,19 @@
 
 {# if there is not a previous link add extra margin top to the page #}
 {% if not previous_location_url %}
-  {% set pageClasses = pageClasses + " ons-u-mt-m" if pageClasses else "ons-u-mt-m" %}
+{% set pageClasses = pageClasses + " ons-u-mt-m" if pageClasses else "ons-u-mt-m" %}
 {% endif %}
 
 {% block preHeader %}
   {% if include_csrf_token %}
-    <input id="csrf_token" name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
+    <input id="csrf_token"
+           name="csrf_token"
+           type="hidden"
+           value="{{ csrf_token() }}"/>
   {% endif %}
 
   {% if cookie_settings_url and cookie_domain %}
-    {{
+{{
       onsCookiesBanner({
         "secondaryButtonUrl": cookie_settings_url,
         "statementTitle": _('Tell us whether you accept cookies'),
@@ -86,9 +89,7 @@
     Information such as events or variables can be passed to Google Tag Manager via the data layer,
     and triggers can be set up in Google Tag Manager
     -->
-    <script nonce="{{ csp_nonce }}">
-      dataLayer = {{ data_layer | tojson }}
-    </script>
+    <script nonce="{{ csp_nonce }}">dataLayer = {{ data_layer | tojson }}</script>
 
     <!-- Google Tag Manager -->
     <script nonce="{{ csp_nonce }}">
@@ -116,7 +117,9 @@
     <!-- Google Tag Manager (noscript) -->
     <noscript>
       <iframe src="https://www.googletagmanager.com/ns.html?id={{ google_tag_manager_id }}&gtm_auth={{ google_tag_manager_auth }}&gtm_cookies_win=x"
-              height="0" width="0" style="display:none;visibility:hidden">
+              height="0"
+              width="0"
+              style="display:none;visibility:hidden">
       </iframe>
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
@@ -125,7 +128,7 @@
 
 
 {% block skipLink %}
-  {{
+{{
     onsSkipToContent({
       "url": "#main-content",
       "text": _("Skip to main content")
@@ -138,13 +141,14 @@
   {% if config['EQ_ENABLE_LIVE_RELOAD'] %}
     <script nonce="{{ csp_nonce }}" id="__bs_script__">//<![CDATA[
       document.write("<script async nonce='{{ csp_nonce }}' src='http://HOST:35729/livereload.js'><\/script>".replace("HOST", location.hostname));
-    //]]></script>
-  {% endif %}
+    //]]>
+</script>
+{% endif %}
 {% endblock %}
 
 {% block preFooter %}
-  {% if session_expires_at %}
-    {{
+{% if session_expires_at %}
+{{
       onsTimeoutModal({
         "showModalTimeInSeconds": 60,
         "serverSessionExpiryEndpoint": url_for('session.session_expiry'),
@@ -162,5 +166,5 @@
         "endWithFullStop": true
       })
     }}
-  {% endif %}
+{% endif %}
 {% endblock %}

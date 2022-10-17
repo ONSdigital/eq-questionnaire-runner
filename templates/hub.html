@@ -4,14 +4,14 @@
 
 {% block pre_submit_button_content %}
   {% if content.individual_response_url %}
-    {% set title = _("If you can’t answer someone else’s questions") %}
-    {% include 'partials/individual-response-guidance.html' %}
+{% set title = _("If you can’t answer someone else’s questions") %}
+{% include 'partials/individual-response-guidance.html' %}
   {% endif %}
 {% endblock pre_submit_button_content %}
 
 {% block summary %}
   {% if content.rows %}
-    {{ onsSummary({
+{{ onsSummary({
         "hub": true,
         "classes": "ons-u-mt-m",
         "summaries": [{

@@ -17,7 +17,7 @@
 } -%}
 
 {%- if day_field -%}
-  {%- set config = config | setAttributes({
+{%- set config = config | setAttributes({
     "day": {
       "label": {
         "text": _("Day"),
@@ -32,7 +32,7 @@
 {%- endif -%}
 
 {%- if month_field -%}
-  {%- set config = config | setAttributes({
+{%- set config = config | setAttributes({
     "month": {
       "label": {
         "text": _("Month"),
@@ -47,7 +47,7 @@
 {%- endif -%}
 
 {%- if year_field -%}
-  {%- set config = config | setAttributes({
+{%- set config = config | setAttributes({
     "year": {
       "label": {
         "text": _("Year"),

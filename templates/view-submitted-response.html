@@ -24,12 +24,10 @@
 }%}
 
 {% block main %}
-  <h1 class="ons-u-mt-m">
-    {{ content.submitted_text}}
-  </h1>
-  {{ onsMetadata(content.metadata)}}
+  <h1 class="ons-u-mt-m">{{ content.submitted_text }}</h1>
+{{ onsMetadata(content.metadata)}}
   {% if not content.view_submitted_response.expired %}
-    {{
+{{
       onsButton({
         "type": 'button',
         "text": _('Print answers'),
@@ -39,7 +37,7 @@
         }
       })
     }}
-    {{
+{{
       onsButton({
         "text": _('Save answers as PDF'),
         "variants": ['small', 'secondary', 'download', 'timer'],
@@ -51,16 +49,14 @@
       })
     }}
     {% block summary %}
-      <div class="ons-u-mt-l ons-u-mb-l">
-        {% include 'partials/summary/summary.html' %}
-      </div>
+      <div class="ons-u-mt-l ons-u-mb-l">{% include 'partials/summary/summary.html' %}</div>
     {% endblock summary %}
   {% else %}
     {% call onsPanel({
       "id": "view-submitted-guidance",
       "classes": "ons-u-mb-m"
      }) %}
-    {{ _("For security, you can no longer view or get a copy of your answers") }}
+{{ _("For security, you can no longer view or get a copy of your answers") }}
     {% endcall %}
   {% endif %}
 {% endblock %}

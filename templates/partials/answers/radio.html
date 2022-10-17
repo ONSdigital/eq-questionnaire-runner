@@ -11,7 +11,7 @@
 } %}
 
 {% if answer.voluntary %}
-  {% set config = config | setAttribute("clearRadios", {
+{% set config = config | setAttribute("clearRadios", {
     "text": _("Clear selection"),
     "name": "action[clear_radios]",
     "ariaClearText": "You can clear your answer using the clear selection button after the radio inputs",

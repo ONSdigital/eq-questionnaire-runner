@@ -3,7 +3,7 @@
 
 {% set error_list = [] %}
 {% for error_id, error in form.mapped_errors %}
-  {{ error_list.append( {
+{{ error_list.append( {
     "text": error,
     "url": "#" + error_id,
     "variants": "inPageLink",
@@ -23,7 +23,7 @@
     }
   })
 %}
-  {{
+{{
     onsList({
       "element": "ol",
       "attributes": {

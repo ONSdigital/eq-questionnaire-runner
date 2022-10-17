@@ -1,12 +1,12 @@
 {%- if content.summary.collapsible -%}
-  {%- include 'partials/summary/collapsible-summary.html' -%}
+{%- include 'partials/summary/collapsible-summary.html' -%}
 {%- else -%}
-  {% from "components/summary/_macro.njk" import onsSummary %}
+{% from "components/summary/_macro.njk" import onsSummary %}
 
-  {% set summaryGroups = [] %}
+{% set summaryGroups = [] %}
 
   {%- for group in content.summary.groups if group.blocks -%}
-    {% do summaryGroups.append (
+{% do summaryGroups.append (
       {
         "groups": [
           {
@@ -28,8 +28,7 @@
     )
     %}
   {%- endfor -%}
-  {{ onsSummary({
+{{ onsSummary({
     "summaries": summaryGroups
   }) }}
 {%- endif -%}
-

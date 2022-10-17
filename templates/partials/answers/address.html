@@ -28,7 +28,7 @@
 } %}
 
 {% if answer.lookup_options and address_lookup_api_url %}
-  {% set config = config | setAttributes({
+{% set config = config | setAttributes({
     "label": {
       "text": _("Enter address or postcode and select from results")
     },
@@ -64,7 +64,7 @@
     }
   }) %}
 {% else %}
-  {% set config = config | setAttribute("manualEntry", true) %}
+{% set config = config | setAttribute("manualEntry", true) %}
 {% endif %}
 
 {{ onsAddressInput(config) }}

@@ -12,7 +12,7 @@
 {% set months = form.fields[answer.id].months %}
 
 {% if years %}
-  {% set config = config | setAttribute("field1", {
+{% set config = config | setAttribute("field1", {
     "id": years.id,
     "name": years.name,
     "value": years.data if years.data is not none else '',
@@ -24,7 +24,7 @@
 {% endif %}
 
 {% if months %}
-  {% set config = config | setAttribute("field2", {
+{% set config = config | setAttribute("field2", {
     "id": months.id,
     "name": months.name,
     "value": months.data if months.data is not none else '',

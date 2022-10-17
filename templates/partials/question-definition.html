@@ -1,7 +1,7 @@
 {% from "components/collapsible/_macro.njk" import onsCollapsible %}
 
 {% for definition in question.definitions %}
-  {% set definition_id = "question-definition-" ~ loop.index %}
-  {% set category = 'Question definition' %}
-  {%- include 'partials/definition.html' -%}
+{% set definition_id = "question-definition-" ~ loop.index %}
+{% set category = 'Question definition' %}
+{%- include 'partials/definition.html' -%}
 {% endfor %}

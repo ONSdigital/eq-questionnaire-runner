@@ -6,7 +6,7 @@
 {%- for group in content.summary.groups -%}
   {%- if group["blocks"] | length -%}
     {%- if group.title -%}
-      {%- set item = {
+{%- set item = {
         "title": group.title,
         "id": group.id,
         "content": "",
@@ -22,8 +22,8 @@
         }
       } -%}
 
-      {%- set summary %}
-        {{ onsSummary({
+{%- set summary %}
+{{ onsSummary({
           "classes": "summary--no-bottom-border",
           "summaries": [
             {
@@ -43,13 +43,13 @@
             }
           ]
         }) }}
-      {%- endset -%}
+    {%- endset -%}
 
-      {%- do item | setAttribute("content", item.content + summary) -%}
+{%- do item | setAttribute("content", item.content + summary) -%}
 
-      {%- do itemList.append(item) -%}
-    {%- endif -%}
+{%- do itemList.append(item) -%}
   {%- endif -%}
+{%- endif -%}
 {%- endfor -%}
 
 {{ onsAccordion({
