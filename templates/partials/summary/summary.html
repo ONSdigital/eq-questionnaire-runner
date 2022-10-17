@@ -5,31 +5,48 @@
 
   {% set summaryGroups = [] %}
 
+  {% set summary_link = {
+      "url": add_link,
+      "text": add_link_text,
+      "attributes": {
+      "data-qa": "add-item-link"
+      }
+    }
+  %}
+
   {%- for group in content.summary.groups if group.blocks -%}
-    {% do summaryGroups.append (
-      {
+      {% do summaryGroups.append (
+        {
         "groups": [
           {
             "groupTitle": group.title if group.title else None,
             "id": group.id if group.id else None,
-            "rows": map_summary_item_config(
-                      group,
-                      content.summary.summary_type,
-                      content.summary.answers_are_editable,
-                      _("No answer provided"),
-                      _("Change"),
-                      _("Change your answer for:"),
-                      content.summary.calculated_question
-                    ),
-            "classes": "ons-u-mt-m" if loop.index > 1 else ""
+            "rows": map_summary_item_hybrid_config(
+            group,
+            content.summary.summary_type,
+            content.summary.answers_are_editable,
+            _("No answer provided"),
+            _("Change"),
+            _("Change your answer for:"),
+            _("Remove"),
+            _("Remove {item_name}"),
+            None,
+            content.summary.calculated_question
+            ),
+            "classes": "ons-u-mt-m" if loop.index > 1 else "",
+            "placeholderText": empty_list_text,
+            "summaryLink": summary_link,
           }
         ]
-      }
-    )
-    %}
+        }
+      )
+      %}
   {%- endfor -%}
+
+
   {{ onsSummary({
     "summaries": summaryGroups
   }) }}
+
 {%- endif -%}
 

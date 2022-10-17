@@ -594,9 +594,63 @@ def map_summary_item_config(
     return rows
 
 
+@blueprint.app_template_filter()  # type: ignore
+def map_summary_item_hybrid_config(
+    group: SelectFieldBase._Option,
+    summary_type: str,
+    answers_are_editable: bool,
+    no_answer_provided: str,
+    edit_link_text: str,
+    edit_link_aria_label: str,
+    remove_link_text: str,
+    remove_link_aria_label: str,
+    icon: str,
+    calculated_question: SelectFieldBase._Option,
+) -> list[SummaryRow]:
+
+    rows = []
+
+    for block in group["blocks"]:
+        if block.get("question"):
+            rows.append(
+                SummaryRow(
+                    block["question"],
+                    summary_type,
+                    answers_are_editable,
+                    no_answer_provided,
+                    edit_link_text,
+                    edit_link_aria_label,
+                )
+            )
+        else:
+            list_collector_rows = map_list_collector_config(
+                list_items=block["list"]["list_items"],
+                icon=icon,
+                edit_link_text=edit_link_text,
+                edit_link_aria_label=edit_link_aria_label,
+                remove_link_text=remove_link_text,
+                remove_link_aria_label=remove_link_aria_label,
+                related_answers=block.get("related_answers"),
+                answer_title=block.get("answer_title"),
+            )
+            rows.extend(iter(list_collector_rows))
+
+    if summary_type == "CalculatedSummary":
+        rows.append(SummaryRow(calculated_question, summary_type, False, "", "", ""))
+
+    logger.info(rows)
+
+    return rows
+
+
 @blueprint.app_context_processor
 def map_summary_item_config_processor() -> dict[str, Callable]:
     return dict(map_summary_item_config=map_summary_item_config)
+
+
+@blueprint.app_context_processor
+def map_summary_item_hybrid_config_processor() -> dict[str, Callable]:
+    return dict(map_summary_item_hybrid_config=map_summary_item_hybrid_config)
 
 
 # pylint: disable=too-many-locals

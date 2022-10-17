@@ -134,7 +134,7 @@ class SectionSummaryContext(Context):
         else:
             summary_elements = {}
 
-        return {
+        groups = {
             "show_non_item_answers": show_non_item_answers,
             **collapsible,
             **summary_elements,
@@ -150,10 +150,14 @@ class SectionSummaryContext(Context):
                     self.current_location,
                     self._language,
                     return_to,
+                    summary_elements,
+                    return_to_block_id=None,
                 ).serialize()
                 for group in self.section["groups"]
             ],
         }
+
+        return groups
 
     def _title_for_location(self):
         section_id = self.current_location.section_id

@@ -96,7 +96,7 @@
                             "routing_rules": [
                                 {
                                     "goto": {
-                                        "section": "End",
+                                        "block": "estimate-checkbox",
                                         "when": [
                                             {
                                                 "id": "any-companies-or-branches-answer",
@@ -263,6 +263,28 @@
                                         }
                                     ]
                                 }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "estimate-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "estimate-checkbox-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Estimate",
+                                                "value": "Estimate"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "estimate-checkbox-question",
+                                "title": "Are all the numbers an estimate?",
+                                "type": "General"
                             }
                         }
                     ]

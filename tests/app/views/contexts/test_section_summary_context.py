@@ -276,7 +276,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                     "list_name": "companies",
                     "related_answers": {
                         "PlwgoG": [
-                            ("Registration number", 123, "registration-number"),
+                            ("Registration " "number", 123, "registration-number"),
                             (
                                 "Is this UK company or branch an authorised insurer?",
                                 "Yes",
@@ -284,7 +284,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                             ),
                         ],
                         "UHPLbX": [
-                            ("Registration number", 456, "registration-number"),
+                            ("Registration " "number", 456, "registration-number"),
                             (
                                 "Is this UK company or branch an authorised insurer?",
                                 "No",
@@ -296,7 +296,68 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                     "type": "List",
                 }
             ],
-            "groups": [{"blocks": [], "id": "group", "title": None}],
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
+                            "add_link_text": "Add another UK company or branch",
+                            "answer_title": "Name of UK company or branch",
+                            "empty_list_text": "No UK company or branch added",
+                            "list": {
+                                "editable": True,
+                                "list_items": [
+                                    {
+                                        "edit_link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary",
+                                        "item_title": "company " "a",
+                                        "list_item_id": "PlwgoG",
+                                        "primary_person": False,
+                                        "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
+                                    },
+                                    {
+                                        "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
+                                        "item_title": "company " "b",
+                                        "list_item_id": "UHPLbX",
+                                        "primary_person": False,
+                                        "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
+                                    },
+                                ],
+                            },
+                            "list_name": "companies",
+                            "related_answers": {
+                                "PlwgoG": [
+                                    (
+                                        "Registration " "number",
+                                        123,
+                                        "registration-number",
+                                    ),
+                                    (
+                                        "Is this UK company or branch an authorised insurer?",
+                                        "Yes",
+                                        "authorised-insurer-radio",
+                                    ),
+                                ],
+                                "UHPLbX": [
+                                    (
+                                        "Registration " "number",
+                                        456,
+                                        "registration-number",
+                                    ),
+                                    (
+                                        "Is this UK company or branch an authorised insurer?",
+                                        "No",
+                                        "authorised-insurer-radio",
+                                    ),
+                                ],
+                            },
+                            "title": "Companies or UK branches",
+                            "type": "List",
+                        }
+                    ],
+                    "id": "group",
+                    "title": None,
+                }
+            ],
             "page_title": "General insurance business",
             "show_non_item_answers": True,
             "summary_type": "SectionSummary",

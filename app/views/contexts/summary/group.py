@@ -17,6 +17,7 @@ class Group:
         location,
         language,
         return_to,
+        summary_elements=None,
         return_to_block_id: Optional[str] = None,
     ):
         self.id = group_schema["id"]
@@ -32,6 +33,7 @@ class Group:
             schema=schema,
             location=location,
             return_to=return_to,
+            summary_elements=summary_elements,
             return_to_block_id=return_to_block_id,
         )
         self.placeholder_renderer = PlaceholderRenderer(
@@ -55,6 +57,7 @@ class Group:
         schema,
         location,
         return_to,
+        summary_elements,
         return_to_block_id,
     ):
         blocks = []
@@ -79,6 +82,11 @@ class Group:
                         ).serialize()
                     ]
                 )
+
+            elif block["id"] in routing_path and block["type"] in [
+                "ListCollector",
+            ]:
+                blocks.extend([summary_elements["custom_summary"][0]])
 
         return blocks
 
