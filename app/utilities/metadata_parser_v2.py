@@ -56,15 +56,16 @@ class SurveyMetadata(Schema, StripWhitespaceMixin):
     def validate_receipting_keys(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
         if data and (receipting_keys := data.get("receipting_keys", {})):
-            missing_receipting_keys: list = []
-            for receipting_key in receipting_keys:
-                if receipting_key not in data.get("data"):
-                    missing_receipting_keys.append(receipting_key)
+            missing_receipting_keys = [
+                receipting_key
+                for receipting_key in receipting_keys
+                if receipting_key not in data.get("data", {})
+            ]
 
-                if missing_receipting_keys:
-                    raise ValidationError(
-                        f"Receipting keys: {missing_receipting_keys} not set in Survey Metadata"
-                    )
+            if missing_receipting_keys:
+                raise ValidationError(
+                    f"Receipting keys: {missing_receipting_keys} not set in Survey Metadata"
+                )
 
 
 class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
