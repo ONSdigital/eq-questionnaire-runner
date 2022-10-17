@@ -35,6 +35,7 @@ types-redis = "*"
 types-PyYAML = "*"
 types-python-dateutil = "*"
 pytest-mock = "*"
+djlint = "*"
 
 [packages]
 colorama = "*"

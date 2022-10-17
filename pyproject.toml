@@ -1,2 +1,8 @@
 [tool.black]
 target_version = ['py37']
+
+[tool.djlint]
+indent=2
+max_line_length=160
+preserve_leading_space=true
+preserve_blank_lines=true
