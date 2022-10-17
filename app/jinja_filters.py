@@ -638,8 +638,6 @@ def map_summary_item_hybrid_config(
     if summary_type == "CalculatedSummary":
         rows.append(SummaryRow(calculated_question, summary_type, False, "", "", ""))
 
-    logger.info(rows)
-
     return rows
 
 

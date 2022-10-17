@@ -86,7 +86,8 @@ class Group:
             elif block["id"] in routing_path and block["type"] in [
                 "ListCollector",
             ]:
-                blocks.extend([summary_elements["custom_summary"][0]])
+                for list in summary_elements["custom_summary"]:
+                    blocks.extend([list])
 
         return blocks
 
