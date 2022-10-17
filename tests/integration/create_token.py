@@ -74,8 +74,10 @@ class TokenGenerator:
         self._sr_public_kid = sr_public_kid
 
     @staticmethod
-    def _get_payload_with_params(schema_name=None, schema_url=None, **extra_payload):
-        payload_vars = PAYLOAD.copy()
+    def _get_payload_with_params(
+        schema_name=None, schema_url=None, payload=PAYLOAD, **extra_payload
+    ):  # pylint: disable=dangerous-default-value
+        payload_vars = payload.copy()
         payload_vars["tx_id"] = str(uuid4())
         if schema_name:
             payload_vars["schema_name"] = schema_name
@@ -92,26 +94,10 @@ class TokenGenerator:
 
         return payload_vars
 
-    @staticmethod
-    def _get_payload_with_params_v2(schema_name, payload, **extra_payload):
-        payload_vars = payload.copy()
-        payload_vars["tx_id"] = str(uuid4())
-        payload_vars["schema_name"] = schema_name
-        if "schema_url" in extra_payload:
-            payload_vars["schema_url"] = extra_payload["schema_url"]
-
-        payload_vars["iat"] = time.time()
-        payload_vars["exp"] = payload_vars["iat"] + float(3600)  # one hour from now
-        payload_vars["jti"] = str(uuid4())
-        payload_vars["case_id"] = str(uuid4())
-
-        for key, value in extra_payload.items():
-            payload_vars[key] = value
-
-        return payload_vars
-
     def create_token(self, schema_name, **extra_payload):
-        payload_vars = self._get_payload_with_params(schema_name, None, **extra_payload)
+        payload_vars = self._get_payload_with_params(
+            schema_name=schema_name, schema_url=None, **extra_payload
+        )
 
         return self.generate_token(payload_vars)
 
@@ -119,15 +105,15 @@ class TokenGenerator:
         payload_for_theme = (
             PAYLOAD_V2_SOCIAL if theme == "social" else PAYLOAD_V2_BUSINESS
         )
-        payload = self._get_payload_with_params_v2(
-            schema_name, payload_for_theme, **extra_payload
+        payload = self._get_payload_with_params(
+            schema_name=schema_name, payload=payload_for_theme, **extra_payload
         )
 
         return self.generate_token(payload)
 
     def create_token_invalid_version(self, schema_name, **extra_payload):
-        payload = self._get_payload_with_params_v2(
-            schema_name, PAYLOAD_V2_BUSINESS, **extra_payload
+        payload = self._get_payload_with_params(
+            schema_name=schema_name, payload=PAYLOAD_V2_BUSINESS, **extra_payload
         )
 
         payload["version"] = "v3"
@@ -135,19 +121,25 @@ class TokenGenerator:
         return self.generate_token(payload)
 
     def create_token_without_jti(self, schema_name, **extra_payload):
-        payload_vars = self._get_payload_with_params(schema_name, None, **extra_payload)
+        payload_vars = self._get_payload_with_params(
+            schema_name=schema_name, schema_url=None, **extra_payload
+        )
         del payload_vars["jti"]
 
         return self.generate_token(payload_vars)
 
     def create_token_without_case_id(self, schema_name, **extra_payload):
-        payload_vars = self._get_payload_with_params(schema_name, None, **extra_payload)
+        payload_vars = self._get_payload_with_params(
+            schema_name=schema_name, schema_url=None, **extra_payload
+        )
         del payload_vars["case_id"]
 
         return self.generate_token(payload_vars)
 
     def create_token_without_trad_as(self, schema_name, **extra_payload):
-        payload_vars = self._get_payload_with_params(schema_name, None, **extra_payload)
+        payload_vars = self._get_payload_with_params(
+            schema_name=schema_name, schema_url=None, **extra_payload
+        )
         del payload_vars["trad_as"]
 
         return self.generate_token(payload_vars)
@@ -155,8 +147,8 @@ class TokenGenerator:
     def create_token_v2_social_token_invalid_receipting_key(
         self, schema_name, **extra_payload
     ):
-        payload_vars = self._get_payload_with_params_v2(
-            schema_name, PAYLOAD_V2_SOCIAL, **extra_payload
+        payload_vars = self._get_payload_with_params(
+            schema_name=schema_name, payload=PAYLOAD_V2_SOCIAL, **extra_payload
         )
         del payload_vars["survey_metadata"]["data"]["questionnaire_id"]
 
@@ -164,7 +156,7 @@ class TokenGenerator:
 
     def create_token_with_schema_url(self, schema_name, schema_url, **extra_payload):
         payload_vars = self._get_payload_with_params(
-            schema_name, schema_url, **extra_payload
+            schema_name=schema_name, schema_url=schema_url, **extra_payload
         )
 
         return self.generate_token(payload_vars)
