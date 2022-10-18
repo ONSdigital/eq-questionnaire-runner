@@ -32,7 +32,7 @@
           {
             "groupTitle": group.title if group.title else None,
             "id": group.id if group.id else None,
-            "rows": map_summary_item_hybrid_config(
+            "rows": map_summary_item_config(
             group,
             content.summary.summary_type,
             content.summary.answers_are_editable,
@@ -41,8 +41,8 @@
             _("Change your answer for:"),
             _("Remove"),
             _("Remove {item_name}"),
+            content.summary.calculated_question,
             None,
-            content.summary.calculated_question
             ),
             "classes": "ons-u-mt-m" if loop.index > 1 else "",
             "placeholderText": links.empty_list_text,

@@ -83,11 +83,10 @@ class Group:
                     ]
                 )
 
-            elif block["id"] in routing_path and block["type"] in [
-                "ListCollector",
-            ]:
-                for list_element in summary_elements["custom_summary"]:
-                    blocks.extend([list_element])
+            elif block["id"] in routing_path and block["type"] in ["ListCollector"]:
+                if summary_elements.get("custom_summary"):
+                    for list_element in summary_elements["custom_summary"]:
+                        blocks.extend([list_element])
 
         return blocks
 

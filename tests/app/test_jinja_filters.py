@@ -737,6 +737,129 @@ def test_calculated_summary_config():
             "id": "calculated-summary-question",
             "answers": [{"id": "calculated-summary-answer", "value": "£2.00"}],
         },
+        remove_link_text="",
+        remove_link_aria_label="",
+        icon="",
+    )
+
+    assert to_dict(expected) == to_dict(result)
+
+
+@pytest.mark.usefixtures("gb_locale")
+def test_summary_item_config_with_list_collector():
+    expected = [
+        {
+            "rowItems": [
+                {
+                    "actions": [
+                        {
+                            "ariaLabel": "Change your answer for:",
+                            "attributes": {"data-qa": "list-item-change-1-link"},
+                            "text": "Change",
+                            "url": "/questionnaire/companies/vmmPmD/edit-company/?return_to=section-summary",
+                        },
+                        {
+                            "ariaLabel": "Remove",
+                            "attributes": {"data-qa": "list-item-remove-1-link"},
+                            "text": "Remove {item_name}",
+                            "url": "/questionnaire/companies/vmmPmD/remove-company/?return_to=section-summary",
+                        },
+                    ],
+                    "iconType": "",
+                    "id": "vmmPmD",
+                    "rowTitle": "Name of UK company or branch",
+                    "rowTitleAttributes": {
+                        "data-list-item-id": "vmmPmD",
+                        "data-qa": "list-item-1-label",
+                    },
+                    "valueList": [{"text": "Company A"}],
+                },
+                {
+                    "actions": [
+                        {
+                            "ariaLabel": "Change your answer for:",
+                            "attributes": {"data-qa": "list-item-change-1-link"},
+                            "text": "Change",
+                            "url": "/questionnaire/companies/vmmPmD/edit-company/?return_to=section-summary#registration-number",
+                        }
+                    ],
+                    "iconType": None,
+                    "id": "vmmPmD",
+                    "rowTitle": "Registration number",
+                    "rowTitleAttributes": {
+                        "data-list-item-id": "vmmPmD",
+                        "data-qa": "list-item-1-label",
+                    },
+                    "valueList": [{"text": 123}],
+                },
+                {
+                    "actions": [
+                        {
+                            "ariaLabel": "Change your answer for:",
+                            "attributes": {"data-qa": "list-item-change-1-link"},
+                            "text": "Change",
+                            "url": "/questionnaire/companies/vmmPmD/edit-company/?return_to=section-summary#authorised-insurer-radio",
+                        }
+                    ],
+                    "iconType": None,
+                    "id": "vmmPmD",
+                    "rowTitle": "Is this UK company or branch an authorised "
+                    "insurer?",
+                    "rowTitleAttributes": {
+                        "data-list-item-id": "vmmPmD",
+                        "data-qa": "list-item-1-label",
+                    },
+                    "valueList": [{"text": "No"}],
+                },
+            ]
+        }
+    ]
+
+    result = map_summary_item_config(
+        group={
+            "blocks": [
+                {
+                    "title": "Companies or UK branches",
+                    "type": "List",
+                    "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
+                    "add_link_text": "Add another UK company or branch",
+                    "empty_list_text": "No UK company or branch added",
+                    "list_name": "companies",
+                    "related_answers": {
+                        "vmmPmD": [
+                            ("Registration number", 123, "registration-number"),
+                            (
+                                "Is this UK company or branch an authorised insurer?",
+                                "No",
+                                "authorised-insurer-radio",
+                            ),
+                        ]
+                    },
+                    "answer_title": "Name of UK company or branch",
+                    "list": {
+                        "list_items": [
+                            {
+                                "item_title": "Company A",
+                                "primary_person": False,
+                                "list_item_id": "vmmPmD",
+                                "edit_link": "/questionnaire/companies/vmmPmD/edit-company/?return_to=section-summary",
+                                "remove_link": "/questionnaire/companies/vmmPmD/remove-company/?return_to=section-summary",
+                            }
+                        ],
+                        "editable": True,
+                    },
+                }
+            ],
+        },
+        summary_type="SectionSummary",
+        answers_are_editable=True,
+        no_answer_provided="No answer Provided",
+        edit_link_text="Change",
+        edit_link_aria_label="Change your answer for:",
+        calculated_question={},
+        remove_link_text="Remove {item_name}",
+        remove_link_aria_label="Remove",
+        icon="",
     )
 
     assert to_dict(expected) == to_dict(result)

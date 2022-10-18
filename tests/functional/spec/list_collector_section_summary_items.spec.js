@@ -3,6 +3,7 @@ import AnyCompaniesOrBranchesPage from "../generated_pages/list_collector_sectio
 import AnyCompaniesOrBranchesAddPage from "../generated_pages/list_collector_section_summary_items/any-other-companies-or-branches-add.page.js";
 import AnyCompaniesOrBranchesRemovePage from "../generated_pages/list_collector_section_summary_items/any-other-companies-or-branches-remove.page.js";
 import SectionSummaryPage from "../generated_pages/list_collector_section_summary_items/section-summary.page.js";
+import EstimatePage from "../generated_pages/list_collector_section_summary_items/estimate-checkbox.page";
 
 describe("List Collector Section Summary Items", () => {
   describe("Given I launch the test list collector section summary items survey", () => {
@@ -40,6 +41,7 @@ describe("List Collector Section Summary Items", () => {
       $(AnyCompaniesOrBranchesAddPage.submit()).click();
       $(AnyCompaniesOrBranchesPage.no()).click();
       $(AnyCompaniesOrBranchesPage.submit()).click();
+      $(EstimatePage.submit()).click();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
     });
     it("When I add my own item and relevant data, Then after I answer yes on additional items page I should be able to choose an item from the items list and add relevant data about it.", () => {
@@ -67,6 +69,7 @@ describe("List Collector Section Summary Items", () => {
       $(AnyCompaniesOrBranchesAddPage.submit()).click();
       $(AnyCompaniesOrBranchesPage.no()).click();
       $(AnyCompaniesOrBranchesPage.submit()).click();
+      $(EstimatePage.submit()).click();
       $(SectionSummaryPage.companiesListEditLink(1)).click();
       expect(browser.getUrl()).to.contain("edit-company/?return_to=section-summary");
     });
@@ -79,10 +82,12 @@ describe("List Collector Section Summary Items", () => {
       $(AnyCompaniesOrBranchesAddPage.submit()).click();
       $(AnyCompaniesOrBranchesPage.no()).click();
       $(AnyCompaniesOrBranchesPage.submit()).click();
+      $(EstimatePage.submit()).click();
       $(SectionSummaryPage.companiesListRemoveLink(1)).click();
       expect(browser.getUrl()).to.contain("remove-company/?return_to=section-summary");
       $(AnyCompaniesOrBranchesRemovePage.yes()).click();
       $(AnyCompaniesOrBranchesRemovePage.submit()).click();
+      $(EstimatePage.submit()).click();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.false;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.false;
@@ -90,6 +95,7 @@ describe("List Collector Section Summary Items", () => {
     it("When I decide not to add an item and relevant data and I change my answer to yes, Then I should be able to add the item.", () => {
       $(AnyCompaniesOrBranchesDrivingQuestionPage.no()).click();
       $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
+      $(EstimatePage.submit()).click();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.false;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.false;
@@ -103,6 +109,7 @@ describe("List Collector Section Summary Items", () => {
       $(AnyCompaniesOrBranchesAddPage.submit()).click();
       $(AnyCompaniesOrBranchesPage.no()).click();
       $(AnyCompaniesOrBranchesPage.submit()).click();
+      $(EstimatePage.submit()).click();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.true;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.true;
@@ -116,6 +123,7 @@ describe("List Collector Section Summary Items", () => {
       $(AnyCompaniesOrBranchesAddPage.submit()).click();
       $(AnyCompaniesOrBranchesPage.no()).click();
       $(AnyCompaniesOrBranchesPage.submit()).click();
+      $(EstimatePage.submit()).click();
       $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
       $(AnyCompaniesOrBranchesDrivingQuestionPage.no()).click();
       $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
@@ -125,6 +133,7 @@ describe("List Collector Section Summary Items", () => {
       $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
       $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
       $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
+      $(EstimatePage.submit()).click();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.true;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.true;

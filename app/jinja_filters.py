@@ -573,39 +573,10 @@ def map_summary_item_config(
     no_answer_provided: str,
     edit_link_text: str,
     edit_link_aria_label: str,
-    calculated_question: SelectFieldBase._Option,
-) -> list[SummaryRow]:
-
-    rows = [
-        SummaryRow(
-            block["question"],
-            summary_type,
-            answers_are_editable,
-            no_answer_provided,
-            edit_link_text,
-            edit_link_aria_label,
-        )
-        for block in group["blocks"]
-    ]
-
-    if summary_type == "CalculatedSummary":
-        rows.append(SummaryRow(calculated_question, summary_type, False, "", "", ""))
-
-    return rows
-
-
-@blueprint.app_template_filter()  # type: ignore
-def map_summary_item_hybrid_config(
-    group: SelectFieldBase._Option,
-    summary_type: str,
-    answers_are_editable: bool,
-    no_answer_provided: str,
-    edit_link_text: str,
-    edit_link_aria_label: str,
     remove_link_text: str,
     remove_link_aria_label: str,
-    icon: str,
     calculated_question: SelectFieldBase._Option,
+    icon: Optional[str] = None,
 ) -> list[SummaryRow]:
 
     rows = []
@@ -644,11 +615,6 @@ def map_summary_item_hybrid_config(
 @blueprint.app_context_processor
 def map_summary_item_config_processor() -> dict[str, Callable]:
     return dict(map_summary_item_config=map_summary_item_config)
-
-
-@blueprint.app_context_processor
-def map_summary_item_hybrid_config_processor() -> dict[str, Callable]:
-    return dict(map_summary_item_hybrid_config=map_summary_item_hybrid_config)
 
 
 # pylint: disable=too-many-locals
