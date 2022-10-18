@@ -1,7 +1,6 @@
 {% from "components/summary/_macro.njk" import onsSummary %}
 
 {% if list.editable %}
-  {% set headers = ["Name of person", "Action"] %}
   {% set rows = map_list_collector_config(
     list.list_items,
     "person",
@@ -11,7 +10,6 @@
     _("Remove {item_name}")
   ) %}
 {% else %}
-  {% set headers = ["Name of person"] %}
   {% set rows = map_list_collector_config(
     list.list_items,
     "person"
@@ -20,7 +18,6 @@
 
 {% set group_config = {
   "groupTitle": list_title,
-  "headers": headers,
   "rows": rows,
   "placeholderText": empty_list_text,
 } %}
