@@ -5,16 +5,27 @@
 
   {% set summaryGroups = [] %}
 
-  {% set summary_link = {
-      "url": add_link,
-      "text": add_link_text,
-      "attributes": {
-      "data-qa": "add-item-link"
-      }
-    }
-  %}
-
   {%- for group in content.summary.groups if group.blocks -%}
+
+      {% set links = {'add_link_text': "", "add_link": "", "empty_link_text": ""} %}
+
+      {% for block in group.blocks %}
+        {% if block.type == "List" %}
+          {% do links.update({'add_link_text': block.add_link_text}) %}
+          {% do links.update({'add_link': block.add_link}) %}
+          {% do links.update({'empty_list_text': block.empty_list_text}) %}
+        {% endif %}
+      {% endfor %}
+
+      {% set summary_link = {
+        "url": links.add_link,
+        "text": links.add_link_text,
+        "attributes": {
+          "data-qa": "add-item-link"
+        }
+        }
+      %}
+
       {% do summaryGroups.append (
         {
         "groups": [
@@ -34,7 +45,7 @@
             content.summary.calculated_question
             ),
             "classes": "ons-u-mt-m" if loop.index > 1 else "",
-            "placeholderText": empty_list_text,
+            "placeholderText": links.empty_list_text,
             "summaryLink": summary_link,
           }
         ]

@@ -15,13 +15,6 @@
 }}
 {% block form_content %}
 
-  {% set custom_summary = content.summary.custom_summary[0] %}
-    {% if custom_summary.type == 'List' %}
-      {% set add_link = custom_summary.add_link %}
-      {% set add_link_text = custom_summary.add_link_text %}
-      {% set empty_list_text = custom_summary.empty_list_text %}
-    {% endif %}
-
   {% if content.summary.groups %}
     {% set group = content.summary.groups %}
     <h1>{{content.summary.title}}</h1>

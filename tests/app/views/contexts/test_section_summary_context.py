@@ -276,7 +276,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                     "list_name": "companies",
                     "related_answers": {
                         "PlwgoG": [
-                            ("Registration " "number", 123, "registration-number"),
+                            ("Registration number", 123, "registration-number"),
                             (
                                 "Is this UK company or branch an authorised insurer?",
                                 "Yes",
@@ -284,7 +284,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                             ),
                         ],
                         "UHPLbX": [
-                            ("Registration " "number", 456, "registration-number"),
+                            ("Registration number", 456, "registration-number"),
                             (
                                 "Is this UK company or branch an authorised insurer?",
                                 "No",
@@ -327,7 +327,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                             "related_answers": {
                                 "PlwgoG": [
                                     (
-                                        "Registration " "number",
+                                        "Registration number",
                                         123,
                                         "registration-number",
                                     ),
@@ -339,7 +339,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                 ],
                                 "UHPLbX": [
                                     (
-                                        "Registration " "number",
+                                        "Registration number",
                                         456,
                                         "registration-number",
                                     ),
