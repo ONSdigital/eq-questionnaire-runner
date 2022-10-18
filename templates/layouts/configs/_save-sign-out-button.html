@@ -10,11 +10,8 @@
                 "data-ga": "click",
                 "data-ga-category": "Navigation",
                 "data-ga-action": "Save and sign out click"
-            },
-            "iconType": "exit",
-            "iconPosition": "after"
+            }
         }) %}
-
     {% else %}
         {% do pageConfig | setAttribute("signoutButton", {
             "text": _("Exit"),
@@ -24,11 +21,8 @@
                 "data-ga": "click",
                 "data-ga-category": "Navigation",
                 "data-ga-action": "Exit click"
-            },
-            "iconType": "exit",
-            "iconPosition": 'after'
+            }
         }) %}
-
     {% endif %}
 
 {% endif %}
