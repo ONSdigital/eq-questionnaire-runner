@@ -13,7 +13,7 @@
       "data-ga-action": "Confirmation Email",
       "data-ga-label": email_field.id
     }
-  }%}
+  } %}
 {% endif %}
 
 {% set config = {
@@ -28,9 +28,8 @@
   "attributes": {
     "data-qa": "input-text",
   },
-    "error": error
-  }
-%}
+  "error": error
+} %}
 
 {{ onsInput(config) }}
 
@@ -40,7 +39,10 @@
     "variants": 'timer',
     "classes": "ons-u-mt-s",
     "attributes": {
-      "data-qa": "btn-submit"
+      "data-qa": "btn-submit",
+      "data-ga-category": "Submit button",
+      "data-ga-action": "Send confirmation",
+      "data-ga-label": "Send confirmation button click"
     }
   })
 }}

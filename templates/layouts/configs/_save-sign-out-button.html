@@ -7,10 +7,12 @@
             "url": sign_out_url,
             "attributes": {
                 "data-qa": "btn-save-sign-out",
-                "data-ga": "click",
                 "data-ga-category": "Navigation",
-                "data-ga-action": "Save and sign out click"
-            }
+                "data-ga-action": "Save and sign out",
+                "data-ga-label": "Save and sign out button click"
+            },
+            "iconType": "exit",
+            "iconPosition": "after"
         }) %}
     {% else %}
         {% do pageConfig | setAttribute("signoutButton", {
@@ -18,10 +20,12 @@
             "url": sign_out_url,
             "attributes": {
                 "data-qa": "btn-exit",
-                "data-ga": "click",
                 "data-ga-category": "Navigation",
-                "data-ga-action": "Exit click"
-            }
+                "data-ga-action": "Exit",
+                "data-ga-label": "Exit button click"
+            },
+            "iconType": "exit",
+            "iconPosition": 'after'
         }) %}
     {% endif %}
 
