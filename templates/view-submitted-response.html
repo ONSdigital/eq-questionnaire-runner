@@ -35,18 +35,24 @@
         "text": _('Print answers'),
         "variants": ['small', 'secondary', 'print'],
         "attributes": {
-          "data-qa": "btn-print"
+          "data-qa": "btn-print",
+          "data-ga-category": "Print button",
+          "data-ga-action": "Open print Dialogue",
+          "data-ga-label": "Print button click"
         }
       })
     }}
     {{
       onsButton({
         "text": _('Save answers as PDF'),
-        "variants": ['small', 'secondary', 'download', 'timer'],
+        "variants": ['small', 'secondary', 'timer', 'download'],
         "url": content.pdf_url,
         "removeDownloadAttribute": true,
         "attributes": {
-          "data-qa": "btn-pdf"
+          "data-qa": "btn-pdf",
+          "data-ga-category": "PDF button",
+          "data-ga-action": "Download PDF",
+          "data-ga-label": "PDF button click"
         }
       })
     }}
@@ -60,7 +66,7 @@
       "id": "view-submitted-guidance",
       "classes": "ons-u-mb-m"
      }) %}
-    {{ _("For security, you can no longer view or get a copy of your answers") }}
+      {{ _("For security, you can no longer view or get a copy of your answers") }}
     {% endcall %}
   {% endif %}
 {% endblock %}
