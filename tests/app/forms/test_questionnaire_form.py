@@ -1266,7 +1266,7 @@ def test_calculated_field(
     errors_text,
     value_dict,
 ):
-
+    # pylint: disable=too-many-locals
     for answer in answers:
         answer_store.add_or_update(answer)
 
