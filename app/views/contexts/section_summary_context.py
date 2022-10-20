@@ -382,25 +382,7 @@ class SectionSummaryContext(Context):
                                 return_to_block_id=None,
                             ).serialize()
                         ]
-                        # keys = [
-                        #     self._schema.get_answers_by_answer_id(answer.answer_id)[0]["label"]
-                        #     for answer in self._answer_store
-                        #     if answer.answer_id in related_answers
-                        #     and answer.list_item_id == list_id
-                        # ]
-                        # values = [
-                        #     answer.value
-                        #     for answer in self._answer_store
-                        #     if answer.answer_id in related_answers
-                        #     and answer.list_item_id == list_id
-                        # ]
-                        #
-                        # ids = [
-                        #     answer.answer_id
-                        #     for answer in self._answer_store
-                        #     if answer.answer_id in related_answers
-                        #     and answer.list_item_id == list_id
-                        # ]
+
                         related_answers_dict[list_id] = block
 
             return related_answers_dict

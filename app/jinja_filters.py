@@ -689,36 +689,17 @@ def map_list_collector_config(
         rows.append({"rowItems": [row_items]})
 
         if related_answers:
-            if related_list := related_answers[list_item["list_item_id"]]:
-                for block in related_list:
-                    rows.append(
-                        SummaryRow(  # type: ignore
-                            block["question"],
-                            summary_type="SectionSummary",
-                            answers_are_editable=True,
-                            no_answer_provided="no answer",
-                            edit_link_text=edit_link_text,  # type: ignore
-                            edit_link_aria_label=edit_link_aria_label,  # type: ignore
-                        )
-                    )
-            # rows[index - 1]["rowItems"].extend(
-            #     {
-            #         "iconType": None,
-            #         "actions": [
-            #             {
-            #                 "text": edit_link_text,
-            #                 "ariaLabel": edit_link_aria_label_text,
-            #                 "url": f'{list_item.get("edit_link")}#{answer[2]}',
-            #                 "attributes": {"data-qa": f"list-item-change-{index}-link"},
-            #             }
-            #         ],
-            #         "valueList": [{"text": answer[1]}],
-            #         "rowTitle": answer[0],
-            #         "id": list_item.get("list_item_id"),
-            #         "rowTitleAttributes": row_title_attributes,
-            #     }
-            #     for answer in related_answers[list_item["list_item_id"]]
-            # )
+            for block in related_answers.get(list_item["list_item_id"]):  # type: ignore
+                summary_row = SummaryRow(
+                    block["question"],
+                    summary_type="SectionSummary",
+                    answers_are_editable=True,
+                    no_answer_provided="no answer",
+                    edit_link_text=edit_link_text,  # type: ignore
+                    edit_link_aria_label=edit_link_aria_label,  # type: ignore
+                )
+                for row in summary_row.rowItems:
+                    rows[index - 1]["rowItems"].append(row)  # type: ignore
 
     return rows
 

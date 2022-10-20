@@ -519,12 +519,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                         "data-qa": "list-item-1-label",
                     },
                     "valueList": [{"text": "Joe Bloggs"}],
-                }
-            ]
-        },
-        {
-            "id": "add-question",
-            "rowItems": [
+                },
                 {
                     "actions": [
                         {
@@ -570,9 +565,8 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                     "rowTitleAttributes": {"data-qa": "authorised-insurer-radio-label"},
                     "valueList": [{"text": "Yes"}],
                 },
-            ],
-            "rowTitle": "",
-        },
+            ]
+        }
     ]
 
     assert to_dict(output) == to_dict(expected)
@@ -817,12 +811,7 @@ def test_summary_item_config_with_list_collector():
                         "data-qa": "list-item-1-label",
                     },
                     "valueList": [{"text": "Company A"}],
-                }
-            ]
-        },
-        {
-            "id": "add-question",
-            "rowItems": [
+                },
                 {
                     "actions": [
                         {
@@ -869,9 +858,8 @@ def test_summary_item_config_with_list_collector():
                     "rowTitleAttributes": {"data-qa": "authorised-insurer-radio-label"},
                     "valueList": [{"text": "Yes"}],
                 },
-            ],
-            "rowTitle": "",
-        },
+            ]
+        }
     ]
 
     result = map_summary_item_config(
