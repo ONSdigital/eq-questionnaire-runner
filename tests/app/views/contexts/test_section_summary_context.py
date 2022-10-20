@@ -157,7 +157,7 @@ def test_context_for_section_list_summary(people_answer_store):
                 {
                     "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
                     "add_link_text": "Add someone to this " "household",
-                    "answer_title": "First name",
+                    "answer_title": None,
                     "empty_list_text": "There are no householders",
                     "list": {
                         "editable": True,
@@ -188,7 +188,7 @@ def test_context_for_section_list_summary(people_answer_store):
                 {
                     "add_link": "/questionnaire/visitors/add-visitor/?return_to=section-summary",
                     "add_link_text": "Add another visitor to this " "household",
-                    "answer_title": "First name",
+                    "answer_title": None,
                     "empty_list_text": "There are no visitors",
                     "list": {
                         "editable": True,
@@ -584,7 +584,7 @@ def test_context_for_driving_question_summary():
                 {
                     "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
                     "add_link_text": "Add someone to this " "household",
-                    "answer_title": "First name",
+                    "answer_title": None,
                     "empty_list_text": "There are no householders",
                     "list": {
                         "editable": True,
@@ -746,17 +746,12 @@ def test_primary_links_for_section_summary(people_answer_store):
                 ]
             }
         },
-        {
-            "add_block": {
-                "question_variants": [{"answers": [{"label": "answer_title"}]}]
-            }
-        },
     ),
 )
 def test_answer_titles_for_variants(add_block):
     assert (
         SectionSummaryContext._get_answer_title(  # pylint: disable=protected-access
-            add_block
+            MagicMock(), add_block
         )
         == "answer_title"
     )

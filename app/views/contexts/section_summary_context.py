@@ -7,6 +7,7 @@ from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.routing_path import RoutingPath
+from app.questionnaire.variants import choose_variant
 from app.utilities import safe_content
 
 from ...data_models.list_store import ListModel
@@ -239,7 +240,11 @@ class SectionSummaryContext(Context):
                 else None
             )
 
-            answer_title = self._get_answer_title(list_collector_block)
+            answer_title = (
+                self._get_answer_title(list_collector_block)
+                if related_answers
+                else None
+            )
 
             return {
                 "title": rendered_summary["title"],
@@ -387,11 +392,20 @@ class SectionSummaryContext(Context):
 
             return related_answers_dict
 
-    @staticmethod
-    def _get_answer_title(list_collector_block: Mapping[str, Any]) -> str:
-        if variants := list_collector_block["add_block"].get("question_variants"):
-            if question := variants[0].get("question"):
-                return question["answers"][0]["label"]
-            return variants[0]["answers"][0]["label"]
+    def _get_answer_title(self, list_collector_block: Mapping[str, Any]) -> str:
+        if list_collector_block["add_block"].get("question_variants"):
+            variant_label = choose_variant(
+                list_collector_block["add_block"],
+                self._schema,
+                self._metadata,
+                self._response_metadata,
+                self._answer_store,
+                self._list_store,
+                variants_key="question_variants",
+                single_key="question",
+                current_location=self.current_location,
+            )["answers"][0]["label"]
+
+            return variant_label
 
         return list_collector_block["add_block"]["question"]["answers"][0]["label"]
