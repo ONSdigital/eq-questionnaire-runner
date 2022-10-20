@@ -259,14 +259,14 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                         "list_items": [
                             {
                                 "edit_link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary",
-                                "item_title": "company a",
+                                "item_title": "company " "a",
                                 "list_item_id": "PlwgoG",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
                             },
                             {
                                 "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
-                                "item_title": "company b",
+                                "item_title": "company " "b",
                                 "list_item_id": "UHPLbX",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
@@ -276,20 +276,100 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                     "list_name": "companies",
                     "related_answers": {
                         "PlwgoG": [
-                            ("Registration number", 123, "registration-number"),
-                            (
-                                "Is this UK company or branch an authorised insurer?",
-                                "Yes",
-                                "authorised-insurer-radio",
-                            ),
+                            {
+                                "id": "edit-company",
+                                "number": None,
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "currency": None,
+                                            "id": "registration-number",
+                                            "label": "Registration " "number",
+                                            "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=registration-n"
+                                            "umber#registration-number",
+                                            "type": "number",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "value": 123,
+                                        },
+                                        {
+                                            "currency": None,
+                                            "id": "authorised-insurer-radio",
+                                            "label": "Is "
+                                            "this "
+                                            "UK "
+                                            "company "
+                                            "or "
+                                            "branch "
+                                            "an "
+                                            "authorised "
+                                            "insurer?",
+                                            "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=authorised-ins"
+                                            "urer-radio#authorised-insurer-radio",
+                                            "type": "radio",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "value": {
+                                                "detail_answer_value": None,
+                                                "label": "Yes",
+                                            },
+                                        },
+                                    ],
+                                    "id": "add-question",
+                                    "number": None,
+                                    "title": " ",
+                                    "type": "General",
+                                },
+                                "title": None,
+                            }
                         ],
                         "UHPLbX": [
-                            ("Registration number", 456, "registration-number"),
-                            (
-                                "Is this UK company or branch an authorised insurer?",
-                                "No",
-                                "authorised-insurer-radio",
-                            ),
+                            {
+                                "id": "edit-company",
+                                "number": None,
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "currency": None,
+                                            "id": "registration-number",
+                                            "label": "Registration " "number",
+                                            "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=registration-n"
+                                            "umber#registration-number",
+                                            "type": "number",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "value": 456,
+                                        },
+                                        {
+                                            "currency": None,
+                                            "id": "authorised-insurer-radio",
+                                            "label": "Is "
+                                            "this "
+                                            "UK "
+                                            "company "
+                                            "or "
+                                            "branch "
+                                            "an "
+                                            "authorised "
+                                            "insurer?",
+                                            "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=authorised-ins"
+                                            "urer-radio#authorised-insurer-radio",
+                                            "type": "radio",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "value": {
+                                                "detail_answer_value": None,
+                                                "label": "No",
+                                            },
+                                        },
+                                    ],
+                                    "id": "add-question",
+                                    "number": None,
+                                    "title": " ",
+                                    "type": "General",
+                                },
+                                "title": None,
+                            }
                         ],
                     },
                     "title": "Companies or UK branches",
@@ -326,28 +406,84 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                             "list_name": "companies",
                             "related_answers": {
                                 "PlwgoG": [
-                                    (
-                                        "Registration number",
-                                        123,
-                                        "registration-number",
-                                    ),
-                                    (
-                                        "Is this UK company or branch an authorised insurer?",
-                                        "Yes",
-                                        "authorised-insurer-radio",
-                                    ),
+                                    {
+                                        "id": "edit-company",
+                                        "number": None,
+                                        "question": {
+                                            "answers": [
+                                                {
+                                                    "currency": None,
+                                                    "id": "registration-number",
+                                                    "label": "Registration " "number",
+                                                    "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=regist"
+                                                    "ration-number#registration-number",
+                                                    "type": "number",
+                                                    "unit": None,
+                                                    "unit_length": None,
+                                                    "value": 123,
+                                                },
+                                                {
+                                                    "currency": None,
+                                                    "id": "authorised-insurer-radio",
+                                                    "label": "Is this UK company or branch an authorised insurer?",
+                                                    "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=author"
+                                                    "ised-insurer-radio#authorised-insurer-radio",
+                                                    "type": "radio",
+                                                    "unit": None,
+                                                    "unit_length": None,
+                                                    "value": {
+                                                        "detail_answer_value": None,
+                                                        "label": "Yes",
+                                                    },
+                                                },
+                                            ],
+                                            "id": "add-question",
+                                            "number": None,
+                                            "title": " ",
+                                            "type": "General",
+                                        },
+                                        "title": None,
+                                    }
                                 ],
                                 "UHPLbX": [
-                                    (
-                                        "Registration number",
-                                        456,
-                                        "registration-number",
-                                    ),
-                                    (
-                                        "Is this UK company or branch an authorised insurer?",
-                                        "No",
-                                        "authorised-insurer-radio",
-                                    ),
+                                    {
+                                        "id": "edit-company",
+                                        "number": None,
+                                        "question": {
+                                            "answers": [
+                                                {
+                                                    "currency": None,
+                                                    "id": "registration-number",
+                                                    "label": "Registration " "number",
+                                                    "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=regist"
+                                                    "ration-number#registration-number",
+                                                    "type": "number",
+                                                    "unit": None,
+                                                    "unit_length": None,
+                                                    "value": 456,
+                                                },
+                                                {
+                                                    "currency": None,
+                                                    "id": "authorised-insurer-radio",
+                                                    "label": "Is this UK company or branch an authorised insurer?",
+                                                    "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=author"
+                                                    "ised-insurer-radio#authorised-insurer-radio",
+                                                    "type": "radio",
+                                                    "unit": None,
+                                                    "unit_length": None,
+                                                    "value": {
+                                                        "detail_answer_value": None,
+                                                        "label": "No",
+                                                    },
+                                                },
+                                            ],
+                                            "id": "add-question",
+                                            "number": None,
+                                            "title": " ",
+                                            "type": "General",
+                                        },
+                                        "title": None,
+                                    }
                                 ],
                             },
                             "title": "Companies or UK branches",

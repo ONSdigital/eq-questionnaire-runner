@@ -431,6 +431,7 @@ def test_map_list_collector_config():
     assert output == expected
 
 
+@pytest.mark.usefixtures("gb_locale")
 def test_map_list_collector_config_with_related_answers_and_answer_title():
     list_items = [
         {
@@ -452,12 +453,41 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
         "remove_link_aria_label",
         {
             "VHoiow": [
-                ["Registration number", 123, "registrtion-number"],
-                [
-                    "Is this UK company or branch an authorised insurer?",
-                    "Yes",
-                    "authorised-insurer-radio",
-                ],
+                {
+                    "id": "edit-company",
+                    "title": None,
+                    "number": None,
+                    "question": {
+                        "id": "add-question",
+                        "type": "General",
+                        "title": " ",
+                        "number": None,
+                        "answers": [
+                            {
+                                "id": "registration-number",
+                                "label": "Registration number",
+                                "value": 123,
+                                "type": "number",
+                                "unit": None,
+                                "unit_length": None,
+                                "currency": None,
+                                "link": "/questionnaire/companies/CewUqo/edit-company/?return_to=section-summary&return_to_answer_id=registration-number#regist"
+                                "ration-number",
+                            },
+                            {
+                                "id": "authorised-insurer-radio",
+                                "label": "Is this UK company or branch an authorised insurer?",
+                                "value": {"label": "Yes", "detail_answer_value": None},
+                                "type": "radio",
+                                "unit": None,
+                                "unit_length": None,
+                                "currency": None,
+                                "link": "/questionnaire/companies/CewUqo/edit-company/?return_to=section-summary&return_to_answer_id=authorised-insurer-radio#a"
+                                "uthorised-insurer-radio",
+                            },
+                        ],
+                    },
+                }
             ]
         },
         "answer_title",
@@ -489,49 +519,63 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                         "data-qa": "list-item-1-label",
                     },
                     "valueList": [{"text": "Joe Bloggs"}],
-                },
+                }
+            ]
+        },
+        {
+            "id": "add-question",
+            "rowItems": [
                 {
                     "actions": [
                         {
-                            "ariaLabel": "edit_link_aria_label",
-                            "attributes": {"data-qa": "list-item-change-1-link"},
+                            "ariaLabel": "edit_link_aria_label Registration " "number",
+                            "attributes": {
+                                "data-ga": "click",
+                                "data-ga-action": "Edit click",
+                                "data-ga-category": "Summary",
+                                "data-qa": "registration-number-edit",
+                            },
                             "text": "edit_link_text",
-                            "url": "/nonprimary/change#registrtion-number",
+                            "url": "/questionnaire/companies/CewUqo/edit-company/?return_to=section-summary&return_to_answer_id=registration-number#registratio"
+                            "n-number",
                         }
                     ],
-                    "iconType": None,
-                    "id": "VHoiow",
+                    "attributes": {"data-qa": "registration-number"},
+                    "id": "registration-number",
                     "rowTitle": "Registration number",
-                    "rowTitleAttributes": {
-                        "data-list-item-id": "VHoiow",
-                        "data-qa": "list-item-1-label",
-                    },
-                    "valueList": [{"text": 123}],
+                    "rowTitleAttributes": {"data-qa": "registration-number-label"},
+                    "valueList": [{"text": "123"}],
                 },
                 {
                     "actions": [
                         {
-                            "ariaLabel": "edit_link_aria_label",
-                            "attributes": {"data-qa": "list-item-change-1-link"},
+                            "ariaLabel": "edit_link_aria_label Is this UK "
+                            "company or branch an authorised "
+                            "insurer?",
+                            "attributes": {
+                                "data-ga": "click",
+                                "data-ga-action": "Edit click",
+                                "data-ga-category": "Summary",
+                                "data-qa": "authorised-insurer-radio-edit",
+                            },
                             "text": "edit_link_text",
-                            "url": "/nonprimary/change#authorised-insurer-radio",
+                            "url": "/questionnaire/companies/CewUqo/edit-company/?return_to=section-summary&return_to_answer_id=authorised-insurer-radio#author"
+                            "ised-insurer-radio",
                         }
                     ],
-                    "iconType": None,
-                    "id": "VHoiow",
+                    "attributes": {"data-qa": "authorised-insurer-radio"},
+                    "id": "authorised-insurer-radio",
                     "rowTitle": "Is this UK company or branch an authorised "
                     "insurer?",
-                    "rowTitleAttributes": {
-                        "data-list-item-id": "VHoiow",
-                        "data-qa": "list-item-1-label",
-                    },
+                    "rowTitleAttributes": {"data-qa": "authorised-insurer-radio-label"},
                     "valueList": [{"text": "Yes"}],
                 },
-            ]
-        }
+            ],
+            "rowTitle": "",
+        },
     ]
 
-    assert output == expected
+    assert to_dict(output) == to_dict(expected)
 
 
 @pytest.mark.parametrize(
@@ -773,46 +817,61 @@ def test_summary_item_config_with_list_collector():
                         "data-qa": "list-item-1-label",
                     },
                     "valueList": [{"text": "Company A"}],
-                },
+                }
+            ]
+        },
+        {
+            "id": "add-question",
+            "rowItems": [
                 {
                     "actions": [
                         {
-                            "ariaLabel": "Change your answer for:",
-                            "attributes": {"data-qa": "list-item-change-1-link"},
+                            "ariaLabel": "Change your answer for: "
+                            "Registration number",
+                            "attributes": {
+                                "data-ga": "click",
+                                "data-ga-action": "Edit click",
+                                "data-ga-category": "Summary",
+                                "data-qa": "registration-number-edit",
+                            },
                             "text": "Change",
-                            "url": "/questionnaire/companies/vmmPmD/edit-company/?return_to=section-summary#registration-number",
+                            "url": "/questionnaire/companies/pRavxh/edit-company/?return_to=section-summary&return_to_answer_id=registration-number#registratio"
+                            "n-number",
                         }
                     ],
-                    "iconType": None,
-                    "id": "vmmPmD",
+                    "attributes": {"data-qa": "registration-number"},
+                    "id": "registration-number",
                     "rowTitle": "Registration number",
-                    "rowTitleAttributes": {
-                        "data-list-item-id": "vmmPmD",
-                        "data-qa": "list-item-1-label",
-                    },
-                    "valueList": [{"text": 123}],
+                    "rowTitleAttributes": {"data-qa": "registration-number-label"},
+                    "valueList": [{"text": "123"}],
                 },
                 {
                     "actions": [
                         {
-                            "ariaLabel": "Change your answer for:",
-                            "attributes": {"data-qa": "list-item-change-1-link"},
+                            "ariaLabel": "Change your answer for: Is this UK "
+                            "company or branch an authorised "
+                            "insurer?",
+                            "attributes": {
+                                "data-ga": "click",
+                                "data-ga-action": "Edit click",
+                                "data-ga-category": "Summary",
+                                "data-qa": "authorised-insurer-radio-edit",
+                            },
                             "text": "Change",
-                            "url": "/questionnaire/companies/vmmPmD/edit-company/?return_to=section-summary#authorised-insurer-radio",
+                            "url": "/questionnaire/companies/pRavxh/edit-company/?return_to=section-summary&return_to_answer_id=authorised-insurer-radio#author"
+                            "ised-insurer-radio",
                         }
                     ],
-                    "iconType": None,
-                    "id": "vmmPmD",
+                    "attributes": {"data-qa": "authorised-insurer-radio"},
+                    "id": "authorised-insurer-radio",
                     "rowTitle": "Is this UK company or branch an authorised "
                     "insurer?",
-                    "rowTitleAttributes": {
-                        "data-list-item-id": "vmmPmD",
-                        "data-qa": "list-item-1-label",
-                    },
-                    "valueList": [{"text": "No"}],
+                    "rowTitleAttributes": {"data-qa": "authorised-insurer-radio-label"},
+                    "valueList": [{"text": "Yes"}],
                 },
-            ]
-        }
+            ],
+            "rowTitle": "",
+        },
     ]
 
     result = map_summary_item_config(
@@ -827,12 +886,44 @@ def test_summary_item_config_with_list_collector():
                     "list_name": "companies",
                     "related_answers": {
                         "vmmPmD": [
-                            ("Registration number", 123, "registration-number"),
-                            (
-                                "Is this UK company or branch an authorised insurer?",
-                                "No",
-                                "authorised-insurer-radio",
-                            ),
+                            {
+                                "id": "edit-company",
+                                "title": None,
+                                "number": None,
+                                "question": {
+                                    "id": "add-question",
+                                    "type": "General",
+                                    "title": " ",
+                                    "number": None,
+                                    "answers": [
+                                        {
+                                            "id": "registration-number",
+                                            "label": "Registration number",
+                                            "value": 123,
+                                            "type": "number",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "currency": None,
+                                            "link": "/questionnaire/companies/pRavxh/edit-company/?return_to=section-summary&return_to_answer_id=registration-n"
+                                            "umber#registration-number",
+                                        },
+                                        {
+                                            "id": "authorised-insurer-radio",
+                                            "label": "Is this UK company or branch an authorised insurer?",
+                                            "value": {
+                                                "label": "Yes",
+                                                "detail_answer_value": None,
+                                            },
+                                            "type": "radio",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "currency": None,
+                                            "link": "/questionnaire/companies/pRavxh/edit-company/?return_to=section-summary&return_to_answer_id=authorised-ins"
+                                            "urer-radio#authorised-insurer-radio",
+                                        },
+                                    ],
+                                },
+                            }
                         ]
                     },
                     "answer_title": "Name of UK company or branch",

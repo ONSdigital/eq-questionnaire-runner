@@ -87,7 +87,6 @@ describe("List Collector Section Summary Items", () => {
       expect(browser.getUrl()).to.contain("remove-company/?return_to=section-summary");
       $(AnyCompaniesOrBranchesRemovePage.yes()).click();
       $(AnyCompaniesOrBranchesRemovePage.submit()).click();
-      $(EstimatePage.submit()).click();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.false;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.false;
@@ -100,7 +99,7 @@ describe("List Collector Section Summary Items", () => {
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.false;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.false;
       expect($(SectionSummaryPage.companiesListAddLink()).isExisting()).to.be.true;
-      $(SectionSummaryPage.companiesListAddLink()).click();
+      $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
       $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
       $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
       $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Company A");
@@ -109,7 +108,6 @@ describe("List Collector Section Summary Items", () => {
       $(AnyCompaniesOrBranchesAddPage.submit()).click();
       $(AnyCompaniesOrBranchesPage.no()).click();
       $(AnyCompaniesOrBranchesPage.submit()).click();
-      $(EstimatePage.submit()).click();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.true;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.true;
@@ -133,7 +131,6 @@ describe("List Collector Section Summary Items", () => {
       $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
       $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
       $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
-      $(EstimatePage.submit()).click();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.true;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.true;

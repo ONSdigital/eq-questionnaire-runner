@@ -605,6 +605,19 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             ]
             return add_block
 
+    def get_edit_block_for_list_collector(
+        self, list_collector_id: str
+    ) -> ImmutableDict:
+        edit_block_map = {
+            "ListCollector": "edit_block",
+            "PrimaryPersonListCollector": "add_or_edit_block",
+        }
+        if list_collector := self.get_block(list_collector_id):
+            edit_block: ImmutableDict = list_collector[
+                edit_block_map[list_collector["type"]]
+            ]
+            return edit_block
+
     def get_answer_ids_for_list_items(
         self, list_collector_id: str
     ) -> Optional[list[str]]:

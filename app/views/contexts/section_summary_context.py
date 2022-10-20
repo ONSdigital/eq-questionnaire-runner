@@ -13,6 +13,7 @@ from ...data_models.list_store import ListModel
 from .context import Context
 from .list_context import ListContext
 from .summary import Group
+from .summary.block import Block
 
 
 class SectionSummaryContext(Context):
@@ -233,7 +234,9 @@ class SectionSummaryContext(Context):
             )
 
             related_answers = (
-                self._get_related_answers(current_list) if current_list else None
+                self._get_related_answers(current_list, list_collector_block.get("id"))
+                if current_list
+                else None
             )
 
             answer_title = self._get_answer_title(list_collector_block)
@@ -321,7 +324,9 @@ class SectionSummaryContext(Context):
 
         return primary_person_edit_block_id, edit_block_id
 
-    def _get_related_answers(self, current_list: ListModel) -> dict[str, list]:
+    def _get_related_answers(
+        self, current_list: ListModel, list_collector_block_id
+    ) -> dict[str, list]:
         section = self.section["id"]
 
         # pylint: disable=protected-access
@@ -329,28 +334,74 @@ class SectionSummaryContext(Context):
             section, current_list
         ):
             related_answers_dict = {}
+
             for list_id in current_list:
-                keys = [
-                    self._schema.get_answers_by_answer_id(answer.answer_id)[0]["label"]
-                    for answer in self._answer_store
-                    if answer.answer_id in related_answers
-                    and answer.list_item_id == list_id
-                ]
-                values = [
-                    answer.value
-                    for answer in self._answer_store
-                    if answer.answer_id in related_answers
-                    and answer.list_item_id == list_id
-                ]
+                for answer in self._answer_store:
+                    if (
+                        answer.answer_id in related_answers
+                        and answer.list_item_id == list_id
+                    ):
+                        edit_block_id = self._schema.get_edit_block_for_list_collector(
+                            list_collector_block_id
+                        )["id"]
 
-                ids = [
-                    answer.answer_id
-                    for answer in self._answer_store
-                    if answer.answer_id in related_answers
-                    and answer.list_item_id == list_id
-                ]
+                        question = dict(
+                            self._schema.get_add_block_for_list_collector(  # type: ignore
+                                list_collector_block_id
+                            ).get(
+                                "question"
+                            )
+                        )
 
-                related_answers_dict[list_id] = list(zip(keys, values, ids))
+                        question["title"] = " "
+
+                        question["answers"] = list(question["answers"])[1:]
+
+                        block_schema = {
+                            "id": edit_block_id,
+                            "title": None,
+                            "number": None,
+                            "type": "ListCollector",
+                            "for_list": current_list.name,
+                            "question": question,
+                        }
+                        block = [
+                            Block(
+                                block_schema,
+                                answer_store=self._answer_store,
+                                list_store=self._list_store,
+                                metadata=self._metadata,
+                                response_metadata=self._response_metadata,
+                                schema=self._schema,
+                                location=Location(
+                                    list_name=current_list.name,
+                                    list_item_id=list_id,
+                                    section_id=self.section["id"],
+                                ),
+                                return_to="section-summary",
+                                return_to_block_id=None,
+                            ).serialize()
+                        ]
+                        # keys = [
+                        #     self._schema.get_answers_by_answer_id(answer.answer_id)[0]["label"]
+                        #     for answer in self._answer_store
+                        #     if answer.answer_id in related_answers
+                        #     and answer.list_item_id == list_id
+                        # ]
+                        # values = [
+                        #     answer.value
+                        #     for answer in self._answer_store
+                        #     if answer.answer_id in related_answers
+                        #     and answer.list_item_id == list_id
+                        # ]
+                        #
+                        # ids = [
+                        #     answer.answer_id
+                        #     for answer in self._answer_store
+                        #     if answer.answer_id in related_answers
+                        #     and answer.list_item_id == list_id
+                        # ]
+                        related_answers_dict[list_id] = block
 
             return related_answers_dict
 

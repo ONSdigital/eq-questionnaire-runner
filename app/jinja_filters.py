@@ -573,9 +573,9 @@ def map_summary_item_config(
     no_answer_provided: str,
     edit_link_text: str,
     edit_link_aria_label: str,
-    remove_link_text: str,
-    remove_link_aria_label: str,
     calculated_question: SelectFieldBase._Option,
+    remove_link_text: Optional[str],
+    remove_link_aria_label: Optional[str],
     icon: Optional[str] = None,
 ) -> list[SummaryRow]:
 
@@ -689,24 +689,36 @@ def map_list_collector_config(
         rows.append({"rowItems": [row_items]})
 
         if related_answers:
-            rows[index - 1]["rowItems"].extend(
-                {
-                    "iconType": None,
-                    "actions": [
-                        {
-                            "text": edit_link_text,
-                            "ariaLabel": edit_link_aria_label_text,
-                            "url": f'{list_item.get("edit_link")}#{answer[2]}',
-                            "attributes": {"data-qa": f"list-item-change-{index}-link"},
-                        }
-                    ],
-                    "valueList": [{"text": answer[1]}],
-                    "rowTitle": answer[0],
-                    "id": list_item.get("list_item_id"),
-                    "rowTitleAttributes": row_title_attributes,
-                }
-                for answer in related_answers[list_item["list_item_id"]]
-            )
+            if related_list := related_answers[list_item["list_item_id"]]:
+                for block in related_list:
+                    rows.append(
+                        SummaryRow(  # type: ignore
+                            block["question"],
+                            summary_type="SectionSummary",
+                            answers_are_editable=True,
+                            no_answer_provided="no answer",
+                            edit_link_text=edit_link_text,  # type: ignore
+                            edit_link_aria_label=edit_link_aria_label,  # type: ignore
+                        )
+                    )
+            # rows[index - 1]["rowItems"].extend(
+            #     {
+            #         "iconType": None,
+            #         "actions": [
+            #             {
+            #                 "text": edit_link_text,
+            #                 "ariaLabel": edit_link_aria_label_text,
+            #                 "url": f'{list_item.get("edit_link")}#{answer[2]}',
+            #                 "attributes": {"data-qa": f"list-item-change-{index}-link"},
+            #             }
+            #         ],
+            #         "valueList": [{"text": answer[1]}],
+            #         "rowTitle": answer[0],
+            #         "id": list_item.get("list_item_id"),
+            #         "rowTitleAttributes": row_title_attributes,
+            #     }
+            #     for answer in related_answers[list_item["list_item_id"]]
+            # )
 
     return rows
 
