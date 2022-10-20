@@ -22,12 +22,19 @@ lint: lint-python
 lint-python:
 	pipenv run ./scripts/run_lint_python.sh
 
+lint-html:
+	pipenv run djlint --lint ./
+
 format: format-python
 	yarn format
+	format-html
 
 format-python:
 	pipenv run isort .
 	pipenv run black .
+
+format-html:
+	pipenv run djlint --reformat ./
 
 test:
 	pipenv run ./scripts/run_tests.sh
