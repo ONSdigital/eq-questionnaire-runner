@@ -2,7 +2,7 @@ import AnyCompaniesOrBranchesDrivingQuestionPage from "../generated_pages/list_c
 import AnyCompaniesOrBranchesPage from "../generated_pages/list_collector_section_summary_items/any-other-companies-or-branches.page.js";
 import AnyCompaniesOrBranchesAddPage from "../generated_pages/list_collector_section_summary_items/any-other-companies-or-branches-add.page.js";
 import AnyCompaniesOrBranchesRemovePage from "../generated_pages/list_collector_section_summary_items/any-other-companies-or-branches-remove.page.js";
-import SectionSummaryPage from "../generated_pages/list_collector_section_summary_items/section-summary.page.js";
+import SectionSummaryPage from "../generated_pages/list_collector_section_summary_items/section-companies-summary.page";
 import EstimatePage from "../generated_pages/list_collector_section_summary_items/estimate-checkbox.page";
 
 describe("List Collector Section Summary Items", () => {

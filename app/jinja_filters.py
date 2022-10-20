@@ -695,8 +695,8 @@ def map_list_collector_config(
                     summary_type="SectionSummary",
                     answers_are_editable=True,
                     no_answer_provided="no answer",
-                    edit_link_text=edit_link_text,  # type: ignore
-                    edit_link_aria_label=edit_link_aria_label,  # type: ignore
+                    edit_link_text=edit_link_text or "",
+                    edit_link_aria_label=edit_link_aria_label or "",
                 )
                 for row in summary_row.rowItems:
                     rows[index - 1]["rowItems"].append(row)  # type: ignore
