@@ -358,8 +358,6 @@ class SectionSummaryContext(Context):
                             )
                         )
 
-                        question["title"] = " "
-
                         question["answers"] = list(question["answers"])[1:]
 
                         block_schema = {

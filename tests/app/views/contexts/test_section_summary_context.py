@@ -235,12 +235,12 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
         progress_store=ProgressStore(),
         metadata={},
         response_metadata={},
-        current_location=Location(section_id="section"),
+        current_location=Location(section_id="section-companies"),
         routing_path=RoutingPath(
             [
                 "any-other-companies-or-branches",
             ],
-            section_id="section",
+            section_id="section-companies",
         ),
     )
     context = summary_context()
@@ -259,14 +259,14 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                         "list_items": [
                             {
                                 "edit_link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary",
-                                "item_title": "company " "a",
+                                "item_title": "company a",
                                 "list_item_id": "PlwgoG",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
                             },
                             {
                                 "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
-                                "item_title": "company " "b",
+                                "item_title": "company b",
                                 "list_item_id": "UHPLbX",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
@@ -284,7 +284,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                         {
                                             "currency": None,
                                             "id": "registration-number",
-                                            "label": "Registration " "number",
+                                            "label": "Registration number",
                                             "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=registration-n"
                                             "umber#registration-number",
                                             "type": "number",
@@ -295,15 +295,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                         {
                                             "currency": None,
                                             "id": "authorised-insurer-radio",
-                                            "label": "Is "
-                                            "this "
-                                            "UK "
-                                            "company "
-                                            "or "
-                                            "branch "
-                                            "an "
-                                            "authorised "
-                                            "insurer?",
+                                            "label": "Is this UK company or branch an authorised insurer?",
                                             "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=authorised-ins"
                                             "urer-radio#authorised-insurer-radio",
                                             "type": "radio",
@@ -315,9 +307,9 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                             },
                                         },
                                     ],
-                                    "id": "add-question",
+                                    "id": "add-question-companies",
                                     "number": None,
-                                    "title": " ",
+                                    "title": "Give details about the company or branch that undertakes general insurance business",
                                     "type": "General",
                                 },
                                 "title": None,
@@ -332,7 +324,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                         {
                                             "currency": None,
                                             "id": "registration-number",
-                                            "label": "Registration " "number",
+                                            "label": "Registration number",
                                             "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=registration-n"
                                             "umber#registration-number",
                                             "type": "number",
@@ -343,15 +335,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                         {
                                             "currency": None,
                                             "id": "authorised-insurer-radio",
-                                            "label": "Is "
-                                            "this "
-                                            "UK "
-                                            "company "
-                                            "or "
-                                            "branch "
-                                            "an "
-                                            "authorised "
-                                            "insurer?",
+                                            "label": "Is this UK company or branch an authorised insurer?",
                                             "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=authorised-ins"
                                             "urer-radio#authorised-insurer-radio",
                                             "type": "radio",
@@ -363,9 +347,9 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                             },
                                         },
                                     ],
-                                    "id": "add-question",
+                                    "id": "add-question-companies",
                                     "number": None,
-                                    "title": " ",
+                                    "title": "Give details about the company or branch that undertakes general insurance business",
                                     "type": "General",
                                 },
                                 "title": None,
@@ -389,14 +373,14 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                 "list_items": [
                                     {
                                         "edit_link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary",
-                                        "item_title": "company " "a",
+                                        "item_title": "company a",
                                         "list_item_id": "PlwgoG",
                                         "primary_person": False,
                                         "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
                                     },
                                     {
                                         "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
-                                        "item_title": "company " "b",
+                                        "item_title": "company b",
                                         "list_item_id": "UHPLbX",
                                         "primary_person": False,
                                         "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
@@ -414,7 +398,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                                 {
                                                     "currency": None,
                                                     "id": "registration-number",
-                                                    "label": "Registration " "number",
+                                                    "label": "Registration number",
                                                     "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=regist"
                                                     "ration-number#registration-number",
                                                     "type": "number",
@@ -437,9 +421,9 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                                     },
                                                 },
                                             ],
-                                            "id": "add-question",
+                                            "id": "add-question-companies",
                                             "number": None,
-                                            "title": " ",
+                                            "title": "Give details about the company or branch that undertakes general insurance business",
                                             "type": "General",
                                         },
                                         "title": None,
@@ -454,7 +438,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                                 {
                                                     "currency": None,
                                                     "id": "registration-number",
-                                                    "label": "Registration " "number",
+                                                    "label": "Registration number",
                                                     "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=regist"
                                                     "ration-number#registration-number",
                                                     "type": "number",
@@ -477,9 +461,9 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                                     },
                                                 },
                                             ],
-                                            "id": "add-question",
+                                            "id": "add-question-companies",
                                             "number": None,
-                                            "title": " ",
+                                            "title": "Give details about the company or branch that undertakes general insurance business",
                                             "type": "General",
                                         },
                                         "title": None,
@@ -490,7 +474,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                             "type": "List",
                         }
                     ],
-                    "id": "group",
+                    "id": "group-companies",
                     "title": None,
                 }
             ],

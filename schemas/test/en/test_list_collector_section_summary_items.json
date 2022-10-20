@@ -146,7 +146,7 @@
                                 "id": "add-company",
                                 "type": "ListAddQuestion",
                                 "question": {
-                                    "id": "add-question",
+                                    "id": "add-question-companies",
                                     "type": "General",
                                     "title": "Give details about the company or branch that undertakes general insurance business",
                                     "answers": [
@@ -185,7 +185,7 @@
                                 "id": "edit-company",
                                 "type": "ListEditQuestion",
                                 "question": {
-                                    "id": "edit-question",
+                                    "id": "edit-question-companies",
                                     "type": "General",
                                     "title": "What is the name of the person?",
                                     "answers": [
@@ -224,7 +224,7 @@
                                 "id": "remove-company",
                                 "type": "ListRemoveQuestion",
                                 "question": {
-                                    "id": "remove-question",
+                                    "id": "remove-question-companies",
                                     "type": "General",
                                     "title": "Are you sure you want to remove this company or UK branch?",
                                     "answers": [
@@ -345,7 +345,7 @@
                                 "type": "ListAddQuestion",
                                 "cancel_text": "Don’t need to add anyone else?",
                                 "question": {
-                                    "id": "add-question",
+                                    "id": "add-question-people",
                                     "type": "General",
                                     "title": "What is the name of the person?",
                                     "answers": [
@@ -369,7 +369,7 @@
                                 "type": "ListEditQuestion",
                                 "cancel_text": "Don’t need to change anything?",
                                 "question": {
-                                    "id": "edit-question",
+                                    "id": "edit-question-people",
                                     "type": "General",
                                     "title": "What is the name of the person?",
                                     "answers": [
@@ -393,7 +393,7 @@
                                 "type": "ListRemoveQuestion",
                                 "cancel_text": "Don’t need to remove this person?",
                                 "question": {
-                                    "id": "remove-question",
+                                    "id": "remove-question-people",
                                     "type": "General",
                                     "title": "Are you sure you want to remove this person?",
                                     "warning": "All of the information about this person will be deleted",
