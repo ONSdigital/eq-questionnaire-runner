@@ -1,4 +1,4 @@
-{% extends 'errors/_base.html' %}
+{% extends "errors/_base.html" %}
 
 {% set page_title = _("Page is not available") %}
 
@@ -32,4 +32,4 @@
             {{ _("If you started your survey using an access code, you need to <a href='{url}'>re-enter your code</a>.").format(url = other_logout_url) }}
         </p>
     {% endif %}
-{% endblock %}
+{% endblock main %}

@@ -1,4 +1,4 @@
-{% extends 'layouts/_base.html' %}
+{% extends "layouts/_base.html" %}
 {% import 'macros/helpers.html' as helpers %}
 {% from "components/button/_macro.njk" import onsButton %}
 
@@ -10,7 +10,7 @@
 {% set form = content.form %}
     {% if form.mapped_errors %}
 {% set error_title = _("There is a problem with your answer") %}
-{% include 'partials/error-panel.html' %}
+{% include "partials/error-panel.html" %}
     {% endif %}
 
     <h1 class="question__title ons-u-fs-xxl" data-qa="confirm-email-title">
@@ -21,7 +21,7 @@
     </div>
     {%- for answer in question.answers -%}
 {% set question_title = answer.title %}
-{% include 'partials/answer.html' %}
+{% include "partials/answer.html" %}
     {%- endfor -%}
 
 {{
@@ -37,4 +37,4 @@
     <br/>
     <br/>
 
-{% endblock %}
+{% endblock main %}

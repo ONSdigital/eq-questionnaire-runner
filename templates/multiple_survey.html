@@ -1,4 +1,4 @@
-{% extends 'layouts/_base.html' %}
+{% extends "layouts/_base.html" %}
 {% from "components/panel/_macro.njk" import onsPanel %}
 
 {% set page_title = _("Information") %}
@@ -18,4 +18,4 @@
         </p>
         <p>{{ _("Close this window to continue with your current survey") }}.</p>
     {% endcall %}
-{% endblock %}
+{% endblock main %}

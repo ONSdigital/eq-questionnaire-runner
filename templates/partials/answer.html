@@ -11,7 +11,7 @@
         'label': answer.label,
         'schema_item': answer.guidance
       } %}
-{% include 'partials/answer-guidance.html' %}
+{% include "partials/answer-guidance.html" %}
         {% endwith %}
     {% endif %}
 {% endset -%}
@@ -30,5 +30,5 @@
   } %}
 {% endif %}
 
-{% include 'partials/answers/' ~ answer.type|lower ~ '.html' %}
+{% include "partials/answers/" ~ answer.type|lower ~ '.html' %}
 {{ answer_guidance }}

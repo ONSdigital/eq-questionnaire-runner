@@ -51,7 +51,7 @@
 {% do pageConfig.update({"theme":theme}) %}
 {% endif %}
 
-{% include 'layouts/configs/_save-sign-out-button.html' %}
+{% include "layouts/configs/_save-sign-out-button.html" %}
 
 
 {# if there is not a previous link add extra margin top to the page #}
@@ -80,7 +80,7 @@
       })
     }}
     {% endif %}
-{% endblock %}
+{% endblock preHeader %}
 
 {% block head %}
     {% if google_tag_manager_id and google_tag_manager_auth %}
@@ -108,10 +108,10 @@
         </script>
         <!-- End Google Tag Manager -->
     {% endif %}
-{% endblock %}
+{% endblock head %}
 
 {% block bodyStart %}
-    {% if google_tag_manager_id and google_tag_manager_auth  %}
+    {% if google_tag_manager_id and google_tag_manager_auth %}
         <!-- Google Tag Manager (noscript) -->
         <noscript>
           {# djlint:off H021 #}
@@ -124,7 +124,7 @@
         </noscript>
         <!-- End Google Tag Manager (noscript) -->
     {% endif %}
-{% endblock %}
+{% endblock bodyStart %}
 
 {% block skipLink %}
 {{
@@ -133,7 +133,7 @@
       "text": _("Skip to main content")
     })
   }}
-{% endblock %}
+{% endblock skipLink %}
 
 {% block scripts %}
     {% if config['EQ_ENABLE_LIVE_RELOAD'] %}
@@ -142,7 +142,7 @@
     //]]>
 </script>
 {% endif %}
-{% endblock %}
+{% endblock scripts %}
 
 {% block preFooter %}
 {% if session_expires_at %}
@@ -165,4 +165,4 @@
       })
     }}
 {% endif %}
-{% endblock %}
+{% endblock preFooter %}

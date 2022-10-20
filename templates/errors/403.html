@@ -1,4 +1,4 @@
-{% extends 'errors/_base.html' %}
+{% extends "errors/_base.html" %}
 
 {% set page_title = _("Sorry, there is a problem") %}
 
@@ -20,4 +20,4 @@
             {{ _("If you started your survey using an access code and you need further help, please <a href='{url}'>contact us</a>.").format(url=other_contact_us_url) }}
         </p>
     {% endif %}
-{% endblock %}
+{% endblock main %}

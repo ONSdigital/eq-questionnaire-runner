@@ -1,4 +1,4 @@
-{% extends 'layouts/_base.html' %}
+{% extends "layouts/_base.html" %}
 
 {% set page_title = _("Signed out") %}
 
@@ -8,4 +8,4 @@
     {% if account_service_log_out_url %}
         <a href="{{ account_service_log_out_url }}">{{ _("Return to your account") }}</a>
     {% endif %}
-{% endblock %}
+{% endblock main %}

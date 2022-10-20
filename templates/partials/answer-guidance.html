@@ -1,4 +1,4 @@
-{% from "components/collapsible/_macro.njk" import onsCollapsible %}
+    {% from "components/collapsible/_macro.njk" import onsCollapsible %}
 
 {% call onsCollapsible({
   "id": "answer-guidance-" ~ answer.id,
@@ -28,6 +28,6 @@
 }) %}
     <div class="ons-u-mt-s">
 {% set content_block = answer_guidance.schema_item %}
-{% include 'partials/content-block.html' %}
+{% include "partials/content-block.html" %}
     </div>
 {% endcall %}

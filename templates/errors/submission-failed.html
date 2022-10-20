@@ -1,4 +1,4 @@
-{% extends 'errors/_base.html' %}
+{% extends "errors/_base.html" %}
 
 {% set hide_sign_out_button = True %}
 
@@ -24,4 +24,4 @@
             {{ _("If you started your survey using an access code, please <a href='{url}'>contact us</a>.").format(url=other_contact_us_url) }}
         </p>
     {% endif %}
-{% endblock %}
+{% endblock main %}

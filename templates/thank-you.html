@@ -1,4 +1,4 @@
-{% extends 'layouts/_base.html' %}
+{% extends "layouts/_base.htm"' %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
 {% from "components/metadata/_macro.njk" import onsMetadata %}
 {% from "components/timeout-panel/_macro.njk" import onsTimeoutPanel %}
@@ -40,7 +40,7 @@
 
     {% if content.guidance %}
 {% set contents = content.guidance.contents %}
-{% include 'partials/contents.html' %}
+{% include "partials/contents.html" %}
     {% else %}
         <p class="ons-u-mb-s">
 {{ _("Your answers will be processed in the next few weeks.") }}
@@ -86,7 +86,7 @@
     {% endif %}
 
     {% if content.show_feedback_call_to_action %}
-{% include 'partials/feedback-call-to-action.html' %}
+{% include "partials/feedback-call-to-action.html" %}
     {% endif %}
 
-{% endblock %}
+{% endblock main %}

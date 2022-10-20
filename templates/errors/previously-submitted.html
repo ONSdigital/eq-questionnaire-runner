@@ -1,4 +1,4 @@
-{% extends 'layouts/_base.html' %}
+{% extends "layouts/_base.html" %}
 
 {% set page_title = _("Submission Complete") %}
 
@@ -8,4 +8,4 @@
     <p>
         {{ _("<a href='{url}'>Return to previous page</a>").format(url = thank_you_url) }}
     </p>
-{% endblock %}
+{% endblock main %}

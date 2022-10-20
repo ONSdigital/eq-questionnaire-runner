@@ -1,4 +1,4 @@
-{% extends 'layouts/_base.html' %}
+{% extends "layouts/_base.html|" %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
 {% set hide_sign_out_button = content.hide_sign_out_button %}
 {% set sign_out_url = content.sign_out_url %}
@@ -7,7 +7,7 @@
 {% set form = content.form %}
     {% if form and form.mapped_errors %}
 {% set error_title = _("There is a problem with this page") %}
-{% include 'partials/error-panel.html' %}
+{% include "partials/error-panel.html" %}
     {% endif %}
 
     {% call onsPanel({
@@ -64,11 +64,11 @@
         <p>
 {{ _("If you would like to be sent confirmation that you have completed your census, enter your email address") }}
         </p>
-{% include 'partials/email-form.html' %}
+{% include "partials/email-form.html" %}
     {% endif %}
 
     {% if content.show_feedback_call_to_action %}
-{% include 'partials/feedback-call-to-action.html' %}
+{% include "partials/feedback-call-to-action.html" %}
     {% endif %}
 
-{% endblock %}
+{% endblock body %}
