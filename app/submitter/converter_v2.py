@@ -69,7 +69,7 @@ def convert_answers_v2(
         "schema_name": metadata.schema_name,
         "flushed": flushed,
         "submitted_at": submitted_at.isoformat(),
-        "launch_language_code": metadata["language_code"] or DEFAULT_LANGUAGE_CODE,
+        "launch_language_code": metadata.language_code or DEFAULT_LANGUAGE_CODE,
     }
 
     optional_properties = get_optional_payload_properties(metadata, response_metadata)

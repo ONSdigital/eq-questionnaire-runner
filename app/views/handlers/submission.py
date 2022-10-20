@@ -69,7 +69,7 @@ class SubmissionHandler:
     def get_payload(self):
         answer_converter = (
             convert_answers_v2
-            if self._metadata["version"] is AuthPayloadVersion.V2
+            if self._metadata.version is AuthPayloadVersion.V2
             else convert_answers
         )
 
