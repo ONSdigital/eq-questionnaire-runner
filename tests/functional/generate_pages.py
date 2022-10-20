@@ -605,7 +605,7 @@ def write_summary_spec(
 
             else:
                 page_spec.write(
-                    NON_ITEM_ANSWERS_LIST_SECTION_SUMMARY_ADD_LINK_GETTER.substitute(
+                    LIST_SECTION_SUMMARY_ADD_LINK_GETTER.substitute(
                         list_context
                     )
                 )
