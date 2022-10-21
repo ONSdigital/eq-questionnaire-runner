@@ -1,7 +1,5 @@
 {% extends "errors/_base.html" %}
-
 {% set page_title = _("Page not found") %}
-
 {% block main %}
     <h1>{{ _("Page not found") }}</h1>
     <p>{{ _("If you entered a web address, check it is correct.") }}</p>
@@ -11,9 +9,7 @@
             {{ _("If the web address is correct or you selected a link or button, <a href='{url}'>contact us</a> for more help.").format(url=contact_us_url) }}
         </p>
     {% else %}
-        <p>
-{{ _("If the web address is correct or you selected a link or button, please see the following help links.") }}
-        </p>
+        <p>{{ _("If the web address is correct or you selected a link or button, please see the following help links.") }}</p>
         <h3>Business surveys</h3>
         <p>
             {{ _("If you are completing a business survey, please <a href='{url}'>contact us</a>.").format(url=business_contact_us_url) }}

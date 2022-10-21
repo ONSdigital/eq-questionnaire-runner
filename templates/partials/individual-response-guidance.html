@@ -1,25 +1,24 @@
 {% from "components/collapsible/_macro.njk" import onsCollapsible %}
-
 {% call onsCollapsible({
-  "classes": "ons-u-mt-s",
-  "title": title,
-  "headingAttributes": {
+    "classes": "ons-u-mt-s",
+    "title": title,
+    "headingAttributes": {
     "data-ga": "click",
     "data-ga-category": "definition",
     "data-ga-action": "Open panel",
     "data-ga-label": title
-  },
-  "button": {
+    },
+    "button": {
     "close": _("Hide this"),
     "contextSuffix": "content",
     "attributes": {
-      "data-ga": "click",
-      "data-ga-category": "definition",
-      "data-ga-action": "Close panel",
-      "data-ga-label": title
+    "data-ga": "click",
+    "data-ga-category": "definition",
+    "data-ga-action": "Close panel",
+    "data-ga-label": title
     }
-  }
-}) %}
+    }
+    }) %}
     <div class="ons-u-mt-s">
         <p>
             {{ _("You can <em>share your household access code</em> with the people you live with so they can complete their own sections.") }}

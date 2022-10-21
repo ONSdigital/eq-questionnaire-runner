@@ -2,7 +2,6 @@
     "profile": "jinja",
     "indent": "4",
     "max_line_length": "88",
-    "preserve_leading_space": true,
-    "preserve_blank_lines": true,
+    "format_attribute_template_tags": "true",
     "use_gitignore": "True"
 }

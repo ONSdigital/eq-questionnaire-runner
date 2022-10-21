@@ -1,9 +1,7 @@
 {% extends "layouts/_base.html" %}
 {% from 'components/button/_macro.njk' import onsButton %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
-
 {% set save_on_signout = true %}
-
 {% block main %}
     {% call onsPanel({
         "type": "success",
@@ -13,18 +11,16 @@
         }) %}
         <h1 id="question-title"
             class="question__title ons-u-mb-xs ons-u-fs-l js-piping">
-{{ _("A letter has been sent to Individual Resident at {display_address}").format(display_address=display_address) }}
+            {{ _("A letter has been sent to Individual Resident at {display_address}").format(display_address=display_address) }}
         </h1>
-        <p>
-{{ _("The letter with an individual access code should arrive soon for them to complete their own census") }}
-        </p>
+        <p>{{ _("The letter with an individual access code should arrive soon for them to complete their own census") }}</p>
     {% endcall %}
-{{
-        onsButton({
-            "text": _("Continue"),
-            "variants": 'timer',
-            "classes": 'ons-u-mb-m ons-u-mt-l',
-            "attributes": {'data-qa': 'btn-submit'}
-        })
+    {{
+    onsButton({
+    "text": _("Continue"),
+    "variants": 'timer',
+    "classes": 'ons-u-mb-m ons-u-mt-l',
+    "attributes": {'data-qa': 'btn-submit'}
+    })
     }}
 {% endblock main %}

@@ -1,10 +1,7 @@
 {% extends "layouts/_base.html" %}
-
 {% set page_title = _("Signed out") %}
-
 {% block main %}
     <h1>{{ _("Your survey answers have been saved. You are now signed out") }}.</h1>
-
     {% if account_service_log_out_url %}
         <a href="{{ account_service_log_out_url }}">{{ _("Return to your account") }}</a>
     {% endif %}

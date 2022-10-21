@@ -1,33 +1,32 @@
-    {% from "components/collapsible/_macro.njk" import onsCollapsible %}
-
+{% from "components/collapsible/_macro.njk" import onsCollapsible %}
 {% call onsCollapsible({
-  "id": "answer-guidance-" ~ answer.id,
-  "classes": "ons-u-mt-s",
-  "title": _(answer_guidance.schema_item.show_guidance),
-  "headingAttributes": {
+    "id": "answer-guidance-" ~ answer.id,
+    "classes": "ons-u-mt-s",
+    "title": _(answer_guidance.schema_item.show_guidance),
+    "headingAttributes": {
     "data-ga": "click",
     "data-ga-category": "Answer guidance",
     "data-ga-action": "Open panel",
     "data-ga-label": _(answer_guidance.schema_item.show_guidance),
     "data-qa": "answer-guidance-" ~ answer.id ~ "-title"
-  },
-  "contentAttributes": {
+    },
+    "contentAttributes": {
     "data-qa": "answer-guidance-" ~ answer.id ~ "-content"
-  },
-  "button": {
+    },
+    "button": {
     "close": _("Hide this"),
     "contextSuffix": "content",
     "attributes": {
-      "data-ga": "click",
-      "data-ga-category": "Answer guidance",
-      "data-ga-action": "Close panel",
-      "data-ga-label": _(answer_guidance.schema_item.show_guidance),
-      "data-qa": "answer-guidance-" ~ answer.id ~ "-button"
+    "data-ga": "click",
+    "data-ga-category": "Answer guidance",
+    "data-ga-action": "Close panel",
+    "data-ga-label": _(answer_guidance.schema_item.show_guidance),
+    "data-qa": "answer-guidance-" ~ answer.id ~ "-button"
     }
-  }
-}) %}
+    }
+    }) %}
     <div class="ons-u-mt-s">
-{% set content_block = answer_guidance.schema_item %}
-{% include "partials/content-block.html" %}
+        {% set content_block = answer_guidance.schema_item %}
+        {% include "partials/content-block.html" %}
     </div>
 {% endcall %}

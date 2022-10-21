@@ -1,36 +1,33 @@
 {% from "components/address-input/_macro.njk" import onsAddressInput %}
-
 {% set address_form = form.fields[answer.id] %}
-
 {% set config = {
-    "id": answer.id,
-    "dontWrap": true,
-    "line1": {
-        "label": _("Address line 1"),
-        "value": address_form.line1._value() | e,
-        "error": error
-    },
-    "line2": {
-        "label": _("Address line 2"),
-        "value": address_form.line2._value() | e
-    },
-    "town": {
-        "label": _("Town or city"),
-        "value": address_form.town._value() | e
-    },
-    "postcode": {
-        "label": _("Postcode"),
-        "value": address_form.postcode._value() | e
-    },
-    "uprn": {
-      "value": address_form.uprn._value() | e
-    }
+"id": answer.id,
+"dontWrap": true,
+"line1": {
+"label": _("Address line 1"),
+"value": address_form.line1._value() | e,
+"error": error
+},
+"line2": {
+"label": _("Address line 2"),
+"value": address_form.line2._value() | e
+},
+"town": {
+"label": _("Town or city"),
+"value": address_form.town._value() | e
+},
+"postcode": {
+"label": _("Postcode"),
+"value": address_form.postcode._value() | e
+},
+"uprn": {
+"value": address_form.uprn._value() | e
+}
 } %}
-
 {% if answer.lookup_options and address_lookup_api_url %}
-{% set config = config | setAttributes({
+    {% set config = config | setAttributes({
     "label": {
-      "text": _("Enter address or postcode and select from results")
+    "text": _("Enter address or postcode and select from results")
     },
     "searchButton": _("Search for an address"),
     "manualLinkText": _("Manually enter address"),
@@ -58,13 +55,12 @@
     "errorMessageAPI": _("Sorry, there was a problem loading addresses"),
     "errorMessageAPILinkText": _("Enter address manually"),
     "options": {
-        "regionCode": answer.lookup_options.region_code | lower,
-        "oneYearAgo": answer.lookup_options.one_year_ago if answer.lookup_options.one_year_ago is defined,
-        "addressType": answer.lookup_options.address_type | lower
+    "regionCode": answer.lookup_options.region_code | lower,
+    "oneYearAgo": answer.lookup_options.one_year_ago if answer.lookup_options.one_year_ago is defined,
+    "addressType": answer.lookup_options.address_type | lower
     }
-  }) %}
+    }) %}
 {% else %}
-{% set config = config | setAttribute("manualEntry", true) %}
+    {% set config = config | setAttribute("manualEntry", true) %}
 {% endif %}
-
 {{ onsAddressInput(config) }}

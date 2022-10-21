@@ -2,63 +2,54 @@
 {% from "components/cookies-banner/_macro.njk" import onsCookiesBanner %}
 {% from "components/skip-to-content/_macro.njk" import onsSkipToContent %}
 {% from "components/timeout-modal/_macro.njk" import onsTimeoutModal %}
-
 {% set form = {
-  "attributes": {
-    "autocomplete": "off",
-    "novalidate": null
-  }
+"attributes": {
+"autocomplete": "off",
+"novalidate": null
+}
 } %}
-
 {% if previous_location_url %}
-{% set breadcrumbs = {
+    {% set breadcrumbs = {
     "ariaLabel": 'Previous',
     "itemsList": [
-      {
-        "url": previous_location_url,
-        "id": "top-previous",
-        "text": _("Previous"),
-        "attributes": {
-          "data-ga": 'click',
-          "data-ga-category": 'Navigation',
-          "data-ga-action": 'Previous link click'
-        }
-      }
+    {
+    "url": previous_location_url,
+    "id": "top-previous",
+    "text": _("Previous"),
+    "attributes": {
+    "data-ga": 'click',
+    "data-ga-category": 'Navigation',
+    "data-ga-action": 'Previous link click'
+    }
+    }
     ]
-  } %}
+    } %}
 {% endif %}
-
 {% if survey_title %}
-{% set full_page_title = page_title ~ " - " ~ survey_title %}
+    {% set full_page_title = page_title ~ " - " ~ survey_title %}
 {% else %}
-{% set full_page_title = page_title %}
+    {% set full_page_title = page_title %}
 {% endif %}
-
 {% set pageConfig = {
-  "title": full_page_title,
-  "header": page_header,
-  "serviceLinks": service_links,
-  "footer": footer,
-  "language": languages,
-  "cdn": {
-    "url": cdn_url
-  },
-  "breadcrumbs": breadcrumbs,
-  "cspNonce": csp_nonce
+"title": full_page_title,
+"header": page_header,
+"serviceLinks": service_links,
+"footer": footer,
+"language": languages,
+"cdn": {
+"url": cdn_url
+},
+"breadcrumbs": breadcrumbs,
+"cspNonce": csp_nonce
 } %}
-
 {% if theme %}
-{% do pageConfig.update({"theme":theme}) %}
+    {% do pageConfig.update({"theme":theme}) %}
 {% endif %}
-
 {% include "layouts/configs/_save-sign-out-button.html" %}
-
-
 {# if there is not a previous link add extra margin top to the page #}
 {% if not previous_location_url %}
-{% set pageClasses = pageClasses + " ons-u-mt-m" if pageClasses else "ons-u-mt-m" %}
+    {% set pageClasses = pageClasses + " ons-u-mt-m" if pageClasses else "ons-u-mt-m" %}
 {% endif %}
-
 {% block preHeader %}
     {% if include_csrf_token %}
         <input id="csrf_token"
@@ -66,10 +57,9 @@
                type="hidden"
                value="{{ csrf_token() }}"/>
     {% endif %}
-
     {% if cookie_settings_url and cookie_domain %}
-{{
-      onsCookiesBanner({
+        {{
+        onsCookiesBanner({
         "secondaryButtonUrl": cookie_settings_url,
         "statementTitle": _('Tell us whether you accept cookies'),
         "statementText": _("We use <a href='{cookie_settings_url}'>cookies to collect information</a> about how you use {cookie_domain}. We use this information to make the website work as well as possible and improve our services.").format(cookie_settings_url=cookie_settings_url, cookie_domain=cookie_domain),
@@ -77,11 +67,10 @@
         "primaryButtonText": _('Accept all cookies'),
         "secondaryButtonText": _('Set cookie preferences'),
         "confirmationButtonText": _('Hide'),
-      })
-    }}
+        })
+        }}
     {% endif %}
 {% endblock preHeader %}
-
 {% block head %}
     {% if google_tag_manager_id and google_tag_manager_auth %}
         <!--
@@ -89,7 +78,6 @@
     and triggers can be set up in Google Tag Manager
     -->
         <script nonce="{{ csp_nonce }}">dataLayer = {{ data_layer | tojson }}</script>
-
         <!-- Google Tag Manager -->
         <script nonce="{{ csp_nonce }}">
       function loadGTM() {
@@ -109,12 +97,11 @@
         <!-- End Google Tag Manager -->
     {% endif %}
 {% endblock head %}
-
 {% block bodyStart %}
     {% if google_tag_manager_id and google_tag_manager_auth %}
         <!-- Google Tag Manager (noscript) -->
         <noscript>
-          {# djlint:off H021 #}
+            {# djlint:off H021 #}
             <iframe src="https://www.googletagmanager.com/ns.html?id={{ google_tag_manager_id }}&gtm_auth={{ google_tag_manager_auth }}&gtm_cookies_win=x"
                     height="0"
                     width="0"
@@ -125,16 +112,14 @@
         <!-- End Google Tag Manager (noscript) -->
     {% endif %}
 {% endblock bodyStart %}
-
 {% block skipLink %}
-{{
+    {{
     onsSkipToContent({
-      "url": "#main-content",
-      "text": _("Skip to main content")
+    "url": "#main-content",
+    "text": _("Skip to main content")
     })
-  }}
+    }}
 {% endblock skipLink %}
-
 {% block scripts %}
     {% if config['EQ_ENABLE_LIVE_RELOAD'] %}
         <script nonce="{{ csp_nonce }}" id="__bs_script__">//<![CDATA[
@@ -143,26 +128,25 @@
 </script>
 {% endif %}
 {% endblock scripts %}
-
 {% block preFooter %}
 {% if session_expires_at %}
 {{
-      onsTimeoutModal({
-        "showModalTimeInSeconds": 60,
-        "serverSessionExpiryEndpoint": url_for('session.session_expiry'),
-        "sessionExpiresAt": session_expires_at,
-        "redirectUrl": url_for('session.get_session_expired'),
-        "title": _("You will be signed out soon"),
-        "textFirstLine": _("It appears you have been inactive for a while."),
-        "countdownText": _("To protect your information, your progress will be saved and you will be signed out in"),
-        "countdownExpiredText": _("You are being signed out"),
-        "btnText": _("Continue survey"),
-        "minutesTextSingular": _("minute"),
-        "minutesTextPlural": _("minutes"),
-        "secondsTextSingular": _("second"),
-        "secondsTextPlural": _("seconds"),
-        "endWithFullStop": true
-      })
-    }}
+onsTimeoutModal({
+"showModalTimeInSeconds": 60,
+"serverSessionExpiryEndpoint": url_for('session.session_expiry'),
+"sessionExpiresAt": session_expires_at,
+"redirectUrl": url_for('session.get_session_expired'),
+"title": _("You will be signed out soon"),
+"textFirstLine": _("It appears you have been inactive for a while."),
+"countdownText": _("To protect your information, your progress will be saved and you will be signed out in"),
+"countdownExpiredText": _("You are being signed out"),
+"btnText": _("Continue survey"),
+"minutesTextSingular": _("minute"),
+"minutesTextPlural": _("minutes"),
+"secondsTextSingular": _("second"),
+"secondsTextPlural": _("seconds"),
+"endWithFullStop": true
+})
+}}
 {% endif %}
 {% endblock preFooter %}

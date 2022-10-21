@@ -1,9 +1,7 @@
 {% extends "question.html" %}
-
 {% set save_on_signout = true %}
 {% set question = content.block.question %}
 {% set continue_button_text = _("Continue") %}
-
 {% block after_submit_button_content %}
     {% if show_contact_us_guidance %}
         <p class="ons-u-mt-xl">
