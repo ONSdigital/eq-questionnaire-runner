@@ -136,6 +136,43 @@ class SectionSummaryContext(Context):
         else:
             summary_elements = {}
 
+        all_groups = []
+        group_number = 0
+        for group in list(self.section["groups"]):
+
+            group_name = group["id"]
+            standard_group: list = []
+            list_collector_group = []
+            for block in group["blocks"]:
+                if block["type"] == "ListCollector":
+                    if standard_group:
+                        partial = {
+                            "id": f"{group_name}-{group_number}",
+                            "blocks": standard_group,
+                        }
+                        all_groups.append(partial)
+                        group_number += 1
+                    list_collector_group.append(block)
+                    partial = {
+                        "id": f"{group_name}-{group_number}",
+                        "blocks": list_collector_group,
+                    }
+                    all_groups.append(partial)
+                    group_number += 1
+                    list_collector_group = []
+                    standard_group = []
+
+                else:
+                    standard_group.append(block)
+
+            partial = {
+                "id": f"{group_name}-{group_number}",
+                "blocks": standard_group,
+                "title": group.get("title"),
+            }
+
+            all_groups.append(partial)
+
         groups = {
             "show_non_item_answers": show_non_item_answers,
             **collapsible,
@@ -155,7 +192,7 @@ class SectionSummaryContext(Context):
                     summary_elements,
                     return_to_block_id=None,
                 ).serialize()
-                for group in self.section["groups"]
+                for group in all_groups
             ],
         }
 
@@ -174,6 +211,7 @@ class SectionSummaryContext(Context):
             if summary_element["type"] == "List":
                 yield self._list_summary_element(summary_element)
 
+    # pylint: disable=too-many-locals
     def _list_summary_element(self, summary: dict[str, str]) -> Mapping[str, Any]:
         list_collector_block = None
         (
@@ -182,7 +220,8 @@ class SectionSummaryContext(Context):
             primary_person_edit_block_id,
             related_answers,
             answer_title,
-        ) = (None, None, None, None, None)
+            answer_focus,
+        ) = (None, None, None, None, None, None)
         current_list = self._list_store[summary["for_list"]]
 
         list_collector_blocks = list(
@@ -240,6 +279,9 @@ class SectionSummaryContext(Context):
                 else None
             )
 
+            if related_answers:
+                answer_focus = f"#{self._get_answer_id(list_collector_block)}"
+
             answer_title = (
                 self._get_answer_title(list_collector_block)
                 if related_answers
@@ -255,6 +297,7 @@ class SectionSummaryContext(Context):
                 "list_name": rendered_summary["for_list"],
                 "related_answers": related_answers,
                 "answer_title": answer_title,
+                "answer_focus": answer_focus,
                 **list_summary_context,
             }
 
@@ -407,3 +450,21 @@ class SectionSummaryContext(Context):
             return variant_label
 
         return list_collector_block["add_block"]["question"]["answers"][0]["label"]
+
+    def _get_answer_id(self, list_collector_block: Mapping[str, Any]) -> str:
+        if list_collector_block["add_block"].get("question_variants"):
+            variant_label = choose_variant(
+                list_collector_block["add_block"],
+                self._schema,
+                self._metadata,
+                self._response_metadata,
+                self._answer_store,
+                self._list_store,
+                variants_key="question_variants",
+                single_key="question",
+                current_location=self.current_location,
+            )["answers"][0]["id"]
+
+            return variant_label
+
+        return list_collector_block["add_block"]["question"]["answers"][0]["id"]

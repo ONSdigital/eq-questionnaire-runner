@@ -157,6 +157,7 @@ def test_context_for_section_list_summary(people_answer_store):
                 {
                     "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
                     "add_link_text": "Add someone to this " "household",
+                    "answer_focus": None,
                     "answer_title": None,
                     "empty_list_text": "There are no householders",
                     "list": {
@@ -188,6 +189,7 @@ def test_context_for_section_list_summary(people_answer_store):
                 {
                     "add_link": "/questionnaire/visitors/add-visitor/?return_to=section-summary",
                     "add_link_text": "Add another visitor to this " "household",
+                    "answer_focus": None,
                     "answer_title": None,
                     "empty_list_text": "There are no visitors",
                     "list": {
@@ -252,6 +254,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                 {
                     "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
                     "add_link_text": "Add another UK company or " "branch",
+                    "answer_focus": "#company-or-branch-name",
                     "answer_title": "Name of UK company or branch",
                     "empty_list_text": "No UK company or branch " "added",
                     "list": {
@@ -259,14 +262,14 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                         "list_items": [
                             {
                                 "edit_link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary",
-                                "item_title": "company a",
+                                "item_title": "company " "a",
                                 "list_item_id": "PlwgoG",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
                             },
                             {
                                 "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
-                                "item_title": "company b",
+                                "item_title": "company " "b",
                                 "list_item_id": "UHPLbX",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
@@ -284,7 +287,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                         {
                                             "currency": None,
                                             "id": "registration-number",
-                                            "label": "Registration number",
+                                            "label": "Registration " "number",
                                             "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=registration-n"
                                             "umber#registration-number",
                                             "type": "number",
@@ -324,7 +327,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                         {
                                             "currency": None,
                                             "id": "registration-number",
-                                            "label": "Registration number",
+                                            "label": "Registration " "number",
                                             "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=registration-n"
                                             "umber#registration-number",
                                             "type": "number",
@@ -361,26 +364,28 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                 }
             ],
             "groups": [
+                {"blocks": [], "id": "group-companies-0", "title": None},
                 {
                     "blocks": [
                         {
                             "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
-                            "add_link_text": "Add another UK company or branch",
-                            "answer_title": "Name of UK company or branch",
-                            "empty_list_text": "No UK company or branch added",
+                            "add_link_text": "Add another UK company " "or branch",
+                            "answer_focus": "#company-or-branch-name",
+                            "answer_title": "Name of UK company or " "branch",
+                            "empty_list_text": "No UK company or " "branch added",
                             "list": {
                                 "editable": True,
                                 "list_items": [
                                     {
                                         "edit_link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary",
-                                        "item_title": "company a",
+                                        "item_title": "company " "a",
                                         "list_item_id": "PlwgoG",
                                         "primary_person": False,
                                         "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
                                     },
                                     {
                                         "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
-                                        "item_title": "company b",
+                                        "item_title": "company " "b",
                                         "list_item_id": "UHPLbX",
                                         "primary_person": False,
                                         "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
@@ -398,7 +403,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                                 {
                                                     "currency": None,
                                                     "id": "registration-number",
-                                                    "label": "Registration number",
+                                                    "label": "Registration " "number",
                                                     "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=regist"
                                                     "ration-number#registration-number",
                                                     "type": "number",
@@ -438,7 +443,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                                 {
                                                     "currency": None,
                                                     "id": "registration-number",
-                                                    "label": "Registration number",
+                                                    "label": "Registration " "number",
                                                     "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=regist"
                                                     "ration-number#registration-number",
                                                     "type": "number",
@@ -474,9 +479,10 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                             "type": "List",
                         }
                     ],
-                    "id": "group-companies",
+                    "id": "group-companies-1",
                     "title": None,
-                }
+                },
+                {"blocks": [], "id": "group-companies-2", "title": None},
             ],
             "page_title": "General insurance business",
             "show_non_item_answers": True,
@@ -568,6 +574,7 @@ def test_context_for_driving_question_summary():
                 {
                     "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
                     "add_link_text": "Add someone to this " "household",
+                    "answer_focus": None,
                     "answer_title": None,
                     "empty_list_text": "There are no householders",
                     "list": {
@@ -726,7 +733,7 @@ def test_primary_links_for_section_summary(people_answer_store):
         {
             "add_block": {
                 "question_variants": [
-                    {"question": {"answers": [{"label": "answer_title"}]}}
+                    {"question": {"answers": [{"label": "Test Title"}]}}
                 ]
             }
         },
@@ -737,5 +744,24 @@ def test_answer_titles_for_variants(add_block):
         SectionSummaryContext._get_answer_title(  # pylint: disable=protected-access
             MagicMock(), add_block
         )
-        == "answer_title"
+        == "Test Title"
+    )
+
+
+@pytest.mark.parametrize(
+    "list_collector_block",
+    (
+        {
+            "add_block": {
+                "question_variants": [{"question": {"answers": [{"id": "test-id"}]}}]
+            }
+        },
+    ),
+)
+def test_get_answer_id(list_collector_block):
+    assert (
+        SectionSummaryContext._get_answer_id(  # pylint: disable=protected-access
+            MagicMock(), list_collector_block
+        )
+        == "test-id"
     )

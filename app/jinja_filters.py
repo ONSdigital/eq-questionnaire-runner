@@ -603,6 +603,7 @@ def map_summary_item_config(
                 remove_link_aria_label=remove_link_aria_label,
                 related_answers=block.get("related_answers"),
                 answer_title=block.get("answer_title"),
+                answer_focus=block.get("answer_focus"),
             )
             rows.extend(iter(list_collector_rows))
 
@@ -628,6 +629,7 @@ def map_list_collector_config(
     remove_link_aria_label: Optional[str] = None,
     related_answers: Optional[dict] = None,
     answer_title: Optional[str] = None,
+    answer_focus: Optional[str] = None,
 ) -> list[dict[str, list[dict[str, Any]]]]:
     rows = []
 
@@ -638,10 +640,16 @@ def map_list_collector_config(
         edit_link_aria_label_text = None
         remove_link_aria_label_text = None
 
+        url = (
+            f'{list_item.get("edit_link")}{answer_focus}'
+            if answer_focus
+            else list_item.get("edit_link")
+        )
+
         edit_link = {
             "text": edit_link_text,
             "ariaLabel": edit_link_aria_label_text,
-            "url": list_item.get("edit_link"),
+            "url": url,
             "attributes": {"data-qa": f"list-item-change-{index}-link"},
         }
 
