@@ -622,7 +622,7 @@ def write_summary_spec(
         else:
             page_spec.write(LIST_SECTION_SUMMARY_LABEL_GETTER.substitute(list_context))
 
-    for index, group in enumerate(section["groups"]):
+    for group in section["groups"]:
         for block in group["blocks"]:
             for question in get_all_questions(block):
                 question_context = {
@@ -651,7 +651,7 @@ def write_summary_spec(
         if not collapsible:
             group_context = {
                 "group_id_camel": camel_case(generate_pascal_case_from_id(group["id"])),
-                "group_id": f'{group["id"]}-{index}',
+                "group_id": f'{group["id"]}-0',
             }
             page_spec.write(SUMMARY_TITLE_GETTER.substitute(group_context))
 
