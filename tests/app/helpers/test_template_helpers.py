@@ -128,6 +128,26 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             },
         ),
         (
+            SurveyType.HEALTH,
+            None,
+            SocialSurveyConfig(),
+            {
+                "orgLogo": "ons-logo-en",
+                "orgLogoAlt": "Office for National Statistics logo",
+                "title": "ONS Social Surveys"
+            },
+        ),
+        (
+            SurveyType.HEALTH,
+            "Test",
+            SocialSurveyConfig(),
+            {
+                "orgLogo": "ons-logo-en",
+                "orgLogoAlt": "Office for National Statistics logo",
+                "title": "Test",             
+            }
+        ),
+        (
             SurveyType.SOCIAL,
             None,
             SocialSurveyConfig(),
