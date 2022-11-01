@@ -134,7 +134,7 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             {
                 "orgLogo": "ons-logo-en",
                 "orgLogoAlt": "Office for National Statistics logo",
-                "title": "ONS Social Surveys"
+                "title": "ONS Social Surveys",
             },
         ),
         (
@@ -144,8 +144,8 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             {
                 "orgLogo": "ons-logo-en",
                 "orgLogoAlt": "Office for National Statistics logo",
-                "title": "Test",             
-            }
+                "title": "Test",
+            },
         ),
         (
             SurveyType.SOCIAL,
