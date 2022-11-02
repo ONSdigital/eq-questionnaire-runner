@@ -18,7 +18,7 @@ from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,
 )
-from app.submitter import converter_v2
+from app.submitter import GCSFeedbackSubmitter, LogFeedbackSubmitter, converter_v2
 from app.submitter.converter import (
     build_collection,
     build_metadata,
@@ -125,9 +125,8 @@ class Feedback:
             tx_id=tx_id, case_id=case_id, **additional_metadata
         )
 
-        if not current_app.eq["feedback_submitter"].upload(  # type: ignore
-            feedback_metadata, encrypted_message
-        ):
+        submitter: Union[GCSFeedbackSubmitter, LogFeedbackSubmitter] = current_app.eq["feedback_submitter"]  # type: ignore
+        if not submitter.upload(feedback_metadata(), encrypted_message):
             raise FeedbackUploadFailed()
 
         self._session_store.save()
