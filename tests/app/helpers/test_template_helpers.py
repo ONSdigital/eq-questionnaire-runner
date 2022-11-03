@@ -128,26 +128,6 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             },
         ),
         (
-            SurveyType.HEALTH,
-            None,
-            SocialSurveyConfig(),
-            {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "title": "ONS Social Surveys",
-            },
-        ),
-        (
-            SurveyType.HEALTH,
-            "Test",
-            SocialSurveyConfig(),
-            {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "title": "Test",
-            },
-        ),
-        (
             SurveyType.SOCIAL,
             None,
             SocialSurveyConfig(),
@@ -831,3 +811,14 @@ def test_include_csrf_token(app: Flask, include_csrf_token: bool):
         ).context["include_csrf_token"]
 
     assert result == include_csrf_token
+
+
+def test_health_survey_config(app: Flask):
+    with app.app_context():
+        survey_config = get_survey_config(
+            theme=SurveyType.HEALTH,
+            schema=QuestionnaireSchema({}),
+            language="en",
+        )
+
+    assert isinstance(survey_config, SocialSurveyConfig)
