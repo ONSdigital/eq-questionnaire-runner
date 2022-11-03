@@ -9,17 +9,13 @@
     "description": "A questionnaire to demo the health survey theme",
     "metadata": [
         {
-            "name": "user_id",
+            "name": "case_ref",
             "type": "string"
         },
         {
-            "name": "period_id",
+            "name": "questionnaire_id",
             "type": "string"
         },
-        {
-            "name": "ru_name",
-            "type": "string"
-        }
     ],
     "questionnaire_flow": {
         "type": "Linear",
