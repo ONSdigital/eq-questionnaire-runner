@@ -93,18 +93,6 @@
                             ]
                         },
                         {
-                            "id": "country-interstitial-india-or-azerbaijan",
-                            "type": "Interstitial",
-                            "content": {
-                                "title": "Condition: Submitted India or Azerbaijan",
-                                "contents": [
-                                    {
-                                        "description": "You submitted India or Azerbaijan."
-                                    }
-                                ]
-                            }
-                        },
-                        {
                             "id": "country-interstitial-georgia",
                             "type": "Interstitial",
                             "content": {
@@ -112,6 +100,18 @@
                                 "contents": [
                                     {
                                         "description": "You submitted Georgia."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "country-interstitial-india-or-azerbaijan",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "Condition: Submitted India or Azerbaijan",
+                                "contents": [
+                                    {
+                                        "description": "You submitted India or Azerbaijan."
                                     }
                                 ]
                             }

@@ -4,19 +4,22 @@ from flask import Blueprint, g, jsonify, redirect, request
 from flask import session as cookie_session
 from flask import url_for
 from flask_login import login_required, logout_user
-from marshmallow import ValidationError
+from marshmallow import INCLUDE, ValidationError
 from sdc.crypto.exceptions import InvalidTokenException
 from structlog import get_logger
 from werkzeug.exceptions import Unauthorized
 
+from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.authentication.authenticator import decrypt_token, store_session
 from app.authentication.jti_claim_storage import JtiTokenUsed, use_jti_claim
+from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_session_store, get_session_timeout_in_seconds
 from app.helpers.template_helpers import get_survey_config, render_template
 from app.routes.errors import _render_error_page
-from app.utilities.metadata_parser import (
+from app.utilities.metadata_parser import validate_runner_claims
+from app.utilities.metadata_parser_v2 import (
     validate_questionnaire_claims,
-    validate_runner_claims,
+    validate_runner_claims_v2,
 )
 from app.utilities.schema import load_schema_from_metadata
 
@@ -51,34 +54,47 @@ def login():
 
     validate_jti(decrypted_token)
 
-    try:
-        runner_claims = validate_runner_claims(decrypted_token)
-    except ValidationError as e:
-        raise InvalidTokenException("Invalid runner claims") from e
+    runner_claims = get_runner_claims(decrypted_token)
+
+    metadata = MetadataProxy.from_dict(runner_claims)
+
     # pylint: disable=assigning-non-slot
-    g.schema = load_schema_from_metadata(metadata=runner_claims)
+    g.schema = load_schema_from_metadata(metadata=metadata)
     schema_metadata = g.schema.json["metadata"]
 
-    try:
-        questionnaire_claims = validate_questionnaire_claims(
-            decrypted_token, schema_metadata
-        )
-    except ValidationError as e:
-        raise InvalidTokenException("Invalid questionnaire claims") from e
+    questionnaire_claims = get_questionnaire_claims(
+        decrypted_token=decrypted_token, schema_metadata=schema_metadata
+    )
 
-    claims = {**runner_claims, **questionnaire_claims}
+    if metadata.version is AuthPayloadVersion.V2:
+        if questionnaire_claims:
+            runner_claims["survey_metadata"]["data"] = questionnaire_claims
 
-    schema_name = claims["schema_name"]
+        ru_ref = questionnaire_claims.get("ru_ref")
+        questionnaire_id = questionnaire_claims.get("questionnaire_id")
+        claims = runner_claims
+    else:
+        ru_ref = runner_claims["ru_ref"]
+        questionnaire_id = None
+        claims = {**runner_claims, **questionnaire_claims}
+
     tx_id = claims["tx_id"]
-    ru_ref = claims["ru_ref"]
     case_id = claims["case_id"]
 
-    logger.bind(
-        schema_name=schema_name,
-        tx_id=tx_id,
-        ru_ref=ru_ref,
-        case_id=case_id,
-    )
+    logger_args = {
+        key: value
+        for key, value in {
+            "tx_id": tx_id,
+            "case_id": case_id,
+            "schema_name": metadata.schema_name,
+            "schema_url": metadata.schema_url,
+            "ru_ref": ru_ref,
+            "questionnaire_id": questionnaire_id,
+        }.items()
+        if value
+    }
+    logger.bind(**logger_args)
+
     logger.info("decrypted token and parsed metadata")
 
     store_session(claims)
@@ -151,3 +167,30 @@ def get_sign_out():
 @session_blueprint.route("/signed-out", methods=["GET"])
 def get_signed_out():
     return render_template(template="signed-out")
+
+
+def get_runner_claims(decrypted_token):
+    try:
+        if version := decrypted_token.get("version"):
+            if version == AuthPayloadVersion.V2.value:
+                return validate_runner_claims_v2(decrypted_token)
+
+            raise InvalidTokenException(f"Invalid runner claims version: {version}")
+
+        return validate_runner_claims(decrypted_token)
+    except ValidationError as e:
+        raise InvalidTokenException("Invalid runner claims") from e
+
+
+def get_questionnaire_claims(decrypted_token, schema_metadata):
+    try:
+        if decrypted_token.get("version") == AuthPayloadVersion.V2.value:
+            claims = decrypted_token.get("survey_metadata", {}).get("data", {})
+            return validate_questionnaire_claims(
+                claims, schema_metadata, unknown=INCLUDE
+            )
+
+        return validate_questionnaire_claims(decrypted_token, schema_metadata)
+
+    except ValidationError as e:
+        raise InvalidTokenException("Invalid questionnaire claims") from e

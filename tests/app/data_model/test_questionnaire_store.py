@@ -2,6 +2,7 @@ import pytest
 
 from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.utilities.json import json_dumps, json_loads
 
@@ -19,7 +20,7 @@ def test_questionnaire_store_json_loads(
     # When
     store = QuestionnaireStore(questionnaire_store.storage)
     # Then
-    assert store.metadata.copy() == basic_input["METADATA"]
+    assert store.metadata == MetadataProxy.from_dict(basic_input["METADATA"])
     assert store.response_metadata == basic_input["RESPONSE_METADATA"]
     assert store.answer_store == AnswerStore(basic_input["ANSWERS"])
     assert not hasattr(store, "NOT_A_LEGAL_TOP_LEVEL_KEY")
@@ -44,7 +45,7 @@ def test_questionnaire_store_missing_keys(questionnaire_store, basic_input):
     # When
     store = QuestionnaireStore(questionnaire_store.storage)
     # Then
-    assert store.metadata.copy() == basic_input["METADATA"]
+    assert store.metadata == MetadataProxy.from_dict(basic_input["METADATA"])
     assert store.response_metadata == basic_input["RESPONSE_METADATA"]
     assert store.answer_store == AnswerStore(basic_input["ANSWERS"])
     assert not store.progress_store.serialize()
@@ -96,7 +97,6 @@ def test_questionnaire_store_deletes(questionnaire_store, basic_input):
 
     # Then
     assert "a-test-section" not in store.progress_store
-    assert store.metadata.copy() == {}
     assert len(store.answer_store) == 0
     assert store.response_metadata == {}
 

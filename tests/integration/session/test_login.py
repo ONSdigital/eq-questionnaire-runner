@@ -41,6 +41,30 @@ class TestLoginWithGetRequest(IntegrationTestCase):
         self.assertStatusOK()
         self.assertInUrl("/questionnaire")
 
+    def test_login_with_valid_v2_business_token_should_redirect_to_survey(self):
+        # Given
+        token = self.token_generator.create_token_v2(schema_name="test_checkbox")
+
+        # When
+        self.get(url=f"/session?token={token}")
+
+        # Then
+        self.assertStatusOK()
+        self.assertInUrl("/questionnaire")
+
+    def test_login_with_valid_v2_social_token_should_redirect_to_survey(self):
+        # Given
+        token = self.token_generator.create_token_v2(
+            schema_name="test_theme_social", theme="social"
+        )
+
+        # When
+        self.get(url=f"/session?token={token}")
+
+        # Then
+        self.assertStatusOK()
+        self.assertInUrl("/questionnaire")
+
     def test_login_with_token_twice_is_unauthorised_when_same_jti_provided(self):
         # Given
         token = self.token_generator.create_token("test_checkbox")
@@ -63,6 +87,26 @@ class TestLoginWithGetRequest(IntegrationTestCase):
     def test_login_with_valid_token_no_schema_name(self):
         # Given
         token = self.token_generator.create_token("")
+
+        # When
+        self.get(url=f"/session?token={token}")
+
+        # Then
+        self.assertStatusForbidden()
+
+    def test_login_with_valid_v2_business_token_no_schema_name(self):
+        # Given
+        token = self.token_generator.create_token_v2(schema_name="")
+
+        # When
+        self.get(url=f"/session?token={token}")
+
+        # Then
+        self.assertStatusForbidden()
+
+    def test_login_with_valid_v2_social_token_no_schema_name(self):
+        # Given
+        token = self.token_generator.create_token_v2(schema_name="", theme="social")
 
         # When
         self.get(url=f"/session?token={token}")
@@ -99,6 +143,13 @@ class TestLoginWithGetRequest(IntegrationTestCase):
     def test_login_with_invalid_questionnaire_claims_should_be_forbidden(self):
         # flag_1 should be a boolean
         token = self.token_generator.create_token("test_metadata_routing", flag_1=123)
+
+        self.get(url=f"/session?token={token}")
+
+        self.assertStatusForbidden()
+
+    def test_login_with_invalid_version_should_be_forbidden(self):
+        token = self.token_generator.create_token_invalid_version("test_checkbox")
 
         self.get(url=f"/session?token={token}")
 
@@ -204,7 +255,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         token = self.token_generator.create_token("test_checkbox")
 
         # When
-        self.head("/session?token=" + token)
+        self.head(f"/session?token={token}")
         self.post(url=f"/session?token={token}")
 
         # Then
@@ -228,6 +279,40 @@ class TestLoginWithPostRequest(IntegrationTestCase):
     def test_login_with_invalid_questionnaire_claims_should_be_forbidden(self):
         # flag_1 should be a boolean
         token = self.token_generator.create_token("test_metadata_routing", flag_1=123)
+
+        self.post(url=f"/session?token={token}")
+
+        self.assertStatusForbidden()
+
+    def test_v2_business_login_with_invalid_questionnaire_claims_should_be_forbidden(
+        self,
+    ):
+        # flag_1 should be a boolean
+        token = self.token_generator.create_token_v2(
+            "test_metadata_routing", flag_1=123
+        )
+
+        self.post(url=f"/session?token={token}")
+
+        self.assertStatusForbidden()
+
+    def test_v2_social_login_with_invalid_questionnaire_claims_should_be_forbidden(
+        self,
+    ):
+        token = self.token_generator.create_token_v2(
+            schema_name="test_address", theme="social"
+        )
+
+        self.post(url=f"/session?token={token}")
+
+        self.assertStatusForbidden()
+
+    def test_v2_social_login_with_invalid_receipting_key_should_be_forbidden(self):
+        token = (
+            self.token_generator.create_token_v2_social_token_invalid_receipting_key(
+                "test_theme_social"
+            )
+        )
 
         self.post(url=f"/session?token={token}")
 

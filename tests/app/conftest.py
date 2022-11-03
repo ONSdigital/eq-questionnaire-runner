@@ -9,6 +9,7 @@ from mock import MagicMock
 from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
@@ -91,23 +92,27 @@ def fake_questionnaire_store():
     storage.get_user_data = MagicMock(return_value=("{}", "ce_sid", 1, None))
     storage.add_or_update = MagicMock()
     store = QuestionnaireStore(storage)
-    store.metadata = {
-        "schema_name": "test_checkbox",
-        "display_address": "68 Abingdon Road, Goathill",
-        "tx_id": "tx_id",
-        "language_code": "en",
-    }
+    store.metadata = MetadataProxy.from_dict(
+        {
+            "schema_name": "test_checkbox",
+            "display_address": "68 Abingdon Road, Goathill",
+            "tx_id": "tx_id",
+            "language_code": "en",
+        }
+    )
 
     return store
 
 
 @pytest.fixture
 def fake_metadata():
-    return {
-        "tx_id": "tx_id",
-        "language_code": "en",
-        "display_address": "68 Abingdon Road, Goathill",
-    }
+    return MetadataProxy.from_dict(
+        {
+            "tx_id": "tx_id",
+            "language_code": "en",
+            "display_address": "68 Abingdon Road, Goathill",
+        }
+    )
 
 
 @pytest.fixture

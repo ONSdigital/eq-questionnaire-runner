@@ -11,6 +11,7 @@ from app.questionnaire.location import Location
 from app.questionnaire.router import Router
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
+from tests.app.questionnaire.conftest import get_metadata
 
 
 class RouterTestCase:
@@ -18,7 +19,7 @@ class RouterTestCase:
     answer_store = AnswerStore()
     list_store = ListStore()
     progress_store = ProgressStore()
-    metadata = {}
+    metadata = get_metadata()
     response_metadata = {}
 
     @cached_property
