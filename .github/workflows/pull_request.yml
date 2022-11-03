@@ -6,6 +6,7 @@ on:
       - "master"
       - "branch-v*"
       - "bug-fix-*"
+      - "feature-*"
 
 jobs:
   python-dependencies:
