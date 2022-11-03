@@ -576,8 +576,8 @@ def test_account_service_log_out_url_context(
         (SurveyType.DEFAULT, "cy", SurveyConfig),
         (SurveyType.BUSINESS, "en", BusinessSurveyConfig),
         (SurveyType.BUSINESS, "cy", BusinessSurveyConfig),
-        (SurveyType.HEALTH, "en", SurveyConfig),
-        (SurveyType.HEALTH, "cy", SurveyConfig),
+        (SurveyType.HEALTH, "en", SocialSurveyConfig),
+        (SurveyType.HEALTH, "cy", SocialSurveyConfig),
         (SurveyType.SOCIAL, "en", SocialSurveyConfig),
         (SurveyType.SOCIAL, "cy", SocialSurveyConfig),
         (SurveyType.NORTHERN_IRELAND, "en", NorthernIrelandBusinessSurveyConfig),
@@ -813,14 +813,3 @@ def test_include_csrf_token(app: Flask, include_csrf_token: bool):
         ).context["include_csrf_token"]
 
     assert result == include_csrf_token
-
-
-def test_health_survey_config(app: Flask):
-    with app.app_context():
-        survey_config = get_survey_config(
-            theme=SurveyType.HEALTH,
-            schema=QuestionnaireSchema({}),
-            language="en",
-        )
-
-    assert isinstance(survey_config, SocialSurveyConfig)
