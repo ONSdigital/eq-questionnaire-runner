@@ -15,7 +15,7 @@
         {
             "name": "questionnaire_id",
             "type": "string"
-        },
+        }
     ],
     "questionnaire_flow": {
         "type": "Linear",
