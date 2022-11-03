@@ -189,7 +189,7 @@ def survey_config_mapping(
     survey_type_to_config: dict[SurveyType, Type[SurveyConfig]] = {
         SurveyType.DEFAULT: BusinessSurveyConfig,
         SurveyType.BUSINESS: BusinessSurveyConfig,
-        SurveyType.HEALTH: SurveyConfig,
+        SurveyType.HEALTH: SocialSurveyConfig,
         SurveyType.SOCIAL: SocialSurveyConfig,
         SurveyType.NORTHERN_IRELAND: NorthernIrelandBusinessSurveyConfig,
         SurveyType.CENSUS: (
