@@ -27,6 +27,7 @@ from tests.app.helpers.conftest import (
     expected_footer_social_theme,
     expected_footer_social_theme_no_cookie,
 )
+from tests.app.questionnaire.conftest import get_metadata
 
 DEFAULT_URL = "http://localhost"
 
@@ -57,6 +58,7 @@ def test_footer_context(app: Flask, theme, survey_config, expected_footer):
         if theme:
             cookie_session["theme"] = theme
         config = survey_config
+
         result = ContextHelper(
             language="en",
             is_post_submission=False,
@@ -330,7 +332,7 @@ def test_service_links_context(
         if is_authenticated:
             mocker.patch(
                 "app.helpers.template_helpers.get_metadata",
-                return_value={"ru_ref": "63782964754U"},
+                return_value=get_metadata({"ru_ref": "63782964754U", "tx_id": "tx_id"}),
             )
 
         result = ContextHelper(

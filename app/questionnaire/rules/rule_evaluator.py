@@ -3,6 +3,7 @@ from datetime import date
 from typing import Generator, Iterable, Mapping, Optional, Sequence, Union
 
 from app.data_models import AnswerStore, ListStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
@@ -22,7 +23,7 @@ class RuleEvaluator:
     schema: QuestionnaireSchema
     answer_store: AnswerStore
     list_store: ListStore
-    metadata: Mapping
+    metadata: Optional[MetadataProxy]
     response_metadata: Mapping
     location: Union[None, Location, RelationshipLocation]
     routing_path_block_ids: Optional[list] = None

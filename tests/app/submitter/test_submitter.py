@@ -212,6 +212,47 @@ def test_gcs_submitter_adds_metadata_when_sends_message(patch_gcs_client):
     }
 
 
+def test_gcs_submitter_adds_additional_keys_to_metadata_when_set(patch_gcs_client):
+    gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
+
+    # When
+    gcs_submitter.send_message(
+        message={"test_data"}, tx_id="123", case_id="456", **{"questionnaire_id": "1"}
+    )
+
+    # Then
+    bucket = patch_gcs_client.return_value.get_bucket.return_value
+    blob = bucket.blob.return_value
+
+    assert blob.metadata == {
+        "tx_id": "123",
+        "case_id": "456",
+        "questionnaire_id": "1",
+    }
+
+
+def test_gcs_feedback_submitter_adds_additional_keys_to_metadata_when_set(
+    patch_gcs_client,
+):
+    gcs_submitter = GCSFeedbackSubmitter(bucket_name="test_bucket")
+
+    # When
+    gcs_submitter.upload(
+        payload=json_dumps({"some-data": "some-value"}),
+        metadata={"tx_id": "123", "case_id": "456", "questionnaire_id": "1"},
+    )
+
+    # Then
+    bucket = patch_gcs_client.return_value.get_bucket.return_value
+    blob = bucket.blob.return_value
+
+    assert blob.metadata == {
+        "tx_id": "123",
+        "case_id": "456",
+        "questionnaire_id": "1",
+    }
+
+
 @pytest.mark.parametrize(
     "submitter, entrypoint, data_to_upload",
     [

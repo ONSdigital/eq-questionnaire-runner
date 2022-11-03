@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Any, Mapping
+from typing import Mapping
 
 from flask import current_app, url_for
 from flask_babel import gettext, lazy_gettext
@@ -15,6 +15,7 @@ from app.data_models import (
     SessionData,
     SessionStore,
 )
+from app.data_models.metadata_proxy import MetadataProxy
 from app.forms.questionnaire_form import generate_form
 from app.helpers import url_safe_serializer
 from app.questionnaire import QuestionnaireSchema, QuestionSchemaType
@@ -157,17 +158,17 @@ class ConfirmEmail:
 class ConfirmationEmailFulfilmentRequest(FulfilmentRequest):
     email_address: str
     session_data: SessionData
-    metadata: Mapping[str, Any]
+    metadata: MetadataProxy
     schema: QuestionnaireSchema
 
     def _payload(self) -> Mapping:
         return {
             "fulfilmentRequest": {
                 "email_address": self.email_address,
-                "display_address": self.metadata.get("display_address"),
+                "display_address": self.metadata["display_address"],
                 "form_type": self.schema.form_type,
                 "language_code": self.session_data.language_code,
                 "region_code": self.schema.region_code,
-                "tx_id": self.metadata["tx_id"],
+                "tx_id": self.metadata.tx_id,
             }
         }
