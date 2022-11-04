@@ -71,11 +71,11 @@ def login():
             runner_claims["survey_metadata"]["data"] = questionnaire_claims
 
         ru_ref = questionnaire_claims.get("ru_ref")
-        questionnaire_id = questionnaire_claims.get("questionnaire_id")
+        qid = questionnaire_claims.get("qid")
         claims = runner_claims
     else:
         ru_ref = runner_claims["ru_ref"]
-        questionnaire_id = None
+        qid = None
         claims = {**runner_claims, **questionnaire_claims}
 
     tx_id = claims["tx_id"]
@@ -89,7 +89,7 @@ def login():
             "schema_name": metadata.schema_name,
             "schema_url": metadata.schema_url,
             "ru_ref": ru_ref,
-            "questionnaire_id": questionnaire_id,
+            "qid": qid,
         }.items()
         if value
     }

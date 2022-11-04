@@ -55,9 +55,9 @@ PAYLOAD_V2_SOCIAL = {
     "survey_metadata": {
         "data": {
             "case_ref": "1000000000000001",
-            "questionnaire_id": str(uuid4()),
+            "qid": str(uuid4()),
         },
-        "receipting_keys": ["questionnaire_id"],
+        "receipting_keys": ["qid"],
     },
     "collection_exercise_sid": "789",
     "response_id": "1234567890123456",
@@ -150,7 +150,7 @@ class TokenGenerator:
         payload_vars = self._get_payload_with_params(
             schema_name=schema_name, payload=PAYLOAD_V2_SOCIAL, **extra_payload
         )
-        del payload_vars["survey_metadata"]["data"]["questionnaire_id"]
+        del payload_vars["survey_metadata"]["data"]["qid"]
 
         return self.generate_token(payload_vars)
 
