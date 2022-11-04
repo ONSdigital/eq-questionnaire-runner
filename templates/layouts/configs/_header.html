@@ -29,8 +29,14 @@
 {% endif %}
 
 {% do pageConfig | setAttribute("header", {
-    "title": survey_title | default("ONS Surveys"),
+    "title": survey_title,
     "signoutButton": signout_button,
     "language": languages,
-    "serviceLinks": service_links
+    "serviceLinks": service_links,
+    "orgLogo": orgLogo,
+    "orgLogoAlt": orgLogoAlt,
+    "titleLogo": titleLogo,
+    "titleLogoAlt": titleLogoAlt,
+    "customHeaderLogo": customHeaderLogo,
+    "orgMobileLogo": orgMobileLogo
 }) %}
