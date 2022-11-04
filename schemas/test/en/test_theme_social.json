@@ -9,7 +9,7 @@
     "description": "A questionnaire to demo the social survey theme",
     "metadata": [
         {
-            "name": "questionnaire_id",
+            "name": "qid",
             "type": "string"
         }
     ],

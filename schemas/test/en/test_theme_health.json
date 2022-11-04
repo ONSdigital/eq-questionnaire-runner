@@ -9,7 +9,7 @@
     "description": "A questionnaire to demo the health survey theme",
     "metadata": [
         {
-            "name": "questionnaire_id",
+            "name": "qid",
             "type": "string"
         }
     ],
