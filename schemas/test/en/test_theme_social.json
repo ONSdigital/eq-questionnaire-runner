@@ -9,10 +9,6 @@
     "description": "A questionnaire to demo the social survey theme",
     "metadata": [
         {
-            "name": "case_ref",
-            "type": "string"
-        },
-        {
             "name": "qid",
             "type": "string"
         }
