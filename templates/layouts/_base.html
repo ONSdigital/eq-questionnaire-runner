@@ -35,11 +35,7 @@
 {% endif %}
 
 {% set pageConfig = {
-  "title": full_page_title,
-  "header": page_header,
-  "serviceLinks": service_links,
   "footer": footer,
-  "language": languages,
   "cdn": {
     "url": cdn_url
   },
@@ -51,7 +47,7 @@
   {% do pageConfig.update({"theme":theme}) %}
 {% endif %}
 
-{% include 'layouts/configs/_save-sign-out-button.html' %}
+{% include 'layouts/configs/_header.html' %}
 
 
 {# if there is not a previous link add extra margin top to the page #}
