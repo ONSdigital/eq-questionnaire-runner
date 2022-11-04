@@ -183,9 +183,9 @@ function getSurveyMetadata(theme, userId, displayAddress, periodId, periodStr) {
     surveyMetadata = {
       data: {
         case_ref: "1000000000000001",
-        questionnaire_id: "1000000000000001",
+        qid: "1000000000000001",
       },
-      receipting_keys: ["questionnaire_id"],
+      receipting_keys: ["qid"],
     };
   } else {
     surveyMetadata = {

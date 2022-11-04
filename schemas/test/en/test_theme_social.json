@@ -13,7 +13,7 @@
             "type": "string"
         },
         {
-            "name": "questionnaire_id",
+            "name": "qid",
             "type": "string"
         }
     ],

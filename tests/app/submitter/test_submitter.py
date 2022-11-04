@@ -217,7 +217,7 @@ def test_gcs_submitter_adds_additional_keys_to_metadata_when_set(patch_gcs_clien
 
     # When
     gcs_submitter.send_message(
-        message={"test_data"}, tx_id="123", case_id="456", **{"questionnaire_id": "1"}
+        message={"test_data"}, tx_id="123", case_id="456", **{"qid": "1"}
     )
 
     # Then
@@ -227,7 +227,7 @@ def test_gcs_submitter_adds_additional_keys_to_metadata_when_set(patch_gcs_clien
     assert blob.metadata == {
         "tx_id": "123",
         "case_id": "456",
-        "questionnaire_id": "1",
+        "qid": "1",
     }
 
 
@@ -239,7 +239,7 @@ def test_gcs_feedback_submitter_adds_additional_keys_to_metadata_when_set(
     # When
     gcs_submitter.upload(
         payload=json_dumps({"some-data": "some-value"}),
-        metadata={"tx_id": "123", "case_id": "456", "questionnaire_id": "1"},
+        metadata={"tx_id": "123", "case_id": "456", "qid": "1"},
     )
 
     # Then
@@ -249,7 +249,7 @@ def test_gcs_feedback_submitter_adds_additional_keys_to_metadata_when_set(
     assert blob.metadata == {
         "tx_id": "123",
         "case_id": "456",
-        "questionnaire_id": "1",
+        "qid": "1",
     }
 
 

@@ -417,7 +417,7 @@ def test_valid_v2_social_claims():
 def test_invalid_v2_social_claims_missing_receipting_key_raises_error():
     metadata = get_metadata_social()
 
-    del metadata["survey_metadata"]["data"]["questionnaire_id"]
+    del metadata["survey_metadata"]["data"]["qid"]
 
     with pytest.raises(ValidationError):
         validate_runner_claims_v2(metadata)
