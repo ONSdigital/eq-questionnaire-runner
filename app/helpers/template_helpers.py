@@ -61,7 +61,6 @@ class ContextHelper:
             "account_service_todo_url": self._survey_config.account_service_todo_url,
             "contact_us_url": self._survey_config.contact_us_url,
             "thank_you_url": url_for("post_submission.get_thank_you"),
-            "page_header": self.page_header_context,
             "service_links": self.service_links_context,
             "footer": self.footer_context,
             "languages": get_languages_context(self._language),
