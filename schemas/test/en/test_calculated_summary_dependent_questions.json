@@ -8,9 +8,7 @@
     "description": "A schema to showcase Calculated Summary with dependent questions.",
     "questionnaire_flow": {
         "type": "Linear",
-        "options": {
-
-        }
+        "options": {}
     },
     "sections": [
         {
@@ -142,10 +140,7 @@
                             "title": "We have calculated your total spend to be <em>%(total)s</em>. Is this correct?",
                             "calculation": {
                                 "calculation_type": "sum",
-                                "answers_to_calculate": [
-                                    "answer-1",
-                                    "answer-3"
-                                ],
+                                "answers_to_calculate": ["answer-1", "answer-3"],
                                 "title": "Total capital expenditure"
                             }
                         }
