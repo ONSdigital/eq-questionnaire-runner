@@ -697,7 +697,7 @@ def map_list_collector_config(
         rows.append({"rowItems": [row_items]})
 
         if related_answers:
-            for block in related_answers.get(list_item["list_item_id"]):  # type: ignore
+            for block in related_answers[list_item["list_item_id"]]:
                 summary_row = SummaryRow(
                     block["question"],
                     summary_type="SectionSummary",
