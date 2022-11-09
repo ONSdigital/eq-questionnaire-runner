@@ -102,8 +102,6 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             BusinessSurveyConfig(),
             {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
                 "title": "ONS Business Surveys",
             },
         ),
@@ -112,8 +110,6 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             "Test",
             BusinessSurveyConfig(),
             {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
                 "title": "Test",
             },
         ),
@@ -122,8 +118,6 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             BusinessSurveyConfig(),
             {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
                 "title": "ONS Surveys",
             },
         ),
@@ -132,8 +126,6 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             SocialSurveyConfig(),
             {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
                 "title": "ONS Social Surveys",
             },
         ),
@@ -142,8 +134,6 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             "Test",
             SocialSurveyConfig(),
             {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
                 "title": "Test",
             },
         ),
@@ -152,8 +142,6 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             SocialSurveyConfig(),
             {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
                 "title": "ONS Surveys",
             },
         ),
@@ -163,10 +151,6 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             CensusSurveyConfig(),
             {
                 "title": "Census 2021",
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "titleLogo": "census-logo-en",
-                "titleLogoAlt": "Census 2021",
             },
         ),
         (
@@ -175,10 +159,6 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             CensusSurveyConfig(),
             {
                 "title": "Test",
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "titleLogo": "census-logo-en",
-                "titleLogoAlt": "Census 2021",
             },
         ),
         (
@@ -187,10 +167,6 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             CensusSurveyConfig(),
             {
                 "title": "ONS Surveys",
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "titleLogo": "census-logo-en",
-                "titleLogoAlt": "Census 2021",
             },
         ),
         (
@@ -198,12 +174,6 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             CensusNISRASurveyConfig(),
             {
-                "orgLogo": "nisra-logo",
-                "orgLogoAlt": "Northern Ireland Statistics and Research Agency logo",
-                "titleLogo": "census-logo-en",
-                "titleLogoAlt": "Census 2021",
-                "customHeaderLogo": True,
-                "orgMobileLogo": "nisra-logo-mobile",
                 "title": "Census 2021",
             },
         ),
@@ -212,12 +182,6 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             CensusNISRASurveyConfig(),
             {
-                "orgLogo": "nisra-logo",
-                "orgLogoAlt": "Northern Ireland Statistics and Research Agency logo",
-                "titleLogo": "census-logo-en",
-                "titleLogoAlt": "Census 2021",
-                "customHeaderLogo": True,
-                "orgMobileLogo": "nisra-logo-mobile",
                 "title": "ONS Surveys",
             },
         ),
@@ -226,8 +190,6 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             SurveyConfig(),
             {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
                 "title": "ONS Surveys",
             },
         ),

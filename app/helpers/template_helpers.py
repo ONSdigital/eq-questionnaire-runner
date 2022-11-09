@@ -74,12 +74,8 @@ class ContextHelper:
             "google_tag_manager_id": self._google_tag_manager_id,
             "google_tag_manager_auth": self._google_tag_manager_auth,
             "survey_type": self._survey_type,
-            "orgLogo": self._survey_config.page_header_logo,
-            "orgLogoAlt": self._survey_config.page_header_logo_alt,
-            "titleLogo": self._survey_config.title_logo,
-            "titleLogoAlt": self._survey_config.title_logo_alt,
-            "customHeaderLogo": self._survey_config.custom_header_logo,
-            "orgMobileLogo": self._survey_config.mobile_logo,
+            "mastheadLogo": self._survey_config.masthead_logo,
+            "mastheadLogoMobile": self._survey_config.masthead_logo_mobile,
         }
         if self._survey_type:
             context["cookie_settings_url"] = self._survey_config.cookie_settings_url
