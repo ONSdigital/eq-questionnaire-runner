@@ -219,13 +219,13 @@ class Router:
         if not return_to:
             return None
 
-        if (
-            return_to == "calculated-summary"
-            and return_to_block_id in routing_path
-            and self.can_access_location(
-                Location(block_id=return_to_block_id, section_id=location.section_id),
-                routing_path,
-            )
+        if return_to == "calculated-summary" and self.can_access_location(
+            Location(
+                block_id=return_to_block_id,
+                section_id=location.section_id,
+                list_item_id=location.list_item_id,
+            ),
+            routing_path,
         ):
             return url_for(
                 "questionnaire.block",

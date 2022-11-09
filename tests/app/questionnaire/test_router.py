@@ -546,7 +546,7 @@ class TestRouterNextLocation(RouterTestCase):
         assert expected_location_url == next_location_url
 
     @pytest.mark.usefixtures("app")
-    def test_return_to_calculated_summary_with_dependent_questions(self):
+    def test_return_to_calculated_summary_not_on_allowable_path(self):
         self.schema = load_schema_from_name(
             "test_calculated_summary_dependent_questions"
         )

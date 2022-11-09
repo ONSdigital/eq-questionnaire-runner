@@ -35,7 +35,7 @@
                                         "id": "answer-1",
                                         "mandatory": true,
                                         "type": "Currency",
-                                        "label": "Capital expenditure",
+                                        "label": "Money spent on food",
                                         "description": "Enter the full value",
                                         "minimum": {
                                             "value": 0,
@@ -59,7 +59,7 @@
                                         "id": "answer-2",
                                         "mandatory": true,
                                         "type": "Currency",
-                                        "label": "Capital expenditure",
+                                        "label": "Money spent on vegetables",
                                         "description": "Enter the full value",
                                         "minimum": {
                                             "value": 0,
@@ -90,7 +90,7 @@
                                         "id": "answer-3",
                                         "mandatory": true,
                                         "type": "Currency",
-                                        "label": "Capital expenditure",
+                                        "label": "Money spent on clothes",
                                         "description": "Enter the full value",
                                         "minimum": {
                                             "value": 0,
@@ -114,7 +114,7 @@
                                         "id": "answer-4",
                                         "mandatory": true,
                                         "type": "Currency",
-                                        "label": "Capital expenditure",
+                                        "label": "Money spent on shoes",
                                         "description": "Enter the full value",
                                         "minimum": {
                                             "value": 0,
@@ -150,9 +150,6 @@
         }
     ],
     "theme": "default",
-    "navigation": {
-        "visible": false
-    },
     "metadata": [
         {
             "name": "user_id",
@@ -165,29 +162,6 @@
         {
             "name": "ru_name",
             "type": "string"
-        },
-        {
-            "name": "ru_ref",
-            "type": "string"
-        },
-        {
-            "name": "ref_p_start_date",
-            "type": "date"
-        },
-        {
-            "name": "ref_p_end_date",
-            "type": "date"
         }
-    ],
-    "post_submission": {
-        "confirmation_email": true,
-        "feedback": true,
-        "view_response": true
-    },
-    "submission": {
-        "button": "Submit",
-        "title": "Check your answers and submit",
-        "warning": "You must submit this survey to complete it",
-        "guidance": "You will have the opportunity to view, save or print a copy of your answers after submitting this survey."
-    }
+    ]
 }
