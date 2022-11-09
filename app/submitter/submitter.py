@@ -32,20 +32,21 @@ class GCSSubmitter:
         self.bucket = client.get_bucket(bucket_name)
 
     def send_message(self, message: str, tx_id: str, case_id: str) -> bool:
+        logger.info("sending message")
+
+        blob = self.bucket.blob(tx_id)
+        blob.metadata = {"tx_id": tx_id, "case_id": case_id}
+
+        # DEFAULT_RETRY is not idempotent.
+        # However, this behaviour was deemed acceptable for our use case.
         try:
-            logger.info("sending message")
-
-            blob = self.bucket.blob(tx_id)
-            blob.metadata = {"tx_id": tx_id, "case_id": case_id}
-
-            # DEFAULT_RETRY is not idempotent.
-            # However, this behaviour was deemed acceptable for our use case.
             blob.upload_from_string(str(message).encode("utf8"), retry=DEFAULT_RETRY)
+        except Forbidden as e:
+            if e == "google.api_core.exceptions.Forbidden.AccessDenied":
+                print("")
+                pass
 
-            return True
-        except Exception as e :
-            if e == "google.api_core.exceptions.Forbidden"
-
+        return True
 
 
 class RabbitMQSubmitter:
