@@ -3,6 +3,7 @@ from typing import Iterable, Mapping, MutableMapping, Optional
 
 from flask_babel import lazy_gettext
 
+from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.survey_config.link import Link
 from app.survey_config.survey_config import SurveyConfig
@@ -29,8 +30,20 @@ class SocialSurveyConfig(
                 }
             ]
 
+        language_code = (
+            self.schema.language_code if self.schema else DEFAULT_LANGUAGE_CODE
+        )
+
         if not self.account_service_log_out_url:
-            self.account_service_log_out_url: str = f"{self.base_url}/sign-in/logout"
+            self.account_service_log_out_url: str = (
+                f"{self.base_url}/{language_code}/start/"
+            )
+
+        self.contact_us_url: str = f"{self.base_url}/{language_code}/contact-us/"
+        self.cookie_settings_url: str = f"{self.base_url}/{language_code}/cookies/"
+        self.privacy_and_data_protection_url: str = (
+            f"{self.base_url}/{language_code}/privacy-and-data-protection/"
+        )
 
     def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
         links = [Link(lazy_gettext("What we do"), self.what_we_do_url).__dict__]

@@ -1,6 +1,7 @@
 from pytest import fixture
 
 from app.helpers.template_helpers import ContextHelper
+from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.survey_config.census_config import CY_BASE_URL, EN_BASE_URL
 
@@ -195,7 +196,7 @@ def expected_footer_social_theme():
                     },
                     {
                         "text": "Contact us",
-                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/contact-us/",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/{DEFAULT_LANGUAGE_CODE}/contact-us/",
                         "target": "_blank",
                     },
                     {
@@ -211,12 +212,12 @@ def expected_footer_social_theme():
                 "itemsList": [
                     {
                         "text": "Cookies",
-                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cookies/",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/{DEFAULT_LANGUAGE_CODE}/cookies/",
                         "target": "_blank",
                     },
                     {
                         "text": "Privacy and data protection",
-                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/privacy-and-data-protection/",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/{DEFAULT_LANGUAGE_CODE}/privacy-and-data-protection/",
                         "target": "_blank",
                     },
                 ]

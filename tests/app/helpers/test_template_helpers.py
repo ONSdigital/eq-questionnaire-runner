@@ -6,6 +6,7 @@ from flask import session as cookie_session
 
 from app.helpers.template_helpers import ContextHelper, get_survey_config
 from app.questionnaire import QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.survey_config import (
     BusinessSurveyConfig,
@@ -362,7 +363,7 @@ def test_service_links_context(
         ),
         (
             SocialSurveyConfig(),
-            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/contact-us/",
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/{DEFAULT_LANGUAGE_CODE}/contact-us/",
         ),
     ],
 )
@@ -418,7 +419,7 @@ def test_sign_out_button_text_context(
         (
             SocialSurveyConfig(),
             True,
-            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cookies/",
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/{DEFAULT_LANGUAGE_CODE}/cookies/",
         ),
         (SurveyConfig(), False, None),
     ],
@@ -556,7 +557,7 @@ def test_account_service_my_todo_url_context(
         ),
         (
             SocialSurveyConfig(),
-            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/sign-in/logout",
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/{DEFAULT_LANGUAGE_CODE}/start/",
         ),
     ],
 )
