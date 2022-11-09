@@ -438,7 +438,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
             "remove_link": "/nonprimary/remove",
             "edit_link": "/nonprimary/change",
             "primary_person": False,
-            "item_title": "Joe Bloggs",
+            "item_title": "Company A",
             "id": "nonprimary",
             "list_item_id": "VHoiow",
         },
@@ -471,8 +471,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                                 "unit": None,
                                 "unit_length": None,
                                 "currency": None,
-                                "link": "/questionnaire/companies/CewUqo/edit-company/?return_to=section-summary&return_to_answer_id=registration-number#regist"
-                                "ration-number",
+                                "link": "registration_edit_link_url",
                             },
                             {
                                 "id": "authorised-insurer-radio",
@@ -482,8 +481,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                                 "unit": None,
                                 "unit_length": None,
                                 "currency": None,
-                                "link": "/questionnaire/companies/CewUqo/edit-company/?return_to=section-summary&return_to_answer_id=authorised-insurer-radio#a"
-                                "uthorised-insurer-radio",
+                                "link": "authorised_edit_link_url",
                             },
                         ],
                     },
@@ -518,7 +516,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                         "data-list-item-id": "VHoiow",
                         "data-qa": "list-item-1-label",
                     },
-                    "valueList": [{"text": "Joe Bloggs"}],
+                    "valueList": [{"text": "Company A"}],
                 },
                 {
                     "actions": [
@@ -531,8 +529,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                                 "data-qa": "registration-number-edit",
                             },
                             "text": "edit_link_text",
-                            "url": "/questionnaire/companies/CewUqo/edit-company/?return_to=section-summary&return_to_answer_id=registration-number#registratio"
-                            "n-number",
+                            "url": "registration_edit_link_url",
                         }
                     ],
                     "attributes": {"data-qa": "registration-number"},
@@ -554,8 +551,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                                 "data-qa": "authorised-insurer-radio-edit",
                             },
                             "text": "edit_link_text",
-                            "url": "/questionnaire/companies/CewUqo/edit-company/?return_to=section-summary&return_to_answer_id=authorised-insurer-radio#author"
-                            "ised-insurer-radio",
+                            "url": "authorised_edit_link_url",
                         }
                     ],
                     "attributes": {"data-qa": "authorised-insurer-radio"},
@@ -794,13 +790,13 @@ def test_summary_item_config_with_list_collector():
                             "ariaLabel": "Change your answer for:",
                             "attributes": {"data-qa": "list-item-change-1-link"},
                             "text": "Change",
-                            "url": "/questionnaire/companies/vmmPmD/edit-company/?return_to=section-summary",
+                            "url": "change_link_url",
                         },
                         {
                             "ariaLabel": "Remove",
                             "attributes": {"data-qa": "list-item-remove-1-link"},
                             "text": "Remove {item_name}",
-                            "url": "/questionnaire/companies/vmmPmD/remove-company/?return_to=section-summary",
+                            "url": "remove_link_url",
                         },
                     ],
                     "iconType": "",
@@ -824,8 +820,7 @@ def test_summary_item_config_with_list_collector():
                                 "data-qa": "registration-number-edit",
                             },
                             "text": "Change",
-                            "url": "/questionnaire/companies/pRavxh/edit-company/?return_to=section-summary&return_to_answer_id=registration-number#registratio"
-                            "n-number",
+                            "url": "edit_link_url",
                         }
                     ],
                     "attributes": {"data-qa": "registration-number"},
@@ -847,8 +842,7 @@ def test_summary_item_config_with_list_collector():
                                 "data-qa": "authorised-insurer-radio-edit",
                             },
                             "text": "Change",
-                            "url": "/questionnaire/companies/pRavxh/edit-company/?return_to=section-summary&return_to_answer_id=authorised-insurer-radio#author"
-                            "ised-insurer-radio",
+                            "url": "edit_link_url",
                         }
                     ],
                     "attributes": {"data-qa": "authorised-insurer-radio"},
@@ -892,8 +886,7 @@ def test_summary_item_config_with_list_collector():
                                             "unit": None,
                                             "unit_length": None,
                                             "currency": None,
-                                            "link": "/questionnaire/companies/pRavxh/edit-company/?return_to=section-summary&return_to_answer_id=registration-n"
-                                            "umber#registration-number",
+                                            "link": "edit_link_url",
                                         },
                                         {
                                             "id": "authorised-insurer-radio",
@@ -906,8 +899,7 @@ def test_summary_item_config_with_list_collector():
                                             "unit": None,
                                             "unit_length": None,
                                             "currency": None,
-                                            "link": "/questionnaire/companies/pRavxh/edit-company/?return_to=section-summary&return_to_answer_id=authorised-ins"
-                                            "urer-radio#authorised-insurer-radio",
+                                            "link": "edit_link_url",
                                         },
                                     ],
                                 },
@@ -921,8 +913,8 @@ def test_summary_item_config_with_list_collector():
                                 "item_title": "Company A",
                                 "primary_person": False,
                                 "list_item_id": "vmmPmD",
-                                "edit_link": "/questionnaire/companies/vmmPmD/edit-company/?return_to=section-summary",
-                                "remove_link": "/questionnaire/companies/vmmPmD/remove-company/?return_to=section-summary",
+                                "edit_link": "change_link_url",
+                                "remove_link": "remove_link_url",
                             }
                         ],
                         "editable": True,
