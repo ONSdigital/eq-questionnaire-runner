@@ -568,7 +568,7 @@ class SummaryRow:
 @blueprint.app_template_filter()  # type: ignore
 def map_summary_item_config(
     group: SelectFieldBase._Option,
-    summary_type: str,
+    summary_type: SelectFieldBase._Option,
     answers_are_editable: bool,
     no_answer_provided: str,
     edit_link_text: str,
