@@ -511,13 +511,12 @@ class TestRouterNextLocation(RouterTestCase):
         self.schema = load_schema_from_name("test_calculated_summary")
 
         current_location = Location(
-            section_id="default-section", block_id="fifth-number-block"
+            section_id="default-section", block_id="second-number-block"
         )
 
         routing_path = RoutingPath(
             [
-                "fifth-number-block",
-                "sixth-number-block",
+                "second-number-block",
                 "currency-total-playback-skipped-fourth",
             ],
             section_id="default-section",
@@ -539,7 +538,50 @@ class TestRouterNextLocation(RouterTestCase):
             "questionnaire.block",
             list_item_id=expected_location.list_item_id,
             block_id=expected_location.block_id,
-            _anchor="first-number-answer",
+            return_to="calculated-summary",
+            return_to_answer_id="first-number-answer",
+            return_to_block_id="currency-total-playback-skipped-fourth",
+        )
+
+        assert expected_location_url == next_location_url
+
+    @pytest.mark.usefixtures("app")
+    def test_return_to_calculated_summary_not_on_allowable_path(self):
+        self.schema = load_schema_from_name(
+            "test_calculated_summary_dependent_questions"
+        )
+
+        current_location = Location(section_id="default-section", block_id="block-3")
+
+        routing_path = RoutingPath(
+            [
+                "block-3",
+                "block-4",
+                "calculated-summary-block",
+            ],
+            section_id="default-section",
+        )
+
+        next_location_url = self.router.get_next_location_url(
+            current_location,
+            routing_path,
+            return_to_answer_id="answer-3",
+            return_to="calculated-summary",
+            return_to_block_id="calculated-summary-block",
+        )
+
+        expected_location = Location(
+            section_id="default-section",
+            block_id="block-4",
+        )
+
+        expected_location_url = url_for(
+            "questionnaire.block",
+            list_item_id=expected_location.list_item_id,
+            block_id=expected_location.block_id,
+            return_to="calculated-summary",
+            return_to_answer_id="answer-3",
+            return_to_block_id="calculated-summary-block",
         )
 
         assert expected_location_url == next_location_url
@@ -736,13 +778,11 @@ class TestRouterPreviousLocation(RouterTestCase):
         self.schema = load_schema_from_name("test_calculated_summary")
 
         current_location = Location(
-            section_id="default-section", block_id="fifth-number-block"
+            section_id="default-section", block_id="second-number-block"
         )
 
         routing_path = RoutingPath(
             [
-                "fifth-number-block",
-                "sixth-number-block",
                 "currency-total-playback-skipped-fourth",
             ],
             section_id="default-section",
