@@ -93,6 +93,126 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
                 survey_config=CensusSurveyConfig(),
             ).context["footer"]["footerWarning"]
 
+@pytest.mark.parametrize(
+    "theme, survey_title, survey_config, expected",
+    (
+        (
+            SurveyType.BUSINESS,
+            None,
+            BusinessSurveyConfig(),
+            {
+                "title": "ONS Business Surveys",
+            },
+        ),
+        (
+            SurveyType.BUSINESS,
+            "Test",
+            BusinessSurveyConfig(),
+            {
+                "title": "Test",
+            },
+        ),
+        (
+            None,
+            None,
+            BusinessSurveyConfig(),
+            {
+                "title": "ONS Surveys",
+            },
+        ),
+        (
+            SurveyType.SOCIAL,
+            None,
+            SocialSurveyConfig(),
+            {
+                "title": "ONS Social Surveys",
+            },
+        ),
+        (
+            SurveyType.SOCIAL,
+            "Test",
+            SocialSurveyConfig(),
+            {
+                "title": "Test",
+            },
+        ),
+        (
+            None,
+            None,
+            SocialSurveyConfig(),
+            {
+                "title": "ONS Surveys",
+            },
+        ),
+        (
+            SurveyType.CENSUS,
+            None,
+            CensusSurveyConfig(),
+            {
+                "title": "Census 2021",
+            },
+        ),
+        (
+            SurveyType.CENSUS,
+            "Test",
+            CensusSurveyConfig(),
+            {
+                "title": "Test",
+            },
+        ),
+        (
+            None,
+            None,
+            CensusSurveyConfig(),
+            {
+                "title": "ONS Surveys",
+            },
+        ),
+        (
+            SurveyType.CENSUS_NISRA,
+            None,
+            CensusNISRASurveyConfig(),
+            {
+                "title": "Census 2021",
+            },
+        ),
+        (
+            None,
+            None,
+            CensusNISRASurveyConfig(),
+            {
+                "title": "ONS Surveys",
+            },
+        ),
+        (
+            None,
+            None,
+            SurveyConfig(),
+            {
+                "title": "ONS Surveys",
+            },
+        ),
+    ),
+)
+def test_get_page_header_context(
+    app: Flask, theme, survey_title, survey_config, expected
+):
+    with app.app_context():
+        for cookie_name, cookie_value in {
+            "theme": theme,
+            "survey_title": survey_title,
+        }.items():
+            if cookie_value:
+                cookie_session[cookie_name] = cookie_value
+
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["page_header"]
+
+    assert result == expected
 
 @pytest.mark.parametrize(
     "survey_config, is_authenticated, theme, expected",
