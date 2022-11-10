@@ -1,14 +1,12 @@
 from typing import Mapping, Optional
 from uuid import uuid4
 
-from google.api_core.exceptions import Forbidden 
+from google.api_core.exceptions import Forbidden
 from google.cloud import storage  # type: ignore
 from google.cloud.storage.retry import DEFAULT_RETRY
 from pika import BasicProperties, BlockingConnection, URLParameters
 from pika.exceptions import AMQPError, NackError, UnroutableError
 from structlog import get_logger
-
-from app.submitter.previously_submitted_exception import PreviouslySubmittedException
 
 logger = get_logger()
 
@@ -37,7 +35,6 @@ class GCSSubmitter:
     def send_message(self, message: str, tx_id: str, case_id: str) -> bool:
         logger.info("sending message")
 
-        tx_id = "cd7402f2-9bc9-4f68-982a-a4cdc375ce9a"    
         blob = self.bucket.blob(tx_id)
         blob.metadata = {"tx_id": tx_id, "case_id": case_id}
 
@@ -47,8 +44,8 @@ class GCSSubmitter:
             blob.upload_from_string(str(message).encode("utf8"), retry=DEFAULT_RETRY)
         except Forbidden as e:
             if "storage.objects.delete" in e.message:
-                logger.debug("Doubble Submission Found")
-        
+                logger.info("Doubble Submission found")
+
         return True
 
 
