@@ -40,7 +40,6 @@ class GCSSubmitter:
 
         # DEFAULT_RETRY is not idempotent.
         # However, this behaviour was deemed acceptable for our use case.
-        
         # GCS doesn't allow corrupted data to be uploaded so we can handle the double submission error
         try:
             blob.upload_from_string(str(message).encode("utf8"), retry=DEFAULT_RETRY)
