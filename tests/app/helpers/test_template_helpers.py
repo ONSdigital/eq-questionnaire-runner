@@ -93,6 +93,7 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
                 survey_config=CensusSurveyConfig(),
             ).context["footer"]["footerWarning"]
 
+
 @pytest.mark.parametrize(
     "theme, survey_title, survey_config, expected",
     (
@@ -213,6 +214,7 @@ def test_get_page_header_context(
         ).context["page_header"]
 
     assert result == expected
+
 
 @pytest.mark.parametrize(
     "survey_config, is_authenticated, theme, expected",
