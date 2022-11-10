@@ -16,8 +16,6 @@ NIR_BASE_URL = f"{EN_BASE_URL}/ni"
 class CensusSurveyConfig(
     SurveyConfig,
 ):
-    title_logo: str = "census-logo-en"
-    title_logo_alt: LazyString = lazy_gettext("Census 2021")
     base_url: str = EN_BASE_URL
     account_service_log_out_url: str = f"{base_url}/en/start"
     design_system_theme: str = "census"
@@ -88,7 +86,6 @@ class CensusSurveyConfig(
 class WelshCensusSurveyConfig(
     CensusSurveyConfig,
 ):
-    title_logo: str = "census-logo-cy"
     base_url: str = CY_BASE_URL
     account_service_log_out_url: str = f"{base_url}/en/start"
 

@@ -101,97 +101,73 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             SurveyType.BUSINESS,
             None,
             BusinessSurveyConfig(),
-            {
-                "title": "ONS Business Surveys",
-            },
+            "ONS Business Surveys",
         ),
         (
             SurveyType.BUSINESS,
             "Test",
             BusinessSurveyConfig(),
-            {
-                "title": "Test",
-            },
+            "Test",
         ),
         (
             None,
             None,
             BusinessSurveyConfig(),
-            {
-                "title": "ONS Surveys",
-            },
+            "ONS Surveys",
         ),
         (
             SurveyType.SOCIAL,
             None,
             SocialSurveyConfig(),
-            {
-                "title": "ONS Social Surveys",
-            },
+            "ONS Social Surveys",
         ),
         (
             SurveyType.SOCIAL,
             "Test",
             SocialSurveyConfig(),
-            {
-                "title": "Test",
-            },
+            "Test",
         ),
         (
             None,
             None,
             SocialSurveyConfig(),
-            {
-                "title": "ONS Surveys",
-            },
+            "ONS Surveys",
         ),
         (
             SurveyType.CENSUS,
             None,
             CensusSurveyConfig(),
-            {
-                "title": "Census 2021",
-            },
+            "Census 2021",
         ),
         (
             SurveyType.CENSUS,
             "Test",
             CensusSurveyConfig(),
-            {
-                "title": "Test",
-            },
+            "Test",
         ),
         (
             None,
             None,
             CensusSurveyConfig(),
-            {
-                "title": "ONS Surveys",
-            },
+            "ONS Surveys",
         ),
         (
             SurveyType.CENSUS_NISRA,
             None,
             CensusNISRASurveyConfig(),
-            {
-                "title": "Census 2021",
-            },
+            "Census 2021",
         ),
         (
             None,
             None,
             CensusNISRASurveyConfig(),
-            {
-                "title": "ONS Surveys",
-            },
+            "ONS Surveys",
         ),
         (
             None,
             None,
             SurveyConfig(),
-            {
-                "title": "ONS Surveys",
-            },
+            "ONS Surveys",
         ),
     ),
 )
@@ -211,7 +187,7 @@ def test_get_page_header_context(
             is_post_submission=False,
             include_csrf_token=True,
             survey_config=survey_config,
-        ).context["page_header"]
+        ).context["survey_title"]
 
     assert result == expected
 
