@@ -137,14 +137,8 @@ class ContextHelper:
         ):
             context["legal"] = [{"itemsList": footer_legal_links}]
 
-        if (
-            self._survey_config.powered_by_logo
-            or self._survey_config.powered_by_logo_alt
-        ):
-            context["poweredBy"] = {
-                "logo": self._survey_config.powered_by_logo,
-                "alt": self._survey_config.powered_by_logo_alt,
-            }
+        if self._survey_config.powered_by_logo:
+            context["poweredBy"] = (self._survey_config.powered_by_logo,)
 
         return context
 

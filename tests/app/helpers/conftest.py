@@ -299,10 +299,7 @@ def expected_footer_nisra_theme():
                 ]
             }
         ],
-        "poweredBy": {
-            "logo": "nisra-logo",
-            "alt": "NISRA - Northern Ireland Statistics and Research Agency",
-        },
+        "poweredBy": "nisra-logo",
     }
 
 

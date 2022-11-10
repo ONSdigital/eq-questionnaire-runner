@@ -30,7 +30,6 @@ class SurveyConfig:
     masthead_logo: Optional[str] = None
     masthead_logo_mobile: Optional[str] = None
     powered_by_logo: Optional[str] = None
-    powered_by_logo_alt: Optional[str] = None
     crest: bool = True
     footer_links: Optional[Iterable[MutableMapping]] = None
     footer_legal_links: Optional[Iterable[Mapping]] = None
