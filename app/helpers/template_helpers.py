@@ -6,7 +6,7 @@ from flask import render_template as flask_render_template
 from flask import request
 from flask import session as cookie_session
 from flask import url_for
-from flask_babel import get_locale, lazy_gettext
+from flask_babel import LazyString, get_locale, lazy_gettext
 from flask_login import current_user
 
 from app.globals import get_metadata, get_session_store
@@ -83,7 +83,7 @@ class ContextHelper:
             if self._survey_title:
                 context["survey_title"] = self._survey_title
             else:
-                context["survey_title"] = lazy_gettext("ONS Surveys"),
+                context["survey_title"] = "ONS Surveys"
 
         return context
 
