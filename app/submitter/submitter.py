@@ -39,8 +39,8 @@ class GCSSubmitter:
         blob.metadata = {"tx_id": tx_id, "case_id": case_id}
 
         # DEFAULT_RETRY is not idempotent.
-        # However, this behaviour was deemed acceptable for our use case.
-        # GCS doesn't allow corrupted data to be uploaded so we can handle the double submission error
+        # However, this behaviour was deemed acceptable for our use case.        
+        # Handles doubble submission error because GCS doesn't allow partial data to be uploaded  
         try:
             blob.upload_from_string(str(message).encode("utf8"), retry=DEFAULT_RETRY)
         except Forbidden as e:
