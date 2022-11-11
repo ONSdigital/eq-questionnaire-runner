@@ -40,7 +40,7 @@ class GCSSubmitter:
 
         # DEFAULT_RETRY is not idempotent.
         # However, this behaviour was deemed acceptable for our use case.
-        # Handles doubble submission error because GCS doesn't allow partial data to be uploaded
+        # Handles doubble submission error because GCS doesn't allow partial data to be uploaded.
         try:
             blob.upload_from_string(str(message).encode("utf8"), retry=DEFAULT_RETRY)
         except Forbidden as e:
