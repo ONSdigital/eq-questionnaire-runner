@@ -40,14 +40,14 @@ class GCSSubmitter:
 
         # DEFAULT_RETRY is not idempotent.
         # However, this behaviour was deemed acceptable for our use case.
-        # Handles doubble submission error because GCS doesn't allow partial data to be uploaded.
+        # Treats doubble submission error as successful because GCS doesn't allow partial data to be uploaded.
         try:
             blob.upload_from_string(str(message).encode("utf8"), retry=DEFAULT_RETRY)
         except Forbidden as e:
             if "storage.objects.delete" in e.message:
                 logger.info("Doubble Submission found")
             else:
-                logger.info("FORBIDDEN ERROR")
+                logger.debug("Forbidden Error")
 
         return True
 
