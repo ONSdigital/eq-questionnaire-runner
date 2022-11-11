@@ -310,3 +310,4 @@ def test_double_submission():
             tx_id="123",
             case_id="457"
         )
+        assert "Double Submission found"
