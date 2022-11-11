@@ -46,6 +46,8 @@ class GCSSubmitter:
         except Forbidden as e:
             if "storage.objects.delete" in e.message:
                 logger.info("Doubble Submission found")
+            else: 
+                logger.info("FORBIDDEN ERROR")
 
         return True
 
