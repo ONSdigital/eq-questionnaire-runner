@@ -45,7 +45,7 @@ class GCSSubmitter:
             blob.upload_from_string(str(message).encode("utf8"), retry=DEFAULT_RETRY)
         except Forbidden as e:
             if "storage.objects.delete" in e.message:
-                logger.info("Doubble Submission found")
+                logger.info("Double Submission found")
             else:
                 logger.debug("Forbidden Error")
 
