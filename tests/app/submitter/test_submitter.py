@@ -1,8 +1,9 @@
+import logging
 import uuid
 
 import pytest
 from pika.exceptions import AMQPError, NackError
-import logging
+
 from app.submitter import GCSFeedbackSubmitter, GCSSubmitter, RabbitMQSubmitter
 from app.utilities.json import json_dumps
 
@@ -302,5 +303,9 @@ def test_double_submission(caplog):
 
     with caplog.at_level(logging.INFO):
         gcs_submitter.send_message(message={"test_data"}, tx_id="123", case_id="456")
-        gcs_submitter.send_message(message={"other_test_data"}, tx_id="123", case_id="456")
-    assert "Questionnaire submission exists, ignoring delete operation error" in caplog.text
+        gcs_submitter.send_message(message={"test_data"}, tx_id="123", case_id="456")
+
+    assert (
+        "Questionnaire submission exists, ignoring delete operation error"
+        in caplog.text
+    )
