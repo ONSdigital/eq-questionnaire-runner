@@ -3,6 +3,7 @@ import uuid
 import pytest
 from google.api_core.exceptions import Forbidden
 from pika.exceptions import AMQPError, NackError
+
 from app.submitter import GCSFeedbackSubmitter, GCSSubmitter, RabbitMQSubmitter
 from app.utilities.json import json_dumps
 
@@ -296,6 +297,7 @@ def test_gcs_feedback_submitter_uploads_feedback(patch_gcs_client):
     )
     assert feedback_upload is True
 
+
 def test_double_submission():
     gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
 
@@ -305,9 +307,5 @@ def test_double_submission():
             tx_id="123",
             case_id="456",
         )
-        gcs_submitter.send_message(
-            message={"test_data"},
-            tx_id="123",
-            case_id="457"
-        )
-        assert "Double Submission found"
+        gcs_submitter.send_message(message={"test_data"}, tx_id="123", case_id="457")
+        assert "Questionnaire submission exists, ignoring delete operation error"
