@@ -302,10 +302,5 @@ def test_double_submission():
     gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
 
     with pytest.raises(Forbidden):
-        gcs_submitter.send_message(
-            message={"test_data"},
-            tx_id="123",
-            case_id="456",
-        )
+        gcs_submitter.send_message(message={"test_data"}, tx_id="123", case_id="456")
         gcs_submitter.send_message(message={"test_data"}, tx_id="123", case_id="457")
-        assert "Questionnaire submission exists, ignoring delete operation error"
