@@ -253,6 +253,37 @@ class TestFeedback(IntegrationTestCase):
         )
         self.assertInUrl("/submitted/feedback/sent")
 
+    def test_feedback_submission_v2_business(self):
+        # Given I submit the email confirmation form
+        self.launchSurveyV2(schema_name="test_feedback_email_confirmation")
+        self.post({"answer_id": "Yes"})
+        self.post()
+        self.post({"email": "email@example.com"})
+
+        # When I request the feedback page
+        self.get("/submitted/feedback/send")
+
+        # Then I am able to submit feedback
+        self.post(
+            {"feedback-type": "Page design and structure", "feedback-text": "Feedback"}
+        )
+        self.assertInUrl("/submitted/feedback/sent")
+
+    def test_feedback_submission_v2_social(self):
+        # Given I submit the email confirmation form
+        self.launchSurveyV2(schema_name="test_theme_social", theme="social")
+        self.post({"radio-answer": "Bacon"})
+        self.post()
+
+        # When I request the feedback page
+        self.get("/submitted/feedback/send")
+
+        # Then I am able to submit feedback
+        self.post(
+            {"feedback-type": "Page design and structure", "feedback-text": "Feedback"}
+        )
+        self.assertInUrl("/submitted/feedback/sent")
+
     def test_feedback_call_to_action_visible_on_email_confirmation(self):
         # Given I complete the survey
         self.launchSurvey("test_feedback_email_confirmation")

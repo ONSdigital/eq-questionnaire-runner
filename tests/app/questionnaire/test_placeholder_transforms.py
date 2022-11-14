@@ -490,6 +490,7 @@ def test_option_label_from_value_with_placeholder_label(
     option_label_from_value_schema,
 ):
     label_renderer = placeholder_renderer
+
     placeholder_transform = PlaceholderTransforms(
         language="en", schema=option_label_from_value_schema, renderer=label_renderer
     )

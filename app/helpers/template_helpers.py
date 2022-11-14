@@ -86,12 +86,16 @@ class ContextHelper:
     def service_links_context(
         self,
     ) -> Optional[dict[str, Union[dict[str, str], list[dict]]]]:
-        metadata = get_metadata(current_user)
+
+        ru_ref = (
+            metadata["ru_ref"] if (metadata := get_metadata(current_user)) else None
+        )
+
         if service_links := self._survey_config.get_service_links(
             sign_out_url=self._sign_out_url,
             is_authenticated=current_user.is_authenticated,
             cookie_has_theme=bool(self._survey_type),
-            ru_ref=metadata.get("ru_ref") if metadata else None,  # type: ignore
+            ru_ref=ru_ref,
         ):
             return {
                 "toggleServicesButton": {
@@ -107,8 +111,8 @@ class ContextHelper:
     def data_layer_context(
         self,
     ) -> list[dict]:
-        metadata = get_metadata(current_user)
-        tx_id = metadata.get("tx_id") if metadata else None
+        tx_id = metadata.tx_id if (metadata := get_metadata(current_user)) else None
+
         return self._survey_config.get_data_layer(tx_id=tx_id)
 
     @property
@@ -185,7 +189,7 @@ def survey_config_mapping(
     survey_type_to_config: dict[SurveyType, Type[SurveyConfig]] = {
         SurveyType.DEFAULT: BusinessSurveyConfig,
         SurveyType.BUSINESS: BusinessSurveyConfig,
-        SurveyType.HEALTH: SurveyConfig,
+        SurveyType.HEALTH: SocialSurveyConfig,
         SurveyType.SOCIAL: SocialSurveyConfig,
         SurveyType.NORTHERN_IRELAND: NorthernIrelandBusinessSurveyConfig,
         SurveyType.CENSUS: (
