@@ -298,15 +298,14 @@ def test_gcs_feedback_submitter_uploads_feedback(patch_gcs_client):
     assert feedback_upload is True
 
 
-def test_double_submission(patch_gcs_client):
+def test_double_submission(patch_gcs_client, mocker):
     # Given
     gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
-    patch_gcs_client.raiseError.side_effect = Forbidden("storage.objects.delete")
+    gcs_submitter.send_message = mocker.Mock(side_effect = Forbidden("storage.objects.delete"))
 
     # When
     published = gcs_submitter.send_message(
         message={"test_data"}, tx_id="123", case_id="456"
     )
-
-    # Then
-    assert published, "send_message should publish message"
+    # Then  
+    assert published

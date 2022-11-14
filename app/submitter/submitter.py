@@ -46,14 +46,13 @@ class GCSSubmitter:
             # If an object exists then the GCS Client will attempt to delete the existing object before reuploading.
             # However, runner does not delete permission in an attempt to reduce duplicate receipts.
             # The first version of the object is acceptable as it is an extreme edge case for two submissions to contain different response data.
-            if "storage.objects.delete" in e.message:
-                logger.info(
-                    "Questionnaire submission exists, ignoring delete operation error"
-                )
+            if "storage.objects.delete" not in e.message:
+                raise
 
-            raise
-
-        return True
+            logger.info(
+                "Questionnaire submission exists, ignoring delete operation error"
+            )
+            return True
 
 
 class RabbitMQSubmitter:
