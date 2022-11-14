@@ -2,6 +2,7 @@ import logging
 import uuid
 
 import pytest
+from google.cloud.storage.retry import DEFAULT_RETRY
 from pika.exceptions import AMQPError, NackError
 
 from app.submitter import GCSFeedbackSubmitter, GCSSubmitter, RabbitMQSubmitter
@@ -298,7 +299,7 @@ def test_gcs_feedback_submitter_uploads_feedback(patch_gcs_client):
     assert feedback_upload is True
 
 
-def test_double_submission(caplog):
+def test_double_submission(caplog,GCSSubmitter):
     gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
 
     with caplog.at_level(logging.INFO):
