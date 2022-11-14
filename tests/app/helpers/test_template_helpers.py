@@ -113,7 +113,7 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             None,
             BusinessSurveyConfig(),
-            "ONS Surveys",
+            "ONS Business Surveys",
         ),
         (
             SurveyType.SOCIAL,
@@ -131,7 +131,7 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             None,
             SocialSurveyConfig(),
-            "ONS Surveys",
+            "ONS Social Surveys",
         ),
         (
             SurveyType.CENSUS,
@@ -149,7 +149,7 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             None,
             CensusSurveyConfig(),
-            "ONS Surveys",
+            "Census 2021",
         ),
         (
             SurveyType.CENSUS_NISRA,
@@ -161,13 +161,13 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             None,
             CensusNISRASurveyConfig(),
-            "ONS Surveys",
+            "Census 2021",
         ),
         (
             None,
             None,
             SurveyConfig(),
-            "ONS Surveys",
+            None,
         ),
     ),
 )
