@@ -3,13 +3,14 @@ import time
 from functools import lru_cache
 from glob import glob
 from pathlib import Path
-from typing import Any, Mapping, Optional
+from typing import Mapping, Optional
 
 import requests
 from requests import RequestException
 from requests.adapters import HTTPAdapter, Retry
 from structlog import get_logger
 
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,
@@ -99,11 +100,12 @@ def get_allowed_languages(schema_name, launch_language):
 
 
 def load_schema_from_metadata(
-    metadata: Mapping[str, Any], *, language_code: Optional[str] = None
+    metadata: MetadataProxy, *, language_code: Optional[str] = None
 ) -> QuestionnaireSchema:
-    metadata = metadata or {}
-    language_code = language_code or metadata.get("language_code")
-    if schema_url := metadata.get("schema_url"):
+
+    language_code = language_code or metadata.language_code
+
+    if metadata and (schema_url := metadata.schema_url):
         # :TODO: Remove before production uses schema_url
         # This is temporary and is only for development/integration purposes.
         # This should not be used in production.
@@ -126,7 +128,8 @@ def load_schema_from_metadata(
         return schema
 
     return load_schema_from_name(
-        metadata.get("schema_name"), language_code=language_code
+        metadata.schema_name,
+        language_code=language_code,
     )
 
 

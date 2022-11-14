@@ -315,7 +315,7 @@ def get_answer_value(
 
 
 def get_metadata_value(metadata, key):
-    return metadata.get(key)
+    return metadata[key]
 
 
 def get_list_count(list_store, list_name):

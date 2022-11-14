@@ -28,11 +28,11 @@ def with_schema(function: Callable) -> Any:
         if not session_store or not session_store.session_data:
             raise Unauthorized
 
-        metadata = get_metadata(current_user) or {}
+        metadata = get_metadata(current_user)
         language_code = session_store.session_data.language_code
 
         schema = load_schema_from_metadata(
-            metadata=metadata, language_code=language_code
+            metadata=metadata, language_code=language_code  # type: ignore
         )
         return function(schema, *args, **kwargs)
 

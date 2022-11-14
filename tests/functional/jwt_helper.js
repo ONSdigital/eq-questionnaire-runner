@@ -61,6 +61,8 @@ export function getRandomString(length) {
 export function generateToken(
   schema,
   {
+    version,
+    theme,
     userId,
     collectionId,
     responseId,
@@ -68,12 +70,7 @@ export function generateToken(
     periodStr = "May 2016",
     regionCode = "GB-ENG",
     languageCode = "en",
-    sexualIdentity = false,
     includeLogoutUrl = true,
-    country = "",
-    locality = "",
-    townName = "",
-    postcode = "",
     displayAddress = "",
   }
 ) {
@@ -87,35 +84,57 @@ export function generateToken(
   };
 
   // Payload
-  const oPayload = {
-    tx_id: uuidv4(),
-    jti: uuidv4(),
-    iat: KJUR.jws.IntDate.get("now"),
-    exp: KJUR.jws.IntDate.get("now") + 1800,
-    user_id: userId,
-    case_id: uuidv4(),
-    ru_ref: "12346789012A",
-    response_id: responseId,
-    ru_name: "Apple",
-    trad_as: "Apple",
-    schema_name: `${schemaParts[1]}_${schemaParts[2]}`,
-    collection_exercise_sid: collectionId,
-    period_id: periodId,
-    period_str: periodStr,
-    ref_p_start_date: "2017-01-01",
-    ref_p_end_date: "2017-02-01",
-    employment_date: "2016-06-10",
-    return_by: "2017-03-01",
-    country,
-    locality,
-    town_name: townName,
-    postcode,
-    display_address: displayAddress,
-    region_code: regionCode,
-    language_code: languageCode,
-    sexual_identity: sexualIdentity,
-    account_service_url: "http://localhost:8000",
-  };
+  let payload = {};
+  const txId = uuidv4();
+  const jti = uuidv4();
+  const iat = KJUR.jws.IntDate.get("now");
+  const exp = KJUR.jws.IntDate.get("now") + 1800;
+  const caseId = uuidv4();
+
+  if (version === "v2") {
+    payload = {
+      tx_id: txId,
+      jti: jti,
+      iat: iat,
+      exp: exp,
+      case_id: caseId,
+      response_id: responseId,
+      schema_name: `${schemaParts[1]}_${schemaParts[2]}`,
+      collection_exercise_sid: collectionId,
+      region_code: regionCode,
+      language_code: languageCode,
+      account_service_url: "http://localhost:8000",
+      survey_metadata: getSurveyMetadata(theme, userId, displayAddress, periodId, periodStr),
+      version: "v2",
+    };
+  } else {
+    payload = {
+      tx_id: txId,
+      jti: jti,
+      iat: iat,
+      exp: exp,
+      user_id: userId,
+      case_id: caseId,
+      ru_ref: "12346789012A",
+      response_id: responseId,
+      ru_name: "Apple",
+      trad_as: "Apple",
+      schema_name: `${schemaParts[1]}_${schemaParts[2]}`,
+      collection_exercise_sid: collectionId,
+      period_id: periodId,
+      period_str: periodStr,
+      ref_p_start_date: "2017-01-01",
+      ref_p_end_date: "2017-02-01",
+      employment_date: "2016-06-10",
+      return_by: "2017-03-01",
+      display_address: displayAddress,
+      region_code: regionCode,
+      language_code: languageCode,
+      account_service_url: "http://localhost:8000",
+    };
+  }
+
+  const oPayload = payload;
 
   if (includeLogoutUrl) {
     oPayload.account_service_log_out_url = "http://localhost:8000";
@@ -155,4 +174,38 @@ export function generateToken(
 
       return token;
     });
+}
+
+function getSurveyMetadata(theme, userId, displayAddress, periodId, periodStr) {
+  let surveyMetadata = {};
+
+  if (theme === "social") {
+    surveyMetadata = {
+      data: {
+        case_ref: "1000000000000001",
+        qid: "1000000000000001",
+      },
+      receipting_keys: ["qid"],
+    };
+  } else {
+    surveyMetadata = {
+      survey_metadata: {
+        data: {
+          user_id: userId,
+          display_address: displayAddress,
+          ru_ref: "12346789012A",
+          period_id: periodId,
+          period_str: periodStr,
+          ref_p_start_date: "2017-01-01",
+          ref_p_end_date: "2017-02-01",
+          employment_date: "2016-06-10",
+          return_by: "2017-03-01",
+          ru_name: "Apple",
+          trad_as: "Apple",
+        },
+      },
+    };
+  }
+
+  return surveyMetadata;
 }

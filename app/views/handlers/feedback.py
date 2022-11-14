@@ -7,7 +7,9 @@ from flask_babel import gettext, lazy_gettext
 from sdc.crypto.encrypter import encrypt
 from werkzeug.datastructures import MultiDict
 
+from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.data_models import QuestionnaireStore
+from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.forms.questionnaire_form import QuestionnaireForm, generate_form
@@ -16,12 +18,14 @@ from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,
 )
+from app.submitter import GCSFeedbackSubmitter, LogFeedbackSubmitter, converter_v2
 from app.submitter.converter import (
     build_collection,
     build_metadata,
     get_optional_payload_properties,
 )
 from app.views.contexts.feedback_form_context import build_feedback_context
+from app.views.handlers.submission import get_receipting_metadata
 
 
 class FeedbackNotEnabled(Exception):
@@ -86,30 +90,43 @@ class Feedback:
         session_data: SessionData = self._session_store.session_data  # type: ignore
         session_data.feedback_count += 1
 
-        feedback_metadata = FeedbackMetadata(self._questionnaire_store.metadata["case_id"], self._questionnaire_store.metadata["tx_id"])  # type: ignore
+        metadata = self._questionnaire_store.metadata
+        if not metadata:
+            raise NoMetadataException  # pragma: no cover
+
+        case_id = metadata.case_id
+        tx_id = metadata.tx_id
 
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
-        feedback_message = FeedbackPayload(
-            metadata=self._questionnaire_store.metadata,
+        feedback_converter = (
+            FeedbackPayloadV2
+            if metadata.version is AuthPayloadVersion.V2
+            else FeedbackPayload
+        )
+        feedback_message = feedback_converter(
+            metadata=metadata,
             response_metadata=self._questionnaire_store.response_metadata,
             schema=self._schema,
-            case_id=self._questionnaire_store.metadata["case_id"],
+            case_id=case_id,
             submission_language_code=session_data.language_code,
             feedback_count=session_data.feedback_count,
             feedback_text=self.form.data.get("feedback-text"),
             feedback_type=self.form.data.get("feedback-type"),
         )
-        message = feedback_message()
-        metadata = feedback_metadata()
-        message.update(metadata)
+
         encrypted_message = encrypt(
-            message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION  # type: ignore
+            feedback_message(), current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION  # type: ignore
         )
 
-        if not current_app.eq["feedback_submitter"].upload(  # type: ignore
-            metadata, encrypted_message
-        ):
+        additional_metadata = get_receipting_metadata(metadata)
+
+        feedback_metadata = FeedbackMetadata(
+            tx_id=tx_id, case_id=case_id, **additional_metadata
+        )
+
+        submitter: Union[GCSFeedbackSubmitter, LogFeedbackSubmitter] = current_app.eq["feedback_submitter"]  # type: ignore
+        if not submitter.upload(feedback_metadata(), encrypted_message):
             raise FeedbackUploadFailed()
 
         self._session_store.save()
@@ -187,9 +204,12 @@ class Feedback:
 
 
 class FeedbackMetadata:
-    def __init__(self, case_id: str, tx_id: str):
+    def __init__(self, case_id: str, tx_id: str, **kwargs: dict):
         self.case_id = case_id
         self.tx_id = tx_id
+
+        for key, value in kwargs.items():
+            setattr(self, key, value)
 
     def __call__(self) -> dict[str, str]:
         return vars(self)
@@ -247,7 +267,7 @@ class FeedbackPayload:
 
     def __init__(
         self,
-        metadata: Mapping[str, Union[str, int, list]],
+        metadata: MetadataProxy,
         response_metadata: Mapping[str, Union[str, int, list]],
         schema: QuestionnaireSchema,
         case_id: Optional[str],
@@ -277,15 +297,89 @@ class FeedbackPayload:
             "submission_language_code": (
                 self.submission_language_code or DEFAULT_LANGUAGE_CODE
             ),
-            "tx_id": self.metadata["tx_id"],
+            "tx_id": self.metadata.tx_id,
             "type": "uk.gov.ons.edc.eq:feedback",
-            "launch_language_code": self.metadata.get(
-                "language_code", DEFAULT_LANGUAGE_CODE
-            ),
+            "launch_language_code": self.metadata.language_code
+            or DEFAULT_LANGUAGE_CODE,
             "version": "0.0.1",
         }
 
         optional_properties = get_optional_payload_properties(
+            self.metadata, self.response_metadata
+        )
+
+        payload["data"] = {
+            "feedback_text": self.feedback_text,
+            "feedback_type": self.feedback_type,
+            "feedback_count": str(self.feedback_count),
+        }
+
+        return payload | optional_properties
+
+
+class FeedbackPayloadV2:
+    """
+    Create the feedback payload object for down stream processing in the following format:
+    v0.0.1: https://github.com/ONSdigital/ons-schema-definitions/blob/main/examples/eq_runner_to_downstream/payload_v2/business/feedback_0_0_1.json
+    v0.0.3: https://github.com/ONSdigital/ons-schema-definitions/blob/main/examples/eq_runner_to_downstream/payload_v2/business/feedback_0_0_3.json
+    ```
+    :param metadata: Questionnaire metadata
+    :param response_metadata: Response metadata
+    :param schema: QuestionnaireSchema class with populated schema json
+    :param case_id: Questionnaire case id
+    :param submission_language_code: Language being used at the point of feedback submission
+    :param feedback_count: Number of feedback submissions attempted by the user
+    :param feedback_text: Feedback text input by the user
+    :param feedback_type: Type of feedback selected by the user
+
+
+    :return payload: Feedback payload object
+    """
+
+    def __init__(
+        self,
+        metadata: MetadataProxy,
+        response_metadata: Mapping[str, Union[str, int, list]],
+        schema: QuestionnaireSchema,
+        case_id: Optional[str],
+        submission_language_code: Optional[str],
+        feedback_count: int,
+        feedback_text: str,
+        feedback_type: str,
+    ):
+        self.metadata = metadata
+        self.response_metadata = response_metadata
+        self.case_id = case_id
+        self.schema = schema
+        self.submission_language_code = submission_language_code
+        self.feedback_count = feedback_count
+        self.feedback_text = feedback_text
+        self.feedback_type = feedback_type
+
+    def __call__(self) -> dict[str, Any]:
+        payload = {
+            "tx_id": self.metadata.tx_id,
+            "type": "uk.gov.ons.edc.eq:feedback",
+            "version": AuthPayloadVersion.V2.value,
+            "data_version": self.schema.json["data_version"],
+            "origin": "uk.gov.ons.edc.eq",
+            "flushed": False,
+            "submitted_at": datetime.now(tz=timezone.utc).isoformat(),
+            "launch_language_code": self.metadata.language_code
+            or DEFAULT_LANGUAGE_CODE,
+            "submission_language_code": (
+                self.submission_language_code or DEFAULT_LANGUAGE_CODE
+            ),
+            "collection_exercise_sid": self.metadata.collection_exercise_sid,
+            "schema_name": self.metadata.schema_name,
+            "case_id": self.case_id,
+            "survey_metadata": {"survey_id": self.schema.json["survey_id"]},
+        }
+
+        if self.metadata.survey_metadata:
+            payload["survey_metadata"] |= self.metadata.survey_metadata.data
+
+        optional_properties = converter_v2.get_optional_payload_properties(
             self.metadata, self.response_metadata
         )
 

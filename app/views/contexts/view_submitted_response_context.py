@@ -5,6 +5,7 @@ from flask import url_for
 from flask_babel import lazy_gettext
 
 from app.data_models import QuestionnaireStore
+from app.data_models.metadata_proxy import NoMetadataException
 from app.globals import has_view_submitted_response_expired
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.survey_config.survey_type import SurveyType
@@ -25,21 +26,28 @@ def build_view_submitted_response_context(
         questionnaire_store.submitted_at  # type: ignore
     )
 
+    metadata = questionnaire_store.metadata
+    if not metadata:
+        raise NoMetadataException
+
+    trad_as = metadata["trad_as"]
+    ru_name = metadata["ru_name"]
+
     if survey_type is SurveyType.SOCIAL:
         submitted_text = lazy_gettext("Answers submitted.")
-    elif trad_as := questionnaire_store.metadata.get("trad_as"):
+    elif trad_as:
         submitted_text = lazy_gettext(
             "Answers submitted for <span>{ru_name}</span> ({trad_as})"
-        ).format(ru_name=questionnaire_store.metadata["ru_name"], trad_as=trad_as)
+        ).format(ru_name=ru_name, trad_as=trad_as)
     else:
         submitted_text = lazy_gettext(
             "Answers submitted for <span>{ru_name}</span>"
-        ).format(ru_name=questionnaire_store.metadata["ru_name"])
+        ).format(ru_name=ru_name)
 
     metadata = build_submission_metadata_context(
         survey_type,
         questionnaire_store.submitted_at,  # type: ignore
-        questionnaire_store.metadata["tx_id"],
+        metadata.tx_id,
     )
     context = {
         "hide_sign_out_button": True,
@@ -57,7 +65,7 @@ def build_view_submitted_response_context(
             answer_store=questionnaire_store.answer_store,
             list_store=questionnaire_store.list_store,
             progress_store=questionnaire_store.progress_store,
-            metadata=questionnaire_store.metadata,  # type: ignore
+            metadata=questionnaire_store.metadata,
             response_metadata=questionnaire_store.response_metadata,
         )
         context["summary"] = summary_context()

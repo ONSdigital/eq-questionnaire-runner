@@ -27,6 +27,7 @@ from tests.app.helpers.conftest import (
     expected_footer_social_theme,
     expected_footer_social_theme_no_cookie,
 )
+from tests.app.questionnaire.conftest import get_metadata
 
 DEFAULT_URL = "http://localhost"
 
@@ -57,6 +58,7 @@ def test_footer_context(app: Flask, theme, survey_config, expected_footer):
         if theme:
             cookie_session["theme"] = theme
         config = survey_config
+
         result = ContextHelper(
             language="en",
             is_post_submission=False,
@@ -268,7 +270,7 @@ def test_service_links_context(
         if is_authenticated:
             mocker.patch(
                 "app.helpers.template_helpers.get_metadata",
-                return_value={"ru_ref": "63782964754U"},
+                return_value=get_metadata({"ru_ref": "63782964754U", "tx_id": "tx_id"}),
             )
 
         result = ContextHelper(
@@ -512,8 +514,8 @@ def test_account_service_log_out_url_context(
         (SurveyType.DEFAULT, "cy", SurveyConfig),
         (SurveyType.BUSINESS, "en", BusinessSurveyConfig),
         (SurveyType.BUSINESS, "cy", BusinessSurveyConfig),
-        (SurveyType.HEALTH, "en", SurveyConfig),
-        (SurveyType.HEALTH, "cy", SurveyConfig),
+        (SurveyType.HEALTH, "en", SocialSurveyConfig),
+        (SurveyType.HEALTH, "cy", SocialSurveyConfig),
         (SurveyType.SOCIAL, "en", SocialSurveyConfig),
         (SurveyType.SOCIAL, "cy", SocialSurveyConfig),
         (SurveyType.NORTHERN_IRELAND, "en", NorthernIrelandBusinessSurveyConfig),
@@ -642,7 +644,7 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
     [
         (SurveyType.DEFAULT, "en", "ONS Business Surveys"),
         (SurveyType.BUSINESS, "en", "ONS Business Surveys"),
-        (SurveyType.HEALTH, "en", None),
+        (SurveyType.HEALTH, "en", "ONS Social Surveys"),
         (SurveyType.SOCIAL, "en", "ONS Social Surveys"),
         (SurveyType.NORTHERN_IRELAND, "en", "ONS Business Surveys"),
         (SurveyType.CENSUS, "en", "Census 2021"),
