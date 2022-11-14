@@ -52,7 +52,7 @@ class GCSSubmitter:
             logger.info(
                 "Questionnaire submission exists, ignoring delete operation error"
             )
-            return True
+        return True
 
 
 class RabbitMQSubmitter:
