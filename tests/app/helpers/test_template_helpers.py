@@ -173,9 +173,7 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
         ),
     ),
 )
-def test_get_survey_title(
-    app: Flask, theme, survey_title, survey_config, expected
-):
+def test_get_survey_title(app: Flask, theme, survey_title, survey_config, expected):
     with app.app_context():
         for cookie_name, cookie_value in {
             "theme": theme,
