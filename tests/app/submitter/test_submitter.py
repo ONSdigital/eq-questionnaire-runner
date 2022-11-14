@@ -1,8 +1,7 @@
-import logging
 import uuid
 
 import pytest
-from google.cloud.storage.retry import DEFAULT_RETRY
+from google.api_core.exceptions import Forbidden
 from pika.exceptions import AMQPError, NackError
 
 from app.submitter import GCSFeedbackSubmitter, GCSSubmitter, RabbitMQSubmitter
@@ -299,14 +298,15 @@ def test_gcs_feedback_submitter_uploads_feedback(patch_gcs_client):
     assert feedback_upload is True
 
 
-def test_double_submission(caplog,GCSSubmitter):
+def test_double_submission(patch_gcs_client):
+    # Given
     gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
+    patch_gcs_client.raiseError.side_effect = Forbidden("storage.objects.delete")
 
-    with caplog.at_level(logging.INFO):
-        gcs_submitter.send_message(message={"test_data"}, tx_id="123", case_id="456")
-        gcs_submitter.send_message(message={"test_data"}, tx_id="123", case_id="456")
-
-    assert (
-        "Questionnaire submission exists, ignoring delete operation error"
-        in caplog.text
+    # When
+    published = gcs_submitter.send_message(
+        message={"test_data"}, tx_id="123", case_id="456"
     )
+
+    # Then
+    assert published, "send_message should publish message"
