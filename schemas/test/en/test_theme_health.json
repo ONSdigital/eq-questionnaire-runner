@@ -4,18 +4,15 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Test Social Survey",
-    "theme": "social",
-    "description": "A questionnaire to demo the social survey theme",
+    "title": "Test Health Survey",
+    "theme": "health",
+    "description": "A questionnaire to demo the health survey theme",
     "metadata": [
         {
             "name": "qid",
             "type": "string"
         }
     ],
-    "post_submission": {
-        "feedback": true
-    },
     "questionnaire_flow": {
         "type": "Linear",
         "options": {
@@ -62,7 +59,7 @@
                         }
                     ],
                     "id": "group",
-                    "title": "Social Theme Test"
+                    "title": "Health Theme Test"
                 }
             ]
         }

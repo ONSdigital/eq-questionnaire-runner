@@ -1,4 +1,4 @@
-from typing import Mapping, Optional
+from typing import Mapping, Optional, Union
 from uuid import uuid4
 
 from google.cloud import storage  # type: ignore
@@ -14,13 +14,19 @@ MetadataType = Mapping[str, str]
 
 class LogSubmitter:
     @staticmethod
-    def send_message(message: str, tx_id: str, case_id: str) -> bool:
+    def send_message(
+        message: str,
+        tx_id: str,
+        case_id: str,
+        **kwargs: Mapping[str, Union[str, int]],
+    ) -> bool:
         logger.info("sending message")
         logger.info(
             "message payload",
             message=message,
             case_id=case_id,
             tx_id=tx_id,
+            **kwargs,
         )
 
         return True
@@ -31,11 +37,20 @@ class GCSSubmitter:
         client = storage.Client()
         self.bucket = client.get_bucket(bucket_name)
 
-    def send_message(self, message: str, tx_id: str, case_id: str) -> bool:
+    def send_message(
+        self,
+        message: str,
+        tx_id: str,
+        case_id: str,
+        **kwargs: dict,
+    ) -> bool:
         logger.info("sending message")
 
         blob = self.bucket.blob(tx_id)
-        blob.metadata = {"tx_id": tx_id, "case_id": case_id}
+
+        metadata: dict = {"tx_id": tx_id, "case_id": case_id, **kwargs}
+
+        blob.metadata = metadata
 
         # DEFAULT_RETRY is not idempotent.
         # However, this behaviour was deemed acceptable for our use case.

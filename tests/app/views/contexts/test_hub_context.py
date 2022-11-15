@@ -5,6 +5,7 @@ from app.data_models.progress_store import CompletionStatus
 from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import HubContext
+from tests.app.questionnaire.conftest import get_metadata
 
 
 @pytest.fixture
@@ -14,7 +15,7 @@ def router(schema, answer_store, list_store, progress_store):
         answer_store,
         list_store,
         progress_store,
-        metadata={},
+        metadata=get_metadata(),
         response_metadata={},
     )
 
@@ -47,7 +48,7 @@ def test_get_not_started_row_for_section(
         list_store=list_store,
         schema=schema,
         answer_store=answer_store,
-        metadata={},
+        metadata=get_metadata(),
         response_metadata={},
     )
 
@@ -90,7 +91,7 @@ def test_get_completed_row_for_section(
         list_store=list_store,
         schema=schema,
         answer_store=answer_store,
-        metadata={},
+        metadata=get_metadata(),
         response_metadata={},
     )
 
@@ -112,7 +113,7 @@ def test_get_context(progress_store, answer_store, list_store, router):
         list_store=list_store,
         schema=schema,
         answer_store=answer_store,
-        metadata={},
+        metadata=get_metadata(),
         response_metadata={},
     )
 
@@ -141,7 +142,7 @@ def test_get_context_custom_content_incomplete(
         list_store=list_store,
         schema=schema,
         answer_store=answer_store,
-        metadata={},
+        metadata=get_metadata(),
         response_metadata={},
     )
 
@@ -170,7 +171,7 @@ def test_get_context_custom_content_complete(
         list_store=list_store,
         schema=schema,
         answer_store=answer_store,
-        metadata={},
+        metadata=get_metadata(),
         response_metadata={},
     )
 
@@ -199,7 +200,7 @@ def test_get_context_no_list_items_survey_incomplete_individual_response_disable
         list_store=list_store,
         schema=schema,
         answer_store=answer_store,
-        metadata={},
+        metadata=get_metadata(),
         response_metadata={},
     )
 

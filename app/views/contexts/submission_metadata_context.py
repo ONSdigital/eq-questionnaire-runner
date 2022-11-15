@@ -20,6 +20,7 @@ def build_submission_metadata_context(
             }
         ],
     }
+
     submission_reference = {
         "term": lazy_gettext("Submission reference:"),
         "descriptions": [{"description": convert_tx_id(tx_id)}],

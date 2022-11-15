@@ -240,21 +240,6 @@ def fake_session_data():
 
 
 @pytest.fixture
-def fake_questionnaire_store_metadata():
-    return {
-        "tx_id": "tx_id",
-        "schema_name": "some_schema_name",
-        "period_str": "period_str",
-        "language_code": None,
-        "schema_url": None,
-        "ru_name": "ru_name",
-        "ru_ref": "ru_ref",
-        "response_id": "response_id",
-        "case_id": "case_id",
-    }
-
-
-@pytest.fixture
 def test_calculated_summary_schema():
     return load_schema_from_name("test_calculated_summary")
 

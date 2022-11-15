@@ -15,44 +15,10 @@ from marshmallow import (
 from structlog import get_logger
 
 from app.questionnaire.rules.utils import parse_iso_8601_datetime
+from app.utilities.metadata_validators import DateString, RegionCode, UUIDString
 from app.utilities.schema import get_schema_name_from_params
 
 logger = get_logger()
-
-
-class RegionCode(validate.Regexp):
-    """A region code defined as per ISO 3166-2:GB
-    Currently, this does not validate the subdivision, but only checks length
-    """
-
-    def __init__(self, *args, **kwargs):
-        super().__init__("^GB-[A-Z]{3}$", *args, **kwargs)
-
-
-class UUIDString(fields.UUID):
-    """Currently, runner cannot handle UUID objects in metadata
-    Since all metadata is serialized and deserialized to JSON.
-    This custom field deserializes UUIDs to strings.
-    """
-
-    def _deserialize(self, *args, **kwargs):  # pylint: disable=arguments-differ
-        return str(super()._deserialize(*args, **kwargs))
-
-
-class DateString(fields.DateTime):
-    """Currently, runner cannot handle Date objects in metadata
-    Since all metadata is serialized and deserialized to JSON.
-    This custom field deserializes Dates to strings.
-    """
-
-    def _deserialize(self, *args, **kwargs):  # pylint: disable=arguments-differ
-        date = super()._deserialize(*args, **kwargs)
-
-        if self.format == "iso8601":
-            return date.isoformat()
-
-        return date.strftime(self.format)
-
 
 VALIDATORS = {
     "date": functools.partial(DateString, format="%Y-%m-%d", required=True),
@@ -174,41 +140,6 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         raise ValidationError(
             "Both 'eq_id' and 'form_type' must be defined when 'response_id' is not defined"
         )
-
-
-def validate_questionnaire_claims(claims, questionnaire_specific_metadata):
-    """Validate any survey specific claims required for a questionnaire"""
-    dynamic_fields = {}
-
-    for metadata_field in questionnaire_specific_metadata:
-        field_arguments = {}
-        validators = []
-
-        if metadata_field.get("optional"):
-            field_arguments["required"] = False
-
-        if any(
-            length_limit in metadata_field
-            for length_limit in ("min_length", "max_length", "length")
-        ):
-            validators.append(
-                validate.Length(
-                    min=metadata_field.get("min_length"),
-                    max=metadata_field.get("max_length"),
-                    equal=metadata_field.get("length"),
-                )
-            )
-
-        dynamic_fields[metadata_field["name"]] = VALIDATORS[metadata_field["type"]](
-            validate=validators, **field_arguments
-        )
-
-    questionnaire_metadata_schema = type(
-        "QuestionnaireMetadataSchema", (Schema, StripWhitespaceMixin), dynamic_fields
-    )(unknown=EXCLUDE)
-
-    # The load method performs validation.
-    return questionnaire_metadata_schema.load(claims)
 
 
 def validate_runner_claims(claims: Dict):

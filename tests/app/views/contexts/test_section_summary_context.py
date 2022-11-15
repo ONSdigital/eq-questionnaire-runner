@@ -9,6 +9,7 @@ from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import SectionSummaryContext
+from tests.app.questionnaire.conftest import get_metadata
 from tests.app.views.contexts import assert_summary_context
 
 
@@ -21,7 +22,7 @@ def test_build_summary_rendering_context(
         answer_store,
         list_store,
         progress_store,
-        metadata={},
+        metadata=get_metadata(),
         response_metadata={},
         current_location=Location(section_id="property-details-section"),
         routing_path=mocker.MagicMock(),
@@ -41,7 +42,7 @@ def test_build_view_context_for_section_summary(
         answer_store,
         list_store,
         progress_store,
-        metadata={},
+        metadata=None,
         response_metadata={},
         current_location=Location(
             section_id="property-details-section",
@@ -112,7 +113,7 @@ def test_custom_section(
         answer_store,
         list_store,
         progress_store,
-        metadata={},
+        metadata=None,
         response_metadata={},
         current_location=location,
         routing_path=mocker.MagicMock(),
@@ -136,7 +137,7 @@ def test_context_for_section_list_summary(people_answer_store):
             ]
         ),
         progress_store=ProgressStore(),
-        metadata={"display_address": "70 Abingdon Road, Goathill"},
+        metadata=get_metadata({"display_address": "70 Abingdon Road, Goathill"}),
         response_metadata={},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
@@ -504,7 +505,7 @@ def test_context_for_driving_question_summary_empty_list():
         AnswerStore([{"answer_id": "anyone-usually-live-at-answer", "value": "No"}]),
         ListStore(),
         ProgressStore(),
-        metadata={},
+        metadata=None,
         response_metadata={},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(["anyone-usually-live-at"], section_id="section"),
@@ -556,7 +557,7 @@ def test_context_for_driving_question_summary():
         ),
         ListStore([{"items": ["PlwgoG"], "name": "people"}]),
         ProgressStore(),
-        metadata={},
+        metadata=None,
         response_metadata={},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
@@ -618,7 +619,7 @@ def test_titles_for_repeating_section_summary(people_answer_store):
             ]
         ),
         ProgressStore(),
-        metadata={},
+        metadata=None,
         response_metadata={},
         current_location=Location(
             section_id="personal-details-section",
@@ -643,7 +644,7 @@ def test_titles_for_repeating_section_summary(people_answer_store):
             ]
         ),
         ProgressStore(),
-        metadata={},
+        metadata=None,
         response_metadata={},
         current_location=Location(
             block_id="personal-summary",
@@ -670,7 +671,7 @@ def test_primary_only_links_for_section_summary(people_answer_store):
             [{"items": ["PlwgoG"], "name": "people", "primary_person": "PlwgoG"}]
         ),
         progress_store=ProgressStore(),
-        metadata={"display_address": "70 Abingdon Road, Goathill"},
+        metadata=get_metadata({"display_address": "70 Abingdon Road, Goathill"}),
         response_metadata={},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
@@ -707,7 +708,7 @@ def test_primary_links_for_section_summary(people_answer_store):
             ]
         ),
         progress_store=ProgressStore(),
-        metadata={"display_address": "70 Abingdon Road, Goathill"},
+        metadata=get_metadata({"display_address": "70 Abingdon Road, Goathill"}),
         response_metadata={},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
