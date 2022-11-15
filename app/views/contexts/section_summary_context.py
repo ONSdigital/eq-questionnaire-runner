@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Mapping, Optional
+from typing import Any, Mapping, Optional
 
 from flask import url_for
 
@@ -10,6 +10,7 @@ from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.variants import choose_variant
 from app.utilities import safe_content
 
+from ...data_models.list_store import ListModel
 from ...data_models.metadata_proxy import MetadataProxy
 from .context import Context
 from .list_context import ListContext
