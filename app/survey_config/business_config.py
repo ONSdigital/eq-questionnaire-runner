@@ -133,5 +133,5 @@ class BusinessSurveyConfig(SurveyConfig):
 
 @dataclass
 class NorthernIrelandBusinessSurveyConfig(BusinessSurveyConfig):
-    masthead_logo = read_file("./img/ni-finance-logo.svg")
-    masthead_logo_mobile = read_file("./img/ni-finance-logo-mobile.svg")
+    masthead_logo: str = read_file("./img/ni-finance-logo.svg")
+    masthead_logo_mobile: str = read_file("./img/ni-finance-logo-mobile.svg")

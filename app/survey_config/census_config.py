@@ -146,15 +146,15 @@ class CensusNISRASurveyConfig(
 ):
     base_url: str = NIR_BASE_URL
     account_service_log_out_url: str = base_url
-    masthead_logo = read_file("./img/ni-logo.svg")
-    masthead_logo_mobile = read_file("./img/ni-logo-mobile.svg")
+    masthead_logo: str = read_file("./img/ni-logo.svg")
+    masthead_logo_mobile: str = read_file("./img/ni-logo-mobile.svg")
     copyright_declaration: LazyString = lazy_gettext(
         "Crown copyright and database rights 2021 NIMA MOU577.501."
     )
     copyright_text: LazyString = lazy_gettext(
         "Use of address data is subject to the terms and conditions."
     )
-    powered_by_logo = read_file("./img/ni-powered-by-logo.svg")
+    powered_by_logo: str = read_file("./img/ni-powered-by-logo.svg")
     _is_nisra: bool = True
 
     def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
