@@ -80,10 +80,6 @@ class ContextHelper:
         if self._survey_type:
             context["cookie_settings_url"] = self._survey_config.cookie_settings_url
             context["cookie_domain"] = self._survey_config.cookie_domain
-            if self._survey_title:
-                context["survey_title"] = self._survey_title
-            else:
-                context["survey_title"] = "ONS Surveys"
 
         return context
 
