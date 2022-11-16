@@ -7,10 +7,12 @@ from mock import Mock
 
 from app.data_models import AnswerStore, ListStore
 from app.data_models.answer import Answer
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.operator import Operator
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from tests.app.questionnaire.conftest import get_metadata
 from tests.app.questionnaire.test_value_source_resolver import get_list_items
 
 current_date = datetime.now(timezone.utc).date()
@@ -37,7 +39,7 @@ def get_rule_evaluator(
     schema: QuestionnaireSchema = None,
     answer_store: AnswerStore = AnswerStore(),
     list_store: ListStore = ListStore(),
-    metadata: Optional[dict] = None,
+    metadata: Optional[MetadataProxy] = None,
     response_metadata: Mapping = None,
     location: Union[Location, RelationshipLocation] = Location(
         section_id="test-section", block_id="test-block"
@@ -236,14 +238,14 @@ def test_answer_source_with_dict_answer_selector(answer_value, expected_result):
 )
 def test_metadata_source(metadata_value, expected_result):
     rule_evaluator = get_rule_evaluator(
-        metadata={"some-metadata": metadata_value},
+        metadata=get_metadata({"some_key": metadata_value})
     )
 
     assert (
         rule_evaluator.evaluate(
             rule={
                 Operator.EQUAL: [
-                    {"source": "metadata", "identifier": "some-metadata"},
+                    {"source": "metadata", "identifier": "some_key"},
                     3,
                 ]
             },
@@ -517,7 +519,7 @@ def test_nested_rules(operator, operands, expected_result):
                 },
             ]
         ),
-        metadata={"region_code": "GB-NIR", "language_code": "en"},
+        metadata=get_metadata({"region_code": "GB-NIR", "language_code": "en"}),
         list_store=ListStore(
             [
                 {
@@ -556,7 +558,7 @@ def test_nested_rules(operator, operands, expected_result):
     ],
 )
 def test_comparison_operator_rule_with_nonetype_operands(operator_name, operands):
-    rule_evaluator = get_rule_evaluator()
+    rule_evaluator = get_rule_evaluator(metadata=get_metadata())
     assert rule_evaluator.evaluate(rule={operator_name: operands}) is False
 
 
@@ -575,7 +577,9 @@ def test_comparison_operator_rule_with_nonetype_operands(operator_name, operands
     "operator_name", [Operator.ALL_IN, Operator.ANY_IN, Operator.IN]
 )
 def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
-    rule_evaluator = get_rule_evaluator()
+    rule_evaluator = get_rule_evaluator(
+        metadata=get_metadata(),
+    )
     assert (
         rule_evaluator.evaluate(
             rule={operator_name: operands},
@@ -706,7 +710,7 @@ def test_date_value(rule, expected_result):
                 }
             ]
         ),
-        metadata={"some-metadata": current_date_as_yyyy_mm_dd},
+        metadata=get_metadata({"some-metadata": current_date_as_yyyy_mm_dd}),
     )
 
     assert (

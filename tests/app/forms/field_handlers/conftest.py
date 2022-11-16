@@ -28,7 +28,7 @@ def rule_evaluator():
     evaluator = RuleEvaluator(
         answer_store=AnswerStore(),
         list_store=ListStore(),
-        metadata={},
+        metadata=None,
         response_metadata=get_mock_response_metadata(),
         schema=get_mock_schema(),
         location=None,
@@ -42,7 +42,7 @@ def value_source_resolver():
     resolver = ValueSourceResolver(
         answer_store=AnswerStore(),
         list_store=ListStore(),
-        metadata={},
+        metadata=None,
         response_metadata=get_mock_response_metadata(),
         schema=get_mock_schema(),
         location=None,

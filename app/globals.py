@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from typing import Any, Mapping, Optional, Union
+from typing import Optional
 
 from flask import current_app, g
 from flask import session as cookie_session
@@ -8,6 +8,7 @@ from structlog import get_logger
 from app.authentication.user import User
 from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.questionnaire import QuestionnaireSchema
@@ -91,7 +92,7 @@ def create_session_store(
     )
 
 
-def get_metadata(user: User) -> Union[None, Mapping[str, Any]]:
+def get_metadata(user: User) -> Optional[MetadataProxy]:
     if user.is_anonymous:
         logger.debug("anonymous user requesting metadata get instance")
         return None

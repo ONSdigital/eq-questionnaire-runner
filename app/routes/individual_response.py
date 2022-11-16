@@ -51,10 +51,15 @@ def before_individual_response_request():
         return redirect(url_for("post_submission.get_thank_you"))
 
     logger.bind(
-        tx_id=metadata["tx_id"],
-        schema_name=metadata["schema_name"],
-        ce_id=metadata["collection_exercise_sid"],
+        tx_id=metadata.tx_id,
+        ce_id=metadata.collection_exercise_sid,
     )
+
+    if schema_name := metadata.schema_name:
+        logger.bind(schema_name=schema_name)
+
+    if schema_url := metadata.schema_url:
+        logger.bind(schema_url=schema_url)  # pragma: no cover
 
     logger.info(
         "individual-response request", method=request.method, url_path=request.full_path
@@ -64,7 +69,7 @@ def before_individual_response_request():
 
     # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
-        metadata=questionnaire_store.metadata,
+        metadata=metadata,
         language_code=get_locale().language,
     )
 
@@ -170,9 +175,11 @@ def individual_response_post_address_confirmation(schema, questionnaire_store):
     if request.method == "POST":
         return redirect(url_for("questionnaire.get_questionnaire"))
 
+    metadata = questionnaire_store.metadata
+
     return render_template(
         template="individual_response/confirmation-post",
-        display_address=questionnaire_store.metadata.get("display_address"),
+        display_address=metadata["display_address"],
         page_title=individual_response_handler.page_title(
             lazy_gettext("An individual access code has been sent by post")
         ),

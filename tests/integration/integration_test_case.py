@@ -53,26 +53,21 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
     def _set_up_app(self, setting_overrides=None):
         self._ds = patch("app.setup.datastore.Client", MockDatastore)
         self._ds.start()
-
         self._redis = patch("app.setup.redis.Redis", fakeredis.FakeStrictRedis)
         self._redis.start()
-
         configure_logging()
-
         overrides = {
             "EQ_ENABLE_HTML_MINIFY": False,
             "EQ_SUBMISSION_CONFIRMATION_BACKEND": "log",
         }
 
         if setting_overrides:
-            overrides = overrides | setting_overrides
-
+            overrides |= setting_overrides
         with patch(
             "google.auth._default._get_explicit_environ_credentials",
             return_value=(Mock(), "test-project-id"),
         ):
             self._application = create_app(overrides)
-
         self._key_store = KeyStore(
             {
                 "keys": {
@@ -129,29 +124,31 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         token = self.token_generator.create_token(
             schema_name=schema_name, **payload_kwargs
         )
-        self.get("/session?token=" + token)
+
+        self.get(f"/session?token={token}")
+
+    def launchSurveyV2(
+        self, theme="default", schema_name="test_dates", **payload_kwargs
+    ):
+        """
+        Launch a survey as an authenticated user and follow re-directs
+        :param schema_name: The name of the schema to load
+        """
+        token = self.token_generator.create_token_v2(
+            theme=theme, schema_name=schema_name, **payload_kwargs
+        )
+
+        self.get(f"/session?token={token}")
 
     def dumpAnswers(self):
-
         self.get("/dump/answers")
-
-        # Then I get a 200 OK response
         self.assertStatusOK()
-
-        # And the JSON response contains the data I submitted
-        dump_answers = json_loads(self.getResponseData())
-        return dump_answers
+        return json_loads(self.getResponseData())
 
     def dumpSubmission(self):
-
         self.get("/dump/submission")
-
-        # Then I get a 200 OK response
         self.assertStatusOK()
-
-        # And the JSON response contains the data I submitted
-        dump_submission = json_loads(self.getResponseData())
-        return dump_submission
+        return json_loads(self.getResponseData())
 
     def dump_debug(self):
         self.get("/dump/debug")

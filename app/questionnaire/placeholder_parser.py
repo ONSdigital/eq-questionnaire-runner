@@ -11,6 +11,7 @@ from typing import (
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 from app.questionnaire.relationship_location import RelationshipLocation
@@ -39,7 +40,7 @@ class PlaceholderParser:
         language: str,
         answer_store: AnswerStore,
         list_store: ListStore,
-        metadata: Mapping,
+        metadata: Optional[MetadataProxy],
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
         renderer: "PlaceholderRenderer",

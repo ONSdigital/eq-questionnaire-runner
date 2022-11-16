@@ -1,9 +1,14 @@
 from unittest.mock import Mock
 
+from httmock import HTTMock, urlmatch
+
+from app.utilities.schema import get_schema_path_map
 from tests.integration.integration_test_case import IntegrationTestCase
 from tests.integration.questionnaire import HUB_URL_PATH, THANK_YOU_URL_PATH
 
 SUBMIT_URL_PATH = "/questionnaire/submit"
+
+SCHEMA_PATH_MAP = get_schema_path_map(include_test_schemas=True)
 
 
 class SubmissionTestCase(IntegrationTestCase):
@@ -50,6 +55,34 @@ class TestQuestionnaireSubmission(SubmissionTestCase):
 
         self.get(self.retry_url)
         self.assertInUrl(SUBMIT_URL_PATH)
+
+
+class TestQuestionnaireSubmissionSchemaURL(SubmissionTestCase):
+    def test_login_token_with_schema_url_should_redirect_to_survey(self):
+        schema_url = "http://eq-survey-register.url/my-test-schema"
+
+        # Given
+        token = self.token_generator.create_token_with_schema_url(
+            "test_textarea", schema_url
+        )
+
+        # When
+        with HTTMock(self.schema_url_mock):
+            self.get(url=f"/session?token={token}")
+
+        self.assertStatusOK()
+        self.assertInUrl("/questionnaire")
+        self.post()
+        self.post()
+        self.assertInUrl(THANK_YOU_URL_PATH)
+
+    @staticmethod
+    @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema")
+    def schema_url_mock(_url, _request):
+        schema_path = SCHEMA_PATH_MAP["test"]["en"]["test_textarea"]
+
+        with open(schema_path, encoding="utf8") as json_data:
+            return json_data.read()
 
 
 class TestQuestionnaireSubmissionHub(SubmissionTestCase):
