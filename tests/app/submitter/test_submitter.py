@@ -340,7 +340,7 @@ def test_gcs_feedback_submitter_uploads_feedback(patch_gcs_client):
     assert feedback_upload is True
 
 
-def test_double_submission_passes(
+def test_double_submission_passes_when_delete_operation_error(
     patch_gcs_client, gcs_blob_storage_delete_error_message
 ):  # pylint: disable=redefined-outer-name
     # Given
@@ -349,7 +349,7 @@ def test_double_submission_passes(
     # When
     bucket = patch_gcs_client.return_value.get_bucket.return_value
     bucket.blob.return_value = gcs_blob_storage_delete_error_message
-
+s
     published = gcs_submitter.send_message(
         message={"test_data"}, tx_id="123", case_id="456"
     )
@@ -357,7 +357,7 @@ def test_double_submission_passes(
     assert published
 
 
-def test_forbidden_error_raised(
+def test_double_submission_is_forbidden_when_not_delete_operation_error(
     patch_gcs_client, gcs_blob_storage_error_message
 ):  # pylint: disable=redefined-outer-name
 
