@@ -331,7 +331,7 @@ def test_forbidden_error_raised(patch_gcs_client, gcs_blob_storage_error_message
 
 @pytest.fixture
 def gcs_blob_storage_error_message(mocker):
-    blob = Blob(name="our-blob", bucket=mocker.Mock())
+    blob = Blob(name="test-blob", bucket=mocker.Mock())
 
     blob.upload_from_string = mocker.Mock(  # pylint: disable=protected-access
         side_effect=Forbidden("wrong-error")
@@ -342,7 +342,7 @@ def gcs_blob_storage_error_message(mocker):
 
 @pytest.fixture
 def gcs_blob_storage_delete_error_message(mocker):
-    blob = Blob(name="our-second-blob", bucket=mocker.Mock())
+    blob = Blob(name="test-blob", bucket=mocker.Mock())
 
     blob.upload_from_string = mocker.Mock(  # pylint: disable=protected-access
         side_effect=Forbidden("storage.objects.delete")
