@@ -349,7 +349,6 @@ def test_double_submission_passes_when_delete_operation_error(
     # When
     bucket = patch_gcs_client.return_value.get_bucket.return_value
     bucket.blob.return_value = gcs_blob_storage_delete_error_message
-s
     published = gcs_submitter.send_message(
         message={"test_data"}, tx_id="123", case_id="456"
     )
