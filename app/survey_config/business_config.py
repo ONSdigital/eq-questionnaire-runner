@@ -5,7 +5,7 @@ from warnings import warn
 
 from flask_babel import lazy_gettext
 
-from app import settings
+from app.settings import read_file
 from app.survey_config.link import HeaderLink, Link
 from app.survey_config.survey_config import SurveyConfig
 
@@ -133,5 +133,5 @@ class BusinessSurveyConfig(SurveyConfig):
 
 @dataclass
 class NorthernIrelandBusinessSurveyConfig(BusinessSurveyConfig):
-    masthead_logo: settings.read_file("./img/ni-finance-logo.svg")
-    masthead_logo_mobile: settings.read_file("./img/ni-finance-logo-mobile.svg")
+    masthead_logo = read_file("./img/ni-finance-logo.svg")
+    masthead_logo_mobile = read_file("./img/ni-finance-logo-mobile.svg")
