@@ -301,7 +301,7 @@ def test_gcs_feedback_submitter_uploads_feedback(patch_gcs_client):
 
 def test_double_submission_passes(
     patch_gcs_client, gcs_blob_storage_delete_error_message
-):
+):  # pylint: disable=redefined-outer-name
     # Given
     gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
 
@@ -316,7 +316,10 @@ def test_double_submission_passes(
     assert published
 
 
-def test_forbidden_error_raised(patch_gcs_client, gcs_blob_storage_error_message):
+def test_forbidden_error_raised(
+    patch_gcs_client, gcs_blob_storage_error_message
+):  # pylint: disable=redefined-outer-name
+
     # Given
     gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
 
