@@ -1,8 +1,8 @@
-import logging
 import uuid
 
 import pytest
 from google.api_core.exceptions import Forbidden
+from google.cloud.storage import Blob
 from pika.exceptions import AMQPError, NackError
 
 from app.submitter import GCSFeedbackSubmitter, GCSSubmitter, RabbitMQSubmitter
@@ -299,18 +299,53 @@ def test_gcs_feedback_submitter_uploads_feedback(patch_gcs_client):
     assert feedback_upload is True
 
 
-def test_double_submission(patch_gcs_client, caplog):
-    caplog.set_level(logging.INFO)
+def test_double_submission_passes(
+    patch_gcs_client, gcs_blob_storage_delete_error_message
+):
+    # Given
     gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
 
-    patch_gcs_client.side_effect = Forbidden("storage.objects.delete")
+    # When
+    bucket = patch_gcs_client.return_value.get_bucket.return_value
+    bucket.blob.return_value = gcs_blob_storage_delete_error_message
 
     published = gcs_submitter.send_message(
         message={"test_data"}, tx_id="123", case_id="456"
     )
+    # Then
+    assert published
 
-    assert published is True
-    assert (
-        "Questionnaire submission exists, ignoring delete operation error"
-        in caplog.text
+
+def test_forbidden_error_raised(patch_gcs_client, gcs_blob_storage_error_message):
+    # Given
+    gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
+
+    # When
+    bucket = patch_gcs_client.return_value.get_bucket.return_value
+    bucket.blob.return_value = gcs_blob_storage_error_message
+
+    # Then
+    with pytest.raises(Forbidden):
+        gcs_submitter.send_message(message={"test_data"}, tx_id="123", case_id="456")
+
+
+@pytest.fixture
+def gcs_blob_storage_error_message(mocker):
+    blob = Blob(name="our-blob", bucket=mocker.Mock())
+
+    blob.upload_from_string = mocker.Mock(  # pylint: disable=protected-access
+        side_effect=Forbidden("wrong-error")
     )
+
+    return blob
+
+
+@pytest.fixture
+def gcs_blob_storage_delete_error_message(mocker):
+    blob = Blob(name="our-second-blob", bucket=mocker.Mock())
+
+    blob.upload_from_string = mocker.Mock(  # pylint: disable=protected-access
+        side_effect=Forbidden("storage.objects.delete")
+    )
+
+    return blob
