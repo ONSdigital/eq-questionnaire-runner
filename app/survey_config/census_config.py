@@ -4,6 +4,7 @@ from typing import Optional, Union
 from flask_babel import lazy_gettext
 from flask_babel.speaklater import LazyString
 
+from app import settings
 from app.survey_config.link import Link
 from app.survey_config.survey_config import SurveyConfig
 
@@ -145,18 +146,15 @@ class CensusNISRASurveyConfig(
 ):
     base_url: str = NIR_BASE_URL
     account_service_log_out_url: str = base_url
-    with open("./img/ni-logo.svg", encoding="UTF-8") as f:
-        masthead_logo: Optional[str] = f.read()
-    with open("./img/ni-logo-mobile.svg", encoding="UTF-8") as f:
-        masthead_logo_mobile: Optional[str] = f.read()
+    masthead_logo: settings.read_file("./img/ni-logo.svg")
+    masthead_logo_mobile: settings.read_file("./img/ni-logo-mobile.svg")
     copyright_declaration: LazyString = lazy_gettext(
         "Crown copyright and database rights 2021 NIMA MOU577.501."
     )
     copyright_text: LazyString = lazy_gettext(
         "Use of address data is subject to the terms and conditions."
     )
-    with open("./img/ni-powered-by-logo.svg", encoding="UTF-8") as f:
-        powered_by_logo: Optional[str] = f.read()
+    powered_by_logo: settings.read_file("./img/ni-powered-by-logo.svg")
     _is_nisra: bool = True
 
     def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
