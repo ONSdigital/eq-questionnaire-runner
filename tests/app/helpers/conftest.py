@@ -1,8 +1,14 @@
 from pytest import fixture
 
 from app.helpers.template_helpers import ContextHelper
-from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
+from app.settings import (
+    ACCOUNT_SERVICE_BASE_URL,
+    ACCOUNT_SERVICE_BASE_URL_SOCIAL,
+    ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL,
+)
 from app.survey_config.census_config import CY_BASE_URL, EN_BASE_URL
+
+LANGUAGE_CODE = "en"
 
 
 @fixture
@@ -195,7 +201,7 @@ def expected_footer_social_theme():
                     },
                     {
                         "text": "Contact us",
-                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/contact-us/",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/aboutus/contactus/surveyenquiries",
                         "target": "_blank",
                     },
                     {
@@ -217,6 +223,49 @@ def expected_footer_social_theme():
                     {
                         "text": "Privacy and data protection",
                         "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/privacy-and-data-protection/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
+    }
+    return {**footer_context(), **social}
+
+
+def expected_footer_welsh_social_theme():
+    social = {
+        "rows": [
+            {
+                "itemsList": [
+                    {
+                        "text": "What we do",
+                        "url": "https://www.ons.gov.uk/aboutus/whatwedo/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Contact us",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/aboutus/contactus/surveyenquiries",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Accessibility",
+                        "url": "https://www.ons.gov.uk/help/accessibility/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
+        "legal": [
+            {
+                "itemsList": [
+                    {
+                        "text": "Cookies",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/{LANGUAGE_CODE}/cookies/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Privacy and data protection",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/{LANGUAGE_CODE}/privacy-and-data-protection/",
                         "target": "_blank",
                     },
                 ]

@@ -6,7 +6,11 @@ from flask import session as cookie_session
 
 from app.helpers.template_helpers import ContextHelper, get_survey_config
 from app.questionnaire import QuestionnaireSchema
-from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
+from app.settings import (
+    ACCOUNT_SERVICE_BASE_URL,
+    ACCOUNT_SERVICE_BASE_URL_SOCIAL,
+    ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL,
+)
 from app.survey_config import (
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
@@ -15,9 +19,11 @@ from app.survey_config import (
     SocialSurveyConfig,
     SurveyConfig,
     WelshCensusSurveyConfig,
+    WelshSocialSurveyConfig,
 )
 from app.survey_config.survey_type import SurveyType
 from tests.app.helpers.conftest import (
+    LANGUAGE_CODE,
     expected_footer_business_theme,
     expected_footer_business_theme_no_cookie,
     expected_footer_census_theme,
@@ -26,6 +32,7 @@ from tests.app.helpers.conftest import (
     expected_footer_nisra_theme,
     expected_footer_social_theme,
     expected_footer_social_theme_no_cookie,
+    expected_footer_welsh_social_theme,
 )
 from tests.app.questionnaire.conftest import get_metadata
 
@@ -41,6 +48,11 @@ DEFAULT_URL = "http://localhost"
         (None, BusinessSurveyConfig(), expected_footer_business_theme_no_cookie()),
         (SurveyType.SOCIAL, SocialSurveyConfig(), expected_footer_social_theme()),
         (None, SocialSurveyConfig(), expected_footer_social_theme_no_cookie()),
+        (
+            SurveyType.SOCIAL,
+            WelshSocialSurveyConfig(),
+            expected_footer_welsh_social_theme(),
+        ),
         (
             SurveyType.CENSUS_NISRA,
             CensusNISRASurveyConfig(),
@@ -143,6 +155,16 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             SurveyType.SOCIAL,
             "Test",
             SocialSurveyConfig(),
+            {
+                "orgLogo": "ons-logo-en",
+                "orgLogoAlt": "Office for National Statistics logo",
+                "title": "Test",
+            },
+        ),
+        (
+            SurveyType.SOCIAL,
+            "Test",
+            WelshSocialSurveyConfig(),
             {
                 "orgLogo": "ons-logo-en",
                 "orgLogoAlt": "Office for National Statistics logo",
@@ -346,32 +368,41 @@ def test_service_links_context(
 
 
 @pytest.mark.parametrize(
-    "survey_config, expected",
+    "survey_config, language, expected",
     [
         (
             SurveyConfig(),
+            "en",
             f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
         (
             BusinessSurveyConfig(),
+            "en",
             f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
         (
             NorthernIrelandBusinessSurveyConfig(),
+            "en",
             f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
         (
             SocialSurveyConfig(),
-            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/contact-us/",
+            "en",
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/aboutus/contactus/surveyenquiries",
+        ),
+        (
+            WelshSocialSurveyConfig(),
+            "cy",
+            f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/aboutus/contactus/surveyenquiries",
         ),
     ],
 )
 def test_contact_us_url_context(
-    app: Flask, survey_config: SurveyConfig, expected: dict[str, str]
+    app: Flask, survey_config: SurveyConfig, language: str, expected: dict[str, str]
 ):
     with app.app_context():
         result = ContextHelper(
-            language="en",
+            language=language,
             is_post_submission=False,
             include_csrf_token=True,
             survey_config=survey_config,
@@ -420,6 +451,11 @@ def test_sign_out_button_text_context(
             True,
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cookies/",
         ),
+        (
+            WelshSocialSurveyConfig(),
+            True,
+            f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/{LANGUAGE_CODE}/cookies/",
+        ),
         (SurveyConfig(), False, None),
     ],
 )
@@ -455,6 +491,10 @@ def test_cookie_settings_url_context(
         (
             SocialSurveyConfig(),
             ACCOUNT_SERVICE_BASE_URL_SOCIAL,
+        ),
+        (
+            WelshSocialSurveyConfig(),
+            ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL,
         ),
     ],
 )
@@ -558,6 +598,10 @@ def test_account_service_my_todo_url_context(
             SocialSurveyConfig(),
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/sign-in/logout",
         ),
+        (
+            WelshSocialSurveyConfig(),
+            f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/{LANGUAGE_CODE}/start",
+        ),
     ],
 )
 def test_account_service_log_out_url_context(
@@ -577,9 +621,9 @@ def test_account_service_log_out_url_context(
         (SurveyType.BUSINESS, "en", BusinessSurveyConfig),
         (SurveyType.BUSINESS, "cy", BusinessSurveyConfig),
         (SurveyType.HEALTH, "en", SocialSurveyConfig),
-        (SurveyType.HEALTH, "cy", SocialSurveyConfig),
+        (SurveyType.HEALTH, "cy", WelshSocialSurveyConfig),
         (SurveyType.SOCIAL, "en", SocialSurveyConfig),
-        (SurveyType.SOCIAL, "cy", SocialSurveyConfig),
+        (SurveyType.SOCIAL, "cy", WelshSocialSurveyConfig),
         (SurveyType.NORTHERN_IRELAND, "en", NorthernIrelandBusinessSurveyConfig),
         (SurveyType.NORTHERN_IRELAND, "cy", NorthernIrelandBusinessSurveyConfig),
         (SurveyType.CENSUS, "en", CensusSurveyConfig),
@@ -601,6 +645,7 @@ def test_get_survey_config(
     "survey_config_type, base_url",
     [
         (SocialSurveyConfig, ACCOUNT_SERVICE_BASE_URL_SOCIAL),
+        (WelshSocialSurveyConfig, ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL),
         (SurveyConfig, DEFAULT_URL),
         (BusinessSurveyConfig, DEFAULT_URL),
     ],
@@ -683,6 +728,7 @@ def test_context_set_from_app_config(app):
         (SurveyType.BUSINESS, "en", None),
         (SurveyType.HEALTH, "en", None),
         (SurveyType.SOCIAL, "en", None),
+        (SurveyType.SOCIAL, "cy", None),
         (SurveyType.NORTHERN_IRELAND, "en", None),
         (SurveyType.CENSUS, "en", "census"),
         (SurveyType.CENSUS, "cy", "census"),
@@ -708,6 +754,7 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
         (SurveyType.BUSINESS, "en", "ONS Business Surveys"),
         (SurveyType.HEALTH, "en", "ONS Social Surveys"),
         (SurveyType.SOCIAL, "en", "ONS Social Surveys"),
+        (SurveyType.SOCIAL, "cy", "ONS Social Surveys"),
         (SurveyType.NORTHERN_IRELAND, "en", "ONS Business Surveys"),
         (SurveyType.CENSUS, "en", "Census 2021"),
         (SurveyType.CENSUS, "cy", "Census 2021"),
