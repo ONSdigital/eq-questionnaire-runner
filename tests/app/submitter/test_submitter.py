@@ -384,7 +384,7 @@ def gcs_blob_storage_error_message(mocker):
 
 
 @pytest.fixture
-def gcs_blob_storage_delete_error_message(mocker):
+def gcs_blob_delete_forbidden(mocker):
     blob = Blob(name="test-blob", bucket=mocker.Mock())
 
     blob.upload_from_string = mocker.Mock(  # pylint: disable=protected-access
