@@ -377,7 +377,7 @@ def gcs_blob_create_forbidden(mocker):
     blob = Blob(name="test-blob", bucket=mocker.Mock())
 
     blob.upload_from_string = mocker.Mock(  # pylint: disable=protected-access
-        side_effect=Forbidden("wrong-error")
+        side_effect=Forbidden("storage.objects.create")
     )
 
     return blob
