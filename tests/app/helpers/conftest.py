@@ -1,7 +1,11 @@
 from pytest import fixture
 
 from app.helpers.template_helpers import ContextHelper
-from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL, read_file
+from app.settings import (
+    ACCOUNT_SERVICE_BASE_URL,
+    ACCOUNT_SERVICE_BASE_URL_SOCIAL,
+    read_file,
+)
 from app.survey_config.census_config import CY_BASE_URL, EN_BASE_URL
 
 

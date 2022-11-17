@@ -147,7 +147,9 @@ class CensusNISRASurveyConfig(
     base_url: str = NIR_BASE_URL
     account_service_log_out_url: str = base_url
     masthead_logo: str = read_file("./templates/assets/images/ni-logo.svg")
-    masthead_logo_mobile: str = read_file("./templates/assets/images/ni-logo-mobile.svg")
+    masthead_logo_mobile: str = read_file(
+        "./templates/assets/images/ni-logo-mobile.svg"
+    )
     copyright_declaration: LazyString = lazy_gettext(
         "Crown copyright and database rights 2021 NIMA MOU577.501."
     )
