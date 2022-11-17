@@ -341,14 +341,14 @@ def test_gcs_feedback_submitter_uploads_feedback(patch_gcs_client):
 
 
 def test_double_submission_passes_when_delete_operation_error(
-    patch_gcs_client, gcs_blob_storage_delete_error_message
+    patch_gcs_client, gcs_blob_delete_forbidden
 ):  # pylint: disable=redefined-outer-name
     # Given
     gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
 
     # When
     bucket = patch_gcs_client.return_value.get_bucket.return_value
-    bucket.blob.return_value = gcs_blob_storage_delete_error_message
+    bucket.blob.return_value = gcs_blob_delete_forbidden
     published = gcs_submitter.send_message(
         message={"test_data"}, tx_id="123", case_id="456"
     )
@@ -357,7 +357,7 @@ def test_double_submission_passes_when_delete_operation_error(
 
 
 def test_double_submission_is_forbidden_when_not_delete_operation_error(
-    patch_gcs_client, gcs_blob_storage_error_message
+    patch_gcs_client, gcs_blob_create_forbidden
 ):  # pylint: disable=redefined-outer-name
 
     # Given
@@ -365,7 +365,7 @@ def test_double_submission_is_forbidden_when_not_delete_operation_error(
 
     # When
     bucket = patch_gcs_client.return_value.get_bucket.return_value
-    bucket.blob.return_value = gcs_blob_storage_error_message
+    bucket.blob.return_value = gcs_blob_create_forbidden
 
     # Then
     with pytest.raises(Forbidden):
