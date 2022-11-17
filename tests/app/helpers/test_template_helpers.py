@@ -6,7 +6,11 @@ from flask import session as cookie_session
 
 from app.helpers.template_helpers import ContextHelper, get_survey_config
 from app.questionnaire import QuestionnaireSchema
-from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
+from app.settings import (
+    ACCOUNT_SERVICE_BASE_URL,
+    ACCOUNT_SERVICE_BASE_URL_SOCIAL,
+    read_file,
+)
 from app.survey_config import (
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
@@ -103,77 +107,85 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             SurveyType.BUSINESS,
             None,
             BusinessSurveyConfig(),
-            "ONS Business Surveys",
+            ["ONS Business Surveys", None, None],
         ),
         (
             SurveyType.BUSINESS,
             "Test",
             BusinessSurveyConfig(),
-            "Test",
+            ["Test", None, None],
         ),
         (
             None,
             None,
             BusinessSurveyConfig(),
-            "ONS Business Surveys",
+            ["ONS Business Surveys", None, None],
         ),
         (
             SurveyType.SOCIAL,
             None,
             SocialSurveyConfig(),
-            "ONS Social Surveys",
+            ["ONS Social Surveys", None, None],
         ),
         (
             SurveyType.SOCIAL,
             "Test",
             SocialSurveyConfig(),
-            "Test",
+            ["Test", None, None],
         ),
         (
             None,
             None,
             SocialSurveyConfig(),
-            "ONS Social Surveys",
-        ),
-        (
-            SurveyType.CENSUS,
-            None,
-            CensusSurveyConfig(),
-            "Census 2021",
-        ),
-        (
-            SurveyType.CENSUS,
-            "Test",
-            CensusSurveyConfig(),
-            "Test",
-        ),
-        (
-            None,
-            None,
-            CensusSurveyConfig(),
-            "Census 2021",
-        ),
-        (
-            SurveyType.CENSUS_NISRA,
-            None,
-            CensusNISRASurveyConfig(),
-            "Census 2021",
-        ),
-        (
-            None,
-            None,
-            CensusNISRASurveyConfig(),
-            "Census 2021",
+            ["ONS Social Surveys", None, None],
         ),
         (
             None,
             None,
             SurveyConfig(),
+            [None, None, None],
+        ),
+        (
+            SurveyType.CENSUS,
             None,
+            CensusSurveyConfig(),
+            ["Census 2021", None, None],
+        ),
+        (
+            SurveyType.CENSUS,
+            "Test",
+            CensusSurveyConfig(),
+            ["Test", None, None],
+        ),
+        (
+            None,
+            None,
+            CensusSurveyConfig(),
+            ["Census 2021", None, None],
+        ),
+        (
+            SurveyType.CENSUS_NISRA,
+            None,
+            CensusNISRASurveyConfig(),
+            [
+                "Census 2021",
+                read_file("./templates/assets/images/ni-logo.svg"),
+                read_file("./templates/assets/images/ni-logo-mobile.svg"),
+            ],
+        ),
+        (
+            None,
+            None,
+            CensusNISRASurveyConfig(),
+            [
+                "Census 2021",
+                read_file("./templates/assets/images/ni-logo.svg"),
+                read_file("./templates/assets/images/ni-logo-mobile.svg"),
+            ],
         ),
     ),
 )
-def test_get_survey_title(app: Flask, theme, survey_title, survey_config, expected):
+def test_header_context(app: Flask, theme, survey_title, survey_config, expected):
     with app.app_context():
         for cookie_name, cookie_value in {
             "theme": theme,
@@ -182,12 +194,26 @@ def test_get_survey_title(app: Flask, theme, survey_title, survey_config, expect
             if cookie_value:
                 cookie_session[cookie_name] = cookie_value
 
-        result = ContextHelper(
-            language="en",
-            is_post_submission=False,
-            include_csrf_token=True,
-            survey_config=survey_config,
-        ).context["survey_title"]
+        result = [
+            ContextHelper(
+                language="en",
+                is_post_submission=False,
+                include_csrf_token=True,
+                survey_config=survey_config,
+            ).context["survey_title"],
+            ContextHelper(
+                language="en",
+                is_post_submission=False,
+                include_csrf_token=True,
+                survey_config=survey_config,
+            ).context["mastheadLogo"],
+            ContextHelper(
+                language="en",
+                is_post_submission=False,
+                include_csrf_token=True,
+                survey_config=survey_config,
+            ).context["mastheadLogoMobile"],
+        ]
 
     assert result == expected
 
