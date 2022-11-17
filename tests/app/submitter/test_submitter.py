@@ -373,7 +373,7 @@ def test_double_submission_is_forbidden_when_not_delete_operation_error(
 
 
 @pytest.fixture
-def gcs_blob_storage_error_message(mocker):
+def gcs_blob_create_forbidden(mocker):
     blob = Blob(name="test-blob", bucket=mocker.Mock())
 
     blob.upload_from_string = mocker.Mock(  # pylint: disable=protected-access
