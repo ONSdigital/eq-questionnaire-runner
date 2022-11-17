@@ -8,8 +8,6 @@ from app.settings import (
 )
 from app.survey_config.census_config import CY_BASE_URL, EN_BASE_URL
 
-LANGUAGE_CODE = "en"
-
 
 @fixture
 def get_context_helper():
@@ -30,6 +28,18 @@ def get_context_helper():
 def footer_context():
     return {
         "lang": "en",
+        "crest": True,
+        "newTabWarning": "The following links open in a new tab",
+        "copyrightDeclaration": {
+            "copyright": "Crown copyright and database rights 2020 OS 100019153.",
+            "text": "Use of address data is subject to the terms and conditions.",
+        },
+    }
+
+
+def welsh_footer_context():
+    return {
+        "lang": "cy",
         "crest": True,
         "newTabWarning": "The following links open in a new tab",
         "copyrightDeclaration": {
@@ -260,19 +270,19 @@ def expected_footer_welsh_social_theme():
                 "itemsList": [
                     {
                         "text": "Cookies",
-                        "url": f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/{LANGUAGE_CODE}/cookies/",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/cy/cookies/",
                         "target": "_blank",
                     },
                     {
                         "text": "Privacy and data protection",
-                        "url": f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/{LANGUAGE_CODE}/privacy-and-data-protection/",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/cy/privacy-and-data-protection/",
                         "target": "_blank",
                     },
                 ]
             }
         ],
     }
-    return {**footer_context(), **social}
+    return {**welsh_footer_context(), **social}
 
 
 def expected_footer_social_theme_no_cookie():

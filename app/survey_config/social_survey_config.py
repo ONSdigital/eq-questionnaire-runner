@@ -3,7 +3,6 @@ from typing import Iterable, Mapping, MutableMapping, Optional
 
 from flask_babel import lazy_gettext
 
-from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.settings import (
     ACCOUNT_SERVICE_BASE_URL_SOCIAL,
     ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL,
@@ -87,9 +86,7 @@ class WelshSocialSurveyConfig(
                 }
             ]
 
-        language_code = (
-            self.schema.language_code if self.schema else DEFAULT_LANGUAGE_CODE
-        )
+        language_code = "cy"
 
         self.account_service_log_out_url: str = f"{self.base_url}/{language_code}/start"
 

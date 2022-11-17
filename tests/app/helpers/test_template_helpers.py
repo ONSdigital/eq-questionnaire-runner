@@ -23,7 +23,6 @@ from app.survey_config import (
 )
 from app.survey_config.survey_type import SurveyType
 from tests.app.helpers.conftest import (
-    LANGUAGE_CODE,
     expected_footer_business_theme,
     expected_footer_business_theme_no_cookie,
     expected_footer_census_theme,
@@ -40,39 +39,52 @@ DEFAULT_URL = "http://localhost"
 
 
 @pytest.mark.parametrize(
-    "theme, survey_config, expected_footer",
+    "theme, survey_config, language, expected_footer",
     [
-        (SurveyType.CENSUS, CensusSurveyConfig(), expected_footer_census_theme()),
-        (None, CensusSurveyConfig(), expected_footer_census_theme_no_cookie()),
-        (SurveyType.BUSINESS, BusinessSurveyConfig(), expected_footer_business_theme()),
-        (None, BusinessSurveyConfig(), expected_footer_business_theme_no_cookie()),
-        (SurveyType.SOCIAL, SocialSurveyConfig(), expected_footer_social_theme()),
-        (None, SocialSurveyConfig(), expected_footer_social_theme_no_cookie()),
+        (SurveyType.CENSUS, CensusSurveyConfig(), "en", expected_footer_census_theme()),
+        (None, CensusSurveyConfig(), "en", expected_footer_census_theme_no_cookie()),
+        (
+            SurveyType.BUSINESS,
+            BusinessSurveyConfig(),
+            "en",
+            expected_footer_business_theme(),
+        ),
+        (
+            None,
+            BusinessSurveyConfig(),
+            "en",
+            expected_footer_business_theme_no_cookie(),
+        ),
+        (SurveyType.SOCIAL, SocialSurveyConfig(), "en", expected_footer_social_theme()),
+        (None, SocialSurveyConfig(), "en", expected_footer_social_theme_no_cookie()),
         (
             SurveyType.SOCIAL,
             WelshSocialSurveyConfig(),
+            "cy",
             expected_footer_welsh_social_theme(),
         ),
         (
             SurveyType.CENSUS_NISRA,
             CensusNISRASurveyConfig(),
+            "en",
             expected_footer_nisra_theme(),
         ),
         (
             SurveyType.CENSUS,
             WelshCensusSurveyConfig(),
+            "en",
             expected_footer_census_welsh_theme(),
         ),
     ],
 )
-def test_footer_context(app: Flask, theme, survey_config, expected_footer):
+def test_footer_context(app: Flask, theme, survey_config, language, expected_footer):
     with app.app_context():
         if theme:
             cookie_session["theme"] = theme
         config = survey_config
 
         result = ContextHelper(
-            language="en",
+            language=language,
             is_post_submission=False,
             include_csrf_token=True,
             survey_config=config,
@@ -454,7 +466,7 @@ def test_sign_out_button_text_context(
         (
             WelshSocialSurveyConfig(),
             True,
-            f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/{LANGUAGE_CODE}/cookies/",
+            f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/cy/cookies/",
         ),
         (SurveyConfig(), False, None),
     ],
@@ -600,7 +612,7 @@ def test_account_service_my_todo_url_context(
         ),
         (
             WelshSocialSurveyConfig(),
-            f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/{LANGUAGE_CODE}/start",
+            f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/cy/start",
         ),
     ],
 )
