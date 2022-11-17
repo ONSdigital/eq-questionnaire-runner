@@ -34,6 +34,8 @@ from tests.app.helpers.conftest import (
 from tests.app.questionnaire.conftest import get_metadata
 
 DEFAULT_URL = "http://localhost"
+NI_LOGO = (read_file("./templates/assets/images/ni-logo.svg"),)
+NI_LOGO_MOBILE = read_file("./templates/assets/images/ni-logo-mobile.svg")
 
 
 @pytest.mark.parametrize(
@@ -169,8 +171,8 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             CensusNISRASurveyConfig(),
             [
                 "Census 2021",
-                read_file("./templates/assets/images/ni-logo.svg"),
-                read_file("./templates/assets/images/ni-logo-mobile.svg"),
+                NI_LOGO,
+                NI_LOGO_MOBILE,
             ],
         ),
         (
@@ -179,8 +181,8 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             CensusNISRASurveyConfig(),
             [
                 "Census 2021",
-                read_file("./templates/assets/images/ni-logo.svg"),
-                read_file("./templates/assets/images/ni-logo-mobile.svg"),
+                NI_LOGO,
+                NI_LOGO_MOBILE,
             ],
         ),
     ),
