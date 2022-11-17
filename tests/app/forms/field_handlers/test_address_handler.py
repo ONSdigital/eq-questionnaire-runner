@@ -6,8 +6,11 @@ from app.forms import error_messages
 from app.forms.field_handlers import AddressHandler
 
 
-def get_test_form_class(
-    answer_schema, value_source_resolver, rule_evaluator, messages=error_messages.copy()
+def get_test_form_class(  # pylint: disable=dangerous-default-value
+    answer_schema,
+    value_source_resolver,
+    rule_evaluator,
+    messages=error_messages.copy(),
 ):
     address_handler = AddressHandler(
         answer_schema, value_source_resolver, rule_evaluator, error_messages=messages

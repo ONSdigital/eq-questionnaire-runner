@@ -1,4 +1,6 @@
 from mock import Mock, patch
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.settings import (
@@ -6,6 +8,12 @@ from app.settings import (
     ACCOUNT_SERVICE_BASE_URL_SOCIAL,
     ONS_URL,
 )
+=======
+=======
+
+>>>>>>> 0600c213 (updated unit tests to use the latest session if cookie session was not updated)
+from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
+>>>>>>> 2900660d (Saving last cookie ession on error)
 from tests.integration.create_token import ACCOUNT_SERVICE_URL
 from tests.integration.integration_test_case import IntegrationTestCase
 
@@ -159,7 +167,8 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.launchSurvey("test_introduction")
 
         # When
-        cookie = self.getUrlAndCookie("/dump/debug")
+        last_cookie = self.last_response.headers["Set-Cookie"]
+        cookie = self.getUrlAndCookie("/dump/debug", last_cookie)
 
         # Then
         self.assertEqual(cookie.get("theme"), "default")
@@ -177,7 +186,8 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         )
 
         # When
-        cookie = self.getUrlAndCookie("/dump/debug")
+        last_cookie = self.last_response.headers["Set-Cookie"]
+        cookie = self.getUrlAndCookie("/dump/debug", last_cookie)
 
         # Then
         self.assertEqual(cookie.get("theme"), "social")
@@ -213,7 +223,8 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.launchSurvey("test_introduction")
 
         # When
-        cookie = self.getUrlAndCookie("/abc123")
+        last_cookie = self.last_response.headers["Set-Cookie"]
+        cookie = self.getUrlAndCookie("/abc123", last_cookie)
 
         # Then
         self.assertEqual(cookie.get("theme"), "default")
@@ -231,7 +242,8 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         )
 
         # When
-        cookie = self.getUrlAndCookie("/abc123")
+        last_cookie = self.last_response.headers["Set-Cookie"]
+        cookie = self.getUrlAndCookie("/abc123", last_cookie)
 
         # Then
         self.assertEqual(cookie.get("theme"), "social")
@@ -279,13 +291,14 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
     def test_500_theme_default_cookie_exists(self):
         # Given
         self.launchSurvey("test_introduction")
-
+        last_cookie = self.last_response.headers["Set-Cookie"]
         # When
         with patch(
             "app.routes.questionnaire.get_block_handler",
             side_effect=Exception("You broke it"),
         ):
             self.post({"answer": "test"})
+            self.last_response.headers["Set-Cookie"] = last_cookie
             cookie = self.getCookie()
 
             # Then
@@ -298,13 +311,14 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
     def test_500_theme_social_cookie_exists(self):
         # Given
         self.launchSurvey("test_introduction")
-
+        last_cookie = self.last_response.headers["Set-Cookie"]
         # When
         with patch(
             "app.routes.questionnaire.get_block_handler",
             side_effect=Exception("You broke it"),
         ):
             self.post({"answer": "test"})
+            self.last_response.headers["Set-Cookie"] = last_cookie
             cookie = self.getCookie()
 
             # Then
@@ -387,8 +401,8 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.post()
         self.post()
 
-    def getUrlAndCookie(self, url):
-        self.get(url=url)
+    def getUrlAndCookie(self, url, last_cookie=None):
+        self.get(url=url, last_cookie=last_cookie)
         return self.getCookie()
 
     def deleteCookieAndGetUrl(self, url):

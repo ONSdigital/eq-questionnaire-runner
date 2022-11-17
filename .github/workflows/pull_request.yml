@@ -10,7 +10,7 @@ on:
 
 jobs:
   python-dependencies:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
       - run: |
@@ -27,7 +27,7 @@ jobs:
           wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb
           sudo dpkg -i wkhtmltox_0.12.6-1.bionic_amd64.deb
       - name: Install Pipenv
-        run: pip install pipenv==2018.11.26
+        run: pip install pipenv==2022.11.30
       - name: Cache virtualenv
         id: cache-virtualenv
         uses: actions/cache@v1
@@ -38,7 +38,7 @@ jobs:
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: pipenv install --dev
   node-dependencies:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -58,7 +58,7 @@ jobs:
         run: yarn
   test-unit:
     needs: python-dependencies
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
       - run: |
@@ -77,7 +77,7 @@ jobs:
       - name: Write app version
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
       - name: Install pipenv
-        run: pip install pipenv==2018.11.26
+        run: pip install pipenv==2022.11.30
       - name: Cache virtualenv
         id: cache-virtualenv
         uses: actions/cache@v1
@@ -100,7 +100,7 @@ jobs:
       - name: Running unit tests
         run: pipenv run ./scripts/run_tests_unit.sh
   validate-schemas:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
       - name: Run validator
@@ -112,7 +112,7 @@ jobs:
       matrix:
         suite: [ timeout_modal, features, general, components ]
     needs: [python-dependencies, node-dependencies]
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
     steps:
@@ -130,7 +130,7 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install pipenv
-        run: pip install pipenv==2018.11.26
+        run: pip install pipenv==2022.11.30
       - name: Cache virtualenv
         id: cache-virtualenv
         uses: actions/cache@v1
@@ -163,7 +163,7 @@ jobs:
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker-compose kill
   docker-push:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
       - name: Set Tag and SHA

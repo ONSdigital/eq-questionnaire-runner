@@ -261,7 +261,7 @@ class PlaceholderTransforms:
 
         return f"{number_to_format}{indicator}"
 
-    def get_ordinal_indicator(self, number_to_format: int) -> str:
+    def get_ordinal_indicator(self, number_to_format: int) -> Optional[str]:
         if self.language in ["en", "eo"]:
             if 11 <= number_to_format % 100 <= 13:
                 return "th"

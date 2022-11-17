@@ -13,7 +13,7 @@ from app.settings import MAX_NUMBER
 # wtforms Form parents are not discoverable in the 2.3.3 implementation
 
 
-def get_test_form_class(
+def get_test_form_class(  # pylint: disable=dangerous-default-value
     answer_schema, value_source_resolver, rule_evaluator, messages=error_messages.copy()
 ):
     handler = NumberHandler(

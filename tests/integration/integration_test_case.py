@@ -155,7 +155,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self.assertStatusOK()
         return json_loads(self.getResponseData())
 
-    def get(self, url, follow_redirects=True, **kwargs):
+    def get(self, url, follow_redirects=True, last_cookie=None, **kwargs):
         """
         GETs the specified URL, following any redirects.
 
@@ -167,7 +167,8 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         :param url: the URL to GET
         """
         response = self._client.get(url, follow_redirects=follow_redirects, **kwargs)
-
+        if last_cookie is not None:
+            response.headers["Set-Cookie"] = last_cookie
         self._cache_response(response)
 
     def post(self, post_data=None, url=None, action=None, **kwargs):

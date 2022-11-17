@@ -417,8 +417,8 @@ class SumCheck:
             condition = f"{conditions[0]} or equals"
         else:
             condition = conditions[0]
-
-        is_valid, message = self._is_valid(condition, total, target_total)
+        # is_valid never returns a "None" object. Therefore a none object being iterated will never occur
+        is_valid, message = self._is_valid(condition, total, target_total)  # type: ignore[misc]
 
         if not is_valid:
             raise validators.ValidationError(
@@ -431,7 +431,7 @@ class SumCheck:
         condition: str,
         total: Union[Decimal, float],
         target_total: Union[Decimal, float],
-    ) -> tuple[bool, str]:
+    ) -> Optional[tuple[bool, str]]:
         if condition == "equals":
             return total == target_total, "TOTAL_SUM_NOT_EQUALS"
         if condition == "less than":

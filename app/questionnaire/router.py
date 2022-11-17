@@ -66,7 +66,8 @@ class Router:
         return self.get_next_location_url_for_end_of_section()
 
     def get_last_location_in_questionnaire_url(self) -> str:
-        routing_path = self.routing_path(*self._get_last_complete_section_key())
+        # List or Tuple is never going to be None value so will always be expected as a varadic arugment
+        routing_path = self.routing_path(*self._get_last_complete_section_key())  # type: ignore[misc]
         return self.get_last_location_in_section(routing_path).url()
 
     def is_list_item_in_list_store(self, list_item_id: str, list_name: str) -> bool:
@@ -144,7 +145,9 @@ class Router:
         # Due to backwards routing you can be on the last block of the path but with an in_progress section
         is_last_block_on_path = routing_path[-1] == location.block_id
         if is_last_block_on_path:
-            return self._get_first_incomplete_location_in_section(routing_path).url()
+            # This is never called if next_location = None so we have to type ignore
+            next_location: Location = self._get_first_incomplete_location_in_section(routing_path)  # type: ignore
+            return next_location.url()
 
         return self.get_next_block_url(
             location,
@@ -321,7 +324,7 @@ class Router:
 
     def _get_first_incomplete_location_in_section(
         self, routing_path: RoutingPath
-    ) -> Location:
+    ) -> Optional[Location]:
         for block_id in routing_path:
             if not self._is_block_complete(
                 block_id, routing_path.section_id, routing_path.list_item_id
@@ -364,12 +367,12 @@ class Router:
                 section_key = (section_id, None)
                 yield section_key
 
-    def _get_first_incomplete_section_key(self) -> tuple[str, Optional[str]]:
+    def _get_first_incomplete_section_key(self) -> Optional[tuple[str, Optional[str]]]:
         for section_id, list_item_id in self.get_enabled_section_keys():
             if not self._progress_store.is_section_complete(section_id, list_item_id):
                 return section_id, list_item_id
 
-    def _get_last_complete_section_key(self) -> tuple[str, Optional[str]]:
+    def _get_last_complete_section_key(self) -> Optional[tuple[str, Optional[str]]]:
         for section_id, list_item_id in list(self.get_enabled_section_keys())[::-1]:
             if self._progress_store.is_section_complete(section_id, list_item_id):
                 return section_id, list_item_id
@@ -420,6 +423,7 @@ class Router:
             block_id=next_block_id,
             list_name=routing_path.list_name,
             list_item_id=routing_path.list_item_id,
+            _external=False,
             **kwargs,
         )
 
