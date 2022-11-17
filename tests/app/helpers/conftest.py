@@ -4,7 +4,7 @@ from app.helpers.template_helpers import ContextHelper
 from app.settings import (
     ACCOUNT_SERVICE_BASE_URL,
     ACCOUNT_SERVICE_BASE_URL_SOCIAL,
-    ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL,
+    CY_ONS_URL,
 )
 from app.survey_config.census_config import CY_BASE_URL, EN_BASE_URL
 
@@ -249,17 +249,17 @@ def expected_footer_welsh_social_theme():
                 "itemsList": [
                     {
                         "text": "What we do",
-                        "url": "https://www.ons.gov.uk/aboutus/whatwedo/",
+                        "url": f"{CY_ONS_URL}/aboutus/whatwedo/",
                         "target": "_blank",
                     },
                     {
                         "text": "Contact us",
-                        "url": f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/aboutus/contactus/surveyenquiries",
+                        "url": f"{CY_ONS_URL}/aboutus/contactus/surveyenquiries",
                         "target": "_blank",
                     },
                     {
                         "text": "Accessibility",
-                        "url": "https://www.ons.gov.uk/help/accessibility/",
+                        "url": f"{CY_ONS_URL}/help/accessibility/",
                         "target": "_blank",
                     },
                 ]
@@ -270,12 +270,12 @@ def expected_footer_welsh_social_theme():
                 "itemsList": [
                     {
                         "text": "Cookies",
-                        "url": f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/cy/cookies/",
+                        "url": f"{CY_ONS_URL}/cy/cookies/",
                         "target": "_blank",
                     },
                     {
                         "text": "Privacy and data protection",
-                        "url": f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/cy/privacy-and-data-protection/",
+                        "url": f"{CY_ONS_URL}/cy/privacy-and-data-protection/",
                         "target": "_blank",
                     },
                 ]

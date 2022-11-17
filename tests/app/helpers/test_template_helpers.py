@@ -9,7 +9,7 @@ from app.questionnaire import QuestionnaireSchema
 from app.settings import (
     ACCOUNT_SERVICE_BASE_URL,
     ACCOUNT_SERVICE_BASE_URL_SOCIAL,
-    ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL,
+    CY_ONS_URL,
 )
 from app.survey_config import (
     BusinessSurveyConfig,
@@ -405,7 +405,7 @@ def test_service_links_context(
         (
             WelshSocialSurveyConfig(),
             "cy",
-            f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/aboutus/contactus/surveyenquiries",
+            f"{CY_ONS_URL}/aboutus/contactus/surveyenquiries",
         ),
     ],
 )
@@ -466,7 +466,7 @@ def test_sign_out_button_text_context(
         (
             WelshSocialSurveyConfig(),
             True,
-            f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/cy/cookies/",
+            f"{CY_ONS_URL}/cy/cookies/",
         ),
         (SurveyConfig(), False, None),
     ],
@@ -489,32 +489,38 @@ def test_cookie_settings_url_context(
 
 
 @pytest.mark.parametrize(
-    "survey_config, address",
+    "survey_config, language, address",
     [
-        (SurveyConfig(), ACCOUNT_SERVICE_BASE_URL),
+        (SurveyConfig(), "en", ACCOUNT_SERVICE_BASE_URL),
         (
             BusinessSurveyConfig(),
+            "en",
             ACCOUNT_SERVICE_BASE_URL,
         ),
         (
             NorthernIrelandBusinessSurveyConfig(),
+            "en",
             ACCOUNT_SERVICE_BASE_URL,
         ),
         (
             SocialSurveyConfig(),
+            "en",
             ACCOUNT_SERVICE_BASE_URL_SOCIAL,
         ),
         (
             WelshSocialSurveyConfig(),
-            ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL,
+            "cy",
+            CY_ONS_URL,
         ),
     ],
 )
-def test_cookie_domain_context(app: Flask, survey_config: SurveyConfig, address: str):
+def test_cookie_domain_context(
+    app: Flask, survey_config: SurveyConfig, language: str, address: str
+):
     with app.app_context():
         cookie_session["theme"] = "dummy_value"
         context_helper = ContextHelper(
-            language="en",
+            language=language,
             is_post_submission=False,
             include_csrf_token=True,
             survey_config=survey_config,
@@ -612,7 +618,7 @@ def test_account_service_my_todo_url_context(
         ),
         (
             WelshSocialSurveyConfig(),
-            f"{ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL}/cy/start",
+            f"{CY_ONS_URL}/cy/start",
         ),
     ],
 )
@@ -657,7 +663,7 @@ def test_get_survey_config(
     "survey_config_type, base_url",
     [
         (SocialSurveyConfig, ACCOUNT_SERVICE_BASE_URL_SOCIAL),
-        (WelshSocialSurveyConfig, ACCOUNT_SERVICE_BASE_URL_WELSH_SOCIAL),
+        (WelshSocialSurveyConfig, CY_ONS_URL),
         (SurveyConfig, DEFAULT_URL),
         (BusinessSurveyConfig, DEFAULT_URL),
     ],
