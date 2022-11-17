@@ -34,7 +34,7 @@ from tests.app.helpers.conftest import (
 from tests.app.questionnaire.conftest import get_metadata
 
 DEFAULT_URL = "http://localhost"
-NI_LOGO = (read_file("./templates/assets/images/ni-logo.svg"),)
+NI_LOGO = read_file("./templates/assets/images/ni-logo.svg")
 NI_LOGO_MOBILE = read_file("./templates/assets/images/ni-logo-mobile.svg")
 
 
