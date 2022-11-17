@@ -3,7 +3,7 @@ from typing import Iterable, Mapping, MutableMapping, Optional
 
 from flask_babel import lazy_gettext
 
-from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL, CY_ONS_URL
+from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL, CY_ONS_URL, ONS_URL
 from app.survey_config.link import Link
 from app.survey_config.survey_config import SurveyConfig
 
@@ -32,7 +32,7 @@ class SocialSurveyConfig(
         if not self.account_service_log_out_url:
             self.account_service_log_out_url: str = f"{self.base_url}/sign-in/logout"
 
-        self.contact_us_url: str = f"{self.base_url}/aboutus/contactus/surveyenquiries"
+        self.contact_us_url: str = f"{ONS_URL}/aboutus/contactus/surveyenquiries"
 
     def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
         links = [Link(lazy_gettext("What we do"), self.what_we_do_url).__dict__]
@@ -69,17 +69,17 @@ class WelshSocialSurveyConfig(
     def __post_init__(self):
         super().__post_init__()
 
+        base_url: str = ACCOUNT_SERVICE_BASE_URL_SOCIAL
+
         language_code = "cy"
 
-        self.account_service_log_out_url: str = f"{CY_ONS_URL}/{language_code}/start"
+        self.account_service_log_out_url: str = f"{self.base_url}/{language_code}/start"
 
         self.contact_us_url: str = f"{CY_ONS_URL}/aboutus/contactus/surveyenquiries"
-        self.cookie_settings_url: str = f"{CY_ONS_URL}/{language_code}/cookies/"
+        self.cookie_settings_url: str = f"{base_url}/{language_code}/cookies/"
         self.privacy_and_data_protection_url: str = (
-            f"{CY_ONS_URL}/{language_code}/privacy-and-data-protection/"
+            f"{base_url}/{language_code}/privacy-and-data-protection/"
         )
 
         self.accessibility_url: str = f"{CY_ONS_URL}/help/accessibility/"
         self.what_we_do_url: str = f"{CY_ONS_URL}/aboutus/whatwedo/"
-
-        self.cookie_domain: str = CY_ONS_URL.split("://")[-1].split("/")[0]

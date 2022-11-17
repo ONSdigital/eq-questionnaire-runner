@@ -10,6 +10,7 @@ from app.settings import (
     ACCOUNT_SERVICE_BASE_URL,
     ACCOUNT_SERVICE_BASE_URL_SOCIAL,
     CY_ONS_URL,
+    ONS_URL,
 )
 from app.survey_config import (
     BusinessSurveyConfig,
@@ -400,7 +401,7 @@ def test_service_links_context(
         (
             SocialSurveyConfig(),
             "en",
-            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/aboutus/contactus/surveyenquiries",
+            f"{ONS_URL}/aboutus/contactus/surveyenquiries",
         ),
         (
             WelshSocialSurveyConfig(),
@@ -466,7 +467,7 @@ def test_sign_out_button_text_context(
         (
             WelshSocialSurveyConfig(),
             True,
-            f"{CY_ONS_URL}/cy/cookies/",
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cy/cookies/",
         ),
         (SurveyConfig(), False, None),
     ],
@@ -510,7 +511,7 @@ def test_cookie_settings_url_context(
         (
             WelshSocialSurveyConfig(),
             "cy",
-            CY_ONS_URL,
+            ACCOUNT_SERVICE_BASE_URL_SOCIAL,
         ),
     ],
 )
@@ -618,7 +619,7 @@ def test_account_service_my_todo_url_context(
         ),
         (
             WelshSocialSurveyConfig(),
-            f"{CY_ONS_URL}/cy/start",
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cy/start",
         ),
     ],
 )
@@ -663,7 +664,7 @@ def test_get_survey_config(
     "survey_config_type, base_url",
     [
         (SocialSurveyConfig, ACCOUNT_SERVICE_BASE_URL_SOCIAL),
-        (WelshSocialSurveyConfig, CY_ONS_URL),
+        (WelshSocialSurveyConfig, ACCOUNT_SERVICE_BASE_URL_SOCIAL),
         (SurveyConfig, DEFAULT_URL),
         (BusinessSurveyConfig, DEFAULT_URL),
     ],
@@ -676,14 +677,25 @@ def test_survey_config_base_url_provided_used_in_links(
 
     assert result.base_url == base_url
 
-    urls_to_check = [
-        result.account_service_my_account_url,
-        result.account_service_log_out_url,
-        result.account_service_todo_url,
-        result.cookie_settings_url,
-        result.contact_us_url,
-        result.privacy_and_data_protection_url,
-    ]
+    if survey_config_type in [SocialSurveyConfig, WelshSocialSurveyConfig]:
+
+        urls_to_check = [
+            result.account_service_my_account_url,
+            result.account_service_log_out_url,
+            result.account_service_todo_url,
+            result.cookie_settings_url,
+            result.privacy_and_data_protection_url,
+        ]
+
+    else:
+        urls_to_check = [
+            result.account_service_my_account_url,
+            result.account_service_log_out_url,
+            result.account_service_todo_url,
+            result.cookie_settings_url,
+            result.contact_us_url,
+            result.privacy_and_data_protection_url,
+        ]
 
     for url in urls_to_check:
         if url:

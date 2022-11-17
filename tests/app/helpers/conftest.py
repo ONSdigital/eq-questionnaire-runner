@@ -5,6 +5,7 @@ from app.settings import (
     ACCOUNT_SERVICE_BASE_URL,
     ACCOUNT_SERVICE_BASE_URL_SOCIAL,
     CY_ONS_URL,
+    ONS_URL,
 )
 from app.survey_config.census_config import CY_BASE_URL, EN_BASE_URL
 
@@ -211,7 +212,7 @@ def expected_footer_social_theme():
                     },
                     {
                         "text": "Contact us",
-                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/aboutus/contactus/surveyenquiries",
+                        "url": f"{ONS_URL}/aboutus/contactus/surveyenquiries",
                         "target": "_blank",
                     },
                     {
@@ -270,12 +271,12 @@ def expected_footer_welsh_social_theme():
                 "itemsList": [
                     {
                         "text": "Cookies",
-                        "url": f"{CY_ONS_URL}/cy/cookies/",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cy/cookies/",
                         "target": "_blank",
                     },
                     {
                         "text": "Privacy and data protection",
-                        "url": f"{CY_ONS_URL}/cy/privacy-and-data-protection/",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cy/privacy-and-data-protection/",
                         "target": "_blank",
                     },
                 ]
