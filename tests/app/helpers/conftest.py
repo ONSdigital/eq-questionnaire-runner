@@ -248,7 +248,6 @@ def expected_footer_social_theme_no_cookie():
     return {**footer_context(), **social}
 
 
-# pylint: disable=line-too-long, invalid-string-quote
 def expected_footer_nisra_theme():
     return {
         "lang": "en",
@@ -302,9 +301,6 @@ def expected_footer_nisra_theme():
         ],
         "poweredBy": read_file("./templates/assets/images/ni-powered-by-logo.svg"),
     }
-
-
-# pylint: enable=line-too-long, invalid-string-quote
 
 
 def expected_footer_census_welsh_theme():
