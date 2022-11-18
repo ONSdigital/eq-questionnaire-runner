@@ -196,25 +196,17 @@ def test_header_context(app: Flask, theme, survey_title, survey_config, expected
             if cookie_value:
                 cookie_session[cookie_name] = cookie_value
 
+              context_helper = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        )
+
         result = [
-            ContextHelper(
-                language="en",
-                is_post_submission=False,
-                include_csrf_token=True,
-                survey_config=survey_config,
-            ).context["survey_title"],
-            ContextHelper(
-                language="en",
-                is_post_submission=False,
-                include_csrf_token=True,
-                survey_config=survey_config,
-            ).context["mastheadLogo"],
-            ContextHelper(
-                language="en",
-                is_post_submission=False,
-                include_csrf_token=True,
-                survey_config=survey_config,
-            ).context["mastheadLogoMobile"],
+            context_helper.context["survey_title"],
+            context_helper.context["mastheadLogo"],
+            context_helper.context["mastheadLogoMobile"],
         ]
 
     assert result == expected
