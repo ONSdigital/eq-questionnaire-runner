@@ -196,7 +196,7 @@ def test_header_context(app: Flask, theme, survey_title, survey_config, expected
             if cookie_value:
                 cookie_session[cookie_name] = cookie_value
 
-              context_helper = ContextHelper(
+        context_helper = ContextHelper(
             language="en",
             is_post_submission=False,
             include_csrf_token=True,
