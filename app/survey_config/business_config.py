@@ -134,6 +134,8 @@ class BusinessSurveyConfig(SurveyConfig):
 @dataclass
 class NorthernIrelandBusinessSurveyConfig(BusinessSurveyConfig):
     masthead_logo: str = read_file("./templates/assets/images/ni-finance-logo.svg")
-    masthead_logo_mobile: str = read_file(
-        "./templates/assets/images/ni-finance-logo-mobile.svg"
+    masthead_logo_mobile: str = (
+        read_file("./templates/assets/images/ni-finance-logo.svg")
+        .replace("ni-finance-logo-alt", "ni-finance-logo-mobile-alt")
+        .replace('width="296" height="56"', 'width="184" height="35"')
     )

@@ -303,7 +303,10 @@ def expected_footer_nisra_theme():
                 ]
             }
         ],
-        "poweredBy": read_file("./templates/assets/images/ni-powered-by-logo.svg").replace("#3d7cc9", "#222").replace("#cddb00", "#222").replace("#00205c", "#222"),
+        "poweredBy": read_file("./templates/assets/images/ni-powered-by-logo.svg")
+        .replace("#3d7cc9", "#222")
+        .replace("#cddb00", "#222")
+        .replace("#00205c", "#222"),
     }
 
 

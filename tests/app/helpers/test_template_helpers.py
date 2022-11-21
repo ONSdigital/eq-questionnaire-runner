@@ -35,7 +35,14 @@ from tests.app.questionnaire.conftest import get_metadata
 
 DEFAULT_URL = "http://localhost"
 NI_LOGO = read_file("./templates/assets/images/ni-logo.svg")
-NI_LOGO_MOBILE = read_file("./templates/assets/images/ni-logo-mobile.svg")
+NI_LOGO_MOBILE = (
+    read_file("./templates/assets/images/ni-logo.svg")
+    .replace("nisra-logo-en-alt", "nisra-logo-en-mobile-alt")
+    .replace(
+        'width="170" height="56" viewBox="0 1 170 54"',
+        'width="107" height="35" viewBox="0 0 170 54"',
+    )
+)
 
 
 @pytest.mark.parametrize(
