@@ -156,7 +156,7 @@ class CensusNISRASurveyConfig(
     copyright_text: LazyString = lazy_gettext(
         "Use of address data is subject to the terms and conditions."
     )
-    powered_by_logo: str = read_file("./templates/assets/images/ni-powered-by-logo.svg")
+    powered_by_logo: str = read_file("./templates/assets/images/ni-logo.svg").replace("#3d7cc9", "#222").replace("#cddb00", "#222").replace("#00205c", "#222")
     _is_nisra: bool = True
 
     def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
