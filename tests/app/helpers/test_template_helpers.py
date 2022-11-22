@@ -23,6 +23,7 @@ from tests.app.helpers.conftest import (
     expected_footer_census_theme,
     expected_footer_census_theme_no_cookie,
     expected_footer_census_welsh_theme,
+    expected_footer_nisra_theme,
     expected_footer_social_theme,
     expected_footer_social_theme_no_cookie,
 )
@@ -40,6 +41,11 @@ DEFAULT_URL = "http://localhost"
         (None, BusinessSurveyConfig(), expected_footer_business_theme_no_cookie()),
         (SurveyType.SOCIAL, SocialSurveyConfig(), expected_footer_social_theme()),
         (None, SocialSurveyConfig(), expected_footer_social_theme_no_cookie()),
+        (
+            SurveyType.CENSUS_NISRA,
+            CensusNISRASurveyConfig(),
+            expected_footer_nisra_theme(),
+        ),
         (
             SurveyType.CENSUS,
             WelshCensusSurveyConfig(),

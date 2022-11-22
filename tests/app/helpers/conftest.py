@@ -248,6 +248,60 @@ def expected_footer_social_theme_no_cookie():
     return {**footer_context(), **social}
 
 
+def expected_footer_nisra_theme():
+    return {
+        "lang": "en",
+        "crest": True,
+        "newTabWarning": "The following links open in a new tab",
+        "copyrightDeclaration": {
+            "copyright": "Crown copyright and database rights 2021 NIMA MOU577.501.",
+            "text": "Use of address data is subject to the terms and conditions.",
+        },
+        "rows": [
+            {
+                "itemsList": [
+                    {
+                        "text": "Help",
+                        "url": f"{EN_BASE_URL}/ni/help/help-with-the-questions/online-questions-help/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Contact us",
+                        "url": f"{EN_BASE_URL}/ni/contact-us/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
+        "legal": [
+            {
+                "itemsList": [
+                    {
+                        "text": "Cookies",
+                        "url": f"{EN_BASE_URL}/ni/cookies/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Accessibility statement",
+                        "url": f"{EN_BASE_URL}/ni/accessibility-statement/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Privacy and data protection",
+                        "url": f"{EN_BASE_URL}/ni/privacy-and-data-protection/",
+                        "target": "_blank",
+                    },
+                    {
+                        "text": "Terms and conditions",
+                        "url": f"{EN_BASE_URL}/ni/terms-and-conditions/",
+                        "target": "_blank",
+                    },
+                ]
+            }
+        ],
+    }
+
+
 def expected_footer_census_welsh_theme():
     return {
         "lang": "en",
