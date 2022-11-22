@@ -20,7 +20,6 @@ from app.survey_config import (
     SocialSurveyConfig,
     SurveyConfig,
     WelshCensusSurveyConfig,
-    WelshSocialSurveyConfig,
 )
 from app.survey_config.survey_type import SurveyType
 from tests.app.helpers.conftest import (
@@ -60,7 +59,7 @@ DEFAULT_URL = "http://localhost"
         (None, SocialSurveyConfig(), "en", expected_footer_social_theme_no_cookie()),
         (
             SurveyType.SOCIAL,
-            WelshSocialSurveyConfig(),
+            SocialSurveyConfig(),
             "cy",
             expected_footer_welsh_social_theme(),
         ),
@@ -177,7 +176,7 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
         (
             SurveyType.SOCIAL,
             "Test",
-            WelshSocialSurveyConfig(),
+            SocialSurveyConfig(),
             {
                 "orgLogo": "ons-logo-en",
                 "orgLogoAlt": "Office for National Statistics logo",
@@ -404,7 +403,7 @@ def test_service_links_context(
             f"{ONS_URL}/aboutus/contactus/surveyenquiries",
         ),
         (
-            WelshSocialSurveyConfig(),
+            SocialSurveyConfig(),
             "cy",
             f"{ONS_URL_CY}/aboutus/contactus/surveyenquiries",
         ),
@@ -465,7 +464,7 @@ def test_sign_out_button_text_context(
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cookies/",
         ),
         (
-            WelshSocialSurveyConfig(),
+            SocialSurveyConfig(),
             True,
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cy/cookies/",
         ),
@@ -509,7 +508,7 @@ def test_cookie_settings_url_context(
             ACCOUNT_SERVICE_BASE_URL_SOCIAL,
         ),
         (
-            WelshSocialSurveyConfig(),
+            SocialSurveyConfig(),
             "cy",
             ACCOUNT_SERVICE_BASE_URL_SOCIAL,
         ),
@@ -618,7 +617,7 @@ def test_account_service_my_todo_url_context(
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/sign-in/logout",
         ),
         (
-            WelshSocialSurveyConfig(),
+            SocialSurveyConfig(),
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cy/start",
         ),
     ],
@@ -640,9 +639,7 @@ def test_account_service_log_out_url_context(
         (SurveyType.BUSINESS, "en", BusinessSurveyConfig),
         (SurveyType.BUSINESS, "cy", BusinessSurveyConfig),
         (SurveyType.HEALTH, "en", SocialSurveyConfig),
-        (SurveyType.HEALTH, "cy", WelshSocialSurveyConfig),
         (SurveyType.SOCIAL, "en", SocialSurveyConfig),
-        (SurveyType.SOCIAL, "cy", WelshSocialSurveyConfig),
         (SurveyType.NORTHERN_IRELAND, "en", NorthernIrelandBusinessSurveyConfig),
         (SurveyType.NORTHERN_IRELAND, "cy", NorthernIrelandBusinessSurveyConfig),
         (SurveyType.CENSUS, "en", CensusSurveyConfig),
@@ -664,7 +661,6 @@ def test_get_survey_config(
     "survey_config_type, base_url",
     [
         (SocialSurveyConfig, ACCOUNT_SERVICE_BASE_URL_SOCIAL),
-        (WelshSocialSurveyConfig, ACCOUNT_SERVICE_BASE_URL_SOCIAL),
         (SurveyConfig, DEFAULT_URL),
         (BusinessSurveyConfig, DEFAULT_URL),
     ],
@@ -686,7 +682,7 @@ def test_survey_config_base_url_provided_used_in_links(
         result.privacy_and_data_protection_url,
     ]
 
-    if survey_config_type in [SocialSurveyConfig, WelshSocialSurveyConfig]:
+    if survey_config_type == SocialSurveyConfig:
 
         urls_to_check.remove(result.contact_us_url)
 
