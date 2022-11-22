@@ -156,7 +156,7 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             CensusSurveyConfig(),
             ["Census 2021", None, None],
-        )
+        ),
     ),
 )
 def test_header_context(app: Flask, theme, survey_title, survey_config, expected):
