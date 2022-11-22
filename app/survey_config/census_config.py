@@ -146,26 +146,11 @@ class CensusNISRASurveyConfig(
 ):
     base_url: str = NIR_BASE_URL
     account_service_log_out_url: str = base_url
-    masthead_logo: str = read_file("./templates/assets/images/ni-logo.svg")
-    masthead_logo_mobile: str = (
-        read_file("./templates/assets/images/ni-logo.svg")
-        .replace("nisra-logo-en-alt", "nisra-logo-en-mobile-alt")
-        .replace(
-            'width="170" height="56" viewBox="0 1 170 54"',
-            'width="107" height="35" viewBox="0 0 170 54"',
-        )
-    )
     copyright_declaration: LazyString = lazy_gettext(
         "Crown copyright and database rights 2021 NIMA MOU577.501."
     )
     copyright_text: LazyString = lazy_gettext(
         "Use of address data is subject to the terms and conditions."
-    )
-    powered_by_logo: str = (
-        read_file("./templates/assets/images/ni-logo.svg")
-        .replace("#3d7cc9", "#222")
-        .replace("#cddb00", "#222")
-        .replace("#00205c", "#222")
     )
     _is_nisra: bool = True
 

@@ -27,22 +27,12 @@ from tests.app.helpers.conftest import (
     expected_footer_census_theme,
     expected_footer_census_theme_no_cookie,
     expected_footer_census_welsh_theme,
-    expected_footer_nisra_theme,
     expected_footer_social_theme,
     expected_footer_social_theme_no_cookie,
 )
 from tests.app.questionnaire.conftest import get_metadata
 
 DEFAULT_URL = "http://localhost"
-NI_LOGO = read_file("./templates/assets/images/ni-logo.svg")
-NI_LOGO_MOBILE = (
-    read_file("./templates/assets/images/ni-logo.svg")
-    .replace("nisra-logo-en-alt", "nisra-logo-en-mobile-alt")
-    .replace(
-        'width="170" height="56" viewBox="0 1 170 54"',
-        'width="107" height="35" viewBox="0 0 170 54"',
-    )
-)
 
 
 @pytest.mark.parametrize(
@@ -54,11 +44,6 @@ NI_LOGO_MOBILE = (
         (None, BusinessSurveyConfig(), expected_footer_business_theme_no_cookie()),
         (SurveyType.SOCIAL, SocialSurveyConfig(), expected_footer_social_theme()),
         (None, SocialSurveyConfig(), expected_footer_social_theme_no_cookie()),
-        (
-            SurveyType.CENSUS_NISRA,
-            CensusNISRASurveyConfig(),
-            expected_footer_nisra_theme(),
-        ),
         (
             SurveyType.CENSUS,
             WelshCensusSurveyConfig(),
@@ -171,27 +156,7 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             CensusSurveyConfig(),
             ["Census 2021", None, None],
-        ),
-        (
-            SurveyType.CENSUS_NISRA,
-            None,
-            CensusNISRASurveyConfig(),
-            [
-                "Census 2021",
-                NI_LOGO,
-                NI_LOGO_MOBILE,
-            ],
-        ),
-        (
-            None,
-            None,
-            CensusNISRASurveyConfig(),
-            [
-                "Census 2021",
-                NI_LOGO,
-                NI_LOGO_MOBILE,
-            ],
-        ),
+        )
     ),
 )
 def test_header_context(app: Flask, theme, survey_title, survey_config, expected):
@@ -674,7 +639,6 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
         (SurveyType.NORTHERN_IRELAND, "en", "ONS Business Surveys"),
         (SurveyType.CENSUS, "en", "Census 2021"),
         (SurveyType.CENSUS, "cy", "Census 2021"),
-        (SurveyType.CENSUS_NISRA, "en", "Census 2021"),
     ],
 )
 def test_correct_survey_title_in_context(
