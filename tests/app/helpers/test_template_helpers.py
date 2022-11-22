@@ -59,7 +59,7 @@ DEFAULT_URL = "http://localhost"
         (None, SocialSurveyConfig(), "en", expected_footer_social_theme_no_cookie()),
         (
             SurveyType.SOCIAL,
-            SocialSurveyConfig(),
+            "social_survey_config_welsh",
             "cy",
             expected_footer_welsh_social_theme(),
         ),
@@ -77,11 +77,19 @@ DEFAULT_URL = "http://localhost"
         ),
     ],
 )
-def test_footer_context(app: Flask, theme, survey_config, language, expected_footer):
+def test_footer_context(
+    app: Flask, theme, survey_config, language, expected_footer, mocker
+):
     with app.app_context():
         if theme:
             cookie_session["theme"] = theme
         config = survey_config
+        if config == "social_survey_config_welsh":
+            mocker.patch(
+                "app.survey_config.SurveyConfig._get_language_code",
+                return_value=language,
+            )
+            config = SocialSurveyConfig()
 
         result = ContextHelper(
             language=language,
@@ -403,16 +411,26 @@ def test_service_links_context(
             f"{ONS_URL}/aboutus/contactus/surveyenquiries",
         ),
         (
-            SocialSurveyConfig(),
+            "social_survey_config_welsh",
             "cy",
             f"{ONS_URL_CY}/aboutus/contactus/surveyenquiries",
         ),
     ],
 )
 def test_contact_us_url_context(
-    app: Flask, survey_config: SurveyConfig, language: str, expected: dict[str, str]
+    app: Flask,
+    survey_config: SurveyConfig,
+    language: str,
+    expected: dict[str, str],
+    mocker,
 ):
     with app.app_context():
+        if survey_config == "social_survey_config_welsh":
+            mocker.patch(
+                "app.survey_config.SurveyConfig._get_language_code",
+                return_value=language,
+            )
+            survey_config = SocialSurveyConfig()
         result = ContextHelper(
             language=language,
             is_post_submission=False,
@@ -461,10 +479,10 @@ def test_sign_out_button_text_context(
         (
             SocialSurveyConfig(),
             True,
-            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cookies/",
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/cookies/",
         ),
         (
-            SocialSurveyConfig(),
+            "social_survey_config_welsh",
             True,
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cy/cookies/",
         ),
@@ -472,9 +490,14 @@ def test_sign_out_button_text_context(
     ],
 )
 def test_cookie_settings_url_context(
-    app: Flask, survey_config: SurveyConfig, cookie_present: bool, expected: str
+    app: Flask, survey_config: SurveyConfig, cookie_present: bool, expected: str, mocker
 ):
     with app.app_context():
+        if survey_config == "social_survey_config_welsh":
+            mocker.patch(
+                "app.survey_config.SurveyConfig._get_language_code", return_value="cy"
+            )
+            survey_config = SocialSurveyConfig()
         if cookie_present:
             cookie_session["theme"] = "dummy_value"
         context_helper = ContextHelper(
@@ -614,17 +637,22 @@ def test_account_service_my_todo_url_context(
         ),
         (
             SocialSurveyConfig(),
-            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/sign-in/logout",
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/start",
         ),
         (
-            SocialSurveyConfig(),
+            "social_survey_config_welsh",
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cy/start",
         ),
     ],
 )
 def test_account_service_log_out_url_context(
-    app: Flask, survey_config: SurveyConfig, expected: str, get_context_helper
+    app: Flask, survey_config: SurveyConfig, expected: str, get_context_helper, mocker
 ):
+    if survey_config == "social_survey_config_welsh":
+        mocker.patch(
+            "app.survey_config.SurveyConfig._get_language_code", return_value="cy"
+        )
+        survey_config = SocialSurveyConfig()
     result = get_context_helper(app, survey_config).context[
         "account_service_log_out_url"
     ]

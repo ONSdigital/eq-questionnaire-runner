@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Iterable, Mapping, MutableMapping, Optional, Union
 
-from flask_babel import lazy_gettext, get_locale
+from flask_babel import get_locale, lazy_gettext
 from flask_babel.speaklater import LazyString
 
 from app.questionnaire import QuestionnaireSchema
@@ -93,4 +93,3 @@ class SurveyConfig:
     @staticmethod
     def _get_language_code():
         return get_locale().language if get_locale() else DEFAULT_LANGUAGE_CODE
-
