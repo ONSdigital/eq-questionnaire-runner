@@ -153,6 +153,18 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             CensusSurveyConfig(),
             ["Census 2021", None, None],
         ),
+        (
+            SurveyType.CENSUS_NISRA,
+            None,
+            CensusNISRASurveyConfig(),
+            ["Census 2021", None, None],
+        ),
+        (
+            None,
+            None,
+            CensusNISRASurveyConfig(),
+            ["Census 2021", None, None],
+        ),
     ),
 )
 def test_header_context(app: Flask, theme, survey_title, survey_config, expected):
@@ -635,6 +647,7 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
         (SurveyType.NORTHERN_IRELAND, "en", "ONS Business Surveys"),
         (SurveyType.CENSUS, "en", "Census 2021"),
         (SurveyType.CENSUS, "cy", "Census 2021"),
+        (SurveyType.CENSUS_NISRA, "en", "Census 2021"),
     ],
 )
 def test_correct_survey_title_in_context(
