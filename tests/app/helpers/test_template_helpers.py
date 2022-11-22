@@ -6,10 +6,7 @@ from flask import session as cookie_session
 
 from app.helpers.template_helpers import ContextHelper, get_survey_config
 from app.questionnaire import QuestionnaireSchema
-from app.settings import (
-    ACCOUNT_SERVICE_BASE_URL,
-    ACCOUNT_SERVICE_BASE_URL_SOCIAL,
-)
+from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.survey_config import (
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,

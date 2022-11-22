@@ -1,10 +1,7 @@
 from pytest import fixture
 
 from app.helpers.template_helpers import ContextHelper
-from app.settings import (
-    ACCOUNT_SERVICE_BASE_URL,
-    ACCOUNT_SERVICE_BASE_URL_SOCIAL,
-)
+from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.survey_config.census_config import CY_BASE_URL, EN_BASE_URL
 
 
