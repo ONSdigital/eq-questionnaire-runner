@@ -1,5 +1,6 @@
 from mock import Mock, patch
 
+from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.settings import (
     ACCOUNT_SERVICE_BASE_URL,
     ACCOUNT_SERVICE_BASE_URL_SOCIAL,
@@ -128,7 +129,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         cookie = self.getCookie()
         self.assertEqual(cookie.get("theme"), "social")
         self.assertInBody(
-            f'<p>To access this page you need to <a href="{SOCIAL_URL}/sign-in/logout">re-enter your access code</a>.</p>'
+            f'<p>To access this page you need to <a href="{SOCIAL_URL}/{DEFAULT_LANGUAGE_CODE}/start">re-enter your access code</a>.</p>'
         )
 
     def test_401_no_cookie(self):
@@ -148,7 +149,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
                 (
                     f'<p>If you are completing a business survey, you need to sign back in to <a href="{BUSINESS_URL}/sign-in/logout">your account</a>.</p>'
                 ),
-                f'<p>If you started your survey using an access code, you need to <a href="{SOCIAL_URL}/sign-in/logout">re-enter your code</a>.</p>',
+                f'<p>If you started your survey using an access code, you need to <a href="{SOCIAL_URL}/{DEFAULT_LANGUAGE_CODE}/start">re-enter your code</a>.</p>',
             ]
         )
 

@@ -55,11 +55,16 @@ DEFAULT_URL = "http://localhost"
             "en",
             expected_footer_business_theme_no_cookie(),
         ),
-        (SurveyType.SOCIAL, SocialSurveyConfig(), "en", expected_footer_social_theme()),
+        (
+            SurveyType.SOCIAL,
+            SocialSurveyConfig(language_code="en"),
+            "en",
+            expected_footer_social_theme(),
+        ),
         (None, SocialSurveyConfig(), "en", expected_footer_social_theme_no_cookie()),
         (
             SurveyType.SOCIAL,
-            "social_survey_config_welsh",
+            SocialSurveyConfig(language_code="cy"),
             "cy",
             expected_footer_welsh_social_theme(),
         ),
@@ -77,19 +82,11 @@ DEFAULT_URL = "http://localhost"
         ),
     ],
 )
-def test_footer_context(
-    app: Flask, theme, survey_config, language, expected_footer, mocker
-):
+def test_footer_context(app: Flask, theme, survey_config, language, expected_footer):
     with app.app_context():
         if theme:
             cookie_session["theme"] = theme
         config = survey_config
-        if config == "social_survey_config_welsh":
-            mocker.patch(
-                "app.survey_config.SurveyConfig._get_language_code",
-                return_value=language,
-            )
-            config = SocialSurveyConfig()
 
         result = ContextHelper(
             language=language,
@@ -411,7 +408,7 @@ def test_service_links_context(
             f"{ONS_URL}/aboutus/contactus/surveyenquiries",
         ),
         (
-            "social_survey_config_welsh",
+            SocialSurveyConfig(language_code="cy"),
             "cy",
             f"{ONS_URL_CY}/aboutus/contactus/surveyenquiries",
         ),
@@ -422,15 +419,8 @@ def test_contact_us_url_context(
     survey_config: SurveyConfig,
     language: str,
     expected: dict[str, str],
-    mocker,
 ):
     with app.app_context():
-        if survey_config == "social_survey_config_welsh":
-            mocker.patch(
-                "app.survey_config.SurveyConfig._get_language_code",
-                return_value=language,
-            )
-            survey_config = SocialSurveyConfig()
         result = ContextHelper(
             language=language,
             is_post_submission=False,
@@ -477,12 +467,12 @@ def test_sign_out_button_text_context(
             f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
         ),
         (
-            SocialSurveyConfig(),
+            SocialSurveyConfig(language_code="en"),
             True,
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/cookies/",
         ),
         (
-            "social_survey_config_welsh",
+            SocialSurveyConfig(language_code="cy"),
             True,
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cy/cookies/",
         ),
@@ -490,14 +480,9 @@ def test_sign_out_button_text_context(
     ],
 )
 def test_cookie_settings_url_context(
-    app: Flask, survey_config: SurveyConfig, cookie_present: bool, expected: str, mocker
+    app: Flask, survey_config: SurveyConfig, cookie_present: bool, expected: str
 ):
     with app.app_context():
-        if survey_config == "social_survey_config_welsh":
-            mocker.patch(
-                "app.survey_config.SurveyConfig._get_language_code", return_value="cy"
-            )
-            survey_config = SocialSurveyConfig()
         if cookie_present:
             cookie_session["theme"] = "dummy_value"
         context_helper = ContextHelper(
@@ -636,23 +621,18 @@ def test_account_service_my_todo_url_context(
             f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
         ),
         (
-            SocialSurveyConfig(),
+            SocialSurveyConfig(language_code="en"),
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/start",
         ),
         (
-            "social_survey_config_welsh",
+            SocialSurveyConfig(language_code="cy"),
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cy/start",
         ),
     ],
 )
 def test_account_service_log_out_url_context(
-    app: Flask, survey_config: SurveyConfig, expected: str, get_context_helper, mocker
+    app: Flask, survey_config: SurveyConfig, expected: str, get_context_helper
 ):
-    if survey_config == "social_survey_config_welsh":
-        mocker.patch(
-            "app.survey_config.SurveyConfig._get_language_code", return_value="cy"
-        )
-        survey_config = SocialSurveyConfig()
     result = get_context_helper(app, survey_config).context[
         "account_service_log_out_url"
     ]
