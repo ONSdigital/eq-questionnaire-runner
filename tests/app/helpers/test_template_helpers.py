@@ -9,7 +9,6 @@ from app.questionnaire import QuestionnaireSchema
 from app.settings import (
     ACCOUNT_SERVICE_BASE_URL,
     ACCOUNT_SERVICE_BASE_URL_SOCIAL,
-    read_file,
 )
 from app.survey_config import (
     BusinessSurveyConfig,
