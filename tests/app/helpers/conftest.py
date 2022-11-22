@@ -4,8 +4,8 @@ from app.helpers.template_helpers import ContextHelper
 from app.settings import (
     ACCOUNT_SERVICE_BASE_URL,
     ACCOUNT_SERVICE_BASE_URL_SOCIAL,
-    CY_ONS_URL,
     ONS_URL,
+    ONS_URL_CY,
 )
 from app.survey_config.census_config import CY_BASE_URL, EN_BASE_URL
 
@@ -250,17 +250,17 @@ def expected_footer_welsh_social_theme():
                 "itemsList": [
                     {
                         "text": "What we do",
-                        "url": f"{CY_ONS_URL}/aboutus/whatwedo/",
+                        "url": f"{ONS_URL_CY}/aboutus/whatwedo/",
                         "target": "_blank",
                     },
                     {
                         "text": "Contact us",
-                        "url": f"{CY_ONS_URL}/aboutus/contactus/surveyenquiries",
+                        "url": f"{ONS_URL_CY}/aboutus/contactus/surveyenquiries",
                         "target": "_blank",
                     },
                     {
                         "text": "Accessibility",
-                        "url": f"{CY_ONS_URL}/help/accessibility/",
+                        "url": f"{ONS_URL_CY}/help/accessibility/",
                         "target": "_blank",
                     },
                 ]

@@ -3,7 +3,7 @@ from typing import Iterable, Mapping, MutableMapping, Optional
 
 from flask_babel import lazy_gettext
 
-from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL, CY_ONS_URL, ONS_URL
+from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL, ONS_URL, ONS_URL_CY
 from app.survey_config.link import Link
 from app.survey_config.survey_config import SurveyConfig
 
@@ -73,11 +73,11 @@ class WelshSocialSurveyConfig(
 
         self.account_service_log_out_url: str = f"{self.base_url}/{language_code}/start"
 
-        self.contact_us_url: str = f"{CY_ONS_URL}/aboutus/contactus/surveyenquiries"
+        self.contact_us_url: str = f"{ONS_URL_CY}/aboutus/contactus/surveyenquiries"
         self.cookie_settings_url: str = f"{self.base_url}/{language_code}/cookies/"
         self.privacy_and_data_protection_url: str = (
             f"{self.base_url}/{language_code}/privacy-and-data-protection/"
         )
 
-        self.accessibility_url: str = f"{CY_ONS_URL}/help/accessibility/"
-        self.what_we_do_url: str = f"{CY_ONS_URL}/aboutus/whatwedo/"
+        self.accessibility_url: str = f"{ONS_URL_CY}/help/accessibility/"
+        self.what_we_do_url: str = f"{ONS_URL_CY}/aboutus/whatwedo/"

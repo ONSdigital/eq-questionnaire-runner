@@ -9,8 +9,8 @@ from app.questionnaire import QuestionnaireSchema
 from app.settings import (
     ACCOUNT_SERVICE_BASE_URL,
     ACCOUNT_SERVICE_BASE_URL_SOCIAL,
-    CY_ONS_URL,
     ONS_URL,
+    ONS_URL_CY,
 )
 from app.survey_config import (
     BusinessSurveyConfig,
@@ -406,7 +406,7 @@ def test_service_links_context(
         (
             WelshSocialSurveyConfig(),
             "cy",
-            f"{CY_ONS_URL}/aboutus/contactus/surveyenquiries",
+            f"{ONS_URL_CY}/aboutus/contactus/surveyenquiries",
         ),
     ],
 )
