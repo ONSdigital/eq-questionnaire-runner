@@ -228,12 +228,12 @@ def expected_footer_social_theme():
                 "itemsList": [
                     {
                         "text": "Cookies",
-                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cookies/",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/cookies/",
                         "target": "_blank",
                     },
                     {
                         "text": "Privacy and data protection",
-                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/privacy-and-data-protection/",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/privacy-and-data-protection/",
                         "target": "_blank",
                     },
                 ]
