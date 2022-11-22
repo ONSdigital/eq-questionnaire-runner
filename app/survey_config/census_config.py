@@ -4,7 +4,6 @@ from typing import Optional, Union
 from flask_babel import lazy_gettext
 from flask_babel.speaklater import LazyString
 
-from app.settings import read_file
 from app.survey_config.link import Link
 from app.survey_config.survey_config import SurveyConfig
 
