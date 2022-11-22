@@ -60,7 +60,7 @@ class SurveyConfig:
         self.privacy_and_data_protection_url: str = (
             f"{self.base_url}/privacy-and-data-protection/"
         )
-        self.language_code = get_locale().language if get_locale() else DEFAULT_LANGUAGE_CODE
+        self.language_code = self._get_language_code()
 
     def get_service_links(  # pylint: disable=unused-argument, no-self-use
         self,
@@ -89,3 +89,8 @@ class SurveyConfig:
             return [{"tx_id": tx_id}]
 
         return []
+
+    @staticmethod
+    def _get_language_code():
+        return get_locale().language if get_locale() else DEFAULT_LANGUAGE_CODE
+
