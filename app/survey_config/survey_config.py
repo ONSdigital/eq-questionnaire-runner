@@ -1,10 +1,11 @@
 from dataclasses import dataclass, field
 from typing import Iterable, Mapping, MutableMapping, Optional, Union
 
-from flask_babel import lazy_gettext
+from flask_babel import lazy_gettext, get_locale
 from flask_babel.speaklater import LazyString
 
 from app.questionnaire import QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.settings import ACCOUNT_SERVICE_BASE_URL, ONS_URL
 
 
@@ -48,6 +49,7 @@ class SurveyConfig:
     cookie_settings_url: str = field(init=False)
     cookie_domain: str = field(init=False)
     privacy_and_data_protection_url: str = field(init=False)
+    language_code: Optional[str] = None
 
     def __post_init__(self):
         self.contact_us_url: str = f"{self.base_url}/contact-us/"
@@ -58,6 +60,7 @@ class SurveyConfig:
         self.privacy_and_data_protection_url: str = (
             f"{self.base_url}/privacy-and-data-protection/"
         )
+        self.language_code = get_locale().language if get_locale() else DEFAULT_LANGUAGE_CODE
 
     def get_service_links(  # pylint: disable=unused-argument, no-self-use
         self,

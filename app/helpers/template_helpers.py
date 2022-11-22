@@ -21,7 +21,6 @@ from app.survey_config import (
     SocialSurveyConfig,
     SurveyConfig,
     WelshCensusSurveyConfig,
-    WelshSocialSurveyConfig,
 )
 from app.survey_config.survey_type import SurveyType
 from app.utilities.schema import load_schema_from_metadata
@@ -190,12 +189,8 @@ def survey_config_mapping(
     survey_type_to_config: dict[SurveyType, Type[SurveyConfig]] = {
         SurveyType.DEFAULT: BusinessSurveyConfig,
         SurveyType.BUSINESS: BusinessSurveyConfig,
-        SurveyType.HEALTH: WelshSocialSurveyConfig
-        if language == "cy"
-        else SocialSurveyConfig,
-        SurveyType.SOCIAL: WelshSocialSurveyConfig
-        if language == "cy"
-        else SocialSurveyConfig,
+        SurveyType.HEALTH: SocialSurveyConfig,
+        SurveyType.SOCIAL: SocialSurveyConfig,
         SurveyType.NORTHERN_IRELAND: NorthernIrelandBusinessSurveyConfig,
         SurveyType.CENSUS: (
             WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig

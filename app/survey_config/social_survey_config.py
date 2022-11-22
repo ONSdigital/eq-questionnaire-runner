@@ -29,10 +29,21 @@ class SocialSurveyConfig(
                 }
             ]
 
-        if not self.account_service_log_out_url:
-            self.account_service_log_out_url: str = f"{self.base_url}/sign-in/logout"
+        upstream_base_url = f"{self.base_url}/{self.language_code}"
+        ons_url = ONS_URL_CY if self.language_code == "cy" else ONS_URL
 
-        self.contact_us_url: str = f"{ONS_URL}/aboutus/contactus/surveyenquiries"
+        if not self.account_service_log_out_url:
+            self.account_service_log_out_url: str = f"{upstream_base_url}/start/"
+
+        self.account_service_log_out_url: str = f"{upstream_base_url}/start"
+        self.cookie_settings_url: str = f"{upstream_base_url}/cookies/"
+        self.privacy_and_data_protection_url: str = (
+            f"{upstream_base_url}/privacy-and-data-protection/"
+        )
+
+        self.contact_us_url: str = f"{ons_url}/aboutus/contactus/surveyenquiries"
+        self.accessibility_url: str = f"{ons_url}/help/accessibility/"
+        self.what_we_do_url: str = f"{ons_url}/aboutus/whatwedo/"
 
     def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
         links = [Link(lazy_gettext("What we do"), self.what_we_do_url).__dict__]
@@ -60,24 +71,3 @@ class SocialSurveyConfig(
             ]
 
         return None
-
-
-@dataclass
-class WelshSocialSurveyConfig(
-    SocialSurveyConfig,
-):
-    def __post_init__(self):
-        super().__post_init__()
-
-        language_code = "cy"
-
-        self.account_service_log_out_url: str = f"{self.base_url}/{language_code}/start"
-
-        self.contact_us_url: str = f"{ONS_URL_CY}/aboutus/contactus/surveyenquiries"
-        self.cookie_settings_url: str = f"{self.base_url}/{language_code}/cookies/"
-        self.privacy_and_data_protection_url: str = (
-            f"{self.base_url}/{language_code}/privacy-and-data-protection/"
-        )
-
-        self.accessibility_url: str = f"{ONS_URL_CY}/help/accessibility/"
-        self.what_we_do_url: str = f"{ONS_URL_CY}/aboutus/whatwedo/"

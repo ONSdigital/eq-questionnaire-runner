@@ -5,7 +5,7 @@ from .census_config import (
     WelshCensusSurveyConfig,
 )
 from .link import Link
-from .social_survey_config import SocialSurveyConfig, WelshSocialSurveyConfig
+from .social_survey_config import SocialSurveyConfig
 from .survey_config import SurveyConfig
 
 __all__ = [
@@ -16,6 +16,5 @@ __all__ = [
     "WelshCensusSurveyConfig",
     "BusinessSurveyConfig",
     "NorthernIrelandBusinessSurveyConfig",
-    "WelshSocialSurveyConfig",
     "Link",
 ]
