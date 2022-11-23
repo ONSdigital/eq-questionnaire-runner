@@ -212,7 +212,7 @@ def expected_footer_social_theme():
                     },
                     {
                         "text": "Contact us",
-                        "url": f"{ONS_URL}/aboutus/contactus/surveyenquiries",
+                        "url": f"{ONS_URL}/aboutus/contactus/surveyenquiries/",
                         "target": "_blank",
                     },
                     {
@@ -255,7 +255,7 @@ def expected_footer_welsh_social_theme():
                     },
                     {
                         "text": "Contact us",
-                        "url": f"{ONS_URL_CY}/aboutus/contactus/surveyenquiries",
+                        "url": f"{ONS_URL_CY}/aboutus/contactus/surveyenquiries/",
                         "target": "_blank",
                     },
                     {

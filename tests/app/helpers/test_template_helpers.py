@@ -405,12 +405,12 @@ def test_service_links_context(
         (
             SocialSurveyConfig(),
             "en",
-            f"{ONS_URL}/aboutus/contactus/surveyenquiries",
+            f"{ONS_URL}/aboutus/contactus/surveyenquiries/",
         ),
         (
             SocialSurveyConfig(language_code="cy"),
             "cy",
-            f"{ONS_URL_CY}/aboutus/contactus/surveyenquiries",
+            f"{ONS_URL_CY}/aboutus/contactus/surveyenquiries/",
         ),
     ],
 )
@@ -622,11 +622,11 @@ def test_account_service_my_todo_url_context(
         ),
         (
             SocialSurveyConfig(),
-            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/start",
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/start/",
         ),
         (
             SocialSurveyConfig(language_code="cy"),
-            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cy/start",
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cy/start/",
         ),
     ],
 )

@@ -35,13 +35,12 @@ class SocialSurveyConfig(
         if not self.account_service_log_out_url:
             self.account_service_log_out_url: str = f"{upstream_base_url}/start/"
 
-        self.account_service_log_out_url: str = f"{upstream_base_url}/start"
         self.cookie_settings_url: str = f"{upstream_base_url}/cookies/"
         self.privacy_and_data_protection_url: str = (
             f"{upstream_base_url}/privacy-and-data-protection/"
         )
 
-        self.contact_us_url: str = f"{ons_url}/aboutus/contactus/surveyenquiries"
+        self.contact_us_url: str = f"{ons_url}/aboutus/contactus/surveyenquiries/"
         self.accessibility_url: str = f"{ons_url}/help/accessibility/"
         self.what_we_do_url: str = f"{ons_url}/aboutus/whatwedo/"
 
