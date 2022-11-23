@@ -31,7 +31,6 @@ from tests.app.helpers.conftest import (
     expected_footer_nisra_theme,
     expected_footer_social_theme,
     expected_footer_social_theme_no_cookie,
-    expected_footer_welsh_social_theme,
 )
 from tests.app.questionnaire.conftest import get_metadata
 
@@ -59,14 +58,14 @@ DEFAULT_URL = "http://localhost"
             SurveyType.SOCIAL,
             SocialSurveyConfig(),
             "en",
-            expected_footer_social_theme(),
+            expected_footer_social_theme("en"),
         ),
         (None, SocialSurveyConfig(), "en", expected_footer_social_theme_no_cookie()),
         (
             SurveyType.SOCIAL,
             SocialSurveyConfig(language_code="cy"),
             "cy",
-            expected_footer_welsh_social_theme(),
+            expected_footer_social_theme("cy"),
         ),
         (
             SurveyType.CENSUS_NISRA,

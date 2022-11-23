@@ -38,18 +38,6 @@ def footer_context():
     }
 
 
-def welsh_footer_context():
-    return {
-        "lang": "cy",
-        "crest": True,
-        "newTabWarning": "The following links open in a new tab",
-        "copyrightDeclaration": {
-            "copyright": "Crown copyright and database rights 2020 OS 100019153.",
-            "text": "Use of address data is subject to the terms and conditions.",
-        },
-    }
-
-
 def expected_footer_census_theme():
     census = {
         "rows": [
@@ -200,24 +188,35 @@ def expected_footer_business_theme_no_cookie():
     return {**footer_context(), **business}
 
 
-def expected_footer_social_theme():
+def expected_footer_social_theme(language_code: str):
+    ons_url = ONS_URL_CY if language_code == "cy" else ONS_URL
+    upstream_url = f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/{language_code}"
+    social_footer_context = {
+        "lang": language_code,
+        "crest": True,
+        "newTabWarning": "The following links open in a new tab",
+        "copyrightDeclaration": {
+            "copyright": "Crown copyright and database rights 2020 OS 100019153.",
+            "text": "Use of address data is subject to the terms and conditions.",
+        },
+    }
     social = {
         "rows": [
             {
                 "itemsList": [
                     {
                         "text": "What we do",
-                        "url": "https://www.ons.gov.uk/aboutus/whatwedo/",
+                        "url": f"{ons_url}/aboutus/whatwedo/",
                         "target": "_blank",
                     },
                     {
                         "text": "Contact us",
-                        "url": f"{ONS_URL}/aboutus/contactus/surveyenquiries/",
+                        "url": f"{ons_url}/aboutus/contactus/surveyenquiries/",
                         "target": "_blank",
                     },
                     {
                         "text": "Accessibility",
-                        "url": "https://www.ons.gov.uk/help/accessibility/",
+                        "url": f"{ons_url}/help/accessibility/",
                         "target": "_blank",
                     },
                 ]
@@ -228,62 +227,19 @@ def expected_footer_social_theme():
                 "itemsList": [
                     {
                         "text": "Cookies",
-                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/cookies/",
+                        "url": f"{upstream_url}/cookies/",
                         "target": "_blank",
                     },
                     {
                         "text": "Privacy and data protection",
-                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/privacy-and-data-protection/",
+                        "url": f"{upstream_url}/privacy-and-data-protection/",
                         "target": "_blank",
                     },
                 ]
             }
         ],
     }
-    return {**footer_context(), **social}
-
-
-def expected_footer_welsh_social_theme():
-    social = {
-        "rows": [
-            {
-                "itemsList": [
-                    {
-                        "text": "What we do",
-                        "url": f"{ONS_URL_CY}/aboutus/whatwedo/",
-                        "target": "_blank",
-                    },
-                    {
-                        "text": "Contact us",
-                        "url": f"{ONS_URL_CY}/aboutus/contactus/surveyenquiries/",
-                        "target": "_blank",
-                    },
-                    {
-                        "text": "Accessibility",
-                        "url": f"{ONS_URL_CY}/help/accessibility/",
-                        "target": "_blank",
-                    },
-                ]
-            }
-        ],
-        "legal": [
-            {
-                "itemsList": [
-                    {
-                        "text": "Cookies",
-                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cy/cookies/",
-                        "target": "_blank",
-                    },
-                    {
-                        "text": "Privacy and data protection",
-                        "url": f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cy/privacy-and-data-protection/",
-                        "target": "_blank",
-                    },
-                ]
-            }
-        ],
-    }
-    return {**welsh_footer_context(), **social}
+    return social_footer_context | social
 
 
 def expected_footer_social_theme_no_cookie():
