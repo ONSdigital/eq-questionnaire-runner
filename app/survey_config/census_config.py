@@ -139,7 +139,8 @@ class WelshCensusSurveyConfig(
         return None
 
 
-# Census and Nisra theme will no longer work as of 23/11/22 - Theming has been removed from DS in v60 (https://github.com/ONSdigital/eq-questionnaire-runner/pull/951)
+# Census and Nisra theme will no longer work as of 23/11/22
+# Theming has been removed from DS in v60 (https://github.com/ONSdigital/eq-questionnaire-runner/pull/951)
 @dataclass
 class CensusNISRASurveyConfig(
     CensusSurveyConfig,
