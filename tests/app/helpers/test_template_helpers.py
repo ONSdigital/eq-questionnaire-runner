@@ -180,9 +180,9 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
         (
             SurveyType.SOCIAL,
             "Test",
-            SocialSurveyConfig(),
+            SocialSurveyConfig(language_code="cy"),
             {
-                "orgLogo": "ons-logo-en",
+                "orgLogo": "ons-logo-cy",
                 "orgLogoAlt": "Office for National Statistics logo",
                 "title": "Test",
             },
