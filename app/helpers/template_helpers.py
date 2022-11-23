@@ -141,9 +141,6 @@ class ContextHelper:
         ):
             context["legal"] = [{"itemsList": footer_legal_links}]
 
-        if self._survey_config.powered_by_logo:
-            context["poweredBy"] = self._survey_config.powered_by_logo
-
         return context
 
     @cached_property

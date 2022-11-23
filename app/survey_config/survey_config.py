@@ -27,7 +27,6 @@ class SurveyConfig:
     what_we_do_url: str = f"{ONS_URL}/aboutus/whatwedo/"
     masthead_logo: Optional[str] = None
     masthead_logo_mobile: Optional[str] = None
-    powered_by_logo: Optional[str] = None
     crest: bool = True
     footer_links: Optional[Iterable[MutableMapping]] = None
     footer_legal_links: Optional[Iterable[Mapping]] = None
