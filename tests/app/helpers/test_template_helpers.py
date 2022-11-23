@@ -57,7 +57,7 @@ DEFAULT_URL = "http://localhost"
         ),
         (
             SurveyType.SOCIAL,
-            SocialSurveyConfig(language_code="en"),
+            SocialSurveyConfig(),
             "en",
             expected_footer_social_theme(),
         ),
@@ -467,7 +467,7 @@ def test_sign_out_button_text_context(
             f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
         ),
         (
-            SocialSurveyConfig(language_code="en"),
+            SocialSurveyConfig(),
             True,
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/cookies/",
         ),
@@ -621,7 +621,7 @@ def test_account_service_my_todo_url_context(
             f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
         ),
         (
-            SocialSurveyConfig(language_code="en"),
+            SocialSurveyConfig(),
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/start",
         ),
         (
