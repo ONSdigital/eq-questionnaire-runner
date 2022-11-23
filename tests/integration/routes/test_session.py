@@ -33,8 +33,7 @@ class TestSession(IntegrationTestCase):
             '<p>If you are completing a business survey, you need to sign back in to <a href="https://surveys.ons.gov.uk/sign-in/logout">your account</a>.</p>'
         )
         self.assertInBody(
-            '<p>If you started your survey using an access code, you need to <a href="https://start.surveys.ons.gov.uk/en/start">re-enter your code</a>.'
-            "</p>"
+            '<p>If you started your survey using an access code, you need to <a href="https://start.surveys.ons.gov.uk/en/start/">re-enter your code</a>.</p>'
         )
 
     def test_session_jti_token_expired(self):
