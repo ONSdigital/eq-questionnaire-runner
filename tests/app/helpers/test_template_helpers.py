@@ -131,51 +131,31 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             SurveyType.BUSINESS,
             None,
             BusinessSurveyConfig(),
-            {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "title": "ONS Business Surveys",
-            },
+            ["ONS Business Surveys", None, None],
         ),
         (
             SurveyType.BUSINESS,
             "Test",
             BusinessSurveyConfig(),
-            {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "title": "Test",
-            },
+            ["Test", None, None],
         ),
         (
             None,
             None,
             BusinessSurveyConfig(),
-            {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "title": "ONS Surveys",
-            },
+            ["ONS Business Surveys", None, None],
         ),
         (
             SurveyType.SOCIAL,
             None,
             SocialSurveyConfig(),
-            {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "title": "ONS Social Surveys",
-            },
+            ["ONS Social Surveys", None, None],
         ),
         (
             SurveyType.SOCIAL,
             "Test",
             SocialSurveyConfig(),
-            {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "title": "Test",
-            },
+            ["Test", None, None],
         ),
         (
             SurveyType.SOCIAL,
@@ -191,91 +171,47 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             None,
             SocialSurveyConfig(),
-            {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "title": "ONS Surveys",
-            },
-        ),
-        (
-            SurveyType.CENSUS,
-            None,
-            CensusSurveyConfig(),
-            {
-                "title": "Census 2021",
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "titleLogo": "census-logo-en",
-                "titleLogoAlt": "Census 2021",
-            },
-        ),
-        (
-            SurveyType.CENSUS,
-            "Test",
-            CensusSurveyConfig(),
-            {
-                "title": "Test",
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "titleLogo": "census-logo-en",
-                "titleLogoAlt": "Census 2021",
-            },
-        ),
-        (
-            None,
-            None,
-            CensusSurveyConfig(),
-            {
-                "title": "ONS Surveys",
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "titleLogo": "census-logo-en",
-                "titleLogoAlt": "Census 2021",
-            },
-        ),
-        (
-            SurveyType.CENSUS_NISRA,
-            None,
-            CensusNISRASurveyConfig(),
-            {
-                "orgLogo": "nisra-logo",
-                "orgLogoAlt": "Northern Ireland Statistics and Research Agency logo",
-                "titleLogo": "census-logo-en",
-                "titleLogoAlt": "Census 2021",
-                "customHeaderLogo": True,
-                "orgMobileLogo": "nisra-logo-mobile",
-                "title": "Census 2021",
-            },
-        ),
-        (
-            None,
-            None,
-            CensusNISRASurveyConfig(),
-            {
-                "orgLogo": "nisra-logo",
-                "orgLogoAlt": "Northern Ireland Statistics and Research Agency logo",
-                "titleLogo": "census-logo-en",
-                "titleLogoAlt": "Census 2021",
-                "customHeaderLogo": True,
-                "orgMobileLogo": "nisra-logo-mobile",
-                "title": "ONS Surveys",
-            },
+            ["ONS Social Surveys", None, None],
         ),
         (
             None,
             None,
             SurveyConfig(),
-            {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "title": "ONS Surveys",
-            },
+            [None, None, None],
+        ),
+        (
+            SurveyType.CENSUS,
+            None,
+            CensusSurveyConfig(),
+            ["Census 2021", None, None],
+        ),
+        (
+            SurveyType.CENSUS,
+            "Test",
+            CensusSurveyConfig(),
+            ["Test", None, None],
+        ),
+        (
+            None,
+            None,
+            CensusSurveyConfig(),
+            ["Census 2021", None, None],
+        ),
+        (
+            SurveyType.CENSUS_NISRA,
+            None,
+            CensusNISRASurveyConfig(),
+            ["Census 2021", None, None],
+        ),
+        (
+            None,
+            None,
+            CensusNISRASurveyConfig(),
+            ["Census 2021", None, None],
         ),
     ),
 )
-def test_get_page_header_context(
-    app: Flask, theme, survey_title, survey_config, expected
-):
+def test_header_context(app: Flask, theme, survey_title, survey_config, expected):
     with app.app_context():
         for cookie_name, cookie_value in {
             "theme": theme,
@@ -284,12 +220,18 @@ def test_get_page_header_context(
             if cookie_value:
                 cookie_session[cookie_name] = cookie_value
 
-        result = ContextHelper(
+        context_helper = ContextHelper(
             language="en",
             is_post_submission=False,
             include_csrf_token=True,
             survey_config=survey_config,
-        ).context["page_header"]
+        )
+
+        result = [
+            context_helper.context["survey_title"],
+            context_helper.context["mastheadLogo"],
+            context_helper.context["mastheadLogoMobile"],
+        ]
 
     assert result == expected
 

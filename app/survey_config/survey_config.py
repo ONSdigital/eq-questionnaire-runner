@@ -14,10 +14,6 @@ class SurveyConfig:
     """Valid options for defining survey-based configuration."""
 
     schema: Optional[QuestionnaireSchema] = None
-    page_header_logo: Optional[str] = "ons-logo-en"
-    page_header_logo_alt: Optional[LazyString] = lazy_gettext(
-        "Office for National Statistics logo"
-    )
     copyright_declaration: Optional[LazyString] = lazy_gettext(
         "Crown copyright and database rights 2020 OS 100019153."
     )
@@ -28,14 +24,10 @@ class SurveyConfig:
     account_service_my_account_url: Optional[str] = None
     account_service_todo_url: Optional[str] = None
     account_service_log_out_url: Optional[str] = None
-    title_logo: Optional[str] = None
-    title_logo_alt: Optional[str] = None
     accessibility_url: str = f"{ONS_URL}/help/accessibility/"
     what_we_do_url: str = f"{ONS_URL}/aboutus/whatwedo/"
-    custom_header_logo: bool = False
-    mobile_logo: Optional[str] = None
-    powered_by_logo: Optional[str] = None
-    powered_by_logo_alt: Optional[str] = None
+    masthead_logo: Optional[str] = None
+    masthead_logo_mobile: Optional[str] = None
     crest: bool = True
     footer_links: Optional[Iterable[MutableMapping]] = None
     footer_legal_links: Optional[Iterable[Mapping]] = None

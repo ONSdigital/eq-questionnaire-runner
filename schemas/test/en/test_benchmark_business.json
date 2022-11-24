@@ -5,6 +5,7 @@
     "data_version": "0.0.1",
     "survey_id": "017",
     "form_type": "0070",
+    "theme": "business",
     "legal_basis": "Notice is given under section 1 of the Statistics of Trade Act 1947.",
     "title": "Quarterly Stocks Survey",
     "questionnaire_flow": {
@@ -543,7 +544,6 @@
             ]
         }
     ],
-    "theme": "default",
     "navigation": {
         "visible": false
     },
