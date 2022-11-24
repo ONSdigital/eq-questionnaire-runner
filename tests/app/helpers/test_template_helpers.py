@@ -6,7 +6,7 @@ from flask import session as cookie_session
 
 from app.helpers.template_helpers import ContextHelper, get_survey_config
 from app.questionnaire import QuestionnaireSchema
-from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
+from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL, read_file
 from app.survey_config import (
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
@@ -170,6 +170,16 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             CensusNISRASurveyConfig(),
             ["Census 2021", None, None],
+        ),
+        (
+            None,
+            None,
+            NorthernIrelandBusinessSurveyConfig(),
+            [
+                "ONS Business Surveys",
+                read_file("./templates/assets/images/ni-finance-logo.svg"),
+                read_file("./templates/assets/images/ni-finance-mobile-logo.svg"),
+            ],
         ),
     ),
 )
