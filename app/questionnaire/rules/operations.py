@@ -242,3 +242,11 @@ class Operations:
             label = self.renderer.render_placeholder(label_options, list_item_id=None)
 
         return label
+
+    @staticmethod
+    def evaluate_sum(*args: tuple) -> Union[int, Decimal]:
+        values_list: list = []
+        for arg in args:
+            if arg and isinstance(arg, (int, Decimal)):
+                values_list.append(arg)
+        return sum(values_list)

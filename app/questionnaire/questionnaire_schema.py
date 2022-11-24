@@ -233,10 +233,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _populate_answer_dependencies(self) -> None:
         for block in self.get_blocks():
             if block["type"] == "CalculatedSummary":
+                answer_ids_for_block = get_calculated_summary_answer_ids(block)
                 self._update_answer_dependencies_for_calculated_summary(
-                    block["calculation"]["answers_to_calculate"], block["id"]
+                    answer_ids_for_block, block["id"]
                 )
                 continue
+
             for question in self.get_all_questions_for_block(block):
                 if question["type"] == "Calculated":
                     self._update_answer_dependencies_for_calculations(
@@ -317,12 +319,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             }
         if value_source["source"] == "calculated_summary":
             identifier = value_source["identifier"]
-            calculated_summary_block = self.get_block(identifier)
-            answer_ids_for_block = calculated_summary_block["calculation"]["answers_to_calculate"]  # type: ignore
-            for answer_id_for_block in answer_ids_for_block:
-                self._answer_dependencies_map[answer_id_for_block] |= {
-                    self._get_answer_dependent_for_block_id(block_id=block_id, answer_id=answer_id)  # type: ignore
-                }
+            if calculated_summary_block := self.get_block(identifier):
+                answer_ids_for_block = get_calculated_summary_answer_ids(
+                    calculated_summary_block
+                )
+
+                for answer_id_for_block in answer_ids_for_block:
+                    self._answer_dependencies_map[answer_id_for_block] |= {
+                        self._get_answer_dependent_for_block_id(block_id=block_id, answer_id=answer_id)  # type: ignore
+                    }
 
     def _get_answer_dependent_for_block_id(
         self, *, block_id: str, answer_id: Optional[str] = None
@@ -869,9 +874,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 answer_id_list.append(identifier)
             elif source == "calculated_summary" and identifier:
                 calculated_summary_block = self.get_block(identifier)
-                calculated_summary_answer_ids = calculated_summary_block["calculation"]["answers_to_calculate"]  # type: ignore
+                calculated_summary_answer_ids = get_calculated_summary_answer_ids(
+                    calculated_summary_block  # type: ignore
+                )
                 answer_id_list.extend(iter(calculated_summary_answer_ids))
-
             for answer_id in answer_id_list:
                 block = self.get_block_for_answer_id(answer_id)  # type: ignore
                 section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
@@ -888,3 +894,18 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 )
 
         return rules_section_dependencies
+
+
+def get_calculated_summary_answer_ids(calculated_summary_block: Mapping) -> list:
+    if calculated_summary_block["calculation"].get("answers_to_calculate"):
+        calculated_summary_answer_ids: list = calculated_summary_block["calculation"][
+            "answers_to_calculate"
+        ]
+    else:
+        calculated_summary_answer_ids = [
+            value["identifier"]
+            for value in calculated_summary_block["calculation"]["operation"]["+"]
+            if value["source"] == "answers"
+        ]
+
+    return calculated_summary_answer_ids

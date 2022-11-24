@@ -1208,3 +1208,10 @@ def section_dependencies_calculated_summary_schema():
     return load_schema_from_name(
         "test_new_routing_and_skipping_section_dependencies_calculated_summary"
     )
+
+
+@pytest.fixture
+def section_dependencies_new_calculated_summary_schema():
+    return load_schema_from_name(
+        "test_new_routing_and_skipping_section_dependencies_new_calculated_summary"
+    )

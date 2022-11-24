@@ -813,9 +813,16 @@ def process_block(
                 process_guidance(context, page_spec)
 
         elif block["type"] == "CalculatedSummary":
-            process_calculated_summary(
-                block["calculation"]["answers_to_calculate"], page_spec
-            )
+            if block["calculation"].get("answers_to_calculate"):
+                process_calculated_summary(
+                    block["calculation"]["answers_to_calculate"], page_spec
+                )
+            else:
+                answer_ids_for_block = [
+                    value["identifier"]
+                    for value in block["calculation"]["operation"]["+"]
+                ]
+                process_calculated_summary(answer_ids_for_block, page_spec)
         elif block["type"] == "Interstitial":
             has_definition = False
             if "content_variants" in block:

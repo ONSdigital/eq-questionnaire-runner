@@ -1,3 +1,4 @@
+# pylint: disable=too-many-lines
 from functools import cached_property
 
 import pytest
@@ -646,6 +647,145 @@ class TestRouterNextLocation(RouterTestCase):
             == next_location_url
         )
 
+    @pytest.mark.usefixtures("app")
+    def test_return_to_new_calculated_summary(self):
+        self.schema = load_schema_from_name("test_new_calculated_summary")
+
+        current_location = Location(
+            section_id="default-section", block_id="second-number-block"
+        )
+
+        routing_path = RoutingPath(
+            [
+                "second-number-block",
+                "currency-total-playback-skipped-fourth",
+            ],
+            section_id="default-section",
+        )
+
+        next_location_url = self.router.get_next_location_url(
+            current_location,
+            routing_path,
+            return_to_answer_id="first-number-answer",
+            return_to="calculated-summary",
+            return_to_block_id="currency-total-playback-skipped-fourth",
+        )
+        expected_location = Location(
+            section_id="default-section",
+            block_id="currency-total-playback-skipped-fourth",
+        )
+
+        expected_location_url = url_for(
+            "questionnaire.block",
+            list_item_id=expected_location.list_item_id,
+            block_id=expected_location.block_id,
+            return_to="calculated-summary",
+            return_to_answer_id="first-number-answer",
+            return_to_block_id="currency-total-playback-skipped-fourth",
+        )
+
+        assert expected_location_url == next_location_url
+
+    @pytest.mark.usefixtures("app")
+    def test_return_to_new_calculated_summary_not_on_allowable_path(self):
+        self.schema = load_schema_from_name(
+            "test_new_calculated_summary_dependent_questions"
+        )
+
+        current_location = Location(section_id="default-section", block_id="block-3")
+
+        routing_path = RoutingPath(
+            [
+                "block-3",
+                "block-4",
+                "calculated-summary-block",
+            ],
+            section_id="default-section",
+        )
+
+        next_location_url = self.router.get_next_location_url(
+            current_location,
+            routing_path,
+            return_to_answer_id="answer-3",
+            return_to="calculated-summary",
+            return_to_block_id="calculated-summary-block",
+        )
+
+        expected_location = Location(
+            section_id="default-section",
+            block_id="block-4",
+        )
+
+        expected_location_url = url_for(
+            "questionnaire.block",
+            list_item_id=expected_location.list_item_id,
+            block_id=expected_location.block_id,
+            return_to="calculated-summary",
+            return_to_answer_id="answer-3",
+            return_to_block_id="calculated-summary-block",
+        )
+
+        assert expected_location_url == next_location_url
+
+    @pytest.mark.usefixtures("app")
+    @pytest.mark.parametrize(
+        "return_to_block_id, expected_url",
+        [
+            (
+                "non-valid-block",
+                "/questionnaire/sixth-number-block/?return_to=calculated-summary&return_to_block_id=non-valid-block",
+            ),
+            (None, "/questionnaire/sixth-number-block/?return_to=calculated-summary"),
+        ],
+    )
+    def test_return_to_nw_calculated_summary_invalid_return_to_block_id(
+        self, return_to_block_id, expected_url
+    ):
+        self.schema = load_schema_from_name("test_new_calculated_summary")
+
+        current_location = Location(
+            section_id="default-section", block_id="fifth-number-block"
+        )
+
+        routing_path = RoutingPath(
+            ["fifth-number-block", "sixth-number-block"],
+            section_id="default-section",
+        )
+        next_location_url = self.router.get_next_location_url(
+            current_location,
+            routing_path,
+            return_to="calculated-summary",
+            return_to_block_id=return_to_block_id,
+        )
+
+        assert expected_url == next_location_url
+
+    @pytest.mark.usefixtures("app")
+    def test_return_to_new_calculated_summary_return_to_block_id_not_on_path(self):
+        self.schema = load_schema_from_name("test_new_calculated_summary")
+
+        current_location = Location(
+            section_id="default-section", block_id="fifth-number-block"
+        )
+
+        routing_path = RoutingPath(
+            ["fifth-number-block", "sixth-number-block"],
+            section_id="default-section",
+        )
+        next_location_url = self.router.get_next_location_url(
+            current_location,
+            routing_path,
+            return_to="calculated-summary",
+            return_to_block_id="fourth-number-block",
+        )
+
+        # return_to_block_id is still passed here as although it is not currently on the path it may be in future once incomplete questions are
+        # answered so needs to be preserved
+        assert (
+            "/questionnaire/sixth-number-block/?return_to=calculated-summary&return_to_block_id=fourth-number-block"
+            == next_location_url
+        )
+
 
 class TestRouterNextLocationLinearFlow(RouterTestCase):
     @pytest.mark.usefixtures("app")
@@ -804,6 +944,7 @@ class TestRouterPreviousLocation(RouterTestCase):
         expected_location_url = url_for(
             "questionnaire.block",
             list_item_id=expected_location.list_item_id,
+            return_to="calculated-summary",
             block_id=expected_location.block_id,
             _anchor="first-number-answer",
         )

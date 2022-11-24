@@ -20,7 +20,7 @@ import ThankYouPage from "../../base_pages/thank-you.page.js";
 describe("Feature: Calculated Summary", () => {
   describe("Given I have a Calculated Summary", () => {
     before("Get to Calculated Summary", () => {
-      browser.openQuestionnaire("test_calculated_summary.json");
+      browser.openQuestionnaire("test_new_calculated_summary.json");
 
       $(FirstNumberBlockPage.firstNumber()).setValue(1.23);
       $(FirstNumberBlockPage.submit()).click();

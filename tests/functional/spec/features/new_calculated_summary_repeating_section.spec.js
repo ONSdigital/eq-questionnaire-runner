@@ -1,26 +1,43 @@
-import FirstNumberBlockPage from "../../generated_pages/calculated_summary/first-number-block.page.js";
-import SecondNumberBlockPage from "../../generated_pages/calculated_summary/second-number-block.page.js";
-import ThirdNumberBlockPage from "../../generated_pages/calculated_summary/third-number-block.page.js";
-import ThirdAndAHalfNumberBlockPage from "../../generated_pages/calculated_summary/third-and-a-half-number-block.page.js";
-import SkipFourthBlockPage from "../../generated_pages/calculated_summary/skip-fourth-block.page.js";
-import FourthNumberBlockPage from "../../generated_pages/calculated_summary/fourth-number-block.page.js";
-import FourthAndAHalfNumberBlockPage from "../../generated_pages/calculated_summary/fourth-and-a-half-number-block.page.js";
-import FifthNumberBlockPage from "../../generated_pages/calculated_summary/fifth-number-block.page.js";
-import SixthNumberBlockPage from "../../generated_pages/calculated_summary/sixth-number-block.page.js";
+import ProxyBlockPage from "../../generated_pages/new_calculated_summary_repeating_section/proxy.page.js";
+import FirstNumberBlockPage from "../../generated_pages/new_calculated_summary_repeating_section/first-number-block.page.js";
+import SecondNumberBlockPage from "../../generated_pages/new_calculated_summary_repeating_section/second-number-block.page.js";
+import ThirdNumberBlockPage from "../../generated_pages/new_calculated_summary_repeating_section/third-number-block.page.js";
+import ThirdAndAHalfNumberBlockPage from "../../generated_pages/new_calculated_summary_repeating_section/third-and-a-half-number-block.page.js";
+import SkipFourthBlockPage from "../../generated_pages/new_calculated_summary_repeating_section/skip-fourth-block.page.js";
+import FourthNumberBlockPage from "../../generated_pages/new_calculated_summary_repeating_section/fourth-number-block.page.js";
+import FourthAndAHalfNumberBlockPage from "../../generated_pages/new_calculated_summary_repeating_section/fourth-and-a-half-number-block.page.js";
+import FifthNumberBlockPage from "../../generated_pages/new_calculated_summary_repeating_section/fifth-number-block.page.js";
+import SixthNumberBlockPage from "../../generated_pages/new_calculated_summary_repeating_section/sixth-number-block.page.js";
 import CurrencyTotalPlaybackPageWithFourth from "../../generated_pages/calculated_summary/currency-total-playback-with-fourth.page.js";
-import SetMinMaxBlockPage from "../../generated_pages/calculated_summary/set-min-max-block.page.js";
-import CurrencyTotalPlaybackPageSkippedFourth from "../../generated_pages/calculated_summary/currency-total-playback-skipped-fourth.page.js";
-import UnitTotalPlaybackPage from "../../generated_pages/calculated_summary/unit-total-playback.page.js";
-import PercentageTotalPlaybackPage from "../../generated_pages/calculated_summary/percentage-total-playback.page.js";
-import NumberTotalPlaybackPage from "../../generated_pages/calculated_summary/number-total-playback.page.js";
-import CalculatedSummaryTotalConfirmation from "../../generated_pages/calculated_summary/calculated-summary-total-confirmation.page.js";
-import SubmitPage from "../../generated_pages/calculated_summary/submit.page";
+import SetMinMaxBlockPage from "../../generated_pages/new_calculated_summary_repeating_section/set-min-max-block.page.js";
+import CurrencyTotalPlaybackPageSkippedFourth from "../../generated_pages/new_calculated_summary_repeating_section/currency-total-playback-skipped-fourth.page.js";
+import UnitTotalPlaybackPage from "../../generated_pages/new_calculated_summary_repeating_section/unit-total-playback.page.js";
+import PercentageTotalPlaybackPage from "../../generated_pages/new_calculated_summary_repeating_section/percentage-total-playback.page.js";
+import NumberTotalPlaybackPage from "../../generated_pages/new_calculated_summary_repeating_section/number-total-playback.page.js";
+import CalculatedSummaryTotalConfirmation from "../../generated_pages/new_calculated_summary_repeating_section/calculated-summary-total-confirmation.page.js";
+import SubmitPage from "../../generated_pages/new_calculated_summary_repeating_section/personal-details-section-summary.page.js";
 import ThankYouPage from "../../base_pages/thank-you.page.js";
+import HubPage from "../../base_pages/hub.page.js";
+import PrimaryPersonListCollectorPage from "../../generated_pages/new_calculated_summary_repeating_section/primary-person-list-collector.page";
+import PrimaryPersonListCollectorAddPage from "../../generated_pages/new_calculated_summary_repeating_section/primary-person-list-collector-add.page.js";
+import ListCollectorPage from "../../generated_pages/new_calculated_summary_repeating_section/list-collector.page";
 
-describe("Feature: Calculated Summary", () => {
-  describe("Given I have a Calculated Summary", () => {
+describe("Feature: Calculated Summary Repeating Section", () => {
+  describe("Given I have a Calculated Summary in a Repeating Section", () => {
     before("Get to Calculated Summary", () => {
-      browser.openQuestionnaire("test_calculated_summary.json");
+      browser.openQuestionnaire("test_new_calculated_summary_repeating_section.json");
+      $(HubPage.submit()).click();
+      $(PrimaryPersonListCollectorPage.yes()).click();
+      $(PrimaryPersonListCollectorPage.submit()).click();
+      $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Marcus");
+      $(PrimaryPersonListCollectorAddPage.lastName()).setValue("Twin");
+      $(PrimaryPersonListCollectorAddPage.submit()).click();
+      $(ListCollectorPage.no()).click();
+      $(ListCollectorPage.submit()).click();
+      $(HubPage.submit()).click();
+
+      $(ProxyBlockPage.yes()).click();
+      $(ProxyBlockPage.submit()).click();
 
       $(FirstNumberBlockPage.firstNumber()).setValue(1.23);
       $(FirstNumberBlockPage.submit()).click();
@@ -95,20 +112,20 @@ describe("Feature: Calculated Summary", () => {
 
     it("Given I reach the calculated summary page, Then the Change link url should contain return_to, return_to_answer_id and return_to_block_id query params", () => {
       expect($(CurrencyTotalPlaybackPageWithFourth.firstNumberAnswerEdit()).getAttribute("href")).to.contain(
-        "/questionnaire/first-number-block/?return_to=calculated-summary&return_to_answer_id=first-number-answer&return_to_block_id=currency-total-playback-with-fourth#first-number-answer"
+        "first-number-block/?return_to=calculated-summary&return_to_answer_id=first-number-answer&return_to_block_id=currency-total-playback-with-fourth#first-number-answer"
       );
     });
 
     it("Given I edit an answer from the calculated summary page and click the Previous button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", () => {
       $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
       $(ThirdNumberBlockPage.previous()).click();
-      expect(browser.getUrl()).to.contain("/questionnaire/currency-total-playback-with-fourth/?return_to=calculated-summary#third-number-answer");
+      expect(browser.getUrl()).to.contain("currency-total-playback-with-fourth/?return_to=calculated-summary#third-number-answer");
     });
 
     it("Given I edit an answer from the calculated summary page and click the Submit button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", () => {
       $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
       $(ThirdNumberBlockPage.submit()).click();
-      expect(browser.getUrl()).to.contain("/questionnaire/currency-total-playback-with-fourth/?return_to=calculated-summary#third-number-answer");
+      expect(browser.getUrl()).to.contain("currency-total-playback-with-fourth/?return_to=calculated-summary#third-number-answer");
     });
 
     it("Given I change an answer, When I get to the currency summary, Then I should see the new total", () => {
@@ -325,6 +342,7 @@ describe("Feature: Calculated Summary", () => {
 
     it("Given I am on the summary, When I submit the questionnaire, Then I should see the thank you page", () => {
       $(SubmitPage.submit()).click();
+      $(HubPage.submit()).click();
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
     });
   });
