@@ -43,7 +43,6 @@ class SocialSurveyConfig(
         self.contact_us_url: str = f"{ons_url}/aboutus/contactus/surveyenquiries/"
         self.accessibility_url: str = f"{ons_url}/help/accessibility/"
         self.what_we_do_url: str = f"{ons_url}/aboutus/whatwedo/"
-        self.page_header_logo = f"ons-logo-{self.language_code}"
 
     def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
         links = [Link(lazy_gettext("What we do"), self.what_we_do_url).__dict__]
