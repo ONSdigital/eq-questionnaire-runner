@@ -5,14 +5,13 @@ from warnings import warn
 
 from flask_babel import lazy_gettext
 
+from app.settings import read_file
 from app.survey_config.link import HeaderLink, Link
 from app.survey_config.survey_config import SurveyConfig
 
 
 @dataclass
-class BusinessSurveyConfig(
-    SurveyConfig,
-):
+class BusinessSurveyConfig(SurveyConfig):
     survey_title: str = "ONS Business Surveys"
     footer_links: Iterable[MutableMapping] = field(default_factory=list)
     footer_legal_links: Iterable[Mapping] = field(default_factory=list)
@@ -134,10 +133,7 @@ class BusinessSurveyConfig(
 
 @dataclass
 class NorthernIrelandBusinessSurveyConfig(BusinessSurveyConfig):
-
-    page_header_logo: str = "ni-finance-logo"
-    page_header_logo_alt: str = lazy_gettext(
-        "Northern Ireland Department of Finance logo"
+    masthead_logo: str = read_file("./templates/assets/images/ni-finance-logo.svg")
+    masthead_logo_mobile: str = read_file(
+        "./templates/assets/images/ni-finance-logo.svg"
     )
-    mobile_logo: str = "ni-finance-logo-mobile"
-    custom_header_logo: bool = True

@@ -16,8 +16,6 @@ NIR_BASE_URL = f"{EN_BASE_URL}/ni"
 class CensusSurveyConfig(
     SurveyConfig,
 ):
-    title_logo: str = "census-logo-en"
-    title_logo_alt: LazyString = lazy_gettext("Census 2021")
     base_url: str = EN_BASE_URL
     account_service_log_out_url: str = f"{base_url}/en/start"
     design_system_theme: str = "census"
@@ -88,7 +86,6 @@ class CensusSurveyConfig(
 class WelshCensusSurveyConfig(
     CensusSurveyConfig,
 ):
-    title_logo: str = "census-logo-cy"
     base_url: str = CY_BASE_URL
     account_service_log_out_url: str = f"{base_url}/en/start"
 
@@ -142,26 +139,20 @@ class WelshCensusSurveyConfig(
         return None
 
 
+# Census and Nisra theme will no longer work as of 23/11/22
+# Theming has been removed from DS in v60 (https://github.com/ONSdigital/eq-questionnaire-runner/pull/951)
 @dataclass
 class CensusNISRASurveyConfig(
     CensusSurveyConfig,
 ):
     base_url: str = NIR_BASE_URL
     account_service_log_out_url: str = base_url
-    page_header_logo: str = "nisra-logo"
-    page_header_logo_alt: str = lazy_gettext(
-        "Northern Ireland Statistics and Research Agency logo"
-    )
-    custom_header_logo: bool = True
-    mobile_logo: str = "nisra-logo-mobile"
     copyright_declaration: LazyString = lazy_gettext(
         "Crown copyright and database rights 2021 NIMA MOU577.501."
     )
     copyright_text: LazyString = lazy_gettext(
         "Use of address data is subject to the terms and conditions."
     )
-    powered_by_logo: str = "nisra-logo"
-    powered_by_logo_alt: str = "NISRA - Northern Ireland Statistics and Research Agency"
     _is_nisra: bool = True
 
     def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
