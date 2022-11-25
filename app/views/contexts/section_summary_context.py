@@ -137,42 +137,7 @@ class SectionSummaryContext(Context):
         else:
             summary_elements = {}
 
-        all_groups = []
-        group_number = 0
-        for group in list(self.section["groups"]):
-
-            group_name = group["id"]
-            standard_group: list = []
-            list_collector_group = []
-            for block in group["blocks"]:
-                if block["type"] == "ListCollector":
-                    if standard_group:
-                        partial = {
-                            "id": f"{group_name}-{group_number}",
-                            "blocks": standard_group,
-                        }
-                        all_groups.append(partial)
-                        group_number += 1
-                    list_collector_group.append(block)
-                    partial = {
-                        "id": f"{group_name}-{group_number}",
-                        "blocks": list_collector_group,
-                    }
-                    all_groups.append(partial)
-                    group_number += 1
-                    list_collector_group = []
-                    standard_group = []
-
-                else:
-                    standard_group.append(block)
-
-            partial = {
-                "id": f"{group_name}-{group_number}",
-                "blocks": standard_group,
-                "title": group.get("title"),
-            }
-
-            all_groups.append(partial)
+        refactored_groups = self._get_refactored_groups(self.section["groups"])
 
         groups = {
             "show_non_item_answers": show_non_item_answers,
@@ -193,7 +158,7 @@ class SectionSummaryContext(Context):
                     summary_elements,
                     return_to_block_id=None,
                 ).serialize()
-                for group in all_groups
+                for group in refactored_groups
             ],
         }
 
@@ -469,3 +434,52 @@ class SectionSummaryContext(Context):
             return variant_label
 
         return list_collector_block["add_block"]["question"]["answers"][0]["id"]
+
+    @staticmethod
+    def _get_refactored_groups(original_groups: dict) -> list[dict]:
+        """original schema groups are refactored into groups based on block types, it follows the order/sequence of blocks in the original groups, all the
+        non list collector blocks are put together into groups, list collectors are put into separate groups, this way summary groups are displayed correctly
+        on section summary"""
+        refactored_groups = []
+        group_number = 0
+
+        for group in list(original_groups):
+            group_name = group["id"]
+            standard_blocks_list: list[dict[str, str]] = []
+            list_collector_blocks_list: list[dict[str, str]] = []
+            for block in group["blocks"]:
+                if block["type"] == "ListCollector":
+                    # if list collector block encountered, close the previously started standard blocks list if exists
+                    if standard_blocks_list:
+                        previously_started_group = {
+                            "id": f"{group_name}-{group_number}",
+                            "blocks": standard_blocks_list,
+                        }
+                        # add previous standard blocks group to all groups and increase the group number for the list collector group that you handle next
+                        refactored_groups.append(previously_started_group)
+                        group_number += 1
+                    list_collector_blocks_list.append(block)
+                    list_collector_group = {
+                        "id": f"{group_name}-{group_number}",
+                        "blocks": list_collector_blocks_list,
+                    }
+                    # add current list collector group to all groups and increase the group number for the next group
+                    refactored_groups.append(list_collector_group)
+                    group_number += 1
+                    # reset both types of block lists for next iterations of this loop if any
+                    list_collector_blocks_list = []
+                    standard_blocks_list = []
+
+                else:
+                    # if list collector not encountered keep adding blocks or add first one to an empty standard blocks list
+                    standard_blocks_list.append(block)
+
+            # on exiting the loop, accumulated list of blocks gets added as a group
+            standard_blocks_group = {
+                "id": f"{group_name}-{group_number}",
+                "blocks": standard_blocks_list,
+                "title": group.get("title"),
+            }
+            refactored_groups.append(standard_blocks_group)
+
+        return refactored_groups
