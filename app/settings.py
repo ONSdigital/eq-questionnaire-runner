@@ -149,10 +149,14 @@ ACCOUNT_SERVICE_BASE_URL = os.getenv(
     "ACCOUNT_SERVICE_BASE_URL", "https://surveys.ons.gov.uk"
 )
 
-ACCOUNT_SERVICE_BASE_URL_SOCIAL = "https://start.surveys.ons.gov.uk"
+ACCOUNT_SERVICE_BASE_URL_SOCIAL = os.getenv(
+    "ACCOUNT_SERVICE_BASE_URL_SOCIAL", "https://start.surveys.ons.gov.uk"
+)
 
 PRINT_STYLE_SHEET_FILE_PATH = os.getenv(
     "PRINT_STYLE_SHEET_FILEPATH", "templates/assets/styles"
 )
 
 ONS_URL = os.getenv("ONS_URL", "https://www.ons.gov.uk")
+
+ONS_URL_CY = os.getenv("ONS_URL_CY", "https://cy.ons.gov.uk")
