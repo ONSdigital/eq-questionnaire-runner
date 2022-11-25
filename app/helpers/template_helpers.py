@@ -6,7 +6,7 @@ from flask import render_template as flask_render_template
 from flask import request
 from flask import session as cookie_session
 from flask import url_for
-from flask_babel import LazyString, get_locale, lazy_gettext
+from flask_babel import get_locale, lazy_gettext
 from flask_login import current_user
 
 from app.globals import get_metadata, get_session_store
@@ -61,7 +61,6 @@ class ContextHelper:
             "account_service_todo_url": self._survey_config.account_service_todo_url,
             "contact_us_url": self._survey_config.contact_us_url,
             "thank_you_url": url_for("post_submission.get_thank_you"),
-            "page_header": self.page_header_context,
             "service_links": self.service_links_context,
             "footer": self.footer_context,
             "languages": get_languages_context(self._language),
@@ -75,6 +74,8 @@ class ContextHelper:
             "google_tag_manager_id": self._google_tag_manager_id,
             "google_tag_manager_auth": self._google_tag_manager_auth,
             "survey_type": self._survey_type,
+            "mastheadLogo": self._survey_config.masthead_logo,
+            "mastheadLogoMobile": self._survey_config.masthead_logo_mobile,
         }
         if self._survey_type:
             context["cookie_settings_url"] = self._survey_config.cookie_settings_url
@@ -116,27 +117,6 @@ class ContextHelper:
         return self._survey_config.get_data_layer(tx_id=tx_id)
 
     @property
-    def page_header_context(self) -> dict[str, Union[bool, str, LazyString]]:
-        context: dict[str, Union[bool, str, LazyString]] = {
-            "orgLogo": f"{self._survey_config.page_header_logo}",
-            "orgLogoAlt": f"{self._survey_config.page_header_logo_alt}",
-            "title": self._survey_title
-            if self._survey_title and self._survey_type
-            else "ONS Surveys",
-        }
-
-        if self._survey_config.title_logo:
-            context["titleLogo"] = self._survey_config.title_logo
-        if self._survey_config.title_logo_alt:
-            context["titleLogoAlt"] = self._survey_config.title_logo_alt
-        if self._survey_config.custom_header_logo:
-            context["customHeaderLogo"] = self._survey_config.custom_header_logo
-        if self._survey_config.mobile_logo:
-            context["orgMobileLogo"] = self._survey_config.mobile_logo
-
-        return context
-
-    @property
     def footer_context(self) -> dict[str, Any]:
         context = {
             "lang": self._language,
@@ -160,15 +140,6 @@ class ContextHelper:
             cookie_has_theme=bool(self._survey_type),
         ):
             context["legal"] = [{"itemsList": footer_legal_links}]
-
-        if (
-            self._survey_config.powered_by_logo
-            or self._survey_config.powered_by_logo_alt
-        ):
-            context["poweredBy"] = {
-                "logo": self._survey_config.powered_by_logo,
-                "alt": self._survey_config.powered_by_logo_alt,
-            }
 
         return context
 
@@ -199,8 +170,7 @@ def survey_config_mapping(
     }
 
     return survey_type_to_config[theme](
-        base_url=base_url,
-        schema=schema,
+        base_url=base_url, schema=schema, language_code=language
     )
 
 
