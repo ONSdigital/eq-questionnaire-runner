@@ -445,41 +445,42 @@ class SectionSummaryContext(Context):
 
         for group in list(original_groups):
             group_name = group["id"]
-            standard_blocks_list: list[dict[str, str]] = []
-            list_collector_blocks_list: list[dict[str, str]] = []
+            non_list_collector_blocks: list[dict[str, str]] = []
+            list_collector_blocks: list[dict[str, str]] = []
             for block in group["blocks"]:
                 if block["type"] == "ListCollector":
-                    # if list collector block encountered, close the previously started standard blocks list if exists
-                    if standard_blocks_list:
+                    # if list collector block encountered, close the previously started non list collector blocks list if exists
+                    if non_list_collector_blocks:
                         previously_started_group = {
                             "id": f"{group_name}-{group_number}",
-                            "blocks": standard_blocks_list,
+                            "blocks": non_list_collector_blocks,
                         }
-                        # add previous standard blocks group to all groups and increase the group number for the list collector group that you handle next
+                        # add previous non list collector blocks group to all groups and increase the group number for the list collector group
+                        # that you handle next
                         refactored_groups.append(previously_started_group)
                         group_number += 1
-                    list_collector_blocks_list.append(block)
+                    list_collector_blocks.append(block)
                     list_collector_group = {
                         "id": f"{group_name}-{group_number}",
-                        "blocks": list_collector_blocks_list,
+                        "blocks": list_collector_blocks,
                     }
                     # add current list collector group to all groups and increase the group number for the next group
                     refactored_groups.append(list_collector_group)
                     group_number += 1
                     # reset both types of block lists for next iterations of this loop if any
-                    list_collector_blocks_list = []
-                    standard_blocks_list = []
+                    list_collector_blocks = []
+                    non_list_collector_blocks = []
 
                 else:
-                    # if list collector not encountered keep adding blocks or add first one to an empty standard blocks list
-                    standard_blocks_list.append(block)
+                    # if list collector not encountered keep adding blocks or add first one to an empty non list collector blocks list
+                    non_list_collector_blocks.append(block)
 
             # on exiting the loop, accumulated list of blocks gets added as a group
-            standard_blocks_group = {
+            non_list_collector_group = {
                 "id": f"{group_name}-{group_number}",
-                "blocks": standard_blocks_list,
+                "blocks": non_list_collector_blocks,
                 "title": group.get("title"),
             }
-            refactored_groups.append(standard_blocks_group)
+            refactored_groups.append(non_list_collector_group)
 
         return refactored_groups
