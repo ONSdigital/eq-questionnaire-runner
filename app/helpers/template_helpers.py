@@ -170,8 +170,7 @@ def survey_config_mapping(
     }
 
     return survey_type_to_config[theme](
-        base_url=base_url,
-        schema=schema,
+        base_url=base_url, schema=schema, language_code=language
     )
 
 
