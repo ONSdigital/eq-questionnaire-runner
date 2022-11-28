@@ -2,12 +2,13 @@ from typing import Optional, Union
 from urllib.parse import urlencode
 
 from flask import g, request
+from flask import session as cookie_session
 from flask_login import current_user
 
 from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_metadata, get_session_store
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
-from app.utilities.schema import get_allowed_languages
+from app.utilities.schema import get_allowed_languages, load_schema_from_metadata
 
 LANGUAGE_TEXT = {
     "en": "English",
@@ -30,6 +31,11 @@ def handle_language(metadata: Optional[MetadataProxy] = None) -> None:
         g.allowed_languages = get_allowed_languages(schema_name, launch_language)
         request_language = request.args.get("language_code")
         if request_language and request_language in g.allowed_languages:
+            if cookie_session.get("survey_title"):
+                schema = load_schema_from_metadata(
+                    metadata=metadata, language_code=request_language  # type: ignore
+                )
+                cookie_session["survey_title"] = schema.json["title"]
             session_store.session_data.language_code = request_language
             session_store.save()
 
