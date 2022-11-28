@@ -3,7 +3,6 @@ import DobPage from "../generated_pages/language/dob-block.page";
 import NumberOfPeoplePage from "../generated_pages/language/number-of-people-block.page";
 import ConfirmNumberOfPeoplePage from "../generated_pages/language/confirm-number-of-people.page";
 import HubPage from "../base_pages/hub.page.js";
-import ThankYouPage from "../base_pages/thank-you.page";
 
 const PLURAL_TEST_DATA_SETS = [
   {
@@ -164,10 +163,10 @@ describe("Language Code", () => {
 
     $(HubPage.submit()).click();
     expect($(NamePage.questionText()).getText()).to.contain("Please enter a name");
-    expect($(NamePage.title()).getHTML()).to.contain("Test Language Survey");
+    expect($("header").getText()).to.contain("Test Language Survey");
     $(NamePage.switchLanguage("cy")).click();
     expect($(NamePage.questionText()).getText()).to.contain("Rhowch enw");
-    expect($(NamePage.title()).getHTML()).to.contain("Arolwg Iaith Prawf");
+    expect($("header").getText()).to.contain("Arolwg Iaith Prawf");
     $(NamePage.switchLanguage("en")).click();
 
     $(NamePage.firstName()).setValue("Catherine");
