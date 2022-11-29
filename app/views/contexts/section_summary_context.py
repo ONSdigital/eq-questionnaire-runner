@@ -343,8 +343,7 @@ class SectionSummaryContext(Context):
     ) -> dict[str, list]:
         section = self.section["id"]
 
-        # pylint: disable=protected-access
-        if related_answers := self._schema._get_related_answers_for_section(
+        if related_answers := self._schema.get_related_answers_for_section(
             section, current_list
         ):
             related_answers_dict = {}
@@ -355,9 +354,10 @@ class SectionSummaryContext(Context):
                         answer.answer_id in related_answers
                         and answer.list_item_id == list_id
                     ):
-                        edit_block_id = self._schema.get_edit_block_for_list_collector(
+                        edit_block = self._schema.get_edit_block_for_list_collector(
                             list_collector_block_id
-                        )["id"]
+                        )
+                        edit_block_id = edit_block.get("id") if edit_block else None
 
                         question = dict(
                             self._schema.get_add_block_for_list_collector(  # type: ignore

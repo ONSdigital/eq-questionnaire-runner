@@ -602,7 +602,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def get_edit_block_for_list_collector(
         self, list_collector_id: str
-    ) -> ImmutableDict:
+    ) -> Optional[ImmutableDict]:
         edit_block_map = {
             "ListCollector": "edit_block",
             "PrimaryPersonListCollector": "add_or_edit_block",
@@ -903,7 +903,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         return rules_section_dependencies
 
-    def _get_related_answers_for_section(
+    def get_related_answers_for_section(
         self, section_id: str, current_list: ListModel
     ) -> Optional[list[str]]:
         if summary := self.get_summary_for_section(section_id):

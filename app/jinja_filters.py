@@ -702,7 +702,7 @@ def map_list_collector_config(
                     block["question"],
                     summary_type="SectionSummary",
                     answers_are_editable=True,
-                    no_answer_provided="no answer",
+                    no_answer_provided=flask_babel.lazy_gettext("No answer provided"),
                     edit_link_text=edit_link_text or "",
                     edit_link_aria_label=edit_link_aria_label or "",
                 )
