@@ -907,10 +907,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self, section_id: str, current_list: ListModel
     ) -> Optional[list[str]]:
         if summary := self.get_summary_for_section(section_id):
-            for item in summary.get("items"):  # type: ignore
-                if item.get("for_list") == current_list.name:
-                    if related_answers := item.get("related_answers"):
-                        return [
-                            related_answer.get("identifier")
-                            for related_answer in related_answers
-                        ]
+            if summary_items := summary.get("items"):
+                for item in summary_items:
+                    if item.get("for_list") == current_list.name:
+                        if related_answers := item.get("related_answers"):
+                            return [
+                                related_answer.get("identifier")
+                                for related_answer in related_answers
+                            ]
