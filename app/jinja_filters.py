@@ -707,7 +707,7 @@ def map_list_collector_config(
                 )
                 row_items.extend(summary_row.rowItems)  # type: ignore
 
-        rows.append({"rowItems": [row_items]})
+        rows.append({"rowItems": row_items})
 
     return rows
 
