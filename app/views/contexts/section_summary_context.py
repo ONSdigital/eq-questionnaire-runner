@@ -353,6 +353,7 @@ class SectionSummaryContext(Context):
                     if (
                         answer.answer_id in related_answers
                         and answer.list_item_id == list_id
+                        and list_collector_block_id in self.routing_path.block_ids
                     ):
                         edit_block = self._schema.get_edit_block_for_list_collector(
                             list_collector_block_id
