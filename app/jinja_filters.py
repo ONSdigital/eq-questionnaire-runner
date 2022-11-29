@@ -574,8 +574,6 @@ def map_summary_item_config(
     edit_link_text: str,
     edit_link_aria_label: str,
     calculated_question: Optional[dict[str, list]],
-    remove_link_text: Optional[str],
-    remove_link_aria_label: Optional[str],
     icon: Optional[str] = None,
 ) -> list[SummaryRow]:
 
@@ -599,8 +597,8 @@ def map_summary_item_config(
                 icon=icon,
                 edit_link_text=edit_link_text,
                 edit_link_aria_label=edit_link_aria_label,
-                remove_link_text=remove_link_text,
-                remove_link_aria_label=remove_link_aria_label,
+                remove_link_text=flask_babel.lazy_gettext("Remove {item_name}"),
+                remove_link_aria_label=flask_babel.lazy_gettext("Remove"),
                 related_answers=block.get("related_answers"),
                 answer_title=block.get("answer_title"),
                 answer_focus=block.get("answer_focus"),

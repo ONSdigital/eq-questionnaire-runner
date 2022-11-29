@@ -771,8 +771,6 @@ def test_calculated_summary_config():
             "id": "calculated-summary-question",
             "answers": [{"id": "calculated-summary-answer", "value": "£2.00"}],
         },
-        remove_link_text="",
-        remove_link_aria_label="",
         icon="",
     )
 
@@ -928,8 +926,6 @@ def test_summary_item_config_with_list_collector():
         edit_link_text="Change",
         edit_link_aria_label="Change your answer for:",
         calculated_question={},
-        remove_link_text="Remove {item_name}",
-        remove_link_aria_label="Remove",
         icon="",
     )
 
