@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-11-29 15:43+0000\n"
+"POT-Creation-Date: 2022-11-29 21:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,12 +41,12 @@ msgstr ""
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
 
-#: app/jinja_filters.py:600 templates/partials/summary/list-summary.html:10
-msgid "Remove {item_name}"
+#: app/jinja_filters.py:600 templates/partials/summary/list-summary.html:9
+msgid "Remove"
 msgstr ""
 
-#: app/jinja_filters.py:601 templates/partials/summary/list-summary.html:9
-msgid "Remove"
+#: app/jinja_filters.py:601 templates/partials/summary/list-summary.html:10
+msgid "Remove {item_name}"
 msgstr ""
 
 #: app/jinja_filters.py:702

@@ -791,10 +791,10 @@ def test_summary_item_config_with_list_collector():
                             "url": "change_link_url",
                         },
                         {
-                            "ariaLabel": "Remove",
+                            "ariaLabel": "Remove Company A",
                             "attributes": {"data-qa": "list-item-remove-1-link"},
                             "text": {
-                                "_args": ["Remove {item_name}"],
+                                "_args": ["Remove"],
                                 "_func": {},
                                 "_kwargs": {},
                             },
