@@ -225,10 +225,9 @@ class SectionSummaryContext(Context):
                 if primary_person_block := self._schema.get_list_collector_for_list(
                     self.section, for_list=summary["for_list"], primary=True
                 ):
-                    (
-                        primary_person_edit_block_id,
-                        edit_block_id,
-                    ) = self._get_add_or_edit_blocks_primary(primary_person_block)
+                    primary_person_edit_block_id = edit_block_id = primary_person_block[
+                        "add_or_edit_block"
+                    ]["id"]
 
             list_summary_context = self.list_context(
                 list_collector_block["summary"],
@@ -273,12 +272,7 @@ class SectionSummaryContext(Context):
                 self.section, for_list=summary["for_list"], primary=True
             )
 
-            (
-                primary_person_edit_block_id,
-                edit_block_id,
-            ) = self._get_add_or_edit_blocks_primary(
-                primary_person_block  # type: ignore
-            )
+            primary_person_edit_block_id = edit_block_id = primary_person_block["add_or_edit_block"]["id"]  # type: ignore
             # primary person block always exists at this point, type hint conflicts with schema's get_list_collector_for_list return type (Optional)
 
         list_summary_context = self.list_context(
@@ -328,15 +322,6 @@ class SectionSummaryContext(Context):
         return (
             safe_content(self._schema.get_single_string_value(title)) if title else ""
         )
-
-    @staticmethod
-    def _get_add_or_edit_blocks_primary(
-        primary_person_block: Mapping[str, Any]
-    ) -> tuple[str, str]:
-        primary_person_edit_block_id = primary_person_block["add_or_edit_block"]["id"]
-        edit_block_id = primary_person_block["add_or_edit_block"]["id"]
-
-        return primary_person_edit_block_id, edit_block_id
 
     def _get_related_answers(
         self, current_list: ListModel, list_collector_block_id
