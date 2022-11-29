@@ -520,6 +520,7 @@ def test_context_for_driving_question_summary_empty_list():
                 {
                     "add_link": "/questionnaire/anyone-usually-live-at/?return_to=section-summary",
                     "add_link_text": "Add someone to this " "household",
+                    "answer_focus": None,
                     "answer_title": None,
                     "empty_list_text": "There are no householders",
                     "list": {"editable": False, "list_items": []},

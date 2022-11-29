@@ -220,60 +220,14 @@ class SectionSummaryContext(Context):
             remove_block_id = list_collector_block["remove_block"]["id"]
             add_link = self._add_link(summary, list_collector_block)
 
-            if len(current_list) == 1 and current_list.primary_person:
+        if len(current_list) == 1 and current_list.primary_person:
 
-                if primary_person_block := self._schema.get_list_collector_for_list(
-                    self.section, for_list=summary["for_list"], primary=True
-                ):
-                    primary_person_edit_block_id = edit_block_id = primary_person_block[
-                        "add_or_edit_block"
-                    ]["id"]
-
-            list_summary_context = self.list_context(
-                list_collector_block["summary"],
-                for_list=list_collector_block["for_list"],
-                return_to="section-summary",
-                edit_block_id=edit_block_id,
-                remove_block_id=remove_block_id,
-                primary_person_edit_block_id=primary_person_edit_block_id,
-            )
-
-            related_answers = (
-                self._get_related_answers(current_list, list_collector_block.get("id"))
-                if current_list
-                else None
-            )
-
-            if related_answers:
-                answer_focus = f"#{self._get_answer_id(list_collector_block)}"
-
-            answer_title = (
-                self._get_answer_title(list_collector_block)
-                if related_answers
-                else None
-            )
-
-            return {
-                "title": rendered_summary["title"],
-                "type": rendered_summary["type"],
-                "add_link": add_link,
-                "add_link_text": rendered_summary["add_link_text"],
-                "empty_list_text": rendered_summary.get("empty_list_text"),
-                "list_name": rendered_summary["for_list"],
-                "related_answers": related_answers,
-                "answer_title": answer_title,
-                "answer_focus": answer_focus,
-                **list_summary_context,
-            }
-
-        if current_list.primary_person:
-
-            primary_person_block = self._schema.get_list_collector_for_list(
+            if primary_person_block := self._schema.get_list_collector_for_list(
                 self.section, for_list=summary["for_list"], primary=True
-            )
-
-            primary_person_edit_block_id = edit_block_id = primary_person_block["add_or_edit_block"]["id"]  # type: ignore
-            # primary person block always exists at this point, type hint conflicts with schema's get_list_collector_for_list return type (Optional)
+            ):
+                primary_person_edit_block_id = edit_block_id = primary_person_block[
+                    "add_or_edit_block"
+                ]["id"]
 
         list_summary_context = self.list_context(
             list_collector_block["summary"],
@@ -282,6 +236,19 @@ class SectionSummaryContext(Context):
             edit_block_id=edit_block_id,
             remove_block_id=remove_block_id,
             primary_person_edit_block_id=primary_person_edit_block_id,
+        )
+
+        related_answers = (
+            self._get_related_answers(current_list, list_collector_block.get("id"))
+            if current_list
+            else None
+        )
+
+        if related_answers:
+            answer_focus = f"#{self._get_answer_id(list_collector_block)}"
+
+        answer_title = (
+            self._get_answer_title(list_collector_block) if related_answers else None
         )
 
         return {
@@ -293,6 +260,7 @@ class SectionSummaryContext(Context):
             "list_name": rendered_summary["for_list"],
             "related_answers": related_answers,
             "answer_title": answer_title,
+            "answer_focus": answer_focus,
             **list_summary_context,
         }
 
