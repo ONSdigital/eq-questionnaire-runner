@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-11-29 10:04+0000\n"
+"POT-Creation-Date: 2022-11-29 15:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,7 +41,15 @@ msgstr ""
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
 
-#: app/jinja_filters.py:705
+#: app/jinja_filters.py:600 templates/partials/summary/list-summary.html:10
+msgid "Remove {item_name}"
+msgstr ""
+
+#: app/jinja_filters.py:601 templates/partials/summary/list-summary.html:9
+msgid "Remove"
+msgstr ""
+
+#: app/jinja_filters.py:702
 #: templates/partials/summary/collapsible-summary.html:36
 #: templates/partials/summary/summary.html:39
 msgid "No answer provided"
@@ -1496,12 +1504,12 @@ msgid "Show"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:48
-#: templates/partials/summary/collapsible-summary.html:61
+#: templates/partials/summary/collapsible-summary.html:59
 msgid "Show all"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:49
-#: templates/partials/summary/collapsible-summary.html:62
+#: templates/partials/summary/collapsible-summary.html:60
 msgid "Hide all"
 msgstr ""
 
@@ -1518,18 +1526,6 @@ msgstr ""
 #: templates/partials/summary/collapsible-summary.html:38
 #: templates/partials/summary/summary.html:41
 msgid "Change your answer for:"
-msgstr ""
-
-#: templates/partials/summary/collapsible-summary.html:40
-#: templates/partials/summary/list-summary.html:9
-#: templates/partials/summary/summary.html:43
-msgid "Remove"
-msgstr ""
-
-#: templates/partials/summary/collapsible-summary.html:41
-#: templates/partials/summary/list-summary.html:10
-#: templates/partials/summary/summary.html:44
-msgid "Remove {item_name}"
 msgstr ""
 
 #: templates/partials/summary/list-summary.html:8
