@@ -63,7 +63,9 @@ class Group:
         blocks = []
 
         for block in group_schema["blocks"]:
-            if block["id"] in routing_path and block["type"] in [
+            if block["id"] not in routing_path:
+                continue
+            if block["type"] in [
                 "Question",
                 "ListCollectorDrivingQuestion",
             ]:
@@ -83,7 +85,7 @@ class Group:
                     ]
                 )
 
-            elif block["id"] in routing_path and block["type"] in ["ListCollector"]:
+            elif block["type"] in ["ListCollector"]:
                 if summary_elements.get("custom_summary"):
                     for list_element in summary_elements["custom_summary"]:
                         blocks.extend([list_element])
