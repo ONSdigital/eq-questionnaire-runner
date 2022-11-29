@@ -282,7 +282,6 @@ class SectionSummaryContext(Context):
             edit_block_id=edit_block_id,
             remove_block_id=remove_block_id,
             primary_person_edit_block_id=primary_person_edit_block_id,
-            for_list_item_ids=current_list.primary_person,
         )
 
         return {
