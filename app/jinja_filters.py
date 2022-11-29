@@ -630,7 +630,7 @@ def map_list_collector_config(
     related_answers: Optional[dict] = None,
     answer_title: Optional[str] = None,
     answer_focus: Optional[str] = None,
-) -> list[dict[str, list[dict[str, Any]]]]:
+) -> list[dict[str, list]]:
     rows = []
 
     for index, list_item in enumerate(list_items, start=1):
@@ -682,7 +682,7 @@ def map_list_collector_config(
                 }
             )
 
-        row_items = {
+        row_item = {
             "iconType": icon,
             "actions": actions,
             "id": list_item.get("list_item_id"),
@@ -690,11 +690,10 @@ def map_list_collector_config(
         }
 
         if answer_title:
-            row_items["valueList"] = [{"text": item_name}]
+            row_item["valueList"] = [{"text": item_name}]
 
-        row_items["rowTitle"] = answer_title or item_name
-
-        rows.append({"rowItems": [row_items]})
+        row_item["rowTitle"] = answer_title or item_name
+        row_items = [row_item]
 
         if related_answers:
             for block in related_answers[list_item["list_item_id"]]:
@@ -706,8 +705,9 @@ def map_list_collector_config(
                     edit_link_text=edit_link_text or "",
                     edit_link_aria_label=edit_link_aria_label or "",
                 )
-                for row in summary_row.rowItems:
-                    rows[index - 1]["rowItems"].append(row)  # type: ignore
+                row_items.extend(summary_row.rowItems)  # type: ignore
+
+        rows.append({"rowItems": [row_items]})
 
     return rows
 
