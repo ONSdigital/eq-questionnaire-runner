@@ -567,13 +567,13 @@ class SummaryRow:
 
 @blueprint.app_template_filter()  # type: ignore
 def map_summary_item_config(
-    group: SelectFieldBase._Option,
-    summary_type: SelectFieldBase._Option,
+    group: dict[str, Union[list, dict]],
+    summary_type: str,
     answers_are_editable: bool,
     no_answer_provided: str,
     edit_link_text: str,
     edit_link_aria_label: str,
-    calculated_question: SelectFieldBase._Option,
+    calculated_question: Optional[dict[str, list]],
     remove_link_text: Optional[str],
     remove_link_aria_label: Optional[str],
     icon: Optional[str] = None,
