@@ -11,6 +11,7 @@ from app.settings import (
     ACCOUNT_SERVICE_BASE_URL_SOCIAL,
     ONS_URL,
     ONS_URL_CY,
+    read_file,
 )
 from app.survey_config import (
     BusinessSurveyConfig,
@@ -204,6 +205,16 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             CensusNISRASurveyConfig(),
             ["Census 2021", None, None],
+        ),
+        (
+            None,
+            None,
+            NorthernIrelandBusinessSurveyConfig(),
+            [
+                "ONS Business Surveys",
+                read_file("./templates/assets/images/ni-finance-logo.svg"),
+                read_file("./templates/assets/images/ni-finance-mobile-logo.svg"),
+            ],
         ),
     ),
 )
