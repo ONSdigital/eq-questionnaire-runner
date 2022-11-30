@@ -163,8 +163,10 @@ describe("Language Code", () => {
 
     $(HubPage.submit()).click();
     expect($(NamePage.questionText()).getText()).to.contain("Please enter a name");
+    expect($("header").getText()).to.contain("Test Language Survey");
     $(NamePage.switchLanguage("cy")).click();
     expect($(NamePage.questionText()).getText()).to.contain("Rhowch enw");
+    expect($("header").getText()).to.contain("Arolwg Iaith Prawf");
     $(NamePage.switchLanguage("en")).click();
 
     $(NamePage.firstName()).setValue("Catherine");
