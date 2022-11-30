@@ -32,6 +32,7 @@ class CalculatedSummaryContext(Context):
                 self._schema,
                 location,
                 self._language,
+                self._progress_store,
                 return_to="calculated-summary",
                 return_to_block_id=return_to_block_id,
             ).serialize()

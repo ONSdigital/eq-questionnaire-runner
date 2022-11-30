@@ -2,6 +2,7 @@ from typing import Optional
 
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.views.contexts.summary.block import Block
+from app.views.contexts.summary.list_collector_block import ListCollectorBlock
 
 
 class Group:
@@ -16,8 +17,8 @@ class Group:
         schema,
         location,
         language,
+        progress_store,
         return_to,
-        summary_elements=None,
         return_to_block_id: Optional[str] = None,
     ):
         self.id = group_schema["id"]
@@ -33,7 +34,8 @@ class Group:
             schema=schema,
             location=location,
             return_to=return_to,
-            summary_elements=summary_elements,
+            progress_store=progress_store,
+            language=language,
             return_to_block_id=return_to_block_id,
         )
         self.placeholder_renderer = PlaceholderRenderer(
@@ -45,6 +47,7 @@ class Group:
             schema=schema,
         )
 
+    # pylint: disable=too-many-locals
     @staticmethod
     def _build_blocks(
         *,
@@ -57,7 +60,8 @@ class Group:
         schema,
         location,
         return_to,
-        summary_elements,
+        progress_store,
+        language,
         return_to_block_id,
     ):
         blocks = []
@@ -86,9 +90,25 @@ class Group:
                 )
 
             elif block["type"] in ["ListCollector"]:
-                if summary_elements.get("custom_summary"):
-                    for list_element in summary_elements["custom_summary"]:
-                        blocks.extend([list_element])
+                list_collector_block = ListCollectorBlock(
+                    routing_path=routing_path,
+                    answer_store=answer_store,
+                    list_store=list_store,
+                    progress_store=progress_store,
+                    metadata=metadata,
+                    response_metadata=response_metadata,
+                    schema=schema,
+                    location=location,
+                    language=language,
+                )
+
+                section = schema.get_section(location.section_id)
+                section_summary = section["summary"]["items"]
+                for summary_element in section_summary:
+                    if summary_element["type"] == "List":
+                        blocks.extend(
+                            [list_collector_block.list_summary_element(summary_element)]
+                        )
 
         return blocks
 

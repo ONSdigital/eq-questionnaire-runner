@@ -9,6 +9,7 @@ from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import SectionSummaryContext
+from app.views.contexts.summary.list_collector_block import ListCollectorBlock
 from tests.app.questionnaire.conftest import get_metadata
 from tests.app.views.contexts import assert_summary_context
 
@@ -743,7 +744,7 @@ def test_primary_links_for_section_summary(people_answer_store):
 )
 def test_answer_titles_for_variants(add_block):
     assert (
-        SectionSummaryContext._get_answer_title(  # pylint: disable=protected-access
+        ListCollectorBlock._get_answer_title(  # pylint: disable=protected-access
             MagicMock(), add_block
         )
         == "Test Title"
@@ -762,7 +763,7 @@ def test_answer_titles_for_variants(add_block):
 )
 def test_get_answer_id(list_collector_block):
     assert (
-        SectionSummaryContext._get_answer_id(  # pylint: disable=protected-access
+        ListCollectorBlock._get_answer_id(  # pylint: disable=protected-access
             MagicMock(), list_collector_block
         )
         == "test-id"
