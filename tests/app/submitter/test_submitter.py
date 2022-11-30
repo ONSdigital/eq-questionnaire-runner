@@ -1,6 +1,8 @@
 import uuid
 
 import pytest
+from google.api_core.exceptions import Forbidden
+from google.cloud.storage import Blob
 from pika.exceptions import AMQPError, NackError
 
 from app.submitter import GCSFeedbackSubmitter, GCSSubmitter, RabbitMQSubmitter
@@ -212,6 +214,47 @@ def test_gcs_submitter_adds_metadata_when_sends_message(patch_gcs_client):
     }
 
 
+def test_gcs_submitter_adds_additional_keys_to_metadata_when_set(patch_gcs_client):
+    gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
+
+    # When
+    gcs_submitter.send_message(
+        message={"test_data"}, tx_id="123", case_id="456", **{"qid": "1"}
+    )
+
+    # Then
+    bucket = patch_gcs_client.return_value.get_bucket.return_value
+    blob = bucket.blob.return_value
+
+    assert blob.metadata == {
+        "tx_id": "123",
+        "case_id": "456",
+        "qid": "1",
+    }
+
+
+def test_gcs_feedback_submitter_adds_additional_keys_to_metadata_when_set(
+    patch_gcs_client,
+):
+    gcs_submitter = GCSFeedbackSubmitter(bucket_name="test_bucket")
+
+    # When
+    gcs_submitter.upload(
+        payload=json_dumps({"some-data": "some-value"}),
+        metadata={"tx_id": "123", "case_id": "456", "qid": "1"},
+    )
+
+    # Then
+    bucket = patch_gcs_client.return_value.get_bucket.return_value
+    blob = bucket.blob.return_value
+
+    assert blob.metadata == {
+        "tx_id": "123",
+        "case_id": "456",
+        "qid": "1",
+    }
+
+
 @pytest.mark.parametrize(
     "submitter, entrypoint, data_to_upload",
     [
@@ -295,3 +338,57 @@ def test_gcs_feedback_submitter_uploads_feedback(patch_gcs_client):
         b'"form_type": "H", "language_code": "cy", "region_code": "GB-ENG", "tx_id": "12345"}'
     )
     assert feedback_upload is True
+
+
+def test_double_submission_passes_when_delete_operation_error(
+    patch_gcs_client, gcs_blob_delete_forbidden
+):  # pylint: disable=redefined-outer-name
+    # Given
+    gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
+
+    # When
+    bucket = patch_gcs_client.return_value.get_bucket.return_value
+    bucket.blob.return_value = gcs_blob_delete_forbidden
+    published = gcs_submitter.send_message(
+        message={"test_data"}, tx_id="123", case_id="456"
+    )
+    # Then
+    assert published
+
+
+def test_double_submission_is_forbidden_when_not_delete_operation_error(
+    patch_gcs_client, gcs_blob_create_forbidden
+):  # pylint: disable=redefined-outer-name
+
+    # Given
+    gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
+
+    # When
+    bucket = patch_gcs_client.return_value.get_bucket.return_value
+    bucket.blob.return_value = gcs_blob_create_forbidden
+
+    # Then
+    with pytest.raises(Forbidden):
+        gcs_submitter.send_message(message={"test_data"}, tx_id="123", case_id="456")
+
+
+@pytest.fixture
+def gcs_blob_create_forbidden(mocker):
+    blob = Blob(name="test-blob", bucket=mocker.Mock())
+
+    blob.upload_from_string = mocker.Mock(  # pylint: disable=protected-access
+        side_effect=Forbidden("storage.objects.create")
+    )
+
+    return blob
+
+
+@pytest.fixture
+def gcs_blob_delete_forbidden(mocker):
+    blob = Blob(name="test-blob", bucket=mocker.Mock())
+
+    blob.upload_from_string = mocker.Mock(  # pylint: disable=protected-access
+        side_effect=Forbidden("storage.objects.delete")
+    )
+
+    return blob

@@ -23,6 +23,7 @@ from app.utilities.schema import (
     load_schema_from_name,
     load_schema_from_url,
 )
+from tests.app.questionnaire.conftest import get_metadata
 
 TEST_SCHEMA_URL = "http://test.domain/schema.json"
 
@@ -220,10 +221,12 @@ def test_load_schema_from_url_uses_cache():
 def test_load_schema_from_metadata_with_schema_url():
     load_schema_from_url.cache_clear()
 
-    metadata = {"schema_url": TEST_SCHEMA_URL, "language_code": "cy"}
+    metadata = get_metadata(
+        {"schema_url": TEST_SCHEMA_URL, "language_code": "cy"},
+    )
     mock_schema = QuestionnaireSchema({}, language_code="cy")
     responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)
-    loaded_schema = load_schema_from_metadata(metadata=metadata)
+    loaded_schema = load_schema_from_metadata(metadata=metadata, language_code="cy")
 
     assert loaded_schema.json == mock_schema.json
     assert loaded_schema.language_code == mock_schema.language_code
@@ -234,9 +237,11 @@ def test_load_schema_from_metadata_with_schema_url_and_override_language_code():
     load_schema_from_url.cache_clear()
     language_code = "en"
 
-    metadata = {"schema_url": TEST_SCHEMA_URL, "language_code": "cy"}
+    metadata = get_metadata({"schema_url": TEST_SCHEMA_URL, "language_code": "cy"})
+
     mock_schema = QuestionnaireSchema({}, language_code="cy")
     responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)
+
     loaded_schema = load_schema_from_metadata(
         metadata=metadata, language_code=language_code
     )
