@@ -168,60 +168,67 @@ class ListCollectorBlock:
     ) -> dict[str, list]:
         section = self._section["id"]
 
-        if related_answers := self._schema.get_related_answers_for_section(
+        if related_answers := self._schema.get_related_answers_for_section(  # pylint: disable=too-many-nested-blocks
             section, current_list
         ):
             related_answers_dict = {}
 
             for list_id in current_list:
-                for answer in self._answer_store:
-                    if (
-                        answer.answer_id in related_answers
-                        and answer.list_item_id == list_id
-                        and list_collector_block_id in self._routing_path.block_ids
-                    ):
-                        edit_block = self._schema.get_edit_block_for_list_collector(
-                            list_collector_block_id
-                        )
-                        edit_block_id = edit_block.get("id") if edit_block else None
+                for group in self._section.get("groups"):
+                    for block in group.get("blocks"):
 
-                        question = dict(
-                            self._schema.get_add_block_for_list_collector(  # type: ignore
-                                list_collector_block_id
-                            ).get(
-                                "question"
-                            )
-                        )
+                        if block["type"] in ["ListCollector"]:
+                            block_schema = {
+                                "id": None,
+                                "title": None,
+                                "number": None,
+                                "type": block["type"],
+                                "for_list": current_list.name,
+                                "question": None,
+                            }
+                            add_block = block.get("add_block")
+                            question = add_block.get("question")
+                            for answer in question.get("answers"):
+                                if answer["id"] in related_answers:
+                                    edit_block = (
+                                        self._schema.get_edit_block_for_list_collector(
+                                            list_collector_block_id
+                                        )
+                                    )
+                                    edit_block_id = (
+                                        edit_block.get("id") if edit_block else None
+                                    )
+                                    block_schema = dict(block_schema)
+                                    block_schema["id"] = edit_block_id
+                                    question = dict(question)
+                                    answers = [
+                                        answer
+                                        for answer in question.get("answers")
+                                        if answer["id"] in related_answers
+                                    ]
+                                    del question["answers"]
+                                    question["answers"] = answers
+                                    block_schema["question"] = question
 
-                        question["answers"] = list(question["answers"])[1:]
+                                    block = [
+                                        Block(
+                                            block_schema,
+                                            answer_store=self._answer_store,
+                                            list_store=self._list_store,
+                                            metadata=self._metadata,
+                                            response_metadata=self._response_metadata,
+                                            schema=self._schema,
+                                            location=Location(
+                                                list_name=current_list.name,
+                                                list_item_id=list_id,
+                                                section_id=self._section["id"],
+                                            ),
+                                            return_to="section-summary",
+                                            return_to_block_id=None,
+                                        ).serialize()
+                                    ]
 
-                        block_schema = {
-                            "id": edit_block_id,
-                            "title": None,
-                            "number": None,
-                            "type": "ListCollector",
-                            "for_list": current_list.name,
-                            "question": question,
-                        }
-                        block = [
-                            Block(
-                                block_schema,
-                                answer_store=self._answer_store,
-                                list_store=self._list_store,
-                                metadata=self._metadata,
-                                response_metadata=self._response_metadata,
-                                schema=self._schema,
-                                location=Location(
-                                    list_name=current_list.name,
-                                    list_item_id=list_id,
-                                    section_id=self._section["id"],
-                                ),
-                                return_to="section-summary",
-                                return_to_block_id=None,
-                            ).serialize()
-                        ]
-
-                        related_answers_dict[list_id] = block
+                                    related_answers_dict[list_id] = block
 
             return related_answers_dict
 
