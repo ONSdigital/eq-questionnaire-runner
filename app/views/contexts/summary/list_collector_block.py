@@ -164,7 +164,7 @@ class ListCollectorBlock:
 
     def _get_related_answers(
         self, current_list: ListModel, list_collector_block_id
-    ) -> dict[str, list]:
+    ) -> dict:
         section = self._section["id"]
 
         if related_answers := self._schema.get_related_answers_for_section(  # pylint: disable=too-many-nested-blocks
@@ -206,7 +206,7 @@ class ListCollectorBlock:
         current_list: ListModel,
         related_answers: list[str],
         list_collector_block_id: str,
-        block: Mapping,
+        block: dict,
     ) -> list[Block]:
         block_schema = {
             "id": None,
@@ -216,7 +216,7 @@ class ListCollectorBlock:
             "for_list": current_list.name,
             "question": None,
         }
-        add_block = block.get("add_block")
+        add_block = block.get("add_block", {})
         question = add_block.get("question")
         for answer in question.get("answers"):
             if answer["id"] in related_answers:
@@ -236,7 +236,7 @@ class ListCollectorBlock:
                 question["answers"] = answers
                 block_schema["question"] = question
 
-                block = [
+                related_block = [
                     Block(
                         block_schema,
                         answer_store=self._answer_store,
@@ -254,4 +254,4 @@ class ListCollectorBlock:
                     ).serialize()
                 ]
 
-                return block
+                return related_block
