@@ -103,12 +103,17 @@ class Group:
                 )
 
                 section = schema.get_section(location.section_id)
-                section_summary = section["summary"]["items"]
-                for summary_element in section_summary:
-                    if summary_element["type"] == "List":
-                        blocks.extend(
-                            [list_collector_block.list_summary_element(summary_element)]
-                        )
+                summary = section.get("summary", {})
+                if summary_items := summary.get("items"):
+                    for summary_item in summary_items:
+                        if summary_item["type"] == "List":
+                            blocks.extend(
+                                [
+                                    list_collector_block.list_summary_element(
+                                        summary_item
+                                    )
+                                ]
+                            )
 
         return blocks
 
