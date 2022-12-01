@@ -5,7 +5,6 @@ from flask import url_for
 from app.data_models.list_store import ListModel
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
-from app.questionnaire.variants import choose_variant
 from app.views import contexts
 from app.views.contexts.summary.block import Block
 
@@ -51,7 +50,7 @@ class ListCollectorBlock:
             remove_block_id,
             primary_person_edit_block_id,
             related_answers,
-            answer_title,
+            item_label,
             answer_focus,
         ) = (None, None, None, None, None, None)
         current_list = self._list_store[summary["for_list"]]
@@ -111,21 +110,21 @@ class ListCollectorBlock:
         )
 
         if related_answers:
-            answer_focus = f"#{self._get_answer_id(list_collector_block)}"
+            answer_focus = f"#{self._get_item_anchor_answer_id()}"
 
-        answer_title = (
-            self._get_answer_title(list_collector_block) if related_answers else None
-        )
+        item_label = self._get_item_label() if related_answers else None
 
         return {
-            "title": rendered_summary["title"],
+            "title": rendered_summary["item_title"]
+            if related_answers
+            else rendered_summary["title"],
             "type": rendered_summary["type"],
             "add_link": add_link,
             "add_link_text": rendered_summary["add_link_text"],
             "empty_list_text": rendered_summary.get("empty_list_text"),
             "list_name": rendered_summary["for_list"],
             "related_answers": related_answers,
-            "answer_title": answer_title,
+            "item_label": item_label,
             "answer_focus": answer_focus,
             **list_summary_context,
         }
@@ -232,38 +231,14 @@ class ListCollectorBlock:
 
             return related_answers_dict
 
-    def _get_answer_title(self, list_collector_block: Mapping[str, Any]) -> str:
-        if list_collector_block["add_block"].get("question_variants"):
-            variant_label = choose_variant(
-                list_collector_block["add_block"],
-                self._schema,
-                self._metadata,
-                self._response_metadata,
-                self._answer_store,
-                self._list_store,
-                variants_key="question_variants",
-                single_key="question",
-                current_location=self._location,
-            )["answers"][0]["label"]
+    def _get_item_label(self) -> str:
+        for item in self._section["summary"].get("items"):
+            if item["for_list"] == self._list_store[item["for_list"]].name:
 
-            return variant_label
+                return item["item_label"]
 
-        return list_collector_block["add_block"]["question"]["answers"][0]["label"]
+    def _get_item_anchor_answer_id(self) -> str:
+        for item in self._section["summary"].get("items"):
+            if item["for_list"] == self._list_store[item["for_list"]].name:
 
-    def _get_answer_id(self, list_collector_block: Mapping[str, Any]) -> str:
-        if list_collector_block["add_block"].get("question_variants"):
-            variant_label = choose_variant(
-                list_collector_block["add_block"],
-                self._schema,
-                self._metadata,
-                self._response_metadata,
-                self._answer_store,
-                self._list_store,
-                variants_key="question_variants",
-                single_key="question",
-                current_location=self._location,
-            )["answers"][0]["id"]
-
-            return variant_label
-
-        return list_collector_block["add_block"]["question"]["answers"][0]["id"]
+                return item["item_anchor_answer_id"]

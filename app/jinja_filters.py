@@ -417,12 +417,12 @@ class SummaryAction:
     def __init__(
         self,
         answer: SelectFieldBase._Option,
-        answer_title: str,
+        item_title: str,
         edit_link_text: str,
         edit_link_aria_label: str,
     ) -> None:
         self.text = edit_link_text
-        self.ariaLabel = edit_link_aria_label + " " + answer_title
+        self.ariaLabel = edit_link_aria_label + " " + item_title
         self.url = answer["link"]
 
         self.attributes = {
@@ -600,7 +600,7 @@ def map_summary_item_config(
                 remove_link_text=flask_babel.lazy_gettext("Remove"),
                 remove_link_aria_label=flask_babel.lazy_gettext("Remove {item_name}"),
                 related_answers=block.get("related_answers"),
-                answer_title=block.get("answer_title"),
+                item_label=block.get("item_label"),
                 answer_focus=block.get("answer_focus"),
             )
             rows.extend(iter(list_collector_rows))
@@ -626,7 +626,7 @@ def map_list_collector_config(
     remove_link_text: Optional[str] = None,
     remove_link_aria_label: Optional[str] = None,
     related_answers: Optional[dict] = None,
-    answer_title: Optional[str] = None,
+    item_label: Optional[str] = None,
     answer_focus: Optional[str] = None,
 ) -> list[dict[str, list]]:
     rows = []
@@ -687,10 +687,10 @@ def map_list_collector_config(
             "rowTitleAttributes": row_title_attributes,
         }
 
-        if answer_title:
+        if item_label:
             row_item["valueList"] = [{"text": item_name}]
 
-        row_item["rowTitle"] = answer_title or item_name
+        row_item["rowTitle"] = item_label or item_name
         row_items = [row_item]
 
         if related_answers:

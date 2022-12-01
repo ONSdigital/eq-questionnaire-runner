@@ -39,7 +39,9 @@
                     {
                         "type": "List",
                         "for_list": "companies",
-                        "title": "Companies or UK branches",
+                        "item_title": "Companies or UK branches",
+                        "item_anchor_answer_id": "company-or-branch-name",
+                        "item_label": "Name of UK company or branch",
                         "add_link_text": "Add another UK company or branch",
                         "empty_list_text": "No UK company or branch added",
                         "related_answers": [

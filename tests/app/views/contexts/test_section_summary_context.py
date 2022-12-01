@@ -9,7 +9,6 @@ from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import SectionSummaryContext
-from app.views.contexts.summary.list_collector_block import ListCollectorBlock
 from tests.app.questionnaire.conftest import get_metadata
 from tests.app.views.contexts import assert_summary_context
 
@@ -160,7 +159,7 @@ def test_context_for_section_list_summary(people_answer_store):
                     "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
                     "add_link_text": "Add someone to this " "household",
                     "answer_focus": None,
-                    "answer_title": None,
+                    "item_label": None,
                     "empty_list_text": "There are no householders",
                     "list": {
                         "editable": True,
@@ -192,7 +191,7 @@ def test_context_for_section_list_summary(people_answer_store):
                     "add_link": "/questionnaire/visitors/add-visitor/?return_to=section-summary",
                     "add_link_text": "Add another visitor to this " "household",
                     "answer_focus": None,
-                    "answer_title": None,
+                    "item_label": None,
                     "empty_list_text": "There are no visitors",
                     "list": {
                         "editable": True,
@@ -257,7 +256,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                     "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
                     "add_link_text": "Add another UK company or " "branch",
                     "answer_focus": "#company-or-branch-name",
-                    "answer_title": "Name of UK company or branch",
+                    "item_label": "Name of UK company or branch",
                     "empty_list_text": "No UK company or branch " "added",
                     "list": {
                         "editable": True,
@@ -373,7 +372,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                             "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
                             "add_link_text": "Add another UK company " "or branch",
                             "answer_focus": "#company-or-branch-name",
-                            "answer_title": "Name of UK company or " "branch",
+                            "item_label": "Name of UK company or " "branch",
                             "empty_list_text": "No UK company or " "branch added",
                             "list": {
                                 "editable": True,
@@ -527,7 +526,7 @@ def test_context_for_driving_question_summary_empty_list():
                     "add_link": "/questionnaire/anyone-usually-live-at/?return_to=section-summary",
                     "add_link_text": "Add someone to this " "household",
                     "answer_focus": None,
-                    "answer_title": None,
+                    "item_label": None,
                     "empty_list_text": "There are no householders",
                     "list": {"editable": False, "list_items": []},
                     "list_name": "people",
@@ -583,7 +582,7 @@ def test_context_for_driving_question_summary():
                     "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
                     "add_link_text": "Add someone to this " "household",
                     "answer_focus": None,
-                    "answer_title": None,
+                    "item_label": None,
                     "empty_list_text": "There are no householders",
                     "list": {
                         "editable": True,
@@ -733,43 +732,3 @@ def test_primary_links_for_section_summary(people_answer_store):
 
     assert "/edit-person/" in list_items[0]["edit_link"]
     assert "/edit-person/" in list_items[1]["edit_link"]
-
-
-@pytest.mark.parametrize(
-    "add_block",
-    (
-        {
-            "add_block": {
-                "question_variants": [
-                    {"question": {"answers": [{"label": "Test Title"}]}}
-                ]
-            }
-        },
-    ),
-)
-def test_answer_titles_for_variants(add_block):
-    assert (
-        ListCollectorBlock._get_answer_title(  # pylint: disable=protected-access
-            MagicMock(), add_block
-        )
-        == "Test Title"
-    )
-
-
-@pytest.mark.parametrize(
-    "list_collector_block",
-    (
-        {
-            "add_block": {
-                "question_variants": [{"question": {"answers": [{"id": "test-id"}]}}]
-            }
-        },
-    ),
-)
-def test_get_answer_id(list_collector_block):
-    assert (
-        ListCollectorBlock._get_answer_id(  # pylint: disable=protected-access
-            MagicMock(), list_collector_block
-        )
-        == "test-id"
-    )

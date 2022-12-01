@@ -438,7 +438,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
             "remove_link": "/nonprimary/remove",
             "edit_link": "/nonprimary/change",
             "primary_person": False,
-            "item_title": "Company A",
+            "item_title": "Name of UK company or branch",
             "id": "nonprimary",
             "list_item_id": "VHoiow",
         },
@@ -488,7 +488,8 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                 }
             ]
         },
-        "answer_title",
+        "Name of UK company or branch",
+        "",
     )
 
     expected = [
@@ -511,12 +512,12 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                     ],
                     "iconType": "icon",
                     "id": "VHoiow",
-                    "rowTitle": "answer_title",
+                    "rowTitle": "Name of UK company or branch",
                     "rowTitleAttributes": {
                         "data-list-item-id": "VHoiow",
                         "data-qa": "list-item-1-label",
                     },
-                    "valueList": [{"text": "Company A"}],
+                    "valueList": [{"text": "Name of UK company or branch"}],
                 },
                 {
                     "actions": [
@@ -803,12 +804,11 @@ def test_summary_item_config_with_list_collector():
                     ],
                     "iconType": "",
                     "id": "vmmPmD",
-                    "rowTitle": "Name of UK company or branch",
+                    "rowTitle": "Company A",
                     "rowTitleAttributes": {
                         "data-list-item-id": "vmmPmD",
                         "data-qa": "list-item-1-label",
                     },
-                    "valueList": [{"text": "Company A"}],
                 },
                 {
                     "actions": [
