@@ -24,7 +24,7 @@ class Group:
         self.id = group_schema["id"]
         self.title = group_schema.get("title")
         self.location = location
-        self.blocks = self._build_blocks(
+        self.blocks, self.links = self._build_blocks_and_links(
             group_schema=group_schema,
             routing_path=routing_path,
             answer_store=answer_store,
@@ -49,7 +49,7 @@ class Group:
 
     # pylint: disable=too-many-locals
     @staticmethod
-    def _build_blocks(
+    def _build_blocks_and_links(
         *,
         group_schema,
         routing_path,
@@ -65,6 +65,8 @@ class Group:
         return_to_block_id,
     ):
         blocks = []
+
+        links = {}
 
         for block in group_schema["blocks"]:
             if block["id"] not in routing_path:
@@ -107,18 +109,28 @@ class Group:
                 if summary_items := summary.get("items"):
                     for summary_item in summary_items:
                         if summary_item["type"] == "List":
-                            blocks.extend(
-                                [
-                                    list_collector_block.list_summary_element(
-                                        summary_item
-                                    )
-                                ]
-                            )
 
-        return blocks
+                            list_summary_element = (
+                                list_collector_block.list_summary_element(summary_item)
+                            )
+                            blocks.extend([list_summary_element])
+                            links["add_link"] = list_summary_element["add_link"]
+                            links["add_link_text"] = list_summary_element[
+                                "add_link_text"
+                            ]
+                            links["empty_list_text"] = list_summary_element[
+                                "empty_list_text"
+                            ]
+
+        return blocks, links
 
     def serialize(self):
         return self.placeholder_renderer.render(
-            {"id": self.id, "title": self.title, "blocks": self.blocks},
+            {
+                "id": self.id,
+                "title": self.title,
+                "blocks": self.blocks,
+                "links": self.links,
+            },
             self.location.list_item_id,
         )

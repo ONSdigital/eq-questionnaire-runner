@@ -7,15 +7,11 @@
 
   {%- for group in content.summary.groups if group.blocks -%}
 
-      {% set links = {'add_link_text': "", "add_link": "", "empty_link_text": ""} %}
-
-      {% for block in group.blocks %}
-        {% if block.type == "List" %}
-          {% do links.update({'add_link_text': block.add_link_text}) %}
-          {% do links.update({'add_link': block.add_link}) %}
-          {% do links.update({'empty_list_text': block.empty_list_text}) %}
-        {% endif %}
-      {% endfor %}
+      {% if group.links %}
+          {% set links = {"add_link_text": group.links.add_link_text, "add_link": group.links.add_link, "empty_link_text": group.links.empty_list_text} %}
+      {% else %}
+          {% set links = {"add_link_text": "",  "add_link": "", "empty_link_text": ""} %}
+      {% endif %}
 
       {% set summary_link = {
         "url": links.add_link,
