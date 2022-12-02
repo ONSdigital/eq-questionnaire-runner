@@ -108,7 +108,10 @@ class Group:
                 summary = section.get("summary", {})
                 if summary_items := summary.get("items"):
                     for summary_item in summary_items:
-                        if summary_item["type"] == "List":
+                        if (
+                            summary_item["type"] == "List"
+                            and summary_item["for_list"] == block["for_list"]
+                        ):
 
                             list_summary_element = (
                                 list_collector_block.list_summary_element(summary_item)
