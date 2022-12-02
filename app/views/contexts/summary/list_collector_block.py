@@ -236,7 +236,7 @@ class ListCollectorBlock:
                 question["answers"] = answers
                 block_schema["question"] = question
 
-                related_block = [
+                return [
                     Block(
                         block_schema,
                         answer_store=self._answer_store,
@@ -253,5 +253,3 @@ class ListCollectorBlock:
                         return_to_block_id=None,
                     ).serialize()
                 ]
-
-                return related_block
