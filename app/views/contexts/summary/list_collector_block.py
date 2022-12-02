@@ -1,5 +1,5 @@
 import itertools
-from typing import Any, Mapping
+from typing import Any, Mapping, Optional
 
 from flask import url_for
 
@@ -142,7 +142,9 @@ class ListCollectorBlock:
             self._response_metadata,
         )
 
-    def _add_link(self, summary, list_collector_block):
+    def _add_link(
+        self, summary: dict[str, str], list_collector_block: Optional[dict[str, dict]]
+    ):
 
         if list_collector_block:
             return url_for(
@@ -164,8 +166,8 @@ class ListCollectorBlock:
             )
 
     def _get_related_answers(
-        self, current_list: ListModel, list_collector_block
-    ) -> dict:
+        self, current_list: ListModel, list_collector_block: dict[str, dict]
+    ) -> dict[str, list[Block]]:
         section = self._section["id"]
 
         if related_answers := self._schema.get_related_answers_for_section(
@@ -189,7 +191,7 @@ class ListCollectorBlock:
                                 ]
                             )
 
-                question = dict(list_collector_block["add_block"].get("question"))
+                question = dict(list_collector_block["add_block"].get("question"))  # type: ignore
 
                 edit_block = self._schema.get_edit_block_for_list_collector(
                     list_collector_block.get("id")
@@ -233,13 +235,13 @@ class ListCollectorBlock:
 
             return related_answers_dict
 
-    def _get_item_label(self) -> str:
+    def _get_item_label(self) -> Optional[str]:
         for item in self._section["summary"].get("items"):
             if item["for_list"] == self._list_store[item["for_list"]].name:
 
                 return item["item_label"]
 
-    def _get_item_anchor_answer_id(self) -> str:
+    def _get_item_anchor_answer_id(self) -> Optional[str]:
         for item in self._section["summary"].get("items"):
             if item["for_list"] == self._list_store[item["for_list"]].name:
 
