@@ -7,6 +7,7 @@ from app.data_models.progress_store import ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.routing_path import RoutingPath
+from app.survey_config.link import SummaryLink
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import SectionSummaryContext
 from tests.app.questionnaire.conftest import get_metadata
@@ -483,8 +484,12 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                     "id": "group-companies-1",
                     "title": None,
                     "links": {
-                        "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
-                        "add_link_text": "Add another UK company or branch",
+                        "add_link": SummaryLink(
+                            text="Add another UK company or branch",
+                            url="/questionnaire/companies/add-company/?return_to=section-summary",
+                            attributes={"data-qa": "add-item-link"},
+                            target="_self",
+                        ),
                         "empty_list_text": "No UK company or branch added",
                     },
                 },

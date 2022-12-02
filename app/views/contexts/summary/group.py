@@ -1,6 +1,7 @@
 from typing import Optional
 
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
+from app.survey_config.link import SummaryLink
 from app.views.contexts.summary.block import Block
 from app.views.contexts.summary.list_collector_block import ListCollectorBlock
 
@@ -117,10 +118,11 @@ class Group:
                                 list_collector_block.list_summary_element(summary_item)
                             )
                             blocks.extend([list_summary_element])
-                            links["add_link"] = list_summary_element["add_link"]
-                            links["add_link_text"] = list_summary_element[
-                                "add_link_text"
-                            ]
+                            links["add_link"] = SummaryLink(
+                                text=list_summary_element["add_link_text"],
+                                url=list_summary_element["add_link"],
+                                attributes={"data-qa": "add-item-link"},
+                            )
                             links["empty_list_text"] = list_summary_element[
                                 "empty_list_text"
                             ]

@@ -7,21 +7,6 @@
 
   {%- for group in content.summary.groups if group.blocks -%}
 
-      {% if group.links %}
-          {% set links = {"add_link_text": group.links.add_link_text, "add_link": group.links.add_link, "empty_list_text": group.links.empty_list_text} %}
-      {% else %}
-          {% set links = {"add_link_text": "",  "add_link": "", "empty_list_text": ""} %}
-      {% endif %}
-
-      {% set summary_link = {
-        "url": links.add_link,
-        "text": links.add_link_text,
-        "attributes": {
-          "data-qa": "add-item-link"
-        }
-        }
-      %}
-
       {% do summaryGroups.append (
         {
         "groups": [
@@ -39,8 +24,8 @@
             None,
             ),
             "classes": "ons-u-mt-m" if loop.index > 1 else "",
-            "placeholderText": links.empty_list_text,
-            "summaryLink": summary_link,
+            "placeholderText": group.links.empty_list_text,
+            "summaryLink": group.links.add_link,
           }
         ]
         }
