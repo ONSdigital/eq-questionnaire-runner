@@ -1,29 +1,20 @@
 from datetime import datetime
-from typing import Any, Mapping, Union
+from typing import Any, Mapping, Optional, Union
 
 from structlog import get_logger
 
 from app.data_models import QuestionnaireStore
+from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
 from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,
 )
 from app.questionnaire.routing_path import RoutingPath
-from app.submitter.convert_payload_0_0_1 import convert_answers_to_payload_0_0_1
-from app.submitter.convert_payload_0_0_3 import convert_answers_to_payload_0_0_3
+from app.submitter.converter_v2 import get_payload_data
 
 logger = get_logger()
 
-MetadataType = Mapping[str, Union[str, int, list]]
-
-
-class DataVersionError(Exception):
-    def __init__(self, version: str):
-        super().__init__()
-        self.version = version
-
-    def __str__(self) -> str:
-        return f"Data version {self.version} not supported"
+MetadataType = Mapping[str, Optional[Union[str, list]]]
 
 
 def convert_answers(
@@ -72,6 +63,9 @@ def convert_answers(
         Data payload
     """
     metadata = questionnaire_store.metadata
+    if not metadata:
+        raise NoMetadataException
+
     response_metadata = questionnaire_store.response_metadata
     answer_store = questionnaire_store.answer_store
     list_store = questionnaire_store.list_store
@@ -79,8 +73,8 @@ def convert_answers(
     survey_id = schema.json["survey_id"]
 
     payload = {
-        "case_id": metadata["case_id"],
-        "tx_id": metadata["tx_id"],
+        "case_id": metadata.case_id,
+        "tx_id": metadata.tx_id,
         "type": "uk.gov.ons.edc.eq:surveyresponse",
         "version": schema.json["data_version"],
         "origin": "uk.gov.ons.edc.eq",
@@ -89,63 +83,60 @@ def convert_answers(
         "submitted_at": submitted_at.isoformat(),
         "collection": build_collection(metadata),
         "metadata": build_metadata(metadata),
-        "launch_language_code": metadata.get("language_code", DEFAULT_LANGUAGE_CODE),
+        "launch_language_code": metadata.language_code or DEFAULT_LANGUAGE_CODE,
     }
 
     optional_properties = get_optional_payload_properties(metadata, response_metadata)
 
-    if schema.json["data_version"] == "0.0.3":
-        payload["data"] = {
-            "answers": convert_answers_to_payload_0_0_3(
-                answer_store, list_store, schema, routing_path
-            ),
-            "lists": list_store.serialize(),
-        }
-    elif schema.json["data_version"] == "0.0.1":
-        payload["data"] = convert_answers_to_payload_0_0_1(
-            metadata, response_metadata, answer_store, list_store, schema, routing_path
-        )
-    else:
-        raise DataVersionError(schema.json["data_version"])
-
-    logger.info("converted answer ready for submission")
+    payload["data"] = get_payload_data(
+        answer_store=answer_store,
+        list_store=list_store,
+        schema=schema,
+        routing_path=routing_path,
+        metadata=metadata,
+        response_metadata=response_metadata,
+    )
 
     return payload | optional_properties
 
 
-def build_collection(metadata: MetadataType) -> MetadataType:
+def build_collection(metadata: MetadataProxy) -> MetadataType:
     collection_metadata = {
-        "exercise_sid": metadata["collection_exercise_sid"],
-        "schema_name": metadata["schema_name"],
+        "exercise_sid": metadata.collection_exercise_sid,
+        "schema_name": metadata.schema_name,
         "period": metadata["period_id"],
     }
 
-    if form_type := metadata.get("form_type"):
+    if form_type := metadata["form_type"]:
         collection_metadata["instrument_id"] = form_type
 
     return collection_metadata
 
 
-def build_metadata(metadata: MetadataType) -> MetadataType:
-    downstream_metadata = {"user_id": metadata["user_id"], "ru_ref": metadata["ru_ref"]}
+def build_metadata(metadata: MetadataProxy) -> MetadataType:
 
-    if metadata.get("ref_p_start_date"):
-        downstream_metadata["ref_period_start_date"] = metadata["ref_p_start_date"]
-    if metadata.get("ref_p_end_date"):
-        downstream_metadata["ref_period_end_date"] = metadata["ref_p_end_date"]
-    if metadata.get("display_address"):
-        downstream_metadata["display_address"] = metadata["display_address"]
+    downstream_metadata = {
+        "user_id": metadata["user_id"],
+        "ru_ref": metadata["ru_ref"],
+    }
+
+    if ref_p_start_date := metadata["ref_p_start_date"]:
+        downstream_metadata["ref_period_start_date"] = ref_p_start_date
+    if ref_p_end_date := metadata["ref_p_end_date"]:
+        downstream_metadata["ref_period_end_date"] = ref_p_end_date
+    if display_address := metadata["display_address"]:
+        downstream_metadata["display_address"] = display_address
 
     return downstream_metadata
 
 
 def get_optional_payload_properties(
-    metadata: MetadataType, response_metadata: Mapping
+    metadata: MetadataProxy, response_metadata: Mapping
 ) -> MetadataType:
     payload = {}
 
     for key in ["channel", "case_type", "form_type", "region_code", "case_ref"]:
-        if value := metadata.get(key):
+        if value := metadata[key]:
             payload[key] = value
     if started_at := response_metadata.get("started_at"):
         payload["started_at"] = started_at

@@ -1,4 +1,4 @@
-from collections import abc, defaultdict
+from collections import defaultdict
 from copy import deepcopy
 from dataclasses import dataclass
 from functools import cached_property
@@ -10,6 +10,7 @@ from werkzeug.datastructures import ImmutableDict
 from app.data_models.answer import Answer
 from app.forms import error_messages
 from app.questionnaire.rules.operator import OPERATION_MAPPING
+from app.utilities.make_immutable import make_immutable
 
 DEFAULT_LANGUAGE_CODE = "en"
 
@@ -120,13 +121,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @classmethod
     def serialize(cls, data: Any) -> Any:
-        if isinstance(data, abc.Hashable):
-            return data
-        if isinstance(data, list):
-            return tuple((cls.serialize(item) for item in data))
-        if isinstance(data, dict):
-            key_value_tuples = {k: cls.serialize(v) for k, v in data.items()}
-            return ImmutableDict(key_value_tuples)
+        return make_immutable(data)
 
     @classmethod
     def get_mutable_deepcopy(cls, data: Any) -> Any:

@@ -22,7 +22,11 @@ class IndividualResponseTestCase(IntegrationTestCase):
         self.DUMMY_MOBILE_NUMBER = "07700900258"
 
         super().setUp()
-        self.launchSurvey("test_individual_response", region_code="GB-ENG")
+
+        self.launchSurvey(
+            schema_name="test_individual_response",
+            region_code="GB-ENG",
+        )
 
     @property
     def individual_section_link(self):

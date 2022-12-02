@@ -1,12 +1,14 @@
-from typing import Any, Mapping, Optional, Union
+from typing import Optional, Union
 from urllib.parse import urlencode
 
 from flask import g, request
+from flask import session as cookie_session
 from flask_login import current_user
 
+from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_metadata, get_session_store
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
-from app.utilities.schema import get_allowed_languages
+from app.utilities.schema import get_allowed_languages, load_schema_from_metadata
 
 LANGUAGE_TEXT = {
     "en": "English",
@@ -14,18 +16,28 @@ LANGUAGE_TEXT = {
 }
 
 
-def handle_language(metadata: Optional[Mapping[str, Any]] = None) -> None:
+def handle_language(metadata: Optional[MetadataProxy] = None) -> None:
     session_store = get_session_store()
 
     if session_store and session_store.session_data:
-        metadata = metadata or get_metadata(current_user) or {}
-        schema_name = metadata["schema_name"]
+        if not metadata:
+            metadata = get_metadata(current_user)
 
-        launch_language = metadata.get("language_code") or DEFAULT_LANGUAGE_CODE
+        schema_name = metadata.schema_name if metadata else None
+        language_code = metadata.language_code if metadata else None
+
+        launch_language = language_code or DEFAULT_LANGUAGE_CODE
         # pylint: disable=assigning-non-slot
         g.allowed_languages = get_allowed_languages(schema_name, launch_language)
         request_language = request.args.get("language_code")
         if request_language and request_language in g.allowed_languages:
+            if metadata:
+                schema = load_schema_from_metadata(
+                    metadata=metadata, language_code=request_language
+                )
+                if schema.json["title"] != cookie_session.get("survey_title"):
+                    cookie_session["survey_title"] = schema.json["title"]
+
             session_store.session_data.language_code = request_language
             session_store.save()
 

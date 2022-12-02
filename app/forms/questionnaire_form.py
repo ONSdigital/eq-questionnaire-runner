@@ -13,6 +13,7 @@ from werkzeug.datastructures import ImmutableMultiDict, MultiDict
 from wtforms import validators
 
 from app.data_models import AnswerStore, AnswerValueTypes, ListStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.forms import error_messages
 from app.forms.field_handlers import DateHandler, FieldHandler, get_field_handler
 from app.forms.validators import DateRangeCheck, MutuallyExclusiveCheck, SumCheck
@@ -40,7 +41,7 @@ class QuestionnaireForm(FlaskForm):
         question_schema: QuestionSchemaType,
         answer_store: AnswerStore,
         list_store: ListStore,
-        metadata: Mapping[str, Any],
+        metadata: Optional[MetadataProxy],
         response_metadata: Mapping[str, Any],
         location: Union[None, Location, RelationshipLocation],
         **kwargs: Union[MultiDict[str, Any], Mapping[str, Any], None],
@@ -445,7 +446,7 @@ def get_answer_fields(
     schema: QuestionnaireSchema,
     answer_store: AnswerStore,
     list_store: ListStore,
-    metadata: Mapping[str, Any],
+    metadata: Optional[MetadataProxy],
     response_metadata: Mapping[str, Any],
     location: Union[Location, RelationshipLocation, None],
 ) -> dict[str, FieldHandler]:
@@ -560,7 +561,7 @@ def generate_form(
     question_schema: QuestionSchemaType,
     answer_store: AnswerStore,
     list_store: ListStore,
-    metadata: Mapping[str, Any],
+    metadata: Optional[MetadataProxy],
     response_metadata: Mapping[str, Any],
     location: Union[None, Location, RelationshipLocation] = None,
     data: Optional[dict[str, Any]] = None,

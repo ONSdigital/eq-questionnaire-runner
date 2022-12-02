@@ -9,18 +9,13 @@
     "description": "A questionnaire to demo the social survey theme",
     "metadata": [
         {
-            "name": "user_id",
-            "type": "string"
-        },
-        {
-            "name": "period_id",
-            "type": "string"
-        },
-        {
-            "name": "ru_name",
+            "name": "qid",
             "type": "string"
         }
     ],
+    "post_submission": {
+        "feedback": true
+    },
     "questionnaire_flow": {
         "type": "Linear",
         "options": {
