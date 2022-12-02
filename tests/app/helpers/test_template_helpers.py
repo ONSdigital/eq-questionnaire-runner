@@ -6,7 +6,13 @@ from flask import session as cookie_session
 
 from app.helpers.template_helpers import ContextHelper, get_survey_config
 from app.questionnaire import QuestionnaireSchema
-from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
+from app.settings import (
+    ACCOUNT_SERVICE_BASE_URL,
+    ACCOUNT_SERVICE_BASE_URL_SOCIAL,
+    ONS_URL,
+    ONS_URL_CY,
+    read_file,
+)
 from app.survey_config import (
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
@@ -27,38 +33,63 @@ from tests.app.helpers.conftest import (
     expected_footer_social_theme,
     expected_footer_social_theme_no_cookie,
 )
+from tests.app.questionnaire.conftest import get_metadata
 
 DEFAULT_URL = "http://localhost"
 
 
 @pytest.mark.parametrize(
-    "theme, survey_config, expected_footer",
+    "theme, survey_config, language, expected_footer",
     [
-        (SurveyType.CENSUS, CensusSurveyConfig(), expected_footer_census_theme()),
-        (None, CensusSurveyConfig(), expected_footer_census_theme_no_cookie()),
-        (SurveyType.BUSINESS, BusinessSurveyConfig(), expected_footer_business_theme()),
-        (None, BusinessSurveyConfig(), expected_footer_business_theme_no_cookie()),
-        (SurveyType.SOCIAL, SocialSurveyConfig(), expected_footer_social_theme()),
-        (None, SocialSurveyConfig(), expected_footer_social_theme_no_cookie()),
+        (SurveyType.CENSUS, CensusSurveyConfig(), "en", expected_footer_census_theme()),
+        (None, CensusSurveyConfig(), "en", expected_footer_census_theme_no_cookie()),
+        (
+            SurveyType.BUSINESS,
+            BusinessSurveyConfig(),
+            "en",
+            expected_footer_business_theme(),
+        ),
+        (
+            None,
+            BusinessSurveyConfig(),
+            "en",
+            expected_footer_business_theme_no_cookie(),
+        ),
+        (
+            SurveyType.SOCIAL,
+            SocialSurveyConfig(),
+            "en",
+            expected_footer_social_theme("en"),
+        ),
+        (None, SocialSurveyConfig(), "en", expected_footer_social_theme_no_cookie()),
+        (
+            SurveyType.SOCIAL,
+            SocialSurveyConfig(language_code="cy"),
+            "cy",
+            expected_footer_social_theme("cy"),
+        ),
         (
             SurveyType.CENSUS_NISRA,
             CensusNISRASurveyConfig(),
+            "en",
             expected_footer_nisra_theme(),
         ),
         (
             SurveyType.CENSUS,
             WelshCensusSurveyConfig(),
+            "en",
             expected_footer_census_welsh_theme(),
         ),
     ],
 )
-def test_footer_context(app: Flask, theme, survey_config, expected_footer):
+def test_footer_context(app: Flask, theme, survey_config, language, expected_footer):
     with app.app_context():
         if theme:
             cookie_session["theme"] = theme
         config = survey_config
+
         result = ContextHelper(
-            language="en",
+            language=language,
             is_post_submission=False,
             include_csrf_token=True,
             survey_config=config,
@@ -101,141 +132,93 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             SurveyType.BUSINESS,
             None,
             BusinessSurveyConfig(),
-            {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "title": "ONS Business Surveys",
-            },
+            ["ONS Business Surveys", None, None],
         ),
         (
             SurveyType.BUSINESS,
             "Test",
             BusinessSurveyConfig(),
-            {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "title": "Test",
-            },
+            ["Test", None, None],
         ),
         (
             None,
             None,
             BusinessSurveyConfig(),
-            {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "title": "ONS Surveys",
-            },
+            ["ONS Business Surveys", None, None],
         ),
         (
             SurveyType.SOCIAL,
             None,
             SocialSurveyConfig(),
-            {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "title": "ONS Social Surveys",
-            },
+            ["ONS Social Surveys", None, None],
         ),
         (
             SurveyType.SOCIAL,
             "Test",
             SocialSurveyConfig(),
-            {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "title": "Test",
-            },
+            ["Test", None, None],
+        ),
+        (
+            SurveyType.SOCIAL,
+            "Test",
+            SocialSurveyConfig(language_code="cy"),
+            ["Test", None, None],
         ),
         (
             None,
             None,
             SocialSurveyConfig(),
-            {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "title": "ONS Surveys",
-            },
-        ),
-        (
-            SurveyType.CENSUS,
-            None,
-            CensusSurveyConfig(),
-            {
-                "title": "Census 2021",
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "titleLogo": "census-logo-en",
-                "titleLogoAlt": "Census 2021",
-            },
-        ),
-        (
-            SurveyType.CENSUS,
-            "Test",
-            CensusSurveyConfig(),
-            {
-                "title": "Test",
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "titleLogo": "census-logo-en",
-                "titleLogoAlt": "Census 2021",
-            },
-        ),
-        (
-            None,
-            None,
-            CensusSurveyConfig(),
-            {
-                "title": "ONS Surveys",
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "titleLogo": "census-logo-en",
-                "titleLogoAlt": "Census 2021",
-            },
-        ),
-        (
-            SurveyType.CENSUS_NISRA,
-            None,
-            CensusNISRASurveyConfig(),
-            {
-                "orgLogo": "nisra-logo",
-                "orgLogoAlt": "Northern Ireland Statistics and Research Agency logo",
-                "titleLogo": "census-logo-en",
-                "titleLogoAlt": "Census 2021",
-                "customHeaderLogo": True,
-                "orgMobileLogo": "nisra-logo-mobile",
-                "title": "Census 2021",
-            },
-        ),
-        (
-            None,
-            None,
-            CensusNISRASurveyConfig(),
-            {
-                "orgLogo": "nisra-logo",
-                "orgLogoAlt": "Northern Ireland Statistics and Research Agency logo",
-                "titleLogo": "census-logo-en",
-                "titleLogoAlt": "Census 2021",
-                "customHeaderLogo": True,
-                "orgMobileLogo": "nisra-logo-mobile",
-                "title": "ONS Surveys",
-            },
+            ["ONS Social Surveys", None, None],
         ),
         (
             None,
             None,
             SurveyConfig(),
-            {
-                "orgLogo": "ons-logo-en",
-                "orgLogoAlt": "Office for National Statistics logo",
-                "title": "ONS Surveys",
-            },
+            [None, None, None],
+        ),
+        (
+            SurveyType.CENSUS,
+            None,
+            CensusSurveyConfig(),
+            ["Census 2021", None, None],
+        ),
+        (
+            SurveyType.CENSUS,
+            "Test",
+            CensusSurveyConfig(),
+            ["Test", None, None],
+        ),
+        (
+            None,
+            None,
+            CensusSurveyConfig(),
+            ["Census 2021", None, None],
+        ),
+        (
+            SurveyType.CENSUS_NISRA,
+            None,
+            CensusNISRASurveyConfig(),
+            ["Census 2021", None, None],
+        ),
+        (
+            None,
+            None,
+            CensusNISRASurveyConfig(),
+            ["Census 2021", None, None],
+        ),
+        (
+            None,
+            None,
+            NorthernIrelandBusinessSurveyConfig(),
+            [
+                "ONS Business Surveys",
+                read_file("./templates/assets/images/ni-finance-logo.svg"),
+                read_file("./templates/assets/images/ni-finance-mobile-logo.svg"),
+            ],
         ),
     ),
 )
-def test_get_page_header_context(
-    app: Flask, theme, survey_title, survey_config, expected
-):
+def test_header_context(app: Flask, theme, survey_title, survey_config, expected):
     with app.app_context():
         for cookie_name, cookie_value in {
             "theme": theme,
@@ -244,12 +227,18 @@ def test_get_page_header_context(
             if cookie_value:
                 cookie_session[cookie_name] = cookie_value
 
-        result = ContextHelper(
+        context_helper = ContextHelper(
             language="en",
             is_post_submission=False,
             include_csrf_token=True,
             survey_config=survey_config,
-        ).context["page_header"]
+        )
+
+        result = [
+            context_helper.context["survey_title"],
+            context_helper.context["mastheadLogo"],
+            context_helper.context["mastheadLogoMobile"],
+        ]
 
     assert result == expected
 
@@ -330,7 +319,7 @@ def test_service_links_context(
         if is_authenticated:
             mocker.patch(
                 "app.helpers.template_helpers.get_metadata",
-                return_value={"ru_ref": "63782964754U"},
+                return_value=get_metadata({"ru_ref": "63782964754U", "tx_id": "tx_id"}),
             )
 
         result = ContextHelper(
@@ -344,32 +333,44 @@ def test_service_links_context(
 
 
 @pytest.mark.parametrize(
-    "survey_config, expected",
+    "survey_config, language, expected",
     [
         (
             SurveyConfig(),
+            "en",
             f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
         (
             BusinessSurveyConfig(),
+            "en",
             f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
         (
             NorthernIrelandBusinessSurveyConfig(),
+            "en",
             f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
         (
             SocialSurveyConfig(),
-            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/contact-us/",
+            "en",
+            f"{ONS_URL}/aboutus/contactus/surveyenquiries/",
+        ),
+        (
+            SocialSurveyConfig(language_code="cy"),
+            "cy",
+            f"{ONS_URL_CY}/aboutus/contactus/surveyenquiries/",
         ),
     ],
 )
 def test_contact_us_url_context(
-    app: Flask, survey_config: SurveyConfig, expected: dict[str, str]
+    app: Flask,
+    survey_config: SurveyConfig,
+    language: str,
+    expected: dict[str, str],
 ):
     with app.app_context():
         result = ContextHelper(
-            language="en",
+            language=language,
             is_post_submission=False,
             include_csrf_token=True,
             survey_config=survey_config,
@@ -416,7 +417,12 @@ def test_sign_out_button_text_context(
         (
             SocialSurveyConfig(),
             True,
-            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cookies/",
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/cookies/",
+        ),
+        (
+            SocialSurveyConfig(language_code="cy"),
+            True,
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cy/cookies/",
         ),
         (SurveyConfig(), False, None),
     ],
@@ -439,28 +445,38 @@ def test_cookie_settings_url_context(
 
 
 @pytest.mark.parametrize(
-    "survey_config, address",
+    "survey_config, language, address",
     [
-        (SurveyConfig(), ACCOUNT_SERVICE_BASE_URL),
+        (SurveyConfig(), "en", ACCOUNT_SERVICE_BASE_URL),
         (
             BusinessSurveyConfig(),
+            "en",
             ACCOUNT_SERVICE_BASE_URL,
         ),
         (
             NorthernIrelandBusinessSurveyConfig(),
+            "en",
             ACCOUNT_SERVICE_BASE_URL,
         ),
         (
             SocialSurveyConfig(),
+            "en",
+            ACCOUNT_SERVICE_BASE_URL_SOCIAL,
+        ),
+        (
+            SocialSurveyConfig(),
+            "cy",
             ACCOUNT_SERVICE_BASE_URL_SOCIAL,
         ),
     ],
 )
-def test_cookie_domain_context(app: Flask, survey_config: SurveyConfig, address: str):
+def test_cookie_domain_context(
+    app: Flask, survey_config: SurveyConfig, language: str, address: str
+):
     with app.app_context():
         cookie_session["theme"] = "dummy_value"
         context_helper = ContextHelper(
-            language="en",
+            language=language,
             is_post_submission=False,
             include_csrf_token=True,
             survey_config=survey_config,
@@ -554,7 +570,11 @@ def test_account_service_my_todo_url_context(
         ),
         (
             SocialSurveyConfig(),
-            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/sign-in/logout",
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/start/",
+        ),
+        (
+            SocialSurveyConfig(language_code="cy"),
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cy/start/",
         ),
     ],
 )
@@ -574,10 +594,8 @@ def test_account_service_log_out_url_context(
         (SurveyType.DEFAULT, "cy", SurveyConfig),
         (SurveyType.BUSINESS, "en", BusinessSurveyConfig),
         (SurveyType.BUSINESS, "cy", BusinessSurveyConfig),
-        (SurveyType.HEALTH, "en", SurveyConfig),
-        (SurveyType.HEALTH, "cy", SurveyConfig),
+        (SurveyType.HEALTH, "en", SocialSurveyConfig),
         (SurveyType.SOCIAL, "en", SocialSurveyConfig),
-        (SurveyType.SOCIAL, "cy", SocialSurveyConfig),
         (SurveyType.NORTHERN_IRELAND, "en", NorthernIrelandBusinessSurveyConfig),
         (SurveyType.NORTHERN_IRELAND, "cy", NorthernIrelandBusinessSurveyConfig),
         (SurveyType.CENSUS, "en", CensusSurveyConfig),
@@ -619,6 +637,10 @@ def test_survey_config_base_url_provided_used_in_links(
         result.contact_us_url,
         result.privacy_and_data_protection_url,
     ]
+
+    if survey_config_type == SocialSurveyConfig:
+
+        urls_to_check.remove(result.contact_us_url)
 
     for url in urls_to_check:
         if url:
@@ -681,6 +703,7 @@ def test_context_set_from_app_config(app):
         (SurveyType.BUSINESS, "en", None),
         (SurveyType.HEALTH, "en", None),
         (SurveyType.SOCIAL, "en", None),
+        (SurveyType.SOCIAL, "cy", None),
         (SurveyType.NORTHERN_IRELAND, "en", None),
         (SurveyType.CENSUS, "en", "census"),
         (SurveyType.CENSUS, "cy", "census"),
@@ -704,8 +727,9 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
     [
         (SurveyType.DEFAULT, "en", "ONS Business Surveys"),
         (SurveyType.BUSINESS, "en", "ONS Business Surveys"),
-        (SurveyType.HEALTH, "en", None),
+        (SurveyType.HEALTH, "en", "ONS Social Surveys"),
         (SurveyType.SOCIAL, "en", "ONS Social Surveys"),
+        (SurveyType.SOCIAL, "cy", "ONS Social Surveys"),
         (SurveyType.NORTHERN_IRELAND, "en", "ONS Business Surveys"),
         (SurveyType.CENSUS, "en", "Census 2021"),
         (SurveyType.CENSUS, "cy", "Census 2021"),

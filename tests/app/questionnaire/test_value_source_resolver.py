@@ -3,13 +3,16 @@ from typing import Mapping, Optional, Union
 import pytest
 from mock import Mock
 
+from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.data_models import AnswerStore, ListStore
 from app.data_models.answer import Answer, AnswerDict
+from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from tests.app.data_model.test_answer import ESCAPED_CONTENT, HTML_CONTENT
+from tests.app.questionnaire.conftest import get_metadata
 
 
 def get_list_items(num: int):
@@ -34,7 +37,7 @@ def get_value_source_resolver(
     schema: QuestionnaireSchema = None,
     answer_store: AnswerStore = AnswerStore(),
     list_store: ListStore = ListStore(),
-    metadata: Optional[dict] = None,
+    metadata: MetadataProxy = None,
     response_metadata: Mapping = None,
     location: Union[Location, RelationshipLocation] = Location(
         section_id="test-section", block_id="test-block"
@@ -343,8 +346,42 @@ def test_answer_source_default_answer(use_default_answer):
 )
 def test_metadata_source(metadata_identifier, expected_result):
     value_source_resolver = get_value_source_resolver(
-        metadata={"region_code": "GB-ENG"},
+        metadata=get_metadata({"region_code": "GB-ENG"})
     )
+
+    source = {"source": "metadata", "identifier": metadata_identifier}
+    assert value_source_resolver.resolve(source) == expected_result
+
+
+def test_resolve_metadata_source_with_no_metadata_raises_exception():
+    value_source_resolver = get_value_source_resolver(metadata=None)
+
+    source = {"source": "metadata", "identifier": "identifier"}
+
+    with pytest.raises(NoMetadataException):
+        value_source_resolver.resolve(source)
+
+
+@pytest.mark.parametrize(
+    "metadata_identifier, expected_result",
+    [
+        ("region_code", "GB-ENG"),
+        ("display_address", "68 Abingdon Road, Goathill"),
+        ("language_code", None),
+    ],
+)
+def test_metadata_source_v2_metadata_structure(metadata_identifier, expected_result):
+    metadata = get_metadata(
+        {
+            "version": AuthPayloadVersion.V2,
+            "region_code": "GB-ENG",
+            "survey_metadata": {
+                "data": {"display_address": "68 Abingdon Road, Goathill"}
+            },
+        }
+    )
+
+    value_source_resolver = get_value_source_resolver(metadata=metadata)
 
     source = {"source": "metadata", "identifier": metadata_identifier}
     assert value_source_resolver.resolve(source) == expected_result

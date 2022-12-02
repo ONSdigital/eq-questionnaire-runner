@@ -1,6 +1,7 @@
-from typing import Mapping, Optional
+from typing import Mapping, Optional, Union
 from uuid import uuid4
 
+from google.api_core.exceptions import Forbidden
 from google.cloud import storage  # type: ignore
 from google.cloud.storage.retry import DEFAULT_RETRY
 from pika import BasicProperties, BlockingConnection, URLParameters
@@ -14,13 +15,19 @@ MetadataType = Mapping[str, str]
 
 class LogSubmitter:
     @staticmethod
-    def send_message(message: str, tx_id: str, case_id: str) -> bool:
+    def send_message(
+        message: str,
+        tx_id: str,
+        case_id: str,
+        **kwargs: Mapping[str, Union[str, int]],
+    ) -> bool:
         logger.info("sending message")
         logger.info(
             "message payload",
             message=message,
             case_id=case_id,
             tx_id=tx_id,
+            **kwargs,
         )
 
         return True
@@ -31,16 +38,35 @@ class GCSSubmitter:
         client = storage.Client()
         self.bucket = client.get_bucket(bucket_name)
 
-    def send_message(self, message: str, tx_id: str, case_id: str) -> bool:
+    def send_message(
+        self,
+        message: str,
+        tx_id: str,
+        case_id: str,
+        **kwargs: dict,
+    ) -> bool:
         logger.info("sending message")
 
         blob = self.bucket.blob(tx_id)
-        blob.metadata = {"tx_id": tx_id, "case_id": case_id}
+
+        metadata: dict = {"tx_id": tx_id, "case_id": case_id, **kwargs}
+
+        blob.metadata = metadata
 
         # DEFAULT_RETRY is not idempotent.
         # However, this behaviour was deemed acceptable for our use case.
-        blob.upload_from_string(str(message).encode("utf8"), retry=DEFAULT_RETRY)
+        try:
+            blob.upload_from_string(str(message).encode("utf8"), retry=DEFAULT_RETRY)
+        except Forbidden as e:
+            # If an object exists then the GCS Client will attempt to delete the existing object before reuploading.
+            # However, in an attempt to reduce duplicate receipts, runner does not have a delete permission.
+            # The first version of the object is acceptable as it is an extreme edge case for two submissions to contain different response data.
+            if "storage.objects.delete" not in e.message:
+                raise
 
+            logger.info(
+                "Questionnaire submission exists, ignoring delete operation error"
+            )
         return True
 
 

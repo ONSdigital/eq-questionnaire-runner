@@ -35,10 +35,7 @@ class ThankYou:
         self._schema: QuestionnaireSchema = schema
         self._submitted_at = submitted_at
 
-        self._is_census_theme = cookie_session.get("theme") in [
-            "census",
-            "census-nisra",
-        ]
+        self._is_census_theme = cookie_session.get("theme") == "census"
         self.template = (
             self.CENSUS_THANK_YOU_TEMPLATE
             if self._is_census_theme

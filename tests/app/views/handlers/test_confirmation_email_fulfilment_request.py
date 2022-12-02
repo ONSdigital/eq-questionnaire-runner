@@ -27,7 +27,7 @@ def test_confirmation_email_fulfilment_request_message(
         "form_type": confirmation_email_fulfilment_schema.form_type,
         "language_code": session_data.language_code,
         "region_code": confirmation_email_fulfilment_schema.region_code,
-        "tx_id": metadata["tx_id"],
+        "tx_id": metadata.tx_id,
     }
 
     assert (

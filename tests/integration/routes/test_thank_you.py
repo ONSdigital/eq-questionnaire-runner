@@ -105,7 +105,7 @@ class TestThankYou(IntegrationTestCase):
         self.assertInBody(ACCOUNT_SERVICE_TODO_PATH)
 
     def test_back_to_surveys_link_not_on_thank_you_theme_social(self):
-        self.launchSurvey("test_theme_social")
+        self.launchSurveyV2(schema_name="test_theme_social", theme="social")
         self.post()
         self.post()
 

@@ -13,6 +13,7 @@ from app.submitter.converter import convert_answers
 from app.submitter.submission_failed import SubmissionFailedException
 from app.utilities.json import json_dumps
 from app.utilities.schema import load_schema_from_metadata
+from app.views.handlers.submission import get_receipting_metadata
 
 flush_blueprint = Blueprint("flush", __name__)
 
@@ -40,9 +41,9 @@ def flush_data():
 
     if roles and "flusher" in roles:
         user = _get_user(decrypted_token["response_id"])
-        metadata = get_metadata(user)
-        if "tx_id" in metadata:
-            logger.bind(tx_id=metadata["tx_id"])
+
+        if metadata := get_metadata(user):
+            logger.bind(tx_id=metadata.tx_id)
         if _submit_data(user):
             return Response(status=200)
         return Response(status=404)
@@ -60,7 +61,9 @@ def _submit_data(user):
         progress_store = questionnaire_store.progress_store
         list_store = questionnaire_store.list_store
         submitted_at = datetime.now(timezone.utc)
-        schema = load_schema_from_metadata(metadata=metadata)
+        schema = load_schema_from_metadata(
+            metadata=metadata, language_code=metadata.language_code
+        )
 
         router = Router(
             schema,
@@ -86,10 +89,13 @@ def _submit_data(user):
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
         )
 
+        additional_metadata = get_receipting_metadata(metadata)
+
         sent = current_app.eq["submitter"].send_message(
             encrypted_message,
-            tx_id=metadata.get("tx_id"),
-            case_id=metadata["case_id"],
+            tx_id=metadata.tx_id,
+            case_id=metadata.case_id,
+            **additional_metadata,
         )
 
         if not sent:
