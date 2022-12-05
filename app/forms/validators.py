@@ -468,7 +468,13 @@ class MutuallyExclusiveCheck:
         is_mandatory: bool,
         is_only_checkboxes_or_radios: bool,
     ) -> None:
-        total_answered = sum(1 for value in answer_values if value)
+
+        empty_answer_values: tuple = (None, [], "", {})
+
+        total_answered = sum(
+            value not in empty_answer_values for value in answer_values
+        )
+
         if total_answered > 1:
             raise validators.ValidationError(self.messages["MUTUALLY_EXCLUSIVE"])
         if is_mandatory and total_answered < 1:
