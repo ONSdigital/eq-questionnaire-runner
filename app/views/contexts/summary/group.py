@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Mapping, Optional
 
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.survey_config.link import SummaryLink
@@ -26,8 +26,8 @@ class Group:
         self.id = group_schema["id"]
         self.title = group_schema.get("title")
         self.location = location
-        self.empty_list_text = None
-        self.links: dict = {}
+        self.placeholder_text = None
+        self.links: Mapping[str, SummaryLink] = {}
         self.blocks = self._build_blocks_and_links(
             group_schema=group_schema,
             routing_path=routing_path,
@@ -122,7 +122,7 @@ class Group:
                             attributes={"data-qa": "add-item-link"},
                         )
 
-                        self.empty_list_text = list_summary_element["empty_list_text"]
+                        self.placeholder_text = list_summary_element["empty_list_text"]
 
         return blocks
 
@@ -144,7 +144,7 @@ class Group:
                 "title": self.title,
                 "blocks": self.blocks,
                 "links": self.links,
-                "empty_list_text": self.empty_list_text,
+                "placeholder_text": self.placeholder_text,
             },
             self.location.list_item_id,
         )

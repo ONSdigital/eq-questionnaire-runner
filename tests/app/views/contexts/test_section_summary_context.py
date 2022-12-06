@@ -258,7 +258,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                     "id": "group-companies-0",
                     "links": {},
                     "title": None,
-                    "empty_list_text": None,
+                    "placeholder_text": None,
                 },
                 {
                     "blocks": [
@@ -409,7 +409,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                             target="_self",
                         ),
                     },
-                    "empty_list_text": "No UK company or branch added",
+                    "placeholder_text": "No UK company or branch added",
                     "title": None,
                 },
                 {
@@ -417,7 +417,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                     "id": "group-companies-2",
                     "links": {},
                     "title": None,
-                    "empty_list_text": None,
+                    "placeholder_text": None,
                 },
             ],
             "page_title": "General insurance business",
