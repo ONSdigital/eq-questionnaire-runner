@@ -603,7 +603,7 @@ def map_summary_item_config(
                 item_label=block.get("item_label"),
                 answer_focus=block.get("answer_focus"),
             )
-            rows.extend(iter(list_collector_rows))
+            rows.extend(list_collector_rows)
 
     if summary_type == "CalculatedSummary":
         rows.append(SummaryRow(calculated_question, summary_type, False, "", "", ""))
