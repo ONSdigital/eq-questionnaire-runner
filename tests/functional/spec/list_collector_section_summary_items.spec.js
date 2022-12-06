@@ -19,14 +19,15 @@ describe("List Collector Section Summary Items", () => {
       expect($(SectionSummaryPage.anyCompaniesOrBranchesQuestion()).isExisting()).to.be.true;
       expect($(SectionSummaryPage.anyCompaniesOrBranchesAnswer()).getText()).to.contain("Yes");
     });
-    it("When I add my own item and relevant data, Then after submitting I should be asked if I have more items to add.", () => {
+    it("When I add my own item, Then the item should be visible on the section summary and have correct values", () => {
       drivingQuestionYes();
       addFirstCompany();
-      expect($(AnyCompaniesOrBranchesPage.yes()).isExisting()).to.be.true;
-      expect($(AnyCompaniesOrBranchesPage.no()).isExisting()).to.be.true;
-      expect($(AnyCompaniesOrBranchesPage.heading()).getText()).to.contain(
-        "Do you need to add any other UK companies or branches that undertake general insurance business?"
-      );
+      anyMoreCompaniesNo();
+      $(EstimatePage.submit()).click();
+      expect($(SectionSummaryPage.companiesListLabel(1)).getText()).to.contain("Name of UK company or branch");
+      expect($(companiesListRowItem(1)).getText()).to.contain("Company A");
+      expect($(companiesListRowItem(2)).getText()).to.contain("123,456,789");
+      expect($(companiesListRowItem(3)).getText()).to.contain("Yes");
     });
     it("When I add my own item, Then I should be able to remove that item from the section summary page.", () => {
       drivingQuestionYes();
@@ -147,4 +148,8 @@ function removeFirstCompany() {
   $(SectionSummaryPage.companiesListRemoveLink(1)).click();
   $(AnyCompaniesOrBranchesRemovePage.yes()).click();
   $(AnyCompaniesOrBranchesRemovePage.submit()).click();
+}
+
+function companiesListRowItem(index) {
+  return `#group-companies-1 .ons-summary__items .ons-summary__item .ons-summary__row:nth-of-type(${index})`;
 }
