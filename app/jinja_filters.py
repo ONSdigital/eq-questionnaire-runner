@@ -68,9 +68,7 @@ def format_percentage(value: Union[int, Decimal]) -> str:
     return f"{value}%"
 
 
-def format_unit(
-    unit: Union[int, Decimal], value: Union[int, Decimal], length: str = "short"
-) -> str:
+def format_unit(unit: str, value: Union[int, Decimal], length: str = "short") -> str:
     formatted_unit: str = units.format_unit(
         value=value,
         measurement_unit=unit,
@@ -183,7 +181,7 @@ def get_format_date_range(start_date: Markup, end_date: Markup) -> Markup:
 
 @blueprint.app_context_processor
 def format_unit_processor() -> dict[
-    str, Callable[[Union[int, Decimal], Union[int, Decimal], str], str]
+    str, Callable[[str, Union[int, Decimal], str], str]
 ]:
     return dict(format_unit=format_unit)
 
