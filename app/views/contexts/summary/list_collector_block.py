@@ -3,9 +3,12 @@ from typing import Any, Mapping, Optional
 
 from flask import url_for
 
-from app.data_models.list_store import ListModel
+from app.data_models import AnswerStore, ProgressStore
+from app.data_models.list_store import ListModel, ListStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
+from app.questionnaire.routing_path import RoutingPath
 from app.views import contexts
 from app.views.contexts.summary.block import Block
 
@@ -13,15 +16,15 @@ from app.views.contexts.summary.block import Block
 class ListCollectorBlock:
     def __init__(
         self,
-        routing_path,
-        answer_store,
-        list_store,
-        progress_store,
-        metadata,
-        response_metadata,
-        schema,
-        location,
-        language,
+        routing_path: RoutingPath,
+        answer_store: AnswerStore,
+        list_store: ListStore,
+        progress_store: ProgressStore,
+        metadata: MetadataProxy,
+        response_metadata: Mapping,
+        schema: QuestionnaireSchema,
+        location: Location,
+        language: str,
     ):
         self._location = location
         self._placeholder_renderer = PlaceholderRenderer(
@@ -35,7 +38,7 @@ class ListCollectorBlock:
         self._list_store = list_store
         self._schema = schema
         self._location = location
-        self._section = self._schema.get_section(self._location.section_id)
+        self._section: dict = self._schema.get_section(self._location.section_id) or {}
         self._language = language
         self._answer_store = answer_store
         self._metadata = metadata
@@ -131,7 +134,8 @@ class ListCollectorBlock:
         }
 
     @property
-    def list_context(self):
+    def list_context(self):  # type: ignore
+        # Ignore return type due to circular import warning in tests
         return contexts.ListContext(
             self._language,
             self._schema,
@@ -144,7 +148,7 @@ class ListCollectorBlock:
 
     def _add_link(
         self, summary: dict[str, str], list_collector_block: Optional[dict[str, dict]]
-    ):
+    ) -> Optional[str]:
 
         if list_collector_block:
             return url_for(
@@ -177,7 +181,8 @@ class ListCollectorBlock:
 
             for list_id in current_list:
                 answers = []
-                for group in self._section.get("groups"):
+                groups = self._section.get("groups") or []
+                for group in groups:
                     for block in group.get("blocks"):
                         if block["type"] == "ListCollector":
                             answers.extend(
@@ -191,10 +196,11 @@ class ListCollectorBlock:
                                 ]
                             )
 
-                question = dict(list_collector_block["add_block"].get("question"))  # type: ignore
+                add_block_question = list_collector_block["add_block"].get("question")
+                question = dict(add_block_question) if add_block_question else {}
 
                 edit_block = self._schema.get_edit_block_for_list_collector(
-                    list_collector_block.get("id")
+                    str(list_collector_block.get("id"))
                 )
                 edit_block_id = edit_block.get("id") if edit_block else None
 
@@ -239,10 +245,10 @@ class ListCollectorBlock:
         for item in self._section["summary"].get("items"):
             if item["for_list"] == self._list_store[item["for_list"]].name:
 
-                return item["item_label"]
+                return str(item["item_label"])
 
     def _get_item_anchor_answer_id(self) -> Optional[str]:
         for item in self._section["summary"].get("items"):
             if item["for_list"] == self._list_store[item["for_list"]].name:
 
-                return item["item_anchor_answer_id"]
+                return str(item["item_anchor_answer_id"])
