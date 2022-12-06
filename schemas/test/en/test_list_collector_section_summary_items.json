@@ -164,7 +164,7 @@
                                             "label": "Registration number",
                                             "mandatory": true,
                                             "type": "Number",
-                                            "minimum": {
+                                            "maximum": {
                                                 "value": 999,
                                                 "exclusive": false
                                             },
