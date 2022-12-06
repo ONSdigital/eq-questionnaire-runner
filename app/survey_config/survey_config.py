@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Iterable, Mapping, MutableMapping, Optional, Union
+from typing import Iterable, Mapping, MutableMapping, Optional
 
 from flask_babel import lazy_gettext
 from flask_babel.speaklater import LazyString
