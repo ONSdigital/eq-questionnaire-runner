@@ -757,13 +757,13 @@ def test_correct_survey_title_in_context(
             SurveyType.DEFAULT,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
-            [],
+            [{"survey_id": "001"}],
         ),
         (
             SurveyType.DEFAULT,
             "en",
             QuestionnaireSchema({"survey_id": "001", "form_type": "test"}),
-            [],
+            [{"form_type": "test", "survey_id": "001"}],
         ),
         (
             SurveyType.BUSINESS,
@@ -773,8 +773,18 @@ def test_correct_survey_title_in_context(
             ),
             [{"form_type": "test", "survey_id": "001", "title": "test_title"}],
         ),
-        (SurveyType.HEALTH, "en", QuestionnaireSchema({"survey_id": "001"}), []),
-        (SurveyType.SOCIAL, "en", QuestionnaireSchema({"survey_id": "001"}), []),
+        (
+            SurveyType.HEALTH,
+            "en",
+            QuestionnaireSchema({"survey_id": "001"}),
+            [{"survey_id": "001"}],
+        ),
+        (
+            SurveyType.SOCIAL,
+            "en",
+            QuestionnaireSchema({"survey_id": "001"}),
+            [{"survey_id": "001"}],
+        ),
         (
             SurveyType.NORTHERN_IRELAND,
             "en",
