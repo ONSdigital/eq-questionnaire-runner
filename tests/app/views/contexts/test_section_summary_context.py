@@ -159,7 +159,7 @@ def test_context_for_section_list_summary(people_answer_store):
                 {
                     "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
                     "add_link_text": "Add someone to this " "household",
-                    "answer_focus": None,
+                    "item_focus": None,
                     "item_label": None,
                     "empty_list_text": "There are no householders",
                     "list": {
@@ -191,7 +191,7 @@ def test_context_for_section_list_summary(people_answer_store):
                 {
                     "add_link": "/questionnaire/visitors/add-visitor/?return_to=section-summary",
                     "add_link_text": "Add another visitor to this " "household",
-                    "answer_focus": None,
+                    "item_focus": None,
                     "item_label": None,
                     "empty_list_text": "There are no visitors",
                     "list": {
@@ -256,7 +256,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                 {
                     "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
                     "add_link_text": "Add another UK company or " "branch",
-                    "answer_focus": "#company-or-branch-name",
+                    "item_focus": "#company-or-branch-name",
                     "empty_list_text": "No UK company or branch " "added",
                     "item_label": "Name of UK company or branch",
                     "list": {
@@ -398,7 +398,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                         {
                             "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
                             "add_link_text": "Add another UK company or branch",
-                            "answer_focus": "#company-or-branch-name",
+                            "item_focus": "#company-or-branch-name",
                             "empty_list_text": "No UK company or branch added",
                             "item_label": "Name of UK company or branch",
                             "list": {
@@ -582,7 +582,7 @@ def test_context_for_driving_question_summary_empty_list():
                 {
                     "add_link": "/questionnaire/anyone-usually-live-at/?return_to=section-summary",
                     "add_link_text": "Add someone to this " "household",
-                    "answer_focus": None,
+                    "item_focus": None,
                     "item_label": None,
                     "empty_list_text": "There are no householders",
                     "list": {"editable": False, "list_items": []},
@@ -638,7 +638,7 @@ def test_context_for_driving_question_summary():
                 {
                     "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
                     "add_link_text": "Add someone to this " "household",
-                    "answer_focus": None,
+                    "item_focus": None,
                     "item_label": None,
                     "empty_list_text": "There are no householders",
                     "list": {

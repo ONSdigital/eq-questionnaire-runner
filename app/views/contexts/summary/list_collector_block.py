@@ -52,7 +52,7 @@ class ListCollectorBlock:
             primary_person_edit_block_id,
             related_answers,
             item_label,
-            answer_focus,
+            item_focus,
         ) = (None, None, None, None, None, None)
         current_list = self._list_store[summary["for_list"]]
 
@@ -111,7 +111,7 @@ class ListCollectorBlock:
         )
 
         if related_answers:
-            answer_focus = f"#{self._get_item_anchor_answer_id()}"
+            item_focus = f"#{self._get_item_anchor_answer_id()}"
 
         item_label = self._get_item_label() if related_answers else None
 
@@ -126,7 +126,7 @@ class ListCollectorBlock:
             "list_name": rendered_summary["for_list"],
             "related_answers": related_answers,
             "item_label": item_label,
-            "answer_focus": answer_focus,
+            "item_focus": item_focus,
             **list_summary_context,
         }
 

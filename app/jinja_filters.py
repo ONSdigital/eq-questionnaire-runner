@@ -601,7 +601,7 @@ def map_summary_item_config(
                 remove_link_aria_label=flask_babel.lazy_gettext("Remove {item_name}"),
                 related_answers=block.get("related_answers"),
                 item_label=block.get("item_label"),
-                answer_focus=block.get("answer_focus"),
+                item_focus=block.get("item_focus"),
             )
             rows.extend(list_collector_rows)
 
@@ -627,7 +627,7 @@ def map_list_collector_config(
     remove_link_aria_label: Optional[str] = None,
     related_answers: Optional[dict] = None,
     item_label: Optional[str] = None,
-    answer_focus: Optional[str] = None,
+    item_focus: Optional[str] = None,
 ) -> list[dict[str, list]]:
     rows = []
 
@@ -639,8 +639,8 @@ def map_list_collector_config(
         remove_link_aria_label_text = None
 
         url = (
-            f'{list_item.get("edit_link")}{answer_focus}'
-            if answer_focus
+            f'{list_item.get("edit_link")}{item_focus}'
+            if item_focus
             else list_item.get("edit_link")
         )
 
