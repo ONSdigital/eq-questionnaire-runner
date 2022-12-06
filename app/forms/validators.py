@@ -20,6 +20,7 @@ from app.forms.fields import (
     IntegerFieldWithSeparator,
 )
 from app.jinja_filters import format_number, get_formatted_currency
+from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.rules.utils import parse_datetime
 from app.utilities import safe_content
 
@@ -469,10 +470,9 @@ class MutuallyExclusiveCheck:
         is_only_checkboxes_or_radios: bool,
     ) -> None:
 
-        empty_answer_values: tuple = (None, [], "", {})
-
         total_answered = sum(
-            value not in empty_answer_values for value in answer_values
+            value not in QuestionnaireStoreUpdater.EMPTY_ANSWER_VALUES
+            for value in answer_values
         )
 
         if total_answered > 1:
