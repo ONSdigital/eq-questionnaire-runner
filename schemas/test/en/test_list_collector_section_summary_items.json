@@ -163,7 +163,12 @@
                                             "id": "registration-number",
                                             "label": "Registration number",
                                             "mandatory": true,
-                                            "type": "Number"
+                                            "type": "Number",
+                                            "minimum": {
+                                                "value": 999,
+                                                "exclusive": false
+                                            },
+                                            "decimal_places": 0
                                         },
                                         {
                                             "type": "Radio",
