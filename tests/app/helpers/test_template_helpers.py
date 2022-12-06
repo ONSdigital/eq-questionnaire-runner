@@ -757,13 +757,13 @@ def test_correct_survey_title_in_context(
             SurveyType.DEFAULT,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
-            [{"survey_id": "001"}],
+            [],
         ),
         (
             SurveyType.DEFAULT,
             "en",
             QuestionnaireSchema({"survey_id": "001", "form_type": "test"}),
-            [{"form_type": "test", "survey_id": "001"}],
+            [],
         ),
         (
             SurveyType.BUSINESS,
