@@ -4,17 +4,20 @@ import AnyCompaniesOrBranchesAddPage from "../generated_pages/list_collector_sec
 import AnyCompaniesOrBranchesRemovePage from "../generated_pages/list_collector_section_summary_items/any-other-companies-or-branches-remove.page.js";
 import SectionSummaryPage from "../generated_pages/list_collector_section_summary_items/section-companies-summary.page";
 import EstimatePage from "../generated_pages/list_collector_section_summary_items/estimate-checkbox.page";
-import SummaryPage from "../generated_pages/mutually_exclusive_multiple/mutually-exclusive-date-section-summary.page";
 
 describe("List Collector Section Summary Items", () => {
   describe("Given I launch the test list collector section summary items survey", () => {
     beforeEach(() => {
       browser.openQuestionnaire("test_list_collector_section_summary_items.json");
     });
-    it("When I answer yes to the driving question, Then I should be able to add my own item and the relevant data about it and get to the list collector question page.", () => {
+    it("When I get to the section summary, Then the driving question should be visible.", () => {
       drivingQuestionYes();
       addFirstCompany();
-      expect(browser.getUrl()).to.contain(AnyCompaniesOrBranchesPage.url());
+      anyMoreCompaniesNo();
+      $(EstimatePage.submit()).click();
+      expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
+      expect($(SectionSummaryPage.anyCompaniesOrBranchesQuestion()).isExisting()).to.be.true;
+      expect($(SectionSummaryPage.anyCompaniesOrBranchesAnswer()).getText()).to.contain("Yes");
     });
     it("When I add my own item and relevant data, Then after submitting I should be asked if I have more items to add.", () => {
       drivingQuestionYes();
@@ -38,7 +41,7 @@ describe("List Collector Section Summary Items", () => {
       addFirstCompany();
       anyMoreCompaniesNo();
       $(EstimatePage.submit()).click();
-      removeFirstCompany()
+      removeFirstCompany();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.false;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.false;
