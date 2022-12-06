@@ -26,7 +26,9 @@ class Group:
         self.id = group_schema["id"]
         self.title = group_schema.get("title")
         self.location = location
-        self.blocks, self.links = self._build_blocks_and_links(
+        self.empty_list_text = None
+        self.links: dict = {}
+        self.blocks = self._build_blocks_and_links(
             group_schema=group_schema,
             routing_path=routing_path,
             answer_store=answer_store,
@@ -67,8 +69,6 @@ class Group:
         return_to_block_id,
     ):
         blocks = []
-
-        links = {}
 
         for block in group_schema["blocks"]:
             if block["id"] not in routing_path:
@@ -116,16 +116,15 @@ class Group:
                             list_collector_block.list_summary_element(summary_item)
                         )
                         blocks.extend([list_summary_element])
-                        links["add_link"] = SummaryLink(
+                        self.links["add_link"] = SummaryLink(
                             text=list_summary_element["add_link_text"],
                             url=list_summary_element["add_link"],
                             attributes={"data-qa": "add-item-link"},
                         )
-                        links["empty_list_text"] = list_summary_element[
-                            "empty_list_text"
-                        ]
 
-        return blocks, links
+                        self.empty_list_text = list_summary_element["empty_list_text"]
+
+        return blocks
 
     @staticmethod
     def get_summary_item_for_list_for_section(section, block):
@@ -145,6 +144,7 @@ class Group:
                 "title": self.title,
                 "blocks": self.blocks,
                 "links": self.links,
+                "empty_list_text": self.empty_list_text,
             },
             self.location.list_item_id,
         )
