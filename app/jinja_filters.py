@@ -601,7 +601,7 @@ def map_summary_item_config(
                 remove_link_aria_label=flask_babel.lazy_gettext("Remove {item_name}"),
                 related_answers=block.get("related_answers"),
                 item_label=block.get("item_label"),
-                item_focus=block.get("item_focus"),
+                item_anchor=block.get("item_anchor"),
             )
             rows.extend(list_collector_rows)
 
@@ -627,7 +627,7 @@ def map_list_collector_config(
     remove_link_aria_label: Optional[str] = None,
     related_answers: Optional[dict] = None,
     item_label: Optional[str] = None,
-    item_focus: Optional[str] = None,
+    item_anchor: Optional[str] = None,
 ) -> list[dict[str, list]]:
     rows = []
 
@@ -638,25 +638,20 @@ def map_list_collector_config(
         edit_link_aria_label_text = None
         remove_link_aria_label_text = None
 
-        url = (
-            f'{list_item.get("edit_link")}{item_focus}'
-            if item_focus
-            else list_item.get("edit_link")
-        )
-
-        edit_link = {
-            "text": edit_link_text,
-            "ariaLabel": edit_link_aria_label_text,
-            "url": url,
-            "attributes": {"data-qa": f"list-item-change-{index}-link"},
-        }
-
-        row_title_attributes = {
-            "data-qa": f"list-item-{index}-label",
-            "data-list-item-id": list_item.get("list_item_id"),
-        }
-
         if edit_link_text:
+            url = (
+                f'{list_item.get("edit_link")}{item_anchor}'
+                if item_anchor
+                else list_item.get("edit_link")
+            )
+
+            edit_link = {
+                "text": edit_link_text,
+                "ariaLabel": edit_link_aria_label_text,
+                "url": url,
+                "attributes": {"data-qa": f"list-item-change-{index}-link"},
+            }
+
             if edit_link_aria_label:
                 edit_link_aria_label_text = edit_link_aria_label.format(
                     item_name=item_name
@@ -684,7 +679,10 @@ def map_list_collector_config(
             "iconType": icon,
             "actions": actions,
             "id": list_item.get("list_item_id"),
-            "rowTitleAttributes": row_title_attributes,
+            "rowTitleAttributes": {
+                "data-qa": f"list-item-{index}-label",
+                "data-list-item-id": list_item.get("list_item_id"),
+            },
         }
 
         if item_label:
