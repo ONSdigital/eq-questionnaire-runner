@@ -128,17 +128,17 @@ class SectionSummaryContext(Context):
             **summary_elements,
             "groups": [
                 Group(
-                    group,
-                    self.routing_path,
-                    self._answer_store,
-                    self._list_store,
-                    self._metadata,
-                    self._response_metadata,
-                    self._schema,
-                    self.current_location,
-                    self._language,
-                    self._progress_store,
-                    return_to,
+                    group_schema=group,
+                    routing_path=self.routing_path,
+                    answer_store=self._answer_store,
+                    list_store=self._list_store,
+                    metadata=self._metadata,
+                    response_metadata=self._response_metadata,
+                    schema=self._schema,
+                    location=self.current_location,
+                    language=self._language,
+                    progress_store=self._progress_store,
+                    return_to=return_to,
                     return_to_block_id=None,
                 ).serialize()
                 for group in refactored_groups

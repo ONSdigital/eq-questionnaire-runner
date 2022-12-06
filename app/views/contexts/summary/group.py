@@ -9,6 +9,7 @@ from app.views.contexts.summary.list_collector_block import ListCollectorBlock
 class Group:
     def __init__(
         self,
+        *,
         group_schema,
         routing_path,
         answer_store,
