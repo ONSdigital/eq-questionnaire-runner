@@ -114,7 +114,7 @@ class ListCollectorBlock:
         )
 
         if related_answers:
-            item_anchor = f"#{self._get_item_anchor_answer_id()}"
+            item_anchor = self._get_item_anchor_answer_id() or None
 
         item_label = self._get_item_label() if related_answers else None
 
@@ -243,12 +243,17 @@ class ListCollectorBlock:
 
     def _get_item_label(self) -> Optional[str]:
         for item in self._section["summary"].get("items"):
-            if item["for_list"] == self._list_store[item["for_list"]].name:
+            if (
+                item["for_list"] == self._list_store[item["for_list"]].name
+                and item["item_label"]
+            ):
 
                 return str(item["item_label"])
 
     def _get_item_anchor_answer_id(self) -> Optional[str]:
         for item in self._section["summary"].get("items"):
-            if item["for_list"] == self._list_store[item["for_list"]].name:
-
-                return str(item["item_anchor_answer_id"])
+            if (
+                item["for_list"] == self._list_store[item["for_list"]].name
+                and item["item_anchor_answer_id"]
+            ):
+                return f"#{str(item['item_anchor_answer_id'])}"

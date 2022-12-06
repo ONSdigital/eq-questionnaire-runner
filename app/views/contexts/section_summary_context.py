@@ -97,18 +97,7 @@ class SectionSummaryContext(Context):
 
         show_non_item_answers = summary.get("show_non_item_answers", False)
 
-        if summary.get("items"):
-            if not show_non_item_answers:
-                summary_elements = {
-                    "custom_summary": list(
-                        self._custom_summary_elements(
-                            self.section["summary"]["items"],
-                        )
-                    )
-                }
-
-                return collapsible | summary_elements
-
+        if summary.get("items") and not show_non_item_answers:
             summary_elements = {
                 "custom_summary": list(
                     self._custom_summary_elements(
@@ -117,15 +106,13 @@ class SectionSummaryContext(Context):
                 )
             }
 
-        else:
-            summary_elements = {}
+            return collapsible | summary_elements
 
         refactored_groups = self._get_refactored_groups(self.section["groups"])
 
         groups = {
             "show_non_item_answers": show_non_item_answers,
             **collapsible,
-            **summary_elements,
             "groups": [
                 Group(
                     group_schema=group,
