@@ -11,21 +11,13 @@ describe("List Collector Section Summary Items", () => {
       browser.openQuestionnaire("test_list_collector_section_summary_items.json");
     });
     it("When I answer yes to the driving question, Then I should be able to add my own item and the relevant data about it and get to the list collector question page.", () => {
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
-      $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Company A");
-      $(AnyCompaniesOrBranchesAddPage.registrationNumber()).setValue("0123456789");
-      $(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioYes()).click();
-      $(AnyCompaniesOrBranchesAddPage.submit()).click();
+      drivingQuestionYes();
+      addCompanyA();
       expect(browser.getUrl()).to.contain(AnyCompaniesOrBranchesPage.url());
     });
     it("When I add my own item and relevant data, Then after submitting I should be asked if I have more items to add.", () => {
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
-      $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Company A");
-      $(AnyCompaniesOrBranchesAddPage.registrationNumber()).setValue("0123456789");
-      $(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioYes()).click();
-      $(AnyCompaniesOrBranchesAddPage.submit()).click();
+      drivingQuestionYes();
+      addCompanyA();
       expect($(AnyCompaniesOrBranchesPage.yes()).isExisting()).to.be.true;
       expect($(AnyCompaniesOrBranchesPage.no()).isExisting()).to.be.true;
       expect($(AnyCompaniesOrBranchesPage.heading()).getText()).to.contain(
@@ -33,26 +25,16 @@ describe("List Collector Section Summary Items", () => {
       );
     });
     it("When I add my own item and relevant data, Then after I answer no on additional items page I should get to the section summary page.", () => {
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
-      $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Company A");
-      $(AnyCompaniesOrBranchesAddPage.registrationNumber()).setValue("0123456789");
-      $(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioYes()).click();
-      $(AnyCompaniesOrBranchesAddPage.submit()).click();
-      $(AnyCompaniesOrBranchesPage.no()).click();
-      $(AnyCompaniesOrBranchesPage.submit()).click();
+      drivingQuestionYes();
+      addCompanyA();
+      anyMoreCompaniesNo();
       $(EstimatePage.submit()).click();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
     });
     it("When I add my own item and relevant data, Then after I answer yes on additional items page I should be able to choose an item from the items list and add relevant data about it.", () => {
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
-      $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Company A");
-      $(AnyCompaniesOrBranchesAddPage.registrationNumber()).setValue("0123456789");
-      $(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioYes()).click();
-      $(AnyCompaniesOrBranchesAddPage.submit()).click();
-      $(AnyCompaniesOrBranchesPage.yes()).click();
-      $(AnyCompaniesOrBranchesPage.submit()).click();
+      drivingQuestionYes();
+      addCompanyA();
+      anyMoreCompaniesYes();
       expect($(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).isExisting()).to.be.true;
       expect($(AnyCompaniesOrBranchesAddPage.registrationNumber()).isExisting()).to.be.true;
       expect($(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioYes()).isExisting()).to.be.true;
@@ -61,27 +43,17 @@ describe("List Collector Section Summary Items", () => {
       );
     });
     it("When I add my own item and relevant data, Then I should be able to edit that item from the section summary page.", () => {
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
-      $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Company A");
-      $(AnyCompaniesOrBranchesAddPage.registrationNumber()).setValue("0123456789");
-      $(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioYes()).click();
-      $(AnyCompaniesOrBranchesAddPage.submit()).click();
-      $(AnyCompaniesOrBranchesPage.no()).click();
-      $(AnyCompaniesOrBranchesPage.submit()).click();
+      drivingQuestionYes();
+      addCompanyA();
+      anyMoreCompaniesNo();
       $(EstimatePage.submit()).click();
       $(SectionSummaryPage.companiesListEditLink(1)).click();
       expect(browser.getUrl()).to.contain("edit-company/?return_to=section-summary");
     });
     it("When I add my own item and relevant data, Then I should be able to remove that item from the section summary page.", () => {
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
-      $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Company A");
-      $(AnyCompaniesOrBranchesAddPage.registrationNumber()).setValue("0123456789");
-      $(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioYes()).click();
-      $(AnyCompaniesOrBranchesAddPage.submit()).click();
-      $(AnyCompaniesOrBranchesPage.no()).click();
-      $(AnyCompaniesOrBranchesPage.submit()).click();
+      drivingQuestionYes();
+      addCompanyA();
+      anyMoreCompaniesNo();
       $(EstimatePage.submit()).click();
       $(SectionSummaryPage.companiesListRemoveLink(1)).click();
       expect(browser.getUrl()).to.contain("remove-company/?return_to=section-summary");
@@ -92,48 +64,63 @@ describe("List Collector Section Summary Items", () => {
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.false;
     });
     it("When I decide not to add an item and relevant data and I change my answer to yes, Then I should be able to add the item.", () => {
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.no()).click();
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
+      drivingQuestionNo();
       $(EstimatePage.submit()).click();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.false;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.false;
       expect($(SectionSummaryPage.companiesListAddLink()).isExisting()).to.be.false;
       $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
-      $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Company A");
-      $(AnyCompaniesOrBranchesAddPage.registrationNumber()).setValue("0123456789");
-      $(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioYes()).click();
-      $(AnyCompaniesOrBranchesAddPage.submit()).click();
-      $(AnyCompaniesOrBranchesPage.no()).click();
-      $(AnyCompaniesOrBranchesPage.submit()).click();
+      drivingQuestionYes();
+      addCompanyA();
+      anyMoreCompaniesNo();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.true;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.true;
+      expect($(SectionSummaryPage.companiesListAddLink()).isExisting()).to.be.true;
     });
     it("When I decide to add an item and relevant data and I decide to remove it, Then I should be able to see the item again after I decide to add more items.", () => {
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
-      $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Company A");
-      $(AnyCompaniesOrBranchesAddPage.registrationNumber()).setValue("0123456789");
-      $(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioYes()).click();
-      $(AnyCompaniesOrBranchesAddPage.submit()).click();
-      $(AnyCompaniesOrBranchesPage.no()).click();
-      $(AnyCompaniesOrBranchesPage.submit()).click();
+      drivingQuestionYes();
+      addCompanyA();
+      anyMoreCompaniesNo();
       $(EstimatePage.submit()).click();
       $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.no()).click();
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
+      drivingQuestionNo();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.false;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.false;
       $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
-      $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
+      drivingQuestionYes();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.true;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.true;
     });
   });
 });
+
+function drivingQuestionYes() {
+  $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
+  $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
+}
+
+function drivingQuestionNo() {
+  $(AnyCompaniesOrBranchesDrivingQuestionPage.no()).click();
+  $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
+}
+
+function addCompanyA() {
+  $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Company A");
+  $(AnyCompaniesOrBranchesAddPage.registrationNumber()).setValue("0123456789");
+  $(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioYes()).click();
+  $(AnyCompaniesOrBranchesAddPage.submit()).click();
+}
+
+function anyMoreCompaniesYes() {
+  $(AnyCompaniesOrBranchesPage.yes()).click();
+  $(AnyCompaniesOrBranchesPage.submit()).click();
+}
+
+function anyMoreCompaniesNo() {
+  $(AnyCompaniesOrBranchesPage.no()).click();
+  $(AnyCompaniesOrBranchesPage.submit()).click();
+}
