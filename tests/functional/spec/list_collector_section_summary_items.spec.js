@@ -12,7 +12,7 @@ describe("List Collector Section Summary Items", () => {
     });
     it("When I get to the section summary, Then the driving question should be visible.", () => {
       drivingQuestionYes();
-      addFirstCompany();
+      addCompany("Company A", "0123456789", true);
       anyMoreCompaniesNo();
       $(EstimatePage.submit()).click();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
@@ -21,17 +21,20 @@ describe("List Collector Section Summary Items", () => {
     });
     it("When I add my own item, Then the item should be visible on the section summary and have correct values", () => {
       drivingQuestionYes();
-      addFirstCompany();
+      addCompany("Company A", "0123456789", true);
       anyMoreCompaniesNo();
       $(EstimatePage.submit()).click();
       expect($(SectionSummaryPage.companiesListLabel(1)).getText()).to.contain("Name of UK company or branch");
       expect($(companiesListRowItem(1)).getText()).to.contain("Company A");
       expect($(companiesListRowItem(2)).getText()).to.contain("123,456,789");
       expect($(companiesListRowItem(3)).getText()).to.contain("Yes");
+      expect($(companiesListRowItemAnchor(1)).getHTML()).to.contain("return_to=section-summary#company-or-branch-name");
+      expect($(companiesListRowItemAnchor(2)).getHTML()).to.contain("return_to_answer_id=registration-number#registration-number");
+      expect($(companiesListRowItemAnchor(3)).getHTML()).to.contain("return_to_answer_id=authorised-insurer-radio#authorised-insurer-radio");
     });
     it("When I add my own item, Then I should be able to remove that item from the section summary page.", () => {
       drivingQuestionYes();
-      addFirstCompany();
+      addCompany("Company A", "0123456789", true);
       anyMoreCompaniesNo();
       $(EstimatePage.submit()).click();
       $(SectionSummaryPage.companiesListRemoveLink(1)).click();
@@ -39,7 +42,7 @@ describe("List Collector Section Summary Items", () => {
     });
     it("When I add my own item and make it not on the path, Then the list of answers should not be visible on the section summary.", () => {
       drivingQuestionYes();
-      addFirstCompany();
+      addCompany("Company A", "0123456789", true);
       anyMoreCompaniesNo();
       $(EstimatePage.submit()).click();
       removeFirstCompany();
@@ -49,7 +52,7 @@ describe("List Collector Section Summary Items", () => {
     });
     it("When I remove my own item but list collector is still on the path, Then the placeholder text should be visible on the section summary.", () => {
       drivingQuestionYes();
-      addFirstCompany();
+      addCompany("Company A", "0123456789", true);
       anyMoreCompaniesNo();
       $(EstimatePage.submit()).click();
       removeFirstCompany();
@@ -58,14 +61,14 @@ describe("List Collector Section Summary Items", () => {
     });
     it("When I add my own item and relevant data, Then after I answer no on additional items page I should get to the section summary page.", () => {
       drivingQuestionYes();
-      addFirstCompany();
+      addCompany("Company A", "0123456789", true);
       anyMoreCompaniesNo();
       $(EstimatePage.submit()).click();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
     });
     it("When I add my own item and relevant data, Then after I answer yes on additional items page I should be able to choose an item from the items list and add relevant data about it.", () => {
       drivingQuestionYes();
-      addFirstCompany();
+      addCompany("Company A", "0123456789", true);
       anyMoreCompaniesYes();
       expect($(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).isExisting()).to.be.true;
       expect($(AnyCompaniesOrBranchesAddPage.registrationNumber()).isExisting()).to.be.true;
@@ -76,7 +79,7 @@ describe("List Collector Section Summary Items", () => {
     });
     it("When I add my own item and relevant data, Then I should be able to edit that item from the section summary page.", () => {
       drivingQuestionYes();
-      addFirstCompany();
+      addCompany("Company A", "0123456789", true);
       anyMoreCompaniesNo();
       $(EstimatePage.submit()).click();
       $(SectionSummaryPage.companiesListEditLink(1)).click();
@@ -91,7 +94,7 @@ describe("List Collector Section Summary Items", () => {
       expect($(SectionSummaryPage.companiesListAddLink()).isExisting()).to.be.false;
       $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
       drivingQuestionYes();
-      addFirstCompany();
+      addCompany("Company A", "0123456789", true);
       anyMoreCompaniesNo();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.true;
@@ -100,7 +103,7 @@ describe("List Collector Section Summary Items", () => {
     });
     it("When I decide to add an item and relevant data and I decide to remove it, Then I should be able to see the item again after I decide to add more items.", () => {
       drivingQuestionYes();
-      addFirstCompany();
+      addCompany("Company A", "0123456789", true);
       anyMoreCompaniesNo();
       $(EstimatePage.submit()).click();
       $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
@@ -127,10 +130,14 @@ function drivingQuestionNo() {
   $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
 }
 
-function addFirstCompany() {
-  $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Company A");
-  $(AnyCompaniesOrBranchesAddPage.registrationNumber()).setValue("0123456789");
-  $(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioYes()).click();
+function addCompany(name, number, authorised) {
+  $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue(name);
+  $(AnyCompaniesOrBranchesAddPage.registrationNumber()).setValue(number);
+  if (authorised) {
+    $(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioYes()).click();
+  } else {
+    $(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioNo()).click();
+  }
   $(AnyCompaniesOrBranchesAddPage.submit()).click();
 }
 
@@ -152,4 +159,8 @@ function removeFirstCompany() {
 
 function companiesListRowItem(index) {
   return `#group-companies-1 .ons-summary__items .ons-summary__item .ons-summary__row:nth-of-type(${index})`;
+}
+
+function companiesListRowItemAnchor(index) {
+  return `#group-companies-1 .ons-summary__items .ons-summary__item .ons-summary__row:nth-of-type(${index}) a`;
 }
