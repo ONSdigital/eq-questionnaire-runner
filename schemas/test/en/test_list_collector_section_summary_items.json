@@ -291,7 +291,7 @@
                                                 "value": "No"
                                             }
                                         ],
-                                        "type": "Checkbox"
+                                        "type": "Radio"
                                     }
                                 ],
                                 "id": "confirmation-checkbox-question",
