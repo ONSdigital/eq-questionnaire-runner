@@ -1,7 +1,7 @@
 from typing import Mapping, Optional
 
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
-from app.survey_config.link import SummaryLink
+from app.survey_config.link import Link
 from app.views.contexts.summary.block import Block
 from app.views.contexts.summary.list_collector_block import ListCollectorBlock
 
@@ -27,7 +27,7 @@ class Group:
         self.title = group_schema.get("title")
         self.location = location
         self.placeholder_text = None
-        self.links: Mapping[str, SummaryLink] = {}
+        self.links: Mapping[str, Link] = {}
         self.blocks = self._build_blocks_and_links(
             group_schema=group_schema,
             routing_path=routing_path,
@@ -116,7 +116,8 @@ class Group:
                             list_collector_block.list_summary_element(summary_item)
                         )
                         blocks.extend([list_summary_element])
-                        self.links["add_link"] = SummaryLink(
+                        self.links["add_link"] = Link(
+                            target="_self",
                             text=list_summary_element["add_link_text"],
                             url=list_summary_element["add_link"],
                             attributes={"data-qa": "add-item-link"},
