@@ -9,6 +9,10 @@ class Link:
     text: LazyString
     url: str
     target: Optional[str] = "_blank"
+    attributes: Optional[dict] = field(default_factory=dict)
+
+    def as_dict(self):
+        return {k: v for k, v in self.__dict__.items() if v}
 
 
 @dataclass
@@ -16,11 +20,3 @@ class HeaderLink:
     title: LazyString
     url: str
     id: str
-
-
-@dataclass
-class SummaryLink:
-    text: LazyString
-    url: str
-    attributes: Optional[dict] = field(default_factory=dict)
-    target: Optional[str] = "_self"
