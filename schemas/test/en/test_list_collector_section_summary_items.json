@@ -99,7 +99,7 @@
                             "routing_rules": [
                                 {
                                     "goto": {
-                                        "block": "estimate-checkbox",
+                                        "block": "confirmation-checkbox",
                                         "when": [
                                             {
                                                 "id": "any-companies-or-branches-answer",
@@ -275,23 +275,27 @@
                         },
                         {
                             "type": "Question",
-                            "id": "estimate-checkbox",
+                            "id": "confirmation-checkbox",
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "estimate-checkbox-answer",
+                                        "id": "confirmation-checkbox-answer",
                                         "mandatory": false,
                                         "options": [
                                             {
-                                                "label": "Estimate",
-                                                "value": "Estimate"
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
                                             }
                                         ],
                                         "type": "Checkbox"
                                     }
                                 ],
-                                "id": "estimate-checkbox-question",
-                                "title": "Are all the numbers an estimate?",
+                                "id": "confirmation-checkbox-question",
+                                "title": "Are all the companies or branches based in UK?",
                                 "type": "General"
                             }
                         }

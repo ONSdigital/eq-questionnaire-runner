@@ -3,7 +3,7 @@ import AnyCompaniesOrBranchesPage from "../generated_pages/list_collector_sectio
 import AnyCompaniesOrBranchesAddPage from "../generated_pages/list_collector_section_summary_items/any-other-companies-or-branches-add.page.js";
 import AnyCompaniesOrBranchesRemovePage from "../generated_pages/list_collector_section_summary_items/any-other-companies-or-branches-remove.page.js";
 import SectionSummaryPage from "../generated_pages/list_collector_section_summary_items/section-companies-summary.page";
-import EstimatePage from "../generated_pages/list_collector_section_summary_items/estimate-checkbox.page";
+import UkBasedPage from "../generated_pages/list_collector_section_summary_items/confirmation-checkbox.page";
 
 describe("List Collector Section Summary Items", () => {
   describe("Given I launch the test list collector section summary items survey", () => {
@@ -14,7 +14,7 @@ describe("List Collector Section Summary Items", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
-      $(EstimatePage.submit()).click();
+      answerUkBasedQuestion();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.anyCompaniesOrBranchesQuestion()).isExisting()).to.be.true;
       expect($(SectionSummaryPage.anyCompaniesOrBranchesAnswer()).getText()).to.contain("Yes");
@@ -23,7 +23,7 @@ describe("List Collector Section Summary Items", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
-      $(EstimatePage.submit()).click();
+      answerUkBasedQuestion();
       expect($(SectionSummaryPage.companiesListLabel(1)).getText()).to.contain("Name of UK company or branch");
       expect($(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
       expect($(companiesListRowItem(1, 2)).getText()).to.contain("123");
@@ -40,7 +40,7 @@ describe("List Collector Section Summary Items", () => {
       anyMoreCompaniesYes();
       addCompany("Company C", "789", true);
       anyMoreCompaniesNo();
-      $(EstimatePage.submit()).click();
+      answerUkBasedQuestion();
       expect($(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
       expect($(companiesListRowItem(1, 2)).getText()).to.contain("123");
       expect($(companiesListRowItem(1, 3)).getText()).to.contain("Yes");
@@ -55,7 +55,7 @@ describe("List Collector Section Summary Items", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
-      $(EstimatePage.submit()).click();
+      answerUkBasedQuestion();
       $(SectionSummaryPage.companiesListRemoveLink(1)).click();
       expect(browser.getUrl()).to.contain("remove-company/?return_to=section-summary");
     });
@@ -63,7 +63,7 @@ describe("List Collector Section Summary Items", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
-      $(EstimatePage.submit()).click();
+      answerUkBasedQuestion();
       removeFirstCompany();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.false;
@@ -73,7 +73,7 @@ describe("List Collector Section Summary Items", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
-      $(EstimatePage.submit()).click();
+      answerUkBasedQuestion();
       removeFirstCompany();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($("body").getText()).to.contain("No UK company or branch added");
@@ -82,7 +82,7 @@ describe("List Collector Section Summary Items", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
-      $(EstimatePage.submit()).click();
+      answerUkBasedQuestion();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
     });
     it("When I add my own item and relevant data, Then after I answer yes on additional items page I should be able to choose an item from the items list and add relevant data about it.", () => {
@@ -100,13 +100,13 @@ describe("List Collector Section Summary Items", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
-      $(EstimatePage.submit()).click();
+      answerUkBasedQuestion();
       $(SectionSummaryPage.companiesListEditLink(1)).click();
       expect(browser.getUrl()).to.contain("edit-company/?return_to=section-summary");
     });
     it("When I decide not to add an item and relevant data and I change my answer to yes, Then I should be able to add the item.", () => {
       drivingQuestionNo();
-      $(EstimatePage.submit()).click();
+      answerUkBasedQuestion();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.false;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.false;
@@ -124,7 +124,7 @@ describe("List Collector Section Summary Items", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
-      $(EstimatePage.submit()).click();
+      answerUkBasedQuestion();
       $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
       drivingQuestionNo();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
@@ -174,6 +174,11 @@ function removeFirstCompany() {
   $(SectionSummaryPage.companiesListRemoveLink(1)).click();
   $(AnyCompaniesOrBranchesRemovePage.yes()).click();
   $(AnyCompaniesOrBranchesRemovePage.submit()).click();
+}
+
+function answerUkBasedQuestion() {
+  $(UkBasedPage.yes()).click();
+  $(UkBasedPage.submit()).click();
 }
 
 function companiesListRowItem(row, index) {
