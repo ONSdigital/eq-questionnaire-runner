@@ -195,7 +195,7 @@
                                 "question": {
                                     "id": "edit-question-companies",
                                     "type": "General",
-                                    "title": "What is the name of the person?",
+                                    "title": "What is the name of the company?",
                                     "answers": [
                                         {
                                             "id": "company-or-branch-name",

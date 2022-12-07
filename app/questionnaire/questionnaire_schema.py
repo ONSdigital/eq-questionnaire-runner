@@ -8,7 +8,6 @@ from flask_babel import force_locale
 from werkzeug.datastructures import ImmutableDict
 
 from app.data_models.answer import Answer
-from app.data_models.list_store import ListModel
 from app.forms import error_messages
 from app.questionnaire.rules.operator import OPERATION_MAPPING
 from app.utilities.make_immutable import make_immutable
@@ -903,15 +902,19 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         return rules_section_dependencies
 
-    def get_related_answers_for_section(
-        self, section_id: str, current_list: ListModel
-    ) -> Optional[list[str]]:
+    def get_summary_item_for_list_for_section(
+        self, *, section_id: str, list_name: str
+    ) -> Optional[ImmutableDict]:
         if summary := self.get_summary_for_section(section_id):
             if summary_items := summary.get("items"):
                 for item in summary_items:
-                    if item.get("for_list") == current_list.name:
-                        if related_answers := item.get("related_answers"):
-                            return [
-                                related_answer.get("identifier")
-                                for related_answer in related_answers
-                            ]
+                    if item.get("for_list") == list_name:
+                        return item  # type: ignore
+
+    def get_related_answers_for_list_for_section(
+        self, *, section_id: str, list_name: str
+    ) -> Optional[tuple[ImmutableDict]]:
+        if item := self.get_summary_item_for_list_for_section(
+            section_id=section_id, list_name=list_name
+        ):
+            return item.get("related_answers")

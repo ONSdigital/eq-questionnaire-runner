@@ -1,7 +1,8 @@
-import itertools
+from collections import defaultdict
 from typing import Any, Mapping, Optional
 
 from flask import url_for
+from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerStore, ProgressStore
 from app.data_models.list_store import ListModel, ListStore
@@ -108,9 +109,7 @@ class ListCollectorBlock:
         )
 
         related_answers = (
-            self._get_related_answers(current_list, list_collector_block)
-            if current_list
-            else None
+            self._get_related_answers(current_list) if current_list else None
         )
 
         if related_answers:
@@ -169,76 +168,43 @@ class ListCollectorBlock:
             )
 
     def _get_related_answers(
-        self, current_list: ListModel, list_collector_block: dict[str, dict]
-    ) -> dict[str, list[Block]]:
+        self, current_list: ListModel
+    ) -> Optional[dict[str, list[Block]]]:
         section = self._section["id"]
 
-        if related_answers := self._schema.get_related_answers_for_section(
-            section, current_list
-        ):
-            related_answers_dict = {}
+        related_answers = self._schema.get_related_answers_for_list_for_section(
+            section_id=section, list_name=current_list.name
+        )
+        if not related_answers:
+            return None
 
-            for list_id in current_list:
-                answers = []
-                groups = self._section.get("groups") or []
-                for group in groups:
-                    for block in group.get("blocks"):
-                        if block["type"] == "ListCollector":
-                            answers.extend(
-                                [
-                                    answer
-                                    for answer_id, answer in itertools.product(
-                                        related_answers,
-                                        block["add_block"]["question"]["answers"],
-                                    )
-                                    if answer["id"] == answer_id
-                                ]
-                            )
+        related_answers_dict = {}
 
-                add_block_question = list_collector_block["add_block"].get("question")
-                question = dict(add_block_question) if add_block_question else {}
+        blocks = self.get_blocks_for_related_answers(related_answers)
 
-                edit_block = self._schema.get_edit_block_for_list_collector(
-                    str(list_collector_block.get("id"))
-                )
-                edit_block_id = edit_block.get("id") if edit_block else None
+        for list_id in current_list:
+            serialized_blocks = [
+                Block(
+                    block,
+                    answer_store=self._answer_store,
+                    list_store=self._list_store,
+                    metadata=self._metadata,
+                    response_metadata=self._response_metadata,
+                    schema=self._schema,
+                    location=Location(
+                        list_name=current_list.name,
+                        list_item_id=list_id,
+                        section_id=self._section["id"],
+                    ),
+                    return_to="section-summary",
+                    return_to_block_id=None,
+                ).serialize()
+                for block in blocks
+            ]
 
-                del question["answers"]
+            related_answers_dict[list_id] = serialized_blocks
 
-                blocks = []
-                for answer in answers:
-                    block_schema: dict = {
-                        "id": edit_block_id,
-                        "title": None,
-                        "number": None,
-                        "type": answer["type"],
-                        "for_list": current_list.name,
-                        "question": {},
-                    }
-                    question["title"] = answer.get("label")
-                    block_schema["question"] = question
-                    question["answers"] = [answer]
-                    block = Block(
-                        block_schema,
-                        answer_store=self._answer_store,
-                        list_store=self._list_store,
-                        metadata=self._metadata,
-                        response_metadata=self._response_metadata,
-                        schema=self._schema,
-                        location=Location(
-                            list_name=current_list.name,
-                            list_item_id=list_id,
-                            section_id=self._section["id"],
-                        ),
-                        return_to="section-summary",
-                        return_to_block_id=None,
-                    ).serialize()
-
-                    blocks.append(block)
-
-                related_answers_dict[list_id] = blocks
-
-            return related_answers_dict
+        return related_answers_dict
 
     def _get_item_label(self, list_name: str) -> Optional[str]:
         for item in self._section["summary"].get("items"):
@@ -250,3 +216,39 @@ class ListCollectorBlock:
         for item in self._section["summary"].get("items"):
             if item["for_list"] == list_name and item["item_anchor_answer_id"]:
                 return f"#{str(item['item_anchor_answer_id'])}"
+
+    def get_blocks_for_related_answers(
+        self, related_answers: tuple[ImmutableDict]
+    ) -> list[Optional[ImmutableDict]]:
+        blocks = []
+        answers_by_block = defaultdict(list)
+
+        for answer in related_answers:
+            answer_id = answer["identifier"]
+            block = self._schema.get_block_for_answer_id(answer_id)
+
+            block_to_keep = (
+                block["edit_block"]  # type: ignore
+                # block is not optional at this point
+                if block["type"] == "ListCollector"  # type: ignore
+                else block
+            )
+            answers_by_block[block_to_keep].append(answer_id)
+
+        for immutable_block, answer_ids in answers_by_block.items():
+            block = self._schema.get_mutable_deepcopy(immutable_block)
+
+            # We need to filter out answers for both variants and normal questions
+            for question in block.get("question_variants", [block.get("question")]):  # type: ignore
+                # block is not optional at this point
+                answers = [
+                    answer
+                    for answer in question["answers"]
+                    if answer["id"] in answer_ids
+                ]
+                # Mutate the answers to only keep the related answers
+                question["answers"] = answers
+
+            blocks.append(block)
+
+        return blocks
