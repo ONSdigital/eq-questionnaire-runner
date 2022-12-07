@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 import pytest
 from wtforms.validators import ValidationError
 
@@ -72,6 +74,8 @@ def test_mutually_exclusive_mandatory_answers_raise_validation_error(
         (["British, Irish", None], True),
         ([None, "I prefer not to say"], True),
         (["", "I prefer not to say"], True),
+        ([0, []], True),
+        ([Decimal(0), []], True),
     ),
 )
 def test_mutually_exclusive_mandatory_answers(answer_permutations, is_mandatory):
