@@ -503,6 +503,32 @@
                                     ]
                                 }
                             }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "confirmation-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "confirmation-checkbox-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "confirmation-checkbox-question",
+                                "title": "Are all companies or branches based in UK?",
+                                "type": "General"
+                            }
                         }
                     ]
                 }
