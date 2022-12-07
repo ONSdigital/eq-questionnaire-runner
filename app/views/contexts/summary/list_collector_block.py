@@ -241,13 +241,22 @@ class ListCollectorBlock:
             # We need to filter out answers for both variants and normal questions
             for question in block.get("question_variants", [block.get("question")]):  # type: ignore
                 # block is not optional at this point
-                answers = [
-                    answer
-                    for answer in question["answers"]
-                    if answer["id"] in answer_ids
-                ]
-                # Mutate the answers to only keep the related answers
-                question["answers"] = answers
+                if question.get("answers"):
+                    answers = [
+                        answer
+                        for answer in question["answers"]
+                        if answer["id"] in answer_ids
+                    ]
+                    # Mutate the answers to only keep the related answers
+                    question["answers"] = answers
+                else:
+                    answers = [
+                        answer
+                        for answer in question["question"].get("answers")
+                        if answer["id"] in answer_ids
+                    ]
+                    # Mutate the answers to only keep the related answers
+                    question["question"]["answers"] = answers
 
             blocks.append(block)
 

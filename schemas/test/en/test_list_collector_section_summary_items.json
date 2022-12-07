@@ -295,7 +295,7 @@
                                     }
                                 ],
                                 "id": "confirmation-checkbox-question",
-                                "title": "Are all the companies or branches based in UK?",
+                                "title": "Are all companies or branches based in UK?",
                                 "type": "General"
                             }
                         }

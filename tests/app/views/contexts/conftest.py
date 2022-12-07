@@ -223,6 +223,48 @@ def companies_answer_store():
 
 
 @pytest.fixture
+def companies_variants_answer_store():
+    return AnswerStore(
+        [
+            {
+                "answer_id": "uk-based-answer",
+                "value": "No",
+            },
+            {
+                "answer_id": "company-or-branch-name",
+                "value": "company a",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "registration-number",
+                "value": 123,
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "authorised-insurer-radio",
+                "value": "Yes",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "company-or-branch-name",
+                "value": "company b",
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "registration-number",
+                "value": 456,
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "authorised-insurer-radio",
+                "value": "No",
+                "list_item_id": "UHPLbX",
+            },
+        ]
+    )
+
+
+@pytest.fixture
 def people_list_store():
     return ListStore([{"items": ["PlwgoG", "UHPLbX"], "name": "people"}])
 
