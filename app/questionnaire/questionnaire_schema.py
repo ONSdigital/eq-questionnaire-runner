@@ -233,7 +233,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _populate_answer_dependencies(self) -> None:
         for block in self.get_blocks():
             if block["type"] == "CalculatedSummary":
-                answer_ids_for_block = get_calculated_summary_answer_ids(block)
+                answer_ids_for_block = self.get_calculated_summary_answer_ids(block)
                 self._update_answer_dependencies_for_calculated_summary(
                     answer_ids_for_block, block["id"]
                 )
@@ -320,7 +320,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         if value_source["source"] == "calculated_summary":
             identifier = value_source["identifier"]
             if calculated_summary_block := self.get_block(identifier):
-                answer_ids_for_block = get_calculated_summary_answer_ids(
+                answer_ids_for_block = self.get_calculated_summary_answer_ids(
                     calculated_summary_block
                 )
 
@@ -874,7 +874,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 answer_id_list.append(identifier)
             elif source == "calculated_summary" and identifier:
                 calculated_summary_block = self.get_block(identifier)
-                calculated_summary_answer_ids = get_calculated_summary_answer_ids(
+                calculated_summary_answer_ids = self.get_calculated_summary_answer_ids(
                     calculated_summary_block  # type: ignore
                 )
                 answer_id_list.extend(iter(calculated_summary_answer_ids))
@@ -895,17 +895,24 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         return rules_section_dependencies
 
+    def get_calculated_summary_answer_ids(
+        self, calculated_summary_block: Mapping
+    ) -> list:
+        if calculated_summary_block["calculation"].get("answers_to_calculate"):
+            calculated_summary_answer_ids: list = calculated_summary_block[
+                "calculation"
+            ]["answers_to_calculate"]
+        else:
+            values = self._get_values_for_key(
+                calculated_summary_block["calculation"]["operation"], "+"
+            )
 
-def get_calculated_summary_answer_ids(calculated_summary_block: Mapping) -> list:
-    if calculated_summary_block["calculation"].get("answers_to_calculate"):
-        calculated_summary_answer_ids: list = calculated_summary_block["calculation"][
-            "answers_to_calculate"
-        ]
-    else:
-        calculated_summary_answer_ids = [
-            value["identifier"]
-            for value in calculated_summary_block["calculation"]["operation"]["+"]
-            if value["source"] == "answers"
-        ]
+            calculated_summary_answer_ids = []
+            for value_sources in values:
+                calculated_summary_answer_ids.extend(
+                    value_source["identifier"]
+                    for value_source in value_sources
+                    if value_source["source"] == "answers"
+                )
 
-    return calculated_summary_answer_ids
+        return calculated_summary_answer_ids
