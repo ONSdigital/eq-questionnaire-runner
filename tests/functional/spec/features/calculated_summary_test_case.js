@@ -1,26 +1,26 @@
-import FirstNumberBlockPage from "../../generated_pages/calculated_summary/first-number-block.page.js";
-import SecondNumberBlockPage from "../../generated_pages/calculated_summary/second-number-block.page.js";
-import ThirdNumberBlockPage from "../../generated_pages/calculated_summary/third-number-block.page.js";
-import ThirdAndAHalfNumberBlockPage from "../../generated_pages/calculated_summary/third-and-a-half-number-block.page.js";
-import SkipFourthBlockPage from "../../generated_pages/calculated_summary/skip-fourth-block.page.js";
-import FourthNumberBlockPage from "../../generated_pages/calculated_summary/fourth-number-block.page.js";
-import FourthAndAHalfNumberBlockPage from "../../generated_pages/calculated_summary/fourth-and-a-half-number-block.page.js";
-import FifthNumberBlockPage from "../../generated_pages/calculated_summary/fifth-number-block.page.js";
-import SixthNumberBlockPage from "../../generated_pages/calculated_summary/sixth-number-block.page.js";
-import CurrencyTotalPlaybackPageWithFourth from "../../generated_pages/calculated_summary/currency-total-playback-with-fourth.page.js";
-import SetMinMaxBlockPage from "../../generated_pages/calculated_summary/set-min-max-block.page.js";
-import CurrencyTotalPlaybackPageSkippedFourth from "../../generated_pages/calculated_summary/currency-total-playback-skipped-fourth.page.js";
-import UnitTotalPlaybackPage from "../../generated_pages/calculated_summary/unit-total-playback.page.js";
-import PercentageTotalPlaybackPage from "../../generated_pages/calculated_summary/percentage-total-playback.page.js";
-import NumberTotalPlaybackPage from "../../generated_pages/calculated_summary/number-total-playback.page.js";
-import CalculatedSummaryTotalConfirmation from "../../generated_pages/calculated_summary/calculated-summary-total-confirmation.page.js";
+import CurrencyTotalPlaybackPageWithFourth from "../../generated_pages/calculated_summary/currency-total-playback-with-fourth.page";
+import UnitTotalPlaybackPage from "../../generated_pages/calculated_summary/unit-total-playback.page";
+import NumberTotalPlaybackPage from "../../generated_pages/calculated_summary/number-total-playback.page";
+import ThirdNumberBlockPage from "../../generated_pages/calculated_summary/third-number-block.page";
+import FourthNumberBlockPage from "../../generated_pages/calculated_summary/fourth-number-block.page";
+import FourthAndAHalfNumberBlockPage from "../../generated_pages/calculated_summary/fourth-and-a-half-number-block.page";
+import SixthNumberBlockPage from "../../generated_pages/calculated_summary/sixth-number-block.page";
+import FifthNumberBlockPage from "../../generated_pages/calculated_summary/fifth-number-block.page";
+import SkipFourthBlockPage from "../../generated_pages/calculated_summary/skip-fourth-block.page";
+import CurrencyTotalPlaybackPageSkippedFourth from "../../generated_pages/calculated_summary/currency-total-playback-skipped-fourth.page";
+import PercentageTotalPlaybackPage from "../../generated_pages/calculated_summary/percentage-total-playback.page";
+import CalculatedSummaryTotalConfirmation from "../../generated_pages/calculated_summary/calculated-summary-total-confirmation.page";
+import SetMinMaxBlockPage from "../../generated_pages/calculated_summary/set-min-max-block.page";
 import SubmitPage from "../../generated_pages/calculated_summary/submit.page";
-import ThankYouPage from "../../base_pages/thank-you.page.js";
+import ThirdAndAHalfNumberBlockPage from "../../generated_pages/calculated_summary/third-and-a-half-number-block.page";
+import ThankYouPage from "../../base_pages/thank-you.page";
+import FirstNumberBlockPage from "../../generated_pages/calculated_summary/first-number-block.page";
+import SecondNumberBlockPage from "../../generated_pages/calculated_summary/second-number-block.page";
 
-describe("Feature: Calculated Summary", () => {
-  describe("Given I have a Calculated Summary", () => {
+class TestCase {
+  testCase(schema) {
     before("Get to Calculated Summary", () => {
-      browser.openQuestionnaire("test_new_calculated_summary.json");
+      browser.openQuestionnaire(schema);
 
       $(FirstNumberBlockPage.firstNumber()).setValue(1.23);
       $(FirstNumberBlockPage.submit()).click();
@@ -327,5 +327,7 @@ describe("Feature: Calculated Summary", () => {
       $(SubmitPage.submit()).click();
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
     });
-  });
-});
+  }
+}
+
+export const CalculatedSummaryTestCase = new TestCase();
