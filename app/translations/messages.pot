@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-12-01 15:21+0000\n"
+"POT-Creation-Date: 2022-12-08 15:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -215,15 +215,15 @@ msgstr[1] ""
 msgid "Not a valid choice."
 msgstr ""
 
-#: app/helpers/template_helpers.py:102
+#: app/helpers/template_helpers.py:103
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:144
+#: app/helpers/template_helpers.py:124
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:178
+#: app/helpers/template_helpers.py:149
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -307,48 +307,48 @@ msgstr ""
 msgid "An individual access code has been sent by text"
 msgstr ""
 
-#: app/survey_config/business_config.py:60
-#: app/survey_config/census_config.py:41 app/survey_config/census_config.py:99
-#: app/survey_config/census_config.py:171
+#: app/survey_config/business_config.py:59
+#: app/survey_config/census_config.py:39 app/survey_config/census_config.py:96
+#: app/survey_config/census_config.py:162
 msgid "Help"
 msgstr ""
 
-#: app/survey_config/business_config.py:74
+#: app/survey_config/business_config.py:73
 msgid "My account"
 msgstr ""
 
-#: app/survey_config/business_config.py:79
+#: app/survey_config/business_config.py:78
 msgid "Sign out"
 msgstr ""
 
-#: app/survey_config/business_config.py:89
-#: app/survey_config/social_survey_config.py:36
+#: app/survey_config/business_config.py:88
+#: app/survey_config/social_survey_config.py:48
 msgid "What we do"
 msgstr ""
 
-#: app/survey_config/business_config.py:92
-#: app/survey_config/census_config.py:48 app/survey_config/census_config.py:107
-#: app/survey_config/census_config.py:178
-#: app/survey_config/social_survey_config.py:39
+#: app/survey_config/business_config.py:91
+#: app/survey_config/census_config.py:46 app/survey_config/census_config.py:104
+#: app/survey_config/census_config.py:169
+#: app/survey_config/social_survey_config.py:51
 msgid "Contact us"
 msgstr ""
 
-#: app/survey_config/business_config.py:96
-#: app/survey_config/social_survey_config.py:43
+#: app/survey_config/business_config.py:95
+#: app/survey_config/social_survey_config.py:55
 msgid "Accessibility"
 msgstr ""
 
-#: app/survey_config/business_config.py:106
-#: app/survey_config/census_config.py:69 app/survey_config/census_config.py:127
-#: app/survey_config/census_config.py:186
-#: app/survey_config/social_survey_config.py:53
+#: app/survey_config/business_config.py:105
+#: app/survey_config/census_config.py:67 app/survey_config/census_config.py:124
+#: app/survey_config/census_config.py:177
+#: app/survey_config/social_survey_config.py:65
 msgid "Cookies"
 msgstr ""
 
-#: app/survey_config/business_config.py:108
-#: app/survey_config/census_config.py:75 app/survey_config/census_config.py:133
-#: app/survey_config/census_config.py:192
-#: app/survey_config/social_survey_config.py:55
+#: app/survey_config/business_config.py:107
+#: app/survey_config/census_config.py:73 app/survey_config/census_config.py:130
+#: app/survey_config/census_config.py:183
+#: app/survey_config/social_survey_config.py:67
 msgid "Privacy and data protection"
 msgstr ""
 
@@ -372,33 +372,25 @@ msgstr ""
 msgid "BSL and audio videos"
 msgstr ""
 
-#: app/survey_config/census_config.py:71 app/survey_config/census_config.py:129
-#: app/survey_config/census_config.py:188
+#: app/survey_config/census_config.py:69 app/survey_config/census_config.py:126
+#: app/survey_config/census_config.py:179
 msgid "Accessibility statement"
 msgstr ""
 
-#: app/survey_config/census_config.py:79 app/survey_config/census_config.py:137
-#: app/survey_config/census_config.py:196
+#: app/survey_config/census_config.py:77 app/survey_config/census_config.py:134
+#: app/survey_config/census_config.py:187
 msgid "Terms and conditions"
 msgstr ""
 
-#: app/survey_config/census_config.py:152
-msgid "Northern Ireland Statistics and Research Agency logo"
-msgstr ""
-
-#: app/survey_config/census_config.py:157
+#: app/survey_config/census_config.py:150
 msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
 msgstr ""
 
-#: app/survey_config/census_config.py:160 app/survey_config/survey_config.py:23
+#: app/survey_config/census_config.py:153 app/survey_config/survey_config.py:20
 msgid "Use of address data is subject to the terms and conditions."
 msgstr ""
 
 #: app/survey_config/survey_config.py:17
-msgid "Office for National Statistics logo"
-msgstr ""
-
-#: app/survey_config/survey_config.py:20
 msgid "Crown copyright and database rights 2020 OS 100019153."
 msgstr ""
 
