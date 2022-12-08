@@ -1,6 +1,6 @@
-{% from "components/collapsible/_macro.njk" import onsCollapsible %}
+{% from "components/details/_macro.njk" import onsDetails %}
 
-{% call onsCollapsible({
+{% call onsDetails({
   "id": "answer-guidance-" ~ answer.id,
   "classes": "ons-u-mt-s",
   "title": _(answer_guidance.schema_item.show_guidance),
