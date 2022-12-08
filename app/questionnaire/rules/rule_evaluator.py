@@ -16,7 +16,9 @@ from app.questionnaire.value_source_resolver import (
     ValueSourceTypes,
 )
 
-RuleEvaluatorTypes = Union[bool, Optional[date], list[str], list[date], int, Decimal]
+RuleEvaluatorTypes = Union[
+    bool, Optional[date], list[str], list[date], int, float, Decimal
+]
 
 
 @dataclass

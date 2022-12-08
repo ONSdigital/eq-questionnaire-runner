@@ -240,13 +240,9 @@ class Operations:
 
         else:
             label = self.renderer.render_placeholder(label_options, list_item_id=None)
-
         return label
 
     @staticmethod
-    def evaluate_sum(*args: tuple) -> Union[int, Decimal]:
-        values_list: list = []
-        for arg in args:
-            if arg and isinstance(arg, (int, Decimal)):
-                values_list.append(arg)
-        return sum(values_list)
+    def evaluate_sum(*args: tuple) -> Union[int, float, Decimal]:
+        # type ignore added as will only return int, float or decimal
+        return sum(value for value in args if isinstance(value, (int, float, Decimal)))  # type: ignore
