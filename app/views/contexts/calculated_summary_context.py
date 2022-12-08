@@ -1,6 +1,6 @@
 from copy import deepcopy
 from decimal import Decimal
-from typing import Callable, List, Mapping, Union
+from typing import Callable, List, Mapping, Tuple, Union
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -60,20 +60,15 @@ class CalculatedSummaryContext(Context):
                 calculated_section, return_to_block_id, current_location
             )
 
-            if calculation.get("answers_to_calculate"):
-                formatted_total = self._get_formatted_total(
-                    groups or [],
-                    current_location=current_location,
-                    calculation_operator=ValueSourceResolver.get_calculation_operator(
-                        calculation["calculation_type"]
-                    ),
+            formatted_total = self._get_formatted_total(
+                groups or [],
+                current_location=current_location,
+                calculation=ValueSourceResolver.get_calculation_operator(
+                    calculation["calculation_type"]
                 )
-            else:
-                formatted_total = self._get_formatted_total_with_rule_evaluator(
-                    groups or [],
-                    current_location=current_location,
-                    calculation=calculation["operation"],
-                )
+                if calculation.get("answers_to_calculate")
+                else calculation["operation"],
+            )
 
             collapsible = block.get("collapsible") or False
             block_title = block.get("title")
@@ -176,8 +171,34 @@ class CalculatedSummaryContext(Context):
         return transformed_block
 
     def _get_formatted_total(
-        self, groups: list, current_location: Location, calculation_operator: Callable
-    ):
+        self,
+        groups: list,
+        current_location: Location,
+        calculation: Union[Callable, ImmutableDict],
+    ) -> str:
+        answer_format, values_to_calculate = self._get_answer_format(
+            groups, current_location
+        )
+
+        if isinstance(calculation, ImmutableDict):
+            evaluate_calculated_summary = RuleEvaluator(
+                self._schema,
+                self._answer_store,
+                self._list_store,
+                self._metadata,
+                self._response_metadata,
+                location=current_location,
+            )
+
+            calculated_total: Union[int, float, Decimal] = evaluate_calculated_summary.evaluate(calculation)  # type: ignore
+        else:
+            calculated_total = calculation(values_to_calculate)
+
+        return self._format_total(answer_format, calculated_total)
+
+    def _get_answer_format(
+        self, groups: list, current_location: Location
+    ) -> Tuple[Mapping, list]:
         values_to_calculate: list = []
         answer_format: Mapping = {"type": None}
         for group in groups:
@@ -202,51 +223,11 @@ class CalculatedSummaryContext(Context):
                     answer_value = answer.get("value") or 0
                     values_to_calculate.append(answer_value)
 
-        calculated_total = calculation_operator(values_to_calculate)
-
-        return self._format_total(answer_format, calculated_total)
-
-    def _get_formatted_total_with_rule_evaluator(
-        self, groups: list, current_location: Location, calculation: ImmutableDict
-    ) -> str:
-        answer_format: Mapping = {"type": None}
-        for group in groups:
-            for block in group["blocks"]:
-                question = choose_question_to_display(
-                    block,
-                    self._schema,
-                    self._metadata,
-                    self._response_metadata,
-                    self._answer_store,
-                    self._list_store,
-                    current_location=current_location,
-                )
-                for answer in question["answers"]:
-                    if not answer_format["type"]:
-                        answer_format = {
-                            "type": answer["type"],
-                            "unit": answer.get("unit"),
-                            "unit_length": answer.get("unit_length"),
-                            "currency": answer.get("currency"),
-                        }
-
-        evaluate_calculated_summary = RuleEvaluator(
-            self._schema,
-            self._answer_store,
-            self._list_store,
-            self._metadata,
-            self._response_metadata,
-            location=current_location,
-        )
-
-        # type ignore as rule evaluator will only return an int or decimal in this instance
-        calculated_summary_total: Union[int, Decimal] = evaluate_calculated_summary.evaluate(calculation)  # type: ignore
-
-        return self._format_total(answer_format, calculated_summary_total)
+        return answer_format, values_to_calculate
 
     @staticmethod
     def _format_total(
-        answer_format: Mapping[str, str], total: Union[int, Decimal]
+        answer_format: Mapping[str, str], total: Union[int, float, Decimal]
     ) -> str:
         if answer_format["type"] == "currency":
             return get_formatted_currency(total, answer_format["currency"])
