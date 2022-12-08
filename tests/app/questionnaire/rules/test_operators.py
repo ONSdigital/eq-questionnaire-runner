@@ -498,3 +498,20 @@ def test_operation_option_label_from_value(get_operator, mock_schema, mocker):
     mock_schema.get_answers_by_answer_id = mocker.Mock(return_value=answer_schema)
 
     assert operator.evaluate(operands) == "Head-label"
+
+
+@pytest.mark.parametrize(
+    "operands, expected_result",
+    [
+        ([1, 2, 3, 4], 10),
+        ([1.1, 2.2, 3.3, 4.4], 11.0),
+        ([[]], 0),
+        ([None], 0),
+        ([1, 2.2, 3, 4], 10.2),
+        (["a", 1], 1),
+    ],
+)
+def test_operator_sum(get_operator, operands, expected_result):
+    operator = get_operator(Operator.SUM)
+
+    assert operator.evaluate(operands) == expected_result
