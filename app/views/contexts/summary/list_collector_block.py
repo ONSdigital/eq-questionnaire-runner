@@ -234,28 +234,20 @@ class ListCollectorBlock:
             answers_by_block[block_to_keep].append(answer_id)
 
         for immutable_block, answer_ids in answers_by_block.items():
-            block = self._schema.get_mutable_deepcopy(immutable_block)
+            mutable_block = self._schema.get_mutable_deepcopy(immutable_block)
 
             # We need to filter out answers for both variants and normal questions
-            for question in block.get("question_variants", [block.get("question")]):  # type: ignore
-                # block is not optional at this point
-                if question.get("answers"):
-                    answers = [
-                        answer
-                        for answer in question["answers"]
-                        if answer["id"] in answer_ids
-                    ]
-                    # Mutate the answers to only keep the related answers
-                    question["answers"] = answers
-                else:
-                    answers = [
-                        answer
-                        for answer in question["question"].get("answers")
-                        if answer["id"] in answer_ids
-                    ]
-                    # Mutate the answers to only keep the related answers
-                    question["question"]["answers"] = answers
+            for variant_or_block in mutable_block.get(
+                "question_variants", [mutable_block]
+            ):
+                answers = [
+                    answer
+                    for answer in variant_or_block["question"].get("answers", {})
+                    if answer["id"] in answer_ids
+                ]
+                # Mutate the answers to only keep the related answers
+                variant_or_block["question"]["answers"] = answers
 
-            blocks.append(block)
+            blocks.append(mutable_block)
 
         return blocks
