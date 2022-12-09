@@ -176,7 +176,7 @@ class ListCollectorBlock:
         if not related_answers:
             return None
 
-        related_answers_dict = {}
+        related_answers_blocks = {}
 
         blocks = self.get_blocks_for_related_answers(related_answers)
 
@@ -200,9 +200,9 @@ class ListCollectorBlock:
                 for block in blocks
             ]
 
-            related_answers_dict[list_id] = serialized_blocks
+            related_answers_blocks[list_id] = serialized_blocks
 
-        return related_answers_dict
+        return related_answers_blocks
 
     def _get_item_label(self, list_name: str) -> Optional[str]:
         for item in self._section["summary"].get("items"):
