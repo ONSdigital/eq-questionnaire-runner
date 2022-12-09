@@ -108,9 +108,7 @@ class ListCollectorBlock:
             primary_person_edit_block_id=primary_person_edit_block_id,
         )
 
-        related_answers = (
-            self._get_related_answers(current_list) if current_list else None
-        )
+        related_answers = self._get_related_answers(current_list)
 
         if related_answers and list_collector_blocks_on_path:
             item_anchor = self._get_item_anchor_answer_id(current_list.name)
