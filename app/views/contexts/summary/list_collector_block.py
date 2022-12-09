@@ -112,7 +112,7 @@ class ListCollectorBlock:
             self._get_related_answers(current_list) if current_list else None
         )
 
-        if related_answers:
+        if related_answers and list_collector_blocks_on_path:
             item_anchor = self._get_item_anchor_answer_id(current_list.name)
             item_label = self._get_item_label(current_list.name)
 
