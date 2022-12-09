@@ -96,35 +96,38 @@ class Group:
             else:
                 section = schema.get_section(location.section_id)
 
-                if summary_item := self.get_summary_item_for_list_for_section_summary(
+                summary_item = self.get_summary_item_for_list_for_section_summary(
                     summary=section.get("summary", {}),
                     list_name=block.get("for_list", {}),
-                ):
-                    if block["type"] in ["ListCollector"]:
-                        list_collector_block = ListCollectorBlock(
-                            routing_path=routing_path,
-                            answer_store=answer_store,
-                            list_store=list_store,
-                            progress_store=progress_store,
-                            metadata=metadata,
-                            response_metadata=response_metadata,
-                            schema=schema,
-                            location=location,
-                            language=language,
-                        )
+                )
+                if not summary_item:
+                    continue
 
-                        list_summary_element = (
-                            list_collector_block.list_summary_element(summary_item)
-                        )
-                        blocks.extend([list_summary_element])
-                        self.links["add_link"] = Link(
-                            target="_self",
-                            text=list_summary_element["add_link_text"],
-                            url=list_summary_element["add_link"],
-                            attributes={"data-qa": "add-item-link"},
-                        )
+                if block["type"] in ["ListCollector"]:
+                    list_collector_block = ListCollectorBlock(
+                        routing_path=routing_path,
+                        answer_store=answer_store,
+                        list_store=list_store,
+                        progress_store=progress_store,
+                        metadata=metadata,
+                        response_metadata=response_metadata,
+                        schema=schema,
+                        location=location,
+                        language=language,
+                    )
 
-                        self.placeholder_text = list_summary_element["empty_list_text"]
+                    list_summary_element = list_collector_block.list_summary_element(
+                        summary_item
+                    )
+                    blocks.extend([list_summary_element])
+                    self.links["add_link"] = Link(
+                        target="_self",
+                        text=list_summary_element["add_link_text"],
+                        url=list_summary_element["add_link"],
+                        attributes={"data-qa": "add-item-link"},
+                    )
+
+                    self.placeholder_text = list_summary_element["empty_list_text"]
 
         return blocks
 
