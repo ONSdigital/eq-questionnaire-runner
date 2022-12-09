@@ -689,7 +689,7 @@ def map_list_collector_config(
             row_item["valueList"] = [{"text": item_name}]
 
         row_item["rowTitle"] = item_label or item_name
-        row_items = [row_item]
+        row_items: list = [row_item]
 
         if related_answers:
             for block in related_answers[list_item["list_item_id"]]:
@@ -701,7 +701,7 @@ def map_list_collector_config(
                     edit_link_text=edit_link_text,
                     edit_link_aria_label=edit_link_aria_label,
                 )
-                row_items.extend(summary_row.rowItems)  # type: ignore
+                row_items.extend(summary_row.rowItems)
 
         rows.append({"rowItems": row_items})
 
