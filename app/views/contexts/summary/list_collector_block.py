@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Any, Mapping, Optional
+from typing import Mapping, Optional, Union
 
 from flask import url_for
 from werkzeug.datastructures import ImmutableDict
@@ -48,7 +48,9 @@ class ListCollectorBlock:
         self._progress_store = progress_store
 
     # pylint: disable=too-many-locals
-    def list_summary_element(self, summary: dict[str, str]) -> Mapping[str, Any]:
+    def list_summary_element(
+        self, summary: dict
+    ) -> Mapping[str, Optional[Union[dict, str]]]:
         list_collector_block = None
         (
             edit_block_id,
@@ -141,7 +143,7 @@ class ListCollectorBlock:
         )
 
     def _add_link(
-        self, summary: dict[str, str], list_collector_block: Optional[dict[str, dict]]
+        self, summary: dict, list_collector_block: Optional[dict[str, dict]]
     ) -> Optional[str]:
 
         if list_collector_block:
@@ -214,7 +216,7 @@ class ListCollectorBlock:
                 return f"#{str(item['item_anchor_answer_id'])}"
 
     def get_blocks_for_related_answers(
-        self, related_answers: tuple[ImmutableDict]
+        self, related_answers: tuple
     ) -> list[Optional[ImmutableDict]]:
         blocks = []
         answers_by_block = defaultdict(list)
