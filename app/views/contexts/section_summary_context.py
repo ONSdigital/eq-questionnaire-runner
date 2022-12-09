@@ -111,7 +111,6 @@ class SectionSummaryContext(Context):
         refactored_groups = self._get_refactored_groups(self.section["groups"])
 
         groups = {
-            "show_non_item_answers": show_non_item_answers,
             **collapsible,
             "groups": [
                 Group(
