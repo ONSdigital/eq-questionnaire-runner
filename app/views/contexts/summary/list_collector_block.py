@@ -206,13 +206,13 @@ class ListCollectorBlock:
 
     def _get_item_label(self, list_name: str) -> Optional[str]:
         for item in self._section["summary"].get("items"):
-            if item["for_list"] == list_name and item["item_label"]:
+            if item["for_list"] == list_name and item.get("item_label"):
 
                 return str(item["item_label"])
 
     def _get_item_anchor_answer_id(self, list_name: str) -> Optional[str]:
         for item in self._section["summary"].get("items"):
-            if item["for_list"] == list_name and item["item_anchor_answer_id"]:
+            if item["for_list"] == list_name and item.get("item_anchor_answer_id"):
                 return f"#{str(item['item_anchor_answer_id'])}"
 
     def get_blocks_for_related_answers(
