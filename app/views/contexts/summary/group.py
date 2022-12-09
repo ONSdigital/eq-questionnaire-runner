@@ -96,8 +96,9 @@ class Group:
             else:
                 section = schema.get_section(location.section_id)
 
-                if summary_item := self.get_summary_item_for_list_for_section(
-                    section, block
+                if summary_item := self.get_summary_item_for_list_for_section_summary(
+                    summary=section.get("summary", {}),
+                    list_name=block.get("for_list", {}),
                 ):
                     if block["type"] in ["ListCollector"]:
                         list_collector_block = ListCollectorBlock(
@@ -128,13 +129,12 @@ class Group:
         return blocks
 
     @staticmethod
-    def get_summary_item_for_list_for_section(section, block):
-        summary = section.get("summary", {})
+    def get_summary_item_for_list_for_section_summary(*, summary, list_name):
         if summary_items := summary.get("items"):
             for summary_item in summary_items:
                 if (
                     summary_item["type"] == "List"
-                    and summary_item["for_list"] == block["for_list"]
+                    and summary_item["for_list"] == list_name
                 ):
                     return summary_item
 
