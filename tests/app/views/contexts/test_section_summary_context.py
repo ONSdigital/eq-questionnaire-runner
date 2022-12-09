@@ -225,7 +225,7 @@ def test_context_for_section_list_summary(people_answer_store):
 
 @pytest.mark.usefixtures("app")
 def test_context_for_section_summary_with_list_summary(companies_answer_store):
-    schema = load_schema_from_name("test_list_collector_section_summary_items")
+    schema = load_schema_from_name("test_list_collector_list_summary")
 
     summary_context = SectionSummaryContext(
         language=DEFAULT_LANGUAGE_CODE,
@@ -407,7 +407,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
 def test_context_for_section_summary_with_list_summary_and_first_variant(
     companies_variants_answer_store_first_variant,
 ):
-    schema = load_schema_from_name("test_list_collector_variants_section_summary_items")
+    schema = load_schema_from_name("test_list_collector_variants_list_summary")
 
     summary_context = SectionSummaryContext(
         language=DEFAULT_LANGUAGE_CODE,
@@ -589,7 +589,7 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
 def test_context_for_section_summary_with_list_summary_and_second_variant(
     companies_variants_answer_store_second_variant,
 ):
-    schema = load_schema_from_name("test_list_collector_variants_section_summary_items")
+    schema = load_schema_from_name("test_list_collector_variants_list_summary")
 
     summary_context = SectionSummaryContext(
         language=DEFAULT_LANGUAGE_CODE,

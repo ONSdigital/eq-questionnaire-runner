@@ -8,7 +8,7 @@ import UkBasedPage from "../generated_pages/list_collector_section_summary_items
 describe("List Collector Section Summary Items", () => {
   describe("Given I launch the test list collector section summary items survey", () => {
     beforeEach(() => {
-      browser.openQuestionnaire("test_list_collector_section_summary_items.json");
+      browser.openQuestionnaire("test_list_collector_list_summary.json");
     });
     it("When I get to the section summary, Then the driving question should be visible.", () => {
       drivingQuestionYes();
