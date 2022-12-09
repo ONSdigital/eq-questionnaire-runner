@@ -87,20 +87,20 @@ class ListCollectorBlock:
         )
 
         if list_collector_blocks_on_path:
-
             edit_block_id = list_collector_block["edit_block"]["id"]
             remove_block_id = list_collector_block["remove_block"]["id"]
             add_link = self._add_link(summary, list_collector_block)
+            related_answers = self._get_related_answers(current_list)
+            item_anchor = self._get_item_anchor_answer_id(current_list.name)
+            item_label = self._get_item_label(current_list.name)
 
         if len(current_list) == 1 and current_list.primary_person:
-
             if primary_person_block := self._schema.get_list_collector_for_list(
                 self._section, for_list=summary["for_list"], primary=True
             ):
                 primary_person_edit_block_id = edit_block_id = primary_person_block[
                     "add_or_edit_block"
                 ]["id"]
-
         list_summary_context = self.list_context(
             list_collector_block["summary"],
             for_list=list_collector_block["for_list"],
@@ -109,12 +109,6 @@ class ListCollectorBlock:
             remove_block_id=remove_block_id,
             primary_person_edit_block_id=primary_person_edit_block_id,
         )
-
-        related_answers = self._get_related_answers(current_list)
-
-        if related_answers and list_collector_blocks_on_path:
-            item_anchor = self._get_item_anchor_answer_id(current_list.name)
-            item_label = self._get_item_label(current_list.name)
 
         return {
             "title": rendered_summary["title"],
