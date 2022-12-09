@@ -1,9 +1,9 @@
-import AnyCompaniesOrBranchesDrivingQuestionPage from "../generated_pages/list_collector_section_summary_items/any-companies-or-branches.page.js";
-import AnyCompaniesOrBranchesPage from "../generated_pages/list_collector_section_summary_items/any-other-companies-or-branches.page.js";
-import AnyCompaniesOrBranchesAddPage from "../generated_pages/list_collector_section_summary_items/any-other-companies-or-branches-add.page.js";
-import AnyCompaniesOrBranchesRemovePage from "../generated_pages/list_collector_section_summary_items/any-other-companies-or-branches-remove.page.js";
-import SectionSummaryPage from "../generated_pages/list_collector_section_summary_items/section-companies-summary.page";
-import UkBasedPage from "../generated_pages/list_collector_section_summary_items/confirmation-checkbox.page";
+import AnyCompaniesOrBranchesDrivingQuestionPage from "../generated_pages/list_collector_list_summary/any-companies-or-branches.page.js";
+import AnyCompaniesOrBranchesPage from "../generated_pages/list_collector_list_summary/any-other-companies-or-branches.page.js";
+import AnyCompaniesOrBranchesAddPage from "../generated_pages/list_collector_list_summary/any-other-companies-or-branches-add.page.js";
+import AnyCompaniesOrBranchesRemovePage from "../generated_pages/list_collector_list_summary/any-other-companies-or-branches-remove.page.js";
+import SectionSummaryPage from "../generated_pages/list_collector_list_summary/section-companies-summary.page";
+import UkBasedPage from "../generated_pages/list_collector_list_summary/confirmation-checkbox.page";
 
 describe("List Collector Section Summary Items", () => {
   describe("Given I launch the test list collector section summary items survey", () => {
