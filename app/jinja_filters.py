@@ -621,8 +621,8 @@ def map_summary_item_config_processor() -> dict[str, Callable]:
 def map_list_collector_config(
     list_items: list[dict[str, Union[str, int]]],
     icon: str,
-    edit_link_text: Optional[str] = None,
-    edit_link_aria_label: Optional[str] = None,
+    edit_link_text: str = "",
+    edit_link_aria_label: str = "",
     remove_link_text: Optional[str] = None,
     remove_link_aria_label: Optional[str] = None,
     related_answers: Optional[dict] = None,
@@ -698,8 +698,8 @@ def map_list_collector_config(
                     summary_type="SectionSummary",
                     answers_are_editable=True,
                     no_answer_provided=flask_babel.lazy_gettext("No answer provided"),
-                    edit_link_text=edit_link_text or "",
-                    edit_link_aria_label=edit_link_aria_label or "",
+                    edit_link_text=edit_link_text,
+                    edit_link_aria_label=edit_link_aria_label,
                 )
                 row_items.extend(summary_row.rowItems)  # type: ignore
 

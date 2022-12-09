@@ -113,8 +113,8 @@ class ListCollectorBlock:
         )
 
         if related_answers:
-            item_anchor = self._get_item_anchor_answer_id(current_list.name) or None
-            item_label = self._get_item_label(current_list.name) or None
+            item_anchor = self._get_item_anchor_answer_id(current_list.name)
+            item_label = self._get_item_label(current_list.name)
 
         return {
             "title": rendered_summary["item_title"]
