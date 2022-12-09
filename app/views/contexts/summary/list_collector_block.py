@@ -117,9 +117,7 @@ class ListCollectorBlock:
             item_label = self._get_item_label(current_list.name)
 
         return {
-            "title": rendered_summary["item_title"]
-            if related_answers
-            else rendered_summary["title"],
+            "title": rendered_summary["title"],
             "type": rendered_summary["type"],
             "add_link": add_link,
             "add_link_text": rendered_summary["add_link_text"],
