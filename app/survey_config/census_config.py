@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Union
 
 from flask_babel import lazy_gettext
 from flask_babel.speaklater import LazyString
@@ -23,6 +23,15 @@ class CensusSurveyConfig(
     survey_title: LazyString = lazy_gettext("Census 2021")
     sign_out_button_text: str = lazy_gettext("Save and complete later")
     _is_nisra: bool = False
+
+    def get_data_layer(self, tx_id: Optional[str] = None) -> list[dict]:
+        data_layer: list[Union[dict[str, bool], dict[str, str]]] = [
+            {"nisra": self._is_nisra}
+        ]
+        if tx_id:
+            data_layer.append({"tx_id": tx_id})
+
+        return data_layer
 
     def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
         links = [
