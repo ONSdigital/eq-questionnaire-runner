@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, Union
+from typing import Optional
 
 from flask_babel import lazy_gettext
 from flask_babel.speaklater import LazyString
