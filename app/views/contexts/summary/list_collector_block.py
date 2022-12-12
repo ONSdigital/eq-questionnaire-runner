@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Any, Mapping, Optional, Union
+from typing import Any, Mapping, Optional
 
 from flask import url_for
 from werkzeug.datastructures import ImmutableDict
@@ -84,13 +84,16 @@ class ListCollectorBlock:
             summary, self._location.list_item_id
         )
 
+        section_id = self._section["id"]
         if list_collector_blocks_on_path:
             edit_block_id = list_collector_block["edit_block"]["id"]
             remove_block_id = list_collector_block["remove_block"]["id"]
             add_link = self._add_link(summary, list_collector_block)
             related_answers = self._get_related_answers(current_list)
-            item_anchor = self._get_item_anchor_answer_id(current_list.name)
-            item_label = self._get_item_label(current_list.name)
+            item_anchor = self._schema.get_item_anchor_answer_id(
+                section_id, current_list.name
+            )
+            item_label = self._schema.get_item_label(section_id, current_list.name)
 
         if len(current_list) == 1 and current_list.primary_person:
             if primary_person_block := self._schema.get_list_collector_for_list(
@@ -148,7 +151,7 @@ class ListCollectorBlock:
                 return_to="section-summary",
             )
 
-        if driving_question_block := QuestionnaireSchema.get_driving_question_for_list(
+        if driving_question_block := self._schema.get_driving_question_for_list(
             self._section, summary["for_list"]
         ):
             return url_for(
@@ -158,12 +161,12 @@ class ListCollectorBlock:
             )
 
     def _get_related_answers(
-        self, current_list: ListModel
+        self, list_model: ListModel
     ) -> Optional[dict[str, list[Block]]]:
-        section = self._section["id"]
+        section_id = self._section["id"]
 
         related_answers = self._schema.get_related_answers_for_list_for_section(
-            section_id=section, list_name=current_list.name
+            section_id=section_id, list_name=list_model.name
         )
         if not related_answers:
             return None
@@ -172,7 +175,7 @@ class ListCollectorBlock:
 
         blocks = self.get_blocks_for_related_answers(related_answers)
 
-        for list_id in current_list:
+        for list_id in list_model:
             serialized_blocks = [
                 Block(
                     block,
@@ -182,9 +185,9 @@ class ListCollectorBlock:
                     response_metadata=self._response_metadata,
                     schema=self._schema,
                     location=Location(
-                        list_name=current_list.name,
+                        list_name=list_model.name,
                         list_item_id=list_id,
-                        section_id=self._section["id"],
+                        section_id=section_id,
                     ),
                     return_to="section-summary",
                     return_to_block_id=None,
@@ -195,17 +198,6 @@ class ListCollectorBlock:
             related_answers_blocks[list_id] = serialized_blocks
 
         return related_answers_blocks
-
-    def _get_item_label(self, list_name: str) -> Optional[str]:
-        for item in self._section["summary"].get("items"):
-            if item["for_list"] == list_name and item.get("item_label"):
-
-                return str(item["item_label"])
-
-    def _get_item_anchor_answer_id(self, list_name: str) -> Optional[str]:
-        for item in self._section["summary"].get("items"):
-            if item["for_list"] == list_name and item.get("item_anchor_answer_id"):
-                return f"#{str(item['item_anchor_answer_id'])}"
 
     def get_blocks_for_related_answers(
         self, related_answers: tuple
