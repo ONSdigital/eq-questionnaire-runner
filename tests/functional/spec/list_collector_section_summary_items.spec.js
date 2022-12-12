@@ -51,15 +51,7 @@ describe("List Collector Section Summary Items", () => {
       expect($(companiesListRowItem(3, 2)).getText()).to.contain("789");
       expect($(companiesListRowItem(3, 3)).getText()).to.contain("Yes");
     });
-    it("When I add my own item, Then I should be able to remove that item from the section summary page.", () => {
-      drivingQuestionYes();
-      addCompany("Company A", "123", true);
-      anyMoreCompaniesNo();
-      answerUkBasedQuestion();
-      $(SectionSummaryPage.companiesListRemoveLink(1)).click();
-      expect(browser.getUrl()).to.contain("remove-company/?return_to=section-summary");
-    });
-    it("When I add my own item and make it not on the path, Then the list of answers should not be visible on the section summary.", () => {
+    it("When I remove an item, Then the list of answers should no longer be visible on the section summary.", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
@@ -69,7 +61,7 @@ describe("List Collector Section Summary Items", () => {
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.false;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.false;
     });
-    it("When I remove my own item but list collector is still on the path, Then the placeholder text should be visible on the section summary.", () => {
+    it("When I remove an item but the list collector is still on the path, Then the placeholder text should be visible on the section summary.", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
@@ -78,14 +70,15 @@ describe("List Collector Section Summary Items", () => {
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($("body").getText()).to.contain("No UK company or branch added");
     });
-    it("When I add my own item and relevant data, Then after I answer no on additional items page I should get to the section summary page.", () => {
+    it("When I add an item and relevant data and answer No on the additional items page, Then I should get to the section summary page.", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
       answerUkBasedQuestion();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
+      expect($(SectionSummaryPage.companiesListAddLink()).isExisting()).to.be.true;
     });
-    it("When I add my own item and relevant data, Then after I answer yes on additional items page I should be able to choose an item from the items list and add relevant data about it.", () => {
+    it("When I add an item and relevant data and answer Yes on the additional items page, Then I should be able to and add a new item and relevant data.", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesYes();
@@ -96,7 +89,7 @@ describe("List Collector Section Summary Items", () => {
         "Give details about the company or branch that undertakes general insurance business"
       );
     });
-    it("When I add my own item and relevant data, Then I should be able to edit that item from the section summary page.", () => {
+    it("When I add an item and relevant data, Then I should be able to edit that item from the section summary page.", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
@@ -104,7 +97,7 @@ describe("List Collector Section Summary Items", () => {
       $(SectionSummaryPage.companiesListEditLink(1)).click();
       expect(browser.getUrl()).to.contain("edit-company/?return_to=section-summary");
     });
-    it("When I decide not to add an item and relevant data and I change my answer to yes, Then I should be able to add the item.", () => {
+    it("When no item is added but I change my answer to the driving question to Yes, Then I should be able to add a new item.", () => {
       drivingQuestionNo();
       answerUkBasedQuestion();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
@@ -120,21 +113,26 @@ describe("List Collector Section Summary Items", () => {
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.true;
       expect($(SectionSummaryPage.companiesListAddLink()).isExisting()).to.be.true;
     });
-    it("When I decide to add an item and relevant data and I decide to remove it, Then I should be able to see the item again after I decide to add more items.", () => {
+    it("When I add an item and relevant data but change my answer to the driving question to No, Then I should see the original item on the summary if change the answer back to Yes.", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
       answerUkBasedQuestion();
+      expect($(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
       $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
       drivingQuestionNo();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.false;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.false;
+      expect($("body").getText()).to.not.have.string("No UK company or branch added");
+      expect($(SectionSummaryPage.companiesListAddLink()).isExisting()).to.be.false;
       $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
       drivingQuestionYes();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
+      expect($(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.true;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.true;
+      expect($(SectionSummaryPage.companiesListAddLink()).isExisting()).to.be.true;
     });
   });
 });
