@@ -93,53 +93,40 @@ class Group:
                     ]
                 )
 
-            else:
+            elif block["type"] == "ListCollector":
                 section = schema.get_section(location.section_id)
 
-                summary_item = self.get_summary_item_for_list_for_section_summary(
-                    summary=section.get("summary", {}),
+                summary_item = schema.get_summary_item_for_list_for_section(
+                    section_id=section.get("id"),
                     list_name=block.get("for_list", {}),
                 )
-                if not summary_item:
-                    continue
 
-                if block["type"] in ["ListCollector"]:
-                    list_collector_block = ListCollectorBlock(
-                        routing_path=routing_path,
-                        answer_store=answer_store,
-                        list_store=list_store,
-                        progress_store=progress_store,
-                        metadata=metadata,
-                        response_metadata=response_metadata,
-                        schema=schema,
-                        location=location,
-                        language=language,
-                    )
+                list_collector_block = ListCollectorBlock(
+                    routing_path=routing_path,
+                    answer_store=answer_store,
+                    list_store=list_store,
+                    progress_store=progress_store,
+                    metadata=metadata,
+                    response_metadata=response_metadata,
+                    schema=schema,
+                    location=location,
+                    language=language,
+                )
 
-                    list_summary_element = list_collector_block.list_summary_element(
-                        summary_item
-                    )
-                    blocks.extend([list_summary_element])
-                    self.links["add_link"] = Link(
-                        target="_self",
-                        text=list_summary_element["add_link_text"],
-                        url=list_summary_element["add_link"],
-                        attributes={"data-qa": "add-item-link"},
-                    )
+                list_summary_element = list_collector_block.list_summary_element(
+                    summary_item
+                )
+                blocks.extend([list_summary_element])
+                self.links["add_link"] = Link(
+                    target="_self",
+                    text=list_summary_element["add_link_text"],
+                    url=list_summary_element["add_link"],
+                    attributes={"data-qa": "add-item-link"},
+                )
 
-                    self.placeholder_text = list_summary_element["empty_list_text"]
+                self.placeholder_text = list_summary_element["empty_list_text"]
 
         return blocks
-
-    @staticmethod
-    def get_summary_item_for_list_for_section_summary(*, summary, list_name):
-        if summary_items := summary.get("items"):
-            for summary_item in summary_items:
-                if (
-                    summary_item["type"] == "List"
-                    and summary_item["for_list"] == list_name
-                ):
-                    return summary_item
 
     def serialize(self):
         return self.placeholder_renderer.render(
