@@ -304,23 +304,26 @@
         },
         {
             "id": "section-household",
-            "title": "Household",
+            "title": "Household Section",
             "summary": {
                 "show_on_completion": true,
                 "items": [
                     {
                         "type": "List",
                         "for_list": "people",
-                        "title": "Household members",
+                        "title": "Who lives here",
+                        "item_anchor_answer_id": "add-question-people",
+                        "item_label": "Name of householder",
                         "add_link_text": "Add someone to this household",
                         "empty_list_text": "There are no householders"
                     }
-                ]
+                ],
+                "show_non_item_answers": true
             },
             "groups": [
                 {
                     "id": "group-household",
-                    "title": "List",
+                    "title": "Household Questions",
                     "blocks": [
                         {
                             "id": "list-collector",
@@ -458,6 +461,32 @@
                                         }
                                     ]
                                 }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "householder-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "householder-checkbox-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "householder-checkbox-question",
+                                "title": "Are all these people based in the UK?",
+                                "type": "General"
                             }
                         }
                     ]
