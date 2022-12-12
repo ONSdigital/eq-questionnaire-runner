@@ -207,12 +207,12 @@ class ListCollectorBlock:
 
         for answer in related_answers:
             answer_id = answer["identifier"]
-            block = self._schema.get_block_for_answer_id(answer_id)
+            # block is not optional at this point
+            block: Mapping = self._schema.get_block_for_answer_id(answer_id) # type: ignore
 
             block_to_keep = (
-                block["edit_block"]  # type: ignore
-                # block is not optional at this point
-                if block["type"] == "ListCollector"  # type: ignore
+                block["edit_block"]
+                if block["type"] == "ListCollector"
                 else block
             )
             answers_by_block[block_to_keep].append(answer_id)
