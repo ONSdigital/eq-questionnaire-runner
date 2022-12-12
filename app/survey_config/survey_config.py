@@ -74,10 +74,8 @@ class SurveyConfig:
     ) -> Optional[list[dict]]:
         return None
 
-    def get_data_layer(  # pylint: disable=no-self-use
-        self, tx_id: Optional[str] = None
+    def get_additional_data_layer_context(  # pylint: disable=no-self-use
+        self = None
     ) -> list[dict]:
-        if tx_id:
-            return [{"tx_id": tx_id}]
-
         return []
+
