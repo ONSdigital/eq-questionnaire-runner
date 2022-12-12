@@ -2,10 +2,14 @@
     "_meta": {
         "hash": {
 <<<<<<< HEAD
+<<<<<<< HEAD
             "sha256": "00e3cc658f3f31d7843ba96da258d8455033a27f06c5b4a0ee4980e012f4352d"
 =======
             "sha256": "b5e31efc01f5998dab0a6b21ad9eb9237f9d38a04db8b8f209618220f5844674"
 >>>>>>> 47f0a684 (updated lock file)
+=======
+            "sha256": "1e1d902e9849f6b629d3e7a35ebe187be6d69a5a41244e89d2cda019d3263674"
+>>>>>>> 8c928351 (update piplock file)
         },
         "pipfile-spec": 6,
         "requires": {
