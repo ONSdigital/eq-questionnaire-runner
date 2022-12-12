@@ -49,8 +49,8 @@ class ListCollectorBlock:
 
     # pylint: disable=too-many-locals
     def list_summary_element(
-        self, summary: dict
-    ) -> Mapping[str, Optional[Union[dict, str]]]:
+        self, summary: Mapping
+    ) -> dict[str, Optional[Union[dict, str]]]:
         list_collector_block = None
         (
             edit_block_id,
@@ -137,7 +137,7 @@ class ListCollectorBlock:
         )
 
     def _add_link(
-        self, summary: dict, list_collector_block: Optional[dict[str, dict]]
+        self, summary: Mapping, list_collector_block: Optional[Mapping[str, dict]]
     ) -> Optional[str]:
 
         if list_collector_block:
@@ -148,11 +148,9 @@ class ListCollectorBlock:
                 return_to="section-summary",
             )
 
-        driving_question_block = QuestionnaireSchema.get_driving_question_for_list(
+        if driving_question_block := QuestionnaireSchema.get_driving_question_for_list(
             self._section, summary["for_list"]
-        )
-
-        if driving_question_block:
+        ):
             return url_for(
                 "questionnaire.block",
                 block_id=driving_question_block["id"],

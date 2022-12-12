@@ -312,7 +312,7 @@
                         "type": "List",
                         "for_list": "people",
                         "title": "Who lives here",
-                        "item_anchor_answer_id": "add-question-people",
+                        "item_anchor_answer_id": "first-name",
                         "item_label": "Name of householder",
                         "add_link_text": "Add someone to this household",
                         "empty_list_text": "There are no householders"
