@@ -171,7 +171,7 @@ describe("List Collector", () => {
 
   describe("Given I start a list collector survey and complete to Section Summary", () => {
     beforeEach(() => {
-      browser.openQuestionnaire("test_list_collector_section_summary.json");
+      browser.openQuestionnaire("test_list_collector_list_summary.json");
       $(PrimaryPersonListCollectorPage.yes()).click();
       $(PrimaryPersonListCollectorPage.submit()).click();
       $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Marcus");

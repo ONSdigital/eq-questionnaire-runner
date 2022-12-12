@@ -125,7 +125,7 @@ def test_custom_section(
 
 @pytest.mark.usefixtures("app")
 def test_context_for_section_list_summary(people_answer_store):
-    schema = load_schema_from_name("test_list_collector_section_summary")
+    schema = load_schema_from_name("test_list_collector_list_summary")
 
     summary_context = SectionSummaryContext(
         language=DEFAULT_LANGUAGE_CODE,
@@ -225,7 +225,7 @@ def test_context_for_section_list_summary(people_answer_store):
 
 @pytest.mark.usefixtures("app")
 def test_context_for_section_summary_with_list_summary(companies_answer_store):
-    schema = load_schema_from_name("test_list_collector_list_summary")
+    schema = load_schema_from_name("test_list_collector_section_summary")
 
     summary_context = SectionSummaryContext(
         language=DEFAULT_LANGUAGE_CODE,
@@ -934,7 +934,7 @@ def test_titles_for_repeating_section_summary(people_answer_store):
 
 @pytest.mark.usefixtures("app")
 def test_primary_only_links_for_section_summary(people_answer_store):
-    schema = load_schema_from_name("test_list_collector_section_summary")
+    schema = load_schema_from_name("test_list_collector_list_summary")
 
     summary_context = SectionSummaryContext(
         language=DEFAULT_LANGUAGE_CODE,
@@ -965,7 +965,7 @@ def test_primary_only_links_for_section_summary(people_answer_store):
 
 @pytest.mark.usefixtures("app")
 def test_primary_links_for_section_summary(people_answer_store):
-    schema = load_schema_from_name("test_list_collector_section_summary")
+    schema = load_schema_from_name("test_list_collector_list_summary")
 
     summary_context = SectionSummaryContext(
         language=DEFAULT_LANGUAGE_CODE,
