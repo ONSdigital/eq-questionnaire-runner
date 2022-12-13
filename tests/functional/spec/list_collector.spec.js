@@ -9,15 +9,15 @@ import ListCollectorEditPage from "../generated_pages/list_collector/list-collec
 import ListCollectorRemovePage from "../generated_pages/list_collector/list-collector-remove.page.js";
 import NextInterstitialPage from "../generated_pages/list_collector/next-interstitial.page.js";
 import SummaryPage from "../generated_pages/list_collector/section-summary.page.js";
-import PrimaryPersonListCollectorPage from "../generated_pages/list_collector_section_summary/primary-person-list-collector.page.js";
-import PrimaryPersonListCollectorAddPage from "../generated_pages/list_collector_section_summary/primary-person-list-collector-add.page.js";
-import SectionSummaryListCollectorPage from "../generated_pages/list_collector_section_summary/list-collector.page.js";
-import SectionSummaryListCollectorAddPage from "../generated_pages/list_collector_section_summary/list-collector-add.page.js";
-import SectionSummaryListCollectorEditPage from "../generated_pages/list_collector_section_summary/list-collector-edit.page.js";
-import SectionSummaryListCollectorRemovePage from "../generated_pages/list_collector_section_summary/list-collector-remove.page.js";
-import VisitorListCollectorPage from "../generated_pages/list_collector_section_summary/visitor-list-collector.page.js";
-import VisitorListCollectorAddPage from "../generated_pages/list_collector_section_summary/visitor-list-collector-add.page.js";
-import PeopleListSectionSummaryPage from "../generated_pages/list_collector_section_summary/section-summary.page.js";
+import PrimaryPersonListCollectorPage from "../generated_pages/list_collector_list_summary/primary-person-list-collector.page.js";
+import PrimaryPersonListCollectorAddPage from "../generated_pages/list_collector_list_summary/primary-person-list-collector-add.page.js";
+import SectionSummaryListCollectorPage from "../generated_pages/list_collector_list_summary/list-collector.page.js";
+import SectionSummaryListCollectorAddPage from "../generated_pages/list_collector_list_summary/list-collector-add.page.js";
+import SectionSummaryListCollectorEditPage from "../generated_pages/list_collector_list_summary/list-collector-edit.page.js";
+import SectionSummaryListCollectorRemovePage from "../generated_pages/list_collector_list_summary/list-collector-remove.page.js";
+import VisitorListCollectorPage from "../generated_pages/list_collector_list_summary/visitor-list-collector.page.js";
+import VisitorListCollectorAddPage from "../generated_pages/list_collector_list_summary/visitor-list-collector-add.page.js";
+import PeopleListSectionSummaryPage from "../generated_pages/list_collector_list_summary/section-summary.page.js";
 import { SubmitPage } from "../base_pages/submit.page.js";
 
 describe("List Collector", () => {
