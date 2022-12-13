@@ -39,7 +39,8 @@ class ListCollectorBlock:
         self._list_store = list_store
         self._schema = schema
         self._location = location
-        self._section: dict = self._schema.get_section(self._location.section_id) or {}
+        # type ignore added as section should exist
+        self._section: ImmutableDict = self._schema.get_section(self._location.section_id)  # type: ignore
         self._language = language
         self._answer_store = answer_store
         self._metadata = metadata
@@ -100,6 +101,7 @@ class ListCollectorBlock:
                 primary_person_edit_block_id = edit_block_id = primary_person_block[
                     "add_or_edit_block"
                 ]["id"]
+
         list_summary_context = self.list_context(
             list_collector_block["summary"],
             for_list=list_collector_block["for_list"],
