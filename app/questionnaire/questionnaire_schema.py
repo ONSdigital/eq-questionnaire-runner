@@ -893,7 +893,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self, *, section_id: str, list_name: str
     ) -> Optional[ImmutableDict]:
         if summary := self.get_summary_for_section(section_id):
-            for item in summary.get("items", {}):
+            for item in summary.get("items", []):
                 if item.get("for_list") == list_name:
                     return item  # type: ignore
 
