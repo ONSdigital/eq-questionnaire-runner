@@ -90,9 +90,7 @@ class ListCollectorBlock:
             remove_block_id = list_collector_block["remove_block"]["id"]
             add_link = self._add_link(summary, list_collector_block)
             related_answers = self._get_related_answers(current_list)
-            item_anchor = self._schema.get_item_anchor_answer_id(
-                section_id, current_list.name
-            )
+            item_anchor = self._schema.get_item_anchor(section_id, current_list.name)
             item_label = self._schema.get_item_label(section_id, current_list.name)
 
         if len(current_list) == 1 and current_list.primary_person:

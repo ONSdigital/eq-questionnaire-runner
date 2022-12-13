@@ -912,9 +912,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
                     return str(item["item_label"])
 
-    def get_item_anchor_answer_id(
-        self, section_id: str, list_name: str
-    ) -> Optional[str]:
+    def get_item_anchor(self, section_id: str, list_name: str) -> Optional[str]:
         if summary := self.get_summary_for_section(section_id):
             for item in summary.get("items", []):
                 if item["for_list"] == list_name and item.get("item_anchor_answer_id"):
