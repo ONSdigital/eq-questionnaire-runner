@@ -72,6 +72,6 @@ class SurveyConfig:
         return None
 
     def get_additional_data_layer_context(  # pylint: disable=no-self-use
-        self=None,
+        self,
     ) -> list[dict]:
         return []
