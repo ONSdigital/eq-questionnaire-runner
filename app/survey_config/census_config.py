@@ -24,7 +24,7 @@ class CensusSurveyConfig(
     sign_out_button_text: str = lazy_gettext("Save and complete later")
     _is_nisra: bool = False
 
-    def get_additional_data_layer_context(self) -> list[dict]:
+    def get_additional_data_layer_context(self=None) -> list[dict]:
         return [{"nisra": self._is_nisra}]
 
     def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
