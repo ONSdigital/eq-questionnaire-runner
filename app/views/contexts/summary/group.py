@@ -97,8 +97,8 @@ class Group:
                 section = schema.get_section(location.section_id)
 
                 if summary_item := schema.get_summary_item_for_list_for_section(
-                    section_id=section.get("id"),
-                    list_name=block.get("for_list", {}),
+                    section_id=section["id"],
+                    list_name=block["for_list"],
                 ):
                     list_collector_block = ListCollectorBlock(
                         routing_path=routing_path,
