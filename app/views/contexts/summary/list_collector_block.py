@@ -10,7 +10,7 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.routing_path import RoutingPath
-from app.views import contexts
+from app.views.contexts.list_context import ListContext
 from app.views.contexts.summary.block import Block
 
 
@@ -125,9 +125,8 @@ class ListCollectorBlock:
         }
 
     @property
-    def list_context(self):  # type: ignore
-        # Ignore return type due to circular import warning in tests
-        return contexts.ListContext(
+    def list_context(self) -> ListContext:
+        return ListContext(
             self._language,
             self._schema,
             self._answer_store,
