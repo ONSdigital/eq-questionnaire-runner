@@ -27,6 +27,7 @@ from app.utilities.schema import load_schema_from_metadata
 
 DATA_LAYER_KEYS = {"title", "survey_id", "form_type"}
 
+
 class ContextHelper:
     def __init__(
         self,
@@ -113,9 +114,15 @@ class ContextHelper:
     def data_layer_context(
         self,
     ) -> list[dict]:
-        tx_id_context = {"tx_id": metadata.tx_id} if (metadata := get_metadata(current_user)) else None
+        tx_id_context = (
+            {"tx_id": metadata.tx_id}
+            if (metadata := get_metadata(current_user))
+            else None
+        )
         additional_context = self._survey_config.get_additional_data_layer_context()
-        schema_context = {key: value for key in DATA_LAYER_KEYS if (value := cookie_session.get(key))}
+        schema_context = {
+            key: value for key in DATA_LAYER_KEYS if (value := cookie_session.get(key))
+        }
         context = [*additional_context, schema_context]
         if tx_id_context:
             context.append(tx_id_context)

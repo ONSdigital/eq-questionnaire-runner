@@ -25,9 +25,7 @@ class CensusSurveyConfig(
     _is_nisra: bool = False
 
     def get_additional_data_layer_context(self) -> list[dict]:
-        return [
-            {"nisra": self._is_nisra}
-        ]
+        return [{"nisra": self._is_nisra}]
 
     def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
         links = [
