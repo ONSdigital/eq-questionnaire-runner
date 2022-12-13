@@ -20,15 +20,6 @@ class SocialSurveyConfig(
     def __post_init__(self):
         super().__post_init__()
 
-        if self.schema:
-            self.data_layer: list[dict] = [
-                {
-                    key: self.schema.json[key]
-                    for key in ["survey_id", "title"]
-                    if key in self.schema.json
-                }
-            ]
-
         upstream_base_url = f"{self.base_url}/{self.language_code}"
         ons_url = ONS_URL_CY if self.language_code == "cy" else ONS_URL
 

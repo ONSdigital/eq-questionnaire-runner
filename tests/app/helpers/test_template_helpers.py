@@ -773,8 +773,22 @@ def test_correct_survey_title_in_context(
             ),
             [{"form_type": "test", "survey_id": "001", "title": "test_title"}],
         ),
-        (SurveyType.HEALTH, "en", QuestionnaireSchema({"survey_id": "001"}), []),
-        (SurveyType.SOCIAL, "en", QuestionnaireSchema({"survey_id": "001"}), []),
+        (
+            SurveyType.HEALTH,
+            "en",
+            QuestionnaireSchema(
+                {"survey_id": "001", "form_type": "test", "title": "test_title"}
+            ),
+            [{"form_type": "test", "survey_id": "001", "title": "test_title"}],
+        ),
+        (
+            SurveyType.SOCIAL,
+            "en",
+            QuestionnaireSchema(
+                {"survey_id": "001", "form_type": "test", "title": "test_title"}
+            ),
+            [{"form_type": "test", "survey_id": "001", "title": "test_title"}],
+        ),
         (
             SurveyType.NORTHERN_IRELAND,
             "en",

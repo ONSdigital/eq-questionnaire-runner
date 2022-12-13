@@ -111,18 +111,6 @@ class BusinessSurveyConfig(SurveyConfig):
 
         return None
 
-    def get_data_layer(self, tx_id: Optional[str] = None) -> list[dict]:
-        data_layer = [{"tx_id": tx_id}] if tx_id else []
-        if self.schema:
-            data_layer.append(
-                {
-                    key: self.schema.json[key]
-                    for key in ["form_type", "survey_id", "title"]
-                    if key in self.schema.json
-                }
-            )
-        return data_layer
-
     @property
     def _stripped_base_url(self) -> str:
         warn(
