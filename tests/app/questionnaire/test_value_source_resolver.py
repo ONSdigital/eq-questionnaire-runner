@@ -586,6 +586,57 @@ def test_new_calculated_summary_value_source(mocker, list_item_id):
 
 
 @pytest.mark.parametrize(
+    "list_item_id",
+    [None, "item-1"],
+)
+def test_new_calculated_summary_nested_value_source(mocker, list_item_id):
+    schema = mocker.MagicMock()
+    schema.get_block = Mock(
+        return_value={
+            "id": "number-total",
+            "type": "CalculatedSummary",
+            "calculation": {
+                "operation": {
+                    "+": [
+                        {"+": [{"source": "answers", "identifier": "number-answer-1"}]},
+                        {"+": [{"source": "answers", "identifier": "number-answer-2"}]},
+                    ]
+                }
+            },
+        },
+    )
+
+    if list_item_id:
+        location = Location(
+            section_id="test-section", block_id="test-block", list_item_id="item-1"
+        )
+    else:
+        location = None
+
+    value_source_resolver = get_value_source_resolver(
+        answer_store=AnswerStore(
+            [
+                AnswerDict(
+                    answer_id="number-answer-1", value=10, list_item_id=list_item_id
+                ),
+                AnswerDict(
+                    answer_id="number-answer-2", value=5, list_item_id=list_item_id
+                ),
+            ]
+        ),
+        schema=schema,
+        list_item_id=list_item_id,
+        location=location,
+    )
+    assert (
+        value_source_resolver.resolve(
+            {"source": "calculated_summary", "identifier": "number-total"}
+        )
+        == 15
+    )
+
+
+@pytest.mark.parametrize(
     "answer_value, escaped_value",
     [
         (HTML_CONTENT, ESCAPED_CONTENT),
