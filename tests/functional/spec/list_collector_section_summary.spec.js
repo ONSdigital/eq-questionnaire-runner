@@ -58,6 +58,7 @@ describe("List Collector Section Summary Items", () => {
       answerUkBasedQuestion();
       removeFirstCompany();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
+      expect($("body").getText()).to.not.have.string("Company A");
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.false;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.false;
     });
@@ -69,6 +70,18 @@ describe("List Collector Section Summary Items", () => {
       removeFirstCompany();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($("body").getText()).to.contain("No UK company or branch added");
+    });
+    it("When I have multiple items in the list and I remove the first item, Then only the item that was not deleted should be visible on the section summary.", () => {
+      drivingQuestionYes();
+      addCompany("Company A", "123", true);
+      anyMoreCompaniesYes();
+      addCompany("Company B", "234", true);
+      anyMoreCompaniesNo();
+      answerUkBasedQuestion();
+      removeFirstCompany();
+      expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
+      expect($("body").getText()).to.not.have.string("Company A");
+      expect($("body").getText()).to.contain("Company B");
     });
     it("When I add an item and relevant data and answer No on the additional items page, Then I should get to the section summary page.", () => {
       drivingQuestionYes();
