@@ -150,17 +150,17 @@ describe("List Collector Section Summary Items", () => {
   });
 });
 
-function drivingQuestionYes() {
+const drivingQuestionYes = () => {
   $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
   $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
-}
+};
 
-function drivingQuestionNo() {
+const drivingQuestionNo = () => {
   $(AnyCompaniesOrBranchesDrivingQuestionPage.no()).click();
   $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
-}
+};
 
-function addCompany(name, number, authorised) {
+const addCompany = (name, number, authorised) => {
   $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue(name);
   $(AnyCompaniesOrBranchesAddPage.registrationNumber()).setValue(number);
   if (authorised) {
@@ -169,33 +169,33 @@ function addCompany(name, number, authorised) {
     $(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioNo()).click();
   }
   $(AnyCompaniesOrBranchesAddPage.submit()).click();
-}
+};
 
-function anyMoreCompaniesYes() {
+const anyMoreCompaniesYes = () => {
   $(AnyCompaniesOrBranchesPage.yes()).click();
   $(AnyCompaniesOrBranchesPage.submit()).click();
-}
+};
 
-function anyMoreCompaniesNo() {
+const anyMoreCompaniesNo = () => {
   $(AnyCompaniesOrBranchesPage.no()).click();
   $(AnyCompaniesOrBranchesPage.submit()).click();
-}
+};
 
-function removeFirstCompany() {
+const removeFirstCompany = () => {
   $(SectionSummaryPage.companiesListRemoveLink(1)).click();
   $(AnyCompaniesOrBranchesRemovePage.yes()).click();
   $(AnyCompaniesOrBranchesRemovePage.submit()).click();
-}
+};
 
-function answerUkBasedQuestion() {
+const answerUkBasedQuestion = () => {
   $(UkBasedPage.yes()).click();
   $(UkBasedPage.submit()).click();
-}
+};
 
-function companiesListRowItem(row, index) {
+const companiesListRowItem = (row, index) => {
   return `#group-companies-1 .ons-summary__items .ons-summary__item:nth-of-type(${row}) .ons-summary__row:nth-of-type(${index})`;
-}
+};
 
-function companiesListRowItemAnchor(index) {
+const companiesListRowItemAnchor = (index) => {
   return `#group-companies-1 .ons-summary__items .ons-summary__item .ons-summary__row:nth-of-type(${index}) a`;
-}
+};
