@@ -107,8 +107,10 @@ describe("List Collector Section Summary Items", () => {
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
       answerUkBasedQuestion();
+      expect($(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
       $(SectionSummaryPage.companiesListEditLink(1)).click();
       expect(browser.getUrl()).to.contain("edit-company/?return_to=section-summary");
+      expect($(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).getValue()).to.equal("Company A");
     });
     it("When no item is added but I change my answer to the driving question to Yes, Then I should be able to add a new item.", () => {
       drivingQuestionNo();
