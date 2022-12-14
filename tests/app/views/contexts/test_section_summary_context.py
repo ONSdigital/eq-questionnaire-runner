@@ -158,7 +158,7 @@ def test_context_for_section_list_summary(people_answer_store):
             "custom_summary": [
                 {
                     "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
-                    "add_link_text": "Add someone to this " "household",
+                    "add_link_text": "Add someone to this household",
                     "item_anchor": None,
                     "item_label": None,
                     "empty_list_text": "There are no householders",
@@ -190,7 +190,7 @@ def test_context_for_section_list_summary(people_answer_store):
                 },
                 {
                     "add_link": "/questionnaire/visitors/add-visitor/?return_to=section-summary",
-                    "add_link_text": "Add another visitor to this " "household",
+                    "add_link_text": "Add another visitor to this household",
                     "item_anchor": None,
                     "item_label": None,
                     "empty_list_text": "There are no visitors",
@@ -264,10 +264,10 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                     "blocks": [
                         {
                             "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
-                            "add_link_text": "Add another UK company " "or branch",
-                            "empty_list_text": "No UK company or " "branch added",
+                            "add_link_text": "Add another UK company or branch",
+                            "empty_list_text": "No UK company or branch added",
                             "item_anchor": "#company-or-branch-name",
-                            "item_label": "Name of UK company or " "branch",
+                            "item_label": "Name of UK company or branch",
                             "list": {
                                 "editable": True,
                                 "list_items": [
@@ -298,7 +298,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                                 {
                                                     "currency": None,
                                                     "id": "registration-number",
-                                                    "label": "Registration " "number",
+                                                    "label": "Registration number",
                                                     "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=regist"
                                                     "ration-number#registration-number",
                                                     "type": "number",
@@ -338,7 +338,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                                 {
                                                     "currency": None,
                                                     "id": "registration-number",
-                                                    "label": "Registration " "number",
+                                                    "label": "Registration number",
                                                     "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=regist"
                                                     "ration-number#registration-number",
                                                     "type": "number",
@@ -791,7 +791,7 @@ def test_context_for_driving_question_summary_empty_list():
             "custom_summary": [
                 {
                     "add_link": "/questionnaire/anyone-usually-live-at/?return_to=section-summary",
-                    "add_link_text": "Add someone to this " "household",
+                    "add_link_text": "Add someone to this household",
                     "item_anchor": None,
                     "item_label": None,
                     "empty_list_text": "There are no householders",
@@ -847,7 +847,7 @@ def test_context_for_driving_question_summary():
             "custom_summary": [
                 {
                     "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
-                    "add_link_text": "Add someone to this " "household",
+                    "add_link_text": "Add someone to this household",
                     "item_anchor": None,
                     "item_label": None,
                     "empty_list_text": "There are no householders",

@@ -522,7 +522,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                 {
                     "actions": [
                         {
-                            "ariaLabel": "edit_link_aria_label Registration " "number",
+                            "ariaLabel": "edit_link_aria_label Registration number",
                             "attributes": {
                                 "data-ga": "click",
                                 "data-ga-action": "Edit click",
