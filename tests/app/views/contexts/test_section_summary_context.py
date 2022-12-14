@@ -167,14 +167,14 @@ def test_context_for_section_list_summary(people_answer_store):
                         "list_items": [
                             {
                                 "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=section-summary",
-                                "item_title": "Toni " "Morrison",
+                                "item_title": "Toni Morrison",
                                 "list_item_id": "PlwgoG",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=section-summary",
                             },
                             {
                                 "edit_link": "/questionnaire/people/UHPLbX/edit-person/?return_to=section-summary",
-                                "item_title": "Barry " "Pheloung",
+                                "item_title": "Barry Pheloung",
                                 "list_item_id": "UHPLbX",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/people/UHPLbX/remove-person/?return_to=section-summary",
@@ -273,14 +273,14 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                 "list_items": [
                                     {
                                         "edit_link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary",
-                                        "item_title": "company " "a",
+                                        "item_title": "company a",
                                         "list_item_id": "PlwgoG",
                                         "primary_person": False,
                                         "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
                                     },
                                     {
                                         "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
-                                        "item_title": "company " "b",
+                                        "item_title": "company b",
                                         "list_item_id": "UHPLbX",
                                         "primary_person": False,
                                         "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
@@ -856,7 +856,7 @@ def test_context_for_driving_question_summary():
                         "list_items": [
                             {
                                 "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=section-summary",
-                                "item_title": "Toni " "Morrison",
+                                "item_title": "Toni Morrison",
                                 "list_item_id": "PlwgoG",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=section-summary",
