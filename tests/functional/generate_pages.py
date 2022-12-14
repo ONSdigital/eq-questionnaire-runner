@@ -7,6 +7,7 @@ import os
 import re
 from string import Template
 
+from app.questionnaire import QuestionnaireSchema
 from app.utilities.json import json_loads
 
 logger = logging.getLogger(__name__)
@@ -813,16 +814,11 @@ def process_block(
                 process_guidance(context, page_spec)
 
         elif block["type"] == "CalculatedSummary":
-            if block["calculation"].get("answers_to_calculate"):
-                process_calculated_summary(
-                    block["calculation"]["answers_to_calculate"], page_spec
-                )
-            else:
-                answer_ids_for_block = [
-                    value["identifier"]
-                    for value in block["calculation"]["operation"]["+"]
-                ]
-                process_calculated_summary(answer_ids_for_block, page_spec)
+            questionnaire_schema = QuestionnaireSchema(block)
+            answer_ids_for_block = (
+                questionnaire_schema.get_calculated_summary_answer_ids(block)
+            )
+            process_calculated_summary(answer_ids_for_block, page_spec)
         elif block["type"] == "Interstitial":
             has_definition = False
             if "content_variants" in block:
