@@ -70,7 +70,7 @@ class CalculatedSummaryContext(Context):
         )
 
         collapsible = block.get("collapsible") or False
-        block_title = block.get("title")
+        block_title = block["title"]
 
         return {
             "summary": {
@@ -79,9 +79,7 @@ class CalculatedSummaryContext(Context):
                 "calculated_question": self._get_calculated_question(
                     calculation, formatted_total
                 ),
-                "title": block_title % dict(total=formatted_total)
-                if block_title
-                else None,
+                "title": block_title % dict(total=formatted_total),
                 "collapsible": collapsible,
                 "summary_type": "CalculatedSummary",
             }
@@ -91,41 +89,40 @@ class CalculatedSummaryContext(Context):
         self, rendered_block: ImmutableDict, current_location: Location
     ) -> Mapping:
         """Build up the list of blocks only including blocks / questions / answers which are relevant to the summary"""
-        if (block_id := current_location.block_id) and (
-            group := self._schema.get_group_for_block_id(block_id)
-        ):
-            section_id = self._schema.get_section_id_for_block_id(block_id)
+        # type ignores added as block will exist at this point
+        block_id: str = current_location.block_id  # type: ignore
+        group: ImmutableDict = self._schema.get_group_for_block_id(block_id)  # type: ignore
 
-            blocks = []
-            if rendered_block["calculation"].get("answers_to_calculate"):
-                answers_to_calculate = rendered_block["calculation"][
-                    "answers_to_calculate"
-                ]
-            else:
-                answers_to_calculate = self._schema.get_calculated_summary_answer_ids(
-                    rendered_block
-                )
+        section_id = self._schema.get_section_id_for_block_id(block_id)
 
-            blocks_to_calculate = [
-                self._schema.get_block_for_answer_id(answer_id)
-                for answer_id in answers_to_calculate
-            ]
-
-            unique_blocks = list(
-                {block["id"]: block for block in blocks_to_calculate if block}.values()
+        blocks = []
+        if rendered_block["calculation"].get("answers_to_calculate"):
+            answers_to_calculate = rendered_block["calculation"]["answers_to_calculate"]
+        else:
+            answers_to_calculate = self._schema.get_calculated_summary_answer_ids(
+                rendered_block
             )
 
-            for block in unique_blocks:
-                if block and QuestionnaireSchema.is_question_block_type(block["type"]):
-                    transformed_block = self._remove_unwanted_questions_answers(
-                        block, answers_to_calculate, current_location=current_location
-                    )
-                    if set(get_answer_ids_in_block(transformed_block)) & set(
-                        answers_to_calculate
-                    ):
-                        blocks.append(transformed_block)
+        blocks_to_calculate = [
+            self._schema.get_block_for_answer_id(answer_id)
+            for answer_id in answers_to_calculate
+        ]
 
-            return {"id": section_id, "groups": [{"id": group["id"], "blocks": blocks}]}
+        unique_blocks = list(
+            {block["id"]: block for block in blocks_to_calculate if block}.values()
+        )
+
+        for block in unique_blocks:
+            if block and QuestionnaireSchema.is_question_block_type(block["type"]):
+                transformed_block = self._remove_unwanted_questions_answers(
+                    block, answers_to_calculate, current_location=current_location
+                )
+                if set(get_answer_ids_in_block(transformed_block)) & set(
+                    answers_to_calculate
+                ):
+                    blocks.append(transformed_block)
+
+        return {"id": section_id, "groups": [{"id": group["id"], "blocks": blocks}]}
 
     def _remove_unwanted_questions_answers(
         self, block, answer_ids_to_keep, current_location
