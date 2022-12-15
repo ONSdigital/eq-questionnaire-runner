@@ -1,4 +1,3 @@
-import ProxyBlockPage from "../../generated_pages/new_calculated_summary_repeating_section/proxy.page.js";
 import FirstNumberBlockPage from "../../generated_pages/new_calculated_summary_repeating_section/first-number-block.page.js";
 import SecondNumberBlockPage from "../../generated_pages/new_calculated_summary_repeating_section/second-number-block.page.js";
 import ThirdNumberBlockPage from "../../generated_pages/new_calculated_summary_repeating_section/third-number-block.page.js";
@@ -35,9 +34,6 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       $(ListCollectorPage.no()).click();
       $(ListCollectorPage.submit()).click();
       $(HubPage.submit()).click();
-
-      $(ProxyBlockPage.yes()).click();
-      $(ProxyBlockPage.submit()).click();
 
       $(FirstNumberBlockPage.firstNumber()).setValue(1.23);
       $(FirstNumberBlockPage.submit()).click();

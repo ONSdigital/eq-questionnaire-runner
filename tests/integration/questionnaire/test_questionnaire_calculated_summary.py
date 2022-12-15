@@ -80,7 +80,6 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
     def test_new_calculated_summary_repeating_section(self):
         self.launchSurvey("test_new_calculated_summary_repeating_section")
         self._add_list_items()
-        self.post({"proxy-answer": "No, I'm answering for myself"})
         self.post()
 
         self._complete_calculated_summary_path_with_skip()
@@ -92,7 +91,6 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
     def test_new_calculated_summary_no_skip_repeating_section(self):
         self.launchSurvey("test_new_calculated_summary_repeating_section")
         self._add_list_items()
-        self.post({"proxy-answer": "No, I'm answering for myself"})
         self.post()
 
         self._complete_calculated_summary_path_no_skip()
