@@ -296,17 +296,17 @@
                                 },
                                 "title": "Grand total of previous values"
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
                                         {
-                                            "id": "skip-fourth-block-answer",
-                                            "condition": "equals",
-                                            "value": "No"
-                                        }
+                                            "identifier": "skip-fourth-block-answer",
+                                            "source": "answers"
+                                        },
+                                        "No"
                                     ]
                                 }
-                            ]
+                            }
                         },
                         {
                             "type": "CalculatedSummary",
