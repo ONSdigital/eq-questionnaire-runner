@@ -102,14 +102,9 @@ class CalculatedSummaryContext(Context):
                     "answers_to_calculate"
                 ]
             else:
-                calculated_summary_value_sources = rendered_block["calculation"][
-                    "operation"
-                ]["+"]
-                answers_to_calculate = [
-                    value["identifier"]
-                    for value in calculated_summary_value_sources
-                    if value["source"] == "answers"
-                ]
+                answers_to_calculate = self._schema.get_calculated_summary_answer_ids(
+                    rendered_block
+                )
 
             blocks_to_calculate = [
                 self._schema.get_block_for_answer_id(answer_id)
