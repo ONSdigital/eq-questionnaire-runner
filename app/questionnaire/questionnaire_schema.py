@@ -896,8 +896,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return rules_section_dependencies
 
     def get_calculated_summary_answer_ids(
-        self, calculated_summary_block: Mapping
-    ) -> list:
+        self, calculated_summary_block: Mapping[str, Any]
+    ) -> list[str]:
         if calculated_summary_block["calculation"].get("answers_to_calculate"):
             return calculated_summary_block["calculation"]["answers_to_calculate"]  # type: ignore
 
