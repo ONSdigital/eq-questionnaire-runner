@@ -103,17 +103,17 @@ class CalculatedSummaryContext(Context):
                 rendered_block
             )
 
-        blocks_to_calculate = [
+        blocks_to_calculate: list = [
             self._schema.get_block_for_answer_id(answer_id)
             for answer_id in answers_to_calculate
         ]
 
         unique_blocks = list(
-            {block["id"]: block for block in blocks_to_calculate if block}.values()
+            {block["id"]: block for block in blocks_to_calculate}.values()
         )
 
         for block in unique_blocks:
-            if block and QuestionnaireSchema.is_question_block_type(block["type"]):
+            if QuestionnaireSchema.is_question_block_type(block["type"]):
                 transformed_block = self._remove_unwanted_questions_answers(
                     block, answers_to_calculate, current_location=current_location
                 )
