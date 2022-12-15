@@ -555,18 +555,23 @@ def test_new_calculated_summary_value_source(mocker, list_item_id):
         },
     )
 
-    if list_item_id:
-        location = Location(
+    location = (
+        Location(
             section_id="test-section", block_id="test-block", list_item_id="item-1"
         )
-    else:
-        location = None
+        if list_item_id
+        else Location(
+            section_id="test-section", block_id="test-block", list_item_id=None
+        )
+    )
 
     value_source_resolver = get_value_source_resolver(
         answer_store=AnswerStore(
             [
                 AnswerDict(
-                    answer_id="number-answer-1", value=10, list_item_id=list_item_id
+                    answer_id="number-answer-1",
+                    value=10,
+                    list_item_id=location.list_item_id,
                 ),
                 AnswerDict(
                     answer_id="number-answer-2", value=5, list_item_id=list_item_id
@@ -611,12 +616,15 @@ def test_new_calculated_summary_nested_value_source(mocker, list_item_id):
         },
     )
 
-    if list_item_id:
-        location = Location(
+    location = (
+        Location(
             section_id="test-section", block_id="test-block", list_item_id="item-1"
         )
-    else:
-        location = None
+        if list_item_id
+        else Location(
+            section_id="test-section", block_id="test-block", list_item_id=None
+        )
+    )
 
     value_source_resolver = get_value_source_resolver(
         answer_store=AnswerStore(
