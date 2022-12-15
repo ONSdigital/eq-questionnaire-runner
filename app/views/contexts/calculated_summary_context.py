@@ -46,47 +46,46 @@ class CalculatedSummaryContext(Context):
     def build_view_context_for_calculated_summary(
         self, current_location: Location
     ) -> Mapping:
-        if (block_id := current_location.block_id) and (
-            block := self._schema.get_block(block_id)
-        ):
-            return_to_block_id = block["id"]
+        # type ignores added as block will exist at this point
+        block_id: str = current_location.block_id  # type: ignore
+        block: ImmutableDict = self._schema.get_block(block_id)  # type: ignore
 
-            calculated_section = self._build_calculated_summary_section(
-                block, current_location
+        calculated_section = self._build_calculated_summary_section(
+            block, current_location
+        )
+        calculation = block["calculation"]
+
+        groups = self.build_groups_for_section(
+            calculated_section, block_id, current_location
+        )
+
+        formatted_total = self._get_formatted_total(
+            groups or [],
+            current_location=current_location,
+            calculation=ValueSourceResolver.get_calculation_operator(
+                calculation["calculation_type"]
             )
-            calculation = block["calculation"]
+            if calculation.get("answers_to_calculate")
+            else calculation["operation"],
+        )
 
-            groups = self.build_groups_for_section(
-                calculated_section, return_to_block_id, current_location
-            )
+        collapsible = block.get("collapsible") or False
+        block_title = block.get("title")
 
-            formatted_total = self._get_formatted_total(
-                groups or [],
-                current_location=current_location,
-                calculation=ValueSourceResolver.get_calculation_operator(
-                    calculation["calculation_type"]
-                )
-                if calculation.get("answers_to_calculate")
-                else calculation["operation"],
-            )
-
-            collapsible = block.get("collapsible") or False
-            block_title = block.get("title")
-
-            return {
-                "summary": {
-                    "groups": groups,
-                    "answers_are_editable": True,
-                    "calculated_question": self._get_calculated_question(
-                        calculation, formatted_total
-                    ),
-                    "title": block_title % dict(total=formatted_total)
-                    if block_title
-                    else None,
-                    "collapsible": collapsible,
-                    "summary_type": "CalculatedSummary",
-                }
+        return {
+            "summary": {
+                "groups": groups,
+                "answers_are_editable": True,
+                "calculated_question": self._get_calculated_question(
+                    calculation, formatted_total
+                ),
+                "title": block_title % dict(total=formatted_total)
+                if block_title
+                else None,
+                "collapsible": collapsible,
+                "summary_type": "CalculatedSummary",
             }
+        }
 
     def _build_calculated_summary_section(
         self, rendered_block: ImmutableDict, current_location: Location
