@@ -598,8 +598,8 @@ def test_new_calculated_summary_nested_value_source(mocker, list_item_id):
             "calculation": {
                 "operation": {
                     "+": [
-                        {"+": [{"source": "answers", "identifier": "number-answer-1"}]},
-                        {"+": [{"source": "answers", "identifier": "number-answer-2"}]},
+                        {"+": [{"source": "answers", "identifier": "number-answer-1"}, {"source": "answers", "identifier": "number-answer-2"}]},
+                        {"source": "answers", "identifier": "number-answer-3"},
                     ]
                 }
             },
