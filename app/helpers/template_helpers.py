@@ -158,7 +158,7 @@ def survey_config_mapping(
     *, theme: SurveyType, language: str, base_url: str, schema: QuestionnaireSchema
 ) -> SurveyConfig:
     survey_type_to_config: dict[SurveyType, Type[SurveyConfig]] = {
-        SurveyType.DEFAULT: BusinessSurveyConfig,
+        SurveyType.DEFAULT: SocialSurveyConfig,
         SurveyType.BUSINESS: BusinessSurveyConfig,
         SurveyType.HEALTH: SocialSurveyConfig,
         SurveyType.SOCIAL: SocialSurveyConfig,
