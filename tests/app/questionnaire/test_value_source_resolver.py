@@ -555,14 +555,8 @@ def test_new_calculated_summary_value_source(mocker, list_item_id):
         },
     )
 
-    location = (
-        Location(
-            section_id="test-section", block_id="test-block", list_item_id="item-1"
-        )
-        if list_item_id
-        else Location(
-            section_id="test-section", block_id="test-block", list_item_id=None
-        )
+    location = Location(
+        section_id="test-section", block_id="test-block", list_item_id=list_item_id
     )
 
     value_source_resolver = get_value_source_resolver(
@@ -616,14 +610,8 @@ def test_new_calculated_summary_nested_value_source(mocker, list_item_id):
         },
     )
 
-    location = (
-        Location(
-            section_id="test-section", block_id="test-block", list_item_id="item-1"
-        )
-        if list_item_id
-        else Location(
-            section_id="test-section", block_id="test-block", list_item_id=None
-        )
+    location = Location(
+        section_id="test-section", block_id="test-block", list_item_id=list_item_id
     )
 
     value_source_resolver = get_value_source_resolver(
