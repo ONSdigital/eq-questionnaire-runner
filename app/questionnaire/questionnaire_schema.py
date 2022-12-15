@@ -899,20 +899,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self, calculated_summary_block: Mapping
     ) -> list:
         if calculated_summary_block["calculation"].get("answers_to_calculate"):
-            calculated_summary_answer_ids: list = calculated_summary_block[
-                "calculation"
-            ]["answers_to_calculate"]
-        else:
-            values = self._get_values_for_key(
-                calculated_summary_block["calculation"]["operation"], "+"
-            )
+            return calculated_summary_block["calculation"]["answers_to_calculate"]  # type: ignore
 
-            calculated_summary_answer_ids = []
-            for value_sources in values:
-                calculated_summary_answer_ids.extend(
-                    value_source["identifier"]
-                    for value_source in value_sources
-                    if value_source["source"] == "answers"
-                )
+        values = self._get_dictionaries_with_key(
+            "source", calculated_summary_block["calculation"]["operation"]
+        )
 
-        return calculated_summary_answer_ids
+        return [value["identifier"] for value in values if value["source"] == "answers"]

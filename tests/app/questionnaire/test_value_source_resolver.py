@@ -598,7 +598,12 @@ def test_new_calculated_summary_nested_value_source(mocker, list_item_id):
             "calculation": {
                 "operation": {
                     "+": [
-                        {"+": [{"source": "answers", "identifier": "number-answer-1"}, {"source": "answers", "identifier": "number-answer-2"}]},
+                        {
+                            "+": [
+                                {"source": "answers", "identifier": "number-answer-1"},
+                                {"source": "answers", "identifier": "number-answer-2"},
+                            ]
+                        },
                         {"source": "answers", "identifier": "number-answer-3"},
                     ]
                 }
@@ -622,6 +627,9 @@ def test_new_calculated_summary_nested_value_source(mocker, list_item_id):
                 AnswerDict(
                     answer_id="number-answer-2", value=5, list_item_id=list_item_id
                 ),
+                AnswerDict(
+                    answer_id="number-answer-3", value=5, list_item_id=list_item_id
+                ),
             ]
         ),
         schema=schema,
@@ -632,7 +640,7 @@ def test_new_calculated_summary_nested_value_source(mocker, list_item_id):
         value_source_resolver.resolve(
             {"source": "calculated_summary", "identifier": "number-total"}
         )
-        == 15
+        == 20
     )
 
 
