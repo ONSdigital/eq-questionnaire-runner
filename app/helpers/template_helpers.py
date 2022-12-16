@@ -50,7 +50,6 @@ class ContextHelper:
         )
         self._survey_type = cookie_session.get("theme")
 
-
     @property
     def context(self) -> dict[str, Any]:
         context = {
@@ -150,7 +149,6 @@ class ContextHelper:
             ).format(sign_out_url=self._sign_out_url)
 
             return footer_warning
-    
 
 
 @lru_cache
@@ -237,7 +235,8 @@ def get_survey_type() -> SurveyType:
     survey_type = cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
     return SurveyType(survey_type)
 
+
 def get_survey_title(self) -> str:
-    if get_session_store() != None:
-        return cookie_session.get("survey_title", self._survey_config.survey_title) 
+    if get_session_store() is not None:
+        return cookie_session.get("survey_title", self._survey_config.survey_title)
     return lazy_gettext("ONS Surveys")
