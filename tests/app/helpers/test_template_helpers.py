@@ -6,6 +6,7 @@ from flask import session as cookie_session
 
 from app.helpers.template_helpers import ContextHelper, get_survey_config
 from app.questionnaire import QuestionnaireSchema
+from app.routes.session import set_schema_context_in_cookie
 from app.settings import (
     ACCOUNT_SERVICE_BASE_URL,
     ACCOUNT_SERVICE_BASE_URL_SOCIAL,
@@ -809,8 +810,8 @@ def test_correct_survey_title_in_context(
         ),
         (
             SurveyType.CENSUS_NISRA,
-            QuestionnaireSchema({"survey_id": "001"}),
             "en",
+            QuestionnaireSchema({"survey_id": "001"}),
             [{"nisra": True}, {"survey_id": "001"}],
         ),
     ],
@@ -819,6 +820,7 @@ def test_correct_data_layer_in_context(
     app: Flask, theme: str, language: str, schema: QuestionnaireSchema, expected: str
 ):
     with app.app_context():
+        set_schema_context_in_cookie(schema)
         survey_config = get_survey_config(theme=theme, language=language, schema=schema)
 
         result = ContextHelper(
