@@ -237,7 +237,7 @@ def get_survey_type() -> SurveyType:
     survey_type = cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
     return SurveyType(survey_type)
 
-def get_survey_title(self):
+def get_survey_title(self) -> str:
     if get_session_store() != None:
         return cookie_session.get("survey_title", self._survey_config.survey_title) 
     return "ONS Surveys"
