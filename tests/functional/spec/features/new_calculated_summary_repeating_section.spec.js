@@ -363,7 +363,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       expect($(HubPage.summaryRowState("personal-details-section-2")).getText()).to.equal("Completed");
     });
 
-    it("Given I return to a partially completed section with a calculated summary, When I answer the dependent questions return to the hub, Then the section status for the repeating section I updated should be complete", () => {
+    it("Given I return to a partially completed section with a calculated summary, When I answer the dependent questions and return to the hub, Then the section status for the repeating section I updated should be complete", () => {
       expect(browser.getUrl()).to.contain(HubPage.pageName);
       expect($(HubPage.summaryRowState("personal-details-section-1")).getText()).to.equal("Partially completed");
       $(HubPage.summaryRowLink("personal-details-section-1")).click();
