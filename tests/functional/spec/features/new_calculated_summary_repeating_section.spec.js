@@ -335,6 +335,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       $(ListCollectorAddPage.submit()).click();
       $(ListCollectorPage.no()).click();
       $(ListCollectorPage.submit()).click();
+      $(HubPage.submit()).click();
       getToFirstCalculatedSummary();
       getToSubmitPage();
       $(SubmitPage.submit()).click();
