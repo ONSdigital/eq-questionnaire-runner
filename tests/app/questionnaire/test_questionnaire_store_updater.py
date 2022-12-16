@@ -14,7 +14,7 @@ from app.questionnaire.questionnaire_store_updater import (
 )
 
 
-# pylint: disable=too-many-locals
+# pylint: disable=too-many-locals, too-many-lines
 def test_save_answers_with_form_data(
     mock_location,
     mock_empty_schema,
@@ -429,24 +429,41 @@ def get_answer_dependencies(for_list=None):
 
 
 @pytest.mark.parametrize(
-    "answer_id, answer_updated, answer_dependencies, expected_output",
+    "answer_id, answer_updated, answer_dependencies, is_repeating, expected_output",
     [
         (
             "total-employees-answer",
             True,
             get_answer_dependencies(),
+            False,
             {("breakdown-section", None): {"employees-breakdown-block"}},
         ),
         (
             "total-turnover-answer",
             True,
             get_answer_dependencies(),
+            False,
             {("breakdown-section", None): {"turnover-breakdown-block"}},
         ),
         (
             "total-employees-answer",
             True,
             get_answer_dependencies(for_list="people"),
+            True,
+            {("breakdown-section", "person-1"): {"employees-breakdown-block"}},
+        ),
+        (
+            "total-turnover-answer",
+            True,
+            get_answer_dependencies(for_list="people"),
+            True,
+            {("breakdown-section", "person-1"): {"turnover-breakdown-block"}},
+        ),
+        (
+            "total-employees-answer",
+            True,
+            get_answer_dependencies(for_list="people"),
+            False,
             {
                 ("breakdown-section", "person-1"): {"employees-breakdown-block"},
                 ("breakdown-section", "person-2"): {"employees-breakdown-block"},
@@ -457,6 +474,7 @@ def get_answer_dependencies(for_list=None):
             "total-turnover-answer",
             True,
             get_answer_dependencies(for_list="people"),
+            False,
             {
                 ("breakdown-section", "person-1"): {"turnover-breakdown-block"},
                 ("breakdown-section", "person-2"): {"turnover-breakdown-block"},
@@ -467,6 +485,7 @@ def get_answer_dependencies(for_list=None):
             "total-employees-answer",
             False,
             get_answer_dependencies(),
+            False,
             {},
         ),
     ],
@@ -477,12 +496,12 @@ def test_update_answers_captures_answer_dependencies(
     answer_id,
     answer_updated,
     answer_dependencies,
+    is_repeating,
     expected_output,
     mock_schema,
 ):
     location = Location(
-        section_id="default-section",
-        block_id="default-block",
+        section_id="default-section", block_id="default-block", list_item_id="person-1"
     )
 
     list_store = ListStore(
@@ -496,6 +515,7 @@ def test_update_answers_captures_answer_dependencies(
 
     mock_schema.get_answer_ids_for_question.return_value = [answer_id]
     mock_schema.answer_dependencies = answer_dependencies
+    mock_schema.is_answer_in_repeating_section.return_value = is_repeating
 
     mock_empty_answer_store.add_or_update.return_value = answer_updated
     form_data = MultiDict({answer_id: "some-value"})
@@ -601,11 +621,49 @@ def test_update_answers_with_answer_dependents(
     assert answer_store == expected_output
 
 
-def test_update_repeating_answers_with_answer_dependents(mock_schema, mock_router):
+@pytest.mark.parametrize(
+    "is_repeating, expected_output",
+    [
+        (
+            False,
+            AnswerStore(
+                [
+                    AnswerDict(
+                        answer_id="first-answer",
+                        value="answer updated",
+                        list_item_id="abc123",
+                    ),
+                ]
+            ),
+        ),
+        (
+            True,
+            AnswerStore(
+                [
+                    AnswerDict(
+                        answer_id="first-answer",
+                        value="answer updated",
+                        list_item_id="abc123",
+                    ),
+                    AnswerDict(
+                        answer_id="second-answer",
+                        value="second answer",
+                        list_item_id="xyz456",
+                    ),
+                ]
+            ),
+        ),
+    ],
+)
+def test_update_repeating_answers_with_answer_dependents(
+    mock_schema, mock_router, is_repeating, expected_output
+):
     # Given repeating dependent answers
     answer_store = AnswerStore(
         [
-            AnswerDict(answer_id="first-answer", value="original-answer"),
+            AnswerDict(
+                answer_id="first-answer", value="original-answer", list_item_id="abc123"
+            ),
             AnswerDict(
                 answer_id="second-answer", value="second answer", list_item_id="abc123"
             ),
@@ -631,10 +689,11 @@ def test_update_repeating_answers_with_answer_dependents(mock_schema, mock_route
     form_data = MultiDict({"first-answer": "answer updated"})
 
     location = Location(
-        section_id="section",
-        block_id="first-block",
+        section_id="section", block_id="first-block", list_item_id="abc123"
     )
     current_question = mock_schema.get_block(location.block_id)["question"]
+
+    mock_schema.is_answer_in_repeating_section.return_value = is_repeating
     questionnaire_store_updater = get_questionnaire_store_updater(
         schema=mock_schema,
         answer_store=answer_store,
@@ -648,9 +707,7 @@ def test_update_repeating_answers_with_answer_dependents(mock_schema, mock_route
     questionnaire_store_updater.update_answers(form_data)
 
     # Then all repeating dependent answers should be removed from the answer store
-    assert answer_store == AnswerStore(
-        [AnswerDict(answer_id="first-answer", value="answer updated")]
-    )
+    assert answer_store == expected_output
 
 
 @pytest.mark.parametrize(

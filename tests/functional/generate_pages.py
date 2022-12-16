@@ -6,6 +6,7 @@ import logging
 import os
 import re
 from string import Template
+from typing import Mapping, Sequence
 
 from app.utilities.json import json_loads
 
@@ -871,9 +872,23 @@ def process_block(
                 process_guidance(context, page_spec)
 
         elif block["type"] == "CalculatedSummary":
-            process_calculated_summary(
-                block["calculation"]["answers_to_calculate"], page_spec
-            )
+            if block["calculation"].get("answers_to_calculate"):
+                process_calculated_summary(
+                    block["calculation"]["answers_to_calculate"], page_spec
+                )
+            else:
+                values = _get_dictionaries_with_key(
+                    "source", block["calculation"]["operation"]
+                )
+
+                calculated_summary_answer_ids = [
+                    value["identifier"]
+                    for value in values
+                    if value["source"] == "answers"
+                ]
+
+                process_calculated_summary(calculated_summary_answer_ids, page_spec)
+
         elif block["type"] == "Interstitial":
             has_definition = False
             if "content_variants" in block:
@@ -921,6 +936,20 @@ def _has_definitions_in_block_contents(block_contents):
 
 def _has_guidance_in_primary_contents(block_contents):
     return any("guidance" in element for element in block_contents)
+
+
+def _get_dictionaries_with_key(
+    key,
+    dictionary,
+):
+    if key in dictionary:
+        yield dictionary
+
+    for value in dictionary.values():
+        if isinstance(value, Sequence):
+            for element in value:
+                if isinstance(element, Mapping):
+                    yield from _get_dictionaries_with_key(key, element)
 
 
 def process_schema(in_schema, out_dir, spec_file, require_path=".."):
