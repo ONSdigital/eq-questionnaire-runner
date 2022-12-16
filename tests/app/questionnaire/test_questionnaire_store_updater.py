@@ -14,7 +14,7 @@ from app.questionnaire.questionnaire_store_updater import (
 )
 
 
-# pylint: disable=too-many-locals
+# pylint: disable=too-many-locals, too-many-lines
 def test_save_answers_with_form_data(
     mock_location,
     mock_empty_schema,
@@ -476,9 +476,9 @@ def get_answer_dependencies(for_list=None):
             get_answer_dependencies(for_list="people"),
             False,
             {
-             ("breakdown-section", "person-1"): {"turnover-breakdown-block"},
-             ("breakdown-section", "person-2"): {"turnover-breakdown-block"},
-             ("breakdown-section", "person-3"): {"turnover-breakdown-block"},
+                ("breakdown-section", "person-1"): {"turnover-breakdown-block"},
+                ("breakdown-section", "person-2"): {"turnover-breakdown-block"},
+                ("breakdown-section", "person-3"): {"turnover-breakdown-block"},
             },
         ),
         (
