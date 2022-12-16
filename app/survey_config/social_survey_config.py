@@ -36,16 +36,18 @@ class SocialSurveyConfig(
         self.what_we_do_url: str = f"{ons_url}/aboutus/whatwedo/"
 
     def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
-        links = [Link(lazy_gettext("What we do"), self.what_we_do_url).__dict__]
+        links = [Link(lazy_gettext("What we do"), self.what_we_do_url).as_dict()]
 
         if cookie_has_theme:
-            links.append(Link(lazy_gettext("Contact us"), self.contact_us_url).__dict__)
+            links.append(
+                Link(lazy_gettext("Contact us"), self.contact_us_url).as_dict()
+            )
 
         links.append(
             Link(
                 lazy_gettext("Accessibility"),
                 self.accessibility_url,
-            ).__dict__
+            ).as_dict()
         )
 
         return links
@@ -53,11 +55,11 @@ class SocialSurveyConfig(
     def get_footer_legal_links(self, cookie_has_theme: bool) -> Optional[list[dict]]:
         if cookie_has_theme:
             return [
-                Link(lazy_gettext("Cookies"), self.cookie_settings_url).__dict__,
+                Link(lazy_gettext("Cookies"), self.cookie_settings_url).as_dict(),
                 Link(
                     lazy_gettext("Privacy and data protection"),
                     self.privacy_and_data_protection_url,
-                ).__dict__,
+                ).as_dict(),
             ]
 
         return None
