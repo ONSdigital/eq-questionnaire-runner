@@ -240,4 +240,4 @@ def get_survey_type() -> SurveyType:
 def get_survey_title(self) -> str:
     if get_session_store() != None:
         return cookie_session.get("survey_title", self._survey_config.survey_title) 
-    return "ONS Surveys"
+    return lazy_gettext("ONS Surveys")
