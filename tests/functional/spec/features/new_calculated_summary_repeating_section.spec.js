@@ -20,6 +20,7 @@ import HubPage from "../../base_pages/hub.page.js";
 import PrimaryPersonListCollectorPage from "../../generated_pages/new_calculated_summary_repeating_section/primary-person-list-collector.page";
 import PrimaryPersonListCollectorAddPage from "../../generated_pages/new_calculated_summary_repeating_section/primary-person-list-collector-add.page.js";
 import ListCollectorPage from "../../generated_pages/new_calculated_summary_repeating_section/list-collector.page";
+import ListCollectorAddPage from "../../generated_pages/new_calculated_summary_repeating_section/list-collector-add.page";
 
 describe("Feature: Calculated Summary Repeating Section", () => {
   describe("Given I have a Calculated Summary in a Repeating Section", () => {
@@ -35,34 +36,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       $(ListCollectorPage.submit()).click();
       $(HubPage.submit()).click();
 
-      $(FirstNumberBlockPage.firstNumber()).setValue(1.23);
-      $(FirstNumberBlockPage.submit()).click();
-
-      $(SecondNumberBlockPage.secondNumber()).setValue(4.56);
-      $(SecondNumberBlockPage.secondNumberUnitTotal()).setValue(789);
-      $(SecondNumberBlockPage.secondNumberAlsoInTotal()).setValue(0.12);
-      $(SecondNumberBlockPage.submit()).click();
-
-      $(ThirdNumberBlockPage.thirdNumber()).setValue(3.45);
-      $(ThirdNumberBlockPage.submit()).click();
-      $(ThirdAndAHalfNumberBlockPage.thirdAndAHalfNumberUnitTotal()).setValue(678);
-      $(ThirdAndAHalfNumberBlockPage.submit()).click();
-
-      $(SkipFourthBlockPage.no()).click();
-      $(SkipFourthBlockPage.submit()).click();
-
-      $(FourthNumberBlockPage.fourthNumber()).setValue(9.01);
-      $(FourthNumberBlockPage.submit()).click();
-      $(FourthAndAHalfNumberBlockPage.fourthAndAHalfNumberAlsoInTotal()).setValue(2.34);
-      $(FourthAndAHalfNumberBlockPage.submit()).click();
-
-      $(FifthNumberBlockPage.fifthPercent()).setValue(56);
-      $(FifthNumberBlockPage.fifthNumber()).setValue(78.91);
-      $(FifthNumberBlockPage.submit()).click();
-
-      $(SixthNumberBlockPage.sixthPercent()).setValue(23);
-      $(SixthNumberBlockPage.sixthNumber()).setValue(45.67);
-      $(SixthNumberBlockPage.submit()).click();
+      getToFirstCalculatedSummary();
 
       const browserUrl = browser.getUrl();
 
@@ -342,4 +316,89 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
     });
   });
+
+  describe("Given I have a Calculated Summary in a Repeating Section", () => {
+    before("Get to Final Summary", () => {
+      browser.openQuestionnaire("test_new_calculated_summary_repeating_section.json");
+      $(HubPage.submit()).click();
+      $(PrimaryPersonListCollectorPage.no()).click();
+      $(PrimaryPersonListCollectorPage.submit()).click();
+      $(ListCollectorPage.yes()).click();
+      $(ListCollectorPage.submit()).click();
+      $(ListCollectorAddPage.firstName()).setValue("Jean");
+      $(ListCollectorAddPage.lastName()).setValue("Clemens");
+      $(ListCollectorAddPage.submit()).click();
+      $(ListCollectorPage.yes()).click();
+      $(ListCollectorPage.submit()).click();
+      $(ListCollectorAddPage.firstName()).setValue("Jane");
+      $(ListCollectorAddPage.lastName()).setValue("Doe");
+      $(ListCollectorAddPage.submit()).click();
+      $(ListCollectorPage.no()).click();
+      $(ListCollectorPage.submit()).click();
+      getToFirstCalculatedSummary();
+      getToSubmitPage();
+      $(SubmitPage.submit()).click();
+      $(HubPage.submit()).click();
+      getToFirstCalculatedSummary();
+      getToSubmitPage();
+      $(SubmitPage.submit()).click();
+    });
+
+    it("Given I am on the submit page, When I have completed two repeating sections containing a calculated summary, Then the section status for both repeating sections should be complete", () => {
+      expect(browser.getUrl()).to.contain(HubPage.pageName);
+      expect($(HubPage.summaryRowState("personal-details-section-1")).getText()).to.equal("Completed");
+      expect($(HubPage.summaryRowState("personal-details-section-2")).getText()).to.equal("Completed");
+    });
+
+    it("Given I change an answer with a dependent calculated summary question, When I return to the hub, Then the section status for the repeating section I updated should be incomplete", () => {
+      expect(browser.getUrl()).to.contain(HubPage.pageName);
+      $(HubPage.summaryRowLink("personal-details-section-1")).click();
+      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      $(SubmitPage.skipFourthBlockAnswerEdit()).click();
+      $(SkipFourthBlockPage.yes()).click();
+      $(SkipFourthBlockPage.submit()).click();
+      browser.url(HubPage.url());
+      expect($(HubPage.summaryRowState("personal-details-section-1")).getText()).to.equal("Partially completed");
+      expect($(HubPage.summaryRowState("personal-details-section-2")).getText()).to.equal("Completed");
+    });
+  });
 });
+
+const getToFirstCalculatedSummary = () => {
+  $(FirstNumberBlockPage.firstNumber()).setValue(1.23);
+  $(FirstNumberBlockPage.submit()).click();
+
+  $(SecondNumberBlockPage.secondNumber()).setValue(4.56);
+  $(SecondNumberBlockPage.secondNumberUnitTotal()).setValue(789);
+  $(SecondNumberBlockPage.secondNumberAlsoInTotal()).setValue(0.12);
+  $(SecondNumberBlockPage.submit()).click();
+
+  $(ThirdNumberBlockPage.thirdNumber()).setValue(3.45);
+  $(ThirdNumberBlockPage.submit()).click();
+  $(ThirdAndAHalfNumberBlockPage.thirdAndAHalfNumberUnitTotal()).setValue(678);
+  $(ThirdAndAHalfNumberBlockPage.submit()).click();
+
+  $(SkipFourthBlockPage.no()).click();
+  $(SkipFourthBlockPage.submit()).click();
+
+  $(FourthNumberBlockPage.fourthNumber()).setValue(9.01);
+  $(FourthNumberBlockPage.submit()).click();
+  $(FourthAndAHalfNumberBlockPage.fourthAndAHalfNumberAlsoInTotal()).setValue(2.34);
+  $(FourthAndAHalfNumberBlockPage.submit()).click();
+
+  $(FifthNumberBlockPage.fifthPercent()).setValue(56);
+  $(FifthNumberBlockPage.fifthNumber()).setValue(78.91);
+  $(FifthNumberBlockPage.submit()).click();
+
+  $(SixthNumberBlockPage.sixthPercent()).setValue(23);
+  $(SixthNumberBlockPage.sixthNumber()).setValue(45.67);
+  $(SixthNumberBlockPage.submit()).click();
+};
+
+const getToSubmitPage = () => {
+  $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
+  $(UnitTotalPlaybackPage.submit()).click();
+  $(PercentageTotalPlaybackPage.submit()).click();
+  $(NumberTotalPlaybackPage.submit()).click();
+  $(CalculatedSummaryTotalConfirmation.submit()).click();
+};
