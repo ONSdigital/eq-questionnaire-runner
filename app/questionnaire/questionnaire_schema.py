@@ -895,6 +895,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         return rules_section_dependencies
 
+
     def get_calculated_summary_answer_ids(
         self, calculated_summary_block: Mapping[str, Any]
     ) -> list[str]:
@@ -906,3 +907,33 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         )
 
         return [value["identifier"] for value in values if value["source"] == "answers"]
+
+    def get_summary_item_for_list_for_section(
+        self, *, section_id: str, list_name: str
+    ) -> Optional[ImmutableDict]:
+        if summary := self.get_summary_for_section(section_id):
+            for item in summary.get("items", []):
+                if item.get("for_list") == list_name:
+                    return item  # type: ignore
+
+    def get_related_answers_for_list_for_section(
+        self, *, section_id: str, list_name: str
+    ) -> Optional[tuple[ImmutableDict]]:
+        if item := self.get_summary_item_for_list_for_section(
+            section_id=section_id, list_name=list_name
+        ):
+            return item.get("related_answers")
+
+    def get_item_label(self, section_id: str, list_name: str) -> Optional[str]:
+        if summary := self.get_summary_for_section(section_id):
+            for item in summary.get("items", []):
+                if item["for_list"] == list_name and item.get("item_label"):
+
+                    return str(item["item_label"])
+
+    def get_item_anchor(self, section_id: str, list_name: str) -> Optional[str]:
+        if summary := self.get_summary_for_section(section_id):
+            for item in summary.get("items", []):
+                if item["for_list"] == list_name and item.get("item_anchor_answer_id"):
+                    return f"#{str(item['item_anchor_answer_id'])}"
+

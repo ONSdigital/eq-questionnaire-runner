@@ -28,15 +28,16 @@ class CalculatedSummaryContext(Context):
 
         return [
             Group(
-                group,
-                routing_path,
-                self._answer_store,
-                self._list_store,
-                self._metadata,
-                self._response_metadata,
-                self._schema,
-                current_location,
-                self._language,
+                group_schema=group,
+                routing_path=routing_path,
+                answer_store=self._answer_store,
+                list_store=self._list_store,
+                metadata=self._metadata,
+                response_metadata=self._response_metadata,
+                schema=self._schema,
+                location=current_location,
+                language=self._language,
+                progress_store=self._progress_store,
                 return_to="calculated-summary",
                 return_to_block_id=return_to_block_id,
             ).serialize()
