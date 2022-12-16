@@ -222,7 +222,7 @@ def test_header_context(app: Flask, theme, survey_title, survey_config, expected
     with app.app_context():
         for cookie_name, cookie_value in {
             "theme": theme,
-            "survey_title": survey_title,
+            "title": survey_title,
         }.items():
             if cookie_value:
                 cookie_session[cookie_name] = cookie_value
