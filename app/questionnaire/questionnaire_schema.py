@@ -895,7 +895,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         return rules_section_dependencies
 
-
     def get_calculated_summary_answer_ids(
         self, calculated_summary_block: Mapping[str, Any]
     ) -> list[str]:
@@ -936,4 +935,3 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             for item in summary.get("items", []):
                 if item["for_list"] == list_name and item.get("item_anchor_answer_id"):
                     return f"#{str(item['item_anchor_answer_id'])}"
-
