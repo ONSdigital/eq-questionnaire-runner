@@ -799,19 +799,19 @@ def test_correct_survey_title_in_context(
             SurveyType.CENSUS,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
-            [{"nisra": False}],
+            [{'nisra': True}, {"survey_id": "001"}],
         ),
         (
             SurveyType.CENSUS,
             "cy",
             QuestionnaireSchema({"survey_id": "001"}),
-            [{"nisra": False}],
+            [{'nisra': True}, {"survey_id": "001"}],
         ),
         (
             SurveyType.CENSUS_NISRA,
             QuestionnaireSchema({"survey_id": "001"}),
             "en",
-            [{"nisra": True}],
+            [{'nisra': True}, {"survey_id": "001"}],
         ),
     ],
 )

@@ -16,7 +16,7 @@ class TestCookie(IntegrationTestCase):
         self.assertIsNotNone(cookie.get("survey_id"))
         self.assertIsNotNone(cookie.get("user_ik"))
         self.assertIsNotNone(cookie.get("account_service_base_url"))
-        self.assertEqual(len(cookie), 8)
+        self.assertEqual(len(cookie), 10)
 
         self.assertIsNone(cookie.get("user_id"))
         self.assertIsNone(cookie.get("_permanent"))
