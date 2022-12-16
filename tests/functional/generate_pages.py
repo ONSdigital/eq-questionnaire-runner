@@ -278,6 +278,32 @@ LIST_SECTION_SUMMARY_REMOVE_LINK_GETTER = Template(
 """
 )
 
+
+NON_ITEM_ANSWERS_LIST_SECTION_SUMMARY_LABEL_GETTER = Template(
+    r"""  ${list_name}ListLabel(listItemInstance) { return `dt[data-qa="list-item-` + listItemInstance + `-label"]`; }
+
+"""
+)
+
+NON_ITEM_ANSWERS_LIST_SECTION_SUMMARY_ADD_LINK_GETTER = Template(
+    r"""  ${list_name}ListAddLink() { return `a[data-qa="add-item-link"]`; }
+
+"""
+)
+
+# pylint: disable=line-too-long
+NON_ITEM_ANSWERS_LIST_SECTION_SUMMARY_EDIT_LINK_GETTER = Template(
+    r"""  ${list_name}ListEditLink(listItemInstance) { return `a[data-qa="list-item-change-` + listItemInstance + `-link"]`; }
+
+"""
+)
+# pylint: disable=line-too-long
+NON_ITEM_ANSWERS_LIST_SECTION_SUMMARY_REMOVE_LINK_GETTER = Template(
+    r"""  ${list_name}ListRemoveLink(listItemInstance) { return `a[data-qa="list-item-remove-` + listItemInstance + `-link"]`; }
+
+"""
+)
+
 RELATIONSHIP_PLAYBACK_GETTER = r"""  playback() { return `[class*="relationships__playback"]`; }
 
 """
@@ -544,7 +570,14 @@ def process_guidance(context, page_spec):
     page_spec.write(GUIDANCE_PANEL_GETTER.safe_substitute(context))
 
 
-def write_summary_spec(page_spec, section, collapsible, answers_are_editable=False):
+# pylint: disable=too-many-locals
+def write_summary_spec(
+    page_spec,
+    section,
+    collapsible,
+    answers_are_editable=False,
+    show_non_item_answers=False,
+):
     list_summaries = [
         summary_element
         for summary_element in section.get("summary", {}).get("items", [])
@@ -553,16 +586,41 @@ def write_summary_spec(page_spec, section, collapsible, answers_are_editable=Fal
     for list_block in list_summaries:
         list_context = {"list_name": list_block["for_list"]}
         if answers_are_editable:
+            if show_non_item_answers:
+                page_spec.write(
+                    NON_ITEM_ANSWERS_LIST_SECTION_SUMMARY_ADD_LINK_GETTER.substitute(
+                        list_context
+                    )
+                )
+                page_spec.write(
+                    NON_ITEM_ANSWERS_LIST_SECTION_SUMMARY_EDIT_LINK_GETTER.substitute(
+                        list_context
+                    )
+                )
+                page_spec.write(
+                    NON_ITEM_ANSWERS_LIST_SECTION_SUMMARY_REMOVE_LINK_GETTER.substitute(
+                        list_context
+                    )
+                )
+
+            else:
+                page_spec.write(
+                    LIST_SECTION_SUMMARY_ADD_LINK_GETTER.substitute(list_context)
+                )
+                page_spec.write(
+                    LIST_SECTION_SUMMARY_EDIT_LINK_GETTER.substitute(list_context)
+                )
+                page_spec.write(
+                    LIST_SECTION_SUMMARY_REMOVE_LINK_GETTER.substitute(list_context)
+                )
+        if show_non_item_answers:
             page_spec.write(
-                LIST_SECTION_SUMMARY_ADD_LINK_GETTER.substitute(list_context)
+                NON_ITEM_ANSWERS_LIST_SECTION_SUMMARY_LABEL_GETTER.substitute(
+                    list_context
+                )
             )
-            page_spec.write(
-                LIST_SECTION_SUMMARY_EDIT_LINK_GETTER.substitute(list_context)
-            )
-            page_spec.write(
-                LIST_SECTION_SUMMARY_REMOVE_LINK_GETTER.substitute(list_context)
-            )
-        page_spec.write(LIST_SECTION_SUMMARY_LABEL_GETTER.substitute(list_context))
+        else:
+            page_spec.write(LIST_SECTION_SUMMARY_LABEL_GETTER.substitute(list_context))
 
     for group in section["groups"]:
         for block in group["blocks"]:
@@ -593,7 +651,7 @@ def write_summary_spec(page_spec, section, collapsible, answers_are_editable=Fal
         if not collapsible:
             group_context = {
                 "group_id_camel": camel_case(generate_pascal_case_from_id(group["id"])),
-                "group_id": group["id"],
+                "group_id": f'{group["id"]}-0',
             }
             page_spec.write(SUMMARY_TITLE_GETTER.substitute(group_context))
 
@@ -940,11 +998,18 @@ def process_section_summary(
         page_spec.write(CLASS_NAME.substitute(section_context))
         page_spec.write(CONSTRUCTOR.substitute(section_context))
         page_spec.write(SECTION_SUMMARY_PAGE_URL)
+
+        show_non_item_answers = False
+        if summary := section.get("summary"):
+            if summary.get("show_non_item_answers"):
+                show_non_item_answers = True
+
         write_summary_spec(
             page_spec,
             section,
             collapsible=False,
             answers_are_editable=True,
+            show_non_item_answers=show_non_item_answers,
         )
         page_spec.write(FOOTER.substitute(section_context))
 

@@ -38,12 +38,12 @@ class CensusSurveyConfig(
             Link(
                 lazy_gettext("Help"),
                 f"{EN_BASE_URL}/help/how-to-answer-questions/online-questions-help/",
-            ).__dict__
+            ).as_dict()
         ]
 
         if cookie_has_theme:
             links.append(
-                Link(lazy_gettext("Contact us"), f"{EN_BASE_URL}/contact-us/").__dict__
+                Link(lazy_gettext("Contact us"), f"{EN_BASE_URL}/contact-us/").as_dict()
             )
 
         links.extend(
@@ -51,11 +51,11 @@ class CensusSurveyConfig(
                 Link(
                     lazy_gettext("Languages"),
                     f"{EN_BASE_URL}/help/languages-and-accessibility/languages/",
-                ).__dict__,
+                ).as_dict(),
                 Link(
                     lazy_gettext("BSL and audio videos"),
                     f"{EN_BASE_URL}/help/languages-and-accessibility/accessibility/accessible-videos-with-bsl/",
-                ).__dict__,
+                ).as_dict(),
             ]
         )
 
@@ -64,19 +64,19 @@ class CensusSurveyConfig(
     def get_footer_legal_links(self, cookie_has_theme: bool) -> Optional[list[dict]]:
         if cookie_has_theme:
             return [
-                Link(lazy_gettext("Cookies"), f"{EN_BASE_URL}/cookies/").__dict__,
+                Link(lazy_gettext("Cookies"), f"{EN_BASE_URL}/cookies/").as_dict(),
                 Link(
                     lazy_gettext("Accessibility statement"),
                     f"{EN_BASE_URL}/accessibility-statement/",
-                ).__dict__,
+                ).as_dict(),
                 Link(
                     lazy_gettext("Privacy and data protection"),
                     f"{EN_BASE_URL}/privacy-and-data-protection/",
-                ).__dict__,
+                ).as_dict(),
                 Link(
                     lazy_gettext("Terms and conditions"),
                     f"{EN_BASE_URL}/terms-and-conditions/",
-                ).__dict__,
+                ).as_dict(),
             ]
 
         return None
@@ -95,25 +95,25 @@ class WelshCensusSurveyConfig(
             Link(
                 lazy_gettext("Help"),
                 f"{CY_BASE_URL}/help/sut-i-ateb-y-cwestiynau/help-y-cwestiynau-ar-lein/",
-            ).__dict__
+            ).as_dict()
         ]
 
         if cookie_has_theme:
             links.append(
                 Link(
                     lazy_gettext("Contact us"), f"{CY_BASE_URL}/cysylltu-a-ni/"
-                ).__dict__
+                ).as_dict()
             )
         links.extend(
             [
                 Link(
                     lazy_gettext("Languages"),
                     f"{CY_BASE_URL}/help/ieithoedd-a-hygyrchedd/ieithoedd/",
-                ).__dict__,
+                ).as_dict(),
                 Link(
                     lazy_gettext("BSL and audio videos"),
                     f"{CY_BASE_URL}/help/ieithoedd-a-hygyrchedd/hygyrchedd/fideos-hygyrch-gyda-bsl/",
-                ).__dict__,
+                ).as_dict(),
             ]
         )
         return links
@@ -121,19 +121,19 @@ class WelshCensusSurveyConfig(
     def get_footer_legal_links(self, cookie_has_theme: bool) -> Optional[list[dict]]:
         if cookie_has_theme:
             return [
-                Link(lazy_gettext("Cookies"), f"{CY_BASE_URL}/cwcis/").__dict__,
+                Link(lazy_gettext("Cookies"), f"{CY_BASE_URL}/cwcis/").as_dict(),
                 Link(
                     lazy_gettext("Accessibility statement"),
                     f"{CY_BASE_URL}/datganiad-hygyrchedd/",
-                ).__dict__,
+                ).as_dict(),
                 Link(
                     lazy_gettext("Privacy and data protection"),
                     f"{CY_BASE_URL}/preifatrwydd-a-diogelu-data/",
-                ).__dict__,
+                ).as_dict(),
                 Link(
                     lazy_gettext("Terms and conditions"),
                     f"{CY_BASE_URL}/telerau-ac-amodau/",
-                ).__dict__,
+                ).as_dict(),
             ]
 
         return None
@@ -161,12 +161,14 @@ class CensusNISRASurveyConfig(
             Link(
                 lazy_gettext("Help"),
                 f"{NIR_BASE_URL}/help/help-with-the-questions/online-questions-help/",
-            ).__dict__
+            ).as_dict()
         ]
 
         if cookie_has_theme:
             links.append(
-                Link(lazy_gettext("Contact us"), f"{NIR_BASE_URL}/contact-us/").__dict__
+                Link(
+                    lazy_gettext("Contact us"), f"{NIR_BASE_URL}/contact-us/"
+                ).as_dict()
             )
 
         return links
@@ -174,19 +176,19 @@ class CensusNISRASurveyConfig(
     def get_footer_legal_links(self, cookie_has_theme: bool) -> Optional[list[dict]]:
         if cookie_has_theme:
             return [
-                Link(lazy_gettext("Cookies"), f"{NIR_BASE_URL}/cookies/").__dict__,
+                Link(lazy_gettext("Cookies"), f"{NIR_BASE_URL}/cookies/").as_dict(),
                 Link(
                     lazy_gettext("Accessibility statement"),
                     f"{NIR_BASE_URL}/accessibility-statement/",
-                ).__dict__,
+                ).as_dict(),
                 Link(
                     lazy_gettext("Privacy and data protection"),
                     f"{NIR_BASE_URL}/privacy-and-data-protection/",
-                ).__dict__,
+                ).as_dict(),
                 Link(
                     lazy_gettext("Terms and conditions"),
                     f"{NIR_BASE_URL}/terms-and-conditions/",
-                ).__dict__,
+                ).as_dict(),
             ]
 
         return None
