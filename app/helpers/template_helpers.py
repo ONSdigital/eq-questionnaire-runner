@@ -50,6 +50,7 @@ class ContextHelper:
         )
         self._survey_type = cookie_session.get("theme")
 
+
     @property
     def context(self) -> dict[str, Any]:
         context = {
@@ -150,10 +151,6 @@ class ContextHelper:
 
             return footer_warning
     
-def get_survey_title(self):
-    if cookie_session.get("survey_title", self._survey_config.survey_title):
-        return cookie_session.get("survey_title", self._survey_config.survey_title) 
-    return "ONS SOCIAL"
 
 
 @lru_cache
@@ -161,7 +158,7 @@ def survey_config_mapping(
     *, theme: SurveyType, language: str, base_url: str, schema: QuestionnaireSchema
 ) -> SurveyConfig:
     survey_type_to_config: dict[SurveyType, Type[SurveyConfig]] = {
-        SurveyType.DEFAULT: SocialSurveyConfig,
+        SurveyType.DEFAULT: BusinessSurveyConfig,
         SurveyType.BUSINESS: BusinessSurveyConfig,
         SurveyType.HEALTH: SocialSurveyConfig,
         SurveyType.SOCIAL: SocialSurveyConfig,
@@ -240,5 +237,7 @@ def get_survey_type() -> SurveyType:
     survey_type = cookie_session.get("theme", current_app.config["SURVEY_TYPE"])
     return SurveyType(survey_type)
 
-
-
+def get_survey_title(self):
+    if get_session_store() != None:
+        return cookie_session.get("survey_title", self._survey_config.survey_title) 
+    return "ONS Surveys"
