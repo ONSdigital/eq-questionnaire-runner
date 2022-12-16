@@ -133,7 +133,7 @@ jobs:
         run: pip install pipenv==2018.11.26
       - name: Cache virtualenv
         id: cache-virtualenv
-        uses: actions/cache@v1node
+        uses: actions/cache@v1
         with:
           path: ~/.local/share/virtualenvs/
           key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('Pipfile.lock') }}
