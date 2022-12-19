@@ -13,8 +13,8 @@ class MultipleClientTestCase(IntegrationTestCase):
 
         self.cache = {}
 
-    # pylint: disable=arguments-renamed
-    def launchSurvey(self, client, schema_name="test_textfield", **payload_kwargs):
+
+    def launchSurvey(self, schema_name, client, **payload_kwargs):
         token = self.token_generator.create_token(schema_name, **payload_kwargs)
         self.get(client, "/session?token=" + token)
 
