@@ -855,7 +855,7 @@ def test_raises_exception_when_bad_operand_type():
     with pytest.raises(TypeError):
         rule_evaluator = get_rule_evaluator()
         rule_evaluator.evaluate(
-            rule={Operator.EQUAL: {1, 1}}  # pylint: disable=duplicate-value
+            rule={Operator.EQUAL: {1}}
         )
 
 
