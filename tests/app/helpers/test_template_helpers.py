@@ -18,6 +18,7 @@ from app.survey_config import (
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
     NorthernIrelandBusinessSurveyConfig,
+    BEISBusinessSurveyConfig,
     SocialSurveyConfig,
     SurveyConfig,
     WelshCensusSurveyConfig,
@@ -216,6 +217,16 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
                 read_file("./templates/assets/images/ni-finance-mobile-logo.svg"),
             ],
         ),
+        (
+            None,
+            None,
+            BEISBusinessSurveyConfig(),
+            [
+                "ONS Business Surveys",
+                read_file("./templates/assets/images/beis-logo.svg"),
+                read_file("./templates/assets/images/beis-mobile-logo.svg"),
+            ],
+        ),
     ),
 )
 def test_header_context(app: Flask, theme, survey_title, survey_config, expected):
@@ -351,6 +362,11 @@ def test_service_links_context(
             f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
         (
+            BEISBusinessSurveyConfig(),
+            "en",
+            f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
+        ),
+        (
             SocialSurveyConfig(),
             "en",
             f"{ONS_URL}/aboutus/contactus/surveyenquiries/",
@@ -415,6 +431,11 @@ def test_sign_out_button_text_context(
             f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
         ),
         (
+            BEISBusinessSurveyConfig(),
+            True,
+            f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
+        ),
+        (
             SocialSurveyConfig(),
             True,
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/cookies/",
@@ -459,6 +480,11 @@ def test_cookie_settings_url_context(
             ACCOUNT_SERVICE_BASE_URL,
         ),
         (
+            BEISBusinessSurveyConfig(),
+            "en",
+            ACCOUNT_SERVICE_BASE_URL,
+        ),
+        (
             SocialSurveyConfig(),
             "en",
             ACCOUNT_SERVICE_BASE_URL_SOCIAL,
@@ -494,6 +520,7 @@ def test_cookie_domain_context(
         SurveyConfig(),
         BusinessSurveyConfig(),
         NorthernIrelandBusinessSurveyConfig(),
+        BEISBusinessSurveyConfig(),
         SocialSurveyConfig(),
     ],
 )
@@ -566,6 +593,10 @@ def test_account_service_my_todo_url_context(
         (CensusNISRASurveyConfig(), "https://census.gov.uk/ni"),
         (
             NorthernIrelandBusinessSurveyConfig(),
+            f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
+        ),
+        (
+            BEISBusinessSurveyConfig(),
             f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
         ),
         (
