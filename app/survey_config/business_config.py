@@ -128,6 +128,7 @@ class NorthernIrelandBusinessSurveyConfig(BusinessSurveyConfig):
         "./templates/assets/images/ni-finance-mobile-logo.svg"
     )
 
+
 @dataclass
 class BEISBusinessSurveyConfig(BusinessSurveyConfig):
     masthead_logo: str = read_file("./templates/assets/images/beis-logo.svg")

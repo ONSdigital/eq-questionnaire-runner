@@ -1,4 +1,8 @@
-from .business_config import BusinessSurveyConfig, NorthernIrelandBusinessSurveyConfig, BEISBusinessSurveyConfig
+from .business_config import (
+    BEISBusinessSurveyConfig,
+    BusinessSurveyConfig,
+    NorthernIrelandBusinessSurveyConfig,
+)
 from .census_config import (
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
