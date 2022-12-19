@@ -230,8 +230,10 @@ class Router:
         ):
             return url_for(
                 "questionnaire.block",
-                list_item_id=location.list_item_id,
                 block_id=return_to_block_id,
+                list_name=location.list_name,
+                list_item_id=location.list_item_id,
+                return_to=return_to,
                 _anchor=return_to_answer_id,
             )
 

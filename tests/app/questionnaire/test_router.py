@@ -1,3 +1,4 @@
+# pylint: disable=too-many-lines
 from functools import cached_property
 
 import pytest
@@ -508,8 +509,15 @@ class TestRouterNextLocation(RouterTestCase):
         assert expected_location_url == next_location
 
     @pytest.mark.usefixtures("app")
-    def test_return_to_calculated_summary(self):
-        self.schema = load_schema_from_name("test_calculated_summary")
+    @pytest.mark.parametrize(
+        "schema",
+        (
+            "test_calculated_summary",
+            "test_new_calculated_summary",
+        ),
+    )
+    def test_return_to_calculated_summary(self, schema):
+        self.schema = load_schema_from_name(schema)
 
         current_location = Location(
             section_id="default-section", block_id="second-number-block"
@@ -547,10 +555,15 @@ class TestRouterNextLocation(RouterTestCase):
         assert expected_location_url == next_location_url
 
     @pytest.mark.usefixtures("app")
-    def test_return_to_calculated_summary_not_on_allowable_path(self):
-        self.schema = load_schema_from_name(
-            "test_calculated_summary_dependent_questions"
-        )
+    @pytest.mark.parametrize(
+        "schema",
+        (
+            "test_calculated_summary_dependent_questions",
+            "test_new_calculated_summary_dependent_questions",
+        ),
+    )
+    def test_return_to_calculated_summary_not_on_allowable_path(self, schema):
+        self.schema = load_schema_from_name(schema)
 
         current_location = Location(section_id="default-section", block_id="block-3")
 
@@ -589,19 +602,34 @@ class TestRouterNextLocation(RouterTestCase):
 
     @pytest.mark.usefixtures("app")
     @pytest.mark.parametrize(
-        "return_to_block_id, expected_url",
+        "schema, return_to_block_id, expected_url",
         [
             (
+                "test_calculated_summary",
                 "non-valid-block",
                 "/questionnaire/sixth-number-block/?return_to=calculated-summary&return_to_block_id=non-valid-block",
             ),
-            (None, "/questionnaire/sixth-number-block/?return_to=calculated-summary"),
+            (
+                "test_calculated_summary",
+                None,
+                "/questionnaire/sixth-number-block/?return_to=calculated-summary",
+            ),
+            (
+                "test_new_calculated_summary",
+                "non-valid-block",
+                "/questionnaire/sixth-number-block/?return_to=calculated-summary&return_to_block_id=non-valid-block",
+            ),
+            (
+                "test_new_calculated_summary",
+                None,
+                "/questionnaire/sixth-number-block/?return_to=calculated-summary",
+            ),
         ],
     )
     def test_return_to_calculated_summary_invalid_return_to_block_id(
-        self, return_to_block_id, expected_url
+        self, schema, return_to_block_id, expected_url
     ):
-        self.schema = load_schema_from_name("test_calculated_summary")
+        self.schema = load_schema_from_name(schema)
 
         current_location = Location(
             section_id="default-section", block_id="fifth-number-block"
@@ -621,8 +649,15 @@ class TestRouterNextLocation(RouterTestCase):
         assert expected_url == next_location_url
 
     @pytest.mark.usefixtures("app")
-    def test_return_to_calculated_summary_return_to_block_id_not_on_path(self):
-        self.schema = load_schema_from_name("test_calculated_summary")
+    @pytest.mark.parametrize(
+        "schema",
+        (
+            "test_calculated_summary",
+            "test_new_calculated_summary",
+        ),
+    )
+    def test_return_to_calculated_summary_return_to_block_id_not_on_path(self, schema):
+        self.schema = load_schema_from_name(schema)
 
         current_location = Location(
             section_id="default-section", block_id="fifth-number-block"
@@ -804,6 +839,7 @@ class TestRouterPreviousLocation(RouterTestCase):
         expected_location_url = url_for(
             "questionnaire.block",
             list_item_id=expected_location.list_item_id,
+            return_to="calculated-summary",
             block_id=expected_location.block_id,
             _anchor="first-number-answer",
         )

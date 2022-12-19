@@ -8,6 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+
 "POT-Creation-Date: 2022-12-19 15:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
@@ -39,6 +40,20 @@ msgstr ""
 #: app/jinja_filters.py:179
 #, python-format
 msgid "%(from_date)s to %(to_date)s"
+msgstr ""
+
+#: app/jinja_filters.py:600 templates/partials/summary/list-summary.html:9
+msgid "Remove"
+msgstr ""
+
+#: app/jinja_filters.py:601 templates/partials/summary/list-summary.html:10
+msgid "Remove {item_name}"
+msgstr ""
+
+#: app/jinja_filters.py:702
+#: templates/partials/summary/collapsible-summary.html:36
+#: templates/partials/summary/summary.html:39
+msgid "No answer provided"
 msgstr ""
 
 #: app/forms/error_messages.py:11 app/forms/error_messages.py:12
@@ -211,7 +226,9 @@ msgstr ""
 msgid "The following links open in a new tab"
 msgstr ""
 
+
 #: app/helpers/template_helpers.py:147
+
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -314,33 +331,43 @@ msgid "Sign out"
 msgstr ""
 
 #: app/survey_config/business_config.py:88
+
 #: app/survey_config/social_survey_config.py:39
+
 msgid "What we do"
 msgstr ""
 
 #: app/survey_config/business_config.py:91
 #: app/survey_config/census_config.py:46 app/survey_config/census_config.py:104
 #: app/survey_config/census_config.py:169
+
 #: app/survey_config/social_survey_config.py:42
+
 msgid "Contact us"
 msgstr ""
 
 #: app/survey_config/business_config.py:95
+
 #: app/survey_config/social_survey_config.py:46
+
 msgid "Accessibility"
 msgstr ""
 
 #: app/survey_config/business_config.py:105
 #: app/survey_config/census_config.py:67 app/survey_config/census_config.py:124
 #: app/survey_config/census_config.py:177
+
 #: app/survey_config/social_survey_config.py:56
+
 msgid "Cookies"
 msgstr ""
 
 #: app/survey_config/business_config.py:107
 #: app/survey_config/census_config.py:73 app/survey_config/census_config.py:130
 #: app/survey_config/census_config.py:183
+
 #: app/survey_config/social_survey_config.py:58
+
 msgid "Privacy and data protection"
 msgstr ""
 
@@ -446,7 +473,7 @@ msgstr ""
 #: templates/individual_response/confirmation-post.html:21
 #: templates/individual_response/confirmation-text-message.html:29
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
-#: templates/sectionsummary.html:10 templates/sectionsummary.html:49
+#: templates/sectionsummary.html:10 templates/sectionsummary.html:50
 msgid "Continue"
 msgstr ""
 
@@ -1494,12 +1521,12 @@ msgid "Show"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:48
-#: templates/partials/summary/collapsible-summary.html:58
+#: templates/partials/summary/collapsible-summary.html:59
 msgid "Show all"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:49
-#: templates/partials/summary/collapsible-summary.html:59
+#: templates/partials/summary/collapsible-summary.html:60
 msgid "Hide all"
 msgstr ""
 
@@ -1507,31 +1534,18 @@ msgstr ""
 msgid "Start survey"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:36
-#: templates/partials/summary/summary.html:19
-msgid "No answer provided"
-msgstr ""
-
 #: templates/partials/summary/collapsible-summary.html:37
 #: templates/partials/summary/list-summary.html:7
-#: templates/partials/summary/summary.html:20
+#: templates/partials/summary/summary.html:40
 msgid "Change"
 msgstr ""
 
 #: templates/partials/summary/collapsible-summary.html:38
-#: templates/partials/summary/summary.html:21
+#: templates/partials/summary/summary.html:41
 msgid "Change your answer for:"
 msgstr ""
 
 #: templates/partials/summary/list-summary.html:8
 msgid "Change details for {item_name}"
-msgstr ""
-
-#: templates/partials/summary/list-summary.html:9
-msgid "Remove"
-msgstr ""
-
-#: templates/partials/summary/list-summary.html:10
-msgid "Remove {item_name}"
 msgstr ""
 
