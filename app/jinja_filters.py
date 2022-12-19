@@ -64,7 +64,7 @@ def get_currency_symbol(currency: str = "GBP") -> str:
 
 
 @blueprint.app_template_filter()
-def format_percentage(value: Union[int, Decimal]) -> str:
+def format_percentage(value: Union[int, float, Decimal]) -> str:
     return f"{value}%"
 
 
