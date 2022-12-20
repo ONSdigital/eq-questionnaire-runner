@@ -218,8 +218,28 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             ],
         ),
         (
+            SurveyType.NORTHERN_IRELAND,
+            "Test",
+            NorthernIrelandBusinessSurveyConfig(),
+            [
+                "ONS Business Surveys",
+                read_file("./templates/assets/images/ni-finance-logo.svg"),
+                read_file("./templates/assets/images/ni-finance-mobile-logo.svg"),
+            ],
+        ),
+        (
             None,
             None,
+            BEISBusinessSurveyConfig(),
+            [
+                "ONS Business Surveys",
+                read_file("./templates/assets/images/beis-logo.svg"),
+                read_file("./templates/assets/images/beis-mobile-logo.svg"),
+            ],
+        ),
+        (
+            SurveyType.BEIS,
+            "Test",
             BEISBusinessSurveyConfig(),
             [
                 "ONS Business Surveys",
