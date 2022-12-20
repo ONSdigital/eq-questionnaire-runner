@@ -629,7 +629,6 @@ def test_account_service_log_out_url_context(
         (SurveyType.SOCIAL, "en", SocialSurveyConfig),
         (SurveyType.NORTHERN_IRELAND, "en", NorthernIrelandBusinessSurveyConfig),
         (SurveyType.BEIS, "en", BEISBusinessSurveyConfig),
-        (SurveyType.BEIS, "cy", BEISBusinessSurveyConfig),
         (SurveyType.CENSUS, "en", CensusSurveyConfig),
         (SurveyType.CENSUS, "cy", WelshCensusSurveyConfig),
         (SurveyType.CENSUS_NISRA, "en", CensusNISRASurveyConfig),
