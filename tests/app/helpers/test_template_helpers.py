@@ -628,13 +628,11 @@ def test_account_service_log_out_url_context(
         (SurveyType.HEALTH, "en", SocialSurveyConfig),
         (SurveyType.SOCIAL, "en", SocialSurveyConfig),
         (SurveyType.NORTHERN_IRELAND, "en", NorthernIrelandBusinessSurveyConfig),
-        (SurveyType.NORTHERN_IRELAND, "cy", NorthernIrelandBusinessSurveyConfig),
         (SurveyType.BEIS, "en", BEISBusinessSurveyConfig),
         (SurveyType.BEIS, "cy", BEISBusinessSurveyConfig),
         (SurveyType.CENSUS, "en", CensusSurveyConfig),
         (SurveyType.CENSUS, "cy", WelshCensusSurveyConfig),
         (SurveyType.CENSUS_NISRA, "en", CensusNISRASurveyConfig),
-        (SurveyType.CENSUS_NISRA, "cy", CensusNISRASurveyConfig),
         (None, None, BusinessSurveyConfig),
     ],
 )

@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Test Department for Business, Energy and Industrial Strategy",
-    "theme": "beis",
-    "description": "A questionnaire to demo the BEIS survey theme",
+    "title": "Test Office of Rail and Road",
+    "theme": "orr",
+    "description": "A questionnaire to demo the ORR survey theme",
     "metadata": [
         {
             "name": "user_id",
@@ -67,7 +67,7 @@
                         }
                     ],
                     "id": "group",
-                    "title": "BEIS Theme Test"
+                    "title": "ORR Theme Test"
                 }
             ]
         }
