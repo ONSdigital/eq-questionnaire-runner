@@ -27,7 +27,7 @@ class TestApplicationVariables(IntegrationTestCase):
         self.assertStatusOK()
         self.assertInHead("gtm.start")
         self.assertInHead(
-            f'dataLayer = [{{"tx_id": "{actual["METADATA"]["tx_id"]}"}}, {{"form_type": "H", "survey_id": "0", "title": "Feedback test schema"}}]'
+            f'dataLayer = [{{"form_type": "H", "survey_id": "0", "title": "Feedback test schema"}}, {{"tx_id": "{actual["METADATA"]["tx_id"]}"}}]'
         )
         self.assertInBody("https://www.googletagmanager.com")
         self.assertInHead(settings.EQ_GOOGLE_TAG_MANAGER_AUTH)
@@ -45,7 +45,7 @@ class TestApplicationVariables(IntegrationTestCase):
         self.assertInHead("gtm.start")
         # form_type is empty so should not be present
         self.assertInHead(
-            f'dataLayer = [{{"tx_id": "{actual["METADATA"]["tx_id"]}"}}, {{"survey_id": "001", "title": "Other input fields"}}]'
+            f'dataLayer = [{{"survey_id": "001", "title": "Other input fields"}}, {{"tx_id": "{actual["METADATA"]["tx_id"]}"}}]'
         )
 
     def test_google_analytics_data_layer_is_set_to_nisra_false(self):
@@ -59,7 +59,7 @@ class TestApplicationVariables(IntegrationTestCase):
         self.assertStatusOK()
         self.assertInHead("gtm.start")
         self.assertInHead(
-            f'dataLayer = [{{"nisra": false}}, {{"tx_id": "{actual["METADATA"]["tx_id"]}"}}]'
+            f'dataLayer = [{{"nisra": false}}, {{"form_type": "I", "survey_id": "0", "title": "Census individual test schema"}},{{"tx_id": "{actual["METADATA"]["tx_id"]}"}}]'
         )
 
     def test_livereload_script_rendered(self):
