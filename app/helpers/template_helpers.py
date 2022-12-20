@@ -151,7 +151,7 @@ class ContextHelper:
             return footer_warning
 
     def get_survey_title(self):
-        if get_session_store() is not None:
+        if cookie_session.get("survey_title") is not None:
             return cookie_session.get("survey_title", self._survey_config.survey_title)
         return lazy_gettext("ONS Surveys")
 
