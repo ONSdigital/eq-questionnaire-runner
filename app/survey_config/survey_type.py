@@ -7,5 +7,6 @@ class SurveyType(Enum):
     DEFAULT = "default"
     HEALTH = "health"
     NORTHERN_IRELAND = "northernireland"
+    ORR = "orr"
     CENSUS = "census"
     CENSUS_NISRA = "census-nisra"
