@@ -565,7 +565,7 @@ class SummaryRow:
             )
 
 
-@blueprint.app_template_filter()  # type: ignore
+@blueprint.app_template_filter()
 def map_summary_item_config(
     group: dict[str, Union[list, dict]],
     summary_type: str,
