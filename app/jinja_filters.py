@@ -607,7 +607,7 @@ def map_summary_item_config(
             map_list_collector_config returns List[Dict[str, List[Any]]] but mypy expects
             Iterable[SummaryRow].
             """
-            rows.extend(list_collector_rows) #type: ignore
+            rows.extend(list_collector_rows)  # type: ignore
 
     if summary_type == "CalculatedSummary":
         rows.append(SummaryRow(calculated_question, summary_type, False, "", "", ""))

@@ -854,7 +854,7 @@ def test_answer_source_default_answer_used_when_no_answer(
 def test_raises_exception_when_bad_operand_type():
     with pytest.raises(TypeError):
         rule_evaluator = get_rule_evaluator()
-        rule_evaluator.evaluate(rule={Operator.EQUAL: {1,2}})
+        rule_evaluator.evaluate(rule={Operator.EQUAL: {1, 2}})
 
 
 @pytest.mark.parametrize(
