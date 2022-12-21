@@ -141,5 +141,5 @@ class BEISBusinessSurveyConfig(BusinessSurveyConfig):
 class ORRBusinessSurveyConfig(BusinessSurveyConfig):
     masthead_logo: str = read_file("./templates/assets/images/orr-logo.svg")
     masthead_logo_mobile: str = read_file(
-        "./templates/assets/images/orr-logo.svg"
+        "./templates/assets/images/orr-mobile-logo.svg"
     )

@@ -255,7 +255,7 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             [
                 "ONS Business Surveys",
                 read_file("./templates/assets/images/orr-logo.svg"),
-                read_file("./templates/assets/images/orr-logo.svg"),
+                read_file("./templates/assets/images/orr-mobile-logo.svg"),
             ],
         ),
         (
