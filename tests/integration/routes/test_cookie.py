@@ -12,11 +12,10 @@ class TestCookie(IntegrationTestCase):
         self.assertIsNotNone(cookie.get("expires_in"))
         self.assertIsNotNone(cookie.get("theme"))
         self.assertIsNotNone(cookie.get("title"))
-        self.assertIsNotNone(cookie.get("form_type"))
         self.assertIsNotNone(cookie.get("survey_id"))
         self.assertIsNotNone(cookie.get("user_ik"))
         self.assertIsNotNone(cookie.get("account_service_base_url"))
-        self.assertEqual(len(cookie), 10)
+        self.assertEqual(len(cookie), 9)
 
         self.assertIsNone(cookie.get("user_id"))
         self.assertIsNone(cookie.get("_permanent"))
