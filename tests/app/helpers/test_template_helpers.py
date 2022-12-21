@@ -575,9 +575,9 @@ def test_cookie_domain_context(
     [
         SurveyConfig(),
         BusinessSurveyConfig(),
+        SocialSurveyConfig(),
         NorthernIrelandBusinessSurveyConfig(),
         BEISBusinessSurveyConfig(),
-        SocialSurveyConfig(),
         ORRBusinessSurveyConfig(),
     ],
 )
