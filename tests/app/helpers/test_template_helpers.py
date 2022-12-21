@@ -223,8 +223,8 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             ORRBusinessSurveyConfig(),
             [
                 "ONS Business Surveys",
-                '<img alt="Office of Rail and Road" width="80" height="56" src="./templates/assets/images/orr-logo.png"/>',
-                '<img alt="Office of Rail and Road" width="50" height="35" src="./templates/assets/images/orr-logo.png"/>',
+                read_file("./templates/assets/images/orr-logo.svg"),
+                read_file("./templates/assets/images/orr-logo.svg"),
             ],
         ),
     ),

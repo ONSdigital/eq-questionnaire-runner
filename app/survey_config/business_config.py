@@ -131,5 +131,7 @@ class NorthernIrelandBusinessSurveyConfig(BusinessSurveyConfig):
 
 @dataclass
 class ORRBusinessSurveyConfig(BusinessSurveyConfig):
-    masthead_logo: str = '<img alt="Office of Rail and Road" width="80" height="56" src="./templates/assets/images/orr-logo.png"/>'
-    masthead_logo_mobile: str = '<img alt="Office of Rail and Road" width="50" height="35" src="./templates/assets/images/orr-logo.png"/>'
+    masthead_logo: str = read_file("./templates/assets/images/orr-logo.svg")
+    masthead_logo_mobile: str = read_file(
+        "./templates/assets/images/orr-logo.svg"
+    )
