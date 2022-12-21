@@ -72,7 +72,6 @@ google-cloud-tasks = "*"
 simplejson = "*"
 markupsafe = "*"
 pdfkit = "*"
-typing-extensions = "*"
 
 [requires]
 python_version = "3.10.8"
