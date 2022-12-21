@@ -14,6 +14,7 @@ from app.helpers.language_helper import get_languages_context
 from app.questionnaire import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config import (
+    BEISBusinessSurveyConfig,
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
@@ -165,6 +166,7 @@ def survey_config_mapping(
         SurveyType.SOCIAL: SocialSurveyConfig,
         SurveyType.NORTHERN_IRELAND: NorthernIrelandBusinessSurveyConfig,
         SurveyType.ORR: ORRBusinessSurveyConfig,
+        SurveyType.BEIS: BEISBusinessSurveyConfig,
         SurveyType.CENSUS: (
             WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig
         ),
