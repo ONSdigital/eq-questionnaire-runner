@@ -58,9 +58,9 @@ class TestApplicationVariables(IntegrationTestCase):
         self.get("/questionnaire/individual-confirmation/")
         self.assertStatusOK()
         self.assertInHead("gtm.start")
+        # pylint: disable=line-too-long
         self.assertInHead(
-            # pylint: disable=line-too-long
-            f'dataLayer = [{"nisra": false}, {"form_type": "I", "survey_id": "0", "title": "Census individual test schema"},{"tx_id": "{actual["METADATA"]["tx_id"]}"}]'
+            f'dataLayer = [{{"nisra": false}}, {{"form_type": "I", "survey_id": "0", "title": "Census individual test schema"}}, {{"tx_id": "{actual["METADATA"]["tx_id"]}"}}]'
         )
 
     def test_livereload_script_rendered(self):
