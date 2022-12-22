@@ -772,6 +772,7 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
         ).context["theme"]
     assert result == expected
 
+
 @pytest.mark.parametrize(
     "theme, language, schema, expected",
     [
@@ -877,6 +878,7 @@ def test_include_csrf_token(app: Flask, include_csrf_token: bool):
         ).context["include_csrf_token"]
 
     assert result == include_csrf_token
+
 
 @pytest.mark.parametrize(
     "theme, language, expected",
