@@ -253,6 +253,9 @@ class DateCheck:
         if not form.data:
             raise validators.StopValidation(self.message)
 
+        if hasattr(form, "year") and len(form["year"].data) < 4:
+            raise validators.StopValidation(self.message)
+
         try:
             if hasattr(form, "day"):
                 datetime.strptime(form.data, "%Y-%m-%d").replace(tzinfo=timezone.utc)

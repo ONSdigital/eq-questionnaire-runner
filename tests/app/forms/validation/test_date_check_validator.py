@@ -39,10 +39,27 @@ def test_invalid_month_year(date_check, mock_form, mock_field, date):
     assert_invalid_date_error(date_check, mock_form, mock_field)
 
 
-def test_invalid_year(date_check, mock_form, mock_field):
+@pytest.mark.parametrize(
+    "year",
+    [
+        "20000",
+        "200",
+        "20",
+    ],
+)
+def test_invalid_year(date_check, mock_form, mock_field, year):
     del mock_form.day
     del mock_form.month
-    mock_form.data = "20000"
+    mock_form.year.data = year
+
+    assert_invalid_date_error(date_check, mock_form, mock_field)
+
+
+def test_invalid_data(date_check, mock_form, mock_field):
+    del mock_form.day
+    del mock_form.month
+    del mock_form.year
+    mock_form.data = "abc"
 
     assert_invalid_date_error(date_check, mock_form, mock_field)
 
@@ -56,7 +73,7 @@ def test_invalid_year(date_check, mock_form, mock_field):
 )
 def test_valid_day_month_year(date_check, mock_form, mock_field, date):
     mock_form.data = date
-
+    mock_form["year"].data = date.split("-")[0]
     try:
         date_check(mock_form, mock_field)
     except StopValidation:
@@ -66,6 +83,7 @@ def test_valid_day_month_year(date_check, mock_form, mock_field, date):
 def test_valid_month_year(date_check, mock_form, mock_field):
     del mock_form.day
     mock_form.data = "2016-12"
+    mock_form["year"].data = "2016"
 
     try:
         date_check(mock_form, mock_field)
@@ -77,6 +95,7 @@ def test_valid_year(date_check, mock_form, mock_field):
     del mock_form.day
     del mock_form.month
     mock_form.data = "2016"
+    mock_form["year"].data = "2016"
 
     try:
         date_check(mock_form, mock_field)
