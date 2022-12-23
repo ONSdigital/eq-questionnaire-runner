@@ -577,7 +577,7 @@ def map_summary_item_config(
     icon: Optional[str] = None,
 ) -> list[SummaryRow]:
 
-    rows = []
+    rows : list = []
 
     for block in group["blocks"]:
         if block.get("question"):
@@ -604,8 +604,7 @@ def map_summary_item_config(
                 item_anchor=block.get("item_anchor"),
             )
 
-            # map_list_collector_config returns List[Dict[str, List[Any]]] but mypy expects Iterable[SummaryRow]
-            rows.extend(list_collector_rows)  # type: ignore
+            rows.extend(list_collector_rows)
 
     if summary_type == "CalculatedSummary":
         rows.append(SummaryRow(calculated_question, summary_type, False, "", "", ""))
