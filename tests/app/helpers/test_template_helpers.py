@@ -773,6 +773,37 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
     assert result == expected
 
 
+pytest.mark.parametrize(
+    "theme, language, expected",
+    [
+        (SurveyType.DEFAULT, "en", "ONS Business Surveys"),
+        (SurveyType.BUSINESS, "en", "ONS Business Surveys"),
+        (SurveyType.HEALTH, "en", "ONS Social Surveys"),
+        (SurveyType.SOCIAL, "en", "ONS Social Surveys"),
+        (SurveyType.SOCIAL, "cy", "ONS Social Surveys"),
+        (SurveyType.NORTHERN_IRELAND, "en", "ONS Business Surveys"),
+        (SurveyType.BEIS, "en", "ONS Business Surveys"),
+        (SurveyType.CENSUS, "en", "Census 2021"),
+        (SurveyType.CENSUS, "cy", "Census 2021"),
+        (SurveyType.CENSUS_NISRA, "en", "Census 2021"),
+    ],
+)
+
+
+def test_correct_survey_title_in_context(
+    app: Flask, theme: str, language: str, expected: str
+):
+    with app.app_context():
+        survey_config = get_survey_config(theme=theme, language=language)
+        result = ContextHelper(
+            language="en",
+            is_post_submission=False,
+            include_csrf_token=True,
+            survey_config=survey_config,
+        ).context["survey_title"]
+    assert result == expected
+
+
 @pytest.mark.parametrize(
     "theme, language, schema, expected",
     [
@@ -878,31 +909,3 @@ def test_include_csrf_token(app: Flask, include_csrf_token: bool):
         ).context["include_csrf_token"]
 
     assert result == include_csrf_token
-
-
-@pytest.mark.parametrize(
-    "theme, language, expected",
-    [
-        (SurveyType.DEFAULT, "en", "ONS Surveys"),
-        (SurveyType.BUSINESS, "en", "ONS Surveys"),
-        (SurveyType.HEALTH, "en", "ONS Surveys"),
-        (SurveyType.SOCIAL, "en", "ONS Surveys"),
-        (SurveyType.SOCIAL, "cy", "ONS Surveys"),
-        (SurveyType.NORTHERN_IRELAND, "en", "ONS Surveys"),
-        (SurveyType.CENSUS, "en", "ONS Surveys"),
-        (SurveyType.CENSUS, "cy", "ONS Surveys"),
-        (SurveyType.CENSUS_NISRA, "en", "ONS Surveys"),
-    ],
-)
-def test_correct_title_when_no_session_key(
-    app: Flask, theme: str, language: str, expected: str
-):
-    with app.app_context():
-        survey_config = get_survey_config(theme=theme, language=language)
-        result = ContextHelper(
-            language="en",
-            is_post_submission=False,
-            include_csrf_token=True,
-            survey_config=survey_config,
-        ).context["survey_title"]
-    assert result == expected
