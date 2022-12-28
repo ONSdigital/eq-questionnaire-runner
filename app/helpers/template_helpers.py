@@ -39,7 +39,7 @@ class ContextHelper:
         self._is_post_submission = is_post_submission
         self._include_csrf_token = include_csrf_token
         self._survey_config = survey_config
-        self._survey_title = self.get_survey_title()
+        self._survey_title = cookie_session.get("survey_title", lazy_gettext("ONS Surveys"))
         self._sign_out_url = url_for("session.get_sign_out")
         self._cdn_url = (
             f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
@@ -150,12 +150,6 @@ class ContextHelper:
             ).format(sign_out_url=self._sign_out_url)
 
             return footer_warning
-
-    def get_survey_title(self) -> Any:
-        if cookie_session.get("survey_title") is not None:
-            return cookie_session.get("survey_title", self._survey_config.survey_title)
-        return lazy_gettext("ONS Surveys")
-
 
 @lru_cache
 def survey_config_mapping(
