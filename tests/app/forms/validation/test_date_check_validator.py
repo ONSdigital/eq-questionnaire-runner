@@ -7,18 +7,16 @@ from app.forms import error_messages
 @pytest.mark.parametrize(
     "date",
     [
-        "",
         "2016-12-",
-        "2016--03",
-        "-12-03",
         "2016-12-40",
         "2016-13-20",
-        "20000-12-20",
         "2015-02-29",  # 2015 was not a leap year
+        "20000-12-20",
     ],
 )
 def test_invalid_day_month_year(date_check, mock_form, mock_field, date):
     mock_form.data = date
+    mock_form["year"].data = date.split("-")[0]
 
     assert_invalid_date_error(date_check, mock_form, mock_field)
 
@@ -27,32 +25,27 @@ def test_invalid_day_month_year(date_check, mock_form, mock_field, date):
     "date",
     [
         "2016-",
-        "-12",
         "2016-13",
+        "2016--03",
         "20000-12",
     ],
 )
 def test_invalid_month_year(date_check, mock_form, mock_field, date):
     mock_form.data = date
+    mock_form["year"].data = date.split("-")[0]
     del mock_form.day
 
     assert_invalid_date_error(date_check, mock_form, mock_field)
 
 
 @pytest.mark.parametrize(
-    "year",
-    [
-        "20000",
-        "200",
-        "20",
-    ],
+    "date",
+    ["", "-12-03", "-12", "200", "20", "2"],
 )
-def test_invalid_year(date_check, mock_form, mock_field, year):
-    del mock_form.day
-    del mock_form.month
-    mock_form.year.data = year
+def test_invalid_year(date_check, mock_form, mock_field, date):
+    mock_form["year"].data = date.split("-")[0]
 
-    assert_invalid_date_error(date_check, mock_form, mock_field)
+    assert_invalid_year_format_error(date_check, mock_form, mock_field)
 
 
 def test_invalid_data(date_check, mock_form, mock_field):
@@ -107,3 +100,9 @@ def assert_invalid_date_error(date_check, mock_form, mock_field):
     with pytest.raises(StopValidation) as ite:
         date_check(mock_form, mock_field)
     assert error_messages["INVALID_DATE"] == str(ite.value)
+
+
+def assert_invalid_year_format_error(date_check, mock_form, mock_field):
+    with pytest.raises(StopValidation) as ite:
+        date_check(mock_form, mock_field)
+    assert error_messages["INVALID_YEAR_FORMAT"] == str(ite.value)

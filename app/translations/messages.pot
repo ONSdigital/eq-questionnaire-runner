@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-01-03 11:23+0000\n"
+"POT-Creation-Date: 2023-01-03 14:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: app/forms/validators.py:373 app/jinja_filters.py:115
+#: app/forms/validators.py:376 app/jinja_filters.py:115
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:377 app/jinja_filters.py:123
+#: app/forms/validators.py:380 app/jinja_filters.py:123
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
@@ -206,7 +206,11 @@ msgstr ""
 msgid "Remove an answer"
 msgstr ""
 
-#: app/forms/validators.py:384
+#: app/forms/error_messages.py:70
+msgid "Enter the year in YYYY format"
+msgstr ""
+
+#: app/forms/validators.py:387
 #, python-format
 msgid "%(num)s day"
 msgid_plural "%(num)s days"

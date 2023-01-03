@@ -254,7 +254,7 @@ class DateCheck:
             raise validators.StopValidation(self.message)
 
         if hasattr(form, "year") and len(form["year"].data) < 4:
-            raise validators.StopValidation(self.message)
+            raise validators.StopValidation(error_messages["INVALID_YEAR_FORMAT"])
 
         try:
             if hasattr(form, "day"):
