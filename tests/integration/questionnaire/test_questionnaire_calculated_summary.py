@@ -48,7 +48,6 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
     def test_calculated_summary(self):
         self.launchSurvey("test_calculated_summary")
         self._complete_calculated_summary_path_with_skip()
-        self.assertInBody("Skipped Fourth")
         self.assertInBody(
             "We calculate the total of currency values entered to be £80.00"
         )
@@ -56,7 +55,6 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
     def test_calculated_summary_no_skip(self):
         self.launchSurvey("test_calculated_summary")
         self._complete_calculated_summary_path_no_skip()
-        self.assertNotInBody("Skipped Fourth")
         self.assertInBody(
             "We calculate the total of currency values entered to be £180.00"
         )
@@ -64,7 +62,6 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
     def test_new_calculated_summary(self):
         self.launchSurvey("test_new_calculated_summary")
         self._complete_calculated_summary_path_with_skip()
-        self.assertInBody("Skipped Fourth")
         self.assertInBody(
             "We calculate the total of currency values entered to be £80.00"
         )
@@ -72,7 +69,6 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
     def test_new_calculated_summary_no_skip(self):
         self.launchSurvey("test_new_calculated_summary")
         self._complete_calculated_summary_path_no_skip()
-        self.assertNotInBody("Skipped Fourth")
         self.assertInBody(
             "We calculate the total of currency values entered to be £180.00"
         )
@@ -83,7 +79,6 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.post()
 
         self._complete_calculated_summary_path_with_skip()
-        self.assertInBody("Skipped Fourth")
         self.assertInBody(
             "We calculate the total of currency values entered to be £80.00"
         )
@@ -94,7 +89,6 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.post()
 
         self._complete_calculated_summary_path_no_skip()
-        self.assertNotInBody("Skipped Fourth")
         self.assertInBody(
             "We calculate the total of currency values entered to be £180.00"
         )

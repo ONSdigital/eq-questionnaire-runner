@@ -82,7 +82,7 @@ class ListCollectorBlock:
         )
 
         rendered_summary = self._placeholder_renderer.render(
-            summary, self._location.list_item_id
+            dict_to_render=summary, list_item_id=self._location.list_item_id
         )
 
         section_id = self._section["id"]

@@ -5,6 +5,8 @@ import FirstQuestionBlockPage from "../generated_pages/new_routing_and_skipping_
 import FruitPage from "../generated_pages/new_routing_and_skipping_section_dependencies_calculated_summary/fruit.page";
 import SecondQuestionBlockPage from "../generated_pages/new_routing_and_skipping_section_dependencies_calculated_summary/second-question-block.page";
 import VegetablesPage from "../generated_pages/new_routing_and_skipping_section_dependencies_calculated_summary/vegetables.page";
+import SkipQuestionPage from "../generated_pages/new_routing_and_skipping_section_dependencies_calculated_summary/skip-butter-block.page";
+import ButterPage from "../generated_pages/new_routing_and_skipping_section_dependencies_calculated_summary/butter-block.page";
 
 import HubPage from "../base_pages/hub.page";
 
@@ -27,6 +29,8 @@ describe("Routing and skipping section dependencies based on calculated summarie
       $(FirstQuestionBlockPage.bread()).setValue(25);
       $(FirstQuestionBlockPage.cheese()).setValue(25);
       $(FirstQuestionBlockPage.submit()).click();
+      $(SkipQuestionPage.yes()).click();
+      $(SkipQuestionPage.submit()).click();
       $(CurrencyTotalPlaybackPage.submit()).click();
       $(CalculatedSummarySectionSummaryPage.submit()).click();
 
@@ -42,6 +46,8 @@ describe("Routing and skipping section dependencies based on calculated summarie
       $(FirstQuestionBlockPage.bread()).setValue(1);
       $(FirstQuestionBlockPage.cheese()).setValue(1);
       $(FirstQuestionBlockPage.submit()).click();
+      $(SkipQuestionPage.yes()).click();
+      $(SkipQuestionPage.submit()).click();
       $(CurrencyTotalPlaybackPage.submit()).click();
       $(CalculatedSummarySectionSummaryPage.submit()).click();
 
@@ -56,6 +62,8 @@ describe("Routing and skipping section dependencies based on calculated summarie
       $(FirstQuestionBlockPage.bread()).setValue(5);
       $(FirstQuestionBlockPage.cheese()).setValue(5);
       $(FirstQuestionBlockPage.submit()).click();
+      $(SkipQuestionPage.yes()).click();
+      $(SkipQuestionPage.submit()).click();
       $(CurrencyTotalPlaybackPage.submit()).click();
       $(CalculatedSummarySectionSummaryPage.submit()).click();
 
@@ -70,6 +78,8 @@ describe("Routing and skipping section dependencies based on calculated summarie
       $(FirstQuestionBlockPage.bread()).setValue(30);
       $(FirstQuestionBlockPage.cheese()).setValue(30);
       $(FirstQuestionBlockPage.submit()).click();
+      $(SkipQuestionPage.yes()).click();
+      $(SkipQuestionPage.submit()).click();
       $(CurrencyTotalPlaybackPage.submit()).click();
       $(CalculatedSummarySectionSummaryPage.submit()).click();
 
@@ -86,6 +96,8 @@ describe("Routing and skipping section dependencies based on calculated summarie
       $(FirstQuestionBlockPage.bread()).setValue(20);
       $(FirstQuestionBlockPage.cheese()).setValue(20);
       $(FirstQuestionBlockPage.submit()).click();
+      $(SkipQuestionPage.yes()).click();
+      $(SkipQuestionPage.submit()).click();
       $(CurrencyTotalPlaybackPage.submit()).click();
       $(CalculatedSummarySectionSummaryPage.submit()).click();
 
@@ -102,6 +114,8 @@ describe("Routing and skipping section dependencies based on calculated summarie
       $(FirstQuestionBlockPage.bread()).setValue(20);
       $(FirstQuestionBlockPage.cheese()).setValue(20);
       $(FirstQuestionBlockPage.submit()).click();
+      $(SkipQuestionPage.yes()).click();
+      $(SkipQuestionPage.submit()).click();
       $(CurrencyTotalPlaybackPage.submit()).click();
       $(CalculatedSummarySectionSummaryPage.submit()).click();
 
@@ -115,9 +129,70 @@ describe("Routing and skipping section dependencies based on calculated summarie
       $(CurrencyTotalPlaybackPage.milkAnswerEdit()).click();
       $(FirstQuestionBlockPage.milk()).setValue(100);
       $(FirstQuestionBlockPage.submit()).click();
+      $(SkipQuestionPage.yes()).click();
+      $(SkipQuestionPage.submit()).click();
       $(CurrencyTotalPlaybackPage.submit()).click();
       $(CalculatedSummarySectionSummaryPage.submit()).click();
       expect($(HubPage.summaryRowState("dependent-question-section")).getText()).to.equal("Partially completed");
+    });
+
+    it("When the calculated summary total is less than £100 but additional answers on the path are opened up as a result of editing an answer, Then the dependent section should be enabled", () => {
+      $(HubPage.summaryRowLink("calculated-summary-section")).click();
+      $(FirstQuestionBlockPage.milk()).setValue(10);
+      $(FirstQuestionBlockPage.eggs()).setValue(10);
+      $(FirstQuestionBlockPage.bread()).setValue(10);
+      $(FirstQuestionBlockPage.cheese()).setValue(10);
+      $(FirstQuestionBlockPage.submit()).click();
+      $(SkipQuestionPage.yes()).click();
+      $(SkipQuestionPage.submit()).click();
+      $(CurrencyTotalPlaybackPage.submit()).click();
+      $(CalculatedSummarySectionSummaryPage.submit()).click();
+
+      expect($(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).to.be.true;
+      expect($(HubPage.summaryRowLink("dependent-question-section")).isExisting()).to.be.true;
+      expect($(HubPage.summaryRowLink("dependent-enabled-section")).isExisting()).to.be.false;
+
+      $(HubPage.summaryRowLink("calculated-summary-section")).click();
+      $(CalculatedSummarySectionSummaryPage.skipButterBlockAnswerEdit()).click();
+      $(SkipQuestionPage.no()).click();
+      $(SkipQuestionPage.submit()).click();
+      $(ButterPage.butter()).setValue(60);
+      $(ButterPage.submit()).click();
+      $(CurrencyTotalPlaybackPage.submit()).click();
+      $(CalculatedSummarySectionSummaryPage.submit()).click();
+
+      expect($(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).to.be.true;
+      expect($(HubPage.summaryRowLink("dependent-question-section")).isExisting()).to.be.true;
+      expect($(HubPage.summaryRowLink("dependent-enabled-section")).isExisting()).to.be.true;
+    });
+
+    it("When the calculated summary total is equal to £100 but answers on the path are remove as a result of an answer edit, Then the dependent section should be enabled", () => {
+      $(HubPage.summaryRowLink("calculated-summary-section")).click();
+      $(FirstQuestionBlockPage.milk()).setValue(10);
+      $(FirstQuestionBlockPage.eggs()).setValue(10);
+      $(FirstQuestionBlockPage.bread()).setValue(10);
+      $(FirstQuestionBlockPage.cheese()).setValue(10);
+      $(FirstQuestionBlockPage.submit()).click();
+      $(SkipQuestionPage.no()).click();
+      $(SkipQuestionPage.submit()).click();
+      $(ButterPage.butter()).setValue(60);
+      $(ButterPage.submit()).click();
+      $(CurrencyTotalPlaybackPage.submit()).click();
+      $(CalculatedSummarySectionSummaryPage.submit()).click();
+
+      expect($(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).to.be.true;
+      expect($(HubPage.summaryRowLink("dependent-question-section")).isExisting()).to.be.true;
+      expect($(HubPage.summaryRowLink("dependent-enabled-section")).isExisting()).to.be.true;
+
+      $(HubPage.summaryRowLink("calculated-summary-section")).click();
+      $(CalculatedSummarySectionSummaryPage.skipButterBlockAnswerEdit()).click();
+      $(SkipQuestionPage.yes()).click();
+      $(SkipQuestionPage.submit()).click();
+      $(CalculatedSummarySectionSummaryPage.submit()).click();
+
+      expect($(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).to.be.true;
+      expect($(HubPage.summaryRowLink("dependent-question-section")).isExisting()).to.be.true;
+      expect($(HubPage.summaryRowLink("dependent-enabled-section")).isExisting()).to.be.false;
     });
   });
 });

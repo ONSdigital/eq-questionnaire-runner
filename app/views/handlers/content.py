@@ -23,7 +23,9 @@ class Content(BlockHandler):
         ) or self._get_content_title(transformed_block)
         self._set_page_title(content_page_title)
         return self.placeholder_renderer.render(
-            transformed_block, self._current_location.list_item_id
+            transformed_block,
+            self._current_location.list_item_id,
+            self._routing_path.block_ids,
         )
 
     def get_context(self):

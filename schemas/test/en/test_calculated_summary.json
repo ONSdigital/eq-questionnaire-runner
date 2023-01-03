@@ -271,34 +271,8 @@
                         },
                         {
                             "type": "CalculatedSummary",
-                            "id": "currency-total-playback-skipped-fourth",
-                            "title": "We calculate the total of currency values entered to be %(total)s. Is this correct? (Skipped Fourth)",
-                            "calculation": {
-                                "calculation_type": "sum",
-                                "answers_to_calculate": [
-                                    "first-number-answer",
-                                    "second-number-answer",
-                                    "second-number-answer-also-in-total",
-                                    "third-number-answer"
-                                ],
-                                "title": "Grand total of previous values"
-                            },
-                            "skip_conditions": [
-                                {
-                                    "when": [
-                                        {
-                                            "id": "skip-fourth-block-answer",
-                                            "condition": "equals",
-                                            "value": "No"
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "type": "CalculatedSummary",
-                            "id": "currency-total-playback-with-fourth",
-                            "title": "We calculate the total of currency values entered to be %(total)s. Is this correct? (With Fourth)",
+                            "id": "currency-total-playback",
+                            "title": "We calculate the total of currency values entered to be %(total)s. Is this correct?",
                             "calculation": {
                                 "calculation_type": "sum",
                                 "answers_to_calculate": [
@@ -310,18 +284,7 @@
                                     "fourth-and-a-half-number-answer-also-in-total"
                                 ],
                                 "title": "Grand total of previous values"
-                            },
-                            "skip_conditions": [
-                                {
-                                    "when": [
-                                        {
-                                            "id": "skip-fourth-block-answer",
-                                            "condition": "equals",
-                                            "value": "Yes"
-                                        }
-                                    ]
-                                }
-                            ]
+                            }
                         },
                         {
                             "type": "CalculatedSummary",
@@ -363,7 +326,7 @@
                                     {
                                         "list": [
                                             {
-                                                "text": "Total currency values (if Q4 not skipped): <em>{total}</em>",
+                                                "text": "Total currency values: <em>{total}</em>",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "total",
@@ -373,26 +336,7 @@
                                                                 "arguments": {
                                                                     "number": {
                                                                         "source": "calculated_summary",
-                                                                        "identifier": "currency-total-playback-with-fourth"
-                                                                    }
-                                                                }
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "text": "Total currency values (if Q4 skipped)): <em>{total}</em>",
-                                                "placeholders": [
-                                                    {
-                                                        "placeholder": "total",
-                                                        "transforms": [
-                                                            {
-                                                                "transform": "format_currency",
-                                                                "arguments": {
-                                                                    "number": {
-                                                                        "source": "calculated_summary",
-                                                                        "identifier": "currency-total-playback-skipped-fourth"
+                                                                        "identifier": "currency-total-playback"
                                                                     }
                                                                 }
                                                             }
@@ -465,17 +409,6 @@
                         {
                             "type": "Question",
                             "id": "set-min-max-block",
-                            "skip_conditions": {
-                                "when": {
-                                    "==": [
-                                        {
-                                            "identifier": "skip-fourth-block-answer",
-                                            "source": "answers"
-                                        },
-                                        "No"
-                                    ]
-                                }
-                            },
                             "question": {
                                 "answers": [
                                     {
@@ -489,7 +422,7 @@
                                         "minimum": {
                                             "value": {
                                                 "source": "calculated_summary",
-                                                "identifier": "currency-total-playback-skipped-fourth"
+                                                "identifier": "currency-total-playback"
                                             }
                                         }
                                     },
@@ -504,7 +437,7 @@
                                         "maximum": {
                                             "value": {
                                                 "source": "calculated_summary",
-                                                "identifier": "currency-total-playback-skipped-fourth"
+                                                "identifier": "currency-total-playback"
                                             }
                                         }
                                     }
@@ -515,7 +448,7 @@
                                         {
                                             "placeholder": "calculated_summary_answer",
                                             "value": {
-                                                "identifier": "currency-total-playback-skipped-fourth",
+                                                "identifier": "currency-total-playback",
                                                 "source": "calculated_summary"
                                             }
                                         }

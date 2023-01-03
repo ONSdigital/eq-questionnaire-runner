@@ -30,12 +30,13 @@ class ValueSourceResolver:
     schema: QuestionnaireSchema
     location: Union[None, Location, RelationshipLocation]
     list_item_id: Optional[str]
-    routing_path_block_ids: Optional[list] = None
+    routing_path_block_ids: Union[Optional[tuple], list[str]] = None
     use_default_answer: bool = False
     escape_answer_values: bool = False
+    assess_routing_path: bool = True
 
     def _is_answer_on_path(self, answer_id: str) -> bool:
-        if self.routing_path_block_ids:
+        if self.assess_routing_path and self.routing_path_block_ids:
             block = self.schema.get_block_for_answer_id(answer_id)
             return block is not None and block["id"] in self.routing_path_block_ids
 
@@ -144,6 +145,7 @@ class ValueSourceResolver:
             self.metadata,
             self.response_metadata,
             location=self.location,
+            routing_path_block_ids=self.routing_path_block_ids,
         )
 
         return evaluate_calculated_summary.evaluate(calculation["operation"])  # type: ignore
@@ -161,6 +163,9 @@ class ValueSourceResolver:
         self, value_source: Mapping
     ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
         source = value_source["source"]
+
+        if not self.assess_routing_path:
+            self.assess_routing_path = source == "calculated_summary"
 
         if source == "answers":
             return self._resolve_answer_value_source(value_source)

@@ -46,6 +46,7 @@ class PlaceholderParser:
         renderer: "PlaceholderRenderer",
         list_item_id: Optional[str] = None,
         location: Union[Location, RelationshipLocation, None] = None,
+        routing_path_block_ids: Optional[tuple] = None,
     ):
 
         self._answer_store = answer_store
@@ -59,6 +60,7 @@ class PlaceholderParser:
         self._placeholder_map: MutableMapping[
             str, Union[ValueSourceEscapedTypes, ValueSourceTypes, None]
         ] = {}
+        self._routing_path_block_ids = routing_path_block_ids
 
         self._value_source_resolver = ValueSourceResolver(
             answer_store=self._answer_store,
@@ -70,6 +72,8 @@ class PlaceholderParser:
             escape_answer_values=True,
             response_metadata=self._response_metadata,
             use_default_answer=True,
+            routing_path_block_ids=self._routing_path_block_ids,
+            assess_routing_path=False,
         )
 
     def __call__(

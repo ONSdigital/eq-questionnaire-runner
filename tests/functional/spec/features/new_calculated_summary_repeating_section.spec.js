@@ -7,9 +7,8 @@ import FourthNumberBlockPage from "../../generated_pages/new_calculated_summary_
 import FourthAndAHalfNumberBlockPage from "../../generated_pages/new_calculated_summary_repeating_section/fourth-and-a-half-number-block.page.js";
 import FifthNumberBlockPage from "../../generated_pages/new_calculated_summary_repeating_section/fifth-number-block.page.js";
 import SixthNumberBlockPage from "../../generated_pages/new_calculated_summary_repeating_section/sixth-number-block.page.js";
-import CurrencyTotalPlaybackPageWithFourth from "../../generated_pages/calculated_summary/currency-total-playback-with-fourth.page.js";
+import CurrencyTotalPlaybackPage from "../../generated_pages/new_calculated_summary_repeating_section/currency-total-playback.page.js";
 import SetMinMaxBlockPage from "../../generated_pages/new_calculated_summary_repeating_section/set-min-max-block.page.js";
-import CurrencyTotalPlaybackPageSkippedFourth from "../../generated_pages/new_calculated_summary_repeating_section/currency-total-playback-skipped-fourth.page.js";
 import UnitTotalPlaybackPage from "../../generated_pages/new_calculated_summary_repeating_section/unit-total-playback.page.js";
 import PercentageTotalPlaybackPage from "../../generated_pages/new_calculated_summary_repeating_section/percentage-total-playback.page.js";
 import NumberTotalPlaybackPage from "../../generated_pages/new_calculated_summary_repeating_section/number-total-playback.page.js";
@@ -42,7 +41,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
 
       const browserUrl = browser.getUrl();
 
-      expect(browserUrl).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
+      expect(browserUrl).to.contain(CurrencyTotalPlaybackPage.pageName);
     });
 
     it("Given I have completed all questions, When I am on the calculated summary and there is no custom page title, Then the page title should use the calculation's title", () => {
@@ -51,29 +50,25 @@ describe("Feature: Calculated Summary Repeating Section", () => {
 
     it("Given I complete every question, When I get to the currency summary, Then I should see the correct total", () => {
       // Totals and titles should be shown
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £20.71. Is this correct?"
       );
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£20.71");
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("£20.71");
 
       // Answers included in calculation should be shown
-      expect($(CurrencyTotalPlaybackPageWithFourth.firstNumberAnswerLabel()).getText()).to.contain("First answer label");
-      expect($(CurrencyTotalPlaybackPageWithFourth.firstNumberAnswer()).getText()).to.contain("£1.23");
-      expect($(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswerLabel()).getText()).to.contain("Second answer in currency label");
-      expect($(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswer()).getText()).to.contain("£4.56");
-      expect($(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswerAlsoInTotalLabel()).getText()).to.contain(
-        "Second answer label also in currency total (optional)"
-      );
-      expect($(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswerAlsoInTotal()).getText()).to.contain("£0.12");
-      expect($(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerLabel()).getText()).to.contain("Third answer label");
-      expect($(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswer()).getText()).to.contain("£3.45");
-      expect($(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswerLabel()).getText()).to.contain("Fourth answer label (optional)");
-      expect($(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswer()).getText()).to.contain("£9.01");
-      expect($(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotalLabel()).getText()).to.contain(
-        "Fourth answer label also in total (optional)"
-      );
-      expect($(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).to.contain("£2.34");
+      expect($(CurrencyTotalPlaybackPage.firstNumberAnswerLabel()).getText()).to.contain("First answer label");
+      expect($(CurrencyTotalPlaybackPage.firstNumberAnswer()).getText()).to.contain("£1.23");
+      expect($(CurrencyTotalPlaybackPage.secondNumberAnswerLabel()).getText()).to.contain("Second answer in currency label");
+      expect($(CurrencyTotalPlaybackPage.secondNumberAnswer()).getText()).to.contain("£4.56");
+      expect($(CurrencyTotalPlaybackPage.secondNumberAnswerAlsoInTotalLabel()).getText()).to.contain("Second answer label also in currency total (optional)");
+      expect($(CurrencyTotalPlaybackPage.secondNumberAnswerAlsoInTotal()).getText()).to.contain("£0.12");
+      expect($(CurrencyTotalPlaybackPage.thirdNumberAnswerLabel()).getText()).to.contain("Third answer label");
+      expect($(CurrencyTotalPlaybackPage.thirdNumberAnswer()).getText()).to.contain("£3.45");
+      expect($(CurrencyTotalPlaybackPage.fourthNumberAnswerLabel()).getText()).to.contain("Fourth answer label (optional)");
+      expect($(CurrencyTotalPlaybackPage.fourthNumberAnswer()).getText()).to.contain("£9.01");
+      expect($(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotalLabel()).getText()).to.contain("Fourth answer label also in total (optional)");
+      expect($(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).to.contain("£2.34");
 
       // Answers not included in calculation should not be shown
       expect($$(UnitTotalPlaybackPage.secondNumberAnswerUnitTotal())).to.be.empty;
@@ -83,50 +78,50 @@ describe("Feature: Calculated Summary Repeating Section", () => {
     });
 
     it("Given I reach the calculated summary page, Then the Change link url should contain return_to, return_to_answer_id and return_to_block_id query params", () => {
-      expect($(CurrencyTotalPlaybackPageWithFourth.firstNumberAnswerEdit()).getAttribute("href")).to.contain(
-        "first-number-block/?return_to=calculated-summary&return_to_answer_id=first-number-answer&return_to_block_id=currency-total-playback-with-fourth#first-number-answer"
+      expect($(CurrencyTotalPlaybackPage.firstNumberAnswerEdit()).getAttribute("href")).to.contain(
+        "first-number-block/?return_to=calculated-summary&return_to_answer_id=first-number-answer&return_to_block_id=currency-total-playback#first-number-answer"
       );
     });
 
     it("Given I edit an answer from the calculated summary page and click the Previous button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", () => {
-      $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
+      $(CurrencyTotalPlaybackPage.thirdNumberAnswerEdit()).click();
       $(ThirdNumberBlockPage.previous()).click();
-      expect(browser.getUrl()).to.contain("currency-total-playback-with-fourth/?return_to=calculated-summary#third-number-answer");
+      expect(browser.getUrl()).to.contain("currency-total-playback/?return_to=calculated-summary#third-number-answer");
     });
 
     it("Given I edit an answer from the calculated summary page and click the Submit button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", () => {
-      $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
+      $(CurrencyTotalPlaybackPage.thirdNumberAnswerEdit()).click();
       $(ThirdNumberBlockPage.submit()).click();
-      expect(browser.getUrl()).to.contain("currency-total-playback-with-fourth/?return_to=calculated-summary#third-number-answer");
+      expect(browser.getUrl()).to.contain("currency-total-playback/?return_to=calculated-summary#third-number-answer");
     });
 
     it("Given I change an answer, When I get to the currency summary, Then I should see the new total", () => {
-      $(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswerEdit()).click();
+      $(CurrencyTotalPlaybackPage.fourthNumberAnswerEdit()).click();
       $(FourthNumberBlockPage.fourthNumber()).setValue(19.01);
       $(FourthNumberBlockPage.submit()).click();
 
-      expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
+      expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPage.pageName);
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £30.71. Is this correct?"
       );
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£30.71");
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("£30.71");
     });
 
     it("Given I leave an answer empty, When I get to the currency summary, Then I should see no answer provided and new total", () => {
-      $(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotalEdit()).click();
+      $(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotalEdit()).click();
       $(FourthAndAHalfNumberBlockPage.fourthAndAHalfNumberAlsoInTotal()).setValue("");
       $(FourthAndAHalfNumberBlockPage.submit()).click();
 
-      expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
+      expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPage.pageName);
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £28.37. Is this correct?"
       );
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£28.37");
-      expect($(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).to.contain("No answer provided");
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("£28.37");
+      expect($(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).to.contain("No answer provided");
     });
 
     it("Given I skip the fourth page, When I get to the playback, Then I can should not see it in the total", () => {
-      $(CurrencyTotalPlaybackPageWithFourth.previous()).click();
+      $(CurrencyTotalPlaybackPage.previous()).click();
       $(SixthNumberBlockPage.previous()).click();
       $(FifthNumberBlockPage.previous()).click();
       $(FourthAndAHalfNumberBlockPage.previous()).click();
@@ -140,18 +135,18 @@ describe("Feature: Calculated Summary Repeating Section", () => {
 
       const expectedUrl = browser.getUrl();
 
-      expect(expectedUrl).to.contain(CurrencyTotalPlaybackPageSkippedFourth.pageName);
-      expect($$(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswer())).to.be.empty;
-      expect($$(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotal())).to.be.empty;
-      expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
+      expect(expectedUrl).to.contain(CurrencyTotalPlaybackPage.pageName);
+      expect($$(CurrencyTotalPlaybackPage.fourthNumberAnswer())).to.be.empty;
+      expect($$(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotal())).to.be.empty;
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £9.36. Is this correct?"
       );
-      expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryAnswer()).getText()).to.contain("£9.36");
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("£9.36");
     });
 
     it("Given I complete every question, When I get to the unit summary, Then I should see the correct total", () => {
       // Totals and titles should be shown
-      $(CurrencyTotalPlaybackPageWithFourth.submit()).click();
+      $(CurrencyTotalPlaybackPage.submit()).click();
       expect($(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of unit values entered to be 1,467 cm. Is this correct?"
       );
@@ -223,13 +218,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       $(SecondCurrencyTotalPlaybackPage.submit()).click();
 
       const content = $("h1 + ul").getText();
-      const textsToAssert = [
-        "Total currency values (if Q4 not skipped): £28.37",
-        "Total currency values (if Q4 skipped)): £9.36",
-        "Total unit values: 1,467",
-        "Total percentage values: 79",
-        "Total number values: 124.58",
-      ];
+      const textsToAssert = ["Total currency values: £9.36", "Total unit values: 1,467", "Total percentage values: 79", "Total number values: 124.58"];
 
       textsToAssert.forEach((text) => expect(content).to.contain(text));
     });
@@ -264,11 +253,11 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       $(FifthNumberBlockPage.submit()).click();
       $(SixthNumberBlockPage.submit()).click();
 
-      expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £9.41. Is this correct?"
       );
 
-      $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
+      $(CurrencyTotalPlaybackPage.submit()).click();
       $(UnitTotalPlaybackPage.submit()).click();
       $(PercentageTotalPlaybackPage.submit()).click();
       $(NumberTotalPlaybackPage.submit()).click();
@@ -292,11 +281,11 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       $(FifthNumberBlockPage.submit()).click();
       $(SixthNumberBlockPage.submit()).click();
 
-      expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £15.91. Is this correct?"
       );
 
-      $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
+      $(CurrencyTotalPlaybackPage.submit()).click();
       $(UnitTotalPlaybackPage.submit()).click();
       $(PercentageTotalPlaybackPage.submit()).click();
       $(NumberTotalPlaybackPage.submit()).click();
@@ -321,11 +310,11 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       $(FifthNumberBlockPage.submit()).click();
       $(SixthNumberBlockPage.submit()).click();
 
-      expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £6.91. Is this correct?"
       );
 
-      $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
+      $(CurrencyTotalPlaybackPage.submit()).click();
       $(UnitTotalPlaybackPage.submit()).click();
       $(PercentageTotalPlaybackPage.submit()).click();
       $(NumberTotalPlaybackPage.submit()).click();
@@ -397,14 +386,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       expect(browser.getUrl()).to.contain(HubPage.pageName);
       expect($(HubPage.summaryRowState("personal-details-section-1")).getText()).to.equal("Partially completed");
       $(HubPage.summaryRowLink("personal-details-section-1")).click();
-      expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPageSkippedFourth.pageName);
-      $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
-      $(UnitTotalPlaybackPage.submit()).click();
-      $(PercentageTotalPlaybackPage.submit()).click();
-      $(NumberTotalPlaybackPage.submit()).click();
-      $(BreakdownPage.submit()).click();
-      $(SecondCurrencyTotalPlaybackPage.submit()).click();
-      $(CalculatedSummaryTotalConfirmation.submit()).click();
+      expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
       $(SetMinMaxBlockPage.setMinimum()).setValue(10.0);
       $(SetMinMaxBlockPage.setMaximum()).setValue(6.0);
       $(SetMinMaxBlockPage.submit()).click();
@@ -448,7 +430,7 @@ const getToFirstCalculatedSummary = () => {
 };
 
 const getToSubmitPage = () => {
-  $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
+  $(CurrencyTotalPlaybackPage.submit()).click();
   $(UnitTotalPlaybackPage.submit()).click();
   $(PercentageTotalPlaybackPage.submit()).click();
   $(NumberTotalPlaybackPage.submit()).click();

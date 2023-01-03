@@ -449,6 +449,7 @@ def get_answer_fields(
     metadata: Optional[MetadataProxy],
     response_metadata: Mapping[str, Any],
     location: Union[Location, RelationshipLocation, None],
+    routing_path_block_ids: Optional[tuple] = None,
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
     value_source_resolver = ValueSourceResolver(
@@ -460,6 +461,8 @@ def get_answer_fields(
         list_item_id=list_item_id,
         escape_answer_values=False,
         response_metadata=response_metadata,
+        routing_path_block_ids=routing_path_block_ids,
+        assess_routing_path=False,
     )
 
     rule_evaluator = RuleEvaluator(
@@ -566,6 +569,7 @@ def generate_form(
     location: Union[None, Location, RelationshipLocation] = None,
     data: Optional[dict[str, Any]] = None,
     form_data: Optional[MultiDict[str, Any]] = None,
+    routing_path_block_ids: Optional[tuple] = None,
 ) -> QuestionnaireForm:
     class DynamicForm(QuestionnaireForm):
         pass
@@ -583,6 +587,7 @@ def generate_form(
         metadata,
         response_metadata,
         location,
+        routing_path_block_ids,
     )
 
     for answer_id, field in answer_fields.items():

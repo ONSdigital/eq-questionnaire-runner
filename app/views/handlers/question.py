@@ -22,27 +22,29 @@ class Question(BlockHandler):
     @cached_property
     def form(self):
         question_json = self.rendered_block.get("question")
+
         if self._form_data:
             return generate_form(
-                self._schema,
-                question_json,
-                self._questionnaire_store.answer_store,
-                self._questionnaire_store.list_store,
-                self._questionnaire_store.metadata,
-                self._questionnaire_store.response_metadata,
-                self._current_location,
+                schema=self._schema,
+                question_schema=question_json,
+                answer_store=self._questionnaire_store.answer_store,
+                list_store=self._questionnaire_store.list_store,
+                metadata=self._questionnaire_store.metadata,
+                response_metadata=self._questionnaire_store.response_metadata,
+                location=self._current_location,
                 form_data=self._form_data,
+                routing_path_block_ids=self._routing_path.block_ids,
             )
 
         answers = self._get_answers_for_question(question_json)
         return generate_form(
-            self._schema,
-            question_json,
-            self._questionnaire_store.answer_store,
-            self._questionnaire_store.list_store,
-            self._questionnaire_store.metadata,
-            self._questionnaire_store.response_metadata,
-            self._current_location,
+            schema=self._schema,
+            question_schema=question_json,
+            answer_store=self._questionnaire_store.answer_store,
+            list_store=self._questionnaire_store.list_store,
+            metadata=self._questionnaire_store.metadata,
+            response_metadata=self._questionnaire_store.response_metadata,
+            location=self._current_location,
             data=answers,
         )
 
@@ -73,7 +75,9 @@ class Question(BlockHandler):
 
         self._set_page_title(page_title)
         rendered_question = self.placeholder_renderer.render(
-            transformed_block["question"], self._current_location.list_item_id
+            transformed_block["question"],
+            self._current_location.list_item_id,
+            self._routing_path.block_ids,
         )
         return {
             **transformed_block,

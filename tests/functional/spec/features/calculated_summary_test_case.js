@@ -1,4 +1,4 @@
-import CurrencyTotalPlaybackPageWithFourth from "../../generated_pages/calculated_summary/currency-total-playback-with-fourth.page";
+import CurrencyTotalPlaybackPage from "../../generated_pages/calculated_summary/currency-total-playback.page";
 import UnitTotalPlaybackPage from "../../generated_pages/calculated_summary/unit-total-playback.page";
 import NumberTotalPlaybackPage from "../../generated_pages/calculated_summary/number-total-playback.page";
 import ThirdNumberBlockPage from "../../generated_pages/calculated_summary/third-number-block.page";
@@ -7,7 +7,6 @@ import FourthAndAHalfNumberBlockPage from "../../generated_pages/calculated_summ
 import SixthNumberBlockPage from "../../generated_pages/calculated_summary/sixth-number-block.page";
 import FifthNumberBlockPage from "../../generated_pages/calculated_summary/fifth-number-block.page";
 import SkipFourthBlockPage from "../../generated_pages/calculated_summary/skip-fourth-block.page";
-import CurrencyTotalPlaybackPageSkippedFourth from "../../generated_pages/calculated_summary/currency-total-playback-skipped-fourth.page";
 import PercentageTotalPlaybackPage from "../../generated_pages/calculated_summary/percentage-total-playback.page";
 import CalculatedSummaryTotalConfirmation from "../../generated_pages/calculated_summary/calculated-summary-total-confirmation.page";
 import SetMinMaxBlockPage from "../../generated_pages/calculated_summary/set-min-max-block.page";
@@ -53,7 +52,7 @@ class TestCase {
 
       const browserUrl = browser.getUrl();
 
-      expect(browserUrl).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
+      expect(browserUrl).to.contain(CurrencyTotalPlaybackPage.pageName);
     });
 
     it("Given I have completed all questions, When I am on the calculated summary, Then the page title should use the calculation's title", () => {
@@ -62,29 +61,25 @@ class TestCase {
 
     it("Given I complete every question, When I get to the currency summary, Then I should see the correct total", () => {
       // Totals and titles should be shown
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £20.71. Is this correct?"
       );
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£20.71");
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("£20.71");
 
       // Answers included in calculation should be shown
-      expect($(CurrencyTotalPlaybackPageWithFourth.firstNumberAnswerLabel()).getText()).to.contain("First answer label");
-      expect($(CurrencyTotalPlaybackPageWithFourth.firstNumberAnswer()).getText()).to.contain("£1.23");
-      expect($(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswerLabel()).getText()).to.contain("Second answer in currency label");
-      expect($(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswer()).getText()).to.contain("£4.56");
-      expect($(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswerAlsoInTotalLabel()).getText()).to.contain(
-        "Second answer label also in currency total (optional)"
-      );
-      expect($(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswerAlsoInTotal()).getText()).to.contain("£0.12");
-      expect($(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerLabel()).getText()).to.contain("Third answer label");
-      expect($(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswer()).getText()).to.contain("£3.45");
-      expect($(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswerLabel()).getText()).to.contain("Fourth answer label (optional)");
-      expect($(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswer()).getText()).to.contain("£9.01");
-      expect($(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotalLabel()).getText()).to.contain(
-        "Fourth answer label also in total (optional)"
-      );
-      expect($(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).to.contain("£2.34");
+      expect($(CurrencyTotalPlaybackPage.firstNumberAnswerLabel()).getText()).to.contain("First answer label");
+      expect($(CurrencyTotalPlaybackPage.firstNumberAnswer()).getText()).to.contain("£1.23");
+      expect($(CurrencyTotalPlaybackPage.secondNumberAnswerLabel()).getText()).to.contain("Second answer in currency label");
+      expect($(CurrencyTotalPlaybackPage.secondNumberAnswer()).getText()).to.contain("£4.56");
+      expect($(CurrencyTotalPlaybackPage.secondNumberAnswerAlsoInTotalLabel()).getText()).to.contain("Second answer label also in currency total (optional)");
+      expect($(CurrencyTotalPlaybackPage.secondNumberAnswerAlsoInTotal()).getText()).to.contain("£0.12");
+      expect($(CurrencyTotalPlaybackPage.thirdNumberAnswerLabel()).getText()).to.contain("Third answer label");
+      expect($(CurrencyTotalPlaybackPage.thirdNumberAnswer()).getText()).to.contain("£3.45");
+      expect($(CurrencyTotalPlaybackPage.fourthNumberAnswerLabel()).getText()).to.contain("Fourth answer label (optional)");
+      expect($(CurrencyTotalPlaybackPage.fourthNumberAnswer()).getText()).to.contain("£9.01");
+      expect($(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotalLabel()).getText()).to.contain("Fourth answer label also in total (optional)");
+      expect($(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).to.contain("£2.34");
 
       // Answers not included in calculation should not be shown
       expect($$(UnitTotalPlaybackPage.secondNumberAnswerUnitTotal())).to.be.empty;
@@ -94,50 +89,50 @@ class TestCase {
     });
 
     it("Given I reach the calculated summary page, Then the Change link url should contain return_to, return_to_answer_id and return_to_block_id query params", () => {
-      expect($(CurrencyTotalPlaybackPageWithFourth.firstNumberAnswerEdit()).getAttribute("href")).to.contain(
-        "/questionnaire/first-number-block/?return_to=calculated-summary&return_to_answer_id=first-number-answer&return_to_block_id=currency-total-playback-with-fourth#first-number-answer"
+      expect($(CurrencyTotalPlaybackPage.firstNumberAnswerEdit()).getAttribute("href")).to.contain(
+        "/questionnaire/first-number-block/?return_to=calculated-summary&return_to_answer_id=first-number-answer&return_to_block_id=currency-total-playback#first-number-answer"
       );
     });
 
     it("Given I edit an answer from the calculated summary page and click the Previous button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", () => {
-      $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
+      $(CurrencyTotalPlaybackPage.thirdNumberAnswerEdit()).click();
       $(ThirdNumberBlockPage.previous()).click();
-      expect(browser.getUrl()).to.contain("/questionnaire/currency-total-playback-with-fourth/?return_to=calculated-summary#third-number-answer");
+      expect(browser.getUrl()).to.contain("/questionnaire/currency-total-playback/?return_to=calculated-summary#third-number-answer");
     });
 
     it("Given I edit an answer from the calculated summary page and click the Submit button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", () => {
-      $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
+      $(CurrencyTotalPlaybackPage.thirdNumberAnswerEdit()).click();
       $(ThirdNumberBlockPage.submit()).click();
-      expect(browser.getUrl()).to.contain("/questionnaire/currency-total-playback-with-fourth/?return_to=calculated-summary#third-number-answer");
+      expect(browser.getUrl()).to.contain("/questionnaire/currency-total-playback/?return_to=calculated-summary#third-number-answer");
     });
 
     it("Given I change an answer, When I get to the currency summary, Then I should see the new total", () => {
-      $(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswerEdit()).click();
+      $(CurrencyTotalPlaybackPage.fourthNumberAnswerEdit()).click();
       $(FourthNumberBlockPage.fourthNumber()).setValue(19.01);
       $(FourthNumberBlockPage.submit()).click();
 
-      expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
+      expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPage.pageName);
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £30.71. Is this correct?"
       );
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£30.71");
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("£30.71");
     });
 
     it("Given I leave an answer empty, When I get to the currency summary, Then I should see no answer provided and new total", () => {
-      $(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotalEdit()).click();
+      $(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotalEdit()).click();
       $(FourthAndAHalfNumberBlockPage.fourthAndAHalfNumberAlsoInTotal()).setValue("");
       $(FourthAndAHalfNumberBlockPage.submit()).click();
 
-      expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
+      expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPage.pageName);
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £28.37. Is this correct?"
       );
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£28.37");
-      expect($(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).to.contain("No answer provided");
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("£28.37");
+      expect($(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).to.contain("No answer provided");
     });
 
-    it("Given I skip the fourth page, When I get to the playback, Then I can should not see it in the total", () => {
-      $(CurrencyTotalPlaybackPageWithFourth.previous()).click();
+    it("Given I skip the fourth page, When I get to the playback, Then I should not see it in the total", () => {
+      $(CurrencyTotalPlaybackPage.previous()).click();
       $(SixthNumberBlockPage.previous()).click();
       $(FifthNumberBlockPage.previous()).click();
       $(FourthAndAHalfNumberBlockPage.previous()).click();
@@ -151,18 +146,18 @@ class TestCase {
 
       const expectedUrl = browser.getUrl();
 
-      expect(expectedUrl).to.contain(CurrencyTotalPlaybackPageSkippedFourth.pageName);
-      expect($$(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswer())).to.be.empty;
-      expect($$(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotal())).to.be.empty;
-      expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
+      expect(expectedUrl).to.contain(CurrencyTotalPlaybackPage.pageName);
+      expect($$(CurrencyTotalPlaybackPage.fourthNumberAnswer())).to.be.empty;
+      expect($$(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotal())).to.be.empty;
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £9.36. Is this correct?"
       );
-      expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryAnswer()).getText()).to.contain("£9.36");
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("£9.36");
     });
 
     it("Given I complete every question, When I get to the unit summary, Then I should see the correct total", () => {
       // Totals and titles should be shown
-      $(CurrencyTotalPlaybackPageWithFourth.submit()).click();
+      $(CurrencyTotalPlaybackPage.submit()).click();
       expect($(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of unit values entered to be 1,467 cm. Is this correct?"
       );
@@ -216,13 +211,7 @@ class TestCase {
       $(NumberTotalPlaybackPage.submit()).click();
 
       const content = $("h1 + ul").getText();
-      const textsToAssert = [
-        "Total currency values (if Q4 not skipped): £28.37",
-        "Total currency values (if Q4 skipped)): £9.36",
-        "Total unit values: 1,467",
-        "Total percentage values: 79",
-        "Total number values: 124.58",
-      ];
+      const textsToAssert = ["Total currency values: £9.36", "Total unit values: 1,467", "Total percentage values: 79", "Total number values: 124.58"];
 
       textsToAssert.forEach((text) => expect(content).to.contain(text));
     });
@@ -257,11 +246,11 @@ class TestCase {
       $(FifthNumberBlockPage.submit()).click();
       $(SixthNumberBlockPage.submit()).click();
 
-      expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £9.41. Is this correct?"
       );
 
-      $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
+      $(CurrencyTotalPlaybackPage.submit()).click();
       $(UnitTotalPlaybackPage.submit()).click();
       $(PercentageTotalPlaybackPage.submit()).click();
       $(NumberTotalPlaybackPage.submit()).click();
@@ -283,11 +272,11 @@ class TestCase {
       $(FifthNumberBlockPage.submit()).click();
       $(SixthNumberBlockPage.submit()).click();
 
-      expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £15.91. Is this correct?"
       );
 
-      $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
+      $(CurrencyTotalPlaybackPage.submit()).click();
       $(UnitTotalPlaybackPage.submit()).click();
       $(PercentageTotalPlaybackPage.submit()).click();
       $(NumberTotalPlaybackPage.submit()).click();
@@ -310,11 +299,11 @@ class TestCase {
       $(FifthNumberBlockPage.submit()).click();
       $(SixthNumberBlockPage.submit()).click();
 
-      expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
+      expect($(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £6.91. Is this correct?"
       );
 
-      $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
+      $(CurrencyTotalPlaybackPage.submit()).click();
       $(UnitTotalPlaybackPage.submit()).click();
       $(PercentageTotalPlaybackPage.submit()).click();
       $(NumberTotalPlaybackPage.submit()).click();
@@ -325,6 +314,31 @@ class TestCase {
       $(SetMinMaxBlockPage.setMaximum()).setValue(6.0);
       $(SetMinMaxBlockPage.submit()).click();
       expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    });
+
+    it("Given I am on a page with a placeholder containing a calculated summary value, When I have updated the calculated summary so that additional answers are on the path, Then the placeholder should display the updated value", () => {
+      $(SubmitPage.skipFourthBlockAnswerEdit()).click();
+      $(SkipFourthBlockPage.no()).click();
+      $(SkipFourthBlockPage.submit()).click();
+      $(SubmitPage.skipFourthBlockAnswerEdit()).click();
+      browser.url(CalculatedSummaryTotalConfirmation.url());
+      expect(browser.getUrl()).to.contain(CalculatedSummaryTotalConfirmation.pageName);
+      const content = $("h1 + ul").getText();
+      const textsToAssert = ["Total currency values: £25.92", "Total unit values: 1,467", "Total percentage values: 79", "Total number values: 124.58"];
+
+      textsToAssert.forEach((text) => expect(content).to.contain(text));
+      browser.url(SubmitPage.url());
+    });
+
+    it("Given I am on a page with a dependent question based on a calculated summary value, When I have updated the calculated summary so that additional answers are on the path, Then the question should display the updated value", () => {
+      $(SubmitPage.setMinimumAnswerEdit()).click();
+      expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
+      expect($(SetMinMaxBlockPage.questionTitle()).getText()).to.contain("Set minimum and maximum values based on your calculated summary total of £25.92");
+      $(SetMinMaxBlockPage.submit()).click();
+      expect($(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer more than or equal to £25.92");
+      $(SetMinMaxBlockPage.setMinimum()).setValue(30.0);
+      $(SetMinMaxBlockPage.setMaximum()).setValue(6.0);
+      $(SetMinMaxBlockPage.submit()).click();
     });
 
     it("Given I am on the summary, When I submit the questionnaire, Then I should see the thank you page", () => {

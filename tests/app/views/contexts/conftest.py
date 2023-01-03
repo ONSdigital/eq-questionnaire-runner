@@ -349,5 +349,23 @@ def test_calculated_summary_answers():
 
 
 @pytest.fixture
+def test_calculated_summary_answers_skipped_fourth():
+    answers = [
+        {"value": 1, "answer_id": "first-number-answer"},
+        {"value": 2, "answer_id": "second-number-answer"},
+        {"value": 3, "answer_id": "second-number-answer-unit-total"},
+        {"value": 4, "answer_id": "second-number-answer-also-in-total"},
+        {"value": 5, "answer_id": "third-number-answer"},
+        {"value": 6, "answer_id": "third-and-a-half-number-answer-unit-total"},
+        {"value": "Yes", "answer_id": "skip-fourth-block-answer"},
+        {"value": 9, "answer_id": "fifth-percent-answer"},
+        {"value": 10, "answer_id": "fifth-number-answer"},
+        {"value": 11, "answer_id": "sixth-percent-answer"},
+        {"value": 12, "answer_id": "sixth-number-answer"},
+    ]
+    return AnswerStore(answers)
+
+
+@pytest.fixture
 def test_section_summary_schema():
     return load_schema_from_name("test_section_summary")

@@ -12,6 +12,7 @@ from app.jinja_filters import (
 )
 from app.questionnaire import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.schema_utils import get_answer_ids_in_block
 from app.questionnaire.value_source_resolver import ValueSourceResolver
@@ -24,7 +25,9 @@ class CalculatedSummaryContext(Context):
     def build_groups_for_section(
         self, section: Mapping, return_to_block_id: str, current_location: Location
     ) -> List[Group]:
-        routing_path = self._router.routing_path(section["id"])
+        routing_path = self._router.routing_path(
+            section["id"], list_item_id=current_location.list_item_id
+        )
 
         return [
             Group(
@@ -45,7 +48,7 @@ class CalculatedSummaryContext(Context):
         ]
 
     def build_view_context_for_calculated_summary(
-        self, current_location: Location
+        self, current_location: Location, routing_path: RoutingPath
     ) -> Mapping:
         # type ignores added as block will exist at this point
         block_id: str = current_location.block_id  # type: ignore
@@ -68,6 +71,7 @@ class CalculatedSummaryContext(Context):
             )
             if calculation.get("answers_to_calculate")
             else calculation["operation"],
+            routing_path=routing_path,
         )
 
         collapsible = block.get("collapsible") or False
@@ -167,6 +171,7 @@ class CalculatedSummaryContext(Context):
         groups: list,
         current_location: Location,
         calculation: Union[Callable, ImmutableDict],
+        routing_path: RoutingPath,
     ) -> str:
         answer_format, values_to_calculate = self._get_answer_format(
             groups, current_location
@@ -179,6 +184,7 @@ class CalculatedSummaryContext(Context):
                 self._list_store,
                 self._metadata,
                 self._response_metadata,
+                routing_path_block_ids=routing_path.block_ids,
                 location=current_location,
             )
 
