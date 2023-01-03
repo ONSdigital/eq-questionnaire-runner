@@ -1,4 +1,5 @@
 from mock import Mock, patch
+
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.settings import (
     ACCOUNT_SERVICE_BASE_URL,
@@ -159,7 +160,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
 
         # When
         last_cookie = self.last_response.headers["Set-Cookie"]
-        cookie= self.getUrlAndCookie("/dump/debug", last_cookie)
+        cookie = self.getUrlAndCookie("/dump/debug", last_cookie)
 
         # Then
         self.assertEqual(cookie.get("theme"), "default")
