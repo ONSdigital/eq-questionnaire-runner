@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2022 ORGANIZATION
+# Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-11-29 21:21+0000\n"
+"POT-Creation-Date: 2023-01-03 11:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: app/forms/validators.py:372 app/jinja_filters.py:115
+#: app/forms/validators.py:373 app/jinja_filters.py:115
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:376 app/jinja_filters.py:123
+#: app/forms/validators.py:377 app/jinja_filters.py:123
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
@@ -49,9 +49,9 @@ msgstr ""
 msgid "Remove {item_name}"
 msgstr ""
 
-#: app/jinja_filters.py:702
+#: app/jinja_filters.py:700
 #: templates/partials/summary/collapsible-summary.html:36
-#: templates/partials/summary/summary.html:39
+#: templates/partials/summary/summary.html:20
 msgid "No answer provided"
 msgstr ""
 
@@ -206,7 +206,7 @@ msgstr ""
 msgid "Remove an answer"
 msgstr ""
 
-#: app/forms/validators.py:383
+#: app/forms/validators.py:384
 #, python-format
 msgid "%(num)s day"
 msgid_plural "%(num)s days"
@@ -217,15 +217,15 @@ msgstr[1] ""
 msgid "Not a valid choice."
 msgstr ""
 
-#: app/helpers/template_helpers.py:103
+#: app/helpers/template_helpers.py:105
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:124
+#: app/helpers/template_helpers.py:126
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:149
+#: app/helpers/template_helpers.py:151
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -324,33 +324,33 @@ msgid "Sign out"
 msgstr ""
 
 #: app/survey_config/business_config.py:88
-#: app/survey_config/social_survey_config.py:48
+#: app/survey_config/social_survey_config.py:39
 msgid "What we do"
 msgstr ""
 
-#: app/survey_config/business_config.py:91
+#: app/survey_config/business_config.py:92
 #: app/survey_config/census_config.py:46 app/survey_config/census_config.py:104
-#: app/survey_config/census_config.py:169
-#: app/survey_config/social_survey_config.py:51
+#: app/survey_config/census_config.py:170
+#: app/survey_config/social_survey_config.py:43
 msgid "Contact us"
 msgstr ""
 
-#: app/survey_config/business_config.py:95
-#: app/survey_config/social_survey_config.py:55
+#: app/survey_config/business_config.py:97
+#: app/survey_config/social_survey_config.py:48
 msgid "Accessibility"
 msgstr ""
 
-#: app/survey_config/business_config.py:105
+#: app/survey_config/business_config.py:107
 #: app/survey_config/census_config.py:67 app/survey_config/census_config.py:124
-#: app/survey_config/census_config.py:177
-#: app/survey_config/social_survey_config.py:65
+#: app/survey_config/census_config.py:179
+#: app/survey_config/social_survey_config.py:58
 msgid "Cookies"
 msgstr ""
 
-#: app/survey_config/business_config.py:107
+#: app/survey_config/business_config.py:109
 #: app/survey_config/census_config.py:73 app/survey_config/census_config.py:130
-#: app/survey_config/census_config.py:183
-#: app/survey_config/social_survey_config.py:67
+#: app/survey_config/census_config.py:185
+#: app/survey_config/social_survey_config.py:60
 msgid "Privacy and data protection"
 msgstr ""
 
@@ -371,12 +371,12 @@ msgid "BSL and audio videos"
 msgstr ""
 
 #: app/survey_config/census_config.py:69 app/survey_config/census_config.py:126
-#: app/survey_config/census_config.py:179
+#: app/survey_config/census_config.py:181
 msgid "Accessibility statement"
 msgstr ""
 
 #: app/survey_config/census_config.py:77 app/survey_config/census_config.py:134
-#: app/survey_config/census_config.py:187
+#: app/survey_config/census_config.py:189
 msgid "Terms and conditions"
 msgstr ""
 
@@ -392,7 +392,7 @@ msgstr ""
 msgid "Crown copyright and database rights 2020 OS 100019153."
 msgstr ""
 
-#: app/survey_config/survey_config.py:39
+#: app/survey_config/survey_config.py:36
 msgid "Save and exit survey"
 msgstr ""
 
@@ -1519,12 +1519,12 @@ msgstr ""
 
 #: templates/partials/summary/collapsible-summary.html:37
 #: templates/partials/summary/list-summary.html:7
-#: templates/partials/summary/summary.html:40
+#: templates/partials/summary/summary.html:21
 msgid "Change"
 msgstr ""
 
 #: templates/partials/summary/collapsible-summary.html:38
-#: templates/partials/summary/summary.html:41
+#: templates/partials/summary/summary.html:22
 msgid "Change your answer for:"
 msgstr ""
 
