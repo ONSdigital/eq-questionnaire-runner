@@ -178,8 +178,8 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         )
 
         # When
-        cookie = self.getUrlAndCookie("/dump/debug")
-
+        last_cookie = self.last_response.headers["Set-Cookie"]
+        cookie = self.getUrlAndCookie("/dump/debug", last_cookie)
         # Then
         self.assertEqual(cookie.get("theme"), "social")
         self.assertStatusForbidden()
@@ -214,7 +214,8 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.launchSurvey("test_introduction")
 
         # When
-        cookie = self.getUrlAndCookie("/abc123")
+        last_cookie = self.last_response.headers["Set-Cookie"]
+        cookie = self.getUrlAndCookie("/abc123", last_cookie)
 
         # Then
         self.assertEqual(cookie.get("theme"), "default")
@@ -232,7 +233,8 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         )
 
         # When
-        cookie = self.getUrlAndCookie("/abc123")
+        last_cookie = self.last_response.headers["Set-Cookie"]
+        cookie = self.getUrlAndCookie("/abc123", last_cookie)
 
         # Then
         self.assertEqual(cookie.get("theme"), "social")
@@ -280,6 +282,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
     def test_500_theme_default_cookie_exists(self):
         # Given
         self.launchSurvey("test_introduction")
+        last_cookie = self.last_response.headers["Set-Cookie"]
 
         # When
         with patch(
@@ -287,6 +290,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
             side_effect=Exception("You broke it"),
         ):
             self.post({"answer": "test"})
+            self.last_response.headers["Set-Cookie"] = last_cookie
             cookie = self.getCookie()
 
             # Then
@@ -299,13 +303,14 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
     def test_500_theme_social_cookie_exists(self):
         # Given
         self.launchSurvey("test_introduction")
-
+        last_cookie = self.last_response.headers["Set-Cookie"]
         # When
         with patch(
             "app.routes.questionnaire.get_block_handler",
             side_effect=Exception("You broke it"),
         ):
             self.post({"answer": "test"})
+            self.last_response.headers["Set-Cookie"] = last_cookie
             cookie = self.getCookie()
 
             # Then
@@ -389,7 +394,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.post()
 
     def getUrlAndCookie(self, url, last_cookie=None):
-        self.get(url=url, cookie=last_cookie)
+        self.get(url=url, last_cookie=last_cookie)
         return self.getCookie()
 
     def deleteCookieAndGetUrl(self, url):
