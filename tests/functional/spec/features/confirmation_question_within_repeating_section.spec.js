@@ -24,7 +24,7 @@ describe("Feature: Confirmation Question Within A Repeating Section", () => {
         // Answer question preceding confirmation question
         $(DateOfBirthPage.day()).setValue("01");
         $(DateOfBirthPage.month()).setValue("01");
-        $(DateOfBirthPage.year()).setValue("2007");
+        $(DateOfBirthPage.year()).setValue("2015");
         $(DateOfBirthPage.submit()).click();
 
         // Answer 'No' to confirmation question
@@ -38,7 +38,7 @@ describe("Feature: Confirmation Question Within A Repeating Section", () => {
       it("When I view the summary, Then the confirmation question should not be displayed", () => {
         $(DateOfBirthPage.day()).setValue("01");
         $(DateOfBirthPage.month()).setValue("01");
-        $(DateOfBirthPage.year()).setValue("2007");
+        $(DateOfBirthPage.year()).setValue("2015");
         $(DateOfBirthPage.submit()).click();
 
         $(ConfirmDateOfBirthPage.yesPersonNameIsAgeOld()).click();
