@@ -82,7 +82,7 @@ def format_unit(
 
 def format_unit_input_label(unit: str, unit_length: str = "short") -> str:
     """
-    This function is used to only get the unit of measurement text.  If the unit_length
+    This function is used to only get the unit of measurement text. If the unit_length
     is long then only the plural form of the word is returned (e.g., Hours, Years, etc).
 
     :param (str) unit unit of measurement
