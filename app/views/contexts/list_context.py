@@ -3,7 +3,7 @@ from functools import partial
 from flask import url_for
 from flask_babel import lazy_gettext
 
-from . import Context
+from app.views.contexts.context import Context
 
 
 class ListContext(Context):

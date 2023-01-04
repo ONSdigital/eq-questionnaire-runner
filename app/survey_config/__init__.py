@@ -1,4 +1,9 @@
-from .business_config import BusinessSurveyConfig, NorthernIrelandBusinessSurveyConfig
+from .business_config import (
+    BEISBusinessSurveyConfig,
+    BusinessSurveyConfig,
+    NorthernIrelandBusinessSurveyConfig,
+    ORRBusinessSurveyConfig,
+)
 from .census_config import (
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
@@ -16,5 +21,7 @@ __all__ = [
     "WelshCensusSurveyConfig",
     "BusinessSurveyConfig",
     "NorthernIrelandBusinessSurveyConfig",
+    "BEISBusinessSurveyConfig",
+    "ORRBusinessSurveyConfig",
     "Link",
 ]

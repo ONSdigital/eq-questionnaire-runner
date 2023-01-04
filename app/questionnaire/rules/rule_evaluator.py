@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import date
+from decimal import Decimal
 from typing import Generator, Iterable, Mapping, Optional, Sequence, Union
 
 from app.data_models import AnswerStore, ListStore
@@ -15,7 +16,9 @@ from app.questionnaire.value_source_resolver import (
     ValueSourceTypes,
 )
 
-RuleEvaluatorTypes = Union[bool, Optional[date], list[str], list[date]]
+RuleEvaluatorTypes = Union[
+    bool, Optional[date], list[str], list[date], int, float, Decimal
+]
 
 
 @dataclass

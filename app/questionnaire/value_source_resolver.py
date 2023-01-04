@@ -11,6 +11,7 @@ from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.relationship_location import RelationshipLocation
+from app.questionnaire.rules import rule_evaluator
 
 ValueSourceTypes = Union[None, str, int, Decimal, list]
 ValueSourceEscapedTypes = Union[
@@ -127,13 +128,25 @@ class ValueSourceResolver:
         """
         calculated_summary_block: Mapping[str, Any] = self.schema.get_block(value_source["identifier"])  # type: ignore
         calculation = calculated_summary_block["calculation"]
-        operator = self.get_calculation_operator(calculation["calculation_type"])
-        list_item_id = self._resolve_list_item_id_for_value_source(value_source)
-        values = [
-            self._get_answer_value(answer_id=answer_id, list_item_id=list_item_id)
-            for answer_id in calculation["answers_to_calculate"]
-        ]
-        return operator([value for value in values if value])  # type: ignore
+        if calculation.get("answers_to_calculate"):
+            operator = self.get_calculation_operator(calculation["calculation_type"])
+            list_item_id = self._resolve_list_item_id_for_value_source(value_source)
+            values = [
+                self._get_answer_value(answer_id=answer_id, list_item_id=list_item_id)
+                for answer_id in calculation["answers_to_calculate"]
+            ]
+            return operator([value for value in values if value])  # type: ignore
+
+        evaluate_calculated_summary = rule_evaluator.RuleEvaluator(
+            self.schema,
+            self.answer_store,
+            self.list_store,
+            self.metadata,
+            self.response_metadata,
+            location=self.location,
+        )
+
+        return evaluate_calculated_summary.evaluate(calculation["operation"])  # type: ignore
 
     @staticmethod
     def get_calculation_operator(

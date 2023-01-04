@@ -85,16 +85,18 @@ class BusinessSurveyConfig(SurveyConfig):
         return links
 
     def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
-        links = [Link(lazy_gettext("What we do"), self.what_we_do_url).__dict__]
+        links = [Link(lazy_gettext("What we do"), self.what_we_do_url).as_dict()]
 
         if cookie_has_theme:
-            links.append(Link(lazy_gettext("Contact us"), self.contact_us_url).__dict__)
+            links.append(
+                Link(lazy_gettext("Contact us"), self.contact_us_url).as_dict()
+            )
 
         links.append(
             Link(
                 lazy_gettext("Accessibility"),
                 self.accessibility_url,
-            ).__dict__
+            ).as_dict()
         )
 
         return links
@@ -102,26 +104,14 @@ class BusinessSurveyConfig(SurveyConfig):
     def get_footer_legal_links(self, cookie_has_theme: bool) -> Optional[list[dict]]:
         if cookie_has_theme:
             return [
-                Link(lazy_gettext("Cookies"), self.cookie_settings_url).__dict__,
+                Link(lazy_gettext("Cookies"), self.cookie_settings_url).as_dict(),
                 Link(
                     lazy_gettext("Privacy and data protection"),
                     self.privacy_and_data_protection_url,
-                ).__dict__,
+                ).as_dict(),
             ]
 
         return None
-
-    def get_data_layer(self, tx_id: Optional[str] = None) -> list[dict]:
-        data_layer = [{"tx_id": tx_id}] if tx_id else []
-        if self.schema:
-            data_layer.append(
-                {
-                    key: self.schema.json[key]
-                    for key in ["form_type", "survey_id", "title"]
-                    if key in self.schema.json
-                }
-            )
-        return data_layer
 
     @property
     def _stripped_base_url(self) -> str:
@@ -136,4 +126,20 @@ class NorthernIrelandBusinessSurveyConfig(BusinessSurveyConfig):
     masthead_logo: str = read_file("./templates/assets/images/ni-finance-logo.svg")
     masthead_logo_mobile: str = read_file(
         "./templates/assets/images/ni-finance-mobile-logo.svg"
+    )
+
+
+@dataclass
+class BEISBusinessSurveyConfig(BusinessSurveyConfig):
+    masthead_logo: str = read_file("./templates/assets/images/beis-logo.svg")
+    masthead_logo_mobile: str = read_file(
+        "./templates/assets/images/beis-mobile-logo.svg"
+    )
+
+
+@dataclass
+class ORRBusinessSurveyConfig(BusinessSurveyConfig):
+    masthead_logo: str = read_file("./templates/assets/images/orr-logo.svg")
+    masthead_logo_mobile: str = read_file(
+        "./templates/assets/images/orr-mobile-logo.svg"
     )
