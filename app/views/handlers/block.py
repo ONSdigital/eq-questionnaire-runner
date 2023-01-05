@@ -157,7 +157,7 @@ class BlockHandler:
             page_title = f"{page_title}: {section_repeating_page_title}"
 
         if (
-            self._current_location.list_item_id
+            (self._current_location.list_item_id and self.block["type"] != "CalculatedSummary")
             or self.block["type"] == "ListAddQuestion"
         ):
             page_title_vars = self._resolve_custom_page_title_vars()

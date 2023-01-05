@@ -499,7 +499,6 @@
                             "type": "CalculatedSummary",
                             "id": "currency-total-playback-skipped-fourth",
                             "title": "We calculate the total of currency values entered to be %(total)s. Is this correct? (Skipped Fourth)",
-                            "page_title": "Calculated Summary",
                             "calculation": {
                                 "operation": {
                                     "+": [
@@ -539,7 +538,6 @@
                             "type": "CalculatedSummary",
                             "id": "currency-total-playback-with-fourth",
                             "title": "We calculate the total of currency values entered to be %(total)s. Is this correct? (With Fourth)",
-                            "page_title": "Calculated Summary",
                             "calculation": {
                                 "operation": {
                                     "+": [
@@ -586,7 +584,6 @@
                         {
                             "type": "CalculatedSummary",
                             "id": "unit-total-playback",
-                            "page_title": "Calculated Summary",
                             "title": "We calculate the total of unit values entered to be %(total)s. Is this correct?",
                             "calculation": {
                                 "operation": {
@@ -607,7 +604,6 @@
                         {
                             "type": "CalculatedSummary",
                             "id": "percentage-total-playback",
-                            "page_title": "Calculated Summary",
                             "title": "We calculate the total of percentage values entered to be %(total)s. Is this correct?",
                             "calculation": {
                                 "operation": {
@@ -628,7 +624,6 @@
                         {
                             "type": "CalculatedSummary",
                             "id": "number-total-playback",
-                            "page_title": "Calculated Summary",
                             "title": "We calculate the total of number values entered to be %(total)s. Is this correct?",
                             "calculation": {
                                 "operation": {
