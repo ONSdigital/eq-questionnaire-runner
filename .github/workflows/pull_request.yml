@@ -40,10 +40,10 @@ jobs:
   node-dependencies:
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
         with:
-          node-version: "16"
+          node-version: "14.19.0"
       - name: Get yarn cache
         id: get-yarn-cache
         run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
@@ -116,14 +116,14 @@ jobs:
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
       - name: Update to latest stable Chrome
         run: |
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo apt install ./google-chrome-stable_current_amd64.deb
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v1
         with:
-          node-version: "16"
+          node-version: "14.19.0"
       - run: |
           echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
       - uses: actions/setup-python@v2
