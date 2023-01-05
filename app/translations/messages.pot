@@ -17,14 +17,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.11.0\n"
 
-#: app/forms/validators.py:373 app/jinja_filters.py:115
+#: app/forms/validators.py:376 app/jinja_filters.py:115
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:377 app/jinja_filters.py:123
+#: app/forms/validators.py:380 app/jinja_filters.py:123
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
@@ -204,7 +204,11 @@ msgstr ""
 msgid "Remove an answer"
 msgstr ""
 
-#: app/forms/validators.py:384
+#: app/forms/error_messages.py:70
+msgid "Enter the year in a valid format. For example, 2023."
+msgstr ""
+
+#: app/forms/validators.py:387
 #, python-format
 msgid "%(num)s day"
 msgid_plural "%(num)s days"
