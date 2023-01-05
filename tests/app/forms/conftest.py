@@ -3,7 +3,7 @@ import pytest
 
 @pytest.fixture
 def mock_form(mocker):
-    return mocker.Mock()
+    return mocker.MagicMock()
 
 
 @pytest.fixture
