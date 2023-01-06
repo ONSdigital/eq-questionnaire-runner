@@ -10,7 +10,7 @@ on:
 
 jobs:
   python-dependencies:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - run: |
@@ -38,7 +38,7 @@ jobs:
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: pipenv install --dev
   node-dependencies:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -58,7 +58,7 @@ jobs:
         run: yarn
   test-unit:
     needs: python-dependencies
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - run: |
@@ -100,7 +100,7 @@ jobs:
       - name: Running unit tests
         run: pipenv run ./scripts/run_tests_unit.sh
   validate-schemas:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - name: Run validator
@@ -112,7 +112,7 @@ jobs:
       matrix:
         suite: [ timeout_modal, features, general, components ]
     needs: [python-dependencies, node-dependencies]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
     steps:
@@ -163,7 +163,7 @@ jobs:
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker-compose kill
   docker-push:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - name: Set Tag and SHA
