@@ -224,6 +224,11 @@ def submit_questionnaire(
     )
 
 
+@questionnaire_blueprint.route("/preview", methods=["GET"])
+def get_preview():
+    return render_template(template="preview")
+
+
 @questionnaire_blueprint.route("sections/<section_id>/", methods=["GET", "POST"])
 @questionnaire_blueprint.route(
     "sections/<section_id>/<list_item_id>/", methods=["GET", "POST"]

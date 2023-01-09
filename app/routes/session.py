@@ -123,6 +123,8 @@ def login():
             "account_service_log_out_url"
         )
 
+    cookie_session["preview_questions"] = g.schema.json.get("preview_questions", False)
+
     return redirect(url_for("questionnaire.get_questionnaire"))
 
 

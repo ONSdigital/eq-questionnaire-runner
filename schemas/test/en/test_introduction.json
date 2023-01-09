@@ -5,6 +5,7 @@
     "data_version": "0.0.3",
     "survey_id": "144",
     "theme": "default",
+    "preview_questions": true,
     "title": "Test introduction",
     "legal_basis": "Notice is given under section 999 of the Test Act 2000",
     "metadata": [

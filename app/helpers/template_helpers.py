@@ -55,6 +55,7 @@ class ContextHelper:
             "EQ_GOOGLE_TAG_MANAGER_AUTH"
         )
         self._survey_type = cookie_session.get("theme")
+        self._preview_questions = cookie_session.get("preview_questions")
 
     @property
     def context(self) -> dict[str, Any]:
@@ -80,6 +81,7 @@ class ContextHelper:
             "survey_type": self._survey_type,
             "mastheadLogo": self._survey_config.masthead_logo,
             "mastheadLogoMobile": self._survey_config.masthead_logo_mobile,
+            "preview_questions": self._preview_questions,
         }
         if self._survey_type:
             context["cookie_settings_url"] = self._survey_config.cookie_settings_url
