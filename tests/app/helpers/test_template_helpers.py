@@ -833,7 +833,7 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
         (SurveyType.CENSUS_NISRA, "en", "ONS Surveys"),
     ],
 )
-def test_correct_survey_title_in_context(
+def test_use_default_survey_title_in_context_when_no_cookie(
     app: Flask, theme: str, language: str, expected: str
 ):
     with app.app_context():
