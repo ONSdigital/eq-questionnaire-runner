@@ -30,7 +30,7 @@ class TestTimeout(IntegrationTestCase):
         self.get("/session")
         self.assertStatusUnauthorised()
         self.assertInBody("followed a link to a page you are not signed in to")
-        self.assertEqualPageTitle("Page is not available - ONS Social Surveys")
+        self.assertEqualPageTitle("Page is not available - ONS Surveys")
 
     def test_schema_defined_timeout_cant_be_higher_than_server(self):
         self.launchSurvey("test_timeout")

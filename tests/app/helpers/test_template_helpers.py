@@ -773,7 +773,7 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
     assert result == expected
 
 
-pytest.mark.parametrize(
+@pytest.mark.parametrize(
     "theme, language, expected",
     [
         (SurveyType.DEFAULT, "en", "ONS Business Surveys"),
@@ -788,8 +788,6 @@ pytest.mark.parametrize(
         (SurveyType.CENSUS_NISRA, "en", "Census 2021"),
     ],
 )
-
-
 def test_correct_survey_title_in_context(
     app: Flask, theme: str, language: str, expected: str
 ):
