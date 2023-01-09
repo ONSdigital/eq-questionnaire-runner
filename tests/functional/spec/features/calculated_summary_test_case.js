@@ -176,6 +176,10 @@ class TestCase {
       expect($(UnitTotalPlaybackPage.thirdAndAHalfNumberAnswerUnitTotal()).getText()).to.contain("678 cm");
     });
 
+    it("Given the calculated summary has a custom title, When I am on the unit calculated summary, Then the page title should use the custom title", () => {
+      expect(browser.getTitle()).to.equal("Total Unit Values - A test schema to demo Calculated Summary");
+    });
+
     it("Given I complete every question, When I get to the percentage summary, Then I should see the correct total", () => {
       // Totals and titles should be shown
       $(UnitTotalPlaybackPage.submit()).click();
