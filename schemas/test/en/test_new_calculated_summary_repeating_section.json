@@ -585,6 +585,7 @@
                             "type": "CalculatedSummary",
                             "id": "unit-total-playback",
                             "title": "We calculate the total of unit values entered to be %(total)s. Is this correct?",
+                            "page_title": "Total Unit Values",
                             "calculation": {
                                 "operation": {
                                     "+": [
@@ -605,6 +606,7 @@
                             "type": "CalculatedSummary",
                             "id": "percentage-total-playback",
                             "title": "We calculate the total of percentage values entered to be %(total)s. Is this correct?",
+                            "page_title": "Percentage Calculated Summary:  Person {list_item_position}",
                             "calculation": {
                                 "operation": {
                                     "+": [

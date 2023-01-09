@@ -147,7 +147,10 @@ class BlockHandler:
         )
         return {"list_item_position": list_item_position}
 
-    def _set_page_title(self, page_title):
+    def _set_page_title(self, page_title: Optional[str]):
+        if not page_title:
+            return None
+
         section_repeating_page_title = (
             self._schema.get_repeating_page_title_for_section(
                 self._current_location.section_id
@@ -158,8 +161,8 @@ class BlockHandler:
 
         if (
             self._current_location.list_item_id
-            and self.block["type"] != "CalculatedSummary"
-        ) or self.block["type"] == "ListAddQuestion":
+            or self.block["type"] == "ListAddQuestion"
+        ):
             page_title_vars = self._resolve_custom_page_title_vars()
             page_title = page_title.format(**page_title_vars)
 
