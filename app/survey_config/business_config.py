@@ -135,3 +135,11 @@ class BEISBusinessSurveyConfig(BusinessSurveyConfig):
     masthead_logo_mobile: str = read_file(
         "./templates/assets/images/beis-mobile-logo.svg"
     )
+
+
+@dataclass
+class ORRBusinessSurveyConfig(BusinessSurveyConfig):
+    masthead_logo: str = read_file("./templates/assets/images/orr-logo.svg")
+    masthead_logo_mobile: str = read_file(
+        "./templates/assets/images/orr-mobile-logo.svg"
+    )

@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2022 ORGANIZATION
+# Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-12-22 14:11+0000\n"
+"POT-Creation-Date: 2023-01-04 15:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: app/forms/validators.py:373 app/jinja_filters.py:115
+#: app/forms/validators.py:376 app/jinja_filters.py:115
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:377 app/jinja_filters.py:123
+#: app/forms/validators.py:380 app/jinja_filters.py:123
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
@@ -206,7 +206,11 @@ msgstr ""
 msgid "Remove an answer"
 msgstr ""
 
-#: app/forms/validators.py:384
+#: app/forms/error_messages.py:70
+msgid "Enter the year in a valid format. For example, 2023."
+msgstr ""
+
+#: app/forms/validators.py:387
 #, python-format
 msgid "%(num)s day"
 msgid_plural "%(num)s days"
@@ -217,15 +221,15 @@ msgstr[1] ""
 msgid "Not a valid choice."
 msgstr ""
 
-#: app/helpers/template_helpers.py:102
+#: app/helpers/template_helpers.py:105
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:123
+#: app/helpers/template_helpers.py:126
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:148
+#: app/helpers/template_helpers.py:151
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
