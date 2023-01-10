@@ -4,7 +4,7 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 class TestSchema(IntegrationTestCase):
     def test_get_preview_questions_flag(self):
-        self.get("/schemas/test_preview_questions")
+        self.get("/schemas/test_introduction")
         response = self.getResponseData()
         parsed_json = json_loads(response)
 
@@ -12,7 +12,7 @@ class TestSchema(IntegrationTestCase):
         self.assertEqual(parsed_json["preview_questions"], True)
 
     def test_preview_questions(self):
-        self.launchSurvey("test_preview_questions")
+        self.launchSurvey("test_introduction")
         self.get("/questionnaire/preview")
 
         self.assertStatusCode(200)
