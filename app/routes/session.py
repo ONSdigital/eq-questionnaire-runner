@@ -14,7 +14,11 @@ from app.authentication.authenticator import decrypt_token, store_session
 from app.authentication.jti_claim_storage import JtiTokenUsed, use_jti_claim
 from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_session_store, get_session_timeout_in_seconds
-from app.helpers.template_helpers import get_survey_config, render_template
+from app.helpers.template_helpers import (
+    DATA_LAYER_KEYS,
+    get_survey_config,
+    render_template,
+)
 from app.routes.errors import _render_error_page
 from app.utilities.metadata_parser import validate_runner_claims
 from app.utilities.metadata_parser_v2 import (
@@ -37,6 +41,12 @@ def add_cache_control(response):
 @session_blueprint.route("/session", methods=["HEAD"])
 def login_head():
     return "", 204
+
+
+def set_schema_context_in_cookie(schema) -> None:
+    for key in [*DATA_LAYER_KEYS, "theme"]:
+        if value := schema.json.get(key):
+            cookie_session[key] = value
 
 
 @session_blueprint.route("/session", methods=["GET", "POST"])
@@ -101,9 +111,9 @@ def login():
 
     store_session(claims)
 
-    cookie_session["theme"] = g.schema.json["theme"]
-    cookie_session["survey_title"] = g.schema.json["title"]
     cookie_session["expires_in"] = get_session_timeout_in_seconds(g.schema)
+
+    set_schema_context_in_cookie(g.schema)
 
     if account_service_url := claims.get("account_service_url"):
         cookie_session["account_service_base_url"] = account_service_url

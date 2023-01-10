@@ -43,7 +43,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       expect(browserUrl).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
     });
 
-    it("Given I have completed all questions, When I am on the calculated summary, Then the page title should use the calculation's title", () => {
+    it("Given I have completed all questions, When I am on the calculated summary and there is no custom page title, Then the page title should use the calculation's title", () => {
       expect(browser.getTitle()).to.equal("Grand total of previous values - A test schema to demo Calculated Summary");
     });
 
@@ -163,6 +163,10 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       expect($(UnitTotalPlaybackPage.thirdAndAHalfNumberAnswerUnitTotal()).getText()).to.contain("678 cm");
     });
 
+    it("Given the calculated summary has a custom title, When I am on the unit calculated summary, Then the page title should use the custom title", () => {
+      expect(browser.getTitle()).to.equal("Total Unit Values - A test schema to demo Calculated Summary");
+    });
+
     it("Given I complete every question, When I get to the percentage summary, Then I should see the correct total", () => {
       // Totals and titles should be shown
       $(UnitTotalPlaybackPage.submit()).click();
@@ -177,6 +181,10 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       expect($(PercentageTotalPlaybackPage.fifthPercentAnswer()).getText()).to.contain("56%");
       expect($(PercentageTotalPlaybackPage.sixthPercentAnswerLabel()).getText()).to.contain("Sixth answer label percentage tota");
       expect($(PercentageTotalPlaybackPage.sixthPercentAnswer()).getText()).to.contain("23%");
+    });
+
+    it("Given the calculated summary has a custom title with the list item position, When I am on the percentage calculated summary, Then the page title should use the custom title with the list item position", () => {
+      expect(browser.getTitle()).to.equal("Percentage Calculated Summary: Person 1 - A test schema to demo Calculated Summary");
     });
 
     it("Given I complete every question, When I get to the number summary, Then I should see the correct total", () => {
