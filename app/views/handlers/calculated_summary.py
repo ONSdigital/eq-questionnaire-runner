@@ -16,6 +16,8 @@ class CalculatedSummary(Content):
         context = calculated_summary_context.build_view_context_for_calculated_summary(
             self._current_location
         )
-        self.page_title = context["summary"]["calculated_question"]["title"]
+
+        if not self.page_title:
+            self.page_title = context["summary"]["calculated_question"]["title"]
 
         return context
