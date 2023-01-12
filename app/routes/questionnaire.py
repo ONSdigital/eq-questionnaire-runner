@@ -45,12 +45,14 @@ from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
 from app.views.handlers.submit_questionnaire import SubmitQuestionnaireHandler
 from app.views.handlers.thank_you import ThankYou
+from app.views.handlers.view_preview_questions_pdf import ViewPreviewQuestionsPDF
 from app.views.handlers.view_submitted_response import (
     ViewSubmittedResponse,
     ViewSubmittedResponseExpired,
     ViewSubmittedResponseNotEnabled,
 )
 from app.views.handlers.view_submitted_response_pdf import ViewSubmittedResponsePDF
+from app.views.contexts.preview_context import PreviewContext
 
 logger = get_logger()
 
@@ -225,8 +227,29 @@ def submit_questionnaire(
 
 
 @questionnaire_blueprint.route("/preview", methods=["GET"])
-def get_preview():
-    return render_template(template="preview")
+@with_questionnaire_store
+@with_schema
+def get_preview(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore):
+    preview_context = PreviewContext(
+        language=flask_babel.get_locale().language,
+        schema=schema,
+        answer_store=questionnaire_store.answer_store,
+        list_store=questionnaire_store.list_store,
+        progress_store=questionnaire_store.progress_store,
+        metadata=questionnaire_store.metadata,
+        response_metadata=questionnaire_store.response_metadata,
+    )
+
+    schema_type = schema.json["questionnaire_flow"].get("type")
+
+    context = {
+        "schema_type": schema_type,
+        "summary": preview_context(),
+        "pdf_url": url_for(".get_preview_questions_pdf"),
+    }
+
+    return render_template(template="preview", content=context)
+
 
 
 @questionnaire_blueprint.route("sections/<section_id>/", methods=["GET", "POST"])
@@ -421,6 +444,27 @@ def get_view_submitted_response(schema, questionnaire_store):
 
     return view_submitted_response.get_rendered_html()
 
+
+@questionnaire_blueprint.route("download-pdf", methods=["GET"])
+@with_questionnaire_store
+@with_schema
+def get_preview_questions_pdf(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+) -> Response:
+
+    view_preview_questions_pdf = ViewPreviewQuestionsPDF(
+        schema,
+        questionnaire_store,
+        flask_babel.get_locale().language,
+    )
+
+
+    return send_file(
+        path_or_file=view_preview_questions_pdf.get_pdf(),
+        mimetype=view_preview_questions_pdf.mimetype,
+        as_attachment=True,
+        download_name=view_preview_questions_pdf.filename,
+    )
 
 @post_submission_blueprint.route("download-pdf", methods=["GET"])
 @with_questionnaire_store

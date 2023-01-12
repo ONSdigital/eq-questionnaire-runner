@@ -19,4 +19,117 @@
 
 {% block main %}
 
+<h2>Preview of the questions in this survey</h2>
+
+{{
+  onsPanel({
+    "body": '<p>To answer these questions you need to <a href="/questionnaire">start survey</a></p>'
+  })
+}}
+
+<br>
+<p>You may not have to answer all of these questions. The questions you see will depend on the answers you provide.</p>
+
+{{
+  onsButton({
+    "type": 'button',
+    "text": _('Print answers'),
+    "variants": ['small', 'secondary', 'print'],
+    "attributes": {
+      "data-qa": "btn-print",
+      "data-ga-category": "Print button",
+      "data-ga-action": "Open print Dialogue",
+      "data-ga-label": "Print button click"
+    }
+  })
+}}
+{{
+  onsButton({
+    "text": _('Save answers as PDF'),
+    "variants": ['small', 'secondary', 'timer', 'download'],
+    "url": content.pdf_url,
+    "removeDownloadAttribute": true,
+    "attributes": {
+      "data-qa": "btn-pdf",
+      "data-ga-category": "PDF button",
+      "data-ga-action": "Download PDF",
+      "data-ga-label": "PDF button click"
+    }
+  })
+}}
+
+
+
+<div class="ons-u-mt-l ons-u-mb-l">
+
+  {%- if content.schema_type == "Hub" -%}
+    {%- set itemList = [] -%}
+    {%- for group in content.summary.groups -%}
+      {%- if group["blocks"] | length -%}
+          {%- set item = {
+            "title": group.title,
+            "id": group.id,
+            "content": "",
+            "button": {
+              "open": _('Show'),
+              "close": _('Hide'),
+              "attributes": {
+                "data-ga": "click",
+                "data-ga-category": "Preview Survey",
+                "data-ga-action": "Open panel",
+                "data-ga-label": group.title
+              }
+            }
+          } -%}
+
+          {%- set group %}
+            {% for block in group["blocks"] %}
+              {% if 'question' in block %}
+                {% set question = block['question'] %}
+                {% include 'partials/preview-question.html' %}
+              {% endif %}
+            {% endfor %}
+          {%- endset -%}
+
+
+          {%- do item | setAttribute("content", item.content + group) -%}
+
+          {%- do itemList.append(item) -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {{ onsAccordion({
+      "id": "summary-accordion",
+      "allButton": {
+          "open": _('Show all'),
+          "close": _('Hide all'),
+          "attributes": {
+            "data-ga": "click",
+            "data-ga-category": "Preview Survey",
+            "data-ga-action": "Show all",
+            "data-ga-label": "Show all"
+          }
+      },
+      "itemsList": itemList
+    }) }}
+  {%- else %}
+    {% set summaryGroups = [] %}
+
+    {%- for group in content.summary.groups if group.blocks -%}
+      <div class="ons-summary__group">
+      <h2 class="ons-summary__group-title">{{ group.title}}</h2>
+      {% for block in group["blocks"] %}
+        {% if 'question' in block %}
+          {% set question = block['question'] %}
+            {% include 'partials/preview-question.html' %}
+        {% endif %}
+      {% endfor %}
+      </div>
+    {%- endfor -%}
+
+  {%- endif -%}
+
+</div>
+
+
 {% endblock main %}
