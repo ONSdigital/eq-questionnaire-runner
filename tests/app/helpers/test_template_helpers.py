@@ -16,6 +16,7 @@ from app.settings import (
 )
 from app.survey_config import (
     BEISBusinessSurveyConfig,
+    NIBEISBusinessSurveyConfig,
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
@@ -252,6 +253,26 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
         (
             None,
             None,
+            NIBEISBusinessSurveyConfig(),
+            [
+                "ONS Surveys",
+                read_file("./templates/assets/images/nibeis-logo.svg"),
+                read_file("./templates/assets/images/nibeis-mobile-logo.svg"),
+            ],
+        ),
+        (
+            SurveyType.NIBEIS,
+            "Test",
+            NIBEISBusinessSurveyConfig(),
+            [
+                "Test",
+                read_file("./templates/assets/images/nibeis-logo.svg"),
+                read_file("./templates/assets/images/nibeis-mobile-logo.svg"),
+            ],
+        ),
+        (
+            None,
+            None,
             ORRBusinessSurveyConfig(),
             [
                 "ONS Surveys",
@@ -409,6 +430,11 @@ def test_service_links_context(
             f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
         (
+            NIBEISBusinessSurveyConfig(),
+            "en",
+            f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
+        ),
+        (
             ORRBusinessSurveyConfig(),
             "en",
             f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
@@ -483,6 +509,11 @@ def test_sign_out_button_text_context(
             f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
         ),
         (
+            NIBEISBusinessSurveyConfig(),
+            True,
+            f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
+        ),
+        (
             ORRBusinessSurveyConfig(),
             True,
             f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
@@ -537,6 +568,11 @@ def test_cookie_settings_url_context(
             ACCOUNT_SERVICE_BASE_URL,
         ),
         (
+            NIBEISBusinessSurveyConfig(),
+            "en",
+            ACCOUNT_SERVICE_BASE_URL,
+        ),
+        (
             ORRBusinessSurveyConfig(),
             "en",
             ACCOUNT_SERVICE_BASE_URL,
@@ -579,6 +615,7 @@ def test_cookie_domain_context(
         SocialSurveyConfig(),
         NorthernIrelandBusinessSurveyConfig(),
         BEISBusinessSurveyConfig(),
+        NIBEISBusinessSurveyConfig(),
         ORRBusinessSurveyConfig(),
     ],
 )
@@ -658,6 +695,10 @@ def test_account_service_my_todo_url_context(
             f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
         ),
         (
+            NIBEISBusinessSurveyConfig(),
+            f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
+        ),
+        (
             ORRBusinessSurveyConfig(),
             f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
         ),
@@ -691,6 +732,7 @@ def test_account_service_log_out_url_context(
         (SurveyType.SOCIAL, "en", SocialSurveyConfig),
         (SurveyType.NORTHERN_IRELAND, "en", NorthernIrelandBusinessSurveyConfig),
         (SurveyType.BEIS, "en", BEISBusinessSurveyConfig),
+        (SurveyType.NIBEIS, "en", NIBEISBusinessSurveyConfig),
         (SurveyType.ORR, "en", ORRBusinessSurveyConfig),
         (SurveyType.CENSUS, "en", CensusSurveyConfig),
         (SurveyType.CENSUS, "cy", WelshCensusSurveyConfig),
@@ -799,6 +841,7 @@ def test_context_set_from_app_config(app):
         (SurveyType.SOCIAL, "cy", None),
         (SurveyType.NORTHERN_IRELAND, "en", None),
         (SurveyType.BEIS, "en", None),
+        (SurveyType.NIBEIS, "en", None),
         (SurveyType.ORR, "en", None),
         (SurveyType.CENSUS, "en", "census"),
         (SurveyType.CENSUS, "cy", "census"),
@@ -827,6 +870,7 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
         (SurveyType.SOCIAL, "cy", "ONS Surveys"),
         (SurveyType.NORTHERN_IRELAND, "en", "ONS Surveys"),
         (SurveyType.BEIS, "en", "ONS Surveys"),
+        (SurveyType.NIBEIS, "en", "ONS Surveys"),
         (SurveyType.ORR, "en", "ONS Surveys"),
         (SurveyType.CENSUS, "en", "ONS Surveys"),
         (SurveyType.CENSUS, "cy", "ONS Surveys"),
@@ -894,6 +938,12 @@ def test_use_default_survey_title_in_context_when_no_cookie(
         ),
         (
             SurveyType.BEIS,
+            "en",
+            QuestionnaireSchema({"survey_id": "001"}),
+            [{"survey_id": "001"}],
+        ),
+        (
+            SurveyType.NIBEIS,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
             [{"survey_id": "001"}],
