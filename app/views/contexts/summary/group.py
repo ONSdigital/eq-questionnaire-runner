@@ -46,6 +46,7 @@ class Group:
             language=language,
             answer_store=answer_store,
             list_store=list_store,
+            location=location,
             metadata=metadata,
             response_metadata=response_metadata,
             schema=schema,
