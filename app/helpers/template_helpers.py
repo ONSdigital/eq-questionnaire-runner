@@ -15,10 +15,10 @@ from app.questionnaire import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config import (
     BEISBusinessSurveyConfig,
-    NIBEISBusinessSurveyConfig,
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
+    NIBEISBusinessSurveyConfig,
     NorthernIrelandBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
     SocialSurveyConfig,

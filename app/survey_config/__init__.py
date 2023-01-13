@@ -1,7 +1,7 @@
 from .business_config import (
     BEISBusinessSurveyConfig,
-    NIBEISBusinessSurveyConfig,
     BusinessSurveyConfig,
+    NIBEISBusinessSurveyConfig,
     NorthernIrelandBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
 )
