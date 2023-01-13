@@ -139,6 +139,9 @@ class BEISBusinessSurveyConfig(BusinessSurveyConfig):
 @dataclass
 class NIBEISBusinessSurveyConfig(BusinessSurveyConfig):
     masthead_logo: str = read_file("./templates/assets/images/nibeis-logo.svg")
+    masthead_logo_mobile: str = read_file(
+        "./templates/assets/images/nibeis-logo.svg"
+    )
 
 @dataclass
 class ORRBusinessSurveyConfig(BusinessSurveyConfig):
