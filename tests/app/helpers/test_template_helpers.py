@@ -16,10 +16,10 @@ from app.settings import (
 )
 from app.survey_config import (
     BEISBusinessSurveyConfig,
+    NIBEISBusinessSurveyConfig,
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
-    NIBEISBusinessSurveyConfig,
     NorthernIrelandBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
     SocialSurveyConfig,
@@ -257,6 +257,7 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             [
                 "ONS Surveys",
                 read_file("./templates/assets/images/nibeis-logo.svg"),
+                read_file("./templates/assets/images/nibeis-logo.svg"),
             ],
         ),
         (
@@ -265,6 +266,7 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             NIBEISBusinessSurveyConfig(),
             [
                 "Test",
+                read_file("./templates/assets/images/nibeis-logo.svg"),
                 read_file("./templates/assets/images/nibeis-logo.svg"),
             ],
         ),
