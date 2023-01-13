@@ -257,7 +257,6 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             [
                 "ONS Surveys",
                 read_file("./templates/assets/images/nibeis-logo.svg"),
-                read_file("./templates/assets/images/nibeis-mobile-logo.svg"),
             ],
         ),
         (
@@ -267,7 +266,6 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             [
                 "Test",
                 read_file("./templates/assets/images/nibeis-logo.svg"),
-                read_file("./templates/assets/images/nibeis-mobile-logo.svg"),
             ],
         ),
         (

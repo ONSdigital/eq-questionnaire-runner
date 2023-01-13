@@ -8,7 +8,8 @@ describe("Theme NIBEIS", () => {
 
     it("When I navigate to the radio page, Then I should see NIBEIS theme content", () => {
       expect(browser.getUrl()).to.contain(RadioPage.pageName);
-      expect($("#nibeis-logo-alt").getHTML()).to.contain("Department for Business, Energy and Industrial Strategy");
+      expect($("#beis-logo-alt").getHTML()).to.contain("Department for Business, Energy and Industrial Strategy");
+      expect($("#ni-finance-logo-alt").getHTML()).to.contain("Northern Ireland Department of Finance logo");
     });
   });
 });
