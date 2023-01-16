@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import Optional, Union
+from typing import Union
 
 from app.data_models import QuestionnaireStore
 from app.questionnaire import QuestionnaireSchema
