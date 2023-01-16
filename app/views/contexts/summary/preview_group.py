@@ -82,20 +82,7 @@ class PreviewGroup:
         return dict_to_render
 
     def resolve_title(self, question):
-        if isinstance(question["title"], str):
-            placeholders = re.findall(r"\{.*?}", question["title"])
-            title = question["title"]
-
-            for placeholder in placeholders:
-                stripped_placeholder = placeholder.replace("{", "").replace("}", "")
-                if stripped_placeholder in self.survey_data:
-                    title = title.replace(
-                        placeholder, self.survey_data[stripped_placeholder]
-                    )
-
-            question["title"] = title
-
-        elif isinstance(question["title"], dict):
+        if isinstance(question["title"], dict):
             placeholders = re.findall(r"\{.*?}", question["title"].get("text"))
 
             title = question["title"].get("text")

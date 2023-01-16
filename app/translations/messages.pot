@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-01-04 15:33+0000\n"
+"POT-Creation-Date: 2023-01-16 14:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -221,15 +221,15 @@ msgstr[1] ""
 msgid "Not a valid choice."
 msgstr ""
 
-#: app/helpers/template_helpers.py:105
+#: app/helpers/template_helpers.py:109
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:126
+#: app/helpers/template_helpers.py:140
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:151
+#: app/helpers/template_helpers.py:165
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -314,8 +314,8 @@ msgid "An individual access code has been sent by text"
 msgstr ""
 
 #: app/survey_config/business_config.py:59
-#: app/survey_config/census_config.py:39 app/survey_config/census_config.py:96
-#: app/survey_config/census_config.py:162
+#: app/survey_config/census_config.py:33 app/survey_config/census_config.py:90
+#: app/survey_config/census_config.py:156
 msgid "Help"
 msgstr ""
 
@@ -333,8 +333,8 @@ msgid "What we do"
 msgstr ""
 
 #: app/survey_config/business_config.py:92
-#: app/survey_config/census_config.py:46 app/survey_config/census_config.py:104
-#: app/survey_config/census_config.py:170
+#: app/survey_config/census_config.py:40 app/survey_config/census_config.py:98
+#: app/survey_config/census_config.py:164
 #: app/survey_config/social_survey_config.py:43
 msgid "Contact us"
 msgstr ""
@@ -345,15 +345,15 @@ msgid "Accessibility"
 msgstr ""
 
 #: app/survey_config/business_config.py:107
-#: app/survey_config/census_config.py:67 app/survey_config/census_config.py:124
-#: app/survey_config/census_config.py:179
+#: app/survey_config/census_config.py:61 app/survey_config/census_config.py:118
+#: app/survey_config/census_config.py:173
 #: app/survey_config/social_survey_config.py:58
 msgid "Cookies"
 msgstr ""
 
 #: app/survey_config/business_config.py:109
-#: app/survey_config/census_config.py:73 app/survey_config/census_config.py:130
-#: app/survey_config/census_config.py:185
+#: app/survey_config/census_config.py:67 app/survey_config/census_config.py:124
+#: app/survey_config/census_config.py:179
 #: app/survey_config/social_survey_config.py:60
 msgid "Privacy and data protection"
 msgstr ""
@@ -366,29 +366,29 @@ msgstr ""
 msgid "Save and complete later"
 msgstr ""
 
-#: app/survey_config/census_config.py:52 app/survey_config/census_config.py:110
+#: app/survey_config/census_config.py:46 app/survey_config/census_config.py:104
 msgid "Languages"
 msgstr ""
 
-#: app/survey_config/census_config.py:56 app/survey_config/census_config.py:114
+#: app/survey_config/census_config.py:50 app/survey_config/census_config.py:108
 msgid "BSL and audio videos"
 msgstr ""
 
-#: app/survey_config/census_config.py:69 app/survey_config/census_config.py:126
-#: app/survey_config/census_config.py:181
+#: app/survey_config/census_config.py:63 app/survey_config/census_config.py:120
+#: app/survey_config/census_config.py:175
 msgid "Accessibility statement"
 msgstr ""
 
-#: app/survey_config/census_config.py:77 app/survey_config/census_config.py:134
-#: app/survey_config/census_config.py:189
+#: app/survey_config/census_config.py:71 app/survey_config/census_config.py:128
+#: app/survey_config/census_config.py:183
 msgid "Terms and conditions"
 msgstr ""
 
-#: app/survey_config/census_config.py:150
+#: app/survey_config/census_config.py:144
 msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
 msgstr ""
 
-#: app/survey_config/census_config.py:153 app/survey_config/survey_config.py:20
+#: app/survey_config/census_config.py:147 app/survey_config/survey_config.py:20
 msgid "Use of address data is subject to the terms and conditions."
 msgstr ""
 
@@ -460,7 +460,8 @@ msgstr ""
 #: templates/individual_response/confirmation-post.html:21
 #: templates/individual_response/confirmation-text-message.html:29
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
-#: templates/sectionsummary.html:10 templates/sectionsummary.html:50
+#: templates/preview.html:12 templates/sectionsummary.html:10
+#: templates/sectionsummary.html:50
 msgid "Continue"
 msgstr ""
 
@@ -723,6 +724,10 @@ msgstr ""
 msgid "Thank you for completing the census"
 msgstr ""
 
+#: app/views/handlers/view_preview_questions.py:32
+msgid "Preview Questions"
+msgstr ""
+
 #: app/views/handlers/view_submitted_response.py:52
 msgid "View Submitted Response"
 msgstr ""
@@ -874,7 +879,7 @@ msgstr ""
 msgid "Introduction"
 msgstr ""
 
-#: templates/introduction.html:23
+#: templates/introduction.html:29
 msgid "Your response is legally required"
 msgstr ""
 
@@ -892,6 +897,39 @@ msgstr ""
 
 #: templates/multiple_survey.html:17
 msgid "Close this window to continue with your current survey"
+msgstr ""
+
+#: templates/preview.html:36 templates/view-submitted-response.html:35
+msgid "Print answers"
+msgstr ""
+
+#: templates/preview.html:48 templates/view-submitted-response.html:47
+msgid "Save answers as PDF"
+msgstr ""
+
+#: templates/partials/introduction/preview.html:29
+#: templates/partials/summary/collapsible-summary.html:14
+#: templates/preview.html:74
+msgid "Show"
+msgstr ""
+
+#: templates/layouts/_base.html:73
+#: templates/partials/introduction/preview.html:30
+#: templates/partials/summary/collapsible-summary.html:15
+#: templates/preview.html:75
+msgid "Hide"
+msgstr ""
+
+#: templates/partials/introduction/preview.html:48
+#: templates/partials/summary/collapsible-summary.html:59
+#: templates/preview.html:104
+msgid "Show all"
+msgstr ""
+
+#: templates/partials/introduction/preview.html:49
+#: templates/partials/summary/collapsible-summary.html:60
+#: templates/preview.html:105
+msgid "Hide all"
 msgstr ""
 
 #: templates/signed-out.html:3
@@ -966,14 +1004,6 @@ msgstr ""
 
 #: templates/thank-you.html:76
 msgid "For security, your answers will only be available to view for 45 minutes"
-msgstr ""
-
-#: templates/view-submitted-response.html:35
-msgid "Print answers"
-msgstr ""
-
-#: templates/view-submitted-response.html:47
-msgid "Save answers as PDF"
 msgstr ""
 
 #: templates/errors/401.html:3
@@ -1226,12 +1256,6 @@ msgstr ""
 
 #: templates/layouts/_base.html:72
 msgid "Set cookie preferences"
-msgstr ""
-
-#: templates/layouts/_base.html:73
-#: templates/partials/introduction/preview.html:30
-#: templates/partials/summary/collapsible-summary.html:15
-msgid "Hide"
 msgstr ""
 
 #: templates/layouts/_base.html:128
@@ -1500,21 +1524,6 @@ msgstr ""
 
 #: templates/partials/answers/textfield.html:44
 msgid "{x} characters too many"
-msgstr ""
-
-#: templates/partials/introduction/preview.html:29
-#: templates/partials/summary/collapsible-summary.html:14
-msgid "Show"
-msgstr ""
-
-#: templates/partials/introduction/preview.html:48
-#: templates/partials/summary/collapsible-summary.html:59
-msgid "Show all"
-msgstr ""
-
-#: templates/partials/introduction/preview.html:49
-#: templates/partials/summary/collapsible-summary.html:60
-msgid "Hide all"
 msgstr ""
 
 #: templates/partials/introduction/start-survey.html:5
