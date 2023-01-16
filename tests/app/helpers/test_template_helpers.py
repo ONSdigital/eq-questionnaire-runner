@@ -256,7 +256,8 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             BEISNIBusinessSurveyConfig(),
             [
                 "ONS Surveys",
-                read_file("./templates/assets/images/beis-ni-logo.svg"),
+                read_file("./templates/assets/images/beis-mobile-logo.svg")
+                + read_file("./templates/assets/images/finance-ni-logo-stacked.svg"),
                 None,
             ],
         ),
@@ -266,7 +267,8 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             BEISNIBusinessSurveyConfig(),
             [
                 "Test",
-                read_file("./templates/assets/images/beis-ni-logo.svg"),
+                read_file("./templates/assets/images/beis-mobile-logo.svg")
+                + read_file("./templates/assets/images/finance-ni-logo-stacked.svg"),
                 None,
             ],
         ),
