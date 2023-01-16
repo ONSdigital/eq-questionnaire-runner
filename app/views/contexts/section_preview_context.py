@@ -1,8 +1,8 @@
 from functools import cached_property
-from typing import Any, Mapping, Optional
-
+from typing import Mapping, Optional
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.utilities import safe_content
@@ -19,7 +19,7 @@ class SectionPreviewContext(Context):
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: Mapping[str, Any],
+        metadata: Optional[MetadataProxy],
         response_metadata: Mapping,
         current_location: Location,
     ):
@@ -63,36 +63,13 @@ class SectionPreviewContext(Context):
 
     def get_page_title(self, title_for_location: str) -> str:
 
-        section_repeating_page_title = (
-            self._schema.get_repeating_page_title_for_section(
-                self.current_location.section_id
-            )
-        )
-        page_title = self._schema.get_custom_page_title_for_section(
+        return self._schema.get_custom_page_title_for_section(
             self.current_location.section_id
         ) or self._get_safe_page_title(title_for_location)
 
-        if section_repeating_page_title:
-            page_title = f"{page_title}: {section_repeating_page_title}"
-
-        if self.current_location.list_item_id and self.current_location.list_name:
-            list_item_position = self._list_store.list_item_position(
-                self.current_location.list_name, self.current_location.list_item_id
-            )
-            page_title = page_title.format(list_item_position=list_item_position)
-        return page_title
-
     def _build_summary(self):
-        """
-        Build a summary context for a particular location.
-
-        Does not support generating multiple sections at a time (i.e. passing no list_item_id for repeating section).
-        """
-        summary = self.section.get("summary", {})
-        collapsible = {"collapsible": summary.get("collapsible", False)}
 
         return {
-            **collapsible,
             "groups": [
                 PreviewGroup(
                     group,
@@ -115,12 +92,7 @@ class SectionPreviewContext(Context):
         }
 
     def _title_for_location(self):
-        section_id = self.current_location.section_id
-        return (
-            self._schema.get_repeating_title_for_section(section_id)
-            or self._schema.get_summary_title_for_section(section_id)
-            or self._schema.get_title_for_section(section_id)
-        )
+        return self._schema.get_title_for_section(self.current_location.section_id)
 
     def _get_safe_page_title(self, title):
         return (

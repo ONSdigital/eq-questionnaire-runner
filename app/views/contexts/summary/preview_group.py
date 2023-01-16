@@ -38,7 +38,7 @@ class PreviewGroup:
             response_metadata=response_metadata,
             schema=schema,
         )
-        self.survey_data= metadata["survey_metadata"].data
+        self.survey_data = metadata["survey_metadata"].data
 
     @staticmethod
     def _build_blocks(
@@ -72,35 +72,39 @@ class PreviewGroup:
 
     def serialize(self):
 
-        dict_to_render = QuestionnaireSchema.get_mutable_deepcopy({"id": self.id, "title": self.title, "blocks": self.blocks})
+        dict_to_render = QuestionnaireSchema.get_mutable_deepcopy(
+            {"id": self.id, "title": self.title, "blocks": self.blocks}
+        )
         for block in dict_to_render.get("blocks"):
             if question := block.get("question"):
                 self.resolve_title(question)
 
         return dict_to_render
 
-
     def resolve_title(self, question):
         if isinstance(question["title"], str):
-            placeholders = re.findall(r'\{.*?}', question["title"])
+            placeholders = re.findall(r"\{.*?}", question["title"])
             title = question["title"]
 
             for placeholder in placeholders:
                 stripped_placeholder = placeholder.replace("{", "").replace("}", "")
                 if stripped_placeholder in self.survey_data:
-                    title = title.replace(placeholder, self.survey_data[stripped_placeholder])
+                    title = title.replace(
+                        placeholder, self.survey_data[stripped_placeholder]
+                    )
 
             question["title"] = title
 
-
         elif isinstance(question["title"], dict):
-            placeholders = re.findall(r'\{.*?}', question["title"].get("text"))
+            placeholders = re.findall(r"\{.*?}", question["title"].get("text"))
 
             title = question["title"].get("text")
 
             for placeholder in placeholders:
                 stripped_placeholder = placeholder.replace("{", "").replace("}", "")
                 if stripped_placeholder in self.survey_data:
-                    title = title.replace(placeholder, self.survey_data[stripped_placeholder])
+                    title = title.replace(
+                        placeholder, self.survey_data[stripped_placeholder]
+                    )
 
             question["title"] = title

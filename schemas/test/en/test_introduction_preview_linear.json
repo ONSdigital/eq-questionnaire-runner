@@ -29,6 +29,14 @@
             "name": "trad_as",
             "type": "string",
             "optional": true
+        },
+        {
+          "name": "ref_p_start_date",
+          "type": "date"
+        },
+        {
+          "name": "ref_p_end_date",
+          "type": "date"
         }
     ],
     "questionnaire_flow": {
@@ -39,6 +47,10 @@
         {
             "id": "introduction-section",
             "title": "Introduction",
+            "summary": {
+                "page_title": "Summary title",
+                "show_on_completion": true
+            },
             "groups": [
                 {
                     "id": "introduction-group",
@@ -251,6 +263,153 @@
                                     }
                                 ]
                             }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "mandatory-radio",
+                            "question": {
+                                "description": ["Example description"],
+                                "instruction": ["Example instruction"],
+                                "answers": [
+                                    {
+                                        "id": "mandatory-radio-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "id": "mandatory-radio-question",
+                                "title": {
+                                  "text": "Are you able to report for the calendar month {ref_p_start_date} to {ref_p_end_date}?",
+                                  "placeholders": [
+                                    {
+                                      "placeholder": "ref_p_start_date",
+                                      "transforms": [
+                                        {
+                                          "transform": "format_date",
+                                          "arguments": {
+                                            "date_to_format": {
+                                              "source": "metadata",
+                                              "identifier": "ref_p_start_date"
+                                            },
+                                            "date_format": "d MMMM yyyy"
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "placeholder": "ref_p_end_date",
+                                      "transforms": [
+                                        {
+                                          "transform": "format_date",
+                                          "arguments": {
+                                            "date_to_format": {
+                                              "source": "metadata",
+                                              "identifier": "ref_p_end_date"
+                                            },
+                                            "date_format": "d MMMM yyyy"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "non-mandatory-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "non-mandatory-checkbox-answer",
+                                        "instruction": "Select any answers that apply",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "None",
+                                                "value": "None"
+                                            },
+                                            {
+                                                "label": "Cheese",
+                                                "value": "Cheese"
+                                            },
+                                            {
+                                                "label": "Ham",
+                                                "value": "Ham"
+                                            },
+                                            {
+                                                "label": "Pineapple",
+                                                "value": "Pineapple"
+                                            },
+                                            {
+                                                "label": "Tuna",
+                                                "value": "Tuna"
+                                            },
+                                            {
+                                                "label": "Pepperoni",
+                                                "value": "Pepperoni"
+                                            },
+                                            {
+                                                "label": "Other",
+                                                "value": "Other",
+                                                "description": "Choose any other topping",
+                                                "detail_answer": {
+                                                    "mandatory": false,
+                                                    "id": "other-answer-non-mandatory",
+                                                    "label": "Please specify other",
+                                                    "type": "TextField"
+                                                }
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "non-mandatory-checkbox-question",
+                                "title": "Are you sure you are able to report for the calendar month {ref_p_start_date} to {ref_p_end_date}?",
+                                "type": "General",
+                                "guidance": {
+                                  "contents": [
+                                    {
+                                      "description": "<strong>Include:</strong>"
+                                    },
+                                    {
+                                      "list": [
+                                        "list item 1",
+                                        "list item 2"
+                                      ]
+                                    }
+                                  ]
+                                }
+                            }
+                        },
+                        {
+                          "id": "text-area",
+                          "type": "Question",
+                          "question": {
+                            "id": "text-area-question",
+                            "title": "Please provide any further details",
+                            "type": "General",
+                            "answers": [
+                              {
+                                "id": "text-area-answer",
+                                "mandatory": false,
+                                "type": "TextArea",
+                                "label": "Comments",
+                                "max_length": 2000
+                              }
+                            ]
+                          }
                         }
                     ]
                 }

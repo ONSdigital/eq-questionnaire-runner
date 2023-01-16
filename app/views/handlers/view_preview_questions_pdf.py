@@ -1,15 +1,13 @@
 import io
 import re
+from datetime import datetime, timezone
 
 import pdfkit
 from flask import current_app
 
 from app.data_models import QuestionnaireStore
 from app.questionnaire import QuestionnaireSchema
-from app.views.handlers.view_preview_questions import (
-    ViewPreviewQuestions,
-)
-from datetime import datetime, timezone
+from app.views.handlers.view_preview_questions import ViewPreviewQuestions
 
 
 class ViewPreviewQuestionsPDF(ViewPreviewQuestions):

@@ -16,3 +16,18 @@ def assert_summary_context(context):
                 assert "id" in answer
                 assert "value" in answer
                 assert "type" in answer
+
+
+def assert_preview_context(context):
+    preview_context = context["groups"][0]
+    for key_value in ("id", "blocks", "title"):
+        assert (
+            key_value in preview_context
+        ), f"Key value {key_value} missing from context['groups']"
+
+    for block in context["groups"][0]["blocks"]:
+        assert "id" in block
+        assert "title" in block
+        assert "question" in block
+        for answers in block["question"]["answers"]:
+            assert len(answers) != 0

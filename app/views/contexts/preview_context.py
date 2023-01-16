@@ -1,12 +1,11 @@
 from typing import Generator, Mapping, Optional, Union
 
-from app.questionnaire.location import Location
-
-from .context import Context
-from .section_preview_context import SectionPreviewContext
-from app.questionnaire import QuestionnaireSchema
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
+from app.questionnaire import QuestionnaireSchema
+from app.questionnaire.location import Location
+from app.views.contexts import Context
+from app.views.contexts.section_preview_context import SectionPreviewContext
 
 
 class PreviewContext(Context):
@@ -20,7 +19,15 @@ class PreviewContext(Context):
         metadata: Optional[MetadataProxy],
         response_metadata: Mapping,
     ):
-        super().__init__(language, schema, answer_store, list_store, progress_store, metadata, response_metadata)
+        super().__init__(
+            language,
+            schema,
+            answer_store,
+            list_store,
+            progress_store,
+            metadata,
+            response_metadata,
+        )
         self._routing_path = None
 
     def __call__(
@@ -48,8 +55,5 @@ class PreviewContext(Context):
                 response_metadata=self._response_metadata,
                 current_location=location,
             )
-            section: Mapping = self._schema.get_section(section_id) or {}
-            if section.get("summary", {}).get("items"):
-                break
 
             yield from section_preview_context(return_to=return_to)["summary"]["groups"]

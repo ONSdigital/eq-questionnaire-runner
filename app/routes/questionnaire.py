@@ -33,6 +33,7 @@ from app.questionnaire.router import Router
 from app.submitter.previously_submitted_exception import PreviouslySubmittedException
 from app.utilities.schema import load_schema_from_metadata
 from app.views.contexts import HubContext
+from app.views.contexts.preview_context import PreviewContext
 from app.views.handlers.block_factory import get_block_handler
 from app.views.handlers.confirm_email import ConfirmEmail
 from app.views.handlers.confirmation_email import (
@@ -52,7 +53,6 @@ from app.views.handlers.view_submitted_response import (
     ViewSubmittedResponseNotEnabled,
 )
 from app.views.handlers.view_submitted_response_pdf import ViewSubmittedResponsePDF
-from app.views.contexts.preview_context import PreviewContext
 
 logger = get_logger()
 
@@ -249,7 +249,6 @@ def get_preview(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireS
     }
 
     return render_template(template="preview", content=context)
-
 
 
 @questionnaire_blueprint.route("sections/<section_id>/", methods=["GET", "POST"])
@@ -458,13 +457,13 @@ def get_preview_questions_pdf(
         flask_babel.get_locale().language,
     )
 
-
     return send_file(
         path_or_file=view_preview_questions_pdf.get_pdf(),
         mimetype=view_preview_questions_pdf.mimetype,
         as_attachment=True,
         download_name=view_preview_questions_pdf.filename,
     )
+
 
 @post_submission_blueprint.route("download-pdf", methods=["GET"])
 @with_questionnaire_store

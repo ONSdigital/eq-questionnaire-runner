@@ -28,8 +28,8 @@ class PreviewBlock:
             location=location,
         )
 
+    @staticmethod
     def get_question(
-        self,
         block_schema,
         answer_store,
         list_store,

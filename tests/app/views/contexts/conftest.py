@@ -351,3 +351,8 @@ def test_calculated_summary_answers():
 @pytest.fixture
 def test_section_summary_schema():
     return load_schema_from_name("test_section_summary")
+
+
+@pytest.fixture
+def test_introduction_preview_linear_schema():
+    return load_schema_from_name("test_introduction_preview_linear")

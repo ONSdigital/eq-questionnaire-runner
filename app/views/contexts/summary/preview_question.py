@@ -25,7 +25,8 @@ class PreviewQuestion:
             answers=iter(question_schema["answers"])
         )
 
-    def _build_answers(self, question_schema):
+    @staticmethod
+    def _build_answers(question_schema):
         answers = []
         for answer in iter(question_schema["answers"]):
             if options := answer.get("options"):
@@ -35,7 +36,8 @@ class PreviewQuestion:
 
         return answers
 
-    def _build_answer_descriptions(self, answers):
+    @staticmethod
+    def _build_answer_descriptions(answers):
         return next(
             (
                 answer.get("description")
@@ -49,7 +51,8 @@ class PreviewQuestion:
         for answer in answers:
             return self._build_guidance(answer)
 
-    def _build_descriptions(self, question_schema):
+    @staticmethod
+    def _build_descriptions(question_schema):
         if description := question_schema.get("description"):
 
             return description
@@ -59,7 +62,8 @@ class PreviewQuestion:
     def _build_question_guidance(self, question_schema):
         return self._build_guidance(question_schema)
 
-    def _build_guidance(self, schema_element):
+    @staticmethod
+    def _build_guidance(schema_element):
         if guidance := schema_element.get("guidance"):
             guidance_list = []
             for contents in guidance.get("contents"):
@@ -71,8 +75,8 @@ class PreviewQuestion:
             return guidance_list
         return None
 
+    @staticmethod
     def _get_length(
-        self,
         question_schema,
     ):
         if answers := question_schema.get("answers"):
@@ -82,7 +86,8 @@ class PreviewQuestion:
 
         return None
 
-    def _build_instruction(self, question_schema):
+    @staticmethod
+    def _build_instruction(question_schema):
         if instruction := question_schema.get("instruction"):
             return instruction
         return None
