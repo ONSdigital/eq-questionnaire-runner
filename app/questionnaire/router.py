@@ -65,8 +65,8 @@ class Router:
 
         return self.get_next_location_url_for_end_of_section()
 
-    def get_last_location_in_questionnaire_url(self) -> Optional[str]:
-        #Expects a vardic argument but can be None 
+    def get_last_location_in_questionnaire_url(self) -> str:
+        # Expects a vardic argument but can be None
         routing_path = self.routing_path(*self._get_last_complete_section_key())  # type: ignore[misc]
         return self.get_last_location_in_section(routing_path).url()
 
@@ -372,7 +372,7 @@ class Router:
             if not self._progress_store.is_section_complete(section_id, list_item_id):
                 return section_id, list_item_id
 
-    def _get_last_complete_section_key(self) -> Optional[tuple[str,Optional[str]]]:
+    def _get_last_complete_section_key(self) -> Optional[tuple[str, Optional[str]]]:
         for section_id, list_item_id in list(self.get_enabled_section_keys())[::-1]:
             if self._progress_store.is_section_complete(section_id, list_item_id):
                 return section_id, list_item_id
