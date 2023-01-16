@@ -77,8 +77,8 @@ class ContextHelper:
             "google_tag_manager_id": self._google_tag_manager_id,
             "google_tag_manager_auth": self._google_tag_manager_auth,
             "survey_type": self._survey_type,
-            "mastheadLogo": self._survey_config.masthead_logo,
-            "mastheadLogoMobile": self._survey_config.masthead_logo_mobile,
+            "masthead_logo": self._survey_config.masthead_logo,
+            "masthead_logo_mobile": self._survey_config.masthead_logo_mobile,
         }
         if self._survey_type:
             context["cookie_settings_url"] = self._survey_config.cookie_settings_url

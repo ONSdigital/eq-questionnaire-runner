@@ -310,8 +310,8 @@ def test_header_context(app: Flask, theme, survey_title, survey_config, expected
 
         result = [
             context_helper.context["survey_title"],
-            context_helper.context["mastheadLogo"],
-            context_helper.context["mastheadLogoMobile"],
+            context_helper.context["masthead_logo"],
+            context_helper.context["masthead_logo_mobile"],
         ]
 
     assert result == expected
