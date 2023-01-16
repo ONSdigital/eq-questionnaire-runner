@@ -221,15 +221,19 @@ msgstr[1] ""
 msgid "Not a valid choice."
 msgstr ""
 
-#: app/helpers/template_helpers.py:109
+#: app/helpers/template_helpers.py:45
+msgid "ONS Surveys"
+msgstr ""
+
+#: app/helpers/template_helpers.py:105
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:140
+#: app/helpers/template_helpers.py:136
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:165
+#: app/helpers/template_helpers.py:161
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"

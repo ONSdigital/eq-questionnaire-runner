@@ -644,6 +644,71 @@
                             }
                         },
                         {
+                            "id": "breakdown",
+                            "type": "Question",
+                            "question": {
+                                "id": "breakdown-question",
+                                "title": {
+                                    "text": "Enter two values that add up to the previous calculated summary total of {total_first}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "total_first",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_currency",
+                                                    "arguments": {
+                                                        "number": {
+                                                            "identifier": "number-total-playback",
+                                                            "source": "calculated_summary"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "breakdown-answer-1",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "label": "First Value",
+                                        "decimal_places": 2,
+                                        "currency": "GBP"
+                                    },
+                                    {
+                                        "id": "breakdown-answer-2",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "label": "Second Value",
+                                        "decimal_places": 2,
+                                        "currency": "GBP"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "second-currency-total-playback",
+                            "title": "We calculate the total of number values entered to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "breakdown-answer-1"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "breakdown-answer-2"
+                                        }
+                                    ]
+                                },
+                                "title": "Grand total of previous values"
+                            }
+                        },
+                        {
                             "type": "Interstitial",
                             "id": "calculated-summary-total-confirmation",
                             "content": {
