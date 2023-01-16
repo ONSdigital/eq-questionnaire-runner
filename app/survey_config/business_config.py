@@ -123,9 +123,9 @@ class BusinessSurveyConfig(SurveyConfig):
 
 @dataclass
 class NIBusinessSurveyConfig(BusinessSurveyConfig):
-    masthead_logo: str = read_file("./templates/assets/images/ni-finance-logo.svg")
+    masthead_logo: str = read_file("./templates/assets/images/finance-ni-logo.svg")
     masthead_logo_mobile: str = read_file(
-        "./templates/assets/images/ni-finance-mobile-logo.svg"
+        "./templates/assets/images/finance-ni-mobile-logo.svg"
     )
 
 

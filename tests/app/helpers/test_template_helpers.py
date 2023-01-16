@@ -216,8 +216,8 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             NIBusinessSurveyConfig(),
             [
                 "ONS Surveys",
-                read_file("./templates/assets/images/ni-finance-logo.svg"),
-                read_file("./templates/assets/images/ni-finance-mobile-logo.svg"),
+                read_file("./templates/assets/images/finance-ni-logo.svg"),
+                read_file("./templates/assets/images/finance-ni-mobile-logo.svg"),
             ],
         ),
         (
@@ -226,8 +226,8 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             NIBusinessSurveyConfig(),
             [
                 "Test",
-                read_file("./templates/assets/images/ni-finance-logo.svg"),
-                read_file("./templates/assets/images/ni-finance-mobile-logo.svg"),
+                read_file("./templates/assets/images/finance-ni-logo.svg"),
+                read_file("./templates/assets/images/finance-ni-mobile-logo.svg"),
             ],
         ),
         (
