@@ -81,7 +81,7 @@ class ContextHelper:
         }
 
         if self._survey_config.masthead_logo_mobile:
-            context["masthead_logo_mobile"] = self._survey_config.masthead_logo_mobile,
+            context["masthead_logo_mobile"] = self._survey_config.masthead_logo_mobile
 
         if self._survey_type:
             context["cookie_settings_url"] = self._survey_config.cookie_settings_url
