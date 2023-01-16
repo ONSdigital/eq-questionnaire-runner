@@ -1,4 +1,4 @@
-import RadioPage from "../generated_pages/theme_beis-ni/radio.page";
+import RadioPage from "../generated_pages/theme_beis_ni/radio.page";
 
 describe("Theme BEIS-NI", () => {
   describe("Given I launch a BEIS-NI themed questionnaire", () => {
