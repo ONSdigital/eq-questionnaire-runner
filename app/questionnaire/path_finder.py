@@ -111,7 +111,7 @@ class PathFinder:
         blocks: list[Mapping],
         current_location: Location,
         when_rules_block_dependencies: list[str],
-    ) -> Optional[list[str]]:
+    ) -> list[str]:
         # Keep going unless we've hit the last block
 
         routing_path_block_ids: list[str] = []
@@ -170,6 +170,8 @@ class PathFinder:
 
             # No routing rules, so step forward a block
             block_index = block_index + 1
+
+        return routing_path_block_ids
 
     def _evaluate_routing_rules(
         self,
