@@ -8,7 +8,7 @@ class SurveyType(Enum):
     HEALTH = "health"
     NORTHERN_IRELAND = "northernireland"
     BEIS = "beis"
-    BEISNI = "beisni"
+    BEIS_NI = "beis-ni"
     ORR = "orr"
     CENSUS = "census"
     CENSUS_NISRA = "census-nisra"

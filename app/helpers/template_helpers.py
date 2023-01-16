@@ -178,7 +178,7 @@ def survey_config_mapping(
         SurveyType.SOCIAL: SocialSurveyConfig,
         SurveyType.NORTHERN_IRELAND: NIBusinessSurveyConfig,
         SurveyType.BEIS: BEISBusinessSurveyConfig,
-        SurveyType.BEISNI: BEISNIBusinessSurveyConfig,
+        SurveyType.BEIS_NI: BEISNIBusinessSurveyConfig,
         SurveyType.ORR: ORRBusinessSurveyConfig,
         SurveyType.CENSUS: (
             WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig

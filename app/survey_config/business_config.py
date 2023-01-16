@@ -139,7 +139,7 @@ class BEISBusinessSurveyConfig(BusinessSurveyConfig):
 
 @dataclass
 class BEISNIBusinessSurveyConfig(BusinessSurveyConfig):
-    masthead_logo: str = read_file("./templates/assets/images/beisni-logo.svg")
+    masthead_logo: str = read_file("./templates/assets/images/beis-ni-logo.svg")
 
 
 @dataclass
