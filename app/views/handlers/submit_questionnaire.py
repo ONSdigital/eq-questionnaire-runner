@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import Union
+from typing import Union, Optional
 
 from app.data_models import QuestionnaireStore
 from app.questionnaire import QuestionnaireSchema
@@ -48,7 +48,7 @@ class SubmitQuestionnaireHandler:
         )
         return submit_questionnaire_context()
 
-    def get_previous_location_url(self) -> str:
+    def get_previous_location_url(self) -> Optional[str]:
         return self.router.get_last_location_in_questionnaire_url()
 
     @property

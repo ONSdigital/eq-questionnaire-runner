@@ -65,8 +65,8 @@ class Router:
 
         return self.get_next_location_url_for_end_of_section()
 
-    def get_last_location_in_questionnaire_url(self) -> str:
-        # List or Tuple is never going to be None value so will always be expected as a varadic arugment
+    def get_last_location_in_questionnaire_url(self) -> Optional[str]:
+        #Expects a vardic argument but can be None 
         routing_path = self.routing_path(*self._get_last_complete_section_key())  # type: ignore[misc]
         return self.get_last_location_in_section(routing_path).url()
 
@@ -145,7 +145,7 @@ class Router:
         # Due to backwards routing you can be on the last block of the path but with an in_progress section
         is_last_block_on_path = routing_path[-1] == location.block_id
         if is_last_block_on_path:
-            # This is never called if next_location = None so we have to type ignore
+            # The section is not complete therefore we must have a location
             next_location: Location = self._get_first_incomplete_location_in_section(routing_path)  # type: ignore
             return next_location.url()
 
@@ -372,7 +372,7 @@ class Router:
             if not self._progress_store.is_section_complete(section_id, list_item_id):
                 return section_id, list_item_id
 
-    def _get_last_complete_section_key(self) -> Optional[tuple[str, Optional[str]]]:
+    def _get_last_complete_section_key(self) -> Optional[tuple[str,Optional[str]]]:
         for section_id, list_item_id in list(self.get_enabled_section_keys())[::-1]:
             if self._progress_store.is_section_complete(section_id, list_item_id):
                 return section_id, list_item_id
