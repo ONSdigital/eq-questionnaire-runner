@@ -18,8 +18,8 @@ from app.survey_config import (
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
-    NIBEISBusinessSurveyConfig,
-    NorthernIrelandBusinessSurveyConfig,
+    BEISNIBusinessSurveyConfig,
+    NIBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
     SocialSurveyConfig,
     SurveyConfig,
@@ -176,9 +176,9 @@ def survey_config_mapping(
         SurveyType.BUSINESS: BusinessSurveyConfig,
         SurveyType.HEALTH: SocialSurveyConfig,
         SurveyType.SOCIAL: SocialSurveyConfig,
-        SurveyType.NORTHERN_IRELAND: NorthernIrelandBusinessSurveyConfig,
+        SurveyType.NORTHERN_IRELAND: NIBusinessSurveyConfig,
         SurveyType.BEIS: BEISBusinessSurveyConfig,
-        SurveyType.NIBEIS: NIBEISBusinessSurveyConfig,
+        SurveyType.BEISNI: BEISNIBusinessSurveyConfig,
         SurveyType.ORR: ORRBusinessSurveyConfig,
         SurveyType.CENSUS: (
             WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig

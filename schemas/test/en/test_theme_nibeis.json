@@ -5,8 +5,8 @@
     "data_version": "0.0.3",
     "survey_id": "0",
     "title": "Test NI Department for Business, Energy and Industrial Strategy",
-    "theme": "nibeis",
-    "description": "A questionnaire to demo the NIBEIS survey theme",
+    "theme": "beisni",
+    "description": "A questionnaire to demo the BEISNI survey theme",
     "metadata": [
         {
             "name": "user_id",
@@ -67,7 +67,7 @@
                         }
                     ],
                     "id": "group",
-                    "title": "NIBEIS Theme Test"
+                    "title": "BEISNI Theme Test"
                 }
             ]
         }
