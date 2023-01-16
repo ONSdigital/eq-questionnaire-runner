@@ -16,10 +16,10 @@ from app.settings import (
 )
 from app.survey_config import (
     BEISBusinessSurveyConfig,
+    BEISNIBusinessSurveyConfig,
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
-    BEISNIBusinessSurveyConfig,
     NIBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
     SocialSurveyConfig,
