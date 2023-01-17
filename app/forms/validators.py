@@ -420,7 +420,7 @@ class SumCheck:
             condition = f"{conditions[0]} or equals"
         else:
             condition = conditions[0]
-        
+
         is_valid, message = self._is_valid(condition, total, target_total)
 
         if not is_valid:
@@ -446,6 +446,7 @@ class SumCheck:
         if condition == "less than or equals":
             return total <= target_total, "TOTAL_SUM_NOT_LESS_THAN_OR_EQUALS"
         raise NotImplementedError("Condition is not implemented")
+
 
 def format_playback_value(
     value: Union[float, Decimal], currency: Optional[str] = None

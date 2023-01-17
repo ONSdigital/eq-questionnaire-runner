@@ -575,9 +575,9 @@ def map_summary_item_config(
     edit_link_aria_label: str,
     calculated_question: Optional[dict[str, list]],
     icon: Optional[str] = None,
-) -> list[SummaryRow]:
+) -> list[Union[dict[str, list], SummaryRow]]:
 
-    rows: list[SummaryRow] = []
+    rows: list[Union[dict[str, list], SummaryRow]] = []
 
     for block in group["blocks"]:
         if block.get("question"):
@@ -629,8 +629,8 @@ def map_list_collector_config(
     related_answers: Optional[dict] = None,
     item_label: Optional[str] = None,
     item_anchor: Optional[str] = None,
-) -> list[dict[str, list]]:
-    rows = []
+) -> list[Union[dict[str, list], SummaryRow]]:
+    rows: list[Union[dict[str, list], SummaryRow]] = []
 
     for index, list_item in enumerate(list_items, start=1):
         item_name = list_item.get("item_title")
