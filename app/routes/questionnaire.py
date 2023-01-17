@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Union
+from typing import Optional, Union
 
 import flask_babel
 from flask import Blueprint, g, redirect, request, send_file

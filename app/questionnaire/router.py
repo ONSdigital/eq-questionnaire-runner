@@ -65,10 +65,11 @@ class Router:
 
         return self.get_next_location_url_for_end_of_section()
 
-    def get_last_location_in_questionnaire_url(self) -> str:
-        # Expects a vardic argument but can be None
-        routing_path = self.routing_path(*self._get_last_complete_section_key())  # type: ignore[misc]
-        return self.get_last_location_in_section(routing_path).url()
+    def get_last_location_in_questionnaire_url(self) -> Optional[str]:
+        section_key = self._get_last_complete_section_key()
+        if section_key:
+            routing_path = self.routing_path(*section_key)
+            return self.get_last_location_in_section(routing_path).url()
 
     def is_list_item_in_list_store(self, list_item_id: str, list_name: str) -> bool:
         return list_item_id in self._list_store[list_name]
@@ -145,7 +146,7 @@ class Router:
         # Due to backwards routing you can be on the last block of the path but with an in_progress section
         is_last_block_on_path = routing_path[-1] == location.block_id
         if is_last_block_on_path:
-            # The section is not complete therefore we must have a location
+            # Type ignore: The section is not complete therefore we must have a location
             next_location: Location = self._get_first_incomplete_location_in_section(routing_path)  # type: ignore
             return next_location.url()
 

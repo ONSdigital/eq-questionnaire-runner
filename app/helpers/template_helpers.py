@@ -216,7 +216,7 @@ def get_survey_config(
     )
 
 
-def render_template(template: str, **kwargs: Union[str, Mapping]) -> str:
+def render_template(template: str, **kwargs: Union[Optional[str], Mapping]) -> str:
     session_expires_at = None
     language = get_locale().language
     if session_store := get_session_store():
