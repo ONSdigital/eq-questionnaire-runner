@@ -2,22 +2,13 @@ class PreviewQuestion:
     def __init__(
         self,
         question_schema,
-        *,
-        schema,
     ):
-        self.id = question_schema["id"]
-        self.type = question_schema["type"]
-        self.schema = schema
-        self.summary = question_schema.get("summary")
-        self.title = (
-            question_schema.get("title") or question_schema["answers"][0]["label"]
-        )
-
+        self.title = question_schema.get("title")
         self.answers = self._build_answers(question_schema)
         self.descriptions = self._build_descriptions(question_schema)
         self.guidance = self._build_question_guidance(question_schema)
-        self.text_length = self._get_length(question_schema)
-        self.instruction = self._build_instruction(question_schema)
+        self.text_length = self._get_length(question_schema.get("answers"))
+        self.instruction = question_schema.get("instruction") or None
         self.answer_description = self._build_answer_descriptions(
             iter(question_schema["answers"])
         )
@@ -77,25 +68,19 @@ class PreviewQuestion:
 
     @staticmethod
     def _get_length(
-        question_schema,
+        answers,
     ):
-        if answers := question_schema.get("answers"):
-            for answer in answers:
-                if answer.get("type") == "TextArea":
-                    return answer.get("max_length")
-
-        return None
-
-    @staticmethod
-    def _build_instruction(question_schema):
-        if instruction := question_schema.get("instruction"):
-            return instruction
-        return None
+        return next(
+            (
+                answer.get("max_length")
+                for answer in answers
+                if answer.get("type") == "TextArea"
+            ),
+            None,
+        )
 
     def serialize(self):
         return {
-            "id": self.id,
-            "type": self.type,
             "title": self.title,
             "answers": self.answers,
             "descriptions": self.descriptions,

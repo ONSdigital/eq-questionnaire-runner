@@ -74,7 +74,6 @@ class SectionPreviewContext(Context):
                 PreviewGroup(
                     group,
                     self._metadata,
-                    self._schema,
                     self._schema.get_title_for_section(
                         self.current_location.section_id
                     ),  # this gets the title of a section for a group since we have 1 to 1 relationship between section and its group(s),

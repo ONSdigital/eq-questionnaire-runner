@@ -23,7 +23,7 @@ def test_build_preview_rendering_context(
     assert_preview_context(preview_context)
 
 
-def test_build_view_context_for_section_summary(
+def test_build_preview_context(
     test_introduction_preview_linear_schema, answer_store, list_store, progress_store
 ):
     preview_context = PreviewContext(
@@ -41,5 +41,5 @@ def test_build_view_context_for_section_summary(
 
     assert "groups" in context
     assert_preview_context(context)
-    assert len(context["groups"][0]) == 3
+    assert len(context["groups"][0]) == 2
     assert "blocks" in context["groups"][0]

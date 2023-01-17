@@ -9,14 +9,11 @@ class PreviewGroup:
         self,
         group_schema,
         metadata,
-        schema,
         section_title,
     ):
-        self.id = group_schema["id"]
         self.title = section_title
         self.blocks = self._build_blocks(
             group_schema=group_schema,
-            schema=schema,
         )
         self.survey_data = metadata["survey_metadata"].data
 
@@ -24,17 +21,15 @@ class PreviewGroup:
     def _build_blocks(
         *,
         group_schema,
-        schema,
     ):
         blocks = []
 
         for block in group_schema["blocks"]:
-            if block["id"] and block["type"] == "Question":
+            if block["type"] == "Question":
                 blocks.extend(
                     [
                         PreviewBlock(
                             block,
-                            schema=schema,
                         ).serialize()
                     ]
                 )
@@ -43,7 +38,7 @@ class PreviewGroup:
     def serialize(self):
 
         dict_to_render = QuestionnaireSchema.get_mutable_deepcopy(
-            {"id": self.id, "title": self.title, "blocks": self.blocks}
+            {"title": self.title, "blocks": self.blocks}
         )
         for block in dict_to_render.get("blocks"):
             if question := block.get("question"):
