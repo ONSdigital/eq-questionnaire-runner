@@ -16,10 +16,11 @@ from app.settings import (
 )
 from app.survey_config import (
     BEISBusinessSurveyConfig,
+    BEISNIBusinessSurveyConfig,
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
-    NorthernIrelandBusinessSurveyConfig,
+    NIBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
     SocialSurveyConfig,
     SurveyConfig,
@@ -212,21 +213,21 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
         (
             None,
             None,
-            NorthernIrelandBusinessSurveyConfig(),
+            NIBusinessSurveyConfig(),
             [
                 "ONS Surveys",
-                read_file("./templates/assets/images/ni-finance-logo.svg"),
-                read_file("./templates/assets/images/ni-finance-mobile-logo.svg"),
+                read_file("./templates/assets/images/finance-ni-logo.svg"),
+                read_file("./templates/assets/images/finance-ni-mobile-logo.svg"),
             ],
         ),
         (
             SurveyType.NORTHERN_IRELAND,
             "Test",
-            NorthernIrelandBusinessSurveyConfig(),
+            NIBusinessSurveyConfig(),
             [
                 "Test",
-                read_file("./templates/assets/images/ni-finance-logo.svg"),
-                read_file("./templates/assets/images/ni-finance-mobile-logo.svg"),
+                read_file("./templates/assets/images/finance-ni-logo.svg"),
+                read_file("./templates/assets/images/finance-ni-mobile-logo.svg"),
             ],
         ),
         (
@@ -247,6 +248,28 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
                 "Test",
                 read_file("./templates/assets/images/beis-logo.svg"),
                 read_file("./templates/assets/images/beis-mobile-logo.svg"),
+            ],
+        ),
+        (
+            None,
+            None,
+            BEISNIBusinessSurveyConfig(),
+            [
+                "ONS Surveys",
+                read_file("./templates/assets/images/beis-mobile-logo.svg")
+                + read_file("./templates/assets/images/finance-ni-logo-stacked.svg"),
+                None,
+            ],
+        ),
+        (
+            SurveyType.BEIS_NI,
+            "Test",
+            BEISNIBusinessSurveyConfig(),
+            [
+                "Test",
+                read_file("./templates/assets/images/beis-mobile-logo.svg")
+                + read_file("./templates/assets/images/finance-ni-logo-stacked.svg"),
+                None,
             ],
         ),
         (
@@ -289,8 +312,8 @@ def test_header_context(app: Flask, theme, survey_title, survey_config, expected
 
         result = [
             context_helper.context["survey_title"],
-            context_helper.context["mastheadLogo"],
-            context_helper.context["mastheadLogoMobile"],
+            context_helper.context["masthead_logo"],
+            context_helper.context["masthead_logo_mobile"],
         ]
 
     assert result == expected
@@ -399,12 +422,17 @@ def test_service_links_context(
             f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
         (
-            NorthernIrelandBusinessSurveyConfig(),
+            NIBusinessSurveyConfig(),
             "en",
             f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
         (
             BEISBusinessSurveyConfig(),
+            "en",
+            f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
+        ),
+        (
+            BEISNIBusinessSurveyConfig(),
             "en",
             f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
@@ -473,12 +501,17 @@ def test_sign_out_button_text_context(
             f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
         ),
         (
-            NorthernIrelandBusinessSurveyConfig(),
+            NIBusinessSurveyConfig(),
             True,
             f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
         ),
         (
             BEISBusinessSurveyConfig(),
+            True,
+            f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
+        ),
+        (
+            BEISNIBusinessSurveyConfig(),
             True,
             f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
         ),
@@ -527,12 +560,17 @@ def test_cookie_settings_url_context(
             ACCOUNT_SERVICE_BASE_URL,
         ),
         (
-            NorthernIrelandBusinessSurveyConfig(),
+            NIBusinessSurveyConfig(),
             "en",
             ACCOUNT_SERVICE_BASE_URL,
         ),
         (
             BEISBusinessSurveyConfig(),
+            "en",
+            ACCOUNT_SERVICE_BASE_URL,
+        ),
+        (
+            BEISNIBusinessSurveyConfig(),
             "en",
             ACCOUNT_SERVICE_BASE_URL,
         ),
@@ -577,8 +615,9 @@ def test_cookie_domain_context(
         SurveyConfig(),
         BusinessSurveyConfig(),
         SocialSurveyConfig(),
-        NorthernIrelandBusinessSurveyConfig(),
+        NIBusinessSurveyConfig(),
         BEISBusinessSurveyConfig(),
+        BEISNIBusinessSurveyConfig(),
         ORRBusinessSurveyConfig(),
     ],
 )
@@ -650,11 +689,15 @@ def test_account_service_my_todo_url_context(
         (WelshCensusSurveyConfig(), "https://cyfrifiad.gov.uk/en/start"),
         (CensusNISRASurveyConfig(), "https://census.gov.uk/ni"),
         (
-            NorthernIrelandBusinessSurveyConfig(),
+            NIBusinessSurveyConfig(),
             f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
         ),
         (
             BEISBusinessSurveyConfig(),
+            f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
+        ),
+        (
+            BEISNIBusinessSurveyConfig(),
             f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
         ),
         (
@@ -689,8 +732,9 @@ def test_account_service_log_out_url_context(
         (SurveyType.BUSINESS, "cy", BusinessSurveyConfig),
         (SurveyType.HEALTH, "en", SocialSurveyConfig),
         (SurveyType.SOCIAL, "en", SocialSurveyConfig),
-        (SurveyType.NORTHERN_IRELAND, "en", NorthernIrelandBusinessSurveyConfig),
+        (SurveyType.NORTHERN_IRELAND, "en", NIBusinessSurveyConfig),
         (SurveyType.BEIS, "en", BEISBusinessSurveyConfig),
+        (SurveyType.BEIS_NI, "en", BEISNIBusinessSurveyConfig),
         (SurveyType.ORR, "en", ORRBusinessSurveyConfig),
         (SurveyType.CENSUS, "en", CensusSurveyConfig),
         (SurveyType.CENSUS, "cy", WelshCensusSurveyConfig),
@@ -799,6 +843,7 @@ def test_context_set_from_app_config(app):
         (SurveyType.SOCIAL, "cy", None),
         (SurveyType.NORTHERN_IRELAND, "en", None),
         (SurveyType.BEIS, "en", None),
+        (SurveyType.BEIS_NI, "en", None),
         (SurveyType.ORR, "en", None),
         (SurveyType.CENSUS, "en", "census"),
         (SurveyType.CENSUS, "cy", "census"),
@@ -827,6 +872,7 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
         (SurveyType.SOCIAL, "cy", "ONS Surveys"),
         (SurveyType.NORTHERN_IRELAND, "en", "ONS Surveys"),
         (SurveyType.BEIS, "en", "ONS Surveys"),
+        (SurveyType.BEIS_NI, "en", "ONS Surveys"),
         (SurveyType.ORR, "en", "ONS Surveys"),
         (SurveyType.CENSUS, "en", "ONS Surveys"),
         (SurveyType.CENSUS, "cy", "ONS Surveys"),
@@ -894,6 +940,12 @@ def test_use_default_survey_title_in_context_when_no_cookie(
         ),
         (
             SurveyType.BEIS,
+            "en",
+            QuestionnaireSchema({"survey_id": "001"}),
+            [{"survey_id": "001"}],
+        ),
+        (
+            SurveyType.BEIS_NI,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
             [{"survey_id": "001"}],
