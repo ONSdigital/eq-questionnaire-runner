@@ -36,7 +36,7 @@ class PathFinder:
         """
         Visits all the blocks in a section and returns a path given a list of answers.
         """
-        routing_path_block_ids: Optional[list[str]] = []
+        routing_path_block_ids: list[str] = []
         current_location = Location(section_id=section_id, list_item_id=list_item_id)
         section = self.schema.get_section(section_id)
         list_name = self.schema.get_repeating_list_for_section(
@@ -77,7 +77,7 @@ class PathFinder:
     def _get_not_skipped_blocks_in_section(
         self,
         location: Location,
-        routing_path_block_ids: Optional[list[str]],
+        routing_path_block_ids: list[str],
         section: ImmutableDict,
         when_rules_block_dependencies: list[str],
     ) -> Optional[list[Mapping]]:
