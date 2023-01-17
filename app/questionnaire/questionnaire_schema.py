@@ -379,7 +379,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _is_list_name_in_rule(
         self, rules: Union[Mapping, Sequence], list_name: str
-    ) -> Optional[bool]:
+    ) -> bool:
         if isinstance(rules, Mapping) and QuestionnaireSchema.has_operator(rules):
             rules = self.get_operands(rules)
 
@@ -400,6 +400,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             # Nested rules
             if QuestionnaireSchema.has_operator(rule):
                 return self._is_list_name_in_rule(rule, list_name)
+
+        return False
 
     @staticmethod
     def get_operands(rules: Mapping) -> list:
