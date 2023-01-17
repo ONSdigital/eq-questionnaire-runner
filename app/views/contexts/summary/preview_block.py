@@ -15,9 +15,11 @@ class PreviewBlock:
     def get_question(
         block_schema,
     ):
-
         return PreviewQuestion(
-            block_schema.get("question_variants") or block_schema.get("question")
+            block_schema.get(
+                "question",
+            )
+            or block_schema["question_variants"][0]["question"]
         ).serialize()
 
     def serialize(self):
