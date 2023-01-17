@@ -15,10 +15,11 @@ from app.questionnaire import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config import (
     BEISBusinessSurveyConfig,
+    BEISNIBusinessSurveyConfig,
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
-    NorthernIrelandBusinessSurveyConfig,
+    NIBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
     SocialSurveyConfig,
     SurveyConfig,
@@ -76,9 +77,10 @@ class ContextHelper:
             "google_tag_manager_id": self._google_tag_manager_id,
             "google_tag_manager_auth": self._google_tag_manager_auth,
             "survey_type": self._survey_type,
-            "mastheadLogo": self._survey_config.masthead_logo,
-            "mastheadLogoMobile": self._survey_config.masthead_logo_mobile,
+            "masthead_logo": self._survey_config.masthead_logo,
+            "masthead_logo_mobile": self._survey_config.masthead_logo_mobile,
         }
+
         if self._survey_type:
             context["cookie_settings_url"] = self._survey_config.cookie_settings_url
             context["cookie_domain"] = self._survey_config.cookie_domain
@@ -174,8 +176,9 @@ def survey_config_mapping(
         SurveyType.BUSINESS: BusinessSurveyConfig,
         SurveyType.HEALTH: SocialSurveyConfig,
         SurveyType.SOCIAL: SocialSurveyConfig,
-        SurveyType.NORTHERN_IRELAND: NorthernIrelandBusinessSurveyConfig,
+        SurveyType.NORTHERN_IRELAND: NIBusinessSurveyConfig,
         SurveyType.BEIS: BEISBusinessSurveyConfig,
+        SurveyType.BEIS_NI: BEISNIBusinessSurveyConfig,
         SurveyType.ORR: ORRBusinessSurveyConfig,
         SurveyType.CENSUS: (
             WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig

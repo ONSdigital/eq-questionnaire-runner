@@ -122,10 +122,10 @@ class BusinessSurveyConfig(SurveyConfig):
 
 
 @dataclass
-class NorthernIrelandBusinessSurveyConfig(BusinessSurveyConfig):
-    masthead_logo: str = read_file("./templates/assets/images/ni-finance-logo.svg")
+class NIBusinessSurveyConfig(BusinessSurveyConfig):
+    masthead_logo: str = read_file("./templates/assets/images/finance-ni-logo.svg")
     masthead_logo_mobile: str = read_file(
-        "./templates/assets/images/ni-finance-mobile-logo.svg"
+        "./templates/assets/images/finance-ni-mobile-logo.svg"
     )
 
 
@@ -135,6 +135,13 @@ class BEISBusinessSurveyConfig(BusinessSurveyConfig):
     masthead_logo_mobile: str = read_file(
         "./templates/assets/images/beis-mobile-logo.svg"
     )
+
+
+@dataclass
+class BEISNIBusinessSurveyConfig(BusinessSurveyConfig):
+    masthead_logo: str = read_file(
+        "./templates/assets/images/beis-mobile-logo.svg"
+    ) + read_file("./templates/assets/images/finance-ni-logo-stacked.svg")
 
 
 @dataclass
