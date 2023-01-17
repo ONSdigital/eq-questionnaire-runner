@@ -577,7 +577,7 @@ def map_summary_item_config(
     icon: Optional[str] = None,
 ) -> list[SummaryRow]:
 
-    rows: list = []
+    rows: list[SummaryRow] = []
 
     for block in group["blocks"]:
         if block.get("question"):
