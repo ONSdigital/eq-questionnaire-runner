@@ -1,7 +1,6 @@
 import re
 
 from app.questionnaire import QuestionnaireSchema
-from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.views.contexts.summary.preview_block import PreviewBlock
 
 
@@ -9,33 +8,14 @@ class PreviewGroup:
     def __init__(
         self,
         group_schema,
-        answer_store,
-        list_store,
         metadata,
-        response_metadata,
         schema,
-        location,
-        language,
         section_title,
     ):
         self.id = group_schema["id"]
         self.title = section_title
-        self.location = location
         self.blocks = self._build_blocks(
             group_schema=group_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            response_metadata=response_metadata,
-            schema=schema,
-            location=location,
-        )
-        self.placeholder_renderer = PlaceholderRenderer(
-            language=language,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            response_metadata=response_metadata,
             schema=schema,
         )
         self.survey_data = metadata["survey_metadata"].data
@@ -44,12 +24,7 @@ class PreviewGroup:
     def _build_blocks(
         *,
         group_schema,
-        answer_store,
-        list_store,
-        metadata,
-        response_metadata,
         schema,
-        location,
     ):
         blocks = []
 
@@ -59,12 +34,7 @@ class PreviewGroup:
                     [
                         PreviewBlock(
                             block,
-                            answer_store=answer_store,
-                            list_store=list_store,
-                            metadata=metadata,
-                            response_metadata=response_metadata,
                             schema=schema,
-                            location=location,
                         ).serialize()
                     ]
                 )

@@ -7,12 +7,7 @@ class PreviewBlock:
         self,
         block_schema,
         *,
-        answer_store,
-        list_store,
-        metadata,
-        response_metadata,
         schema,
-        location,
     ):
         self.id = block_schema["id"]
         self.title = block_schema.get("title")
@@ -20,12 +15,12 @@ class PreviewBlock:
 
         self.question = self.get_question(
             block_schema=block_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            response_metadata=response_metadata,
+            answer_store={},
+            list_store={},
+            metadata={},
+            response_metadata={},
             schema=schema,
-            location=location,
+            location=None,
         )
 
     @staticmethod
