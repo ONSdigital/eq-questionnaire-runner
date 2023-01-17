@@ -31,12 +31,12 @@
             "optional": true
         },
         {
-          "name": "ref_p_start_date",
-          "type": "date"
+            "name": "ref_p_start_date",
+            "type": "date"
         },
         {
-          "name": "ref_p_end_date",
-          "type": "date"
+            "name": "ref_p_end_date",
+            "type": "date"
         }
     ],
     "questionnaire_flow": {
@@ -289,39 +289,39 @@
                                 ],
                                 "id": "mandatory-radio-question",
                                 "title": {
-                                  "text": "Are you able to report for the calendar month {ref_p_start_date} to {ref_p_end_date}?",
-                                  "placeholders": [
-                                    {
-                                      "placeholder": "ref_p_start_date",
-                                      "transforms": [
+                                    "text": "Are you able to report for the calendar month {ref_p_start_date} to {ref_p_end_date}?",
+                                    "placeholders": [
                                         {
-                                          "transform": "format_date",
-                                          "arguments": {
-                                            "date_to_format": {
-                                              "source": "metadata",
-                                              "identifier": "ref_p_start_date"
-                                            },
-                                            "date_format": "d MMMM yyyy"
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    {
-                                      "placeholder": "ref_p_end_date",
-                                      "transforms": [
+                                            "placeholder": "ref_p_start_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "metadata",
+                                                            "identifier": "ref_p_start_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
                                         {
-                                          "transform": "format_date",
-                                          "arguments": {
-                                            "date_to_format": {
-                                              "source": "metadata",
-                                              "identifier": "ref_p_end_date"
-                                            },
-                                            "date_format": "d MMMM yyyy"
-                                          }
+                                            "placeholder": "ref_p_end_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "metadata",
+                                                            "identifier": "ref_p_end_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
                                         }
-                                      ]
-                                    }
-                                  ]
+                                    ]
                                 },
                                 "type": "General"
                             }
@@ -379,37 +379,34 @@
                                 "title": "Checkbox",
                                 "type": "General",
                                 "guidance": {
-                                  "contents": [
-                                    {
-                                      "description": "<strong>Include:</strong>"
-                                    },
-                                    {
-                                      "list": [
-                                        "list item 1",
-                                        "list item 2"
-                                      ]
-                                    }
-                                  ]
+                                    "contents": [
+                                        {
+                                            "description": "<strong>Include:</strong>"
+                                        },
+                                        {
+                                            "list": ["list item 1", "list item 2"]
+                                        }
+                                    ]
                                 }
                             }
                         },
                         {
-                          "id": "text-area",
-                          "type": "Question",
-                          "question": {
-                            "id": "text-area-question",
-                            "title": "Please provide any further details",
-                            "type": "General",
-                            "answers": [
-                              {
-                                "id": "text-area-answer",
-                                "mandatory": false,
-                                "type": "TextArea",
-                                "label": "Comments",
-                                "max_length": 2000
-                              }
-                            ]
-                          }
+                            "id": "text-area",
+                            "type": "Question",
+                            "question": {
+                                "id": "text-area-question",
+                                "title": "Please provide any further details",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "text-area-answer",
+                                        "mandatory": false,
+                                        "type": "TextArea",
+                                        "label": "Comments",
+                                        "max_length": 2000
+                                    }
+                                ]
+                            }
                         }
                     ]
                 }
