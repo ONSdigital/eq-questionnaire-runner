@@ -420,8 +420,8 @@ class SumCheck:
             condition = f"{conditions[0]} or equals"
         else:
             condition = conditions[0]
-        # is_valid never returns a "None" object. Therefore a none object being iterated will never occur
-        is_valid, message = self._is_valid(condition, total, target_total)  # type: ignore[misc]
+        
+        is_valid, message = self._is_valid(condition, total, target_total)
 
         if not is_valid:
             raise validators.ValidationError(
@@ -434,7 +434,7 @@ class SumCheck:
         condition: str,
         total: Union[Decimal, float],
         target_total: Union[Decimal, float],
-    ) -> Optional[tuple[bool, str]]:
+    ) -> tuple[bool, str]:
         if condition == "equals":
             return total == target_total, "TOTAL_SUM_NOT_EQUALS"
         if condition == "less than":
@@ -445,7 +445,7 @@ class SumCheck:
             return total >= target_total, "TOTAL_SUM_NOT_GREATER_THAN_OR_EQUALS"
         if condition == "less than or equals":
             return total <= target_total, "TOTAL_SUM_NOT_LESS_THAN_OR_EQUALS"
-
+        raise NotImplementedError("Condition is not implemented")
 
 def format_playback_value(
     value: Union[float, Decimal], currency: Optional[str] = None
