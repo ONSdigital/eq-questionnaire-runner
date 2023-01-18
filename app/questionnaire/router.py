@@ -67,7 +67,7 @@ class Router:
 
     def get_last_location_in_questionnaire_url(self) -> Optional[str]:
         section_key = self._get_last_complete_section_key()
-        if section_key:        
+        if section_key:
             routing_path = self.routing_path(*section_key)
             return self.get_last_location_in_section(routing_path).url()
 

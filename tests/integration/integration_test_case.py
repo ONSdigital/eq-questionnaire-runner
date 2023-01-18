@@ -42,7 +42,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self.last_csrf_token = None
         self.redirect_url = None
         self.last_response_headers = None
-
+        self.last_cookie = None
         # Perform setup steps
         self._set_up_app()
 
@@ -155,7 +155,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self.assertStatusOK()
         return json_loads(self.getResponseData())
 
-    def get(self, url, follow_redirects=True, last_cookie=None, **kwargs):
+    def get(self, url, follow_redirects=True, **kwargs):
         """
         GETs the specified URL, following any redirects.
 
@@ -167,8 +167,8 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         :param url: the URL to GET
         """
         response = self._client.get(url, follow_redirects=follow_redirects, **kwargs)
-        if last_cookie is not None:
-            response.headers["Set-Cookie"] = last_cookie
+        if "Set-Cookie" in response.headers:
+            self.last_cookie = response.headers["Set-Cookie"]
         self._cache_response(response)
 
     def post(self, post_data=None, url=None, action=None, **kwargs):
@@ -309,7 +309,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         """
         Returns the last received response cookie session
         """
-        cookie = self.last_response.headers["Set-Cookie"]
+        cookie = self.last_cookie
         cookie_session = cookie.split("session=.")[1].split(";")[0]
         decoded_cookie_session = decode_flask_cookie(cookie_session)
         return json_loads(decoded_cookie_session)
