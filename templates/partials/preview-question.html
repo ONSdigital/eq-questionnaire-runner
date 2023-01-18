@@ -20,7 +20,9 @@
 {% endif %}
 
 {% if question.instruction %}
-  <p>{{ question.instruction }}</p>
+  {% for instruction in question.instruction %}
+    <p>{{ instruction }}</p>
+  {% endfor %}
 {% endif %}
 
 {% if question.guidance %}

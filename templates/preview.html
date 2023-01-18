@@ -1,20 +1,27 @@
-{% extends 'layouts/_questionnaire.html' %}
-{% from 'macros/helpers.html' import format_paragraphs %}
-
-{% from 'macros/helpers.html' import interviewer_note %}
-
-{% from "components/accordion/_macro.njk" import onsAccordion %}
-
-{% from "components/summary/_macro.njk" import onsSummary %}
-
-{% set save_on_signout = true %}
-
-{% set continue_button_text = _("Continue") %}
+{% extends 'layouts/_base.html' %}
 
 
 {% from "components/panel/_macro.njk" import onsPanel %}
+{% from "components/button/_macro.njk" import onsButton %}
+{% from "components/accordion/_macro.njk" import onsAccordion %}
 
+{% set save_on_signout = true %}
 
+{% set breadcrumbs = {
+  "ariaLabel": 'Back',
+  "itemsList": [
+    {
+      "url": url_for("questionnaire.get_questionnaire"),
+      "id": "top-previous",
+      "text": _("Back"),
+      "attributes": {
+        "data-ga": 'click',
+        "data-ga-category": 'Navigation',
+        "data-ga-action": 'Previous link click'
+      }
+    }
+  ]
+}%}
 
 
 {% block main %}
