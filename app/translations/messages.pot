@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-01-16 14:57+0000\n"
+"POT-Creation-Date: 2023-01-18 11:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -221,19 +221,19 @@ msgstr[1] ""
 msgid "Not a valid choice."
 msgstr ""
 
-#: app/helpers/template_helpers.py:45
+#: app/helpers/template_helpers.py:46
 msgid "ONS Surveys"
 msgstr ""
 
-#: app/helpers/template_helpers.py:105
+#: app/helpers/template_helpers.py:109
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:136
+#: app/helpers/template_helpers.py:140
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:161
+#: app/helpers/template_helpers.py:165
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -464,8 +464,7 @@ msgstr ""
 #: templates/individual_response/confirmation-post.html:21
 #: templates/individual_response/confirmation-text-message.html:29
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
-#: templates/preview.html:12 templates/sectionsummary.html:10
-#: templates/sectionsummary.html:50
+#: templates/sectionsummary.html:10 templates/sectionsummary.html:50
 msgid "Continue"
 msgstr ""
 
@@ -852,7 +851,8 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: templates/feedback.html:14 templates/view-submitted-response.html:16
+#: templates/feedback.html:14 templates/preview.html:16
+#: templates/view-submitted-response.html:16
 msgid "Back"
 msgstr ""
 
@@ -903,36 +903,52 @@ msgstr ""
 msgid "Close this window to continue with your current survey"
 msgstr ""
 
-#: templates/preview.html:36 templates/view-submitted-response.html:35
+#: templates/preview.html:29
+msgid "Preview of the questions in this survey"
+msgstr ""
+
+#: templates/preview.html:35
+msgid ""
+"To answer these questions you need to <a href='/questionnaire'>start "
+"survey</a>"
+msgstr ""
+
+#: templates/preview.html:39
+msgid ""
+"You may not have to answer all of these questions. The questions you see "
+"will depend on the answers you provide."
+msgstr ""
+
+#: templates/preview.html:44 templates/view-submitted-response.html:35
 msgid "Print answers"
 msgstr ""
 
-#: templates/preview.html:48 templates/view-submitted-response.html:47
+#: templates/preview.html:56 templates/view-submitted-response.html:47
 msgid "Save answers as PDF"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:29
 #: templates/partials/summary/collapsible-summary.html:14
-#: templates/preview.html:74
+#: templates/preview.html:82
 msgid "Show"
 msgstr ""
 
 #: templates/layouts/_base.html:73
 #: templates/partials/introduction/preview.html:30
 #: templates/partials/summary/collapsible-summary.html:15
-#: templates/preview.html:75
+#: templates/preview.html:83
 msgid "Hide"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:48
 #: templates/partials/summary/collapsible-summary.html:59
-#: templates/preview.html:104
+#: templates/preview.html:112
 msgid "Show all"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:49
 #: templates/partials/summary/collapsible-summary.html:60
-#: templates/preview.html:105
+#: templates/preview.html:113
 msgid "Hide all"
 msgstr ""
 
@@ -1350,6 +1366,14 @@ msgstr ""
 msgid ""
 "You can also <a id='section-start-link' href='{url}'>go back to the start"
 " of the section</a>"
+msgstr ""
+
+#: templates/partials/preview-question.html:65
+msgid "You can answer with the following options:"
+msgstr ""
+
+#: templates/partials/preview-question.html:74
+msgid " characters can be added."
 msgstr ""
 
 #: templates/partials/question.html:60

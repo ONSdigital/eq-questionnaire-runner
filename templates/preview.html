@@ -26,16 +26,17 @@
 
 {% block main %}
 
-<h2>Preview of the questions in this survey</h2>
+<h2 class="ons-u-mt-m">{{ _("Preview of the questions in this survey") }}</h2>
 
-{{
-  onsPanel({
-    "body": '<p>To answer these questions you need to <a href="/questionnaire">start survey</a></p>'
-  })
-}}
+
+{% call onsPanel({
+    "classes": "ons-u-mb-l"
+  }) %}
+    <p>{{ _("To answer these questions you need to <a href='/questionnaire'>start survey</a>") }}</p>
+{% endcall %}
 
 <br>
-<p>You may not have to answer all of these questions. The questions you see will depend on the answers you provide.</p>
+<p>{{ _("You may not have to answer all of these questions. The questions you see will depend on the answers you provide.") }}</p>
 
 {{
   onsButton({

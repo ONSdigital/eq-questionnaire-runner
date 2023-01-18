@@ -62,7 +62,7 @@
 {% endif %}
 
 {% if answers_length > 1 %}
-  <p>You can answer with the following options:</p>
+  <p>{{ _("You can answer with the following options:") }}</p>
   <ul>
     {% for answer in answers %}
       <li>{{ answer }}</li>
@@ -71,7 +71,7 @@
 {% elif answers_length == 1 %}
   <p><strong>{{ answers[0] }}</strong></p>
   {% if question.text_length %}
-    <p>{{ question.text_length }} characters can be added.</p>
+    <p>{{ question.text_length }}{{ _(" characters can be added.") }}</p>
   {% endif %}
 {% endif %}
 
