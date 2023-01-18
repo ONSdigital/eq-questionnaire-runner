@@ -15,10 +15,11 @@ from app.questionnaire import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config import (
     BEISBusinessSurveyConfig,
+    BEISNIBusinessSurveyConfig,
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
-    NorthernIrelandBusinessSurveyConfig,
+    NIBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
     SocialSurveyConfig,
     SurveyConfig,
@@ -26,6 +27,8 @@ from app.survey_config import (
 )
 from app.survey_config.survey_type import SurveyType
 from app.utilities.schema import load_schema_from_metadata
+
+DATA_LAYER_KEYS = {"title", "survey_id", "form_type"}
 
 
 class ContextHelper:
@@ -40,9 +43,7 @@ class ContextHelper:
         self._is_post_submission = is_post_submission
         self._include_csrf_token = include_csrf_token
         self._survey_config = survey_config
-        self._survey_title = cookie_session.get(
-            "survey_title", self._survey_config.survey_title
-        )
+        self._survey_title = cookie_session.get("title", lazy_gettext("ONS Surveys"))
         self._sign_out_url = url_for("session.get_sign_out")
         self._cdn_url = (
             f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
@@ -76,9 +77,10 @@ class ContextHelper:
             "google_tag_manager_id": self._google_tag_manager_id,
             "google_tag_manager_auth": self._google_tag_manager_auth,
             "survey_type": self._survey_type,
-            "mastheadLogo": self._survey_config.masthead_logo,
-            "mastheadLogoMobile": self._survey_config.masthead_logo_mobile,
+            "masthead_logo": self._survey_config.masthead_logo,
+            "masthead_logo_mobile": self._survey_config.masthead_logo_mobile,
         }
+
         if self._survey_type:
             context["cookie_settings_url"] = self._survey_config.cookie_settings_url
             context["cookie_domain"] = self._survey_config.cookie_domain
@@ -114,9 +116,19 @@ class ContextHelper:
     def data_layer_context(
         self,
     ) -> list[dict]:
-        tx_id = metadata.tx_id if (metadata := get_metadata(current_user)) else None
-
-        return self._survey_config.get_data_layer(tx_id=tx_id)
+        tx_id_context = (
+            {"tx_id": metadata.tx_id}
+            if (metadata := get_metadata(current_user))
+            else None
+        )
+        additional_context = self._survey_config.get_additional_data_layer_context()
+        schema_context = {
+            key: value for key in DATA_LAYER_KEYS if (value := cookie_session.get(key))
+        }
+        context = [*additional_context, schema_context]
+        if tx_id_context:
+            context.append(tx_id_context)
+        return context
 
     @property
     def footer_context(self) -> dict[str, Any]:
@@ -164,8 +176,9 @@ def survey_config_mapping(
         SurveyType.BUSINESS: BusinessSurveyConfig,
         SurveyType.HEALTH: SocialSurveyConfig,
         SurveyType.SOCIAL: SocialSurveyConfig,
-        SurveyType.NORTHERN_IRELAND: NorthernIrelandBusinessSurveyConfig,
+        SurveyType.NORTHERN_IRELAND: NIBusinessSurveyConfig,
         SurveyType.BEIS: BEISBusinessSurveyConfig,
+        SurveyType.BEIS_NI: BEISNIBusinessSurveyConfig,
         SurveyType.ORR: ORRBusinessSurveyConfig,
         SurveyType.CENSUS: (
             WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig

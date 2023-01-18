@@ -6,6 +6,7 @@ from flask import session as cookie_session
 
 from app.helpers.template_helpers import ContextHelper, get_survey_config
 from app.questionnaire import QuestionnaireSchema
+from app.routes.session import set_schema_context_in_cookie
 from app.settings import (
     ACCOUNT_SERVICE_BASE_URL,
     ACCOUNT_SERVICE_BASE_URL_SOCIAL,
@@ -15,10 +16,11 @@ from app.settings import (
 )
 from app.survey_config import (
     BEISBusinessSurveyConfig,
+    BEISNIBusinessSurveyConfig,
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
-    NorthernIrelandBusinessSurveyConfig,
+    NIBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
     SocialSurveyConfig,
     SurveyConfig,
@@ -134,7 +136,7 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             SurveyType.BUSINESS,
             None,
             BusinessSurveyConfig(),
-            ["ONS Business Surveys", None, None],
+            ["ONS Surveys", None, None],
         ),
         (
             SurveyType.BUSINESS,
@@ -146,13 +148,13 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             None,
             BusinessSurveyConfig(),
-            ["ONS Business Surveys", None, None],
+            ["ONS Surveys", None, None],
         ),
         (
             SurveyType.SOCIAL,
             None,
             SocialSurveyConfig(),
-            ["ONS Social Surveys", None, None],
+            ["ONS Surveys", None, None],
         ),
         (
             SurveyType.SOCIAL,
@@ -170,19 +172,19 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             None,
             SocialSurveyConfig(),
-            ["ONS Social Surveys", None, None],
+            ["ONS Surveys", None, None],
         ),
         (
             None,
             None,
             SurveyConfig(),
-            [None, None, None],
+            ["ONS Surveys", None, None],
         ),
         (
             SurveyType.CENSUS,
             None,
             CensusSurveyConfig(),
-            ["Census 2021", None, None],
+            ["ONS Surveys", None, None],
         ),
         (
             SurveyType.CENSUS,
@@ -194,38 +196,38 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             None,
             CensusSurveyConfig(),
-            ["Census 2021", None, None],
+            ["ONS Surveys", None, None],
         ),
         (
             SurveyType.CENSUS_NISRA,
             None,
             CensusNISRASurveyConfig(),
-            ["Census 2021", None, None],
+            ["ONS Surveys", None, None],
         ),
         (
             None,
             None,
             CensusNISRASurveyConfig(),
-            ["Census 2021", None, None],
+            ["ONS Surveys", None, None],
         ),
         (
             None,
             None,
-            NorthernIrelandBusinessSurveyConfig(),
+            NIBusinessSurveyConfig(),
             [
-                "ONS Business Surveys",
-                read_file("./templates/assets/images/ni-finance-logo.svg"),
-                read_file("./templates/assets/images/ni-finance-mobile-logo.svg"),
+                "ONS Surveys",
+                read_file("./templates/assets/images/finance-ni-logo.svg"),
+                read_file("./templates/assets/images/finance-ni-mobile-logo.svg"),
             ],
         ),
         (
             SurveyType.NORTHERN_IRELAND,
             "Test",
-            NorthernIrelandBusinessSurveyConfig(),
+            NIBusinessSurveyConfig(),
             [
                 "Test",
-                read_file("./templates/assets/images/ni-finance-logo.svg"),
-                read_file("./templates/assets/images/ni-finance-mobile-logo.svg"),
+                read_file("./templates/assets/images/finance-ni-logo.svg"),
+                read_file("./templates/assets/images/finance-ni-mobile-logo.svg"),
             ],
         ),
         (
@@ -233,7 +235,7 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             BEISBusinessSurveyConfig(),
             [
-                "ONS Business Surveys",
+                "ONS Surveys",
                 read_file("./templates/assets/images/beis-logo.svg"),
                 read_file("./templates/assets/images/beis-mobile-logo.svg"),
             ],
@@ -251,9 +253,31 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
         (
             None,
             None,
+            BEISNIBusinessSurveyConfig(),
+            [
+                "ONS Surveys",
+                read_file("./templates/assets/images/beis-mobile-logo.svg")
+                + read_file("./templates/assets/images/finance-ni-logo-stacked.svg"),
+                None,
+            ],
+        ),
+        (
+            SurveyType.BEIS_NI,
+            "Test",
+            BEISNIBusinessSurveyConfig(),
+            [
+                "Test",
+                read_file("./templates/assets/images/beis-mobile-logo.svg")
+                + read_file("./templates/assets/images/finance-ni-logo-stacked.svg"),
+                None,
+            ],
+        ),
+        (
+            None,
+            None,
             ORRBusinessSurveyConfig(),
             [
-                "ONS Business Surveys",
+                "ONS Surveys",
                 read_file("./templates/assets/images/orr-logo.svg"),
                 read_file("./templates/assets/images/orr-mobile-logo.svg"),
             ],
@@ -274,7 +298,7 @@ def test_header_context(app: Flask, theme, survey_title, survey_config, expected
     with app.app_context():
         for cookie_name, cookie_value in {
             "theme": theme,
-            "survey_title": survey_title,
+            "title": survey_title,
         }.items():
             if cookie_value:
                 cookie_session[cookie_name] = cookie_value
@@ -288,8 +312,8 @@ def test_header_context(app: Flask, theme, survey_title, survey_config, expected
 
         result = [
             context_helper.context["survey_title"],
-            context_helper.context["mastheadLogo"],
-            context_helper.context["mastheadLogoMobile"],
+            context_helper.context["masthead_logo"],
+            context_helper.context["masthead_logo_mobile"],
         ]
 
     assert result == expected
@@ -398,12 +422,17 @@ def test_service_links_context(
             f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
         (
-            NorthernIrelandBusinessSurveyConfig(),
+            NIBusinessSurveyConfig(),
             "en",
             f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
         (
             BEISBusinessSurveyConfig(),
+            "en",
+            f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
+        ),
+        (
+            BEISNIBusinessSurveyConfig(),
             "en",
             f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
@@ -472,12 +501,17 @@ def test_sign_out_button_text_context(
             f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
         ),
         (
-            NorthernIrelandBusinessSurveyConfig(),
+            NIBusinessSurveyConfig(),
             True,
             f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
         ),
         (
             BEISBusinessSurveyConfig(),
+            True,
+            f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
+        ),
+        (
+            BEISNIBusinessSurveyConfig(),
             True,
             f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
         ),
@@ -526,12 +560,17 @@ def test_cookie_settings_url_context(
             ACCOUNT_SERVICE_BASE_URL,
         ),
         (
-            NorthernIrelandBusinessSurveyConfig(),
+            NIBusinessSurveyConfig(),
             "en",
             ACCOUNT_SERVICE_BASE_URL,
         ),
         (
             BEISBusinessSurveyConfig(),
+            "en",
+            ACCOUNT_SERVICE_BASE_URL,
+        ),
+        (
+            BEISNIBusinessSurveyConfig(),
             "en",
             ACCOUNT_SERVICE_BASE_URL,
         ),
@@ -576,8 +615,9 @@ def test_cookie_domain_context(
         SurveyConfig(),
         BusinessSurveyConfig(),
         SocialSurveyConfig(),
-        NorthernIrelandBusinessSurveyConfig(),
+        NIBusinessSurveyConfig(),
         BEISBusinessSurveyConfig(),
+        BEISNIBusinessSurveyConfig(),
         ORRBusinessSurveyConfig(),
     ],
 )
@@ -649,11 +689,15 @@ def test_account_service_my_todo_url_context(
         (WelshCensusSurveyConfig(), "https://cyfrifiad.gov.uk/en/start"),
         (CensusNISRASurveyConfig(), "https://census.gov.uk/ni"),
         (
-            NorthernIrelandBusinessSurveyConfig(),
+            NIBusinessSurveyConfig(),
             f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
         ),
         (
             BEISBusinessSurveyConfig(),
+            f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
+        ),
+        (
+            BEISNIBusinessSurveyConfig(),
             f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
         ),
         (
@@ -688,8 +732,9 @@ def test_account_service_log_out_url_context(
         (SurveyType.BUSINESS, "cy", BusinessSurveyConfig),
         (SurveyType.HEALTH, "en", SocialSurveyConfig),
         (SurveyType.SOCIAL, "en", SocialSurveyConfig),
-        (SurveyType.NORTHERN_IRELAND, "en", NorthernIrelandBusinessSurveyConfig),
+        (SurveyType.NORTHERN_IRELAND, "en", NIBusinessSurveyConfig),
         (SurveyType.BEIS, "en", BEISBusinessSurveyConfig),
+        (SurveyType.BEIS_NI, "en", BEISNIBusinessSurveyConfig),
         (SurveyType.ORR, "en", ORRBusinessSurveyConfig),
         (SurveyType.CENSUS, "en", CensusSurveyConfig),
         (SurveyType.CENSUS, "cy", WelshCensusSurveyConfig),
@@ -798,6 +843,7 @@ def test_context_set_from_app_config(app):
         (SurveyType.SOCIAL, "cy", None),
         (SurveyType.NORTHERN_IRELAND, "en", None),
         (SurveyType.BEIS, "en", None),
+        (SurveyType.BEIS_NI, "en", None),
         (SurveyType.ORR, "en", None),
         (SurveyType.CENSUS, "en", "census"),
         (SurveyType.CENSUS, "cy", "census"),
@@ -819,20 +865,21 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
 @pytest.mark.parametrize(
     "theme, language, expected",
     [
-        (SurveyType.DEFAULT, "en", "ONS Business Surveys"),
-        (SurveyType.BUSINESS, "en", "ONS Business Surveys"),
-        (SurveyType.HEALTH, "en", "ONS Social Surveys"),
-        (SurveyType.SOCIAL, "en", "ONS Social Surveys"),
-        (SurveyType.SOCIAL, "cy", "ONS Social Surveys"),
-        (SurveyType.NORTHERN_IRELAND, "en", "ONS Business Surveys"),
-        (SurveyType.BEIS, "en", "ONS Business Surveys"),
-        (SurveyType.ORR, "en", "ONS Business Surveys"),
-        (SurveyType.CENSUS, "en", "Census 2021"),
-        (SurveyType.CENSUS, "cy", "Census 2021"),
-        (SurveyType.CENSUS_NISRA, "en", "Census 2021"),
+        (SurveyType.DEFAULT, "en", "ONS Surveys"),
+        (SurveyType.BUSINESS, "en", "ONS Surveys"),
+        (SurveyType.HEALTH, "en", "ONS Surveys"),
+        (SurveyType.SOCIAL, "en", "ONS Surveys"),
+        (SurveyType.SOCIAL, "cy", "ONS Surveys"),
+        (SurveyType.NORTHERN_IRELAND, "en", "ONS Surveys"),
+        (SurveyType.BEIS, "en", "ONS Surveys"),
+        (SurveyType.BEIS_NI, "en", "ONS Surveys"),
+        (SurveyType.ORR, "en", "ONS Surveys"),
+        (SurveyType.CENSUS, "en", "ONS Surveys"),
+        (SurveyType.CENSUS, "cy", "ONS Surveys"),
+        (SurveyType.CENSUS_NISRA, "en", "ONS Surveys"),
     ],
 )
-def test_correct_survey_title_in_context(
+def test_use_default_survey_title_in_context_when_no_cookie(
     app: Flask, theme: str, language: str, expected: str
 ):
     with app.app_context():
@@ -898,6 +945,12 @@ def test_correct_survey_title_in_context(
             [{"survey_id": "001"}],
         ),
         (
+            SurveyType.BEIS_NI,
+            "en",
+            QuestionnaireSchema({"survey_id": "001"}),
+            [{"survey_id": "001"}],
+        ),
+        (
             SurveyType.ORR,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
@@ -907,19 +960,19 @@ def test_correct_survey_title_in_context(
             SurveyType.CENSUS,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
-            [{"nisra": False}],
+            [{"nisra": False}, {"survey_id": "001"}],
         ),
         (
             SurveyType.CENSUS,
             "cy",
             QuestionnaireSchema({"survey_id": "001"}),
-            [{"nisra": False}],
+            [{"nisra": False}, {"survey_id": "001"}],
         ),
         (
             SurveyType.CENSUS_NISRA,
-            QuestionnaireSchema({"survey_id": "001"}),
             "en",
-            [{"nisra": True}],
+            QuestionnaireSchema({"survey_id": "001"}),
+            [{"nisra": True}, {"survey_id": "001"}],
         ),
     ],
 )
@@ -927,6 +980,7 @@ def test_correct_data_layer_in_context(
     app: Flask, theme: str, language: str, schema: QuestionnaireSchema, expected: str
 ):
     with app.app_context():
+        set_schema_context_in_cookie(schema)
         survey_config = get_survey_config(theme=theme, language=language, schema=schema)
 
         result = ContextHelper(

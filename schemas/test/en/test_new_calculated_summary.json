@@ -359,6 +359,7 @@
                             "type": "CalculatedSummary",
                             "id": "unit-total-playback",
                             "title": "We calculate the total of unit values entered to be %(total)s. Is this correct?",
+                            "page_title": "Total Unit Values",
                             "calculation": {
                                 "operation": {
                                     "+": [

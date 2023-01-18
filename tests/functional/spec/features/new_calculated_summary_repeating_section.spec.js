@@ -13,6 +13,8 @@ import CurrencyTotalPlaybackPageSkippedFourth from "../../generated_pages/new_ca
 import UnitTotalPlaybackPage from "../../generated_pages/new_calculated_summary_repeating_section/unit-total-playback.page.js";
 import PercentageTotalPlaybackPage from "../../generated_pages/new_calculated_summary_repeating_section/percentage-total-playback.page.js";
 import NumberTotalPlaybackPage from "../../generated_pages/new_calculated_summary_repeating_section/number-total-playback.page.js";
+import BreakdownPage from "../../generated_pages/new_calculated_summary_repeating_section/breakdown.page.js";
+import SecondCurrencyTotalPlaybackPage from "../../generated_pages/new_calculated_summary_repeating_section/second-currency-total-playback.page.js";
 import CalculatedSummaryTotalConfirmation from "../../generated_pages/new_calculated_summary_repeating_section/calculated-summary-total-confirmation.page.js";
 import SubmitPage from "../../generated_pages/new_calculated_summary_repeating_section/personal-details-section-summary.page.js";
 import ThankYouPage from "../../base_pages/thank-you.page.js";
@@ -43,7 +45,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       expect(browserUrl).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
     });
 
-    it("Given I have completed all questions, When I am on the calculated summary, Then the page title should use the calculation's title", () => {
+    it("Given I have completed all questions, When I am on the calculated summary and there is no custom page title, Then the page title should use the calculation's title", () => {
       expect(browser.getTitle()).to.equal("Grand total of previous values - A test schema to demo Calculated Summary");
     });
 
@@ -163,6 +165,10 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       expect($(UnitTotalPlaybackPage.thirdAndAHalfNumberAnswerUnitTotal()).getText()).to.contain("678 cm");
     });
 
+    it("Given the calculated summary has a custom title, When I am on the unit calculated summary, Then the page title should use the custom title", () => {
+      expect(browser.getTitle()).to.equal("Total Unit Values - A test schema to demo Calculated Summary");
+    });
+
     it("Given I complete every question, When I get to the percentage summary, Then I should see the correct total", () => {
       // Totals and titles should be shown
       $(UnitTotalPlaybackPage.submit()).click();
@@ -177,6 +183,10 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       expect($(PercentageTotalPlaybackPage.fifthPercentAnswer()).getText()).to.contain("56%");
       expect($(PercentageTotalPlaybackPage.sixthPercentAnswerLabel()).getText()).to.contain("Sixth answer label percentage tota");
       expect($(PercentageTotalPlaybackPage.sixthPercentAnswer()).getText()).to.contain("23%");
+    });
+
+    it("Given the calculated summary has a custom title with the list item position, When I am on the percentage calculated summary, Then the page title should use the custom title with the list item position", () => {
+      expect(browser.getTitle()).to.equal("Percentage Calculated Summary: Person 1 - A test schema to demo Calculated Summary");
     });
 
     it("Given I complete every question, When I get to the number summary, Then I should see the correct total", () => {
@@ -195,8 +205,22 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       expect($(NumberTotalPlaybackPage.sixthNumberAnswer()).getText()).to.contain("45.67");
     });
 
-    it("Given I complete every calculated summary, When I go to a page with calculated summary piping, Then I should the see the piped calculated summary total for each summary", () => {
+    it("Given I have a calculated summary total that is used as a placeholder in another calculated summary, When I get to the calculated summary page displaying the placeholder, Then I should see the correct total", () => {
       $(NumberTotalPlaybackPage.submit()).click();
+      expect(browser.getUrl()).to.contain(BreakdownPage.pageName);
+      $(BreakdownPage.answer1()).setValue(100.0);
+      $(BreakdownPage.answer2()).setValue(24.58);
+      $(BreakdownPage.submit()).click();
+      expect(browser.getUrl()).to.contain(SecondCurrencyTotalPlaybackPage.pageName);
+      expect($(SecondCurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
+        "We calculate the total of number values entered to be £124.58. Is this correct?"
+      );
+      expect($("body").getText()).to.have.string("Enter two values that add up to the previous calculated summary total of £124.58");
+      expect($(SecondCurrencyTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("124.58");
+    });
+
+    it("Given I complete every calculated summary, When I go to a page with calculated summary piping, Then I should the see the piped calculated summary total for each summary", () => {
+      $(SecondCurrencyTotalPlaybackPage.submit()).click();
 
       const content = $("h1 + ul").getText();
       const textsToAssert = [
@@ -248,6 +272,8 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       $(UnitTotalPlaybackPage.submit()).click();
       $(PercentageTotalPlaybackPage.submit()).click();
       $(NumberTotalPlaybackPage.submit()).click();
+      $(BreakdownPage.submit()).click();
+      $(SecondCurrencyTotalPlaybackPage.submit()).click();
       $(CalculatedSummaryTotalConfirmation.submit()).click();
       expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
       $(SetMinMaxBlockPage.setMinimum()).setValue(10.0);
@@ -274,6 +300,8 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       $(UnitTotalPlaybackPage.submit()).click();
       $(PercentageTotalPlaybackPage.submit()).click();
       $(NumberTotalPlaybackPage.submit()).click();
+      $(BreakdownPage.submit()).click();
+      $(SecondCurrencyTotalPlaybackPage.submit()).click();
       $(CalculatedSummaryTotalConfirmation.submit()).click();
       expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
       $(SetMinMaxBlockPage.submit()).click();
@@ -301,6 +329,8 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       $(UnitTotalPlaybackPage.submit()).click();
       $(PercentageTotalPlaybackPage.submit()).click();
       $(NumberTotalPlaybackPage.submit()).click();
+      $(BreakdownPage.submit()).click();
+      $(SecondCurrencyTotalPlaybackPage.submit()).click();
       $(CalculatedSummaryTotalConfirmation.submit()).click();
       expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
       $(SetMinMaxBlockPage.submit()).click();
@@ -372,6 +402,8 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       $(UnitTotalPlaybackPage.submit()).click();
       $(PercentageTotalPlaybackPage.submit()).click();
       $(NumberTotalPlaybackPage.submit()).click();
+      $(BreakdownPage.submit()).click();
+      $(SecondCurrencyTotalPlaybackPage.submit()).click();
       $(CalculatedSummaryTotalConfirmation.submit()).click();
       $(SetMinMaxBlockPage.setMinimum()).setValue(10.0);
       $(SetMinMaxBlockPage.setMaximum()).setValue(6.0);
@@ -420,5 +452,9 @@ const getToSubmitPage = () => {
   $(UnitTotalPlaybackPage.submit()).click();
   $(PercentageTotalPlaybackPage.submit()).click();
   $(NumberTotalPlaybackPage.submit()).click();
+  $(BreakdownPage.answer1()).setValue(100.0);
+  $(BreakdownPage.answer2()).setValue(24.58);
+  $(BreakdownPage.submit()).click();
+  $(SecondCurrencyTotalPlaybackPage.submit()).click();
   $(CalculatedSummaryTotalConfirmation.submit()).click();
 };
