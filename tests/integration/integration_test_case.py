@@ -167,7 +167,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         :param url: the URL to GET
         """
         response = self._client.get(url, follow_redirects=follow_redirects, **kwargs)
-        #As of Flask-Login 0.6.0 the session cookie is only sent when the session is modified
+        # As of Flask-Login 0.6.0 the session cookie is only sent when the session is modified
         if "Set-Cookie" in response.headers:
             self.last_cookie = response.headers["Set-Cookie"]
         self._cache_response(response)
