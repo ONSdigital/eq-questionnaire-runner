@@ -4,7 +4,7 @@ from typing import Union
 from flask_babel import lazy_gettext
 
 from app.data_models import QuestionnaireStore
-from app.helpers.template_helpers import get_survey_type, render_template
+from app.helpers.template_helpers import render_template
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.view_preview_questions_context import (
     build_view_preview_questions_context,
@@ -24,7 +24,7 @@ class ViewPreviewQuestions:
 
     def get_context(self) -> dict[str, Union[str, datetime, dict]]:
         return build_view_preview_questions_context(
-            self._language, self._schema, self._questionnaire_store, get_survey_type()
+            self._language, self._schema, self._questionnaire_store
         )
 
     @staticmethod
