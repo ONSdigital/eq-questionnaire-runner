@@ -1,5 +1,8 @@
-from typing import Optional
+from typing import Any, Mapping, Optional
 
+from app.data_models import AnswerStore, ListStore
+from app.data_models.metadata_proxy import MetadataProxy
+from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.questionnaire.variants import choose_variant
@@ -9,17 +12,17 @@ from app.views.contexts.summary.question import Question
 class Block:
     def __init__(
         self,
-        block_schema,
+        block_schema: Mapping[str, Any],
         *,
-        answer_store,
-        list_store,
-        metadata,
-        response_metadata,
-        schema,
-        location,
-        return_to,
+        answer_store: AnswerStore,
+        list_store: ListStore,
+        metadata: Optional[MetadataProxy],
+        response_metadata: Mapping,
+        schema: QuestionnaireSchema,
+        location: Location,
+        return_to: Optional[str],
         return_to_block_id: Optional[str] = None,
-    ):
+    ) -> None:
         self.id = block_schema["id"]
         self.title = block_schema.get("title")
         self.number = block_schema.get("number")
@@ -59,16 +62,16 @@ class Block:
     def get_question(
         self,
         *,
-        block_schema,
-        answer_store,
-        list_store,
-        metadata,
-        response_metadata,
-        schema,
-        location,
-        return_to,
-        return_to_block_id,
-    ):
+        block_schema: Mapping[str, Any],
+        answer_store: AnswerStore,
+        list_store: ListStore,
+        metadata: Optional[MetadataProxy],
+        response_metadata: Mapping,
+        schema: QuestionnaireSchema,
+        location: Location,
+        return_to: Optional[str],
+        return_to_block_id: Optional[str],
+    ) -> Mapping[str, Question]:
         """Taking question variants into account, return the question which was displayed to the user"""
 
         variant = choose_variant(
@@ -94,7 +97,7 @@ class Block:
             return_to_block_id=return_to_block_id,
         ).serialize()
 
-    def serialize(self):
+    def serialize(self) -> Mapping[str, Any]:
         return {
             "id": self.id,
             "title": self.title,

@@ -178,7 +178,6 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
 
         # When
         cookie = self.getUrlAndCookie("/dump/debug")
-
         # Then
         self.assertEqual(cookie.get("theme"), "social")
         self.assertStatusForbidden()
@@ -298,7 +297,6 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
     def test_500_theme_social_cookie_exists(self):
         # Given
         self.launchSurvey("test_introduction")
-
         # When
         with patch(
             "app.routes.questionnaire.get_block_handler",

@@ -21,12 +21,12 @@ class ListCollectorBlock:
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: MetadataProxy,
+        metadata: Optional[MetadataProxy],
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
         location: Location,
         language: str,
-    ):
+    ) -> None:
         self._location = location
         self._placeholder_renderer = PlaceholderRenderer(
             language=language,
@@ -161,7 +161,8 @@ class ListCollectorBlock:
 
     def _get_related_answers(
         self, list_model: ListModel
-    ) -> Optional[dict[str, list[Block]]]:
+    ) -> Optional[dict[str, list[Mapping[str, Any]]]]:
+
         section_id = self._section["id"]
 
         related_answers = self._schema.get_related_answers_for_list_for_section(
@@ -200,7 +201,7 @@ class ListCollectorBlock:
 
     def get_blocks_for_related_answers(
         self, related_answers: tuple
-    ) -> list[Optional[ImmutableDict]]:
+    ) -> list[dict[str, Any]]:
         blocks = []
         answers_by_block = defaultdict(list)
 
