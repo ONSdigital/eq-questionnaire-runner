@@ -445,7 +445,8 @@ class SumCheck:
             return total >= target_total, "TOTAL_SUM_NOT_GREATER_THAN_OR_EQUALS"
         if condition == "less than or equals":
             return total <= target_total, "TOTAL_SUM_NOT_LESS_THAN_OR_EQUALS"
-        raise NotImplementedError("Condition is not implemented")
+
+        raise NotImplementedError(f"Condition '{condition}' is not implemented")
 
 
 def format_playback_value(
