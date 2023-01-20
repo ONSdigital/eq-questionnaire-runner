@@ -15,6 +15,9 @@ class ListCollector(Question):
                 "questionnaire.block",
                 list_name=self.rendered_block["for_list"],
                 block_id=self.rendered_block["add_block"]["id"],
+                return_to=self._return_to,
+                return_to_answer_id=self._return_to_answer_id,
+                return_to_block_id=self._return_to_block_id,
             )
             return add_url
 
@@ -39,6 +42,7 @@ class ListCollector(Question):
                 for_list=self.rendered_block["for_list"],
                 edit_block_id=self.rendered_block["edit_block"]["id"],
                 remove_block_id=self.rendered_block["remove_block"]["id"],
+                return_to=self._return_to,
             ),
         }
 
