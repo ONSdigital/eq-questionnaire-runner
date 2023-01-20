@@ -171,7 +171,7 @@ class PathFinder:
             # No routing rules, so step forward a block
             block_index = block_index + 1
 
-        return routing_path_block_ids
+        return routing_path_block_ids  # pragma: no cover
 
     def _evaluate_routing_rules(
         self,
