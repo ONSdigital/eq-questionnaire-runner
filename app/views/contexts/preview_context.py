@@ -56,4 +56,4 @@ class PreviewContext(Context):
                 current_location=location,
             )
 
-            yield from section_preview_context(return_to=return_to)["summary"]["groups"]
+            yield from section_preview_context(return_to=return_to)["preview"]["groups"]

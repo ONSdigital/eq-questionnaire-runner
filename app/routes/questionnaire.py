@@ -244,7 +244,7 @@ def get_preview(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireS
 
     context = {
         "schema_type": schema_type,
-        "summary": preview_context(),
+        "preview": preview_context(),
         "pdf_url": url_for(".get_preview_questions_pdf"),
     }
 

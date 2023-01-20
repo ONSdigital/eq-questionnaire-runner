@@ -31,7 +31,7 @@ def build_view_preview_questions_context(
         metadata=questionnaire_store.metadata,
         response_metadata=questionnaire_store.response_metadata,
     )
-    context["summary"] = preview_context()  # type: ignore
+    context["preview"] = preview_context()  # type: ignore
     # preview_context is in conflict with context variable return type, same problem below
     context["pdf_url"] = url_for("questionnaire.get_preview_questions_pdf")
 

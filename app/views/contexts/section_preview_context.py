@@ -35,7 +35,7 @@ class SectionPreviewContext(Context):
         self.current_location = current_location
 
     def __call__(self, return_to: Optional[str] = "section-summary") -> Mapping:
-        summary = self._build_summary()
+        preview = self._build_preview()
         title_for_location = self._title_for_location()
         title = (
             self._placeholder_renderer.render_placeholder(
@@ -48,12 +48,10 @@ class SectionPreviewContext(Context):
         page_title = self.get_page_title(title_for_location)
 
         return {
-            "summary": {
+            "preview": {
                 "title": title,
                 "page_title": page_title,
-                "summary_type": "SectionSummary",
-                "answers_are_editable": True,
-                **summary,
+                **preview,
             }
         }
 
@@ -67,7 +65,7 @@ class SectionPreviewContext(Context):
             self.current_location.section_id
         ) or self._get_safe_page_title(title_for_location)
 
-    def _build_summary(self):
+    def _build_preview(self):
 
         return {
             "groups": [

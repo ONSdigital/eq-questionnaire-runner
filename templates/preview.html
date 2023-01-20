@@ -71,7 +71,7 @@
 
   {%- if content.schema_type == "Hub" -%}
     {%- set itemList = [] -%}
-    {%- for group in content.summary.groups -%}
+    {%- for group in content.preview.groups -%}
       {%- if group["blocks"] | length -%}
           {%- set item = {
             "title": group.title,
@@ -120,9 +120,8 @@
       "itemsList": itemList
     }) }}
   {%- else %}
-    {% set summaryGroups = [] %}
 
-    {%- for group in content.summary.groups if group.blocks -%}
+    {%- for group in content.preview.groups if group.blocks -%}
       <div class="ons-summary__group">
       <h2 class="ons-summary__group-title">{{ group.title}}</h2>
       {% for block in group["blocks"] %}
