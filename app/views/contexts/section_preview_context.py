@@ -8,7 +8,7 @@ from app.questionnaire.location import Location
 from app.utilities import safe_content
 
 from .context import Context
-from .summary import PreviewGroup
+from .preview import PreviewGroup
 
 
 class SectionPreviewContext(Context):

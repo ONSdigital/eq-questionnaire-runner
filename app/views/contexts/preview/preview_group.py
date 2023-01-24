@@ -1,7 +1,7 @@
 import re
 
 from app.questionnaire import QuestionnaireSchema
-from app.views.contexts.summary.preview_block import PreviewBlock
+from app.views.contexts.preview.preview_block import PreviewBlock
 
 
 class PreviewGroup:

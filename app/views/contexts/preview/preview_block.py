@@ -1,4 +1,4 @@
-from app.views.contexts.summary.preview_question import PreviewQuestion
+from app.views.contexts.preview.preview_question import PreviewQuestion
 
 
 class PreviewBlock:
