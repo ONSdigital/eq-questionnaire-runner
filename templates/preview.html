@@ -30,11 +30,10 @@
 
 
 {% call onsPanel({
-  }) %}
-    <p>{{ _("To answer these questions you need to <a href='/questionnaire'>start survey</a>") }}</p>
+  "classes": 'ons-u-mb-m'
+}) %}
+  <p>{{ _("To answer these questions you need to <a href='/questionnaire'>start survey</a>") }}</p>
 {% endcall %}
-
-<br>
 <p>{{ _("You may not have to answer all of these questions. The questions you see will depend on the answers you provide.") }}</p>
 
 {{
