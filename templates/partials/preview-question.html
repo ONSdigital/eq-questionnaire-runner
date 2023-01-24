@@ -27,19 +27,19 @@
 
 {% if question.guidance %}
   {% call onsPanel({
-        "classes": "ons-u-mb-l"
-      }) %}
-      {% for guidance in question.guidance %}
-        {% if guidance is string %}
-          <p>{{ guidance }}</p>
-        {% else %}
+    "classes": "ons-u-mb-l"
+  }) %}
+    {% for guidance in question.guidance %}
+      {% if guidance is string %}
+        <p>{{ guidance }}</p>
+      {% else %}
         <ul>
           {% for item in guidance %}
-          <li>{{ item }}</li>
+            <li>{{ item }}</li>
           {% endfor %}
         </ul>
-        {% endif %}
-      {% endfor %}
+      {% endif %}
+    {% endfor %}
   {% endcall %}
 {% endif %}
 
