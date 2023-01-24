@@ -5,11 +5,11 @@ class TestPreviewPDF(IntegrationTestCase):
     def test_download(self):
         super().setUp()
 
-        # Given I launch and complete a questionnaire that has view-submitted-response enabled and has expired
+        # Given I launch a questionnaire and open preview of questions
         self.launchSurvey("test_introduction_preview_linear")
         self.get("/questionnaire/preview/")
 
-        # When I try to download preview questions from the preview page
+        # When I try to download preview of questions from the preview page
         download_pdf_url = (
             self.getHtmlSoup()
             .find("a", {"href": "/questionnaire/download-pdf"})
