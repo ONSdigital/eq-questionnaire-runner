@@ -1,6 +1,6 @@
 {% from 'components/panel/_macro.njk' import onsPanel %}
 
-{% set title= interviewer_note(question.title) if block.interviewer_only else question.title %}
+{% set title = interviewer_note(question.title) if block.interviewer_only else question.title %}
 {% set answers= question.answers %}
 
 <div class="ons-summary__item">
