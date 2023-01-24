@@ -1,7 +1,7 @@
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
-class TestViewSubmissionResponsePDF(IntegrationTestCase):
+class TestViewPreviewPDF(IntegrationTestCase):
     def test_download(self):
         super().setUp()
 
