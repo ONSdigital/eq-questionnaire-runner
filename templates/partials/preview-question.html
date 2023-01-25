@@ -5,77 +5,77 @@
 
 <div class="ons-summary__item">
 
-<h3 class="ons-u-mt-m ons-u-fs-r--b">{{ title }}</h3>
-
-{% set answers_length = answers|length %}
-
-{% if question.descriptions %}
-  {% set descriptions = question.descriptions %}
-  {% set descriptions_length = descriptions|length %}
-    {% for description in descriptions %}
-      {{ description }}
-    {% endfor %}
-{% endif %}
-
-{% if question.instruction %}
-  {% for instruction in question.instruction %}
-    <p>{{ instruction }}</p>
-  {% endfor %}
-{% endif %}
-
-{% if question.guidance %}
-  {% call onsPanel({
-    "classes": "ons-u-mb-l"
-  }) %}
-    {% for guidance in question.guidance %}
-      {% if guidance is string %}
-        <p>{{ guidance }}</p>
-      {% else %}
-        <ul>
-          {% for item in guidance %}
-            <li>{{ item }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endfor %}
-  {% endcall %}
-{% endif %}
-
-{% if question.answer_guidance %}
-  {% call onsPanel({
-    "classes": "ons-u-mb-l"
-  }) %}
-    {% for guidance in question.answer_guidance %}
-      {% if guidance is string %}
-        <p>{{ guidance }}</p>
-      {% else %}
-        <ul>
-          {% for item in guidance %}
-            <li>{{ item }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endfor %}
-  {% endcall %}
-{% endif %}
-
-{% if answers_length > 1 %}
-  <p>{{ _("You can answer with the following options:") }}</p>
-  <ul>
-    {% for answer in answers %}
-      <li>{{ answer }}</li>
-    {% endfor %}
-  </ul>
-{% elif answers_length == 1 %}
-  <p><strong>{{ answers[0] }}</strong></p>
-  {% if question.text_length %}
-    <p>{{ question.text_length }}{{ _(" characters can be added.") }}</p>
+  <h3 class="ons-u-mt-m ons-u-fs-r--b">{{ title }}</h3>
+  
+  {% set answers_length = answers|length %}
+  
+  {% if question.descriptions %}
+    {% set descriptions = question.descriptions %}
+    {% set descriptions_length = descriptions|length %}
+      {% for description in descriptions %}
+        {{ description }}
+      {% endfor %}
   {% endif %}
-{% endif %}
-
-{% if question.answer_description %}
-  {% set description = question.answer_description %}
-  <p>{{ description }}</p>
-{% endif %}
+  
+  {% if question.instruction %}
+    {% for instruction in question.instruction %}
+      <p>{{ instruction }}</p>
+    {% endfor %}
+  {% endif %}
+  
+  {% if question.guidance %}
+    {% call onsPanel({
+      "classes": "ons-u-mb-l"
+    }) %}
+      {% for guidance in question.guidance %}
+        {% if guidance is string %}
+          <p>{{ guidance }}</p>
+        {% else %}
+          <ul>
+            {% for item in guidance %}
+              <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endfor %}
+    {% endcall %}
+  {% endif %}
+  
+  {% if question.answer_guidance %}
+    {% call onsPanel({
+      "classes": "ons-u-mb-l"
+    }) %}
+      {% for guidance in question.answer_guidance %}
+        {% if guidance is string %}
+          <p>{{ guidance }}</p>
+        {% else %}
+          <ul>
+            {% for item in guidance %}
+              <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endfor %}
+    {% endcall %}
+  {% endif %}
+  
+  {% if answers_length > 1 %}
+    <p>{{ _("You can answer with the following options:") }}</p>
+    <ul>
+      {% for answer in answers %}
+        <li>{{ answer }}</li>
+      {% endfor %}
+    </ul>
+  {% elif answers_length == 1 %}
+    <p><strong>{{ answers[0] }}</strong></p>
+    {% if question.text_length %}
+      <p>{{ question.text_length }}{{ _(" characters can be added.") }}</p>
+    {% endif %}
+  {% endif %}
+  
+  {% if question.answer_description %}
+    {% set description = question.answer_description %}
+    <p>{{ description }}</p>
+  {% endif %}
 
 </div>
