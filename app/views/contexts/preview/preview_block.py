@@ -6,7 +6,7 @@ class PreviewBlock:
         self.survey_data = survey_data
         self.title = block_schema.get("title")
         self.question = self.get_question(
-            block_schema=block_schema, survey_data=self.survey_data
+            block_schema=block_schema, survey_data=survey_data
         )
 
     @staticmethod
