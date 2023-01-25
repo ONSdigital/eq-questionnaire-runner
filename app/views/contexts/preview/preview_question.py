@@ -1,11 +1,13 @@
+from re import findall
+
+from app.questionnaire import QuestionnaireSchema
+
+
 class PreviewQuestion:
-    def __init__(
-        self,
-        question_schema,
-    ):
+    def __init__(self, question_schema, survey_data):
         self.title = question_schema.get("title")
         self.answers = self._build_answers(question_schema)
-        self.descriptions = self._build_descriptions(question_schema)
+        self.descriptions = self._build_descriptions(question_schema, survey_data)
         self.guidance = self._build_question_guidance(question_schema)
         self.text_length = self._get_length(question_schema.get("answers"))
         self.instruction = question_schema.get("instruction") or None
@@ -15,6 +17,7 @@ class PreviewQuestion:
         self.answer_guidance = self._build_answer_guidance(
             answers=iter(question_schema["answers"])
         )
+        self.survey_data = survey_data
 
     @staticmethod
     def _build_answers(question_schema):
@@ -42,11 +45,18 @@ class PreviewQuestion:
         for answer in answers:
             return self._build_guidance(answer)
 
-    @staticmethod
-    def _build_descriptions(question_schema):
-        if description := question_schema.get("description"):
+    def _build_descriptions(self, question_schema, survey_data):
+        if descriptions := question_schema.get("description"):
+            mutable_descriptions = QuestionnaireSchema.get_mutable_deepcopy(
+                descriptions
+            )
+            for index, _ in enumerate(mutable_descriptions):
+                if isinstance(mutable_descriptions[index], dict):
+                    mutable_descriptions[index] = self.resolve_text(
+                        mutable_descriptions[index], survey_data
+                    )
 
-            return description
+            return mutable_descriptions
 
         return None
 
@@ -90,3 +100,18 @@ class PreviewQuestion:
             "answer_description": self.answer_description,
             "answer_guidance": self.answer_guidance,
         }
+
+    @staticmethod
+    def resolve_text(description, survey_data):
+        placeholders = findall(r"\{.*?}", description.get("text"))
+
+        text = description.get("text")
+
+        for placeholder in placeholders:
+            stripped_placeholder = placeholder.replace("{", "").replace("}", "")
+            if stripped_placeholder in survey_data:
+                text = text.replace(placeholder, survey_data[stripped_placeholder])
+
+        description = text
+
+        return description

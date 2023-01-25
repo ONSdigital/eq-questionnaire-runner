@@ -370,6 +370,20 @@
                                 "id": "further-details-text-area-question",
                                 "title": "Please provide any further details",
                                 "type": "General",
+                                "description": [
+                                    {
+                                        "text": "<p>Answer for {ru_name}</p>",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "ru_name",
+                                                "value": {
+                                                    "source": "metadata",
+                                                    "identifier": "ru_name"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
                                 "answers": [
                                     {
                                         "id": "further-details-text-area-answer",

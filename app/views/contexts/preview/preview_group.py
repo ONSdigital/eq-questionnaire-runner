@@ -1,4 +1,4 @@
-import re
+from re import findall
 
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.preview.preview_block import PreviewBlock
@@ -11,28 +11,19 @@ class PreviewGroup:
         metadata,
         section_title,
     ):
+        self.survey_data = metadata["survey_metadata"].data
         self.title = section_title
         self.blocks = self._build_blocks(
-            group_schema=group_schema,
+            group_schema=group_schema, survey_data=self.survey_data
         )
-        self.survey_data = metadata["survey_metadata"].data
 
     @staticmethod
-    def _build_blocks(
-        *,
-        group_schema,
-    ):
+    def _build_blocks(group_schema, survey_data):
         blocks = []
 
         for block in group_schema["blocks"]:
             if block["type"] == "Question":
-                blocks.extend(
-                    [
-                        PreviewBlock(
-                            block,
-                        ).serialize()
-                    ]
-                )
+                blocks.extend([PreviewBlock(block, survey_data).serialize()])
         return blocks
 
     def serialize(self):
@@ -48,7 +39,7 @@ class PreviewGroup:
 
     def resolve_title(self, question):
         if isinstance(question["title"], dict):
-            placeholders = re.findall(r"\{.*?}", question["title"].get("text"))
+            placeholders = findall(r"\{.*?}", question["title"].get("text"))
 
             title = question["title"].get("text")
 

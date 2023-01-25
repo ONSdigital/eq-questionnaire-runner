@@ -13,7 +13,11 @@ def test_build_preview_rendering_context(
         list_store,
         progress_store,
         metadata=get_metadata(
-            {"ref_p_start_date": "2016-02-02", "ref_p_end_date": "2016-03-03"}
+            {
+                "ru_name": "ESSENTIAL ENTERPRISE LTD.",
+                "ref_p_start_date": "2016-02-02",
+                "ref_p_end_date": "2016-03-03",
+            }
         ),
         response_metadata={},
     )
@@ -33,7 +37,11 @@ def test_build_preview_context(
         list_store,
         progress_store,
         metadata=get_metadata(
-            {"ref_p_start_date": "2016-02-02", "ref_p_end_date": "2016-03-03"}
+            {
+                "ru_name": "ESSENTIAL ENTERPRISE LTD.",
+                "ref_p_start_date": "2016-02-02",
+                "ref_p_end_date": "2016-03-03",
+            }
         ),
         response_metadata={},
     )
