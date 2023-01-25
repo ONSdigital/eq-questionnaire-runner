@@ -12,10 +12,10 @@ jobs:
   python-dependencies:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: |
           echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install apt dependencies
@@ -30,7 +30,7 @@ jobs:
         run: pip install pipenv==2022.11.30
       - name: Cache virtualenv
         id: cache-virtualenv
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.local/share/virtualenvs/
           key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('Pipfile.lock') }}
@@ -40,16 +40,16 @@ jobs:
   node-dependencies:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: "14.19.0"
       - name: Get yarn cache
         id: get-yarn-cache
-        run: echo "::set-output name=dir::$(yarn cache dir)"
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
       - name: Cache yarn modules
         id: cache-yarn
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ${{ steps.get-yarn-cache.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
@@ -60,10 +60,10 @@ jobs:
     needs: python-dependencies
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: |
           echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install apt dependencies
@@ -80,7 +80,7 @@ jobs:
         run: pip install pipenv==2022.11.30
       - name: Cache virtualenv
         id: cache-virtualenv
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.local/share/virtualenvs/
           key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('Pipfile.lock') }}
@@ -102,7 +102,7 @@ jobs:
   validate-schemas:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Run validator
         run: ./scripts/run_validator.sh
       - name: Running schema tests
@@ -111,29 +111,28 @@ jobs:
     strategy:
       matrix:
         suite: [ timeout_modal, features, general, components ]
-    needs: [python-dependencies, node-dependencies]
     runs-on: ubuntu-22.04
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Update to latest stable Chrome
         run: |
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo apt install ./google-chrome-stable_current_amd64.deb
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
           node-version: "14.19.0"
       - run: |
           echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install pipenv
         run: pip install pipenv==2022.11.30
       - name: Cache virtualenv
         id: cache-virtualenv
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.local/share/virtualenvs/
           key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('Pipfile.lock') }}
@@ -143,9 +142,9 @@ jobs:
           pipenv install --dev
       - name: Get yarn cache
         id: get-yarn-cache
-        run: echo "::set-output name=dir::$(yarn cache dir)"
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
       - name: Cache yarn modules
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         id: cache-yarn
         with:
           path: ${{ steps.get-yarn-cache.outputs.dir }}
@@ -165,7 +164,7 @@ jobs:
   docker-push:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set Tag and SHA
         run: |
           CLEAN_TAG=$(echo "${{ github.event.pull_request.head.ref  }}"  | tr / -)
