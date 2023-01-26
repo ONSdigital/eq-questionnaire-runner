@@ -296,7 +296,7 @@ class IndividualResponseHandler:
 
     def _render_block(self):
         return self.placeholder_renderer.render(
-            self.block_definition, self._list_item_id
+            dict_to_render=self.block_definition, list_item_id=self._list_item_id
         )
 
     def _update_section_status(self, status):

@@ -68,7 +68,7 @@ def test_renders_json(placholder_transform_question_json, mocker):
     )
 
     renderer = get_placeholder_render(mocker=mocker, answer_store=answer_store)
-    rendered_schema = renderer.render(json_to_render, list_item_id=None)
+    rendered_schema = renderer.render(dict_to_render=json_to_render, list_item_id=None)
     rendered_label = rendered_schema["answers"][0]["options"][0]["label"]
 
     assert rendered_label == "Alfred Aho’s age is 33 years. Is this correct?"
@@ -100,7 +100,7 @@ def test_renders_json_uses_language(placholder_transform_question_json, mocker):
     renderer = get_placeholder_render(
         mocker=mocker, language="cy", answer_store=answer_store
     )
-    rendered_schema = renderer.render(json_to_render, list_item_id=None)
+    rendered_schema = renderer.render(dict_to_render=json_to_render, list_item_id=None)
     rendered_label = rendered_schema["answers"][0]["options"][0]["label"]
 
     assert rendered_label == "Alfred Aho age is 33 years. Is this correct?"

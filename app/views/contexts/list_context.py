@@ -97,7 +97,7 @@ class ListContext(Context):
 
     def _get_item_title(self, summary_definition, list_item_id, is_primary):
         rendered_summary = self._placeholder_renderer.render(
-            summary_definition, list_item_id
+            dict_to_render=summary_definition, list_item_id=list_item_id
         )
 
         if is_primary:

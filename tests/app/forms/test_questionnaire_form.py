@@ -1664,7 +1664,9 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
             response_metadata={},
             schema=schema,
         )
-        rendered_schema = renderer.render(question_schema, None)
+        rendered_schema = renderer.render(
+            dict_to_render=question_schema, list_item_id=None
+        )
 
         form = generate_form(
             schema,

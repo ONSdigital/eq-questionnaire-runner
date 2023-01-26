@@ -75,9 +75,9 @@ class Question(BlockHandler):
 
         self._set_page_title(page_title)
         rendered_question = self.placeholder_renderer.render(
-            transformed_block["question"],
-            self._current_location.list_item_id,
-            self._routing_path.block_ids,
+            dict_to_render=transformed_block["question"],
+            list_item_id=self._current_location.list_item_id,
+            routing_path_block_ids=self._routing_path.block_ids,
         )
         return {
             **transformed_block,

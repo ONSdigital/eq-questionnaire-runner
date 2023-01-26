@@ -105,6 +105,7 @@ class PlaceholderRenderer:
 
     def render(
         self,
+        *,
         dict_to_render: Mapping[str, Any],
         list_item_id: Optional[str],
         routing_path_block_ids: Optional[tuple] = None,

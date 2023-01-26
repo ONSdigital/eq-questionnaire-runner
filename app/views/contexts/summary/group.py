@@ -130,12 +130,12 @@ class Group:
 
     def serialize(self):
         return self.placeholder_renderer.render(
-            {
+            dict_to_render={
                 "id": self.id,
                 "title": self.title,
                 "blocks": self.blocks,
                 "links": self.links,
                 "placeholder_text": self.placeholder_text,
             },
-            self.location.list_item_id,
+            list_item_id=self.location.list_item_id,
         )
