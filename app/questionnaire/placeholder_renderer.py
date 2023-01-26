@@ -39,6 +39,7 @@ class PlaceholderRenderer:
 
     def render_pointer(
         self,
+        *,
         dict_to_render: Mapping[str, Any],
         pointer_to_render: str,
         list_item_id: Optional[str],
@@ -118,7 +119,10 @@ class PlaceholderRenderer:
 
         for pointer in pointers:
             rendered_text = self.render_pointer(
-                dict_to_render, pointer, list_item_id, routing_path_block_ids
+                dict_to_render=dict_to_render,
+                pointer_to_render=pointer,
+                list_item_id=list_item_id,
+                routing_path_block_ids=routing_path_block_ids,
             )
             set_pointer(dict_to_render, pointer, rendered_text)
 

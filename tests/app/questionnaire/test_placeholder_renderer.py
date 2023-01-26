@@ -35,8 +35,8 @@ def test_renders_pointer(placholder_transform_question_json, mocker):
     )
     renderer = get_placeholder_render(mocker=mocker, answer_store=answer_store)
     rendered = renderer.render_pointer(
-        placholder_transform_question_json,
-        "/answers/0/options/0/label",
+        dict_to_render=placholder_transform_question_json,
+        pointer_to_render="/answers/0/options/0/label",
         list_item_id=None,
     )
 
@@ -111,7 +111,9 @@ def test_errors_on_invalid_pointer(placholder_transform_question_json, mocker):
 
     with pytest.raises(ValueError):
         renderer.render_pointer(
-            placholder_transform_question_json, "/title", list_item_id=None
+            dict_to_render=placholder_transform_question_json,
+            pointer_to_render="/title",
+            list_item_id=None,
         )
 
 
@@ -119,7 +121,11 @@ def test_errors_on_invalid_json(mocker):
     renderer = get_placeholder_render(mocker=mocker)
     with pytest.raises(ValueError):
         dict_to_render = {"invalid": {"no": "placeholders", "in": "this"}}
-        renderer.render_pointer(dict_to_render, "/invalid", list_item_id=None)
+        renderer.render_pointer(
+            dict_to_render=dict_to_render,
+            pointer_to_render="/invalid",
+            list_item_id=None,
+        )
 
 
 def test_renders_text_plural_from_answers(mocker):
