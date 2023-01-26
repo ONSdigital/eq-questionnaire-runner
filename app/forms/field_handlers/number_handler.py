@@ -66,7 +66,10 @@ class NumberHandler(FieldHandler):
 
     def get_field(self) -> Union[DecimalField, IntegerField]:
         return self._field_type(
-            label=self.label, validators=self.validators, description=self.guidance
+            label=self.label,
+            validators=self.validators,
+            description=self.guidance,
+            places=self.answer_schema.get("decimal_places", 0),
         )
 
     def _get_number_field_validators(

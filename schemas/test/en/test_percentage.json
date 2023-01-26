@@ -52,7 +52,8 @@
                                         "type": "Percentage",
                                         "maximum": {
                                             "value": 100
-                                        }
+                                        },
+                                        "decimal_places": 1
                                     }
                                 ],
                                 "id": "question",
