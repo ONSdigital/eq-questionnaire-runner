@@ -29,7 +29,7 @@ class RuleEvaluator:
     metadata: Optional[MetadataProxy]
     response_metadata: Mapping
     location: Union[None, Location, RelationshipLocation]
-    routing_path_block_ids: Union[Optional[tuple], list[str]] = None
+    routing_path_block_ids: Optional[Iterable] = None
     language: str = DEFAULT_LANGUAGE_CODE
 
     # pylint: disable=attribute-defined-outside-init

@@ -5,7 +5,7 @@ import logging
 from collections.abc import Callable
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
-from typing import Any, Mapping, Optional, Sequence, Union
+from typing import Any, Iterable, Mapping, Optional, Sequence, Union
 
 from dateutil.relativedelta import relativedelta
 from flask_wtf import FlaskForm
@@ -449,7 +449,7 @@ def get_answer_fields(
     metadata: Optional[MetadataProxy],
     response_metadata: Mapping[str, Any],
     location: Union[Location, RelationshipLocation, None],
-    routing_path_block_ids: Optional[tuple] = None,
+    routing_path_block_ids: Optional[Iterable] = None,
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
     value_source_resolver = ValueSourceResolver(

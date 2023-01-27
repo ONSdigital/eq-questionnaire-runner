@@ -30,7 +30,7 @@ class ValueSourceResolver:
     schema: QuestionnaireSchema
     location: Union[None, Location, RelationshipLocation]
     list_item_id: Optional[str]
-    routing_path_block_ids: Union[Optional[tuple], list[str]] = None
+    routing_path_block_ids: Optional[Iterable] = None
     use_default_answer: bool = False
     escape_answer_values: bool = False
     assess_routing_path: bool = True
