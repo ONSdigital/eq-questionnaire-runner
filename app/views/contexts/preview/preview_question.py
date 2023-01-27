@@ -6,7 +6,7 @@ from app.questionnaire import QuestionnaireSchema
 class PreviewQuestion:
     def __init__(self, question_schema, survey_data):
         self.title = question_schema.get("title")
-        self.answers = self._build_answers(question_schema)
+        self.answers = self._build_answers(question_schema, survey_data)
         self.descriptions = self._build_descriptions(question_schema, survey_data)
         self.guidance = self._build_question_guidance(question_schema)
         self.text_length = self._get_length(question_schema.get("answers"))
@@ -19,12 +19,16 @@ class PreviewQuestion:
         )
         self.survey_data = survey_data
 
-    @staticmethod
-    def _build_answers(question_schema):
+    def _build_answers(self, question_schema, survey_data):
         answers = []
         for answer in iter(question_schema["answers"]):
             if options := answer.get("options"):
-                answers.extend(option["label"] for option in options)
+                for option in options:
+                    if isinstance(option["label"], dict):
+                        label = self.resolve_text(option["label"], survey_data)
+                        answers.append(label)
+                    else:
+                        answers.append(option["label"])
             if not options:
                 answers.append(answer["label"])
 
@@ -102,16 +106,14 @@ class PreviewQuestion:
         }
 
     @staticmethod
-    def resolve_text(description, survey_data):
-        placeholders = findall(r"\{.*?}", description.get("text"))
+    def resolve_text(element, survey_data):
+        placeholders = findall(r"\{.*?}", element.get("text"))
 
-        text = description.get("text")
+        text = element.get("text")
 
         for placeholder in placeholders:
             stripped_placeholder = placeholder.replace("{", "").replace("}", "")
             if stripped_placeholder in survey_data:
                 text = text.replace(placeholder, survey_data[stripped_placeholder])
 
-        description = text
-
-        return description
+        return text

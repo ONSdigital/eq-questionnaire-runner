@@ -37,6 +37,10 @@
         {
             "name": "ref_p_end_date",
             "type": "date"
+        },
+        {
+            "name": "display_address",
+            "type": "string"
         }
     ],
     "questionnaire_flow": {
@@ -280,7 +284,7 @@
                         },
                         {
                             "type": "Question",
-                            "id": "turnover-block",
+                            "id": "turnover-variants-block",
                             "question_variants": [
                                 {
                                     "question": {
@@ -314,12 +318,12 @@
                                                 }
                                             ]
                                         },
-                                        "id": "turnover-question",
+                                        "id": "turnover-variants-question",
                                         "title": "What was your total turnover",
                                         "type": "General",
                                         "answers": [
                                             {
-                                                "id": "turnover-answer",
+                                                "id": "turnover-variants-answer",
                                                 "mandatory": false,
                                                 "type": "TextField",
                                                 "label": "Total turnover"
@@ -338,12 +342,12 @@
                                 },
                                 {
                                     "question": {
-                                        "id": "turnover-question",
+                                        "id": "turnover-variants-question",
                                         "title": "Why are you not able to report?",
                                         "type": "General",
                                         "answers": [
                                             {
-                                                "id": "turnover-answer",
+                                                "id": "turnover-variants-answer",
                                                 "mandatory": false,
                                                 "type": "TextField",
                                                 "label": "Details"
@@ -361,6 +365,61 @@
                                     }
                                 }
                             ]
+                        },
+                        {
+                            "type": "Question",
+                            "id": "address-mutually-exclusive-checkbox",
+                            "question": {
+                                "id": "address-mutually-exclusive-checkbox-question",
+                                "type": "MutuallyExclusive",
+                                "title": "Were your company based at any of the following addresses?",
+                                "mandatory": true,
+                                "answers": [
+                                    {
+                                        "id": "address-checkbox-answer",
+                                        "instruction": "Select an answer",
+                                        "type": "Checkbox",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": {
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "company_address",
+                                                            "value": {
+                                                                "identifier": "display_address",
+                                                                "source": "metadata"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "text": "{company_address}"
+                                                },
+                                                "value": "{company_address}"
+                                            },
+                                            {
+                                                "label": "7 Evelyn Street, Barry",
+                                                "value": "7 Evelyn Street, Barry"
+                                            },
+                                            {
+                                                "label": "251 Argae Lane, Barry",
+                                                "value": "251 Argae Lane, Barry"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "address-checkbox-exclusive-answer",
+                                        "mandatory": false,
+                                        "type": "Checkbox",
+                                        "options": [
+                                            {
+                                                "label": "I prefer not to say",
+                                                "description": "Some description",
+                                                "value": "I prefer not to say"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
                         },
                         {
                             "id": "further-details-text-area",
