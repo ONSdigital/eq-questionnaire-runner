@@ -1,7 +1,6 @@
 import pytest
 
-from app.questionnaire.location import Location
-from app.questionnaire.routing_path import RoutingPath
+from app.questionnaire import Location
 from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
 from tests.app.views.contexts import assert_summary_context
 
@@ -84,18 +83,6 @@ def test_build_view_context_for_currency_calculated_summary(
         mocker.MagicMock(return_value=locale),
     )
 
-    current_location = Location(section_id="default-section", block_id=block_id)
-
-    routing_path = RoutingPath(
-        [
-            "first-number-answer",
-            "second-number-answer-unit-total",
-            "fifth-percent-answer",
-            "fifth-number-answer",
-        ],
-        section_id="default-section",
-    )
-
     calculated_summary_context = CalculatedSummaryContext(
         language,
         test_calculated_summary_schema,
@@ -106,11 +93,10 @@ def test_build_view_context_for_currency_calculated_summary(
         progress_store,
         metadata=None,
         response_metadata={},
+        location=Location(section_id="default-section", block_id=block_id),
     )
 
-    context = calculated_summary_context.build_view_context_for_calculated_summary(
-        current_location, routing_path
-    )
+    context = calculated_summary_context.build_view_context_for_calculated_summary()
 
     assert "summary" in context
     assert_summary_context(context)
