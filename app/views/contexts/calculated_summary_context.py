@@ -25,15 +25,10 @@ class CalculatedSummaryContext(Context):
         section: Mapping,
         return_to_block_id: str,
     ) -> List[Group]:
-        routing_path = self._router.routing_path(
-            section["id"],
-            list_item_id=self._location.list_item_id if self._location else None,
-        )
-
         return [
             Group(
                 group_schema=group,
-                routing_path=routing_path,
+                routing_path=self._routing_path,
                 answer_store=self._answer_store,
                 list_store=self._list_store,
                 metadata=self._metadata,
