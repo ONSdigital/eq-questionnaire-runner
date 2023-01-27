@@ -25,7 +25,6 @@ class Content(BlockHandler):
         return self.placeholder_renderer.render(
             dict_to_render=transformed_block,
             list_item_id=self._current_location.list_item_id,
-            routing_path_block_ids=self._routing_path.block_ids,
         )
 
     def get_context(self):

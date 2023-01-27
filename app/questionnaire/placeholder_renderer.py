@@ -28,6 +28,7 @@ class PlaceholderRenderer:
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
         location: Union[None, Location, RelationshipLocation] = None,
+        routing_path_block_ids: Optional[tuple] = None,
     ):
         self._language = language
         self._answer_store = answer_store
@@ -36,6 +37,7 @@ class PlaceholderRenderer:
         self._response_metadata = response_metadata
         self._schema = schema
         self._location = location
+        self._routing_path_block_ids = routing_path_block_ids
 
     def render_pointer(
         self,
@@ -43,13 +45,10 @@ class PlaceholderRenderer:
         dict_to_render: Mapping[str, Any],
         pointer_to_render: str,
         list_item_id: Optional[str],
-        routing_path_block_ids: Optional[tuple] = None,
     ) -> str:
         pointer_data = resolve_pointer(dict_to_render, pointer_to_render)
 
-        return self.render_placeholder(
-            pointer_data, list_item_id, routing_path_block_ids
-        )
+        return self.render_placeholder(pointer_data, list_item_id)
 
     def get_plural_count(
         self, schema_partial: Mapping[str, str]
@@ -69,7 +68,6 @@ class PlaceholderRenderer:
         self,
         placeholder_data: MutableMapping[str, Any],
         list_item_id: Optional[str],
-        routing_path_block_ids: Optional[tuple] = None,
     ) -> str:
         placeholder_parser = PlaceholderParser(
             language=self._language,
@@ -81,7 +79,7 @@ class PlaceholderRenderer:
             list_item_id=list_item_id,
             location=self._location,
             renderer=self,
-            routing_path_block_ids=routing_path_block_ids,
+            routing_path_block_ids=self._routing_path_block_ids,
         )
 
         placeholder_data = QuestionnaireSchema.get_mutable_deepcopy(placeholder_data)
@@ -109,7 +107,6 @@ class PlaceholderRenderer:
         *,
         dict_to_render: Mapping[str, Any],
         list_item_id: Optional[str],
-        routing_path_block_ids: Optional[tuple] = None,
     ) -> Mapping[str, Any]:
         """
         Transform the current schema json to a fully rendered dictionary
@@ -122,7 +119,6 @@ class PlaceholderRenderer:
                 dict_to_render=dict_to_render,
                 pointer_to_render=pointer,
                 list_item_id=list_item_id,
-                routing_path_block_ids=routing_path_block_ids,
             )
             set_pointer(dict_to_render, pointer, rendered_text)
 
