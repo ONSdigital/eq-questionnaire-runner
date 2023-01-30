@@ -164,6 +164,8 @@ class ValueSourceResolver:
     ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
         source = value_source["source"]
 
+        #  We always need to assess the routing path for calculated summary value sources
+        #  as they may contain answers that are not on the path
         if not self.assess_routing_path:
             self.assess_routing_path = source == "calculated_summary"
 
