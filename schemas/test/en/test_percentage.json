@@ -53,7 +53,7 @@
                                         "maximum": {
                                             "value": 100
                                         },
-                                        "decimal_places": 1
+                                        "decimal_places": 3
                                     }
                                 ],
                                 "id": "question",
