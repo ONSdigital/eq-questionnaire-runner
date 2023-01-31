@@ -955,7 +955,7 @@ class IndividualResponseFulfilmentRequest(FulfilmentRequest):
             else {}
         )
 
-    def _get_fulfilment_code(self) -> str:
+    def _get_fulfilment_code(self) -> Optional[str]:
         fulfilment_codes = {
             "sms": {
                 GB_ENG_REGION_CODE: "UACITA1",
