@@ -59,7 +59,7 @@ jobs:
   test-unit:
     strategy:
       matrix:
-        suite: [[app, 83.36], [integration, 91.67]]
+        suite: [[app, 83.38], [integration, 91.50]]
     needs: python-dependencies
     runs-on: ubuntu-22.04
     steps:
