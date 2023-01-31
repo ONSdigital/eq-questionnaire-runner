@@ -45,13 +45,9 @@ def test_currency_playback(mock_form):
     with pytest.raises(ValidationError) as exc:
         validator(mock_form, conditions, calculation_total, target_total)
 
-    assert (
-        error_messages["TOTAL_SUM_NOT_EQUALS"]
-        % {
-            "total": format_playback_value(target_total, currency="EUR"),
-        }
-        == str(exc.value)
-    )
+    assert error_messages["TOTAL_SUM_NOT_EQUALS"] % {
+        "total": format_playback_value(target_total, currency="EUR"),
+    } == str(exc.value)
 
 
 @pytest.mark.usefixtures("gb_locale")
@@ -84,3 +80,11 @@ def test_invalid_multiple_conditions(mock_form):
         "There are multiple conditions, but equals is not one of them. We only support <= and >="
         == str(exc.value)
     )
+
+
+# pylint: disable=protected-access
+def test_is_valid_raises_NotImplementedError():
+    condition = "invalid_condition"
+    total, target_total = 10.5, 10.5
+    with pytest.raises(NotImplementedError):
+        SumCheck._is_valid(condition, total, target_total)

@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Optional, Union
 
 from flask import url_for
 
@@ -22,7 +22,7 @@ def individual_response_url(
     individual_response_for_list: str,
     list_item_id: str,
     questionnaire_store: QuestionnaireStore,
-    journey: str = None,
+    journey: Optional[str] = None,
 ) -> Union[str, None]:
     if individual_response_for_list:
 
