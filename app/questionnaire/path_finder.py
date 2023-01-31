@@ -80,7 +80,7 @@ class PathFinder:
         routing_path_block_ids: list[str],
         section: ImmutableDict,
         when_rules_block_dependencies: list[str],
-    ) -> list[Mapping]:
+    ) -> Optional[list[Mapping]]:
         # :TODO: Fix group skipping in its own section. Routing path will be empty and therefore not checked
         if section:
             not_skipped_blocks: list[Mapping] = []
@@ -170,6 +170,8 @@ class PathFinder:
 
             # No routing rules, so step forward a block
             block_index = block_index + 1
+
+        return routing_path_block_ids  # pragma: no cover
 
     def _evaluate_routing_rules(
         self,

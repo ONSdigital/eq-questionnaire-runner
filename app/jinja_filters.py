@@ -29,7 +29,7 @@ def strip_tags(value: str) -> Markup:
 
 
 @blueprint.app_template_filter()
-def format_number(value: Union[int, Decimal]) -> str:
+def format_number(value: Union[int, Decimal, float]) -> str:
     formatted_number: str
     if value or value == 0:
         formatted_number = numbers.format_decimal(
@@ -64,7 +64,7 @@ def get_currency_symbol(currency: str = "GBP") -> str:
 
 
 @blueprint.app_template_filter()
-def format_percentage(value: Union[int, Decimal]) -> str:
+def format_percentage(value: Union[int, float, Decimal]) -> str:
     return f"{value}%"
 
 
@@ -565,7 +565,7 @@ class SummaryRow:
             )
 
 
-@blueprint.app_template_filter()  # type: ignore
+@blueprint.app_template_filter()
 def map_summary_item_config(
     group: dict[str, Union[list, dict]],
     summary_type: str,
@@ -575,9 +575,9 @@ def map_summary_item_config(
     edit_link_aria_label: str,
     calculated_question: Optional[dict[str, list]],
     icon: Optional[str] = None,
-) -> list[SummaryRow]:
+) -> list[Union[dict[str, list], SummaryRow]]:
 
-    rows = []
+    rows: list[Union[dict[str, list], SummaryRow]] = []
 
     for block in group["blocks"]:
         if block.get("question"):
@@ -603,6 +603,7 @@ def map_summary_item_config(
                 item_label=block.get("item_label"),
                 item_anchor=block.get("item_anchor"),
             )
+
             rows.extend(list_collector_rows)
 
     if summary_type == "CalculatedSummary":
@@ -620,7 +621,7 @@ def map_summary_item_config_processor() -> dict[str, Callable]:
 @blueprint.app_template_filter()  # type: ignore
 def map_list_collector_config(
     list_items: list[dict[str, Union[str, int]]],
-    icon: str,
+    icon: Optional[str],
     edit_link_text: str = "",
     edit_link_aria_label: str = "",
     remove_link_text: Optional[str] = None,
@@ -628,8 +629,8 @@ def map_list_collector_config(
     related_answers: Optional[dict] = None,
     item_label: Optional[str] = None,
     item_anchor: Optional[str] = None,
-) -> list[dict[str, list]]:
-    rows = []
+) -> list[Union[dict[str, list], SummaryRow]]:
+    rows: list[Union[dict[str, list], SummaryRow]] = []
 
     for index, list_item in enumerate(list_items, start=1):
         item_name = list_item.get("item_title")
