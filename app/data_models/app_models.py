@@ -54,7 +54,7 @@ class Timestamp(fields.Field):
         value: datetime,
         *args: Optional[list],
         **kwargs: Any,
-    ) -> int:
+    ) -> Optional[int]:
         if value:
             # Timezone aware datetime to timestamp
             return int(value.replace(tzinfo=timezone.utc).timestamp())
@@ -65,7 +65,7 @@ class Timestamp(fields.Field):
         value: float,
         *args: Optional[list],
         **kwargs: Any,
-    ) -> datetime:
+    ) -> Optional[datetime]:
         if value:
             # Timestamp to timezone aware datetime
             return datetime.fromtimestamp(value, tz=timezone.utc)
