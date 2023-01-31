@@ -74,7 +74,9 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
 
     # The following three parameters can be removed after Census
     survey = VALIDATORS["string"](
-        required=False, validate=validate.OneOf(("CENSUS", "CCS")), missing="CENSUS"
+        required=False,
+        validate=validate.OneOf(("CENSUS", "CCS")),
+        load_default="CENSUS",
     )  # type:ignore
     region_code = VALIDATORS["string"](
         required=False, validate=RegionCode()
