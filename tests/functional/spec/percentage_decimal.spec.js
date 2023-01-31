@@ -11,5 +11,5 @@ describe("Percentage", () => {
     $(SubmitPage.previous()).click();
     expect(browser.getUrl()).to.contain(PercentageDecimalPage.pageName);
     expect($(PercentageDecimalPage.decimal()).getValue()).to.equal("3.333");
-    });
+  });
 });
