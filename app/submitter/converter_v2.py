@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Mapping, Optional, OrderedDict, Union
+from typing import Any, Iterable, Mapping, Optional, OrderedDict, Union
 
 from structlog import get_logger
 
@@ -113,7 +113,7 @@ def get_payload_data(
     routing_path: RoutingPath,
     metadata: MetadataProxy,
     response_metadata: Mapping,
-) -> Union[OrderedDict[str, Any], dict[str, Union[list[Any]]]]:
+) -> Union[OrderedDict[str, Any], dict[str, Union[list[Any], object]]]:
     if schema.json["data_version"] == "0.0.1":
         return convert_answers_to_payload_0_0_1(
             metadata=metadata,
@@ -123,8 +123,10 @@ def get_payload_data(
             schema=schema,
             full_routing_path=routing_path,
         )
+
     if schema.json["data_version"] == "0.0.3":
-        return {
+
+        data = {
             "answers": convert_answers_to_payload_0_0_3(
                 answer_store=answer_store,
                 list_store=list_store,
@@ -134,4 +136,22 @@ def get_payload_data(
             "lists": list_store.serialize(),
         }
 
+        if answer_codes := schema.json.get("answer_codes"):
+            get_filtered_answer_codes(answer_codes, data)
+
+        return data
+
     raise DataVersionError(schema.json["data_version"])
+
+
+def get_filtered_answer_codes(
+    answer_codes: Iterable[OrderedDict[str, Any]], data: dict
+) -> None:
+    answer_ids_to_filter = {answer.answer_id for answer in data["answers"]}
+    filtered_answer_codes: list = []
+    filtered_answer_codes.extend(
+        answer_code
+        for answer_code in answer_codes
+        if answer_code["answer_id"] in answer_ids_to_filter
+    )
+    data["answer_codes"] = filtered_answer_codes

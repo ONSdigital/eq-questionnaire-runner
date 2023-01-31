@@ -1,0 +1,169 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Other input fields",
+    "theme": "default",
+    "description": "A questionnaire to demo answer codes.",
+    "messages": {
+        "NUMBER_TOO_LARGE": "Number is too large",
+        "NUMBER_TOO_SMALL": "Number cannot be less than zero",
+        "INVALID_NUMBER": "Please enter an integer"
+    },
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "answer_codes": [
+        {
+            "answer_id": "mandatory-checkbox-answer",
+            "value": "None",
+            "code": "1a"
+        },
+        {
+            "answer_id": "mandatory-checkbox-answer",
+            "value": "Ham & Cheese",
+            "code": "1b"
+        },
+        {
+            "answer_id": "mandatory-checkbox-answer",
+            "value": "Ham",
+            "code": "1c"
+        },
+        {
+            "answer_id": "mandatory-checkbox-answer",
+            "value": "Pepperoni",
+            "code": "1d"
+        },
+        {
+            "answer_id": "mandatory-checkbox-answer",
+            "value": "Other",
+            "code": "1e"
+        },
+        {
+            "answer_id": "other-answer-mandatory",
+            "code": "1f"
+        },
+        {
+            "answer_id": "name-answer",
+            "code": "2"
+        },
+        {
+            "answer_id": "name-answer-2",
+            "code": "3"
+        }
+    ],
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "mandatory-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "mandatory-checkbox-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "None",
+                                                "value": "None"
+                                            },
+                                            {
+                                                "label": "Ham & Cheese",
+                                                "value": "Ham & Cheese"
+                                            },
+                                            {
+                                                "label": "Ham",
+                                                "value": "Ham"
+                                            },
+                                            {
+                                                "label": "Pepperoni",
+                                                "value": "Pepperoni"
+                                            },
+                                            {
+                                                "label": "Other",
+                                                "description": "Choose any other topping",
+                                                "value": "Other",
+                                                "detail_answer": {
+                                                    "mandatory": true,
+                                                    "id": "other-answer-mandatory",
+                                                    "label": "Please specify other",
+                                                    "type": "TextField"
+                                                }
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "mandatory-checkbox-question",
+                                "title": "Which pizza toppings would you like?",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "name-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "name-answer",
+                                        "label": "What is your name?",
+                                        "max_length": 20,
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    }
+                                ],
+                                "id": "name-question",
+                                "title": "Title",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "name-block-2",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "name-answer-2",
+                                        "label": "What is your surname?",
+                                        "max_length": 20,
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    }
+                                ],
+                                "id": "name-question-2",
+                                "title": "Title",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "checkboxes"
+                }
+            ]
+        }
+    ]
+}
