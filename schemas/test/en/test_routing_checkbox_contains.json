@@ -70,33 +70,31 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "country-interstitial-all",
-                                        "when": [
+                                    "block": "country-interstitial-all",
+                                    "when": {
+                                        "all-in": [
+                                            ["India", "Azerbaijan", "Liechtenstein"],
                                             {
-                                                "id": "country-checkbox-answer",
-                                                "condition": "contains all",
-                                                "values": ["India", "Azerbaijan", "Liechtenstein"]
+                                                "identifier": "country-checkbox-answer",
+                                                "source": "answers"
                                             }
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "country-interstitial-any",
-                                        "when": [
+                                    "block": "country-interstitial-any",
+                                    "when": {
+                                        "any-in": [
                                             {
-                                                "id": "country-checkbox-answer",
-                                                "condition": "contains any",
-                                                "values": ["India", "Azerbaijan"]
-                                            }
+                                                "identifier": "country-checkbox-answer",
+                                                "source": "answers"
+                                            },
+                                            ["India", "Azerbaijan"]
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         },

@@ -55,7 +55,7 @@ def test_transform_variants_with_question_variants(question_variant_schema):
 def test_transform_variants_with_content(content_variant_schema):
     schema = QuestionnaireSchema(content_variant_schema)
     answer_store = AnswerStore({})
-    answer_store.add_or_update(Answer(answer_id="age-answer", value="18"))
+    answer_store.add_or_update(Answer(answer_id="age-answer", value=18))
     metadata = {}
     response_metadata = {}
 
@@ -155,7 +155,7 @@ def test_transform_variants_list_collector(list_collector_variant_schema):
 def test_choose_content_to_display(content_variant_schema):
     schema = QuestionnaireSchema(content_variant_schema)
     answer_store = AnswerStore({})
-    answer_store.add_or_update(Answer(answer_id="age-answer", value="18"))
+    answer_store.add_or_update(Answer(answer_id="age-answer", value=18))
     metadata = {}
     response_metadata = {}
 

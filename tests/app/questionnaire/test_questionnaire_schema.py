@@ -220,7 +220,7 @@ def test_get_all_questions_for_block_question_variants():
                     "title": "Question 1",
                     "answers": [{"id": "answer1", "label": "Variant 1"}],
                 },
-                "when": [],
+                "when": {},
             },
             {
                 "question": {
@@ -228,7 +228,7 @@ def test_get_all_questions_for_block_question_variants():
                     "title": "Question 1",
                     "answers": [{"id": "answer1", "label": "Variant 2"}],
                 },
-                "when": [],
+                "when": {},
             },
         ],
     }

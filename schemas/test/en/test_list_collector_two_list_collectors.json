@@ -81,9 +81,7 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "list-collector"
-                                    }
+                                    "block": "list-collector"
                                 }
                             ]
                         },
@@ -273,9 +271,7 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "another-list-collector"
-                                    }
+                                    "block": "another-list-collector"
                                 }
                             ],
                             "type": "Question"

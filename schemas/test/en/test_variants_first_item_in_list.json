@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Test Question Variants Using List",
+    "title": "Test New Question Variants Using List",
     "theme": "default",
-    "description": "A questionnaire to test question variants using the first item in a list",
+    "description": "A questionnaire to test new question variants using the first item in a list",
     "metadata": [
         {
             "name": "user_id",
@@ -236,17 +236,19 @@
                                         "title": "You are the first person in the list",
                                         "type": "General"
                                     },
-                                    "when": [
-                                        {
-                                            "list": "people",
-                                            "id_selector": "first",
-                                            "condition": "equals",
-                                            "comparison": {
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "list",
+                                                "identifier": "people",
+                                                "selector": "first"
+                                            },
+                                            {
                                                 "source": "location",
-                                                "id": "list_item_id"
+                                                "identifier": "list_item_id"
                                             }
-                                        }
-                                    ]
+                                        ]
+                                    }
                                 },
                                 {
                                     "question": {
@@ -271,17 +273,19 @@
                                         "title": "You are not the first person in the list",
                                         "type": "General"
                                     },
-                                    "when": [
-                                        {
-                                            "list": "people",
-                                            "id_selector": "first",
-                                            "condition": "not equals",
-                                            "comparison": {
+                                    "when": {
+                                        "!=": [
+                                            {
+                                                "source": "list",
+                                                "identifier": "people",
+                                                "selector": "first"
+                                            },
+                                            {
                                                 "source": "location",
-                                                "id": "list_item_id"
+                                                "identifier": "list_item_id"
                                             }
-                                        }
-                                    ]
+                                        ]
+                                    }
                                 }
                             ],
                             "type": "Question"

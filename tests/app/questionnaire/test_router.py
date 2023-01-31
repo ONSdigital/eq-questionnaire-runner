@@ -55,10 +55,6 @@ class TestRouter(RouterTestCase):
 
         assert expected_section_ids == self.router.enabled_section_ids
 
-        self.schema = load_schema_from_name("test_new_section_enabled_checkbox")
-
-        assert expected_section_ids == self.router.enabled_section_ids
-
     def test_full_routing_path_without_repeating_sections(self):
         self.schema = load_schema_from_name("test_checkbox")
         routing_path = self.router.full_routing_path()
@@ -290,7 +286,7 @@ class TestRouterLocationValidity(RouterTestCase):
         assert not can_access_location
 
     def test_cant_access_section_disabled(self):
-        self.schema = load_schema_from_name("test_new_section_enabled_checkbox")
+        self.schema = load_schema_from_name("test_section_enabled_checkbox")
 
         current_location = Location(
             section_id="section-2", block_id="section-2-block", list_item_id=None
@@ -511,10 +507,7 @@ class TestRouterNextLocation(RouterTestCase):
     @pytest.mark.usefixtures("app")
     @pytest.mark.parametrize(
         "schema",
-        (
-            "test_calculated_summary",
-            "test_new_calculated_summary",
-        ),
+        ("test_calculated_summary",),
     )
     def test_return_to_calculated_summary(self, schema):
         self.schema = load_schema_from_name(schema)
@@ -614,16 +607,6 @@ class TestRouterNextLocation(RouterTestCase):
                 None,
                 "/questionnaire/sixth-number-block/?return_to=calculated-summary",
             ),
-            (
-                "test_new_calculated_summary",
-                "non-valid-block",
-                "/questionnaire/sixth-number-block/?return_to=calculated-summary&return_to_block_id=non-valid-block",
-            ),
-            (
-                "test_new_calculated_summary",
-                None,
-                "/questionnaire/sixth-number-block/?return_to=calculated-summary",
-            ),
         ],
     )
     def test_return_to_calculated_summary_invalid_return_to_block_id(
@@ -651,10 +634,7 @@ class TestRouterNextLocation(RouterTestCase):
     @pytest.mark.usefixtures("app")
     @pytest.mark.parametrize(
         "schema",
-        (
-            "test_calculated_summary",
-            "test_new_calculated_summary",
-        ),
+        ("test_calculated_summary",),
     )
     def test_return_to_calculated_summary_return_to_block_id_not_on_path(self, schema):
         self.schema = load_schema_from_name(schema)
@@ -710,7 +690,7 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
     @pytest.mark.usefixtures("app")
     def test_return_to_final_summary_questionnaire_and_section_is_complete(self):
         self.schema = load_schema_from_name(
-            "test_new_routing_to_questionnaire_end_single_section"
+            "test_routing_to_questionnaire_end_single_section"
         )
         self.progress_store = ProgressStore(
             [
@@ -759,7 +739,7 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
     @pytest.mark.usefixtures("app")
     def test_return_to_final_summary_questionnaire_is_not_complete(self):
         self.schema = load_schema_from_name(
-            "test_new_routing_to_questionnaire_end_multiple_sections"
+            "test_routing_to_questionnaire_end_multiple_sections"
         )
         self.answer_store = AnswerStore([{"answer_id": "test-answer", "value": "Yes"}])
         self.progress_store = ProgressStore(
@@ -1085,7 +1065,7 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
     @pytest.mark.usefixtures("app")
     def test_last_block_not_on_path(self):
         self.schema = load_schema_from_name(
-            "test_new_routing_to_questionnaire_end_multiple_sections"
+            "test_routing_to_questionnaire_end_multiple_sections"
         )
         self.answer_store = AnswerStore(
             [

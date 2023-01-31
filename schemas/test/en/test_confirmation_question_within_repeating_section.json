@@ -186,7 +186,9 @@
         {
             "id": "default-section",
             "title": "Questions",
-            "summary": { "show_on_completion": true },
+            "summary": {
+                "show_on_completion": true
+            },
             "repeat": {
                 "for_list": "people",
                 "title": {
@@ -289,22 +291,21 @@
                         {
                             "type": "ConfirmationQuestion",
                             "id": "confirm-dob-block",
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "<=": [
                                         {
-                                            "condition": "less than or equal to",
-                                            "date_comparison": {
-                                                "offset_by": {
-                                                    "years": -16
-                                                },
-                                                "value": "now"
-                                            },
-                                            "id": "date-of-birth-answer"
-                                        }
+                                            "date": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "date-of-birth-answer"
+                                                }
+                                            ]
+                                        },
+                                        { "date": ["now", { "years": -16 }] }
                                     ]
                                 }
-                            ],
+                            },
                             "question": {
                                 "answers": [
                                     {
@@ -413,21 +414,19 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "dob-block",
-                                        "when": [
+                                    "block": "dob-block",
+                                    "when": {
+                                        "==": [
                                             {
-                                                "id": "confirm-date-of-birth-answer",
-                                                "condition": "equals",
-                                                "value": "No, I need to change their date of birth"
-                                            }
+                                                "source": "answers",
+                                                "identifier": "confirm-date-of-birth-answer"
+                                            },
+                                            "No, I need to change their date of birth"
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         },
@@ -470,8 +469,14 @@
                                         "type": "Radio",
                                         "default": "Yes",
                                         "options": [
-                                            { "label": "Yes", "value": "Yes" },
-                                            { "label": "No", "value": "No" }
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
                                         ]
                                     }
                                 ]

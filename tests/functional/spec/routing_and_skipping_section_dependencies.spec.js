@@ -1,27 +1,27 @@
-import AgePage from "../generated_pages/new_routing_and_skipping_section_dependencies/age.page";
-import HouseHoldPersonalDetailsSectionSummaryPage from "../generated_pages/new_routing_and_skipping_section_dependencies/household-personal-details-section-summary.page";
-import HouseholdSectionSummaryPage from "../generated_pages/new_routing_and_skipping_section_dependencies/household-section-summary.page";
-import ListCollectorAddPage from "../generated_pages/new_routing_and_skipping_section_dependencies/list-collector-add.page";
-import ListCollectorPage from "../generated_pages/new_routing_and_skipping_section_dependencies/list-collector.page";
-import NamePage from "../generated_pages/new_routing_and_skipping_section_dependencies/name-block.page";
-import PrimaryPersonSummaryPage from "../generated_pages/new_routing_and_skipping_section_dependencies/primary-person-summary.page";
-import ReasonNoConfirmationPage from "../generated_pages/new_routing_and_skipping_section_dependencies/reason-no-confirmation.page";
-import RepeatingAgePage from "../generated_pages/new_routing_and_skipping_section_dependencies/repeating-age.page";
-import RepeatingSexPage from "../generated_pages/new_routing_and_skipping_section_dependencies/repeating-sex.page";
-import SecurityPage from "../generated_pages/new_routing_and_skipping_section_dependencies/security.page";
-import SkipAgePage from "../generated_pages/new_routing_and_skipping_section_dependencies/skip-age.page";
-import SkipEnableSectionPage from "../generated_pages/new_routing_and_skipping_section_dependencies/skip-household-section.page";
-import EnableSectionPage from "../generated_pages/new_routing_and_skipping_section_dependencies/enable-section.page";
-import SkipConfirmationPage from "../generated_pages/new_routing_and_skipping_section_dependencies/skip-confirmation.page";
-import SkipConfirmationSectionSummaryPage from "../generated_pages/new_routing_and_skipping_section_dependencies/skip-confirmation-section-summary.page";
-import SkipSectionSummaryPage from "../generated_pages/new_routing_and_skipping_section_dependencies/skip-section-summary.page";
+import AgePage from "../generated_pages/routing_and_skipping_section_dependencies/age.page";
+import HouseHoldPersonalDetailsSectionSummaryPage from "../generated_pages/routing_and_skipping_section_dependencies/household-personal-details-section-summary.page";
+import HouseholdSectionSummaryPage from "../generated_pages/routing_and_skipping_section_dependencies/household-section-summary.page";
+import ListCollectorAddPage from "../generated_pages/routing_and_skipping_section_dependencies/list-collector-add.page";
+import ListCollectorPage from "../generated_pages/routing_and_skipping_section_dependencies/list-collector.page";
+import NamePage from "../generated_pages/routing_and_skipping_section_dependencies/name-block.page";
+import PrimaryPersonSummaryPage from "../generated_pages/routing_and_skipping_section_dependencies/primary-person-summary.page";
+import ReasonNoConfirmationPage from "../generated_pages/routing_and_skipping_section_dependencies/reason-no-confirmation.page";
+import RepeatingAgePage from "../generated_pages/routing_and_skipping_section_dependencies/repeating-age.page";
+import RepeatingSexPage from "../generated_pages/routing_and_skipping_section_dependencies/repeating-sex.page";
+import SecurityPage from "../generated_pages/routing_and_skipping_section_dependencies/security.page";
+import SkipAgePage from "../generated_pages/routing_and_skipping_section_dependencies/skip-age.page";
+import SkipEnableSectionPage from "../generated_pages/routing_and_skipping_section_dependencies/skip-household-section.page";
+import EnableSectionPage from "../generated_pages/routing_and_skipping_section_dependencies/enable-section.page";
+import SkipConfirmationPage from "../generated_pages/routing_and_skipping_section_dependencies/skip-confirmation.page";
+import SkipConfirmationSectionSummaryPage from "../generated_pages/routing_and_skipping_section_dependencies/skip-confirmation-section-summary.page";
+import SkipSectionSummaryPage from "../generated_pages/routing_and_skipping_section_dependencies/skip-section-summary.page";
 
 import HubPage from "../base_pages/hub.page";
 
 describe("Routing and skipping section dependencies", () => {
   describe("Given the routing and skipping section dependencies questionnaire", () => {
     beforeEach("Load the survey", () => {
-      browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
+      browser.openQuestionnaire("test_routing_and_skipping_section_dependencies.json");
     });
 
     it("When I answer 'No' to skipping the age question, Then in the Primary Person section I am asked my name, age and why I didn't confirm skipping", () => {
@@ -126,7 +126,7 @@ describe("Routing and skipping section dependencies", () => {
 
   describe("Given the routing and skipping section dependencies questionnaire", () => {
     beforeEach("Load the survey", () => {
-      browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
+      browser.openQuestionnaire("test_routing_and_skipping_section_dependencies.json");
     });
     it("When I answer 'No' to skipping the section question and 'Yes' to enable the section question, Then the household summary will be visible on the hub", () => {
       answerNoToSkipEnableQuestionAndYesToEnableSection();
@@ -142,7 +142,7 @@ describe("Routing and skipping section dependencies", () => {
 
   describe("Given the routing and skipping section dependencies questionnaire and I answered 'No' to skipping the section question and 'Yes' to enable the section question", () => {
     before("Load the survey", () => {
-      browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
+      browser.openQuestionnaire("test_routing_and_skipping_section_dependencies.json");
     });
     it("When I change my answer to skipping the section question to 'No', Then the household summary will not be visible on the hub", () => {
       answerNoToSkipEnableQuestionAndYesToEnableSection();
@@ -154,7 +154,7 @@ describe("Routing and skipping section dependencies", () => {
 
   describe("Given the routing and skipping section dependencies questionnaire and I answered 'Yes' to skipping the age question but 'No' to are you sure in skip question confirmation section", () => {
     before("Load the survey", () => {
-      browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
+      browser.openQuestionnaire("test_routing_and_skipping_section_dependencies.json");
     });
 
     it("When I change my answer to skipping age to 'No', removing the 'are you sure' question from the path, Then in the Primary Person section I am asked my name, age and why I didn't confirm skipping", () => {
@@ -182,7 +182,7 @@ describe("Routing and skipping section dependencies", () => {
 
   describe("Given the routing and skipping section dependencies questionnaire and I answered 'Yes' to skipping the age question and complete the Primary Person section", () => {
     before("Load the survey", () => {
-      browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
+      browser.openQuestionnaire("test_routing_and_skipping_section_dependencies.json");
     });
 
     it("When I change my answer to skipping age to 'No', Then the Primary Person section status is changed to Partially completed", () => {
@@ -208,7 +208,7 @@ describe("Routing and skipping section dependencies", () => {
 
   describe("Given the routing and skipping section dependencies questionnaire and I answered 'Yes' to skipping the age question and add 2 household members but complete only one", () => {
     before("Load the survey", () => {
-      browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
+      browser.openQuestionnaire("test_routing_and_skipping_section_dependencies.json");
     });
 
     it("When I change my answer to skipping age to 'No', Then the completed household member status is changed to Partially completed and the other stays as not started", () => {

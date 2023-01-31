@@ -139,21 +139,19 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "when": [
+                                    "when": {
+                                        "==": [
                                             {
-                                                "value": "No I need to change this",
-                                                "id": "confirm-answers",
-                                                "condition": "equals"
-                                            }
-                                        ],
-                                        "block": "mandatory-checkbox"
-                                    }
+                                                "source": "answers",
+                                                "identifier": "confirm-answers"
+                                            },
+                                            "No I need to change this"
+                                        ]
+                                    },
+                                    "block": "mandatory-checkbox"
                                 },
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         }

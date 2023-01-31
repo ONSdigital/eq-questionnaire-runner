@@ -42,57 +42,20 @@ def test_introduction_in_path_when_in_schema(answer_store, list_store, progress_
 
 
 def test_introduction_not_in_path_when_not_in_schema(
-    answer_store, list_store, progress_store, mocker
+    answer_store, list_store, progress_store
 ):
     schema = load_schema_from_name("test_checkbox")
     current_section = schema.get_section("default-section")
     path_finder = PathFinder(schema, answer_store, list_store, progress_store, None, {})
 
-    mocker.patch("app.questionnaire.when_rules.evaluate_when_rules", return_value=False)
     routing_path = path_finder.routing_path(section_id=current_section["id"])
 
     assert "introduction" not in routing_path
 
 
-@pytest.mark.parametrize(
-    "schema",
-    (
-        "test_new_routing_number_equals",
-        "test_routing_number_equals",
-    ),
-)
-def test_routing_path_with_conditional_path(schema, answer_store, list_store):
-    schema = load_schema_from_name(schema)
-    section_id = schema.get_section_id_for_block_id("number-question")
-    expected_path = RoutingPath(
-        ["number-question", "correct-answer"],
-        section_id="default-section",
-    )
-
-    answer = Answer(answer_id="answer", value=123)
-    answer_store.add_or_update(answer)
-    progress_store = ProgressStore(
-        [
-            {
-                "section_id": "default-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["number-question"],
-            }
-        ]
-    )
-    path_finder = PathFinder(schema, answer_store, list_store, progress_store, None, {})
-
-    routing_path = path_finder.routing_path(section_id=section_id)
-
-    assert routing_path == expected_path
-
-
-def test_new_routing_basic_and_conditional_path(
-    answer_store, list_store, progress_store
-):
+def test_routing_basic_and_conditional_path(answer_store, list_store, progress_store):
     # Given
-    schema = load_schema_from_name("test_new_routing_number_equals")
+    schema = load_schema_from_name("test_routing_number_equals")
     section_id = schema.get_section_id_for_block_id("number-question")
     expected_path = RoutingPath(
         ["number-question", "correct-answer"],
@@ -258,18 +221,9 @@ def test_routing_path_with_conditional_value_not_in_metadata(answer_store, list_
     assert routing_path == expected_path
 
 
-@pytest.mark.parametrize(
-    "schema, expected_routing_path_ids",
-    (
-        ("test_new_skip_condition_block", ["do-you-want-to-skip"]),
-        ("test_skip_condition_block", ["do-you-want-to-skip", "a-non-skipped-block"]),
-    ),
-)
-def test_new_routing_path_should_skip_block(
-    schema, expected_routing_path_ids, answer_store, list_store
-):
+def test_routing_path_should_skip_block(answer_store, list_store):
     # Given
-    schema = load_schema_from_name(schema)
+    schema = load_schema_from_name("test_skip_condition_block")
     section_id = schema.get_section_id_for_block_id("should-skip")
     answer_store.add_or_update(
         Answer(answer_id="do-you-want-to-skip-answer", value="Yes")
@@ -291,6 +245,7 @@ def test_new_routing_path_should_skip_block(
     routing_path = path_finder.routing_path(section_id=section_id)
 
     # Then
+    expected_routing_path_ids = ["do-you-want-to-skip"]
     expected_routing_path = RoutingPath(
         expected_routing_path_ids,
         section_id="default-section",
@@ -299,16 +254,9 @@ def test_new_routing_path_should_skip_block(
     assert routing_path == expected_routing_path
 
 
-@pytest.mark.parametrize(
-    "schema",
-    (
-        "test_skip_condition_group",
-        "test_new_skip_condition_group",
-    ),
-)
-def test_routing_path_should_skip_group(schema, answer_store, list_store):
+def test_routing_path_should_skip_group(answer_store, list_store):
     # Given
-    schema = load_schema_from_name(schema)
+    schema = load_schema_from_name("test_skip_condition_group")
 
     section_id = schema.get_section_id_for_block_id("do-you-want-to-skip")
     answer_store.add_or_update(
@@ -338,16 +286,9 @@ def test_routing_path_should_skip_group(schema, answer_store, list_store):
     assert routing_path == expected_routing_path
 
 
-@pytest.mark.parametrize(
-    "schema",
-    (
-        "test_skip_condition_group",
-        "test_new_skip_condition_group",
-    ),
-)
-def test_routing_path_should_not_skip_group(schema, answer_store, list_store):
+def test_routing_path_should_not_skip_group(answer_store, list_store):
     # Given
-    schema = load_schema_from_name(schema)
+    schema = load_schema_from_name("test_skip_condition_group")
 
     section_id = schema.get_section_id_for_block_id("do-you-want-to-skip")
     answer_store.add_or_update(
@@ -400,7 +341,7 @@ def test_get_routing_path_when_first_block_in_group_skipped(
 
 def test_build_path_with_group_routing(answer_store, list_store, progress_store):
     # Given i have answered the routing question
-    schema = load_schema_from_name("test_new_routing_group")
+    schema = load_schema_from_name("test_routing_group")
     section_id = schema.get_section_id_for_block_id("group2-block")
 
     answer_store.add_or_update(Answer(answer_id="which-group-answer", value="group2"))
@@ -415,71 +356,7 @@ def test_build_path_with_group_routing(answer_store, list_store, progress_store)
 
 
 def test_remove_answer_and_block_if_routing_backwards(list_store):
-    schema = load_schema_from_name("test_confirmation_question")
-    section_id = schema.get_section_id_for_block_id("confirm-zero-employees-block")
-
-    # All blocks completed
-    progress_store = ProgressStore(
-        [
-            {
-                "section_id": "default-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": [
-                    "number-of-employees-total-block",
-                    "confirm-zero-employees-block",
-                ],
-            }
-        ]
-    )
-
-    number_of_employees_answer = Answer(answer_id="number-of-employees-total", value=0)
-    confirm_zero_answer = Answer(
-        answer_id="confirm-zero-employees-answer", value="No I need to correct this"
-    )
-    answer_store = AnswerStore({})
-    answer_store.add_or_update(number_of_employees_answer)
-    answer_store.add_or_update(confirm_zero_answer)
-
-    path_finder = PathFinder(schema, answer_store, list_store, progress_store, {}, {})
-
-    assert (
-        len(
-            path_finder.progress_store.get_completed_block_ids(
-                section_id="default-section"
-            )
-        )
-        == 2
-    )
-    assert len(path_finder.answer_store) == 2
-
-    routing_path = path_finder.routing_path(section_id=section_id)
-
-    expected_path = RoutingPath(
-        [
-            "number-of-employees-total-block",
-            "confirm-zero-employees-block",
-            "number-of-employees-total-block",
-        ],
-        section_id="default-section",
-    )
-    assert routing_path == expected_path
-
-    assert path_finder.progress_store.get_completed_block_ids(
-        section_id="default-section"
-    ) == [progress_store.get_completed_block_ids(section_id="default-section")[0]]
-
-    assert len(path_finder.answer_store) == 1
-    assert not path_finder.answer_store.get_answer("confirm-zero-employees-answer")
-
-    assert (
-        progress_store.get_section_status(section_id="default-section")
-        == CompletionStatus.IN_PROGRESS
-    )
-
-
-def test_new_remove_answer_and_block_if_routing_backwards(list_store):
-    schema = load_schema_from_name("test_new_confirmation_question")
+    schema = load_schema_from_name("test_confirmation_question_backwards_routing")
     section_id = schema.get_section_id_for_block_id("confirm-zero-employees-block")
 
     # All blocks completed
@@ -604,26 +481,16 @@ def test_new_remove_answer_and_block_if_routing_backwards(list_store):
         ),
     ),
 )
-@pytest.mark.parametrize(
-    "schema_name",
-    (
-        [
-            "test_new_routing_and_skipping_section_dependencies",
-            "test_routing_and_skipping_section_dependencies",
-        ]
-    ),
-)
 def test_routing_path_block_ids_dependent_on_other_sections_when_rules(
     list_store,
     skip_age_answer,
     skip_confirmation_answer,
-    schema_name,
     section_id,
     expected_route,
     answer_store,
 ):
     # Given a schema which has when rules in a section which has dependencies on other sections answers
-    schema = load_schema_from_name(schema_name)
+    schema = load_schema_from_name("test_routing_and_skipping_section_dependencies")
     answer_store.add_or_update(
         Answer(answer_id="skip-age-answer", value=skip_age_answer)
     )
@@ -690,20 +557,11 @@ def test_routing_path_block_ids_dependent_on_other_sections_when_rules(
         ),
     ),
 )
-@pytest.mark.parametrize(
-    "schema_name",
-    (
-        [
-            "test_new_routing_and_skipping_section_dependencies",
-            "test_routing_and_skipping_section_dependencies",
-        ]
-    ),
-)
 def test_routing_path_block_ids_dependent_on_other_sections_when_rules_repeating(
-    skip_age_answer, schema_name, expected_route, answer_store
+    skip_age_answer, expected_route, answer_store
 ):
     # Given a schema with repeating sections which has when rules dependent on another section
-    schema = load_schema_from_name(schema_name)
+    schema = load_schema_from_name("test_routing_and_skipping_section_dependencies")
     answer_store.add_or_update(
         Answer(answer_id="skip-age-answer", value=skip_age_answer)
     )

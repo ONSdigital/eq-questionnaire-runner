@@ -37,8 +37,8 @@ class TestQuestionnaireSubmit(IntegrationTestCase):
     def test_submit_page_not_available_after_invalidating_section(self):
         # Given I launch and complete the questionnaire
         for schema in [
-            "test_new_routing_to_questionnaire_end_single_section",
-            "test_new_routing_to_questionnaire_end_multiple_sections",
+            "test_routing_to_questionnaire_end_single_section",
+            "test_routing_to_questionnaire_end_multiple_sections",
         ]:
             with self.subTest(schema=schema):
                 self.launchSurvey(schema)
@@ -98,7 +98,7 @@ class TestQuestionnaireSubmitWithSummary(IntegrationTestCase):
         self,
     ):
         # Given a partially completed questionnaire
-        self.launchSurvey("test_new_routing_to_questionnaire_end_single_section")
+        self.launchSurvey("test_routing_to_questionnaire_end_single_section")
         self.post({"test-answer": "Yes"})
 
         # When I make a GET or POST request to the submit page
@@ -111,7 +111,7 @@ class TestQuestionnaireSubmitWithSummary(IntegrationTestCase):
 
     def test_is_displayed(self):
         # Given I launch a questionnaire
-        self.launchSurvey("test_new_routing_to_questionnaire_end_multiple_sections")
+        self.launchSurvey("test_routing_to_questionnaire_end_multiple_sections")
 
         # When I complete the questionnaire
         self.post({"test-answer": "Yes"})

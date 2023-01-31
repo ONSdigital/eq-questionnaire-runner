@@ -64,21 +64,19 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "block3",
-                                        "when": [
+                                    "block": "block3",
+                                    "when": {
+                                        "in": [
+                                            "United Kingdom",
                                             {
-                                                "id": "passports-answer",
-                                                "condition": "contains",
-                                                "value": "United Kingdom"
+                                                "identifier": "passports-answer",
+                                                "source": "answers"
                                             }
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "block2"
-                                    }
+                                    "block": "block2"
                                 }
                             ]
                         },

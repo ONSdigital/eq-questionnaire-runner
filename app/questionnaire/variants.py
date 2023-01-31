@@ -1,7 +1,6 @@
 from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
-from app.questionnaire.when_rules import evaluate_when_rules
 
 
 def choose_variant(
@@ -18,28 +17,18 @@ def choose_variant(
     if block.get(single_key):
         return block[single_key]
     for variant in block.get(variants_key, []):
-        when_rules = variant.get("when", [])
+        when_rules = variant["when"]
 
-        if isinstance(when_rules, dict):
-            when_rule_evaluator = RuleEvaluator(
-                schema,
-                answer_store,
-                list_store,
-                metadata,
-                response_metadata,
-                location=current_location,
-            )
-
-            if when_rule_evaluator.evaluate(when_rules):
-                return variant[single_key]
-        elif evaluate_when_rules(
-            when_rules,
+        when_rule_evaluator = RuleEvaluator(
             schema,
-            metadata,
             answer_store,
             list_store,
-            current_location=current_location,
-        ):
+            metadata,
+            response_metadata,
+            location=current_location,
+        )
+
+        if when_rule_evaluator.evaluate(when_rules):
             return variant[single_key]
 
 

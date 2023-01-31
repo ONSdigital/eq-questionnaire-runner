@@ -55,21 +55,19 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "block3",
-                                        "when": [
+                                    "block": "block3",
+                                    "when": {
+                                        "==": [
                                             {
-                                                "meta": "flag_1",
-                                                "condition": "equals",
-                                                "value": true
-                                            }
+                                                "identifier": "flag_1",
+                                                "source": "metadata"
+                                            },
+                                            "true"
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "block2"
-                                    }
+                                    "block": "block2"
                                 }
                             ]
                         },

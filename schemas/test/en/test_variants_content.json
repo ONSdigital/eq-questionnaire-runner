@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Test Content Variants",
+    "title": "Test New Content Variants",
     "theme": "default",
-    "description": "A questionnaire to test content variants and variant choices",
+    "description": "A questionnaire to test new content variants and variant choices",
     "metadata": [
         {
             "name": "user_id",
@@ -67,13 +67,15 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "age-answer",
-                                            "condition": "greater than",
-                                            "value": 16
-                                        }
-                                    ]
+                                    "when": {
+                                        ">": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "age-answer"
+                                            },
+                                            16
+                                        ]
+                                    }
                                 },
                                 {
                                     "content": {
@@ -84,13 +86,15 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "age-answer",
-                                            "condition": "less than or equal to",
-                                            "value": 16
-                                        }
-                                    ]
+                                    "when": {
+                                        "<=": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "age-answer"
+                                            },
+                                            16
+                                        ]
+                                    }
                                 }
                             ]
                         }

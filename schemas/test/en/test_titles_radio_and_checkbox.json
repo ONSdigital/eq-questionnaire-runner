@@ -69,13 +69,15 @@
                             "id": "checkbox-block",
                             "question_variants": [
                                 {
-                                    "when": [
-                                        {
-                                            "id": "name-answer",
-                                            "condition": "equals",
-                                            "value": "Peter"
-                                        }
-                                    ],
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "name-answer"
+                                            },
+                                            "Peter"
+                                        ]
+                                    },
                                     "question": {
                                         "id": "checkbox-question",
                                         "type": "General",
@@ -108,13 +110,15 @@
                                     }
                                 },
                                 {
-                                    "when": [
-                                        {
-                                            "id": "name-answer",
-                                            "condition": "equals",
-                                            "value": "Mary"
-                                        }
-                                    ],
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "name-answer"
+                                            },
+                                            "Mary"
+                                        ]
+                                    },
                                     "question": {
                                         "id": "checkbox-question",
                                         "type": "General",
@@ -147,13 +151,15 @@
                                     }
                                 },
                                 {
-                                    "when": [
-                                        {
-                                            "id": "name-answer",
-                                            "condition": "not equals",
-                                            "value": "Mary"
-                                        }
-                                    ],
+                                    "when": {
+                                        "!=": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "name-answer"
+                                            },
+                                            "Mary"
+                                        ]
+                                    },
                                     "question": {
                                         "id": "checkbox-question",
                                         "type": "General",
@@ -192,13 +198,15 @@
                             "id": "radio-block",
                             "question_variants": [
                                 {
-                                    "when": [
-                                        {
-                                            "id": "name-answer",
-                                            "condition": "equals",
-                                            "value": "Peter"
-                                        }
-                                    ],
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "name-answer"
+                                            },
+                                            "Peter"
+                                        ]
+                                    },
                                     "question": {
                                         "id": "radio-question",
                                         "type": "General",
@@ -235,13 +243,15 @@
                                     }
                                 },
                                 {
-                                    "when": [
-                                        {
-                                            "id": "name-answer",
-                                            "condition": "equals",
-                                            "value": "Mary"
-                                        }
-                                    ],
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "name-answer"
+                                            },
+                                            "Mary"
+                                        ]
+                                    },
                                     "question": {
                                         "id": "radio-question",
                                         "type": "General",
@@ -278,13 +288,15 @@
                                     }
                                 },
                                 {
-                                    "when": [
-                                        {
-                                            "id": "name-answer",
-                                            "condition": "not equals",
-                                            "value": "Mary"
-                                        }
-                                    ],
+                                    "when": {
+                                        "!=": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "name-answer"
+                                            },
+                                            "Mary"
+                                        ]
+                                    },
                                     "question": {
                                         "id": "radio-question",
                                         "type": "General",

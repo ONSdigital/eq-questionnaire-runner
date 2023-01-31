@@ -109,13 +109,15 @@ def question_variant_schema():
                                 "title": "Block 1",
                                 "question_variants": [
                                     {
-                                        "when": [
-                                            {
-                                                "id": "when-answer",
-                                                "condition": "equals",
-                                                "value": "yes",
-                                            }
-                                        ],
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "identifier": "when-answer",
+                                                    "source": "answers",
+                                                },
+                                                "yes",
+                                            ]
+                                        },
                                         "question": {
                                             "id": "question1",
                                             "type": "General",
@@ -129,13 +131,15 @@ def question_variant_schema():
                                         },
                                     },
                                     {
-                                        "when": [
-                                            {
-                                                "id": "when-answer",
-                                                "condition": "not equals",
-                                                "value": "yes",
-                                            }
-                                        ],
+                                        "when": {
+                                            "!=": [
+                                                {
+                                                    "identifier": "when-answer",
+                                                    "source": "answers",
+                                                },
+                                                "yes",
+                                            ]
+                                        },
                                         "question": {
                                             "id": "question1",
                                             "type": "General",
@@ -246,13 +250,15 @@ def list_collector_variant_schema():
                                                 }
                                             ],
                                         },
-                                        "when": [
-                                            {
-                                                "id": "when-answer",
-                                                "condition": "equals",
-                                                "value": "yes",
-                                            }
-                                        ],
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "identifier": "when-answer",
+                                                    "source": "answers",
+                                                },
+                                                "yes",
+                                            ]
+                                        },
                                     },
                                     {
                                         "question": {
@@ -266,13 +272,15 @@ def list_collector_variant_schema():
                                                 }
                                             ],
                                         },
-                                        "when": [
-                                            {
-                                                "id": "when-answer",
-                                                "condition": "equals",
-                                                "value": "no",
-                                            }
-                                        ],
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "identifier": "when-answer",
+                                                    "source": "answers",
+                                                },
+                                                "no",
+                                            ]
+                                        },
                                     },
                                 ],
                                 "add_block": {
@@ -291,13 +299,15 @@ def list_collector_variant_schema():
                                                     }
                                                 ],
                                             },
-                                            "when": [
-                                                {
-                                                    "id": "when-answer",
-                                                    "condition": "equals",
-                                                    "value": "yes",
-                                                }
-                                            ],
+                                            "when": {
+                                                "==": [
+                                                    {
+                                                        "identifier": "when-answer",
+                                                        "source": "answers",
+                                                    },
+                                                    "yes",
+                                                ]
+                                            },
                                         },
                                         {
                                             "question": {
@@ -311,13 +321,15 @@ def list_collector_variant_schema():
                                                     }
                                                 ],
                                             },
-                                            "when": [
-                                                {
-                                                    "id": "when-answer",
-                                                    "condition": "equals",
-                                                    "value": "no",
-                                                }
-                                            ],
+                                            "when": {
+                                                "==": [
+                                                    {
+                                                        "identifier": "when-answer",
+                                                        "source": "answers",
+                                                    },
+                                                    "no",
+                                                ]
+                                            },
                                         },
                                     ],
                                 },
@@ -337,13 +349,15 @@ def list_collector_variant_schema():
                                                     }
                                                 ],
                                             },
-                                            "when": [
-                                                {
-                                                    "id": "when-answer",
-                                                    "condition": "equals",
-                                                    "value": "yes",
-                                                }
-                                            ],
+                                            "when": {
+                                                "==": [
+                                                    {
+                                                        "identifier": "when-answer",
+                                                        "source": "answers",
+                                                    },
+                                                    "yes",
+                                                ]
+                                            },
                                         },
                                         {
                                             "question": {
@@ -357,13 +371,15 @@ def list_collector_variant_schema():
                                                     }
                                                 ],
                                             },
-                                            "when": [
-                                                {
-                                                    "id": "when-answer",
-                                                    "condition": "equals",
-                                                    "value": "no",
-                                                }
-                                            ],
+                                            "when": {
+                                                "==": [
+                                                    {
+                                                        "identifier": "when-answer",
+                                                        "source": "answers",
+                                                    },
+                                                    "no",
+                                                ]
+                                            },
                                         },
                                     ],
                                 },
@@ -386,13 +402,15 @@ def list_collector_variant_schema():
                                                     }
                                                 ],
                                             },
-                                            "when": [
-                                                {
-                                                    "id": "when-answer",
-                                                    "condition": "equals",
-                                                    "value": "yes",
-                                                }
-                                            ],
+                                            "when": {
+                                                "==": [
+                                                    {
+                                                        "identifier": "when-answer",
+                                                        "source": "answers",
+                                                    },
+                                                    "yes",
+                                                ]
+                                            },
                                         },
                                         {
                                             "question": {
@@ -406,13 +424,15 @@ def list_collector_variant_schema():
                                                     }
                                                 ],
                                             },
-                                            "when": [
-                                                {
-                                                    "id": "when-answer",
-                                                    "condition": "equals",
-                                                    "value": "no",
-                                                }
-                                            ],
+                                            "when": {
+                                                "==": [
+                                                    {
+                                                        "identifier": "when-answer",
+                                                        "source": "answers",
+                                                    },
+                                                    "no",
+                                                ]
+                                            },
                                         },
                                     ],
                                 },
@@ -481,7 +501,6 @@ def sections_dependent_on_list_schema():
                                         },
                                         "when": {
                                             ">": [
-                                                0,
                                                 {
                                                     "count": [
                                                         {
@@ -490,6 +509,7 @@ def sections_dependent_on_list_schema():
                                                         }
                                                     ]
                                                 },
+                                                0,
                                             ]
                                         },
                                     },
@@ -535,7 +555,6 @@ def sections_dependent_on_list_schema():
                                 },
                                 "when": {
                                     ">": [
-                                        0,
                                         {
                                             "count": [
                                                 {
@@ -544,6 +563,7 @@ def sections_dependent_on_list_schema():
                                                 }
                                             ]
                                         },
+                                        0,
                                     ]
                                 },
                             },
@@ -572,13 +592,16 @@ def sections_dependent_on_list_schema():
                                     "title": {"text": "Does anyone else live here?"},
                                     "type": "General",
                                 },
-                                "when": [
-                                    {
-                                        "condition": "greater than",
-                                        "list": "not-the-list",
-                                        "value": 0,
-                                    }
-                                ],
+                                "when": {
+                                    "<": [
+                                        0,
+                                        {
+                                            "identifier": "not-the-list",
+                                            "source": "list",
+                                            "selector": "count",
+                                        },
+                                    ]
+                                },
                             }
                         ],
                     }
@@ -605,13 +628,16 @@ def sections_dependent_on_list_schema():
                                     "title": {"text": "Does anyone else live here?"},
                                     "type": "General",
                                 },
-                                "when": [
-                                    {
-                                        "condition": "greater than",
-                                        "list": "list",
-                                        "value": 0,
-                                    }
-                                ],
+                                "when": {
+                                    ">": [
+                                        {
+                                            "identifier": "list",
+                                            "source": "list",
+                                            "selector": "count",
+                                        },
+                                        0,
+                                    ]
+                                },
                             }
                         ],
                     }
@@ -647,6 +673,41 @@ def sections_dependent_on_list_schema():
                                                     "identifier": "not-a-list",
                                                 }
                                             ]
+                                        },
+                                        0,
+                                    ]
+                                },
+                            }
+                        ],
+                    }
+                ],
+            },
+            {
+                "id": "section5",
+                "groups": [
+                    {
+                        "id": "group5",
+                        "blocks": [
+                            {
+                                "type": "Question",
+                                "id": "block5",
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "id": "answer1",
+                                            "mandatory": True,
+                                            "type": "General",
+                                        }
+                                    ],
+                                    "id": "question1",
+                                    "title": {"text": "Does anyone else live here?"},
+                                    "type": "General",
+                                },
+                                "when": {
+                                    ">": [
+                                        {
+                                            "identifier": "missing-the-source-attribute",
+                                            "selector": "count",
                                         },
                                         0,
                                     ]
@@ -695,29 +756,39 @@ def content_variant_schema():
                                 "content_variants": [
                                     {
                                         "content": [{"title": "You are over 16"}],
-                                        "when": [
-                                            {
-                                                "id": "age-answer",
-                                                "condition": "greater than",
-                                                "value": "16",
-                                            }
-                                        ],
+                                        "when": {
+                                            ">": [
+                                                {
+                                                    "identifier": "age-answer",
+                                                    "source": "answers",
+                                                },
+                                                16,
+                                            ]
+                                        },
                                     },
                                     {
                                         "content": [{"title": "You are under 16"}],
-                                        "when": [
-                                            {
-                                                "id": "age-answer",
-                                                "condition": "less than or equal to",
-                                                "value": "16",
-                                            }
-                                        ],
+                                        "when": {
+                                            "<=": [
+                                                {
+                                                    "identifier": "age-answer",
+                                                    "source": "answers",
+                                                },
+                                                16,
+                                            ]
+                                        },
                                     },
                                     {
                                         "content": [{"title": "You are ageless"}],
-                                        "when": [
-                                            {"id": "age-answer", "condition": "not set"}
-                                        ],
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "identifier": "age-answer",
+                                                    "source": "answers",
+                                                },
+                                                None,
+                                            ]
+                                        },
                                     },
                                 ],
                             },
@@ -1200,18 +1271,18 @@ def dynamic_answer_options_function_driven_schema():
 
 @pytest.fixture
 def skipping_section_dependencies_schema():
-    return load_schema_from_name("test_new_routing_and_skipping_section_dependencies")
+    return load_schema_from_name("test_routing_and_skipping_section_dependencies")
 
 
 @pytest.fixture
 def section_dependencies_calculated_summary_schema():
     return load_schema_from_name(
-        "test_new_routing_and_skipping_section_dependencies_calculated_summary"
+        "test_routing_and_skipping_section_dependencies_calculated_summary"
     )
 
 
 @pytest.fixture
 def section_dependencies_new_calculated_summary_schema():
     return load_schema_from_name(
-        "test_new_routing_and_skipping_section_dependencies_new_calculated_summary"
+        "test_routing_and_skipping_section_dependencies_new_calculated_summary"
     )

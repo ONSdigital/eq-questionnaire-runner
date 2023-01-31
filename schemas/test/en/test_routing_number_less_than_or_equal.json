@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "001",
-    "title": "Test Routing Number Less Than or Equal",
+    "title": "Test Routing Number Less Than Or Equal To",
     "theme": "default",
-    "description": "A test survey for routing based on a number less than or equal",
+    "description": "A test survey for routing based on a number less than or equal to",
     "metadata": [
         {
             "name": "user_id",
@@ -44,7 +44,7 @@
                                         "id": "answer",
                                         "mandatory": true,
                                         "type": "Number",
-                                        "label": "Less than or equal to 123"
+                                        "label": "Number"
                                     }
                                 ],
                                 "id": "question",
@@ -53,33 +53,19 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "correct-answer",
-                                        "when": [
+                                    "block": "correct-answer",
+                                    "when": {
+                                        "<=": [
                                             {
-                                                "id": "answer",
-                                                "condition": "less than",
-                                                "value": 123
-                                            }
+                                                "source": "answers",
+                                                "identifier": "answer"
+                                            },
+                                            123
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "correct-answer",
-                                        "when": [
-                                            {
-                                                "id": "answer",
-                                                "condition": "equals",
-                                                "value": 123
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "goto": {
-                                        "block": "incorrect-answer"
-                                    }
+                                    "block": "incorrect-answer"
                                 }
                             ]
                         },
@@ -107,9 +93,7 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         },
@@ -117,7 +101,7 @@
                             "type": "Interstitial",
                             "id": "correct-answer",
                             "content": {
-                                "title": "correct answer",
+                                "title": "Correct answer",
                                 "contents": [
                                     {
                                         "description": {

@@ -139,39 +139,46 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "section": "End",
-                                        "when": [
+                                    "section": "End",
+                                    "when": {
+                                        "and": [
                                             {
-                                                "condition": "equals",
-                                                "id": "anyone-usually-live-at-answer",
-                                                "value": "No"
+                                                "==": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "anyone-usually-live-at-answer"
+                                                    },
+                                                    "No"
+                                                ]
                                             },
                                             {
-                                                "condition": "less than",
-                                                "list": "people",
-                                                "value": 1
+                                                "<": [
+                                                    {
+                                                        "source": "list",
+                                                        "identifier": "people",
+                                                        "selector": "count"
+                                                    },
+                                                    1
+                                                ]
                                             }
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "list-collector"
-                                    }
+                                    "block": "list-collector"
                                 }
                             ],
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
                                         {
-                                            "condition": "equals",
-                                            "id": "you-live-here",
-                                            "value": "Yes"
-                                        }
+                                            "source": "answers",
+                                            "identifier": "you-live-here"
+                                        },
+                                        "Yes"
                                     ]
                                 }
-                            ],
+                            },
                             "type": "Question"
                         },
                         {
