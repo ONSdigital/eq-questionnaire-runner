@@ -45,9 +45,13 @@ def test_currency_playback(mock_form):
     with pytest.raises(ValidationError) as exc:
         validator(mock_form, conditions, calculation_total, target_total)
 
-    assert error_messages["TOTAL_SUM_NOT_EQUALS"] % {
-        "total": format_playback_value(target_total, currency="EUR"),
-    } == str(exc.value)
+    assert (
+        error_messages["TOTAL_SUM_NOT_EQUALS"]
+        % {
+            "total": format_playback_value(target_total, currency="EUR"),
+        }
+        == str(exc.value)
+    )
 
 
 @pytest.mark.usefixtures("gb_locale")

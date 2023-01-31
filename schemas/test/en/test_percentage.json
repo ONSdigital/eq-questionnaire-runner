@@ -52,11 +52,32 @@
                                         "type": "Percentage",
                                         "maximum": {
                                             "value": 100
+                                        }
+                                    }
+                                ],
+                                "id": "question",
+                                "title": "Title",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "block-decimal",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "description": "Enter percentage of growth",
+                                        "id": "answer-decimal",
+                                        "label": "New to the market 2012-2014",
+                                        "mandatory": false,
+                                        "type": "Percentage",
+                                        "maximum": {
+                                            "value": 100
                                         },
                                         "decimal_places": 3
                                     }
                                 ],
-                                "id": "question",
+                                "id": "question-decimal",
                                 "title": "Title",
                                 "type": "General"
                             }
