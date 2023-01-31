@@ -113,7 +113,7 @@ jobs:
   test-functional:
     strategy:
       matrix:
-        suite: [ timeout_modal, features, general, components ]
+        suite: [ timeout_modal, timeout_modal_post_submission, features, general, components ]
     needs: [python-dependencies, node-dependencies]
     runs-on: ubuntu-20.04
     env:

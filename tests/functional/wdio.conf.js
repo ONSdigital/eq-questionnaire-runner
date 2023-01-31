@@ -18,7 +18,8 @@ exports.config = {
   //
   specs: ["./tests/functional/spec/**/*.js"],
   suites: {
-    timeout_modal: ["./tests/functional/spec/timeout/*.spec.js"],
+    timeout_modal: ["./tests/functional/spec/timeout/timeout_modal.spec.js"],
+    timeout_modal_post_submission: ["./tests/functional/spec/timeout/timeout_modal_post_submission.spec.js"],
     components: ["./tests/functional/spec/components/**/*.js"],
     features: ["./tests/functional/spec/features/**/*.js"],
     general: ["./tests/functional/spec/*.spec.js"],
