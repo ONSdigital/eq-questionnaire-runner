@@ -57,6 +57,9 @@ jobs:
         if: steps.cache-yarn.outputs.cache-hit != 'true'
         run: yarn
   test-unit:
+    strategy:
+      matrix:
+      suite: [ app, integration ]
     needs: python-dependencies
     runs-on: ubuntu-20.04
     steps:
@@ -98,7 +101,7 @@ jobs:
       - name: Running lint tests
         run: pipenv run ./scripts/run_lint_python.sh
       - name: Running unit tests
-        run: pipenv run ./scripts/run_tests_unit.sh
+        run: pipenv run ./scripts/run_tests_unit.sh tests/${{ matrix.suite }}
   validate-schemas:
     runs-on: ubuntu-20.04
     steps:
