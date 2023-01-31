@@ -8,6 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2023-01-31 13:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -218,19 +219,19 @@ msgstr[1] ""
 msgid "Not a valid choice."
 msgstr ""
 
-#: app/helpers/template_helpers.py:45
+#: app/helpers/template_helpers.py:46
 msgid "ONS Surveys"
 msgstr ""
 
-#: app/helpers/template_helpers.py:105
+#: app/helpers/template_helpers.py:107
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:136
+#: app/helpers/template_helpers.py:138
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:161
+#: app/helpers/template_helpers.py:163
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
