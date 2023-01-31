@@ -11,6 +11,6 @@ describe("Timeout Modal Post Submission", () => {
       $(TimeoutInterstitialPage.submit()).click();
       $(TimeoutSubmitPage.submit()).click();
     });
-    TimeoutModalTestCase.testCase(ThankYouPage);
+    TimeoutModalTestCase.testCaseExpired(ThankYouPage);
   });
 });

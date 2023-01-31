@@ -113,7 +113,7 @@ jobs:
   test-functional:
     strategy:
       matrix:
-        suite: [ timeout_modal_expired, timeout_modal_extended, timeout_modal_extended_new_window, timeout_modal_post_submission, features, general, components ]
+        suite: [ timeout_modal_expired, timeout_modal_extended, timeout_modal_extended_new_window, timeout_modal_post_submission_expired, features, general, components ]
     runs-on: ubuntu-22.04
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
