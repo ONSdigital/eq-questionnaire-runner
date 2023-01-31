@@ -8,6 +8,6 @@ describe("Percentage", () => {
     $(PercentagePage.submit()).click();
     $(SubmitPage.previous()).click();
     expect(browser.getUrl()).to.contain(PercentagePage.pageName);
-    expect($(PercentagePage.answer()).getHTML()).to.contain("3.333");
+    expect($(PercentagePage.answer()).getValue()).to.equal("3.333");
   });
 });

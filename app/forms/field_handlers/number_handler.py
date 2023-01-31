@@ -70,13 +70,11 @@ class NumberHandler(FieldHandler):
                 label=self.label,
                 validators=self.validators,
                 description=self.guidance,
-                places=self.max_decimals
+                places=self.max_decimals,
             )
             if self._field_type == DecimalFieldWithSeparator
             else self._field_type(
-                label=self.label,
-                validators=self.validators,
-                description=self.guidance
+                label=self.label, validators=self.validators, description=self.guidance
             )
         )
 
