@@ -59,8 +59,7 @@ jobs:
   test-unit:
     strategy:
       matrix:
-        suite: [ app, integration ]
-        coverage: [83]
+        suite: [[app, 83.36], [integration, 91.67]]
     needs: python-dependencies
     runs-on: ubuntu-20.04
     steps:
@@ -102,7 +101,7 @@ jobs:
       - name: Running lint tests
         run: pipenv run ./scripts/run_lint_python.sh
       - name: Running unit tests
-        run: pipenv run ./scripts/run_tests_unit.sh --cov-fail-under=${{ matrix.coverage }} tests/${{ matrix.suite }}
+        run: pipenv run ./scripts/run_tests_unit.sh --cov-fail-under=${{ matrix.suite[1] }} tests/${{ matrix.suite[0] }}
   validate-schemas:
     runs-on: ubuntu-20.04
     steps:
