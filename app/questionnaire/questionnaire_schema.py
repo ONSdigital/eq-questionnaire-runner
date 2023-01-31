@@ -401,6 +401,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             if QuestionnaireSchema.has_operator(rule):
                 return self._is_list_name_in_rule(rule, list_name)
 
+        return False
+
     @staticmethod
     def get_operands(rules: Mapping) -> list:
         operator = next(iter(rules))
