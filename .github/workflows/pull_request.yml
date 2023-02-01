@@ -131,6 +131,8 @@ jobs:
         run: pipenv install --dev
       - name: Load templates
         run: make load-design-system-templates
+      - name: Compile translations
+        run: make translate
       - name: Link env vars
         run: ln -sf .development.env .env
       - name: Running unit tests
@@ -143,6 +145,24 @@ jobs:
         run: ./scripts/run_validator.sh
       - name: Running schema tests
         run: ./scripts/validate_test_schemas.sh
+  lint-javascript:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Get yarn cache
+        id: get-yarn-cache
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: Cache yarn modules
+        uses: actions/cache@v3
+        id: cache-yarn
+        with:
+          path: ${{ steps.get-yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+      - name: Install yarn deps
+        run: yarn install
+      - name: Functional tests spec lint
+        run: ./scripts/lint_functional_test_specs.sh
+      - name: Javascript linting check
+        run: yarn lint
   test-functional:
     strategy:
       matrix:
@@ -187,10 +207,6 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
       - name: Install yarn deps
         run: yarn install
-      - name: Functional tests spec lint
-        run: ./scripts/lint_functional_test_specs.sh
-      - name: Javascript linting check
-        run: yarn lint
       - name: Docker compose
         run: docker-compose --version && RUNNER_ENV_FILE=.functional-tests.env docker-compose up --build -d
       - name: Functional tests
