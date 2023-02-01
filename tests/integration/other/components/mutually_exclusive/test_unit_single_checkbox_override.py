@@ -1,4 +1,4 @@
-from tests.integration.components.mutually_exclusive.schema_urls import (
+from tests.integration.other.components.mutually_exclusive.schema_urls import (
     MUTUALLY_EXCLUSIVE_UNIT,
 )
 from tests.integration.integration_test_case import IntegrationTestCase

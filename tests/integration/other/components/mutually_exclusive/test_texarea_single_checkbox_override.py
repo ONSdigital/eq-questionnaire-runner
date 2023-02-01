@@ -1,55 +1,55 @@
-from tests.integration.components.mutually_exclusive.schema_urls import (
-    MUTUALLY_EXCLUSIVE_TEXTFIELD,
+from tests.integration.other.components.mutually_exclusive.schema_urls import (
+    MUTUALLY_EXCLUSIVE_TEXTAREA,
 )
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
-class TestTextFieldSingleCheckboxOverride(IntegrationTestCase):
+class TestTextAreaSingleCheckboxOverride(IntegrationTestCase):
     """
-    Tests to ensure that the server-side validation for mutually exclusive textfield
+    Tests to ensure that the server-side validation for mutually exclusive textarea
     with single checkbox override function as expected. These tests emulate the non-JS version.
     """
 
     def setUp(self):
         super().setUp()
         self.launchSurvey("test_mutually_exclusive")
-        self.get(MUTUALLY_EXCLUSIVE_TEXTFIELD)
+        self.get(MUTUALLY_EXCLUSIVE_TEXTAREA)
 
     def test_non_exclusive_answer(self):
         # When
-        self.post({"textfield-answer": "John Doe"})
+        self.post({"textarea-answer": "John Doe"})
 
         # Then
-        self.assertInUrl("/sections/mutually-exclusive-textfield-section/")
+        self.assertInUrl("/sections/mutually-exclusive-textarea-section/")
         self.assertInBody("John Doe")
 
     def test_exclusive_answer(self):
         # When
         self.post(
             {
-                "textfield-answer": "",
-                "textfield-exclusive-answer": ["I prefer not to say"],
+                "textarea-answer": "",
+                "textarea-exclusive-answer": ["I prefer not to say"],
             }
         )
 
         # Then
-        self.assertInUrl("/sections/mutually-exclusive-textfield-section/")
+        self.assertInUrl("/sections/mutually-exclusive-textarea-section/")
         self.assertInBody("I prefer not to say")
 
     def test_optional_exclusive_question(self):
         # When
-        self.post({"textfield-answer": ""})
+        self.post({"textarea-answer": ""})
 
         # Then
-        self.assertInUrl("/sections/mutually-exclusive-textfield-section/")
+        self.assertInUrl("/sections/mutually-exclusive-textarea-section/")
         self.assertInBody("No answer provided")
 
     def test_invalid_exclusive_answers(self):
         # When
         self.post(
             {
-                "textfield-answer": "John Doe",
-                "textfield-exclusive-answer": ["I prefer not to say"],
+                "textarea-answer": "John Doe",
+                "textarea-exclusive-answer": ["I prefer not to say"],
             }
         )
 
