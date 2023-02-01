@@ -56,10 +56,7 @@ jobs:
       - name: Install yarn deps
         if: steps.cache-yarn.outputs.cache-hit != 'true'
         run: yarn
-  test-unit:
-    strategy:
-      matrix:
-        suite: [[app, 83.3], [integration, 91.4]]
+  translations-and-lint-python:
     needs: python-dependencies
     runs-on: ubuntu-22.04
     steps:
@@ -94,12 +91,46 @@ jobs:
         run: make load-design-system-templates
       - name: Compile translations
         run: make translate
-      - name: Link env vars
-        run: ln -sf .development.env .env
       - name: Running translation tests
         run: pipenv run python -m scripts.extract_translation_templates --test
       - name: Running lint tests
         run: pipenv run ./scripts/run_lint_python.sh
+  test-unit:
+    strategy:
+      matrix:
+        suite: [[app, 83.3], [integration, 91.4]]
+    needs: python-dependencies
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install apt dependencies
+        run: |
+            sudo apt-get install libsnappy-dev libgconf-2-4 jq
+
+            # Install wkthtmltopdf with patched Qt
+            sudo apt-get install -y xfonts-base xfonts-75dpi
+            wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb
+            sudo dpkg -i wkhtmltox_0.12.6-1.bionic_amd64.deb
+      - name: Write app version
+        run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
+      - name: Install pipenv
+        run: pip install pipenv==2022.11.30
+      - name: Cache virtualenv
+        id: cache-virtualenv
+        uses: actions/cache@v3
+        with:
+          path: ~/.local/share/virtualenvs/
+          key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('Pipfile.lock') }}
+      - name: Install virtual environment
+        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+        run: pipenv install --dev
+      - name: Link env vars
+        run: ln -sf .development.env .env
       - name: Running unit tests
         run: pipenv run ./scripts/run_tests_unit.sh --cov-fail-under=${{ matrix.suite[1] }} tests/${{ matrix.suite[0] }}
   validate-schemas:
