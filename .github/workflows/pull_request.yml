@@ -129,6 +129,8 @@ jobs:
       - name: Install virtual environment
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: pipenv install --dev
+      - name: Load templates
+        run: make load-design-system-templates
       - name: Link env vars
         run: ln -sf .development.env .env
       - name: Running unit tests
