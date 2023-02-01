@@ -159,10 +159,14 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
       - name: Install yarn deps
         run: yarn install
+      - name: Docker compose
+        run: docker-compose --version && RUNNER_ENV_FILE=.functional-tests.env docker-compose up --build -d
       - name: Functional tests spec lint
         run: ./scripts/lint_functional_test_specs.sh
       - name: Javascript linting check
         run: yarn lint
+      - name: Docker compose shutdown
+        run: RUNNER_ENV_FILE=.functional-tests.env docker-compose kill
   test-functional:
     strategy:
       matrix:
