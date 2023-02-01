@@ -39,7 +39,7 @@ pytest-mock = "*"
 [packages]
 colorama = "*"
 flask = "*"
-flask-babel = "*"
+flask-babel = "==2.0.0"
 flask-login = "*"
 flask-wtf = "*"
 gevent = {version = "*",platform_python_implementation = "=='CPython'"}
