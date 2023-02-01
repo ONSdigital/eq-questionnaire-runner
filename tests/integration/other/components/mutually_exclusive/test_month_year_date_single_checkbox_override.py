@@ -1,7 +1,7 @@
+from tests.integration.integration_test_case import IntegrationTestCase
 from tests.integration.other.components.mutually_exclusive.schema_urls import (
     MUTUALLY_EXCLUSIVE_MONTH_YEAR_DATE,
 )
-from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class TestMonthYearDateSingleCheckboxOverride(IntegrationTestCase):

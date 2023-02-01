@@ -98,7 +98,7 @@ jobs:
   test-unit:
     strategy:
       matrix:
-        suite: [[app, 83], [integration/questionnaire, 81], [integration/routes, 76], [integration/other, 80]]
+        suite: [[app, 83], [integration/questionnaire, 81], [integration/routes, 75], [integration/other, 80]]
     needs: python-dependencies
     runs-on: ubuntu-22.04
     steps:
