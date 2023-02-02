@@ -1,4 +1,4 @@
-from typing import Any, Mapping, Optional, Union
+from typing import Any, Mapping, Optional
 
 from flask import url_for
 from markupsafe import Markup, escape
@@ -71,7 +71,7 @@ class Question:
         list_name: Optional[str],
         return_to: Optional[str],
         return_to_block_id: Optional[str],
-    ) -> Union[list[dict[str, Any]], list[dict[str, str]]]:
+    ) -> list[dict[str, Any]]:
 
         if self.summary:
             answer_id = f"{self.id}-concatenated-answer"
@@ -255,7 +255,7 @@ class Question:
             if answer == option["value"]:
                 return option["label"]
 
-    def serialize(self) -> Mapping[str, Any]:
+    def serialize(self) -> dict[str, Any]:
         return {
             "id": self.id,
             "type": self.type,

@@ -71,7 +71,7 @@ class Block:
         location: Location,
         return_to: Optional[str],
         return_to_block_id: Optional[str],
-    ) -> Mapping[str, Question]:
+    ) -> dict[str, Question]:
         """Taking question variants into account, return the question which was displayed to the user"""
 
         variant = choose_variant(

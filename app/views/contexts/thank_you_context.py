@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Mapping, Optional, Union
+from typing import Any, Optional, Union
 
 from flask import url_for
 from flask_babel import lazy_gettext
@@ -24,7 +24,7 @@ def build_thank_you_context(
     submitted_at: datetime,
     survey_type: SurveyType,
     guidance_content: Optional[dict] = None,
-) -> Mapping[str, Any]:
+) -> dict[str, Any]:
     if survey_type is SurveyType.SOCIAL:
         submission_text = lazy_gettext("Your answers have been submitted.")
     elif (trad_as := metadata["trad_as"]) and (ru_name := metadata["ru_name"]):

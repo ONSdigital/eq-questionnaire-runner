@@ -11,7 +11,7 @@ from .section_summary_context import SectionSummaryContext
 class SummaryContext(Context):
     def __call__(
         self, answers_are_editable: bool = False, return_to: Optional[str] = None
-    ) -> Mapping[str, Union[str, list, bool]]:
+    ) -> dict[str, Union[str, list, bool]]:
 
         groups = list(self._build_all_groups(return_to))
         summary_options = self._schema.get_summary_options()

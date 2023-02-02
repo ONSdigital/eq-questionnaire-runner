@@ -26,7 +26,7 @@ class CalculatedSummaryContext(Context):
         section: Mapping[str, Any],
         return_to_block_id: str,
         current_location: Location,
-    ) -> list[Mapping[str, Group]]:
+    ) -> list[dict[str, Group]]:
         routing_path = self._router.routing_path(section["id"])
         return [
             Group(
@@ -196,9 +196,9 @@ class CalculatedSummaryContext(Context):
 
     def _get_answer_format(
         self, groups: list, current_location: Location
-    ) -> Tuple[Mapping[str, Any], list]:
+    ) -> Tuple[dict[str, Any], list]:
         values_to_calculate: list = []
-        answer_format: Mapping = {"type": None}
+        answer_format: dict = {"type": None}
         for group in groups:
             for block in group["blocks"]:
                 question = choose_question_to_display(

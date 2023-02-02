@@ -170,8 +170,8 @@ class HubContext(Context):
 
     def _get_rows(
         self, enabled_section_ids: Iterable[str]
-    ) -> list[Mapping[str, Union[str, list]]]:
-        rows: list[Mapping] = []
+    ) -> list[dict[str, Union[str, list]]]:
+        rows: list[dict] = []
 
         for section_id in enabled_section_ids:
             show_on_hub = self._schema.get_show_on_hub_for_section(section_id)
