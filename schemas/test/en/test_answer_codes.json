@@ -37,27 +37,27 @@
     "answer_codes": [
         {
             "answer_id": "mandatory-checkbox-answer",
-            "value": "None",
+            "answer_value": "None",
             "code": "1a"
         },
         {
             "answer_id": "mandatory-checkbox-answer",
-            "value": "Ham & Cheese",
+            "answer_value": "Ham & Cheese",
             "code": "1b"
         },
         {
             "answer_id": "mandatory-checkbox-answer",
-            "value": "Ham",
+            "answer_value": "Ham",
             "code": "1c"
         },
         {
             "answer_id": "mandatory-checkbox-answer",
-            "value": "Pepperoni",
+            "answer_value": "Pepperoni",
             "code": "1d"
         },
         {
             "answer_id": "mandatory-checkbox-answer",
-            "value": "Other",
+            "answer_value": "Other",
             "code": "1e"
         },
         {
