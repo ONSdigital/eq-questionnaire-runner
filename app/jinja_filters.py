@@ -29,7 +29,7 @@ def strip_tags(value: str) -> Markup:
 
 
 @blueprint.app_template_filter()
-def format_number(value: Union[int, Decimal]) -> str:
+def format_number(value: Union[int, Decimal, float]) -> str:
     formatted_number: str
     if value or value == 0:
         formatted_number = numbers.format_decimal(
@@ -64,12 +64,12 @@ def get_currency_symbol(currency: str = "GBP") -> str:
 
 
 @blueprint.app_template_filter()
-def format_percentage(value: Union[int, Decimal]) -> str:
+def format_percentage(value: Union[int, float, Decimal]) -> str:
     return f"{value}%"
 
 
 def format_unit(
-    unit: Union[int, Decimal], value: Union[int, Decimal], length: str = "short"
+    unit: str, value: Union[int, float, Decimal], length: str = "short"
 ) -> str:
     formatted_unit: str = units.format_unit(
         value=value,
@@ -82,7 +82,7 @@ def format_unit(
 
 def format_unit_input_label(unit: str, unit_length: str = "short") -> str:
     """
-    This function is used to only get the unit of measurement text.  If the unit_length
+    This function is used to only get the unit of measurement text. If the unit_length
     is long then only the plural form of the word is returned (e.g., Hours, Years, etc).
 
     :param (str) unit unit of measurement
@@ -183,7 +183,7 @@ def get_format_date_range(start_date: Markup, end_date: Markup) -> Markup:
 
 @blueprint.app_context_processor
 def format_unit_processor() -> dict[
-    str, Callable[[Union[int, Decimal], Union[int, Decimal], str], str]
+    str, Callable[[str, Union[int, Decimal], str], str]
 ]:
     return dict(format_unit=format_unit)
 
@@ -417,12 +417,12 @@ class SummaryAction:
     def __init__(
         self,
         answer: SelectFieldBase._Option,
-        answer_title: str,
+        item_title: str,
         edit_link_text: str,
         edit_link_aria_label: str,
     ) -> None:
         self.text = edit_link_text
-        self.ariaLabel = edit_link_aria_label + " " + answer_title
+        self.ariaLabel = edit_link_aria_label + " " + item_title
         self.url = answer["link"]
 
         self.attributes = {
@@ -565,28 +565,46 @@ class SummaryRow:
             )
 
 
-@blueprint.app_template_filter()  # type: ignore
+@blueprint.app_template_filter()
 def map_summary_item_config(
-    group: SelectFieldBase._Option,
+    group: dict[str, Union[list, dict]],
     summary_type: str,
     answers_are_editable: bool,
     no_answer_provided: str,
     edit_link_text: str,
     edit_link_aria_label: str,
-    calculated_question: SelectFieldBase._Option,
-) -> list[SummaryRow]:
+    calculated_question: Optional[dict[str, list]],
+    icon: Optional[str] = None,
+) -> list[Union[dict[str, list], SummaryRow]]:
 
-    rows = [
-        SummaryRow(
-            block["question"],
-            summary_type,
-            answers_are_editable,
-            no_answer_provided,
-            edit_link_text,
-            edit_link_aria_label,
-        )
-        for block in group["blocks"]
-    ]
+    rows: list[Union[dict[str, list], SummaryRow]] = []
+
+    for block in group["blocks"]:
+        if block.get("question"):
+            rows.append(
+                SummaryRow(
+                    block["question"],
+                    summary_type,
+                    answers_are_editable,
+                    no_answer_provided,
+                    edit_link_text,
+                    edit_link_aria_label,
+                )
+            )
+        else:
+            list_collector_rows = map_list_collector_config(
+                list_items=block["list"]["list_items"],
+                icon=icon,
+                edit_link_text=edit_link_text,
+                edit_link_aria_label=edit_link_aria_label,
+                remove_link_text=flask_babel.lazy_gettext("Remove"),
+                remove_link_aria_label=flask_babel.lazy_gettext("Remove {item_name}"),
+                related_answers=block.get("related_answers"),
+                item_label=block.get("item_label"),
+                item_anchor=block.get("item_anchor"),
+            )
+
+            rows.extend(list_collector_rows)
 
     if summary_type == "CalculatedSummary":
         rows.append(SummaryRow(calculated_question, summary_type, False, "", "", ""))
@@ -599,16 +617,20 @@ def map_summary_item_config_processor() -> dict[str, Callable]:
     return dict(map_summary_item_config=map_summary_item_config)
 
 
+# pylint: disable=too-many-locals
 @blueprint.app_template_filter()  # type: ignore
 def map_list_collector_config(
     list_items: list[dict[str, Union[str, int]]],
-    icon: str,
-    edit_link_text: Optional[str] = None,
-    edit_link_aria_label: Optional[str] = None,
+    icon: Optional[str],
+    edit_link_text: str = "",
+    edit_link_aria_label: str = "",
     remove_link_text: Optional[str] = None,
     remove_link_aria_label: Optional[str] = None,
-) -> list[dict[str, list[dict[str, Any]]]]:
-    rows = []
+    related_answers: Optional[dict] = None,
+    item_label: Optional[str] = None,
+    item_anchor: Optional[str] = None,
+) -> list[Union[dict[str, list], SummaryRow]]:
+    rows: list[Union[dict[str, list], SummaryRow]] = []
 
     for index, list_item in enumerate(list_items, start=1):
         item_name = list_item.get("item_title")
@@ -618,19 +640,26 @@ def map_list_collector_config(
         remove_link_aria_label_text = None
 
         if edit_link_text:
+            url = (
+                f'{list_item.get("edit_link")}{item_anchor}'
+                if item_anchor
+                else list_item.get("edit_link")
+            )
+
+            edit_link = {
+                "text": edit_link_text,
+                "ariaLabel": edit_link_aria_label_text,
+                "url": url,
+                "attributes": {"data-qa": f"list-item-change-{index}-link"},
+            }
+
             if edit_link_aria_label:
                 edit_link_aria_label_text = edit_link_aria_label.format(
                     item_name=item_name
                 )
+            edit_link["ariaLabel"] = edit_link_aria_label_text
 
-            actions.append(
-                {
-                    "text": edit_link_text,
-                    "ariaLabel": edit_link_aria_label_text,
-                    "url": list_item.get("edit_link"),
-                    "attributes": {"data-qa": f"list-item-change-{index}-link"},
-                }
-            )
+            actions.append(edit_link)
 
         if not list_item.get("primary_person") and remove_link_text:
             if remove_link_aria_label:
@@ -647,22 +676,35 @@ def map_list_collector_config(
                 }
             )
 
-        rows.append(
-            {
-                "rowItems": [
-                    {
-                        "iconType": icon,
-                        "actions": actions,
-                        "rowTitle": item_name,
-                        "id": list_item.get("list_item_id"),
-                        "rowTitleAttributes": {
-                            "data-qa": f"list-item-{index}-label",
-                            "data-list-item-id": list_item.get("list_item_id"),
-                        },
-                    }
-                ]
-            }
-        )
+        row_item = {
+            "iconType": icon,
+            "actions": actions,
+            "id": list_item.get("list_item_id"),
+            "rowTitleAttributes": {
+                "data-qa": f"list-item-{index}-label",
+                "data-list-item-id": list_item.get("list_item_id"),
+            },
+        }
+
+        if item_label:
+            row_item["valueList"] = [{"text": item_name}]
+
+        row_item["rowTitle"] = item_label or item_name
+        row_items: list = [row_item]
+
+        if related_answers:
+            for block in related_answers[list_item["list_item_id"]]:
+                summary_row = SummaryRow(
+                    block["question"],
+                    summary_type="SectionSummary",
+                    answers_are_editable=True,
+                    no_answer_provided=flask_babel.lazy_gettext("No answer provided"),
+                    edit_link_text=edit_link_text,
+                    edit_link_aria_label=edit_link_aria_label,
+                )
+                row_items.extend(summary_row.rowItems)
+
+        rows.append({"rowItems": row_items})
 
     return rows
 

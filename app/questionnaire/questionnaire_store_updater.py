@@ -113,7 +113,7 @@ class QuestionnaireStoreUpdater:
     def _get_relationships_in_answer_store(self, relationship_answer_id: str):
         return self._answer_store.get_answer(relationship_answer_id).value  # type: ignore
 
-    def remove_answers(self, answer_ids: List, list_item_id: str = None):
+    def remove_answers(self, answer_ids: List, list_item_id: Optional[str] = None):
         for answer_id in answer_ids:
             self._answer_store.remove_answer(answer_id, list_item_id=list_item_id)
 
@@ -272,15 +272,12 @@ class QuestionnaireStoreUpdater:
             answer_id, set()
         )
 
-        for dependency in dependencies:
-            if dependency.for_list:
-                list_item_ids: Union[list[str], list[None]] = self._list_store[
-                    dependency.for_list
-                ].items
-            else:
-                list_item_ids = [None]
+        is_repeating_answer = self._schema.is_answer_in_repeating_section(answer_id)
 
-            for list_item_id in list_item_ids:
+        for dependency in dependencies:
+            for list_item_id in self._get_list_item_ids_for_dependency(
+                dependency, is_repeating_answer
+            ):
                 if dependency.answer_id:
                     self._answer_store.remove_answer(
                         dependency.answer_id, list_item_id=list_item_id
@@ -289,6 +286,23 @@ class QuestionnaireStoreUpdater:
                 self.dependent_block_id_by_section_key[
                     (dependency.section_id, list_item_id)
                 ].add(dependency.block_id)
+
+    def _get_list_item_ids_for_dependency(
+        self, dependency: AnswerDependent, is_repeating_answer: Optional[bool] = False
+    ) -> Union[list[str], list[None]]:
+        if dependency.for_list:
+            list_item_ids: Union[list[str], list[None]]
+
+            if is_repeating_answer:
+                # If the source answer is repeating, then we must be in the current repeating section.
+                # A repeating answer should only ever be depended on by itself.
+                list_item_ids = [self._current_location.list_item_id]  # type: ignore
+            else:
+                list_item_ids = self._list_store[dependency.for_list].items
+        else:
+            list_item_ids = [None]
+
+        return list_item_ids
 
     def _capture_section_dependencies_for_answer(self, answer_id: str) -> None:
         """Captures a unique list of section ids that are dependents of the provided answer id."""

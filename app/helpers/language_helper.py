@@ -35,8 +35,8 @@ def handle_language(metadata: Optional[MetadataProxy] = None) -> None:
                 schema = load_schema_from_metadata(
                     metadata=metadata, language_code=request_language
                 )
-                if schema.json["title"] != cookie_session.get("survey_title"):
-                    cookie_session["survey_title"] = schema.json["title"]
+                if schema.json["title"] != cookie_session.get("title"):
+                    cookie_session["title"] = schema.json["title"]
 
             session_store.session_data.language_code = request_language
             session_store.save()

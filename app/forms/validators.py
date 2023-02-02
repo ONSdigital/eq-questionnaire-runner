@@ -20,6 +20,7 @@ from app.forms.fields import (
     IntegerFieldWithSeparator,
 )
 from app.jinja_filters import format_number, get_formatted_currency
+from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.rules.utils import parse_datetime
 from app.utilities import safe_content
 
@@ -252,6 +253,9 @@ class DateCheck:
         if not form.data:
             raise validators.StopValidation(self.message)
 
+        if hasattr(form, "year") and len(form["year"].data) < 4:
+            raise validators.StopValidation(error_messages["INVALID_YEAR_FORMAT"])
+
         try:
             if hasattr(form, "day"):
                 datetime.strptime(form.data, "%Y-%m-%d").replace(tzinfo=timezone.utc)
@@ -442,6 +446,8 @@ class SumCheck:
         if condition == "less than or equals":
             return total <= target_total, "TOTAL_SUM_NOT_LESS_THAN_OR_EQUALS"
 
+        raise NotImplementedError(f"Condition '{condition}' is not implemented")
+
 
 def format_playback_value(
     value: Union[float, Decimal], currency: Optional[str] = None
@@ -468,7 +474,12 @@ class MutuallyExclusiveCheck:
         is_mandatory: bool,
         is_only_checkboxes_or_radios: bool,
     ) -> None:
-        total_answered = sum(1 for value in answer_values if value)
+
+        total_answered = sum(
+            value not in QuestionnaireStoreUpdater.EMPTY_ANSWER_VALUES
+            for value in answer_values
+        )
+
         if total_answered > 1:
             raise validators.ValidationError(self.messages["MUTUALLY_EXCLUSIVE"])
         if is_mandatory and total_answered < 1:

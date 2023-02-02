@@ -1,8 +1,6 @@
 from functools import cached_property
 from typing import Mapping, Optional
 
-from flask import url_for
-
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
@@ -11,8 +9,8 @@ from app.utilities import safe_content
 
 from ...data_models.metadata_proxy import MetadataProxy
 from .context import Context
-from .list_context import ListContext
 from .summary import Group
+from .summary.list_collector_block import ListCollectorBlock
 
 
 class SectionSummaryContext(Context):
@@ -67,18 +65,6 @@ class SectionSummaryContext(Context):
     def section(self):
         return self._schema.get_section(self.current_location.section_id)
 
-    @property
-    def list_context(self):
-        return ListContext(
-            self._language,
-            self._schema,
-            self._answer_store,
-            self._list_store,
-            self._progress_store,
-            self._metadata,
-            self._response_metadata,
-        )
-
     def get_page_title(self, title_for_location: str) -> str:
 
         section_repeating_page_title = (
@@ -109,7 +95,9 @@ class SectionSummaryContext(Context):
         summary = self.section.get("summary", {})
         collapsible = {"collapsible": summary.get("collapsible", False)}
 
-        if summary.get("items"):
+        show_non_item_answers = summary.get("show_non_item_answers", False)
+
+        if summary.get("items") and not show_non_item_answers:
             summary_elements = {
                 "custom_summary": list(
                     self._custom_summary_elements(
@@ -118,122 +106,108 @@ class SectionSummaryContext(Context):
                 )
             }
 
-            return {**collapsible, **summary_elements}
+            return collapsible | summary_elements
 
-        return {
+        refactored_groups = self._get_refactored_groups(self.section["groups"])
+
+        groups = {
             **collapsible,
             "groups": [
                 Group(
-                    group,
-                    self.routing_path,
-                    self._answer_store,
-                    self._list_store,
-                    self._metadata,
-                    self._response_metadata,
-                    self._schema,
-                    self.current_location,
-                    self._language,
-                    return_to,
+                    group_schema=group,
+                    routing_path=self.routing_path,
+                    answer_store=self._answer_store,
+                    list_store=self._list_store,
+                    metadata=self._metadata,
+                    response_metadata=self._response_metadata,
+                    schema=self._schema,
+                    location=self.current_location,
+                    language=self._language,
+                    progress_store=self._progress_store,
+                    return_to=return_to,
+                    return_to_block_id=None,
                 ).serialize()
-                for group in self.section["groups"]
+                for group in refactored_groups
             ],
         }
 
+        return groups
+
     def _title_for_location(self):
         section_id = self.current_location.section_id
-        title = (
+        return (
             self._schema.get_repeating_title_for_section(section_id)
             or self._schema.get_summary_title_for_section(section_id)
             or self._schema.get_title_for_section(section_id)
         )
-        return title
 
     def _custom_summary_elements(self, section_summary):
         for summary_element in section_summary:
             if summary_element["type"] == "List":
-                yield self._list_summary_element(summary_element)
-
-    def _list_summary_element(self, summary) -> Mapping:
-        list_collector_block = None
-        edit_block_id, remove_block_id, primary_person_edit_block_id = None, None, None
-        current_list = self._list_store[summary["for_list"]]
-
-        list_collector_blocks = list(
-            self._schema.get_list_collectors_for_list(
-                self.section, for_list=summary["for_list"]
-            )
-        )
-
-        list_collector_blocks_on_path = [
-            list_collector_block
-            for list_collector_block in list_collector_blocks
-            if list_collector_block["id"] in self.routing_path.block_ids
-        ]
-
-        if list_collector_blocks_on_path:
-            list_collector_block = list_collector_blocks_on_path[0]
-            edit_block_id = list_collector_block["edit_block"]["id"]
-            remove_block_id = list_collector_block["remove_block"]["id"]
-
-        add_link = self._add_link(summary, list_collector_block)
-
-        if len(current_list) == 1 and current_list.primary_person:
-
-            if primary_person_block := self._schema.get_list_collector_for_list(
-                self.section, for_list=summary["for_list"], primary=True
-            ):
-                primary_person_edit_block_id = primary_person_block[
-                    "add_or_edit_block"
-                ]["id"]
-                edit_block_id = primary_person_block["add_or_edit_block"]["id"]
-
-        rendered_summary = self._placeholder_renderer.render(
-            summary, self.current_location.list_item_id
-        )
-
-        list_collector_block = list_collector_block or list_collector_blocks[0]
-
-        list_summary_context = self.list_context(
-            list_collector_block["summary"],
-            for_list=list_collector_block["for_list"],
-            return_to="section-summary",
-            edit_block_id=edit_block_id,
-            remove_block_id=remove_block_id,
-            primary_person_edit_block_id=primary_person_edit_block_id,
-        )
-
-        return {
-            "title": rendered_summary["title"],
-            "type": rendered_summary["type"],
-            "add_link": add_link,
-            "add_link_text": rendered_summary["add_link_text"],
-            "empty_list_text": rendered_summary.get("empty_list_text"),
-            "list_name": rendered_summary["for_list"],
-            **list_summary_context,
-        }
-
-    def _add_link(self, summary, list_collector_block):
-
-        if list_collector_block:
-            return url_for(
-                "questionnaire.block",
-                list_name=summary["for_list"],
-                block_id=list_collector_block["add_block"]["id"],
-                return_to="section-summary",
-            )
-
-        driving_question_block = QuestionnaireSchema.get_driving_question_for_list(
-            self.section, summary["for_list"]
-        )
-
-        if driving_question_block:
-            return url_for(
-                "questionnaire.block",
-                block_id=driving_question_block["id"],
-                return_to="section-summary",
-            )
+                list_collector_block = ListCollectorBlock(
+                    routing_path=self.routing_path,
+                    answer_store=self._answer_store,
+                    list_store=self._list_store,
+                    progress_store=self._progress_store,
+                    metadata=self._metadata,
+                    response_metadata=self._response_metadata,
+                    schema=self._schema,
+                    location=self.current_location,
+                    language=self._language,
+                )
+                yield list_collector_block.list_summary_element(summary_element)
 
     def _get_safe_page_title(self, title):
         return (
             safe_content(self._schema.get_single_string_value(title)) if title else ""
         )
+
+    @staticmethod
+    def _get_refactored_groups(original_groups: dict) -> list[dict]:
+        """original schema groups are refactored into groups based on block types, it follows the order/sequence of blocks in the original groups, all the
+        non list collector blocks are put together into groups, list collectors are put into separate groups, this way summary groups are displayed correctly
+        on section summary"""
+        refactored_groups = []
+        group_number = 0
+
+        for group in list(original_groups):
+            group_name = group["id"]
+            non_list_collector_blocks: list[dict[str, str]] = []
+            list_collector_blocks: list[dict[str, str]] = []
+            for block in group["blocks"]:
+                if block["type"] == "ListCollector":
+                    # if list collector block encountered, close the previously started non list collector blocks list if exists
+                    if non_list_collector_blocks:
+                        previously_started_group = {
+                            "id": f"{group_name}-{group_number}",
+                            "blocks": non_list_collector_blocks,
+                        }
+                        # add previous non list collector blocks group to all groups and increase the group number for the list collector group
+                        # that you handle next
+                        refactored_groups.append(previously_started_group)
+                        group_number += 1
+                    list_collector_blocks.append(block)
+                    list_collector_group = {
+                        "id": f"{group_name}-{group_number}",
+                        "blocks": list_collector_blocks,
+                    }
+                    # add current list collector group to all groups and increase the group number for the next group
+                    refactored_groups.append(list_collector_group)
+                    group_number += 1
+                    # reset both types of block lists for next iterations of this loop if any
+                    list_collector_blocks = []
+                    non_list_collector_blocks = []
+
+                else:
+                    # if list collector not encountered keep adding blocks or add first one to an empty non list collector blocks list
+                    non_list_collector_blocks.append(block)
+
+            # on exiting the loop, accumulated list of blocks gets added as a group
+            non_list_collector_group = {
+                "id": f"{group_name}-{group_number}",
+                "blocks": non_list_collector_blocks,
+                "title": group.get("title"),
+            }
+            refactored_groups.append(non_list_collector_group)
+
+        return refactored_groups

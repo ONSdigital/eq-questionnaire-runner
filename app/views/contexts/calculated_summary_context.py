@@ -1,4 +1,8 @@
 from copy import deepcopy
+from decimal import Decimal
+from typing import Callable, List, Mapping, Tuple, Union
+
+from werkzeug.datastructures import ImmutableDict
 
 from app.jinja_filters import (
     format_number,
@@ -6,8 +10,9 @@ from app.jinja_filters import (
     format_unit,
     get_formatted_currency,
 )
-from app.questionnaire.location import Location
+from app.questionnaire import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.schema_utils import get_answer_ids_in_block
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.questionnaire.variants import choose_question_to_display, transform_variants
@@ -16,73 +21,94 @@ from app.views.contexts.summary.group import Group
 
 
 class CalculatedSummaryContext(Context):
-    def build_groups_for_section(self, section, return_to_block_id):
+    def build_groups_for_section(
+        self, section: Mapping, return_to_block_id: str, current_location: Location
+    ) -> List[Group]:
         routing_path = self._router.routing_path(section["id"])
-
-        location = Location(section["id"])
 
         return [
             Group(
-                group,
-                routing_path,
-                self._answer_store,
-                self._list_store,
-                self._metadata,
-                self._response_metadata,
-                self._schema,
-                location,
-                self._language,
+                group_schema=group,
+                routing_path=routing_path,
+                answer_store=self._answer_store,
+                list_store=self._list_store,
+                metadata=self._metadata,
+                response_metadata=self._response_metadata,
+                schema=self._schema,
+                location=current_location,
+                language=self._language,
+                progress_store=self._progress_store,
                 return_to="calculated-summary",
                 return_to_block_id=return_to_block_id,
             ).serialize()
             for group in section["groups"]
         ]
 
-    def build_view_context_for_calculated_summary(self, current_location):
-        block = self._schema.get_block(current_location.block_id)
-
-        return_to_block_id = block["id"]
+    def build_view_context_for_calculated_summary(
+        self, current_location: Location
+    ) -> Mapping:
+        # type ignores added as block will exist at this point
+        block_id: str = current_location.block_id  # type: ignore
+        block: ImmutableDict = self._schema.get_block(block_id)  # type: ignore
 
         calculated_section = self._build_calculated_summary_section(
             block, current_location
         )
         calculation = block["calculation"]
 
-        groups = self.build_groups_for_section(calculated_section, return_to_block_id)
+        groups = self.build_groups_for_section(
+            calculated_section, block_id, current_location
+        )
 
         formatted_total = self._get_formatted_total(
             groups or [],
             current_location=current_location,
-            calculation_operator=ValueSourceResolver.get_calculation_operator(
+            calculation=ValueSourceResolver.get_calculation_operator(
                 calculation["calculation_type"]
-            ),
+            )
+            if calculation.get("answers_to_calculate")
+            else calculation["operation"],
         )
 
-        context = {
+        collapsible = block.get("collapsible") or False
+        block_title = block["title"]
+
+        return {
             "summary": {
                 "groups": groups,
                 "answers_are_editable": True,
                 "calculated_question": self._get_calculated_question(
                     calculation, formatted_total
                 ),
-                "title": block.get("title") % dict(total=formatted_total),
-                "collapsible": block.get("collapsible", False),
+                "title": block_title % dict(total=formatted_total),
+                "collapsible": collapsible,
                 "summary_type": "CalculatedSummary",
             }
         }
 
-        return context
-
-    def _build_calculated_summary_section(self, rendered_block, current_location):
+    def _build_calculated_summary_section(
+        self, rendered_block: ImmutableDict, current_location: Location
+    ) -> Mapping:
         """Build up the list of blocks only including blocks / questions / answers which are relevant to the summary"""
-        section_id = self._schema.get_section_id_for_block_id(current_location.block_id)
-        group = self._schema.get_group_for_block_id(current_location.block_id)
+        # type ignores added as block will exist at this point
+        block_id: str = current_location.block_id  # type: ignore
+        group: ImmutableDict = self._schema.get_group_for_block_id(block_id)  # type: ignore
+
+        section_id = self._schema.get_section_id_for_block_id(block_id)
+
         blocks = []
-        answers_to_calculate = rendered_block["calculation"]["answers_to_calculate"]
-        blocks_to_calculate = [
+        if rendered_block["calculation"].get("answers_to_calculate"):
+            answers_to_calculate = rendered_block["calculation"]["answers_to_calculate"]
+        else:
+            answers_to_calculate = self._schema.get_calculated_summary_answer_ids(
+                rendered_block
+            )
+
+        blocks_to_calculate: list = [
             self._schema.get_block_for_answer_id(answer_id)
             for answer_id in answers_to_calculate
         ]
+
         unique_blocks = list(
             {block["id"]: block for block in blocks_to_calculate}.values()
         )
@@ -101,7 +127,7 @@ class CalculatedSummaryContext(Context):
 
     def _remove_unwanted_questions_answers(
         self, block, answer_ids_to_keep, current_location
-    ):
+    ) -> str:
         """
         Evaluates questions in a block and removes any questions not containing a relevant answer
         """
@@ -136,9 +162,37 @@ class CalculatedSummaryContext(Context):
 
         return transformed_block
 
-    def _get_formatted_total(self, groups, current_location, calculation_operator):
-        values_to_calculate = []
-        answer_format = {"type": None}
+    def _get_formatted_total(
+        self,
+        groups: list,
+        current_location: Location,
+        calculation: Union[Callable, ImmutableDict],
+    ) -> str:
+        answer_format, values_to_calculate = self._get_answer_format(
+            groups, current_location
+        )
+
+        if isinstance(calculation, ImmutableDict):
+            evaluate_calculated_summary = RuleEvaluator(
+                self._schema,
+                self._answer_store,
+                self._list_store,
+                self._metadata,
+                self._response_metadata,
+                location=current_location,
+            )
+
+            calculated_total: Union[int, float, Decimal] = evaluate_calculated_summary.evaluate(calculation)  # type: ignore
+        else:
+            calculated_total = calculation(values_to_calculate)
+
+        return self._format_total(answer_format, calculated_total)
+
+    def _get_answer_format(
+        self, groups: list, current_location: Location
+    ) -> Tuple[Mapping, list]:
+        values_to_calculate: list = []
+        answer_format: Mapping = {"type": None}
         for group in groups:
             for block in group["blocks"]:
                 question = choose_question_to_display(
@@ -161,22 +215,31 @@ class CalculatedSummaryContext(Context):
                     answer_value = answer.get("value") or 0
                     values_to_calculate.append(answer_value)
 
-        calculated_total = calculation_operator(values_to_calculate)
+        return answer_format, values_to_calculate
+
+    @staticmethod
+    def _format_total(
+        answer_format: Mapping[str, str], total: Union[int, float, Decimal]
+    ) -> str:
         if answer_format["type"] == "currency":
-            return get_formatted_currency(calculated_total, answer_format["currency"])
+            return get_formatted_currency(total, answer_format["currency"])
 
         if answer_format["type"] == "unit":
             return format_unit(
-                answer_format["unit"], calculated_total, answer_format["unit_length"]
+                answer_format["unit"],
+                total,
+                answer_format["unit_length"],
             )
 
         if answer_format["type"] == "percentage":
-            return format_percentage(calculated_total)
+            return format_percentage(total)
 
-        return format_number(calculated_total)
+        return format_number(total)
 
     @staticmethod
-    def _get_calculated_question(calculation_question, formatted_total):
+    def _get_calculated_question(
+        calculation_question: ImmutableDict, formatted_total: str
+    ) -> Mapping:
         calculation_title = calculation_question["title"]
 
         return {

@@ -36,7 +36,7 @@ describe("Feature: Combined question level and single validation for MM-YYYY dat
         $(DateRangePage.dateRangeToMonth()).setValue(4);
         $(DateRangePage.dateRangeToYear()).setValue(2017);
         $(DateRangePage.submit()).click();
-        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a valid date");
+        expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter the year in a valid format. For example, 2023.");
         expect($(DateRangePage.errorNumber(2)).isExisting()).to.be.false;
       });
 

@@ -320,12 +320,12 @@ def test_map_list_collector_config_no_actions():
                 {
                     "actions": [],
                     "iconType": "icon",
-                    "rowTitle": "Mark Bloggs",
                     "id": "one",
                     "rowTitleAttributes": {
-                        "data-qa": "list-item-1-label",
                         "data-list-item-id": "one",
+                        "data-qa": "list-item-1-label",
                     },
+                    "rowTitle": "Mark Bloggs",
                 }
             ]
         },
@@ -334,12 +334,12 @@ def test_map_list_collector_config_no_actions():
                 {
                     "actions": [],
                     "iconType": "icon",
-                    "rowTitle": "Joe Bloggs",
                     "id": "two",
                     "rowTitleAttributes": {
-                        "data-qa": "list-item-2-label",
                         "data-list-item-id": "two",
+                        "data-qa": "list-item-2-label",
                     },
+                    "rowTitle": "Joe Bloggs",
                 }
             ]
         },
@@ -390,12 +390,12 @@ def test_map_list_collector_config():
                         }
                     ],
                     "iconType": "icon",
-                    "rowTitle": "Mark Bloggs (You)",
                     "id": "primary",
                     "rowTitleAttributes": {
-                        "data-qa": "list-item-1-label",
                         "data-list-item-id": "primary",
+                        "data-qa": "list-item-1-label",
                     },
+                    "rowTitle": "Mark Bloggs (You)",
                 }
             ]
         },
@@ -417,18 +417,156 @@ def test_map_list_collector_config():
                         },
                     ],
                     "iconType": "icon",
-                    "rowTitle": "Joe Bloggs",
                     "id": "nonprimary",
                     "rowTitleAttributes": {
-                        "data-qa": "list-item-2-label",
                         "data-list-item-id": "nonprimary",
+                        "data-qa": "list-item-2-label",
                     },
+                    "rowTitle": "Joe Bloggs",
                 }
             ]
         },
     ]
 
     assert output == expected
+
+
+@pytest.mark.usefixtures("gb_locale")
+def test_map_list_collector_config_with_related_answers_and_answer_title():
+    list_items = [
+        {
+            "remove_link": "/nonprimary/remove",
+            "edit_link": "/nonprimary/change",
+            "primary_person": False,
+            "item_title": "Name of UK company or branch",
+            "id": "nonprimary",
+            "list_item_id": "VHoiow",
+        },
+    ]
+
+    output = map_list_collector_config(
+        list_items,
+        "icon",
+        "edit_link_text",
+        "edit_link_aria_label",
+        "remove_link_text",
+        "remove_link_aria_label",
+        {
+            "VHoiow": [
+                {
+                    "id": "edit-company",
+                    "title": None,
+                    "number": None,
+                    "question": {
+                        "id": "add-question",
+                        "type": "General",
+                        "title": " ",
+                        "number": None,
+                        "answers": [
+                            {
+                                "id": "registration-number",
+                                "label": "Registration number",
+                                "value": 123,
+                                "type": "number",
+                                "unit": None,
+                                "unit_length": None,
+                                "currency": None,
+                                "link": "registration_edit_link_url",
+                            },
+                            {
+                                "id": "authorised-insurer-radio",
+                                "label": "Is this UK company or branch an authorised insurer?",
+                                "value": {"label": "Yes", "detail_answer_value": None},
+                                "type": "radio",
+                                "unit": None,
+                                "unit_length": None,
+                                "currency": None,
+                                "link": "authorised_edit_link_url",
+                            },
+                        ],
+                    },
+                }
+            ]
+        },
+        "Name of UK company or branch",
+        "",
+    )
+
+    expected = [
+        {
+            "rowItems": [
+                {
+                    "actions": [
+                        {
+                            "ariaLabel": "edit_link_aria_label",
+                            "attributes": {"data-qa": "list-item-change-1-link"},
+                            "text": "edit_link_text",
+                            "url": "/nonprimary/change",
+                        },
+                        {
+                            "ariaLabel": "remove_link_aria_label",
+                            "attributes": {"data-qa": "list-item-remove-1-link"},
+                            "text": "remove_link_text",
+                            "url": "/nonprimary/remove",
+                        },
+                    ],
+                    "iconType": "icon",
+                    "id": "VHoiow",
+                    "rowTitle": "Name of UK company or branch",
+                    "rowTitleAttributes": {
+                        "data-list-item-id": "VHoiow",
+                        "data-qa": "list-item-1-label",
+                    },
+                    "valueList": [{"text": "Name of UK company or branch"}],
+                },
+                {
+                    "actions": [
+                        {
+                            "ariaLabel": "edit_link_aria_label Registration number",
+                            "attributes": {
+                                "data-ga": "click",
+                                "data-ga-action": "Edit click",
+                                "data-ga-category": "Summary",
+                                "data-qa": "registration-number-edit",
+                            },
+                            "text": "edit_link_text",
+                            "url": "registration_edit_link_url",
+                        }
+                    ],
+                    "attributes": {"data-qa": "registration-number"},
+                    "id": "registration-number",
+                    "rowTitle": "Registration number",
+                    "rowTitleAttributes": {"data-qa": "registration-number-label"},
+                    "valueList": [{"text": "123"}],
+                },
+                {
+                    "actions": [
+                        {
+                            "ariaLabel": "edit_link_aria_label Is this UK "
+                            "company or branch an authorised "
+                            "insurer?",
+                            "attributes": {
+                                "data-ga": "click",
+                                "data-ga-action": "Edit click",
+                                "data-ga-category": "Summary",
+                                "data-qa": "authorised-insurer-radio-edit",
+                            },
+                            "text": "edit_link_text",
+                            "url": "authorised_edit_link_url",
+                        }
+                    ],
+                    "attributes": {"data-qa": "authorised-insurer-radio"},
+                    "id": "authorised-insurer-radio",
+                    "rowTitle": "Is this UK company or branch an authorised "
+                    "insurer?",
+                    "rowTitleAttributes": {"data-qa": "authorised-insurer-radio-label"},
+                    "valueList": [{"text": "Yes"}],
+                },
+            ]
+        }
+    ]
+
+    assert to_dict(output) == to_dict(expected)
 
 
 @pytest.mark.parametrize(
@@ -634,6 +772,165 @@ def test_calculated_summary_config():
             "id": "calculated-summary-question",
             "answers": [{"id": "calculated-summary-answer", "value": "£2.00"}],
         },
+        icon="",
+    )
+
+    assert to_dict(expected) == to_dict(result)
+
+
+@pytest.mark.usefixtures("gb_locale")
+def test_summary_item_config_with_list_collector():
+    expected = [
+        {
+            "rowItems": [
+                {
+                    "actions": [
+                        {
+                            "ariaLabel": "Change your answer for:",
+                            "attributes": {"data-qa": "list-item-change-1-link"},
+                            "text": "Change",
+                            "url": "change_link_url",
+                        },
+                        {
+                            "ariaLabel": "Remove Company A",
+                            "attributes": {"data-qa": "list-item-remove-1-link"},
+                            "text": {
+                                "_args": ["Remove"],
+                                "_func": {},
+                                "_kwargs": {},
+                            },
+                            "url": "remove_link_url",
+                        },
+                    ],
+                    "iconType": "",
+                    "id": "vmmPmD",
+                    "rowTitle": "Company A",
+                    "rowTitleAttributes": {
+                        "data-list-item-id": "vmmPmD",
+                        "data-qa": "list-item-1-label",
+                    },
+                },
+                {
+                    "actions": [
+                        {
+                            "ariaLabel": "Change your answer for: "
+                            "Registration number",
+                            "attributes": {
+                                "data-ga": "click",
+                                "data-ga-action": "Edit click",
+                                "data-ga-category": "Summary",
+                                "data-qa": "registration-number-edit",
+                            },
+                            "text": "Change",
+                            "url": "edit_link_url",
+                        }
+                    ],
+                    "attributes": {"data-qa": "registration-number"},
+                    "id": "registration-number",
+                    "rowTitle": "Registration number",
+                    "rowTitleAttributes": {"data-qa": "registration-number-label"},
+                    "valueList": [{"text": "123"}],
+                },
+                {
+                    "actions": [
+                        {
+                            "ariaLabel": "Change your answer for: Is this UK "
+                            "company or branch an authorised "
+                            "insurer?",
+                            "attributes": {
+                                "data-ga": "click",
+                                "data-ga-action": "Edit click",
+                                "data-ga-category": "Summary",
+                                "data-qa": "authorised-insurer-radio-edit",
+                            },
+                            "text": "Change",
+                            "url": "edit_link_url",
+                        }
+                    ],
+                    "attributes": {"data-qa": "authorised-insurer-radio"},
+                    "id": "authorised-insurer-radio",
+                    "rowTitle": "Is this UK company or branch an authorised "
+                    "insurer?",
+                    "rowTitleAttributes": {"data-qa": "authorised-insurer-radio-label"},
+                    "valueList": [{"text": "Yes"}],
+                },
+            ]
+        }
+    ]
+
+    result = map_summary_item_config(
+        group={
+            "blocks": [
+                {
+                    "title": "Companies or UK branches",
+                    "type": "List",
+                    "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
+                    "add_link_text": "Add another UK company or branch",
+                    "empty_list_text": "No UK company or branch added",
+                    "list_name": "companies",
+                    "related_answers": {
+                        "vmmPmD": [
+                            {
+                                "id": "edit-company",
+                                "title": None,
+                                "number": None,
+                                "question": {
+                                    "id": "add-question",
+                                    "type": "General",
+                                    "title": " ",
+                                    "number": None,
+                                    "answers": [
+                                        {
+                                            "id": "registration-number",
+                                            "label": "Registration number",
+                                            "value": 123,
+                                            "type": "number",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "currency": None,
+                                            "link": "edit_link_url",
+                                        },
+                                        {
+                                            "id": "authorised-insurer-radio",
+                                            "label": "Is this UK company or branch an authorised insurer?",
+                                            "value": {
+                                                "label": "Yes",
+                                                "detail_answer_value": None,
+                                            },
+                                            "type": "radio",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "currency": None,
+                                            "link": "edit_link_url",
+                                        },
+                                    ],
+                                },
+                            }
+                        ]
+                    },
+                    "answer_title": "Name of UK company or branch",
+                    "list": {
+                        "list_items": [
+                            {
+                                "item_title": "Company A",
+                                "primary_person": False,
+                                "list_item_id": "vmmPmD",
+                                "edit_link": "change_link_url",
+                                "remove_link": "remove_link_url",
+                            }
+                        ],
+                        "editable": True,
+                    },
+                }
+            ],
+        },
+        summary_type="SectionSummary",
+        answers_are_editable=True,
+        no_answer_provided="No answer Provided",
+        edit_link_text="Change",
+        edit_link_aria_label="Change your answer for:",
+        calculated_question={},
+        icon="",
     )
 
     assert to_dict(expected) == to_dict(result)

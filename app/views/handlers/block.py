@@ -3,6 +3,7 @@ from functools import cached_property
 from typing import MutableMapping, Optional, Union
 
 from structlog import get_logger
+from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import QuestionnaireStore
 from app.questionnaire.location import InvalidLocationException, Location
@@ -34,9 +35,10 @@ class BlockHandler:
         self._form_data = form_data
 
         if self._current_location.block_id:
-            self.block = self._schema.get_block(self._current_location.block_id)
+            # Type ignore: Block has to exist at this point. Block existence is checked beforehand in block_factory.py
+            self.block: ImmutableDict = self._schema.get_block(self._current_location.block_id)  # type: ignore
         self._routing_path = self._get_routing_path()
-        self.page_title = None
+        self.page_title: Optional[str] = None
         self._return_to = request_args.get("return_to")
         self._return_to_answer_id = request_args.get("return_to_answer_id")
         self._return_to_block_id = request_args.get("return_to_block_id")
@@ -147,7 +149,10 @@ class BlockHandler:
         )
         return {"list_item_position": list_item_position}
 
-    def _set_page_title(self, page_title):
+    def _set_page_title(self, page_title: Optional[str]):
+        if not page_title:
+            return None
+
         section_repeating_page_title = (
             self._schema.get_repeating_page_title_for_section(
                 self._current_location.section_id

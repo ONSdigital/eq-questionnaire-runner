@@ -432,16 +432,13 @@ def test_list_source_with_id_selector_same_name_items():
         ),
     )
 
-    assert (
-        value_source_resolver.resolve(
-            {
-                "source": "list",
-                "identifier": "some-list",
-                "selector": "same_name_items",
-            }
-        )
-        == get_list_items(3)
-    )
+    assert value_source_resolver.resolve(
+        {
+            "source": "list",
+            "identifier": "some-list",
+            "selector": "same_name_items",
+        }
+    ) == get_list_items(3)
 
 
 @pytest.mark.parametrize(
@@ -531,6 +528,112 @@ def test_calculated_summary_value_source(mocker, list_item_id):
             {"source": "calculated_summary", "identifier": "number-total"}
         )
         == 15
+    )
+
+
+@pytest.mark.parametrize(
+    "list_item_id",
+    [None, "item-1"],
+)
+def test_new_calculated_summary_value_source(mocker, list_item_id):
+    schema = mocker.MagicMock()
+    schema.get_block = Mock(
+        return_value={
+            "id": "number-total",
+            "type": "CalculatedSummary",
+            "calculation": {
+                "operation": {
+                    "+": [
+                        {"source": "answers", "identifier": "number-answer-1"},
+                        {"source": "answers", "identifier": "number-answer-2"},
+                    ]
+                }
+            },
+        },
+    )
+
+    location = Location(
+        section_id="test-section", block_id="test-block", list_item_id=list_item_id
+    )
+
+    value_source_resolver = get_value_source_resolver(
+        answer_store=AnswerStore(
+            [
+                AnswerDict(
+                    answer_id="number-answer-1",
+                    value=10,
+                    list_item_id=location.list_item_id,
+                ),
+                AnswerDict(
+                    answer_id="number-answer-2", value=5, list_item_id=list_item_id
+                ),
+            ]
+        ),
+        schema=schema,
+        list_item_id=list_item_id,
+        location=location,
+    )
+    assert (
+        value_source_resolver.resolve(
+            {"source": "calculated_summary", "identifier": "number-total"}
+        )
+        == 15
+    )
+
+
+@pytest.mark.parametrize(
+    "list_item_id",
+    [None, "item-1"],
+)
+def test_new_calculated_summary_nested_value_source(mocker, list_item_id):
+    schema = mocker.MagicMock()
+    schema.get_block = Mock(
+        return_value={
+            "id": "number-total",
+            "type": "CalculatedSummary",
+            "calculation": {
+                "operation": {
+                    "+": [
+                        {
+                            "+": [
+                                {"source": "answers", "identifier": "number-answer-1"},
+                                {"source": "answers", "identifier": "number-answer-2"},
+                            ]
+                        },
+                        {"source": "answers", "identifier": "number-answer-3"},
+                    ]
+                }
+            },
+        },
+    )
+
+    location = Location(
+        section_id="test-section", block_id="test-block", list_item_id=list_item_id
+    )
+
+    value_source_resolver = get_value_source_resolver(
+        answer_store=AnswerStore(
+            [
+                AnswerDict(
+                    answer_id="number-answer-1", value=10, list_item_id=list_item_id
+                ),
+                AnswerDict(
+                    answer_id="number-answer-2", value=5, list_item_id=list_item_id
+                ),
+                AnswerDict(
+                    answer_id="number-answer-3", value=5, list_item_id=list_item_id
+                ),
+            ]
+        ),
+        schema=schema,
+        list_item_id=list_item_id,
+        location=location,
+    )
+    assert (
+        value_source_resolver.resolve(
+            {"source": "calculated_summary", "identifier": "number-total"}
+        )
+        == 20
     )
 
 
