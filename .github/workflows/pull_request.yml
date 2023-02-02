@@ -45,7 +45,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "14.19.0"
-          cache: 'npm'
       - name: Get yarn cache
         id: get-yarn-cache
         run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
