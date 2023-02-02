@@ -74,7 +74,7 @@ class Group:
         progress_store: ProgressStore,
         language: str,
         return_to_block_id: Optional[str],
-    ) -> list[Mapping[str, Block]]:
+    ) -> list[dict[str, Block]]:
 
         blocks = []
 

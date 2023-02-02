@@ -161,7 +161,7 @@ class ListCollectorBlock:
 
     def _get_related_answers(
         self, list_model: ListModel
-    ) -> Optional[dict[str, list[Mapping[str, Any]]]]:
+    ) -> Optional[dict[str, list[dict[str, Any]]]]:
 
         section_id = self._section["id"]
 

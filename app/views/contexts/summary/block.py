@@ -97,7 +97,7 @@ class Block:
             return_to_block_id=return_to_block_id,
         ).serialize()
 
-    def serialize(self) -> Mapping[str, Any]:
+    def serialize(self) -> dict[str, Any]:
         return {
             "id": self.id,
             "title": self.title,

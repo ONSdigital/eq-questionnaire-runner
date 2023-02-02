@@ -71,7 +71,7 @@ class Question:
         list_name: Optional[str],
         return_to: Optional[str],
         return_to_block_id: Optional[str],
-    ) -> Union[list[Mapping[str, Any]], list[dict[str, str]]]:
+    ) -> Union[list[dict[str, Any]], list[dict[str, str]]]:
 
         if self.summary:
             answer_id = f"{self.id}-concatenated-answer"
