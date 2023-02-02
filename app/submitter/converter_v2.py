@@ -4,7 +4,8 @@ from typing import Any, Iterable, Mapping, Optional, OrderedDict, Union
 from structlog import get_logger
 
 from app.authentication.auth_payload_version import AuthPayloadVersion
-from app.data_models import AnswerStore, ListStore, QuestionnaireStore
+from app.data_models import AnswerStore, ListStore, QuestionnaireStore, Answer
+from app.data_models.list_store import ListModelDictType
 from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
 from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
@@ -137,7 +138,7 @@ def get_payload_data(
         }
 
         if answer_codes := schema.json.get("answer_codes"):
-            get_filtered_answer_codes(answer_codes, data)
+            data["answer_codes"] = get_filtered_answer_codes(answer_codes, data)
 
         return data
 
@@ -145,13 +146,13 @@ def get_payload_data(
 
 
 def get_filtered_answer_codes(
-    answer_codes: Iterable[OrderedDict[str, Any]], data: dict
-) -> None:
+    answer_codes: Iterable[dict], data: dict
+) -> list[dict[str, str]]:
     answer_ids_to_filter = {answer.answer_id for answer in data["answers"]}
-    filtered_answer_codes: list = []
+    filtered_answer_codes: list[dict] = []
     filtered_answer_codes.extend(
         answer_code
         for answer_code in answer_codes
         if answer_code["answer_id"] in answer_ids_to_filter
     )
-    data["answer_codes"] = filtered_answer_codes
+    return filtered_answer_codes
