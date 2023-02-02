@@ -125,19 +125,24 @@ def get_payload_data(
         )
 
     if schema.json["data_version"] == "0.0.3":
+        answers = convert_answers_to_payload_0_0_3(
+            answer_store=answer_store,
+            list_store=list_store,
+            schema=schema,
+            full_routing_path=routing_path,
+        )
 
         data = {
-            "answers": convert_answers_to_payload_0_0_3(
-                answer_store=answer_store,
-                list_store=list_store,
-                schema=schema,
-                full_routing_path=routing_path,
-            ),
+            "answers": answers,
             "lists": list_store.serialize(),
         }
 
         if answer_codes := schema.json.get("answer_codes"):
-            data["answer_codes"] = get_filtered_answer_codes(answer_codes, data)
+            answer_ids_to_filter = {answer.answer_id for answer in answers}
+            if filtered_answer_codes := get_filtered_answer_codes(
+                answer_codes, answer_ids_to_filter
+            ):
+                data["answer_codes"] = filtered_answer_codes
 
         return data
 
@@ -145,9 +150,8 @@ def get_payload_data(
 
 
 def get_filtered_answer_codes(
-    answer_codes: Iterable[dict], data: dict
+    answer_codes: Iterable[dict], answer_ids_to_filter: set[str]
 ) -> list[dict[str, str]]:
-    answer_ids_to_filter = {answer.answer_id for answer in data["answers"]}
     filtered_answer_codes: list[dict] = []
     filtered_answer_codes.extend(
         answer_code
