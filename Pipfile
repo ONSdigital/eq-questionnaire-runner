@@ -13,7 +13,7 @@ pylint-mccabe = "*"
 pylint-quotes = "*"
 "beautifulsoup4" = "*"
 httmock = "*"
-"flake8" = "*"
+"flake8" = "==4.0.1"
 "flake8-debugger" = "*"
 "flake8-mock" = "*"
 "flake8-print" = "*"
@@ -24,7 +24,7 @@ freezegun = "*"
 pytest-xdist = "*"
 fakeredis = "*"
 mypy = "*"
-black = "==20.8b1"
+black = "*"
 pytest-flask = "*"
 pytest = "*"
 pytest-sugar = "*"
@@ -74,7 +74,7 @@ markupsafe = "*"
 pdfkit = "*"
 
 [requires]
-python_version = "3.9"
+python_version = "3.10"
 
 [pipenv]
 allow_prereleases = false
