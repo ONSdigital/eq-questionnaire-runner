@@ -81,7 +81,7 @@
                                 "answers": [
                                     {
                                         "id": "mandatory-checkbox-answer",
-                                        "mandatory": true,
+                                        "mandatory": false,
                                         "options": [
                                             {
                                                 "label": "None",
