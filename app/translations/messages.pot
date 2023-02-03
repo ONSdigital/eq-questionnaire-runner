@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-01-31 13:07+0000\n"
+"POT-Creation-Date: 2023-02-03 11:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -223,15 +223,15 @@ msgstr ""
 msgid "ONS Surveys"
 msgstr ""
 
-#: app/helpers/template_helpers.py:107
+#: app/helpers/template_helpers.py:109
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:138
+#: app/helpers/template_helpers.py:140
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:163
+#: app/helpers/template_helpers.py:165
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -402,63 +402,63 @@ msgstr ""
 msgid "Save and exit survey"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:14
+#: app/views/contexts/hub_context.py:15
 msgid "Completed"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:16
+#: app/views/contexts/hub_context.py:17
 msgid "View answers"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:17
+#: app/views/contexts/hub_context.py:18
 msgid "View answers for {section_name}"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:21
+#: app/views/contexts/hub_context.py:22
 msgid "Partially completed"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:23
+#: app/views/contexts/hub_context.py:24
 msgid "Continue with section"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:24
+#: app/views/contexts/hub_context.py:25
 msgid "Continue with {section_name} section"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:28
+#: app/views/contexts/hub_context.py:29
 msgid "Not started"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:30
+#: app/views/contexts/hub_context.py:31
 msgid "Start section"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:31
+#: app/views/contexts/hub_context.py:32
 msgid "Start {section_name} section"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:35
+#: app/views/contexts/hub_context.py:36
 msgid "Separate census requested"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:37 app/views/contexts/hub_context.py:38
+#: app/views/contexts/hub_context.py:38 app/views/contexts/hub_context.py:39
 msgid "Change or resend"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:48 app/views/contexts/hub_context.py:49
+#: app/views/contexts/hub_context.py:51 app/views/contexts/hub_context.py:52
 msgid "Submit survey"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:53
+#: app/views/contexts/hub_context.py:56
 msgid "You must submit this survey to complete it"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:60
+#: app/views/contexts/hub_context.py:63
 msgid "Choose another section to complete"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:61 templates/confirm-email.html:25
+#: app/views/contexts/hub_context.py:64 templates/confirm-email.html:25
 #: templates/individual_response/confirmation-post.html:21
 #: templates/individual_response/confirmation-text-message.html:29
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
@@ -466,19 +466,19 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: app/views/contexts/list_context.py:104
+#: app/views/contexts/list_context.py:109
 msgid " (You)"
 msgstr ""
 
-#: app/views/contexts/submission_metadata_context.py:13
+#: app/views/contexts/submission_metadata_context.py:14
 msgid "Submitted on:"
 msgstr ""
 
-#: app/views/contexts/submission_metadata_context.py:16
+#: app/views/contexts/submission_metadata_context.py:17
 msgid "{date} at {time}"
 msgstr ""
 
-#: app/views/contexts/submission_metadata_context.py:25
+#: app/views/contexts/submission_metadata_context.py:26
 msgid "Submission reference:"
 msgstr ""
 
@@ -494,29 +494,29 @@ msgstr ""
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:28
+#: app/views/contexts/thank_you_context.py:29
 msgid "Your answers have been submitted."
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:30
+#: app/views/contexts/thank_you_context.py:31
 msgid ""
 "Your answers have been submitted for <span>{company_name}</span> "
 "({trading_name})"
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:37
+#: app/views/contexts/thank_you_context.py:38
 msgid "Your answers have been submitted for <span>{company_name}</span>"
 msgstr ""
 
-#: app/views/contexts/view_submitted_response_context.py:37
+#: app/views/contexts/view_submitted_response_context.py:36
 msgid "Answers submitted."
 msgstr ""
 
-#: app/views/contexts/view_submitted_response_context.py:39
+#: app/views/contexts/view_submitted_response_context.py:38
 msgid "Answers submitted for <span>{ru_name}</span> ({trad_as})"
 msgstr ""
 
-#: app/views/contexts/view_submitted_response_context.py:43
+#: app/views/contexts/view_submitted_response_context.py:42
 msgid "Answers submitted for <span>{ru_name}</span>"
 msgstr ""
 
@@ -849,8 +849,7 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: templates/feedback.html:14 templates/preview.html:16
-#: templates/view-submitted-response.html:16
+#: templates/feedback.html:14 templates/view-submitted-response.html:16
 msgid "Back"
 msgstr ""
 
@@ -899,55 +898,6 @@ msgstr ""
 
 #: templates/multiple_survey.html:17
 msgid "Close this window to continue with your current survey"
-msgstr ""
-
-#: templates/preview.html:29
-msgid "Preview of the questions in this survey"
-msgstr ""
-
-#: templates/preview.html:35
-msgid ""
-"To answer these questions you need to <a href='/questionnaire'>start "
-"survey</a>"
-msgstr ""
-
-#: templates/preview.html:39
-msgid ""
-"You may not have to answer all of these questions. The questions you see "
-"will depend on the answers you provide."
-msgstr ""
-
-#: templates/preview.html:44 templates/view-submitted-response.html:35
-msgid "Print answers"
-msgstr ""
-
-#: templates/preview.html:56 templates/view-submitted-response.html:47
-msgid "Save answers as PDF"
-msgstr ""
-
-#: templates/partials/introduction/preview.html:29
-#: templates/partials/summary/collapsible-summary.html:14
-#: templates/preview.html:82
-msgid "Show"
-msgstr ""
-
-#: templates/layouts/_base.html:73
-#: templates/partials/introduction/preview.html:30
-#: templates/partials/summary/collapsible-summary.html:15
-#: templates/preview.html:83
-msgid "Hide"
-msgstr ""
-
-#: templates/partials/introduction/preview.html:48
-#: templates/partials/summary/collapsible-summary.html:59
-#: templates/preview.html:112
-msgid "Show all"
-msgstr ""
-
-#: templates/partials/introduction/preview.html:49
-#: templates/partials/summary/collapsible-summary.html:60
-#: templates/preview.html:113
-msgid "Hide all"
 msgstr ""
 
 #: templates/signed-out.html:3
@@ -1022,6 +972,14 @@ msgstr ""
 
 #: templates/thank-you.html:76
 msgid "For security, your answers will only be available to view for 45 minutes"
+msgstr ""
+
+#: templates/view-submitted-response.html:35
+msgid "Print answers"
+msgstr ""
+
+#: templates/view-submitted-response.html:47
+msgid "Save answers as PDF"
 msgstr ""
 
 #: templates/errors/401.html:3
@@ -1306,11 +1264,11 @@ msgid ""
 " of the section</a>"
 msgstr ""
 
-#: templates/partials/preview-question.html:65
+#: templates/partials/preview-question.html:63
 msgid "You can answer with the following options:"
 msgstr ""
 
-#: templates/partials/preview-question.html:74
+#: templates/partials/preview-question.html:72
 msgid " characters can be added."
 msgstr ""
 
