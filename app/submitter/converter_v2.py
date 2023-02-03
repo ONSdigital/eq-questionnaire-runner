@@ -132,7 +132,7 @@ def get_payload_data(
             full_routing_path=routing_path,
         )
 
-        data: dict[str, Union[list[Any]]] = {
+        data: dict[str, list[dict]] = {
             "answers": answers,
             "lists": list_store.serialize(),
         }
