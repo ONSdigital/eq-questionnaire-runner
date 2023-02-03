@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from typing import Optional
 from uuid import uuid4
 
 from flask import current_app
@@ -10,7 +11,7 @@ def get_jwk_from_secret(secret: str) -> jwk.JWK:
     return jwk.JWK(kty="oct", k=base64url_encode(secret.encode("utf-8")))
 
 
-def get_address_lookup_api_auth_token() -> str:
+def get_address_lookup_api_auth_token() -> Optional[str]:
     if current_app.config["ADDRESS_LOOKUP_API_AUTH_ENABLED"]:
         secret = current_app.eq["secret_store"].get_secret_by_name(  # type: ignore
             "ADDRESS_LOOKUP_API_AUTH_TOKEN_SECRET"

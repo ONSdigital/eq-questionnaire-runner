@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-01-18 11:46+0000\n"
+"POT-Creation-Date: 2023-01-31 13:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.11.0\n"
 
 #: app/forms/validators.py:376 app/jinja_filters.py:115
 #, python-format
@@ -49,9 +49,7 @@ msgstr ""
 msgid "Remove {item_name}"
 msgstr ""
 
-#: app/jinja_filters.py:700
-#: templates/partials/summary/collapsible-summary.html:36
-#: templates/partials/summary/summary.html:20
+#: app/jinja_filters.py:701
 msgid "No answer provided"
 msgstr ""
 
@@ -225,15 +223,15 @@ msgstr ""
 msgid "ONS Surveys"
 msgstr ""
 
-#: app/helpers/template_helpers.py:109
+#: app/helpers/template_helpers.py:107
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:140
+#: app/helpers/template_helpers.py:138
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:165
+#: app/helpers/template_helpers.py:163
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -1006,19 +1004,19 @@ msgid ""
 "your answers</a> for your records."
 msgstr ""
 
-#: templates/layouts/_base.html:155 templates/thank-you.html:71
+#: templates/thank-you.html:71
 msgid "minute"
 msgstr ""
 
-#: templates/layouts/_base.html:156 templates/thank-you.html:72
+#: templates/thank-you.html:72
 msgid "minutes"
 msgstr ""
 
-#: templates/layouts/_base.html:157 templates/thank-you.html:73
+#: templates/thank-you.html:73
 msgid "second"
 msgstr ""
 
-#: templates/layouts/_base.html:158 templates/thank-you.html:74
+#: templates/thank-you.html:74
 msgid "seconds"
 msgstr ""
 
@@ -1248,68 +1246,8 @@ msgid ""
 "href='{contact_us_url}'>contact us</a>"
 msgstr ""
 
-#: templates/layouts/_base.html:20
-msgid "Previous"
-msgstr ""
-
-#: templates/layouts/_base.html:68
-msgid "Tell us whether you accept cookies"
-msgstr ""
-
-#: templates/layouts/_base.html:69
-msgid ""
-"We use <a href='{cookie_settings_url}'>cookies to collect information</a>"
-" about how you use {cookie_domain}. We use this information to make the "
-"website work as well as possible and improve our services."
-msgstr ""
-
-#: templates/layouts/_base.html:70
-msgid ""
-"You’ve accepted all cookies. You can <a "
-"href='{cookie_settings_url}'>change your cookie preferences</a> at any "
-"time."
-msgstr ""
-
-#: templates/layouts/_base.html:71
-msgid "Accept all cookies"
-msgstr ""
-
-#: templates/layouts/_base.html:72
-msgid "Set cookie preferences"
-msgstr ""
-
-#: templates/layouts/_base.html:128
-msgid "Skip to main content"
-msgstr ""
-
-#: templates/layouts/_base.html:150
-msgid "You will be signed out soon"
-msgstr ""
-
-#: templates/layouts/_base.html:151
-msgid "It appears you have been inactive for a while."
-msgstr ""
-
-#: templates/layouts/_base.html:152
-msgid ""
-"To protect your information, your progress will be saved and you will be "
-"signed out in"
-msgstr ""
-
-#: templates/layouts/_base.html:153
-msgid "You are being signed out"
-msgstr ""
-
-#: templates/layouts/_base.html:154
-msgid "Continue survey"
-msgstr ""
-
 #: templates/layouts/_questionnaire.html:40
 msgid "Choose another section and return to this later"
-msgstr ""
-
-#: templates/layouts/configs/_header.html:10
-msgid "Exit"
 msgstr ""
 
 #: templates/macros/helpers.html:13
@@ -1558,15 +1496,8 @@ msgstr ""
 msgid "Start survey"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:37
 #: templates/partials/summary/list-summary.html:7
-#: templates/partials/summary/summary.html:21
 msgid "Change"
-msgstr ""
-
-#: templates/partials/summary/collapsible-summary.html:38
-#: templates/partials/summary/summary.html:22
-msgid "Change your answer for:"
 msgstr ""
 
 #: templates/partials/summary/list-summary.html:8

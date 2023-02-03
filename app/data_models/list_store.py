@@ -151,7 +151,7 @@ class ListStore:
         }
 
     def get(self, item: str) -> ListModel:
-        return self.__getitem__(item)
+        return self[item]
 
     def list_item_position(self, for_list: str, list_item_id: str) -> int:
         return self[for_list].index(list_item_id) + 1
