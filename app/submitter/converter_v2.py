@@ -113,7 +113,7 @@ def get_payload_data(
     routing_path: RoutingPath,
     metadata: MetadataProxy,
     response_metadata: Mapping,
-) -> Union[OrderedDict[str, Any], dict[str, Union[list[Any], object]]]:
+) -> Union[OrderedDict[str, Any], dict[str, Union[list[Any]]]]:
     if schema.json["data_version"] == "0.0.1":
         return convert_answers_to_payload_0_0_1(
             metadata=metadata,
@@ -132,7 +132,7 @@ def get_payload_data(
             full_routing_path=routing_path,
         )
 
-        data = {
+        data: dict[str, Union[list[Any]]] = {
             "answers": answers,
             "lists": list_store.serialize(),
         }
