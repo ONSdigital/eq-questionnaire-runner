@@ -15,7 +15,11 @@ class PreviewGroup:
         metadata: Optional[MetadataProxy],
         section_title: Optional[str],
     ):
-        self.survey_data = metadata["survey_metadata"].data  # type: ignore
+        self.survey_data = (
+            metadata["survey_metadata"].data
+            if metadata and metadata["survey_metadata"]
+            else {}
+        )
         self.title = section_title
         self.blocks = self._build_blocks(
             group_schema=group_schema, survey_data=self.survey_data
