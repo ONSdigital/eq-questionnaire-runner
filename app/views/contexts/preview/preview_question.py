@@ -1,15 +1,20 @@
 from re import findall
+from typing import Any, Iterator, Optional, Union
 
-from app.questionnaire import QuestionnaireSchema
+from werkzeug.datastructures import ImmutableDict
+
+from app.questionnaire import QuestionnaireSchema, QuestionSchemaType
 
 
 class PreviewQuestion:
-    def __init__(self, question_schema, survey_data):
+    def __init__(
+        self, question_schema: QuestionSchemaType, survey_data: ImmutableDict[str, str]
+    ):
         self.title = question_schema.get("title")
         self.answers = self._build_answers(question_schema, survey_data)
         self.descriptions = self._build_descriptions(question_schema, survey_data)
         self.guidance = self._build_question_guidance(question_schema)
-        self.text_length = self._get_length(question_schema.get("answers"))
+        self.text_length = self._get_length(question_schema.get("answers", None))
         self.instruction = question_schema.get("instruction") or None
         self.answer_description = self._build_answer_descriptions(
             iter(question_schema["answers"])
@@ -19,7 +24,9 @@ class PreviewQuestion:
         )
         self.survey_data = survey_data
 
-    def _build_answers(self, question_schema, survey_data):
+    def _build_answers(
+        self, question_schema: QuestionSchemaType, survey_data: ImmutableDict[str, str]
+    ) -> list[Optional[str]]:
         answers = []
         for answer in iter(question_schema["answers"]):
             if options := answer.get("options"):
@@ -35,7 +42,7 @@ class PreviewQuestion:
         return answers
 
     @staticmethod
-    def _build_answer_descriptions(answers):
+    def _build_answer_descriptions(answers: Iterator[dict]) -> Optional[dict]:
         return next(
             (
                 answer.get("description")
@@ -45,11 +52,13 @@ class PreviewQuestion:
             None,
         )
 
-    def _build_answer_guidance(self, answers):
+    def _build_answer_guidance(self, answers: Iterator[dict]) -> Optional[list[Any]]:
         for answer in answers:
             return self._build_guidance(answer)
 
-    def _build_descriptions(self, question_schema, survey_data):
+    def _build_descriptions(
+        self, question_schema: QuestionSchemaType, survey_data: ImmutableDict[str, str]
+    ) -> Any:  # QuestionnaireSchema.get_mutable_deepcopy returns "Any"
         if descriptions := question_schema.get("description"):
             mutable_descriptions = QuestionnaireSchema.get_mutable_deepcopy(
                 descriptions
@@ -64,11 +73,13 @@ class PreviewQuestion:
 
         return None
 
-    def _build_question_guidance(self, question_schema):
+    def _build_question_guidance(
+        self, question_schema: QuestionSchemaType
+    ) -> Optional[list[Any]]:
         return self._build_guidance(question_schema)
 
     @staticmethod
-    def _build_guidance(schema_element):
+    def _build_guidance(schema_element: QuestionSchemaType) -> Optional[list[dict]]:
         if guidance := schema_element.get("guidance"):
             guidance_list = []
             for contents in guidance.get("contents"):
@@ -82,8 +93,8 @@ class PreviewQuestion:
 
     @staticmethod
     def _get_length(
-        answers,
-    ):
+        answers: dict,
+    ) -> Optional[Any]:
         return next(
             (
                 answer.get("max_length")
@@ -93,7 +104,7 @@ class PreviewQuestion:
             None,
         )
 
-    def serialize(self):
+    def serialize(self) -> dict[str, Union[str, dict, Any]]:
         return {
             "title": self.title,
             "answers": self.answers,
@@ -106,14 +117,15 @@ class PreviewQuestion:
         }
 
     @staticmethod
-    def resolve_text(element, survey_data):
-        placeholders = findall(r"\{.*?}", element.get("text"))
+    def resolve_text(
+        element: dict[str, str], survey_data: ImmutableDict[str, str]
+    ) -> Optional[str]:
+        if text := element.get("text"):
+            placeholders = findall(r"\{.*?}", text)
 
-        text = element.get("text")
+            for placeholder in placeholders:
+                stripped_placeholder = placeholder.replace("{", "").replace("}", "")
+                if stripped_placeholder in survey_data:
+                    text = text.replace(placeholder, survey_data[stripped_placeholder])
 
-        for placeholder in placeholders:
-            stripped_placeholder = placeholder.replace("{", "").replace("}", "")
-            if stripped_placeholder in survey_data:
-                text = text.replace(placeholder, survey_data[stripped_placeholder])
-
-        return text
+            return text
