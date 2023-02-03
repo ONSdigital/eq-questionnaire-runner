@@ -7,6 +7,7 @@ from structlog import configure
 from structlog.dev import ConsoleRenderer
 from structlog.processors import JSONRenderer, TimeStamper, format_exc_info
 from structlog.stdlib import LoggerFactory, add_log_level
+from structlog.threadlocal import wrap_dict
 
 from app.utilities.json import json_dumps
 
@@ -54,6 +55,7 @@ def configure_logging():
     ]
 
     configure(
+        context_class=wrap_dict(dict),
         logger_factory=LoggerFactory(),
         processors=processors,
         cache_logger_on_first_use=True,
