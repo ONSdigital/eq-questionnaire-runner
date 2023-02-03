@@ -1427,3 +1427,34 @@ def test_all_answers_codes_for_answer_options_in_payload_when_one_is_answered(ve
         answer_code["answer_id"] == "mandatory-checkbox-answer"
         for answer_code in data_payload["answer_codes"]
     )
+
+
+@pytest.mark.parametrize(
+    "version",
+    (
+        None,
+        AuthPayloadVersion.V2,
+    ),
+)
+def test_no_answers_codes_in_payload_when_no_questions_answered(version):
+    questionnaire_store = get_questionnaire_store(version)
+
+    full_routing_path = [
+        RoutingPath(["mandatory-checkbox"], section_id="default-section")
+    ]
+
+    questionnaire_store.answer_store = AnswerStore()
+
+    schema = load_schema_from_name("test_answer_codes")
+
+    data_payload = get_payload_data(
+        questionnaire_store.answer_store,
+        questionnaire_store.list_store,
+        schema,
+        full_routing_path,
+        questionnaire_store.metadata,
+        questionnaire_store.response_metadata,
+    )
+
+    # Then
+    assert "answer_codes" not in data_payload

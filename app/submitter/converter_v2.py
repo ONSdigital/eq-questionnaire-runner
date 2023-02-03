@@ -132,7 +132,7 @@ def get_payload_data(
             full_routing_path=routing_path,
         )
 
-        data: dict[str, list[dict]] = {
+        data: dict[str, Union[list[Any]]] = {
             "answers": answers,
             "lists": list_store.serialize(),
         }
@@ -140,7 +140,7 @@ def get_payload_data(
         if answer_codes := schema.json.get("answer_codes"):
             answer_ids_to_filter = {answer.answer_id for answer in answers}
             if filtered_answer_codes := get_filtered_answer_codes(
-                answer_codes, answer_ids_to_filter
+                answer_codes=answer_codes, answer_ids_to_filter=answer_ids_to_filter
             ):
                 data["answer_codes"] = filtered_answer_codes
 
@@ -150,7 +150,7 @@ def get_payload_data(
 
 
 def get_filtered_answer_codes(
-    answer_codes: Iterable[dict], answer_ids_to_filter: set[str]
+    *, answer_codes: Iterable[dict], answer_ids_to_filter: set[str]
 ) -> list[dict[str, str]]:
     filtered_answer_codes: list[dict] = []
     filtered_answer_codes.extend(
