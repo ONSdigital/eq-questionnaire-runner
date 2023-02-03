@@ -99,16 +99,20 @@ class PlaceholderRenderer:
         return formatted_placeholder_data
 
     def render(
-        self, dict_to_render: Mapping[str, Any], list_item_id: Optional[str]
-    ) -> Mapping[str, Any]:
+        self, data_to_render: Mapping[str, Any], list_item_id: Optional[str]
+    ) -> dict[str, Any]:
         """
         Transform the current schema json to a fully rendered dictionary
         """
-        dict_to_render = QuestionnaireSchema.get_mutable_deepcopy(dict_to_render)
-        pointers = find_pointers_containing(dict_to_render, "placeholders")
+        data_to_render_mutable: dict[
+            str, Any
+        ] = QuestionnaireSchema.get_mutable_deepcopy(data_to_render)
+        pointers = find_pointers_containing(data_to_render_mutable, "placeholders")
 
         for pointer in pointers:
-            rendered_text = self.render_pointer(dict_to_render, pointer, list_item_id)
-            set_pointer(dict_to_render, pointer, rendered_text)
+            rendered_text = self.render_pointer(
+                data_to_render_mutable, pointer, list_item_id
+            )
+            set_pointer(data_to_render_mutable, pointer, rendered_text)
 
-        return dict_to_render
+        return data_to_render_mutable

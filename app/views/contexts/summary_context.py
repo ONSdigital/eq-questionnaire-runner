@@ -1,4 +1,6 @@
-from typing import Generator, Mapping, Optional, Union
+from typing import Any, Generator, Mapping, Optional, Union
+
+from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire.location import Location
 
@@ -24,7 +26,7 @@ class SummaryContext(Context):
 
     def _build_all_groups(
         self, return_to: Optional[str]
-    ) -> Generator[dict, None, None]:
+    ) -> Generator[ImmutableDict[str, Any], None, None]:
         """NB: Does not support repeating sections"""
 
         for section_id in self._router.enabled_section_ids:
