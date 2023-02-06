@@ -80,7 +80,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             self.assertTrue(UUID(kwargs["request_id"], version=4))
 
     def test_adds_logging_of_span_and_trace(self):
-        with patch("app.setup.logger") as logger:
+        with patch("structlog.contextvars.bind_contextvars") as bind_contextvars:
             self._setting_overrides.update({"EQ_APPLICATION_VERSION": False})
             application = create_app(self._setting_overrides)
 
@@ -89,8 +89,8 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             }
             application.test_client().get("/", headers=x_cloud_headers)
 
-            self.assertEqual(1, logger.bind.call_count)
-            _, kwargs = logger.bind.call_args
+            self.assertEqual(1, bind_contextvars.call_count)
+            _, kwargs = bind_contextvars.call_args
             self.assertTrue(kwargs["span"] == "0123456789012345678901")
             self.assertTrue(kwargs["trace"] == "0123456789")
 
