@@ -1,4 +1,12 @@
-def build_question_context(rendered_block, form):
+from typing import Any
+
+from app.forms.questionnaire_form import QuestionnaireForm
+from app.questionnaire import QuestionSchemaType
+
+
+def build_question_context(
+    rendered_block: dict[str, QuestionSchemaType], form: QuestionnaireForm
+) -> dict[str, Any]:
     question = rendered_block["question"]
 
     context = {

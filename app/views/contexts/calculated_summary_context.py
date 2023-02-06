@@ -1,6 +1,6 @@
 from copy import deepcopy
 from decimal import Decimal
-from typing import Callable, List, Mapping, Tuple, Union
+from typing import Any, Callable, Iterable, Mapping, Tuple, Union
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -22,10 +22,12 @@ from app.views.contexts.summary.group import Group
 
 class CalculatedSummaryContext(Context):
     def build_groups_for_section(
-        self, section: Mapping, return_to_block_id: str, current_location: Location
-    ) -> List[Group]:
+        self,
+        section: Mapping[str, Any],
+        return_to_block_id: str,
+        current_location: Location,
+    ) -> list[dict[str, Group]]:
         routing_path = self._router.routing_path(section["id"])
-
         return [
             Group(
                 group_schema=group,
@@ -46,12 +48,13 @@ class CalculatedSummaryContext(Context):
 
     def build_view_context_for_calculated_summary(
         self, current_location: Location
-    ) -> Mapping:
+    ) -> dict[str, dict[str, Any]]:
+
         # type ignores added as block will exist at this point
         block_id: str = current_location.block_id  # type: ignore
         block: ImmutableDict = self._schema.get_block(block_id)  # type: ignore
 
-        calculated_section = self._build_calculated_summary_section(
+        calculated_section: dict[str, Any] = self._build_calculated_summary_section(
             block, current_location
         )
         calculation = block["calculation"]
@@ -87,14 +90,14 @@ class CalculatedSummaryContext(Context):
         }
 
     def _build_calculated_summary_section(
-        self, rendered_block: ImmutableDict, current_location: Location
-    ) -> Mapping:
+        self, rendered_block: ImmutableDict[str, Any], current_location: Location
+    ) -> dict[str, Any]:
         """Build up the list of blocks only including blocks / questions / answers which are relevant to the summary"""
         # type ignores added as block will exist at this point
         block_id: str = current_location.block_id  # type: ignore
         group: ImmutableDict = self._schema.get_group_for_block_id(block_id)  # type: ignore
-
-        section_id = self._schema.get_section_id_for_block_id(block_id)
+        # type ignores it is not valid to not have a section at this point
+        section_id: str = self._schema.get_section_id_for_block_id(block_id)  # type: ignore
 
         blocks = []
         if rendered_block["calculation"].get("answers_to_calculate"):
@@ -126,12 +129,15 @@ class CalculatedSummaryContext(Context):
         return {"id": section_id, "groups": [{"id": group["id"], "blocks": blocks}]}
 
     def _remove_unwanted_questions_answers(
-        self, block, answer_ids_to_keep, current_location
-    ) -> str:
+        self,
+        block: Mapping[str, Any],
+        answer_ids_to_keep: Iterable[str],
+        current_location: Location,
+    ) -> dict[str, Any]:
         """
         Evaluates questions in a block and removes any questions not containing a relevant answer
         """
-        transformed_block = transform_variants(
+        transformed_block: dict[str, Any] = transform_variants(
             block,
             self._schema,
             self._metadata,
@@ -190,9 +196,9 @@ class CalculatedSummaryContext(Context):
 
     def _get_answer_format(
         self, groups: list, current_location: Location
-    ) -> Tuple[Mapping, list]:
+    ) -> Tuple[dict[str, Any], list]:
         values_to_calculate: list = []
-        answer_format: Mapping = {"type": None}
+        answer_format: dict = {"type": None}
         for group in groups:
             for block in group["blocks"]:
                 question = choose_question_to_display(
@@ -238,8 +244,10 @@ class CalculatedSummaryContext(Context):
 
     @staticmethod
     def _get_calculated_question(
-        calculation_question: ImmutableDict, formatted_total: str
-    ) -> Mapping:
+        calculation_question: ImmutableDict[str, Any],
+        formatted_total: str,
+    ) -> dict[str, Any]:
+
         calculation_title = calculation_question["title"]
 
         return {
