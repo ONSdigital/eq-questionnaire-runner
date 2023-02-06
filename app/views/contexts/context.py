@@ -20,7 +20,7 @@ class Context(ABC):
         progress_store: ProgressStore,
         metadata: Optional[MetadataProxy],
         response_metadata: Mapping,
-    ):
+    ) -> None:
         self._language = language
         self._schema = schema
         self._answer_store = answer_store
