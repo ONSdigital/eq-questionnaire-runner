@@ -2,6 +2,7 @@
 from datetime import datetime, timezone
 
 import pytest
+from werkzeug.datastructures import ImmutableDict
 
 from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.data_models.answer import Answer
@@ -1427,6 +1428,85 @@ def test_all_answers_codes_for_answer_options_in_payload_when_one_is_answered(ve
         answer_code["answer_id"] == "mandatory-checkbox-answer"
         for answer_code in data_payload["answer_codes"]
     )
+
+
+@pytest.mark.parametrize(
+    "version",
+    (
+        None,
+        AuthPayloadVersion.V2,
+    ),
+)
+def test_all_answers_codes_for_list_collector_questions(version):
+    questionnaire_store = get_questionnaire_store(version)
+
+    full_routing_path = [
+        RoutingPath(
+            [
+                "any-companies-or-branches",
+                "any-other-companies-or-branches",
+                "confirmation-checkbox",
+            ],
+            section_id="section-companies",
+        )
+    ]
+
+    questionnaire_store.list_store = ListStore(
+        existing_items=[
+            {
+                "name": "companies",
+                "items": [
+                    "company1",
+                ],
+            }
+        ]
+    )
+
+    questionnaire_store.answer_store = AnswerStore(
+        [
+            Answer(answer_id="any-companies-or-branches-answer", value="Yes").to_dict(),
+            Answer(
+                answer_id="company-or-branch-name", value="ABC", list_item_id="company1"
+            ).to_dict(),
+            Answer(
+                answer_id="registration-number", value="1", list_item_id="company1"
+            ).to_dict(),
+            Answer(
+                answer_id="authorised-insurer-radio",
+                value="No",
+                list_item_id="company1",
+            ).to_dict(),
+            Answer(
+                answer_id="any-other-companies-or-branches-answer", value="No"
+            ).to_dict(),
+            Answer(answer_id="confirmation-checkbox-answer", value="No").to_dict(),
+        ]
+    )
+
+    schema = load_schema_from_name("test_list_collector_section_summary")
+
+    data_payload = get_payload_data(
+        questionnaire_store.answer_store,
+        questionnaire_store.list_store,
+        schema,
+        full_routing_path,
+        questionnaire_store.metadata,
+        questionnaire_store.response_metadata,
+    )
+
+    expected_answer_codes = [
+        ImmutableDict({"answer_id": "any-companies-or-branches-answer", "code": "1"}),
+        ImmutableDict({"answer_id": "company-or-branch-name", "code": "1a"}),
+        ImmutableDict({"answer_id": "registration-number", "code": "1b"}),
+        ImmutableDict({"answer_id": "authorised-insurer-radio", "code": "1c"}),
+        ImmutableDict(
+            {"answer_id": "any-other-companies-or-branches-answer", "code": "2"}
+        ),
+        ImmutableDict({"answer_id": "confirmation-checkbox-answer", "code": "3"}),
+    ]
+
+    # Then
+    assert data_payload["answer_codes"] == expected_answer_codes
 
 
 @pytest.mark.parametrize(
