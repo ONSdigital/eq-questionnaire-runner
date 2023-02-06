@@ -17,7 +17,7 @@ from google.cloud import datastore
 from htmlmin.main import minify
 from jinja2 import ChainableUndefined
 from sdc.crypto.key_store import KeyStore, validate_required_keys
-from structlog import get_logger
+from structlog import contextvars, get_logger
 
 from app import settings
 from app.authentication.authenticator import login_manager
@@ -136,7 +136,7 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
 
         span, trace = get_span_and_trace(flask_request.headers)
         if span and trace:
-            logger.bind(span=span, trace=trace)
+            contextvars.bind_contextvars(span=span, trace=trace)
 
         logger.info(
             "request",
