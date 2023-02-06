@@ -1,18 +1,29 @@
+from typing import Any, Mapping, Optional, Union
+
 from flask import url_for
+
+from app.data_models.answer import AnswerValueEscapedTypes
+
+RadioCheckboxTypes = dict[str, Union[str, AnswerValueEscapedTypes, None]]
+DateRangeTypes = dict[str, Optional[AnswerValueEscapedTypes]]
+
+InferredAnswerValueTypes = Union[
+    None, DateRangeTypes, str, AnswerValueEscapedTypes, RadioCheckboxTypes
+]
 
 
 class Answer:
     def __init__(
         self,
         *,
-        answer_schema,
-        answer_value,
-        block_id,
-        list_name,
-        list_item_id,
-        return_to,
-        return_to_block_id,
-    ):
+        answer_schema: Mapping[str, str],
+        answer_value: InferredAnswerValueTypes,
+        block_id: str,
+        list_name: Optional[str],
+        list_item_id: Optional[str],
+        return_to: Optional[str],
+        return_to_block_id: Optional[str],
+    ) -> None:
         self.id = answer_schema["id"]
         self.label = answer_schema.get("label")
         self.value = answer_value
@@ -28,7 +39,7 @@ class Answer:
             return_to_block_id=return_to_block_id,
         )
 
-    def serialize(self):
+    def serialize(self) -> dict[str, Any]:
         return {
             "id": self.id,
             "label": self.label,
@@ -41,8 +52,14 @@ class Answer:
         }
 
     def _build_link(
-        self, *, block_id, list_name, list_item_id, return_to, return_to_block_id
-    ):
+        self,
+        *,
+        block_id: str,
+        list_name: Optional[str],
+        list_item_id: Optional[str],
+        return_to: Optional[str],
+        return_to_block_id: Optional[str],
+    ) -> str:
         return url_for(
             "questionnaire.block",
             list_name=list_name,

@@ -1,8 +1,9 @@
 from functools import cached_property
-from typing import List, Mapping, Union
+from typing import Any, Iterable, Mapping, Optional, Union
 
 from flask import url_for
 from flask_babel import lazy_gettext
+from werkzeug.datastructures import ImmutableDict
 
 from app.data_models.progress_store import CompletionStatus
 from app.views.contexts import Context
@@ -40,7 +41,9 @@ class HubContext(Context):
         },
     }
 
-    def __call__(self, survey_complete, enabled_section_ids) -> Mapping:
+    def __call__(
+        self, survey_complete: bool, enabled_section_ids: Iterable[str]
+    ) -> dict[str, Any]:
         rows = self._get_rows(enabled_section_ids)
 
         if survey_complete:
@@ -75,10 +78,14 @@ class HubContext(Context):
         }
 
     def get_row_context_for_section(
-        self, section_name: str, section_status: str, section_url: str, row_id: str
-    ) -> Mapping[str, Union[str, List]]:
+        self,
+        section_name: Optional[str],
+        section_status: str,
+        section_url: str,
+        row_id: str,
+    ) -> dict[str, Union[str, list]]:
         section_content = self.SECTION_CONTENT_STATES[section_status]
-        context: Mapping = {
+        context: dict = {
             "rowItems": [
                 {
                     "rowTitle": section_name,
@@ -108,7 +115,9 @@ class HubContext(Context):
         return context
 
     @staticmethod
-    def get_section_url(section_id, list_item_id, section_status) -> str:
+    def get_section_url(
+        section_id: str, list_item_id: Optional[str], section_status: str
+    ) -> str:
         if section_status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED:
             return url_for(
                 "individual_response.individual_response_change",
@@ -124,11 +133,15 @@ class HubContext(Context):
 
         return url_for("questionnaire.get_section", section_id=section_id)
 
-    def _get_row_for_repeating_section(self, section_id, list_item_id, list_item_index):
-        repeating_title = self._schema.get_repeating_title_for_section(section_id)
+    def _get_row_for_repeating_section(
+        self, section_id: str, list_item_id: str, list_item_index: Optional[int]
+    ) -> dict[str, Union[str, list]]:
+        # Type ignore: section id will be valid and repeat will be present at this stage
+        repeating_title: ImmutableDict = self._schema.get_repeating_title_for_section(section_id)  # type: ignore
 
-        title = self._placeholder_renderer.render_placeholder(
-            repeating_title, list_item_id
+        title: str = self._placeholder_renderer.render_placeholder(
+            repeating_title,
+            list_item_id,
         )
 
         return self._get_row_for_section(
@@ -136,8 +149,12 @@ class HubContext(Context):
         )
 
     def _get_row_for_section(
-        self, section_title, section_id, list_item_id=None, list_item_index=None
-    ):
+        self,
+        section_title: Optional[str],
+        section_id: str,
+        list_item_id: Optional[str] = None,
+        list_item_index: Optional[int] = None,
+    ) -> dict[str, Union[str, list]]:
         row_id = f"{section_id}-{list_item_index}" if list_item_index else section_id
 
         section_status = self._progress_store.get_section_status(
@@ -151,8 +168,10 @@ class HubContext(Context):
             row_id,
         )
 
-    def _get_rows(self, enabled_section_ids) -> List[Mapping[str, Union[str, List]]]:
-        rows: List[Mapping] = []
+    def _get_rows(
+        self, enabled_section_ids: Iterable[str]
+    ) -> list[dict[str, Union[str, list]]]:
+        rows: list[dict] = []
 
         for section_id in enabled_section_ids:
             show_on_hub = self._schema.get_show_on_hub_for_section(section_id)
