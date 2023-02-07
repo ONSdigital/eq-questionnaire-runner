@@ -1,7 +1,7 @@
-from tests.integration.integration_test_case import IntegrationTestCase
-from tests.integration.other.components.mutually_exclusive.schema_urls import (
+from tests.integration.components.mutually_exclusive.schema_urls import (
     MUTUALLY_EXCLUSIVE_TEXTFIELD,
 )
+from tests.integration.integration_test_case import IntegrationTestCase
 
 
 class TestTextFieldSingleCheckboxOverride(IntegrationTestCase):
