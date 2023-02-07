@@ -367,6 +367,7 @@ def relationships(
 @with_session_store
 @with_schema
 def get_thank_you(schema, session_store, questionnaire_store):
+    contextvars.clear_contextvars()
     thank_you = ThankYou(schema, session_store, questionnaire_store.submitted_at)
 
     if request.method == "POST":

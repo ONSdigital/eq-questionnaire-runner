@@ -53,3 +53,17 @@ class TestQuestionnaire(IntegrationTestCase):
 
         for output in logs.output:
             self.assertNotIn("questionnaire request", output)
+
+    def test_get_request_logs_output(self):
+        self.launchSurvey("test_hub_and_spoke")
+        with self.assertLogs() as logs:
+            self.get("/questionnaire/")
+            self.assertStatusOK()
+
+        for output in logs.output:
+            self.assertIn("questionnaire request", output)
+            self.assertIn("tx_id", output)
+            self.assertIn("ce_id", output)
+            self.assertIn("schema_name", output)
+            self.assertIn("method", output)
+            self.assertIn("url_path", output)
