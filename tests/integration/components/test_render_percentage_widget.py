@@ -32,6 +32,7 @@ class TestRenderPercentageWidget(IntegrationTestCase):
 
     def test_entering_valid_percentage_redirects_to_summary(self):
         self.post({"answer": "50"})
+        self.post({"answer-decimal": "5.5"})
         self.assertStatusOK()
         self.assertInUrl(SUBMIT_URL_PATH)
 
