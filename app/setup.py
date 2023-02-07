@@ -444,7 +444,6 @@ def setup_babel(application):
     application.babel = Babel(application)
     application.jinja_env.add_extension("jinja2.ext.i18n")
 
-    @application.babel.localeselector
     def get_locale():  # pylint: disable=unused-variable
         session = get_session_store()
 
@@ -453,10 +452,13 @@ def setup_babel(application):
 
         return None
 
-    @application.babel.timezoneselector
     def get_timezone():  # pylint: disable=unused-variable
         # For now regardless of locale we will show times in GMT/BST
         return "Europe/London"
+
+    application.babel.init_app(
+        application, locale_selector=get_locale, timezone_selector=get_timezone
+    )
 
 
 def setup_compression(application):
