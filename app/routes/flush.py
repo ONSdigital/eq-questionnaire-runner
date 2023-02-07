@@ -85,8 +85,8 @@ def _submit_data(user):
                 submitted_at,
                 flushed=True,
             )
-            if metadata.version is AuthPayloadVersion.V2 else
-            convert_answers(
+            if metadata.version is AuthPayloadVersion.V2
+            else convert_answers(
                 schema,
                 questionnaire_store,
                 full_routing_path,
