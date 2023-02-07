@@ -182,9 +182,9 @@ def get_format_date_range(start_date: Markup, end_date: Markup) -> Markup:
 
 
 @blueprint.app_context_processor
-def format_unit_processor() -> dict[
-    str, Callable[[str, Union[int, Decimal], str], str]
-]:
+def format_unit_processor() -> (
+    dict[str, Callable[[str, Union[int, Decimal], str], str]]
+):
     return dict(format_unit=format_unit)
 
 
@@ -453,7 +453,6 @@ class SummaryRowItem:
         edit_link_aria_label: str,
         summary_type: str,
     ) -> None:
-
         if "type" in answer:
             answer_type = answer["type"]
         else:
@@ -576,7 +575,6 @@ def map_summary_item_config(
     calculated_question: Optional[dict[str, list]],
     icon: Optional[str] = None,
 ) -> list[Union[dict[str, list], SummaryRow]]:
-
     rows: list[Union[dict[str, list], SummaryRow]] = []
 
     for block in group["blocks"]:

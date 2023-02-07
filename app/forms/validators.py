@@ -474,7 +474,6 @@ class MutuallyExclusiveCheck:
         is_mandatory: bool,
         is_only_checkboxes_or_radios: bool,
     ) -> None:
-
         total_answered = sum(
             value not in QuestionnaireStoreUpdater.EMPTY_ANSWER_VALUES
             for value in answer_values

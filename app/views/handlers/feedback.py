@@ -133,7 +133,6 @@ class Feedback:
 
     @cached_property
     def question_schema(self) -> Mapping[str, Union[str, list]]:
-
         return {
             "type": "General",
             "id": "feedback",

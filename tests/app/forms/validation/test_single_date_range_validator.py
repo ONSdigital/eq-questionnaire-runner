@@ -27,7 +27,6 @@ from app.questionnaire.rules.utils import parse_datetime
 def test_single_date_period_invalid_raises_ValidationError(
     validator, data, error_type, error_message, mock_form, mock_field
 ):
-
     mock_form.data = data
 
     with pytest.raises(ValidationError) as exc:
