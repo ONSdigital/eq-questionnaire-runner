@@ -136,8 +136,6 @@ jobs:
             sudo dpkg -i wkhtmltox_0.12.6-1.bionic_amd64.deb
       - name: Write app version
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
-      - name: Install pipenv
-        run: pip install pipenv==2022.11.30
       - name: Cache virtualenv
         id: cache-virtualenv
         uses: actions/cache@v3
