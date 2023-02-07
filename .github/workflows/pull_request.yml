@@ -58,7 +58,7 @@ jobs:
         if: steps.cache-yarn.outputs.cache-hit != 'true'
         run: yarn
   lint:
-    needs: [python-dependencies, node-dependencies]
+    needs: python-dependencies
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -68,6 +68,9 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pipenv'
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "14.19.0"
       - name: Install apt dependencies
         run: |
             sudo apt-get install libsnappy-dev libgconf-2-4 jq
