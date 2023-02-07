@@ -7,9 +7,13 @@ from structlog import get_logger
 
 from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.authentication.user import User
+from app.data_models import QuestionnaireStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_answer_store, get_metadata, get_questionnaire_store
 from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.router import Router
+from app.questionnaire.routing_path import RoutingPath
 from app.submitter.converter import convert_answers
 from app.submitter.converter_v2 import convert_answers_v2
 from app.submitter.submission_failed import SubmissionFailedException
@@ -77,22 +81,8 @@ def _submit_data(user):
         )
         full_routing_path = router.full_routing_path()
 
-        message = json_dumps(
-            convert_answers_v2(
-                schema,
-                questionnaire_store,
-                full_routing_path,
-                submitted_at,
-                flushed=True,
-            )
-            if metadata.version is AuthPayloadVersion.V2
-            else convert_answers(
-                schema,
-                questionnaire_store,
-                full_routing_path,
-                submitted_at,
-                flushed=True,
-            )
+        message: str = _get_converted_answers_message(
+            full_routing_path, metadata, questionnaire_store, schema, submitted_at
         )
 
         encrypted_message = encrypt(
@@ -117,6 +107,35 @@ def _submit_data(user):
 
     logger.info("no answers found to flush")
     return False
+
+
+def _get_converted_answers_message(
+    full_routing_path: RoutingPath,
+    metadata: MetadataProxy,
+    questionnaire_store: QuestionnaireStore,
+    schema: QuestionnaireSchema,
+    submitted_at: datetime,
+) -> str:
+    """
+    This gets converted answer message based on the selected version.
+    For version 1 `app.submitter.converter.convert_answers` is used whereas for version 2 `app.submitter.converter_v2.convert_answers_v2` is used
+    Returns:
+        object: str
+    """
+    answer_converter = (
+        convert_answers_v2
+        if metadata.version is AuthPayloadVersion.V2
+        else convert_answers
+    )
+    return json_dumps(
+        answer_converter(
+            schema,
+            questionnaire_store,
+            full_routing_path,
+            submitted_at,
+            flushed=True,
+        )
+    )
 
 
 def _get_user(response_id):
