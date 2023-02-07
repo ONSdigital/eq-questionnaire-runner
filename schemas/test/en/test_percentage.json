@@ -56,7 +56,29 @@
                                     }
                                 ],
                                 "id": "question",
-                                "title": "Title",
+                                "title": "Enter a percentage",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "block-decimal",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "description": "Enter percentage of growth",
+                                        "id": "answer-decimal",
+                                        "label": "New to the market 2012-2014",
+                                        "mandatory": false,
+                                        "type": "Percentage",
+                                        "maximum": {
+                                            "value": 100
+                                        },
+                                        "decimal_places": 3
+                                    }
+                                ],
+                                "id": "question-decimal",
+                                "title": "Enter a percentage with up to 3 decimal places",
                                 "type": "General"
                             }
                         }

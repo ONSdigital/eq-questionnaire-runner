@@ -32,6 +32,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         self.launchSurvey("test_percentage")
         # When
         self.post({"answer": ""})
+        self.post({"answer-decimal": ""})
         # Then
         self.assertEqualPageTitle(
             "Check your answers and submit - Percentage Field Demo"

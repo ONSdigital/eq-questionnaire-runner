@@ -494,7 +494,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self, section_id: str
     ) -> Optional[ImmutableDict]:
         if repeat := self.get_repeat_for_section(section_id):
-            return repeat.get("title")
+            title: ImmutableDict = repeat["title"]
+            return title
 
     def get_repeating_page_title_for_section(self, section_id: str) -> Optional[str]:
         if repeat := self.get_repeat_for_section(section_id):
@@ -929,7 +930,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         if summary := self.get_summary_for_section(section_id):
             for item in summary.get("items", []):
                 if item["for_list"] == list_name and item.get("item_label"):
-
                     return str(item["item_label"])
 
     def get_item_anchor(self, section_id: str, list_name: str) -> Optional[str]:
