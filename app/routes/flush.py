@@ -5,11 +5,13 @@ from sdc.crypto.decrypter import decrypt
 from sdc.crypto.encrypter import encrypt
 from structlog import get_logger
 
+from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.authentication.user import User
 from app.globals import get_answer_store, get_metadata, get_questionnaire_store
 from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
 from app.questionnaire.router import Router
 from app.submitter.converter import convert_answers
+from app.submitter.converter_v2 import convert_answers_v2
 from app.submitter.submission_failed import SubmissionFailedException
 from app.utilities.json import json_dumps
 from app.utilities.schema import load_schema_from_metadata
@@ -76,6 +78,14 @@ def _submit_data(user):
         full_routing_path = router.full_routing_path()
 
         message = json_dumps(
+            convert_answers_v2(
+                schema,
+                questionnaire_store,
+                full_routing_path,
+                submitted_at,
+                flushed=True,
+            )
+            if metadata.version is AuthPayloadVersion.V2 else
             convert_answers(
                 schema,
                 questionnaire_store,

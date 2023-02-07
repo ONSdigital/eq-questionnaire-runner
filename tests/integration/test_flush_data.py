@@ -32,7 +32,7 @@ class TestFlushData(IntegrationTestCase):
     def test_flush_data_successful(self):
         self.post(
             url="/flush?token="
-            + self.token_generator.generate_token(self.get_payload())
+                + self.token_generator.generate_token(self.get_payload())
         )
         self.assertStatusOK()
 
@@ -63,14 +63,14 @@ class TestFlushData(IntegrationTestCase):
     def test_double_flush(self):
         self.post(
             url="/flush?token="
-            + self.token_generator.generate_token(self.get_payload())
+                + self.token_generator.generate_token(self.get_payload())
         )
 
         # Once the data has been flushed it is wiped.
         # It can't be flushed again and should return 404 no data on second flush
         self.post(
             url="/flush?token="
-            + self.token_generator.generate_token(self.get_payload())
+                + self.token_generator.generate_token(self.get_payload())
         )
         self.assertStatusCode(404)
 
@@ -89,14 +89,14 @@ class TestFlushData(IntegrationTestCase):
 
         self.post(
             url="/flush?token="
-            + self.token_generator.generate_token(self.get_payload())
+                + self.token_generator.generate_token(self.get_payload())
         )
         self.assertStatusCode(500)
 
     def test_flush_sets_flushed_flag_to_true(self):
         self.post(
             url="/flush?token="
-            + self.token_generator.generate_token(self.get_payload())
+                + self.token_generator.generate_token(self.get_payload())
         )
 
         self.encrypt_instance.assert_called_once()  # pylint: disable=no-member
@@ -113,3 +113,90 @@ class TestFlushData(IntegrationTestCase):
             "response_id": "1234567890123456",
             "roles": ["flusher"],
         }
+
+    @patch("app.routes.flush.convert_answers_v2")
+    @patch("app.routes.flush.convert_answers")
+    def test_flush_data_successful_v1(self, mock_convert_answers, mock_convert_answers_v2):
+        mock_convert_answer_payload = {
+            "case_id": "7e0fd167-36af-4506-806d-421e5ba3544b",
+            "tx_id": "5432e910-c6ef-418a-abcc-a8de8c23b0f9",
+            "type": "uk.gov.ons.edc.eq:surveyresponse",
+            "version": "0.0.3",
+            "origin": "uk.gov.ons.edc.eq",
+            "survey_id": "001",
+            "flushed": True,
+            "submitted_at": "2023-02-07T11:41:12.126783+00:00",
+            "collection": {
+                "exercise_sid": "f9fb5e81-9820-44cc-a2c3-16bf382b4d8d",
+                "schema_name": "test_textfield",
+                "period": "201605"
+            },
+            "metadata": {
+                "user_id": "UNKNOWN",
+                "ru_ref": "12346789012A"
+            },
+            "launch_language_code": "en",
+            "data": {
+                "answers": [
+                    {
+                        "answer_id": "name-answer",
+                        "value": "sdfsdaf"
+                    }
+                ],
+                "lists": []
+            },
+            "started_at": "2023-02-07T11:40:46.845149+00:00"
+        }
+        mock_convert_answers.return_value = mock_convert_answer_payload
+        self.post(
+            url="/flush?token="
+                + self.token_generator.generate_token(self.get_payload())
+        )
+        self.assertStatusOK()
+        mock_convert_answers.assert_called_once()
+        mock_convert_answers_v2.assert_not_called()
+
+    @patch("app.routes.flush.convert_answers_v2")
+    @patch("app.routes.flush.convert_answers")
+    def test_flush_data_successful_v2(self, mock_convert_answers, mock_convert_answers_v2):
+        mock_convert_answer_payload = {
+            "case_id": "19300487-87e7-42df-9330-718efb08e660",
+            "tx_id": "5d8b97f7-c8bd-42e1-88c9-e7721388463b",
+            "type": "uk.gov.ons.edc.eq:surveyresponse",
+            "version": "v2",
+            "data_version": "0.0.3",
+            "origin": "uk.gov.ons.edc.eq",
+            "collection_exercise_sid": "1eeb58ec-bae7-414d-a02e-5c3c23052dc7",
+            "schema_name": "test_textfield",
+            "flushed": True,
+            "submitted_at": "2023-02-07T11:42:59.575214+00:00",
+            "launch_language_code": "en",
+            "survey_metadata": {
+                "survey_id": "001",
+                "period_id": "201605",
+                "ru_name": "ESSENTIAL ENTERPRISE LTD.",
+                "user_id": "UNKNOWN",
+                "ru_ref": "12346789012A"
+            },
+            "data": {
+                "answers": [
+                    {
+                        "answer_id": "name-answer",
+                        "value": "sdfsdf"
+                    }
+                ],
+                "lists": []
+            },
+            "started_at": "2023-02-07T11:42:32.380784+00:00"
+        }
+        self.launchSurveyV2("test_textfield")
+        form_data = {"name-answer": "Joe Bloggs"}
+        self.post(form_data)
+        mock_convert_answers_v2.return_value = mock_convert_answer_payload
+        self.post(
+            url="/flush?token="
+                + self.token_generator.generate_token(self.get_payload())
+        )
+        self.assertStatusOK()
+        mock_convert_answers_v2.assert_called_once()
+        mock_convert_answers.assert_not_called()
