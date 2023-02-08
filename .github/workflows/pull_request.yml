@@ -60,14 +60,7 @@ jobs:
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
       - name: Install pipenv
         run: pip install pipenv==2022.11.30
-      - name: Cache virtualenv
-        id: cache-virtualenv
-        uses: actions/cache@v3
-        with:
-          path: ~/.local/share/virtualenvs/
-          key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('Pipfile.lock') }}
       - name: Install virtual environment
-        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: pipenv install --dev
       - name: Load templates
         run: make load-design-system-templates
