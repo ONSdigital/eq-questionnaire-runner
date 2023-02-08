@@ -8,7 +8,7 @@ verify_ssl = true
 mock = "*"
 pytest-cov = "*"
 jsonschema = "*"
-pylint = "==2.15.9"
+pylint = "*"
 pylint-mccabe = "*"
 pylint-quotes = "*"
 "beautifulsoup4" = "*"
