@@ -60,8 +60,7 @@ class PlaceholderTransforms:
     @staticmethod
     def format_list(list_to_format: Sequence[str]) -> str:
         formatted_list = "<ul>"
-        for item in list_to_format:
-            formatted_list += f"<li>{item}</li>"
+        formatted_list += "".join([f"<li>{item}</li>" for item in list_to_format])
         formatted_list += "</ul>"
         return formatted_list
 
