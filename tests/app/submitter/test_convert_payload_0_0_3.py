@@ -1351,3 +1351,110 @@ def test_relationship_answers_not_on_path_in_payload(version):
     assert ("related-to-anyone-else-answer", "person1") in answers
     relationships_answer = answers[("relationship-answer", None)]
     assert expected_relationships_answer == relationships_answer["value"]
+
+
+@pytest.mark.parametrize(
+    "version",
+    (
+        None,
+        AuthPayloadVersion.V2,
+    ),
+)
+def test_answers_codes_only_present_for_answered_questions(version):
+    questionnaire_store = get_questionnaire_store(version)
+
+    full_routing_path = [
+        RoutingPath(["mandatory-checkbox", "name-block"], section_id="default-section")
+    ]
+
+    questionnaire_store.answer_store = AnswerStore(
+        [
+            Answer("name-answer", "Joe Bloggs", None).to_dict(),
+        ]
+    )
+
+    schema = load_schema_from_name("test_answer_codes")
+
+    data_payload = get_payload_data(
+        questionnaire_store.answer_store,
+        questionnaire_store.list_store,
+        schema,
+        full_routing_path,
+        questionnaire_store.metadata,
+        questionnaire_store.response_metadata,
+    )
+
+    # Then
+    assert len(data_payload["answer_codes"]) == 1
+    assert data_payload["answer_codes"][0]["answer_id"] == "name-answer"
+    assert data_payload["answer_codes"][0]["code"] == "2"
+
+
+@pytest.mark.parametrize(
+    "version",
+    (
+        None,
+        AuthPayloadVersion.V2,
+    ),
+)
+def test_all_answers_codes_for_answer_options_in_payload_when_one_is_answered(version):
+    questionnaire_store = get_questionnaire_store(version)
+
+    full_routing_path = [
+        RoutingPath(["mandatory-checkbox"], section_id="default-section")
+    ]
+
+    questionnaire_store.answer_store = AnswerStore(
+        [
+            Answer("mandatory-checkbox-answer", ["Ham"]).to_dict(),
+        ]
+    )
+
+    schema = load_schema_from_name("test_answer_codes")
+
+    data_payload = get_payload_data(
+        questionnaire_store.answer_store,
+        questionnaire_store.list_store,
+        schema,
+        full_routing_path,
+        questionnaire_store.metadata,
+        questionnaire_store.response_metadata,
+    )
+
+    # Then
+    assert len(data_payload["answer_codes"]) == 5
+    assert all(
+        answer_code["answer_id"] == "mandatory-checkbox-answer"
+        for answer_code in data_payload["answer_codes"]
+    )
+
+
+@pytest.mark.parametrize(
+    "version",
+    (
+        None,
+        AuthPayloadVersion.V2,
+    ),
+)
+def test_no_answers_codes_in_payload_when_no_questions_answered(version):
+    questionnaire_store = get_questionnaire_store(version)
+
+    full_routing_path = [
+        RoutingPath(["mandatory-checkbox"], section_id="default-section")
+    ]
+
+    questionnaire_store.answer_store = AnswerStore()
+
+    schema = load_schema_from_name("test_answer_codes")
+
+    data_payload = get_payload_data(
+        questionnaire_store.answer_store,
+        questionnaire_store.list_store,
+        schema,
+        full_routing_path,
+        questionnaire_store.metadata,
+        questionnaire_store.response_metadata,
+    )
+
+    # Then
+    assert "answer_codes" not in data_payload
