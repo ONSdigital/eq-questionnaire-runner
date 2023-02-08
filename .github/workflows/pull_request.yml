@@ -101,7 +101,7 @@ jobs:
         run: yarn lint
   test-unit:
     needs: python-dependencies
-    runs-on: ubuntu-20.04-4core
+    runs-on: ubuntu-latest-4-cores
     steps:
       - uses: actions/checkout@v3
       - run: |
