@@ -46,15 +46,18 @@ jobs:
     needs: python-dependencies
     runs-on: ubuntu-22.04
     steps:
+      - uses: actions/checkout@v3
+      - run: |
+          echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pipenv'
       - uses: actions/setup-node@v3
         with:
           node-version: "14.19.0"
       - name: Write app version
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
-      - name: Install pipenv
-        run: pip install pipenv==2022.11.30
-      - name: Install virtual environment
-        run: pipenv install --dev
       - name: Load templates
         run: make load-design-system-templates
       - name: Compile translations
