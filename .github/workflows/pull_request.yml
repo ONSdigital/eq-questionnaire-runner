@@ -9,7 +9,7 @@ on:
       - "feature-*"
 
 concurrency:
-  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
+  group: '${{ github.ref_name }}'
   cancel-in-progress: true
 
 jobs:
@@ -20,6 +20,8 @@ jobs:
         run: echo '${{ toJSON(github.ref) }}'
       - name: Dump head ref context
         run: echo '${{ toJSON(github.head_ref) }}'
+      - name: Dump head ref context
+        run: echo '${{ toJSON(github.ref_name) }}'
   python-dependencies:
     runs-on: ubuntu-22.04
     steps:
