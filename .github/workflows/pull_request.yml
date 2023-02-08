@@ -13,6 +13,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  dump_contexts_to_log:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump ref context
+        run: echo '${{ toJSON(github.ref) }}'
+      - name: Dump head ref context
+        run: echo '${{ toJSON(github.head_ref) }}'
   python-dependencies:
     runs-on: ubuntu-22.04
     steps:
