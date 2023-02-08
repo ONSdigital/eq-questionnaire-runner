@@ -12,6 +12,10 @@ MAX_REPEATS = 25
 logger = logging.getLogger(__name__)
 
 
+class InvalidWhenRule(Exception):
+    pass
+
+
 def evaluate_comparison_rule(when, answer_value, comparison_value):
     """
     Determine whether a comparison rule will be satisfied based on an
@@ -227,7 +231,7 @@ def _get_when_rule_value(
     elif "list" in when_rule:
         value = get_list_count(list_store, when_rule["list"])
     else:
-        raise Exception("The when rule is invalid")
+        raise InvalidWhenRule("The when rule is invalid")
 
     return value
 

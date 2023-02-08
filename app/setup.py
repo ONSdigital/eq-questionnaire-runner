@@ -87,6 +87,14 @@ compress = Compress()
 logger = get_logger()
 
 
+class MissingEnvironmentVariable(Exception):
+    pass
+
+
+class UnknownEnviormentVariable(Exception):
+    pass
+
+
 class AWSReverseProxied:
     def __init__(self, app):
         self.app = app
@@ -291,7 +299,7 @@ def setup_storage(application):
     elif application.config["EQ_STORAGE_BACKEND"] == "dynamodb":
         setup_dynamodb(application)
     else:
-        raise Exception("Unknown EQ_STORAGE_BACKEND")
+        raise UnknownEnviormentVariable("Unknown EQ_STORAGE_BACKEND")
 
     setup_redis(application)
 
@@ -331,7 +339,9 @@ def setup_submitter(application):
         bucket_name = application.config.get("EQ_GCS_SUBMISSION_BUCKET_ID")
 
         if not bucket_name:
-            raise Exception("Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing")
+            raise MissingEnvironmentVariable(
+                "Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing"
+            )
 
         application.eq["submitter"] = GCSSubmitter(bucket_name=bucket_name)
 
@@ -340,9 +350,11 @@ def setup_submitter(application):
         secondary_host = application.config.get("EQ_RABBITMQ_HOST_SECONDARY")
 
         if not host:
-            raise Exception("Setting EQ_RABBITMQ_HOST Missing")
+            raise MissingEnvironmentVariable("Setting EQ_RABBITMQ_HOST Missing")
         if not secondary_host:
-            raise Exception("Setting EQ_RABBITMQ_HOST_SECONDARY Missing")
+            raise MissingEnvironmentVariable(
+                "Setting EQ_RABBITMQ_HOST_SECONDARY Missing"
+            )
 
         application.eq["submitter"] = RabbitMQSubmitter(
             host=host,
@@ -361,7 +373,7 @@ def setup_submitter(application):
         application.eq["submitter"] = LogSubmitter()
 
     else:
-        raise Exception("Unknown EQ_SUBMISSION_BACKEND")
+        raise UnknownEnviormentVariable("Unknown EQ_SUBMISSION_BACKEND")
 
 
 def setup_task_client(application):
@@ -370,7 +382,7 @@ def setup_task_client(application):
     elif application.config["EQ_SUBMISSION_CONFIRMATION_BACKEND"] == "log":
         application.eq["cloud_tasks"] = LogCloudTaskPublisher()
     else:
-        raise Exception("Unknown EQ_SUBMISSION_CONFIRMATION_BACKEND")
+        raise UnknownEnviormentVariable("Unknown EQ_SUBMISSION_CONFIRMATION_BACKEND")
 
 
 def setup_publisher(application):
@@ -381,7 +393,7 @@ def setup_publisher(application):
         application.eq["publisher"] = LogPublisher()
 
     else:
-        raise Exception("Unknown EQ_PUBLISHER_BACKEND")
+        raise UnknownEnviormentVariable("Unknown EQ_PUBLISHER_BACKEND")
 
 
 def setup_feedback(application):
@@ -389,7 +401,9 @@ def setup_feedback(application):
         bucket_name = application.config.get("EQ_GCS_FEEDBACK_BUCKET_ID")
 
         if not bucket_name:
-            raise Exception("Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing")
+            raise MissingEnvironmentVariable(
+                "Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing"
+            )
 
         application.eq["feedback_submitter"] = GCSFeedbackSubmitter(
             bucket_name=bucket_name
@@ -398,7 +412,7 @@ def setup_feedback(application):
     elif application.config["EQ_FEEDBACK_BACKEND"] == "log":
         application.eq["feedback_submitter"] = LogFeedbackSubmitter()
     else:
-        raise Exception("Unknown EQ_FEEDBACK_BACKEND")
+        raise UnknownEnviormentVariable("Unknown EQ_FEEDBACK_BACKEND")
 
 
 def add_blueprints(application):
