@@ -46,13 +46,6 @@ jobs:
     needs: python-dependencies
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
-      - run: |
-          echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
-      - uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'pipenv'
       - uses: actions/setup-node@v3
         with:
           node-version: "14.19.0"
