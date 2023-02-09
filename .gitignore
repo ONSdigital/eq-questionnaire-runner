@@ -19,6 +19,7 @@ sdist
 develop-eggs
 .installed.cfg
 lib64
+.yarn/cache
 
 # Installer logs
 pip-log.txt
