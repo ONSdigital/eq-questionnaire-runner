@@ -316,8 +316,8 @@ class Router:
                 )
         return full_routing_path
 
-    def _is_block_complete(
-        self, block_id: str, section_id: str, list_item_id: str
+    def is_block_complete(
+        self, *, block_id: str, section_id: str, list_item_id: str
     ) -> bool:
         return block_id in self._progress_store.get_completed_block_ids(
             section_id, list_item_id
@@ -327,8 +327,10 @@ class Router:
         self, routing_path: RoutingPath
     ) -> Optional[Location]:
         for block_id in routing_path:
-            if not self._is_block_complete(
-                block_id, routing_path.section_id, routing_path.list_item_id
+            if not self.is_block_complete(
+                block_id=block_id,
+                section_id=routing_path.section_id,
+                list_item_id=routing_path.list_item_id,
             ):
                 return Location(
                     block_id=block_id,
@@ -347,8 +349,10 @@ class Router:
             for block_id in routing_path:
                 allowable_path.append(block_id)
 
-                if not self._is_block_complete(
-                    block_id, routing_path.section_id, routing_path.list_item_id
+                if not self.is_block_complete(
+                    block_id=block_id,
+                    section_id=routing_path.section_id,
+                    list_item_id=routing_path.list_item_id,
                 ):
                     return allowable_path
 
