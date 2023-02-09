@@ -1,5 +1,7 @@
 from . import SUBMIT_URL_PATH, QuestionnaireTestCase
 
+# pylint: disable=too-many-public-methods
+
 
 class TestQuestionnaireListCollector(QuestionnaireTestCase):
     def get_add_someone_link(self):
@@ -320,3 +322,287 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
         self.get(first_person_remove_link)
 
         self.assertInBody("Are you sure you want to remove this person?")
+
+    def test_adding_from_the_summary_page_adds_the_return_to_param_to_the_url(
+        self,
+    ):
+        self.launchSurvey("test_list_collector")
+
+        self.assertInBody("Does anyone else live here?")
+
+        self.post({"anyone-else": "Yes"})
+
+        self.add_person("Marie Claire", "Doe")
+
+        self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
+
+        self.post({"anyone-else": "No"})
+
+        self.post()
+
+        self.post({"another-anyone-else": "No"})
+
+        self.assertInBody("List Collector Summary")
+
+        # Make another mistake
+
+        add_link = self.get_add_someone_link()
+
+        self.get(add_link)
+
+        self.assertInUrl("?return_to=section-summary")
+
+    def test_removing_from_the_summary_page_adds_the_return_to_param_to_the_url(
+        self,
+    ):
+        self.launchSurvey("test_list_collector")
+
+        self.assertInBody("Does anyone else live here?")
+
+        self.post({"anyone-else": "Yes"})
+
+        self.add_person("Marie Claire", "Doe")
+
+        self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
+
+        self.post({"anyone-else": "No"})
+
+        self.post()
+
+        self.post({"another-anyone-else": "No"})
+
+        self.assertInBody("List Collector Summary")
+
+        # Make another mistake
+
+        remove_link = self.get_link("remove", 1)
+
+        self.get(remove_link)
+
+        self.assertInUrl("?return_to=section-summary")
+
+    def test_changing_item_from_the_summary_page_adds_the_return_to_param_to_the_url(
+        self,
+    ):
+        self.launchSurvey("test_list_collector")
+
+        self.assertInBody("Does anyone else live here?")
+
+        self.post({"anyone-else": "Yes"})
+
+        self.add_person("Marie Claire", "Doe")
+
+        self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
+
+        self.post({"anyone-else": "No"})
+
+        self.post()
+
+        self.post({"another-anyone-else": "No"})
+
+        self.assertInBody("List Collector Summary")
+
+        change_link = self.get_link("change", 1)
+
+        self.get(change_link)
+
+        self.assertInUrl("?return_to=section-summary")
+
+    def test_adding_from_the_summary_page_and_then_removing_from_parent_page_keeps_return_to_url_param(
+        self,
+    ):
+        self.launchSurvey("test_list_collector")
+
+        self.assertInBody("Does anyone else live here?")
+
+        self.post({"anyone-else": "Yes"})
+
+        self.add_person("Marie Claire", "Doe")
+
+        self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
+
+        self.post({"anyone-else": "No"})
+
+        self.post()
+
+        self.post({"another-anyone-else": "No"})
+
+        self.assertInBody("List Collector Summary")
+
+        # Add another one form the summary
+
+        add_link = self.get_add_someone_link()
+
+        self.get(add_link)
+
+        self.add_person("Don", "Page")
+
+        self.assertInSelector("Don Page", "[data-qa='list-item-2-label']")
+
+        remove_link = self.get_link("remove", 2)
+
+        self.get(remove_link)
+
+        self.assertInUrl("?return_to=section-summary")
+
+        self.post({"remove-confirmation": "Yes"})
+
+        self.assertInUrl("?return_to=section-summary")
+
+    def test_adding_from_the_summary_page_and_then_changing_from_parent_page_keeps_return_to_url_param(
+        self,
+    ):
+        self.launchSurvey("test_list_collector")
+
+        self.assertInBody("Does anyone else live here?")
+
+        self.post({"anyone-else": "Yes"})
+
+        self.add_person("Marie Claire", "Doe")
+
+        self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
+
+        self.post({"anyone-else": "No"})
+
+        self.post()
+
+        self.post({"another-anyone-else": "No"})
+
+        self.assertInBody("List Collector Summary")
+
+        # Add another one form the summary
+
+        add_link = self.get_add_someone_link()
+
+        self.get(add_link)
+
+        self.add_person("Don", "Page")
+
+        self.assertInSelector("Don Page", "[data-qa='list-item-2-label']")
+
+        change_link = self.get_link("change", 2)
+
+        self.get(change_link)
+
+        self.assertInUrl("?return_to=section-summary")
+
+        self.post({"first-name": "Another", "last-name": "Name"})
+
+        self.assertInUrl("?return_to=section-summary")
+
+    def test_adding_from_the_summary_page_and_then_clicking_previous_link_from_edit_question_block_persists_return_to_url_param(
+        self,
+    ):
+        self.launchSurvey("test_list_collector")
+
+        self.assertInBody("Does anyone else live here?")
+
+        self.post({"anyone-else": "Yes"})
+
+        self.add_person("Marie Claire", "Doe")
+
+        self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
+
+        self.post({"anyone-else": "No"})
+
+        self.post()
+
+        self.post({"another-anyone-else": "No"})
+
+        self.assertInBody("List Collector Summary")
+
+        # Add another one form the summary
+
+        add_link = self.get_add_someone_link()
+
+        self.get(add_link)
+
+        self.add_person("Don", "Page")
+
+        self.assertInSelector("Don Page", "[data-qa='list-item-2-label']")
+
+        change_link = self.get_link("change", 2)
+
+        self.get(change_link)
+
+        self.previous()
+
+        self.assertInUrl("?return_to=section-summary")
+
+    def test_adding_from_the_summary_page_and_then_clicking_previous_link_from_remove_question_block_persists_return_to_url_param(
+        self,
+    ):
+        self.launchSurvey("test_list_collector")
+
+        self.assertInBody("Does anyone else live here?")
+
+        self.post({"anyone-else": "Yes"})
+
+        self.add_person("Marie Claire", "Doe")
+
+        self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
+
+        self.post({"anyone-else": "No"})
+
+        self.post()
+
+        self.post({"another-anyone-else": "No"})
+
+        self.assertInBody("List Collector Summary")
+
+        # Add another one form the summary
+
+        add_link = self.get_add_someone_link()
+
+        self.get(add_link)
+
+        self.add_person("Don", "Page")
+
+        self.assertInSelector("Don Page", "[data-qa='list-item-2-label']")
+
+        remove_link = self.get_link("remove", 2)
+
+        self.get(remove_link)
+
+        self.previous()
+
+        self.assertInUrl("?return_to=section-summary")
+
+    def test_adding_from_the_summary_page_and_then_adding_again_from_list_collector_persists_the_return_to_url_param(
+        self,
+    ):
+        self.launchSurvey("test_list_collector")
+
+        self.assertInBody("Does anyone else live here?")
+
+        self.post({"anyone-else": "Yes"})
+
+        self.add_person("Marie Claire", "Doe")
+
+        self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
+
+        self.post({"anyone-else": "No"})
+
+        self.post()
+
+        self.post({"another-anyone-else": "No"})
+
+        self.assertInBody("List Collector Summary")
+
+        # Add another one form the summary
+
+        add_link = self.get_add_someone_link()
+
+        self.get(add_link)
+
+        self.add_person("Don", "Page")
+
+        self.assertInSelector("Don Page", "[data-qa='list-item-2-label']")
+
+        self.post({"anyone-else": "Yes"})
+
+        self.assertInUrl("?return_to=section-summary")
+
+        self.add_person("Another", "Person")
+
+        self.assertInUrl("?return_to=section-summary")
