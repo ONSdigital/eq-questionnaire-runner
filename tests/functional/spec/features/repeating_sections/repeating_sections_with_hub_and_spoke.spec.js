@@ -165,12 +165,19 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       $(VisitorsListCollectorAddPage.firstName()).setValue("Joe");
       $(VisitorsListCollectorAddPage.lastName()).setValue("Public");
       $(VisitorsListCollectorAddPage.submit()).click();
+      expect(browser.getUrl()).to.contain("/questionnaire/visitors-block");
 
       // Add second visitor
-      $(SectionSummaryPage.visitorListAddLink()).click();
+      $(VisitorsListCollectorPage.yes()).click();
+      $(VisitorsListCollectorPage.submit()).click();
       $(VisitorsListCollectorAddPage.firstName()).setValue("Yvonne");
       $(VisitorsListCollectorAddPage.lastName()).setValue("Yoe");
       $(VisitorsListCollectorAddPage.submit()).click();
+
+      // Exit the visitors list collector
+      $(VisitorsListCollectorPage.no()).click();
+      $(VisitorsListCollectorPage.submit()).click();
+
       $(SectionSummaryPage.submit()).click();
 
       expect($(HubPage.summaryRowState("visitors-section-1")).getText()).to.equal("Not started");
@@ -257,6 +264,10 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       $(VisitorsListCollectorAddPage.firstName()).setValue("Anna");
       $(VisitorsListCollectorAddPage.lastName()).setValue("Doe");
       $(VisitorsListCollectorAddPage.submit()).click();
+
+      $(VisitorsListCollectorPage.no()).click();
+      $(VisitorsListCollectorPage.submit()).click();
+
       $(SectionSummaryPage.submit()).click();
 
       // New visitor added to hub
