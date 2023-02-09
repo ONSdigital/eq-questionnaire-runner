@@ -37,11 +37,14 @@ echo "--- Testing Schemas in $file_path ---"
 failed=0
 passed=0
 
-for schema in $(find $file_path -name '*.json'); do
+file_path_name=$(find "$file_path" -name '*.json')
+
+for schema in ${file_path_name}; do
 
     result="$(curl -s -w 'HTTPSTATUS:%{http_code}' -X POST -H "Content-Type: application/json" -d @"$schema" http://localhost:5001/validate | tr -d '\n')"
+    HTTP_BODY=$(echo "${result}" | sed -e 's/HTTPSTATUS\:.*//g')
     result_response="${result//*HTTPSTATUS:/}"
-    result_body=$(echo "${result//HTTPSTATUS:*/}" | python -m json.tool)
+    result_body=$(echo "$HTTP_BODY"  | python -m json.tool)
 
     if [ "$result_response" == "200" ] && [ "$result_body" == "{}" ]; then
         echo -e "${green}$schema - PASSED${default}"
