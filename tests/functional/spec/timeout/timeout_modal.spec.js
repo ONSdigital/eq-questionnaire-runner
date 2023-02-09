@@ -7,5 +7,7 @@ describe("Timeout Modal", () => {
       browser.openQuestionnaire("test_timeout_modal.json");
     });
     TimeoutModalTestCase.testCaseExpired(TimeoutInterstitialPage);
+    TimeoutModalTestCase.testCaseExtended(TimeoutInterstitialPage);
+    TimeoutModalTestCase.testCaseExtendedNewWindow(TimeoutInterstitialPage);
   });
 });
