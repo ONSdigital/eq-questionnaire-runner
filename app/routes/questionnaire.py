@@ -142,8 +142,10 @@ def before_post_submission_request():
     if schema_url := metadata.schema_url:
         contextvars.bind_contextvars(schema_url=schema_url)
 
-    logger.info(
-        "questionnaire request", method=request.method, url_path=request.full_path
+    contextvars.bind_contextvars(
+        type="questionnaire request",
+        method=request.method,
+        url_path=request.full_path,
     )
 
 
