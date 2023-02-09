@@ -85,8 +85,6 @@ def before_questionnaire_request():
     if questionnaire_store.submitted_at:
         return redirect(url_for("post_submission.get_thank_you"))
 
-    contextvars.clear_contextvars()
-
     contextvars.bind_contextvars(
         tx_id=metadata.tx_id,
         ce_id=metadata.collection_exercise_sid,

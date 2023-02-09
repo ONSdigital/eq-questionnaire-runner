@@ -67,3 +67,4 @@ class TestQuestionnaire(IntegrationTestCase):
             self.assertIn("schema_name", output)
             self.assertIn("method", output)
             self.assertIn("url_path", output)
+            self.assertIn("request_id", output)

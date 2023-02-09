@@ -140,10 +140,11 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     @application.before_request
     def before_request():  # pylint: disable=unused-variable
         request_id = str(uuid4())
-        logger.new(request_id=request_id)
 
         if flask_request.method == "OPTIONS":
             contextvars.clear_contextvars()
+
+        contextvars.bind_contextvars(request_id=request_id)
 
         span, trace = get_span_and_trace(flask_request.headers)
         if span and trace:
