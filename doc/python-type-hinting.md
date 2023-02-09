@@ -40,18 +40,16 @@ def get_objects_matching(ids: Sequence[str]) -> dict[int, dict]
 
 ## Optional arguments
 
-When `Optional` is used for function arguments, it means that the argument can have the value `None`, not that the argument is optional. 
-
-For arguments that can be a single type or `None`, use `Optional`:
+For arguments that can be a single type or None, use the shorthand `|`. This is recommended instead of using older `Optional` keyword:
 
 ```python
-def test(self, var: Optional[int]) -> None:
+def test(self, var: [None | int]) -> None:
 ```
 
-For arguments that can be one of multiple types or `None`, use `Union` with `None`:
+For arguments that can be one of multiple types or None, use the shorthand `|`. This is recommended instead of using older `Union` keyword:
 
 ```python
-def test(self, var: Union[None, int, str]) -> None:
+def test(self, var: [None | int | str]) -> None:
 ```
 
 ## Abstract vs concrete
