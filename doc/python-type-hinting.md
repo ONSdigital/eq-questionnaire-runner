@@ -78,6 +78,18 @@ This import is not necessary in Python 3.10.
 
 https://www.python.org/dev/peps/pep-0563/
 
+## Type Ignore
+
+To mark portions of the program that should not be covered by type hinting, use the following on a particular line:
+
+```python
+# type: ignore
+```
+
+A `# type: ignore` comment on a line by itself at the top of a file silences all errors in the file.
+
+`# type: ignore` should only be used when unavoidable. Ensure that a comment is added to explain why it has been used.
+
 ## Useful links
 
 - https://www.python.org/dev/peps/pep-0484/
