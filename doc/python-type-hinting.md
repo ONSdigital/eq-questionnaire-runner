@@ -90,6 +90,27 @@ A `# type: ignore` comment on a line by itself at the top of a file silences all
 
 `# type: ignore` should only be used when unavoidable. Ensure that a comment is added to explain why it has been used.
 
+## ParamSpec
+
+Used to forward the parameter types of one callable to another callable e.g. to add basic logging to a function, create a decorator add_logging to log function calls:
+
+```python
+T = TypeVar('T')
+P = ParamSpec('P')
+
+def add_logging(f: Callable[P, T]) -> Callable[P, T]:
+    '''A type-safe decorator to add logging to a function.'''
+    def inner(*args: P.args, **kwargs: P.kwargs) -> T:
+        logging.info(f'{f.__name__} was called')
+        return f(*args, **kwargs)
+    return inner
+
+@add_logging
+def add_two(x: float, y: float) -> float:
+    '''Add two numbers together.'''
+    return x + y
+```
+
 ## Useful links
 
 - https://www.python.org/dev/peps/pep-0484/
