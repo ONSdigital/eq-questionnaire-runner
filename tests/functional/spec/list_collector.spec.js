@@ -204,6 +204,8 @@ describe("List Collector", () => {
       $(VisitorListCollectorAddPage.firstNameVisitor()).setValue("Joe");
       $(VisitorListCollectorAddPage.lastNameVisitor()).setValue("Bloggs");
       $(VisitorListCollectorAddPage.submit()).click();
+      $(VisitorListCollectorPage.no()).click();
+      $(VisitorListCollectorPage.submit()).click();
       expect($(PeopleListSectionSummaryPage.visitorsListLabel(2)).getText()).to.contain("Joe Bloggs");
     });
 
