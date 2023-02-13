@@ -67,4 +67,5 @@ class Context(ABC):
             response_metadata=self._response_metadata,
             schema=self._schema,
             routing_path_block_ids=self._routing_path_block_ids,
+            path_finder=self._path_finder,
         )

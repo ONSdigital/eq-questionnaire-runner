@@ -15,6 +15,12 @@ import ThirdAndAHalfNumberBlockPage from "../../generated_pages/calculated_summa
 import ThankYouPage from "../../base_pages/thank-you.page";
 import FirstNumberBlockPage from "../../generated_pages/calculated_summary/first-number-block.page";
 import SecondNumberBlockPage from "../../generated_pages/calculated_summary/second-number-block.page";
+import HubPage from "../../base_pages/hub.page";
+import SkipFirstNumberBlockPageSectionOne from "../../generated_pages/calculated_summary_cross_section_dependencies/skip-first-block.page";
+import FirstNumberBlockPageSectionOne from "../../generated_pages/calculated_summary_cross_section_dependencies/first-number-block.page";
+import FirstAndAHalfNumberBlockPageSectionOne from "../../generated_pages/calculated_summary_cross_section_dependencies/first-and-a-half-number-block.page";
+import SecondNumberBlockPageSectionOne from "../../generated_pages/calculated_summary_cross_section_dependencies/second-number-block.page";
+
 
 class TestCase {
   testCase(schema) {
@@ -344,6 +350,21 @@ class TestCase {
     it("Given I am on the summary, When I submit the questionnaire, Then I should see the thank you page", () => {
       $(SubmitPage.submit()).click();
       expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
+    });
+  }
+
+  testCrossSectionDependencies(schema) {
+    before("Get to Calculated Summary", () => {
+      browser.openQuestionnaire(schema);
+      $(HubPage.submit()).click();
+      $(SkipFirstNumberBlockPageSectionOne.no()).click();
+      $(FirstNumberBlockPageSectionOne.firstNumber()).setValue(10);
+      $(FirstNumberBlockPageSectionOne.submit()).click();
+      $(FirstAndAHalfNumberBlockPageSectionOne.firstAndAHalfNumberAlsoInTotal).setValue(20);
+    });
+
+    it("Given I have completed all questions, When I am on the calculated summary, Then the page title should use the calculation's title", () => {
+      expect(browser.getTitle()).to.equal("Grand total of previous values - A test schema to demo Calculated Summary");
     });
   }
 }

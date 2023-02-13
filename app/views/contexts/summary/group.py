@@ -1,5 +1,6 @@
 from typing import Mapping, Optional
 
+from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.survey_config.link import Link
 from app.views.contexts.summary.block import Block
@@ -42,6 +43,16 @@ class Group:
             language=language,
             return_to_block_id=return_to_block_id,
         )
+
+        path_finder = PathFinder(
+            schema,
+            answer_store,
+            list_store,
+            progress_store,
+            metadata,
+            response_metadata,
+        )
+
         self.placeholder_renderer = PlaceholderRenderer(
             language=language,
             answer_store=answer_store,
@@ -50,6 +61,8 @@ class Group:
             metadata=metadata,
             response_metadata=response_metadata,
             schema=schema,
+            progress_store=progress_store,
+            path_finder=path_finder,
         )
 
     # pylint: disable=too-many-locals

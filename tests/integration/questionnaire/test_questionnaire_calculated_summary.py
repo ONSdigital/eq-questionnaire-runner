@@ -92,3 +92,36 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.assertInBody(
             "We calculate the total of currency values entered to be £180.00"
         )
+
+    def test_calculated_summary_value_sources_across_sections(self):
+        self.launchSurvey("test_calculated_summary_cross_section_dependencies")
+
+        # Complete the first section
+        self.post()
+        self.post({"skip-first-block-answer": "No"})
+        self.post({"first-number-answer": "10"})
+        self.post({"first-and-a-half-number-answer-also-in-total": "20"})
+        self.post({"second-number-answer-also-in-total": "30"})
+        self.assertInBody(
+            "We calculate the total of currency values entered to be £60.00"
+        )
+        self.post()
+        self.post()
+        self.post()
+
+        # Complete the second section
+        self.post(
+            {
+                "third-number-answer": "20",
+                "third-number-answer-also-in-total": "20",
+            }
+        )
+        self.assertInBody(
+            "We calculate the total of currency values entered to be £40.00"
+        )
+
+        # Check calculated summary value sources are displayed correctly for both the current and previous
+        # sections
+        self.post()
+        self.assertInBody("60 - calculated summary answer (previous section)")
+        self.assertInBody("40 - calculated summary answer (current section)")

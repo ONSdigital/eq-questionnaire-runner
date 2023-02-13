@@ -1,9 +1,10 @@
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Any, Callable, Iterable, Mapping, Optional, Union
+from typing import TYPE_CHECKING, Any, Callable, Iterable, Mapping, Optional, Union
 
 from markupsafe import Markup
 
+from app.data_models import ProgressStore
 from app.data_models.answer import AnswerValueTypes, escape_answer_value
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListModel, ListStore
@@ -12,6 +13,9 @@ from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules import rule_evaluator
+
+if TYPE_CHECKING:
+    from app.questionnaire.path_finder import PathFinder  # pragma: no cover
 
 ValueSourceTypes = Union[None, str, int, Decimal, list]
 ValueSourceEscapedTypes = Union[
@@ -34,6 +38,8 @@ class ValueSourceResolver:
     use_default_answer: bool = False
     escape_answer_values: bool = False
     assess_routing_path: bool = True
+    progress_store: Optional[ProgressStore] = None
+    path_finder: Optional["PathFinder"] = None
 
     def _is_answer_on_path(self, answer_id: str) -> bool:
         if self.assess_routing_path and self.routing_path_block_ids:
@@ -190,4 +196,31 @@ class ValueSourceResolver:
             return self.response_metadata.get(value_source.get("identifier"))
 
         if source == "calculated_summary":
+            self.evaluate_completed_blocks_for_calculated_summary()
             return self._resolve_calculated_summary_value_source(value_source)
+
+    def evaluate_completed_blocks_for_calculated_summary(self) -> None:
+        completed_block_ids: list[str] = []
+        if self.progress_store and self.path_finder:
+
+            for section_id, list_item_id in self.progress_store.section_keys():
+                if self.progress_store.is_section_complete(
+                    section_id=section_id, list_item_id=list_item_id
+                ):
+                    routing_path_for_section = self.path_finder.routing_path(
+                        section_id, list_item_id
+                    )
+                    completed_block_ids.extend(routing_path_for_section.block_ids)
+
+        if self.routing_path_block_ids and completed_block_ids:
+            if routing_path_block_ids := [
+                block_id
+                for block_id in completed_block_ids
+                if block_id not in self.routing_path_block_ids
+            ]:
+                self.routing_path_block_ids = [
+                    *list(self.routing_path_block_ids),
+                    *routing_path_block_ids,
+                ]
+        else:
+            self.routing_path_block_ids = completed_block_ids

@@ -1,7 +1,8 @@
-from typing import Any, Mapping, MutableMapping, Optional, Union
+from typing import TYPE_CHECKING, Any, Mapping, MutableMapping, Optional, Union
 
 from jsonpointer import resolve_pointer, set_pointer
 
+from app.data_models import ProgressStore
 from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
@@ -11,6 +12,9 @@ from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.questionnaire.plural_forms import get_plural_form_key
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.schema_utils import find_pointers_containing
+
+if TYPE_CHECKING:
+    from app.questionnaire.path_finder import PathFinder  # pragma: no cover
 
 
 class PlaceholderRenderer:
@@ -27,8 +31,10 @@ class PlaceholderRenderer:
         metadata: Optional[MetadataProxy],
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
+        progress_store: Optional[ProgressStore] = None,
         location: Union[None, Location, RelationshipLocation] = None,
         routing_path_block_ids: Optional[tuple] = None,
+        path_finder: Optional["PathFinder"] = None,
     ):
         self._language = language
         self._answer_store = answer_store
@@ -38,6 +44,8 @@ class PlaceholderRenderer:
         self._schema = schema
         self._location = location
         self._routing_path_block_ids = routing_path_block_ids
+        self._progress_store = progress_store
+        self._path_finder = path_finder
 
     def render_pointer(
         self,
@@ -80,6 +88,8 @@ class PlaceholderRenderer:
             location=self._location,
             renderer=self,
             routing_path_block_ids=self._routing_path_block_ids,
+            progress_store=self._progress_store,
+            path_finder=self._path_finder,
         )
 
         placeholder_data = QuestionnaireSchema.get_mutable_deepcopy(placeholder_data)

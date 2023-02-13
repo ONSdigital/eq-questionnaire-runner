@@ -9,6 +9,7 @@ from typing import (
     Union,
 )
 
+from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
@@ -22,6 +23,7 @@ from app.questionnaire.value_source_resolver import (
 )
 
 if TYPE_CHECKING:
+    from app.questionnaire.path_finder import PathFinder  # pragma: no cover
     from app.questionnaire.placeholder_renderer import (
         PlaceholderRenderer,  # pragma: no cover
     )
@@ -47,6 +49,8 @@ class PlaceholderParser:
         list_item_id: Optional[str] = None,
         location: Union[Location, RelationshipLocation, None] = None,
         routing_path_block_ids: Optional[tuple] = None,
+        progress_store: Optional[ProgressStore] = None,
+        path_finder: Optional["PathFinder"] = None,
     ):
 
         self._answer_store = answer_store
@@ -61,6 +65,8 @@ class PlaceholderParser:
             str, Union[ValueSourceEscapedTypes, ValueSourceTypes, None]
         ] = {}
         self._routing_path_block_ids = routing_path_block_ids
+        self._progress_store = progress_store
+        self._path_finder = path_finder
 
         self._value_source_resolver = ValueSourceResolver(
             answer_store=self._answer_store,
@@ -74,6 +80,8 @@ class PlaceholderParser:
             use_default_answer=True,
             routing_path_block_ids=self._routing_path_block_ids,
             assess_routing_path=False,
+            progress_store=self._progress_store,
+            path_finder=self._path_finder,
         )
 
     def __call__(
