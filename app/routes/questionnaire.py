@@ -96,10 +96,8 @@ def before_questionnaire_request():
     if schema_url := metadata.schema_url:
         contextvars.bind_contextvars(schema_url=schema_url)
 
-    contextvars.bind_contextvars(
-        type="questionnaire request",
-        method=request.method,
-        url_path=request.full_path,
+    logger.info(
+        "questionnaire request", method=request.method, url_path=request.full_path
     )
 
     handle_language(metadata)
@@ -142,10 +140,8 @@ def before_post_submission_request():
     if schema_url := metadata.schema_url:
         contextvars.bind_contextvars(schema_url=schema_url)
 
-    contextvars.bind_contextvars(
-        type="questionnaire request",
-        method=request.method,
-        url_path=request.full_path,
+    logger.info(
+        "questionnaire request", method=request.method, url_path=request.full_path
     )
 
 
@@ -367,7 +363,6 @@ def relationships(
 @with_session_store
 @with_schema
 def get_thank_you(schema, session_store, questionnaire_store):
-    contextvars.clear_contextvars()
     thank_you = ThankYou(schema, session_store, questionnaire_store.submitted_at)
 
     if request.method == "POST":

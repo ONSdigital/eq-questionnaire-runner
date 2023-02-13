@@ -141,9 +141,6 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     def before_request():  # pylint: disable=unused-variable
         request_id = str(uuid4())
 
-        if flask_request.method == "OPTIONS":
-            contextvars.clear_contextvars()
-
         contextvars.bind_contextvars(request_id=request_id)
 
         span, trace = get_span_and_trace(flask_request.headers)
@@ -237,8 +234,6 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
         # We're using the stringified version of the Flask session to get a rough
         # length for the cookie. The real length won't be known yet as Flask
         # serializes and adds the cookie header after this method is called.
-        if flask_request.method == "OPTIONS":
-            contextvars.clear_contextvars()
         logger.info(
             "response",
             status_code=response.status_code,

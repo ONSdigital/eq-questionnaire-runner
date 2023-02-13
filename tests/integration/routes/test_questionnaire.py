@@ -61,10 +61,7 @@ class TestQuestionnaire(IntegrationTestCase):
             self.assertStatusOK()
 
         for output in logs.output:
-            self.assertIn("questionnaire request", output)
             self.assertIn("tx_id", output)
             self.assertIn("ce_id", output)
             self.assertIn("schema_name", output)
-            self.assertIn("method", output)
-            self.assertIn("url_path", output)
             self.assertIn("request_id", output)
