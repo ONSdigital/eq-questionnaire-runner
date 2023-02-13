@@ -333,7 +333,7 @@ def setup_redis(application):
 def setup_submitter(application):
     if application.config["EQ_SUBMISSION_BACKEND"] == "gcs":
         if not (bucket_name := application.config.get("EQ_GCS_SUBMISSION_BUCKET_ID")):
-            raise Exception("Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing")
+            raise MissingEnvironmentVariable(Exception)
 
         application.eq["submitter"] = GCSSubmitter(bucket_name=bucket_name)
 
@@ -391,7 +391,7 @@ def setup_publisher(application):
 def setup_feedback(application):
     if application.config["EQ_FEEDBACK_BACKEND"] == "gcs":
         if not (bucket_name := application.config.get("EQ_GCS_FEEDBACK_BUCKET_ID")):
-            raise Exception("Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing")
+            raise MissingEnvironmentVariable(Exception)
 
         application.eq["feedback_submitter"] = GCSFeedbackSubmitter(
             bucket_name=bucket_name
