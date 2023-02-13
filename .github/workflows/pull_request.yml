@@ -66,8 +66,6 @@ jobs:
         run: pip install pipenv==2022.11.30
       - name: Install virtual environment
         run: pipenv install --dev
-      - name: Load templates
-        run: make load-design-system-templates
       - name: Compile translations
         run: make translate
       - name: Running translation tests
