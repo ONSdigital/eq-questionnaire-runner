@@ -70,7 +70,7 @@ jobs:
         run: make translate
       - name: Running translation tests
         run: pipenv run python -m scripts.extract_translation_templates --test
-      - name: Python liniting
+      - name: Python linting
         run: pipenv run ./scripts/run_lint_python.sh
       - name: Get yarn cache
         id: get-yarn-cache
