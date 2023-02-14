@@ -60,8 +60,14 @@ class TestQuestionnaire(IntegrationTestCase):
             self.get("/questionnaire/")
             self.assertStatusOK()
 
-        for output in logs.output:
-            self.assertIn("tx_id", output)
-            self.assertIn("ce_id", output)
-            self.assertIn("schema_name", output)
-            self.assertIn("request_id", output)
+            request_log = logs.output[0]
+            questionnaire_request_log = logs.output[1]
+
+            self.assertNotIn("tx_id", request_log)
+            self.assertNotIn("ce_id", request_log)
+            self.assertNotIn("schema_name", request_log)
+
+            self.assertIn("tx_id", questionnaire_request_log)
+            self.assertIn("ce_id", questionnaire_request_log)
+            self.assertIn("schema_name", questionnaire_request_log)
+            self.assertIn("request_id", questionnaire_request_log)

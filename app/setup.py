@@ -139,6 +139,8 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     # request will use the logger context of the previous request.
     @application.before_request
     def before_request():  # pylint: disable=unused-variable
+        contextvars.clear_contextvars()
+
         request_id = str(uuid4())
 
         contextvars.bind_contextvars(request_id=request_id)
