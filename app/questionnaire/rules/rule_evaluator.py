@@ -1,9 +1,17 @@
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
-from typing import Generator, Iterable, Mapping, Optional, Sequence, Union
+from typing import (
+    TYPE_CHECKING,
+    Generator,
+    Iterable,
+    Mapping,
+    Optional,
+    Sequence,
+    Union,
+)
 
-from app.data_models import AnswerStore, ListStore
+from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
@@ -15,6 +23,9 @@ from app.questionnaire.value_source_resolver import (
     ValueSourceResolver,
     ValueSourceTypes,
 )
+
+if TYPE_CHECKING:
+    from app.questionnaire.path_finder import PathFinder  # pragma: no cover
 
 RuleEvaluatorTypes = Union[
     bool, Optional[date], list[str], list[date], int, float, Decimal
@@ -31,6 +42,8 @@ class RuleEvaluator:
     location: Union[None, Location, RelationshipLocation]
     routing_path_block_ids: Optional[Iterable] = None
     language: str = DEFAULT_LANGUAGE_CODE
+    progess_store: Optional[ProgressStore] = None
+    path_finder: Optional["PathFinder"] = None
 
     # pylint: disable=attribute-defined-outside-init
     def __post_init__(self) -> None:
@@ -45,6 +58,8 @@ class RuleEvaluator:
             list_item_id=list_item_id,
             routing_path_block_ids=self.routing_path_block_ids,
             use_default_answer=True,
+            progress_store=self.progess_store,
+            path_finder=self.path_finder,
         )
         renderer: PlaceholderRenderer = PlaceholderRenderer(
             language=self.language,
@@ -54,6 +69,8 @@ class RuleEvaluator:
             response_metadata=self.response_metadata,
             schema=self.schema,
             location=self.location,
+            path_finder=self.path_finder,
+            progress_store=self.progess_store,
         )
         self.operations = Operations(
             language=self.language, schema=self.schema, renderer=renderer

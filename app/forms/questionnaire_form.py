@@ -12,12 +12,13 @@ from flask_wtf import FlaskForm
 from werkzeug.datastructures import ImmutableMultiDict, MultiDict
 from wtforms import validators
 
-from app.data_models import AnswerStore, AnswerValueTypes, ListStore
+from app.data_models import AnswerStore, AnswerValueTypes, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.forms import error_messages
 from app.forms.field_handlers import DateHandler, FieldHandler, get_field_handler
 from app.forms.validators import DateRangeCheck, MutuallyExclusiveCheck, SumCheck
 from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
+from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
@@ -450,6 +451,8 @@ def get_answer_fields(
     response_metadata: Mapping[str, Any],
     location: Union[Location, RelationshipLocation, None],
     routing_path_block_ids: Optional[Iterable] = None,
+    progress_store: Optional[ProgressStore] = None,
+    path_finder: Optional[PathFinder] = None,
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
     value_source_resolver = ValueSourceResolver(
@@ -463,6 +466,8 @@ def get_answer_fields(
         response_metadata=response_metadata,
         routing_path_block_ids=routing_path_block_ids,
         assess_routing_path=False,
+        path_finder=path_finder,
+        progress_store=progress_store,
     )
 
     rule_evaluator = RuleEvaluator(
@@ -472,6 +477,8 @@ def get_answer_fields(
         metadata=metadata,
         response_metadata=response_metadata,
         location=location,
+        path_finder=path_finder,
+        progess_store=progress_store,
     )
 
     answer_fields = {}
@@ -570,6 +577,8 @@ def generate_form(
     data: Optional[dict[str, Any]] = None,
     form_data: Optional[MultiDict[str, Any]] = None,
     routing_path_block_ids: Optional[tuple] = None,
+    progress_store: Optional[ProgressStore] = None,
+    path_finder: Optional[PathFinder] = None,
 ) -> QuestionnaireForm:
     class DynamicForm(QuestionnaireForm):
         pass
@@ -588,6 +597,8 @@ def generate_form(
         response_metadata,
         location,
         routing_path_block_ids,
+        progress_store=progress_store,
+        path_finder=path_finder,
     )
 
     for answer_id, field in answer_fields.items():

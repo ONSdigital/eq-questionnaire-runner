@@ -401,6 +401,8 @@ class Router:
                 self._response_metadata,
                 location=None,
                 routing_path_block_ids=routing_path_block_ids,
+                path_finder=self._path_finder,
+                progess_store=self._progress_store,
             )
 
             return bool(when_rule_evaluator.evaluate(enabled["when"]))

@@ -205,13 +205,10 @@ class ValueSourceResolver:
         if self.progress_store and self.path_finder:
 
             for section_id, list_item_id in self.progress_store.section_keys():
-                if self.progress_store.is_section_complete(
-                    section_id=section_id, list_item_id=list_item_id
-                ):
-                    routing_path_for_section = self.path_finder.routing_path(
-                        section_id, list_item_id
-                    )
-                    completed_block_ids.extend(routing_path_for_section.block_ids)
+                routing_path_for_section = self.path_finder.routing_path(
+                    section_id, list_item_id
+                )
+                completed_block_ids.extend(routing_path_for_section.block_ids)
 
         if self.routing_path_block_ids and completed_block_ids:
             if routing_path_block_ids := [
