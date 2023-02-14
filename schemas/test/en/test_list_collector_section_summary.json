@@ -53,6 +53,14 @@
         {
             "answer_id": "householder-checkbox-answer",
             "code": "5"
+        },
+        {
+            "answer_id": "first-name",
+            "code": "6"
+        },
+        {
+            "answer_id": "last-name",
+            "code": "7"
         }
     ],
     "questionnaire_flow": {
