@@ -481,7 +481,7 @@ def get_minimized_asset(filename):
     return filename
 
 
-def get_locale():  # pylint: disable=unused-variable
+def get_locale():
     session = get_session_store()
 
     if session and (session_data := session.session_data):
@@ -490,6 +490,6 @@ def get_locale():  # pylint: disable=unused-variable
     return None
 
 
-def get_timezone():  # pylint: disable=unused-variable
+def get_timezone():
     # For now regardless of locale we will show times in GMT/BST
     return "Europe/London"
