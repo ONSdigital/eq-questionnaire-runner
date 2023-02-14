@@ -88,7 +88,7 @@ To mark portions of the program that should not be covered by type hinting, use 
 
 A `# type: ignore` comment on a line by itself at the top of a file silences all errors in the file.
 
-`# type: ignore` should only be used when unavoidable. Ensure that a comment is added to explain why it has been used.
+`# type: ignore` should only be used when unavoidable. Ensure that a comment is added to explain why it has been used and have a prefix of Type ignore:.
 
 ## ParamSpec
 
