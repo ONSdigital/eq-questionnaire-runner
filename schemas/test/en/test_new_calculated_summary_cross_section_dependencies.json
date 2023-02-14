@@ -145,12 +145,22 @@
                             "id": "currency-total-playback-1",
                             "title": "We calculate the total of currency values entered to be %(total)s. Is this correct?",
                             "calculation": {
-                                "calculation_type": "sum",
-                                "answers_to_calculate": [
-                                    "first-number-answer",
-                                    "first-and-a-half-number-answer-also-in-total",
-                                    "second-number-answer-also-in-total"
-                                ],
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "first-number-answer"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "first-and-a-half-number-answer-also-in-total"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "second-number-answer-also-in-total"
+                                        }
+                                    ]
+                                },
                                 "title": "Grand total of previous values"
                             }
                         }
@@ -197,8 +207,18 @@
                             "id": "currency-total-playback-2",
                             "title": "We calculate the total of currency values entered to be %(total)s. Is this correct?",
                             "calculation": {
-                                "calculation_type": "sum",
-                                "answers_to_calculate": ["third-number-answer", "third-number-answer-also-in-total"],
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "third-number-answer"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "third-number-answer-also-in-total"
+                                        }
+                                    ]
+                                },
                                 "title": "Grand total of previous values"
                             }
                         },

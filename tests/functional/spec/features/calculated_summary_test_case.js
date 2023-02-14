@@ -20,7 +20,12 @@ import SkipFirstNumberBlockPageSectionOne from "../../generated_pages/calculated
 import FirstNumberBlockPageSectionOne from "../../generated_pages/calculated_summary_cross_section_dependencies/first-number-block.page";
 import FirstAndAHalfNumberBlockPageSectionOne from "../../generated_pages/calculated_summary_cross_section_dependencies/first-and-a-half-number-block.page";
 import SecondNumberBlockPageSectionOne from "../../generated_pages/calculated_summary_cross_section_dependencies/second-number-block.page";
-
+import CalculatedSummarySectionOne from "../../generated_pages/calculated_summary_cross_section_dependencies/currency-total-playback-1.page";
+import CalculatedSummarySectionTwo from "../../generated_pages/calculated_summary_cross_section_dependencies/currency-total-playback-2.page";
+import ThirdNumberBlockPageSectionTwo from "../../generated_pages/calculated_summary_cross_section_dependencies/third-number-block.page";
+import SectionSummarySectionOne from "../../generated_pages/calculated_summary_cross_section_dependencies/questions-section-summary.page";
+import SectionSummarySectionTwo from "../../generated_pages/calculated_summary_cross_section_dependencies/calculated-summary-section-summary.page";
+import DependencyQuestionSectionTwo from "../../generated_pages/calculated_summary_cross_section_dependencies/mutually-exclusive-checkbox.page";
 
 class TestCase {
   testCase(schema) {
@@ -354,17 +359,46 @@ class TestCase {
   }
 
   testCrossSectionDependencies(schema) {
-    before("Get to Calculated Summary", () => {
+    before("Get to the question containing calcualted summary values with cross section dependcies", () => {
       browser.openQuestionnaire(schema);
       $(HubPage.submit()).click();
       $(SkipFirstNumberBlockPageSectionOne.no()).click();
+      $(SkipFirstNumberBlockPageSectionOne.submit()).click();
       $(FirstNumberBlockPageSectionOne.firstNumber()).setValue(10);
       $(FirstNumberBlockPageSectionOne.submit()).click();
-      $(FirstAndAHalfNumberBlockPageSectionOne.firstAndAHalfNumberAlsoInTotal).setValue(20);
+      $(FirstAndAHalfNumberBlockPageSectionOne.firstAndAHalfNumberAlsoInTotal()).setValue(20);
+      $(FirstAndAHalfNumberBlockPageSectionOne.submit()).click();
+      $(SecondNumberBlockPageSectionOne.secondNumberAlsoInTotal()).setValue(30);
+      $(SecondNumberBlockPageSectionOne.submit()).click();
+      $(CalculatedSummarySectionOne.submit()).click();
+      $(SectionSummarySectionOne.submit()).click();
+      $(HubPage.submit()).click();
+      $(ThirdNumberBlockPageSectionTwo.thirdNumber()).setValue(20);
+      $(ThirdNumberBlockPageSectionTwo.thirdNumberAlsoInTotal()).setValue(20);
+      $(ThirdNumberBlockPageSectionTwo.submit()).click();
+      $(CalculatedSummarySectionTwo.submit()).click();
     });
 
-    it("Given I have completed all questions, When I am on the calculated summary, Then the page title should use the calculation's title", () => {
-      expect(browser.getTitle()).to.equal("Grand total of previous values - A test schema to demo Calculated Summary");
+    it("Given I have a placeholder displaying a calculated summary value source, When the calculated summary value is from a previous section, Then the value displayed should be correct", () => {
+      expect(browser.getUrl()).to.contain(DependencyQuestionSectionTwo.pageName);
+      expect($(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).to.contain("60 - calculated summary answer (previous section)");
+      expect($(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).to.contain("40 - calculated summary answer (current section)");
+    });
+
+    it("Given I remove answers from the path for a calculated summary in a previous section by changing an answer, When I return to the question with the calculated summary value source, Then the value displayed should be correct", () => {
+      $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1()).click();
+      $(DependencyQuestionSectionTwo.submit()).click();
+      $(SectionSummarySectionTwo.submit()).click();
+      $(HubPage.summaryRowLink("questions-section")).click();
+      $(SectionSummarySectionOne.skipFirstBlockAnswerEdit()).click();
+      $(SkipFirstNumberBlockPageSectionOne.yes()).click();
+      $(SkipFirstNumberBlockPageSectionOne.submit()).click();
+      $(SectionSummarySectionOne.submit()).click();
+      $(HubPage.summaryRowLink("calculated-summary-section")).click();
+      expect($("body").getText()).to.have.string("30 - calculated summary answer (previous section)");
+      $(SectionSummarySectionTwo.checkboxAnswerEdit()).click();
+      expect($(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).to.contain("30 - calculated summary answer (previous section)");
+      expect($(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).to.contain("40 - calculated summary answer (current section)");
     });
   }
 }
