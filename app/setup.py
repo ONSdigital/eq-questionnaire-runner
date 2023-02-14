@@ -91,10 +91,6 @@ class MissingEnvironmentVariable(Exception):
     pass
 
 
-class UnknownEnviormentVariable(Exception):
-    pass
-
-
 class AWSReverseProxied:
     def __init__(self, app):
         self.app = app
@@ -297,7 +293,7 @@ def setup_storage(application):
     elif application.config["EQ_STORAGE_BACKEND"] == "dynamodb":
         setup_dynamodb(application)
     else:
-        raise UnknownEnviormentVariable("Unknown EQ_STORAGE_BACKEND")
+        raise NotImplementedError("Unknown EQ_STORAGE_BACKEND")
 
     setup_redis(application)
 
@@ -369,7 +365,7 @@ def setup_submitter(application):
         application.eq["submitter"] = LogSubmitter()
 
     else:
-        raise UnknownEnviormentVariable("Unknown EQ_SUBMISSION_BACKEND")
+        raise NotImplementedError("Unknown EQ_SUBMISSION_BACKEND")
 
 
 def setup_task_client(application):
@@ -378,7 +374,7 @@ def setup_task_client(application):
     elif application.config["EQ_SUBMISSION_CONFIRMATION_BACKEND"] == "log":
         application.eq["cloud_tasks"] = LogCloudTaskPublisher()
     else:
-        raise UnknownEnviormentVariable("Unknown EQ_SUBMISSION_CONFIRMATION_BACKEND")
+        raise NotImplementedError("Unknown EQ_SUBMISSION_CONFIRMATION_BACKEND")
 
 
 def setup_publisher(application):
@@ -389,7 +385,7 @@ def setup_publisher(application):
         application.eq["publisher"] = LogPublisher()
 
     else:
-        raise UnknownEnviormentVariable("Unknown EQ_PUBLISHER_BACKEND")
+        raise NotImplementedError("Unknown EQ_PUBLISHER_BACKEND")
 
 
 def setup_feedback(application):
@@ -406,7 +402,7 @@ def setup_feedback(application):
     elif application.config["EQ_FEEDBACK_BACKEND"] == "log":
         application.eq["feedback_submitter"] = LogFeedbackSubmitter()
     else:
-        raise UnknownEnviormentVariable("Unknown EQ_FEEDBACK_BACKEND")
+        raise NotImplementedError("Unknown EQ_FEEDBACK_BACKEND")
 
 
 def add_blueprints(application):
