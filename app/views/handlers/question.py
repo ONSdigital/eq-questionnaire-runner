@@ -75,7 +75,7 @@ class Question(BlockHandler):
 
         self._set_page_title(page_title)
         rendered_question = self.placeholder_renderer.render(
-            dict_to_render=transformed_block["question"],
+            data_to_render=transformed_block["question"],
             list_item_id=self._current_location.list_item_id,
         )
         return {
@@ -210,6 +210,7 @@ class Question(BlockHandler):
 
     def evaluate_and_update_section_status_on_list_change(self, list_name):
         section_ids = self._schema.get_section_ids_dependent_on_list(list_name)
+        section_ids.append(self.current_location.section_id)
 
         section_keys_to_evaluate = (
             self.questionnaire_store_updater.started_section_keys(

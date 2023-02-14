@@ -1,5 +1,7 @@
 from functools import cached_property
-from typing import Mapping, Optional
+from typing import Any, Generator, Iterable, Mapping, Optional, Union
+
+from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.questionnaire import QuestionnaireSchema
@@ -25,7 +27,7 @@ class SectionSummaryContext(Context):
         response_metadata: Mapping,
         routing_path: RoutingPath,
         current_location: Location,
-    ):
+    ) -> None:
         super().__init__(
             language,
             schema,
@@ -38,7 +40,9 @@ class SectionSummaryContext(Context):
         self.routing_path = routing_path
         self.current_location = current_location
 
-    def __call__(self, return_to: Optional[str] = "section-summary") -> Mapping:
+    def __call__(
+        self, return_to: Optional[str] = "section-summary"
+    ) -> Mapping[str, Any]:
         summary = self._build_summary(return_to)
         title_for_location = self._title_for_location()
         title = (
@@ -62,10 +66,12 @@ class SectionSummaryContext(Context):
         }
 
     @cached_property
-    def section(self):
-        return self._schema.get_section(self.current_location.section_id)
+    def section(self) -> ImmutableDict:
+        # Type ignore: The section has to exist at this point
+        section: ImmutableDict = self._schema.get_section(self.current_location.section_id)  # type: ignore
+        return section
 
-    def get_page_title(self, title_for_location: str) -> str:
+    def get_page_title(self, title_for_location: Union[Mapping, str]) -> str:
 
         section_repeating_page_title = (
             self._schema.get_repeating_page_title_for_section(
@@ -86,7 +92,7 @@ class SectionSummaryContext(Context):
             page_title = page_title.format(list_item_position=list_item_position)
         return page_title
 
-    def _build_summary(self, return_to: Optional[str]):
+    def _build_summary(self, return_to: Optional[str]) -> dict[str, Any]:
         """
         Build a summary context for a particular location.
 
@@ -133,15 +139,18 @@ class SectionSummaryContext(Context):
 
         return groups
 
-    def _title_for_location(self):
+    def _title_for_location(self) -> Union[str, dict]:
         section_id = self.current_location.section_id
         return (
-            self._schema.get_repeating_title_for_section(section_id)
+            # Type ignore: section id should exist at this point
+            self._schema.get_repeating_title_for_section(section_id)  # type: ignore
             or self._schema.get_summary_title_for_section(section_id)
             or self._schema.get_title_for_section(section_id)
         )
 
-    def _custom_summary_elements(self, section_summary):
+    def _custom_summary_elements(
+        self, section_summary: Iterable[Mapping]
+    ) -> Generator[dict[str, Any], Any, None]:
         for summary_element in section_summary:
             if summary_element["type"] == "List":
                 list_collector_block = ListCollectorBlock(
@@ -157,13 +166,13 @@ class SectionSummaryContext(Context):
                 )
                 yield list_collector_block.list_summary_element(summary_element)
 
-    def _get_safe_page_title(self, title):
+    def _get_safe_page_title(self, title: Union[Mapping, str]) -> str:
         return (
             safe_content(self._schema.get_single_string_value(title)) if title else ""
         )
 
     @staticmethod
-    def _get_refactored_groups(original_groups: dict) -> list[dict]:
+    def _get_refactored_groups(original_groups: dict) -> list[dict[str, Any]]:
         """original schema groups are refactored into groups based on block types, it follows the order/sequence of blocks in the original groups, all the
         non list collector blocks are put together into groups, list collectors are put into separate groups, this way summary groups are displayed correctly
         on section summary"""

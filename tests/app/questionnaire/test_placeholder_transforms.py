@@ -3,6 +3,7 @@ from decimal import Decimal
 import pytest
 
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 
 
 @pytest.mark.parametrize(
@@ -510,3 +511,18 @@ def test_option_label_from_value_with_placeholder_label(
 def test_conditional_trad_as(transformer, trad_as, expected):
     actual = transformer().conditional_trad_as(trad_as)
     assert actual == expected
+
+
+@pytest.mark.parametrize(
+    "invalid_number_to_format",
+    [
+        (100),
+        (200),
+    ],
+)
+def test_get_ordinal_indicator_raises_NotImplementedError(invalid_number_to_format):
+    placeholder_transform = PlaceholderTransforms(
+        "invalid_language", QuestionnaireSchema, "PlaceholderRenderer"
+    )
+    with pytest.raises(NotImplementedError):
+        placeholder_transform.get_ordinal_indicator(invalid_number_to_format)

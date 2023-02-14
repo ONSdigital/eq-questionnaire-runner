@@ -1,10 +1,11 @@
 from datetime import datetime
-from typing import Mapping, Optional
+from typing import Any, Optional, Union
 
 from flask import url_for
 from flask_babel import lazy_gettext
 
 from app.data_models.metadata_proxy import MetadataProxy
+from app.forms.email_form import EmailForm
 from app.globals import (
     get_view_submitted_response_expiration_time,
     has_view_submitted_response_expired,
@@ -23,7 +24,7 @@ def build_thank_you_context(
     submitted_at: datetime,
     survey_type: SurveyType,
     guidance_content: Optional[dict] = None,
-) -> Mapping:
+) -> dict[str, Any]:
     if survey_type is SurveyType.SOCIAL:
         submission_text = lazy_gettext("Your answers have been submitted.")
     elif (trad_as := metadata["trad_as"]) and (ru_name := metadata["ru_name"]):
@@ -51,8 +52,12 @@ def build_thank_you_context(
     }
 
 
-def build_view_submitted_response_context(schema, submitted_at):
-    view_submitted_response = {"enabled": schema.is_view_submitted_response_enabled}
+def build_view_submitted_response_context(
+    schema: QuestionnaireSchema, submitted_at: datetime
+) -> dict[str, Union[bool, str]]:
+    view_submitted_response: dict[str, Union[bool, str]] = {
+        "enabled": schema.is_view_submitted_response_enabled
+    }
 
     if schema.is_view_submitted_response_enabled:
         expired = has_view_submitted_response_expired(submitted_at)
@@ -70,9 +75,10 @@ def build_view_submitted_response_context(schema, submitted_at):
 
 
 def build_census_thank_you_context(
-    metadata: MetadataProxy, confirmation_email_form, form_type
-) -> Mapping:
-
+    metadata: MetadataProxy,
+    confirmation_email_form: Optional[EmailForm],
+    form_type: str,
+) -> dict[str, Union[bool, str, None]]:
     context = {
         "display_address": metadata["display_address"],
         "form_type": form_type,

@@ -21,6 +21,40 @@
             "type": "string"
         }
     ],
+    "answer_codes": [
+        {
+            "answer_id": "any-companies-or-branches-answer",
+            "code": "1"
+        },
+        {
+            "answer_id": "company-or-branch-name",
+            "code": "1a"
+        },
+        {
+            "answer_id": "registration-number",
+            "code": "1b"
+        },
+        {
+            "answer_id": "authorised-insurer-radio",
+            "code": "1c"
+        },
+        {
+            "answer_id": "any-other-companies-or-branches-answer",
+            "code": "2"
+        },
+        {
+            "answer_id": "confirmation-checkbox-answer",
+            "code": "3"
+        },
+        {
+            "answer_id": "anyone-else",
+            "code": "4"
+        },
+        {
+            "answer_id": "householder-checkbox-answer",
+            "code": "5"
+        }
+    ],
     "questionnaire_flow": {
         "type": "Linear",
         "options": {
@@ -97,21 +131,13 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "confirmation-checkbox",
-                                        "when": [
-                                            {
-                                                "id": "any-companies-or-branches-answer",
-                                                "condition": "equals",
-                                                "value": "No"
-                                            }
-                                        ]
-                                    }
+                                    "when": {
+                                        "==": [{ "source": "answers", "identifier": "any-companies-or-branches-answer" }, "No"]
+                                    },
+                                    "block": "confirmation-checkbox"
                                 },
                                 {
-                                    "goto": {
-                                        "block": "any-other-companies-or-branches"
-                                    }
+                                    "block": "any-other-companies-or-branches"
                                 }
                             ]
                         },
@@ -296,6 +322,21 @@
                                 "id": "confirmation-checkbox-question",
                                 "title": "Are all companies or branches based in UK?",
                                 "type": "General"
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "companies"
+                                                }
+                                            ]
+                                        },
+                                        3
+                                    ]
+                                }
                             }
                         }
                     ]

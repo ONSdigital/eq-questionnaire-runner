@@ -446,6 +446,8 @@ class SumCheck:
         if condition == "less than or equals":
             return total <= target_total, "TOTAL_SUM_NOT_LESS_THAN_OR_EQUALS"
 
+        raise NotImplementedError(f"Condition '{condition}' is not implemented")
+
 
 def format_playback_value(
     value: Union[float, Decimal], currency: Optional[str] = None

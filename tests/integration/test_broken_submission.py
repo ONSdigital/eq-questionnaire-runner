@@ -19,6 +19,7 @@ class TestBrokenSubmission(IntegrationTestCase):
 
     def test_broken_submitter_results_in_500(self):
         self.post({"answer": "50"})
+        self.post({"answer-decimal": "5.5"})
         self.assertStatusOK()
 
         self.post()

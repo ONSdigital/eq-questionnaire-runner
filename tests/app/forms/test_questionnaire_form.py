@@ -1284,7 +1284,7 @@ def test_calculated_field(
     question,
     errors_text,
     value_dict,
-):
+):  # pylint: disable=too-many-locals
 
     for answer in answers:
         answer_store.add_or_update(answer)
@@ -1665,7 +1665,7 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
             schema=schema,
         )
         rendered_schema = renderer.render(
-            dict_to_render=question_schema, list_item_id=None
+            data_to_render=question_schema, list_item_id=None
         )
 
         form = generate_form(

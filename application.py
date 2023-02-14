@@ -14,7 +14,7 @@ from app.utilities.json import json_dumps
 
 def configure_logging():
     log_level = logging.INFO
-    debug = os.getenv("FLASK_ENV") == "development"
+    debug = os.getenv("FLASK_DEBUG") == "1"
     if debug:
         log_level = logging.DEBUG
 

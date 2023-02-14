@@ -296,7 +296,7 @@ class IndividualResponseHandler:
 
     def _render_block(self):
         return self.placeholder_renderer.render(
-            dict_to_render=self.block_definition, list_item_id=self._list_item_id
+            data_to_render=self.block_definition, list_item_id=self._list_item_id
         )
 
     def _update_section_status(self, status):
@@ -955,7 +955,7 @@ class IndividualResponseFulfilmentRequest(FulfilmentRequest):
             else {}
         )
 
-    def _get_fulfilment_code(self) -> str:
+    def _get_fulfilment_code(self) -> Optional[str]:
         fulfilment_codes = {
             "sms": {
                 GB_ENG_REGION_CODE: "UACITA1",

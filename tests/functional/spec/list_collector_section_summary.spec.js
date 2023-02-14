@@ -14,7 +14,6 @@ describe("List Collector Section Summary Items", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
-      answerUkBasedQuestion();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.anyCompaniesOrBranchesQuestion()).isExisting()).to.be.true;
       expect($(SectionSummaryPage.anyCompaniesOrBranchesAnswer()).getText()).to.contain("Yes");
@@ -23,7 +22,6 @@ describe("List Collector Section Summary Items", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
-      answerUkBasedQuestion();
       expect($(SectionSummaryPage.companiesListLabel(1)).getText()).to.contain("Name of UK company or branch");
       expect($(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
       expect($(companiesListRowItem(1, 2)).getText()).to.contain("123");
@@ -55,7 +53,6 @@ describe("List Collector Section Summary Items", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
-      answerUkBasedQuestion();
       removeFirstCompany();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($("body").getText()).to.not.have.string("Company A");
@@ -66,7 +63,6 @@ describe("List Collector Section Summary Items", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
-      answerUkBasedQuestion();
       removeFirstCompany();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($("body").getText()).to.contain("No UK company or branch added");
@@ -77,7 +73,6 @@ describe("List Collector Section Summary Items", () => {
       anyMoreCompaniesYes();
       addCompany("Company B", "234", true);
       anyMoreCompaniesNo();
-      answerUkBasedQuestion();
       removeFirstCompany();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($("body").getText()).to.not.have.string("Company A");
@@ -87,7 +82,6 @@ describe("List Collector Section Summary Items", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
-      answerUkBasedQuestion();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.companiesListAddLink()).isExisting()).to.be.true;
     });
@@ -106,15 +100,24 @@ describe("List Collector Section Summary Items", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
-      answerUkBasedQuestion();
       expect($(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
       $(SectionSummaryPage.companiesListEditLink(1)).click();
       expect(browser.getUrl()).to.contain("edit-company/?return_to=section-summary");
       expect($(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).getValue()).to.equal("Company A");
     });
+    it("When I edit an item after adding it, Then I should be redirected to the summary page", () => {
+      drivingQuestionYes();
+      addCompany("Company A", "123", true);
+      anyMoreCompaniesNo();
+      expect($(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
+      $(SectionSummaryPage.companiesListEditLink(1)).click();
+      $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Changed Company");
+      $(AnyCompaniesOrBranchesAddPage.submit()).click();
+      expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
+      expect($(companiesListRowItem(1, 1)).getText()).to.contain("Changed Company");
+    });
     it("When no item is added but I change my answer to the driving question to Yes, Then I should be able to add a new item.", () => {
       drivingQuestionNo();
-      answerUkBasedQuestion();
       expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.false;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.false;
@@ -132,7 +135,6 @@ describe("List Collector Section Summary Items", () => {
       drivingQuestionYes();
       addCompany("Company A", "123", true);
       anyMoreCompaniesNo();
-      answerUkBasedQuestion();
       expect($(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
       $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
       drivingQuestionNo();
@@ -148,6 +150,102 @@ describe("List Collector Section Summary Items", () => {
       expect($(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.true;
       expect($(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.true;
       expect($(SectionSummaryPage.companiesListAddLink()).isExisting()).to.be.true;
+    });
+    it("When I add another company from the summary page, Then I am asked if I want to add any more company before accessing the section summary", () => {
+      drivingQuestionYes();
+      addCompany("Company A", "123", true);
+      anyMoreCompaniesNo();
+      $(SectionSummaryPage.companiesListAddLink()).click();
+      expect(browser.getUrl()).to.contain("/questionnaire/companies/add-company");
+      expect(browser.getUrl()).to.contain("?return_to=section-summary");
+      addCompany("Company B", "456", true);
+      expect(browser.getUrl()).to.contain(AnyCompaniesOrBranchesPage.url());
+      expect($("body").getText()).to.have.string("Company A");
+      expect($("body").getText()).to.have.string("Company B");
+      anyMoreCompaniesNo();
+      expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
+    });
+    it("When I add three companies, Then I am prompted with the confirmation question", () => {
+      drivingQuestionYes();
+      addCompany("Company A", "123", true);
+      anyMoreCompaniesYes();
+      addCompany("Company B", "456", true);
+      anyMoreCompaniesYes();
+      addCompany("Company C", "789", true);
+      anyMoreCompaniesNo();
+      expect(browser.getUrl()).to.contain(UkBasedPage.url());
+    });
+    it("When I add less than 3 companies, Then I am not prompted with the confirmation question", () => {
+      drivingQuestionYes();
+      addCompany("Company A", "123", true);
+      anyMoreCompaniesYes();
+      addCompany("Company B", "456", true);
+      anyMoreCompaniesNo();
+      expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
+    });
+    it("When I add more than 3 companies, Then I am not prompted with the confirmation question", () => {
+      drivingQuestionYes();
+      addCompany("Company A", "123", true);
+      anyMoreCompaniesYes();
+      addCompany("Company B", "456", true);
+      anyMoreCompaniesYes();
+      addCompany("Company C", "789", true);
+      anyMoreCompaniesYes();
+      addCompany("Company D", "135", true);
+      anyMoreCompaniesNo();
+      expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
+    });
+    it("When I add another company from the summary page, and the amount then totals to 3, and the confirmation question hasn't been previously answered, Then I am prompted with the confirmation question", () => {
+      drivingQuestionYes();
+      addCompany("Company A", "123", true);
+      anyMoreCompaniesYes();
+      addCompany("Company B", "456", true);
+      anyMoreCompaniesNo();
+      expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
+      $(SectionSummaryPage.companiesListAddLink()).click();
+      expect(browser.getUrl()).to.contain("/questionnaire/companies/add-company");
+      expect(browser.getUrl()).to.contain("?return_to=section-summary");
+      addCompany("Company C", "234", true);
+      anyMoreCompaniesNo();
+      expect(browser.getUrl()).to.contain(UkBasedPage.url());
+      answerUkBasedQuestion();
+      expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
+    });
+    it("When I remove a company from the summary page, and the amount then totals to 3, and the confirmation question hasn't been previously answered, Then I am prompted with the confirmation question", () => {
+      drivingQuestionYes();
+      addCompany("Company A", "123", true);
+      anyMoreCompaniesYes();
+      addCompany("Company B", "456", true);
+      anyMoreCompaniesYes();
+      addCompany("Company C", "234", true);
+      anyMoreCompaniesYes();
+      addCompany("Company D", "345", true);
+      anyMoreCompaniesNo();
+      expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
+      removeFirstCompany();
+      expect(browser.getUrl()).to.contain(UkBasedPage.url());
+      answerUkBasedQuestion();
+      expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
+    });
+    it("When I remove a company from the summary page, and the amount then totals to 3, but the confirmation question has already been answered, Then I am not prompted with the confirmation question", () => {
+      drivingQuestionYes();
+      addCompany("Company A", "123", true);
+      anyMoreCompaniesYes();
+      addCompany("Company B", "456", true);
+      anyMoreCompaniesYes();
+      addCompany("Company C", "234", true);
+      anyMoreCompaniesNo();
+      expect(browser.getUrl()).to.contain(UkBasedPage.url());
+      answerUkBasedQuestion();
+      expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
+      $(SectionSummaryPage.companiesListAddLink()).click();
+      expect(browser.getUrl()).to.contain("/questionnaire/companies/add-company");
+      expect(browser.getUrl()).to.contain("?return_to=section-summary");
+      addCompany("Company C", "234", true);
+      anyMoreCompaniesNo();
+      expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
+      removeFirstCompany();
+      expect(browser.getUrl()).to.contain(SectionSummaryPage.url());
     });
   });
 });
