@@ -449,19 +449,7 @@ def setup_secure_cookies(application):
 def setup_babel(application):
     application.babel = Babel(application)
     application.jinja_env.add_extension("jinja2.ext.i18n")
-
-    def get_locale():  # pylint: disable=unused-variable
-        session = get_session_store()
-
-        if session and (session_data := session.session_data):
-            return session_data.language_code
-
-        return None
-
-    def get_timezone():  # pylint: disable=unused-variable
-        # For now regardless of locale we will show times in GMT/BST
-        return "Europe/London"
-
+    
     application.babel.init_app(
         application, locale_selector=get_locale, timezone_selector=get_timezone
     )
@@ -491,3 +479,16 @@ def get_minimized_asset(filename):
         elif "js" in filename:
             filename = filename.replace(".js", ".min.js")
     return filename
+
+
+def get_locale():  # pylint: disable=unused-variable
+    session = get_session_store()
+
+    if session and (session_data := session.session_data):
+        return session_data.language_code
+
+    return None
+
+def get_timezone():  # pylint: disable=unused-variable
+    # For now regardless of locale we will show times in GMT/BST
+    return "Europe/London"
