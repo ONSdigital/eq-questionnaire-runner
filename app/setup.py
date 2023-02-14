@@ -449,7 +449,7 @@ def setup_secure_cookies(application):
 def setup_babel(application):
     application.babel = Babel(application)
     application.jinja_env.add_extension("jinja2.ext.i18n")
-    
+
     application.babel.init_app(
         application, locale_selector=get_locale, timezone_selector=get_timezone
     )
@@ -488,6 +488,7 @@ def get_locale():  # pylint: disable=unused-variable
         return session_data.language_code
 
     return None
+
 
 def get_timezone():  # pylint: disable=unused-variable
     # For now regardless of locale we will show times in GMT/BST
