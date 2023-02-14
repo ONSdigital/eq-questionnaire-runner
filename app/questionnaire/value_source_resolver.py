@@ -196,7 +196,8 @@ class ValueSourceResolver:
             return self.response_metadata.get(value_source.get("identifier"))
 
         if source == "calculated_summary":
-            self.evaluate_completed_blocks_for_calculated_summary()
+            if not self.list_item_id:
+                self.evaluate_completed_blocks_for_calculated_summary()
             return self._resolve_calculated_summary_value_source(value_source)
 
     def evaluate_completed_blocks_for_calculated_summary(self) -> None:
