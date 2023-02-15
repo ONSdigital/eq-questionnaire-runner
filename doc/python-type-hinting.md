@@ -92,7 +92,7 @@ A `# type: ignore` comment on a line by itself at the top of a file silences all
 
 ## ParamSpec
 
-Used to forward the parameter types of one callable to another callable e.g. to add basic logging to a function, create a decorator add_logging to log function calls:
+Use to forward the parameter types of one callable to another callable e.g. to add basic logging to a function, create a decorator `add_logging` to log function calls:
 
 ```python
 T = TypeVar('T')
@@ -109,6 +109,32 @@ def add_logging(f: Callable[P, T]) -> Callable[P, T]:
 def add_two(x: float, y: float) -> float:
     '''Add two numbers together.'''
     return x + y
+```
+
+## TypeVar
+
+Use `TypeVar` when the type returned by a function is the same as the type which was passed in i.e. the return type is linked to the parameter type:
+
+```python
+T = TypeVar('T')
+
+def increment_value(self, value: T) -> T:
+    return value + 1
+```
+
+`TypeVar` also accepts extra positional arguments to restrict the type parameter.
+
+```python
+T = TypeVar('T', int, float)
+
+def increment_value(self, value: T) -> T:
+    return value + 1
+```
+
+This tells the typechecker that values other than `int` and `float` are not allowed, resulting in an error:
+
+```python
+increment_value(self, "hello") #error
 ```
 
 ## Useful links
