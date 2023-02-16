@@ -122,7 +122,7 @@ def increment_value(self, value: T) -> T:
     return value + 1
 ```
 
-`TypeVar` also accepts extra positional arguments to restrict the type parameter.
+`TypeVar` also accepts extra positional arguments to restrict the type parameter for improving code documentation and error prevention.
 
 ```python
 T = TypeVar('T', int, float)
@@ -131,7 +131,7 @@ def increment_value(self, value: T) -> T:
     return value + 1
 ```
 
-This tells the typechecker that values other than `int` and `float` are not allowed, resulting in an error:
+This tells the typechecker that values other than `int` and `float` are not allowed, resulting in an error if a string is passed for example:
 
 ```python
 increment_value(self, "hello") #error
