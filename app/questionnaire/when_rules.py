@@ -12,10 +12,6 @@ MAX_REPEATS = 25
 logger = logging.getLogger(__name__)
 
 
-class InvalidWhenRule(Exception):
-    pass
-
-
 def evaluate_comparison_rule(when, answer_value, comparison_value):
     """
     Determine whether a comparison rule will be satisfied based on an
