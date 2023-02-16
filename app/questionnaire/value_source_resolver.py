@@ -196,18 +196,23 @@ class ValueSourceResolver:
             return self.response_metadata.get(value_source.get("identifier"))
 
         if source == "calculated_summary":
-            if not self.list_item_id:
-                self.evaluate_completed_blocks_for_calculated_summary()
+            self.evaluate_completed_blocks_for_calculated_summary()
             return self._resolve_calculated_summary_value_source(value_source)
 
     def evaluate_completed_blocks_for_calculated_summary(self) -> None:
         completed_block_ids: list[str] = []
         if self.progress_store and self.path_finder:
             for section_id, list_item_id in self.progress_store.section_keys():
-                routing_path_for_section = self.path_finder.routing_path(
-                    section_id, list_item_id
-                )
-                completed_block_ids.extend(routing_path_for_section.block_ids)
+                if not self.list_item_id:
+                    routing_path_for_section = self.path_finder.routing_path(
+                        section_id, list_item_id
+                    )
+                    completed_block_ids.extend(routing_path_for_section.block_ids)
+                elif list_item_id == self.list_item_id or list_item_id is None:
+                    routing_path_for_section = self.path_finder.routing_path(
+                        section_id, list_item_id
+                    )
+                    completed_block_ids.extend(routing_path_for_section.block_ids)
 
         if self.routing_path_block_ids and completed_block_ids:
             if routing_path_block_ids := [
