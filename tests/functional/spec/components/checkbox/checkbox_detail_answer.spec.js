@@ -8,31 +8,31 @@ describe("Given the checkbox detail_answer questionnaire,", () => {
     await browser.openQuestionnaire("test_checkbox_detail_answer_textfield.json");
   });
   it("When a checkbox has a detail_answer with visible set to true, Then the detail answer write-in field should be shown", async ()=> {
-    await expect(await $(await CheckboxVisibleTruePage.otherDetail()).isDisplayed()).to.be.true;
+    await expect(await $(CheckboxVisibleTruePage.otherDetail()).isDisplayed()).to.be.true;
   });
   it("When a checkbox has a detail_answer with visible set to true and another answer is checked, then the detail answer write-in field should still be shown", async ()=> {
-    await $(await CheckboxVisibleTruePage.coffee()).click();
-    await expect(await $(await CheckboxVisibleTruePage.otherDetail()).isDisplayed()).to.be.true;
+    await $(CheckboxVisibleTruePage.coffee()).click();
+    await expect(await $(CheckboxVisibleTruePage.otherDetail()).isDisplayed()).to.be.true;
   });
   it("When a checkbox has a detail_answer with visible set to false, Then the detail answer write-in field should not be shown", async ()=> {
-    await $(await CheckboxVisibleTruePage.coffee()).click();
-    await $(await CheckboxVisibleTruePage.submit()).click();
-    await expect(await $(await CheckboxVisibleFalsePage.otherDetail()).isDisplayed()).to.be.false;
+    await $(CheckboxVisibleTruePage.coffee()).click();
+    await $(CheckboxVisibleTruePage.submit()).click();
+    await expect(await $(CheckboxVisibleFalsePage.otherDetail()).isDisplayed()).to.be.false;
   });
   it("When a checkbox has a detail_answer with visible not set, Then the detail answer write-in field should not be shown", async ()=> {
-    await $(await CheckboxVisibleTruePage.coffee()).click();
-    await $(await CheckboxVisibleTruePage.submit()).click();
-    await $(await CheckboxVisibleFalsePage.iceCream()).click();
-    await $(await CheckboxVisibleFalsePage.submit()).click();
-    await expect(await $(await CheckboxVisibleNonePage.otherDetail()).isDisplayed()).to.be.false;
+    await $(CheckboxVisibleTruePage.coffee()).click();
+    await $(CheckboxVisibleTruePage.submit()).click();
+    await $(CheckboxVisibleFalsePage.iceCream()).click();
+    await $(CheckboxVisibleFalsePage.submit()).click();
+    await expect(await $(CheckboxVisibleNonePage.otherDetail()).isDisplayed()).to.be.false;
   });
   it("When a mutually exclusive checkbox has a detail_answer with visible set to true, Then the detail answer write-in field should be shown", async ()=> {
-    await $(await CheckboxVisibleTruePage.coffee()).click();
-    await $(await CheckboxVisibleTruePage.submit()).click();
-    await $(await CheckboxVisibleFalsePage.iceCream()).click();
-    await $(await CheckboxVisibleFalsePage.submit()).click();
-    await $(await CheckboxVisibleNonePage.blue()).click();
-    await $(await CheckboxVisibleNonePage.submit()).click();
-    await expect(await $(await MutuallyExclusivePage.otherDetail()).isDisplayed()).to.be.true;
+    await $(CheckboxVisibleTruePage.coffee()).click();
+    await $(CheckboxVisibleTruePage.submit()).click();
+    await $(CheckboxVisibleFalsePage.iceCream()).click();
+    await $(CheckboxVisibleFalsePage.submit()).click();
+    await $(CheckboxVisibleNonePage.blue()).click();
+    await $(CheckboxVisibleNonePage.submit()).click();
+    await expect(await $(MutuallyExclusivePage.otherDetail()).isDisplayed()).to.be.true;
   });
 });

@@ -14,54 +14,54 @@ describe("Feature: Repeating Section Summaries", () => {
       // Ensure we are on the Hub
       await expect(browser.getUrl()).to.contain(HubPage.url());
       // Start first section to add household members
-      await $(await HubPage.summaryRowLink("section")).click();
+      await $(HubPage.summaryRowLink("section")).click();
 
       // Add a primary person
-      await $(await PrimaryPersonPage.yes()).click();
-      await $(await PrimaryPersonPage.submit()).click();
-      await $(await PrimaryPersonAddPage.firstName()).setValue("Mark");
-      await $(await PrimaryPersonAddPage.lastName()).setValue("Twain");
-      await $(await PrimaryPersonPage.submit()).click();
+      await $(PrimaryPersonPage.yes()).click();
+      await $(PrimaryPersonPage.submit()).click();
+      await $(PrimaryPersonAddPage.firstName()).setValue("Mark");
+      await $(PrimaryPersonAddPage.lastName()).setValue("Twain");
+      await $(PrimaryPersonPage.submit()).click();
 
       // Add other household members
 
-      await $(await FirstListCollectorPage.yes()).click();
-      await $(await FirstListCollectorPage.submit()).click();
-      await $(await FirstListCollectorAddPage.firstName()).setValue("Jean");
-      await $(await FirstListCollectorAddPage.lastName()).setValue("Clemens");
-      await $(await FirstListCollectorAddPage.submit()).click();
+      await $(FirstListCollectorPage.yes()).click();
+      await $(FirstListCollectorPage.submit()).click();
+      await $(FirstListCollectorAddPage.firstName()).setValue("Jean");
+      await $(FirstListCollectorAddPage.lastName()).setValue("Clemens");
+      await $(FirstListCollectorAddPage.submit()).click();
 
-      await $(await FirstListCollectorPage.no()).click();
-      await $(await FirstListCollectorPage.submit()).click();
+      await $(FirstListCollectorPage.no()).click();
+      await $(FirstListCollectorPage.submit()).click();
     });
 
     describe("When the user finishes a repeating section", () => {
       before("Enter information for a repeating section", async ()=> {
-        await $(await HubPage.summaryRowLink("personal-details-section-1")).click();
-        await $(await ProxyPage.yes()).click();
-        await $(await ProxyPage.submit()).click();
+        await $(HubPage.summaryRowLink("personal-details-section-1")).click();
+        await $(ProxyPage.yes()).click();
+        await $(ProxyPage.submit()).click();
 
-        await $(await DateOfBirthPage.day()).setValue("30");
-        await $(await DateOfBirthPage.month()).setValue("11");
-        await $(await DateOfBirthPage.year()).setValue("1835");
-        await $(await DateOfBirthPage.submit()).click();
+        await $(DateOfBirthPage.day()).setValue("30");
+        await $(DateOfBirthPage.month()).setValue("11");
+        await $(DateOfBirthPage.year()).setValue("1835");
+        await $(DateOfBirthPage.submit()).click();
       });
 
       beforeEach("Navigate to the Section Summary", async ()=> {
         browser.url(HubPage.url());
-        await $(await HubPage.summaryRowLink("personal-details-section-1")).click();
+        await $(HubPage.summaryRowLink("personal-details-section-1")).click();
       });
 
       it("the title set in the repeating block is used for the section summary title", async ()=> {
-        await expect(await $(await PersonalSummaryPage.heading()).getText()).to.contain("Mark Twain");
+        await expect(await $(PersonalSummaryPage.heading()).getText()).to.contain("Mark Twain");
       });
 
       it("renders their name as part of the question title on the section summary", async ()=> {
-        await expect(await $(await PersonalSummaryPage.dateOfBirthQuestion()).getText()).to.contain("Mark Twain’s");
+        await expect(await $(PersonalSummaryPage.dateOfBirthQuestion()).getText()).to.contain("Mark Twain’s");
       });
 
       it("renders the correct date of birth answer", async ()=> {
-        await expect(await $(await PersonalSummaryPage.dateOfBirthAnswer()).getText()).to.contain("30 November 1835");
+        await expect(await $(PersonalSummaryPage.dateOfBirthAnswer()).getText()).to.contain("30 November 1835");
       });
     });
   });

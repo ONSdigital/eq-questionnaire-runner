@@ -13,11 +13,11 @@ describe("Difference check (years)", () => {
   });
 
   it("Given a day, month and year answer is provided for a date question then the age in years should be calculated and displayed on the page ", async ()=> {
-    await $(await AgeBlockYearPage.day()).setValue(1);
-    await $(await AgeBlockYearPage.month()).setValue(1);
-    await $(await AgeBlockYearPage.year()).setValue(1990);
-    await $(await AgeBlockYearPage.submit()).click();
-    await expect(await $(await AgeTestYearPage.heading()).getText()).to.equal(`You are ${getYears("1990/01/01")} years old. Is this correct?`);
+    await $(AgeBlockYearPage.day()).setValue(1);
+    await $(AgeBlockYearPage.month()).setValue(1);
+    await $(AgeBlockYearPage.year()).setValue(1990);
+    await $(AgeBlockYearPage.submit()).click();
+    await expect(await $(AgeTestYearPage.heading()).getText()).to.equal(`You are ${getYears("1990/01/01")} years old. Is this correct?`);
   });
 });
 
@@ -27,12 +27,12 @@ describe("Difference check (months and years)", () => {
   });
 
   it("Given a month and year answer is provided for a date question then the difference in years should be calculated and displayed on the page ", async ()=> {
-    await $(await AgeBlockMonthYearPage.Month()).setValue(1);
-    await $(await AgeBlockMonthYearPage.Year()).setValue(1990);
+    await $(AgeBlockMonthYearPage.Month()).setValue(1);
+    await $(AgeBlockMonthYearPage.Year()).setValue(1990);
 
-    await $(await AgeBlockMonthYearPage.submit()).click();
+    await $(AgeBlockMonthYearPage.submit()).click();
 
-    await expect(await $(await AgeTestMonthYearPage.heading()).getText()).to.equal(
+    await expect(await $(AgeTestMonthYearPage.heading()).getText()).to.equal(
       `It has been ${getYears("1990/01/01")} years since you last went on holiday. Is this correct?`
     );
   });
@@ -44,14 +44,14 @@ describe("Difference check (months and years range)", () => {
   });
 
   it("Given a month and year answers 'from' and 'to' are provided for a date question then the difference in years should be calculated and displayed on the page ", async ()=> {
-    await $(await AgeBlockMonthYearRangePage.periodFromMonth()).setValue(1);
-    await $(await AgeBlockMonthYearRangePage.periodFromYear()).setValue(1990);
-    await $(await AgeBlockMonthYearRangePage.periodToMonth()).setValue(1);
-    await $(await AgeBlockMonthYearRangePage.periodToYear()).setValue(1991);
+    await $(AgeBlockMonthYearRangePage.periodFromMonth()).setValue(1);
+    await $(AgeBlockMonthYearRangePage.periodFromYear()).setValue(1990);
+    await $(AgeBlockMonthYearRangePage.periodToMonth()).setValue(1);
+    await $(AgeBlockMonthYearRangePage.periodToYear()).setValue(1991);
 
-    await $(await AgeBlockMonthYearRangePage.submit()).click();
+    await $(AgeBlockMonthYearRangePage.submit()).click();
 
-    await expect(await $(await AgeTestMonthYearRangePage.heading()).getText()).to.have.string("You were out of the UK for 1 year. Is this correct?");
+    await expect(await $(AgeTestMonthYearRangePage.heading()).getText()).to.have.string("You were out of the UK for 1 year. Is this correct?");
   });
 });
 
@@ -61,17 +61,17 @@ describe("Difference check (years range)", () => {
   });
 
   it("Given a day, month and year answers 'from' and 'to' are provided for a date question then the difference in years should be calculated and displayed on the page ", async ()=> {
-    await $(await AgeBlockDayMonthYearRangePage.periodFromday()).setValue(1);
-    await $(await AgeBlockDayMonthYearRangePage.periodFrommonth()).setValue(1);
-    await $(await AgeBlockDayMonthYearRangePage.periodFromyear()).setValue(1990);
+    await $(AgeBlockDayMonthYearRangePage.periodFromday()).setValue(1);
+    await $(AgeBlockDayMonthYearRangePage.periodFrommonth()).setValue(1);
+    await $(AgeBlockDayMonthYearRangePage.periodFromyear()).setValue(1990);
 
-    await $(await AgeBlockDayMonthYearRangePage.periodToday()).setValue(1);
-    await $(await AgeBlockDayMonthYearRangePage.periodTomonth()).setValue(1);
-    await $(await AgeBlockDayMonthYearRangePage.periodToyear()).setValue(1991);
+    await $(AgeBlockDayMonthYearRangePage.periodToday()).setValue(1);
+    await $(AgeBlockDayMonthYearRangePage.periodTomonth()).setValue(1);
+    await $(AgeBlockDayMonthYearRangePage.periodToyear()).setValue(1991);
 
-    await $(await AgeBlockDayMonthYearRangePage.submit()).click();
+    await $(AgeBlockDayMonthYearRangePage.submit()).click();
 
-    await expect(await $(await AgeTestDayMonthYearRangePage.heading()).getText()).to.have.string("You were out of the UK for 1 year. Is this correct?");
+    await expect(await $(AgeTestDayMonthYearRangePage.heading()).getText()).to.have.string("You were out of the UK for 1 year. Is this correct?");
   });
 });
 

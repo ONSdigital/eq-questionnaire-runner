@@ -19,8 +19,8 @@ class TestCase {
 
     it("When the timeout modal is displayed, and I click the “Continue survey” button, Then my session will be extended", async ()=> {
       this.checkTimeoutModal();
-      await $(await TimeoutModalPage.submit()).click();
-      await expect(await $(await TimeoutModalPage.timer()).getText()).to.equal("");
+      await $(TimeoutModalPage.submit()).click();
+      await expect(await $(TimeoutModalPage.timer()).getText()).to.equal("");
       browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
       browser.refresh();
       await expect(browser.getUrl()).to.contain(page.pageName);
@@ -38,8 +38,8 @@ class TestCase {
   }
 
   checkTimeoutModal() {
-    await $(await TimeoutModalPage.timer()).waitForDisplayed({ timeout: 70000 });
-    await expect(await $(await TimeoutModalPage.timer()).getText()).to.equal(
+    await $(TimeoutModalPage.timer()).waitForDisplayed({ timeout: 70000 });
+    await expect(await $(TimeoutModalPage.timer()).getText()).to.equal(
       "To protect your information, your progress will be saved and you will be signed out in 59 seconds."
     );
   }

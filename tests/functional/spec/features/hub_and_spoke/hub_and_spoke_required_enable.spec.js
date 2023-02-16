@@ -7,15 +7,15 @@ describe("Hub and spoke section required and enabled", () => {
     await browser.openQuestionnaire("test_hub_section_required_and_enabled.json");
   });
   it("Given a relationship question in household, When I answer 'Yes', meaning the second section is enabled, Then I am routed to second section", async ()=> {
-    await $(await HouseholdRelationshipsBlockPage.yes()).click();
-    await $(await HouseholdRelationshipsBlockPage.submit()).click();
-    await expect(await $(await RelationshipsCountPage.legend()).getText()).to.contain("How many people are related");
+    await $(HouseholdRelationshipsBlockPage.yes()).click();
+    await $(HouseholdRelationshipsBlockPage.submit()).click();
+    await expect(await $(RelationshipsCountPage.legend()).getText()).to.contain("How many people are related");
   });
   it("Given a relationship question in household, When I answer 'No', Then I am redirected to the hub and can submit my answers without completing the other section", async ()=> {
-    await $(await HouseholdRelationshipsBlockPage.no()).click();
-    await $(await HouseholdRelationshipsBlockPage.submit()).click();
+    await $(HouseholdRelationshipsBlockPage.no()).click();
+    await $(HouseholdRelationshipsBlockPage.submit()).click();
     await expect($("body").getText()).to.contain("Submit survey");
-    await $(await SubmitPage.submit()).click();
+    await $(SubmitPage.submit()).click();
     await expect(browser.getUrl()).to.contain("thank-you");
   });
 });

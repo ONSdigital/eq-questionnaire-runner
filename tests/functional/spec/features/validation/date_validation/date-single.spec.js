@@ -10,68 +10,68 @@ describe("Feature: Validation for single date periods", () => {
 
   describe("Given I enter a date before the minimum offset meta date", () => {
     it("When I continue, Then I should see a period validation error", async ()=> {
-      await $(await DatePeriodPage.dateRangeFromday()).setValue(13);
-      await $(await DatePeriodPage.dateRangeFrommonth()).setValue(2);
-      await $(await DatePeriodPage.dateRangeFromyear()).setValue(2016);
-      await $(await DatePeriodPage.submit()).click();
+      await $(DatePeriodPage.dateRangeFromday()).setValue(13);
+      await $(DatePeriodPage.dateRangeFrommonth()).setValue(2);
+      await $(DatePeriodPage.dateRangeFromyear()).setValue(2016);
+      await $(DatePeriodPage.submit()).click();
 
-      await $(await DatePeriodPage.dateRangeToday()).setValue(3);
-      await $(await DatePeriodPage.dateRangeTomonth()).setValue(3);
-      await $(await DatePeriodPage.dateRangeToyear()).setValue(2018);
-      await $(await DatePeriodPage.submit()).click();
-      await expect(await $(await DatePeriodPage.errorNumber(1)).getText()).to.contain("Enter a date after 12 December 2016");
+      await $(DatePeriodPage.dateRangeToday()).setValue(3);
+      await $(DatePeriodPage.dateRangeTomonth()).setValue(3);
+      await $(DatePeriodPage.dateRangeToyear()).setValue(2018);
+      await $(DatePeriodPage.submit()).click();
+      await expect(await $(DatePeriodPage.errorNumber(1)).getText()).to.contain("Enter a date after 12 December 2016");
     });
   });
 
   describe("Given I enter a date after the maximum offset value date", () => {
     it("When I continue, Then I should see a period validation error", async ()=> {
-      await $(await DatePeriodPage.dateRangeFromday()).setValue(13);
-      await $(await DatePeriodPage.dateRangeFrommonth()).setValue(7);
-      await $(await DatePeriodPage.dateRangeFromyear()).setValue(2017);
-      await $(await DatePeriodPage.submit()).click();
+      await $(DatePeriodPage.dateRangeFromday()).setValue(13);
+      await $(DatePeriodPage.dateRangeFrommonth()).setValue(7);
+      await $(DatePeriodPage.dateRangeFromyear()).setValue(2017);
+      await $(DatePeriodPage.submit()).click();
 
-      await $(await DatePeriodPage.dateRangeToday()).setValue(3);
-      await $(await DatePeriodPage.dateRangeTomonth()).setValue(3);
-      await $(await DatePeriodPage.dateRangeToyear()).setValue(2018);
-      await $(await DatePeriodPage.submit()).click();
-      await expect(await $(await DatePeriodPage.errorNumber(1)).getText()).to.contain("Enter a date before 2 July 2017");
+      await $(DatePeriodPage.dateRangeToday()).setValue(3);
+      await $(DatePeriodPage.dateRangeTomonth()).setValue(3);
+      await $(DatePeriodPage.dateRangeToyear()).setValue(2018);
+      await $(DatePeriodPage.submit()).click();
+      await expect(await $(DatePeriodPage.errorNumber(1)).getText()).to.contain("Enter a date before 2 July 2017");
     });
   });
 
   describe("Given I enter a date before the minimum offset answer id date", () => {
     it("When I continue, Then I should see a period validation error", async ()=> {
-      await $(await DatePeriodPage.dateRangeFromday()).setValue(13);
-      await $(await DatePeriodPage.dateRangeFrommonth()).setValue(11);
-      await $(await DatePeriodPage.dateRangeFromyear()).setValue(2016);
-      await $(await DatePeriodPage.submit()).click();
+      await $(DatePeriodPage.dateRangeFromday()).setValue(13);
+      await $(DatePeriodPage.dateRangeFrommonth()).setValue(11);
+      await $(DatePeriodPage.dateRangeFromyear()).setValue(2016);
+      await $(DatePeriodPage.submit()).click();
 
-      await $(await DatePeriodPage.dateRangeToday()).setValue(13);
-      await $(await DatePeriodPage.dateRangeTomonth()).setValue(1);
-      await $(await DatePeriodPage.dateRangeToyear()).setValue(2018);
-      await $(await DatePeriodPage.submit()).click();
-      await expect(await $(await DatePeriodPage.errorNumber(2)).getText()).to.contain("Enter a date after 10 February 2018");
+      await $(DatePeriodPage.dateRangeToday()).setValue(13);
+      await $(DatePeriodPage.dateRangeTomonth()).setValue(1);
+      await $(DatePeriodPage.dateRangeToyear()).setValue(2018);
+      await $(DatePeriodPage.submit()).click();
+      await expect(await $(DatePeriodPage.errorNumber(2)).getText()).to.contain("Enter a date after 10 February 2018");
     });
   });
 
   describe("Given I enter a date in between the minimum offset meta date and the maximum offset value date", () => {
     it("When I continue, Then I should be able to reach the summary", async ()=> {
-      await $(await DatePeriodPage.dateRangeFromday()).setValue(13);
-      await $(await DatePeriodPage.dateRangeFrommonth()).setValue(12);
-      await $(await DatePeriodPage.dateRangeFromyear()).setValue(2016);
-      await $(await DatePeriodPage.submit()).click();
+      await $(DatePeriodPage.dateRangeFromday()).setValue(13);
+      await $(DatePeriodPage.dateRangeFrommonth()).setValue(12);
+      await $(DatePeriodPage.dateRangeFromyear()).setValue(2016);
+      await $(DatePeriodPage.submit()).click();
 
-      await $(await DatePeriodPage.dateRangeToday()).setValue(11);
-      await $(await DatePeriodPage.dateRangeTomonth()).setValue(2);
-      await $(await DatePeriodPage.dateRangeToyear()).setValue(2018);
-      await $(await DatePeriodPage.submit()).click();
+      await $(DatePeriodPage.dateRangeToday()).setValue(11);
+      await $(DatePeriodPage.dateRangeTomonth()).setValue(2);
+      await $(DatePeriodPage.dateRangeToyear()).setValue(2018);
+      await $(DatePeriodPage.submit()).click();
       await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
   });
 
   function completeFirstDatePage() {
-    await $(await DatePage.day()).setValue(1);
-    await $(await DatePage.month()).setValue(1);
-    await $(await DatePage.year()).setValue(2018);
-    await $(await DatePage.submit()).click();
+    await $(DatePage.day()).setValue(1);
+    await $(DatePage.month()).setValue(1);
+    await $(DatePage.year()).setValue(2018);
+    await $(DatePage.submit()).click();
   }
 });

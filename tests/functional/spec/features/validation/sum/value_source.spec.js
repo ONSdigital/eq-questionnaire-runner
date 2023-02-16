@@ -5,25 +5,25 @@ import SecondBreakdownAnswerPage from "../../../../generated_pages/validation_su
 import SubmitPage from "../../../../generated_pages/validation_sum_against_total_equal/submit.page";
 
 const answerAndSubmitBreakdownQuestion = async (breakdown1, breakdown2, breakdown3, breakdown4) => {
-  await $(await BreakdownAnswerPage.breakdown1()).setValue(breakdown1);
-  await $(await BreakdownAnswerPage.breakdown2()).setValue(breakdown2);
-  await $(await BreakdownAnswerPage.breakdown3()).setValue(breakdown3);
-  await $(await BreakdownAnswerPage.breakdown4()).setValue(breakdown4);
-  await $(await BreakdownAnswerPage.submit()).click();
+  await $(BreakdownAnswerPage.breakdown1()).setValue(breakdown1);
+  await $(BreakdownAnswerPage.breakdown2()).setValue(breakdown2);
+  await $(BreakdownAnswerPage.breakdown3()).setValue(breakdown3);
+  await $(BreakdownAnswerPage.breakdown4()).setValue(breakdown4);
+  await $(BreakdownAnswerPage.submit()).click();
 };
 
 const answerAndSubmitSecondBreakdownQuestion = async (breakdown1, breakdown2, breakdown3, breakdown4) => {
-  await $(await SecondBreakdownAnswerPage.secondBreakdown1()).setValue(breakdown1);
-  await $(await SecondBreakdownAnswerPage.secondBreakdown2()).setValue(breakdown2);
-  await $(await SecondBreakdownAnswerPage.secondBreakdown3()).setValue(breakdown3);
-  await $(await SecondBreakdownAnswerPage.secondBreakdown4()).setValue(breakdown4);
-  await $(await SecondBreakdownAnswerPage.submit()).click();
+  await $(SecondBreakdownAnswerPage.secondBreakdown1()).setValue(breakdown1);
+  await $(SecondBreakdownAnswerPage.secondBreakdown2()).setValue(breakdown2);
+  await $(SecondBreakdownAnswerPage.secondBreakdown3()).setValue(breakdown3);
+  await $(SecondBreakdownAnswerPage.secondBreakdown4()).setValue(breakdown4);
+  await $(SecondBreakdownAnswerPage.submit()).click();
 };
 
 const answerBothBreakdownQuestions = async (array1, array2) => {
   answerAndSubmitBreakdownQuestion(array1[0], array1[1], array1[2], array1[3]);
 
-  await $(await TotalPlaybackPage.submit()).click();
+  await $(TotalPlaybackPage.submit()).click();
 
   answerAndSubmitSecondBreakdownQuestion(array2[0], array2[1], array2[2], array2[3]);
 };
@@ -35,8 +35,8 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
   describe("Given I start a grouped answer validation survey and enter 12 into the total", () => {
     it("When I continue and enter 3 in each breakdown field, Then I should be able to get to the total playback page", async ()=> {
-      await $(await TotalAnswerPage.total()).setValue("12");
-      await $(await TotalAnswerPage.submit()).click();
+      await $(TotalAnswerPage.total()).setValue("12");
+      await $(TotalAnswerPage.submit()).click();
 
       answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
@@ -46,8 +46,8 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
   describe("Given I have a calculated summary value of 12", () => {
     it("When I continue to second breakdown and enter values equal to calculated summary total, Then I should be able to get to the summary page", async ()=> {
-      await $(await TotalAnswerPage.total()).setValue("12");
-      await $(await TotalAnswerPage.submit()).click();
+      await $(TotalAnswerPage.total()).setValue("12");
+      await $(TotalAnswerPage.submit()).click();
 
       answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
@@ -57,20 +57,20 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
   describe("Given I completed both grouped answer validation questions and I am on the summary", () => {
     it("When I go back from the summary and change the total, Then I must reconfirm both breakdown questions with valid answers before I can get to the summary", async ()=> {
-      await $(await TotalAnswerPage.total()).setValue("12");
-      await $(await TotalAnswerPage.submit()).click();
+      await $(TotalAnswerPage.total()).setValue("12");
+      await $(TotalAnswerPage.submit()).click();
 
       answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
-      await $(await SubmitPage.totalAnswerEdit()).click();
-      await $(await TotalAnswerPage.total()).setValue("15");
-      await $(await TotalAnswerPage.submit()).click();
+      await $(SubmitPage.totalAnswerEdit()).click();
+      await $(TotalAnswerPage.total()).setValue("15");
+      await $(TotalAnswerPage.submit()).click();
 
-      await $(await BreakdownAnswerPage.submit()).click();
+      await $(BreakdownAnswerPage.submit()).click();
 
-      await expect(await $(await BreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.true;
+      await expect(await $(BreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.true;
 
-      await expect(await $(await BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 15");
+      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 15");
 
       answerBothBreakdownQuestions(["6", "3", "3", "3"], ["3", "3", "2", "1"]);
 
@@ -80,20 +80,20 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
   describe("Given I completed both grouped answer validation questions and I am on the summary", () => {
     it("When I go back from the summary and change the total, Then I must reconfirm the breakdown question based on answer value source with valid answers before I can continue", async ()=> {
-      await $(await TotalAnswerPage.total()).setValue("12");
-      await $(await TotalAnswerPage.submit()).click();
+      await $(TotalAnswerPage.total()).setValue("12");
+      await $(TotalAnswerPage.submit()).click();
 
       answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
-      await $(await SubmitPage.totalAnswerEdit()).click();
-      await $(await TotalAnswerPage.total()).setValue("15");
-      await $(await TotalAnswerPage.submit()).click();
+      await $(SubmitPage.totalAnswerEdit()).click();
+      await $(TotalAnswerPage.total()).setValue("15");
+      await $(TotalAnswerPage.submit()).click();
 
       answerAndSubmitBreakdownQuestion("0", "3", "3", "3");
 
-      await expect(await $(await BreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.true;
+      await expect(await $(BreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.true;
 
-      await expect(await $(await BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 15");
+      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 15");
 
       answerBothBreakdownQuestions(["5", "4", "4", "2"], ["3", "3", "2", "1"]);
 
@@ -103,26 +103,26 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
   describe("Given I completed both grouped answer validation questions and I am on the summary", () => {
     it("When I go back from the summary and change the first breakdown question answers so its total changes, Then I must reconfirm the second breakdown question based on calculated summary value source with valid answers before I can continue", async ()=> {
-      await $(await TotalAnswerPage.total()).setValue("12");
-      await $(await TotalAnswerPage.submit()).click();
+      await $(TotalAnswerPage.total()).setValue("12");
+      await $(TotalAnswerPage.submit()).click();
 
       answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
-      await $(await SubmitPage.breakdown1Edit()).click();
+      await $(SubmitPage.breakdown1Edit()).click();
 
       answerAndSubmitBreakdownQuestion("6", "3", "2", "1");
 
-      await $(await TotalPlaybackPage.submit()).click();
+      await $(TotalPlaybackPage.submit()).click();
 
-      await $(await SecondBreakdownAnswerPage.submit()).click();
+      await $(SecondBreakdownAnswerPage.submit()).click();
 
-      await expect(await $(await SecondBreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.true;
+      await expect(await $(SecondBreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.true;
 
-      await expect(await $(await SecondBreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 9");
+      await expect(await $(SecondBreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 9");
 
       answerAndSubmitSecondBreakdownQuestion("5", "4", "0", "0");
 
-      await expect(await $(await SecondBreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.false;
+      await expect(await $(SecondBreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.false;
 
       await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
@@ -130,23 +130,23 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
   describe("Given I start a grouped answer validation survey and enter 5 into the total", () => {
     it("When I continue and enter 3 in each breakdown field, Then I should see a validation error", async ()=> {
-      await $(await TotalAnswerPage.total()).setValue("5");
-      await $(await TotalAnswerPage.submit()).click();
+      await $(TotalAnswerPage.total()).setValue("5");
+      await $(TotalAnswerPage.submit()).click();
 
       answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
-      await expect(await $(await BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 5");
+      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 5");
     });
   });
 
   describe("Given I start a grouped answer validation survey and enter 5 into the total", () => {
     it("When I enter 3 in each breakdown field and continue to second breakdown and enter 3 in each field, Then I should see a validation error", async ()=> {
-      await $(await TotalAnswerPage.total()).setValue("5");
-      await $(await TotalAnswerPage.submit()).click();
+      await $(TotalAnswerPage.total()).setValue("5");
+      await $(TotalAnswerPage.submit()).click();
 
       answerBothBreakdownQuestions(["2", "1", "1", "1"], ["3", "3", "3", "3"]);
 
-      await expect(await $(await SecondBreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 3");
+      await expect(await $(SecondBreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 3");
     });
   });
 });

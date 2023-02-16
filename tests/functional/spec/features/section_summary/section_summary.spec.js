@@ -13,57 +13,57 @@ describe("Section Summary", () => {
   describe("Given I start a Test Section Summary survey and complete to Section Summary", () => {
     beforeEach(async ()=> {
       await browser.openQuestionnaire("test_section_summary.json");
-      await $(await InsuranceTypePage.both()).click();
-      await $(await InsuranceTypePage.submit()).click();
-      await $(await InsuranceAddressPage.submit()).click();
-      await $(await ListedPage.submit()).click();
-      await expect(await $(await PropertyDetailsSummaryPage.insuranceTypeAnswer()).getText()).to.contain("Both");
+      await $(InsuranceTypePage.both()).click();
+      await $(InsuranceTypePage.submit()).click();
+      await $(InsuranceAddressPage.submit()).click();
+      await $(ListedPage.submit()).click();
+      await expect(await $(PropertyDetailsSummaryPage.insuranceTypeAnswer()).getText()).to.contain("Both");
     });
 
     it("When I get to the section summary page, Then the submit button should read 'Continue'", async ()=> {
-      await expect(await $(await PropertyDetailsSummaryPage.submit()).getText()).to.contain("Continue");
+      await expect(await $(PropertyDetailsSummaryPage.submit()).getText()).to.contain("Continue");
     });
 
     it("When I have selected an answer to edit and edit it, Then I should return to the section summary with new value displayed", async ()=> {
-      await $(await PropertyDetailsSummaryPage.insuranceAddressAnswerEdit()).click();
-      await $(await InsuranceAddressPage.answer()).setValue("Test Address");
-      await $(await InsuranceAddressPage.submit()).click();
-      await expect(await $(await PropertyDetailsSummaryPage.insuranceAddressAnswer()).getText()).to.contain("Test Address");
+      await $(PropertyDetailsSummaryPage.insuranceAddressAnswerEdit()).click();
+      await $(InsuranceAddressPage.answer()).setValue("Test Address");
+      await $(InsuranceAddressPage.submit()).click();
+      await expect(await $(PropertyDetailsSummaryPage.insuranceAddressAnswer()).getText()).to.contain("Test Address");
     });
 
     it("When I select edit from the section summary and click previous on the question page, Then I should be taken back to the section summary", async ()=> {
-      await $(await PropertyDetailsSummaryPage.insuranceAddressAnswerEdit()).click();
-      await $(await InsuranceAddressPage.previous()).click();
+      await $(PropertyDetailsSummaryPage.insuranceAddressAnswerEdit()).click();
+      await $(InsuranceAddressPage.previous()).click();
       await expect(browser.getUrl()).to.contain(PropertyDetailsSummaryPage.url());
     });
 
     it("When I continue on the section summary page, Then I should be taken to the next section", async ()=> {
-      await $(await PropertyDetailsSummaryPage.submit()).click();
+      await $(PropertyDetailsSummaryPage.submit()).click();
       await expect(browser.getUrl()).to.contain(HouseType.pageName);
     });
 
     it("When I select edit from Section Summary but change routing, Then I should step through the section and be returned to the Section Summary once all new questions have been answered", async ()=> {
-      await $(await PropertyDetailsSummaryPage.insuranceTypeAnswerEdit()).click();
-      await $(await InsuranceTypePage.contents()).click();
-      await $(await InsuranceTypePage.submit()).click();
+      await $(PropertyDetailsSummaryPage.insuranceTypeAnswerEdit()).click();
+      await $(InsuranceTypePage.contents()).click();
+      await $(InsuranceTypePage.submit()).click();
       await expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
-      await $(await InsuranceAddressPage.submit()).click();
+      await $(InsuranceAddressPage.submit()).click();
       await expect(browser.getUrl()).to.contain(AddressDurationPage.pageName);
-      await $(await AddressDurationPage.submit()).click();
+      await $(AddressDurationPage.submit()).click();
       await expect(browser.getUrl()).to.contain(PropertyDetailsSummaryPage.pageName);
     });
 
     it("When I select edit from Section Summary but change routing, Then using previous should not prevent me returning to the section summary once all new questions have been answered", async ()=> {
-      await $(await PropertyDetailsSummaryPage.insuranceTypeAnswerEdit()).click();
-      await $(await InsuranceTypePage.contents()).click();
-      await $(await InsuranceTypePage.submit()).click();
+      await $(PropertyDetailsSummaryPage.insuranceTypeAnswerEdit()).click();
+      await $(InsuranceTypePage.contents()).click();
+      await $(InsuranceTypePage.submit()).click();
       await expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
-      await $(await InsuranceAddressPage.submit()).click();
+      await $(InsuranceAddressPage.submit()).click();
       await expect(browser.getUrl()).to.contain(AddressDurationPage.pageName);
-      await $(await AddressDurationPage.previous()).click();
+      await $(AddressDurationPage.previous()).click();
       await expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
-      await $(await InsuranceAddressPage.submit()).click();
-      await $(await AddressDurationPage.submit()).click();
+      await $(InsuranceAddressPage.submit()).click();
+      await $(AddressDurationPage.submit()).click();
       await expect(browser.getUrl()).to.contain(PropertyDetailsSummaryPage.pageName);
     });
   });
@@ -71,79 +71,79 @@ describe("Section Summary", () => {
   describe("Given I start a Test Section Summary survey and complete to Final Summary", () => {
     beforeEach(async ()=> {
       await browser.openQuestionnaire("test_section_summary.json");
-      await $(await InsuranceTypePage.both()).click();
-      await $(await InsuranceTypePage.submit()).click();
-      await $(await InsuranceAddressPage.submit()).click();
-      await $(await ListedPage.submit()).click();
-      await $(await PropertyDetailsSummaryPage.submit()).click();
-      await $(await HouseType.submit()).click();
-      await $(await HouseholdDetailsSummaryPage.submit()).click();
-      await $(await NumberOfPeoplePage.answer()).setValue(3);
-      await $(await NumberOfPeoplePage.submit()).click();
-      await $(await HouseholdCountSectionSummaryPage.submit()).click();
+      await $(InsuranceTypePage.both()).click();
+      await $(InsuranceTypePage.submit()).click();
+      await $(InsuranceAddressPage.submit()).click();
+      await $(ListedPage.submit()).click();
+      await $(PropertyDetailsSummaryPage.submit()).click();
+      await $(HouseType.submit()).click();
+      await $(HouseholdDetailsSummaryPage.submit()).click();
+      await $(NumberOfPeoplePage.answer()).setValue(3);
+      await $(NumberOfPeoplePage.submit()).click();
+      await $(HouseholdCountSectionSummaryPage.submit()).click();
       await expect(browser.getUrl()).to.contain(SubmitPage.url());
     });
 
     it("When I select edit from Final Summary and don't change an answer, Then I should be taken to the Final Summary", async ()=> {
-      await $(await SubmitPage.summaryShowAllButton()).click();
-      await $(await SubmitPage.insuranceAddressAnswerEdit()).click();
-      await $(await InsuranceAddressPage.submit()).click();
+      await $(SubmitPage.summaryShowAllButton()).click();
+      await $(SubmitPage.insuranceAddressAnswerEdit()).click();
+      await $(InsuranceAddressPage.submit()).click();
       await expect(browser.getUrl()).to.contain(SubmitPage.url());
     });
 
     it("When I select edit from Final Summary and change an answer that doesn't affect completeness, Then I should be taken to the Final Summary", async ()=> {
-      await $(await SubmitPage.summaryShowAllButton()).click();
-      await $(await SubmitPage.insuranceAddressAnswerEdit()).click();
-      await $(await InsuranceAddressPage.answer()).setValue("Test Address");
-      await $(await InsuranceAddressPage.submit()).click();
+      await $(SubmitPage.summaryShowAllButton()).click();
+      await $(SubmitPage.insuranceAddressAnswerEdit()).click();
+      await $(InsuranceAddressPage.answer()).setValue("Test Address");
+      await $(InsuranceAddressPage.submit()).click();
       await expect(browser.getUrl()).to.contain(SubmitPage.url());
     });
 
     it("When I select edit from Final Summary but change routing, Then I should step through the section and be returned to the Final Summary once all new questions have been answered", async ()=> {
-      await $(await SubmitPage.summaryShowAllButton()).click();
-      await $(await SubmitPage.insuranceTypeAnswerEdit()).click();
-      await $(await InsuranceTypePage.contents()).click();
-      await $(await InsuranceTypePage.submit()).click();
+      await $(SubmitPage.summaryShowAllButton()).click();
+      await $(SubmitPage.insuranceTypeAnswerEdit()).click();
+      await $(InsuranceTypePage.contents()).click();
+      await $(InsuranceTypePage.submit()).click();
       await expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
-      await $(await InsuranceAddressPage.submit()).click();
+      await $(InsuranceAddressPage.submit()).click();
       await expect(browser.getUrl()).to.contain(AddressDurationPage.pageName);
-      await $(await AddressDurationPage.submit()).click();
+      await $(AddressDurationPage.submit()).click();
       await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
     it("When I select edit from Final Summary but change routing, Then using previous should not prevent me returning to the section summary once all new questions have been answered", async ()=> {
-      await $(await SubmitPage.summaryShowAllButton()).click();
-      await $(await SubmitPage.insuranceTypeAnswerEdit()).click();
-      await $(await InsuranceTypePage.contents()).click();
-      await $(await InsuranceTypePage.submit()).click();
+      await $(SubmitPage.summaryShowAllButton()).click();
+      await $(SubmitPage.insuranceTypeAnswerEdit()).click();
+      await $(InsuranceTypePage.contents()).click();
+      await $(InsuranceTypePage.submit()).click();
       await expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
-      await $(await InsuranceAddressPage.submit()).click();
+      await $(InsuranceAddressPage.submit()).click();
       await expect(browser.getUrl()).to.contain(AddressDurationPage.pageName);
-      await $(await AddressDurationPage.previous()).click();
+      await $(AddressDurationPage.previous()).click();
       await expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
-      await $(await InsuranceAddressPage.submit()).click();
-      await $(await AddressDurationPage.submit()).click();
+      await $(InsuranceAddressPage.submit()).click();
+      await $(AddressDurationPage.submit()).click();
       await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
     it("When I select edit from Final Summary and change an answer and then go to the next question and click previous, Then I should return to the question I originally edited", async ()=> {
-      await $(await SubmitPage.summaryShowAllButton()).click();
-      await $(await SubmitPage.insuranceTypeAnswerEdit()).click();
-      await $(await InsuranceTypePage.contents()).click();
-      await $(await InsuranceTypePage.submit()).click();
-      await $(await InsuranceAddressPage.previous()).click();
+      await $(SubmitPage.summaryShowAllButton()).click();
+      await $(SubmitPage.insuranceTypeAnswerEdit()).click();
+      await $(InsuranceTypePage.contents()).click();
+      await $(InsuranceTypePage.submit()).click();
+      await $(InsuranceAddressPage.previous()).click();
       await expect(browser.getUrl()).to.contain(InsuranceTypePage.pageName);
     });
 
     it("When I change an answer, Then the final summary should display the updated value", async ()=> {
-      await $(await SubmitPage.summaryShowAllButton()).click();
-      await expect(await $(await SubmitPage.insuranceAddressAnswer()).getText()).to.contain("No answer provided");
-      await $(await SubmitPage.insuranceAddressAnswerEdit()).click();
+      await $(SubmitPage.summaryShowAllButton()).click();
+      await expect(await $(SubmitPage.insuranceAddressAnswer()).getText()).to.contain("No answer provided");
+      await $(SubmitPage.insuranceAddressAnswerEdit()).click();
       await expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
-      await $(await InsuranceAddressPage.answer()).setValue("Test Address");
-      await $(await InsuranceAddressPage.submit()).click();
-      await $(await SubmitPage.summaryShowAllButton()).click();
-      await expect(await $(await SubmitPage.insuranceAddressAnswer()).getText()).to.contain("Test Address");
+      await $(InsuranceAddressPage.answer()).setValue("Test Address");
+      await $(InsuranceAddressPage.submit()).click();
+      await $(SubmitPage.summaryShowAllButton()).click();
+      await expect(await $(SubmitPage.insuranceAddressAnswer()).getText()).to.contain("Test Address");
     });
   });
   describe("Given I start the Test Section Summary questionnaire", () => {
@@ -151,17 +151,17 @@ describe("Section Summary", () => {
       await browser.openQuestionnaire("test_section_summary.json");
     });
     it("When there is no title set in the sections summary, the section title is used for the section summary title", async ()=> {
-      await $(await InsuranceTypePage.both()).click();
-      await $(await InsuranceTypePage.submit()).click();
-      await $(await InsuranceAddressPage.submit()).click();
-      await $(await ListedPage.submit()).click();
-      await expect(await $(await PropertyDetailsSummaryPage.heading()).getText()).to.contain("Property Details Section");
+      await $(InsuranceTypePage.both()).click();
+      await $(InsuranceTypePage.submit()).click();
+      await $(InsuranceAddressPage.submit()).click();
+      await $(ListedPage.submit()).click();
+      await expect(await $(PropertyDetailsSummaryPage.heading()).getText()).to.contain("Property Details Section");
     });
     it("When there is a title set in the sections summary, it is used for the section summary title", async ()=> {
-      await $(await PropertyDetailsSummaryPage.submit()).click();
-      await $(await HouseType.semiDetached()).click();
-      await $(await HouseType.submit()).click();
-      await expect(await $(await HouseholdDetailsSummaryPage.heading()).getText()).to.contain("Household Summary - Semi-detached");
+      await $(PropertyDetailsSummaryPage.submit()).click();
+      await $(HouseType.semiDetached()).click();
+      await $(HouseType.submit()).click();
+      await expect(await $(HouseholdDetailsSummaryPage.heading()).getText()).to.contain("Household Summary - Semi-detached");
     });
   });
 });

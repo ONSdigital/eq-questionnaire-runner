@@ -16,36 +16,36 @@ describe("Last viewed question guidance", () => {
 
     it("When the respondent first launches the survey, then last question guidance is not shown", async ()=> {
       await expect(browser.getUrl()).to.contain(HouseholdInterstitialPage.url());
-      await expect(await $(await HouseholdInterstitialPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
+      await expect(await $(HouseholdInterstitialPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
     });
 
     it("When the respondent resumes on the first block of a section, then last question guidance is not shown", async ()=> {
-      await $(await HouseholdInterstitialPage.saveSignOut()).click();
+      await $(HouseholdInterstitialPage.saveSignOut()).click();
       await browser.openQuestionnaire("test_last_viewed_question_guidance.json", resumableLaunchParams);
       await expect(browser.getUrl()).to.contain(HouseholdInterstitialPage.url());
-      await expect(await $(await HouseholdInterstitialPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
+      await expect(await $(HouseholdInterstitialPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
     });
 
     it("When the respondent saves and resumes from a section which is in progress, then last question guidance is shown", async ()=> {
-      await $(await HouseholdInterstitialPage.submit()).click();
-      await $(await AddressConfirmationPage.saveSignOut()).click();
+      await $(HouseholdInterstitialPage.submit()).click();
+      await $(AddressConfirmationPage.saveSignOut()).click();
       await browser.openQuestionnaire("test_last_viewed_question_guidance.json", resumableLaunchParams);
       await expect(browser.getUrl()).to.contain(AddressConfirmationPage.url());
-      await expect(await $(await AddressConfirmationPage.lastViewedQuestionGuidanceLink()).getAttribute("href")).to.contain(HouseholdInterstitialPage.url());
-      await expect(await $(await AddressConfirmationPage.lastViewedQuestionGuidance()).isExisting()).to.be.true;
+      await expect(await $(AddressConfirmationPage.lastViewedQuestionGuidanceLink()).getAttribute("href")).to.contain(HouseholdInterstitialPage.url());
+      await expect(await $(AddressConfirmationPage.lastViewedQuestionGuidance()).isExisting()).to.be.true;
     });
 
     it("When the respondent answers the question and saves and continues, then last question guidance is not shown on the next question", async ()=> {
-      await $(await AddressConfirmationPage.yes()).click();
-      await $(await AddressConfirmationPage.submit()).click();
+      await $(AddressConfirmationPage.yes()).click();
+      await $(AddressConfirmationPage.submit()).click();
       await expect(browser.getUrl()).to.contain(PrimaryPersonListCollectorPage.url());
-      await expect(await $(await HouseholdInterstitialPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
+      await expect(await $(HouseholdInterstitialPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
     });
 
     it("When the respondent uses the previous link from the next question, then last question guidance is not shown", async ()=> {
-      await $(await AddressConfirmationPage.submit()).click();
-      await $(await PrimaryPersonListCollectorPage.previous()).click();
-      await expect(await $(await HouseholdInterstitialPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
+      await $(AddressConfirmationPage.submit()).click();
+      await $(PrimaryPersonListCollectorPage.previous()).click();
+      await expect(await $(HouseholdInterstitialPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
     });
   });
 });

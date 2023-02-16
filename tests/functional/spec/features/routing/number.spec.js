@@ -10,15 +10,15 @@ describe("Feature: Routing on a Number", () => {
       });
 
       it("When I enter 123, Then I should be routed to the correct page", async ()=> {
-        await $(await NumberQuestionPage.answer()).setValue(123);
-        await $(await NumberQuestionPage.submit()).click();
+        await $(NumberQuestionPage.answer()).setValue(123);
+        await $(NumberQuestionPage.submit()).click();
         await expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter a number that isn't 123, Then I should be routed to the incorrect page", async ()=> {
-        await $(await CorrectAnswerPage.previous()).click();
-        await $(await NumberQuestionPage.answer()).setValue(555);
-        await $(await NumberQuestionPage.submit()).click();
+        await $(CorrectAnswerPage.previous()).click();
+        await $(NumberQuestionPage.answer()).setValue(555);
+        await $(NumberQuestionPage.submit()).click();
         await expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
       });
     });
@@ -31,15 +31,15 @@ describe("Feature: Routing on a Number", () => {
       });
 
       it("When I enter a number that isn't 123, Then I should be routed to the correct page", async ()=> {
-        await $(await NumberQuestionPage.answer()).setValue(987);
-        await $(await NumberQuestionPage.submit()).click();
+        await $(NumberQuestionPage.answer()).setValue(987);
+        await $(NumberQuestionPage.submit()).click();
         await expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter 123, Then I should be routed to the incorrect page", async ()=> {
-        await $(await CorrectAnswerPage.previous()).click();
-        await $(await NumberQuestionPage.answer()).setValue(123);
-        await $(await NumberQuestionPage.submit()).click();
+        await $(CorrectAnswerPage.previous()).click();
+        await $(NumberQuestionPage.answer()).setValue(123);
+        await $(NumberQuestionPage.submit()).click();
         await expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
       });
     });
@@ -52,22 +52,22 @@ describe("Feature: Routing on a Number", () => {
       });
 
       it("When I enter a number greater than 123, Then I should be routed to the correct page", async ()=> {
-        await $(await NumberQuestionPage.answer()).setValue(555);
-        await $(await NumberQuestionPage.submit()).click();
+        await $(NumberQuestionPage.answer()).setValue(555);
+        await $(NumberQuestionPage.submit()).click();
         await expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter 123, Then I should be routed to the incorrect page", async ()=> {
-        await $(await CorrectAnswerPage.previous()).click();
-        await $(await NumberQuestionPage.answer()).setValue(123);
-        await $(await NumberQuestionPage.submit()).click();
+        await $(CorrectAnswerPage.previous()).click();
+        await $(NumberQuestionPage.answer()).setValue(123);
+        await $(NumberQuestionPage.submit()).click();
         await expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
       });
 
       it("When I enter a number less than 123, Then I should be routed to the incorrect page", async ()=> {
-        await $(await IncorrectAnswerPage.previous()).click();
-        await $(await NumberQuestionPage.answer()).setValue(2);
-        await $(await NumberQuestionPage.submit()).click();
+        await $(IncorrectAnswerPage.previous()).click();
+        await $(NumberQuestionPage.answer()).setValue(2);
+        await $(NumberQuestionPage.submit()).click();
         await expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
       });
     });
@@ -80,22 +80,22 @@ describe("Feature: Routing on a Number", () => {
       });
 
       it("When I enter a number less than 123, Then I should be routed to the correct page", async ()=> {
-        await $(await NumberQuestionPage.answer()).setValue(77);
-        await $(await NumberQuestionPage.submit()).click();
+        await $(NumberQuestionPage.answer()).setValue(77);
+        await $(NumberQuestionPage.submit()).click();
         await expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter 123, Then I should be routed to the incorrect page", async ()=> {
-        await $(await CorrectAnswerPage.previous()).click();
-        await $(await NumberQuestionPage.answer()).setValue(123);
-        await $(await NumberQuestionPage.submit()).click();
+        await $(CorrectAnswerPage.previous()).click();
+        await $(NumberQuestionPage.answer()).setValue(123);
+        await $(NumberQuestionPage.submit()).click();
         await expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
       });
 
       it("When I enter a number greater than 123, Then I should be routed to the incorrect page", async ()=> {
-        await $(await IncorrectAnswerPage.previous()).click();
-        await $(await NumberQuestionPage.answer()).setValue(765);
-        await $(await NumberQuestionPage.submit()).click();
+        await $(IncorrectAnswerPage.previous()).click();
+        await $(NumberQuestionPage.answer()).setValue(765);
+        await $(NumberQuestionPage.submit()).click();
         await expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
       });
     });
@@ -108,22 +108,22 @@ describe("Feature: Routing on a Number", () => {
       });
 
       it("When I enter a number greater than 123, Then I should be routed to the correct page", async ()=> {
-        await $(await NumberQuestionPage.answer()).setValue(555);
-        await $(await NumberQuestionPage.submit()).click();
+        await $(NumberQuestionPage.answer()).setValue(555);
+        await $(NumberQuestionPage.submit()).click();
         await expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter 123, Then I should be routed to the correct page", async ()=> {
-        await $(await CorrectAnswerPage.previous()).click();
-        await $(await NumberQuestionPage.answer()).setValue(123);
-        await $(await NumberQuestionPage.submit()).click();
+        await $(CorrectAnswerPage.previous()).click();
+        await $(NumberQuestionPage.answer()).setValue(123);
+        await $(NumberQuestionPage.submit()).click();
         await expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter a number less than 123, Then I should be routed to the incorrect page", async ()=> {
-        await $(await CorrectAnswerPage.previous()).click();
-        await $(await NumberQuestionPage.answer()).setValue(2);
-        await $(await NumberQuestionPage.submit()).click();
+        await $(CorrectAnswerPage.previous()).click();
+        await $(NumberQuestionPage.answer()).setValue(2);
+        await $(NumberQuestionPage.submit()).click();
         await expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
       });
     });
@@ -136,22 +136,22 @@ describe("Feature: Routing on a Number", () => {
       });
 
       it("When I enter a number less than 123, Then I should be routed to the correct page", async ()=> {
-        await $(await NumberQuestionPage.answer()).setValue(23);
-        await $(await NumberQuestionPage.submit()).click();
+        await $(NumberQuestionPage.answer()).setValue(23);
+        await $(NumberQuestionPage.submit()).click();
         await expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter 123, Then I should be routed to the correct page", async ()=> {
-        await $(await CorrectAnswerPage.previous()).click();
-        await $(await NumberQuestionPage.answer()).setValue(123);
-        await $(await NumberQuestionPage.submit()).click();
+        await $(CorrectAnswerPage.previous()).click();
+        await $(NumberQuestionPage.answer()).setValue(123);
+        await $(NumberQuestionPage.submit()).click();
         await expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter a number larger than 123, Then I should be routed to the incorrect page", async ()=> {
-        await $(await CorrectAnswerPage.previous()).click();
-        await $(await NumberQuestionPage.answer()).setValue(546);
-        await $(await NumberQuestionPage.submit()).click();
+        await $(CorrectAnswerPage.previous()).click();
+        await $(NumberQuestionPage.answer()).setValue(546);
+        await $(NumberQuestionPage.submit()).click();
         await expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
       });
     });

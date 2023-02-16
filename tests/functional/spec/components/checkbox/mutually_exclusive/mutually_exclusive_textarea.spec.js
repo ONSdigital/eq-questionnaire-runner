@@ -10,50 +10,50 @@ describe("Component: Mutually Exclusive TextArea With Single Checkbox Override",
   describe("Given the user has not clicked the mutually exclusive checkbox answer", () => {
     it("When the user enters a value for the non-exclusive textarea answer, Then only the non-exclusive textarea answer should be answered.", async ()=> {
       // Given
-      await expect(await $(await TextFieldPage.textareaExclusiveIPreferNotToSay()).isSelected()).to.be.false;
+      await expect(await $(TextFieldPage.textareaExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
       // When
-      await $(await TextFieldPage.textarea()).setValue("Blue");
+      await $(TextFieldPage.textarea()).setValue("Blue");
 
       // Then
-      await expect(await $(await TextFieldPage.textarea()).getValue()).to.contain("Blue");
-      await expect(await $(await TextFieldPage.textareaExclusiveIPreferNotToSay()).isSelected()).to.be.false;
+      await expect(await $(TextFieldPage.textarea()).getValue()).to.contain("Blue");
+      await expect(await $(TextFieldPage.textareaExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      await $(await TextFieldPage.submit()).click();
+      await $(TextFieldPage.submit()).click();
 
-      await expect(await $(await SummaryPage.textareaAnswer()).getText()).to.have.string("Blue");
-      await expect(await $(await SummaryPage.textareaAnswer()).getText()).to.not.have.string("I prefer not to say");
+      await expect(await $(SummaryPage.textareaAnswer()).getText()).to.have.string("Blue");
+      await expect(await $(SummaryPage.textareaAnswer()).getText()).to.not.have.string("I prefer not to say");
     });
   });
 
   describe("Given the user has not answered the non-exclusive textarea answer", () => {
     it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", async ()=> {
       // Given
-      await expect(await $(await TextFieldPage.textarea()).getValue()).to.contain("");
+      await expect(await $(TextFieldPage.textarea()).getValue()).to.contain("");
 
       // When
-      await $(await TextFieldPage.textareaExclusiveIPreferNotToSay()).click();
-      await expect(await $(await TextFieldPage.textareaExclusiveIPreferNotToSay()).isSelected()).to.be.true;
+      await $(TextFieldPage.textareaExclusiveIPreferNotToSay()).click();
+      await expect(await $(TextFieldPage.textareaExclusiveIPreferNotToSay()).isSelected()).to.be.true;
 
       // Then
-      await $(await TextFieldPage.submit()).click();
+      await $(TextFieldPage.submit()).click();
 
-      await expect(await $(await SummaryPage.textareaExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
-      await expect(await $(await SummaryPage.textareaExclusiveAnswer()).getText()).to.not.have.string("Blue");
+      await expect(await $(SummaryPage.textareaExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
+      await expect(await $(SummaryPage.textareaExclusiveAnswer()).getText()).to.not.have.string("Blue");
     });
   });
 
   describe("Given the user has not answered the question and the question is optional", () => {
     it("When the user clicks the Continue button, Then it should display `No answer provided`", async ()=> {
       // Given
-      await expect(await $(await TextFieldPage.textarea()).getValue()).to.contain("");
-      await expect(await $(await TextFieldPage.textareaExclusiveIPreferNotToSay()).isSelected()).to.be.false;
+      await expect(await $(TextFieldPage.textarea()).getValue()).to.contain("");
+      await expect(await $(TextFieldPage.textareaExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
       // When
-      await $(await TextFieldPage.submit()).click();
+      await $(TextFieldPage.submit()).click();
 
       // Then
-      await expect(await $(await SummaryPage.textareaAnswer()).getText()).to.contain("No answer provided");
+      await expect(await $(SummaryPage.textareaAnswer()).getText()).to.contain("No answer provided");
     });
   });
 });

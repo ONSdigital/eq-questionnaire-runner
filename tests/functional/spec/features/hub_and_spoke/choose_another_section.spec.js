@@ -15,19 +15,19 @@ describe("Choose another section link", () => {
 
   it("When a user starts a new section and the hub is available, then the link should be displayed", async ()=> {
     await browser.openQuestionnaire("test_hub_complete_sections.json");
-    await $(await EmploymentStatusBlockPage.workingAsAnEmployee()).click();
-    await $(await EmploymentStatusBlockPage.submit()).click();
-    await $(await HubPage.summaryRowLink("accommodation-section")).click();
+    await $(EmploymentStatusBlockPage.workingAsAnEmployee()).click();
+    await $(EmploymentStatusBlockPage.submit()).click();
+    await $(HubPage.summaryRowLink("accommodation-section")).click();
     await expect($("body").getText()).to.contain("Choose another section and return to this later");
   });
 
   it("When a user gets to a section summary and the hub is available, then the link should not be displayed", async ()=> {
     await browser.openQuestionnaire("test_hub_complete_sections.json");
-    await $(await EmploymentStatusBlockPage.workingAsAnEmployee()).click();
-    await $(await EmploymentStatusBlockPage.submit()).click();
-    await $(await HubPage.summaryRowLink("accommodation-section")).click();
-    await $(await ProxyPage.noIMAnsweringForMyself()).click();
-    await $(await ProxyPage.submit()).click();
+    await $(EmploymentStatusBlockPage.workingAsAnEmployee()).click();
+    await $(EmploymentStatusBlockPage.submit()).click();
+    await $(HubPage.summaryRowLink("accommodation-section")).click();
+    await $(ProxyPage.noIMAnsweringForMyself()).click();
+    await $(ProxyPage.submit()).click();
     await expect($("body").getText()).to.not.have.string("Choose another section and return to this later");
   });
 });

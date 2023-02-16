@@ -10,25 +10,25 @@ describe("Choose another section link", () => {
   });
 
   it("When a user gets to initial question, then the previous location link should not be displayed", async ()=> {
-    await expect(await $(await EmploymentStatusBlockPage.previous()).isExisting()).to.be.false;
+    await expect(await $(EmploymentStatusBlockPage.previous()).isExisting()).to.be.false;
   });
 
   it("When a user gets to the hub, then the previous location link should not be displayed", async ()=> {
-    await $(await EmploymentStatusBlockPage.workingAsAnEmployee()).click();
-    await $(await EmploymentStatusBlockPage.submit()).click();
-    await expect(await $(await HubPage.previous()).isExisting()).to.be.false;
+    await $(EmploymentStatusBlockPage.workingAsAnEmployee()).click();
+    await $(EmploymentStatusBlockPage.submit()).click();
+    await expect(await $(HubPage.previous()).isExisting()).to.be.false;
   });
 
   it("When a user gets to subsequent question, then the previous location link should be displayed", async ()=> {
-    await $(await EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
-    await $(await EmploymentStatusBlockPage.submit()).click();
-    await expect(await $(await EmploymentTypePage.previous()).isExisting()).to.be.true;
+    await $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
+    await $(EmploymentStatusBlockPage.submit()).click();
+    await expect(await $(EmploymentTypePage.previous()).isExisting()).to.be.true;
   });
 
   it("When a user gets to subsequent questions past the hub, then the previous location link should be displayed", async ()=> {
-    await $(await EmploymentStatusBlockPage.workingAsAnEmployee()).click();
-    await $(await EmploymentStatusBlockPage.submit()).click();
-    await $(await HubPage.summaryRowLink("accommodation-section")).click();
-    await expect(await $(await ProxyPage.previous()).isExisting()).to.be.true;
+    await $(EmploymentStatusBlockPage.workingAsAnEmployee()).click();
+    await $(EmploymentStatusBlockPage.submit()).click();
+    await $(HubPage.summaryRowLink("accommodation-section")).click();
+    await expect(await $(ProxyPage.previous()).isExisting()).to.be.true;
   });
 });

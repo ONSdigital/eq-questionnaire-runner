@@ -9,50 +9,50 @@ describe(`Feature: Dynamically generated mandatory answer options driven by a fu
     before("Open questionnaire", async ()=> {
       await browser.openQuestionnaire("test_dynamic_answer_options_function_driven_with_static_options_mandatory.json");
       // Set reference date
-      await $(await ReferenceDatePage.day()).setValue("1");
-      await $(await ReferenceDatePage.month()).setValue("1");
-      await $(await ReferenceDatePage.year()).setValue("2021");
-      await $(await ReferenceDatePage.submit()).click();
+      await $(ReferenceDatePage.day()).setValue("1");
+      await $(ReferenceDatePage.month()).setValue("1");
+      await $(ReferenceDatePage.year()).setValue("2021");
+      await $(ReferenceDatePage.submit()).click();
     });
 
     it("When I do not answer the Checkbox question and submit, then an error message and the question error panel should be displayed.", async ()=> {
-      await $(await DynamicCheckboxPage.submit()).click();
-      await expect(await $(await DynamicCheckboxPage.errorHeader()).getText()).to.contain("There is a problem with your answer");
-      await expect(await $(await DynamicCheckboxPage.answerErrorItem()).getText()).to.contain("Select at least one answer");
-      await expect(await $(await DynamicCheckboxPage.questionErrorPanel()).isExisting()).to.be.true;
+      await $(DynamicCheckboxPage.submit()).click();
+      await expect(await $(DynamicCheckboxPage.errorHeader()).getText()).to.contain("There is a problem with your answer");
+      await expect(await $(DynamicCheckboxPage.answerErrorItem()).getText()).to.contain("Select at least one answer");
+      await expect(await $(DynamicCheckboxPage.questionErrorPanel()).isExisting()).to.be.true;
     });
 
     it("When I do not answer the Radio question and submit, then an error message and the question error panel should be displayed.", async ()=> {
       // Get to Radio question
-      await $(await DynamicCheckboxPage.answerByIndex(0)).click();
-      await $(await DynamicCheckboxPage.submit()).click();
+      await $(DynamicCheckboxPage.answerByIndex(0)).click();
+      await $(DynamicCheckboxPage.submit()).click();
 
-      await $(await DynamicRadioPage.submit()).click();
-      await expect(await $(await DynamicRadioPage.errorHeader()).getText()).to.contain("There is a problem with your answer");
-      await expect(await $(await DynamicRadioPage.answerErrorItem()).getText()).to.contain("Select an answer");
-      await expect(await $(await DynamicRadioPage.questionErrorPanel()).isExisting()).to.be.true;
+      await $(DynamicRadioPage.submit()).click();
+      await expect(await $(DynamicRadioPage.errorHeader()).getText()).to.contain("There is a problem with your answer");
+      await expect(await $(DynamicRadioPage.answerErrorItem()).getText()).to.contain("Select an answer");
+      await expect(await $(DynamicRadioPage.questionErrorPanel()).isExisting()).to.be.true;
     });
 
     it("When I do not answer the Dropdown question and submit, then an error message and the question error panel should be displayed.", async ()=> {
       // Get to Dropdown question
-      await $(await DynamicRadioPage.answerByIndex(0)).click();
-      await $(await DynamicRadioPage.submit()).click();
+      await $(DynamicRadioPage.answerByIndex(0)).click();
+      await $(DynamicRadioPage.submit()).click();
 
-      await $(await DynamicDropdownPage.submit()).click();
-      await expect(await $(await DynamicDropdownPage.errorHeader()).getText()).to.contain("There is a problem with your answer");
-      await expect(await $(await DynamicDropdownPage.answerErrorItem()).getText()).to.contain("Select an answer");
-      await expect(await $(await DynamicDropdownPage.questionErrorPanel()).isExisting()).to.be.true;
+      await $(DynamicDropdownPage.submit()).click();
+      await expect(await $(DynamicDropdownPage.errorHeader()).getText()).to.contain("There is a problem with your answer");
+      await expect(await $(DynamicDropdownPage.answerErrorItem()).getText()).to.contain("Select an answer");
+      await expect(await $(DynamicDropdownPage.questionErrorPanel()).isExisting()).to.be.true;
     });
 
     it("When I do not answer the Mutually Exclusive Checkbox question and submit, then an error message and the question error panel should be displayed.", async ()=> {
       // Get to Mutually Exclusive question
-      await $(await DynamicDropdownPage.answer()).selectByAttribute("value", "2021-01-02");
-      await $(await DynamicDropdownPage.submit()).click();
+      await $(DynamicDropdownPage.answer()).selectByAttribute("value", "2021-01-02");
+      await $(DynamicDropdownPage.submit()).click();
 
-      await $(await DynamicMutuallyExclusivePage.submit()).click();
-      await expect(await $(await DynamicMutuallyExclusivePage.errorHeader()).getText()).to.contain("There is a problem with your answer");
-      await expect(await $(await DynamicMutuallyExclusivePage.errorNumber(1)).getText()).to.contain("Select at least one answer");
-      await expect(await $(await DynamicMutuallyExclusivePage.questionErrorPanel()).isExisting()).to.be.true;
+      await $(DynamicMutuallyExclusivePage.submit()).click();
+      await expect(await $(DynamicMutuallyExclusivePage.errorHeader()).getText()).to.contain("There is a problem with your answer");
+      await expect(await $(DynamicMutuallyExclusivePage.errorNumber(1)).getText()).to.contain("Select at least one answer");
+      await expect(await $(DynamicMutuallyExclusivePage.questionErrorPanel()).isExisting()).to.be.true;
     });
   });
 });

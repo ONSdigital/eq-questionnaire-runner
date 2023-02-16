@@ -13,8 +13,8 @@ describe("Feature: Show section summary on completion", () => {
 
   describe("Given I am completing a section with the summary turned off for the forward journey", () => {
     it("When I reach the end of that section, Then I go straight to the hub", async ()=> {
-      await $(await employmentStatusBlockPage.workingAsAnEmployee()).click();
-      await $(await employmentStatusBlockPage.submit()).click();
+      await $(employmentStatusBlockPage.workingAsAnEmployee()).click();
+      await $(employmentStatusBlockPage.submit()).click();
 
       await expect(browser.getUrl()).to.contain(hubPage.url());
     });
@@ -22,7 +22,7 @@ describe("Feature: Show section summary on completion", () => {
 
   describe("Given I have completed a section with the summary turned off for the forward journey", () => {
     it("When I return to a completed section from the hub, Then I am returned to that section summary", async ()=> {
-      await $(await hubPage.summaryRowLink("employment-section")).click();
+      await $(hubPage.summaryRowLink("employment-section")).click();
 
       await expect(browser.getUrl()).to.contain(employmentSectionSummary.url());
     });
@@ -34,9 +34,9 @@ describe("Feature: Show section summary on completion", () => {
     });
 
     it("When I reach the end of that section, Then I will be taken to the section summary to enable me to amend an answer", async ()=> {
-      await $(await hubPage.summaryRowLink("accommodation-section")).click();
-      await $(await proxyQuestionPage.noIMAnsweringForMyself()).click();
-      await $(await proxyQuestionPage.submit()).click();
+      await $(hubPage.summaryRowLink("accommodation-section")).click();
+      await $(proxyQuestionPage.noIMAnsweringForMyself()).click();
+      await $(proxyQuestionPage.submit()).click();
 
       await expect(browser.getUrl()).to.contain(accommodationSectionSummary.url());
     });
@@ -48,7 +48,7 @@ describe("Feature: Show section summary on completion", () => {
     });
 
     it("When I return to a completed section from the hub, Then I am returned to the correct section summary", async ()=> {
-      await $(await hubPage.summaryRowLink("accommodation-section")).click();
+      await $(hubPage.summaryRowLink("accommodation-section")).click();
 
       await expect(browser.getUrl()).to.contain(accommodationSectionSummary.url());
     });

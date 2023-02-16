@@ -6,9 +6,9 @@ describe("Feature: Playback Confirmation", () => {
   });
 
   it("When the user submits an answer, their answers should be shown on the confirmation screen", async ()=> {
-    await $(await MandatoryCheckboxPage.cheese()).click();
-    await $(await MandatoryCheckboxPage.ham()).click();
-    await $(await MandatoryCheckboxPage.submit()).click();
+    await $(MandatoryCheckboxPage.cheese()).click();
+    await $(MandatoryCheckboxPage.ham()).click();
+    await $(MandatoryCheckboxPage.submit()).click();
 
     await expect($("#confirm-answers-question ul").getHTML()).to.contain("Cheese").to.contain("Ham");
   });

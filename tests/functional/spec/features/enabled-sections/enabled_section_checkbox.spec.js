@@ -8,35 +8,35 @@ describe("Feature: Section Enabled Based On Checkbox Answers", () => {
   });
 
   it("When the user selects `Section 2` and submits, Then section 2 should be displayed", async ()=> {
-    await $(await sectionOne.section1Section2()).click();
-    await $(await sectionOne.submit()).click();
+    await $(sectionOne.section1Section2()).click();
+    await $(sectionOne.submit()).click();
 
     await expect(browser.getUrl()).to.contain("section-2-block");
   });
 
   it("When the user selects `Section 3` and submits, Then section 2 should not be displayed and section 3 should be displayed", async ()=> {
-    await $(await sectionOne.section1Section3()).click();
-    await $(await sectionOne.submit()).click();
+    await $(sectionOne.section1Section3()).click();
+    await $(sectionOne.submit()).click();
 
     await expect(browser.getUrl()).to.contain("section-3-block");
   });
 
   it("When the user selects `Section 2` and `Section 3` and submits, Then section 2 and section 3 should be displayed", async ()=> {
-    await $(await sectionOne.section1Section2()).click();
-    await $(await sectionOne.section1Section3()).click();
-    await $(await sectionOne.submit()).click();
+    await $(sectionOne.section1Section2()).click();
+    await $(sectionOne.section1Section3()).click();
+    await $(sectionOne.submit()).click();
 
     await expect(browser.getUrl()).to.contain("section-2-block");
-    await $(await sectionTwo.submit()).click();
+    await $(sectionTwo.submit()).click();
     await expect(browser.getUrl()).to.contain("section-3-block");
   });
 
   it("When the user selects `Neither` and submits, Then they should be taken straight to the summary", async ()=> {
-    await $(await sectionOne.section1ExclusiveNeither()).click();
-    await $(await sectionOne.submit()).click();
+    await $(sectionOne.section1ExclusiveNeither()).click();
+    await $(sectionOne.submit()).click();
 
     await expect(browser.getUrl()).to.contain(SubmitPage.url());
-    await expect(await $(await SubmitPage.section2Question()).isExisting()).to.be.false;
-    await expect(await $(await SubmitPage.section3Question()).isExisting()).to.be.false;
+    await expect(await $(SubmitPage.section2Question()).isExisting()).to.be.false;
+    await expect(await $(SubmitPage.section3Question()).isExisting()).to.be.false;
   });
 });

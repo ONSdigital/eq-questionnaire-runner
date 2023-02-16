@@ -10,14 +10,14 @@ describe("Feature: Routing - IN Operator", () => {
       });
 
       it("When I do select India, Then I should be routed to the the correct answer interstitial page", async ()=> {
-        await $(await CountryCheckboxPage.india()).click();
-        await $(await CountryCheckboxPage.submit()).click();
+        await $(CountryCheckboxPage.india()).click();
+        await $(CountryCheckboxPage.submit()).click();
         await expect(browser.getUrl()).to.contain(CountryInterstitialPage.pageName);
       });
 
       it("When I do not select India, Then I should be routed to the the incorrect answer interstitial page", async ()=> {
-        await $(await CountryCheckboxPage.liechtenstein()).click();
-        await $(await CountryCheckboxPage.submit()).click();
+        await $(CountryCheckboxPage.liechtenstein()).click();
+        await $(CountryCheckboxPage.submit()).click();
         await expect(browser.getUrl()).to.contain(CountryInterstitialOtherPage.pageName);
       });
     });

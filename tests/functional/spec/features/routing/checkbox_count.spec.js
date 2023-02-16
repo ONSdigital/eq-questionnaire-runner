@@ -8,36 +8,36 @@ describe("Test routing using count of checkboxes checked", () => {
   });
 
   it("Given a user selects 2 checkboxes, When they submit, Then they should be routed to the correct page", async ()=> {
-    await $(await ToppingCheckboxPage.cheese()).click();
-    await $(await ToppingCheckboxPage.ham()).click();
-    await $(await ToppingCheckboxPage.submit()).click();
+    await $(ToppingCheckboxPage.cheese()).click();
+    await $(ToppingCheckboxPage.ham()).click();
+    await $(ToppingCheckboxPage.submit()).click();
 
     await expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
-    await expect(await $(await CorrectAnswerPage.questionText()).getText()).to.have.string("You selected 2 or more toppings");
+    await expect(await $(CorrectAnswerPage.questionText()).getText()).to.have.string("You selected 2 or more toppings");
   });
 
   it("Given a user selects no checkboxes, When they submit, Then they should be routed to the incorrect page", async ()=> {
-    await $(await ToppingCheckboxPage.submit()).click();
+    await $(ToppingCheckboxPage.submit()).click();
 
     await expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
-    await expect(await $(await IncorrectAnswerPage.questionText()).getText()).to.have.string("You did not select 2 or more toppings");
+    await expect(await $(IncorrectAnswerPage.questionText()).getText()).to.have.string("You did not select 2 or more toppings");
   });
 
   it("Given a user selects 1 checkbox, When they submit, Then they should be routed to the incorrect page", async ()=> {
-    await $(await ToppingCheckboxPage.cheese()).click();
-    await $(await ToppingCheckboxPage.submit()).click();
+    await $(ToppingCheckboxPage.cheese()).click();
+    await $(ToppingCheckboxPage.submit()).click();
 
     await expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
-    await expect(await $(await IncorrectAnswerPage.questionText()).getText()).to.have.string("You did not select 2 or more toppings");
+    await expect(await $(IncorrectAnswerPage.questionText()).getText()).to.have.string("You did not select 2 or more toppings");
   });
 
   it("Given a user selects 3 checkbox, When they submit, Then they should be routed to the correct page", async ()=> {
-    await $(await ToppingCheckboxPage.cheese()).click();
-    await $(await ToppingCheckboxPage.ham()).click();
-    await $(await ToppingCheckboxPage.pineapple()).click();
-    await $(await ToppingCheckboxPage.submit()).click();
+    await $(ToppingCheckboxPage.cheese()).click();
+    await $(ToppingCheckboxPage.ham()).click();
+    await $(ToppingCheckboxPage.pineapple()).click();
+    await $(ToppingCheckboxPage.submit()).click();
 
     await expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
-    await expect(await $(await CorrectAnswerPage.questionText()).getText()).to.have.string("You selected 2 or more toppings");
+    await expect(await $(CorrectAnswerPage.questionText()).getText()).to.have.string("You selected 2 or more toppings");
   });
 });

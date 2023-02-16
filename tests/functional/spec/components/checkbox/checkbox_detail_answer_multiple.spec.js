@@ -6,10 +6,10 @@ describe('Checkbox with multiple "detail_answer" options', () => {
 
   it("Given detail answer options are available, When the user clicks an option, Then the detail answer input should be visible.", async ()=> {
     await browser.openQuestionnaire(checkboxSchema);
-    await $(await MandatoryCheckboxPage.yourChoice()).click();
-    await expect(await $(await MandatoryCheckboxPage.yourChoiceDetail()).isDisplayed()).to.be.true;
-    await $(await MandatoryCheckboxPage.cheese()).click();
-    await expect(await $(await MandatoryCheckboxPage.cheeseDetail()).isDisplayed()).to.be.true;
+    await $(MandatoryCheckboxPage.yourChoice()).click();
+    await expect(await $(MandatoryCheckboxPage.yourChoiceDetail()).isDisplayed()).to.be.true;
+    await $(MandatoryCheckboxPage.cheese()).click();
+    await expect(await $(MandatoryCheckboxPage.cheeseDetail()).isDisplayed()).to.be.true;
   });
 
   it("Given a mandatory detail answer, When I select the option but leave the input field empty and submit, Then an error should be displayed.", async ()=> {
@@ -17,26 +17,26 @@ describe('Checkbox with multiple "detail_answer" options', () => {
     await browser.openQuestionnaire(checkboxSchema);
     // When
     // Non-Mandatory detail answer given
-    await $(await MandatoryCheckboxPage.cheese()).click();
-    await $(await MandatoryCheckboxPage.cheeseDetail()).setValue("Mozzarella");
+    await $(MandatoryCheckboxPage.cheese()).click();
+    await $(MandatoryCheckboxPage.cheeseDetail()).setValue("Mozzarella");
     // Mandatory detail answer left blank
-    await $(await MandatoryCheckboxPage.yourChoice()).click();
-    await $(await MandatoryCheckboxPage.submit()).click();
+    await $(MandatoryCheckboxPage.yourChoice()).click();
+    await $(MandatoryCheckboxPage.submit()).click();
     // Then
-    await expect(await $(await MandatoryCheckboxPage.error()).isDisplayed()).to.be.true;
-    await expect(await $(await MandatoryCheckboxPage.errorNumber(1)).getText()).to.contain("Enter your topping choice to continue");
+    await expect(await $(MandatoryCheckboxPage.error()).isDisplayed()).to.be.true;
+    await expect(await $(MandatoryCheckboxPage.errorNumber(1)).getText()).to.contain("Enter your topping choice to continue");
   });
 
   it("Given a selected checkbox answer with an error for a mandatory detail answer, When I enter valid value and submit the page, Then the error is cleared and I navigate to next page.", async ()=> {
     // Given
     await browser.openQuestionnaire(checkboxSchema);
-    await $(await MandatoryCheckboxPage.yourChoice()).click();
-    await $(await MandatoryCheckboxPage.submit()).click();
-    await expect(await $(await MandatoryCheckboxPage.error()).isDisplayed()).to.be.true;
+    await $(MandatoryCheckboxPage.yourChoice()).click();
+    await $(MandatoryCheckboxPage.submit()).click();
+    await expect(await $(MandatoryCheckboxPage.error()).isDisplayed()).to.be.true;
 
     // When
-    await $(await MandatoryCheckboxPage.yourChoiceDetail()).setValue("Bacon");
-    await $(await MandatoryCheckboxPage.submit()).click();
+    await $(MandatoryCheckboxPage.yourChoiceDetail()).setValue("Bacon");
+    await $(MandatoryCheckboxPage.submit()).click();
     await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
   });
 
@@ -44,51 +44,51 @@ describe('Checkbox with multiple "detail_answer" options', () => {
     // Given
     await browser.openQuestionnaire(checkboxSchema);
     // When
-    await $(await MandatoryCheckboxPage.cheese()).click();
-    await expect(await $(await MandatoryCheckboxPage.cheeseDetail()).isDisplayed()).to.be.true;
-    await $(await MandatoryCheckboxPage.submit()).click();
+    await $(MandatoryCheckboxPage.cheese()).click();
+    await expect(await $(MandatoryCheckboxPage.cheeseDetail()).isDisplayed()).to.be.true;
+    await $(MandatoryCheckboxPage.submit()).click();
     // Then
-    await expect(await $(await SubmitPage.mandatoryCheckboxAnswer()).getText()).to.equal("Cheese");
+    await expect(await $(SubmitPage.mandatoryCheckboxAnswer()).getText()).to.equal("Cheese");
   });
 
   it("Given multiple detail answers, When the user provides text for all, Then that text should be displayed on the summary screen", async ()=> {
     // Given
     await browser.openQuestionnaire(checkboxSchema);
     // When
-    await $(await MandatoryCheckboxPage.cheese()).click();
-    await $(await MandatoryCheckboxPage.cheeseDetail()).setValue("Mozzarella");
-    await $(await MandatoryCheckboxPage.yourChoice()).click();
-    await $(await MandatoryCheckboxPage.yourChoiceDetail()).setValue("Bacon");
-    await $(await MandatoryCheckboxPage.submit()).click();
+    await $(MandatoryCheckboxPage.cheese()).click();
+    await $(MandatoryCheckboxPage.cheeseDetail()).setValue("Mozzarella");
+    await $(MandatoryCheckboxPage.yourChoice()).click();
+    await $(MandatoryCheckboxPage.yourChoiceDetail()).setValue("Bacon");
+    await $(MandatoryCheckboxPage.submit()).click();
     // Then
-    await expect(await $(await SubmitPage.mandatoryCheckboxAnswer()).getText()).to.equal("Cheese\nMozzarella\nYour choice\nBacon");
+    await expect(await $(SubmitPage.mandatoryCheckboxAnswer()).getText()).to.equal("Cheese\nMozzarella\nYour choice\nBacon");
   });
 
   it("Given multiple detail answers, When the user provides text for just one, Then that text should be displayed on the summary screen", async ()=> {
     // Given
     await browser.openQuestionnaire(checkboxSchema);
     // When
-    await $(await MandatoryCheckboxPage.yourChoice()).click();
-    await $(await MandatoryCheckboxPage.yourChoiceDetail()).setValue("Bacon");
-    await $(await MandatoryCheckboxPage.submit()).click();
+    await $(MandatoryCheckboxPage.yourChoice()).click();
+    await $(MandatoryCheckboxPage.yourChoiceDetail()).setValue("Bacon");
+    await $(MandatoryCheckboxPage.submit()).click();
     // Then
-    await expect(await $(await SubmitPage.mandatoryCheckboxAnswer()).getText()).to.equal("Your choice\nBacon");
+    await expect(await $(SubmitPage.mandatoryCheckboxAnswer()).getText()).to.equal("Your choice\nBacon");
   });
 
   it("Given I have previously added text in a detail answer and saved, When I uncheck the detail answer option and select a different checkbox, Then the text entered in the detail answer field should be empty.", async ()=> {
     // Given
     await browser.openQuestionnaire(checkboxSchema);
     // When
-    await $(await MandatoryCheckboxPage.cheese()).click();
-    await $(await MandatoryCheckboxPage.cheeseDetail()).setValue("Mozzarella");
-    await $(await MandatoryCheckboxPage.submit()).click();
-    await $(await SubmitPage.previous()).click();
-    await $(await MandatoryCheckboxPage.cheese()).click();
-    await $(await MandatoryCheckboxPage.ham()).click();
-    await $(await MandatoryCheckboxPage.submit()).click();
-    await $(await SubmitPage.previous()).click();
+    await $(MandatoryCheckboxPage.cheese()).click();
+    await $(MandatoryCheckboxPage.cheeseDetail()).setValue("Mozzarella");
+    await $(MandatoryCheckboxPage.submit()).click();
+    await $(SubmitPage.previous()).click();
+    await $(MandatoryCheckboxPage.cheese()).click();
+    await $(MandatoryCheckboxPage.ham()).click();
+    await $(MandatoryCheckboxPage.submit()).click();
+    await $(SubmitPage.previous()).click();
     // Then
-    await $(await MandatoryCheckboxPage.cheese()).click();
-    await expect(await $(await MandatoryCheckboxPage.cheeseDetail()).getValue()).to.equal("");
+    await $(MandatoryCheckboxPage.cheese()).click();
+    await expect(await $(MandatoryCheckboxPage.cheeseDetail()).getValue()).to.equal("");
   });
 });

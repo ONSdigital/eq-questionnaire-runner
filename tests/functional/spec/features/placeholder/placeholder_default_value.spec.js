@@ -8,26 +8,26 @@ describe("Placeholder default value check", () => {
   });
 
   it("Given a question with default answer, When I do not enter any number and click submit, Then the interstitial page shows default employees number as 0", async ()=> {
-    await $(await EmployeesNumberBlockPage.submit()).click();
+    await $(EmployeesNumberBlockPage.submit()).click();
     await expect($("#main-content > p").getText()).to.contain("The total number of employees confirmed are 0");
   });
 
   it("Given a question with default answer, When I enter a number of employee and click submit, Then the interstitial page shows me the employees number entered", async ()=> {
-    await $(await EmployeesNumberBlockPage.employeesNo()).setValue("54");
-    await $(await EmployeesNumberBlockPage.submit()).click();
+    await $(EmployeesNumberBlockPage.employeesNo()).setValue("54");
+    await $(EmployeesNumberBlockPage.submit()).click();
     await expect($("#main-content > p").getText()).to.contain("The total number of employees confirmed are 54");
   });
   it("Given a training budget question with default answer, When I do not enter any amount and click submit, Then the interstitial page shows default amount as 250.00", async ()=> {
-    await $(await EmployeesNumberBlockPage.submit()).click();
-    await $(await EmployeesNumberInterstitialPage.submit()).click();
-    await $(await EmployeesTrainingBlockPage.submit()).click();
+    await $(EmployeesNumberBlockPage.submit()).click();
+    await $(EmployeesNumberInterstitialPage.submit()).click();
+    await $(EmployeesTrainingBlockPage.submit()).click();
     await expect($("#main-content > p").getText()).to.contain("The average training budget per employee is £250.00");
   });
   it("Given a training budget question with default answer, When I enter an amount and click submit, Then the interstitial page shows amount entered", async ()=> {
-    await $(await EmployeesNumberBlockPage.submit()).click();
-    await $(await EmployeesNumberInterstitialPage.submit()).click();
-    await $(await EmployeesTrainingBlockPage.employeesAvgTraining()).setValue("100");
-    await $(await EmployeesTrainingBlockPage.submit()).click();
+    await $(EmployeesNumberBlockPage.submit()).click();
+    await $(EmployeesNumberInterstitialPage.submit()).click();
+    await $(EmployeesTrainingBlockPage.employeesAvgTraining()).setValue("100");
+    await $(EmployeesTrainingBlockPage.submit()).click();
     await expect($("#main-content > p").getText()).to.contain("The average training budget per employee is £100.00");
   });
 });

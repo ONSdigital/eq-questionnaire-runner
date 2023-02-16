@@ -8,8 +8,8 @@ describe("Timeout Modal Post Submission", () => {
   describe("Given I am completing the survey and get to post submission page,", () => {
     beforeEach(async ()=> {
       await browser.openQuestionnaire("test_timeout_modal.json");
-      await $(await TimeoutInterstitialPage.submit()).click();
-      await $(await TimeoutSubmitPage.submit()).click();
+      await $(TimeoutInterstitialPage.submit()).click();
+      await $(TimeoutSubmitPage.submit()).click();
     });
     TimeoutModalTestCase.testCase(ThankYouPage);
   });

@@ -7,32 +7,32 @@ import QuestionPageThreeSkip from "../../../generated_pages/default_with_skip/nu
 describe("Feature: Default Value", () => {
   it('Given I start default schema, When I do not answer a question, Then "no answer provided" is displayed on the Summary page', async ()=> {
     await browser.openQuestionnaire("test_default.json");
-    await $(await QuestionPageOne.submit()).click();
+    await $(QuestionPageOne.submit()).click();
     await expect(browser.getUrl()).to.contain(QuestionPageTwo.pageName);
-    await $(await QuestionPageTwo.two()).setValue(123);
-    await $(await QuestionPageTwo.submit()).click();
+    await $(QuestionPageTwo.two()).setValue(123);
+    await $(QuestionPageTwo.submit()).click();
     await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
-    await expect(await $(await SubmitPage.answerOne()).getText()).to.contain("0");
+    await expect(await $(SubmitPage.answerOne()).getText()).to.contain("0");
   });
 
   it("Given I have not answered a question containing a default value, When I return to the question, Then no value should be displayed", async ()=> {
     await browser.openQuestionnaire("test_default.json");
-    await $(await QuestionPageOne.submit()).click();
+    await $(QuestionPageOne.submit()).click();
     await expect(browser.getUrl()).to.contain(QuestionPageTwo.pageName);
-    await $(await QuestionPageTwo.two()).setValue(123);
-    await $(await QuestionPageTwo.submit()).click();
+    await $(QuestionPageTwo.two()).setValue(123);
+    await $(QuestionPageTwo.submit()).click();
     await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
-    await $(await SubmitPage.previous()).click();
+    await $(SubmitPage.previous()).click();
     await expect(browser.getUrl()).to.contain(QuestionPageTwo.pageName);
-    await $(await QuestionPageTwo.previous()).click();
+    await $(QuestionPageTwo.previous()).click();
     await expect(browser.getUrl()).to.contain(QuestionPageOne.pageName);
-    await expect(await $(await QuestionPageOne.one()).getValue()).to.equal("");
+    await expect(await $(QuestionPageOne.one()).getValue()).to.equal("");
   });
 
   it("Given I have not answered a question containing a default value, When a skip condition checks for the default value, Then I should skip the next question", async ()=> {
     await browser.openQuestionnaire("test_default_with_skip.json");
-    await $(await QuestionPageOneSkip.submit()).click();
+    await $(QuestionPageOneSkip.submit()).click();
     await expect(browser.getUrl()).to.contain(QuestionPageThreeSkip.pageName);
-    await expect(await $(await QuestionPageThreeSkip.questionText()).getText()).to.contain("Question Three");
+    await expect(await $(QuestionPageThreeSkip.questionText()).getText()).to.contain("Question Three");
   });
 });

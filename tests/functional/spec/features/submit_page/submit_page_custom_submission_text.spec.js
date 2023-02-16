@@ -7,11 +7,11 @@ describe("Summary Screen", () => {
   });
 
   it("Given a questionnaire with a summary and custom submission content has been completed, then the correct submission content should be displayed", async ()=> {
-    await $(await DessertBlockPage.dessert()).setValue("Crème Brûlée");
-    await $(await DessertBlockPage.submit()).click();
-    await expect(await $(await SubmitPage.heading()).getText()).to.contain("Submission title");
-    await expect(await $(await SubmitPage.warning()).getText()).to.contain("Submission warning");
-    await expect(await $(await SubmitPage.guidance()).getText()).to.contain("Submission guidance");
-    await expect(await $(await SubmitPage.submit()).getText()).to.contain("Submission button");
+    await $(DessertBlockPage.dessert()).setValue("Crème Brûlée");
+    await $(DessertBlockPage.submit()).click();
+    await expect(await $(SubmitPage.heading()).getText()).to.contain("Submission title");
+    await expect(await $(SubmitPage.warning()).getText()).to.contain("Submission warning");
+    await expect(await $(SubmitPage.guidance()).getText()).to.contain("Submission guidance");
+    await expect(await $(SubmitPage.submit()).getText()).to.contain("Submission button");
   });
 });

@@ -10,26 +10,26 @@ describe("Answers not on path are not considered when routing", () => {
   });
 
   it("Given the user enters an answer on the first path, when they return to the second path, they should be routed to the valid path interstitial", async ()=> {
-    await $(await InitialChoicePage.goHereFirst()).click();
-    await $(await InitialChoicePage.submit()).click();
+    await $(InitialChoicePage.goHereFirst()).click();
+    await $(InitialChoicePage.submit()).click();
 
     await expect(browser.getUrl()).to.contain(InvalidPathPage.pageName);
-    await $(await InvalidPathPage.answer()).setValue(123);
-    await $(await InvalidPathPage.submit()).click();
+    await $(InvalidPathPage.answer()).setValue(123);
+    await $(InvalidPathPage.submit()).click();
 
     // We now have an answer in the store on the 'invalid' path
 
     await expect(browser.getUrl()).to.contain(InvalidPathInterstitialPage.pageName);
-    await $(await InvalidPathInterstitialPage.previous()).click();
-    await $(await InvalidPathPage.previous()).click();
+    await $(InvalidPathInterstitialPage.previous()).click();
+    await $(InvalidPathPage.previous()).click();
 
     // Take the second route
 
-    await $(await InitialChoicePage.goHereSecond()).click();
-    await $(await InitialChoicePage.submit()).click();
+    await $(InitialChoicePage.goHereSecond()).click();
+    await $(InitialChoicePage.submit()).click();
 
-    await $(await ValidPathPage.answer()).setValue(321);
-    await $(await ValidPathPage.submit()).click();
+    await $(ValidPathPage.answer()).setValue(321);
+    await $(ValidPathPage.submit()).click();
 
     // We should be routed to the valid interstitial page since the invalid path answer should not be considered whilst routing.
     await expect(browser.getUrl()).to.contain(ValidFinalInterstitialPage.pageName);
