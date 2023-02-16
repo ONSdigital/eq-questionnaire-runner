@@ -6,7 +6,7 @@ from flask import url_for
 from flask_login import login_required, logout_user
 from marshmallow import INCLUDE, ValidationError
 from sdc.crypto.exceptions import InvalidTokenException
-from structlog import get_logger
+from structlog import contextvars, get_logger
 from werkzeug.exceptions import Unauthorized
 
 from app.authentication.auth_payload_version import AuthPayloadVersion
@@ -105,7 +105,7 @@ def login():
         }.items()
         if value
     }
-    logger.bind(**logger_args)
+    contextvars.bind_contextvars(**logger_args)
 
     logger.info("decrypted token and parsed metadata")
 

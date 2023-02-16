@@ -102,7 +102,6 @@ def get_allowed_languages(schema_name, launch_language):
 def load_schema_from_metadata(
     metadata: MetadataProxy, *, language_code: str
 ) -> QuestionnaireSchema:
-
     if metadata and (schema_url := metadata.schema_url):
         # :TODO: Remove before production uses schema_url
         # This is temporary and is only for development/integration purposes.

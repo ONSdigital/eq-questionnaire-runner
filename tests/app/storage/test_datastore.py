@@ -40,7 +40,6 @@ def test_get_not_found(datastore, mock_client):
 
 @pytest.mark.usefixtures("app")
 def test_put(datastore, mock_client, questionnaire_state):
-
     datastore.put(questionnaire_state, True)
 
     put_data = mock_client.put.call_args[0][0]
@@ -57,7 +56,6 @@ def test_put(datastore, mock_client, questionnaire_state):
 
 @pytest.mark.usefixtures("app")
 def test_put_without_overwrite(datastore, questionnaire_state):
-
     with pytest.raises(NotImplementedError) as exc:
         datastore.put(questionnaire_state, False)
 
@@ -97,7 +95,6 @@ def test_delete(datastore, mock_client, questionnaire_state):
 
 @pytest.mark.usefixtures("app")
 def test_retry(datastore, mock_client, mocker, questionnaire_state):
-
     mock_client.put = mocker.Mock(
         side_effect=[exceptions.InternalServerError("error"), mocker.DEFAULT]
     )

@@ -65,7 +65,6 @@ def evaluate_condition(condition, answer_value, match_value):
     answer_and_match = answer_value is not None and match_value is not None
 
     if condition in {"equals", "not equals", "equals any", "not equals any"}:
-
         answer_value = casefold(answer_value)
 
         if isinstance(match_value, (list, tuple)):
@@ -228,7 +227,7 @@ def _get_when_rule_value(
     elif "list" in when_rule:
         value = get_list_count(list_store, when_rule["list"])
     else:
-        raise Exception("The when rule is invalid")
+        raise NotImplementedError("The when rule is invalid")
 
     return value
 
@@ -254,7 +253,6 @@ def evaluate_when_rules(
     :return: True if the when condition has been met otherwise False
     """
     for when_rule in when_rules:
-
         list_item_id = current_location.list_item_id if current_location else None
 
         value = _get_when_rule_value(

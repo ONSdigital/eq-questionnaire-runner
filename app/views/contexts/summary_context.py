@@ -12,7 +12,6 @@ class SummaryContext(Context):
     def __call__(
         self, answers_are_editable: bool = False, return_to: Optional[str] = None
     ) -> dict[str, Union[str, list, bool]]:
-
         groups = list(self._build_all_groups(return_to))
         summary_options = self._schema.get_summary_options()
         collapsible = summary_options.get("collapsible", False)

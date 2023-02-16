@@ -385,13 +385,11 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self.assertFalse(content in str(data), msg=message)
 
     def assertNotInPage(self, content, message=None):
-
         self.assertNotIn(
             member=str(content), container=self.getResponseData(), msg=str(message)
         )
 
     def assertRegexPage(self, regex, message=None):
-
         self.assertRegex(
             text=self.getResponseData(), expected_regex=str(regex), msg=str(message)
         )

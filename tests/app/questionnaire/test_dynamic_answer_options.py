@@ -40,7 +40,6 @@ def value_source_resolver(mock_schema, response_metadata):
 
 
 def test_dynamic_answer_options(rule_evaluator, value_source_resolver):
-
     dynamic_options = DynamicAnswerOptions(
         {
             "values": {

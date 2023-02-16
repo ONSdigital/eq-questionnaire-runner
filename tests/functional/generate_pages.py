@@ -1011,7 +1011,6 @@ def process_section_summary(
     logger.info("creating %s...", page_path)
 
     with open(page_path, "w", encoding="utf-8") as page_spec:
-
         section_context = {
             "pageName": generate_pascal_case_from_id(section_id),
             "basePage": "SubmitBasePage",
