@@ -3,7 +3,7 @@ from typing import Any, Mapping, Optional, Union
 
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import AnswerStore, ListStore, ProgressStore, QuestionnaireStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
@@ -24,6 +24,7 @@ class SectionPreviewContext(Context):
         metadata: Optional[MetadataProxy],
         response_metadata: Mapping,
         current_location: Location,
+        questionnaire_store: QuestionnaireStore,
     ):
         super().__init__(
             language,
@@ -35,6 +36,8 @@ class SectionPreviewContext(Context):
             response_metadata,
         )
         self.current_location = current_location
+        self.questionnaire_store = questionnaire_store
+        self.language = language
 
     def __call__(
         self, return_to: Optional[str] = "section-summary"
@@ -71,13 +74,17 @@ class SectionPreviewContext(Context):
             "groups": [
                 PreviewGroup(
                     group,
-                    self._metadata,
                     self._schema.get_title_for_section(
                         self.current_location.section_id
                     ),  # this gets the title of a section for a group since we have 1 to 1 relationship between section and its group(s),
                     # group title is not always present/missing in business schemas hence using the section title
                     # base for this was the code we use for summaries generation, that is how summaries are generated in runner
                     # (they use group titles of sections for twisties)
+                    schema=self._schema,
+                    questionnaire_store=self.questionnaire_store,
+                    current_location=self.current_location,
+                    section_id=self.current_location.section_id,
+                    language=self.language,
                 ).serialize()
                 for group in self.section["groups"]
             ],

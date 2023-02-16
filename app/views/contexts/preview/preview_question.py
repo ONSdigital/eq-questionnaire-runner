@@ -1,48 +1,61 @@
-from re import findall
-from typing import Any, Iterator, Optional, Union
+from typing import Any, Optional, Union
 
-from werkzeug.datastructures import ImmutableDict
-
-from app.questionnaire import QuestionnaireSchema, QuestionSchemaType
+from app.data_models import QuestionnaireStore
+from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
+from app.questionnaire.placeholder_renderer import PlaceholderRenderer
+from app.questionnaire.variants import transform_variants
 
 
 class PreviewQuestion:
     def __init__(
-        self, question_schema: QuestionSchemaType, survey_data: ImmutableDict[str, str]
+        self,
+        schema: QuestionnaireSchema,
+        questionnaire_store: QuestionnaireStore,
+        section_id: str,
+        block_id: str,
+        language: str,
     ):
-        self.title = question_schema.get("title")
-        self.answers = self._build_answers(question_schema, survey_data)
-        self.descriptions = self._build_descriptions(question_schema, survey_data)
-        self.guidance = self._build_question_guidance(question_schema)
-        self.text_length = self._get_length(question_schema.get("answers", None))
-        self.instruction = question_schema.get("instruction") or None
-        self.answer_description = self._build_answer_descriptions(
-            iter(question_schema["answers"])
+        self.schema = schema
+        self.questionnaire_store = questionnaire_store
+        self.current_location = Location(section_id=section_id, block_id=block_id)
+        self.block_id = block_id
+
+        self.placeholder_renderer = PlaceholderRenderer(
+            language=language,
+            answer_store=self.questionnaire_store.answer_store,
+            list_store=self.questionnaire_store.list_store,
+            metadata=self.questionnaire_store.metadata,
+            response_metadata=self.questionnaire_store.response_metadata,
+            schema=self.schema,
+            location=self.current_location,
+            preview_mode=True,
         )
-        self.answer_guidance = self._build_answer_guidance(
-            answers=iter(question_schema["answers"])
-        )
-        self.survey_data = survey_data
 
-    def _build_answers(
-        self, question_schema: QuestionSchemaType, survey_data: ImmutableDict[str, str]
-    ) -> list[Optional[str]]:
-        answers = []
-        for answer in iter(question_schema["answers"]):
-            if options := answer.get("options"):
-                for option in options:
-                    if isinstance(option["label"], dict):
-                        label = self.resolve_text(option["label"], survey_data)
-                        answers.append(label)
-                    else:
-                        answers.append(option["label"])
-            if not options:
-                answers.append(answer["label"])
+        self.question = self.rendered_block().get("question")
 
-        return answers
+        self.title = self.question.get("title")  # type: ignore
 
-    @staticmethod
-    def _build_answer_descriptions(answers: Iterator[dict]) -> Optional[dict]:
+        self.answers = self._build_answers()
+        self.descriptions = self._build_descriptions()
+        self.guidance = self._build_question_guidance()
+        self.text_length = self._get_length()
+        self.instruction = self.question.get("instruction")  # type: ignore
+        self.answer_description = self._build_answer_descriptions()
+        self.answer_guidance = self._build_answer_guidance()
+
+    def _build_answers(self) -> list[Optional[str]]:
+        labels: list = []
+        if answers := self.question.get("answers"):  # type: ignore
+            for answer in iter(answers):
+                if options := answer.get("options"):
+                    labels.extend(option["label"] for option in options)
+                if not options:
+                    labels.append(answer["label"])
+
+        return labels
+
+    def _build_answer_descriptions(self) -> Optional[dict]:
+        answers = iter(self.question["answers"])  # type: ignore
         return next(
             (
                 answer.get("description")
@@ -52,31 +65,19 @@ class PreviewQuestion:
             None,
         )
 
-    def _build_answer_guidance(self, answers: Iterator[dict]) -> Optional[list[Any]]:
+    def _build_answer_guidance(self) -> Optional[list[Any]]:
+        answers = iter(self.question["answers"])  # type: ignore
         for answer in answers:
             return self._build_guidance(answer)
 
-    def _build_descriptions(
-        self, question_schema: QuestionSchemaType, survey_data: ImmutableDict[str, str]
-    ) -> Any:  # QuestionnaireSchema.get_mutable_deepcopy returns "Any"
-        if descriptions := question_schema.get("description"):
-            mutable_descriptions = QuestionnaireSchema.get_mutable_deepcopy(
-                descriptions
-            )
-            for index, _ in enumerate(mutable_descriptions):
-                if isinstance(mutable_descriptions[index], dict):
-                    mutable_descriptions[index] = self.resolve_text(
-                        mutable_descriptions[index], survey_data
-                    )
-
-            return mutable_descriptions
+    def _build_descriptions(self) -> Any:
+        if descriptions := self.question.get("description"):  # type: ignore
+            return descriptions
 
         return None
 
-    def _build_question_guidance(
-        self, question_schema: QuestionSchemaType
-    ) -> Optional[list[Any]]:
-        return self._build_guidance(question_schema)
+    def _build_question_guidance(self) -> Optional[list[Any]]:
+        return self._build_guidance(self.question)  # type: ignore
 
     @staticmethod
     def _build_guidance(schema_element: QuestionSchemaType) -> Optional[list[dict]]:
@@ -91,10 +92,8 @@ class PreviewQuestion:
             return guidance_list
         return None
 
-    @staticmethod
-    def _get_length(
-        answers: dict,
-    ) -> Optional[Any]:
+    def _get_length(self) -> Optional[Any]:
+        answers = self.question.get("answers")  # type: ignore
         return next(
             (
                 answer.get("max_length")
@@ -106,6 +105,7 @@ class PreviewQuestion:
 
     def serialize(self) -> dict[str, Union[str, dict, Any]]:
         return {
+            "id": self.block_id,
             "title": self.title,
             "answers": self.answers,
             "descriptions": self.descriptions,
@@ -116,16 +116,15 @@ class PreviewQuestion:
             "answer_guidance": self.answer_guidance,
         }
 
-    @staticmethod
-    def resolve_text(
-        element: dict[str, str], survey_data: ImmutableDict[str, str]
-    ) -> Optional[str]:
-        if text := element.get("text"):
-            placeholders = findall(r"\{.*?}", text)
+    def rendered_block(self) -> dict[str, Any]:
+        transformed_block = transform_variants(
+            self.schema.get_block(self.current_location.block_id),  # type: ignore
+            self.schema,
+            self.questionnaire_store.metadata,
+            self.questionnaire_store.response_metadata,
+            self.questionnaire_store.answer_store,
+            self.questionnaire_store.list_store,
+            self.current_location,
+        )
 
-            for placeholder in placeholders:
-                stripped_placeholder = placeholder.replace("{", "").replace("}", "")
-                if stripped_placeholder in survey_data:
-                    text = text.replace(placeholder, survey_data[stripped_placeholder])
-
-            return text
+        return self.placeholder_renderer.render(transformed_block, None)

@@ -41,6 +41,7 @@ def choose_variant(
             current_location=current_location,
         ):
             return variant[single_key]
+    return block["question_variants"][0]["question"]
 
 
 def choose_question_to_display(
@@ -95,7 +96,7 @@ def transform_variants(
     answer_store,
     list_store,
     current_location,
-):
+) -> ImmutableDict:
     output_block = dict(block)
     if "question_variants" in block:
         question = choose_question_to_display(

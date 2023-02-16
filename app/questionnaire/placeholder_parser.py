@@ -46,6 +46,7 @@ class PlaceholderParser:
         renderer: "PlaceholderRenderer",
         list_item_id: Optional[str] = None,
         location: Union[Location, RelationshipLocation, None] = None,
+        preview_mode: Optional[bool] = False,
     ):
 
         self._answer_store = answer_store
@@ -59,6 +60,7 @@ class PlaceholderParser:
         self._placeholder_map: MutableMapping[
             str, Union[ValueSourceEscapedTypes, ValueSourceTypes, None]
         ] = {}
+        self._preview_mode = preview_mode
 
         self._value_source_resolver = ValueSourceResolver(
             answer_store=self._answer_store,
@@ -83,9 +85,18 @@ class PlaceholderParser:
                 ] = self._parse_placeholder(placeholder)
         return self._placeholder_map
 
-    def _parse_placeholder(
-        self, placeholder: Mapping
-    ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes, TransformedValueTypes]:
+    def _parse_placeholder(self, placeholder: Mapping) -> Any:
+        if self._preview_mode:
+            try:
+                if self.all_sources_metadata(placeholder):
+                    return self._parse_transforms(placeholder["transforms"])
+
+            except KeyError:
+                if placeholder["value"]["source"] == "metadata":
+                    return self._value_source_resolver.resolve(placeholder["value"])
+
+            return placeholder["placeholder"]
+
         try:
             return self._parse_transforms(placeholder["transforms"])
         except KeyError:
@@ -135,3 +146,19 @@ class PlaceholderParser:
             else:
                 values.append(value)
         return values
+
+    @staticmethod
+    def all_sources_metadata(placeholder: Mapping) -> bool:
+        all_sources_metadata = False  # All value sources must be metadata
+        transforms = placeholder["transforms"]
+        for transform in transforms:
+            for identifier in transform["arguments"]:
+                if isinstance(transform["arguments"][identifier], dict):
+                    all_sources_metadata = (
+                        transform["arguments"][identifier]["source"] == "metadata"
+                    )
+                elif items := transform["arguments"].get("items"):
+                    for item in items:
+                        if item["source"] == "metadata":
+                            all_sources_metadata = True
+        return all_sources_metadata

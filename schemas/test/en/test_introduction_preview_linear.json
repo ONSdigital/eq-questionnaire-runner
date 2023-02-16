@@ -234,6 +234,96 @@
                         },
                         {
                             "type": "Question",
+                            "id": "report-radio-second",
+                            "question": {
+                                "description": ["<p>Your return should relate to the calendar year 2021.</p>"],
+                                "instruction": ["Select your answer"],
+                                "answers": [
+                                    {
+                                        "id": "report-radio-second-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "id": "report-radio-second-question",
+                                "title": {
+                                    "text": "Are you sure you are able to report for the calendar month {ref_p_start_date} to {ref_p_end_date}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "ref_p_start_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "first_non_empty_item",
+                                                    "arguments": {
+                                                        "items": [
+                                                            {
+                                                                "identifier": "answer92c53562-4eda-438f-9767-1af697a3fcddfrom",
+                                                                "source": "answers"
+                                                            },
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "ref_p_start_date"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "previous_transform"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "ref_p_end_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "first_non_empty_item",
+                                                    "arguments": {
+                                                        "items": [
+                                                            {
+                                                                "identifier": "answer92c53562-4eda-438f-9767-1af697a3fcddto",
+                                                                "source": "answers"
+                                                            },
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "ref_p_end_date"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "previous_transform"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
                             "id": "projects-checkbox",
                             "question": {
                                 "answers": [

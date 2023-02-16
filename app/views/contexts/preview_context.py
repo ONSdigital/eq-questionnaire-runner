@@ -1,6 +1,6 @@
 from typing import Generator, Mapping, Optional, Union
 
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import AnswerStore, ListStore, ProgressStore, QuestionnaireStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
@@ -18,6 +18,7 @@ class PreviewContext(Context):
         progress_store: ProgressStore,
         metadata: Optional[MetadataProxy],
         response_metadata: Mapping,
+        questionnaire_store: QuestionnaireStore,
     ):
         super().__init__(
             language,
@@ -29,6 +30,7 @@ class PreviewContext(Context):
             response_metadata,
         )
         self._routing_path = None
+        self.questionnaire_store = questionnaire_store
 
     def __call__(
         self, answers_are_editable: bool = False, return_to: Optional[str] = None
@@ -44,7 +46,10 @@ class PreviewContext(Context):
 
         for section_id in [section["id"] for section in self._schema.get_sections()]:
 
-            location = Location(section_id=section_id)
+            location = Location(
+                section_id=section_id,
+                block_id=self._schema.get_first_block_id_for_section(section_id),
+            )
             section_preview_context = SectionPreviewContext(
                 language=self._language,
                 schema=self._schema,
@@ -54,6 +59,7 @@ class PreviewContext(Context):
                 metadata=self._metadata,
                 response_metadata=self._response_metadata,
                 current_location=location,
+                questionnaire_store=self.questionnaire_store,
             )
 
             yield from section_preview_context(return_to=return_to)["preview"]["groups"]

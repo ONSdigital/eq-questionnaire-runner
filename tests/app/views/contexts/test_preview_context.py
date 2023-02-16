@@ -1,25 +1,24 @@
 from app.views.contexts.preview_context import PreviewContext
-from tests.app.questionnaire.conftest import get_metadata
 from tests.app.views.contexts import assert_preview_context
 
 
 def test_build_preview_rendering_context(
-    test_introduction_preview_linear_schema, answer_store, list_store, progress_store
+    test_introduction_preview_linear_schema,
+    answer_store,
+    list_store,
+    progress_store,
+    questionnaire_store,
 ):
+
     preview_context = PreviewContext(
         "en",
         test_introduction_preview_linear_schema,
         answer_store,
         list_store,
         progress_store,
-        metadata=get_metadata(
-            {
-                "ru_name": "ESSENTIAL ENTERPRISE LTD.",
-                "ref_p_start_date": "2016-02-02",
-                "ref_p_end_date": "2016-03-03",
-            }
-        ),
-        response_metadata={},
+        metadata=questionnaire_store.metadata,
+        response_metadata=questionnaire_store.response_metadata,
+        questionnaire_store=questionnaire_store,
     )
 
     preview_context = preview_context()
@@ -28,22 +27,22 @@ def test_build_preview_rendering_context(
 
 
 def test_build_preview_context(
-    test_introduction_preview_linear_schema, answer_store, list_store, progress_store
+    test_introduction_preview_linear_schema,
+    answer_store,
+    list_store,
+    progress_store,
+    questionnaire_store,
 ):
+
     preview_context = PreviewContext(
         "en",
         test_introduction_preview_linear_schema,
         answer_store,
         list_store,
         progress_store,
-        metadata=get_metadata(
-            {
-                "ru_name": "ESSENTIAL ENTERPRISE LTD.",
-                "ref_p_start_date": "2016-02-02",
-                "ref_p_end_date": "2016-03-03",
-            }
-        ),
-        response_metadata={},
+        metadata=questionnaire_store.metadata,
+        response_metadata=questionnaire_store.response_metadata,
+        questionnaire_store=questionnaire_store,
     )
     context = preview_context()
 

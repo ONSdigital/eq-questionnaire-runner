@@ -238,6 +238,7 @@ def get_preview(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireS
         progress_store=questionnaire_store.progress_store,
         metadata=questionnaire_store.metadata,
         response_metadata=questionnaire_store.response_metadata,
+        questionnaire_store=questionnaire_store,
     )
 
     schema_type = schema.json["questionnaire_flow"].get("type")

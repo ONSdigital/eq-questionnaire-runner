@@ -30,6 +30,7 @@ def build_view_preview_questions_context(
         progress_store=questionnaire_store.progress_store,
         metadata=questionnaire_store.metadata,
         response_metadata=questionnaire_store.response_metadata,
+        questionnaire_store=questionnaire_store,
     )
     context["preview"] = preview_context()  # type: ignore
     # preview_context is in conflict with context variable return type, same problem below

@@ -1,6 +1,7 @@
 import pytest
 from mock import MagicMock
 
+from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import ProgressStore
@@ -356,3 +357,25 @@ def test_section_summary_schema():
 @pytest.fixture
 def test_introduction_preview_linear_schema():
     return load_schema_from_name("test_introduction_preview_linear")
+
+
+@pytest.fixture
+def questionnaire_store():
+
+    storage = MagicMock()
+    storage.get_user_data = MagicMock(return_value=("{}", "ce_sid", 1, None))
+    storage.add_or_update = MagicMock()
+
+    store = QuestionnaireStore(storage)
+
+    store.answer_store = AnswerStore()
+    store.metadata = {
+        "ru_name": "ESSENTIAL ENTERPRISE LTD.",
+        "ref_p_start_date": "2016-02-02",
+        "ref_p_end_date": "2016-03-03",
+        "display_address": "68 Abingdon Road, Goathill",
+    }
+
+    store.response_metadata = {"started_at": "2018-07-04T14:49:33.448608+00:00"}
+
+    return store
