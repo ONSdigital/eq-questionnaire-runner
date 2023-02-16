@@ -66,8 +66,13 @@ class TestQuestionnaire(IntegrationTestCase):
             self.assertNotIn("tx_id", request_log)
             self.assertNotIn("ce_id", request_log)
             self.assertNotIn("schema_name", request_log)
+            self.assertIn("url_path", request_log)
+            self.assertIn("request_id", request_log)
+            self.assertIn("method", request_log)
 
             self.assertIn("tx_id", questionnaire_request_log)
             self.assertIn("ce_id", questionnaire_request_log)
             self.assertIn("schema_name", questionnaire_request_log)
+            self.assertIn("url_path", questionnaire_request_log)
             self.assertIn("request_id", questionnaire_request_log)
+            self.assertIn("method", questionnaire_request_log)
