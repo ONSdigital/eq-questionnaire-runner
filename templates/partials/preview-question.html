@@ -1,14 +1,14 @@
 {% from 'components/panel/_macro.njk' import onsPanel %}
+{% from 'macros/helpers.html' import format_paragraphs %}
 
-{% set title = interviewer_note(question.title) if block.interviewer_only else question.title %}
 {% set answers = question.answers %}
 
 <div class="ons-summary__item">
 
-  <h3 class="ons-u-mt-m ons-u-fs-r--b">{{ title }}</h3>
-  
+  <h3 class="ons-u-mt-m ons-u-fs-r--b">{{ question.title }}</h3>
+
   {% set answers_length = answers|length %}
-  
+
   {% if question.descriptions %}
     {% set descriptions = question.descriptions %}
     {% set descriptions_length = descriptions|length %}
@@ -16,49 +16,35 @@
         {{ description }}
       {% endfor %}
   {% endif %}
-  
+
   {% if question.instruction %}
     {% for instruction in question.instruction %}
       <p>{{ instruction }}</p>
     {% endfor %}
   {% endif %}
-  
-  {% if question.guidance %}
+
+  {%- if question.guidance -%}
+    {% set contents = question.guidance.contents %}
     {% call onsPanel({
-      "classes": "ons-u-mb-l"
+      "id": "question-guidance-" ~ question.id,
+      "classes": "ons-u-mb-m"
     }) %}
-      {% for guidance in question.guidance %}
-        {% if guidance is string %}
-          <p>{{ guidance }}</p>
-        {% else %}
-          <ul>
-            {% for item in guidance %}
-              <li>{{ item }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-      {% endfor %}
+      {% set contents = question.guidance.contents %}
+      {% include 'partials/contents.html' %}
     {% endcall %}
   {% endif %}
-  
-  {% if question.answer_guidance %}
+
+  {%- if question.answer_guidance -%}
+    {% set contents = question.answer_guidance.contents %}
     {% call onsPanel({
-      "classes": "ons-u-mb-l"
+      "id": "question-guidance-" ~ question.id,
+      "classes": "ons-u-mb-m"
     }) %}
-      {% for guidance in question.answer_guidance %}
-        {% if guidance is string %}
-          <p>{{ guidance }}</p>
-        {% else %}
-          <ul>
-            {% for item in guidance %}
-              <li>{{ item }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-      {% endfor %}
+      {% set contents = question.answer_guidance.contents %}
+      {% include 'partials/contents.html' %}
     {% endcall %}
   {% endif %}
-  
+
   {% if answers_length > 1 %}
     <p>{{ _("You can answer with the following options:") }}</p>
     <ul>
@@ -72,7 +58,7 @@
       <p>{{ question.text_length }}{{ _(" characters can be added.") }}</p>
     {% endif %}
   {% endif %}
-  
+
   {% if question.answer_description %}
     {% set description = question.answer_description %}
     <p>{{ description }}</p>

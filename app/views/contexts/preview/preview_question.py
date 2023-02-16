@@ -71,26 +71,14 @@ class PreviewQuestion:
             return self._build_guidance(answer)
 
     def _build_descriptions(self) -> Any:
-        if descriptions := self.question.get("description"):  # type: ignore
-            return descriptions
-
-        return None
+        return descriptions if (descriptions := self.question.get("description")) else None  # type: ignore
 
     def _build_question_guidance(self) -> Optional[list[Any]]:
         return self._build_guidance(self.question)  # type: ignore
 
     @staticmethod
     def _build_guidance(schema_element: QuestionSchemaType) -> Optional[list[dict]]:
-        if guidance := schema_element.get("guidance"):
-            guidance_list = []
-            for contents in guidance.get("contents"):
-                if contents.get("description"):
-                    guidance_list.append(contents.get("description"))
-                elif contents.get("list"):
-                    guidance_items = list(contents.get("list"))
-                    guidance_list.append(guidance_items)
-            return guidance_list
-        return None
+        return guidance if (guidance := schema_element.get("guidance")) else None
 
     def _get_length(self) -> Optional[Any]:
         answers = self.question.get("answers")  # type: ignore
