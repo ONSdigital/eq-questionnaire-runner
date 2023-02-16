@@ -127,7 +127,9 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.assertInBody("40 - calculated summary answer (current section)")
 
     def test_calculated_summary_value_sources_across_sections_repeating(self):
-        self.launchSurvey("test_new_calculated_summary_cross_section_dependencies_repeating")
+        self.launchSurvey(
+            "test_new_calculated_summary_cross_section_dependencies_repeating"
+        )
 
         # Add  household members
         self._add_list_items()
