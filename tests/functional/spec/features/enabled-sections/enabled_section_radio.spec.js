@@ -2,40 +2,40 @@ import sectionOne from "../../../generated_pages/section_enabled_radio/section-1
 import SubmitPage from "../../../generated_pages/section_enabled_radio/submit.page";
 
 describe("Feature: Section Enabled Based On Radio Answers", () => {
-  beforeEach("Open survey", () => {
-    browser.openQuestionnaire("test_new_section_enabled_radio.json");
+  beforeEach("Open survey", async ()=> {
+    await browser.openQuestionnaire("test_new_section_enabled_radio.json");
   });
 
-  it("When the user answers `Yes, enable section 2` and submits, Then section 2 should be displayed", () => {
-    $(sectionOne.yesEnableSection2()).click();
-    $(sectionOne.submit()).click();
+  it("When the user answers `Yes, enable section 2` and submits, Then section 2 should be displayed", async ()=> {
+    await $(await sectionOne.yesEnableSection2()).click();
+    await $(await sectionOne.submit()).click();
 
-    expect(browser.getUrl()).to.contain("section-2-block");
+    await expect(browser.getUrl()).to.contain("section-2-block");
   });
 
-  it("When the user answers `No, disable section 2` and submits, Then they should be taking straight to the summary", () => {
-    $(sectionOne.noDisableSection2()).click();
-    $(sectionOne.submit()).click();
+  it("When the user answers `No, disable section 2` and submits, Then they should be taking straight to the summary", async ()=> {
+    await $(await sectionOne.noDisableSection2()).click();
+    await $(await sectionOne.submit()).click();
 
-    expect(browser.getUrl()).to.contain(SubmitPage.url());
-    expect($(SubmitPage.section2Question()).isExisting()).to.be.false;
+    await expect(browser.getUrl()).to.contain(SubmitPage.url());
+    await expect(await $(await SubmitPage.section2Question()).isExisting()).to.be.false;
   });
 
   describe("Given that section 2 is enabled", () => {
-    beforeEach("Enable section 2", () => {
-      $(sectionOne.yesEnableSection2()).click();
-      $(sectionOne.submit()).click();
+    beforeEach("Enable section 2", async ()=> {
+      await $(await sectionOne.yesEnableSection2()).click();
+      await $(await sectionOne.submit()).click();
 
-      expect(browser.getUrl()).to.contain("section-2-block");
+      await expect(browser.getUrl()).to.contain("section-2-block");
     });
 
-    it("When the user changes the answers and disables section 2, Then they should be taken straight to the summary", () => {
+    it("When the user changes the answers and disables section 2, Then they should be taken straight to the summary", async ()=> {
       browser.back();
-      expect(browser.getUrl()).to.contain("section-1-block");
+      await expect(browser.getUrl()).to.contain("section-1-block");
 
-      $(sectionOne.noDisableSection2()).click();
-      $(sectionOne.submit()).click();
-      expect(browser.getUrl()).to.contain(SubmitPage.url());
+      await $(await sectionOne.noDisableSection2()).click();
+      await $(await sectionOne.submit()).click();
+      await expect(browser.getUrl()).to.contain(SubmitPage.url());
     });
   });
 });

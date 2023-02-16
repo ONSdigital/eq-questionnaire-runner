@@ -4,35 +4,35 @@ import NameBlockPage from "../../../generated_pages/custom_question_summary/name
 import SubmitPage from "../../../generated_pages/custom_question_summary/submit.page.js";
 
 describe("Summary Screen", () => {
-  beforeEach("Load the survey", () => {
-    browser.openQuestionnaire("test_custom_question_summary.json");
+  beforeEach("Load the survey", async ()=> {
+    await browser.openQuestionnaire("test_custom_question_summary.json");
   });
 
-  it("Given a survey has question summary concatenations and has been completed when on the summary page then the correct response should be displayed formatted correctly", () => {
+  it("Given a survey has question summary concatenations and has been completed when on the summary page then the correct response should be displayed formatted correctly", async ()=> {
     completeAllQuestions();
-    expect($(SubmitPage.summaryRowState("name-question-concatenated-answer")).getText()).to.contain("John Smith");
-    expect($(SubmitPage.summaryRowState("address-question-concatenated-answer")).getText()).to.contain("Cardiff Road\nNewport\nNP10 8XG");
-    expect($(SubmitPage.summaryRowState("age-question-concatenated-answer")).getText()).to.contain("7\nThis age is an estimate");
+    await expect(await $(await SubmitPage.summaryRowState("name-question-concatenated-answer")).getText()).to.contain("John Smith");
+    await expect(await $(await SubmitPage.summaryRowState("address-question-concatenated-answer")).getText()).to.contain("Cardiff Road\nNewport\nNP10 8XG");
+    await expect(await $(await SubmitPage.summaryRowState("age-question-concatenated-answer")).getText()).to.contain("7\nThis age is an estimate");
   });
 
-  it("Given no values are entered in a question with multiple answers and concatenation set, when on the summary screen then the correct response should be displayed", () => {
-    $(NameBlockPage.submit()).click();
-    $(AddressBlockPage.submit()).click();
-    $(AgeBlock.submit()).click();
-    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
-    expect($(SubmitPage.summaryRowState("name-question-concatenated-answer")).getText()).to.contain("No answer provided");
+  it("Given no values are entered in a question with multiple answers and concatenation set, when on the summary screen then the correct response should be displayed", async ()=> {
+    await $(await NameBlockPage.submit()).click();
+    await $(await AddressBlockPage.submit()).click();
+    await $(await AgeBlock.submit()).click();
+    await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    await expect(await $(await SubmitPage.summaryRowState("name-question-concatenated-answer")).getText()).to.contain("No answer provided");
   });
 
   function completeAllQuestions() {
-    $(NameBlockPage.first()).setValue("John");
-    $(NameBlockPage.last()).setValue("Smith");
-    $(NameBlockPage.submit()).click();
-    $(AddressBlockPage.line1()).setValue("Cardiff Road");
-    $(AddressBlockPage.townCity()).setValue("Newport");
-    $(AddressBlockPage.postcode()).setValue("NP10 8XG");
-    $(AddressBlockPage.submit()).click();
-    $(AgeBlock.number()).setValue(7);
-    $(AgeBlock.singleCheckboxThisAgeIsAnEstimate()).click();
-    $(AgeBlock.submit()).click();
+    await $(await NameBlockPage.first()).setValue("John");
+    await $(await NameBlockPage.last()).setValue("Smith");
+    await $(await NameBlockPage.submit()).click();
+    await $(await AddressBlockPage.line1()).setValue("Cardiff Road");
+    await $(await AddressBlockPage.townCity()).setValue("Newport");
+    await $(await AddressBlockPage.postcode()).setValue("NP10 8XG");
+    await $(await AddressBlockPage.submit()).click();
+    await $(await AgeBlock.number()).setValue(7);
+    await $(await AgeBlock.singleCheckboxThisAgeIsAnEstimate()).click();
+    await $(await AgeBlock.submit()).click();
   }
 });

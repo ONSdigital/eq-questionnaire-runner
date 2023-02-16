@@ -5,33 +5,33 @@ import ValidPathPage from "../../../generated_pages/new_routing_not_affected_by_
 import ValidFinalInterstitialPage from "../../../generated_pages/new_routing_not_affected_by_answers_not_on_path/valid-final-interstitial.page.js";
 
 describe("Answers not on path are not considered when routing", () => {
-  beforeEach(() => {
-    browser.openQuestionnaire("test_new_routing_not_affected_by_answers_not_on_path.json");
+  beforeEach(async ()=> {
+    await browser.openQuestionnaire("test_new_routing_not_affected_by_answers_not_on_path.json");
   });
 
-  it("Given the user enters an answer on the first path, when they return to the second path, they should be routed to the valid path interstitial", () => {
-    $(InitialChoicePage.goHereFirst()).click();
-    $(InitialChoicePage.submit()).click();
+  it("Given the user enters an answer on the first path, when they return to the second path, they should be routed to the valid path interstitial", async ()=> {
+    await $(await InitialChoicePage.goHereFirst()).click();
+    await $(await InitialChoicePage.submit()).click();
 
-    expect(browser.getUrl()).to.contain(InvalidPathPage.pageName);
-    $(InvalidPathPage.answer()).setValue(123);
-    $(InvalidPathPage.submit()).click();
+    await expect(browser.getUrl()).to.contain(InvalidPathPage.pageName);
+    await $(await InvalidPathPage.answer()).setValue(123);
+    await $(await InvalidPathPage.submit()).click();
 
     // We now have an answer in the store on the 'invalid' path
 
-    expect(browser.getUrl()).to.contain(InvalidPathInterstitialPage.pageName);
-    $(InvalidPathInterstitialPage.previous()).click();
-    $(InvalidPathPage.previous()).click();
+    await expect(browser.getUrl()).to.contain(InvalidPathInterstitialPage.pageName);
+    await $(await InvalidPathInterstitialPage.previous()).click();
+    await $(await InvalidPathPage.previous()).click();
 
     // Take the second route
 
-    $(InitialChoicePage.goHereSecond()).click();
-    $(InitialChoicePage.submit()).click();
+    await $(await InitialChoicePage.goHereSecond()).click();
+    await $(await InitialChoicePage.submit()).click();
 
-    $(ValidPathPage.answer()).setValue(321);
-    $(ValidPathPage.submit()).click();
+    await $(await ValidPathPage.answer()).setValue(321);
+    await $(await ValidPathPage.submit()).click();
 
     // We should be routed to the valid interstitial page since the invalid path answer should not be considered whilst routing.
-    expect(browser.getUrl()).to.contain(ValidFinalInterstitialPage.pageName);
+    await expect(browser.getUrl()).to.contain(ValidFinalInterstitialPage.pageName);
   });
 });

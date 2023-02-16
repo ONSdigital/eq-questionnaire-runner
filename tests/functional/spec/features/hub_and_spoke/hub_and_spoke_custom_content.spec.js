@@ -6,25 +6,25 @@ import HubPage from "../../../base_pages/hub.page.js";
 describe("Feature: Hub and Spoke with custom content", () => {
   const hubAndSpokeSchema = "test_hub_and_spoke_custom_content.json";
 
-  it("When the questionnaire is incomplete, then custom content should be displayed correctly", () => {
-    browser.openQuestionnaire(hubAndSpokeSchema);
-    expect($(HubPage.heading()).getText()).to.contain("Choose another section to complete");
-    expect($(HubPage.guidance()).isExisting()).to.be.false;
-    expect($(HubPage.submit()).getText()).to.contain("Continue");
-    expect($(HubPage.warning()).isExisting()).to.be.false;
+  it("When the questionnaire is incomplete, then custom content should be displayed correctly", async ()=> {
+    await browser.openQuestionnaire(hubAndSpokeSchema);
+    await expect(await $(await HubPage.heading()).getText()).to.contain("Choose another section to complete");
+    await expect(await $(await HubPage.guidance()).isExisting()).to.be.false;
+    await expect(await $(await HubPage.submit()).getText()).to.contain("Continue");
+    await expect(await $(await HubPage.warning()).isExisting()).to.be.false;
   });
 
-  it("When the questionnaire is complete, then custom content should be displayed correctly", () => {
-    browser.openQuestionnaire(hubAndSpokeSchema);
-    $(HubPage.summaryRowLink("household-section")).click();
-    $(DoesAnyoneLiveHere.yes()).click();
-    $(DoesAnyoneLiveHere.submit()).click();
-    $(HowManyPeopleLiveHere.answer1()).click();
-    $(HowManyPeopleLiveHere.submit()).click();
-    $(HouseholdSummary.submit()).click();
-    expect($(HubPage.heading()).getText()).to.contain("Submission title");
-    expect($(HubPage.guidance()).getText()).to.contain("Submission guidance");
-    expect($(HubPage.submit()).getText()).to.contain("Submission button");
-    expect($(HubPage.warning()).getText()).to.contain("Submission warning");
+  it("When the questionnaire is complete, then custom content should be displayed correctly", async ()=> {
+    await browser.openQuestionnaire(hubAndSpokeSchema);
+    await $(await HubPage.summaryRowLink("household-section")).click();
+    await $(await DoesAnyoneLiveHere.yes()).click();
+    await $(await DoesAnyoneLiveHere.submit()).click();
+    await $(await HowManyPeopleLiveHere.answer1()).click();
+    await $(await HowManyPeopleLiveHere.submit()).click();
+    await $(await HouseholdSummary.submit()).click();
+    await expect(await $(await HubPage.heading()).getText()).to.contain("Submission title");
+    await expect(await $(await HubPage.guidance()).getText()).to.contain("Submission guidance");
+    await expect(await $(await HubPage.submit()).getText()).to.contain("Submission button");
+    await expect(await $(await HubPage.warning()).getText()).to.contain("Submission warning");
   });
 });

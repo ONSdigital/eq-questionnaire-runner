@@ -4,13 +4,13 @@ import SubmitPage from "../../../generated_pages/confirmation_question/submit.pa
 
 describe("Feature: Routing incompletes block if routing backwards", () => {
   describe("Given I have a confirmation Question", () => {
-    before("Get to summary", () => {
-      browser.openQuestionnaire("test_confirmation_question.json");
-      $(NumberOfEmployeesTotalBlockPage.numberOfEmployeesTotal()).setValue(0);
-      $(NumberOfEmployeesTotalBlockPage.submit()).click();
-      $(ConfirmZeroEmployeesBlockPage.yes()).click();
-      $(ConfirmZeroEmployeesBlockPage.submit()).click();
-      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    before("Get to summary", async ()=> {
+      await browser.openQuestionnaire("test_confirmation_question.json");
+      await $(await NumberOfEmployeesTotalBlockPage.numberOfEmployeesTotal()).setValue(0);
+      await $(await NumberOfEmployeesTotalBlockPage.submit()).click();
+      await $(await ConfirmZeroEmployeesBlockPage.yes()).click();
+      await $(await ConfirmZeroEmployeesBlockPage.submit()).click();
+      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
   });
 });

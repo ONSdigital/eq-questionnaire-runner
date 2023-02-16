@@ -3,40 +3,40 @@ import sectionTwo from "../../../generated_pages/section_enabled_checkbox/sectio
 import SubmitPage from "../../../generated_pages/section_enabled_checkbox/submit.page";
 
 describe("Feature: Section Enabled Based On Checkbox Answers", () => {
-  beforeEach("Open survey", () => {
-    browser.openQuestionnaire("test_new_section_enabled_checkbox.json");
+  beforeEach("Open survey", async ()=> {
+    await browser.openQuestionnaire("test_new_section_enabled_checkbox.json");
   });
 
-  it("When the user selects `Section 2` and submits, Then section 2 should be displayed", () => {
-    $(sectionOne.section1Section2()).click();
-    $(sectionOne.submit()).click();
+  it("When the user selects `Section 2` and submits, Then section 2 should be displayed", async ()=> {
+    await $(await sectionOne.section1Section2()).click();
+    await $(await sectionOne.submit()).click();
 
-    expect(browser.getUrl()).to.contain("section-2-block");
+    await expect(browser.getUrl()).to.contain("section-2-block");
   });
 
-  it("When the user selects `Section 3` and submits, Then section 2 should not be displayed and section 3 should be displayed", () => {
-    $(sectionOne.section1Section3()).click();
-    $(sectionOne.submit()).click();
+  it("When the user selects `Section 3` and submits, Then section 2 should not be displayed and section 3 should be displayed", async ()=> {
+    await $(await sectionOne.section1Section3()).click();
+    await $(await sectionOne.submit()).click();
 
-    expect(browser.getUrl()).to.contain("section-3-block");
+    await expect(browser.getUrl()).to.contain("section-3-block");
   });
 
-  it("When the user selects `Section 2` and `Section 3` and submits, Then section 2 and section 3 should be displayed", () => {
-    $(sectionOne.section1Section2()).click();
-    $(sectionOne.section1Section3()).click();
-    $(sectionOne.submit()).click();
+  it("When the user selects `Section 2` and `Section 3` and submits, Then section 2 and section 3 should be displayed", async ()=> {
+    await $(await sectionOne.section1Section2()).click();
+    await $(await sectionOne.section1Section3()).click();
+    await $(await sectionOne.submit()).click();
 
-    expect(browser.getUrl()).to.contain("section-2-block");
-    $(sectionTwo.submit()).click();
-    expect(browser.getUrl()).to.contain("section-3-block");
+    await expect(browser.getUrl()).to.contain("section-2-block");
+    await $(await sectionTwo.submit()).click();
+    await expect(browser.getUrl()).to.contain("section-3-block");
   });
 
-  it("When the user selects `Neither` and submits, Then they should be taken straight to the summary", () => {
-    $(sectionOne.section1ExclusiveNeither()).click();
-    $(sectionOne.submit()).click();
+  it("When the user selects `Neither` and submits, Then they should be taken straight to the summary", async ()=> {
+    await $(await sectionOne.section1ExclusiveNeither()).click();
+    await $(await sectionOne.submit()).click();
 
-    expect(browser.getUrl()).to.contain(SubmitPage.url());
-    expect($(SubmitPage.section2Question()).isExisting()).to.be.false;
-    expect($(SubmitPage.section3Question()).isExisting()).to.be.false;
+    await expect(browser.getUrl()).to.contain(SubmitPage.url());
+    await expect(await $(await SubmitPage.section2Question()).isExisting()).to.be.false;
+    await expect(await $(await SubmitPage.section3Question()).isExisting()).to.be.false;
   });
 });

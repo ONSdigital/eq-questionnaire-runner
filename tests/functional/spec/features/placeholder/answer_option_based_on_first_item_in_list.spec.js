@@ -8,62 +8,62 @@ import HubPage from "../../../base_pages/hub.page.js";
 
 describe("Component: Definition", () => {
   describe("Load the Survey", () => {
-    beforeEach(() => {
-      browser.openQuestionnaire("test_placeholder_based_on_first_item_in_list.json");
+    beforeEach(async ()=> {
+      await browser.openQuestionnaire("test_placeholder_based_on_first_item_in_list.json");
     });
 
-    it("Given I am the first person in the list, When I get to the question page, Then I should see the default answer option", () => {
+    it("Given I am the first person in the list, When I get to the question page, Then I should see the default answer option", async ()=> {
       // Given
-      $(HubPage.submit()).click();
-      $(ListCollectorPage.yes()).click();
-      $(ListCollectorPage.submit()).click();
-      $(ListCollectorAddPage.firstName()).setValue("Marcus");
-      $(ListCollectorAddPage.lastName()).setValue("Twin");
-      $(ListCollectorAddPage.submit()).click();
-      $(ListCollectorPage.no()).click();
-      $(ListCollectorPage.submit()).click();
-      $(HubPage.submit()).click();
+      await $(await HubPage.submit()).click();
+      await $(await ListCollectorPage.yes()).click();
+      await $(await ListCollectorPage.submit()).click();
+      await $(await ListCollectorAddPage.firstName()).setValue("Marcus");
+      await $(await ListCollectorAddPage.lastName()).setValue("Twin");
+      await $(await ListCollectorAddPage.submit()).click();
+      await $(await ListCollectorPage.no()).click();
+      await $(await ListCollectorPage.submit()).click();
+      await $(await HubPage.submit()).click();
 
       // When
-      $(ListStatusInterstitial.submit()).click();
-      $(FavouriteDrinkQuestion.answer()).setValue("Orange Juice");
-      $(FavouriteDrinkQuestion.submit()).click();
+      await $(await ListStatusInterstitial.submit()).click();
+      await $(await FavouriteDrinkQuestion.answer()).setValue("Orange Juice");
+      await $(await FavouriteDrinkQuestion.submit()).click();
 
       // Then
-      expect($(ListStatusQuestion.listStatus2TeaLabel()).getText()).to.contain("Tea");
+      await expect(await $(await ListStatusQuestion.listStatus2TeaLabel()).getText()).to.contain("Tea");
     });
 
-    it("Given I am not the first person in the list, When I get to the question page, Then I should see the correct answer option", () => {
+    it("Given I am not the first person in the list, When I get to the question page, Then I should see the correct answer option", async ()=> {
       // Given
-      $(HubPage.submit()).click();
-      $(ListCollectorPage.yes()).click();
-      $(ListCollectorPage.submit()).click();
-      $(ListCollectorAddPage.firstName()).setValue("Marcus");
-      $(ListCollectorAddPage.lastName()).setValue("Twin");
-      $(ListCollectorAddPage.submit()).click();
-      $(ListCollectorPage.yes()).click();
-      $(ListCollectorPage.submit()).click();
-      $(ListCollectorAddPage.firstName()).setValue("John");
-      $(ListCollectorAddPage.lastName()).setValue("Doe");
-      $(ListCollectorAddPage.submit()).click();
-      $(ListCollectorPage.no()).click();
-      $(ListCollectorPage.submit()).click();
-      $(HubPage.submit()).click();
+      await $(await HubPage.submit()).click();
+      await $(await ListCollectorPage.yes()).click();
+      await $(await ListCollectorPage.submit()).click();
+      await $(await ListCollectorAddPage.firstName()).setValue("Marcus");
+      await $(await ListCollectorAddPage.lastName()).setValue("Twin");
+      await $(await ListCollectorAddPage.submit()).click();
+      await $(await ListCollectorPage.yes()).click();
+      await $(await ListCollectorPage.submit()).click();
+      await $(await ListCollectorAddPage.firstName()).setValue("John");
+      await $(await ListCollectorAddPage.lastName()).setValue("Doe");
+      await $(await ListCollectorAddPage.submit()).click();
+      await $(await ListCollectorPage.no()).click();
+      await $(await ListCollectorPage.submit()).click();
+      await $(await HubPage.submit()).click();
 
       // When
-      $(ListStatusInterstitial.submit()).click();
-      $(FavouriteDrinkQuestion.answer()).setValue("Orange Juice");
-      $(FavouriteDrinkQuestion.submit()).click();
-      $(ListStatusQuestion.listStatus2Tea()).click();
-      $(ListStatusQuestion.submit()).click();
-      $(SummaryPage.submit()).click();
-      $(HubPage.submit()).click();
-      $(ListStatusInterstitial.submit()).click();
-      $(FavouriteDrinkQuestion.answer()).setValue("Lemonade");
-      $(FavouriteDrinkQuestion.submit()).click();
+      await $(await ListStatusInterstitial.submit()).click();
+      await $(await FavouriteDrinkQuestion.answer()).setValue("Orange Juice");
+      await $(await FavouriteDrinkQuestion.submit()).click();
+      await $(await ListStatusQuestion.listStatus2Tea()).click();
+      await $(await ListStatusQuestion.submit()).click();
+      await $(await SummaryPage.submit()).click();
+      await $(await HubPage.submit()).click();
+      await $(await ListStatusInterstitial.submit()).click();
+      await $(await FavouriteDrinkQuestion.answer()).setValue("Lemonade");
+      await $(await FavouriteDrinkQuestion.submit()).click();
 
       // Then
-      expect($(ListStatusQuestion.listStatus2TeaLabel()).getText()).to.contain("Orange Juice");
+      await expect(await $(await ListStatusQuestion.listStatus2TeaLabel()).getText()).to.contain("Orange Juice");
     });
   });
 });

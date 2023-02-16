@@ -1,0 +1,32 @@
+import DefinitionPage from "../generated_pages/question_definition/definition-block.page";
+
+describe("Component: Definition", () => {
+  describe("Given I start a survey which contains question definition", () => {
+    beforeEach(async ()=> {
+      await browser.openQuestionnaire("test_question_definition.json");
+    });
+
+    it("When I click the title link, then the description should be visible", async ()=> {
+      await expect(await $(await DefinitionPage.definitionContent(1)).getText()).to.equal("");
+
+      // When
+      await $(await DefinitionPage.definitionTitle("1")).click();
+
+      // Then
+      await expect(await $(await DefinitionPage.definitionContent(1)).getText()).to.contain(
+        "A typical photovoltaic system employs solar panels, each comprising a number of solar cells, which generate electrical power."
+      );
+    });
+
+    it("When I click the title link twice, then the description should not be visible", async ()=> {
+      await expect(await $(await DefinitionPage.definitionContent(1)).getText()).to.equal("");
+
+      // When
+      await $(await DefinitionPage.definitionTitle("1")).click();
+      await $(await DefinitionPage.definitionTitle("1")).click();
+
+      // Then
+      await expect(await $(await DefinitionPage.definitionContent(1)).getText()).to.equal("");
+    });
+  });
+});

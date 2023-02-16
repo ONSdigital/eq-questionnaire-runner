@@ -10,35 +10,35 @@ import SubmitPage from "../../../generated_pages/section_summary/submit.page.js"
 
 describe("Collapsible Summary", () => {
   describe("Given I complete a questionnaire with collapsible summary enabled", () => {
-    beforeEach(() => {
-      browser.openQuestionnaire("test_section_summary.json");
-      $(InsuranceTypePage.both()).click();
-      $(InsuranceTypePage.submit()).click();
-      $(InsuranceAddressPage.submit()).click();
-      $(ListedPage.submit()).click();
-      $(PropertyDetailsSummaryPage.submit()).click();
-      $(HouseType.submit()).click();
-      $(HouseholdDetailsSummaryPage.submit()).click();
-      $(NumberOfPeoplePage.answer()).setValue(3);
-      $(NumberOfPeoplePage.submit()).click();
-      $(HouseholdCountSectionSummaryPage.submit()).click();
+    beforeEach(async ()=> {
+      await browser.openQuestionnaire("test_section_summary.json");
+      await $(await InsuranceTypePage.both()).click();
+      await $(await InsuranceTypePage.submit()).click();
+      await $(await InsuranceAddressPage.submit()).click();
+      await $(await ListedPage.submit()).click();
+      await $(await PropertyDetailsSummaryPage.submit()).click();
+      await $(await HouseType.submit()).click();
+      await $(await HouseholdDetailsSummaryPage.submit()).click();
+      await $(await NumberOfPeoplePage.answer()).setValue(3);
+      await $(await NumberOfPeoplePage.submit()).click();
+      await $(await HouseholdCountSectionSummaryPage.submit()).click();
     });
 
-    it("When I am on the submit page, Then a collapsed summary should be displayed with the group title and questions should not be displayed", () => {
-      expect($(SubmitPage.collapsibleSummary()).isDisplayed()).to.be.true;
+    it("When I am on the submit page, Then a collapsed summary should be displayed with the group title and questions should not be displayed", async ()=> {
+      await expect(await $(await SubmitPage.collapsibleSummary()).isDisplayed()).to.be.true;
 
-      expect($(SubmitPage.collapsibleSummary()).getText()).to.contain("Property Details");
-      expect($(SubmitPage.collapsibleSummary()).getText()).to.contain("House Details");
+      await expect(await $(await SubmitPage.collapsibleSummary()).getText()).to.contain("Property Details");
+      await expect(await $(await SubmitPage.collapsibleSummary()).getText()).to.contain("House Details");
 
-      expect($(SubmitPage.insuranceAddressQuestion()).getText()).to.equal("");
-      expect($(SubmitPage.numberOfPeopleQuestion()).getText()).to.equal("");
+      await expect(await $(await SubmitPage.insuranceAddressQuestion()).getText()).to.equal("");
+      await expect(await $(await SubmitPage.numberOfPeopleQuestion()).getText()).to.equal("");
     });
 
-    it("When I click the Show all button, Then the summary should be expanded and questions should be displayed", () => {
-      $(SubmitPage.summaryShowAllButton()).click();
+    it("When I click the Show all button, Then the summary should be expanded and questions should be displayed", async ()=> {
+      await $(await SubmitPage.summaryShowAllButton()).click();
 
-      expect($(SubmitPage.insuranceAddressQuestion()).getText()).to.contain("What is the address you would like to insure?");
-      expect($(SubmitPage.numberOfPeopleQuestion()).getText()).to.contain("Title");
+      await expect(await $(await SubmitPage.insuranceAddressQuestion()).getText()).to.contain("What is the address you would like to insure?");
+      await expect(await $(await SubmitPage.numberOfPeopleQuestion()).getText()).to.contain("Title");
     });
   });
 });

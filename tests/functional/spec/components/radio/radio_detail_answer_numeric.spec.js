@@ -2,73 +2,73 @@ import RadioNumericDetailPage from "../../../generated_pages/radio_detail_answer
 import SubmitPage from "../../../generated_pages/radio_detail_answer_numeric/submit.page";
 
 describe('Radio with a numeric "detail_answer" option', () => {
-  beforeEach(() => {
-    browser.openQuestionnaire("test_radio_detail_answer_numeric.json");
-    $(RadioNumericDetailPage.other()).click();
+  beforeEach(async ()=> {
+    await browser.openQuestionnaire("test_radio_detail_answer_numeric.json");
+    await $(await RadioNumericDetailPage.other()).click();
   });
 
-  it("Given a numeric detail answer options are available, When the user clicks an option, Then the detail answer input should be visible.", () => {
-    expect($(RadioNumericDetailPage.otherDetail()).isDisplayed()).to.be.true;
+  it("Given a numeric detail answer options are available, When the user clicks an option, Then the detail answer input should be visible.", async ()=> {
+    await expect(await $(await RadioNumericDetailPage.otherDetail()).isDisplayed()).to.be.true;
   });
 
-  it("Given a numeric detail answer, When the user does not provide any text, Then just the option value should be displayed on the summary screen", () => {
+  it("Given a numeric detail answer, When the user does not provide any text, Then just the option value should be displayed on the summary screen", async ()=> {
     // When
-    expect($(RadioNumericDetailPage.otherDetail()).isDisplayed()).to.be.true;
-    $(RadioNumericDetailPage.submit()).click();
+    await expect(await $(await RadioNumericDetailPage.otherDetail()).isDisplayed()).to.be.true;
+    await $(await RadioNumericDetailPage.submit()).click();
     // Then
-    expect($(SubmitPage.radioAnswerNumericDetail()).getText()).to.contain("Other");
+    await expect(await $(await SubmitPage.radioAnswerNumericDetail()).getText()).to.contain("Other");
   });
 
-  it("Given a numeric detail answer, When the user provides text, Then that text should be displayed on the summary screen", () => {
+  it("Given a numeric detail answer, When the user provides text, Then that text should be displayed on the summary screen", async ()=> {
     // When
-    $(RadioNumericDetailPage.otherDetail()).setValue("15");
-    $(RadioNumericDetailPage.submit()).click();
+    await $(await RadioNumericDetailPage.otherDetail()).setValue("15");
+    await $(await RadioNumericDetailPage.submit()).click();
     // Then
-    expect($(SubmitPage.radioAnswerNumericDetail()).getText()).to.contain("15");
+    await expect(await $(await SubmitPage.radioAnswerNumericDetail()).getText()).to.contain("15");
   });
 
-  it("Given a numeric detail answer, When the user provides text, An error should be displayed", () => {
+  it("Given a numeric detail answer, When the user provides text, An error should be displayed", async ()=> {
     // When
-    $(RadioNumericDetailPage.otherDetail()).setValue("fhdjkshfjkds");
-    $(RadioNumericDetailPage.submit()).click();
+    await $(await RadioNumericDetailPage.otherDetail()).setValue("fhdjkshfjkds");
+    await $(await RadioNumericDetailPage.submit()).click();
     // Then
-    expect($(RadioNumericDetailPage.error()).isDisplayed()).to.be.true;
-    expect($(RadioNumericDetailPage.errorNumber(1)).getText()).to.contain("Please enter an integer");
+    await expect(await $(await RadioNumericDetailPage.error()).isDisplayed()).to.be.true;
+    await expect(await $(await RadioNumericDetailPage.errorNumber(1)).getText()).to.contain("Please enter an integer");
   });
 
-  it("Given a numeric detail answer, When the user provides a number larger than 20, An error should be displayed", () => {
+  it("Given a numeric detail answer, When the user provides a number larger than 20, An error should be displayed", async ()=> {
     // When
-    $(RadioNumericDetailPage.otherDetail()).setValue("250");
-    $(RadioNumericDetailPage.submit()).click();
+    await $(await RadioNumericDetailPage.otherDetail()).setValue("250");
+    await $(await RadioNumericDetailPage.submit()).click();
     // Then
-    expect($(RadioNumericDetailPage.error()).isDisplayed()).to.be.true;
-    expect($(RadioNumericDetailPage.errorNumber(1)).getText()).to.contain("Number is too large");
+    await expect(await $(await RadioNumericDetailPage.error()).isDisplayed()).to.be.true;
+    await expect(await $(await RadioNumericDetailPage.errorNumber(1)).getText()).to.contain("Number is too large");
   });
 
-  it("Given a numeric detail answer, When the user provides a number less than 0, An error should be displayed", () => {
+  it("Given a numeric detail answer, When the user provides a number less than 0, An error should be displayed", async ()=> {
     // When
-    $(RadioNumericDetailPage.otherDetail()).setValue("-1");
-    $(RadioNumericDetailPage.submit()).click();
+    await $(await RadioNumericDetailPage.otherDetail()).setValue("-1");
+    await $(await RadioNumericDetailPage.submit()).click();
     // Then
-    expect($(RadioNumericDetailPage.error()).isDisplayed()).to.be.true;
-    expect($(RadioNumericDetailPage.errorNumber(1)).getText()).to.contain("Number cannot be less than zero");
+    await expect(await $(await RadioNumericDetailPage.error()).isDisplayed()).to.be.true;
+    await expect(await $(await RadioNumericDetailPage.errorNumber(1)).getText()).to.contain("Number cannot be less than zero");
   });
 
-  it("Given a numeric detail answer, When the user provides text, An error should be displayed and the text in the textbox should be kept", () => {
+  it("Given a numeric detail answer, When the user provides text, An error should be displayed and the text in the textbox should be kept", async ()=> {
     // When
-    $(RadioNumericDetailPage.otherDetail()).setValue("biscuits");
-    $(RadioNumericDetailPage.submit()).click();
+    await $(await RadioNumericDetailPage.otherDetail()).setValue("biscuits");
+    await $(await RadioNumericDetailPage.submit()).click();
     // Then
-    expect($(RadioNumericDetailPage.error()).isDisplayed()).to.be.true;
-    expect($(RadioNumericDetailPage.errorNumber(1)).getText()).to.contain("Please enter an integer");
-    expect($(RadioNumericDetailPage.otherDetail()).getValue()).to.contain("biscuits");
+    await expect(await $(await RadioNumericDetailPage.error()).isDisplayed()).to.be.true;
+    await expect(await $(await RadioNumericDetailPage.errorNumber(1)).getText()).to.contain("Please enter an integer");
+    await expect(await $(await RadioNumericDetailPage.otherDetail()).getValue()).to.contain("biscuits");
   });
 
-  it('Given a numeric detail answer, When the user enters "0" and submits, Then "0" should be displayed on the summary screen', () => {
+  it('Given a numeric detail answer, When the user enters "0" and submits, Then "0" should be displayed on the summary screen', async ()=> {
     // When
-    $(RadioNumericDetailPage.otherDetail()).setValue("0");
-    $(RadioNumericDetailPage.submit()).click();
+    await $(await RadioNumericDetailPage.otherDetail()).setValue("0");
+    await $(await RadioNumericDetailPage.submit()).click();
     // Then
-    expect($(SubmitPage.radioAnswerNumericDetail()).getText()).to.contain("0");
+    await expect(await $(await SubmitPage.radioAnswerNumericDetail()).getText()).to.contain("0");
   });
 });
