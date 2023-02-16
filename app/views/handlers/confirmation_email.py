@@ -29,7 +29,6 @@ class ConfirmationEmail:
         page_title: Optional[str] = None,
         serialised_email: Optional[str] = None,
     ):
-
         if not self.is_enabled(schema):
             raise ConfirmationEmailNotEnabled
 

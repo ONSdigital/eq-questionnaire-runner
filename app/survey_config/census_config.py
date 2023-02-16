@@ -84,7 +84,6 @@ class WelshCensusSurveyConfig(
     account_service_log_out_url: str = f"{base_url}/en/start"
 
     def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
-
         links = [
             Link(
                 lazy_gettext("Help"),
@@ -150,7 +149,6 @@ class CensusNISRASurveyConfig(
     _is_nisra: bool = True
 
     def get_footer_links(self, cookie_has_theme: bool) -> list[dict]:
-
         links = [
             Link(
                 lazy_gettext("Help"),

@@ -239,7 +239,6 @@ def test_add_primary_person(
     populated_list_store,
     mocker,
 ):
-
     mock_questionnaire_store = mocker.MagicMock(
         spec=QuestionnaireStore,
         completed_blocks=[],
@@ -578,7 +577,6 @@ def test_update_answers_with_answer_dependents(
     updated_answer_value,
     expected_output,
 ):
-
     answer_store = AnswerStore(
         [
             AnswerDict(answer_id="first-answer", value="original answer"),
@@ -842,7 +840,6 @@ def test_answer_id_section_dependents_repeating(
     mock_schema,
     mock_router,
 ):
-
     mock_schema.get_repeating_list_for_section.return_value = "list-name"
     mock_schema.get_answer_ids_for_question.return_value = ["first-answer"]
     mock_schema.when_rules_section_dependencies_by_answer = {

@@ -7,7 +7,7 @@ from flask import Flask, Request, current_app
 from flask import session as cookie_session
 from flask_login import LoginManager, user_logged_out
 from sdc.crypto.decrypter import decrypt
-from structlog import get_logger
+from structlog import contextvars, get_logger
 
 from app.authentication.no_token_exception import NoTokenException
 from app.authentication.user import User
@@ -109,7 +109,7 @@ def load_user(extend_session: bool = True) -> Optional[User]:
         user = User(user_id, user_ik)
 
         if metadata := get_metadata(user):
-            logger.bind(tx_id=metadata.tx_id)
+            contextvars.bind_contextvars(tx_id=metadata.tx_id)
 
         if extend_session:
             _extend_session_expiry(session_store)
