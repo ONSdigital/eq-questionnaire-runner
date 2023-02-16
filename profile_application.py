@@ -8,7 +8,6 @@ from app.setup import create_app  # NOQA
 
 
 def setup_profiling(application):
-
     profiling_dir = "profiling"
 
     if os.path.exists(profiling_dir):

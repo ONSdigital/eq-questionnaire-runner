@@ -52,7 +52,6 @@ class PlaceholderParser:
         progress_store: Optional[ProgressStore] = None,
         path_finder: Optional["PathFinder"] = None,
     ):
-
         self._answer_store = answer_store
         self._list_store = list_store
         self._metadata = metadata

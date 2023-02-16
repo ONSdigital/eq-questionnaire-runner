@@ -17,7 +17,7 @@ from google.cloud import datastore
 from htmlmin.main import minify
 from jinja2 import ChainableUndefined
 from sdc.crypto.key_store import KeyStore, validate_required_keys
-from structlog import get_logger
+from structlog import contextvars, get_logger
 
 from app import settings
 from app.authentication.authenticator import login_manager
@@ -87,6 +87,10 @@ compress = Compress()
 logger = get_logger()
 
 
+class MissingEnvironmentVariable(Exception):
+    pass
+
+
 class AWSReverseProxied:
     def __init__(self, app):
         self.app = app
@@ -131,12 +135,15 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     # request will use the logger context of the previous request.
     @application.before_request
     def before_request():  # pylint: disable=unused-variable
+        contextvars.clear_contextvars()
+
         request_id = str(uuid4())
-        logger.new(request_id=request_id)
+
+        contextvars.bind_contextvars(request_id=request_id)
 
         span, trace = get_span_and_trace(flask_request.headers)
         if span and trace:
-            logger.bind(span=span, trace=trace)
+            contextvars.bind_contextvars(span=span, trace=trace)
 
         logger.info(
             "request",
@@ -286,7 +293,7 @@ def setup_storage(application):
     elif application.config["EQ_STORAGE_BACKEND"] == "dynamodb":
         setup_dynamodb(application)
     else:
-        raise Exception("Unknown EQ_STORAGE_BACKEND")
+        raise NotImplementedError("Unknown EQ_STORAGE_BACKEND")
 
     setup_redis(application)
 
@@ -323,10 +330,10 @@ def setup_redis(application):
 
 def setup_submitter(application):
     if application.config["EQ_SUBMISSION_BACKEND"] == "gcs":
-        bucket_name = application.config.get("EQ_GCS_SUBMISSION_BUCKET_ID")
-
-        if not bucket_name:
-            raise Exception("Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing")
+        if not (bucket_name := application.config.get("EQ_GCS_SUBMISSION_BUCKET_ID")):
+            raise MissingEnvironmentVariable(
+                "Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing"
+            )
 
         application.eq["submitter"] = GCSSubmitter(bucket_name=bucket_name)
 
@@ -335,9 +342,11 @@ def setup_submitter(application):
         secondary_host = application.config.get("EQ_RABBITMQ_HOST_SECONDARY")
 
         if not host:
-            raise Exception("Setting EQ_RABBITMQ_HOST Missing")
+            raise MissingEnvironmentVariable("Setting EQ_RABBITMQ_HOST Missing")
         if not secondary_host:
-            raise Exception("Setting EQ_RABBITMQ_HOST_SECONDARY Missing")
+            raise MissingEnvironmentVariable(
+                "Setting EQ_RABBITMQ_HOST_SECONDARY Missing"
+            )
 
         application.eq["submitter"] = RabbitMQSubmitter(
             host=host,
@@ -356,7 +365,7 @@ def setup_submitter(application):
         application.eq["submitter"] = LogSubmitter()
 
     else:
-        raise Exception("Unknown EQ_SUBMISSION_BACKEND")
+        raise NotImplementedError("Unknown EQ_SUBMISSION_BACKEND")
 
 
 def setup_task_client(application):
@@ -365,7 +374,7 @@ def setup_task_client(application):
     elif application.config["EQ_SUBMISSION_CONFIRMATION_BACKEND"] == "log":
         application.eq["cloud_tasks"] = LogCloudTaskPublisher()
     else:
-        raise Exception("Unknown EQ_SUBMISSION_CONFIRMATION_BACKEND")
+        raise NotImplementedError("Unknown EQ_SUBMISSION_CONFIRMATION_BACKEND")
 
 
 def setup_publisher(application):
@@ -376,15 +385,15 @@ def setup_publisher(application):
         application.eq["publisher"] = LogPublisher()
 
     else:
-        raise Exception("Unknown EQ_PUBLISHER_BACKEND")
+        raise NotImplementedError("Unknown EQ_PUBLISHER_BACKEND")
 
 
 def setup_feedback(application):
     if application.config["EQ_FEEDBACK_BACKEND"] == "gcs":
-        bucket_name = application.config.get("EQ_GCS_FEEDBACK_BUCKET_ID")
-
-        if not bucket_name:
-            raise Exception("Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing")
+        if not (bucket_name := application.config.get("EQ_GCS_FEEDBACK_BUCKET_ID")):
+            raise MissingEnvironmentVariable(
+                "Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing"
+            )
 
         application.eq["feedback_submitter"] = GCSFeedbackSubmitter(
             bucket_name=bucket_name
@@ -393,7 +402,7 @@ def setup_feedback(application):
     elif application.config["EQ_FEEDBACK_BACKEND"] == "log":
         application.eq["feedback_submitter"] = LogFeedbackSubmitter()
     else:
-        raise Exception("Unknown EQ_FEEDBACK_BACKEND")
+        raise NotImplementedError("Unknown EQ_FEEDBACK_BACKEND")
 
 
 def add_blueprints(application):
@@ -439,19 +448,9 @@ def setup_babel(application):
     application.babel = Babel(application)
     application.jinja_env.add_extension("jinja2.ext.i18n")
 
-    @application.babel.localeselector
-    def get_locale():  # pylint: disable=unused-variable
-        session = get_session_store()
-
-        if session and (session_data := session.session_data):
-            return session_data.language_code
-
-        return None
-
-    @application.babel.timezoneselector
-    def get_timezone():  # pylint: disable=unused-variable
-        # For now regardless of locale we will show times in GMT/BST
-        return "Europe/London"
+    application.babel.init_app(
+        application, locale_selector=get_locale, timezone_selector=get_timezone
+    )
 
 
 def setup_compression(application):
@@ -478,3 +477,17 @@ def get_minimized_asset(filename):
         elif "js" in filename:
             filename = filename.replace(".js", ".min.js")
     return filename
+
+
+def get_locale():
+    session = get_session_store()
+
+    if session and (session_data := session.session_data):
+        return session_data.language_code
+
+    return None
+
+
+def get_timezone():
+    # For now regardless of locale we will show times in GMT/BST
+    return "Europe/London"

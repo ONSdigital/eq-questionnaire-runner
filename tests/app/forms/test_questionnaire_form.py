@@ -1077,7 +1077,6 @@ def test_invalid_calculation_type(app, answer_store, list_store, mocker):
 
 
 def test_bespoke_message_for_sum_validation(app, answer_store, list_store, mocker):
-
     answer_total = Answer(answer_id="total-answer", value=10)
 
     answer_store.add_or_update(answer_total)
@@ -1285,7 +1284,6 @@ def test_calculated_field(
     errors_text,
     value_dict,
 ):  # pylint: disable=too-many-locals
-
     for answer in answers:
         answer_store.add_or_update(answer)
 
@@ -1321,7 +1319,6 @@ def test_calculated_field(
 def test_sum_calculated_field_value_source_calculated_summary_repeat_not_equal_validation_error(
     app, answer_store, mocker
 ):
-
     list_store = ListStore([{"name": "people", "items": ["lCIZsS"]}])
     answer_store.add_or_update(
         Answer(

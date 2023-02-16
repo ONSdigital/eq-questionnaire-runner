@@ -203,7 +203,6 @@ class ValueSourceResolver:
     def evaluate_completed_blocks_for_calculated_summary(self) -> None:
         completed_block_ids: list[str] = []
         if self.progress_store and self.path_finder:
-
             for section_id, list_item_id in self.progress_store.section_keys():
                 routing_path_for_section = self.path_finder.routing_path(
                     section_id, list_item_id

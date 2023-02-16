@@ -90,7 +90,6 @@ class Group:
         language: str,
         return_to_block_id: Optional[str],
     ) -> list[dict[str, Block]]:
-
         blocks = []
 
         for block in group_schema["blocks"]:
