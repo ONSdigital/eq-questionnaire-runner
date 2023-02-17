@@ -49,7 +49,6 @@ class PreviewBlock:
         ).serialize()
 
     def serialize(self) -> dict[str, Union[str, dict, Any]]:
-
         return {
             "title": self.title,
             "question": self.question,

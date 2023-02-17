@@ -11,7 +11,6 @@ from app.views.handlers.view_preview_questions import ViewPreviewQuestions
 
 
 class ViewPreviewQuestionsPDF(ViewPreviewQuestions):
-
     # The mimetype to use for response
     mimetype = "application/pdf"
 

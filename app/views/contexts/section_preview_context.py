@@ -63,13 +63,11 @@ class SectionPreviewContext(Context):
         return section
 
     def get_page_title(self, title_for_location: str) -> Optional[str]:
-
         return self._schema.get_custom_page_title_for_section(
             self.current_location.section_id
         ) or self._get_safe_page_title(title_for_location)
 
     def _build_preview(self) -> dict[str, Union[str, dict, Any]]:
-
         return {
             "groups": [
                 PreviewGroup(

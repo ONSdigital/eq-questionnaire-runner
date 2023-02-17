@@ -361,7 +361,6 @@ def test_introduction_preview_linear_schema():
 
 @pytest.fixture
 def questionnaire_store():
-
     storage = MagicMock()
     storage.get_user_data = MagicMock(return_value=("{}", "ce_sid", 1, None))
     storage.add_or_update = MagicMock()

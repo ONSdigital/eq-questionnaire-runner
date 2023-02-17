@@ -54,7 +54,6 @@ class PreviewGroup:
     def serialize(
         self,
     ) -> Any:  # QuestionnaireSchema.get_mutable_deepcopy returns "Any"
-
         return QuestionnaireSchema.get_mutable_deepcopy(
             {"title": self.title, "blocks": self.blocks}
         )

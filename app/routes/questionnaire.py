@@ -451,7 +451,6 @@ def get_view_submitted_response(schema, questionnaire_store):
 def get_preview_questions_pdf(
     schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
 ) -> Response:
-
     view_preview_questions_pdf = ViewPreviewQuestionsPDF(
         schema,
         questionnaire_store,

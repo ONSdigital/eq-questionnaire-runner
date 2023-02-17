@@ -267,7 +267,7 @@
                                                     "arguments": {
                                                         "items": [
                                                             {
-                                                                "identifier": "answer92c53562-4eda-438f-9767-1af697a3fcddfrom",
+                                                                "identifier": "report-radio-answer",
                                                                 "source": "answers"
                                                             },
                                                             {
@@ -296,7 +296,7 @@
                                                     "arguments": {
                                                         "items": [
                                                             {
-                                                                "identifier": "answer92c53562-4eda-438f-9767-1af697a3fcddto",
+                                                                "identifier": "report-radio-answer",
                                                                 "source": "answers"
                                                             },
                                                             {

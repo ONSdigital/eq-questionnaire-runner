@@ -35,7 +35,6 @@ class PreviewContext(Context):
     def __call__(
         self, answers_are_editable: bool = False, return_to: Optional[str] = None
     ) -> dict[str, Union[str, list, bool]]:
-
         groups = list(self.build_all_groups(return_to))
         return {
             "groups": groups,
@@ -45,7 +44,6 @@ class PreviewContext(Context):
         """NB: Does not support repeating sections"""
 
         for section_id in [section["id"] for section in self._schema.get_sections()]:
-
             location = Location(
                 section_id=section_id,
                 block_id=self._schema.get_first_block_id_for_section(section_id),

@@ -9,7 +9,6 @@ def test_build_preview_rendering_context(
     progress_store,
     questionnaire_store,
 ):
-
     preview_context = PreviewContext(
         "en",
         test_introduction_preview_linear_schema,
@@ -33,7 +32,6 @@ def test_build_preview_context(
     progress_store,
     questionnaire_store,
 ):
-
     preview_context = PreviewContext(
         "en",
         test_introduction_preview_linear_schema,

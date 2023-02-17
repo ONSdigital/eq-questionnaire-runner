@@ -13,7 +13,6 @@ def build_view_preview_questions_context(
     schema: QuestionnaireSchema,
     questionnaire_store: QuestionnaireStore,
 ) -> dict[str, Union[str, Union[str, datetime], dict]]:
-
     metadata = questionnaire_store.metadata
 
     context = {
