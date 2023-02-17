@@ -42,11 +42,11 @@ from app.views.handlers.confirmation_email import (
     ConfirmationEmailNotEnabled,
 )
 from app.views.handlers.feedback import Feedback, FeedbackNotEnabled
+from app.views.handlers.preview_questions_pdf import PreviewQuestionsPDF
 from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
 from app.views.handlers.submit_questionnaire import SubmitQuestionnaireHandler
 from app.views.handlers.thank_you import ThankYou
-from app.views.handlers.view_preview_questions_pdf import ViewPreviewQuestionsPDF
 from app.views.handlers.view_submitted_response import (
     ViewSubmittedResponse,
     ViewSubmittedResponseExpired,
@@ -451,7 +451,7 @@ def get_view_submitted_response(schema, questionnaire_store):
 def get_preview_questions_pdf(
     schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
 ) -> Response:
-    view_preview_questions_pdf = ViewPreviewQuestionsPDF(
+    view_preview_questions_pdf = PreviewQuestionsPDF(
         schema,
         questionnaire_store,
         flask_babel.get_locale().language,
