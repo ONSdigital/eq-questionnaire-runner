@@ -22,6 +22,16 @@ import PrimaryPersonListCollectorPage from "../../generated_pages/new_calculated
 import PrimaryPersonListCollectorAddPage from "../../generated_pages/new_calculated_summary_repeating_section/primary-person-list-collector-add.page.js";
 import ListCollectorPage from "../../generated_pages/new_calculated_summary_repeating_section/list-collector.page";
 import ListCollectorAddPage from "../../generated_pages/new_calculated_summary_repeating_section/list-collector-add.page";
+import SkipFirstNumberBlockPageSectionOne from "../../generated_pages/new_calculated_summary_cross_section_dependencies_repeating/skip-first-block.page";
+import FirstNumberBlockPageSectionOne from "../../generated_pages/new_calculated_summary_cross_section_dependencies_repeating/first-number-block.page";
+import FirstAndAHalfNumberBlockPageSectionOne from "../../generated_pages/new_calculated_summary_cross_section_dependencies_repeating/first-and-a-half-number-block.page";
+import SecondNumberBlockPageSectionOne from "../../generated_pages/new_calculated_summary_cross_section_dependencies_repeating/second-number-block.page";
+import CalculatedSummarySectionOne from "../../generated_pages/new_calculated_summary_cross_section_dependencies_repeating/currency-total-playback-1.page";
+import CalculatedSummarySectionTwo from "../../generated_pages/new_calculated_summary_cross_section_dependencies_repeating/currency-total-playback-2.page";
+import ThirdNumberBlockPageSectionTwo from "../../generated_pages/new_calculated_summary_cross_section_dependencies_repeating/third-number-block.page";
+import SectionSummarySectionOne from "../../generated_pages/new_calculated_summary_cross_section_dependencies_repeating/questions-section-summary.page";
+import SectionSummarySectionTwo from "../../generated_pages/new_calculated_summary_cross_section_dependencies_repeating/calculated-summary-section-summary.page";
+import DependencyQuestionSectionTwo from "../../generated_pages/new_calculated_summary_cross_section_dependencies_repeating/mutually-exclusive-checkbox.page";
 
 describe("Feature: Calculated Summary Repeating Section", () => {
   describe("Given I have a Calculated Summary in a Repeating Section", () => {
@@ -394,6 +404,59 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       expect(browser.getUrl()).to.contain(HubPage.pageName);
       expect($(HubPage.summaryRowState("personal-details-section-1")).getText()).to.equal("Completed");
       expect($(HubPage.summaryRowState("personal-details-section-2")).getText()).to.equal("Completed");
+    });
+  });
+
+  describe("Given I have a Calculated Summary in a Repeating Section with a Dependency based on a calculated summary in another section", () => {
+    before("Get to the Dependent question page", () => {
+      browser.openQuestionnaire("test_new_calculated_summary_cross_section_dependencies_repeating.json");
+      $(HubPage.submit()).click();
+      $(PrimaryPersonListCollectorPage.yes()).click();
+      $(PrimaryPersonListCollectorPage.submit()).click();
+      $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Marcus");
+      $(PrimaryPersonListCollectorAddPage.lastName()).setValue("Twin");
+      $(PrimaryPersonListCollectorAddPage.submit()).click();
+      $(ListCollectorPage.no()).click();
+      $(ListCollectorPage.submit()).click();
+      $(HubPage.submit()).click();
+
+      $(SkipFirstNumberBlockPageSectionOne.no()).click();
+      $(SkipFirstNumberBlockPageSectionOne.submit()).click();
+      $(FirstNumberBlockPageSectionOne.firstNumber()).setValue(10);
+      $(FirstNumberBlockPageSectionOne.submit()).click();
+      $(FirstAndAHalfNumberBlockPageSectionOne.firstAndAHalfNumberAlsoInTotal()).setValue(20);
+      $(FirstAndAHalfNumberBlockPageSectionOne.submit()).click();
+      $(SecondNumberBlockPageSectionOne.secondNumberAlsoInTotal()).setValue(30);
+      $(SecondNumberBlockPageSectionOne.submit()).click();
+      $(CalculatedSummarySectionOne.submit()).click();
+      $(SectionSummarySectionOne.submit()).click();
+      $(HubPage.submit()).click();
+      $(ThirdNumberBlockPageSectionTwo.thirdNumber()).setValue(20);
+      $(ThirdNumberBlockPageSectionTwo.thirdNumberAlsoInTotal()).setValue(20);
+      $(ThirdNumberBlockPageSectionTwo.submit()).click();
+      $(CalculatedSummarySectionTwo.submit()).click();
+    });
+
+    it("Given I have a placeholder displaying a calculated summary value source, When the calculated summary value is from a previous section, Then the value displayed should be correct", () => {
+      expect(browser.getUrl()).to.contain(DependencyQuestionSectionTwo.pageName);
+      expect($(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).to.contain("60 - calculated summary answer (previous section)");
+      expect($(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).to.contain("40 - calculated summary answer (current section)");
+    });
+
+    it("Given I remove answers from the path for a calculated summary in a previous section by changing an answer, When I return to the question with the calculated summary value source, Then the value displayed should be correct", () => {
+      $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1()).click();
+      $(DependencyQuestionSectionTwo.submit()).click();
+      $(SectionSummarySectionTwo.submit()).click();
+      $(HubPage.summaryRowLink("questions-section")).click();
+      $(SectionSummarySectionOne.skipFirstBlockAnswerEdit()).click();
+      $(SkipFirstNumberBlockPageSectionOne.yes()).click();
+      $(SkipFirstNumberBlockPageSectionOne.submit()).click();
+      $(SectionSummarySectionOne.submit()).click();
+      $(HubPage.summaryRowLink("calculated-summary-section-1")).click();
+      expect($("body").getText()).to.have.string("30 - calculated summary answer (previous section)");
+      $(SectionSummarySectionTwo.checkboxAnswerEdit()).click();
+      expect($(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).to.contain("30 - calculated summary answer (previous section)");
+      expect($(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).to.contain("40 - calculated summary answer (current section)");
     });
   });
 });
