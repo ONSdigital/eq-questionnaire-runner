@@ -132,13 +132,7 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         )
 
         # Add  household members
-        self.post()
-        self.post({"you-live-here": "Yes"})
-        self.add_person("Joe", "Bloggs")
-        self.post({"anyone-else": "Yes"})
-        self.add_person("John", "Bloggs")
-        self.post({"anyone-else": "No"})
-        self.post()
+        self._add_list_items()
 
         # Complete the first section
         self.post({"skip-first-block-answer": "No"})
