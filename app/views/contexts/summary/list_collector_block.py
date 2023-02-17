@@ -141,7 +141,6 @@ class ListCollectorBlock:
         summary: Mapping[str, Any],
         list_collector_block: Optional[Mapping[str, Any]],
     ) -> Optional[str]:
-
         if list_collector_block:
             return url_for(
                 "questionnaire.block",
@@ -162,7 +161,6 @@ class ListCollectorBlock:
     def _get_related_answers(
         self, list_model: ListModel
     ) -> Optional[dict[str, list[dict[str, Any]]]]:
-
         section_id = self._section["id"]
 
         related_answers = self._schema.get_related_answers_for_list_for_section(

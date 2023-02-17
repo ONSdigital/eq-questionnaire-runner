@@ -9,7 +9,7 @@ from flask import url_for
 from flask_babel import get_locale
 from flask_login import current_user, login_required
 from itsdangerous import BadSignature
-from structlog import get_logger
+from structlog import contextvars, get_logger
 from werkzeug import Response
 from werkzeug.exceptions import BadRequest, NotFound
 
@@ -87,16 +87,16 @@ def before_questionnaire_request():
     if questionnaire_store.submitted_at:
         return redirect(url_for("post_submission.get_thank_you"))
 
-    logger.bind(
+    contextvars.bind_contextvars(
         tx_id=metadata.tx_id,
         ce_id=metadata.collection_exercise_sid,
     )
 
     if schema_name := metadata.schema_name:
-        logger.bind(schema_name=schema_name)
+        contextvars.bind_contextvars(schema_name=schema_name)
 
     if schema_url := metadata.schema_url:
-        logger.bind(schema_url=schema_url)
+        contextvars.bind_contextvars(schema_url=schema_url)
 
     logger.info(
         "questionnaire request", method=request.method, url_path=request.full_path
@@ -134,13 +134,13 @@ def before_post_submission_request():
         metadata=metadata, language_code=get_locale().language
     )
 
-    logger.bind(tx_id=metadata.tx_id)
+    contextvars.bind_contextvars(tx_id=metadata.tx_id)
 
     if schema_name := metadata.schema_name:
-        logger.bind(schema_name=schema_name)
+        contextvars.bind_contextvars(schema_name=schema_name)
 
     if schema_url := metadata.schema_url:
-        logger.bind(schema_url=schema_url)
+        contextvars.bind_contextvars(schema_url=schema_url)
 
     logger.info(
         "questionnaire request", method=request.method, url_path=request.full_path

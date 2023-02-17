@@ -2,7 +2,7 @@ from flask import Blueprint, g, redirect, request, url_for
 from flask_babel import get_locale, lazy_gettext
 from flask_login import current_user, login_required
 from itsdangerous import BadSignature
-from structlog import get_logger
+from structlog import contextvars, get_logger
 from werkzeug.exceptions import BadRequest
 
 from app.authentication.no_questionnaire_state_exception import (
@@ -50,16 +50,16 @@ def before_individual_response_request():
     if questionnaire_store.submitted_at:
         return redirect(url_for("post_submission.get_thank_you"))
 
-    logger.bind(
+    contextvars.bind_contextvars(
         tx_id=metadata.tx_id,
         ce_id=metadata.collection_exercise_sid,
     )
 
     if schema_name := metadata.schema_name:
-        logger.bind(schema_name=schema_name)
+        contextvars.bind_contextvars(schema_name=schema_name)
 
     if schema_url := metadata.schema_url:
-        logger.bind(schema_url=schema_url)  # pragma: no cover
+        contextvars.bind_contextvars(schema_url=schema_url)  # pragma: no cover
 
     logger.info(
         "individual-response request", method=request.method, url_path=request.full_path

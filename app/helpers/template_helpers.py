@@ -93,7 +93,6 @@ class ContextHelper:
     def service_links_context(
         self,
     ) -> Optional[dict[str, Union[dict[str, str], list[dict]]]]:
-
         ru_ref = (
             metadata["ru_ref"] if (metadata := get_metadata(current_user)) else None
         )

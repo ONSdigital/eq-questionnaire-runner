@@ -4,7 +4,6 @@ from google.cloud.datastore import Key
 
 
 class MockDatastore:
-
     # pylint: disable=unused-argument
     def __init__(self, **kwargs):
         self.storage = {}

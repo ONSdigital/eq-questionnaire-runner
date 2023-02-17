@@ -114,7 +114,6 @@ def build_collection(metadata: MetadataProxy) -> MetadataType:
 
 
 def build_metadata(metadata: MetadataProxy) -> MetadataType:
-
     downstream_metadata = {
         "user_id": metadata["user_id"],
         "ru_ref": metadata["ru_ref"],

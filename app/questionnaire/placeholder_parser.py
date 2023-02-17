@@ -48,7 +48,6 @@ class PlaceholderParser:
         location: Union[Location, RelationshipLocation, None] = None,
         preview_mode: Optional[bool] = False,
     ):
-
         self._answer_store = answer_store
         self._list_store = list_store
         self._metadata = metadata

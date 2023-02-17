@@ -85,7 +85,6 @@ class PathFinder:
         if section:
             not_skipped_blocks: list[Mapping] = []
             for group in section["groups"]:
-
                 if "skip_conditions" in group:
                     skip_conditions = group.get("skip_conditions")
                     if self.evaluate_skip_conditions(
@@ -282,7 +281,6 @@ class PathFinder:
     def _remove_current_blocks_answers_for_backwards_routing(
         self, rules: dict, this_location: Location
     ) -> None:
-
         if block_id := this_location.block_id:
             answer_ids_for_current_block = self.schema.get_answer_ids_for_block(
                 block_id
