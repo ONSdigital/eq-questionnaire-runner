@@ -510,7 +510,6 @@ def test_when_rule_comparing_answer_values(
     questionnaire_schema,
     current_location,
 ):
-
     for answer in answers.values():
         answer_store.add_or_update(answer)
 

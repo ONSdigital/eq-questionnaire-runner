@@ -6,7 +6,7 @@ from flask_babel import lazy_gettext
 from flask_login import current_user
 from flask_wtf.csrf import CSRFError
 from sdc.crypto.exceptions import InvalidTokenException
-from structlog import get_logger
+from structlog import contextvars, get_logger
 from werkzeug.exceptions import BadRequestKeyError
 
 from app.authentication.no_questionnaire_state_exception import (
@@ -36,7 +36,7 @@ errors_blueprint = Blueprint("errors", __name__)
 
 def log_exception(exception, status_code):
     if metadata := get_metadata(current_user):
-        logger.bind(tx_id=metadata.tx_id)
+        contextvars.bind_contextvars(tx_id=metadata.tx_id)
 
     log = logger.warning if status_code < 500 else logger.error
 

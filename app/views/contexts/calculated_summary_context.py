@@ -49,7 +49,6 @@ class CalculatedSummaryContext(Context):
     def build_view_context_for_calculated_summary(
         self, current_location: Location
     ) -> dict[str, dict[str, Any]]:
-
         # type ignores added as block will exist at this point
         block_id: str = current_location.block_id  # type: ignore
         block: ImmutableDict = self._schema.get_block(block_id)  # type: ignore
@@ -83,7 +82,7 @@ class CalculatedSummaryContext(Context):
                 "calculated_question": self._get_calculated_question(
                     calculation, formatted_total
                 ),
-                "title": block_title % dict(total=formatted_total),
+                "title": block_title % {"total": formatted_total},
                 "collapsible": collapsible,
                 "summary_type": "CalculatedSummary",
             }
@@ -247,7 +246,6 @@ class CalculatedSummaryContext(Context):
         calculation_question: ImmutableDict[str, Any],
         formatted_total: str,
     ) -> dict[str, Any]:
-
         calculation_title = calculation_question["title"]
 
         return {

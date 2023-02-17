@@ -72,7 +72,6 @@ class Question:
         return_to: Optional[str],
         return_to_block_id: Optional[str],
     ) -> list[dict[str, Any]]:
-
         if self.summary:
             answer_id = f"{self.id}-concatenated-answer"
             link = url_for(
@@ -125,7 +124,6 @@ class Question:
     def _concatenate_answers(
         self, answer_store: AnswerStore, concatenation_type: str
     ) -> str:
-
         answer_separators = {"Newline": "<br>", "Space": " "}
         answer_separator = answer_separators.get(concatenation_type, " ")
 
@@ -229,7 +227,6 @@ class Question:
         answer_schema: Mapping[str, Any],
         answer_store: AnswerStore,
     ) -> Optional[RadioCheckboxTypes]:
-
         for option in self.get_answer_options(answer_schema):
             if answer == escape(option["value"]):
                 detail_answer_value = self._get_detail_answer_value(

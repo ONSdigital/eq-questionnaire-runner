@@ -2,7 +2,6 @@ from app.questionnaire.routing_path import RoutingPath
 
 
 def test_eq_to_routing_path(block_ids, routing_path):
-
     assert routing_path == RoutingPath(
         block_ids,
         section_id="section-1",

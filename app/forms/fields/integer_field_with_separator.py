@@ -19,7 +19,6 @@ class IntegerFieldWithSeparator(IntegerField):
         self.data = None
 
     def process_formdata(self, valuelist):
-
         if valuelist:
             try:
                 self.data = int(

@@ -14,20 +14,15 @@ def test_location_url():
     )
     location_url = location.url()
 
-    assert (
-        location_url
-        == "http://test.localdomain/questionnaire/relationships/household/id1/to/id2/",
-    )
-    assert (
-        location.for_json()
-        == {
-            "section_id": "household",
-            "block_id": "relationships",
-            "list_item_id": "id1",
-            "to_list_item_id": "id2",
-            "list_name": "household",
-        },
-    )
+    assert location_url == "/questionnaire/relationships/household/id1/to/id2/"
+
+    assert location.for_json() == {
+        "section_id": "household",
+        "block_id": "relationships",
+        "list_item_id": "id1",
+        "to_list_item_id": "id2",
+        "list_name": "household",
+    }
 
 
 def test_create_location_from_dict():
