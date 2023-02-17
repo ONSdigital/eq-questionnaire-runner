@@ -59,19 +59,19 @@ const answerAndSubmitEntertainmentBreakdownQuestion = async (breakdown1, breakdo
 };
 
 const assertRepeatingSectionOnChange = async (repeatIndex, currentBreakdown1, currentBreakdown2, currentBreakdown3, newTotal) => {
-  it(`When I click 'Continue with section' on repeating section ${repeatIndex}, Then I should be taken to the spending breakdown question and my previous answers should be prefilled`, async ()=> {
+  it(`When I click 'Continue with section' on repeating section ${repeatIndex}, Then I should be taken to the spending breakdown question and my previous answers should be prefilled`, async () => {
     await $(HubPage.summaryRowLink(repeatingSectionId(repeatIndex))).click();
 
     assertSpendingBreakdownAnswer(currentBreakdown1, currentBreakdown2, currentBreakdown3);
   });
 
-  it("When I submit the spending breakdown question with no changes, Then I should see a validation error", async ()=> {
+  it("When I submit the spending breakdown question with no changes, Then I should see a validation error", async () => {
     await $(SpendingBreakdownPage.submit()).click();
 
     await expect(await $(SpendingBreakdownPage.errorNumber(1)).getText()).to.contain(`Enter answers that add up to £${newTotal}`);
   });
 
-  it("When I update my answers to equal the new total spending, Then I should be able to get to the section summary and the breakdown section should be marked as 'Completed'", async ()=> {
+  it("When I update my answers to equal the new total spending, Then I should be able to get to the section summary and the breakdown section should be marked as 'Completed'", async () => {
     answerAndSubmitSpendingBreakdownQuestion(newTotal, 0, 0);
 
     await expect(browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
@@ -82,7 +82,7 @@ const assertRepeatingSectionOnChange = async (repeatIndex, currentBreakdown1, cu
 
 describe("Feature: Validation - Sum of grouped answers to equal total (Repeating section) (Total in separate section)", () => {
   describe("Given I start a repeating grouped answer validation with dependent sections and add 2 householders and complete the household overview section", () => {
-    before(async ()=> {
+    before(async () => {
       await browser.openQuestionnaire("test_validation_sum_against_total_repeating_with_dependent_section.json");
 
       // Add 2 householders
@@ -101,12 +101,12 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       await expect(await $(HubPage.summaryRowState(householdOverviewSectionId)).getText()).to.equal("Completed");
     });
 
-    it("When I am on the hub, Then the two repeating breakdown sections should be marked as 'Not Started'", async ()=> {
+    it("When I am on the hub, Then the two repeating breakdown sections should be marked as 'Not Started'", async () => {
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(1))).getText()).to.equal("Not started");
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(2))).getText()).to.equal("Not started");
     });
 
-    it("When I start a repeating section and don't skip the calculated question, and enter an answer that is not equal to the total for the spending question, Then I should see a validation error", async ()=> {
+    it("When I start a repeating section and don't skip the calculated question, and enter an answer that is not equal to the total for the spending question, Then I should see a validation error", async () => {
       await $(HubPage.summaryRowLink(repeatingSectionId(1))).click();
       await $(BreakdownDrivingPage.yes()).click();
       await $(BreakdownDrivingPage.submit()).click();
@@ -116,7 +116,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       await expect(await $(SpendingBreakdownPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to £1,000.00");
     });
 
-    it("When I enter an answer that is equal to the total for the spending question, Then I should be able to get to the section summary and the repeating section should be marked as 'Completed'", async ()=> {
+    it("When I enter an answer that is equal to the total for the spending question, Then I should be able to get to the section summary and the repeating section should be marked as 'Completed'", async () => {
       answerAndSubmitSpendingBreakdownQuestion(500, 250, 250);
       answerAndSubmitEntertainmentBreakdownQuestion(250, 150, 100);
 
@@ -126,7 +126,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(1))).getText()).to.equal("Completed");
     });
 
-    it("When I start another repeating section and answer 'No' to the driving question, Then I should not have to answer the breakdown question and the section is marked as 'Completed'", async ()=> {
+    it("When I start another repeating section and answer 'No' to the driving question, Then I should not have to answer the breakdown question and the section is marked as 'Completed'", async () => {
       await $(HubPage.summaryRowLink(repeatingSectionId(2))).click();
       await $(BreakdownDrivingPage.no()).click();
       await $(BreakdownDrivingPage.submit()).click();
@@ -137,7 +137,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(2))).getText()).to.equal("Completed");
     });
 
-    it("When I change my answer for the total spending question, Then the first repeating section should be marked as 'Partially completed' and section repeating section should stay as 'Completed'", async ()=> {
+    it("When I change my answer for the total spending question, Then the first repeating section should be marked as 'Partially completed' and section repeating section should stay as 'Completed'", async () => {
       await $(HubPage.summaryRowLink(householdOverviewSectionId)).click();
       await $(HouseholdOverviewSectionSummary.totalSpendingAnswerEdit()).click();
 
@@ -152,7 +152,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
 
     assertRepeatingSectionOnChange(1, "500.00", "250.00", "250.00", "1,500.00");
 
-    it("When I change my answer to the driving question to 'Yes' for the 2nd repeating section, Then I am able to answer the breakdown question and complete the section", async ()=> {
+    it("When I change my answer to the driving question to 'Yes' for the 2nd repeating section, Then I am able to answer the breakdown question and complete the section", async () => {
       await $(HubPage.summaryRowLink(repeatingSectionId(2))).click();
       await $(BreakdownSectionSummary.breakdownDrivingAnswerEdit()).click();
       await $(BreakdownDrivingPage.yes()).click();
@@ -164,7 +164,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(2))).getText()).to.equal("Completed");
     });
 
-    it("When I change my answer for the total spending question, Then both repeating section should be marked as 'Partially completed'", async ()=> {
+    it("When I change my answer for the total spending question, Then both repeating section should be marked as 'Partially completed'", async () => {
       await $(HubPage.summaryRowLink(householdOverviewSectionId)).click();
       await $(HouseholdOverviewSectionSummary.totalSpendingAnswerEdit()).click();
 
@@ -179,7 +179,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
     assertRepeatingSectionOnChange(1, "1500.00", "0.00", "0.00", "2,500.00");
     assertRepeatingSectionOnChange(2, "1000.00", "500.00", "0.00", "2,500.00");
 
-    it("When I edit and resubmit the total spending question without changing the value, Then the repeating section's status should stay as 'Completed'", async ()=> {
+    it("When I edit and resubmit the total spending question without changing the value, Then the repeating section's status should stay as 'Completed'", async () => {
       await $(HubPage.summaryRowLink(householdOverviewSectionId)).click();
       await $(HouseholdOverviewSectionSummary.totalSpendingAnswerEdit()).click();
 
@@ -191,7 +191,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(2))).getText()).to.equal("Completed");
     });
 
-    it("When I submit the questionnaire, Then I should see the thank you page", async ()=> {
+    it("When I submit the questionnaire, Then I should see the thank you page", async () => {
       await $(HubPage.submit()).click();
 
       await expect(browser.getUrl()).to.contain(ThankYouPage.pageName);

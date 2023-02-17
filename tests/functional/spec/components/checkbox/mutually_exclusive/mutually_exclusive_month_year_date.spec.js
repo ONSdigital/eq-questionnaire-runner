@@ -2,13 +2,13 @@ import MonthYearDatePage from "../../../../generated_pages/mutually_exclusive/mu
 import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-month-year-date-section-summary.page";
 
 describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Override", () => {
-  beforeEach(async ()=> {
+  beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive.json");
     browser.url("/questionnaire/mutually-exclusive-month-year-date");
   });
 
   describe("Given the user has entered a value for the non-exclusive month year date answer", () => {
-    it("When then user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", async ()=> {
+    it("When then user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", async () => {
       // Given
       await $(MonthYearDatePage.monthYearDateMonth()).setValue("3");
       await $(MonthYearDatePage.monthYearDateYear()).setValue("2018");
@@ -31,7 +31,7 @@ describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Ove
   });
 
   describe("Given the user has clicked the mutually exclusive checkbox answer", () => {
-    it("When the user enters a value for the non-exclusive month year date answer and removes focus, Then only the non-exclusive month year date answer should be answered.", async ()=> {
+    it("When the user enters a value for the non-exclusive month year date answer and removes focus, Then only the non-exclusive month year date answer should be answered.", async () => {
       // Given
       await $(MonthYearDatePage.monthYearDateExclusiveIPreferNotToSay()).click();
       await expect(await $(MonthYearDatePage.monthYearDateExclusiveIPreferNotToSay()).isSelected()).to.be.true;
@@ -54,7 +54,7 @@ describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Ove
   });
 
   describe("Given the user has not clicked the mutually exclusive checkbox answer", () => {
-    it("When the user enters a value for the non-exclusive month year date answer, Then only the non-exclusive month year date answer should be answered.", async ()=> {
+    it("When the user enters a value for the non-exclusive month year date answer, Then only the non-exclusive month year date answer should be answered.", async () => {
       // Given
       await expect(await $(MonthYearDatePage.monthYearDateExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
@@ -75,7 +75,7 @@ describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Ove
   });
 
   describe("Given the user has not answered the non-exclusive month year date answer", () => {
-    it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", async ()=> {
+    it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", async () => {
       // Given
       await expect(await $(MonthYearDatePage.monthYearDateMonth()).getValue()).to.contain("");
       await expect(await $(MonthYearDatePage.monthYearDateYear()).getValue()).to.contain("");
@@ -93,7 +93,7 @@ describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Ove
   });
 
   describe("Given the user has not answered the question and the question is optional", () => {
-    it("When the user clicks the Continue button, Then it should display `No answer provided`", async ()=> {
+    it("When the user clicks the Continue button, Then it should display `No answer provided`", async () => {
       // Given
       await expect(await $(MonthYearDatePage.monthYearDateMonth()).getValue()).to.contain("");
       await expect(await $(MonthYearDatePage.monthYearDateYear()).getValue()).to.contain("");

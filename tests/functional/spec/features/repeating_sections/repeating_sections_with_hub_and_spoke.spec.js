@@ -19,7 +19,7 @@ import VisitorsListCollectorRemovePage from "../../../generated_pages/repeating_
 
 describe("Feature: Repeating Sections with Hub and Spoke", () => {
   describe("Given the user has added some members to the household and is on the Hub", () => {
-    before("Open survey and add household members", async ()=> {
+    before("Open survey and add household members", async () => {
       await browser.openQuestionnaire("test_repeating_sections_with_hub_and_spoke.json");
       // Accept cookies, this is done due to headless window size where cookie banner
       // is pushing the submit button outside window
@@ -70,9 +70,9 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       await $(VisitorsListCollectorPage.submit()).click();
     });
 
-    beforeEach("Navigate to the Hub", async ()=> browser.url(HubPage.url()));
+    beforeEach("Navigate to the Hub", async () => browser.url(HubPage.url()));
 
-    it("Then a section for each household member should be displayed", async ()=> {
+    it("Then a section for each household member should be displayed", async () => {
       await expect(browser.getUrl()).to.contain(HubPage.url());
 
       await expect(await $(HubPage.summaryRowState("section")).getText()).to.equal("Completed");
@@ -88,14 +88,14 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       await expect(await $(HubPage.summaryRowState("section-5")).isExisting()).to.be.false;
     });
 
-    it("When the user starts a repeating section and clicks the Previous link on the first question, Then they should be taken back to the Hub", async ()=> {
+    it("When the user starts a repeating section and clicks the Previous link on the first question, Then they should be taken back to the Hub", async () => {
       await $(HubPage.summaryRowLink("personal-details-section-2")).click();
       await $(ProxyPage.previous()).click();
 
       await expect(browser.getUrl()).to.contain(HubPage.url());
     });
 
-    it("When the user partially completes a repeating section, Then that section should be marked as 'Partially completed' on the Hub", async ()=> {
+    it("When the user partially completes a repeating section, Then that section should be marked as 'Partially completed' on the Hub", async () => {
       await $(HubPage.summaryRowLink("personal-details-section-1")).click();
       await $(ProxyPage.yes()).click();
       await $(ProxyPage.submit()).click();
@@ -114,13 +114,13 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       await expect(await $(HubPage.summaryRowState("personal-details-section-1")).getText()).to.equal("Partially completed");
     });
 
-    it("When the user continues with a partially completed repeating section, Then they are taken to the first incomplete block", async ()=> {
+    it("When the user continues with a partially completed repeating section, Then they are taken to the first incomplete block", async () => {
       await $(HubPage.summaryRowLink("personal-details-section-1")).click();
 
       await expect(await $(SexPage.questionText()).getText()).to.equal("What is Marcus Twin’s sex?");
     });
 
-    it("When the user completes a repeating section, Then that section should be marked as 'Completed' on the Hub", async ()=> {
+    it("When the user completes a repeating section, Then that section should be marked as 'Completed' on the Hub", async () => {
       await $(HubPage.summaryRowLink("personal-details-section-2")).click();
       await $(ProxyPage.yes()).click();
       await $(ProxyPage.submit()).click();
@@ -142,17 +142,17 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       await expect(await $(HubPage.summaryRowState("personal-details-section-2")).getText()).to.equal("Completed");
     });
 
-    it("When the user clicks 'View answers' for a completed repeating section, Then they are taken to the summary", async ()=> {
+    it("When the user clicks 'View answers' for a completed repeating section, Then they are taken to the summary", async () => {
       await $(HubPage.summaryRowLink("personal-details-section-2")).click();
       await expect(browser.getUrl()).to.contain("/sections/personal-details-section");
     });
 
-    it("When the user views the summary for a repeating section, Then the page title is shown", async ()=> {
+    it("When the user views the summary for a repeating section, Then the page title is shown", async () => {
       await $(HubPage.summaryRowLink("personal-details-section-2")).click();
       await expect(browser.getTitle()).to.equal("… - Hub & Spoke");
     });
 
-    it("When the user adds 2 visitors to the household then a section for each visitor should be display on the hub", async ()=> {
+    it("When the user adds 2 visitors to the household then a section for each visitor should be display on the hub", async () => {
       // Ensure no other sections exist
       await expect(await $(HubPage.summaryRowState("personal-details-section-5")).isExisting()).to.be.false;
       await expect(await $(HubPage.summaryRowState("visitors-section-1")).isExisting()).to.be.false;
@@ -188,12 +188,12 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       await expect(await $(HubPage.summaryRowState("visitors-section-3")).isExisting()).to.be.false;
     });
 
-    it("When the user clicks 'Continue' from the Hub, Then they should progress to the first incomplete section", async ()=> {
+    it("When the user clicks 'Continue' from the Hub, Then they should progress to the first incomplete section", async () => {
       await $(HubPage.submit()).click();
       await expect(await $(ConfirmDateOfBirthPage.questionText()).getText()).to.equal("What is Marcus Twin’s sex?");
     });
 
-    it("When the user answers on their behalf, Then they are shown the non proxy question variant", async ()=> {
+    it("When the user answers on their behalf, Then they are shown the non proxy question variant", async () => {
       await $(HubPage.summaryRowLink("personal-details-section-4")).click();
       await $(ProxyPage.noIMAnsweringForMyself()).click();
       await $(ProxyPage.submit()).click();
@@ -209,7 +209,7 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       await expect(await $(SexPage.questionText()).getText()).to.equal("What is your sex?");
     });
 
-    it("When the user answers on on behalf of someone else, Then they are shown the proxy question variant for the relevant repeating section", async ()=> {
+    it("When the user answers on on behalf of someone else, Then they are shown the proxy question variant for the relevant repeating section", async () => {
       await $(HubPage.summaryRowLink("personal-details-section-3")).click();
       await $(ProxyPage.yes()).click();
       await $(ProxyPage.submit()).click();
@@ -224,7 +224,7 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       await expect(await $(SexPage.questionText()).getText()).to.equal("What is Samuel Clemens’ sex?");
     });
 
-    it("When the user completes all sections, Then the Hub should be in the completed state", async ()=> {
+    it("When the user completes all sections, Then the Hub should be in the completed state", async () => {
       // Complete remaining sections
       await $(HubPage.submit()).click();
       await $(SexPage.male()).click();
@@ -256,7 +256,7 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       await expect(await $(HubPage.heading()).getText()).to.equal("Submit survey");
     });
 
-    it("When the user adds a new visitor, Then the Hub should not be in the completed state", async ()=> {
+    it("When the user adds a new visitor, Then the Hub should not be in the completed state", async () => {
       await $(HubPage.summaryRowLink("section")).click();
 
       // Add another visitor
@@ -281,7 +281,7 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       await expect(await $(HubPage.heading()).getText()).to.equal("Choose another section to complete");
     });
 
-    it("When the user removes a visitor, Then their section is not longer displayed on he Hub", async ()=> {
+    it("When the user removes a visitor, Then their section is not longer displayed on he Hub", async () => {
       // Ensure final householder exists
       await expect(await $(HubPage.summaryRowState("visitors-section-3")).isExisting()).to.be.true;
 
@@ -298,7 +298,7 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       await expect(await $(HubPage.summaryRowState("visitors-section-3")).isExisting()).to.be.false;
     });
 
-    it("When the user submits, it should show the thank you page", async ()=> {
+    it("When the user submits, it should show the thank you page", async () => {
       await $(HubPage.submit()).click();
       await expect(browser.getUrl()).to.contain("thank-you");
     });

@@ -2,11 +2,11 @@ import DefinitionPage from "../generated_pages/question_definition/definition-bl
 
 describe("Component: Definition", () => {
   describe("Given I start a survey which contains question definition", () => {
-    beforeEach(async ()=> {
+    beforeEach(async () => {
       await browser.openQuestionnaire("test_question_definition.json");
     });
 
-    it("When I click the title link, then the description should be visible", async ()=> {
+    it("When I click the title link, then the description should be visible", async () => {
       await expect(await $(DefinitionPage.definitionContent(1)).getText()).to.equal("");
 
       // When
@@ -18,7 +18,7 @@ describe("Component: Definition", () => {
       );
     });
 
-    it("When I click the title link twice, then the description should not be visible", async ()=> {
+    it("When I click the title link twice, then the description should not be visible", async () => {
       await expect(await $(DefinitionPage.definitionContent(1)).getText()).to.equal("");
 
       // When

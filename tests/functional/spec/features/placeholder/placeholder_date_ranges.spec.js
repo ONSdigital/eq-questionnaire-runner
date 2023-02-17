@@ -4,11 +4,11 @@ import Block0Page from "../../../generated_pages/placeholder_transform_date_rang
 import RangeQuestionBlockPage from "../../../generated_pages/placeholder_transform_date_range_bounds/range-question-block.page";
 
 describe("Date checks", () => {
-  beforeEach("Load the survey", async ()=> {
+  beforeEach("Load the survey", async () => {
     await browser.openQuestionnaire("test_placeholder_transform_date_range_bounds.json");
   });
 
-  it("Given a reference date is provided, when I get to the next page, then the placeholder contains a formatted date range based on the reference date", async ()=> {
+  it("Given a reference date is provided, when I get to the next page, then the placeholder contains a formatted date range based on the reference date", async () => {
     await $(DateQuestionPage.day()).setValue(8);
     await $(DateQuestionPage.month()).setValue(9);
     await $(DateQuestionPage.year()).setValue(2021);
@@ -19,7 +19,7 @@ describe("Date checks", () => {
     await $(DaysQuestionBlockPage.submit()).click();
   });
 
-  it("Given a reference date is provided, when I get to the next page, then the placeholder contains a formatted date range", async ()=> {
+  it("Given a reference date is provided, when I get to the next page, then the placeholder contains a formatted date range", async () => {
     await $(DateQuestionPage.day()).setValue(15);
     await $(DateQuestionPage.month()).setValue(9);
     await $(DateQuestionPage.year()).setValue(2021);

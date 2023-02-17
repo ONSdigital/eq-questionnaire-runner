@@ -2,13 +2,13 @@ import PercentagePage from "../../../../generated_pages/mutually_exclusive/mutua
 import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-percentage-section-summary.page";
 
 describe("Component: Mutually Exclusive Percentage With Single Checkbox Override", () => {
-  beforeEach(async ()=> {
+  beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive.json");
     browser.url("/questionnaire/mutually-exclusive-percentage");
   });
 
   describe("Given the user has entered a value for the non-exclusive percentage answer", () => {
-    it("When then user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", async ()=> {
+    it("When then user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", async () => {
       // Given
       await $(PercentagePage.percentage()).setValue("99");
       await expect(await $(PercentagePage.percentage()).getValue()).to.contain("99");
@@ -28,7 +28,7 @@ describe("Component: Mutually Exclusive Percentage With Single Checkbox Override
   });
 
   describe("Given the user has clicked the mutually exclusive checkbox answer", () => {
-    it("When the user enters a value for the non-exclusive percentage answer and removes focus, Then only the non-exclusive percentage answer should be answered.", async ()=> {
+    it("When the user enters a value for the non-exclusive percentage answer and removes focus, Then only the non-exclusive percentage answer should be answered.", async () => {
       // Given
       await $(PercentagePage.percentageExclusiveIPreferNotToSay()).click();
       await expect(await $(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.true;
@@ -48,7 +48,7 @@ describe("Component: Mutually Exclusive Percentage With Single Checkbox Override
   });
 
   describe("Given the user has not clicked the mutually exclusive checkbox answer", () => {
-    it("When the user enters a value for the non-exclusive percentage answer, Then only the non-exclusive percentage answer should be answered.", async ()=> {
+    it("When the user enters a value for the non-exclusive percentage answer, Then only the non-exclusive percentage answer should be answered.", async () => {
       // Given
       await expect(await $(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
@@ -67,7 +67,7 @@ describe("Component: Mutually Exclusive Percentage With Single Checkbox Override
   });
 
   describe("Given the user has not answered the non-exclusive percentage answer", () => {
-    it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", async ()=> {
+    it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", async () => {
       // Given
       await expect(await $(PercentagePage.percentage()).getValue()).to.contain("");
 
@@ -84,7 +84,7 @@ describe("Component: Mutually Exclusive Percentage With Single Checkbox Override
   });
 
   describe("Given the user has not answered the question and the question is optional", () => {
-    it("When the user clicks the Continue button, Then it should display `No answer provided`", async ()=> {
+    it("When the user clicks the Continue button, Then it should display `No answer provided`", async () => {
       // Given
       await expect(await $(PercentagePage.percentage()).getValue()).to.contain("");
       await expect(await $(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.false;

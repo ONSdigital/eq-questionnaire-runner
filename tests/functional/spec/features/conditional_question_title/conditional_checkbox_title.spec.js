@@ -4,18 +4,18 @@ import RadioButtonsPage from "../../../generated_pages/titles_radio_and_checkbox
 import SubmitPage from "../../../generated_pages/titles_radio_and_checkbox/submit.page";
 
 describe("Feature: Conditional checkbox and radio question titles", () => {
-  beforeEach(async ()=> {
+  beforeEach(async () => {
     await browser.openQuestionnaire("test_titles_radio_and_checkbox.json");
   });
 
   describe("Given I start the test_titles_radio_and_checkbox survey", () => {
-    it("When I enter an expected name and submit", async ()=> {
+    it("When I enter an expected name and submit", async () => {
       await $(NameEntryPage.name()).setValue("Peter");
       await $(NameEntryPage.submit()).click();
       await expect(await $(CheckBoxPage.questionText()).getText()).to.contain("Did Peter make changes to this business?");
     });
 
-    it("When I enter an unknown name and go to the checkbox page", async ()=> {
+    it("When I enter an unknown name and go to the checkbox page", async () => {
       await $(NameEntryPage.name()).setValue("Fred");
       await $(NameEntryPage.submit()).click();
       await expect(await $(CheckBoxPage.questionText()).getText()).to.contain("Did this business make major changes in the following areas");
@@ -23,14 +23,14 @@ describe("Feature: Conditional checkbox and radio question titles", () => {
       await expect(await $(RadioButtonsPage.questionText()).getText()).to.contain("Did this business make major changes in the following areas");
     });
 
-    it("When I enter another known name page title should include selected title", async ()=> {
+    it("When I enter another known name page title should include selected title", async () => {
       await $(NameEntryPage.name()).setValue("Mary");
       await $(NameEntryPage.submit()).click();
 
       await expect(browser.getTitle()).to.contain("Did Mary make changes to this business? - Test Survey - Checkbox and Radio titles");
     });
 
-    it("When I enter another known name and go to the summary", async ()=> {
+    it("When I enter another known name and go to the summary", async () => {
       await $(NameEntryPage.name()).setValue("Mary");
       await $(NameEntryPage.submit()).click();
       await expect(await $(CheckBoxPage.questionText()).getText()).to.contain("Did Mary make changes to this business");

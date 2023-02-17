@@ -2,11 +2,11 @@ import IntroductionPage from "../generated_pages/introduction/introduction.page"
 
 describe("Introduction page", () => {
   const introductionSchema = "test_introduction.json";
-  beforeEach(async ()=> {
+  beforeEach(async () => {
     await browser.openQuestionnaire(introductionSchema);
   });
 
-  it("Given I start a survey, When I view the introduction page, Then I should be able to see introduction information", async ()=> {
+  it("Given I start a survey, When I view the introduction page, Then I should be able to see introduction information", async () => {
     await browser.openQuestionnaire(introductionSchema);
     await expect(await $(IntroductionPage.useOfData()).getText()).to.contain("How we use your data");
     await expect(await $(IntroductionPage.useOfInformation()).getText()).to.contain(
@@ -18,7 +18,7 @@ describe("Introduction page", () => {
       "To take part, all you need to do is check that you have the information you need to answer the survey questions."
     );
   });
-  it("Given I start a survey with introduction guidance set, When I view the introduction page, Then I should be able to see introduction guidance", async ()=> {
+  it("Given I start a survey with introduction guidance set, When I view the introduction page, Then I should be able to see introduction guidance", async () => {
     await browser.openQuestionnaire(introductionSchema);
     await expect(await $(IntroductionPage.guidancePanel(1)).isDisplayed()).to.be.true;
     await expect(await $(IntroductionPage.guidancePanel(1)).getText()).to.contain("Coronavirus (COVID-19) guidance");

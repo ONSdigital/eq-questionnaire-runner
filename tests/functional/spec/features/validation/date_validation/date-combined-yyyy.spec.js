@@ -2,13 +2,13 @@ import DateRangePage from "../../../../generated_pages/date_validation_yyyy_comb
 import SubmitPage from "../../../../generated_pages/date_validation_yyyy_combined/submit.page";
 
 describe("Feature: Combined question level and single validation for MM-YYYY dates", () => {
-  before(async ()=> {
+  before(async () => {
     await browser.openQuestionnaire("test_date_validation_yyyy_combined.json");
   });
 
   describe("Period Validation", () => {
     describe("Given I enter dates", () => {
-      it("When I enter dates that are too early and too late, Then I should see two validation errors", async ()=> {
+      it("When I enter dates that are too early and too late, Then I should see two validation errors", async () => {
         await $(DateRangePage.dateRangeFromYear()).setValue(2015);
         await $(DateRangePage.dateRangeToYear()).setValue(2021);
         await $(DateRangePage.submit()).click();
@@ -16,21 +16,21 @@ describe("Feature: Combined question level and single validation for MM-YYYY dat
         await expect(await $(DateRangePage.errorNumber(2)).getText()).to.contain("Enter a date before 2021");
       });
 
-      it("When I enter a range too large, Then I should see a range validation error", async ()=> {
+      it("When I enter a range too large, Then I should see a range validation error", async () => {
         await $(DateRangePage.dateRangeFromYear()).setValue(2016);
         await $(DateRangePage.dateRangeToYear()).setValue(2020);
         await $(DateRangePage.submit()).click();
         await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period less than or equal to 3 years");
       });
 
-      it("When I enter a range too small, Then I should see a range validation error", async ()=> {
+      it("When I enter a range too small, Then I should see a range validation error", async () => {
         await $(DateRangePage.dateRangeFromYear()).setValue(2016);
         await $(DateRangePage.dateRangeToYear()).setValue(2017);
         await $(DateRangePage.submit()).click();
         await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period greater than or equal to 2 years");
       });
 
-      it("When I enter valid dates, Then I should see the summary page", async ()=> {
+      it("When I enter valid dates, Then I should see the summary page", async () => {
         await $(DateRangePage.dateRangeFromYear()).setValue(2016);
         // Min range
         await $(DateRangePage.dateRangeToYear()).setValue(2018);

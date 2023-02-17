@@ -26,7 +26,7 @@ import ListCollectorAddPage from "../../generated_pages/new_calculated_summary_r
 
 describe("Feature: Calculated Summary Repeating Section", () => {
   describe("Given I have a Calculated Summary in a Repeating Section", () => {
-    before("Get to Calculated Summary", async ()=> {
+    before("Get to Calculated Summary", async () => {
       await browser.openQuestionnaire("test_new_calculated_summary_repeating_section.json");
       await $(HubPage.submit()).click();
       await $(PrimaryPersonListCollectorPage.yes()).click();
@@ -45,11 +45,11 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(browserUrl).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
     });
 
-    it("Given I have completed all questions, When I am on the calculated summary and there is no custom page title, Then the page title should use the calculation's title", async ()=> {
+    it("Given I have completed all questions, When I am on the calculated summary and there is no custom page title, Then the page title should use the calculation's title", async () => {
       await expect(browser.getTitle()).to.equal("Grand total of previous values - A test schema to demo Calculated Summary");
     });
 
-    it("Given I complete every question, When I get to the currency summary, Then I should see the correct total", async ()=> {
+    it("Given I complete every question, When I get to the currency summary, Then I should see the correct total", async () => {
       // Totals and titles should be shown
       await expect(await $(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £20.71. Is this correct?"
@@ -76,31 +76,31 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(await $(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).to.contain("£2.34");
 
       // Answers not included in calculation should not be shown
-      await expect(await $$( UnitTotalPlaybackPage.secondNumberAnswerUnitTotal())).to.be.empty;
-      await expect(await $$( UnitTotalPlaybackPage.thirdAndAHalfNumberAnswerUnitTotal())).to.be.empty;
-      await expect(await $$( NumberTotalPlaybackPage.fifthNumberAnswer())).to.be.empty;
-      await expect(await $$( NumberTotalPlaybackPage.sixthNumberAnswer())).to.be.empty;
+      await expect(await $$(UnitTotalPlaybackPage.secondNumberAnswerUnitTotal())).to.be.empty;
+      await expect(await $$(UnitTotalPlaybackPage.thirdAndAHalfNumberAnswerUnitTotal())).to.be.empty;
+      await expect(await $$(NumberTotalPlaybackPage.fifthNumberAnswer())).to.be.empty;
+      await expect(await $$(NumberTotalPlaybackPage.sixthNumberAnswer())).to.be.empty;
     });
 
-    it("Given I reach the calculated summary page, Then the Change link url should contain return_to, return_to_answer_id and return_to_block_id query params", async ()=> {
+    it("Given I reach the calculated summary page, Then the Change link url should contain return_to, return_to_answer_id and return_to_block_id query params", async () => {
       await expect(await $(CurrencyTotalPlaybackPageWithFourth.firstNumberAnswerEdit()).getAttribute("href")).to.contain(
         "first-number-block/?return_to=calculated-summary&return_to_answer_id=first-number-answer&return_to_block_id=currency-total-playback-with-fourth#first-number-answer"
       );
     });
 
-    it("Given I edit an answer from the calculated summary page and click the Previous button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", async ()=> {
+    it("Given I edit an answer from the calculated summary page and click the Previous button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", async () => {
       await $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
       await $(ThirdNumberBlockPage.previous()).click();
       await expect(browser.getUrl()).to.contain("currency-total-playback-with-fourth/?return_to=calculated-summary#third-number-answer");
     });
 
-    it("Given I edit an answer from the calculated summary page and click the Submit button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", async ()=> {
+    it("Given I edit an answer from the calculated summary page and click the Submit button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", async () => {
       await $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
       await $(ThirdNumberBlockPage.submit()).click();
       await expect(browser.getUrl()).to.contain("currency-total-playback-with-fourth/?return_to=calculated-summary#third-number-answer");
     });
 
-    it("Given I change an answer, When I get to the currency summary, Then I should see the new total", async ()=> {
+    it("Given I change an answer, When I get to the currency summary, Then I should see the new total", async () => {
       await $(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswerEdit()).click();
       await $(FourthNumberBlockPage.fourthNumber()).setValue(19.01);
       await $(FourthNumberBlockPage.submit()).click();
@@ -112,7 +112,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(await $(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£30.71");
     });
 
-    it("Given I leave an answer empty, When I get to the currency summary, Then I should see no answer provided and new total", async ()=> {
+    it("Given I leave an answer empty, When I get to the currency summary, Then I should see no answer provided and new total", async () => {
       await $(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotalEdit()).click();
       await $(FourthAndAHalfNumberBlockPage.fourthAndAHalfNumberAlsoInTotal()).setValue("");
       await $(FourthAndAHalfNumberBlockPage.submit()).click();
@@ -125,7 +125,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(await $(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).to.contain("No answer provided");
     });
 
-    it("Given I skip the fourth page, When I get to the playback, Then I can should not see it in the total", async ()=> {
+    it("Given I skip the fourth page, When I get to the playback, Then I can should not see it in the total", async () => {
       await $(CurrencyTotalPlaybackPageWithFourth.previous()).click();
       await $(SixthNumberBlockPage.previous()).click();
       await $(FifthNumberBlockPage.previous()).click();
@@ -141,15 +141,15 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       const expectedUrl = browser.getUrl();
 
       await expect(expectedUrl).to.contain(CurrencyTotalPlaybackPageSkippedFourth.pageName);
-      await expect(await $$( CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswer())).to.be.empty;
-      await expect(await $$( CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotal())).to.be.empty;
+      await expect(await $$(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswer())).to.be.empty;
+      await expect(await $$(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotal())).to.be.empty;
       await expect(await $(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £9.36. Is this correct?"
       );
       await expect(await $(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryAnswer()).getText()).to.contain("£9.36");
     });
 
-    it("Given I complete every question, When I get to the unit summary, Then I should see the correct total", async ()=> {
+    it("Given I complete every question, When I get to the unit summary, Then I should see the correct total", async () => {
       // Totals and titles should be shown
       await $(CurrencyTotalPlaybackPageWithFourth.submit()).click();
       await expect(await $(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
@@ -165,11 +165,11 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(await $(UnitTotalPlaybackPage.thirdAndAHalfNumberAnswerUnitTotal()).getText()).to.contain("678 cm");
     });
 
-    it("Given the calculated summary has a custom title, When I am on the unit calculated summary, Then the page title should use the custom title", async ()=> {
+    it("Given the calculated summary has a custom title, When I am on the unit calculated summary, Then the page title should use the custom title", async () => {
       await expect(browser.getTitle()).to.equal("Total Unit Values - A test schema to demo Calculated Summary");
     });
 
-    it("Given I complete every question, When I get to the percentage summary, Then I should see the correct total", async ()=> {
+    it("Given I complete every question, When I get to the percentage summary, Then I should see the correct total", async () => {
       // Totals and titles should be shown
       await $(UnitTotalPlaybackPage.submit()).click();
       await expect(await $(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
@@ -185,11 +185,11 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(await $(PercentageTotalPlaybackPage.sixthPercentAnswer()).getText()).to.contain("23%");
     });
 
-    it("Given the calculated summary has a custom title with the list item position, When I am on the percentage calculated summary, Then the page title should use the custom title with the list item position", async ()=> {
+    it("Given the calculated summary has a custom title with the list item position, When I am on the percentage calculated summary, Then the page title should use the custom title with the list item position", async () => {
       await expect(browser.getTitle()).to.equal("Percentage Calculated Summary: Person 1 - A test schema to demo Calculated Summary");
     });
 
-    it("Given I complete every question, When I get to the number summary, Then I should see the correct total", async ()=> {
+    it("Given I complete every question, When I get to the number summary, Then I should see the correct total", async () => {
       // Totals and titles should be shown
       await $(UnitTotalPlaybackPage.submit()).click();
       await expect(await $(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
@@ -205,7 +205,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(await $(NumberTotalPlaybackPage.sixthNumberAnswer()).getText()).to.contain("45.67");
     });
 
-    it("Given I have a calculated summary total that is used as a placeholder in another calculated summary, When I get to the calculated summary page displaying the placeholder, Then I should see the correct total", async ()=> {
+    it("Given I have a calculated summary total that is used as a placeholder in another calculated summary, When I get to the calculated summary page displaying the placeholder, Then I should see the correct total", async () => {
       await $(NumberTotalPlaybackPage.submit()).click();
       await expect(browser.getUrl()).to.contain(BreakdownPage.pageName);
       await $(BreakdownPage.answer1()).setValue(100.0);
@@ -219,7 +219,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(await $(SecondCurrencyTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("124.58");
     });
 
-    it("Given I complete every calculated summary, When I go to a page with calculated summary piping, Then I should the see the piped calculated summary total for each summary", async ()=> {
+    it("Given I complete every calculated summary, When I go to a page with calculated summary piping, Then I should the see the piped calculated summary total for each summary", async () => {
       await $(SecondCurrencyTotalPlaybackPage.submit()).click();
 
       const content = $("h1 + ul").getText();
@@ -231,10 +231,10 @@ describe("Feature: Calculated Summary Repeating Section", () => {
         "Total number values: 124.58",
       ];
 
-      textsToAssert.forEachasync (async (text) => await expectasync (content).to.containasync (text));
+      textsToAssert.forEach(async (text) => await expect(content).to.contain(text));
     });
 
-    it("Given I have an answer minimum based on a calculated summary total, When I enter an invalid answer, Then I should see an error message on the page", async ()=> {
+    it("Given I have an answer minimum based on a calculated summary total, When I enter an invalid answer, Then I should see an error message on the page", async () => {
       await $(CalculatedSummaryTotalConfirmation.submit()).click();
       await expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
       await $(SetMinMaxBlockPage.setMinimum()).setValue(8.0);
@@ -244,7 +244,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await $(SetMinMaxBlockPage.submit()).click();
     });
 
-    it("Given I have an answer maximum based on a calculated summary total, When I enter an invalid answer, Then I should see an error message on the page", async ()=> {
+    it("Given I have an answer maximum based on a calculated summary total, When I enter an invalid answer, Then I should see an error message on the page", async () => {
       await $(SubmitPage.submit()).click();
       await expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
       await $(SetMinMaxBlockPage.setMaximum()).setValue(10.0);
@@ -254,7 +254,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await $(SetMinMaxBlockPage.submit()).click();
     });
 
-    it("Given I confirm the totals and am on the summary, When I edit and change an answer, Then I must re-confirm the dependant calculated summary page and min max question page before I can return to the summary", async ()=> {
+    it("Given I confirm the totals and am on the summary, When I edit and change an answer, Then I must re-confirm the dependant calculated summary page and min max question page before I can return to the summary", async () => {
       await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
       await $(SubmitPage.thirdNumberAnswerEdit()).click();
       await $(ThirdNumberBlockPage.thirdNumber()).setValue(3.5);
@@ -282,7 +282,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
-    it("Given I confirm the totals and am on the summary, When I edit and change an answer that has a dependent minimum value from a calculated summary total, And the minimum value has been changed, Then I must re-validate before I get to the summary", async ()=> {
+    it("Given I confirm the totals and am on the summary, When I edit and change an answer that has a dependent minimum value from a calculated summary total, And the minimum value has been changed, Then I must re-validate before I get to the summary", async () => {
       await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
       await $(SubmitPage.thirdNumberAnswerEdit()).click();
       await $(ThirdNumberBlockPage.thirdNumber()).setValue(10.0);
@@ -311,7 +311,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
-    it("Given I confirm the totals and am on the summary, When I edit and change an answer that has a dependent maximum value from a calculated summary total, And the maximum value has been changed, Then I must re-validate before I get to the summary", async ()=> {
+    it("Given I confirm the totals and am on the summary, When I edit and change an answer that has a dependent maximum value from a calculated summary total, And the maximum value has been changed, Then I must re-validate before I get to the summary", async () => {
       await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
       await $(SubmitPage.thirdNumberAnswerEdit()).click();
       await $(ThirdNumberBlockPage.thirdNumber()).setValue(1.0);
@@ -340,7 +340,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
-    it("Given I am on the summary, When I submit the questionnaire, Then I should see the thank you page", async ()=> {
+    it("Given I am on the summary, When I submit the questionnaire, Then I should see the thank you page", async () => {
       await $(SubmitPage.submit()).click();
       await $(HubPage.submit()).click();
       await expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
@@ -348,7 +348,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
   });
 
   describe("Given I have a Calculated Summary in a Repeating Section", () => {
-    before("Get to Final Summary", async ()=> {
+    before("Get to Final Summary", async () => {
       await browser.openQuestionnaire("test_new_calculated_summary_repeating_section.json");
       await $(HubPage.submit()).click();
       await $(PrimaryPersonListCollectorPage.no()).click();
@@ -375,13 +375,13 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await $(SubmitPage.submit()).click();
     });
 
-    it("Given I am on the submit page, When I have completed two repeating sections containing a calculated summary, Then the section status for both repeating sections should be complete", async ()=> {
+    it("Given I am on the submit page, When I have completed two repeating sections containing a calculated summary, Then the section status for both repeating sections should be complete", async () => {
       await expect(browser.getUrl()).to.contain(HubPage.pageName);
       await expect(await $(HubPage.summaryRowState("personal-details-section-1")).getText()).to.equal("Completed");
       await expect(await $(HubPage.summaryRowState("personal-details-section-2")).getText()).to.equal("Completed");
     });
 
-    it("Given I change an answer with a dependent calculated summary question, When I return to the hub, Then only the section status for the repeating section I updated should be incomplete", async ()=> {
+    it("Given I change an answer with a dependent calculated summary question, When I return to the hub, Then only the section status for the repeating section I updated should be incomplete", async () => {
       await expect(browser.getUrl()).to.contain(HubPage.pageName);
       await $(HubPage.summaryRowLink("personal-details-section-1")).click();
       await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
@@ -393,7 +393,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(await $(HubPage.summaryRowState("personal-details-section-2")).getText()).to.equal("Completed");
     });
 
-    it("Given I return to a partially completed section with a calculated summary, When I answer the dependent questions and return to the hub, Then the section status for the repeating section I updated should be complete", async ()=> {
+    it("Given I return to a partially completed section with a calculated summary, When I answer the dependent questions and return to the hub, Then the section status for the repeating section I updated should be complete", async () => {
       await expect(browser.getUrl()).to.contain(HubPage.pageName);
       await expect(await $(HubPage.summaryRowState("personal-details-section-1")).getText()).to.equal("Partially completed");
       await $(HubPage.summaryRowLink("personal-details-section-1")).click();
@@ -416,7 +416,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
   });
 });
 
-const getToFirstCalculatedSummary = async ()=> {
+const getToFirstCalculatedSummary = async () => {
   await $(FirstNumberBlockPage.firstNumber()).setValue(1.23);
   await $(FirstNumberBlockPage.submit()).click();
 
@@ -447,7 +447,7 @@ const getToFirstCalculatedSummary = async ()=> {
   await $(SixthNumberBlockPage.submit()).click();
 };
 
-const getToSubmitPage = async ()=> {
+const getToSubmitPage = async () => {
   await $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
   await $(UnitTotalPlaybackPage.submit()).click();
   await $(PercentageTotalPlaybackPage.submit()).click();

@@ -2,7 +2,7 @@ import AboutYou from "../generated_pages/multiple_answers/about-you-block.page";
 import AgeBlock from "../generated_pages/multiple_answers/age-block.page";
 import SubmitPage from "../generated_pages/multiple_answers/submit.page.js";
 
-function answerAllQuestions() {
+async function answerAllQuestions() {
   await $(AboutYou.textfield()).setValue("John Doe");
   await $(AboutYou.dateday()).setValue("1");
   await $(AboutYou.datemonth()).setValue("1");
@@ -30,12 +30,12 @@ function answerAllQuestions() {
 
 describe("Multiple Answers", () => {
   describe("Given I have completed a questionnaire that has multiple answers per question", () => {
-    beforeEach("Load the questionnaire and answer all questions", async ()=> {
+    beforeEach("Load the questionnaire and answer all questions", async () => {
       await browser.openQuestionnaire("test_multiple_answers.json");
       answerAllQuestions();
     });
 
-    it("When I am on the summary, Then all answers are displayed", async ()=> {
+    it("When I am on the summary, Then all answers are displayed", async () => {
       await expect(await $(SubmitPage.textfieldAnswer()).getText()).to.equal("John Doe");
       await expect(await $(SubmitPage.dateAnswer()).getText()).to.equal("1 January 1995");
       await expect(await $(SubmitPage.checkboxAnswer()).getText()).to.equal("BMW");
@@ -55,7 +55,7 @@ describe("Multiple Answers", () => {
       await expect(await $(SubmitPage.ageEstimateAnswer()).getText()).to.equal("This age is an estimate");
     });
 
-    it("When I click 'Change' an answer, Then I should be taken to the correct page and the answer input should be focused", async ()=> {
+    it("When I click 'Change' an answer, Then I should be taken to the correct page and the answer input should be focused", async () => {
       await $(SubmitPage.currencyAnswerEdit()).click();
       await expect(browser.getUrl()).to.contain(AboutYou.url());
       await expect(browser.getUrl()).to.contain(AboutYou.currency());
@@ -64,11 +64,11 @@ describe("Multiple Answers", () => {
   });
 
   describe("Given I have launched a questionnaire that has multiple answers per question", () => {
-    beforeEach("Load the questionnaire", async ()=> {
+    beforeEach("Load the questionnaire", async () => {
       await browser.openQuestionnaire("test_multiple_answers.json");
     });
 
-    it("When I am on the question page, Then all answers should have a label/legend", async ()=> {
+    it("When I am on the question page, Then all answers should have a label/legend", async () => {
       await expect(await $(AboutYou.dateLegend()).getText()).to.equal("What is your date of birth?");
       await expect(await $(AboutYou.monthYearDateLegend()).getText()).to.equal("When would you like the car by?");
       await expect(await $(AboutYou.radioLegend()).getText()).to.equal("Would you like the sports package?");

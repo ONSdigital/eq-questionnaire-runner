@@ -3,25 +3,25 @@ import NoInstructionPage from "../../../generated_pages/checkbox_instruction/no-
 import CustomInstructionPage from "../../../generated_pages/checkbox_instruction/custom-instruction-checkbox.page";
 
 describe("Given the checkbox label variants questionnaire,", () => {
-  beforeEach(async ()=> {
+  beforeEach(async () => {
     await browser.openQuestionnaire("test_checkbox_instruction.json");
   });
-  it("Given an instruction has not been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the default instruction should be visible", async ()=> {
+  it("Given an instruction has not been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the default instruction should be visible", async () => {
     await expect($("body").getText()).to.have.string("Select all that apply");
   });
-  it("Given an instruction has been set to null in the schema for a checkbox answer, When the checkbox answer is displayed, Then the instruction should not be visible", async ()=> {
+  it("Given an instruction has been set to null in the schema for a checkbox answer, When the checkbox answer is displayed, Then the instruction should not be visible", async () => {
     await $(DefaultInstructionPage.red()).click();
     await $(DefaultInstructionPage.submit()).click();
     await expect($("body").getText()).to.not.have.string("Select all that apply");
   });
-  it("Given a custom instruction has been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the custom instruction should be visible", async ()=> {
+  it("Given a custom instruction has been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the custom instruction should be visible", async () => {
     await $(DefaultInstructionPage.red()).click();
     await $(DefaultInstructionPage.submit()).click();
     await $(NoInstructionPage.rugby()).click();
     await $(NoInstructionPage.submit()).click();
     await expect($("body").getText()).to.have.string("Select your answer");
   });
-  it("Given a label and custom instruction have been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then both the custom instruction and label should be visible", async ()=> {
+  it("Given a label and custom instruction have been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then both the custom instruction and label should be visible", async () => {
     await $(DefaultInstructionPage.red()).click();
     await $(DefaultInstructionPage.submit()).click();
     await $(NoInstructionPage.rugby()).click();

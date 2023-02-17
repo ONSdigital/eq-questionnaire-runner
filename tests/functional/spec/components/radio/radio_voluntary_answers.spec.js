@@ -3,23 +3,23 @@ import RadioVoluntaryFalsePage from "../../../generated_pages/radio_voluntary/ra
 
 describe("Component: Radio", () => {
   describe("Given I start a Voluntary Radio survey", () => {
-    before(async ()=> {
+    before(async () => {
       await browser.openQuestionnaire("test_radio_voluntary.json");
     });
 
-    it("When I select a voluntary radio option, Then the clear button should be displayed", async ()=> {
+    it("When I select a voluntary radio option, Then the clear button should be displayed", async () => {
       await $(RadioVoluntaryTruePage.coffee()).click();
       await expect(await $(RadioVoluntaryTruePage.clearSelectionButton()).isDisplayed()).to.equal(true);
     });
 
-    it("When I select a voluntary radio option and click the clear button, Then the radio option should not be selected and the clear button should not be displayed", async ()=> {
+    it("When I select a voluntary radio option and click the clear button, Then the radio option should not be selected and the clear button should not be displayed", async () => {
       await $(RadioVoluntaryTruePage.coffee()).click();
       await $(RadioVoluntaryTruePage.clearSelectionButton()).click();
       await expect(await $(RadioVoluntaryTruePage.coffee()).isSelected()).to.equal(false);
       await expect(await $(RadioVoluntaryTruePage.clearSelectionButton()).isDisplayed()).to.equal(false);
     });
 
-    it("When I clear a previously saved voluntary radio option and submit, Then when returning to the page the radio option is no longer selected", async ()=> {
+    it("When I clear a previously saved voluntary radio option and submit, Then when returning to the page the radio option is no longer selected", async () => {
       await $(RadioVoluntaryTruePage.coffee()).click();
       await $(RadioVoluntaryTruePage.submit()).click();
       await $(RadioVoluntaryTruePage.previous()).click();
@@ -30,7 +30,7 @@ describe("Component: Radio", () => {
       await expect(await $(RadioVoluntaryTruePage.clearSelectionButton()).isDisplayed()).to.equal(false);
     });
 
-    it("When I select a non-voluntary radio option, Then the clear button should not be displayed on the page", async ()=> {
+    it("When I select a non-voluntary radio option, Then the clear button should not be displayed on the page", async () => {
       await $(RadioVoluntaryTruePage.submit()).click();
       await $(RadioVoluntaryFalsePage.iceCream()).click();
       await expect(await $(RadioVoluntaryFalsePage.clearSelectionButton()).isDisplayed()).to.equal(false);

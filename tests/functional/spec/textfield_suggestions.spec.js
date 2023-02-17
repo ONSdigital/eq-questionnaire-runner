@@ -3,16 +3,16 @@ import MultipleSuggestionsPage from "../generated_pages/textfield_suggestions/mu
 import SubmitPage from "../generated_pages/textfield_suggestions/submit.page.js";
 
 describe("Suggestions", () => {
-  it("Given I open a textfield with a suggestions url, when I have entered text, then it will show suggestions", async ()=> {
+  it("Given I open a textfield with a suggestions url, when I have entered text, then it will show suggestions", async () => {
     await browser.openQuestionnaire("test_textfield_suggestions.json");
     await $(SuggestionsPage.country()).setValue("Uni");
     $("#country-answer-listbox li").waitForDisplayed();
-    await expect(await $$( ".ons-js-autosuggest-listbox li").length).to.not.equal(0);
+    await expect(await $$(".ons-js-autosuggest-listbox li").length).to.not.equal(0);
   });
 });
 
 describe("Suggestions", () => {
-  it("Given I open a textfield with a suggestions url that allows multiple suggestions, when I have entered text and picked suggestion from a list, then after typing more text it will show new suggestions", async ()=> {
+  it("Given I open a textfield with a suggestions url that allows multiple suggestions, when I have entered text and picked suggestion from a list, then after typing more text it will show new suggestions", async () => {
     await browser.openQuestionnaire("test_textfield_suggestions.json");
     const suggestionsList = $("#multiple-country-answer-listbox li");
     const suggestionsOption = $("#multiple-country-answer-listbox__option--0");
@@ -30,7 +30,7 @@ describe("Suggestions", () => {
     browser.pause(500);
     browser.keys(" United");
     suggestionsList.waitForExist();
-    await expect(await $$( ".ons-js-autosuggest-listbox li").length).to.not.equal(0);
+    await expect(await $$(".ons-js-autosuggest-listbox li").length).to.not.equal(0);
     suggestionsOption.click();
     await $(MultipleSuggestionsPage.submit()).click();
     await expect(browser.getUrl()).to.contain(SubmitPage.url());

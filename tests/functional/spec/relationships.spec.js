@@ -9,11 +9,11 @@ describe("Relationships", () => {
   const schema = "test_relationships.json";
 
   describe("Given I am completing the test_relationships survey,", () => {
-    beforeEach("load the survey", async ()=> {
+    beforeEach("load the survey", async () => {
       await browser.openQuestionnaire(schema);
     });
 
-    it("When I have one household member, Then I will be not be asked about relationships", async ()=> {
+    it("When I have one household member, Then I will be not be asked about relationships", async () => {
       await $(ListCollectorPage.yes()).click();
       await $(ListCollectorPage.submit()).click();
       await $(ListCollectorAddPage.firstName()).setValue("Marcus");
@@ -24,7 +24,7 @@ describe("Relationships", () => {
       await expect(browser.getUrl()).to.contain("/sections/section/");
     });
 
-    it("When I add two household members, Then I will be asked about one relationship", async ()=> {
+    it("When I add two household members, Then I will be asked about one relationship", async () => {
       await $(ListCollectorPage.yes()).click();
       await $(ListCollectorPage.submit()).click();
       await $(ListCollectorAddPage.firstName()).setValue("Marcus");
@@ -45,11 +45,11 @@ describe("Relationships", () => {
     });
 
     describe("When I add three household members,", () => {
-      beforeEach("add three people", async ()=> {
+      beforeEach("add three people", async () => {
         addThreePeople();
       });
 
-      it("Then I will be asked about all relationships", async ()=> {
+      it("Then I will be asked about all relationships", async () => {
         await $(ListCollectorPage.no()).click();
         await $(ListCollectorPage.submit()).click();
         await $(RelationshipsPage.husbandOrWife()).click();
@@ -62,20 +62,20 @@ describe("Relationships", () => {
         await expect(browser.getUrl()).to.contain("/sections/section/");
       });
 
-      it("And go to the first relationship, Then the previous link should return to the list collector", async ()=> {
+      it("And go to the first relationship, Then the previous link should return to the list collector", async () => {
         await $(ListCollectorPage.no()).click();
         await $(ListCollectorPage.submit()).click();
         await $(RelationshipsPage.previous()).click();
         await expect(browser.getUrl()).to.contain("/questionnaire/list-collector/");
       });
 
-      it("And go to the first relationship, Then the 'Brother or Sister' option should have the text 'Including half brother or half sister'", async ()=> {
+      it("And go to the first relationship, Then the 'Brother or Sister' option should have the text 'Including half brother or half sister'", async () => {
         await $(ListCollectorPage.no()).click();
         await $(ListCollectorPage.submit()).click();
         await expect(await $(RelationshipsPage.brotherOrSisterLabelDescription()).getText()).to.contain("Including half brother or half sister");
       });
 
-      it("And go to the second relationship, Then the previous link should return to the first relationship", async ()=> {
+      it("And go to the second relationship, Then the previous link should return to the first relationship", async () => {
         await $(ListCollectorPage.no()).click();
         await $(ListCollectorPage.submit()).click();
         await $(RelationshipsPage.husbandOrWife()).click();
@@ -86,7 +86,7 @@ describe("Relationships", () => {
         await expect(await $(RelationshipsPage.questionText()).getText()).to.contain("Marcus");
       });
 
-      it("And go to the section summary, Then the previous link should return to the last relationship Interstitial", async ()=> {
+      it("And go to the section summary, Then the previous link should return to the last relationship Interstitial", async () => {
         await $(ListCollectorPage.no()).click();
         await $(ListCollectorPage.submit()).click();
         await $(RelationshipsPage.husbandOrWife()).click();
@@ -103,7 +103,7 @@ describe("Relationships", () => {
         await expect(await $(RelationshipsPage.questionText()).getText()).to.contain("Olivia");
       });
 
-      it("When I add all relationships and return to the relationships, Then the relationships should be populated", async ()=> {
+      it("When I add all relationships and return to the relationships, Then the relationships should be populated", async () => {
         await $(ListCollectorPage.no()).click();
         await $(ListCollectorPage.submit()).click();
         await $(RelationshipsPage.husbandOrWife()).click();
@@ -121,21 +121,21 @@ describe("Relationships", () => {
         await expect(await $(RelationshipsPage.legallyRegisteredCivilPartner()).isSelected()).to.be.true;
       });
 
-      it("And go to the first relationship, Then the person's name should be in the question title and playback text", async ()=> {
+      it("And go to the first relationship, Then the person's name should be in the question title and playback text", async () => {
         await $(ListCollectorPage.no()).click();
         await $(ListCollectorPage.submit()).click();
         await expect(await $(ListCollectorPage.questionText()).getText()).to.contain("Marcus Twin");
         await expect(await $(RelationshipsPage.playback()).getText()).to.contain("Marcus Twin");
       });
 
-      it("And go to the first relationship and submit without selecting an option, Then an error should be displayed", async ()=> {
+      it("And go to the first relationship and submit without selecting an option, Then an error should be displayed", async () => {
         await $(ListCollectorPage.no()).click();
         await $(ListCollectorPage.submit()).click();
         await $(RelationshipsPage.submit()).click();
         await expect(await $(RelationshipsPage.error()).isDisplayed()).to.be.true;
       });
 
-      it("And go to the first relationship and click 'Save and sign out', Then I should be signed out", async ()=> {
+      it("And go to the first relationship and click 'Save and sign out', Then I should be signed out", async () => {
         await $(ListCollectorPage.no()).click();
         await $(ListCollectorPage.submit()).click();
         await $(RelationshipsPage.husbandOrWife()).click();
@@ -143,7 +143,7 @@ describe("Relationships", () => {
         await expect(browser.getUrl()).to.not.contain("questionnaire");
       });
 
-      it("And go to the first relationship, select a relationship and click 'Save and sign out', Then I should be signed out", async ()=> {
+      it("And go to the first relationship, select a relationship and click 'Save and sign out', Then I should be signed out", async () => {
         await $(ListCollectorPage.no()).click();
         await $(ListCollectorPage.submit()).click();
         await $(RelationshipsPage.saveSignOut()).click();
@@ -152,18 +152,18 @@ describe("Relationships", () => {
     });
 
     describe("When I have added one or more household members after answering the relationships question,", () => {
-      beforeEach("add three people and complete their relationships", async ()=> {
+      beforeEach("add three people and complete their relationships", async () => {
         addThreePeopleAndCompleteRelationships();
       });
 
-      it("Then I delete one of the original household members I will not be asked for the original members relationships again", async ()=> {
+      it("Then I delete one of the original household members I will not be asked for the original members relationships again", async () => {
         await $(SectionSummaryPage.peopleListRemoveLink(1)).click();
         await $(ListCollectorRemovePage.yes()).click();
         await $(ListCollectorRemovePage.submit()).click();
         await expect(browser.getUrl()).to.contain("/sections/section/");
       });
 
-      it("Then I add another household member I will be redirected to parent list collector", async ()=> {
+      it("Then I add another household member I will be redirected to parent list collector", async () => {
         await $(SectionSummaryPage.peopleListAddLink()).click();
         await $(ListCollectorAddPage.firstName()).setValue("Tom");
         await $(ListCollectorAddPage.lastName()).setValue("Bowden");
@@ -172,7 +172,7 @@ describe("Relationships", () => {
       });
     });
 
-    function addThreePeopleAndCompleteRelationships() {
+    async function addThreePeopleAndCompleteRelationships() {
       addThreePeople();
 
       await $(ListCollectorPage.no()).click();
@@ -186,7 +186,7 @@ describe("Relationships", () => {
       await $(RelationshipsInterstitialPage.submit()).click();
     }
 
-    function addThreePeople() {
+    async function addThreePeople() {
       await $(ListCollectorPage.yes()).click();
       await $(ListCollectorPage.submit()).click();
       await $(ListCollectorAddPage.firstName()).setValue("Marcus");

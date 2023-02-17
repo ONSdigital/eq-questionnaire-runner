@@ -9,11 +9,11 @@ import proxyBlock from "../generated_pages/variants_question/proxy-block.page.js
 import secondNumberBlock from "../generated_pages/variants_question/second-number-block.page.js";
 
 describe("QuestionVariants", () => {
-  beforeEach(async ()=> {
+  beforeEach(async () => {
     await browser.openQuestionnaire("test_new_variants_question.json");
   });
 
-  it("Given I am completing the survey, then the correct questions are shown based on my previous answers", async ()=> {
+  it("Given I am completing the survey, then the correct questions are shown based on my previous answers", async () => {
     await $(nameBlock.firstName()).setValue("Guido");
     await $(nameBlock.lastName()).setValue("van Rossum");
     await $(nameBlock.submit()).click();

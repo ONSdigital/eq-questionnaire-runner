@@ -4,12 +4,12 @@ import AddressOptional from "../../../generated_pages/address/address-block-opti
 import SubmitPage from "../../../generated_pages/address/submit.page";
 
 describe("Address Answer Type", () => {
-  beforeEach("Launch survey", async ()=> {
+  beforeEach("Launch survey", async () => {
     await browser.openQuestionnaire("test_address.json");
   });
 
   describe("Given the user is on an address input question", () => {
-    it("When the user enters all address fields, Then the summary displays the address fields", async ()=> {
+    it("When the user enters all address fields, Then the summary displays the address fields", async () => {
       await $(AddressMandatory.Line1()).setValue("Evelyn Street");
       await $(AddressMandatory.Line2()).setValue("Apt 7");
       await $(AddressMandatory.Town()).setValue("Barry");
@@ -25,7 +25,7 @@ describe("Address Answer Type", () => {
   });
 
   describe("Given the user is on an address input question", () => {
-    it("When the user enters only address line 1, Then the summary only displays address line 1", async ()=> {
+    it("When the user enters only address line 1, Then the summary only displays address line 1", async () => {
       await $(AddressMandatory.Line1()).setValue("Evelyn Street");
 
       await $(AddressMandatory.submit()).click();
@@ -37,14 +37,14 @@ describe("Address Answer Type", () => {
   });
 
   describe("Given the user is on an mandatory address input question", () => {
-    it("When the user submits the page without entering address line 1, Then an error is displayed", async ()=> {
+    it("When the user submits the page without entering address line 1, Then an error is displayed", async () => {
       await $(AddressMandatory.submit()).click();
       await expect(await $(AddressMandatory.error()).getText()).to.equal("Enter an address");
     });
   });
 
   describe("Given the user is on an optional address input question", () => {
-    it("When the user submits the page without entering any fields, Then the summary should display `No answer provided`.", async ()=> {
+    it("When the user submits the page without entering any fields, Then the summary should display `No answer provided`.", async () => {
       // Get to optional address question
       await $(AddressMandatory.Line1()).setValue("Evelyn Street");
       await $(AddressMandatory.submit()).click();
@@ -56,7 +56,7 @@ describe("Address Answer Type", () => {
   });
 
   describe("Given the user has submitted an address answer type question", () => {
-    it("When the user revisits the address question page, Then all entered fields are filled in", async ()=> {
+    it("When the user revisits the address question page, Then all entered fields are filled in", async () => {
       await $(AddressMandatory.Line1()).setValue("Evelyn Street");
       await $(AddressMandatory.Line2()).setValue("Apt 7");
       await $(AddressMandatory.Town()).setValue("Barry");
@@ -74,7 +74,7 @@ describe("Address Answer Type", () => {
     });
   });
   describe("Given the user has submitted an address answer type question", () => {
-    it("When the user visits the address confirmation question page, Then the first line of the address is displayed", async ()=> {
+    it("When the user visits the address confirmation question page, Then the first line of the address is displayed", async () => {
       await $(AddressMandatory.Line1()).setValue("Evelyn Street");
       await $(AddressMandatory.Line2()).setValue("Apt 7");
       await $(AddressMandatory.Town()).setValue("Barry");

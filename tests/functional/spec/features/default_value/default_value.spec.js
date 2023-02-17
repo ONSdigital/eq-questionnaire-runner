@@ -5,7 +5,7 @@ import QuestionPageOneSkip from "../../../generated_pages/default_with_skip/numb
 import QuestionPageThreeSkip from "../../../generated_pages/default_with_skip/number-question-three.page.js";
 
 describe("Feature: Default Value", () => {
-  it('Given I start default schema, When I do not answer a question, Then "no answer provided" is displayed on the Summary page', async ()=> {
+  it('Given I start default schema, When I do not answer a question, Then "no answer provided" is displayed on the Summary page', async () => {
     await browser.openQuestionnaire("test_default.json");
     await $(QuestionPageOne.submit()).click();
     await expect(browser.getUrl()).to.contain(QuestionPageTwo.pageName);
@@ -15,7 +15,7 @@ describe("Feature: Default Value", () => {
     await expect(await $(SubmitPage.answerOne()).getText()).to.contain("0");
   });
 
-  it("Given I have not answered a question containing a default value, When I return to the question, Then no value should be displayed", async ()=> {
+  it("Given I have not answered a question containing a default value, When I return to the question, Then no value should be displayed", async () => {
     await browser.openQuestionnaire("test_default.json");
     await $(QuestionPageOne.submit()).click();
     await expect(browser.getUrl()).to.contain(QuestionPageTwo.pageName);
@@ -29,7 +29,7 @@ describe("Feature: Default Value", () => {
     await expect(await $(QuestionPageOne.one()).getValue()).to.equal("");
   });
 
-  it("Given I have not answered a question containing a default value, When a skip condition checks for the default value, Then I should skip the next question", async ()=> {
+  it("Given I have not answered a question containing a default value, When a skip condition checks for the default value, Then I should skip the next question", async () => {
     await browser.openQuestionnaire("test_default_with_skip.json");
     await $(QuestionPageOneSkip.submit()).click();
     await expect(browser.getUrl()).to.contain(QuestionPageThreeSkip.pageName);

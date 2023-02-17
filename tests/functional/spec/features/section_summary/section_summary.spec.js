@@ -11,7 +11,7 @@ import SubmitPage from "../../../generated_pages/section_summary/submit.page.js"
 
 describe("Section Summary", () => {
   describe("Given I start a Test Section Summary survey and complete to Section Summary", () => {
-    beforeEach(async ()=> {
+    beforeEach(async () => {
       await browser.openQuestionnaire("test_section_summary.json");
       await $(InsuranceTypePage.both()).click();
       await $(InsuranceTypePage.submit()).click();
@@ -20,29 +20,29 @@ describe("Section Summary", () => {
       await expect(await $(PropertyDetailsSummaryPage.insuranceTypeAnswer()).getText()).to.contain("Both");
     });
 
-    it("When I get to the section summary page, Then the submit button should read 'Continue'", async ()=> {
+    it("When I get to the section summary page, Then the submit button should read 'Continue'", async () => {
       await expect(await $(PropertyDetailsSummaryPage.submit()).getText()).to.contain("Continue");
     });
 
-    it("When I have selected an answer to edit and edit it, Then I should return to the section summary with new value displayed", async ()=> {
+    it("When I have selected an answer to edit and edit it, Then I should return to the section summary with new value displayed", async () => {
       await $(PropertyDetailsSummaryPage.insuranceAddressAnswerEdit()).click();
       await $(InsuranceAddressPage.answer()).setValue("Test Address");
       await $(InsuranceAddressPage.submit()).click();
       await expect(await $(PropertyDetailsSummaryPage.insuranceAddressAnswer()).getText()).to.contain("Test Address");
     });
 
-    it("When I select edit from the section summary and click previous on the question page, Then I should be taken back to the section summary", async ()=> {
+    it("When I select edit from the section summary and click previous on the question page, Then I should be taken back to the section summary", async () => {
       await $(PropertyDetailsSummaryPage.insuranceAddressAnswerEdit()).click();
       await $(InsuranceAddressPage.previous()).click();
       await expect(browser.getUrl()).to.contain(PropertyDetailsSummaryPage.url());
     });
 
-    it("When I continue on the section summary page, Then I should be taken to the next section", async ()=> {
+    it("When I continue on the section summary page, Then I should be taken to the next section", async () => {
       await $(PropertyDetailsSummaryPage.submit()).click();
       await expect(browser.getUrl()).to.contain(HouseType.pageName);
     });
 
-    it("When I select edit from Section Summary but change routing, Then I should step through the section and be returned to the Section Summary once all new questions have been answered", async ()=> {
+    it("When I select edit from Section Summary but change routing, Then I should step through the section and be returned to the Section Summary once all new questions have been answered", async () => {
       await $(PropertyDetailsSummaryPage.insuranceTypeAnswerEdit()).click();
       await $(InsuranceTypePage.contents()).click();
       await $(InsuranceTypePage.submit()).click();
@@ -53,7 +53,7 @@ describe("Section Summary", () => {
       await expect(browser.getUrl()).to.contain(PropertyDetailsSummaryPage.pageName);
     });
 
-    it("When I select edit from Section Summary but change routing, Then using previous should not prevent me returning to the section summary once all new questions have been answered", async ()=> {
+    it("When I select edit from Section Summary but change routing, Then using previous should not prevent me returning to the section summary once all new questions have been answered", async () => {
       await $(PropertyDetailsSummaryPage.insuranceTypeAnswerEdit()).click();
       await $(InsuranceTypePage.contents()).click();
       await $(InsuranceTypePage.submit()).click();
@@ -69,7 +69,7 @@ describe("Section Summary", () => {
   });
 
   describe("Given I start a Test Section Summary survey and complete to Final Summary", () => {
-    beforeEach(async ()=> {
+    beforeEach(async () => {
       await browser.openQuestionnaire("test_section_summary.json");
       await $(InsuranceTypePage.both()).click();
       await $(InsuranceTypePage.submit()).click();
@@ -84,14 +84,14 @@ describe("Section Summary", () => {
       await expect(browser.getUrl()).to.contain(SubmitPage.url());
     });
 
-    it("When I select edit from Final Summary and don't change an answer, Then I should be taken to the Final Summary", async ()=> {
+    it("When I select edit from Final Summary and don't change an answer, Then I should be taken to the Final Summary", async () => {
       await $(SubmitPage.summaryShowAllButton()).click();
       await $(SubmitPage.insuranceAddressAnswerEdit()).click();
       await $(InsuranceAddressPage.submit()).click();
       await expect(browser.getUrl()).to.contain(SubmitPage.url());
     });
 
-    it("When I select edit from Final Summary and change an answer that doesn't affect completeness, Then I should be taken to the Final Summary", async ()=> {
+    it("When I select edit from Final Summary and change an answer that doesn't affect completeness, Then I should be taken to the Final Summary", async () => {
       await $(SubmitPage.summaryShowAllButton()).click();
       await $(SubmitPage.insuranceAddressAnswerEdit()).click();
       await $(InsuranceAddressPage.answer()).setValue("Test Address");
@@ -99,7 +99,7 @@ describe("Section Summary", () => {
       await expect(browser.getUrl()).to.contain(SubmitPage.url());
     });
 
-    it("When I select edit from Final Summary but change routing, Then I should step through the section and be returned to the Final Summary once all new questions have been answered", async ()=> {
+    it("When I select edit from Final Summary but change routing, Then I should step through the section and be returned to the Final Summary once all new questions have been answered", async () => {
       await $(SubmitPage.summaryShowAllButton()).click();
       await $(SubmitPage.insuranceTypeAnswerEdit()).click();
       await $(InsuranceTypePage.contents()).click();
@@ -111,7 +111,7 @@ describe("Section Summary", () => {
       await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
-    it("When I select edit from Final Summary but change routing, Then using previous should not prevent me returning to the section summary once all new questions have been answered", async ()=> {
+    it("When I select edit from Final Summary but change routing, Then using previous should not prevent me returning to the section summary once all new questions have been answered", async () => {
       await $(SubmitPage.summaryShowAllButton()).click();
       await $(SubmitPage.insuranceTypeAnswerEdit()).click();
       await $(InsuranceTypePage.contents()).click();
@@ -126,7 +126,7 @@ describe("Section Summary", () => {
       await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
-    it("When I select edit from Final Summary and change an answer and then go to the next question and click previous, Then I should return to the question I originally edited", async ()=> {
+    it("When I select edit from Final Summary and change an answer and then go to the next question and click previous, Then I should return to the question I originally edited", async () => {
       await $(SubmitPage.summaryShowAllButton()).click();
       await $(SubmitPage.insuranceTypeAnswerEdit()).click();
       await $(InsuranceTypePage.contents()).click();
@@ -135,7 +135,7 @@ describe("Section Summary", () => {
       await expect(browser.getUrl()).to.contain(InsuranceTypePage.pageName);
     });
 
-    it("When I change an answer, Then the final summary should display the updated value", async ()=> {
+    it("When I change an answer, Then the final summary should display the updated value", async () => {
       await $(SubmitPage.summaryShowAllButton()).click();
       await expect(await $(SubmitPage.insuranceAddressAnswer()).getText()).to.contain("No answer provided");
       await $(SubmitPage.insuranceAddressAnswerEdit()).click();
@@ -147,17 +147,17 @@ describe("Section Summary", () => {
     });
   });
   describe("Given I start the Test Section Summary questionnaire", () => {
-    before(async ()=> {
+    before(async () => {
       await browser.openQuestionnaire("test_section_summary.json");
     });
-    it("When there is no title set in the sections summary, the section title is used for the section summary title", async ()=> {
+    it("When there is no title set in the sections summary, the section title is used for the section summary title", async () => {
       await $(InsuranceTypePage.both()).click();
       await $(InsuranceTypePage.submit()).click();
       await $(InsuranceAddressPage.submit()).click();
       await $(ListedPage.submit()).click();
       await expect(await $(PropertyDetailsSummaryPage.heading()).getText()).to.contain("Property Details Section");
     });
-    it("When there is a title set in the sections summary, it is used for the section summary title", async ()=> {
+    it("When there is a title set in the sections summary, it is used for the section summary title", async () => {
       await $(PropertyDetailsSummaryPage.submit()).click();
       await $(HouseType.semiDetached()).click();
       await $(HouseType.submit()).click();

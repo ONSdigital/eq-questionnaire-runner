@@ -8,9 +8,9 @@ import ThankYouPage from "../base_pages/thank-you.page.js";
 
 describe("List collector with variants primary person", () => {
   describe("Given that person lives in house", () => {
-    before("Load the survey", async ()=> {
+    before("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector_variants_primary_person.json");
-      it("When the user is asked questions about whether they like variant, Then they are routed to section asking if they live in the house", async ()=> {
+      it("When the user is asked questions about whether they like variant, Then they are routed to section asking if they live in the house", async () => {
         await $(VariantBlockPage.yes()).click();
         await $(VariantBlockPage.submit()).click();
         await expect(await $(PrimaryPersonListCollectorPage.legend()).getText()).to.contain("Do you live here? (variant)");
@@ -18,10 +18,10 @@ describe("List collector with variants primary person", () => {
     });
   });
   describe("Given the user starts on the 'Do you like variant' question", () => {
-    before("Load the survey", async ()=> {
+    before("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector_variants_primary_person.json");
     });
-    it("When the user says that they do live there, Then they are shown as the primary person", async ()=> {
+    it("When the user says that they do live there, Then they are shown as the primary person", async () => {
       await $(VariantBlockPage.yes()).click();
       await $(VariantBlockPage.submit()).click();
       await $(PrimaryPersonListCollectorPage.youLiveHereYes()).click();
@@ -31,7 +31,7 @@ describe("List collector with variants primary person", () => {
       await $(ListCollectorAddPage.submit()).click();
       await expect(await $(ListCollectorPage.listLabel(1)).getText()).to.equal("John Doe (You)");
     });
-    it("When the user adds another person, Then they are shown in the list collector summary", async ()=> {
+    it("When the user adds another person, Then they are shown in the list collector summary", async () => {
       await $(ListCollectorPage.yesLabel()).click();
       await $(ListCollectorPage.submit()).click();
       await $(ListCollectorAddPage.firstName()).setValue("Samuel");
@@ -39,14 +39,14 @@ describe("List collector with variants primary person", () => {
       await $(ListCollectorAddPage.submit()).click();
       await expect(await $(ListCollectorPage.listLabel(2)).getText()).to.equal("Samuel Clemens");
     });
-    it("When the user goes back and answers 'No' for 'Do you live here' question, Then the primary person is not shown", async ()=> {
+    it("When the user goes back and answers 'No' for 'Do you live here' question, Then the primary person is not shown", async () => {
       await $(ListCollectorPage.previous()).click();
       await $(PrimaryPersonListCollectorPage.youLiveHereNo()).click();
       await $(PrimaryPersonListCollectorPage.submit()).click();
       await expect(await $(ListCollectorPage.listLabel(1)).getText()).to.equal("Samuel Clemens");
     });
 
-    it("When the user adds another person, Then the user is able to add members of the household", async ()=> {
+    it("When the user adds another person, Then the user is able to add members of the household", async () => {
       await $(ListCollectorPage.yes()).click();
       await $(ListCollectorPage.submit()).click();
       await expect(await $(ListCollectorAddPage.questionText()).getText()).to.equal("What is the name of the person?");
@@ -54,7 +54,7 @@ describe("List collector with variants primary person", () => {
       await $(ListCollectorAddPage.lastName()).setValue("Clemens");
       await $(ListCollectorAddPage.submit()).click();
     });
-    it("When the user adds the primary person again, Then the primary person is first in the list", async ()=> {
+    it("When the user adds the primary person again, Then the primary person is first in the list", async () => {
       await $(ListCollectorPage.previous()).click();
       await $(PrimaryPersonListCollectorPage.youLiveHereYes()).click();
       await $(PrimaryPersonListCollectorPage.submit()).click();
@@ -63,11 +63,11 @@ describe("List collector with variants primary person", () => {
       await $(ListCollectorAddPage.submit()).click();
       await expect(await $(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twin (You)");
     });
-    it("When the user views the summary, Then it does not show the remove link for the primary person", async ()=> {
+    it("When the user views the summary, Then it does not show the remove link for the primary person", async () => {
       await expect(await $(ListCollectorPage.listRemoveLink(1)).isExisting()).to.be.false;
       await expect(await $(ListCollectorPage.listRemoveLink(2)).isExisting()).to.be.true;
     });
-    it("When the user changes the primary person's name on the summary, Then the name should be updated", async ()=> {
+    it("When the user changes the primary person's name on the summary, Then the name should be updated", async () => {
       await $(ListCollectorPage.listEditLink(1)).click();
       await $(EditPersonPage.firstName()).setValue("John");
       await $(EditPersonPage.lastName()).setValue("Doe");
@@ -76,24 +76,24 @@ describe("List collector with variants primary person", () => {
       await expect(await $(ListCollectorPage.listLabel(2)).getText()).to.equal("Samuel Clemens");
     });
 
-    it("When the user answers 'no' to add any person, Then the questionnaire shows the confirmation page", async ()=> {
+    it("When the user answers 'no' to add any person, Then the questionnaire shows the confirmation page", async () => {
       await $(ListCollectorPage.no()).click();
       await $(ListCollectorPage.submit()).click();
       await expect(browser.getUrl()).to.contain(SubmitPage.url());
     });
 
-    it("When the user attempts to submit, Then they are shown the confirmation page", async ()=> {
+    it("When the user attempts to submit, Then they are shown the confirmation page", async () => {
       await expect(await $(SubmitPage.guidance()).getText()).to.contain("Please submit this survey to complete it");
     });
 
-    it("When user updates the variant answer, Then it should come back to summary screen with updated answer", async ()=> {
+    it("When user updates the variant answer, Then it should come back to summary screen with updated answer", async () => {
       await $(SubmitPage.variantAnswerEdit()).click();
       await $(VariantBlockPage.no()).click();
       await $(VariantBlockPage.submit()).click();
       await expect(await $(SubmitPage.variantAnswer()).getText()).to.equal("No");
     });
 
-    it("When the user submits, Then they are allowed to submit the survey", async ()=> {
+    it("When the user submits, Then they are allowed to submit the survey", async () => {
       await $(SubmitPage.submit()).click();
       await expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
     });
@@ -101,16 +101,16 @@ describe("List collector with variants primary person", () => {
 });
 
 describe("Given the user starts on the 'Do you like variant' question", () => {
-  before("Load the survey", async ()=> {
+  before("Load the survey", async () => {
     await browser.openQuestionnaire("test_list_collector_variants_primary_person.json");
   });
-  it("When the user answers 'No' for variant question, Then they are routed to section asking if they live in the house", async ()=> {
+  it("When the user answers 'No' for variant question, Then they are routed to section asking if they live in the house", async () => {
     await $(VariantBlockPage.no()).click();
     await $(VariantBlockPage.submit()).click();
     await expect(await $(PrimaryPersonListCollectorPage.legend()).getText()).to.contain("Do you live here?");
   });
 
-  it("When the user says they do not live there and anyone else, Then confirmation screen is displayed", async ()=> {
+  it("When the user says they do not live there and anyone else, Then confirmation screen is displayed", async () => {
     await $(PrimaryPersonListCollectorPage.youLiveHereNo()).click();
     await $(PrimaryPersonListCollectorPage.submit()).click();
     await $(ListCollectorPage.no()).click();

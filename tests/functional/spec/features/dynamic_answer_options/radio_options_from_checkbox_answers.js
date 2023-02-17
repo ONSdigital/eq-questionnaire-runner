@@ -5,7 +5,7 @@ import SubmitPage from "../../../generated_pages/dynamic_radio_options_from_chec
 
 describe("Dynamic radio options from checkbox answers", () => {
   describe("Given the dynamic radio options from checkbox questionnaire and I am on the checkbox answer page", () => {
-    it("When the respondent answers the checkbox question and submits, Then the radio question should show the answers from that checkbox as options, as well as a static option", async ()=> {
+    it("When the respondent answers the checkbox question and submits, Then the radio question should show the answers from that checkbox as options, as well as a static option", async () => {
       await browser.openQuestionnaire("test_dynamic_radio_options_from_checkbox.json");
       await $(InjurySustainedPage.head()).click();
       await $(InjurySustainedPage.body()).click();
@@ -18,7 +18,7 @@ describe("Dynamic radio options from checkbox answers", () => {
       await expect(await $(MostSeriousInjuryPage.answerLabelByIndex(3)).isExisting()).to.be.false;
     });
 
-    it("When the respondent answers the radio question and submits, Then the next radio question should show only the answers from the first checkbox as options", async ()=> {
+    it("When the respondent answers the radio question and submits, Then the next radio question should show only the answers from the first checkbox as options", async () => {
       await $(MostSeriousInjuryPage.answerLabelByIndex(0)).click();
       await $(MostSeriousInjuryPage.submit()).click();
 
@@ -28,7 +28,7 @@ describe("Dynamic radio options from checkbox answers", () => {
       await expect(await $(HealedTheQuickestPage.answerLabelByIndex(2)).isExisting()).to.be.false;
     });
 
-    it("When the respondent answers the radio question and submits, then the summary should display all the answers correctly", async ()=> {
+    it("When the respondent answers the radio question and submits, then the summary should display all the answers correctly", async () => {
       await $(HealedTheQuickestPage.answerLabelByIndex(1)).click();
       await $(HealedTheQuickestPage.submit()).click();
 
@@ -38,7 +38,7 @@ describe("Dynamic radio options from checkbox answers", () => {
       await expect(await $(SubmitPage.healedTheQuickestAnswer()).getText()).to.contain("Body");
     });
 
-    it("When I edit and change the answer which the dynamic options is dependent on, then my selected answers are removed", async ()=> {
+    it("When I edit and change the answer which the dynamic options is dependent on, then my selected answers are removed", async () => {
       await $(SubmitPage.injurySustainedAnswerEdit()).click();
       await $(InjurySustainedPage.arms()).click();
       await $(InjurySustainedPage.submit()).click();

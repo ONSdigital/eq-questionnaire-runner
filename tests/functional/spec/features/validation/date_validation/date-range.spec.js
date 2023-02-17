@@ -2,13 +2,13 @@ import DateRangePage from "../../../../generated_pages/date_validation_range/dat
 import SubmitPage from "../../../../generated_pages/date_validation_range/submit.page";
 
 describe("Feature: Question level validation for date ranges", () => {
-  beforeEach(async ()=> {
+  beforeEach(async () => {
     await browser.openQuestionnaire("test_date_validation_range.json");
   });
 
   describe("Period Validation", () => {
     describe("Given I enter a date period greater than the max period limit", () => {
-      it("When I continue, Then I should see a period validation error", async ()=> {
+      it("When I continue, Then I should see a period validation error", async () => {
         await $(DateRangePage.dateRangeFromday()).setValue(1);
         await $(DateRangePage.dateRangeFrommonth()).setValue(1);
         await $(DateRangePage.dateRangeFromyear()).setValue(2018);
@@ -22,7 +22,7 @@ describe("Feature: Question level validation for date ranges", () => {
     });
 
     describe("Given I enter a date period less than the min period limit", () => {
-      it("When I continue, Then I should see a period validation error", async ()=> {
+      it("When I continue, Then I should see a period validation error", async () => {
         await $(DateRangePage.dateRangeFromday()).setValue(1);
         await $(DateRangePage.dateRangeFrommonth()).setValue(1);
         await $(DateRangePage.dateRangeFromyear()).setValue(2018);
@@ -36,7 +36,7 @@ describe("Feature: Question level validation for date ranges", () => {
     });
 
     describe("Given I enter a date period within the set period limits", () => {
-      it("When I continue, Then I should be able to reach the summary", async ()=> {
+      it("When I continue, Then I should be able to reach the summary", async () => {
         await $(DateRangePage.dateRangeFromday()).setValue(1);
         await $(DateRangePage.dateRangeFrommonth()).setValue(1);
         await $(DateRangePage.dateRangeFromyear()).setValue(2018);
@@ -52,7 +52,7 @@ describe("Feature: Question level validation for date ranges", () => {
 
   describe("Date Range Validation", () => {
     describe('Given I enter a "to date" which is earlier than the "from date"', () => {
-      it("When I continue, Then I should see a validation error", async ()=> {
+      it("When I continue, Then I should see a validation error", async () => {
         await $(DateRangePage.dateRangeFromday()).setValue(1);
         await $(DateRangePage.dateRangeFrommonth()).setValue(2);
         await $(DateRangePage.dateRangeFromyear()).setValue(2018);
@@ -66,7 +66,7 @@ describe("Feature: Question level validation for date ranges", () => {
     });
 
     describe('Given I enter matching dates for the "from" and "to" dates', () => {
-      it("When I continue, Then I should see a validation error", async ()=> {
+      it("When I continue, Then I should see a validation error", async () => {
         await $(DateRangePage.dateRangeFromday()).setValue(1);
         await $(DateRangePage.dateRangeFrommonth()).setValue(1);
         await $(DateRangePage.dateRangeFromyear()).setValue(2018);
@@ -80,7 +80,7 @@ describe("Feature: Question level validation for date ranges", () => {
     });
 
     describe("Given I enter a valid date range", () => {
-      it("When I continue, Then I should be able to reach the summary", async ()=> {
+      it("When I continue, Then I should be able to reach the summary", async () => {
         await $(DateRangePage.dateRangeFromday()).setValue(1);
         await $(DateRangePage.dateRangeFrommonth()).setValue(1);
         await $(DateRangePage.dateRangeFromyear()).setValue(2018);

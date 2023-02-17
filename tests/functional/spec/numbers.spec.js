@@ -4,16 +4,16 @@ import DetailAnswer from "../generated_pages/numbers/detail-answer-block.page";
 import SubmitPage from "../generated_pages/numbers/submit.page";
 
 describe("Number validation", () => {
-  before(async ()=> {
+  before(async () => {
     await browser.openQuestionnaire("test_numbers.json");
   });
   describe("Given I am completing the test numbers questionnaire,", () => {
-    it("When I am on the set minimum and maximum page, Then each field has a label", async ()=> {
+    it("When I am on the set minimum and maximum page, Then each field has a label", async () => {
       await expect(await $(SetMinMax.setMinimumLabelDescription()).getText()).to.contain("This is a description of the minimum value");
       await expect(await $(SetMinMax.setMaximumLabelDescription()).getText()).to.contain("This is a description of the maximum value");
     });
 
-    it("When I enter values outside of the set range, Then the correct error messages are displayed", async ()=> {
+    it("When I enter values outside of the set range, Then the correct error messages are displayed", async () => {
       await $(SetMinMax.setMinimum()).setValue("10");
       await $(SetMinMax.setMaximum()).setValue("1020");
       await $(SetMinMax.submit()).click();
@@ -38,7 +38,7 @@ describe("Number validation", () => {
       await expect(await $(TestMinMax.errorNumber(8)).getText()).to.contain("Enter an answer more than or equal to £10.00");
     });
 
-    it("When I enter values inside the set range but provide too many decimal places, Then the correct error messages are displayed", async ()=> {
+    it("When I enter values inside the set range but provide too many decimal places, Then the correct error messages are displayed", async () => {
       await $(TestMinMax.testRange()).setValue("1020");
       await $(TestMinMax.testRangeExclusive()).setValue("11");
       await $(TestMinMax.testMin()).setValue("123");
@@ -54,7 +54,7 @@ describe("Number validation", () => {
       await expect(await $(TestMinMax.errorNumber(2)).getText()).to.contain("Enter a number rounded to 2 decimal places");
     });
 
-    it("When I enter values inside the set range, Then I should be able to submit the survey", async ()=> {
+    it("When I enter values inside the set range, Then I should be able to submit the survey", async () => {
       await $(TestMinMax.testRange()).setValue("12");
       await $(TestMinMax.testDecimal()).setValue("11.23");
       await $(TestMinMax.testPercent()).setValue("99");
@@ -66,7 +66,7 @@ describe("Number validation", () => {
       await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
-    it("When I edit and change the maximum value, Then I must re-validate and submit any dependent answers before I can return to the summary", async ()=> {
+    it("When I edit and change the maximum value, Then I must re-validate and submit any dependent answers before I can return to the summary", async () => {
       await $(SubmitPage.setMaximumEdit()).click();
       await $(SetMinMax.setMaximum()).setValue("1019");
       await $(SetMinMax.submit()).click();
@@ -81,7 +81,7 @@ describe("Number validation", () => {
       await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
-    it("When I edit and change the minimum value, Then I must re-validate and submit any dependent answers again before I can return to the summary", async ()=> {
+    it("When I edit and change the minimum value, Then I must re-validate and submit any dependent answers again before I can return to the summary", async () => {
       await $(SubmitPage.setMinimumEdit()).click();
       await $(SetMinMax.setMinimum()).setValue("11");
       await $(SetMinMax.submit()).click();

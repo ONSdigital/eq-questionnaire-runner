@@ -7,13 +7,13 @@ import AnyoneElseLiveAtListCollectorRemovePage from "../generated_pages/list_col
 import SectionSummaryPage from "../generated_pages/list_collector_driving_question/section-summary.page.js";
 
 describe("List Collector Driving Question", () => {
-  beforeEach("Load the survey", async ()=> {
+  beforeEach("Load the survey", async () => {
     await browser.openQuestionnaire("test_list_collector_driving_question.json");
     await $(HubPage.submit()).click();
   });
 
   describe("Given a happy journey through the list collector", () => {
-    it("The collector shows all of the household members in the summary", async ()=> {
+    it("The collector shows all of the household members in the summary", async () => {
       await $(AnyoneUsuallyLiveAtPage.yes()).click();
       await $(AnyoneUsuallyLiveAtPage.submit()).click();
       await $(AnyoneElseLiveAtListCollectorAddPage.firstName()).setValue("Marcus");
@@ -34,7 +34,7 @@ describe("List Collector Driving Question", () => {
   });
 
   describe("Given the user answers no to the driving question", () => {
-    it("The summary add link returns to the driving question", async ()=> {
+    it("The summary add link returns to the driving question", async () => {
       await $(AnyoneUsuallyLiveAtPage.no()).click();
       await $(AnyoneUsuallyLiveAtPage.submit()).click();
       await $(SectionSummaryPage.peopleListAddLink()).click();
@@ -43,7 +43,7 @@ describe("List Collector Driving Question", () => {
   });
 
   describe("Given the user answers yes to the driving question, adds someone and later removes them", () => {
-    it("The summary add link should return to the original list collector", async ()=> {
+    it("The summary add link should return to the original list collector", async () => {
       await $(AnyoneUsuallyLiveAtPage.yes()).click();
       await $(AnyoneUsuallyLiveAtPage.submit()).click();
       await $(AnyoneElseLiveAtListCollectorAddPage.firstName()).setValue("Marcus");

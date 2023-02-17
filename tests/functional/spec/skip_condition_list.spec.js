@@ -6,17 +6,17 @@ import MoreThanTwoInterstitialPage from "../generated_pages/skip_condition_list/
 
 describe("Feature: Routing on lists", () => {
   describe("Given I start skip condition list survey", () => {
-    beforeEach(async ()=> {
+    beforeEach(async () => {
       await browser.openQuestionnaire("test_skip_condition_list.json");
     });
 
-    it("When I don't add a person to the list, Then the less than two people skippable page should be shown", async ()=> {
+    it("When I don't add a person to the list, Then the less than two people skippable page should be shown", async () => {
       await $(ListCollectorPage.no()).click();
       await $(ListCollectorPage.submit()).click();
       await expect(browser.getUrl()).to.contain(LessThanTwoInterstitialPage.pageName);
     });
 
-    it("When I add one person to the list, Then the less than two people skippable page should be shown", async ()=> {
+    it("When I add one person to the list, Then the less than two people skippable page should be shown", async () => {
       await $(ListCollectorPage.yes()).click();
       await $(ListCollectorPage.submit()).click();
       await $(ListCollectorAddPage.firstName()).setValue("Marcus");
@@ -27,7 +27,7 @@ describe("Feature: Routing on lists", () => {
       await expect(browser.getUrl()).to.contain(LessThanTwoInterstitialPage.pageName);
     });
 
-    it("When I add two people to the list, Then the two people skippable page should be shown", async ()=> {
+    it("When I add two people to the list, Then the two people skippable page should be shown", async () => {
       await $(ListCollectorPage.yes()).click();
       await $(ListCollectorPage.submit()).click();
       await $(ListCollectorAddPage.firstName()).setValue("Marcus");
@@ -43,7 +43,7 @@ describe("Feature: Routing on lists", () => {
       await expect(browser.getUrl()).to.contain(TwoInterstitialPage.pageName);
     });
 
-    it("When I add three people to the list, Then the more than two people skippable page should be shown", async ()=> {
+    it("When I add three people to the list, Then the more than two people skippable page should be shown", async () => {
       await $(ListCollectorPage.yes()).click();
       await $(ListCollectorPage.submit()).click();
       await $(ListCollectorAddPage.firstName()).setValue("Marcus");

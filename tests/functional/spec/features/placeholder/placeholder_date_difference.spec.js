@@ -8,11 +8,11 @@ import AgeBlockMonthYearRangePage from "../../../generated_pages/placeholder_dif
 import AgeTestMonthYearRangePage from "../../../generated_pages/placeholder_difference_in_years_month_year_range/age-test.page";
 
 describe("Difference check (years)", () => {
-  before("Load the survey", async ()=> {
+  before("Load the survey", async () => {
     await browser.openQuestionnaire("test_placeholder_difference_in_years.json");
   });
 
-  it("Given a day, month and year answer is provided for a date question then the age in years should be calculated and displayed on the page ", async ()=> {
+  it("Given a day, month and year answer is provided for a date question then the age in years should be calculated and displayed on the page ", async () => {
     await $(AgeBlockYearPage.day()).setValue(1);
     await $(AgeBlockYearPage.month()).setValue(1);
     await $(AgeBlockYearPage.year()).setValue(1990);
@@ -22,11 +22,11 @@ describe("Difference check (years)", () => {
 });
 
 describe("Difference check (months and years)", () => {
-  before("Load the survey", async ()=> {
+  before("Load the survey", async () => {
     await browser.openQuestionnaire("test_placeholder_difference_in_years_month_year.json");
   });
 
-  it("Given a month and year answer is provided for a date question then the difference in years should be calculated and displayed on the page ", async ()=> {
+  it("Given a month and year answer is provided for a date question then the difference in years should be calculated and displayed on the page ", async () => {
     await $(AgeBlockMonthYearPage.Month()).setValue(1);
     await $(AgeBlockMonthYearPage.Year()).setValue(1990);
 
@@ -39,11 +39,11 @@ describe("Difference check (months and years)", () => {
 });
 
 describe("Difference check (months and years range)", () => {
-  before("Load the survey", async ()=> {
+  before("Load the survey", async () => {
     await browser.openQuestionnaire("test_placeholder_difference_in_years_month_year_range.json");
   });
 
-  it("Given a month and year answers 'from' and 'to' are provided for a date question then the difference in years should be calculated and displayed on the page ", async ()=> {
+  it("Given a month and year answers 'from' and 'to' are provided for a date question then the difference in years should be calculated and displayed on the page ", async () => {
     await $(AgeBlockMonthYearRangePage.periodFromMonth()).setValue(1);
     await $(AgeBlockMonthYearRangePage.periodFromYear()).setValue(1990);
     await $(AgeBlockMonthYearRangePage.periodToMonth()).setValue(1);
@@ -56,11 +56,11 @@ describe("Difference check (months and years range)", () => {
 });
 
 describe("Difference check (years range)", () => {
-  before("Load the survey", async ()=> {
+  before("Load the survey", async () => {
     await browser.openQuestionnaire("test_placeholder_difference_in_years_range.json");
   });
 
-  it("Given a day, month and year answers 'from' and 'to' are provided for a date question then the difference in years should be calculated and displayed on the page ", async ()=> {
+  it("Given a day, month and year answers 'from' and 'to' are provided for a date question then the difference in years should be calculated and displayed on the page ", async () => {
     await $(AgeBlockDayMonthYearRangePage.periodFromday()).setValue(1);
     await $(AgeBlockDayMonthYearRangePage.periodFrommonth()).setValue(1);
     await $(AgeBlockDayMonthYearRangePage.periodFromyear()).setValue(1990);

@@ -3,7 +3,7 @@ import { TimeoutModalTestCase } from "./timeout_modal.js";
 
 describe("Timeout Modal", () => {
   describe("Given I am completing the survey,", () => {
-    beforeEach(async ()=> {
+    beforeEach(async () => {
       await browser.openQuestionnaire("test_timeout_modal.json");
     });
     TimeoutModalTestCase.testCase(TimeoutInterstitialPage);

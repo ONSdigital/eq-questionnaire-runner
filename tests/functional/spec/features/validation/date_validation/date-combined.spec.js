@@ -2,13 +2,13 @@ import DateRangePage from "../../../../generated_pages/date_validation_combined/
 import SubmitPage from "../../../../generated_pages/date_validation_combined/submit.page";
 
 describe("Feature: Combined question level and single validation for dates", () => {
-  before(async ()=> {
+  before(async () => {
     await browser.openQuestionnaire("test_date_validation_combined.json");
   });
 
   describe("Period Validation", () => {
     describe("Given I enter dates", () => {
-      it("When I enter a single dates that are too early/late, Then I should see a single validation errors", async ()=> {
+      it("When I enter a single dates that are too early/late, Then I should see a single validation errors", async () => {
         await $(DateRangePage.dateRangeFromday()).setValue(12);
         await $(DateRangePage.dateRangeFrommonth()).setValue(12);
         await $(DateRangePage.dateRangeFromyear()).setValue(2016);
@@ -21,7 +21,7 @@ describe("Feature: Combined question level and single validation for dates", () 
         await expect(await $(DateRangePage.errorNumber(2)).getText()).to.contain("Enter a date before 22 February 2017");
       });
 
-      it("When I enter a range too large, Then I should see a range validation error", async ()=> {
+      it("When I enter a range too large, Then I should see a range validation error", async () => {
         await $(DateRangePage.dateRangeFromday()).setValue(13);
         await $(DateRangePage.dateRangeFrommonth()).setValue(12);
         await $(DateRangePage.dateRangeFromyear()).setValue(2016);
@@ -33,7 +33,7 @@ describe("Feature: Combined question level and single validation for dates", () 
         await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period less than or equal to 50 days");
       });
 
-      it("When I enter a range too small, Then I should see a range validation error", async ()=> {
+      it("When I enter a range too small, Then I should see a range validation error", async () => {
         await $(DateRangePage.dateRangeFromday()).setValue(1);
         await $(DateRangePage.dateRangeFrommonth()).setValue(1);
         await $(DateRangePage.dateRangeFromyear()).setValue(2017);
@@ -45,7 +45,7 @@ describe("Feature: Combined question level and single validation for dates", () 
         await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period greater than or equal to 10 days");
       });
 
-      it("When I enter valid dates, Then I should see the summary page", async ()=> {
+      it("When I enter valid dates, Then I should see the summary page", async () => {
         await $(DateRangePage.dateRangeFromday()).setValue(1);
         await $(DateRangePage.dateRangeFrommonth()).setValue(1);
         await $(DateRangePage.dateRangeFromyear()).setValue(2017);

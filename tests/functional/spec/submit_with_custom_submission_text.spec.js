@@ -3,11 +3,11 @@ import IntroductionPage from "../generated_pages/submit_with_custom_submission_t
 import { SubmitPage } from "../base_pages/submit.page.js";
 
 describe("Submit with custom submission text", () => {
-  beforeEach("Load the questionnaire", async ()=> {
+  beforeEach("Load the questionnaire", async () => {
     await browser.openQuestionnaire("test_submit_with_custom_submission_text.json");
   });
 
-  it("Given a questionnaire with custom submission content has been started, when it is completed to the submit page, then the correct submission content should be displayed", async ()=> {
+  it("Given a questionnaire with custom submission content has been started, when it is completed to the submit page, then the correct submission content should be displayed", async () => {
     await $(IntroductionPage.getStarted()).click();
     await $(BreakfastPage.answer()).setValue("Eggs");
     await $(BreakfastPage.submit()).click();

@@ -6,11 +6,11 @@ import IncorrectAnswerPage from "../../../generated_pages/new_routing_and/incorr
 describe("Feature: Routing - And Operator", () => {
   describe("Equals", () => {
     describe("Given I start the and operator routing survey", () => {
-      beforeEach(async ()=> {
+      beforeEach(async () => {
         await browser.openQuestionnaire("test_new_routing_and.json");
       });
 
-      it("When I enter both answers correctly with 123 and 321, Then I should be routed to the correct page", async ()=> {
+      it("When I enter both answers correctly with 123 and 321, Then I should be routed to the correct page", async () => {
         await $(FirstNumberQuestionPage.answer1()).setValue(123);
         await $(FirstNumberQuestionPage.submit()).click();
         await $(SecondNumberQuestionPage.answer2()).setValue(321);
@@ -18,7 +18,7 @@ describe("Feature: Routing - And Operator", () => {
         await expect(browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
-      it("When I only enter the second answer correctly with 555 and 321, Then I should be routed to the incorrect page", async ()=> {
+      it("When I only enter the second answer correctly with 555 and 321, Then I should be routed to the incorrect page", async () => {
         await $(FirstNumberQuestionPage.answer1()).setValue(555);
         await $(FirstNumberQuestionPage.submit()).click();
         await $(SecondNumberQuestionPage.answer2()).setValue(321);
@@ -26,7 +26,7 @@ describe("Feature: Routing - And Operator", () => {
         await expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
       });
 
-      it("When I only enter the first answer correctly with 123 and 555, Then I should be routed to the incorrect page", async ()=> {
+      it("When I only enter the first answer correctly with 123 and 555, Then I should be routed to the incorrect page", async () => {
         await $(FirstNumberQuestionPage.answer1()).setValue(123);
         await $(FirstNumberQuestionPage.submit()).click();
         await $(SecondNumberQuestionPage.answer2()).setValue(555);
@@ -34,7 +34,7 @@ describe("Feature: Routing - And Operator", () => {
         await expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
       });
 
-      it("When I answer both questions incorrectly with 555 and 444, Then I should be routed to the incorrect page", async ()=> {
+      it("When I answer both questions incorrectly with 555 and 444, Then I should be routed to the incorrect page", async () => {
         await $(FirstNumberQuestionPage.answer1()).setValue(555);
         await $(FirstNumberQuestionPage.submit()).click();
         await $(SecondNumberQuestionPage.answer2()).setValue(444);

@@ -11,7 +11,7 @@ import { getRandomString } from "../jwt_helper";
 describe("Save sign out / Exit", () => {
   const responseId = getRandomString(16);
 
-  it("Given I am on an introduction page, when I click the exit button, then I am redirected to sign out page and my session is cleared", async ()=> {
+  it("Given I am on an introduction page, when I click the exit button, then I am redirected to sign out page and my session is cleared", async () => {
     await browser.openQuestionnaire("test_introduction.json");
     await $(IntroductionPage.exitButton()).click();
 
@@ -21,7 +21,7 @@ describe("Save sign out / Exit", () => {
     await expect($("body").getHTML()).to.contain("Sorry, you need to sign in again");
   });
 
-  it("Given I am completing a questionnaire, when I select save and sign out, then I am redirected to sign out page and my session is cleared", async ()=> {
+  it("Given I am completing a questionnaire, when I select save and sign out, then I am redirected to sign out page and my session is cleared", async () => {
     await browser.openQuestionnaire("test_numbers.json", { userId: "test_user", responseId });
     await $(SetMinMax.setMinimum()).setValue("10");
     await $(SetMinMax.setMaximum()).setValue("1020");
@@ -34,7 +34,7 @@ describe("Save sign out / Exit", () => {
     await expect($("body").getHTML()).to.contain("Sorry, you need to sign in again");
   });
 
-  it("Given I have started a questionnaire, when I return to the questionnaire, then I am returned to the page I was on and can then complete the questionnaire", async ()=> {
+  it("Given I have started a questionnaire, when I return to the questionnaire, then I am returned to the page I was on and can then complete the questionnaire", async () => {
     await browser.openQuestionnaire("test_numbers.json", { userId: "test_user", responseId });
 
     await $(TestMinMax.testRange()).setValue("10");
@@ -49,7 +49,7 @@ describe("Save sign out / Exit", () => {
     await expect(browser.getUrl()).to.contain("thank-you");
   });
 
-  it("Given a business questionnaire, when I navigate the questionnaire, then I see the correct sign out buttons", async ()=> {
+  it("Given a business questionnaire, when I navigate the questionnaire, then I see the correct sign out buttons", async () => {
     await browser.openQuestionnaire("test_introduction.json");
 
     await expect(await $(IntroductionPage.exitButton()).getText()).to.contain("Exit");
@@ -64,7 +64,7 @@ describe("Save sign out / Exit", () => {
     await expect(await $(IntroThankYouPagePage.exitButton()).isExisting()).to.be.false;
   });
 
-  it("Given a Census questionnaire, when I navigate the questionnaire, then I see the correct sign out buttons", async ()=> {
+  it("Given a Census questionnaire, when I navigate the questionnaire, then I see the correct sign out buttons", async () => {
     await browser.openQuestionnaire("test_thank_you_census_household.json");
 
     await expect(await $(HouseHolderConfirmationPage.saveSignOut()).getText()).to.contain("Save and complete later");

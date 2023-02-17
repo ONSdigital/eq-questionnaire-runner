@@ -8,11 +8,11 @@ import HubPage from "../../../base_pages/hub.page.js";
 
 describe("Component: Definition", () => {
   describe("Load the Survey", () => {
-    beforeEach(async ()=> {
+    beforeEach(async () => {
       await browser.openQuestionnaire("test_placeholder_based_on_first_item_in_list.json");
     });
 
-    it("Given I am the first person in the list, When I get to the question page, Then I should see the default answer option", async ()=> {
+    it("Given I am the first person in the list, When I get to the question page, Then I should see the default answer option", async () => {
       // Given
       await $(HubPage.submit()).click();
       await $(ListCollectorPage.yes()).click();
@@ -33,7 +33,7 @@ describe("Component: Definition", () => {
       await expect(await $(ListStatusQuestion.listStatus2TeaLabel()).getText()).to.contain("Tea");
     });
 
-    it("Given I am not the first person in the list, When I get to the question page, Then I should see the correct answer option", async ()=> {
+    it("Given I am not the first person in the list, When I get to the question page, Then I should see the correct answer option", async () => {
       // Given
       await $(HubPage.submit()).click();
       await $(ListCollectorPage.yes()).click();

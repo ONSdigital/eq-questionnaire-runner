@@ -6,15 +6,15 @@ import DateYearDatePage from "../generated_pages/dates/date-year-date-block.page
 import SubmitPage from "../generated_pages/dates/submit.page";
 
 describe("Date checks", () => {
-  beforeEach("Load the survey", async ()=> {
+  beforeEach("Load the survey", async () => {
     await browser.openQuestionnaire("test_dates.json");
   });
 
-  it("Given an answer label is provided for a date question then the label should be displayed ", async ()=> {
+  it("Given an answer label is provided for a date question then the label should be displayed ", async () => {
     await expect(await $(DateRangePage.legend()).getText()).to.contain("Period from");
   });
 
-  it("Given an answer label is not provided for a date question then the question title should be used within the legend ", async ()=> {
+  it("Given an answer label is not provided for a date question then the question title should be used within the legend ", async () => {
     await $(DateRangePage.dateRangeFromday()).setValue(1);
     await $(DateRangePage.dateRangeFrommonth()).setValue(1);
     await $(DateRangePage.dateRangeFromyear()).setValue(1901);
@@ -28,7 +28,7 @@ describe("Date checks", () => {
     await expect(await $(DateMonthYearPage.legend()).getText()).to.contain("Date with month and year");
   });
 
-  it("Given the test_dates survey is selected when dates are entered then the summary screen shows the dates entered formatted", async ()=> {
+  it("Given the test_dates survey is selected when dates are entered then the summary screen shows the dates entered formatted", async () => {
     // When dates are entered
     await $(DateRangePage.dateRangeFromday()).setValue(1);
     await $(DateRangePage.dateRangeFrommonth()).setValue(1);
@@ -67,7 +67,7 @@ describe("Date checks", () => {
     await expect(await $(SubmitPage.yearDateAnswer()).getText()).to.contain("2005");
   });
 
-  it("Given the test_dates survey is selected when the from date is greater than the to date then an error message is shown", async ()=> {
+  it("Given the test_dates survey is selected when the from date is greater than the to date then an error message is shown", async () => {
     // When the from date is greater than the to date
     await $(DateRangePage.dateRangeFromday()).setValue(1);
     await $(DateRangePage.dateRangeFrommonth()).setValue(1);
@@ -88,7 +88,7 @@ describe("Date checks", () => {
     await expect(await $(DateRangePage.dateRangeFromday()).isFocused()).to.be.true;
   });
 
-  it("Given the test_dates survey is selected when the from date and the to date are the same then an error message is shown", async ()=> {
+  it("Given the test_dates survey is selected when the from date and the to date are the same then an error message is shown", async () => {
     // When the from date is greater than the to date
     await $(DateRangePage.dateRangeFromday()).setValue(1);
     await $(DateRangePage.dateRangeFrommonth()).setValue(1);
@@ -105,7 +105,7 @@ describe("Date checks", () => {
     await expect(await $(DateRangePage.dateRangeQuestionErrorPanel()).isExisting()).to.be.true;
   });
 
-  it("Given the test_dates survey is selected when an invalid date is entered in a date range then an error message is shown", async ()=> {
+  it("Given the test_dates survey is selected when an invalid date is entered in a date range then an error message is shown", async () => {
     // When the from date is greater than the to date
     await $(DateRangePage.dateRangeFromday()).setValue(1);
     await $(DateRangePage.dateRangeFrommonth()).setValue(1);
@@ -121,7 +121,7 @@ describe("Date checks", () => {
     await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a valid date");
   });
 
-  it("Given the test_dates survey is selected when the year (month year type) is left empty then an error message is shown", async ()=> {
+  it("Given the test_dates survey is selected when the year (month year type) is left empty then an error message is shown", async () => {
     await $(DateRangePage.dateRangeFromday()).setValue(1);
     await $(DateRangePage.dateRangeFrommonth()).setValue(1);
     await $(DateRangePage.dateRangeFromyear()).setValue(2016);
@@ -140,7 +140,7 @@ describe("Date checks", () => {
     await expect(await $(DateMonthYearPage.errorNumber(1)).getText()).to.contain("Enter a valid date");
   });
 
-  it("Given the test_dates survey is selected, " + "When an error message is shown and it is corrected, " + "Then the next question is displayed", async ()=> {
+  it("Given the test_dates survey is selected, " + "When an error message is shown and it is corrected, " + "Then the next question is displayed", async () => {
     await $(DateRangePage.dateRangeFromday()).setValue(1);
     await $(DateRangePage.dateRangeFrommonth()).setValue(1);
     await $(DateRangePage.dateRangeFromyear()).setValue(2016);
@@ -163,7 +163,7 @@ describe("Date checks", () => {
     await expect(browser.getUrl()).to.contain(DateSinglePage.url());
   });
 
-  it("Given the test_dates survey is selected when an error message is shown then when it is corrected, it goes to the summary page and the information is correct", async ()=> {
+  it("Given the test_dates survey is selected when an error message is shown then when it is corrected, it goes to the summary page and the information is correct", async () => {
     await $(DateRangePage.dateRangeFromday()).setValue(1);
     await $(DateRangePage.dateRangeFrommonth()).setValue(1);
     await $(DateRangePage.dateRangeFromyear()).setValue(2016);
@@ -190,7 +190,7 @@ describe("Date checks", () => {
     await expect(await $(DateNonMandatoryPage.errorNumber(1)).getText()).to.contain("Enter a valid date");
   });
 
-  it("Given the test_dates survey is selected, when a user clicks the day label then the day subfield should gain the focus", async ()=> {
+  it("Given the test_dates survey is selected, when a user clicks the day label then the day subfield should gain the focus", async () => {
     await $(DateRangePage.dateRangeFromday()).setValue(1);
     await $(DateRangePage.dateRangeFrommonth()).setValue(1);
     await $(DateRangePage.dateRangeFromyear()).setValue(2016);

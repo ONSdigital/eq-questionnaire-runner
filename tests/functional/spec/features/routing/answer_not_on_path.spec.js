@@ -5,11 +5,11 @@ import ValidPathPage from "../../../generated_pages/new_routing_not_affected_by_
 import ValidFinalInterstitialPage from "../../../generated_pages/new_routing_not_affected_by_answers_not_on_path/valid-final-interstitial.page.js";
 
 describe("Answers not on path are not considered when routing", () => {
-  beforeEach(async ()=> {
+  beforeEach(async () => {
     await browser.openQuestionnaire("test_new_routing_not_affected_by_answers_not_on_path.json");
   });
 
-  it("Given the user enters an answer on the first path, when they return to the second path, they should be routed to the valid path interstitial", async ()=> {
+  it("Given the user enters an answer on the first path, when they return to the second path, they should be routed to the valid path interstitial", async () => {
     await $(InitialChoicePage.goHereFirst()).click();
     await $(InitialChoicePage.submit()).click();
 

@@ -7,7 +7,7 @@ import DefaultSectionSummary from "../../generated_pages/confirmation_question_w
 
 describe("Feature: Confirmation Question Within A Repeating Section", () => {
   describe("Given I am in a repeating section", () => {
-    beforeEach("Add a person", async ()=> {
+    beforeEach("Add a person", async () => {
       await browser.openQuestionnaire("test_confirmation_question_within_repeating_section.json");
       await $(DoesAnyoneLiveHerePage.yes()).click();
       await $(DoesAnyoneLiveHerePage.submit()).click();
@@ -20,7 +20,7 @@ describe("Feature: Confirmation Question Within A Repeating Section", () => {
     });
 
     describe("Given a confirmation question", () => {
-      it("When I answer 'No' to the confirmation question, Then I should be routed back to the source question", async ()=> {
+      it("When I answer 'No' to the confirmation question, Then I should be routed back to the source question", async () => {
         // Answer question preceding confirmation question
         await $(DateOfBirthPage.day()).setValue("01");
         await $(DateOfBirthPage.month()).setValue("01");
@@ -35,7 +35,7 @@ describe("Feature: Confirmation Question Within A Repeating Section", () => {
     });
 
     describe("Given I have answered a confirmation question", () => {
-      it("When I view the summary, Then the confirmation question should not be displayed", async ()=> {
+      it("When I view the summary, Then the confirmation question should not be displayed", async () => {
         await $(DateOfBirthPage.day()).setValue("01");
         await $(DateOfBirthPage.month()).setValue("01");
         await $(DateOfBirthPage.year()).setValue("2015");
@@ -50,7 +50,7 @@ describe("Feature: Confirmation Question Within A Repeating Section", () => {
     });
 
     describe("Given a confirmation question with a skip condition", () => {
-      it("When I submit an a date of birth where the age is at least '16', Then I should be skipped past the confirmation question and directed to the carer question", async ()=> {
+      it("When I submit an a date of birth where the age is at least '16', Then I should be skipped past the confirmation question and directed to the carer question", async () => {
         await $(DateOfBirthPage.day()).setValue("01");
         await $(DateOfBirthPage.month()).setValue("01");
         await $(DateOfBirthPage.year()).setValue("2000");

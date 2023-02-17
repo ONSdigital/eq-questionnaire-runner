@@ -30,84 +30,84 @@ const openQuestionnaireAndSetUp = async (schema) => {
   await $(ReferenceDatePage.submit()).click();
 };
 
-testCases.forEachasync (async (testCase) => {
+testCases.forEachasync(async (testCase) => {
   describe(`Feature: Dynamically generated answer options driven by a function (${testCase.schemaName})`, () => {
     describe("Selecting/Deselecting", () => {
-      before("Open questionnaire", async ()=> {
+      before("Open questionnaire", async () => {
         openQuestionnaireAndSetUp(testCase.schemaName);
       });
 
       describe("Given a dynamic answer options questionnaire and I am on a dynamic checkbox answer page", () => {
-        it("When I click a checkbox option, then the checkbox should be selected", async ()=> {
+        it("When I click a checkbox option, then the checkbox should be selected", async () => {
           for (let i = 0; i < testCase.answerOptionCount; i++) {
             await $(DynamicCheckboxPage.answerByIndex(i)).click();
             await expect(await $(DynamicCheckboxPage.answerByIndex(i)).isSelected()).to.be.true;
           }
         });
 
-        it("When I click a selected option, then it should be deselected", async ()=> {
+        it("When I click a selected option, then it should be deselected", async () => {
           for (let i = 0; i < testCase.answerOptionCount; i++) {
             await $(DynamicCheckboxPage.answerByIndex(i)).click();
             await expect(await $(DynamicCheckboxPage.answerByIndex(i)).isSelected()).to.be.false;
           }
         });
 
-        it("When I submit the page, then I should be taken to the next page", async ()=> {
+        it("When I submit the page, then I should be taken to the next page", async () => {
           await $(DynamicCheckboxPage.submit()).click();
           await expect(browser.getUrl()).to.contain(DynamicRadioPage.pageName);
         });
       });
 
       describe("Given a dynamic answer options questionnaire and I am on the radio answer page", () => {
-        it("When I click a radio option, then the radio should be selected", async ()=> {
+        it("When I click a radio option, then the radio should be selected", async () => {
           for (let i = 0; i < testCase.answerOptionCount; i++) {
             await $(DynamicRadioPage.answerByIndex(i)).click();
             await expect(await $(DynamicRadioPage.answerByIndex(i)).isSelected()).to.be.true;
           }
         });
 
-        it("When I submit the page, then I should be taken to the next page", async ()=> {
+        it("When I submit the page, then I should be taken to the next page", async () => {
           await $(DynamicRadioPage.submit()).click();
           await expect(browser.getUrl()).to.contain(DynamicDropdownPage.pageName);
         });
       });
 
       describe("Given a dynamic answer options questionnaire and I am on the dropdown page", () => {
-        it("When I select a dropdown option, then the option should be selected", async ()=> {
+        it("When I select a dropdown option, then the option should be selected", async () => {
           for (const value of testCase.dropdownOptionValues) {
             await $(DynamicDropdownPage.answer()).selectByAttribute("value", value);
             await expect(await $(DynamicDropdownPage.answer()).getValue()).to.equal(value);
           }
         });
 
-        it("When I submit the page, then I should be taken to the next page", async ()=> {
+        it("When I submit the page, then I should be taken to the next page", async () => {
           await $(DynamicDropdownPage.submit()).click();
           await expect(browser.getUrl()).to.contain(DynamicMutuallyExclusivePage.pageName);
         });
       });
 
       describe("Given a dynamic answer options questionnaire and I am on the mutually exclusive page", () => {
-        it("When I click a dynamic checkbox option, then the checkbox should be selected", async ()=> {
+        it("When I click a dynamic checkbox option, then the checkbox should be selected", async () => {
           for (let i = 0; i < testCase.answerOptionCount; i++) {
             await $(DynamicMutuallyExclusivePage.answerByIndex(i)).click();
             await expect(await $(DynamicMutuallyExclusivePage.answerByIndex(i)).isSelected()).to.be.true;
           }
         });
 
-        it("When I click a selected option, then it should be deselected", async ()=> {
+        it("When I click a selected option, then it should be deselected", async () => {
           for (let i = 0; i < testCase.answerOptionCount; i++) {
             await $(DynamicMutuallyExclusivePage.answerByIndex(i)).click();
             await expect(await $(DynamicMutuallyExclusivePage.answerByIndex(i)).isSelected()).to.be.false;
           }
         });
 
-        it("When I click the static checkbox option, then the static checkbox should be selected", async ()=> {
+        it("When I click the static checkbox option, then the static checkbox should be selected", async () => {
           // Test exclusive option (Static option)
           await $(DynamicMutuallyExclusivePage.staticIDidNotWork()).click();
           await expect(await $(DynamicMutuallyExclusivePage.staticIDidNotWork()).isSelected()).to.be.true;
         });
 
-        it("When I click the selected static checkbox option, then that checkbox should be deselected", async ()=> {
+        it("When I click the selected static checkbox option, then that checkbox should be deselected", async () => {
           // Test exclusive option (Static option)
           await $(DynamicMutuallyExclusivePage.staticIDidNotWork()).click();
           await expect(await $(DynamicMutuallyExclusivePage.staticIDidNotWork()).isSelected()).to.be.false;
@@ -116,12 +116,12 @@ testCases.forEachasync (async (testCase) => {
     });
 
     describe("Summary page", () => {
-      beforeEach("Open questionnaire", async ()=> {
+      beforeEach("Open questionnaire", async () => {
         openQuestionnaireAndSetUp(testCase.schemaName);
       });
 
       describe("Given a dynamic answer options questionnaire", () => {
-        it("When I submit my questions without answering, then the summary should display `No answer provided` for each question", async ()=> {
+        it("When I submit my questions without answering, then the summary should display `No answer provided` for each question", async () => {
           await $(DynamicCheckboxPage.submit()).click();
           await $(DynamicRadioPage.submit()).click();
           await $(DynamicRadioPage.submit()).click();
@@ -134,7 +134,7 @@ testCases.forEachasync (async (testCase) => {
           await expect(await $(SubmitPage.dynamicMutuallyExclusiveDynamicAnswer()).getText()).to.equal("No answer provided");
         });
 
-        it("When I select a dynamically generated answer option for each question, then my selected answers should be displayed on the summary", async ()=> {
+        it("When I select a dynamically generated answer option for each question, then my selected answers should be displayed on the summary", async () => {
           // Answer Checkbox
           await $(DynamicCheckboxPage.answerByIndex(2)).click(); // Wednesday 30 December 2020
           await $(DynamicCheckboxPage.answerByIndex(3)).click(); // Thursday 30 December 2020
@@ -166,11 +166,11 @@ testCases.forEachasync (async (testCase) => {
 
 describe(`Feature: Dynamically generated answer options driven by a function with static options`, () => {
   describe("Given a dynamic answer options questionnaire with static options", () => {
-    before("Open questionnaire", async ()=> {
+    before("Open questionnaire", async () => {
       openQuestionnaireAndSetUp("test_dynamic_answer_options_function_driven_with_static_options.json");
     });
 
-    it("When I select a static answer option for each question, then my selected answer(s) should be displayed on the summary", async ()=> {
+    it("When I select a static answer option for each question, then my selected answer(s) should be displayed on the summary", async () => {
       // Answer Checkbox
       await $(DynamicCheckboxPage.answerByIndex(7)).click();
       await $(DynamicCheckboxPage.submit()).click();
@@ -202,7 +202,7 @@ describe(`Feature: Dynamically generated answer options driven by a function wit
       await expect(await $(SubmitPage.dynamicMutuallyExclusiveStaticAnswer()).getText()).to.equal("I did not work");
     });
 
-    it("When I edit and change the reference date which the other questions are dependent on, then all dependent answers are removed", async ()=> {
+    it("When I edit and change the reference date which the other questions are dependent on, then all dependent answers are removed", async () => {
       await $(SubmitPage.referenceDateAnswerEdit()).click();
       await $(ReferenceDatePage.day()).setValue("2");
       await $(ReferenceDatePage.submit()).click();

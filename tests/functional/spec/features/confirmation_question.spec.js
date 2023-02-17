@@ -4,22 +4,22 @@ import SubmitPage from "../../generated_pages/confirmation_question/submit.page.
 
 describe("Feature: Confirmation Question", () => {
   describe("Given I have a completed the confirmation question", () => {
-    before("Get to summary", async ()=> {
+    before("Get to summary", async () => {
       await browser.openQuestionnaire("test_confirmation_question.json");
     });
 
-    it("When I view the summary, Then the confirmation question should not be displayed", async ()=> {
+    it("When I view the summary, Then the confirmation question should not be displayed", async () => {
       await $(NumberOfEmployeesTotalBlockPage.numberOfEmployeesTotal()).setValue(0);
       await $(NumberOfEmployeesTotalBlockPage.submit()).click();
       await $(ConfirmZeroEmployeesBlockPage.yesThisIsCorrect()).click();
       await $(ConfirmZeroEmployeesBlockPage.submit()).click();
       await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
       await expect(await $(SubmitPage.numberOfEmployeesTotal()).getText()).to.contain("0");
-      await expect(await $$( SubmitPage.confirmZeroEmployeesAnswer())).to.be.empty;
+      await expect(await $$(SubmitPage.confirmZeroEmployeesAnswer())).to.be.empty;
     });
   });
   describe("Given a confirmation Question", () => {
-    it("When I answer 'No' to the confirmation question, Then I should be routed back to the source question", async ()=> {
+    it("When I answer 'No' to the confirmation question, Then I should be routed back to the source question", async () => {
       await browser.openQuestionnaire("test_confirmation_question.json");
       await $(NumberOfEmployeesTotalBlockPage.submit()).click();
       await $(ConfirmZeroEmployeesBlockPage.noINeedToCorrectThis()).click();
@@ -28,7 +28,7 @@ describe("Feature: Confirmation Question", () => {
     });
   });
   describe("Given a number of employees Question", () => {
-    it("When I don't answer the number of employees question and go to summary, Then default value should be displayed for the the number of employees question", async ()=> {
+    it("When I don't answer the number of employees question and go to summary, Then default value should be displayed for the the number of employees question", async () => {
       await browser.openQuestionnaire("test_confirmation_question.json");
       await $(NumberOfEmployeesTotalBlockPage.submit()).click();
       await $(ConfirmZeroEmployeesBlockPage.yesThisIsCorrect()).click();

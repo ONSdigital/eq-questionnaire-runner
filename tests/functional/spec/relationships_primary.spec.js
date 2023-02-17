@@ -8,11 +8,11 @@ describe("Relationships - Primary Person", () => {
   const schema = "test_relationships_primary.json";
 
   describe("Given I am completing the test_relationships_primary survey", () => {
-    beforeEach(async ()=> {
+    beforeEach(async () => {
       await browser.openQuestionnaire(schema);
     });
 
-    it("When I add household members, Then I will be asked my relationships as a primary person", async ()=> {
+    it("When I add household members, Then I will be asked my relationships as a primary person", async () => {
       addPrimaryAndTwoOthers();
 
       await $(ListCollectorPage.no()).click();
@@ -20,7 +20,7 @@ describe("Relationships - Primary Person", () => {
       await expect(await $(RelationshipsPage.questionText()).getText()).to.contain("is your");
     });
 
-    it("When I add household members, Then non-primary relationships will be asked as a non primary person", async ()=> {
+    it("When I add household members, Then non-primary relationships will be asked as a non primary person", async () => {
       addPrimaryAndTwoOthers();
 
       await $(ListCollectorPage.no()).click();
@@ -32,7 +32,7 @@ describe("Relationships - Primary Person", () => {
       await expect(await $(RelationshipsPage.questionText()).getText()).to.contain("is their");
     });
 
-    it("When I add household members And add thir relationships And remove the primary person And add a new primary person then I will be asked for the relationships again", async ()=> {
+    it("When I add household members And add thir relationships And remove the primary person And add a new primary person then I will be asked for the relationships again", async () => {
       addPrimaryAndTwoOthersAndCompleteRelationships();
 
       browser.url("/questionnaire/primary-person-list-collector");
@@ -53,7 +53,7 @@ describe("Relationships - Primary Person", () => {
       await expect(await $(RelationshipsPage.questionText()).getText()).to.contain("Samuel Clemens is your");
     });
 
-    function addPrimaryAndTwoOthersAndCompleteRelationships() {
+    async function addPrimaryAndTwoOthersAndCompleteRelationships() {
       addPrimaryAndTwoOthers();
 
       await $(ListCollectorPage.no()).click();
@@ -65,7 +65,7 @@ describe("Relationships - Primary Person", () => {
       await $(RelationshipsPage.relationshipBrotherOrSister()).click();
     }
 
-    function addPrimaryAndTwoOthers() {
+    async function addPrimaryAndTwoOthers() {
       await $(PrimaryPersonListCollectorPage.yes()).click();
       await $(PrimaryPersonListCollectorPage.submit()).click();
       await $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Marcus");

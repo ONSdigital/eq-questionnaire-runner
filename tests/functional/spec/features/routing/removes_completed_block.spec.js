@@ -4,7 +4,7 @@ import SubmitPage from "../../../generated_pages/confirmation_question/submit.pa
 
 describe("Feature: Routing incompletes block if routing backwards", () => {
   describe("Given I have a confirmation Question", () => {
-    before("Get to summary", async ()=> {
+    before("Get to summary", async () => {
       await browser.openQuestionnaire("test_confirmation_question.json");
       await $(NumberOfEmployeesTotalBlockPage.numberOfEmployeesTotal()).setValue(0);
       await $(NumberOfEmployeesTotalBlockPage.submit()).click();

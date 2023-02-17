@@ -4,11 +4,11 @@ import ContainsAnyPage from "../generated_pages/routing_checkbox_contains/countr
 import SubmitPage from "../generated_pages/routing_checkbox_contains/submit.page";
 
 describe("Routing Checkbox Contains Condition.", () => {
-  beforeEach(async ()=> {
+  beforeEach(async () => {
     await browser.openQuestionnaire("test_routing_checkbox_contains.json");
   });
 
-  it('Given a list of checkbox options, when I have don\'t select "Liechtenstein" and select the option "India" or the option "Azerbaijan" or both then I should be routed to the "contains any" condition page', async ()=> {
+  it('Given a list of checkbox options, when I have don\'t select "Liechtenstein" and select the option "India" or the option "Azerbaijan" or both then I should be routed to the "contains any" condition page', async () => {
     // When
     await expect(await $(RoutingCheckboxContains.liechtenstein()).isSelected()).to.be.false;
 
@@ -39,7 +39,7 @@ describe("Routing Checkbox Contains Condition.", () => {
     await expect(browser.getUrl()).to.contain(ContainsAnyPage.pageName);
   });
 
-  it('Given a list of checkbox options, when I select the option "Malta" or the option "Liechtenstein" or both then I should be routed to the summary condition page', async ()=> {
+  it('Given a list of checkbox options, when I select the option "Malta" or the option "Liechtenstein" or both then I should be routed to the summary condition page', async () => {
     // When
     await $(RoutingCheckboxContains.liechtenstein()).click();
     await $(RoutingCheckboxContains.submit()).click();
@@ -68,7 +68,7 @@ describe("Routing Checkbox Contains Condition.", () => {
     await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
   });
 
-  it('Given a list of checkbox options, when I select the options "India", "Azerbaijan" and "Liechtenstein" then I should be routed to the "contains all" condition page', async ()=> {
+  it('Given a list of checkbox options, when I select the options "India", "Azerbaijan" and "Liechtenstein" then I should be routed to the "contains all" condition page', async () => {
     // When
     await $(RoutingCheckboxContains.india()).click();
     await $(RoutingCheckboxContains.azerbaijan()).click();

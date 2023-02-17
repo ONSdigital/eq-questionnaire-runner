@@ -9,7 +9,7 @@ import HubPage from "../../../base_pages/hub.page.js";
 
 describe("Feature: Repeating Section Summaries", () => {
   describe("Given the user has added some members to the household and is on the Hub", () => {
-    before("Open survey and add household members", async ()=> {
+    before("Open survey and add household members", async () => {
       await browser.openQuestionnaire("test_repeating_section_summaries.json");
       // Ensure we are on the Hub
       await expect(browser.getUrl()).to.contain(HubPage.url());
@@ -36,7 +36,7 @@ describe("Feature: Repeating Section Summaries", () => {
     });
 
     describe("When the user finishes a repeating section", () => {
-      before("Enter information for a repeating section", async ()=> {
+      before("Enter information for a repeating section", async () => {
         await $(HubPage.summaryRowLink("personal-details-section-1")).click();
         await $(ProxyPage.yes()).click();
         await $(ProxyPage.submit()).click();
@@ -47,20 +47,20 @@ describe("Feature: Repeating Section Summaries", () => {
         await $(DateOfBirthPage.submit()).click();
       });
 
-      beforeEach("Navigate to the Section Summary", async ()=> {
+      beforeEach("Navigate to the Section Summary", async () => {
         browser.url(HubPage.url());
         await $(HubPage.summaryRowLink("personal-details-section-1")).click();
       });
 
-      it("the title set in the repeating block is used for the section summary title", async ()=> {
+      it("the title set in the repeating block is used for the section summary title", async () => {
         await expect(await $(PersonalSummaryPage.heading()).getText()).to.contain("Mark Twain");
       });
 
-      it("renders their name as part of the question title on the section summary", async ()=> {
+      it("renders their name as part of the question title on the section summary", async () => {
         await expect(await $(PersonalSummaryPage.dateOfBirthQuestion()).getText()).to.contain("Mark Twain’s");
       });
 
-      it("renders the correct date of birth answer", async ()=> {
+      it("renders the correct date of birth answer", async () => {
         await expect(await $(PersonalSummaryPage.dateOfBirthAnswer()).getText()).to.contain("30 November 1835");
       });
     });

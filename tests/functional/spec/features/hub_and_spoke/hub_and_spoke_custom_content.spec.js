@@ -6,7 +6,7 @@ import HubPage from "../../../base_pages/hub.page.js";
 describe("Feature: Hub and Spoke with custom content", () => {
   const hubAndSpokeSchema = "test_hub_and_spoke_custom_content.json";
 
-  it("When the questionnaire is incomplete, then custom content should be displayed correctly", async ()=> {
+  it("When the questionnaire is incomplete, then custom content should be displayed correctly", async () => {
     await browser.openQuestionnaire(hubAndSpokeSchema);
     await expect(await $(HubPage.heading()).getText()).to.contain("Choose another section to complete");
     await expect(await $(HubPage.guidance()).isExisting()).to.be.false;
@@ -14,7 +14,7 @@ describe("Feature: Hub and Spoke with custom content", () => {
     await expect(await $(HubPage.warning()).isExisting()).to.be.false;
   });
 
-  it("When the questionnaire is complete, then custom content should be displayed correctly", async ()=> {
+  it("When the questionnaire is complete, then custom content should be displayed correctly", async () => {
     await browser.openQuestionnaire(hubAndSpokeSchema);
     await $(HubPage.summaryRowLink("household-section")).click();
     await $(DoesAnyoneLiveHere.yes()).click();

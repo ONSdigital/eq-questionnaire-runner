@@ -6,17 +6,17 @@ describe("Skip Conditions - Block", () => {
   const schema = "test_new_skip_condition_block.json";
 
   describe("Given I am completing the test skip condition block survey,", () => {
-    beforeEach("load the survey", async ()=> {
+    beforeEach("load the survey", async () => {
       await browser.openQuestionnaire(schema);
     });
 
-    it("When I choose to skip on the first page, Then I should see the summary page", async ()=> {
+    it("When I choose to skip on the first page, Then I should see the summary page", async () => {
       await $(QuestionPage.yes()).click();
       await $(QuestionPage.submit()).click();
       await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
-    it("When I choose not to skip on the first page, Then I should see the should-skip page", async ()=> {
+    it("When I choose not to skip on the first page, Then I should see the should-skip page", async () => {
       await $(QuestionPage.no()).click();
       await $(QuestionPage.submit()).click();
       await expect(browser.getUrl()).to.contain(SkipPage.pageName);

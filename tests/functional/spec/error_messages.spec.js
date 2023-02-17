@@ -1,6 +1,6 @@
 import AboutYou from "../generated_pages/multiple_answers/about-you-block.page";
 
-function answerAllButOne() {
+async function answerAllButOne() {
   await $(AboutYou.textfield()).setValue("John Doe");
   await $(AboutYou.dateday()).setValue("1");
   await $(AboutYou.datemonth()).setValue("1");
@@ -21,11 +21,11 @@ function answerAllButOne() {
 }
 
 describe("Error Messages", () => {
-  beforeEach(async ()=> {
+  beforeEach(async () => {
     await browser.openQuestionnaire("test_multiple_answers.json");
   });
 
-  it("Given a question has errors, When errors are displayed, Then the error messages are correct", async ()=> {
+  it("Given a question has errors, When errors are displayed, Then the error messages are correct", async () => {
     const errorMessageMap = {
       1: "Enter an answer",
       2: "Enter a date",
@@ -51,7 +51,7 @@ describe("Error Messages", () => {
     }
   });
 
-  it("Given a question has errors, When errors are displayed, Then the error message for each answer is correct", async ()=> {
+  it("Given a question has errors, When errors are displayed, Then the error message for each answer is correct", async () => {
     await $(AboutYou.submit()).click();
 
     await expect(await $(AboutYou.textfieldErrorItem()).getText()).to.equal("Enter an answer");
@@ -70,26 +70,26 @@ describe("Error Messages", () => {
     await expect(await $(AboutYou.textareaErrorItem()).getText()).to.equal("Enter an answer");
   });
 
-  it("Given a question has multiple errors, When the errors are displayed, Then the error messages are in a numbered list", async ()=> {
+  it("Given a question has multiple errors, When the errors are displayed, Then the error messages are in a numbered list", async () => {
     await $(AboutYou.submit()).click();
     await expect(await $(AboutYou.errorList()).isDisplayed()).to.be.true;
   });
 
-  it("Given a question has 1 error, When the error is displayed, Then error message isn't in a numbered list", async ()=> {
+  it("Given a question has 1 error, When the error is displayed, Then error message isn't in a numbered list", async () => {
     answerAllButOne();
 
     await $(AboutYou.submit()).click();
     await expect(await $(AboutYou.singleErrorLink()).isDisplayed()).to.be.true;
   });
 
-  it("Given a question has 1 error, When the error is displayed, Then error header is correct", async ()=> {
+  it("Given a question has 1 error, When the error is displayed, Then error header is correct", async () => {
     answerAllButOne();
 
     await $(AboutYou.submit()).click();
     await expect(await $(AboutYou.errorHeader()).getText()).to.equal("There is a problem with your answer");
   });
 
-  it("Given a question has errors, When an error message is clicked, Then the correct answer is focused", async ()=> {
+  it("Given a question has errors, When an error message is clicked, Then the correct answer is focused", async () => {
     await $(AboutYou.submit()).click();
 
     await $(AboutYou.errorNumber(1)).click();

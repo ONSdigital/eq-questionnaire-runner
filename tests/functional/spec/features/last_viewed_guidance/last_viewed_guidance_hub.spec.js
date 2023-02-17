@@ -16,23 +16,23 @@ describe("Last viewed question guidance", () => {
   };
 
   describe("Given the hub has a required section, which has not been completed", () => {
-    before("Open survey", async ()=> {
+    before("Open survey", async () => {
       await browser.openQuestionnaire("test_last_viewed_question_guidance_hub.json", resumableLaunchParams);
     });
 
-    it("When the respondent launches the survey, then last question guidance is not shown", async ()=> {
+    it("When the respondent launches the survey, then last question guidance is not shown", async () => {
       await expect(browser.getUrl()).to.contain(WorkInterstitialPage.url());
       await expect(await $(WorkInterstitialPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
     });
 
-    it("When the respondent saves and resumes from a section which is not started, then last question guidance is not shown", async ()=> {
+    it("When the respondent saves and resumes from a section which is not started, then last question guidance is not shown", async () => {
       await $(WorkInterstitialPage.saveSignOut()).click();
       await browser.openQuestionnaire("test_last_viewed_question_guidance_hub.json", resumableLaunchParams);
       await expect(browser.getUrl()).to.contain(WorkInterstitialPage.url());
       await expect(await $(WorkInterstitialPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
     });
 
-    it("When the respondent saves and resumes from a section which is in progress, then last question guidance is shown", async ()=> {
+    it("When the respondent saves and resumes from a section which is in progress, then last question guidance is shown", async () => {
       await $(WorkInterstitialPage.submit()).click();
       await $(PaidWorkPage.saveSignOut()).click();
       await browser.openQuestionnaire("test_last_viewed_question_guidance_hub.json", resumableLaunchParams);
@@ -42,7 +42,7 @@ describe("Last viewed question guidance", () => {
   });
 
   describe("Given the respondent has completed the required section and is on the hub", () => {
-    before("Open survey and complete first section", async ()=> {
+    before("Open survey and complete first section", async () => {
       await browser.openQuestionnaire("test_last_viewed_question_guidance_hub.json");
       await $(WorkInterstitialPage.submit()).click();
       await $(PaidWorkPage.yes()).click();
@@ -51,13 +51,13 @@ describe("Last viewed question guidance", () => {
       await $(UnPaidWorkPage.submit()).click();
     });
 
-    it("When the respondent selects a section which is not started, then last question guidance is not shown", async ()=> {
+    it("When the respondent selects a section which is not started, then last question guidance is not shown", async () => {
       await $(HubPage.summaryRowLink("education-section")).click();
       await expect(browser.getUrl()).to.contain(GcsesPage.url());
       await expect(await $(GcsesPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
     });
 
-    it("When the respondent selects a section which is in progress, then last question guidance is shown", async ()=> {
+    it("When the respondent selects a section which is in progress, then last question guidance is shown", async () => {
       await $(HubPage.submit()).click();
       await $(GcsesPage.yes()).click();
       await $(GcsesPage.submit()).click();
@@ -68,7 +68,7 @@ describe("Last viewed question guidance", () => {
       await expect(await $(ALevelsPage.lastViewedQuestionGuidance()).isExisting()).to.be.true;
     });
 
-    it("When the respondent selects a section which is complete , then last question guidance is not shown on the summary or any link clicked from the summary", async ()=> {
+    it("When the respondent selects a section which is complete , then last question guidance is not shown on the summary or any link clicked from the summary", async () => {
       await $(ALevelsPage.yes()).click();
       await $(ALevelsPage.submit()).click();
       await expect(browser.getUrl()).to.contain(EducationSectionSummaryPage.url());
@@ -80,14 +80,14 @@ describe("Last viewed question guidance", () => {
       await expect(await $(ALevelsPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
     });
 
-    it("When the user clicks continue on the hub and it takes you to a section which is not started, then last question guidance is not shown", async ()=> {
+    it("When the user clicks continue on the hub and it takes you to a section which is not started, then last question guidance is not shown", async () => {
       browser.url(HubPage.url());
       await $(HubPage.submit()).click();
       await expect(browser.getUrl()).to.contain(SportsPage.url());
       await expect(await $(SportsPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
     });
 
-    it("When the user clicks continue on the hub and it takes you to a section which is in progress, then last question guidance is shown", async ()=> {
+    it("When the user clicks continue on the hub and it takes you to a section which is in progress, then last question guidance is shown", async () => {
       await $(HubPage.submit()).click();
       await $(SportsPage.yes()).click();
       await $(SportsPage.submit()).click();
@@ -98,7 +98,7 @@ describe("Last viewed question guidance", () => {
       await expect(await $(HobbiesPage.lastViewedQuestionGuidance()).isExisting()).to.be.true;
     });
 
-    it("When the user clicks continue on the hub and it takes you to a section which is complete but doesnt have a summary, then last question guidance is not shown", async ()=> {
+    it("When the user clicks continue on the hub and it takes you to a section which is complete but doesnt have a summary, then last question guidance is not shown", async () => {
       await $(HobbiesPage.yes()).click();
       await $(HobbiesPage.submit()).click();
       await $(HubPage.summaryRowLink("interests-section")).click();

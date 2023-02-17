@@ -6,7 +6,7 @@ import { TimeoutModalTestCase } from "./timeout_modal.js";
 
 describe("Timeout Modal Post Submission", () => {
   describe("Given I am completing the survey and get to post submission page,", () => {
-    beforeEach(async ()=> {
+    beforeEach(async () => {
       await browser.openQuestionnaire("test_timeout_modal.json");
       await $(TimeoutInterstitialPage.submit()).click();
       await $(TimeoutSubmitPage.submit()).click();

@@ -29,12 +29,12 @@ const answerBothBreakdownQuestions = async (array1, array2) => {
 };
 
 describe("Feature: Sum of grouped answers equal to validation against value source ", () => {
-  beforeEach(async ()=> {
+  beforeEach(async () => {
     await browser.openQuestionnaire("test_validation_sum_against_value_source.json");
   });
 
   describe("Given I start a grouped answer validation survey and enter 12 into the total", () => {
-    it("When I continue and enter 3 in each breakdown field, Then I should be able to get to the total playback page", async ()=> {
+    it("When I continue and enter 3 in each breakdown field, Then I should be able to get to the total playback page", async () => {
       await $(TotalAnswerPage.total()).setValue("12");
       await $(TotalAnswerPage.submit()).click();
 
@@ -45,7 +45,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
   });
 
   describe("Given I have a calculated summary value of 12", () => {
-    it("When I continue to second breakdown and enter values equal to calculated summary total, Then I should be able to get to the summary page", async ()=> {
+    it("When I continue to second breakdown and enter values equal to calculated summary total, Then I should be able to get to the summary page", async () => {
       await $(TotalAnswerPage.total()).setValue("12");
       await $(TotalAnswerPage.submit()).click();
 
@@ -56,7 +56,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
   });
 
   describe("Given I completed both grouped answer validation questions and I am on the summary", () => {
-    it("When I go back from the summary and change the total, Then I must reconfirm both breakdown questions with valid answers before I can get to the summary", async ()=> {
+    it("When I go back from the summary and change the total, Then I must reconfirm both breakdown questions with valid answers before I can get to the summary", async () => {
       await $(TotalAnswerPage.total()).setValue("12");
       await $(TotalAnswerPage.submit()).click();
 
@@ -79,7 +79,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
   });
 
   describe("Given I completed both grouped answer validation questions and I am on the summary", () => {
-    it("When I go back from the summary and change the total, Then I must reconfirm the breakdown question based on answer value source with valid answers before I can continue", async ()=> {
+    it("When I go back from the summary and change the total, Then I must reconfirm the breakdown question based on answer value source with valid answers before I can continue", async () => {
       await $(TotalAnswerPage.total()).setValue("12");
       await $(TotalAnswerPage.submit()).click();
 
@@ -102,7 +102,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
   });
 
   describe("Given I completed both grouped answer validation questions and I am on the summary", () => {
-    it("When I go back from the summary and change the first breakdown question answers so its total changes, Then I must reconfirm the second breakdown question based on calculated summary value source with valid answers before I can continue", async ()=> {
+    it("When I go back from the summary and change the first breakdown question answers so its total changes, Then I must reconfirm the second breakdown question based on calculated summary value source with valid answers before I can continue", async () => {
       await $(TotalAnswerPage.total()).setValue("12");
       await $(TotalAnswerPage.submit()).click();
 
@@ -129,7 +129,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
   });
 
   describe("Given I start a grouped answer validation survey and enter 5 into the total", () => {
-    it("When I continue and enter 3 in each breakdown field, Then I should see a validation error", async ()=> {
+    it("When I continue and enter 3 in each breakdown field, Then I should see a validation error", async () => {
       await $(TotalAnswerPage.total()).setValue("5");
       await $(TotalAnswerPage.submit()).click();
 
@@ -140,7 +140,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
   });
 
   describe("Given I start a grouped answer validation survey and enter 5 into the total", () => {
-    it("When I enter 3 in each breakdown field and continue to second breakdown and enter 3 in each field, Then I should see a validation error", async ()=> {
+    it("When I enter 3 in each breakdown field and continue to second breakdown and enter 3 in each field, Then I should see a validation error", async () => {
       await $(TotalAnswerPage.total()).setValue("5");
       await $(TotalAnswerPage.submit()).click();
 

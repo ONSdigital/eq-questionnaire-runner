@@ -4,23 +4,23 @@ import FinalInterstitialPage from "../generated_pages/interviewer_note/final-int
 import InitialInterstitialPage from "../generated_pages/interviewer_note/initial-interstitial-block.page.js";
 
 describe("Given I start a survey", () => {
-  before(async ()=> {
+  before(async () => {
     await browser.openQuestionnaire("test_interviewer_note.json");
   });
 
-  it("When I view interstitial page and the interviewer_note is set to true then I should be able to see interviewer note", async ()=> {
+  it("When I view interstitial page and the interviewer_note is set to true then I should be able to see interviewer note", async () => {
     await expect(await $(InitialInterstitialPage.questionText()).getText()).to.contain("Interviewer note");
   });
-  it("When I view question page and the interviewer_note is set to true then I should be able to see interviewer note", async ()=> {
+  it("When I view question page and the interviewer_note is set to true then I should be able to see interviewer note", async () => {
     await $(InitialInterstitialPage.submit()).click();
     await expect(await $(FavouriteTeamPage.questionText()).getText()).to.contain("Interviewer note");
   });
-  it("When I view question page and the interviewer_note is set to false then I should not be able to see interviewer note", async ()=> {
+  it("When I view question page and the interviewer_note is set to false then I should not be able to see interviewer note", async () => {
     await $(FavouriteTeamPage.favouriteTeam()).setValue("TNS");
     await $(FavouriteTeamPage.submit()).click();
     await expect(await $(ConfirmPage.questionText()).getText()).to.not.contain("Interviewer note");
   });
-  it("When I view interstitial page and the interviewer_note is not set then I should not be able to see interviewer note", async ()=> {
+  it("When I view interstitial page and the interviewer_note is not set then I should not be able to see interviewer note", async () => {
     await $(ConfirmPage.yes()).click();
     await $(ConfirmPage.submit()).click();
     await expect(await $(FinalInterstitialPage.questionText()).getText()).to.not.contain("Interviewer note");

@@ -20,11 +20,11 @@ import HubPage from "../base_pages/hub.page";
 
 describe("Routing and skipping section dependencies", () => {
   describe("Given the routing and skipping section dependencies questionnaire", () => {
-    beforeEach("Load the survey", async ()=> {
+    beforeEach("Load the survey", async () => {
       await browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
     });
 
-    it("When I answer 'No' to skipping the age question, Then in the Primary Person section I am asked my name, age and why I didn't confirm skipping", async ()=> {
+    it("When I answer 'No' to skipping the age question, Then in the Primary Person section I am asked my name, age and why I didn't confirm skipping", async () => {
       answerNoToSkipAgeQuestion();
 
       selectPrimaryPerson();
@@ -37,7 +37,7 @@ describe("Routing and skipping section dependencies", () => {
       expectReasonNoConfirmationAnswer();
     });
 
-    it("When I answer 'Yes' to skipping the age question, Then in the Primary Person section I am only asked my name and why I didn't confirm skipping", async ()=> {
+    it("When I answer 'Yes' to skipping the age question, Then in the Primary Person section I am only asked my name and why I didn't confirm skipping", async () => {
       answerYesToSkipAgeQuestion();
 
       selectPrimaryPerson();
@@ -49,7 +49,7 @@ describe("Routing and skipping section dependencies", () => {
       expectPersonalDetailsAgeExistingFalse();
     });
 
-    it("When I answer 'Yes' to skipping the age question and 'Yes' to are you sure in skip question confirmation section, Then in the Primary Person section I am just asked my name", async ()=> {
+    it("When I answer 'Yes' to skipping the age question and 'Yes' to are you sure in skip question confirmation section, Then in the Primary Person section I am just asked my name", async () => {
       answerYesToSkipAgeQuestion();
 
       selectConfirmationSectionAndAnswerSecurityQuestion();
@@ -63,7 +63,7 @@ describe("Routing and skipping section dependencies", () => {
       expectReasonNoConfirmationExistingFalse();
     });
 
-    it("When I answer 'Yes' to skipping the age question but 'No' to are you sure in skip question confirmation section, Then in the Primary Person section I am only asked my name and age", async ()=> {
+    it("When I answer 'Yes' to skipping the age question but 'No' to are you sure in skip question confirmation section, Then in the Primary Person section I am only asked my name and age", async () => {
       answerYesToSkipAgeQuestion();
 
       selectConfirmationSectionAndAnswerSecurityQuestion();
@@ -78,7 +78,7 @@ describe("Routing and skipping section dependencies", () => {
       expectReasonNoConfirmationExistingFalse();
     });
 
-    it("When I answer 'No' to skipping the age question and populate the household, Then in each repeating section I am not asked their age", async ()=> {
+    it("When I answer 'No' to skipping the age question and populate the household, Then in each repeating section I am not asked their age", async () => {
       answerNoToSkipAgeQuestion();
 
       addHouseholdMembers();
@@ -103,7 +103,7 @@ describe("Routing and skipping section dependencies", () => {
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("10");
     });
 
-    it("When I answer 'Yes' to skipping the age question and populate the household, Then in each repeating section I am not asked their age", async ()=> {
+    it("When I answer 'Yes' to skipping the age question and populate the household, Then in each repeating section I am not asked their age", async () => {
       answerYesToSkipAgeQuestion();
 
       addHouseholdMembers();
@@ -125,15 +125,15 @@ describe("Routing and skipping section dependencies", () => {
   });
 
   describe("Given the routing and skipping section dependencies questionnaire", () => {
-    beforeEach("Load the survey", async ()=> {
+    beforeEach("Load the survey", async () => {
       await browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
     });
-    it("When I answer 'No' to skipping the section question and 'Yes' to enable the section question, Then the household summary will be visible on the hub", async ()=> {
+    it("When I answer 'No' to skipping the section question and 'Yes' to enable the section question, Then the household summary will be visible on the hub", async () => {
       answerNoToSkipEnableQuestionAndYesToEnableSection();
 
       await expect(await $(HubPage.summaryRowLink("household-section")).isExisting()).to.be.true;
     });
-    it("When I answer 'No' to skipping the section question and 'No' to enable the section question, Then the household summary will not be visible on the hub", async ()=> {
+    it("When I answer 'No' to skipping the section question and 'No' to enable the section question, Then the household summary will not be visible on the hub", async () => {
       answerNoToSkipEnableQuestionAndNoToEnableSection();
 
       await expect(await $(HubPage.summaryRowLink("household-section")).isExisting()).to.be.false;
@@ -141,10 +141,10 @@ describe("Routing and skipping section dependencies", () => {
   });
 
   describe("Given the routing and skipping section dependencies questionnaire and I answered 'No' to skipping the section question and 'Yes' to enable the section question", () => {
-    before("Load the survey", async ()=> {
+    before("Load the survey", async () => {
       await browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
     });
-    it("When I change my answer to skipping the section question to 'No', Then the household summary will not be visible on the hub", async ()=> {
+    it("When I change my answer to skipping the section question to 'No', Then the household summary will not be visible on the hub", async () => {
       answerNoToSkipEnableQuestionAndYesToEnableSection();
       changeSkipEnableQuestionToYes();
 
@@ -153,11 +153,11 @@ describe("Routing and skipping section dependencies", () => {
   });
 
   describe("Given the routing and skipping section dependencies questionnaire and I answered 'Yes' to skipping the age question but 'No' to are you sure in skip question confirmation section", () => {
-    before("Load the survey", async ()=> {
+    before("Load the survey", async () => {
       await browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
     });
 
-    it("When I change my answer to skipping age to 'No', removing the 'are you sure' question from the path, Then in the Primary Person section I am asked my name, age and why I didn't confirm skipping", async ()=> {
+    it("When I change my answer to skipping age to 'No', removing the 'are you sure' question from the path, Then in the Primary Person section I am asked my name, age and why I didn't confirm skipping", async () => {
       answerYesToSkipAgeQuestion();
 
       selectConfirmationSectionAndAnswerSecurityQuestion();
@@ -181,11 +181,11 @@ describe("Routing and skipping section dependencies", () => {
   });
 
   describe("Given the routing and skipping section dependencies questionnaire and I answered 'Yes' to skipping the age question and complete the Primary Person section", () => {
-    before("Load the survey", async ()=> {
+    before("Load the survey", async () => {
       await browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
     });
 
-    it("When I change my answer to skipping age to 'No', Then the Primary Person section status is changed to Partially completed", async ()=> {
+    it("When I change my answer to skipping age to 'No', Then the Primary Person section status is changed to Partially completed", async () => {
       answerYesToSkipAgeQuestion();
       selectPrimaryPerson();
       answerAndSubmitNameQuestion();
@@ -199,7 +199,7 @@ describe("Routing and skipping section dependencies", () => {
       await expect(await $(HubPage.summaryRowState("primary-person")).getText()).to.equal("Partially completed");
     });
 
-    it("When I change my answer back to skipping age to 'Yes', Then the Primary Person section status is changed back to Completed", async ()=> {
+    it("When I change my answer back to skipping age to 'Yes', Then the Primary Person section status is changed back to Completed", async () => {
       editYesToSkipAgeQuestion();
 
       await expect(await $(HubPage.summaryRowState("primary-person")).getText()).to.equal("Completed");
@@ -207,11 +207,11 @@ describe("Routing and skipping section dependencies", () => {
   });
 
   describe("Given the routing and skipping section dependencies questionnaire and I answered 'Yes' to skipping the age question and add 2 household members but complete only one", () => {
-    before("Load the survey", async ()=> {
+    before("Load the survey", async () => {
       await browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies.json");
     });
 
-    it("When I change my answer to skipping age to 'No', Then the completed household member status is changed to Partially completed and the other stays as not started", async ()=> {
+    it("When I change my answer to skipping age to 'No', Then the completed household member status is changed to Partially completed and the other stays as not started", async () => {
       answerYesToSkipAgeQuestion();
       addHouseholdMembers();
       await $(HubPage.summaryRowLink("household-personal-details-section-1")).click();
@@ -225,7 +225,7 @@ describe("Routing and skipping section dependencies", () => {
       await expect(await $(HubPage.summaryRowState("household-personal-details-section-2")).getText()).to.equal("Not started");
     });
 
-    it("When I change my answer back to skipping age to 'Yes', Then the Partially completed household member status is changed back to Completed and the other stays as not started", async ()=> {
+    it("When I change my answer back to skipping age to 'Yes', Then the Partially completed household member status is changed back to Completed and the other stays as not started", async () => {
       editYesToSkipAgeQuestion();
 
       await expect(await $(HubPage.summaryRowState("household-personal-details-section-1")).getText()).to.equal("Completed");
@@ -234,7 +234,7 @@ describe("Routing and skipping section dependencies", () => {
   });
 });
 
-const addHouseholdMembers = async ()=> {
+const addHouseholdMembers = async () => {
   await $(HubPage.summaryRowLink("household-section")).click();
   await $(ListCollectorPage.yes()).click();
   await $(ListCollectorPage.submit()).click();
@@ -251,17 +251,17 @@ const addHouseholdMembers = async ()=> {
   await $(HouseholdSectionSummaryPage.submit()).click();
 };
 
-const selectPrimaryPerson = async ()=> {
+const selectPrimaryPerson = async () => {
   await $(HubPage.summaryRowLink("primary-person")).click();
 };
 
-const selectConfirmationSectionAndAnswerSecurityQuestion = async ()=> {
+const selectConfirmationSectionAndAnswerSecurityQuestion = async () => {
   await $(HubPage.summaryRowLink("skip-confirmation-section")).click();
   await $(SecurityPage.yes()).click();
   await $(SecurityPage.submit()).click();
 };
 
-const answerYesToSkipAgeQuestion = async ()=> {
+const answerYesToSkipAgeQuestion = async () => {
   await $(HubPage.summaryRowLink("skip-section")).click();
   await $(SkipAgePage.yes()).click();
   await $(SkipAgePage.submit()).click();
@@ -272,7 +272,7 @@ const answerYesToSkipAgeQuestion = async ()=> {
   await $(SkipSectionSummaryPage.submit()).click();
 };
 
-const editNoToSkipAgeQuestion = async ()=> {
+const editNoToSkipAgeQuestion = async () => {
   await $(HubPage.summaryRowLink("skip-section")).click();
   await $(SkipSectionSummaryPage.skipAgeAnswerEdit()).click();
   await $(SkipAgePage.no()).click();
@@ -280,7 +280,7 @@ const editNoToSkipAgeQuestion = async ()=> {
   await $(SkipSectionSummaryPage.submit()).click();
 };
 
-const editYesToSkipAgeQuestion = async ()=> {
+const editYesToSkipAgeQuestion = async () => {
   await $(HubPage.summaryRowLink("skip-section")).click();
   await $(SkipSectionSummaryPage.skipAgeAnswerEdit()).click();
   await $(SkipAgePage.yes()).click();
@@ -288,7 +288,7 @@ const editYesToSkipAgeQuestion = async ()=> {
   await $(SkipSectionSummaryPage.submit()).click();
 };
 
-const answerNoToSkipAgeQuestion = async ()=> {
+const answerNoToSkipAgeQuestion = async () => {
   await $(HubPage.summaryRowLink("skip-section")).click();
   await $(SkipAgePage.no()).click();
   await $(SkipAgePage.submit()).click();
@@ -299,19 +299,19 @@ const answerNoToSkipAgeQuestion = async ()=> {
   await $(SkipSectionSummaryPage.submit()).click();
 };
 
-const answerNoToSkipConfirmationQuestion = async ()=> {
+const answerNoToSkipConfirmationQuestion = async () => {
   await $(SkipConfirmationPage.no()).click();
   await $(SkipConfirmationPage.submit()).click();
   await $(SkipConfirmationSectionSummaryPage.submit()).click();
 };
 
-const answerYesToSkipConfirmationQuestion = async ()=> {
+const answerYesToSkipConfirmationQuestion = async () => {
   await $(SkipConfirmationPage.yes()).click();
   await $(SkipConfirmationPage.submit()).click();
   await $(SkipConfirmationSectionSummaryPage.submit()).click();
 };
 
-const answerNoToSkipEnableQuestionAndYesToEnableSection = async ()=> {
+const answerNoToSkipEnableQuestionAndYesToEnableSection = async () => {
   await $(HubPage.summaryRowLink("skip-section")).click();
   await $(SkipAgePage.no()).click();
   await $(SkipAgePage.submit()).click();
@@ -322,7 +322,7 @@ const answerNoToSkipEnableQuestionAndYesToEnableSection = async ()=> {
   await $(SkipSectionSummaryPage.submit()).click();
 };
 
-const answerNoToSkipEnableQuestionAndNoToEnableSection = async ()=> {
+const answerNoToSkipEnableQuestionAndNoToEnableSection = async () => {
   await $(HubPage.summaryRowLink("skip-section")).click();
   await $(SkipAgePage.no()).click();
   await $(SkipAgePage.submit()).click();
@@ -333,7 +333,7 @@ const answerNoToSkipEnableQuestionAndNoToEnableSection = async ()=> {
   await $(SkipSectionSummaryPage.submit()).click();
 };
 
-const changeSkipEnableQuestionToYes = async ()=> {
+const changeSkipEnableQuestionToYes = async () => {
   await $(HubPage.summaryRowLink("skip-section")).click();
   await $(SkipSectionSummaryPage.skipHouseholdSectionAnswerEdit()).click();
   await $(SkipEnableSectionPage.yes()).click();
@@ -341,37 +341,39 @@ const changeSkipEnableQuestionToYes = async ()=> {
   await $(SkipSectionSummaryPage.submit()).click();
 };
 
-const answerAndSubmitNameQuestion = async ()=> {
+const answerAndSubmitNameQuestion = async () => {
   await $(NamePage.name()).setValue("John Smith");
   await $(NamePage.submit()).click();
 };
 
-const answerAndSubmitAgeQuestion = async ()=> {
+const answerAndSubmitAgeQuestion = async () => {
   await $(AgePage.answer()).setValue("50");
   await $(AgePage.submit()).click();
 };
 
-const answerAndSubmitReasonForNoConfirmationQuestion = async ()=> {
+const answerAndSubmitReasonForNoConfirmationQuestion = async () => {
   await $(ReasonNoConfirmationPage.iDidNotVisitSection2SoConfirmationWasNotNeeded()).click();
   await $(ReasonNoConfirmationPage.submit()).click();
 };
 
-const expectPersonalDetailsName = async ()=> {
+const expectPersonalDetailsName = async () => {
   await expect(await $(PrimaryPersonSummaryPage.nameAnswer()).getText()).to.contain("John Smith");
 };
 
-const expectPersonalDetailsAge = async ()=> {
+const expectPersonalDetailsAge = async () => {
   await expect(await $(PrimaryPersonSummaryPage.ageAnswer()).getText()).to.contain("50");
 };
 
-const expectReasonNoConfirmationAnswer = async ()=> {
-  await expect(await $(PrimaryPersonSummaryPage.reasonNoConfirmationAnswer()).getText()).to.contain("I did not visit section 2, so confirmation was not needed");
+const expectReasonNoConfirmationAnswer = async () => {
+  await expect(await $(PrimaryPersonSummaryPage.reasonNoConfirmationAnswer()).getText()).to.contain(
+    "I did not visit section 2, so confirmation was not needed"
+  );
 };
 
-const expectPersonalDetailsAgeExistingFalse = async ()=> {
+const expectPersonalDetailsAgeExistingFalse = async () => {
   await expect(await $(PrimaryPersonSummaryPage.ageAnswer()).isExisting()).to.be.false;
 };
 
-const expectReasonNoConfirmationExistingFalse = async ()=> {
+const expectReasonNoConfirmationExistingFalse = async () => {
   await expect(await $(PrimaryPersonSummaryPage.reasonNoConfirmationAnswer()).isExisting()).to.be.false;
 };

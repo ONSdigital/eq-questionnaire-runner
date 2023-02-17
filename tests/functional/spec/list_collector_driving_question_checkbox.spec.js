@@ -9,7 +9,7 @@ import ListCollectorTemporaryAwayPage from "../generated_pages/list_collector_dr
 import ListCollectorTemporaryAwayAddPage from "../generated_pages/list_collector_driving_checkbox/list-collector-temporary-away-stay-add.page";
 import SummaryPage from "../generated_pages/list_collector_driving_checkbox/section-summary.page";
 
-const beforeSetup = async ()=> {
+const beforeSetup = async () => {
   await browser.openQuestionnaire("test_list_collector_driving_checkbox.json");
   await $(HubPage.submit()).click();
 };
@@ -18,7 +18,7 @@ describe("List Collector Driving Checkbox Question", () => {
   before("Load the survey", beforeSetup);
 
   describe("Given a happy journey through the list collectors", () => {
-    it("All of the household members and visitors are shown in the summary", async ()=> {
+    it("All of the household members and visitors are shown in the summary", async () => {
       await $(PrimaryPersonListCollectorPage.yesIUsuallyLiveHere()).click();
       await $(PrimaryPersonListCollectorPage.submit()).click();
       await $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Marcus");
@@ -40,7 +40,7 @@ describe("List Collector Driving Checkbox Question", () => {
   });
 
   describe("Given the primary person is removed", () => {
-    it("Then they aren't shown on the summary screen", async ()=> {
+    it("Then they aren't shown on the summary screen", async () => {
       await $(SummaryPage.previous()).click();
       await $(ListCollectorTemporaryAwayPage.previous()).click();
       await $(ListCollectorPage.previous()).click();
@@ -54,7 +54,7 @@ describe("List Collector Driving Checkbox Question", () => {
   });
 
   describe("Given the user chooses yes from the second list collector", () => {
-    it("Then they are taken to the correct list add screen", async ()=> {
+    it("Then they are taken to the correct list add screen", async () => {
       await $(SummaryPage.previous()).click();
       await $(ListCollectorTemporaryAwayPage.yesINeedToAddSomeone()).click();
       await $(ListCollectorTemporaryAwayPage.submit()).click();
@@ -73,7 +73,7 @@ describe("List Collector Driving Checkbox Question", () => {
 describe("Given the user says no one else lives in the house", () => {
   before("Load the survey", beforeSetup);
 
-  it("The user is asked if they need to add anyone that is temporarily away", async ()=> {
+  it("The user is asked if they need to add anyone that is temporarily away", async () => {
     await $(PrimaryPersonListCollectorPage.yesIUsuallyLiveHere()).click();
     await $(PrimaryPersonListCollectorPage.submit()).click();
     await $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Marcus");
@@ -82,20 +82,24 @@ describe("Given the user says no one else lives in the house", () => {
     await $(AnyoneUsuallyLiveAtPage.exclusiveNoneOfTheseApplyNoOneUsuallyLivesHere()).click();
     await $(AnyoneUsuallyLiveAtPage.submit()).click();
 
-    await expect(await $(ListCollectorTemporaryAwayPage.questionText()).getText()).to.equal("You said 1 person lives at 12 Lovely Villas. Do you need to add anyone?");
+    await expect(await $(ListCollectorTemporaryAwayPage.questionText()).getText()).to.equal(
+      "You said 1 person lives at 12 Lovely Villas. Do you need to add anyone?"
+    );
   });
 });
 
 describe("Given a person does not live in the house", () => {
   before("Load the survey", beforeSetup);
-  it("The user is asked whether they live there", async ()=> {
+  it("The user is asked whether they live there", async () => {
     await $(PrimaryPersonListCollectorPage.noIDonTUsuallyLiveHere()).click();
     await $(PrimaryPersonListCollectorPage.submit()).click();
     await expect(await $(AnyoneUsuallyLiveAtPage.questionText()).getText()).to.equal("Do any of the following usually live at 12 Lovely Villas on 21 March?");
 
     await $(AnyoneUsuallyLiveAtPage.exclusiveNoneOfTheseApplyNoOneUsuallyLivesHere()).click();
     await $(AnyoneUsuallyLiveAtPage.submit()).click();
-    await expect(await $(ListCollectorTemporaryAwayPage.questionText()).getText()).to.equal("You said 0 people lives at 12 Lovely Villas. Do you need to add anyone?");
+    await expect(await $(ListCollectorTemporaryAwayPage.questionText()).getText()).to.equal(
+      "You said 0 people lives at 12 Lovely Villas. Do you need to add anyone?"
+    );
 
     await $(ListCollectorTemporaryAwayPage.noThereAreNumberOfPeoplePeopleLivingHere()).click();
     await $(AnyoneUsuallyLiveAtPage.submit()).click();

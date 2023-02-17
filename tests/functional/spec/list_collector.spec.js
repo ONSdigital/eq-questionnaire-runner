@@ -22,11 +22,11 @@ import { SubmitPage } from "../base_pages/submit.page.js";
 
 describe("List Collector", () => {
   describe("Given a normal journey through the list collector without variants", () => {
-    before("Load the survey", async ()=> {
+    before("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector.json");
     });
 
-    it("The user is able to add members of the household", async ()=> {
+    it("The user is able to add members of the household", async () => {
       await $(ListCollectorPage.yes()).click();
       await $(ListCollectorPage.submit()).click();
       await $(ListCollectorAddPage.firstName()).setValue("Marcus");
@@ -49,12 +49,12 @@ describe("List Collector", () => {
       await $(ListCollectorAddPage.submit()).click();
     });
 
-    it("The collector shows all of the household members in the summary", async ()=> {
+    it("The collector shows all of the household members in the summary", async () => {
       const peopleExpected = ["Marcus Twin", "Samuel Clemens", "Olivia Clemens", "Suzy Clemens"];
       checkPeopleInList(peopleExpected, ListCollectorPage.listLabel);
     });
 
-    it("The questionnaire allows the name of a person to be changed", async ()=> {
+    it("The questionnaire allows the name of a person to be changed", async () => {
       await $(ListCollectorPage.listEditLink(1)).click();
       await $(ListCollectorEditPage.firstName()).setValue("Mark");
       await $(ListCollectorEditPage.lastName()).setValue("Twain");
@@ -62,18 +62,18 @@ describe("List Collector", () => {
       await expect(await $(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twain");
     });
 
-    it("The questionnaire allows me to remove the first person (Mark Twain) from the summary", async ()=> {
+    it("The questionnaire allows me to remove the first person (Mark Twain) from the summary", async () => {
       await $(ListCollectorPage.listRemoveLink(1)).click();
       await $(ListCollectorRemovePage.yes()).click();
       await $(ListCollectorRemovePage.submit()).click();
     });
 
-    it("The collector summary does not show Mark Twain anymore.", async ()=> {
+    it("The collector summary does not show Mark Twain anymore.", async () => {
       await expect(await $(ListCollectorPage.listLabel(1)).getText()).to.not.have.string("Mark Twain");
       await expect(await $(ListCollectorPage.listLabel(3)).getText()).to.equal("Suzy Clemens");
     });
 
-    it("The questionnaire allows more people to be added", async ()=> {
+    it("The questionnaire allows more people to be added", async () => {
       await $(ListCollectorPage.yes()).click();
       await $(ListCollectorPage.submit()).click();
       await expect(await $(ListCollectorAddPage.questionText()).getText()).to.contain("What is the name of the person");
@@ -87,7 +87,7 @@ describe("List Collector", () => {
       await $(ListCollectorAddPage.submit()).click();
     });
 
-    it("The user is returned to the list collector when the cancel link is clicked on the add page.", async ()=> {
+    it("The user is returned to the list collector when the cancel link is clicked on the add page.", async () => {
       await $(ListCollectorPage.yes()).click();
       await $(ListCollectorPage.submit()).click();
       await $(ListCollectorAddPage.firstName()).setValue("Someone");
@@ -96,7 +96,7 @@ describe("List Collector", () => {
       await expect(browser.getUrl()).to.contain(ListCollectorPage.pageName);
     });
 
-    it("The user is returned to the list collector when the cancel link is clicked on the edit page.", async ()=> {
+    it("The user is returned to the list collector when the cancel link is clicked on the edit page.", async () => {
       await $(ListCollectorPage.yes()).click();
       await $(ListCollectorPage.submit()).click();
       await $(ListCollectorAddPage.firstName()).setValue("Someone");
@@ -107,28 +107,28 @@ describe("List Collector", () => {
       await expect(browser.getUrl()).to.contain(ListCollectorPage.pageName);
     });
 
-    it("The collector shows everyone on the summary", async ()=> {
+    it("The collector shows everyone on the summary", async () => {
       const peopleExpected = ["Samuel Clemens", "Olivia Clemens", "Suzy Clemens", "Clara Clemens", "Jean Clemens"];
       checkPeopleInList(peopleExpected, ListCollectorPage.listLabel);
     });
 
-    it("When No is answered on the list collector the user sees an interstitial", async ()=> {
+    it("When No is answered on the list collector the user sees an interstitial", async () => {
       await $(ListCollectorPage.no()).click();
       await $(ListCollectorPage.submit()).click();
       await expect(browser.getUrl()).to.contain(NextInterstitialPage.pageName);
       await $(NextInterstitialPage.submit()).click();
     });
 
-    it("After the interstitial, the user should be on the second list collector page", async ()=> {
+    it("After the interstitial, the user should be on the second list collector page", async () => {
       await expect(browser.getUrl()).to.contain(AnotherListCollectorPage.pageName);
     });
 
-    it("The collector still shows the same list of people on the summary", async ()=> {
+    it("The collector still shows the same list of people on the summary", async () => {
       const peopleExpected = ["Samuel Clemens", "Olivia Clemens", "Suzy Clemens", "Clara Clemens", "Jean Clemens"];
       checkPeopleInList(peopleExpected, ListCollectorPage.listLabel);
     });
 
-    it("The collector allows the user to add another person to the same list", async ()=> {
+    it("The collector allows the user to add another person to the same list", async () => {
       await $(AnotherListCollectorPage.yes()).click();
       await $(AnotherListCollectorPage.submit()).click();
       await $(AnotherListCollectorAddPage.firstName()).setValue("Someone");
@@ -137,13 +137,13 @@ describe("List Collector", () => {
       await expect(await $(AnotherListCollectorPage.listLabel(6)).getText()).to.equal("Someone Else");
     });
 
-    it("The collector allows the user to remove a person again", async ()=> {
+    it("The collector allows the user to remove a person again", async () => {
       await $(AnotherListCollectorPage.listRemoveLink(5)).click();
       await $(AnotherListCollectorRemovePage.yes()).click();
       await $(AnotherListCollectorRemovePage.submit()).click();
     });
 
-    it("The user is returned to the list collector when the previous link is clicked.", async ()=> {
+    it("The user is returned to the list collector when the previous link is clicked.", async () => {
       await $(AnotherListCollectorPage.listRemoveLink(1)).click();
       await $(AnotherListCollectorRemovePage.previous()).click();
       await expect(browser.getUrl()).to.contain(AnotherListCollectorPage.pageName);
@@ -156,13 +156,13 @@ describe("List Collector", () => {
       await expect(browser.getUrl()).to.contain(AnotherListCollectorPage.pageName);
     });
 
-    it("The questionnaire shows the confirmation page when no more people to add", async ()=> {
+    it("The questionnaire shows the confirmation page when no more people to add", async () => {
       await $(AnotherListCollectorPage.no()).click();
       await $(AnotherListCollectorPage.submit()).click();
       await expect(browser.getUrl()).to.contain("/sections/section/");
     });
 
-    it("The questionnaire allows submission", async ()=> {
+    it("The questionnaire allows submission", async () => {
       await $(SummaryPage.submit()).click();
       await $(SubmitPage.submit()).click();
       await expect(browser.getUrl()).to.contain("thank-you");
@@ -170,7 +170,7 @@ describe("List Collector", () => {
   });
 
   describe("Given I start a list collector survey and complete to Section Summary", () => {
-    beforeEach(async ()=> {
+    beforeEach(async () => {
       await browser.openQuestionnaire("test_list_collector_list_summary.json");
       await $(PrimaryPersonListCollectorPage.yes()).click();
       await $(PrimaryPersonListCollectorPage.submit()).click();
@@ -193,13 +193,13 @@ describe("List Collector", () => {
       await $(VisitorListCollectorPage.submit()).click();
     });
 
-    it("The section summary should display contents of the list collector", async ()=> {
+    it("The section summary should display contents of the list collector", async () => {
       await expect(await $(PeopleListSectionSummaryPage.peopleListLabel(1)).getText()).to.contain("Marcus Twin (You)");
       await expect(await $(PeopleListSectionSummaryPage.peopleListLabel(2)).getText()).to.contain("Samuel Clemens");
       await expect(await $(PeopleListSectionSummaryPage.visitorsListLabel(1)).getText()).to.contain("Olivia Clemens");
     });
 
-    it("When the user adds an item to the list, They should return to the section summary and it should display the updated list", async ()=> {
+    it("When the user adds an item to the list, They should return to the section summary and it should display the updated list", async () => {
       await $(PeopleListSectionSummaryPage.visitorsListAddLink(1)).click();
       await $(VisitorListCollectorAddPage.firstNameVisitor()).setValue("Joe");
       await $(VisitorListCollectorAddPage.lastNameVisitor()).setValue("Bloggs");
@@ -209,14 +209,14 @@ describe("List Collector", () => {
       await expect(await $(PeopleListSectionSummaryPage.visitorsListLabel(2)).getText()).to.contain("Joe Bloggs");
     });
 
-    it("When the user removes an item from the list, They should return to the section summary and it should display the updated list", async ()=> {
+    it("When the user removes an item from the list, They should return to the section summary and it should display the updated list", async () => {
       await $(PeopleListSectionSummaryPage.peopleListRemoveLink(2)).click();
       await $(SectionSummaryListCollectorRemovePage.yes()).click();
       await $(SectionSummaryListCollectorRemovePage.submit()).click();
       await expect(await $(PeopleListSectionSummaryPage.visitorsListLabel(2)).isExisting()).to.equal(false);
     });
 
-    it("When the user updates the list, They should return to the section summary and it should display the updated list", async ()=> {
+    it("When the user updates the list, They should return to the section summary and it should display the updated list", async () => {
       await $(PeopleListSectionSummaryPage.peopleListEditLink(1)).click();
       await $(SectionSummaryListCollectorEditPage.firstName()).setValue("Mark");
       await $(SectionSummaryListCollectorEditPage.lastName()).setValue("Twain");
@@ -224,7 +224,7 @@ describe("List Collector", () => {
       await expect(await $(PeopleListSectionSummaryPage.peopleListLabel(1)).getText()).to.contain("Mark Twain (You)");
     });
 
-    it("When the user removes an item from the list, They should see the individual response guidance", async ()=> {
+    it("When the user removes an item from the list, They should see the individual response guidance", async () => {
       await $(PeopleListSectionSummaryPage.peopleListRemoveLink(2)).click();
       await expect(await $(SectionSummaryListCollectorRemovePage.individualResponseGuidance()).isExisting()).to.equal(true);
     });

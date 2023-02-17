@@ -96,7 +96,7 @@ const PLURAL_TEST_DATA_SETS = [
 ];
 
 describe("Language Code", () => {
-  it("Given a launch language of Welsh, I should see Welsh text", async ()=> {
+  it("Given a launch language of Welsh, I should see Welsh text", async () => {
     await browser.openQuestionnaire("test_language.json", {
       language: "cy",
     });
@@ -126,7 +126,7 @@ describe("Language Code", () => {
     await expect(browser.getUrl()).to.contain("thank-you");
   });
 
-  it("Given a launch language of English, I should see English text", async ()=> {
+  it("Given a launch language of English, I should see English text", async () => {
     await browser.openQuestionnaire("test_language.json", {
       language: "en",
     });
@@ -156,7 +156,7 @@ describe("Language Code", () => {
     await expect(browser.getUrl()).to.contain("thank-you");
   });
 
-  it("Given a launch language of English, When I select Cymraeg, Then the language should be switched to Welsh", async ()=> {
+  it("Given a launch language of English, When I select Cymraeg, Then the language should be switched to Welsh", async () => {
     await browser.openQuestionnaire("test_language.json", {
       language: "en",
     });
@@ -197,7 +197,7 @@ describe("Language Code", () => {
     await expect(browser.getUrl()).to.contain("thank-you");
   });
 
-  it("Given a launch language of Welsh, When I select English, Then the language should be switched to English", async ()=> {
+  it("Given a launch language of Welsh, When I select English, Then the language should be switched to English", async () => {
     await browser.openQuestionnaire("test_language.json", {
       language: "cy",
     });
@@ -212,7 +212,7 @@ describe("Language Code", () => {
     for (const dataSet of PLURAL_TEST_DATA_SETS) {
       const numberOfPeople = dataSet.count;
 
-      it(`Test plural count: ${numberOfPeople}`, async ()=> {
+      it(`Test plural count: ${numberOfPeople}`, async () => {
         await browser.openQuestionnaire("test_language.json", {
           language: "en",
         });
