@@ -1,4 +1,4 @@
-from typing import Any, Mapping, Union
+from typing import Any, Union
 
 from app.data_models import QuestionnaireStore
 from app.questionnaire import Location, QuestionnaireSchema
@@ -8,7 +8,6 @@ from app.views.contexts.preview.preview_question import PreviewQuestion
 class PreviewBlock:
     def __init__(
         self,
-        block_schema: Mapping[str, Any],
         schema: QuestionnaireSchema,
         questionnaire_store: QuestionnaireStore,
         current_location: Location,
@@ -16,8 +15,6 @@ class PreviewBlock:
         language: str,
         block_id: str,
     ):
-        self.title = block_schema.get("title")
-
         self.schema = schema
 
         self.questionnaire_store = questionnaire_store
@@ -50,6 +47,5 @@ class PreviewBlock:
 
     def serialize(self) -> dict[str, Union[str, dict, Any]]:
         return {
-            "title": self.title,
             "question": self.question,
         }

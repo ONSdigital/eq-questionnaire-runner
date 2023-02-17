@@ -50,7 +50,6 @@ def test_build_preview_context(
                 "title": "Main section",
                 "blocks": [
                     {
-                        "title": None,
                         "question": {
                             "id": "report-radio",
                             "title": "Are you able to report for the calendar month 2 February 2016 to 3 March 2016?",
@@ -70,7 +69,6 @@ def test_build_preview_context(
                         },
                     },
                     {
-                        "title": None,
                         "question": {
                             "id": "report-radio-second",
                             "title": "Are you sure you are able to report for the calendar month ref_p_start_date to ref_p_end_date?",
@@ -86,7 +84,6 @@ def test_build_preview_context(
                         },
                     },
                     {
-                        "title": None,
                         "question": {
                             "id": "projects-checkbox",
                             "title": "Which sector did ESSENTIAL ENTERPRISE LTD. carry out work for?",
@@ -113,7 +110,6 @@ def test_build_preview_context(
                         },
                     },
                     {
-                        "title": None,
                         "question": {
                             "id": "turnover-variants-block",
                             "title": "What was your total turnover",
@@ -152,7 +148,6 @@ def test_build_preview_context(
                         },
                     },
                     {
-                        "title": None,
                         "question": {
                             "id": "address-mutually-exclusive-checkbox",
                             "title": "Were your company based at any of the following addresses?",
@@ -171,7 +166,6 @@ def test_build_preview_context(
                         },
                     },
                     {
-                        "title": None,
                         "question": {
                             "id": "further-details-text-area",
                             "title": "Please provide any further details",

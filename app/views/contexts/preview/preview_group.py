@@ -39,7 +39,6 @@ class PreviewGroup:
                 blocks.extend(
                     [
                         PreviewBlock(
-                            block,
                             self.schema,
                             self.questionnaire_store,
                             self.current_location,
