@@ -180,6 +180,14 @@
                                     {
                                         "id": "report-radio-answer",
                                         "mandatory": true,
+                                        "description": "Choose Yes or No answer",
+                                        "guidance": {
+                                            "contents": [
+                                                {
+                                                    "description": "You can only pick one answer"
+                                                }
+                                            ]
+                                        },
                                         "type": "Radio",
                                         "options": [
                                             {
