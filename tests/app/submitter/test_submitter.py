@@ -359,7 +359,6 @@ def test_double_submission_passes_when_delete_operation_error(
 def test_double_submission_is_forbidden_when_not_delete_operation_error(
     patch_gcs_client, gcs_blob_create_forbidden
 ):  # pylint: disable=redefined-outer-name
-
     # Given
     gcs_submitter = GCSSubmitter(bucket_name="test_bucket")
 

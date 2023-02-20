@@ -153,7 +153,6 @@ def test_session_store_stores_none_for_language_code_value(
 
 @pytest.mark.usefixtures("app")
 def test_legacy_load(app_session_store_encoded):
-
     _save_session(
         app_session_store_encoded,
         app_session_store_encoded.session_id,

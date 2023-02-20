@@ -21,7 +21,6 @@ class DecimalFieldWithSeparator(DecimalField):
         self.data = None
 
     def process_formdata(self, valuelist):
-
         if valuelist:
             try:
                 self.data = Decimal(

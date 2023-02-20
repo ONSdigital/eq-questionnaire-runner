@@ -85,7 +85,6 @@ class QuestionnaireStoreUpdater:
         list_items = self._list_store[list_name]
 
         for collector in relationship_collectors:
-
             relationship_answer_id = self._schema.get_first_answer_id_for_block(
                 collector["id"]
             )
@@ -341,12 +340,12 @@ class QuestionnaireStoreUpdater:
 
     def update_progress_for_dependent_sections(self) -> None:
         """Removes dependent blocks from the progress store and updates the progress to IN_PROGRESS.
-        Section progress is not updated for the current location as it is handled by `handle_post` on block handlers."""
+        Section progress is not updated for the current location as it is handled by `handle_post` on block handlers.
+        """
 
         self._remove_dependent_blocks_and_capture_dependent_sections()
 
         for section in self.dependent_sections:
-
             if (
                 section.section_id,
                 section.list_item_id,

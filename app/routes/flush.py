@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from flask import Blueprint, Response, current_app, request, session
 from sdc.crypto.decrypter import decrypt
 from sdc.crypto.encrypter import encrypt
-from structlog import get_logger
+from structlog import contextvars, get_logger
 
 from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.authentication.user import User
@@ -49,7 +49,7 @@ def flush_data():
         user = _get_user(decrypted_token["response_id"])
 
         if metadata := get_metadata(user):
-            logger.bind(tx_id=metadata.tx_id)
+            contextvars.bind_contextvars(tx_id=metadata.tx_id)
         if _submit_data(user):
             return Response(status=200)
         return Response(status=404)

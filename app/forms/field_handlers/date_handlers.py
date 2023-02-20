@@ -27,7 +27,6 @@ class DateHandler(FieldHandler):
 
     @cached_property
     def validators(self) -> DateValidatorTypes:
-
         validate_with: DateValidatorTypes = [OptionalForm()]
 
         if self.answer_schema["mandatory"] is True:
