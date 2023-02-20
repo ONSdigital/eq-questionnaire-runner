@@ -55,7 +55,7 @@
                 "page_title": "Summary title",
                 "show_on_completion": true
             },
-            "show_on_hub": true,
+            "show_on_hub": false,
             "groups": [
                 {
                     "id": "introduction-group",
