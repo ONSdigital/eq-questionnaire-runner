@@ -25,8 +25,8 @@ class TestCase {
       await expect(await $(TimeoutModalPage.timer()).getText()).to.equal("");
       await browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
       await browser.refresh();
-      await expect(await browser.getUrl()).to.contain(page.pageName);
-      await expect($("body").getHTML()).to.not.include("Sorry, you need to sign in again");
+      await expect(await browser.getUrl()).to.contain(await page.pageName);
+      await expect(await $("body").getHTML()).to.not.include("Sorry, you need to sign in again");
     }).timeout(140000);
   }
 
@@ -34,10 +34,10 @@ class TestCase {
     it("When the timeout modal is displayed, but I open a new window and then focus back on the timeout modal window, Then my session will be extended", async () => {
       this.checkTimeoutModal();
       await browser.newWindow("");
-      await browser.switchWindow(page.pageName);
+      await browser.switchWindow(await page.pageName);
       await browser.refresh();
       await browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
-      await expect(await browser.getUrl()).to.contain(page.pageName);
+      await expect(await browser.getUrl()).to.contain(await page.pageName);
     }).timeout(140000);
   }
 
