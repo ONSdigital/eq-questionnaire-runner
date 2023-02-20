@@ -4,7 +4,7 @@ import HubPage from "../base_pages/hub.page.js";
 describe("Introduction preview questions", () => {
   const introductionSchema = "test_introduction_preview_hub.json";
   const showButton = 'button[data-ga-category="Preview Survey"]';
-  const summaryContent = "#summary-accordion-1-content";
+  const previewSummaryContent = "#summary-accordion-1-content";
   beforeEach(() => {
     browser.openQuestionnaire(introductionSchema);
   });
@@ -15,7 +15,7 @@ describe("Introduction preview questions", () => {
     $(IntroductionPage.previewQuestions()).click();
     expect(browser.getUrl()).to.contain("questionnaire/preview");
     expect($(showButton).getText()).to.equal("Show all");
-    expect($(summaryContent).isClickable()).to.be.false;
+    expect($(previewSummaryContent).isClickable()).to.be.false;
   });
   it("Given I start a survey, When I view the preview page and click the twisty button, Then the twisty button should read 'Hide all' and the answers should be visible", () => {
     browser.openQuestionnaire(introductionSchema);
@@ -24,6 +24,6 @@ describe("Introduction preview questions", () => {
     expect(browser.getUrl()).to.contain("questionnaire/preview");
     $(showButton).click();
     expect($(showButton).getText()).to.equal("Hide all");
-    expect($(summaryContent).isClickable()).to.be.true;
+    expect($(previewSummaryContent).isClickable()).to.be.true;
   });
 });
