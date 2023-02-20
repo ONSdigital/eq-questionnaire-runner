@@ -18,12 +18,12 @@ export const config = {
   //
   specs: ["./spec/**/*.js"],
   suites: {
-    timeout_modal_expired: ["./tests/functional/spec/timeout/timeout_modal_expired/*.js"],
-    timeout_modal_extended: ["./tests/functional/spec/timeout/timeout_modal_extended/*.js"],
-    timeout_modal_extended_new_window: ["./tests/functional/spec/timeout/timeout_modal_extended_new_window/*.js"],
-    components: ["./tests/functional/spec/components/**/*.js"],
-    features: ["./tests/functional/spec/features/**/*.js"],
-    general: ["./tests/functional/spec/*.spec.js"],
+    timeout_modal_expired: ["./spec/timeout/timeout_modal_expired/*.js"],
+    timeout_modal_extended: ["./spec/timeout/timeout_modal_extended/*.js"],
+    timeout_modal_extended_new_window: ["./spec/timeout/timeout_modal_extended_new_window/*.js"],
+    components: ["./spec/components/**/*.js"],
+    features: ["./spec/features/**/*.js"],
+    general: ["./spec/*.spec.js"],
   },
   // Patterns to exclude.
   exclude: [
