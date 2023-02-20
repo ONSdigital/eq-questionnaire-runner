@@ -20,3 +20,14 @@ class TestPreviewPDF(IntegrationTestCase):
 
         # Then I get 200 status code
         self.assertStatusCode(200)
+
+    def test_print_button(self):
+        super().setUp()
+
+        # Given I launch a questionnaire and open preview of questions
+        self.launchSurvey("test_introduction_preview_linear")
+        self.get("/questionnaire/preview/")
+
+        # Then the print button is displayed correctly
+        print_button = self.getHtmlSoup().find("button", {"data-qa": "btn-print"})
+        self.assertIsNotNone(print_button)
