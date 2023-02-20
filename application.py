@@ -3,11 +3,10 @@ import logging
 import os
 import sys
 
-from structlog import configure
+from structlog import configure, contextvars
 from structlog.dev import ConsoleRenderer
 from structlog.processors import JSONRenderer, TimeStamper, format_exc_info
 from structlog.stdlib import LoggerFactory, add_log_level
-from structlog.threadlocal import wrap_dict
 
 from app.utilities.json import json_dumps
 
@@ -46,6 +45,7 @@ def configure_logging():
         ConsoleRenderer() if debug else JSONRenderer(serializer=json_dumps)
     )
     processors = [
+        contextvars.merge_contextvars,
         add_log_level,
         TimeStamper(key="created", fmt="iso"),
         add_service,
@@ -55,7 +55,6 @@ def configure_logging():
     ]
 
     configure(
-        context_class=wrap_dict(dict),
         logger_factory=LoggerFactory(),
         processors=processors,
         cache_logger_on_first_use=True,

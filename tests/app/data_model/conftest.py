@@ -10,7 +10,6 @@ from app.storage import storage_encryption
 
 @pytest.fixture
 def basic_answer_store(answer_store):
-
     answer_store.add_or_update(
         Answer(answer_id="answer1", value=10, list_item_id="abc123")
     )
@@ -40,7 +39,6 @@ def basic_answer_store(answer_store):
 
 @pytest.fixture
 def relationship_answer_store(answer_store):
-
     answer_store.add_or_update(
         Answer(
             answer_id="relationship-answer",
@@ -69,7 +67,6 @@ def relationship_answer_store(answer_store):
 
 @pytest.fixture
 def store_to_serialize(answer_store):
-
     answer_store.add_or_update(
         Answer(answer_id="answer1", value=10, list_item_id="abc123")
     )

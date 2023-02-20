@@ -22,7 +22,7 @@ def validate_required_secrets(
     )
     for required_secret in all_required_secrets:
         if required_secret not in secrets["secrets"]:
-            raise Exception(f"Missing Secret [{required_secret}]")
+            raise ValueError(f"Missing Secret [{required_secret}]")
 
 
 class SecretStore:

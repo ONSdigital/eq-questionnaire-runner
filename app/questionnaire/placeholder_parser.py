@@ -47,7 +47,6 @@ class PlaceholderParser:
         list_item_id: Optional[str] = None,
         location: Union[Location, RelationshipLocation, None] = None,
     ):
-
         self._answer_store = answer_store
         self._list_store = list_store
         self._metadata = metadata

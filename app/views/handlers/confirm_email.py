@@ -47,7 +47,6 @@ class ConfirmEmail:
         serialized_email,
         form_data: Mapping,
     ):
-
         if not ConfirmationEmail.is_enabled(schema):
             raise ConfirmationEmailNotEnabled
 

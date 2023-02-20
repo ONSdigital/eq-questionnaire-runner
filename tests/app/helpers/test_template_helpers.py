@@ -776,7 +776,6 @@ def test_survey_config_base_url_provided_used_in_links(
     ]
 
     if survey_config_type == SocialSurveyConfig:
-
         urls_to_check.remove(result.contact_us_url)
 
     for url in urls_to_check:
