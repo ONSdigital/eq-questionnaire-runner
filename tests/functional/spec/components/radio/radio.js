@@ -25,7 +25,7 @@ describe("Component: Radio", () => {
     it("When I have selected a radio option that contains an escaped character, Then the selected option should be displayed in the summary", async () => {
       await $(RadioMandatoryPage.teaCoffee()).click();
       await $(RadioMandatoryPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(RadioMandatorySummary.pageName);
+      await expect(await browser.getUrl()).to.contain(RadioMandatorySummary.pageName);
       await expect(await $(RadioMandatorySummary.radioMandatoryAnswer()).getText()).to.contain("Tea & Coffee");
     });
   });
@@ -38,7 +38,7 @@ describe("Component: Radio", () => {
     it("When I have selected a radio option, Then the selected option should be displayed in the summary", async () => {
       await $(RadioMandatoryPage.coffee()).click();
       await $(RadioMandatoryPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(RadioMandatorySummary.pageName);
+      await expect(await browser.getUrl()).to.contain(RadioMandatorySummary.pageName);
       await expect(await $(RadioMandatorySummary.radioMandatoryAnswer()).getText()).to.contain("Coffee");
     });
   });
@@ -65,7 +65,7 @@ describe("Component: Radio", () => {
       await $(RadioMandatoryOptionalDetailAnswerPage.other()).click();
       await $(RadioMandatoryOptionalDetailAnswerPage.otherDetail()).setValue("Hello World");
       await $(RadioMandatoryOptionalDetailAnswerPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(RadioMandatoryOptionDetailAnswerSummary.pageName);
+      await expect(await browser.getUrl()).to.contain(RadioMandatoryOptionDetailAnswerSummary.pageName);
       await expect(await $(RadioMandatoryOptionDetailAnswerSummary.radioMandatoryAnswer()).getText()).to.contain("Hello World");
     });
   });
@@ -89,7 +89,7 @@ describe("Component: Radio", () => {
 
     it("When I submit without any data in the other text field is selected, Then the selected option should be displayed in the summary", async () => {
       await $(RadioMandatoryOptionalDetailAnswerPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(RadioMandatoryOptionDetailAnswerSummary.pageName);
+      await expect(await browser.getUrl()).to.contain(RadioMandatoryOptionDetailAnswerSummary.pageName);
       await expect(await $(RadioMandatoryOptionDetailAnswerSummary.radioMandatoryAnswer()).getText()).to.contain("No answer provided");
     });
   });
@@ -112,7 +112,7 @@ describe("Component: Radio", () => {
 
     it("When I have selected no option, Then the selected option should be displayed in the summary", async () => {
       await $(RadioNonMandatoryPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(RadioNonMandatorySummary.pageName);
+      await expect(await browser.getUrl()).to.contain(RadioNonMandatorySummary.pageName);
       await expect(await $(RadioNonMandatorySummary.radioNonMandatoryAnswer()).getText()).to.contain("No answer provided");
     });
   });
@@ -138,7 +138,7 @@ describe("Component: Radio", () => {
       await $(RadioNonMandatoryDetailAnswerPage.other()).click();
       await $(RadioNonMandatoryDetailAnswerPage.otherDetail()).setValue("Hello World");
       await $(RadioNonMandatoryDetailAnswerPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(RadioNonMandatoryDetailAnswerSummary.pageName);
+      await expect(await browser.getUrl()).to.contain(RadioNonMandatoryDetailAnswerSummary.pageName);
       await expect(await $(RadioNonMandatoryDetailAnswerSummary.radioNonMandatoryAnswer()).getText()).to.contain("Hello World");
     });
   });

@@ -64,7 +64,7 @@ describe("Feature: Validation for single date periods", () => {
       await $(DatePeriodPage.dateRangeTomonth()).setValue(2);
       await $(DatePeriodPage.dateRangeToyear()).setValue(2018);
       await $(DatePeriodPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
   });
 

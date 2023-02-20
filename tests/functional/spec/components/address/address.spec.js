@@ -18,7 +18,7 @@ describe("Address Answer Type", () => {
       await $(AddressMandatory.submit()).click();
       await $(AddressOptional.submit()).click();
       await $(AddressConfirmation.submit()).click();
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
       await expect(await $(SubmitPage.addressMandatory()).getText()).to.equal("Evelyn Street\nApt 7\nBarry\nCF63 4JG");
       await expect(await $(SubmitPage.addressMandatory()).getHTML()).to.contain("Evelyn Street<br>Apt 7<br>Barry<br>CF63 4JG");
     });
@@ -31,7 +31,7 @@ describe("Address Answer Type", () => {
       await $(AddressMandatory.submit()).click();
       await $(AddressOptional.submit()).click();
       await $(AddressConfirmation.submit()).click();
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
       await expect(await $(SubmitPage.addressMandatory()).getText()).to.equal("Evelyn Street");
     });
   });
@@ -63,9 +63,9 @@ describe("Address Answer Type", () => {
       await $(AddressMandatory.Postcode()).setValue("CF63 4JG");
 
       await $(AddressMandatory.submit()).click();
-      await expect(browser.getUrl()).to.contain(AddressOptional.pageName);
+      await expect(await browser.getUrl()).to.contain(AddressOptional.pageName);
 
-      browser.url(AddressMandatory.url());
+      await browser.url(AddressMandatory.url());
 
       await expect(await $(AddressMandatory.Line1()).getValue()).to.contain("Evelyn Street");
       await expect(await $(AddressMandatory.Line2()).getValue()).to.contain("Apt 7");

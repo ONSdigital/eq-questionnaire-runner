@@ -76,14 +76,14 @@ describe("Error Messages", () => {
   });
 
   it("Given a question has 1 error, When the error is displayed, Then error message isn't in a numbered list", async () => {
-    answerAllButOne();
+    await answerAllButOne();
 
     await $(AboutYou.submit()).click();
     await expect(await $(AboutYou.singleErrorLink()).isDisplayed()).to.be.true;
   });
 
   it("Given a question has 1 error, When the error is displayed, Then error header is correct", async () => {
-    answerAllButOne();
+    await answerAllButOne();
 
     await $(AboutYou.submit()).click();
     await expect(await $(AboutYou.errorHeader()).getText()).to.equal("There is a problem with your answer");

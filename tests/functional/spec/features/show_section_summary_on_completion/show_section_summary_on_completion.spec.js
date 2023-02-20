@@ -16,7 +16,7 @@ describe("Feature: Show section summary on completion", () => {
       await $(employmentStatusBlockPage.workingAsAnEmployee()).click();
       await $(employmentStatusBlockPage.submit()).click();
 
-      await expect(browser.getUrl()).to.contain(hubPage.url());
+      await expect(await browser.getUrl()).to.contain(hubPage.url());
     });
   });
 
@@ -24,13 +24,13 @@ describe("Feature: Show section summary on completion", () => {
     it("When I return to a completed section from the hub, Then I am returned to that section summary", async () => {
       await $(hubPage.summaryRowLink("employment-section")).click();
 
-      await expect(browser.getUrl()).to.contain(employmentSectionSummary.url());
+      await expect(await browser.getUrl()).to.contain(employmentSectionSummary.url());
     });
   });
 
   describe("Given I am completing a section with the summary turned on for the forward journey", () => {
     before("Get to hub", async () => {
-      browser.url(hubPage.url());
+      await browser.url(hubPage.url());
     });
 
     it("When I reach the end of that section, Then I will be taken to the section summary to enable me to amend an answer", async () => {
@@ -38,19 +38,19 @@ describe("Feature: Show section summary on completion", () => {
       await $(proxyQuestionPage.noIMAnsweringForMyself()).click();
       await $(proxyQuestionPage.submit()).click();
 
-      await expect(browser.getUrl()).to.contain(accommodationSectionSummary.url());
+      await expect(await browser.getUrl()).to.contain(accommodationSectionSummary.url());
     });
   });
 
   describe("Given I have completed a section with the summary turned on for the forward journey", () => {
     before("Get to hub", async () => {
-      browser.url(hubPage.url());
+      await browser.url(hubPage.url());
     });
 
     it("When I return to a completed section from the hub, Then I am returned to the correct section summary", async () => {
       await $(hubPage.summaryRowLink("accommodation-section")).click();
 
-      await expect(browser.getUrl()).to.contain(accommodationSectionSummary.url());
+      await expect(await browser.getUrl()).to.contain(accommodationSectionSummary.url());
     });
   });
 });

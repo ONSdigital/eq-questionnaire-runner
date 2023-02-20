@@ -4,7 +4,7 @@ import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually
 describe("Component: Mutually Exclusive TextArea With Single Checkbox Override", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive.json");
-    browser.url("/questionnaire/mutually-exclusive-textarea");
+    await browser.url("/questionnaire/mutually-exclusive-textarea");
   });
 
   describe("Given the user has not clicked the mutually exclusive checkbox answer", () => {

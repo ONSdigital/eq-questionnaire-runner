@@ -4,8 +4,8 @@ class TestCase {
   testCaseExpired(page) {
     it("When the timeout modal is displayed, and I do not extend my session, Then I will be redirected to the session expired page", async () => {
       this.checkTimeoutModal();
-      browser.pause(65000); // We are waiting for the session to expire
-      await expect(browser.getUrl()).to.contain("/session-expired");
+      await browser.pause(65000); // We are waiting for the session to expire
+      await expect(await browser.getUrl()).to.contain("/session-expired");
       await expect($("body").getHTML())
         .to.include(
           "Sorry, you need to sign in again",
@@ -23,9 +23,9 @@ class TestCase {
       this.checkTimeoutModal();
       await $(TimeoutModalPage.submit()).click();
       await expect(await $(TimeoutModalPage.timer()).getText()).to.equal("");
-      browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
-      browser.refresh();
-      await expect(browser.getUrl()).to.contain(page.pageName);
+      await browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
+      await browser.refresh();
+      await expect(await browser.getUrl()).to.contain(page.pageName);
       await expect($("body").getHTML()).to.not.include("Sorry, you need to sign in again");
     }).timeout(140000);
   }
@@ -33,11 +33,11 @@ class TestCase {
   testCaseExtendedNewWindow(page) {
     it("When the timeout modal is displayed, but I open a new window and then focus back on the timeout modal window, Then my session will be extended", async () => {
       this.checkTimeoutModal();
-      browser.newWindow("");
-      browser.switchWindow(page.pageName);
-      browser.refresh();
-      browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
-      await expect(browser.getUrl()).to.contain(page.pageName);
+      await browser.newWindow("");
+      await browser.switchWindow(page.pageName);
+      await browser.refresh();
+      await browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
+      await expect(await browser.getUrl()).to.contain(page.pageName);
     }).timeout(140000);
   }
 

@@ -123,7 +123,7 @@ describe("Language Code", () => {
     await expect(await $(HubPage.submit()).getText()).to.contain("Botwm cyflwyno");
     await $(HubPage.submit()).click();
 
-    await expect(browser.getUrl()).to.contain("thank-you");
+    await expect(await browser.getUrl()).to.contain("thank-you");
   });
 
   it("Given a launch language of English, I should see English text", async () => {
@@ -153,7 +153,7 @@ describe("Language Code", () => {
     await expect(await $(HubPage.submit()).getText()).to.contain("Submission button");
     await $(HubPage.submit()).click();
 
-    await expect(browser.getUrl()).to.contain("thank-you");
+    await expect(await browser.getUrl()).to.contain("thank-you");
   });
 
   it("Given a launch language of English, When I select Cymraeg, Then the language should be switched to Welsh", async () => {
@@ -194,7 +194,7 @@ describe("Language Code", () => {
     await expect(await $(HubPage.submit()).getText()).to.contain("Botwm cyflwyno");
     await $(HubPage.submit()).click();
 
-    await expect(browser.getUrl()).to.contain("thank-you");
+    await expect(await browser.getUrl()).to.contain("thank-you");
   });
 
   it("Given a launch language of Welsh, When I select English, Then the language should be switched to English", async () => {

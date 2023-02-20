@@ -22,7 +22,7 @@ describe("Durations", () => {
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
     await $(DurationPage.submit()).click();
 
-    await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     await expect(await $(SubmitPage.yearMonthAnswer()).getText()).to.equal("1 year 2 months");
     await $(SubmitPage.submit()).click();
   });
@@ -36,7 +36,7 @@ describe("Durations", () => {
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
     await $(DurationPage.submit()).click();
 
-    await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     await expect(await $(SubmitPage.yearMonthAnswer()).getText()).to.equal("2 months");
     await $(SubmitPage.submit()).click();
   });
@@ -48,7 +48,7 @@ describe("Durations", () => {
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
     await $(DurationPage.submit()).click();
 
-    await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     await expect(await $(SubmitPage.yearMonthAnswer()).getText()).to.equal("No answer provided");
     await $(SubmitPage.submit()).click();
   });

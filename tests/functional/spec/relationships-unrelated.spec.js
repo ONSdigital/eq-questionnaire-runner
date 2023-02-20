@@ -79,7 +79,7 @@ describe("Unrelated Relationships", () => {
         await $(RelationshipsPage.submit()).click();
         await $(RelationshipsPage.unrelated()).click();
         await $(RelationshipsPage.submit()).click();
-        await expect(browser.getUrl()).to.contain(RelationshipsInterstitialPage.pageName);
+        await expect(await browser.getUrl()).to.contain(RelationshipsInterstitialPage.pageName);
       });
     });
 

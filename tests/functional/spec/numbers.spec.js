@@ -63,7 +63,7 @@ describe("Number validation", () => {
       await $(DetailAnswer.otherDetail()).setValue("1020");
       await $(DetailAnswer.submit()).click();
 
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
     it("When I edit and change the maximum value, Then I must re-validate and submit any dependent answers before I can return to the summary", async () => {
@@ -78,7 +78,7 @@ describe("Number validation", () => {
       await $(DetailAnswer.otherDetail()).setValue("1019");
       await $(DetailAnswer.submit()).click();
 
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
     it("When I edit and change the minimum value, Then I must re-validate and submit any dependent answers again before I can return to the summary", async () => {
@@ -92,7 +92,7 @@ describe("Number validation", () => {
       await $(TestMinMax.testRangeExclusive()).setValue("12");
       await $(TestMinMax.submit()).click();
 
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
   });
 });

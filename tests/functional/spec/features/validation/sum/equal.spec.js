@@ -22,7 +22,7 @@ describe("Feature: Sum of grouped answers equal to validation against total ", (
 
       answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
   });
 
@@ -36,15 +36,15 @@ describe("Feature: Sum of grouped answers equal to validation against total ", (
       await $(TotalAnswerPage.total()).setValue("15");
       await $(TotalAnswerPage.submit()).click();
 
-      browser.url(SubmitPage.url());
-      await expect(browser.getUrl()).to.contain(BreakdownAnswerPage.pageName);
+      await browser.url(SubmitPage.url());
+      await expect(await browser.getUrl()).to.contain(BreakdownAnswerPage.pageName);
 
       await $(BreakdownAnswerPage.submit()).click();
       await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 15");
 
       answerAndSubmitBreakdownQuestion("6", "3", "3", "3");
 
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
   });
 
@@ -54,7 +54,7 @@ describe("Feature: Sum of grouped answers equal to validation against total ", (
       await $(TotalAnswerPage.submit()).click();
       answerAndSubmitBreakdownQuestion("5", "", "", "");
 
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
   });
 

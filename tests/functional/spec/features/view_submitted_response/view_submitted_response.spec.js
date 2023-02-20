@@ -12,10 +12,10 @@ describe("View Submitted Response", () => {
     await $(AddressBlockPage.answer()).setValue("NP10 8XG");
     await $(AddressBlockPage.submit()).click();
     await $(SubmitPage.submit()).click();
-    await expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
+    await expect(await browser.getUrl()).to.contain(ThankYouPage.pageName);
     await expect(await $(ThankYouPage.title()).getHTML()).to.contain("Thank you for completing the Test");
     await $(ThankYouPage.savePrintAnswersLink()).click();
-    await expect(browser.getUrl()).to.contain(ViewSubmittedResponsePage.pageName);
+    await expect(await browser.getUrl()).to.contain(ViewSubmittedResponsePage.pageName);
   });
 
   it("Given I have completed a questionnaire with view submitted response enabled, When I am on the view submitted response page within 45 minutes of submission, Then the summary is displayed correctly", async () => {
@@ -34,7 +34,7 @@ describe("View Submitted Response", () => {
 
   describe("Given I am on the view submitted response page and I submitted over 45 minutes ago", () => {
     it("When I click the Download as PDF button, Then I should be redirected to a page informing me that I can no longer view or get a copy of my answers", async () => {
-      browser.pause(40000); // Waiting 40 seconds for the timeout to expire (45 minute timeout changed to 35 seconds by overriding VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS for the purpose of the functional test)
+      await browser.pause(40000); // Waiting 40 seconds for the timeout to expire (45 minute timeout changed to 35 seconds by overriding VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS for the purpose of the functional test)
       await $(ViewSubmittedResponsePage.downloadButton()).click();
       await expect(await $(ViewSubmittedResponsePage.informationPanel()).isDisplayed()).to.be.true;
       await expect(await $(ViewSubmittedResponsePage.informationPanel()).getHTML()).to.contain(

@@ -34,37 +34,37 @@ describe("Section Summary", () => {
     it("When I select edit from the section summary and click previous on the question page, Then I should be taken back to the section summary", async () => {
       await $(PropertyDetailsSummaryPage.insuranceAddressAnswerEdit()).click();
       await $(InsuranceAddressPage.previous()).click();
-      await expect(browser.getUrl()).to.contain(PropertyDetailsSummaryPage.url());
+      await expect(await browser.getUrl()).to.contain(PropertyDetailsSummaryPage.url());
     });
 
     it("When I continue on the section summary page, Then I should be taken to the next section", async () => {
       await $(PropertyDetailsSummaryPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(HouseType.pageName);
+      await expect(await browser.getUrl()).to.contain(HouseType.pageName);
     });
 
     it("When I select edit from Section Summary but change routing, Then I should step through the section and be returned to the Section Summary once all new questions have been answered", async () => {
       await $(PropertyDetailsSummaryPage.insuranceTypeAnswerEdit()).click();
       await $(InsuranceTypePage.contents()).click();
       await $(InsuranceTypePage.submit()).click();
-      await expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
+      await expect(await browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
       await $(InsuranceAddressPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(AddressDurationPage.pageName);
+      await expect(await browser.getUrl()).to.contain(AddressDurationPage.pageName);
       await $(AddressDurationPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(PropertyDetailsSummaryPage.pageName);
+      await expect(await browser.getUrl()).to.contain(PropertyDetailsSummaryPage.pageName);
     });
 
     it("When I select edit from Section Summary but change routing, Then using previous should not prevent me returning to the section summary once all new questions have been answered", async () => {
       await $(PropertyDetailsSummaryPage.insuranceTypeAnswerEdit()).click();
       await $(InsuranceTypePage.contents()).click();
       await $(InsuranceTypePage.submit()).click();
-      await expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
+      await expect(await browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
       await $(InsuranceAddressPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(AddressDurationPage.pageName);
+      await expect(await browser.getUrl()).to.contain(AddressDurationPage.pageName);
       await $(AddressDurationPage.previous()).click();
-      await expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
+      await expect(await browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
       await $(InsuranceAddressPage.submit()).click();
       await $(AddressDurationPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(PropertyDetailsSummaryPage.pageName);
+      await expect(await browser.getUrl()).to.contain(PropertyDetailsSummaryPage.pageName);
     });
   });
 
@@ -81,14 +81,14 @@ describe("Section Summary", () => {
       await $(NumberOfPeoplePage.answer()).setValue(3);
       await $(NumberOfPeoplePage.submit()).click();
       await $(HouseholdCountSectionSummaryPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(SubmitPage.url());
+      await expect(await browser.getUrl()).to.contain(SubmitPage.url());
     });
 
     it("When I select edit from Final Summary and don't change an answer, Then I should be taken to the Final Summary", async () => {
       await $(SubmitPage.summaryShowAllButton()).click();
       await $(SubmitPage.insuranceAddressAnswerEdit()).click();
       await $(InsuranceAddressPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(SubmitPage.url());
+      await expect(await browser.getUrl()).to.contain(SubmitPage.url());
     });
 
     it("When I select edit from Final Summary and change an answer that doesn't affect completeness, Then I should be taken to the Final Summary", async () => {
@@ -96,7 +96,7 @@ describe("Section Summary", () => {
       await $(SubmitPage.insuranceAddressAnswerEdit()).click();
       await $(InsuranceAddressPage.answer()).setValue("Test Address");
       await $(InsuranceAddressPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(SubmitPage.url());
+      await expect(await browser.getUrl()).to.contain(SubmitPage.url());
     });
 
     it("When I select edit from Final Summary but change routing, Then I should step through the section and be returned to the Final Summary once all new questions have been answered", async () => {
@@ -104,11 +104,11 @@ describe("Section Summary", () => {
       await $(SubmitPage.insuranceTypeAnswerEdit()).click();
       await $(InsuranceTypePage.contents()).click();
       await $(InsuranceTypePage.submit()).click();
-      await expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
+      await expect(await browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
       await $(InsuranceAddressPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(AddressDurationPage.pageName);
+      await expect(await browser.getUrl()).to.contain(AddressDurationPage.pageName);
       await $(AddressDurationPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
     it("When I select edit from Final Summary but change routing, Then using previous should not prevent me returning to the section summary once all new questions have been answered", async () => {
@@ -116,14 +116,14 @@ describe("Section Summary", () => {
       await $(SubmitPage.insuranceTypeAnswerEdit()).click();
       await $(InsuranceTypePage.contents()).click();
       await $(InsuranceTypePage.submit()).click();
-      await expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
+      await expect(await browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
       await $(InsuranceAddressPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(AddressDurationPage.pageName);
+      await expect(await browser.getUrl()).to.contain(AddressDurationPage.pageName);
       await $(AddressDurationPage.previous()).click();
-      await expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
+      await expect(await browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
       await $(InsuranceAddressPage.submit()).click();
       await $(AddressDurationPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
     it("When I select edit from Final Summary and change an answer and then go to the next question and click previous, Then I should return to the question I originally edited", async () => {
@@ -132,14 +132,14 @@ describe("Section Summary", () => {
       await $(InsuranceTypePage.contents()).click();
       await $(InsuranceTypePage.submit()).click();
       await $(InsuranceAddressPage.previous()).click();
-      await expect(browser.getUrl()).to.contain(InsuranceTypePage.pageName);
+      await expect(await browser.getUrl()).to.contain(InsuranceTypePage.pageName);
     });
 
     it("When I change an answer, Then the final summary should display the updated value", async () => {
       await $(SubmitPage.summaryShowAllButton()).click();
       await expect(await $(SubmitPage.insuranceAddressAnswer()).getText()).to.contain("No answer provided");
       await $(SubmitPage.insuranceAddressAnswerEdit()).click();
-      await expect(browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
+      await expect(await browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
       await $(InsuranceAddressPage.answer()).setValue("Test Address");
       await $(InsuranceAddressPage.submit()).click();
       await $(SubmitPage.summaryShowAllButton()).click();

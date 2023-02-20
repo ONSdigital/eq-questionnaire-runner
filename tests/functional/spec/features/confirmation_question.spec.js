@@ -13,7 +13,7 @@ describe("Feature: Confirmation Question", () => {
       await $(NumberOfEmployeesTotalBlockPage.submit()).click();
       await $(ConfirmZeroEmployeesBlockPage.yesThisIsCorrect()).click();
       await $(ConfirmZeroEmployeesBlockPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
       await expect(await $(SubmitPage.numberOfEmployeesTotal()).getText()).to.contain("0");
       await expect(await $$(SubmitPage.confirmZeroEmployeesAnswer())).to.be.empty;
     });
@@ -24,7 +24,7 @@ describe("Feature: Confirmation Question", () => {
       await $(NumberOfEmployeesTotalBlockPage.submit()).click();
       await $(ConfirmZeroEmployeesBlockPage.noINeedToCorrectThis()).click();
       await $(ConfirmZeroEmployeesBlockPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(NumberOfEmployeesTotalBlockPage.pageName);
+      await expect(await browser.getUrl()).to.contain(NumberOfEmployeesTotalBlockPage.pageName);
     });
   });
   describe("Given a number of employees Question", () => {

@@ -11,7 +11,7 @@ describe("Dynamic radio options from checkbox answers", () => {
       await $(InjurySustainedPage.body()).click();
       await $(InjurySustainedPage.submit()).click();
 
-      await expect(browser.getUrl()).to.contain(MostSeriousInjuryPage.pageName);
+      await expect(await browser.getUrl()).to.contain(MostSeriousInjuryPage.pageName);
       await expect(await $(MostSeriousInjuryPage.answerLabelByIndex(0)).getText()).to.contain("Head");
       await expect(await $(MostSeriousInjuryPage.answerLabelByIndex(1)).getText()).to.contain("Body");
       await expect(await $(MostSeriousInjuryPage.answerLabelByIndex(2)).getText()).to.contain("They were of equal severity (static option)");
@@ -22,7 +22,7 @@ describe("Dynamic radio options from checkbox answers", () => {
       await $(MostSeriousInjuryPage.answerLabelByIndex(0)).click();
       await $(MostSeriousInjuryPage.submit()).click();
 
-      await expect(browser.getUrl()).to.contain(HealedTheQuickestPage.pageName);
+      await expect(await browser.getUrl()).to.contain(HealedTheQuickestPage.pageName);
       await expect(await $(HealedTheQuickestPage.answerLabelByIndex(0)).getText()).to.contain("Head");
       await expect(await $(HealedTheQuickestPage.answerLabelByIndex(1)).getText()).to.contain("Body");
       await expect(await $(HealedTheQuickestPage.answerLabelByIndex(2)).isExisting()).to.be.false;
@@ -32,7 +32,7 @@ describe("Dynamic radio options from checkbox answers", () => {
       await $(HealedTheQuickestPage.answerLabelByIndex(1)).click();
       await $(HealedTheQuickestPage.submit()).click();
 
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
       await expect(await $(SubmitPage.injurySustainedAnswer()).getText()).to.contain("Head\nBody");
       await expect(await $(SubmitPage.mostSeriousInjuryAnswer()).getText()).to.contain("Head");
       await expect(await $(SubmitPage.healedTheQuickestAnswer()).getText()).to.contain("Body");

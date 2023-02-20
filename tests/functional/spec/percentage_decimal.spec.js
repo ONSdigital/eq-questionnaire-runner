@@ -9,7 +9,7 @@ describe("Decimal places", () => {
     await $(PercentageDecimalPage.decimal()).setValue("3.333");
     await $(PercentageDecimalPage.submit()).click();
     await $(SubmitPage.previous()).click();
-    await expect(browser.getUrl()).to.contain(PercentageDecimalPage.pageName);
+    await expect(await browser.getUrl()).to.contain(PercentageDecimalPage.pageName);
     await expect(await $(PercentageDecimalPage.decimal()).getValue()).to.equal("3.333");
   });
 
@@ -19,7 +19,7 @@ describe("Decimal places", () => {
     await $(PercentageDecimalPage.decimal()).setValue("3.3");
     await $(PercentageDecimalPage.submit()).click();
     await $(SubmitPage.previous()).click();
-    await expect(browser.getUrl()).to.contain(PercentageDecimalPage.pageName);
+    await expect(await browser.getUrl()).to.contain(PercentageDecimalPage.pageName);
     await expect(await $(PercentageDecimalPage.decimal()).getValue()).to.equal("3.300");
   });
 });

@@ -4,7 +4,7 @@ import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually
 describe("Component: Mutually Exclusive Percentage With Single Checkbox Override", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive.json");
-    browser.url("/questionnaire/mutually-exclusive-percentage");
+    await browser.url("/questionnaire/mutually-exclusive-percentage");
   });
 
   describe("Given the user has entered a value for the non-exclusive percentage answer", () => {

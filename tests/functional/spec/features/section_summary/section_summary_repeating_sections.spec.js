@@ -12,7 +12,7 @@ describe("Feature: Repeating Section Summaries", () => {
     before("Open survey and add household members", async () => {
       await browser.openQuestionnaire("test_repeating_section_summaries.json");
       // Ensure we are on the Hub
-      await expect(browser.getUrl()).to.contain(HubPage.url());
+      await expect(await browser.getUrl()).to.contain(HubPage.url());
       // Start first section to add household members
       await $(HubPage.summaryRowLink("section")).click();
 
@@ -48,7 +48,7 @@ describe("Feature: Repeating Section Summaries", () => {
       });
 
       beforeEach("Navigate to the Section Summary", async () => {
-        browser.url(HubPage.url());
+        await browser.url(HubPage.url());
         await $(HubPage.summaryRowLink("personal-details-section-1")).click();
       });
 

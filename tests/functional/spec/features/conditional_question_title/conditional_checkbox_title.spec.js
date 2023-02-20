@@ -27,7 +27,7 @@ describe("Feature: Conditional checkbox and radio question titles", () => {
       await $(NameEntryPage.name()).setValue("Mary");
       await $(NameEntryPage.submit()).click();
 
-      await expect(browser.getTitle()).to.contain("Did Mary make changes to this business? - Test Survey - Checkbox and Radio titles");
+      await expect(await browser.getTitle()).to.contain("Did Mary make changes to this business? - Test Survey - Checkbox and Radio titles");
     });
 
     it("When I enter another known name and go to the summary", async () => {

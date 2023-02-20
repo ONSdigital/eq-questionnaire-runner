@@ -93,7 +93,7 @@ describe("List Collector", () => {
       await $(ListCollectorAddPage.firstName()).setValue("Someone");
       await $(ListCollectorAddPage.lastName()).setValue("Else");
       await $(ListCollectorAddPage.cancelAndReturn()).click();
-      await expect(browser.getUrl()).to.contain(ListCollectorPage.pageName);
+      await expect(await browser.getUrl()).to.contain(ListCollectorPage.pageName);
     });
 
     it("The user is returned to the list collector when the cancel link is clicked on the edit page.", async () => {
@@ -104,7 +104,7 @@ describe("List Collector", () => {
       await $(ListCollectorAddPage.submit()).click();
       await $(ListCollectorPage.listEditLink(1)).click();
       await $(ListCollectorEditPage.cancelAndReturn()).click();
-      await expect(browser.getUrl()).to.contain(ListCollectorPage.pageName);
+      await expect(await browser.getUrl()).to.contain(ListCollectorPage.pageName);
     });
 
     it("The collector shows everyone on the summary", async () => {
@@ -115,12 +115,12 @@ describe("List Collector", () => {
     it("When No is answered on the list collector the user sees an interstitial", async () => {
       await $(ListCollectorPage.no()).click();
       await $(ListCollectorPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(NextInterstitialPage.pageName);
+      await expect(await browser.getUrl()).to.contain(NextInterstitialPage.pageName);
       await $(NextInterstitialPage.submit()).click();
     });
 
     it("After the interstitial, the user should be on the second list collector page", async () => {
-      await expect(browser.getUrl()).to.contain(AnotherListCollectorPage.pageName);
+      await expect(await browser.getUrl()).to.contain(AnotherListCollectorPage.pageName);
     });
 
     it("The collector still shows the same list of people on the summary", async () => {
@@ -146,26 +146,26 @@ describe("List Collector", () => {
     it("The user is returned to the list collector when the previous link is clicked.", async () => {
       await $(AnotherListCollectorPage.listRemoveLink(1)).click();
       await $(AnotherListCollectorRemovePage.previous()).click();
-      await expect(browser.getUrl()).to.contain(AnotherListCollectorPage.pageName);
+      await expect(await browser.getUrl()).to.contain(AnotherListCollectorPage.pageName);
       await $(AnotherListCollectorPage.listEditLink(1)).click();
       await $(AnotherListCollectorEditPage.previous()).click();
-      await expect(browser.getUrl()).to.contain(AnotherListCollectorPage.pageName);
+      await expect(await browser.getUrl()).to.contain(AnotherListCollectorPage.pageName);
       await $(AnotherListCollectorPage.yes()).click();
       await $(AnotherListCollectorPage.submit()).click();
       await $(AnotherListCollectorEditPage.previous()).click();
-      await expect(browser.getUrl()).to.contain(AnotherListCollectorPage.pageName);
+      await expect(await browser.getUrl()).to.contain(AnotherListCollectorPage.pageName);
     });
 
     it("The questionnaire shows the confirmation page when no more people to add", async () => {
       await $(AnotherListCollectorPage.no()).click();
       await $(AnotherListCollectorPage.submit()).click();
-      await expect(browser.getUrl()).to.contain("/sections/section/");
+      await expect(await browser.getUrl()).to.contain("/sections/section/");
     });
 
     it("The questionnaire allows submission", async () => {
       await $(SummaryPage.submit()).click();
       await $(SubmitPage.submit()).click();
-      await expect(browser.getUrl()).to.contain("thank-you");
+      await expect(await browser.getUrl()).to.contain("thank-you");
     });
   });
 

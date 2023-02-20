@@ -4,7 +4,7 @@ import SummaryPage from "../../../../generated_pages/mutually_exclusive_multiple
 describe("Component: Mutually Exclusive Day Month Year Date With Multiple Radio Override", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive_multiple.json");
-    browser.url("/questionnaire/mutually-exclusive-date");
+    await browser.url("/questionnaire/mutually-exclusive-date");
   });
 
   describe("Given the user has entered a value for the non-exclusive month year date answer", () => {

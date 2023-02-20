@@ -56,7 +56,7 @@ describe('Checkbox with "other" option', () => {
     // When
     await $(MandatoryCheckboxPage.otherDetail()).setValue("Other Text");
     await $(MandatoryCheckboxPage.submit()).click();
-    await expect(browser.getUrl()).to.contain(NonMandatoryCheckboxPage.pageName);
+    await expect(await browser.getUrl()).to.contain(NonMandatoryCheckboxPage.pageName);
   });
 
   it('Given a non-mandatory checkbox answer, when the user does not select an option, then "No answer provided" should be displayed on the summary screen', async () => {

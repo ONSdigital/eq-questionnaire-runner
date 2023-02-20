@@ -45,7 +45,7 @@ describe("Feature: Question level validation for date ranges", () => {
         await $(DateRangePage.dateRangeTomonth()).setValue(2);
         await $(DateRangePage.dateRangeToyear()).setValue(2018);
         await $(DateRangePage.submit()).click();
-        await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+        await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
       });
     });
   });
@@ -89,7 +89,7 @@ describe("Feature: Question level validation for date ranges", () => {
         await $(DateRangePage.dateRangeTomonth()).setValue(2);
         await $(DateRangePage.dateRangeToyear()).setValue(2018);
         await $(DateRangePage.submit()).click();
-        await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+        await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
       });
     });
   });

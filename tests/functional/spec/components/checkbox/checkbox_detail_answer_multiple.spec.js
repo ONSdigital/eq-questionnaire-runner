@@ -37,7 +37,7 @@ describe('Checkbox with multiple "detail_answer" options', () => {
     // When
     await $(MandatoryCheckboxPage.yourChoiceDetail()).setValue("Bacon");
     await $(MandatoryCheckboxPage.submit()).click();
-    await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
   });
 
   it("Given a non-mandatory detail answer, When the user does not provide any text, Then just the option value should be displayed on the summary screen", async () => {

@@ -12,7 +12,7 @@ describe("Textfield", () => {
     await browser.openQuestionnaire("test_textfield.json");
     await $(TextFieldPage.name()).setValue("'Twenty><&Five'");
     await $(TextFieldPage.submit()).click();
-    await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     await expect(await $(SubmitPage.nameAnswer()).getText()).to.contain("Twenty><&Five'");
     await $(SubmitPage.nameAnswerEdit()).click();
     await $(TextFieldPage.name()).getValue();

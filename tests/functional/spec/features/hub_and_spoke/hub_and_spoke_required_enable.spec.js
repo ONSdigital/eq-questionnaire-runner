@@ -16,6 +16,6 @@ describe("Hub and spoke section required and enabled", () => {
     await $(HouseholdRelationshipsBlockPage.submit()).click();
     await expect($("body").getText()).to.contain("Submit survey");
     await $(SubmitPage.submit()).click();
-    await expect(browser.getUrl()).to.contain("thank-you");
+    await expect(await browser.getUrl()).to.contain("thank-you");
   });
 });

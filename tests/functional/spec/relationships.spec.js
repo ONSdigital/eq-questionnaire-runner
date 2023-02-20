@@ -21,7 +21,7 @@ describe("Relationships", () => {
       await $(ListCollectorAddPage.submit()).click();
       await $(ListCollectorPage.no()).click();
       await $(ListCollectorPage.submit()).click();
-      await expect(browser.getUrl()).to.contain("/sections/section/");
+      await expect(await browser.getUrl()).to.contain("/sections/section/");
     });
 
     it("When I add two household members, Then I will be asked about one relationship", async () => {
@@ -37,11 +37,11 @@ describe("Relationships", () => {
       await $(ListCollectorAddPage.submit()).click();
       await $(ListCollectorPage.no()).click();
       await $(ListCollectorPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(RelationshipsPage.pageName);
+      await expect(await browser.getUrl()).to.contain(RelationshipsPage.pageName);
       await $(RelationshipsPage.husbandOrWife()).click();
       await $(RelationshipsPage.submit()).click();
       await $(RelationshipsInterstitialPage.submit()).click();
-      await expect(browser.getUrl()).to.contain("/sections/section/");
+      await expect(await browser.getUrl()).to.contain("/sections/section/");
     });
 
     describe("When I add three household members,", () => {
@@ -59,14 +59,14 @@ describe("Relationships", () => {
         await $(RelationshipsPage.husbandOrWife()).click();
         await $(RelationshipsPage.submit()).click();
         await $(RelationshipsInterstitialPage.submit()).click();
-        await expect(browser.getUrl()).to.contain("/sections/section/");
+        await expect(await browser.getUrl()).to.contain("/sections/section/");
       });
 
       it("And go to the first relationship, Then the previous link should return to the list collector", async () => {
         await $(ListCollectorPage.no()).click();
         await $(ListCollectorPage.submit()).click();
         await $(RelationshipsPage.previous()).click();
-        await expect(browser.getUrl()).to.contain("/questionnaire/list-collector/");
+        await expect(await browser.getUrl()).to.contain("/questionnaire/list-collector/");
       });
 
       it("And go to the first relationship, Then the 'Brother or Sister' option should have the text 'Including half brother or half sister'", async () => {
@@ -82,7 +82,7 @@ describe("Relationships", () => {
         await $(RelationshipsPage.submit()).click();
         await $(RelationshipsPage.previous()).click();
         await $(RelationshipsInterstitialPage.submit()).click();
-        await expect(browser.getUrl()).to.contain(RelationshipsPage.pageName);
+        await expect(await browser.getUrl()).to.contain(RelationshipsPage.pageName);
         await expect(await $(RelationshipsPage.questionText()).getText()).to.contain("Marcus");
       });
 
@@ -96,10 +96,10 @@ describe("Relationships", () => {
         await $(RelationshipsPage.husbandOrWife()).click();
         await $(RelationshipsPage.submit()).click();
         await $(RelationshipsInterstitialPage.submit()).click();
-        await expect(browser.getUrl()).to.contain("/sections/section/");
+        await expect(await browser.getUrl()).to.contain("/sections/section/");
         await $(SectionSummaryPage.previous()).click();
         await $(RelationshipsInterstitialPage.previous()).click();
-        await expect(browser.getUrl()).to.contain(RelationshipsPage.pageName);
+        await expect(await browser.getUrl()).to.contain(RelationshipsPage.pageName);
         await expect(await $(RelationshipsPage.questionText()).getText()).to.contain("Olivia");
       });
 
@@ -113,7 +113,7 @@ describe("Relationships", () => {
         await $(RelationshipsPage.husbandOrWife()).click();
         await $(RelationshipsPage.submit()).click();
         await $(RelationshipsInterstitialPage.submit()).click();
-        await expect(browser.getUrl()).to.contain("/sections/section/");
+        await expect(await browser.getUrl()).to.contain("/sections/section/");
         await $(SectionSummaryPage.previous()).click();
         await $(RelationshipsInterstitialPage.previous()).click();
         await expect(await $(RelationshipsPage.husbandOrWife()).isSelected()).to.be.true;
@@ -140,14 +140,14 @@ describe("Relationships", () => {
         await $(ListCollectorPage.submit()).click();
         await $(RelationshipsPage.husbandOrWife()).click();
         await $(RelationshipsPage.saveSignOut()).click();
-        await expect(browser.getUrl()).to.not.contain("questionnaire");
+        await expect(await browser.getUrl()).to.not.contain("questionnaire");
       });
 
       it("And go to the first relationship, select a relationship and click 'Save and sign out', Then I should be signed out", async () => {
         await $(ListCollectorPage.no()).click();
         await $(ListCollectorPage.submit()).click();
         await $(RelationshipsPage.saveSignOut()).click();
-        await expect(browser.getUrl()).to.not.contain("questionnaire");
+        await expect(await browser.getUrl()).to.not.contain("questionnaire");
       });
     });
 
@@ -160,7 +160,7 @@ describe("Relationships", () => {
         await $(SectionSummaryPage.peopleListRemoveLink(1)).click();
         await $(ListCollectorRemovePage.yes()).click();
         await $(ListCollectorRemovePage.submit()).click();
-        await expect(browser.getUrl()).to.contain("/sections/section/");
+        await expect(await browser.getUrl()).to.contain("/sections/section/");
       });
 
       it("Then I add another household member I will be redirected to parent list collector", async () => {
@@ -168,7 +168,7 @@ describe("Relationships", () => {
         await $(ListCollectorAddPage.firstName()).setValue("Tom");
         await $(ListCollectorAddPage.lastName()).setValue("Bowden");
         await $(ListCollectorAddPage.submit()).click();
-        await expect(browser.getUrl()).to.contain("/questionnaire/list-collector/");
+        await expect(await browser.getUrl()).to.contain("/questionnaire/list-collector/");
       });
     });
 

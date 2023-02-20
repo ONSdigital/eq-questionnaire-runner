@@ -25,7 +25,7 @@ describe("Submit Page with Summary", () => {
     completeAllQuestions();
 
     await $(SubmitPage.submit()).click();
-    await expect(browser.getUrl()).to.contain("thank-you");
+    await expect(await browser.getUrl()).to.contain("thank-you");
   });
 
   it("Given a questionnaire with a summary has been completed when a summary page edit link is clicked then it should return to that question", async () => {
@@ -42,7 +42,7 @@ describe("Submit Page with Summary", () => {
     await $(SubmitPage.radioAnswerEdit()).click();
     await $(RadioPage.previous()).click();
 
-    await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
   });
 
   it("Given a questionnaire with a summary has been completed when a summary page edit link is clicked then it should return to that question then back to summary", async () => {
@@ -104,6 +104,6 @@ describe("Submit Page with Summary", () => {
     await $(NumbersPage.decimal()).setValue("123456.78");
     await $(NumbersPage.submit()).click();
 
-    await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
   }
 });

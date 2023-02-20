@@ -61,7 +61,7 @@ describe('Checkbox with a numeric "detail_answer" option', () => {
     // Then
     await expect(await $(CheckboxNumericDetailPage.error()).isDisplayed()).to.be.true;
     await expect(await $(CheckboxNumericDetailPage.errorNumber(1)).getText()).to.contain("Please enter an integer");
-    browser.pause(1000);
+    await browser.pause(1000);
     await expect(await $(CheckboxNumericDetailPage.otherDetail()).getValue()).to.equal("biscuits");
   });
 

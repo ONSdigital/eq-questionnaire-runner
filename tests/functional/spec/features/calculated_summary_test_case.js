@@ -51,13 +51,13 @@ class TestCase {
       await $(SixthNumberBlockPage.sixthNumber()).setValue(45.67);
       await $(SixthNumberBlockPage.submit()).click();
 
-      const browserUrl = browser.getUrl();
+      const browserUrl = await browser.getUrl();
 
-      await expect(browserUrl).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
+      await expect(await browserUrl).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
     });
 
     it("Given I have completed all questions, When I am on the calculated summary, Then the page title should use the calculation's title", async () => {
-      await expect(browser.getTitle()).to.equal("Grand total of previous values - A test schema to demo Calculated Summary");
+      await expect(await browser.getTitle()).to.equal("Grand total of previous values - A test schema to demo Calculated Summary");
     });
 
     it("Given I complete every question, When I get to the currency summary, Then I should see the correct total", async () => {
@@ -102,13 +102,13 @@ class TestCase {
     it("Given I edit an answer from the calculated summary page and click the Previous button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", async () => {
       await $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
       await $(ThirdNumberBlockPage.previous()).click();
-      await expect(browser.getUrl()).to.contain("/questionnaire/currency-total-playback-with-fourth/?return_to=calculated-summary#third-number-answer");
+      await expect(await browser.getUrl()).to.contain("/questionnaire/currency-total-playback-with-fourth/?return_to=calculated-summary#third-number-answer");
     });
 
     it("Given I edit an answer from the calculated summary page and click the Submit button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", async () => {
       await $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
       await $(ThirdNumberBlockPage.submit()).click();
-      await expect(browser.getUrl()).to.contain("/questionnaire/currency-total-playback-with-fourth/?return_to=calculated-summary#third-number-answer");
+      await expect(await browser.getUrl()).to.contain("/questionnaire/currency-total-playback-with-fourth/?return_to=calculated-summary#third-number-answer");
     });
 
     it("Given I change an answer, When I get to the currency summary, Then I should see the new total", async () => {
@@ -116,7 +116,7 @@ class TestCase {
       await $(FourthNumberBlockPage.fourthNumber()).setValue(19.01);
       await $(FourthNumberBlockPage.submit()).click();
 
-      await expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
+      await expect(await browser.getUrl()).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
       await expect(await $(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £30.71. Is this correct?"
       );
@@ -128,7 +128,7 @@ class TestCase {
       await $(FourthAndAHalfNumberBlockPage.fourthAndAHalfNumberAlsoInTotal()).setValue("");
       await $(FourthAndAHalfNumberBlockPage.submit()).click();
 
-      await expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
+      await expect(await browser.getUrl()).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
       await expect(await $(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £28.37. Is this correct?"
       );
@@ -149,7 +149,7 @@ class TestCase {
       await $(FifthNumberBlockPage.submit()).click();
       await $(SixthNumberBlockPage.submit()).click();
 
-      const expectedUrl = browser.getUrl();
+      const expectedUrl = await browser.getUrl();
 
       await expect(expectedUrl).to.contain(CurrencyTotalPlaybackPageSkippedFourth.pageName);
       await expect(await $$(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswer())).to.be.empty;
@@ -177,7 +177,7 @@ class TestCase {
     });
 
     it("Given the calculated summary has a custom title, When I am on the unit calculated summary, Then the page title should use the custom title", async () => {
-      await expect(browser.getTitle()).to.equal("Total Unit Values - A test schema to demo Calculated Summary");
+      await expect(await browser.getTitle()).to.equal("Total Unit Values - A test schema to demo Calculated Summary");
     });
 
     it("Given I complete every question, When I get to the percentage summary, Then I should see the correct total", async () => {
@@ -229,7 +229,7 @@ class TestCase {
 
     it("Given I have an answer minimum based on a calculated summary total, When I enter an invalid answer, Then I should see an error message on the page", async () => {
       await $(CalculatedSummaryTotalConfirmation.submit()).click();
-      await expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
       await $(SetMinMaxBlockPage.setMinimum()).setValue(8.0);
       await $(SetMinMaxBlockPage.submit()).click();
       await expect(await $(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer more than or equal to £9.36");
@@ -239,7 +239,7 @@ class TestCase {
 
     it("Given I have an answer maximum based on a calculated summary total, When I enter an invalid answer, Then I should see an error message on the page", async () => {
       await $(SubmitPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
       await $(SetMinMaxBlockPage.setMaximum()).setValue(10.0);
       await $(SetMinMaxBlockPage.submit()).click();
       await expect(await $(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer less than or equal to £9.36");
@@ -248,7 +248,7 @@ class TestCase {
     });
 
     it("Given I confirm the totals and am on the summary, When I edit and change an answer, Then I must re-confirm the dependant calculated summary page and min max question page before I can return to the summary", async () => {
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
       await $(SubmitPage.thirdNumberAnswerEdit()).click();
       await $(ThirdNumberBlockPage.thirdNumber()).setValue(3.5);
       await $(ThirdNumberBlockPage.submit()).click();
@@ -266,15 +266,15 @@ class TestCase {
       await $(PercentageTotalPlaybackPage.submit()).click();
       await $(NumberTotalPlaybackPage.submit()).click();
       await $(CalculatedSummaryTotalConfirmation.submit()).click();
-      await expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
       await $(SetMinMaxBlockPage.setMinimum()).setValue(10.0);
       await $(SetMinMaxBlockPage.setMaximum()).setValue(9.0);
       await $(SetMinMaxBlockPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
     it("Given I confirm the totals and am on the summary, When I edit and change an answer that has a dependent minimum value from a calculated summary total, And the minimum value has been changed, Then I must re-validate before I get to the summary", async () => {
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
       await $(SubmitPage.thirdNumberAnswerEdit()).click();
       await $(ThirdNumberBlockPage.thirdNumber()).setValue(10.0);
       await $(ThirdNumberBlockPage.submit()).click();
@@ -292,16 +292,16 @@ class TestCase {
       await $(PercentageTotalPlaybackPage.submit()).click();
       await $(NumberTotalPlaybackPage.submit()).click();
       await $(CalculatedSummaryTotalConfirmation.submit()).click();
-      await expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
       await $(SetMinMaxBlockPage.submit()).click();
       await expect(await $(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer more than or equal to £15.91");
       await $(SetMinMaxBlockPage.setMinimum()).setValue(16.0);
       await $(SetMinMaxBlockPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
     it("Given I confirm the totals and am on the summary, When I edit and change an answer that has a dependent maximum value from a calculated summary total, And the maximum value has been changed, Then I must re-validate before I get to the summary", async () => {
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
       await $(SubmitPage.thirdNumberAnswerEdit()).click();
       await $(ThirdNumberBlockPage.thirdNumber()).setValue(1.0);
       await $(ThirdNumberBlockPage.submit()).click();
@@ -319,17 +319,17 @@ class TestCase {
       await $(PercentageTotalPlaybackPage.submit()).click();
       await $(NumberTotalPlaybackPage.submit()).click();
       await $(CalculatedSummaryTotalConfirmation.submit()).click();
-      await expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
       await $(SetMinMaxBlockPage.submit()).click();
       await expect(await $(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer less than or equal to £6.91");
       await $(SetMinMaxBlockPage.setMaximum()).setValue(6.0);
       await $(SetMinMaxBlockPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
     it("Given I am on the summary, When I submit the questionnaire, Then I should see the thank you page", async () => {
       await $(SubmitPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
+      await expect(await browser.getUrl()).to.contain(ThankYouPage.pageName);
     });
   }
 }

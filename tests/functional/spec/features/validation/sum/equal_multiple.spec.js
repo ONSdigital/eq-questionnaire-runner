@@ -12,7 +12,7 @@ describe("Feature: Sum validation (Multi Rule Equals)", () => {
       await $(TotalAnswerPage.total()).setValue("10");
       await $(TotalAnswerPage.submit()).click();
       await $(BreakdownAnswerPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
 
       await $(SubmitPage.previous()).click();
       await $(BreakdownAnswerPage.breakdown1()).setValue("0");
@@ -20,7 +20,7 @@ describe("Feature: Sum validation (Multi Rule Equals)", () => {
       await $(BreakdownAnswerPage.breakdown3()).setValue("0");
       await $(BreakdownAnswerPage.breakdown4()).setValue("0");
       await $(BreakdownAnswerPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
 
       await $(SubmitPage.previous()).click();
       await $(BreakdownAnswerPage.breakdown1()).setValue("1");
@@ -28,7 +28,7 @@ describe("Feature: Sum validation (Multi Rule Equals)", () => {
       await $(BreakdownAnswerPage.breakdown3()).setValue("3");
       await $(BreakdownAnswerPage.breakdown4()).setValue("4");
       await $(BreakdownAnswerPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
   });
 

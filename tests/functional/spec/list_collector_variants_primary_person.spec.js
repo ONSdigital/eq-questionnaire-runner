@@ -79,7 +79,7 @@ describe("List collector with variants primary person", () => {
     it("When the user answers 'no' to add any person, Then the questionnaire shows the confirmation page", async () => {
       await $(ListCollectorPage.no()).click();
       await $(ListCollectorPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(SubmitPage.url());
+      await expect(await browser.getUrl()).to.contain(SubmitPage.url());
     });
 
     it("When the user attempts to submit, Then they are shown the confirmation page", async () => {
@@ -95,7 +95,7 @@ describe("List collector with variants primary person", () => {
 
     it("When the user submits, Then they are allowed to submit the survey", async () => {
       await $(SubmitPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
+      await expect(await browser.getUrl()).to.contain(ThankYouPage.pageName);
     });
   });
 });

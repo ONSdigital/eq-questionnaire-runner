@@ -35,12 +35,12 @@ describe("Relationships - Primary Person", () => {
     it("When I add household members And add thir relationships And remove the primary person And add a new primary person then I will be asked for the relationships again", async () => {
       addPrimaryAndTwoOthersAndCompleteRelationships();
 
-      browser.url("/questionnaire/primary-person-list-collector");
+      await browser.url("/questionnaire/primary-person-list-collector");
 
       await $(PrimaryPersonListCollectorPage.no()).click();
       await $(PrimaryPersonListCollectorPage.submit()).click();
 
-      browser.url("/questionnaire/primary-person-list-collector");
+      await browser.url("/questionnaire/primary-person-list-collector");
 
       await $(PrimaryPersonListCollectorPage.yes()).click();
       await $(PrimaryPersonListCollectorPage.submit()).click();

@@ -74,7 +74,7 @@ const assertRepeatingSectionOnChange = async (repeatIndex, currentBreakdown1, cu
   it("When I update my answers to equal the new total spending, Then I should be able to get to the section summary and the breakdown section should be marked as 'Completed'", async () => {
     answerAndSubmitSpendingBreakdownQuestion(newTotal, 0, 0);
 
-    await expect(browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
+    await expect(await browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
     await $(BreakdownSectionSummary.submit()).click();
     await expect(await $(HubPage.summaryRowState(repeatingSectionId(repeatIndex))).getText()).to.equal("Completed");
   });
@@ -120,7 +120,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       answerAndSubmitSpendingBreakdownQuestion(500, 250, 250);
       answerAndSubmitEntertainmentBreakdownQuestion(250, 150, 100);
 
-      await expect(browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
+      await expect(await browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
       await $(BreakdownSectionSummary.submit()).click();
 
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(1))).getText()).to.equal("Completed");
@@ -131,7 +131,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       await $(BreakdownDrivingPage.no()).click();
       await $(BreakdownDrivingPage.submit()).click();
 
-      await expect(browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
+      await expect(await browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
       await $(BreakdownSectionSummary.submit()).click();
 
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(2))).getText()).to.equal("Completed");
@@ -194,7 +194,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
     it("When I submit the questionnaire, Then I should see the thank you page", async () => {
       await $(HubPage.submit()).click();
 
-      await expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
+      await expect(await browser.getUrl()).to.contain(ThankYouPage.pageName);
     });
   });
 });

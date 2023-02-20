@@ -38,7 +38,7 @@ describe("List Collector Driving Question", () => {
       await $(AnyoneUsuallyLiveAtPage.no()).click();
       await $(AnyoneUsuallyLiveAtPage.submit()).click();
       await $(SectionSummaryPage.peopleListAddLink()).click();
-      await expect(browser.getUrl()).to.contain(AnyoneUsuallyLiveAtPage.url());
+      await expect(await browser.getUrl()).to.contain(AnyoneUsuallyLiveAtPage.url());
     });
   });
 
@@ -55,7 +55,7 @@ describe("List Collector Driving Question", () => {
       await $(AnyoneElseLiveAtListCollectorRemovePage.yes()).click();
       await $(AnyoneElseLiveAtListCollectorRemovePage.submit()).click();
       await $(SectionSummaryPage.peopleListAddLink()).click();
-      await expect(browser.getUrl()).to.contain(AnyoneElseLiveAtListCollectorAddPage.pageName);
+      await expect(await browser.getUrl()).to.contain(AnyoneElseLiveAtListCollectorAddPage.pageName);
     });
   });
 });

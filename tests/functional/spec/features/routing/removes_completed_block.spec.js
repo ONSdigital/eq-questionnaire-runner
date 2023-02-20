@@ -10,7 +10,7 @@ describe("Feature: Routing incompletes block if routing backwards", () => {
       await $(NumberOfEmployeesTotalBlockPage.submit()).click();
       await $(ConfirmZeroEmployeesBlockPage.yes()).click();
       await $(ConfirmZeroEmployeesBlockPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
   });
 });

@@ -46,7 +46,7 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(CalculatedSummarySectionSummaryPage.submit()).click();
 
       await $(HubPage.summaryRowLink("dependent-question-section")).click();
-      await expect(browser.getUrl()).to.contain(FruitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(FruitPage.pageName);
     });
 
     it("When a question in another section has a skip condition dependency on a calculated summary total, and the skip condition is met (total greater than £10), then the dependent question should not be displayed", async () => {
@@ -60,7 +60,7 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(CalculatedSummarySectionSummaryPage.submit()).click();
 
       await $(HubPage.summaryRowLink("dependent-question-section")).click();
-      await expect(browser.getUrl()).to.contain(VegetablesPage.pageName);
+      await expect(await browser.getUrl()).to.contain(VegetablesPage.pageName);
     });
 
     it("When a question in another section has a routing rule dependency on a calculated summary total, and the calculated summary total is greater than £100, then we should be routed to the second question block", async () => {
@@ -76,7 +76,7 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(HubPage.summaryRowLink("dependent-question-section")).click();
       await $(VegetablesPage.yes()).click();
       await $(VegetablesPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(SecondQuestionBlockPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SecondQuestionBlockPage.pageName);
     });
 
     it("When a question in another section has a routing rule dependency on a calculated summary total, and the calculated summary total is less than £100, then we should be routed to the section summary", async () => {
@@ -92,7 +92,7 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(HubPage.summaryRowLink("dependent-question-section")).click();
       await $(VegetablesPage.yes()).click();
       await $(VegetablesPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(DependentQuestionSectionSummaryPage.pageName);
+      await expect(await browser.getUrl()).to.contain(DependentQuestionSectionSummaryPage.pageName);
     });
 
     it("When a question in another section has a dependency on a calculated summary total, and both sections are complete, and I go back and edit the calculated summary total, then the dependent section status should be in progress", async () => {

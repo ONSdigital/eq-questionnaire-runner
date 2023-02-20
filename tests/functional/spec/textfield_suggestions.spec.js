@@ -21,17 +21,17 @@ describe("Suggestions", () => {
     await $(SuggestionsPage.submit()).click();
     await $(MultipleSuggestionsPage.multipleCountry()).click();
     // Browser needs to pause before typing starts to allow for the autosuggest Javascript to initialise
-    browser.pause(500);
-    browser.keys("Ita");
-    suggestionsList.waitForExist();
-    suggestionsOption.click();
+    await browser.pause(500);
+    await browser.keys("Ita");
+    await suggestionsList.waitForExist();
+    await suggestionsOption.click();
     await $(MultipleSuggestionsPage.multipleCountry()).click();
     // Browser needs to pause before typing starts to allow for the autosuggest Javascript to initialise
-    browser.pause(500);
-    browser.keys(" United");
-    suggestionsList.waitForExist();
+    await browser.pause(500);
+    await browser.keys(" United");
+    await suggestionsList.waitForExist();
     await expect(await $$(".ons-js-autosuggest-listbox li").length).to.not.equal(0);
-    suggestionsOption.click();
+    await suggestionsOption.click();
     await $(MultipleSuggestionsPage.submit()).click();
     await expect(browser.getUrl()).to.contain(SubmitPage.url());
   });

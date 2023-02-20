@@ -13,18 +13,18 @@ describe("Feature: Routing - ALL-IN Operator", () => {
         await $(CountryCheckboxPage.india()).click();
         await $(CountryCheckboxPage.malta()).click();
         await $(CountryCheckboxPage.submit()).click();
-        await expect(browser.getUrl()).to.contain(CountryInterstitialPage.pageName);
+        await expect(await browser.getUrl()).to.contain(CountryInterstitialPage.pageName);
       });
       it("When I do select India only, Then I should be routed to the correct answer interstitial page", async () => {
         await $(CountryCheckboxPage.india()).click();
         await $(CountryCheckboxPage.submit()).click();
-        await expect(browser.getUrl()).to.contain(CountryInterstitialOtherPage.pageName);
+        await expect(await browser.getUrl()).to.contain(CountryInterstitialOtherPage.pageName);
       });
 
       it("When I do not select India or Malta, Then I should be routed to the incorrect answer interstitial page", async () => {
         await $(CountryCheckboxPage.liechtenstein()).click();
         await $(CountryCheckboxPage.submit()).click();
-        await expect(browser.getUrl()).to.contain(CountryInterstitialOtherPage.pageName);
+        await expect(await browser.getUrl()).to.contain(CountryInterstitialOtherPage.pageName);
       });
     });
   });

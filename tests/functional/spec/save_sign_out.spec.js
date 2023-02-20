@@ -15,9 +15,9 @@ describe("Save sign out / Exit", () => {
     await browser.openQuestionnaire("test_introduction.json");
     await $(IntroductionPage.exitButton()).click();
 
-    await expect(browser.getUrl()).to.contain("/surveys/todo");
+    await expect(await browser.getUrl()).to.contain("/surveys/todo");
 
-    browser.back();
+    await browser.back();
     await expect($("body").getHTML()).to.contain("Sorry, you need to sign in again");
   });
 
@@ -28,9 +28,9 @@ describe("Save sign out / Exit", () => {
     await $(SetMinMax.submit()).click();
     await $(TestMinMax.saveSignOut()).click();
 
-    await expect(browser.getUrl()).to.contain("/surveys/todo");
+    await expect(await browser.getUrl()).to.contain("/surveys/todo");
 
-    browser.back();
+    await browser.back();
     await expect($("body").getHTML()).to.contain("Sorry, you need to sign in again");
   });
 
@@ -46,7 +46,7 @@ describe("Save sign out / Exit", () => {
     await $(DetailAnswer.submit()).click();
 
     await $(SubmitPage.submit()).click();
-    await expect(browser.getUrl()).to.contain("thank-you");
+    await expect(await browser.getUrl()).to.contain("thank-you");
   });
 
   it("Given a business questionnaire, when I navigate the questionnaire, then I see the correct sign out buttons", async () => {

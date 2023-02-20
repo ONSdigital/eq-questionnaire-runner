@@ -40,7 +40,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
-      await expect(browser.getUrl()).to.contain(TotalPlaybackPage.pageName);
+      await expect(await browser.getUrl()).to.contain(TotalPlaybackPage.pageName);
     });
   });
 
@@ -51,7 +51,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
   });
 
@@ -74,7 +74,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       answerBothBreakdownQuestions(["6", "3", "3", "3"], ["3", "3", "2", "1"]);
 
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
   });
 
@@ -97,7 +97,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       answerBothBreakdownQuestions(["5", "4", "4", "2"], ["3", "3", "2", "1"]);
 
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
   });
 
@@ -124,7 +124,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await expect(await $(SecondBreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.false;
 
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
   });
 
