@@ -6,7 +6,7 @@ class TestCase {
       this.checkTimeoutModal();
       await browser.pause(65000); // We are waiting for the session to expire
       await expect(await browser.getUrl()).to.contain("/session-expired");
-      await expect($("body").getHTML())
+      await expect(await $("body").getHTML())
         .to.include(
           "Sorry, you need to sign in again",
           "This is because you have either:",
