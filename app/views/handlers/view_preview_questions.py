@@ -1,6 +1,3 @@
-from datetime import datetime
-from typing import Union
-
 from flask_babel import lazy_gettext
 
 from app.data_models import QuestionnaireStore
@@ -22,7 +19,7 @@ class ViewPreviewQuestions:
         self._questionnaire_store = questionnaire_store
         self._language = language
 
-    def get_context(self) -> dict[str, Union[str, datetime, dict]]:
+    def get_context(self) -> dict[str, object]:
         return build_view_preview_questions_context(
             self._language, self._schema, self._questionnaire_store
         )
