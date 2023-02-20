@@ -46,7 +46,7 @@ class PreviewQuestion:
     def _build_answers(self) -> list[Optional[str]]:
         labels: list = []
         if answers := self.question.get("answers"):  # type: ignore
-            for answer in iter(answers):
+            for answer in answers:
                 if options := answer.get("options"):
                     labels.extend(option["label"] for option in options)
                 if not options:
@@ -55,7 +55,7 @@ class PreviewQuestion:
         return labels
 
     def _build_answer_descriptions(self) -> Optional[dict]:
-        answers = iter(self.question["answers"])  # type: ignore
+        answers = self.question["answers"]  # type: ignore
         return next(
             (
                 answer.get("description")
@@ -66,7 +66,7 @@ class PreviewQuestion:
         )
 
     def _build_answer_guidance(self) -> Optional[list[Any]]:
-        answers = iter(self.question["answers"])  # type: ignore
+        answers = self.question["answers"]  # type: ignore
         for answer in answers:
             return self._build_guidance(answer)
 
