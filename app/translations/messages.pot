@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-03 11:39+0000\n"
+"POT-Creation-Date: 2023-02-20 07:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.11.0\n"
 
-#: app/forms/validators.py:376 app/jinja_filters.py:115
+#: app/forms/validators.py:377 app/jinja_filters.py:115
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:380 app/jinja_filters.py:123
+#: app/forms/validators.py:381 app/jinja_filters.py:123
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
@@ -41,15 +41,15 @@ msgstr ""
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
 
-#: app/jinja_filters.py:600 templates/partials/summary/list-summary.html:9
+#: app/jinja_filters.py:598 templates/partials/summary/list-summary.html:9
 msgid "Remove"
 msgstr ""
 
-#: app/jinja_filters.py:601 templates/partials/summary/list-summary.html:10
+#: app/jinja_filters.py:599 templates/partials/summary/list-summary.html:10
 msgid "Remove {item_name}"
 msgstr ""
 
-#: app/jinja_filters.py:701
+#: app/jinja_filters.py:699
 msgid "No answer provided"
 msgstr ""
 
@@ -208,14 +208,14 @@ msgstr ""
 msgid "Enter the year in a valid format. For example, 2023."
 msgstr ""
 
-#: app/forms/validators.py:387
+#: app/forms/validators.py:388
 #, python-format
 msgid "%(num)s day"
 msgid_plural "%(num)s days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/fields/select_field_with_detail_answer.py:36
+#: app/forms/fields/select_field_with_detail_answer.py:39
 msgid "Not a valid choice."
 msgstr ""
 
@@ -223,33 +223,33 @@ msgstr ""
 msgid "ONS Surveys"
 msgstr ""
 
-#: app/helpers/template_helpers.py:109
+#: app/helpers/template_helpers.py:108
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:140
+#: app/helpers/template_helpers.py:139
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:165
+#: app/helpers/template_helpers.py:164
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
 msgstr ""
 
-#: app/questionnaire/placeholder_transforms.py:164
+#: app/questionnaire/placeholder_transforms.py:160
 msgid "{number_of_years} year"
 msgid_plural "{number_of_years} years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:170
+#: app/questionnaire/placeholder_transforms.py:166
 msgid "{number_of_months} month"
 msgid_plural "{number_of_months} months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:175
+#: app/questionnaire/placeholder_transforms.py:171
 msgid "{number_of_days} day"
 msgid_plural "{number_of_days} days"
 msgstr[0] ""
@@ -316,8 +316,8 @@ msgid "An individual access code has been sent by text"
 msgstr ""
 
 #: app/survey_config/business_config.py:59
-#: app/survey_config/census_config.py:33 app/survey_config/census_config.py:90
-#: app/survey_config/census_config.py:156
+#: app/survey_config/census_config.py:33 app/survey_config/census_config.py:89
+#: app/survey_config/census_config.py:154
 msgid "Help"
 msgstr ""
 
@@ -335,8 +335,8 @@ msgid "What we do"
 msgstr ""
 
 #: app/survey_config/business_config.py:92
-#: app/survey_config/census_config.py:40 app/survey_config/census_config.py:98
-#: app/survey_config/census_config.py:164
+#: app/survey_config/census_config.py:40 app/survey_config/census_config.py:97
+#: app/survey_config/census_config.py:162
 #: app/survey_config/social_survey_config.py:43
 msgid "Contact us"
 msgstr ""
@@ -347,15 +347,15 @@ msgid "Accessibility"
 msgstr ""
 
 #: app/survey_config/business_config.py:107
-#: app/survey_config/census_config.py:61 app/survey_config/census_config.py:118
-#: app/survey_config/census_config.py:173
+#: app/survey_config/census_config.py:61 app/survey_config/census_config.py:117
+#: app/survey_config/census_config.py:171
 #: app/survey_config/social_survey_config.py:58
 msgid "Cookies"
 msgstr ""
 
 #: app/survey_config/business_config.py:109
-#: app/survey_config/census_config.py:67 app/survey_config/census_config.py:124
-#: app/survey_config/census_config.py:179
+#: app/survey_config/census_config.py:67 app/survey_config/census_config.py:123
+#: app/survey_config/census_config.py:177
 #: app/survey_config/social_survey_config.py:60
 msgid "Privacy and data protection"
 msgstr ""
@@ -368,29 +368,29 @@ msgstr ""
 msgid "Save and complete later"
 msgstr ""
 
-#: app/survey_config/census_config.py:46 app/survey_config/census_config.py:104
+#: app/survey_config/census_config.py:46 app/survey_config/census_config.py:103
 msgid "Languages"
 msgstr ""
 
-#: app/survey_config/census_config.py:50 app/survey_config/census_config.py:108
+#: app/survey_config/census_config.py:50 app/survey_config/census_config.py:107
 msgid "BSL and audio videos"
 msgstr ""
 
-#: app/survey_config/census_config.py:63 app/survey_config/census_config.py:120
-#: app/survey_config/census_config.py:175
+#: app/survey_config/census_config.py:63 app/survey_config/census_config.py:119
+#: app/survey_config/census_config.py:173
 msgid "Accessibility statement"
 msgstr ""
 
-#: app/survey_config/census_config.py:71 app/survey_config/census_config.py:128
-#: app/survey_config/census_config.py:183
+#: app/survey_config/census_config.py:71 app/survey_config/census_config.py:127
+#: app/survey_config/census_config.py:181
 msgid "Terms and conditions"
 msgstr ""
 
-#: app/survey_config/census_config.py:144
+#: app/survey_config/census_config.py:143
 msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
 msgstr ""
 
-#: app/survey_config/census_config.py:147 app/survey_config/survey_config.py:20
+#: app/survey_config/census_config.py:146 app/survey_config/survey_config.py:20
 msgid "Use of address data is subject to the terms and conditions."
 msgstr ""
 
@@ -524,27 +524,27 @@ msgstr ""
 msgid "Yes, send the confirmation email"
 msgstr ""
 
-#: app/views/handlers/confirm_email.py:69
+#: app/views/handlers/confirm_email.py:68
 msgid "Confirm your email address"
 msgstr ""
 
-#: app/views/handlers/confirm_email.py:89
+#: app/views/handlers/confirm_email.py:88
 msgid "Is this email address correct?"
 msgstr ""
 
+#: app/views/handlers/confirm_email.py:101
 #: app/views/handlers/confirm_email.py:102
-#: app/views/handlers/confirm_email.py:103
 #: app/views/handlers/individual_response.py:878
 msgid "No, I need to change it"
 msgstr ""
 
-#: app/views/handlers/confirm_email.py:129
-#: app/views/handlers/confirmation_email.py:68
+#: app/views/handlers/confirm_email.py:128
+#: app/views/handlers/confirmation_email.py:67
 #: app/views/handlers/feedback.py:83 app/views/handlers/question.py:165
 msgid "Error: {page_title}"
 msgstr ""
 
-#: app/views/handlers/confirmation_email.py:46
+#: app/views/handlers/confirmation_email.py:45
 msgid "Confirmation email"
 msgstr ""
 
@@ -552,35 +552,35 @@ msgstr ""
 msgid "Feedback"
 msgstr ""
 
-#: app/views/handlers/feedback.py:140
+#: app/views/handlers/feedback.py:139
 msgid "Give feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:146 app/views/handlers/feedback.py:170
+#: app/views/handlers/feedback.py:145 app/views/handlers/feedback.py:169
 msgid "Select what your feedback is about"
 msgstr ""
 
-#: app/views/handlers/feedback.py:149 app/views/handlers/feedback.py:150
+#: app/views/handlers/feedback.py:148 app/views/handlers/feedback.py:149
 msgid "The survey questions"
 msgstr ""
 
-#: app/views/handlers/feedback.py:151
+#: app/views/handlers/feedback.py:150
 msgid "For example, questions not clear, answer options not relevant"
 msgstr ""
 
-#: app/views/handlers/feedback.py:156 app/views/handlers/feedback.py:157
+#: app/views/handlers/feedback.py:155 app/views/handlers/feedback.py:156
 msgid "Page design and structure"
 msgstr ""
 
-#: app/views/handlers/feedback.py:160 app/views/handlers/feedback.py:163
+#: app/views/handlers/feedback.py:159 app/views/handlers/feedback.py:162
 msgid "General feedback about this service"
 msgstr ""
 
-#: app/views/handlers/feedback.py:178 app/views/handlers/feedback.py:188
+#: app/views/handlers/feedback.py:177 app/views/handlers/feedback.py:187
 msgid "Enter your feedback"
 msgstr ""
 
-#: app/views/handlers/feedback.py:179
+#: app/views/handlers/feedback.py:178
 msgid "Do not include confidential information, such as your contact details"
 msgstr ""
 
@@ -725,7 +725,7 @@ msgstr ""
 msgid "Thank you for completing the census"
 msgstr ""
 
-#: app/views/handlers/view_preview_questions.py:32
+#: app/views/handlers/view_preview_questions.py:29
 msgid "Preview Questions"
 msgstr ""
 
@@ -878,6 +878,10 @@ msgstr ""
 
 #: templates/introduction.html:10
 msgid "Introduction"
+msgstr ""
+
+#: templates/introduction.html:24
+msgid "<a href='{url}'>View the questions you will be asked in this survey</a>"
 msgstr ""
 
 #: templates/introduction.html:29
@@ -1264,11 +1268,11 @@ msgid ""
 " of the section</a>"
 msgstr ""
 
-#: templates/partials/preview-question.html:63
+#: templates/partials/preview-question.html:54
 msgid "You can answer with the following options:"
 msgstr ""
 
-#: templates/partials/preview-question.html:72
+#: templates/partials/preview-question.html:63
 msgid " characters can be added."
 msgstr ""
 
