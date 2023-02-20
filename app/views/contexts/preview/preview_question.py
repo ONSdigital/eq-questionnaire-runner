@@ -32,6 +32,7 @@ class PreviewQuestion:
         )
 
         self.question = self.rendered_block().get("question")
+        # render_block returns same type as placeholder_renderer.render which is dict[str, Any] hence all type ignores below
 
         self.title = self.question.get("title")  # type: ignore
 
