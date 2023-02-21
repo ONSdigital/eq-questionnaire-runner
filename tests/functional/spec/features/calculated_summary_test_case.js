@@ -215,7 +215,7 @@ class TestCase {
     it("Given I complete every calculated summary, When I go to a page with calculated summary piping, Then I should the see the piped calculated summary total for each summary", async () => {
       await $(NumberTotalPlaybackPage.submit()).click();
 
-      const content = $("h1 + ul").getText();
+      const content = await $("h1 + ul").getText();
       const textsToAssert = [
         "Total currency values (if Q4 not skipped): £28.37",
         "Total currency values (if Q4 skipped)): £9.36",

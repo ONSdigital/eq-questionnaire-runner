@@ -34,7 +34,7 @@ testCases.forEachasync(async (testCase) => {
   describe(`Feature: Dynamically generated answer options driven by a function (${testCase.schemaName})`, () => {
     describe("Selecting/Deselecting", () => {
       before("Open questionnaire", async () => {
-        openQuestionnaireAndSetUp(testCase.schemaName);
+        await openQuestionnaireAndSetUp(testCase.schemaName);
       });
 
       describe("Given a dynamic answer options questionnaire and I am on a dynamic checkbox answer page", () => {
@@ -53,7 +53,7 @@ testCases.forEachasync(async (testCase) => {
         });
 
         it("When I submit the page, then I should be taken to the next page", async () => {
-          await $(DynamicCheckboxPage.submit()).click();
+          await $(awaitDynamicCheckboxPage.submit()).click();
           await expect(await browser.getUrl()).to.contain(DynamicRadioPage.pageName);
         });
       });

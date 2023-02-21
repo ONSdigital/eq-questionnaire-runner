@@ -20,7 +20,7 @@ describe("Feature: Sum of grouped answers equal to validation against total ", (
       await $(TotalAnswerPage.total()).setValue("12");
       await $(TotalAnswerPage.submit()).click();
 
-      answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
+      await answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
@@ -30,7 +30,7 @@ describe("Feature: Sum of grouped answers equal to validation against total ", (
     it("When I go back from the summary and change the total, Then I must reconfirm the breakdown question with valid answers before I can get to the summary", async () => {
       await $(TotalAnswerPage.total()).setValue("12");
       await $(TotalAnswerPage.submit()).click();
-      answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
+      await answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
       await $(SubmitPage.totalAnswerEdit()).click();
       await $(TotalAnswerPage.total()).setValue("15");
@@ -42,7 +42,7 @@ describe("Feature: Sum of grouped answers equal to validation against total ", (
       await $(BreakdownAnswerPage.submit()).click();
       await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 15");
 
-      answerAndSubmitBreakdownQuestion("6", "3", "3", "3");
+      await answerAndSubmitBreakdownQuestion("6", "3", "3", "3");
 
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
@@ -52,7 +52,7 @@ describe("Feature: Sum of grouped answers equal to validation against total ", (
     it("When I continue and enter 5 into breakdown 1 and leave the others empty, Then I should be able to get to the summary", async () => {
       await $(TotalAnswerPage.total()).setValue("5");
       await $(TotalAnswerPage.submit()).click();
-      answerAndSubmitBreakdownQuestion("5", "", "", "");
+      await answerAndSubmitBreakdownQuestion("5", "", "", "");
 
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
@@ -62,7 +62,7 @@ describe("Feature: Sum of grouped answers equal to validation against total ", (
     it("When I continue and enter 3 in each breakdown field, Then I should see a validation error", async () => {
       await $(TotalAnswerPage.total()).setValue("5");
       await $(TotalAnswerPage.submit()).click();
-      answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
+      await answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
       await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 5");
     });

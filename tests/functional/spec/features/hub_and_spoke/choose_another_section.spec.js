@@ -5,7 +5,7 @@ import HubPage from "../../../base_pages/hub.page.js";
 describe("Choose another section link", () => {
   it("When a user first views the Hub, then the link should not be displayed", async () => {
     await browser.openQuestionnaire("test_hub_and_spoke.json");
-    await expect($("body").getText()).to.not.have.string("Choose another section and return to this later");
+    await expect(await $("body").getText()).to.not.have.string("Choose another section and return to this later");
   });
 
   it("When a user views the first question and the hub is not available, then the link should not be displayed", async () => {
@@ -18,7 +18,7 @@ describe("Choose another section link", () => {
     await $(EmploymentStatusBlockPage.workingAsAnEmployee()).click();
     await $(EmploymentStatusBlockPage.submit()).click();
     await $(HubPage.summaryRowLink("accommodation-section")).click();
-    await expect($("body").getText()).to.contain("Choose another section and return to this later");
+    await expect(await $("body").getText()).to.contain("Choose another section and return to this later");
   });
 
   it("When a user gets to a section summary and the hub is available, then the link should not be displayed", async () => {
@@ -28,6 +28,6 @@ describe("Choose another section link", () => {
     await $(HubPage.summaryRowLink("accommodation-section")).click();
     await $(ProxyPage.noIMAnsweringForMyself()).click();
     await $(ProxyPage.submit()).click();
-    await expect($("body").getText()).to.not.have.string("Choose another section and return to this later");
+    await expect(await $("body").getText()).to.not.have.string("Choose another section and return to this later");
   });
 });
