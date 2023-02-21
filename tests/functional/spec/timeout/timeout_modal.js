@@ -3,7 +3,7 @@ import { TimeoutModalPage } from "../../base_pages/timeout-modal.page.js";
 class TestCase {
   testCaseExpired(page) {
     it("When the timeout modal is displayed, and I do not extend my session, Then I will be redirected to the session expired page", async () => {
-      this.checkTimeoutModal();
+      await this.checkTimeoutModal();
       await browser.pause(65000); // We are waiting for the session to expire
       await expect(await browser.getUrl()).to.contain("/session-expired");
       await expect(await $("body").getHTML())
@@ -20,7 +20,7 @@ class TestCase {
 
   testCaseExtended(page) {
     it("When the timeout modal is displayed, and I click the “Continue survey” button, Then my session will be extended", async () => {
-      this.checkTimeoutModal();
+      await this.checkTimeoutModal();
       await $(TimeoutModalPage.submit()).click();
       await expect(await $(TimeoutModalPage.timer()).getText()).to.equal("");
       await browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
@@ -32,7 +32,7 @@ class TestCase {
 
   testCaseExtendedNewWindow(page) {
     it("When the timeout modal is displayed, but I open a new window and then focus back on the timeout modal window, Then my session will be extended", async () => {
-      this.checkTimeoutModal();
+      await this.checkTimeoutModal();
       await browser.newWindow("");
       await browser.switchWindow(await page.pageName);
       await browser.refresh();
@@ -43,7 +43,7 @@ class TestCase {
 
   async checkTimeoutModal() {
     await $(TimeoutModalPage.timer()).waitForDisplayed({ timeout: 70000 });
-    await expect($(TimeoutModalPage.timer()).getText()).to.equal(
+    await expect(await $(TimeoutModalPage.timer()).getText()).to.equal(
       "To protect your information, your progress will be saved and you will be signed out in 59 seconds."
     );
   }
