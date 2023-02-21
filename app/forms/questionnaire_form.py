@@ -186,7 +186,6 @@ class QuestionnaireForm(FlaskForm):
         calculation: Calculation,
         question: QuestionSchemaType,
     ) -> Optional[tuple[Union[Calculation, AnswerValueTypes], Optional[str]]]:
-
         calculation_value: Union[Calculation, AnswerValueTypes]
         currency: Optional[str]
 
@@ -299,7 +298,6 @@ class QuestionnaireForm(FlaskForm):
         date_from: Mapping[str, dict],
         date_to: Mapping[str, dict],
     ) -> timedelta:
-
         list_item_id = self.location.list_item_id if self.location else None
         value_source_resolver = ValueSourceResolver(
             answer_store=self.answer_store,

@@ -72,7 +72,6 @@ class SectionSummaryContext(Context):
         return section
 
     def get_page_title(self, title_for_location: Union[Mapping, str]) -> str:
-
         section_repeating_page_title = (
             self._schema.get_repeating_page_title_for_section(
                 self.current_location.section_id

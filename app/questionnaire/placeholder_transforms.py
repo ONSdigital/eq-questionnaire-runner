@@ -67,7 +67,6 @@ class PlaceholderTransforms:
 
     @staticmethod
     def remove_empty_from_list(list_to_filter: Sequence[str]) -> list[str]:
-
         """
         :param list_to_filter: anything that is iterable
         :return: a list with no empty values
@@ -154,7 +153,6 @@ class PlaceholderTransforms:
 
     @staticmethod
     def calculate_date_difference(first_date: str, second_date: str) -> str:
-
         time = relativedelta(
             parse_datetime(second_date),
             parse_datetime(first_date),
@@ -248,7 +246,6 @@ class PlaceholderTransforms:
     def format_ordinal(
         self, number_to_format: int, determiner: Optional[str] = None
     ) -> str:
-
         indicator = self.get_ordinal_indicator(number_to_format)
 
         if determiner == "a_or_an" and self.language in ["en", "eo"]:

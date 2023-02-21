@@ -774,7 +774,6 @@ def test_radio_answer_with_detail_answers_returns_correct_value(
 def test_answer_types_selected_option_label(
     answer_type, options, answers, expected, answer_store, list_store, mock_schema
 ):
-
     for answer in answers:
         answer_store.add_or_update(answer)
 

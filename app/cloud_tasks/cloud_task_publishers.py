@@ -53,7 +53,6 @@ class CloudTaskPublisher:
         function_name: str,
         fulfilment_request_transaction_id: str,
     ) -> Task:
-
         parent = self._client.queue_path(self._project_id, "europe-west2", queue_name)
         try:
             task = self._create_task_with_retry(body, function_name, parent)

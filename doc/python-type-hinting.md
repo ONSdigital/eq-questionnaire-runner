@@ -84,6 +84,15 @@ class Circle(Shape):
 This is recommended as forward declarations are now redundant in 3.10
 https://peps.python.org/pep-0673/
 
+## Type Alias
+
+Use the special annotation `TypeAlias` to declare type aliases more explicitly so type checkers are able to distinguish between type aliases and ordinary assignments:
+
+```python
+MyType: TypeAlias = "ClassName"
+def foo() -> MyType: ...
+```
+
 ## Type Ignore
 
 To mark portions of the program that should not be covered by type hinting, use the following on a particular line:
