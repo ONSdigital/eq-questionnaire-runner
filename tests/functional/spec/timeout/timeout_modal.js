@@ -41,9 +41,9 @@ class TestCase {
     }).timeout(140000);
   }
 
-  checkTimeoutModal() {
-    $(TimeoutModalPage.timer()).waitForDisplayed({ timeout: 70000 });
-    expect($(TimeoutModalPage.timer()).getText()).to.equal(
+  async checkTimeoutModal() {
+    await $(TimeoutModalPage.timer()).waitForDisplayed({ timeout: 70000 });
+    await expect($(TimeoutModalPage.timer()).getText()).to.equal(
       "To protect your information, your progress will be saved and you will be signed out in 59 seconds."
     );
   }
