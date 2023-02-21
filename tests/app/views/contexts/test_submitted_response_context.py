@@ -65,9 +65,19 @@ def test_build_view_submitted_response_context_submitted_text(app: Flask):
 
 def test_build_view_submitted_response_context_submitted_text_social(app: Flask):
     with app.app_context():
-        questionnaire_store = fake_questionnaire_store()
+        questionnaire_store = fake_questionnaire_store_social()
         context = build_view_submitted_response_context(
             "en", SCHEMA, questionnaire_store, SurveyType.SOCIAL
+        )
+
+        assert context["submitted_text"] == "Answers submitted."
+
+
+def test_build_view_submitted_response_context_submitted_text_health(app: Flask):
+    with app.app_context():
+        questionnaire_store = fake_questionnaire_store_social()
+        context = build_view_submitted_response_context(
+            "en", SCHEMA, questionnaire_store, SurveyType.HEALTH
         )
 
         assert context["submitted_text"] == "Answers submitted."
@@ -130,6 +140,21 @@ def fake_questionnaire_store():
     storage.get_user_data = Mock(return_value=("{}", "ce_sid", 1, None))
     questionnaire_store = QuestionnaireStore(storage)
     questionnaire_store.metadata = get_metadata({"tx_id": "tx_id", "ru_name": "Apple"})
+    questionnaire_store.submitted_at = SUBMITTED_AT
+    questionnaire_store.answer_store = AnswerStore(
+        [
+            Answer("name-answer", "John Smith", None).to_dict(),
+            Answer("address-answer", "NP10 8XG", None).to_dict(),
+        ]
+    )
+    return questionnaire_store
+
+
+def fake_questionnaire_store_social():
+    storage = Mock()
+    storage.get_user_data = Mock(return_value=("{}", "ce_sid", 1, None))
+    questionnaire_store = QuestionnaireStore(storage)
+    questionnaire_store.metadata = get_metadata({"tx_id": "tx_id"})
     questionnaire_store.submitted_at = SUBMITTED_AT
     questionnaire_store.answer_store = AnswerStore(
         [

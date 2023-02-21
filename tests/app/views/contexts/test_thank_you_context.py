@@ -9,6 +9,7 @@ from tests.app.questionnaire.conftest import get_metadata
 
 SURVEY_TYPE_DEFAULT = SurveyType.DEFAULT
 SURVEY_TYPE_SOCIAL = SurveyType.SOCIAL
+SURVEY_TYPE_HEALTH = SurveyType.HEALTH
 SUBMITTED_AT = datetime.now(timezone.utc)
 SCHEMA = load_schema_from_name("test_view_submitted_response", "en")
 
@@ -17,6 +18,16 @@ def test_social_survey_context(app: Flask):
     with app.app_context():
         context = build_thank_you_context(
             SCHEMA, get_metadata(), SUBMITTED_AT, SURVEY_TYPE_SOCIAL
+        )
+
+        assert context["submission_text"] == "Your answers have been submitted."
+        assert len(context["metadata"]["itemsList"]) == 1
+
+
+def test_health_survey_context(app: Flask):
+    with app.app_context():
+        context = build_thank_you_context(
+            SCHEMA, get_metadata(), SUBMITTED_AT, SURVEY_TYPE_HEALTH
         )
 
         assert context["submission_text"] == "Your answers have been submitted."
