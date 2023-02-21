@@ -53,7 +53,7 @@ testCases.forEachasync(async (testCase) => {
         });
 
         it("When I submit the page, then I should be taken to the next page", async () => {
-          await $(awaitDynamicCheckboxPage.submit()).click();
+          await $(DynamicCheckboxPage.submit()).click();
           await expect(await browser.getUrl()).to.contain(DynamicRadioPage.pageName);
         });
       });
@@ -88,7 +88,7 @@ testCases.forEachasync(async (testCase) => {
 
       describe("Given a dynamic answer options questionnaire and I am on the mutually exclusive page", () => {
         it("When I click a dynamic checkbox option, then the checkbox should be selected", async () => {
-          for (let i = 0; i < testCase.answerOptionCount; i++) {
+          for (let i = 0; i < await testCase.answerOptionCount; i++) {
             await $(DynamicMutuallyExclusivePage.answerByIndex(i)).click();
             await expect(await $(DynamicMutuallyExclusivePage.answerByIndex(i)).isSelected()).to.be.true;
           }
@@ -117,7 +117,7 @@ testCases.forEachasync(async (testCase) => {
 
     describe("Summary page", () => {
       beforeEach("Open questionnaire", async () => {
-        openQuestionnaireAndSetUp(testCase.schemaName);
+        await openQuestionnaireAndSetUp(testCase.schemaName);
       });
 
       describe("Given a dynamic answer options questionnaire", () => {
@@ -167,7 +167,7 @@ testCases.forEachasync(async (testCase) => {
 describe(`Feature: Dynamically generated answer options driven by a function with static options`, () => {
   describe("Given a dynamic answer options questionnaire with static options", () => {
     before("Open questionnaire", async () => {
-      openQuestionnaireAndSetUp("test_dynamic_answer_options_function_driven_with_static_options.json");
+      await openQuestionnaireAndSetUp("test_dynamic_answer_options_function_driven_with_static_options.json");
     });
 
     it("When I select a static answer option for each question, then my selected answer(s) should be displayed on the summary", async () => {
