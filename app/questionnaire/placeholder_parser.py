@@ -52,35 +52,25 @@ class PlaceholderParser:
         progress_store: Optional[ProgressStore] = None,
         path_finder: Optional["PathFinder"] = None,
     ):
-        self._answer_store = answer_store
-        self._list_store = list_store
-        self._metadata = metadata
-        self._response_metadata = response_metadata
-        self._schema = schema
-        self._list_item_id = list_item_id
-        self._location = location
         self._transformer = PlaceholderTransforms(language, schema, renderer)
         self._placeholder_map: MutableMapping[
             str, Union[ValueSourceEscapedTypes, ValueSourceTypes, None]
         ] = {}
-        self._routing_path_block_ids = routing_path_block_ids
-        self._progress_store = progress_store
-        self._path_finder = path_finder
 
         self._value_source_resolver = ValueSourceResolver(
-            answer_store=self._answer_store,
-            list_store=self._list_store,
-            metadata=self._metadata,
-            schema=self._schema,
-            location=self._location,
-            list_item_id=self._list_item_id,
+            answer_store=answer_store,
+            list_store=list_store,
+            metadata=metadata,
+            schema=schema,
+            location=location,
+            list_item_id=list_item_id,
             escape_answer_values=True,
-            response_metadata=self._response_metadata,
+            response_metadata=response_metadata,
             use_default_answer=True,
-            routing_path_block_ids=self._routing_path_block_ids,
+            routing_path_block_ids=routing_path_block_ids,
             assess_routing_path=False,
-            progress_store=self._progress_store,
-            path_finder=self._path_finder,
+            progress_store=progress_store,
+            path_finder=path_finder,
         )
 
     def __call__(
