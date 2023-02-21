@@ -30,9 +30,11 @@ class TestQuestionnaireListChangeEvaluatesSections(QuestionnaireTestCase):
         self.post()
         self.assertEqualUrl("/questionnaire/")
 
-        self.get("questionnaire/people/add-person/?return_to=section-summary")
+        self.get("questionnaire/people/add-person")
         self.add_person("John", "Doe")
         self.post({"anyone-else": "No"})
+        self.assertEqualUrl("/questionnaire/sections/who-lives-here/")
+        self.post()
         self.assertEqualUrl("/questionnaire/")
 
         self.assertInSelector(

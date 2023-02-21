@@ -34,11 +34,21 @@ class ListAction(Question):
         return True
 
     def get_previous_location_url(self):
-        if self._return_to == "section-summary":
+        if (
+            self._return_to == "section-summary"
+            and self.router.can_display_section_summary(
+                self.parent_location.section_id, self.parent_location.list_item_id
+            )
+        ):
             return self.get_section_summary_url()
 
         block_id = self._request_args.get("previous")
-        return self._get_location_url(block_id)
+        return self._get_location_url(
+            block_id=block_id,
+            return_to=self._return_to,
+            return_to_answer_id=self._return_to_answer_id,
+            return_to_block_id=self._return_to_block_id,
+        )
 
     def get_section_summary_url(self):
         return url_for(
@@ -52,26 +62,56 @@ class ListAction(Question):
             ):
                 return self.get_section_summary_url()
 
-        return self.parent_location.url()
+        if self.router.is_block_complete(
+            block_id=self.parent_location.block_id,
+            section_id=self.parent_location.section_id,
+            list_item_id=self.parent_location.list_item_id,
+        ):
+            return self.router.get_next_location_url(
+                self.parent_location,
+                self._routing_path,
+                self._return_to,
+                self._return_to_answer_id,
+                self._return_to_block_id,
+            )
+
+        return self.parent_location.url(
+            return_to=self._return_to,
+            return_to_answer_id=self._return_to_answer_id,
+            return_to_block_id=self._return_to_block_id,
+        )
 
     def handle_post(self):
         self.questionnaire_store_updater.update_same_name_items(
             self.parent_block["for_list"],
             self.parent_block.get("same_name_answer_ids"),
         )
-        # Clear the answer from the confirmation question on the list collector question
-        answer_ids_to_remove = self._schema.get_answer_ids_for_block(
-            self.parent_location.block_id
-        )
-        self.questionnaire_store_updater.remove_answers(answer_ids_to_remove)
-        self.evaluate_and_update_section_status_on_list_change(
-            self.parent_block["for_list"]
-        )
-        self.questionnaire_store_updater.save()
 
-    def _get_location_url(self, block_id):
+        if self.questionnaire_store_updater.is_dirty():
+            self._routing_path = self.router.routing_path(
+                self.current_location.section_id, self.current_location.list_item_id
+            )
+
+            self.questionnaire_store_updater.save()
+
+    def _get_location_url(
+        self,
+        *,
+        block_id=None,
+        return_to=None,
+        return_to_answer_id=None,
+        return_to_block_id=None,
+    ):
         if block_id and self._schema.is_block_valid(block_id):
             section_id = self._schema.get_section_id_for_block_id(block_id)
-            return Location(section_id=section_id, block_id=block_id).url()
+            return Location(section_id=section_id, block_id=block_id).url(
+                return_to=return_to,
+                return_to_answer_id=return_to_answer_id,
+                return_to_block_id=return_to_block_id,
+            )
 
-        return self.parent_location.url()
+        return self.parent_location.url(
+            return_to=return_to,
+            return_to_answer_id=return_to_answer_id,
+            return_to_block_id=return_to_block_id,
+        )

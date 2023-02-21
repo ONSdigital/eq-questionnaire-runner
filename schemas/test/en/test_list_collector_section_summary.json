@@ -53,6 +53,14 @@
         {
             "answer_id": "householder-checkbox-answer",
             "code": "5"
+        },
+        {
+            "answer_id": "first-name",
+            "code": "6"
+        },
+        {
+            "answer_id": "last-name",
+            "code": "7"
         }
     ],
     "questionnaire_flow": {
@@ -131,21 +139,13 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "confirmation-checkbox",
-                                        "when": [
-                                            {
-                                                "id": "any-companies-or-branches-answer",
-                                                "condition": "equals",
-                                                "value": "No"
-                                            }
-                                        ]
-                                    }
+                                    "when": {
+                                        "==": [{ "source": "answers", "identifier": "any-companies-or-branches-answer" }, "No"]
+                                    },
+                                    "block": "confirmation-checkbox"
                                 },
                                 {
-                                    "goto": {
-                                        "block": "any-other-companies-or-branches"
-                                    }
+                                    "block": "any-other-companies-or-branches"
                                 }
                             ]
                         },
@@ -330,6 +330,21 @@
                                 "id": "confirmation-checkbox-question",
                                 "title": "Are all companies or branches based in UK?",
                                 "type": "General"
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "companies"
+                                                }
+                                            ]
+                                        },
+                                        3
+                                    ]
+                                }
                             }
                         }
                     ]

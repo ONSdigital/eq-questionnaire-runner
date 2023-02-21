@@ -136,13 +136,14 @@ class NumberRange:
             return None
 
         if self.minimum_exclusive and value <= self.minimum:
-            return self.messages["NUMBER_TOO_SMALL_EXCLUSIVE"] % dict(
-                min=format_playback_value(self.minimum, self.currency)
-            )
+            return self.messages["NUMBER_TOO_SMALL_EXCLUSIVE"] % {
+                "min": format_playback_value(self.minimum, self.currency)
+            }
+
         if value < self.minimum:
-            return self.messages["NUMBER_TOO_SMALL"] % dict(
-                min=format_playback_value(self.minimum, self.currency)
-            )
+            return self.messages["NUMBER_TOO_SMALL"] % {
+                "min": format_playback_value(self.minimum, self.currency)
+            }
 
         return None
 
@@ -151,13 +152,13 @@ class NumberRange:
             return None
 
         if self.maximum_exclusive and value >= self.maximum:
-            return self.messages["NUMBER_TOO_LARGE_EXCLUSIVE"] % dict(
-                max=format_playback_value(self.maximum, self.currency)
-            )
+            return self.messages["NUMBER_TOO_LARGE_EXCLUSIVE"] % {
+                "max": format_playback_value(self.maximum, self.currency)
+            }
         if value > self.maximum:
-            return self.messages["NUMBER_TOO_LARGE"] % dict(
-                max=format_playback_value(self.maximum, self.currency)
-            )
+            return self.messages["NUMBER_TOO_LARGE"] % {
+                "max": format_playback_value(self.maximum, self.currency)
+            }
 
         return None
 
@@ -189,7 +190,7 @@ class DecimalPlaces:
                 raise validators.ValidationError(self.messages["INVALID_INTEGER"])
             if len(data.split(decimal_symbol)[1]) > self.max_decimals:
                 raise validators.ValidationError(
-                    self.messages["INVALID_DECIMAL"] % dict(max=self.max_decimals)
+                    self.messages["INVALID_DECIMAL"] % {"max": self.max_decimals}
                 )
 
 
@@ -286,21 +287,21 @@ class SingleDatePeriodCheck:
         if self.minimum_date and date and date < self.minimum_date:
             raise validators.ValidationError(
                 self.messages["SINGLE_DATE_PERIOD_TOO_EARLY"]
-                % dict(
-                    min=self._format_playback_date(
+                % {
+                    "min": self._format_playback_date(
                         self.minimum_date + relativedelta(days=-1), self.date_format
                     )
-                )
+                }
             )
 
         if self.maximum_date and date and date > self.maximum_date:
             raise validators.ValidationError(
                 self.messages["SINGLE_DATE_PERIOD_TOO_LATE"]
-                % dict(
-                    max=self._format_playback_date(
+                % {
+                    "max": self._format_playback_date(
                         self.maximum_date + relativedelta(days=+1), self.date_format
                     )
-                )
+                }
             )
 
     @staticmethod
@@ -339,7 +340,7 @@ class DateRangeCheck:
             ):
                 raise validators.ValidationError(
                     self.messages["DATE_PERIOD_TOO_SMALL"]
-                    % dict(min=self._build_range_length_error(self.period_min))
+                    % {"min": self._build_range_length_error(self.period_min)}
                 )
 
         if self.period_max:
@@ -349,7 +350,7 @@ class DateRangeCheck:
             ):
                 raise validators.ValidationError(
                     self.messages["DATE_PERIOD_TOO_LARGE"]
-                    % dict(max=self._build_range_length_error(self.period_max))
+                    % {"max": self._build_range_length_error(self.period_max)}
                 )
 
     @staticmethod
@@ -412,7 +413,7 @@ class SumCheck:
             try:
                 conditions.remove("equals")
             except ValueError as exc:
-                raise Exception(
+                raise ValueError(
                     "There are multiple conditions, but equals is not one of them. "
                     "We only support <= and >="
                 ) from exc
@@ -426,7 +427,7 @@ class SumCheck:
         if not is_valid:
             raise validators.ValidationError(
                 self.messages[message]
-                % dict(total=format_playback_value(target_total, self.currency))
+                % {"total": format_playback_value(target_total, self.currency)}
             )
 
     @staticmethod

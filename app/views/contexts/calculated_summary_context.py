@@ -82,7 +82,7 @@ class CalculatedSummaryContext(Context):
                 "calculated_question": self._get_calculated_question(
                     calculation, formatted_total
                 ),
-                "title": block_title % dict(total=formatted_total),
+                "title": block_title % {"total": formatted_total},
                 "collapsible": collapsible,
                 "summary_type": "CalculatedSummary",
             }

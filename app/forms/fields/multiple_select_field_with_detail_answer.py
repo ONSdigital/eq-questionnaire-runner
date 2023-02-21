@@ -11,9 +11,12 @@ class MultipleSelectFieldWithDetailAnswer(SelectMultipleField):
         super().__init__(**kwargs)
 
     def __iter__(self):
-        opts = dict(
-            widget=self.option_widget, name=self.name, _form=None, _meta=self.meta
-        )
+        opts = {
+            "widget": self.option_widget,
+            "name": self.name,
+            "_form": None,
+            "_meta": self.meta,
+        }
         for i, (value, label, checked, detail_answer_id) in enumerate(
             self.iter_choices()
         ):

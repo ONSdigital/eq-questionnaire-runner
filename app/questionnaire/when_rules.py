@@ -227,7 +227,7 @@ def _get_when_rule_value(
     elif "list" in when_rule:
         value = get_list_count(list_store, when_rule["list"])
     else:
-        raise Exception("The when rule is invalid")
+        raise NotImplementedError("The when rule is invalid")
 
     return value
 

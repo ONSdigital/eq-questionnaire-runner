@@ -185,17 +185,17 @@ def get_format_date_range(start_date: Markup, end_date: Markup) -> Markup:
 def format_unit_processor() -> (
     dict[str, Callable[[str, Union[int, Decimal], str], str]]
 ):
-    return dict(format_unit=format_unit)
+    return {"format_unit": format_unit}
 
 
 @blueprint.app_context_processor
 def format_unit_input_label_processor() -> dict[str, Callable]:
-    return dict(format_unit_input_label=format_unit_input_label)
+    return {"format_unit_input_label": format_unit_input_label}
 
 
 @blueprint.app_context_processor
 def get_currency_symbol_processor() -> dict[str, Callable]:
-    return dict(get_currency_symbol=get_currency_symbol)
+    return {"get_currency_symbol": get_currency_symbol}
 
 
 @blueprint.app_template_filter()  # type: ignore
@@ -375,7 +375,7 @@ def map_select_config(form: FormType, answer: AnswerType) -> list[SelectConfig]:
 
 @blueprint.app_context_processor
 def map_select_config_processor() -> dict[str, Callable]:
-    return dict(map_select_config=map_select_config)
+    return {"map_select_config": map_select_config}
 
 
 @blueprint.app_template_filter()  # type: ignore
@@ -391,7 +391,7 @@ def map_relationships_config(
 
 @blueprint.app_context_processor
 def map_relationships_config_processor() -> dict[str, Callable]:
-    return dict(map_relationships_config=map_relationships_config)
+    return {"map_relationships_config": map_relationships_config}
 
 
 class DropdownConfig:
@@ -410,7 +410,7 @@ def map_dropdown_config(select: SelectFieldBase._Option) -> list[DropdownConfig]
 
 @blueprint.app_context_processor
 def map_dropdown_config_processor() -> dict[str, Callable]:
-    return dict(map_dropdown_config=map_dropdown_config)
+    return {"map_dropdown_config": map_dropdown_config}
 
 
 class SummaryAction:
@@ -612,7 +612,7 @@ def map_summary_item_config(
 
 @blueprint.app_context_processor
 def map_summary_item_config_processor() -> dict[str, Callable]:
-    return dict(map_summary_item_config=map_summary_item_config)
+    return {"map_summary_item_config": map_summary_item_config}
 
 
 # pylint: disable=too-many-locals
@@ -709,4 +709,4 @@ def map_list_collector_config(
 
 @blueprint.app_context_processor
 def map_list_collector_config_processor() -> dict[str, Callable]:
-    return dict(map_list_collector_config=map_list_collector_config)
+    return {"map_list_collector_config": map_list_collector_config}
