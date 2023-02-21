@@ -62,21 +62,27 @@ def test(self, var: [None | int | str]) -> None:
         return [value + 1 for value in values]
 ```
 
-## Forward declarations
+## Self Type
 
-To reference a type before it has been declared e.g. using a class as a type within the class declaration, add the special `annotations` import:
+To annotate methods that return an instance of their class, the `Self` type is used as it is bound to it's encapsulating class. In the example below, the type checker will correctly infer the type of `Circle().set_scale(0.5)` to be `Circle`:
 
 ```python
-from __future__ import annotations
+from typing import Self
 
-class TestClass:
+class Shape:
+    def set_scale(self, scale: float) -> Self:
+        self.scale = scale
+        return self
 
-  def test(self, var: Sequence[TestClass]) -> None:
+
+class Circle(Shape):
+    def set_radius(self, radius: float) -> Self:
+        self.radius = radius
+        return self
 ```
 
-This import is not necessary in Python 3.10.
-
-https://www.python.org/dev/peps/pep-0563/
+This is recommended as forward declarations are now redundant in 3.10
+https://peps.python.org/pep-0673/
 
 ## Type Ignore
 
@@ -92,7 +98,9 @@ A `# type: ignore` comment on a line by itself at the top of a file silences all
 
 ## ParamSpec
 
-Use to forward the parameter types of one callable to another callable e.g. to add basic logging to a function, create a decorator `add_logging` to log function calls:
+Used to forward the parameter types of one callable to another callable. This is useful when type annotating decorators.
+
+For example, a basic logging function decorator can be typed as:
 
 ```python
 T = TypeVar('T')
