@@ -176,8 +176,8 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(2))).getText()).to.equal("Partially completed");
     });
 
-      await assertRepeatingSectionOnChange(1, "1500.00", "0.00", "0.00", "2,500.00");
-      await assertRepeatingSectionOnChange(2, "1000.00", "500.00", "0.00", "2,500.00");
+    await assertRepeatingSectionOnChange(1, "1500.00", "0.00", "0.00", "2,500.00");
+    await assertRepeatingSectionOnChange(2, "1000.00", "500.00", "0.00", "2,500.00");
 
     it("When I edit and resubmit the total spending question without changing the value, Then the repeating section's status should stay as 'Completed'", async () => {
       await $(HubPage.summaryRowLink(householdOverviewSectionId)).click();

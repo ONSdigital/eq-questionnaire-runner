@@ -88,7 +88,7 @@ testCases.forEachasync(async (testCase) => {
 
       describe("Given a dynamic answer options questionnaire and I am on the mutually exclusive page", () => {
         it("When I click a dynamic checkbox option, then the checkbox should be selected", async () => {
-          for (let i = 0; i < await testCase.answerOptionCount; i++) {
+          for (let i = 0; i < (await testCase.answerOptionCount); i++) {
             await $(DynamicMutuallyExclusivePage.answerByIndex(i)).click();
             await expect(await $(DynamicMutuallyExclusivePage.answerByIndex(i)).isSelected()).to.be.true;
           }
