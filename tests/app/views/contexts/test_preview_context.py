@@ -64,9 +64,37 @@ def test_build_preview_context(
                             "answer_guidance": {
                                 "contents": [
                                     {"description": "You can only pick one answer"}
-                                ]
+                                ],
+                                "hide_guidance": "Show more information",
+                                "show_guidance": "Show more information",
                             },
                         },
+                    },
+                    {
+                        "question": {
+                            "answer_description": None,
+                            "answer_guidance": None,
+                            "answers": ["Start date"],
+                            "descriptions": None,
+                            "guidance": None,
+                            "id": "start-date",
+                            "instruction": None,
+                            "text_length": None,
+                            "title": "Please provide optional start date",
+                        }
+                    },
+                    {
+                        "question": {
+                            "answer_description": None,
+                            "answer_guidance": None,
+                            "answers": ["End date"],
+                            "descriptions": None,
+                            "guidance": None,
+                            "id": "end-date",
+                            "instruction": None,
+                            "text_length": None,
+                            "title": "Please provide optional end date",
+                        }
                     },
                     {
                         "question": {

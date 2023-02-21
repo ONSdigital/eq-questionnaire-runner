@@ -182,6 +182,8 @@
                                         "mandatory": true,
                                         "description": "Choose Yes or No answer",
                                         "guidance": {
+                                            "show_guidance": "Show more information",
+                                            "hide_guidance": "Show more information",
                                             "contents": [
                                                 {
                                                     "description": "You can only pick one answer"
@@ -241,6 +243,40 @@
                             }
                         },
                         {
+                            "id": "start-date",
+                            "type": "Question",
+                            "question": {
+                                "id": "start-date-question",
+                                "title": "Please provide optional start date",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "start-date-answer",
+                                        "mandatory": false,
+                                        "type": "Date",
+                                        "label": "Start date"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "end-date",
+                            "type": "Question",
+                            "question": {
+                                "id": "end-date-question",
+                                "title": "Please provide optional end date",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "end-date-answer",
+                                        "mandatory": false,
+                                        "type": "Date",
+                                        "label": "End date"
+                                    }
+                                ]
+                            }
+                        },
+                        {
                             "type": "Question",
                             "id": "report-radio-second",
                             "question": {
@@ -275,7 +311,7 @@
                                                     "arguments": {
                                                         "items": [
                                                             {
-                                                                "identifier": "report-radio-answer",
+                                                                "identifier": "start-date-answer",
                                                                 "source": "answers"
                                                             },
                                                             {
@@ -304,7 +340,7 @@
                                                     "arguments": {
                                                         "items": [
                                                             {
-                                                                "identifier": "report-radio-answer",
+                                                                "identifier": "end-date-answer",
                                                                 "source": "answers"
                                                             },
                                                             {
