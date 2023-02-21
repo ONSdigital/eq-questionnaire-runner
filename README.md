@@ -235,7 +235,7 @@ yarn test_functional
 This can be limited to a single spec using:
 
 ``` shell
-yarn test_functional --spec save_sign_out.spec.js
+yarn test_functional --spec ./tests/functional/spec/exit.spec.js
 ```
 
 To run a single test, add `.only` into the name of any `describe` or `it` function:
