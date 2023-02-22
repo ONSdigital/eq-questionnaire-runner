@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta, timezone
 
+import pytest
 from flask import Flask
 
 from app.survey_config.survey_type import SurveyType
@@ -12,26 +13,6 @@ SURVEY_TYPE_SOCIAL = SurveyType.SOCIAL
 SURVEY_TYPE_HEALTH = SurveyType.HEALTH
 SUBMITTED_AT = datetime.now(timezone.utc)
 SCHEMA = load_schema_from_name("test_view_submitted_response", "en")
-
-
-def test_social_survey_context(app: Flask):
-    with app.app_context():
-        context = build_thank_you_context(
-            SCHEMA, get_metadata(), SUBMITTED_AT, SURVEY_TYPE_SOCIAL
-        )
-
-        assert context["submission_text"] == "Your answers have been submitted."
-        assert len(context["metadata"]["itemsList"]) == 1
-
-
-def test_health_survey_context(app: Flask):
-    with app.app_context():
-        context = build_thank_you_context(
-            SCHEMA, get_metadata(), SUBMITTED_AT, SURVEY_TYPE_HEALTH
-        )
-
-        assert context["submission_text"] == "Your answers have been submitted."
-        assert len(context["metadata"]["itemsList"]) == 1
 
 
 def test_default_survey_context(app: Flask):
@@ -48,6 +29,23 @@ def test_default_survey_context(app: Flask):
             == "Your answers have been submitted for <span>ESSENTIAL ENTERPRISE LTD</span>"
         )
         assert len(context["metadata"]["itemsList"]) == 2
+
+
+@pytest.mark.parametrize(
+    "survey_type",
+    (
+        (SURVEY_TYPE_SOCIAL),
+        (SURVEY_TYPE_HEALTH),
+    ),
+)
+def test_survey_context_without_ru_name(app: Flask, survey_type):
+    with app.app_context():
+        context = build_thank_you_context(
+            SCHEMA, get_metadata(), SUBMITTED_AT, survey_type
+        )
+
+        assert context["submission_text"] == "Your answers have been submitted."
+        assert len(context["metadata"]["itemsList"]) == 1
 
 
 def test_default_survey_context_with_trad_as(app: Flask):
