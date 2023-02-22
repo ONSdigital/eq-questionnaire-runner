@@ -144,7 +144,7 @@ class ValueSourceResolver:
             ]
             return operator([value for value in values if value])  # type: ignore
 
-        evaluate_calculated_summary = rule_evaluator.RuleEvaluator(
+        evaluator = rule_evaluator.RuleEvaluator(
             self.schema,
             self.answer_store,
             self.list_store,
@@ -154,7 +154,7 @@ class ValueSourceResolver:
             routing_path_block_ids=self.routing_path_block_ids,
         )
 
-        return evaluate_calculated_summary.evaluate(calculation["operation"])  # type: ignore
+        return evaluator.evaluate(calculation["operation"])  # type: ignore
 
     @staticmethod
     def get_calculation_operator(
@@ -203,26 +203,13 @@ class ValueSourceResolver:
         completed_block_ids: list[str] = []
         if self.progress_store and self.path_finder:
             for section_id, list_item_id in self.progress_store.section_keys():
-                if not self.list_item_id:
-                    routing_path_for_section = self.path_finder.routing_path(
-                        section_id, list_item_id
-                    )
-                    completed_block_ids.extend(routing_path_for_section.block_ids)
-                elif list_item_id == self.list_item_id or list_item_id is None:
+                if list_item_id == self.list_item_id or list_item_id is None:
                     routing_path_for_section = self.path_finder.routing_path(
                         section_id, list_item_id
                     )
                     completed_block_ids.extend(routing_path_for_section.block_ids)
 
         if self.routing_path_block_ids and completed_block_ids:
-            if routing_path_block_ids := [
-                block_id
-                for block_id in completed_block_ids
-                if block_id not in self.routing_path_block_ids
-            ]:
-                self.routing_path_block_ids = [
-                    *list(self.routing_path_block_ids),
-                    *routing_path_block_ids,
-                ]
+            self.routing_path_block_ids = {*list(self.routing_path_block_ids or []), *completed_block_ids}
         else:
             self.routing_path_block_ids = completed_block_ids
