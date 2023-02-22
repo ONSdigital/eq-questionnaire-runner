@@ -26,7 +26,7 @@ def build_submission_metadata_context(
         "term": lazy_gettext("Submission reference:"),
         "descriptions": [{"description": convert_tx_id(tx_id)}],
     }
-    if survey_type in [SurveyType.SOCIAL, SurveyType.HEALTH]:
+    if survey_type in {SurveyType.SOCIAL, SurveyType.HEALTH}:
         return {
             "data-qa": "metadata",
             "termCol": 3,
