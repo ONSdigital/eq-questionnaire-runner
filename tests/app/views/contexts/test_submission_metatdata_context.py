@@ -22,7 +22,7 @@ TX_ID = "6b6f90e6-6c27-4c76-8295-7a14e2c4a399"
         (SURVEY_TYPE_HEALTH),
     ),
 )
-def test_metadata_survey_type_health_and_social(app: Flask, survey_type):
+def test_metadata_survey_types_without_ru_name(app: Flask, survey_type):
     with app.app_context():
         metadata = build_submission_metadata_context(survey_type, SUBMITTED_AT, TX_ID)
         assert len(metadata["itemsList"]) == 1
