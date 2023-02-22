@@ -4,12 +4,12 @@ import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually
 describe("Component: Mutually Exclusive Currency With Single Checkbox Override", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive.json");
-    await browser.url("/questionnaire/mutually-exclusive-currency");
   });
 
   describe("Given the user has entered a value for the non-exclusive currency answer", () => {
     it("When then user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", async () => {
       // Given
+      await browser.url("/questionnaire/mutually-exclusive-currency");
       await $(CurrencyPage.currency()).setValue("123");
       await expect(await $(CurrencyPage.currency()).getValue()).to.contain("123");
 
@@ -30,6 +30,7 @@ describe("Component: Mutually Exclusive Currency With Single Checkbox Override",
   describe("Given the user has clicked the mutually exclusive checkbox answer", () => {
     it("When the user enters a value for the non-exclusive currency answer and removes focus, Then only the non-exclusive currency answer should be answered.", async () => {
       // Given
+      await browser.url("/questionnaire/mutually-exclusive-currency");
       await $(CurrencyPage.currencyExclusiveIPreferNotToSay()).click();
       await expect(await $(CurrencyPage.currencyExclusiveIPreferNotToSay()).isSelected()).to.be.true;
 
@@ -50,6 +51,7 @@ describe("Component: Mutually Exclusive Currency With Single Checkbox Override",
   describe("Given the user has not clicked the mutually exclusive checkbox answer", () => {
     it("When the user enters a value for the non-exclusive currency answer, Then only the non-exclusive currency answer should be answered.", async () => {
       // Given
+      await browser.url("/questionnaire/mutually-exclusive-currency");
       await expect(await $(CurrencyPage.currencyExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
       // When
@@ -69,6 +71,7 @@ describe("Component: Mutually Exclusive Currency With Single Checkbox Override",
   describe("Given the user has not answered the non-exclusive currency answer", () => {
     it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", async () => {
       // Given
+      await browser.url("/questionnaire/mutually-exclusive-currency");
       await expect(await $(CurrencyPage.currency()).getValue()).to.contain("");
 
       // When
@@ -86,6 +89,7 @@ describe("Component: Mutually Exclusive Currency With Single Checkbox Override",
   describe("Given the user has not answered the question and the question is optional", () => {
     it("When the user clicks the Continue button, Then it should display `No answer provided`", async () => {
       // Given
+      await browser.url("/questionnaire/mutually-exclusive-currency");
       await expect(await $(CurrencyPage.currency()).getValue()).to.contain("");
       await expect(await $(CurrencyPage.currencyExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
