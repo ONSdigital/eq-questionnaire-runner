@@ -55,7 +55,7 @@ def test_build_view_submitted_response_context_summary(app: Flask):
         )
 
 
-def test_build_view_submitted_response_context_submitted_text_default(app: Flask):
+def test_view_submitted_response_context_submitted_text_with_ru_name(app: Flask):
     with app.app_context():
         questionnaire_store = fake_questionnaire_store(
             {"tx_id": "tx_id", "ru_name": "Apple"}, SUBMITTED_AT
