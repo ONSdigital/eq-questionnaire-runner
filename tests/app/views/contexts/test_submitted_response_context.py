@@ -74,7 +74,7 @@ def test_build_view_submitted_response_context_submitted_text_default(app: Flask
         (SurveyType.HEALTH),
     ),
 )
-def test_build_view_submitted_response_context_submitted_text_health_and_social(
+def test_view_submitted_response_context_submitted_text_without_ru_name(
     app: Flask, survey_type
 ):
     with app.app_context():
