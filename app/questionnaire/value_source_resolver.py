@@ -210,6 +210,9 @@ class ValueSourceResolver:
                     completed_block_ids.extend(routing_path_for_section.block_ids)
 
         if self.routing_path_block_ids and completed_block_ids:
-            self.routing_path_block_ids = {*list(self.routing_path_block_ids or []), *completed_block_ids}
+            self.routing_path_block_ids = {
+                *list(self.routing_path_block_ids or []),
+                *completed_block_ids,
+            }
         else:
             self.routing_path_block_ids = completed_block_ids
