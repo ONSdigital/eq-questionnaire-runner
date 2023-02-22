@@ -112,7 +112,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Total in 
     it("When I update my answers to equal the new total turnover, Then I should be able to get to the section summary and the breakdown section should be marked as 'Completed'", async () => {
       await answerAndSubmitTurnoverBreakdownQuestion(500, 500, 500);
 
-      await expect(browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
+      await expect(await browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
       await $(BreakdownSectionSummary.submit()).click();
       await expect(await $(HubPage.summaryRowState(breakdownSectionId)).getText()).to.equal("Completed");
     });

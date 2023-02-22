@@ -38,7 +38,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await $(ListCollectorPage.submit()).click();
       await $(HubPage.submit()).click();
 
-      getToFirstCalculatedSummary();
+      await getToFirstCalculatedSummary();
 
       const browserUrl = await browser.getUrl();
 
@@ -366,12 +366,12 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await $(ListCollectorPage.no()).click();
       await $(ListCollectorPage.submit()).click();
       await $(HubPage.submit()).click();
-      getToFirstCalculatedSummary();
-      getToSubmitPage();
+      await getToFirstCalculatedSummary();
+      await getToSubmitPage();
       await $(SubmitPage.submit()).click();
       await $(HubPage.submit()).click();
-      getToFirstCalculatedSummary();
-      getToSubmitPage();
+      await getToFirstCalculatedSummary();
+      await getToSubmitPage();
       await $(SubmitPage.submit()).click();
     });
 

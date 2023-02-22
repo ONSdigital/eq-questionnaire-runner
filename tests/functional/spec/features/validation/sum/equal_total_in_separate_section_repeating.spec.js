@@ -16,7 +16,7 @@ import ThankYouPage from "../../../../base_pages/thank-you.page";
 
 const householderSectionId = "householders-section";
 const householdOverviewSectionId = "household-overview-section";
-const repeatingSectionId = async (repeatIndex) => {
+const repeatingSectionId = (repeatIndex) => {
   return `breakdown-section-${repeatIndex}`;
 };
 

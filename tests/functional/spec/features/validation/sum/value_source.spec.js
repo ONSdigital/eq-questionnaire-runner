@@ -21,11 +21,11 @@ const answerAndSubmitSecondBreakdownQuestion = async (breakdown1, breakdown2, br
 };
 
 const answerBothBreakdownQuestions = async (array1, array2) => {
-  answerAndSubmitBreakdownQuestion(array1[0], array1[1], array1[2], array1[3]);
+  await answerAndSubmitBreakdownQuestion(array1[0], array1[1], array1[2], array1[3]);
 
   await $(TotalPlaybackPage.submit()).click();
 
-  answerAndSubmitSecondBreakdownQuestion(array2[0], array2[1], array2[2], array2[3]);
+  await answerAndSubmitSecondBreakdownQuestion(array2[0], array2[1], array2[2], array2[3]);
 };
 
 describe("Feature: Sum of grouped answers equal to validation against value source ", () => {
@@ -38,7 +38,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       await $(TotalAnswerPage.total()).setValue("12");
       await $(TotalAnswerPage.submit()).click();
 
-      answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
+      await answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
       await expect(await browser.getUrl()).to.contain(TotalPlaybackPage.pageName);
     });
@@ -49,7 +49,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       await $(TotalAnswerPage.total()).setValue("12");
       await $(TotalAnswerPage.submit()).click();
 
-      answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
+      await answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
@@ -60,7 +60,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       await $(TotalAnswerPage.total()).setValue("12");
       await $(TotalAnswerPage.submit()).click();
 
-      answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
+      await answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
       await $(SubmitPage.totalAnswerEdit()).click();
       await $(TotalAnswerPage.total()).setValue("15");
@@ -72,7 +72,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 15");
 
-      answerBothBreakdownQuestions(["6", "3", "3", "3"], ["3", "3", "2", "1"]);
+      await answerBothBreakdownQuestions(["6", "3", "3", "3"], ["3", "3", "2", "1"]);
 
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
@@ -83,19 +83,19 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       await $(TotalAnswerPage.total()).setValue("12");
       await $(TotalAnswerPage.submit()).click();
 
-      answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
+      await answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
       await $(SubmitPage.totalAnswerEdit()).click();
       await $(TotalAnswerPage.total()).setValue("15");
       await $(TotalAnswerPage.submit()).click();
 
-      answerAndSubmitBreakdownQuestion("0", "3", "3", "3");
+      await answerAndSubmitBreakdownQuestion("0", "3", "3", "3");
 
       await expect(await $(BreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.true;
 
       await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 15");
 
-      answerBothBreakdownQuestions(["5", "4", "4", "2"], ["3", "3", "2", "1"]);
+      await answerBothBreakdownQuestions(["5", "4", "4", "2"], ["3", "3", "2", "1"]);
 
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
@@ -106,11 +106,11 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       await $(TotalAnswerPage.total()).setValue("12");
       await $(TotalAnswerPage.submit()).click();
 
-      answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
+      await answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
       await $(SubmitPage.breakdown1Edit()).click();
 
-      answerAndSubmitBreakdownQuestion("6", "3", "2", "1");
+      await answerAndSubmitBreakdownQuestion("6", "3", "2", "1");
 
       await $(TotalPlaybackPage.submit()).click();
 
@@ -120,7 +120,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await expect(await $(SecondBreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 9");
 
-      answerAndSubmitSecondBreakdownQuestion("5", "4", "0", "0");
+      await answerAndSubmitSecondBreakdownQuestion("5", "4", "0", "0");
 
       await expect(await $(SecondBreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.false;
 
@@ -133,7 +133,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       await $(TotalAnswerPage.total()).setValue("5");
       await $(TotalAnswerPage.submit()).click();
 
-      answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
+      await answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
       await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 5");
     });
@@ -144,7 +144,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       await $(TotalAnswerPage.total()).setValue("5");
       await $(TotalAnswerPage.submit()).click();
 
-      answerBothBreakdownQuestions(["2", "1", "1", "1"], ["3", "3", "3", "3"]);
+      await answerBothBreakdownQuestions(["2", "1", "1", "1"], ["3", "3", "3", "3"]);
 
       await expect(await $(SecondBreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 3");
     });

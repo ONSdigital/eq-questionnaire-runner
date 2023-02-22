@@ -139,7 +139,7 @@ describe("Component: Mutually Exclusive Day Month Year Date With Multiple Radio 
   describe("Given the user has not answered the non-exclusive month year date answer", () => {
     beforeEach(async () => {
       // Given
-      await browser.url("/questionnaire/mutually-exclusive-date"); 
+      await browser.url("/questionnaire/mutually-exclusive-date");
       await expect(await $(DatePage.dateday()).getValue()).to.contain("");
       await expect(await $(DatePage.datemonth()).getValue()).to.contain("");
       await expect(await $(DatePage.dateyear()).getValue()).to.contain("");
