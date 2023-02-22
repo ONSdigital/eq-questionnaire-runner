@@ -55,7 +55,7 @@ def test_build_view_submitted_response_context_summary(app: Flask):
         )
 
 
-def test_build_view_submitted_response_context_submitted_text(app: Flask):
+def test_build_view_submitted_response_context_submitted_text_default(app: Flask):
     with app.app_context():
         questionnaire_store = fake_questionnaire_store(
             {"tx_id": "tx_id", "ru_name": "Apple"}, SUBMITTED_AT
@@ -67,21 +67,20 @@ def test_build_view_submitted_response_context_submitted_text(app: Flask):
         assert context["submitted_text"] == "Answers submitted for <span>Apple</span>"
 
 
-def test_build_view_submitted_response_context_submitted_text_social(app: Flask):
+@pytest.mark.parametrize(
+    "survey_type",
+    (
+        (SurveyType.SOCIAL),
+        (SurveyType.HEALTH),
+    ),
+)
+def test_build_view_submitted_response_context_submitted_text_health_and_social(
+    app: Flask, survey_type
+):
     with app.app_context():
         questionnaire_store = fake_questionnaire_store({"tx_id": "tx_id"}, SUBMITTED_AT)
         context = build_view_submitted_response_context(
-            "en", SCHEMA, questionnaire_store, SurveyType.SOCIAL
-        )
-
-        assert context["submitted_text"] == "Answers submitted."
-
-
-def test_build_view_submitted_response_context_submitted_text_health(app: Flask):
-    with app.app_context():
-        questionnaire_store = fake_questionnaire_store({"tx_id": "tx_id"}, SUBMITTED_AT)
-        context = build_view_submitted_response_context(
-            "en", SCHEMA, questionnaire_store, SurveyType.HEALTH
+            "en", SCHEMA, questionnaire_store, survey_type
         )
 
         assert context["submitted_text"] == "Answers submitted."
@@ -133,9 +132,7 @@ def test_no_metadata_raises_error(
     app: Flask,
 ):
     with app.app_context():
-        questionnaire_store = fake_questionnaire_store(
-            {"tx_id": "tx_id", "ru_name": "Apple"}, SUBMITTED_AT
-        )
+        questionnaire_store = fake_questionnaire_store({}, SUBMITTED_AT)
 
         questionnaire_store.metadata = None
 
