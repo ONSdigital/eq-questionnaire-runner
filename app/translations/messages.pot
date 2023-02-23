@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-20 07:54+0000\n"
+"POT-Creation-Date: 2023-02-21 13:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -223,15 +223,15 @@ msgstr ""
 msgid "ONS Surveys"
 msgstr ""
 
-#: app/helpers/template_helpers.py:108
+#: app/helpers/template_helpers.py:106
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:139
+#: app/helpers/template_helpers.py:137
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:164
+#: app/helpers/template_helpers.py:162
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -495,29 +495,29 @@ msgid "Please submit this survey to complete it"
 msgstr ""
 
 #: app/views/contexts/thank_you_context.py:29
-msgid "Your answers have been submitted."
-msgstr ""
-
-#: app/views/contexts/thank_you_context.py:31
 msgid ""
 "Your answers have been submitted for <span>{company_name}</span> "
 "({trading_name})"
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:38
+#: app/views/contexts/thank_you_context.py:36
 msgid "Your answers have been submitted for <span>{company_name}</span>"
 msgstr ""
 
-#: app/views/contexts/view_submitted_response_context.py:36
-msgid "Answers submitted."
+#: app/views/contexts/thank_you_context.py:40
+msgid "Your answers have been submitted."
 msgstr ""
 
-#: app/views/contexts/view_submitted_response_context.py:38
+#: app/views/contexts/view_submitted_response_context.py:33
 msgid "Answers submitted for <span>{ru_name}</span> ({trad_as})"
 msgstr ""
 
-#: app/views/contexts/view_submitted_response_context.py:42
+#: app/views/contexts/view_submitted_response_context.py:37
 msgid "Answers submitted for <span>{ru_name}</span>"
+msgstr ""
+
+#: app/views/contexts/view_submitted_response_context.py:41
+msgid "Answers submitted."
 msgstr ""
 
 #: app/views/handlers/confirm_email.py:38
