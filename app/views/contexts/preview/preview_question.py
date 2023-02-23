@@ -1,44 +1,32 @@
 from typing import Any, Mapping, Optional, Union
 
+from werkzeug.datastructures import ImmutableDict
+
 from app.data_models import AnswerStore, ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
-from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 
 
 class PreviewQuestion:
     def __init__(
         self,
         *,
-        schema: QuestionnaireSchema,
+        block: ImmutableDict,
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: Optional[MetadataProxy],
         response_metadata: Mapping[str, Union[str, int, list]],
         section_id: str,
         block_id: str,
-        language: str,
     ):
-        self.schema = schema
+        self.block = block
         self.answer_store = answer_store
         self.list_store = list_store
         self.metadata = metadata
         self.response_metadata = response_metadata
         self.current_location = Location(section_id=section_id, block_id=block_id)
         self.block_id = block_id
-
-        self.placeholder_renderer = PlaceholderRenderer(
-            language=language,
-            answer_store=self.answer_store,
-            list_store=self.list_store,
-            metadata=self.metadata,
-            response_metadata=self.response_metadata,
-            schema=self.schema,
-            location=self.current_location,
-            preview_mode=True,
-        )
-
-        self.question = self.rendered_block().get("question")
+        self.question = self.resolved_block().get("question")
         # render_block returns same type as placeholder_renderer.render which is dict[str, Any] hence all type ignores below
 
         self.title = self.question.get("title")  # type: ignore
@@ -112,16 +100,13 @@ class PreviewQuestion:
             "answer_guidance": self.answer_guidance,
         }
 
-    def rendered_block(self) -> dict[str, Any]:
-        block = self.schema.get_block(self.current_location.block_id)  # type: ignore
-        # block exists at this point, get_block() returns Optional
-        output_block = self.schema.get_mutable_deepcopy(block)  # type: ignore
-        # method returns Any
-        if "question_variants" in block:  # type: ignore
-            # Optional dict as return of get_block()
+    def resolved_block(self) -> dict[str, Any]:
+        output_block: dict = QuestionnaireSchema.get_mutable_deepcopy(self.block)
+        if "question_variants" in self.block:
             output_block.pop("question_variants", None)
             output_block.pop("question", None)
 
-            output_block["question"] = self.schema.get_mutable_deepcopy(block["question_variants"][0]["question"])  # type: ignore
-            # Same as above
-        return self.placeholder_renderer.render(output_block, None)
+            output_block["question"] = QuestionnaireSchema.get_mutable_deepcopy(
+                self.block["question_variants"][0]["question"]
+            )
+        return output_block

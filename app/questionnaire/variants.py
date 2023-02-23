@@ -41,7 +41,6 @@ def choose_variant(
             current_location=current_location,
         ):
             return variant[single_key]
-    return block["question_variants"][0]["question"]
 
 
 def choose_question_to_display(

@@ -6,9 +6,9 @@ from werkzeug.datastructures import ImmutableDict
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
-
-from .context import Context
-from .preview import PreviewGroup
+from app.questionnaire.placeholder_renderer import PlaceholderRenderer
+from app.views.contexts.context import Context
+from app.views.contexts.preview import PreviewGroup
 
 
 class SectionPreviewContext(Context):
@@ -39,6 +39,16 @@ class SectionPreviewContext(Context):
         self._response_metadata = response_metadata
         self.current_location = current_location
         self.language = language
+        self.placeholder_renderer = PlaceholderRenderer(
+            language=self.language,
+            answer_store=self._answer_store,
+            list_store=self._list_store,
+            metadata=self._metadata,
+            response_metadata=self._response_metadata,
+            schema=self._schema,
+            location=self.current_location,
+            preview_mode=True,
+        )
 
     def __call__(self) -> Mapping[str, dict]:
         preview = self._build_preview()
@@ -58,6 +68,8 @@ class SectionPreviewContext(Context):
         return section
 
     def _build_preview(self) -> dict[str, Union[str, dict, Any]]:
+        section = self.placeholder_renderer.render(self.section, None)
+
         return {
             "groups": [
                 PreviewGroup(
@@ -68,7 +80,6 @@ class SectionPreviewContext(Context):
                     # group title is not always present/missing in business schemas hence using the section title
                     # base for this was the code we use for summaries generation, that is how summaries are generated in runner
                     # (they use group titles of sections for twisties)
-                    schema=self._schema,
                     answer_store=self._answer_store,
                     list_store=self._list_store,
                     metadata=self._metadata,
@@ -76,7 +87,7 @@ class SectionPreviewContext(Context):
                     section_id=self.current_location.section_id,
                     language=self.language,
                 ).serialize()
-                for group in self.section["groups"]
+                for group in section["groups"]
             ],
         }
 

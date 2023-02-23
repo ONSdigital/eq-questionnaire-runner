@@ -30,7 +30,7 @@ class PlaceholderRenderer:
         location: Union[None, Location, RelationshipLocation] = None,
         preview_mode: Optional[bool] = False,
     ):
-        self.preview_mode = preview_mode
+        self._preview_mode = preview_mode
         self._language = language
         self._answer_store = answer_store
         self._list_store = list_store
@@ -78,7 +78,7 @@ class PlaceholderRenderer:
             list_item_id=list_item_id,
             location=self._location,
             renderer=self,
-            preview_mode=self.preview_mode,
+            preview_mode=self._preview_mode,
         )
 
         placeholder_data = QuestionnaireSchema.get_mutable_deepcopy(placeholder_data)

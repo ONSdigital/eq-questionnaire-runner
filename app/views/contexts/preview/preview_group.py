@@ -2,7 +2,6 @@ from typing import Any, Mapping, Optional, Union
 
 from app.data_models import AnswerStore, ListStore
 from app.data_models.metadata_proxy import MetadataProxy
-from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.preview.preview_block import PreviewBlock
 
 
@@ -12,7 +11,6 @@ class PreviewGroup:
         *,
         group_schema: Mapping[str, Any],
         section_title: Optional[str],
-        schema: QuestionnaireSchema,
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: Optional[MetadataProxy],
@@ -21,7 +19,6 @@ class PreviewGroup:
         language: str,
     ):
         self.title = section_title
-        self.schema = schema
         self.answer_store = answer_store
         self.list_store = list_store
         self.metadata = metadata
@@ -45,13 +42,12 @@ class PreviewGroup:
                 blocks.extend(
                     [
                         PreviewBlock(
-                            schema=self.schema,
+                            block=block,
                             answer_store=self.answer_store,
                             list_store=self.list_store,
                             metadata=self.metadata,
                             response_metadata=self.response_metadata,
                             section_id=section_id,
-                            language=self.language,
                             block_id=block["id"],
                         ).serialize()
                     ]
