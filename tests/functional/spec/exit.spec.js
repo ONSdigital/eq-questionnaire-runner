@@ -28,6 +28,6 @@ describe("Post submission exit", () => {
     await $(CensusThankYouPage.exit()).click();
     await browser.back();
     await expect(await browser.getUrl()).to.contain("submitted/thank-you");
-    await expect($("body").getHTML()).to.contain("Sorry, you need to sign in again");
+    await expect(await $("body").getHTML()).to.contain("Sorry, you need to sign in again");
   });
 });

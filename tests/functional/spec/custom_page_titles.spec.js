@@ -48,22 +48,22 @@ describe("Feature: Custom Page Titles", () => {
       await $(ListCollectorPage.no()).click();
       await $(ListCollectorPage.submit()).click();
       let expectedPageTitle = await browser.getTitle();
-      await expect(expectedPageTitle).to.equal("How Person 1 is related to Person 2 - Test Custom Page Titles");
+      await expect(await expectedPageTitle).to.equal("How Person 1 is related to Person 2 - Test Custom Page Titles");
 
       await $(RelationshipsPage.husbandOrWife()).click();
       await $(RelationshipsPage.submit()).click();
       expectedPageTitle = browser.getTitle();
-      await expect(expectedPageTitle).to.equal("How Person 1 is related to Person 3 - Test Custom Page Titles");
+      await expect(await expectedPageTitle).to.equal("How Person 1 is related to Person 3 - Test Custom Page Titles");
 
       await $(RelationshipsPage.sonOrDaughter()).click();
       await $(RelationshipsPage.submit()).click();
       expectedPageTitle = await browser.getTitle();
-      await expect(expectedPageTitle).to.equal("How Person 2 is related to Person 3 - Test Custom Page Titles");
+      await expect(await expectedPageTitle).to.equal("How Person 2 is related to Person 3 - Test Custom Page Titles");
 
       await $(RelationshipsPage.sonOrDaughter()).click();
       await $(RelationshipsPage.submit()).click();
       expectedPageTitle = await browser.getTitle();
-      await expect(expectedPageTitle).to.equal("Custom section summary page title - Test Custom Page Titles");
+      await expect(await expectedPageTitle).to.equal("Custom section summary page title - Test Custom Page Titles");
     });
 
     it("When I navigate to list edit and remove pages Then I should see the custom page titles", async () => {
@@ -73,7 +73,7 @@ describe("Feature: Custom Page Titles", () => {
       await $(ListCollectorEditPage.previous()).click();
       await $(ListCollectorPage.listRemoveLink(1)).click();
       expectedPageTitle = await browser.getTitle();
-      await expect(expectedPageTitle).to.equal("Remove person 1 - Test Custom Page Titles");
+      await expect(await expectedPageTitle).to.equal("Remove person 1 - Test Custom Page Titles");
     });
 
     it("When I navigate to a repeating section which has custom page title, Then all page titles in the section should have the correct prefix", async () => {

@@ -163,10 +163,10 @@ describe("Language Code", () => {
 
     await $(HubPage.submit()).click();
     await expect(await $(NamePage.questionText()).getText()).to.contain("Please enter a name");
-    await expect($("header").getText()).to.contain("Test Language Survey");
+    await expect(await $("header").getText()).to.contain("Test Language Survey");
     await $(NamePage.switchLanguage("cy")).click();
     await expect(await $(NamePage.questionText()).getText()).to.contain("Rhowch enw");
-    await expect($("header").getText()).to.contain("Arolwg Iaith Prawf");
+    await expect(await $("header").getText()).to.contain("Arolwg Iaith Prawf");
     await $(NamePage.switchLanguage("en")).click();
 
     await $(NamePage.firstName()).setValue("Catherine");
