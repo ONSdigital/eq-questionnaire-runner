@@ -33,6 +33,6 @@ describe("Suggestions", () => {
     await expect(await $$(".ons-js-autosuggest-listbox li").length).to.not.equal(0);
     await suggestionsOption.click();
     await $(MultipleSuggestionsPage.submit()).click();
-    await expect(browser.getUrl()).to.contain(SubmitPage.url());
+    await expect(await browser.getUrl()).to.contain(SubmitPage.url());
   });
 });

@@ -9,12 +9,12 @@ describe("Skip Conditions - Not Set", () => {
 
   it("Given I do not complete the first page, Then I should see the summary page", async () => {
     await $(FoodPage.submit()).click();
-    await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
   });
 
   it("Given I complete the first page, Then I should see the drink page", async () => {
     await $(FoodPage.bacon()).click();
     await $(FoodPage.submit()).click();
-    await expect(browser.getUrl()).to.contain(DrinkPage.pageName);
+    await expect(await browser.getUrl()).to.contain(DrinkPage.pageName);
   });
 });

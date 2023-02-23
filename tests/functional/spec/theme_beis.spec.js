@@ -8,7 +8,7 @@ describe("Theme BEIS", () => {
 
     it("When I navigate to the radio page, Then I should see BEIS theme content", async () => {
       await expect(await browser.getUrl()).to.contain(RadioPage.pageName);
-      await expect($("#beis-logo-alt").getHTML()).to.contain("Department for Business, Energy and Industrial Strategy");
+      await expect(await $("#beis-logo-alt").getHTML()).to.contain("Department for Business, Energy and Industrial Strategy");
     });
   });
 });
