@@ -11,6 +11,8 @@ describe("Feature: Repeating Section Summaries", () => {
   describe("Given the user has added some members to the household and is on the Hub", () => {
     before("Open survey and add household members", async () => {
       await browser.openQuestionnaire("test_repeating_section_summaries.json");
+      // Ensure the questionnaire fully loads
+      await browser.pause(100);
       // Ensure we are on the Hub
       await expect(await browser.getUrl()).to.contain(HubPage.url());
       // Start first section to add household members

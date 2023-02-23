@@ -123,7 +123,7 @@ describe("List Collector Section Summary Items", () => {
       await expect(await $(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.false;
       await expect(await $(SectionSummaryPage.companiesListAddLink()).isExisting()).to.be.false;
       await $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
-      await  drivingQuestionYes();
+      await drivingQuestionYes();
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
       await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
