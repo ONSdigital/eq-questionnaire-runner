@@ -8,6 +8,7 @@ from app.views.contexts.preview.preview_block import PreviewBlock
 class PreviewGroup:
     def __init__(
         self,
+        *,
         group_schema: Mapping[str, Any],
         section_title: Optional[str],
         schema: QuestionnaireSchema,
@@ -39,11 +40,11 @@ class PreviewGroup:
                 blocks.extend(
                     [
                         PreviewBlock(
-                            self.schema,
-                            self.questionnaire_store,
-                            self.current_location,
-                            section_id,
-                            self.language,
+                            schema=self.schema,
+                            questionnaire_store=self.questionnaire_store,
+                            current_location=self.current_location,
+                            section_id=section_id,
+                            language=self.language,
                             block_id=block["id"],
                         ).serialize()
                     ]

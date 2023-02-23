@@ -7,7 +7,6 @@ from app.data_models import AnswerStore, ListStore, ProgressStore, Questionnaire
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
-from app.utilities import safe_content
 
 from .context import Context
 from .preview import PreviewGroup
@@ -16,6 +15,7 @@ from .preview import PreviewGroup
 class SectionPreviewContext(Context):
     def __init__(
         self,
+        *,
         language: str,
         schema: QuestionnaireSchema,
         answer_store: AnswerStore,
@@ -39,19 +39,13 @@ class SectionPreviewContext(Context):
         self.questionnaire_store = questionnaire_store
         self.language = language
 
-    def __call__(
-        self, return_to: Optional[str] = "section-summary"
-    ) -> Mapping[str, dict]:
+    def __call__(self) -> Mapping[str, dict]:
         preview = self._build_preview()
         title_for_location = self._title_for_location()
-
-        page_title = self.get_page_title(title_for_location)  # type: ignore
-        # get_page_title returns string at this point
 
         return {
             "preview": {
                 "title": title_for_location,
-                "page_title": page_title,
                 **preview,
             }
         }
@@ -62,17 +56,12 @@ class SectionPreviewContext(Context):
         section: ImmutableDict = self._schema.get_section(self.current_location.section_id)  # type: ignore
         return section
 
-    def get_page_title(self, title_for_location: str) -> Optional[str]:
-        return self._schema.get_custom_page_title_for_section(
-            self.current_location.section_id
-        ) or self._get_safe_page_title(title_for_location)
-
     def _build_preview(self) -> dict[str, Union[str, dict, Any]]:
         return {
             "groups": [
                 PreviewGroup(
-                    group,
-                    self._schema.get_title_for_section(
+                    group_schema=group,
+                    section_title=self._schema.get_title_for_section(
                         self.current_location.section_id
                     ),  # this gets the title of a section for a group since we have 1 to 1 relationship between section and its group(s),
                     # group title is not always present/missing in business schemas hence using the section title
@@ -90,8 +79,3 @@ class SectionPreviewContext(Context):
 
     def _title_for_location(self) -> Optional[str]:
         return self._schema.get_title_for_section(self.current_location.section_id)
-
-    def _get_safe_page_title(self, title: str) -> Optional[str]:
-        return (
-            safe_content(self._schema.get_single_string_value(title)) if title else ""
-        )

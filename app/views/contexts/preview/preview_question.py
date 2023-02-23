@@ -9,6 +9,7 @@ from app.questionnaire.variants import transform_variants
 class PreviewQuestion:
     def __init__(
         self,
+        *,
         schema: QuestionnaireSchema,
         questionnaire_store: QuestionnaireStore,
         section_id: str,

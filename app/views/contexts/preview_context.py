@@ -32,18 +32,17 @@ class PreviewContext(Context):
         self._routing_path = None
         self.questionnaire_store = questionnaire_store
 
-    def __call__(
-        self, answers_are_editable: bool = False, return_to: Optional[str] = None
-    ) -> dict[str, Union[str, list, bool]]:
-        groups = list(self.build_all_groups(return_to))
+    def __call__(self) -> dict[str, Union[str, list, bool]]:
+        groups = list(self.build_all_groups())
         return {
             "groups": groups,
         }
 
-    def build_all_groups(self, return_to: Optional[str]) -> Generator[dict, None, None]:
+    def build_all_groups(self) -> Generator[dict, None, None]:
         """NB: Does not support repeating sections"""
 
-        for section_id in [section["id"] for section in self._schema.get_sections()]:
+        for section in self._schema.get_sections():
+            section_id = section["id"]
             location = Location(
                 section_id=section_id,
                 block_id=self._schema.get_first_block_id_for_section(section_id),
@@ -60,4 +59,4 @@ class PreviewContext(Context):
                 questionnaire_store=self.questionnaire_store,
             )
 
-            yield from section_preview_context(return_to=return_to)["preview"]["groups"]
+            yield from section_preview_context()["preview"]["groups"]

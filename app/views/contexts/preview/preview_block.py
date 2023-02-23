@@ -8,6 +8,7 @@ from app.views.contexts.preview.preview_question import PreviewQuestion
 class PreviewBlock:
     def __init__(
         self,
+        *,
         schema: QuestionnaireSchema,
         questionnaire_store: QuestionnaireStore,
         current_location: Location,
@@ -16,15 +17,10 @@ class PreviewBlock:
         block_id: str,
     ):
         self.schema = schema
-
         self.questionnaire_store = questionnaire_store
-
         self.current_location = current_location
-
         self.section_id = section_id
-
         self.block_id = block_id
-
         self.question = self.get_question(
             schema=self.schema,
             questionnaire_store=self.questionnaire_store,
@@ -42,7 +38,11 @@ class PreviewBlock:
         language: str,
     ) -> dict[str, Union[str, dict]]:
         return PreviewQuestion(
-            schema, questionnaire_store, section_id, block_id, language
+            schema=schema,
+            questionnaire_store=questionnaire_store,
+            section_id=section_id,
+            block_id=block_id,
+            language=language,
         ).serialize()
 
     def serialize(self) -> dict[str, Union[str, dict, Any]]:
