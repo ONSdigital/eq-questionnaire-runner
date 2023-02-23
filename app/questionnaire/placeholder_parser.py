@@ -85,15 +85,7 @@ class PlaceholderParser:
         return self._placeholder_map
 
     def _parse_placeholder(self, placeholder: Mapping) -> Any:
-        if self._preview_mode:
-            try:
-                if self.all_sources_metadata(placeholder):
-                    return self._parse_transforms(placeholder["transforms"])
-
-            except KeyError:
-                if placeholder["value"]["source"] == "metadata":
-                    return self._value_source_resolver.resolve(placeholder["value"])
-
+        if self._preview_mode and not self._all_value_sources_metadata(placeholder):
             return placeholder["placeholder"]
 
         try:
@@ -146,18 +138,6 @@ class PlaceholderParser:
                 values.append(value)
         return values
 
-    @staticmethod
-    def all_sources_metadata(placeholder: Mapping) -> bool:
-        all_sources_metadata = False  # All value sources must be metadata
-        transforms = placeholder["transforms"]
-        for transform in transforms:
-            for identifier in transform["arguments"]:
-                if isinstance(transform["arguments"][identifier], dict):
-                    all_sources_metadata = (
-                        transform["arguments"][identifier]["source"] == "metadata"
-                    )
-                elif items := transform["arguments"].get("items"):
-                    for item in items:
-                        if item["source"] == "metadata":
-                            all_sources_metadata = True
-        return all_sources_metadata
+    def _all_value_sources_metadata(self, placeholder: Mapping) -> bool:
+        sources = self._schema.get_values_for_key(placeholder, key="source")
+        return all(source == "metadata" for source in sources)
