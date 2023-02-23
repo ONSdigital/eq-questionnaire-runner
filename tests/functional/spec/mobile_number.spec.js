@@ -18,6 +18,6 @@ describe("Mobile number validation", () => {
   it("Given I am asked to enter Mobile no, When I enter an invalid mobile number and submit, Then an error screen with invalid number information is displayed", async () => {
     await $(MobileNumberBlockPage.mobileNumber()).setValue("12345678");
     await $(MobileNumberBlockPage.submit()).click();
-    await expect($("body").getText()).to.contain("Enter a UK mobile number in a valid format");
+    await expect(await $("body").getText()).to.contain("Enter a UK mobile number in a valid format");
   });
 });

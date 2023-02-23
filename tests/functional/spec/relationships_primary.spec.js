@@ -32,7 +32,7 @@ describe("Relationships - Primary Person", () => {
       await expect(await $(RelationshipsPage.questionText()).getText()).to.contain("is their");
     });
 
-    it("When I add household members And add thir relationships And remove the primary person And add a new primary person then I will be asked for the relationships again", async () => {
+    it("When I add household members And add their relationships And remove the primary person And add a new primary person then I will be asked for the relationships again", async () => {
       addPrimaryAndTwoOthersAndCompleteRelationships();
 
       await browser.url("/questionnaire/primary-person-list-collector");
