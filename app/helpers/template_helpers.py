@@ -54,7 +54,13 @@ class ContextHelper:
             "EQ_GOOGLE_TAG_MANAGER_AUTH"
         )
         self._survey_type = cookie_session.get("theme")
-        self._preview_questions = cookie_session.get("preview_questions")
+        self._preview_questions = False
+        if (metadata := get_metadata(current_user)) and (
+            metadata.schema_url or metadata.schema_name
+        ):
+            self._preview_questions = load_schema_from_metadata(
+                metadata=metadata, language_code=language
+            ).json.get("preview_questions", False)
 
     @property
     def context(self) -> dict[str, Any]:
