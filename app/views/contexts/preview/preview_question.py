@@ -4,7 +4,6 @@ from app.data_models import AnswerStore, ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
-from app.questionnaire.variants import transform_variants
 
 
 class PreviewQuestion:
@@ -114,14 +113,15 @@ class PreviewQuestion:
         }
 
     def rendered_block(self) -> dict[str, Any]:
-        transformed_block = transform_variants(
-            self.schema.get_block(self.current_location.block_id),  # type: ignore
-            self.schema,
-            self.metadata,
-            self.response_metadata,
-            self.answer_store,
-            self.list_store,
-            self.current_location,
-        )
+        block = self.schema.get_block(self.current_location.block_id)  # type: ignore
+        # block exists at this point, get_block() returns Optional
+        output_block = self.schema.get_mutable_deepcopy(block)  # type: ignore
+        # method returns Any
+        if "question_variants" in block:  # type: ignore
+            # Optional dict as return of get_block()
+            output_block.pop("question_variants", None)
+            output_block.pop("question", None)
 
-        return self.placeholder_renderer.render(transformed_block, None)
+            output_block["question"] = self.schema.get_mutable_deepcopy(block["question_variants"][0]["question"])  # type: ignore
+            # Same as above
+        return self.placeholder_renderer.render(output_block, None)
