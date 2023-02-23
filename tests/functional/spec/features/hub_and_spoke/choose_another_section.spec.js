@@ -10,7 +10,7 @@ describe("Choose another section link", () => {
 
   it("When a user views the first question and the hub is not available, then the link should not be displayed", async () => {
     await browser.openQuestionnaire("test_hub_complete_sections.json");
-    await expect($("body").getText()).to.not.have.string("Choose another section and return to this later");
+    await expect(await $("body").getText()).to.not.have.string("Choose another section and return to this later");
   });
 
   it("When a user starts a new section and the hub is available, then the link should be displayed", async () => {

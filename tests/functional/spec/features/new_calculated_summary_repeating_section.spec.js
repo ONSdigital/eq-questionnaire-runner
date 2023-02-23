@@ -215,7 +215,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(await $(SecondCurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of number values entered to be £124.58. Is this correct?"
       );
-      await expect($("body").getText()).to.have.string("Enter two values that add up to the previous calculated summary total of £124.58");
+      await expect(await $("body").getText()).to.have.string("Enter two values that add up to the previous calculated summary total of £124.58");
       await expect(await $(SecondCurrencyTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("124.58");
     });
 

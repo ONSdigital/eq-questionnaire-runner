@@ -10,7 +10,7 @@ describe("Submit Page with Summary", () => {
   });
 
   it("Given a questionnaire with a summary has been completed when the submit page is displayed, then it should contain a summary of all answers", async () => {
-    completeAllQuestions();
+    await completeAllQuestions();
 
     await expect(await $(SubmitPage.radioAnswer()).getText()).to.contain("Bacon");
     await expect(await $(SubmitPage.dessertGroupTitle()).getText()).to.contain("Dessert");
@@ -22,14 +22,14 @@ describe("Submit Page with Summary", () => {
   });
 
   it("Given a questionnaire with a summary has been completed when the submit page is displayed then I should be able to submit the answers", async () => {
-    completeAllQuestions();
+    await completeAllQuestions();
 
     await $(SubmitPage.submit()).click();
     await expect(await browser.getUrl()).to.contain("thank-you");
   });
 
   it("Given a questionnaire with a summary has been completed when a summary page edit link is clicked then it should return to that question", async () => {
-    completeAllQuestions();
+    await completeAllQuestions();
 
     await $(SubmitPage.radioAnswerEdit()).click();
 
@@ -37,7 +37,7 @@ describe("Submit Page with Summary", () => {
   });
 
   it("Given a questionnaire with a summary has been completed and a summary page edit link is clicked, when I click previous, then it should return to the summary", async () => {
-    completeAllQuestions();
+    await completeAllQuestions();
 
     await $(SubmitPage.radioAnswerEdit()).click();
     await $(RadioPage.previous()).click();
@@ -55,7 +55,7 @@ describe("Submit Page with Summary", () => {
   });
 
   it("Given the edit link is used when a question is updated then the submit page summary should show the new answer", async () => {
-    completeAllQuestions();
+    await completeAllQuestions();
 
     await $(SubmitPage.numbersUnitAnswerEdit()).click();
     await expect(await $(NumbersPage.unit()).isFocused()).to.be.true;
@@ -86,7 +86,7 @@ describe("Submit Page with Summary", () => {
   });
 
   it("Given a questionnaire with a summary has been completed, when submission content has not been set in the schema, then the default content should be displayed", async () => {
-    completeAllQuestions();
+    await completeAllQuestions();
 
     await expect(await $(SubmitPage.heading()).getText()).to.contain("Check your answers and submit");
     await expect(await $(SubmitPage.submit()).getText()).to.contain("Submit answers");

@@ -30,7 +30,7 @@ const openQuestionnaireAndSetUp = async (schema) => {
   await $(ReferenceDatePage.submit()).click();
 };
 
-testCases.forEachasync(async (testCase) => {
+testCases.forEach(async (testCase) => {
   describe(`Feature: Dynamically generated answer options driven by a function (${testCase.schemaName})`, () => {
     describe("Selecting/Deselecting", () => {
       before("Open questionnaire", async () => {
@@ -60,7 +60,7 @@ testCases.forEachasync(async (testCase) => {
 
       describe("Given a dynamic answer options questionnaire and I am on the radio answer page", () => {
         it("When I click a radio option, then the radio should be selected", async () => {
-          for (let i = 0; i < testCase.answerOptionCount; i++) {
+          for (let i = 0; i < (await testCase.answerOptionCount); i++) {
             await $(DynamicRadioPage.answerByIndex(i)).click();
             await expect(await $(DynamicRadioPage.answerByIndex(i)).isSelected()).to.be.true;
           }
@@ -95,7 +95,7 @@ testCases.forEachasync(async (testCase) => {
         });
 
         it("When I click a selected option, then it should be deselected", async () => {
-          for (let i = 0; i < testCase.answerOptionCount; i++) {
+          for (let i = 0; i < (await testCase.answerOptionCount); i++) {
             await $(DynamicMutuallyExclusivePage.answerByIndex(i)).click();
             await expect(await $(DynamicMutuallyExclusivePage.answerByIndex(i)).isSelected()).to.be.false;
           }

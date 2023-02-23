@@ -81,7 +81,7 @@ const assertRepeatingSectionOnChange = async (repeatIndex, currentBreakdown1, cu
 };
 
 describe("Feature: Validation - Sum of grouped answers to equal total (Repeating section) (Total in separate section)", () => {
-  describe("Given I start a repeating grouped answer validation with dependent sections and add 2 householders and complete the household overview section", async () => {
+  describe("Given I start a repeating grouped answer validation with dependent sections and add 2 householders and complete the household overview section", () => {
     before(async () => {
       await browser.openQuestionnaire("test_validation_sum_against_total_repeating_with_dependent_section.json");
 
@@ -150,7 +150,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(2))).getText()).to.equal("Completed");
     });
 
-    await assertRepeatingSectionOnChange(1, "500.00", "250.00", "250.00", "1,500.00");
+    assertRepeatingSectionOnChange(1, "500.00", "250.00", "250.00", "1,500.00");
 
     it("When I change my answer to the driving question to 'Yes' for the 2nd repeating section, Then I am able to answer the breakdown question and complete the section", async () => {
       await $(HubPage.summaryRowLink(repeatingSectionId(2))).click();
@@ -176,8 +176,8 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(2))).getText()).to.equal("Partially completed");
     });
 
-    await assertRepeatingSectionOnChange(1, "1500.00", "0.00", "0.00", "2,500.00");
-    await assertRepeatingSectionOnChange(2, "1000.00", "500.00", "0.00", "2,500.00");
+    assertRepeatingSectionOnChange(1, "1500.00", "0.00", "0.00", "2,500.00");
+    assertRepeatingSectionOnChange(2, "1000.00", "500.00", "0.00", "2,500.00");
 
     it("When I edit and resubmit the total spending question without changing the value, Then the repeating section's status should stay as 'Completed'", async () => {
       await $(HubPage.summaryRowLink(householdOverviewSectionId)).click();

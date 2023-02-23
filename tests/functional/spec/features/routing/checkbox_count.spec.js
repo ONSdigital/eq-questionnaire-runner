@@ -27,7 +27,7 @@ describe("Test routing using count of checkboxes checked", () => {
     await $(ToppingCheckboxPage.cheese()).click();
     await $(ToppingCheckboxPage.submit()).click();
 
-    await expect(browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
+    await expect(await browser.getUrl()).to.contain(IncorrectAnswerPage.pageName);
     await expect(await $(IncorrectAnswerPage.questionText()).getText()).to.have.string("You did not select 2 or more toppings");
   });
 
