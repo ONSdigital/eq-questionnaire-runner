@@ -5,7 +5,7 @@ from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerStore, ListStore, ProgressStore, QuestionnaireStore
 from app.data_models.metadata_proxy import MetadataProxy
-from app.questionnaire import QuestionnaireSchema
+from app.questionnaire import Location, QuestionnaireSchema
 
 from .context import Context
 from .preview import PreviewGroup
@@ -22,6 +22,7 @@ class SectionPreviewContext(Context):
         progress_store: ProgressStore,
         metadata: Optional[MetadataProxy],
         response_metadata: Mapping,
+        current_location: Location,
         questionnaire_store: QuestionnaireStore,
     ):
         super().__init__(
@@ -33,6 +34,7 @@ class SectionPreviewContext(Context):
             metadata,
             response_metadata,
         )
+        self.current_location = current_location
         self.questionnaire_store = questionnaire_store
         self.language = language
 
