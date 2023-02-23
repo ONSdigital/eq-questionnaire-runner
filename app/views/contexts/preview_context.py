@@ -7,6 +7,10 @@ from app.views.contexts import Context
 from app.views.contexts.section_preview_context import SectionPreviewContext
 
 
+class PreviewNotEnabledException(Exception):
+    pass
+
+
 class PreviewContext(Context):
     def __init__(
         self,
@@ -30,6 +34,8 @@ class PreviewContext(Context):
         )
         self._routing_path = None
         self.questionnaire_store = questionnaire_store
+        if not schema.json.get("preview_questions"):
+            raise PreviewNotEnabledException(404)
 
     def __call__(self) -> dict[str, Union[str, list, bool]]:
         groups = list(self.build_all_groups())

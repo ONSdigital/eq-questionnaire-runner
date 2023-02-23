@@ -1,4 +1,10 @@
-from app.views.contexts.preview_context import PreviewContext
+import pytest
+
+from app.questionnaire import QuestionnaireSchema
+from app.views.contexts.preview_context import (
+    PreviewContext,
+    PreviewNotEnabledException,
+)
 from tests.app.views.contexts import assert_preview_context
 
 
@@ -217,3 +223,23 @@ def test_build_preview_context(
     assert len(context["groups"][0]) == 2
     assert "blocks" in context["groups"][0]
     assert context == expected_context
+
+
+def test_preview_questions_disabled_raises_exception(
+    answer_store,
+    list_store,
+    progress_store,
+    questionnaire_store,
+):
+    schema = QuestionnaireSchema({"preview_questions": False})
+    with pytest.raises(PreviewNotEnabledException):
+        PreviewContext(
+            "en",
+            schema,
+            answer_store,
+            list_store,
+            progress_store,
+            metadata=questionnaire_store.metadata,
+            response_metadata=questionnaire_store.response_metadata,
+            questionnaire_store=questionnaire_store,
+        )
