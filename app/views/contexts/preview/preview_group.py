@@ -1,7 +1,5 @@
-from typing import Any, Mapping, Optional, Union
+from typing import Any, Mapping, Optional
 
-from app.data_models import AnswerStore, ListStore
-from app.data_models.metadata_proxy import MetadataProxy
 from app.views.contexts.preview.preview_block import PreviewBlock
 
 
@@ -11,29 +9,18 @@ class PreviewGroup:
         *,
         group_schema: Mapping[str, Any],
         section_title: Optional[str],
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        metadata: Optional[MetadataProxy],
-        response_metadata: Mapping[str, Union[str, int, list]],
-        section_id: str,
         language: str,
     ):
         self.title = section_title
-        self.answer_store = answer_store
-        self.list_store = list_store
-        self.metadata = metadata
-        self.response_metadata = response_metadata
         self.language = language
 
         self.blocks = self._build_blocks(
             group_schema=group_schema,
-            section_id=section_id,
         )
 
+    @staticmethod
     def _build_blocks(
-        self,
         group_schema: Mapping[str, Any],
-        section_id: str,
     ) -> list[dict]:
         blocks = []
 
@@ -43,12 +30,6 @@ class PreviewGroup:
                     [
                         PreviewBlock(
                             block=block,
-                            answer_store=self.answer_store,
-                            list_store=self.list_store,
-                            metadata=self.metadata,
-                            response_metadata=self.response_metadata,
-                            section_id=section_id,
-                            block_id=block["id"],
                         ).serialize()
                     ]
                 )

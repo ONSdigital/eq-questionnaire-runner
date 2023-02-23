@@ -1,10 +1,8 @@
-from typing import Any, Mapping, Optional, Union
+from typing import Any, Optional, Union
 
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import AnswerStore, ListStore
-from app.data_models.metadata_proxy import MetadataProxy
-from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
+from app.questionnaire import QuestionnaireSchema, QuestionSchemaType
 
 
 class PreviewQuestion:
@@ -12,20 +10,9 @@ class PreviewQuestion:
         self,
         *,
         block: ImmutableDict,
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        metadata: Optional[MetadataProxy],
-        response_metadata: Mapping[str, Union[str, int, list]],
-        section_id: str,
-        block_id: str,
     ):
         self.block = block
-        self.answer_store = answer_store
-        self.list_store = list_store
-        self.metadata = metadata
-        self.response_metadata = response_metadata
-        self.current_location = Location(section_id=section_id, block_id=block_id)
-        self.block_id = block_id
+        self.block_id = block.get("id")
         self.question = self.resolved_block().get("question")
         # render_block returns same type as placeholder_renderer.render which is dict[str, Any] hence all type ignores below
 

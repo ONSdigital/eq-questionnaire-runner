@@ -80,11 +80,6 @@ class SectionPreviewContext(Context):
                     # group title is not always present/missing in business schemas hence using the section title
                     # base for this was the code we use for summaries generation, that is how summaries are generated in runner
                     # (they use group titles of sections for twisties)
-                    answer_store=self._answer_store,
-                    list_store=self._list_store,
-                    metadata=self._metadata,
-                    response_metadata=self._response_metadata,
-                    section_id=self.current_location.section_id,
                     language=self.language,
                 ).serialize()
                 for group in section["groups"]
