@@ -1,7 +1,7 @@
 from typing import Any, Union
 
 from app.data_models import QuestionnaireStore
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.preview.preview_question import PreviewQuestion
 
 
@@ -11,14 +11,12 @@ class PreviewBlock:
         *,
         schema: QuestionnaireSchema,
         questionnaire_store: QuestionnaireStore,
-        current_location: Location,
         section_id: str,
         language: str,
         block_id: str,
     ):
         self.schema = schema
         self.questionnaire_store = questionnaire_store
-        self.current_location = current_location
         self.section_id = section_id
         self.block_id = block_id
         self.question = self.get_question(

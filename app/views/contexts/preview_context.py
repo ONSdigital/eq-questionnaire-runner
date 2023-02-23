@@ -3,7 +3,6 @@ from typing import Generator, Mapping, Optional, Union
 from app.data_models import AnswerStore, ListStore, ProgressStore, QuestionnaireStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
-from app.questionnaire.location import Location
 from app.views.contexts import Context
 from app.views.contexts.section_preview_context import SectionPreviewContext
 
@@ -41,12 +40,7 @@ class PreviewContext(Context):
     def build_all_groups(self) -> Generator[dict, None, None]:
         """NB: Does not support repeating sections"""
 
-        for section in self._schema.get_sections():
-            section_id = section["id"]
-            location = Location(
-                section_id=section_id,
-                block_id=self._schema.get_first_block_id_for_section(section_id),
-            )
+        for _ in self._schema.get_sections():
             section_preview_context = SectionPreviewContext(
                 language=self._language,
                 schema=self._schema,
@@ -55,7 +49,6 @@ class PreviewContext(Context):
                 progress_store=self._progress_store,
                 metadata=self._metadata,
                 response_metadata=self._response_metadata,
-                current_location=location,
                 questionnaire_store=self.questionnaire_store,
             )
 

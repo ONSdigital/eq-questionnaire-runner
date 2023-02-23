@@ -1,7 +1,7 @@
 from typing import Any, Mapping, Optional
 
 from app.data_models import QuestionnaireStore
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.preview.preview_block import PreviewBlock
 
 
@@ -13,14 +13,12 @@ class PreviewGroup:
         section_title: Optional[str],
         schema: QuestionnaireSchema,
         questionnaire_store: QuestionnaireStore,
-        current_location: Location,
         section_id: str,
         language: str,
     ):
         self.title = section_title
         self.schema = schema
         self.questionnaire_store = questionnaire_store
-        self.current_location = current_location
         self.language = language
 
         self.blocks = self._build_blocks(
@@ -42,7 +40,6 @@ class PreviewGroup:
                         PreviewBlock(
                             schema=self.schema,
                             questionnaire_store=self.questionnaire_store,
-                            current_location=self.current_location,
                             section_id=section_id,
                             language=self.language,
                             block_id=block["id"],
