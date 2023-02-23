@@ -1,6 +1,7 @@
-from typing import Any, Optional, Union
+from typing import Any, Mapping, Optional, Union
 
-from app.data_models import QuestionnaireStore
+from app.data_models import AnswerStore, ListStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.variants import transform_variants
@@ -11,22 +12,28 @@ class PreviewQuestion:
         self,
         *,
         schema: QuestionnaireSchema,
-        questionnaire_store: QuestionnaireStore,
+        answer_store: AnswerStore,
+        list_store: ListStore,
+        metadata: Optional[MetadataProxy],
+        response_metadata: Mapping[str, Union[str, int, list]],
         section_id: str,
         block_id: str,
         language: str,
     ):
         self.schema = schema
-        self.questionnaire_store = questionnaire_store
+        self.answer_store = answer_store
+        self.list_store = list_store
+        self.metadata = metadata
+        self.response_metadata = response_metadata
         self.current_location = Location(section_id=section_id, block_id=block_id)
         self.block_id = block_id
 
         self.placeholder_renderer = PlaceholderRenderer(
             language=language,
-            answer_store=self.questionnaire_store.answer_store,
-            list_store=self.questionnaire_store.list_store,
-            metadata=self.questionnaire_store.metadata,
-            response_metadata=self.questionnaire_store.response_metadata,
+            answer_store=self.answer_store,
+            list_store=self.list_store,
+            metadata=self.metadata,
+            response_metadata=self.response_metadata,
             schema=self.schema,
             location=self.current_location,
             preview_mode=True,
@@ -110,10 +117,10 @@ class PreviewQuestion:
         transformed_block = transform_variants(
             self.schema.get_block(self.current_location.block_id),  # type: ignore
             self.schema,
-            self.questionnaire_store.metadata,
-            self.questionnaire_store.response_metadata,
-            self.questionnaire_store.answer_store,
-            self.questionnaire_store.list_store,
+            self.metadata,
+            self.response_metadata,
+            self.answer_store,
+            self.list_store,
             self.current_location,
         )
 

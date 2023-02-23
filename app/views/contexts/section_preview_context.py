@@ -3,7 +3,7 @@ from typing import Any, Mapping, Optional, Union
 
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import AnswerStore, ListStore, ProgressStore, QuestionnaireStore
+from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 
@@ -21,9 +21,8 @@ class SectionPreviewContext(Context):
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: Optional[MetadataProxy],
-        response_metadata: Mapping,
+        response_metadata: Mapping[str, Union[str, int, list]],
         current_location: Location,
-        questionnaire_store: QuestionnaireStore,
     ):
         super().__init__(
             language,
@@ -34,8 +33,11 @@ class SectionPreviewContext(Context):
             metadata,
             response_metadata,
         )
+        self._answer_store = answer_store
+        self._list_store = list_store
+        self._metadata = metadata
+        self._response_metadata = response_metadata
         self.current_location = current_location
-        self.questionnaire_store = questionnaire_store
         self.language = language
 
     def __call__(self) -> Mapping[str, dict]:
@@ -67,7 +69,10 @@ class SectionPreviewContext(Context):
                     # base for this was the code we use for summaries generation, that is how summaries are generated in runner
                     # (they use group titles of sections for twisties)
                     schema=self._schema,
-                    questionnaire_store=self.questionnaire_store,
+                    answer_store=self._answer_store,
+                    list_store=self._list_store,
+                    metadata=self._metadata,
+                    response_metadata=self._response_metadata,
                     section_id=self.current_location.section_id,
                     language=self.language,
                 ).serialize()

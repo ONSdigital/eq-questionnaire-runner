@@ -1,6 +1,7 @@
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping, Optional, Union
 
-from app.data_models import QuestionnaireStore
+from app.data_models import AnswerStore, ListStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.preview.preview_block import PreviewBlock
 
@@ -12,13 +13,19 @@ class PreviewGroup:
         group_schema: Mapping[str, Any],
         section_title: Optional[str],
         schema: QuestionnaireSchema,
-        questionnaire_store: QuestionnaireStore,
+        answer_store: AnswerStore,
+        list_store: ListStore,
+        metadata: Optional[MetadataProxy],
+        response_metadata: Mapping[str, Union[str, int, list]],
         section_id: str,
         language: str,
     ):
         self.title = section_title
         self.schema = schema
-        self.questionnaire_store = questionnaire_store
+        self.answer_store = answer_store
+        self.list_store = list_store
+        self.metadata = metadata
+        self.response_metadata = response_metadata
         self.language = language
 
         self.blocks = self._build_blocks(
@@ -39,7 +46,10 @@ class PreviewGroup:
                     [
                         PreviewBlock(
                             schema=self.schema,
-                            questionnaire_store=self.questionnaire_store,
+                            answer_store=self.answer_store,
+                            list_store=self.list_store,
+                            metadata=self.metadata,
+                            response_metadata=self.response_metadata,
                             section_id=section_id,
                             language=self.language,
                             block_id=block["id"],
@@ -50,7 +60,5 @@ class PreviewGroup:
 
     def serialize(
         self,
-    ) -> Any:  # QuestionnaireSchema.get_mutable_deepcopy returns "Any"
-        return QuestionnaireSchema.get_mutable_deepcopy(
-            {"title": self.title, "blocks": self.blocks}
-        )
+    ) -> dict[str, Any]:
+        return {"title": self.title, "blocks": self.blocks}

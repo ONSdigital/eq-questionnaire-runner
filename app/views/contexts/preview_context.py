@@ -16,7 +16,7 @@ class PreviewContext(Context):
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: Optional[MetadataProxy],
-        response_metadata: Mapping,
+        response_metadata: Mapping[str, Union[str, int, list]],
         questionnaire_store: QuestionnaireStore,
     ):
         super().__init__(
@@ -55,7 +55,6 @@ class PreviewContext(Context):
                 metadata=self._metadata,
                 response_metadata=self._response_metadata,
                 current_location=location,
-                questionnaire_store=self.questionnaire_store,
             )
 
             yield from section_preview_context()["preview"]["groups"]
