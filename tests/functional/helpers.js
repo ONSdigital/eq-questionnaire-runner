@@ -1,4 +1,4 @@
-const checkPeopleInList = (peopleExpected, listLabel) => {
+const checkPeopleInList = async(peopleExpected, listLabel) => {
   $(listLabel(1)).waitForDisplayed();
 
   for (let i = 1; i <= peopleExpected.length; i++) {

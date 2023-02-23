@@ -9,20 +9,20 @@ describe('Checkbox with "other" option', () => {
   });
 
   it("Given a label has not been provided in the schema for a checkbox answer, When the checkbox answer is displayed, Then the default label should be visible", async () => {
-    await expect($("body").getText()).to.have.string("Select all that apply");
+    await expect(await $("body").getText()).to.have.string("Select all that apply");
   });
 
   it("Given a label has been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the label should be visible", async () => {
     await $(MandatoryCheckboxPage.none()).click();
     await $(MandatoryCheckboxPage.submit()).click();
-    await expect($("body").getText()).to.have.string("Select any answers that apply");
+    await expect(await $("body").getText()).to.have.string("Select any answers that apply");
   });
 
   it("Given that there is only one checkbox, When the checkbox answer is displayed, Then no label should be present", async () => {
     await $(MandatoryCheckboxPage.none()).click();
     await $(MandatoryCheckboxPage.submit()).click();
     await $(NonMandatoryCheckboxPage.submit()).click();
-    await expect($("body").getText()).to.not.have.string("Select all that apply");
+    await expect(await $("body").getText()).to.not.have.string("Select all that apply");
   });
 
   it('Given an "other" option is available, when the user clicks the "other" option the other input should be visible.', async () => {
