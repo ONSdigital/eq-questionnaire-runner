@@ -180,7 +180,6 @@
                                     {
                                         "id": "report-radio-answer",
                                         "mandatory": true,
-                                        "instruction": "Choose an answer",
                                         "description": "Choose Yes or No answer",
                                         "guidance": {
                                             "show_guidance": "Show more information",

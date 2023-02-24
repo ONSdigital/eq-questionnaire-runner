@@ -23,7 +23,6 @@ def test_build_preview_rendering_context(
         progress_store,
         metadata=questionnaire_store.metadata,
         response_metadata=questionnaire_store.response_metadata,
-        questionnaire_store=questionnaire_store,
     )
 
     preview_context = preview_context()
@@ -46,7 +45,6 @@ def test_build_preview_context(
         progress_store,
         metadata=questionnaire_store.metadata,
         response_metadata=questionnaire_store.response_metadata,
-        questionnaire_store=questionnaire_store,
     )
     context = preview_context()
 
@@ -238,5 +236,4 @@ def test_preview_questions_disabled_raises_exception(
             progress_store,
             metadata=questionnaire_store.metadata,
             response_metadata=questionnaire_store.response_metadata,
-            questionnaire_store=questionnaire_store,
         )

@@ -1,6 +1,6 @@
 from typing import Generator, Mapping, Optional, Union
 
-from app.data_models import AnswerStore, ListStore, ProgressStore, QuestionnaireStore
+from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.views.contexts import Context
@@ -21,7 +21,6 @@ class PreviewContext(Context):
         progress_store: ProgressStore,
         metadata: Optional[MetadataProxy],
         response_metadata: Mapping[str, Union[str, int, list]],
-        questionnaire_store: QuestionnaireStore,
     ):
         super().__init__(
             language,
@@ -33,7 +32,6 @@ class PreviewContext(Context):
             response_metadata,
         )
         self._routing_path = None
-        self.questionnaire_store = questionnaire_store
         if not schema.json.get("preview_questions"):
             raise PreviewNotEnabledException(404)
 

@@ -11,9 +11,9 @@ class PreviewBlock:
         *,
         block: ImmutableDict,
     ):
-        self.block = block
-        self.question = self.get_question(
-            block=self.block,
+        self._block = block
+        self._question = self.get_question(
+            block=self._block,
         )
 
     @staticmethod
@@ -26,5 +26,5 @@ class PreviewBlock:
 
     def serialize(self) -> dict[str, Union[str, dict, Any]]:
         return {
-            "question": self.question,
+            "question": self._question,
         }

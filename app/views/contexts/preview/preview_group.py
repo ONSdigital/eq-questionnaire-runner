@@ -9,12 +9,9 @@ class PreviewGroup:
         *,
         group_schema: Mapping[str, Any],
         section_title: Optional[str],
-        language: str,
     ):
-        self.title = section_title
-        self.language = language
-
-        self.blocks = self._build_blocks(
+        self._title = section_title
+        self._blocks = self._build_blocks(
             group_schema=group_schema,
         )
 
@@ -38,4 +35,4 @@ class PreviewGroup:
     def serialize(
         self,
     ) -> dict[str, Any]:
-        return {"title": self.title, "blocks": self.blocks}
+        return {"title": self._title, "blocks": self._blocks}
