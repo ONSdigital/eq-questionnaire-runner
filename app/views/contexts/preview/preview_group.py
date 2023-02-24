@@ -19,18 +19,13 @@ class PreviewGroup:
     def _build_blocks(
         group_schema: Mapping[str, Any],
     ) -> list[dict]:
-        blocks = []
-
-        for block in group_schema["blocks"]:
-            if block["type"] == "Question":
-                blocks.extend(
-                    [
-                        PreviewBlock(
-                            block=block,
-                        ).serialize()
-                    ]
-                )
-        return blocks
+        return [
+            PreviewBlock(
+                block=block,
+            ).serialize()
+            for block in group_schema["blocks"]
+            if block["type"] == "Question"
+        ]
 
     def serialize(
         self,
