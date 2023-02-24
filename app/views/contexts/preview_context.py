@@ -22,6 +22,8 @@ class PreviewContext(Context):
         metadata: Optional[MetadataProxy],
         response_metadata: Mapping[str, Union[str, int, list]],
     ):
+        if not schema.preview_enabled:
+            raise PreviewNotEnabledException(404)
         super().__init__(
             language,
             schema,
@@ -32,8 +34,6 @@ class PreviewContext(Context):
             response_metadata,
         )
         self._routing_path = None
-        if not schema.json.get("preview_questions"):
-            raise PreviewNotEnabledException(404)
 
     def __call__(self) -> dict[str, Union[str, list, bool]]:
         groups = list(self.build_all_groups())

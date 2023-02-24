@@ -116,6 +116,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return region_code
 
     @cached_property
+    def preview_enabled(self) -> Optional[str]:
+        preview_enabled: Optional[str] = self.json.get("preview_questions")
+        return preview_enabled
+
+    @cached_property
     def parent_id_map(self) -> Any:
         return self.serialize(self._parent_id_map)
 

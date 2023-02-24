@@ -2,12 +2,9 @@ import io
 
 from app.data_models import QuestionnaireStore
 from app.questionnaire import QuestionnaireSchema
+from app.views.contexts.preview_context import PreviewNotEnabledException
 from app.views.handlers.pdf_response import PDFResponse
 from app.views.handlers.view_preview_questions import ViewPreviewQuestions
-
-
-class PreviewNotEnabledException(Exception):
-    pass
 
 
 class PreviewQuestionsPDF(PDFResponse, ViewPreviewQuestions):
@@ -17,9 +14,9 @@ class PreviewQuestionsPDF(PDFResponse, ViewPreviewQuestions):
         questionnaire_store: QuestionnaireStore,
         language: str,
     ):
-        super().__init__(schema, questionnaire_store, language)
-        if not schema.json.get("preview_questions"):
+        if not schema.preview_enabled:
             raise PreviewNotEnabledException(404)
+        super().__init__(schema, questionnaire_store, language)
 
     def get_pdf(self) -> io.BytesIO:
         """

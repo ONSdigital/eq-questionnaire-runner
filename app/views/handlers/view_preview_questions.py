@@ -1,11 +1,10 @@
+from flask import url_for
 from flask_babel import lazy_gettext
 
 from app.data_models import QuestionnaireStore
 from app.helpers.template_helpers import render_template
 from app.questionnaire import QuestionnaireSchema
-from app.views.contexts.view_preview_questions_context import (
-    build_view_preview_questions_context,
-)
+from app.views.contexts.preview_context import PreviewContext
 
 
 class ViewPreviewQuestions:
@@ -20,9 +19,19 @@ class ViewPreviewQuestions:
         self._language = language
 
     def get_context(self) -> dict[str, object]:
-        return build_view_preview_questions_context(
-            self._language, self._schema, self._questionnaire_store
+        preview_context = PreviewContext(
+            language=self._language,
+            schema=self._schema,
+            answer_store=self._questionnaire_store.answer_store,
+            list_store=self._questionnaire_store.list_store,
+            progress_store=self._questionnaire_store.progress_store,
+            metadata=self._questionnaire_store.metadata,
+            response_metadata=self._questionnaire_store.response_metadata,
         )
+        context = {"hide_sign_out_button": True, "preview": preview_context()}
+        context["pdf_url"] = url_for("questionnaire.get_preview_questions_pdf")
+
+        return context
 
     @staticmethod
     def get_page_title() -> str:
