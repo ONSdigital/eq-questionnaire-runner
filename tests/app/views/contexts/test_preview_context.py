@@ -66,7 +66,6 @@ def test_build_preview_context(
                                         "hide_guidance": "Show more information",
                                         "show_guidance": "Show more information",
                                     },
-                                    "instruction": "Choose an answer",
                                     "options": ["Yes", "No"],
                                 }
                             ],
