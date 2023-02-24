@@ -33,7 +33,6 @@ class PreviewContext(Context):
             metadata,
             response_metadata,
         )
-        self._routing_path = None
 
     def __call__(self) -> dict[str, Union[str, list, bool]]:
         groups = list(self.build_all_groups())
