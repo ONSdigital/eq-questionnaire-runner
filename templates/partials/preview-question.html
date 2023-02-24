@@ -35,34 +35,84 @@
     {% endcall %}
   {% endif %}
 
-  {%- if question.answer_guidance -%}
-    {% set contents = question.answer_guidance.contents %}
-    {% call onsPanel({
-      "id": "question-guidance-" ~ question.id,
-      "classes": "ons-u-mb-m"
-    }) %}
-      {% set contents = question.answer_guidance.contents %}
-      {% include 'partials/contents.html' %}
-    {% endcall %}
-  {% endif %}
-
   {% if answers_length > 1 %}
     <p>{{ _("You can answer with the following options:") }}</p>
-    <ul>
-      {% for answer in answers %}
-        <li>{{ answer }}</li>
-      {% endfor %}
-    </ul>
-  {% elif answers_length == 1 %}
-    <p><strong>{{ answers[0] }}</strong></p>
-    {% if question.text_length %}
-      <p>{{ question.text_length }}{{ _(" characters can be added.") }}</p>
-    {% endif %}
-  {% endif %}
 
-  {% if question.answer_description %}
-    {% set description = question.answer_description %}
-    <p>{{ description }}</p>
+    {% for answer in answers %}
+
+      {%- if answer.guidance -%}
+          {% set contents = answer.guidance.contents %}
+          {% call onsPanel({
+            "id": "question-guidance-" ~ question.id,
+            "classes": "ons-u-mb-m"
+          }) %}
+            {% set contents = answer.guidance.contents %}
+            {% include 'partials/contents.html' %}
+          {% endcall %}
+      {% endif %}
+
+      {% if answer.description %}
+        {% set description = answer.description %}
+        <p>{{- description | safe -}}</p>
+      {% endif %}
+
+      {% if answer.instruction %}
+        {% set instruction = answer.instruction %}
+        <p>{{- instruction | safe -}}</p>
+      {% endif %}
+      {%  if answer.options %}
+        <ul>
+          {% for option in answer.options %}
+            <li>{{ option }}</li>
+          {% endfor %}
+        </ul>
+      {%  else %}
+        <ul>
+          <li>{{ answer.label }}</li>
+        </ul>
+      {%  endif %}
+
+    {% endfor %}
+
+  {% elif answers_length == 1 %}
+    {% for answer in answers %}
+
+      {%- if answer.guidance -%}
+          {% set contents = answer.guidance.contents %}
+          {% call onsPanel({
+            "id": "question-guidance-" ~ question.id,
+            "classes": "ons-u-mb-m"
+          }) %}
+            {% set contents = answer.guidance.contents %}
+            {% include 'partials/contents.html' %}
+          {% endcall %}
+      {% endif %}
+
+      {% if answer.description %}
+        {% set description = answer.description %}
+        <p>{{- description | safe -}}</p>
+      {% endif %}
+
+      {% if answer.instruction %}
+        {% set instruction = answer.instruction %}
+        <p>{{- instruction | safe -}}</p>
+      {% endif %}
+
+      {%  if answer.options %}
+        <p>{{ _("You can answer with the following options:") }}</p>
+        <ul>
+          {% for option in answer.options %}
+            <li>{{ option }}</li>
+          {% endfor %}
+        </ul>
+      {%  else %}
+        <p>{{ answer.label }}</p>
+        {% if answer.max_length %}
+          <p>{{ answer.max_length }}{{ _(" characters can be added.") }}</p>
+        {% endif %}
+      {% endif %}
+
+    {%  endfor %}
   {% endif %}
 
 </div>

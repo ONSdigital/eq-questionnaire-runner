@@ -53,77 +53,76 @@ def test_build_preview_context(
     expected_context = {
         "groups": [
             {
-                "title": "Main section",
                 "blocks": [
                     {
                         "question": {
-                            "id": "report-radio",
-                            "title": "Are you able to report for the calendar month 2 February 2016 to 3 March 2016?",
-                            "answers": ["Yes", "No"],
+                            "answers": [
+                                {
+                                    "description": "Choose Yes or No answer",
+                                    "guidance": {
+                                        "contents": [
+                                            {
+                                                "description": "You can only pick one answer"
+                                            }
+                                        ],
+                                        "hide_guidance": "Show more information",
+                                        "show_guidance": "Show more information",
+                                    },
+                                    "instruction": "Choose an answer",
+                                    "options": ["Yes", "No"],
+                                }
+                            ],
                             "descriptions": [
                                 "<p>Your return should relate to the calendar year 2021.</p>"
                             ],
                             "guidance": None,
-                            "text_length": None,
+                            "id": "report-radio",
                             "instruction": ["Select your answer"],
-                            "answer_description": "Choose Yes or No answer",
-                            "answer_guidance": {
-                                "contents": [
-                                    {"description": "You can only pick one answer"}
-                                ],
-                                "hide_guidance": "Show more information",
-                                "show_guidance": "Show more information",
-                            },
-                        },
+                            "title": "Are you able to report for the calendar month 2 February 2016 to 3 March 2016?",
+                        }
                     },
                     {
                         "question": {
-                            "answer_description": None,
-                            "answer_guidance": None,
-                            "answers": ["Start date"],
+                            "answers": [{"label": "Start date"}],
                             "descriptions": None,
                             "guidance": None,
                             "id": "start-date",
                             "instruction": None,
-                            "text_length": None,
                             "title": "Please provide optional start date",
                         }
                     },
                     {
                         "question": {
-                            "answer_description": None,
-                            "answer_guidance": None,
-                            "answers": ["End date"],
+                            "answers": [{"label": "End date"}],
                             "descriptions": None,
                             "guidance": None,
                             "id": "end-date",
                             "instruction": None,
-                            "text_length": None,
                             "title": "Please provide optional end date",
                         }
                     },
                     {
                         "question": {
-                            "id": "report-radio-second",
-                            "title": "Are you sure you are able to report for the calendar month ref_p_start_date to ref_p_end_date?",
-                            "answers": ["Yes", "No"],
+                            "answers": [{"options": ["Yes", "No"]}],
                             "descriptions": [
                                 "<p>Your return should relate to the calendar year 2021.</p>"
                             ],
                             "guidance": None,
-                            "text_length": None,
+                            "id": "report-radio-second",
                             "instruction": ["Select your answer"],
-                            "answer_description": None,
-                            "answer_guidance": None,
-                        },
+                            "title": "Are you sure you are able to report for the calendar month ref_p_start_date to ref_p_end_date?",
+                        }
                     },
                     {
                         "question": {
-                            "id": "projects-checkbox",
-                            "title": "Which sector did ESSENTIAL ENTERPRISE LTD. carry out work for?",
                             "answers": [
-                                "Public sector projects",
-                                "Private sector projects",
+                                {
+                                    "instruction": "Select any answers that apply",
+                                    "options": [
+                                        "Public sector projects",
+                                        "Private sector projects",
+                                    ],
+                                }
                             ],
                             "descriptions": None,
                             "guidance": {
@@ -137,17 +136,16 @@ def test_build_preview_context(
                                     },
                                 ]
                             },
-                            "text_length": None,
+                            "id": "projects-checkbox",
                             "instruction": None,
-                            "answer_description": None,
-                            "answer_guidance": None,
-                        },
+                            "title": "Which sector did ESSENTIAL "
+                            "ENTERPRISE LTD. carry out work "
+                            "for?",
+                        }
                     },
                     {
                         "question": {
-                            "id": "turnover-variants-block",
-                            "title": "What was your total turnover",
-                            "answers": ["Total turnover"],
+                            "answers": [{"label": "Total turnover"}],
                             "descriptions": None,
                             "guidance": {
                                 "contents": [
@@ -175,46 +173,45 @@ def test_build_preview_context(
                                     },
                                 ]
                             },
-                            "text_length": None,
+                            "id": "turnover-variants-block",
                             "instruction": None,
-                            "answer_description": None,
-                            "answer_guidance": None,
-                        },
+                            "title": "What was your total turnover",
+                        }
                     },
                     {
                         "question": {
-                            "id": "address-mutually-exclusive-checkbox",
-                            "title": "Were your company based at any of the following addresses?",
                             "answers": [
-                                "68 Abingdon Road, Goathill",
-                                "7 Evelyn Street, Barry",
-                                "251 Argae Lane, Barry",
-                                "I prefer not to say",
+                                {
+                                    "instruction": "Select an " "answer",
+                                    "options": [
+                                        "68 Abingdon Road, Goathill",
+                                        "7 Evelyn Street, Barry",
+                                        "251 Argae Lane, Barry",
+                                    ],
+                                },
+                                {"options": ["I prefer not to say"]},
                             ],
                             "descriptions": None,
                             "guidance": None,
-                            "text_length": None,
+                            "id": "address-mutually-exclusive-checkbox",
                             "instruction": None,
-                            "answer_description": None,
-                            "answer_guidance": None,
-                        },
+                            "title": "Were your company based at any of the following addresses?",
+                        }
                     },
                     {
                         "question": {
-                            "id": "further-details-text-area",
-                            "title": "Please provide any further details",
-                            "answers": ["Comments"],
+                            "answers": [{"label": "Comments", "max_length": 2000}],
                             "descriptions": [
                                 "<p>Answer for ESSENTIAL ENTERPRISE LTD.</p>"
                             ],
                             "guidance": None,
-                            "text_length": 2000,
+                            "id": "further-details-text-area",
                             "instruction": None,
-                            "answer_description": None,
-                            "answer_guidance": None,
-                        },
+                            "title": "Please provide any further details",
+                        }
                     },
                 ],
+                "title": "Main section",
             }
         ]
     }
