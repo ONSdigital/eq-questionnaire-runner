@@ -13,19 +13,15 @@
     {% set descriptions = question.descriptions %}
     {% set descriptions_length = descriptions|length %}
 
-    <div class="ons-question__description ons-u-mb-m">
     {% for description in descriptions %}
-      <p>{{ description }}</p>
+      <div class="ons-question__description ons-u-mb-m">{{- description | safe -}}</div>
     {% endfor %}
-    </div>
   {% endif %}
 
   {% if question.instruction %}
-    <div>
     {% for instruction in question.instruction %}
-      <p>{{ instruction }}</p>
+        <div class="ons-question__instruction ons-u-mb-m"><p>{{- instruction | safe -}}</p></div>
     {% endfor %}
-    </div>
   {% endif %}
 
   {%- if question.guidance -%}

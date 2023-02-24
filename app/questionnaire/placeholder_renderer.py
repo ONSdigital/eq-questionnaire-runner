@@ -85,7 +85,11 @@ class PlaceholderRenderer:
 
         if "text_plural" in placeholder_data:
             plural_schema: Mapping[str, dict] = placeholder_data["text_plural"]
-            count = self.get_plural_count(plural_schema["count"])
+            count = (
+                0
+                if self._preview_mode
+                else self.get_plural_count(plural_schema["count"])
+            )
 
             plural_form_key = get_plural_form_key(count, self._language)
             plural_forms: Mapping[str, str] = plural_schema["forms"]
