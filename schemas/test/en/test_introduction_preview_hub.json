@@ -45,7 +45,9 @@
     ],
     "questionnaire_flow": {
         "type": "Hub",
-        "options": {}
+        "options": {
+            "required_completed_sections": ["introduction-section"]
+        }
     },
     "sections": [
         {
@@ -55,7 +57,7 @@
                 "page_title": "Summary title",
                 "show_on_completion": true
             },
-            "show_on_hub": false,
+            "show_on_hub": true,
             "groups": [
                 {
                     "id": "introduction-group",
@@ -421,7 +423,24 @@
                                     }
                                 ]
                             }
-                        },
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "additional-section",
+            "title": "Additional section",
+            "summary": {
+                "page_title": "Summary title",
+                "show_on_completion": true
+            },
+            "show_on_hub": true,
+            "groups": [
+                {
+                    "id": "additional-group",
+                    "title": "Additional Business Information",
+                    "blocks": [
                         {
                             "id": "further-details-text-area",
                             "type": "Question",
