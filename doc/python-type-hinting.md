@@ -17,8 +17,6 @@ items: list[str] = []
 mappings: dict[str, int] = {}
 ```
 
-In all other places, types for variables are optional.
-
 ## Standard collections
 
 For standard collections, use lower case names e.g `list` rather than `List`:
