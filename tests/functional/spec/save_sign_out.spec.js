@@ -18,7 +18,7 @@ describe("Save sign out / Exit", () => {
     await expect(await browser.getUrl()).to.contain("/surveys/todo");
 
     await browser.back();
-    await expect($("body").getHTML()).to.contain("Sorry, you need to sign in again");
+    await expect(await $("body").getHTML()).to.contain("Sorry, you need to sign in again");
   });
 
   it("Given I am completing a questionnaire, when I select save and sign out, then I am redirected to sign out page and my session is cleared", async () => {
@@ -31,7 +31,7 @@ describe("Save sign out / Exit", () => {
     await expect(await browser.getUrl()).to.contain("/surveys/todo");
 
     await browser.back();
-    await expect($("body").getHTML()).to.contain("Sorry, you need to sign in again");
+    await expect(await $("body").getHTML()).to.contain("Sorry, you need to sign in again");
   });
 
   it("Given I have started a questionnaire, when I return to the questionnaire, then I am returned to the page I was on and can then complete the questionnaire", async () => {
