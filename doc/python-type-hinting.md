@@ -40,16 +40,16 @@ def get_objects_matching(ids: Sequence[str]) -> dict[int, dict]
 
 ## Optional arguments
 
-For arguments that can be a single type or None, use the shorthand `|`. This is recommended instead of using older `Optional` keyword:
+For arguments that can be a single type or None, use the shorthand `|` instead of using the older `Optional` keyword:
 
 ```python
 def test(self, var: [None | int]) -> None:
 ```
 
-For arguments that can be one of multiple types or None, use the shorthand `|`. This is recommended instead of using older `Union` keyword:
+For arguments that can be one of multiple types or None, use the shorthand `|` instead of using the older `Union` keyword:
 
 ```python
-def test(self, var: [None | int | str]) -> None:
+def test(self, var: None | int | str) -> None:
 ```
 
 ## Abstract vs concrete
@@ -64,7 +64,7 @@ def test(self, var: [None | int | str]) -> None:
 
 ## Self Type
 
-To annotate methods that return an instance of their class, the `Self` type is used as it is bound to it's encapsulating class. In the example below, the type checker will correctly infer the type of `Circle().set_scale(0.5)` to be `Circle`:
+To annotate methods that return an instance of their class, use the `Self` type is as it is bound to it's encapsulating class. In the example below, the type checker will correctly infer the type of `Circle().set_scale(0.5)` to be `Circle`:
 
 ```python
 from typing import Self
@@ -95,21 +95,25 @@ def foo() -> MyType: ...
 
 ## Type Ignore
 
-To mark portions of the program that should not be covered by type hinting, use the following on a particular line:
+To mark portions of the program that should not be covered by type hinting, use `# type: ignore` on the specific line. When used in a line by itself at the top of a file, it silences all errors in the file:
 
 ```python
 # type: ignore
 ```
 
-A `# type: ignore` comment on a line by itself at the top of a file silences all errors in the file.
+`# type: ignore` should only be used when unavoidable. Ensure that a comment is added to explain why it has been used and have a prefix of `Type ignore:`
 
-`# type: ignore` should only be used when unavoidable. Ensure that a comment is added to explain why it has been used and have a prefix of `Type ignore:`.
+```python
+# Type ignore: Explain why type ignore has been used in this context
+x: int
+x: str  # type: ignore
+```
 
 ## ParamSpec
 
-Used to forward the parameter types of one callable to another callable. This is useful when type annotating decorators.
+Use to forward the parameter types of one callable to another callable.
 
-For example, a basic logging function decorator can be typed as:
+E.g. a basic logging function decorator:
 
 ```python
 T = TypeVar('T')
@@ -130,7 +134,7 @@ def add_two(x: float, y: float) -> float:
 
 ## TypeVar
 
-Use `TypeVar` when the type returned by a function is the same as the type which was passed in i.e. the return type is linked to the parameter type:
+Use `TypeVar` when the type returned by a function is the same as the type which was passed in:
 
 ```python
 T = TypeVar('T')
@@ -146,12 +150,6 @@ T = TypeVar('T', int, float)
 
 def increment_value(self, value: T) -> T:
     return value + 1
-```
-
-This tells the typechecker that values other than `int` and `float` are not allowed, resulting in an error if a string is passed for example:
-
-```python
-increment_value(self, "hello") #error
 ```
 
 ## Useful links
