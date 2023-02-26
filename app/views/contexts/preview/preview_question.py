@@ -2,8 +2,6 @@ from typing import Any, Union
 
 from werkzeug.datastructures import ImmutableDict
 
-from app.questionnaire import QuestionnaireSchema
-
 
 class PreviewQuestion:
     def __init__(
@@ -14,17 +12,15 @@ class PreviewQuestion:
         self._block = block
         self._block_id = block["id"]
         self._question = self.get_question()
-        # get_question returns same type as placeholder_renderer.render used to resolve section which self._block is part of,
-        # it is dict[str, Any] hence all type ignores below
-        self._title = self._question["title"]  # type: ignore
+        self._title = self._question["title"]
         self._answers = self._build_answers()
-        self._descriptions = self._question.get("description")  # type: ignore
-        self._guidance = self._question.get("guidance")  # type: ignore
-        self._instruction = self._question.get("instruction")  # type: ignore
+        self._descriptions = self._question.get("description")
+        self._guidance = self._question.get("guidance")
+        self._instruction = self._question.get("instruction")
 
     def _build_answers(self) -> list[dict]:
         answers_list = []
-        if answers := self._question.get("answers"):  # type: ignore
+        if answers := self._question.get("answers"):
             for answer in answers:
                 if options := answer.get("options"):
                     options_list = [option["label"] for option in options]
@@ -55,10 +51,8 @@ class PreviewQuestion:
             "instruction": self._instruction,
         }
 
-    def get_question(self) -> dict[str, Any]:
+    def get_question(self) -> Any:
         if "question_variants" in self._block:
-            return QuestionnaireSchema.get_mutable_deepcopy(
-                self._block["question_variants"][0]["question"]
-            )
+            return self._block["question_variants"][0]["question"]
 
-        return QuestionnaireSchema.get_mutable_deepcopy(self._block["question"])
+        return self._block["question"]
