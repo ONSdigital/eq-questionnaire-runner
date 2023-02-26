@@ -12,10 +12,10 @@ class PreviewQuestion:
         block: ImmutableDict,
     ):
         self._block = block
-        self._block_id = block.get("id")
+        self._block_id = block["id"]
         self._question = self.resolve_variants().get("question")
         # resolve_variants returns same type as placeholder_renderer.render which is dict[str, Any] hence all type ignores below
-        self._title = self._question.get("title")  # type: ignore
+        self._title = self._question["title"]  # type: ignore
         self._answers = self._build_answers()
         self._descriptions = self._question.get("description")  # type: ignore
         self._guidance = self._question.get("guidance")  # type: ignore

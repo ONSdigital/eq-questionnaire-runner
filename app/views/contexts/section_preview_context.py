@@ -22,7 +22,7 @@ class SectionPreviewContext(Context):
         progress_store: ProgressStore,
         metadata: Optional[MetadataProxy],
         response_metadata: Mapping[str, Union[str, int, list]],
-        current_location: Location,
+        section_id: str,
     ):
         super().__init__(
             language,
@@ -37,8 +37,11 @@ class SectionPreviewContext(Context):
         self._list_store = list_store
         self._metadata = metadata
         self._response_metadata = response_metadata
-        self._current_location = current_location
         self._language = language
+        self._location = Location(
+            section_id=section_id,
+            block_id=self._schema.get_first_block_id_for_section(section_id),
+        )
         self._placeholder_renderer = PlaceholderRenderer(
             language=self._language,
             answer_store=self._answer_store,
@@ -46,7 +49,7 @@ class SectionPreviewContext(Context):
             metadata=self._metadata,
             response_metadata=self._response_metadata,
             schema=self._schema,
-            location=self._current_location,
+            location=self._location,
             preview_mode=True,
         )
 
@@ -64,7 +67,7 @@ class SectionPreviewContext(Context):
     @cached_property
     def section(self) -> ImmutableDict:
         # Type ignore: The section has to exist at this point
-        section: ImmutableDict = self._schema.get_section(self._current_location.section_id)  # type: ignore
+        section: ImmutableDict = self._schema.get_section(self._location.section_id)  # type: ignore
         return section
 
     def _build_preview(self) -> dict[str, Union[str, dict, Any]]:
@@ -75,7 +78,7 @@ class SectionPreviewContext(Context):
                 PreviewGroup(
                     group_schema=group,
                     section_title=self._schema.get_title_for_section(
-                        self._current_location.section_id
+                        self._location.section_id
                     ),  # this gets the title of a section for a group since we have 1 to 1 relationship between section and its group(s),
                     # group title is not always present/missing in business schemas hence using the section title
                     # base for this was the code we use for summaries generation, that is how summaries are generated in runner
@@ -86,4 +89,4 @@ class SectionPreviewContext(Context):
         }
 
     def _title_for_location(self) -> Optional[str]:
-        return self._schema.get_title_for_section(self._current_location.section_id)
+        return self._schema.get_title_for_section(self._location.section_id)

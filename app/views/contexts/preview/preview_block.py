@@ -12,12 +12,12 @@ class PreviewBlock:
         block: ImmutableDict,
     ):
         self._block = block
-        self._question = self.get_question(
+        self._question = self._get_question(
             block=self._block,
         )
 
     @staticmethod
-    def get_question(
+    def _get_question(
         block: ImmutableDict,
     ) -> dict[str, Union[str, dict]]:
         return PreviewQuestion(

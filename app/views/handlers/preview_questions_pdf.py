@@ -16,6 +16,7 @@ class PreviewQuestionsPDF(PDFResponse, ViewPreviewQuestions):
     ):
         if not schema.preview_enabled:
             raise PreviewNotEnabledException(404)
+
         super().__init__(schema, questionnaire_store, language)
 
     def get_pdf(self) -> io.BytesIO:
