@@ -33,11 +33,7 @@ class SectionPreviewContext(Context):
             metadata,
             response_metadata,
         )
-        self._answer_store = answer_store
-        self._list_store = list_store
-        self._metadata = metadata
-        self._response_metadata = response_metadata
-        self._language = language
+        self._placeholder_preview_mode = self._schema.preview_enabled
         self._location = Location(
             section_id=section_id,
             block_id=self._schema.get_first_block_id_for_section(section_id),
@@ -50,7 +46,7 @@ class SectionPreviewContext(Context):
             response_metadata=self._response_metadata,
             schema=self._schema,
             location=self._location,
-            preview_mode=True,
+            placeholder_preview_mode=self._placeholder_preview_mode,
         )
 
     def __call__(self) -> Mapping[str, dict]:

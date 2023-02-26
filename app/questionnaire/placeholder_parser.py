@@ -46,7 +46,7 @@ class PlaceholderParser:
         renderer: "PlaceholderRenderer",
         list_item_id: Optional[str] = None,
         location: Union[Location, RelationshipLocation, None] = None,
-        preview_mode: Optional[bool] = False,
+        placeholder_preview_mode: Optional[bool] = False,
     ):
         self._answer_store = answer_store
         self._list_store = list_store
@@ -59,7 +59,7 @@ class PlaceholderParser:
         self._placeholder_map: MutableMapping[
             str, Union[ValueSourceEscapedTypes, ValueSourceTypes, None]
         ] = {}
-        self._preview_mode = preview_mode
+        self._placeholder_preview_mode = placeholder_preview_mode
 
         self._value_source_resolver = ValueSourceResolver(
             answer_store=self._answer_store,
@@ -85,7 +85,9 @@ class PlaceholderParser:
         return self._placeholder_map
 
     def _parse_placeholder(self, placeholder: Mapping) -> Any:
-        if self._preview_mode and not self._all_value_sources_metadata(placeholder):
+        if self._placeholder_preview_mode and not self._all_value_sources_metadata(
+            placeholder
+        ):
             return placeholder["placeholder"]
 
         try:
