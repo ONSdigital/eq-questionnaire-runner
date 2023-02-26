@@ -13,8 +13,9 @@ class PreviewQuestion:
     ):
         self._block = block
         self._block_id = block["id"]
-        self._question = self.resolve_variants().get("question")
-        # resolve_variants returns same type as placeholder_renderer.render which is dict[str, Any] hence all type ignores below
+        self._question = self.get_question()
+        # get_question returns same type as placeholder_renderer.render used to resolve section which self._block is part of,
+        # it is dict[str, Any] hence all type ignores below
         self._title = self._question["title"]  # type: ignore
         self._answers = self._build_answers()
         self._descriptions = self._question.get("description")  # type: ignore
@@ -54,13 +55,10 @@ class PreviewQuestion:
             "instruction": self._instruction,
         }
 
-    def resolve_variants(self) -> dict[str, Any]:
-        output_block: dict = QuestionnaireSchema.get_mutable_deepcopy(self._block)
+    def get_question(self) -> dict[str, Any]:
         if "question_variants" in self._block:
-            output_block.pop("question_variants", None)
-            output_block.pop("question", None)
-
-            output_block["question"] = QuestionnaireSchema.get_mutable_deepcopy(
+            return QuestionnaireSchema.get_mutable_deepcopy(
                 self._block["question_variants"][0]["question"]
             )
-        return output_block
+
+        return QuestionnaireSchema.get_mutable_deepcopy(self._block["question"])
