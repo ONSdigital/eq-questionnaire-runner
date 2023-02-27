@@ -46,7 +46,7 @@ describe("Submit Page with Summary", () => {
   });
 
   it("Given a questionnaire with a summary has been completed when a summary page edit link is clicked then it should return to that question then back to summary", async () => {
-    completeAllQuestions();
+    await completeAllQuestions();
 
     await $(SubmitPage.radioAnswerEdit()).click();
     await $(RadioPage.sausage()).click();
