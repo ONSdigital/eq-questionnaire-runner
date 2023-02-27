@@ -21,31 +21,30 @@ class PreviewQuestion:
 
     def _build_answers(self) -> list[dict]:
         answers_list = []
-        if answers := self._question.get("answers"):
-            for answer in answers:
-                answer_dict = {}
-                if answer_label := answer.get("label"):
-                    answer_dict["label"] = answer_label
+        for answer in self._question.get("answers", []):
+            answer_dict = {}
+            if answer_label := answer.get("label"):
+                answer_dict["label"] = answer_label
 
-                if options := answer.get("options"):
-                    options_list = [option["label"] for option in options]
-                    answer_dict["options"] = options_list
+            if options := answer.get("options"):
+                options_list = [option["label"] for option in options]
+                answer_dict["options"] = options_list
 
-                if description := answer.get("description"):
-                    answer_dict["description"] = description
+            if description := answer.get("description"):
+                answer_dict["description"] = description
 
-                if instruction := answer.get("instruction"):
-                    answer_dict["instruction"] = instruction
+            if instruction := answer.get("instruction"):
+                answer_dict["instruction"] = instruction
 
-                if guidance := answer.get("guidance"):
-                    answer_dict["guidance"] = guidance
+            if guidance := answer.get("guidance"):
+                answer_dict["guidance"] = guidance
 
-                if answer.get("type") == "TextArea" and (
-                    length := answer.get("max_length")
-                ):
-                    answer_dict["max_length"] = length
+            if answer.get("type") == "TextArea" and (
+                length := answer.get("max_length")
+            ):
+                answer_dict["max_length"] = length
 
-                answers_list.append(answer_dict)
+            answers_list.append(answer_dict)
         return answers_list
 
     def serialize(self) -> dict[str, Union[str, dict, Any]]:
