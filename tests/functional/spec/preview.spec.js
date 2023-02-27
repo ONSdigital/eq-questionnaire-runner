@@ -1,8 +1,8 @@
-import IntroductionPage from "../generated_pages/introduction_preview_hub/introduction.page";
+import IntroductionPage from "../generated_pages/introduction_hub/introduction.page";
 import IntroductionPageLinear from "../generated_pages/introduction/introduction.page";
 
 describe("Introduction preview questions", () => {
-  const introductionSchema = "test_introduction_preview_hub.json";
+  const introductionSchema = "test_introduction_hub.json";
   const introductionSchemaLinear = "test_introduction.json";
   const showButton = 'button[data-ga-category="Preview Survey"]';
   const previewSummaryContent = "#summary-accordion-1-content";

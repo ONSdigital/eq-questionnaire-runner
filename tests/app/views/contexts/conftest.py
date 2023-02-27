@@ -356,7 +356,7 @@ def test_section_summary_schema():
 
 @pytest.fixture
 def test_introduction_preview_linear_schema():
-    return load_schema_from_name("test_introduction_preview_linear")
+    return load_schema_from_name("test_introduction")
 
 
 @pytest.fixture

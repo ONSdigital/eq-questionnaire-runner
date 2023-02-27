@@ -6,7 +6,7 @@ class TestPreviewPDF(IntegrationTestCase):
         super().setUp()
 
         # Given I launch a questionnaire and open preview of questions
-        self.launchSurvey("test_introduction_preview_linear")
+        self.launchSurvey("test_introduction")
         self.get("/questionnaire/preview/")
 
         # When I try to download preview of questions from the preview page
@@ -25,7 +25,7 @@ class TestPreviewPDF(IntegrationTestCase):
         super().setUp()
 
         # Given I launch a questionnaire and open preview of questions
-        self.launchSurvey("test_introduction_preview_linear")
+        self.launchSurvey("test_introduction")
         self.get("/questionnaire/preview/")
 
         # Then the print button is displayed correctly
