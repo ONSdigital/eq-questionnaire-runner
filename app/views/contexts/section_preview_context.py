@@ -69,20 +69,17 @@ class SectionPreviewContext(Context):
     def _build_preview(self) -> dict[str, Union[str, dict, Any]]:
         section = self._placeholder_renderer.render(self.section, None)
 
-        return {
-            "groups": [
-                PreviewGroup(
-                    group_schema=group,
-                    section_title=self._schema.get_title_for_section(
-                        self._location.section_id
-                    ),  # this gets the title of a section for a group since we have 1 to 1 relationship between section and its group(s),
-                    # group title is not always present/missing in business schemas hence using the section title
-                    # base for this was the code we use for summaries generation, that is how summaries are generated in runner
-                    # (they use group titles of sections for twisties)
-                ).serialize()
-                for group in section["groups"]
-            ],
+        groups = [
+            PreviewGroup(group_schema=group).serialize() for group in section["groups"]
+        ]
+        section_dict: dict = {
+            "title": self._schema.get_title_for_section(self._location.section_id),
+            "blocks": [],
         }
+        for group in groups:
+            section_dict["blocks"] += group["blocks"]
+
+        return {"groups": [section_dict]}
 
     def _title_for_location(self) -> Optional[str]:
         return self._schema.get_title_for_section(self._location.section_id)

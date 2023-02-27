@@ -1,4 +1,4 @@
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping
 
 from app.views.contexts.preview.preview_block import PreviewBlock
 
@@ -8,9 +8,7 @@ class PreviewGroup:
         self,
         *,
         group_schema: Mapping[str, Any],
-        section_title: Optional[str],
     ):
-        self._title = section_title
         self._blocks = self._build_blocks(
             group_schema=group_schema,
         )
@@ -30,4 +28,4 @@ class PreviewGroup:
     def serialize(
         self,
     ) -> dict[str, Any]:
-        return {"title": self._title, "blocks": self._blocks}
+        return {"blocks": self._blocks}
