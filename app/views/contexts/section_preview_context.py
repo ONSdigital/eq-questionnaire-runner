@@ -1,12 +1,8 @@
-from functools import cached_property
 from typing import Any, Mapping, Optional, Union
-
-from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
-from app.questionnaire import Location, QuestionnaireSchema
-from app.questionnaire.placeholder_renderer import PlaceholderRenderer
+from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.context import Context
 from app.views.contexts.preview import PreviewGroup
 
@@ -33,21 +29,7 @@ class SectionPreviewContext(Context):
             metadata,
             response_metadata,
         )
-        self._placeholder_preview_mode = self._schema.preview_enabled
-        self._location = Location(
-            section_id=section_id,
-            block_id=self._schema.get_first_block_id_for_section(section_id),
-        )
-        self._placeholder_renderer = PlaceholderRenderer(
-            language=self._language,
-            answer_store=self._answer_store,
-            list_store=self._list_store,
-            metadata=self._metadata,
-            response_metadata=self._response_metadata,
-            schema=self._schema,
-            location=self._location,
-            placeholder_preview_mode=self._placeholder_preview_mode,
-        )
+        self._section_id = section_id
 
     def __call__(self) -> Mapping[str, dict]:
         preview = self._build_preview()
@@ -60,20 +42,15 @@ class SectionPreviewContext(Context):
             }
         }
 
-    @cached_property
-    def section(self) -> ImmutableDict:
-        # Type ignore: The section has to exist at this point
-        section: ImmutableDict = self._schema.get_section(self._location.section_id)  # type: ignore
-        return section
-
     def _build_preview(self) -> dict[str, Union[str, dict, Any]]:
-        section = self._placeholder_renderer.render(self.section, None)
+        # Type ignore: The section has to exist at this point
+        section = self._placeholder_renderer.render(self._schema.get_section(self._section_id), None)  # type: ignore
 
         groups = [
             PreviewGroup(group_schema=group).serialize() for group in section["groups"]
         ]
         section_dict: dict = {
-            "title": self._schema.get_title_for_section(self._location.section_id),
+            "title": self._schema.get_title_for_section(self._section_id),
             "blocks": [],
         }
         for group in groups:
@@ -82,4 +59,4 @@ class SectionPreviewContext(Context):
         return {"groups": [section_dict]}
 
     def _title_for_location(self) -> Optional[str]:
-        return self._schema.get_title_for_section(self._location.section_id)
+        return self._schema.get_title_for_section(self._section_id)

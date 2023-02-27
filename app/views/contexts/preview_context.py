@@ -1,5 +1,7 @@
 from typing import Generator, Mapping, Optional, Union
 
+from flask_babel import lazy_gettext
+
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
@@ -58,3 +60,8 @@ class PreviewContext(Context):
             )
 
             yield from section_preview_context()["preview"]["groups"]
+
+    @staticmethod
+    def get_page_title() -> str:
+        title: str = lazy_gettext("Preview survey questions")
+        return title

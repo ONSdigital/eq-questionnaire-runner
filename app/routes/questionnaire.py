@@ -248,7 +248,9 @@ def get_preview(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireS
         "pdf_url": url_for(".get_preview_questions_pdf"),
     }
 
-    return render_template(template="preview", content=context)
+    return render_template(
+        template="preview", content=context, page_title=preview_context.get_page_title()
+    )
 
 
 @questionnaire_blueprint.route("sections/<section_id>/", methods=["GET", "POST"])

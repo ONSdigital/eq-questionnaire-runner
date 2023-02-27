@@ -1,5 +1,4 @@
 from flask import url_for
-from flask_babel import lazy_gettext
 
 from app.data_models import QuestionnaireStore
 from app.helpers.template_helpers import render_template
@@ -36,14 +35,9 @@ class ViewPreviewQuestions:
 
         return context
 
-    @staticmethod
-    def get_page_title() -> str:
-        title: str = lazy_gettext("Preview Questions")
-        return title
-
     def get_rendered_html(self) -> str:
         return render_template(
             template="preview",
             content=self.get_context(),
-            page_title=self.get_page_title(),
+            page_title=PreviewContext.get_page_title(),
         )
