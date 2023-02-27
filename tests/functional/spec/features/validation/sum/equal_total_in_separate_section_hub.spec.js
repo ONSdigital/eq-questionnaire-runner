@@ -118,7 +118,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Total in 
     });
 
     it("When I submit the questionnaire, Then I should see the thank you page", async () => {
-      await $(HubPage.submit()).scrollIntoView()
+      await $(HubPage.submit()).scrollIntoView();
       await $(HubPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(ThankYouPage.pageName);
     });

@@ -89,7 +89,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       await addPersonToHousehold("John", "Doe");
       await addPersonToHousehold("Jane", "Doe");
       await $(ListCollectorPage.no()).click();
-      await $(ListCollectorPage.submit()).scrollIntoView()
+      await $(ListCollectorPage.submit()).scrollIntoView();
       await $(ListCollectorPage.submit()).click();
       await $(ListCollectorSummaryPage.submit()).click();
 
