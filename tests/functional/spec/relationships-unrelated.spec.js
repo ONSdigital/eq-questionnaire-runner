@@ -14,11 +14,11 @@ describe("Unrelated Relationships", () => {
 
     describe("And I add six people", () => {
       before("add people", async () => {
-        addPerson("Andrew", "Austin");
-        addPerson("Betty", "Burns");
-        addPerson("Carla", "Clark");
-        addPerson("Daniel", "Davis");
-        addPerson("Eve", "Elliot");
+        await addPerson("Andrew", "Austin");
+        await addPerson("Betty", "Burns");
+        await addPerson("Carla", "Clark");
+        await addPerson("Daniel", "Davis");
+        await addPerson("Eve", "Elliot");
         await $(ListCollectorPage.no()).click();
         await $(ListCollectorPage.submit()).click();
       });
@@ -85,6 +85,7 @@ describe("Unrelated Relationships", () => {
 
     async function addPerson(firstName, lastName) {
       await $(ListCollectorPage.yes()).click();
+      await $(ListCollectorPage.submit()).scrollIntoView();
       await $(ListCollectorPage.submit()).click();
       await $(ListCollectorAddPage.firstName()).setValue(firstName);
       await $(ListCollectorAddPage.lastName()).setValue(lastName);
