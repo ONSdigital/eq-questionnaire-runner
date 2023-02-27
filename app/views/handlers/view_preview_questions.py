@@ -28,8 +28,11 @@ class ViewPreviewQuestions:
             metadata=self._questionnaire_store.metadata,
             response_metadata=self._questionnaire_store.response_metadata,
         )
-        context = {"hide_sign_out_button": True, "preview": preview_context()}
-        context["pdf_url"] = url_for("questionnaire.get_preview_questions_pdf")
+        context = {
+            "hide_sign_out_button": True,
+            "preview": preview_context(),
+            "pdf_url": url_for("questionnaire.get_preview_questions_pdf"),
+        }
 
         return context
 
