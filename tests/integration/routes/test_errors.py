@@ -336,7 +336,8 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         submitter.send_message = Mock(return_value=False)
 
         # When
-        self.launchAndFailSubmission("test_introduction")
+        self.launchAndFailSubmission("test_instructions")
+        self.post()
 
         # Then
         self.assertStatusCode(500)
@@ -378,6 +379,12 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.assertInBody(
             f'<p>If you are completing a business survey, please <a href="{DEFAULT_URL}/contact-us/">contact us</a>.</p>'
         )
+
+    def test_preview_not_enabled_results_in_500(self):
+        self.launchSurvey("test_checkbox")
+        self.post(action="start_questionnaire")
+        self.get("/questionnaire/preview/")
+        self.assertStatusCode(500)
 
     def launchAndFailSubmission(self, schema):
         self.launchSurvey(schema)

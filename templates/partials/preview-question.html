@@ -62,7 +62,7 @@
       <p><strong>{{ _("Or") }}</strong></p>
     {%  endif %}
 
-    {%  if not loop.last %}
+    {%  if not loop.last or (answer.options and answers_length == 1) %}
       <p>{{ _("You can answer with the following options:") }}</p>
     {%  endif %}
 
