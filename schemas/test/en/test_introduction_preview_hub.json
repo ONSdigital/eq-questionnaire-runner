@@ -383,6 +383,7 @@
                                         "instruction": "Select an answer",
                                         "type": "Checkbox",
                                         "mandatory": false,
+                                        "label": "Select all that apply",
                                         "options": [
                                             {
                                                 "label": {

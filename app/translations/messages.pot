@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-21 13:30+0000\n"
+"POT-Creation-Date: 2023-02-27 12:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -223,15 +223,15 @@ msgstr ""
 msgid "ONS Surveys"
 msgstr ""
 
-#: app/helpers/template_helpers.py:106
+#: app/helpers/template_helpers.py:112
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:137
+#: app/helpers/template_helpers.py:143
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:162
+#: app/helpers/template_helpers.py:168
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -725,7 +725,7 @@ msgstr ""
 msgid "Thank you for completing the census"
 msgstr ""
 
-#: app/views/handlers/view_preview_questions.py:29
+#: app/views/handlers/view_preview_questions.py:38
 msgid "Preview Questions"
 msgstr ""
 
@@ -1268,11 +1268,17 @@ msgid ""
 " of the section</a>"
 msgstr ""
 
-#: templates/partials/preview-question.html:54
+#: templates/partials/preview-question.html:39
+#: templates/partials/preview-question.html:115
 msgid "You can answer with the following options:"
 msgstr ""
 
-#: templates/partials/preview-question.html:63
+#: templates/partials/preview-question.html:79
+#: templates/partials/question.html:69
+msgid "Or"
+msgstr ""
+
+#: templates/partials/preview-question.html:112
 msgid " characters can be added."
 msgstr ""
 
@@ -1290,10 +1296,6 @@ msgstr ""
 
 #: templates/partials/question.html:65 templates/partials/question.html:73
 msgid "deselected"
-msgstr ""
-
-#: templates/partials/question.html:69
-msgid "Or"
 msgstr ""
 
 #: templates/partials/answers/address.html:9

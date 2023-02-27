@@ -76,6 +76,7 @@ def test_build_preview_context(
                             "id": "report-radio",
                             "instruction": ["Select your answer"],
                             "title": "Are you able to report for the calendar month 2 February 2016 to 3 March 2016?",
+                            "type": "General",
                         }
                     },
                     {
@@ -86,6 +87,7 @@ def test_build_preview_context(
                             "id": "start-date",
                             "instruction": None,
                             "title": "Please provide optional start date",
+                            "type": "General",
                         }
                     },
                     {
@@ -96,6 +98,7 @@ def test_build_preview_context(
                             "id": "end-date",
                             "instruction": None,
                             "title": "Please provide optional end date",
+                            "type": "General",
                         }
                     },
                     {
@@ -108,6 +111,7 @@ def test_build_preview_context(
                             "id": "report-radio-second",
                             "instruction": ["Select your answer"],
                             "title": "Are you sure you are able to report for the calendar month ref_p_start_date to ref_p_end_date?",
+                            "type": "General",
                         }
                     },
                     {
@@ -138,6 +142,7 @@ def test_build_preview_context(
                             "title": "Which sector did ESSENTIAL "
                             "ENTERPRISE LTD. carry out work "
                             "for?",
+                            "type": "General",
                         }
                     },
                     {
@@ -173,6 +178,7 @@ def test_build_preview_context(
                             "id": "turnover-variants-block",
                             "instruction": None,
                             "title": "What was your total turnover",
+                            "type": "General",
                         }
                     },
                     {
@@ -193,6 +199,7 @@ def test_build_preview_context(
                             "id": "address-mutually-exclusive-checkbox",
                             "instruction": None,
                             "title": "Were your company based at any of the following addresses?",
+                            "type": "MutuallyExclusive",
                         }
                     },
                     {
@@ -205,6 +212,7 @@ def test_build_preview_context(
                             "id": "further-details-text-area",
                             "instruction": None,
                             "title": "Please provide any further details",
+                            "type": "General",
                         }
                     },
                 ],

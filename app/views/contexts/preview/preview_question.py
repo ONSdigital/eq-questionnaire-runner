@@ -17,22 +17,29 @@ class PreviewQuestion:
         self._descriptions = self._question.get("description")
         self._guidance = self._question.get("guidance")
         self._instruction = self._question.get("instruction")
+        self._type = self._question.get("type")
 
     def _build_answers(self) -> list[dict]:
         answers_list = []
         if answers := self._question.get("answers"):
             for answer in answers:
+                answer_dict = {}
+                if answer_label := answer.get("label"):
+                    answer_dict["label"] = answer_label
+
                 if options := answer.get("options"):
                     options_list = [option["label"] for option in options]
-                    answer_dict = {"options": options_list}
-                else:
-                    answer_dict = {"label": answer["label"]}
+                    answer_dict["options"] = options_list
+
                 if description := answer.get("description"):
                     answer_dict["description"] = description
+
                 if instruction := answer.get("instruction"):
                     answer_dict["instruction"] = instruction
+
                 if guidance := answer.get("guidance"):
                     answer_dict["guidance"] = guidance
+
                 if answer.get("type") == "TextArea" and (
                     length := answer.get("max_length")
                 ):
@@ -49,6 +56,7 @@ class PreviewQuestion:
             "descriptions": self._descriptions,
             "guidance": self._guidance,
             "instruction": self._instruction,
+            "type": self._type,
         }
 
     def get_question(self) -> Any:

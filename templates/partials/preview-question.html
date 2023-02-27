@@ -61,6 +61,10 @@
         <p>{{- instruction | safe -}}</p>
       {% endif %}
       {%  if answer.options %}
+        {% if answer.label %}
+          {% set label = answer.label %}
+          <p>{{- label | safe -}}</p>
+        {% endif %}
         <ul>
           {% for option in answer.options %}
             <li>{{ option }}</li>
@@ -70,6 +74,9 @@
         <ul>
           <li>{{ answer.label }}</li>
         </ul>
+      {%  endif %}
+      {%  if not loop.last and question.type == "MutuallyExclusive" %}
+        <p>{{ _("Or") }}</p>
       {%  endif %}
 
     {% endfor %}
@@ -97,7 +104,13 @@
         {% set instruction = answer.instruction %}
         <p>{{- instruction | safe -}}</p>
       {% endif %}
-
+      {% if answer.label %}
+        {% set label = answer.label %}
+        <p>{{- label | safe -}}</p>
+      {% endif %}
+      {% if answer.max_length %}
+          <p>{{ answer.max_length }}{{ _(" characters can be added.") }}</p>
+      {% endif %}
       {%  if answer.options %}
         <p>{{ _("You can answer with the following options:") }}</p>
         <ul>
@@ -105,11 +118,6 @@
             <li>{{ option }}</li>
           {% endfor %}
         </ul>
-      {%  else %}
-        <p>{{ answer.label }}</p>
-        {% if answer.max_length %}
-          <p>{{ answer.max_length }}{{ _(" characters can be added.") }}</p>
-        {% endif %}
       {% endif %}
 
     {%  endfor %}
