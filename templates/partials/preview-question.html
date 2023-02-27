@@ -109,7 +109,7 @@
         <p>{{- label | safe -}}</p>
       {% endif %}
       {% if answer.max_length %}
-          <p>{{ answer.max_length }}{{ _(" characters can be added.") }}</p>
+        <p>{{ _("{max_characters} characters can be added.").format(max_characters = answer.max_length) }}</p>
       {% endif %}
       {%  if answer.options %}
         <p>{{ _("You can answer with the following options:") }}</p>
