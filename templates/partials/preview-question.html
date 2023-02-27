@@ -60,6 +60,9 @@
         {% set instruction = answer.instruction %}
         <p>{{- instruction | safe -}}</p>
       {% endif %}
+      {%  if loop.last and question.type == "MutuallyExclusive" %}
+        <p>{{ _("Or") }}</p>
+      {%  endif %}
       {%  if answer.options %}
         {% if answer.label %}
           {% set label = answer.label %}
@@ -74,9 +77,6 @@
         <ul>
           <li>{{ answer.label }}</li>
         </ul>
-      {%  endif %}
-      {%  if not loop.last and question.type == "MutuallyExclusive" %}
-        <p>{{ _("Or") }}</p>
       {%  endif %}
 
     {% endfor %}
