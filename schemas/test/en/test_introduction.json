@@ -269,8 +269,7 @@
                                     {
                                         "id": "report-radio-answer",
                                         "mandatory": true,
-                                        "description": "Choose Yes or No answer",
-                                        "instruction": "Select an answer",
+                                        "description": "Select your answer",
                                         "guidance": {
                                             "show_guidance": "Show more information",
                                             "hide_guidance": "Show more information",
