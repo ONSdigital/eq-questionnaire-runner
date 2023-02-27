@@ -36,6 +36,7 @@ describe("Relationships", () => {
       await $(ListCollectorAddPage.lastName()).setValue("Clemens");
       await $(ListCollectorAddPage.submit()).click();
       await $(ListCollectorPage.no()).click();
+      await $(ListCollectorPage.submit()).scrollIntoView();
       await $(ListCollectorPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(RelationshipsPage.pageName);
       await $(RelationshipsPage.husbandOrWife()).click();
@@ -46,7 +47,7 @@ describe("Relationships", () => {
 
     describe("When I add three household members,", () => {
       beforeEach("add three people", async () => {
-        addThreePeople();
+        await addThreePeople();
       });
 
       it("Then I will be asked about all relationships", async () => {
@@ -153,7 +154,7 @@ describe("Relationships", () => {
 
     describe("When I have added one or more household members after answering the relationships question,", () => {
       beforeEach("add three people and complete their relationships", async () => {
-        addThreePeopleAndCompleteRelationships();
+        await addThreePeopleAndCompleteRelationships();
       });
 
       it("Then I delete one of the original household members I will not be asked for the original members relationships again", async () => {
@@ -173,9 +174,10 @@ describe("Relationships", () => {
     });
 
     async function addThreePeopleAndCompleteRelationships() {
-      addThreePeople();
+     await addThreePeople();
 
       await $(ListCollectorPage.no()).click();
+      await $(ListCollectorPage.submit()).scrollIntoView();
       await $(ListCollectorPage.submit()).click();
       await $(RelationshipsPage.husbandOrWife()).click();
       await $(RelationshipsPage.submit()).click();
@@ -196,6 +198,7 @@ describe("Relationships", () => {
       await $(ListCollectorPage.submit()).click();
       await $(ListCollectorAddPage.firstName()).setValue("Samuel");
       await $(ListCollectorAddPage.lastName()).setValue("Clemens");
+      await $(ListCollectorAddPage.submit()).scrollIntoView();
       await $(ListCollectorAddPage.submit()).click();
       await $(ListCollectorPage.yes()).click();
       await $(ListCollectorPage.submit()).click();

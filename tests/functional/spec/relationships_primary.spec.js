@@ -13,7 +13,7 @@ describe("Relationships - Primary Person", () => {
     });
 
     it("When I add household members, Then I will be asked my relationships as a primary person", async () => {
-      addPrimaryAndTwoOthers();
+      await addPrimaryAndTwoOthers();
 
       await $(ListCollectorPage.no()).click();
       await $(ListCollectorPage.submit()).click();
@@ -21,7 +21,7 @@ describe("Relationships - Primary Person", () => {
     });
 
     it("When I add household members, Then non-primary relationships will be asked as a non primary person", async () => {
-      addPrimaryAndTwoOthers();
+      await addPrimaryAndTwoOthers();
 
       await $(ListCollectorPage.no()).click();
       await $(ListCollectorPage.submit()).click();
@@ -33,7 +33,7 @@ describe("Relationships - Primary Person", () => {
     });
 
     it("When I add household members And add their relationships And remove the primary person And add a new primary person then I will be asked for the relationships again", async () => {
-      addPrimaryAndTwoOthersAndCompleteRelationships();
+      await addPrimaryAndTwoOthersAndCompleteRelationships();
 
       await browser.url("/questionnaire/primary-person-list-collector");
 
@@ -54,9 +54,10 @@ describe("Relationships - Primary Person", () => {
     });
 
     async function addPrimaryAndTwoOthersAndCompleteRelationships() {
-      addPrimaryAndTwoOthers();
+      await addPrimaryAndTwoOthers();
 
       await $(ListCollectorPage.no()).click();
+      await $(ListCollectorPage.submit()).scrollIntoView();
       await $(ListCollectorPage.submit()).click();
       await $(RelationshipsPage.relationshipBrotherOrSister()).click();
       await $(RelationshipsPage.submit()).click();
@@ -67,6 +68,7 @@ describe("Relationships - Primary Person", () => {
 
     async function addPrimaryAndTwoOthers() {
       await $(PrimaryPersonListCollectorPage.yes()).click();
+      await $(PrimaryPersonListCollectorPage.submit()).scrollIntoView();
       await $(PrimaryPersonListCollectorPage.submit()).click();
       await $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Marcus");
       await $(PrimaryPersonListCollectorAddPage.lastName()).setValue("Twin");
