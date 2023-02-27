@@ -384,7 +384,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.launchSurvey("test_checkbox")
         self.post(action="start_questionnaire")
         self.get("/questionnaire/preview/")
-        self.assertStatusCode(500)
+        self.assertStatusCode(404)
 
     def launchAndFailSubmission(self, schema):
         self.launchSurvey(schema)

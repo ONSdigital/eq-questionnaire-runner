@@ -33,7 +33,10 @@ from app.questionnaire.router import Router
 from app.submitter.previously_submitted_exception import PreviouslySubmittedException
 from app.utilities.schema import load_schema_from_metadata
 from app.views.contexts import HubContext
-from app.views.contexts.preview_context import PreviewContext
+from app.views.contexts.preview_context import (
+    PreviewContext,
+    PreviewNotEnabledException,
+)
 from app.views.handlers.block_factory import get_block_handler
 from app.views.handlers.confirm_email import ConfirmEmail
 from app.views.handlers.confirmation_email import (
@@ -230,15 +233,18 @@ def submit_questionnaire(
 @with_questionnaire_store
 @with_schema
 def get_preview(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore):
-    preview_context = PreviewContext(
-        language=flask_babel.get_locale().language,
-        schema=schema,
-        answer_store=questionnaire_store.answer_store,
-        list_store=questionnaire_store.list_store,
-        progress_store=questionnaire_store.progress_store,
-        metadata=questionnaire_store.metadata,
-        response_metadata=questionnaire_store.response_metadata,
-    )
+    try:
+        preview_context = PreviewContext(
+            language=flask_babel.get_locale().language,
+            schema=schema,
+            answer_store=questionnaire_store.answer_store,
+            list_store=questionnaire_store.list_store,
+            progress_store=questionnaire_store.progress_store,
+            metadata=questionnaire_store.metadata,
+            response_metadata=questionnaire_store.response_metadata,
+        )
+    except PreviewNotEnabledException as exc:
+        raise NotFound from exc
 
     schema_type = schema.json["questionnaire_flow"].get("type")
 
@@ -452,11 +458,14 @@ def get_view_submitted_response(schema, questionnaire_store):
 def get_preview_questions_pdf(
     schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
 ) -> Response:
-    view_preview_questions_pdf = PreviewQuestionsPDF(
-        schema,
-        questionnaire_store,
-        flask_babel.get_locale().language,
-    )
+    try:
+        view_preview_questions_pdf = PreviewQuestionsPDF(
+            schema,
+            questionnaire_store,
+            flask_babel.get_locale().language,
+        )
+    except PreviewNotEnabledException as exc:
+        raise NotFound from exc
 
     return send_file(
         path_or_file=view_preview_questions_pdf.get_pdf(),
