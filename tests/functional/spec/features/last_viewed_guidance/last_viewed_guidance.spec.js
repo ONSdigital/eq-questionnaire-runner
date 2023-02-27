@@ -22,6 +22,7 @@ describe("Last viewed question guidance", () => {
     it("When the respondent resumes on the first block of a section, then last question guidance is not shown", async () => {
       await $(HouseholdInterstitialPage.saveSignOut()).click();
       await browser.openQuestionnaire("test_last_viewed_question_guidance.json", resumableLaunchParams);
+      await browser.pause(100)
       await expect(await browser.getUrl()).to.contain(HouseholdInterstitialPage.url());
       await expect(await $(HouseholdInterstitialPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
     });
@@ -30,6 +31,7 @@ describe("Last viewed question guidance", () => {
       await $(HouseholdInterstitialPage.submit()).click();
       await $(AddressConfirmationPage.saveSignOut()).click();
       await browser.openQuestionnaire("test_last_viewed_question_guidance.json", resumableLaunchParams);
+      await browser.pause(100)
       await expect(await browser.getUrl()).to.contain(AddressConfirmationPage.url());
       await expect(await $(AddressConfirmationPage.lastViewedQuestionGuidanceLink()).getAttribute("href")).to.contain(HouseholdInterstitialPage.url());
       await expect(await $(AddressConfirmationPage.lastViewedQuestionGuidance()).isExisting()).to.be.true;
