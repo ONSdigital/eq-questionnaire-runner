@@ -17,10 +17,12 @@ describe("Introduction preview questions", () => {
     expect($(previewQuestion).$("h3").getText()).to.equal("Are you able to report for the calendar month 1 January 2017 to 1 February 2017?");
     expect($(previewQuestion).$(".ons-question__description").getText()).to.equal("Your return should relate to the calendar year 2021.");
     expect($(previewQuestion).$(".ons-question__instruction").getText()).to.equal("Select your answer");
-    expect($(previewQuestion).$(".ons-panel__body").getText()).to.equal("You can only pick one answer");
-    expect($(previewQuestion).$$("p")[3].getText()).to.equal("Choose Yes or No answer");
-    expect($(previewQuestion).$$("p")[4].getText()).to.equal("You can answer with the following options:");
-    expect($(previewQuestion).$("ul").getText()).to.equal("Yes\nNo");
+    expect($(previewQuestion).$$(".ons-panel__body")[0].getText()).to.equal("Please provide figures for the period in which you were trading.");
+    expect($(previewQuestion).$$(".ons-panel__body")[1].getText()).to.equal("You can only pick one answer");
+    expect($(previewQuestion).$$("p")[4].getText()).to.equal("Choose Yes or No answer");
+    expect($(previewQuestion).$$("p")[5].getText()).to.equal("Select an answer");
+    expect($(previewQuestion).$$("p")[6].getText()).to.equal("You can answer with the following options:");
+    expect($(previewQuestion).$$("ul")[0].getText()).to.equal("Yes\nNo");
   });
   it("Given I start a survey, When I view the preview page of hub flow schema, Then the twisty button should read 'Show all' and answers should be invisible", () => {
     browser.openQuestionnaire(introductionSchema);
