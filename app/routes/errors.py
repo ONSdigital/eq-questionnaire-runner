@@ -20,6 +20,7 @@ from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.submitter.previously_submitted_exception import PreviouslySubmittedException
 from app.submitter.submission_failed import SubmissionFailedException
 from app.survey_config.survey_type import SurveyType
+from app.views.contexts.preview_context import PreviewNotEnabledException
 from app.views.handlers.confirm_email import (
     ConfirmationEmailFulfilmentRequestPublicationFailed,
 )
@@ -252,3 +253,9 @@ def feedback_upload_failed(exception):
         retry_message=retry_message,
         contact_us_message=contact_us_message,
     )
+
+
+@errors_blueprint.app_errorhandler(PreviewNotEnabledException)
+def preview_not_enabled(exception):
+    log_exception(exception, 500)
+    return _render_error_page(500, template=404)
