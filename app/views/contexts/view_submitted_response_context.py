@@ -29,19 +29,16 @@ def build_view_submitted_response_context(
     if not metadata:
         raise NoMetadataException
 
-    trad_as = metadata["trad_as"]
-    ru_name = metadata["ru_name"]
-
-    if survey_type is SurveyType.SOCIAL:
-        submitted_text = lazy_gettext("Answers submitted.")
-    elif trad_as:
+    if (ru_name := metadata["ru_name"]) and (trad_as := metadata["trad_as"]):
         submitted_text = lazy_gettext(
             "Answers submitted for <span>{ru_name}</span> ({trad_as})"
         ).format(ru_name=ru_name, trad_as=trad_as)
-    else:
+    elif ru_name:
         submitted_text = lazy_gettext(
             "Answers submitted for <span>{ru_name}</span>"
         ).format(ru_name=ru_name)
+    else:
+        submitted_text = lazy_gettext("Answers submitted.")
 
     metadata = build_submission_metadata_context(
         survey_type,
