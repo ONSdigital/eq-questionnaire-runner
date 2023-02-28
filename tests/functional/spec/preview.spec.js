@@ -23,6 +23,7 @@ describe("Introduction preview questions", () => {
     expect($(previewQuestion).$$("p")[4].getText()).to.equal("Select your answer");
     expect($(previewQuestion).$$("p")[5].getText()).to.equal("You can answer with the following options:");
     expect($(previewQuestion).$$("ul")[0].getText()).to.equal("Yes\nNo");
+    expect($$(previewQuestion)[4].$$("p")[1].getText()).to.equal("Select any answers that apply");
   });
   it("Given I start a survey, When I view the preview page of hub flow schema, Then the twisty button should read 'Show all' and answers should be invisible", () => {
     browser.openQuestionnaire(introductionSchema);
