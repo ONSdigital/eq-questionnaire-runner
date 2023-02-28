@@ -453,6 +453,20 @@ def get_answer_fields(
     path_finder: Optional[PathFinder] = None,
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
+    section_id = location.section_id if location else None
+
+    block_ids: list = []
+    if section_id and "calculated_summary" in schema.get_values_for_key(
+        question, "source"
+    ):
+        block_ids = get_calculated_summary_block_dependencies(
+            schema=schema,
+            path_finder=path_finder,
+            progress_store=progress_store,
+            section_id=section_id,
+            list_item_id=list_item_id,
+        )
+
     value_source_resolver = ValueSourceResolver(
         answer_store=answer_store,
         list_store=list_store,
@@ -462,7 +476,7 @@ def get_answer_fields(
         list_item_id=list_item_id,
         escape_answer_values=False,
         response_metadata=response_metadata,
-        routing_path_block_ids=routing_path_block_ids,
+        routing_path_block_ids=block_ids or routing_path_block_ids,
         assess_routing_path=False,
         path_finder=path_finder,
         progress_store=progress_store,
@@ -613,3 +627,36 @@ def generate_form(
         data=data,
         formdata=form_data,
     )
+
+
+def get_calculated_summary_block_dependencies(
+    schema: QuestionnaireSchema,
+    path_finder: Optional[PathFinder],
+    progress_store: Optional[ProgressStore],
+    section_id: str,
+    list_item_id: Optional[str],
+) -> list[str]:
+    block_dependencies: list = []
+
+    if (
+        path_finder
+        and progress_store
+        and (
+            section_dependencies := schema.calculated_summary_section_dependencies_by_section.get(
+                section_id
+            )
+        )
+    ):
+        for dependent_section in section_dependencies:
+            block_dependencies.extend(
+                iter(
+                    path_finder.routing_path(dependent_section, list_item_id)  # type: ignore
+                    or (
+                        dependent_section,
+                        list_item_id,
+                    )
+                    in progress_store.started_section_keys()
+                )
+            )
+
+    return block_dependencies

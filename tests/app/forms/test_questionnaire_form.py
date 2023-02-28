@@ -5,7 +5,7 @@ import pytest
 from mock import patch
 from werkzeug.datastructures import MultiDict
 
-from app.data_models import ListStore
+from app.data_models import ListStore, ProgressStore
 from app.data_models.answer_store import Answer, AnswerStore
 from app.forms import error_messages
 from app.forms.questionnaire_form import generate_form
@@ -14,7 +14,8 @@ from app.forms.validators import (
     ResponseRequired,
     format_message_with_title,
 )
-from app.questionnaire import QuestionnaireSchema
+from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.utilities.schema import load_schema_from_name
 from tests.app.questionnaire.conftest import get_metadata
@@ -1292,6 +1293,34 @@ def test_calculated_field(
 
         question_schema = schema.get_block(block).get("question")
 
+        location = Location(
+            section_id="default-section",
+            block_id=question_schema["id"],
+            list_item_id=None,
+        )
+
+        progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "default-section",
+                    "list_item_id": None,
+                    "status": "IN PROGRESS",
+                    "block_ids": [question_schema["id"]],
+                }
+            ]
+        )
+
+        metadata = get_metadata()
+
+        path_finder = PathFinder(
+            schema=schema,
+            answer_store=answer_store,
+            list_store=list_store,
+            metadata=metadata,
+            progress_store=progress_store,
+            response_metadata={},
+        )
+
         form_data = MultiDict(breakdowns)
 
         form = generate_form(
@@ -1299,7 +1328,10 @@ def test_calculated_field(
             question_schema,
             answer_store,
             list_store,
-            metadata=get_metadata(),
+            path_finder=path_finder,
+            progress_store=progress_store,
+            location=location,
+            metadata=metadata,
             response_metadata={},
             form_data=form_data,
         )

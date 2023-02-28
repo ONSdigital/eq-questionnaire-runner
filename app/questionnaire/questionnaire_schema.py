@@ -57,6 +57,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             set
         )
         self._when_rules_section_dependencies_by_section: dict[str, set[str]] = {}
+        self.calculated_summary_section_dependencies_by_section: dict[
+            str, set[str]
+        ] = {}
         self._when_rules_section_dependencies_by_answer: dict[
             str, set[str]
         ] = defaultdict(set)
@@ -73,6 +76,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         # Post schema parsing.
         self._populate_answer_dependencies()
         self._populate_when_rules_section_dependencies()
+        self._populate_calculated_summary_section_dependencies()
 
     @cached_property
     def answer_dependencies(self) -> ImmutableDict[str, set[AnswerDependent]]:
@@ -414,7 +418,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         for section in self.get_sections():
             ignore_keys = ["question_variants", "content_variants"]
-            when_rules = self._get_values_for_key(section, "when", ignore_keys)
+            when_rules = self.get_values_for_key(section, "when", ignore_keys)
 
             rule: Union[Mapping, list] = next(when_rules, [])
             if self._is_list_name_in_rule(rule, list_name):
@@ -777,7 +781,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             operator in rule for operator in OPERATION_MAPPING
         )
 
-    def _get_values_for_key(
+    def get_values_for_key(
         self, block: Mapping, key: str, ignore_keys: Optional[list[str]] = None
     ) -> Generator:
         ignore_keys = ignore_keys or []
@@ -788,10 +792,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 if k == key:
                     yield v
                 if isinstance(v, dict):
-                    yield from self._get_values_for_key(v, key, ignore_keys)
+                    yield from self.get_values_for_key(v, key, ignore_keys)
                 elif isinstance(v, (list, tuple)):
                     for d in v:
-                        yield from self._get_values_for_key(d, key, ignore_keys)
+                        yield from self.get_values_for_key(d, key, ignore_keys)
             except AttributeError:
                 continue
 
@@ -845,7 +849,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _populate_when_rules_section_dependencies(self) -> None:
         for section in self.get_sections():
-            when_rules = self._get_values_for_key(section, "when")
+            when_rules = self.get_values_for_key(section, "when")
             rules: Union[Mapping, list] = next(when_rules, [])
 
             if rules_section_dependencies := self._get_rules_section_dependencies(
@@ -897,6 +901,54 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 )
 
         return rules_section_dependencies
+
+    def _populate_calculated_summary_section_dependencies(self) -> None:
+        for section in self.get_sections():
+            sources = self.get_values_for_key(section, "value")
+            calculated_summary_values = [
+                value
+                for value in sources
+                if isinstance(value, dict)
+                and value.get("source") == "calculated_summary"
+            ]
+
+            self._get_calculated_summary_section_dependencies(
+                section["id"], calculated_summary_values
+            )
+
+    def _get_calculated_summary_section_dependencies(
+        self,
+        current_section_id: str,
+        values: list[dict],
+    ) -> None:
+        section_dependencies: set[str] = set()
+
+        for value in values:
+            answer_id_list: list = []
+            identifier: Optional[str] = value.get("identifier")
+            source: Optional[str] = value.get("source")
+
+            if source == "calculated_summary" and identifier:
+                calculated_summary_block = self.get_block(identifier)
+                calculated_summary_answer_ids = self.get_calculated_summary_answer_ids(
+                    calculated_summary_block  # type: ignore
+                )
+                answer_id_list.extend(iter(calculated_summary_answer_ids))
+            for answer_id in answer_id_list:
+                block = self.get_block_for_answer_id(answer_id)  # type: ignore
+                section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
+
+                if section_id != current_section_id:
+                    section_dependencies.add(section_id)  # type: ignore
+                    self.calculated_summary_section_dependencies_by_section[
+                        section_id  # type: ignore
+                    ] = section_dependencies
+
+            section_dependencies.add(current_section_id)
+
+            self.calculated_summary_section_dependencies_by_section[
+                current_section_id
+            ] = section_dependencies
 
     def get_calculated_summary_answer_ids(
         self, calculated_summary_block: Mapping[str, Any]

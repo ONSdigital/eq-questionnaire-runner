@@ -46,6 +46,7 @@ class PlaceholderRenderer:
         self._routing_path_block_ids = routing_path_block_ids
         self._progress_store = progress_store
         self._path_finder = path_finder
+        self._block_ids_calculated_summary: list = []
 
     def render_pointer(
         self,
@@ -77,6 +78,18 @@ class PlaceholderRenderer:
         placeholder_data: MutableMapping[str, Any],
         list_item_id: Optional[str],
     ) -> str:
+        if (
+            self._location
+            and not self._block_ids_calculated_summary
+            and "calculated_summary"
+            in self._schema.get_values_for_key(placeholder_data, "source")
+        ):
+            self._block_ids_calculated_summary = (
+                self.get_calculated_summary_block_dependencies(
+                    self._location.section_id, list_item_id
+                )
+            )
+
         placeholder_parser = PlaceholderParser(
             language=self._language,
             answer_store=self._answer_store,
@@ -87,7 +100,8 @@ class PlaceholderRenderer:
             list_item_id=list_item_id,
             location=self._location,
             renderer=self,
-            routing_path_block_ids=self._routing_path_block_ids,
+            routing_path_block_ids=self._block_ids_calculated_summary
+            or self._routing_path_block_ids,
             progress_store=self._progress_store,
             path_finder=self._path_finder,
         )
@@ -135,3 +149,32 @@ class PlaceholderRenderer:
             set_pointer(data_to_render_mutable, pointer, rendered_text)
 
         return data_to_render_mutable
+
+    def get_calculated_summary_block_dependencies(
+        self, section_id: str, list_item_id: Optional[str]
+    ) -> list[str]:
+        block_dependencies: list = []
+
+        if (
+            self._progress_store
+            and self._path_finder
+            and (
+                section_dependencies := self._schema.calculated_summary_section_dependencies_by_section.get(
+                    section_id
+                )
+            )
+        ):
+            for dependent_section in section_dependencies:
+                block_dependencies.extend(
+                    iter(
+                        self._path_finder.routing_path(
+                            dependent_section, list_item_id  # type: ignore
+                        )
+                        or (
+                            dependent_section,
+                            list_item_id,
+                        )
+                        in self._progress_store.started_section_keys()
+                    )
+                )
+        return block_dependencies

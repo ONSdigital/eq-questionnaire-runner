@@ -2,6 +2,7 @@ from decimal import Decimal
 from typing import (
     TYPE_CHECKING,
     Any,
+    Iterable,
     Mapping,
     MutableMapping,
     Optional,
@@ -48,7 +49,7 @@ class PlaceholderParser:
         renderer: "PlaceholderRenderer",
         list_item_id: Optional[str] = None,
         location: Union[Location, RelationshipLocation, None] = None,
-        routing_path_block_ids: Optional[tuple] = None,
+        routing_path_block_ids: Optional[Iterable] = None,
         progress_store: Optional[ProgressStore] = None,
         path_finder: Optional["PathFinder"] = None,
     ):
