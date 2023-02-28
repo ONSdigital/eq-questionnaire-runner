@@ -41,7 +41,7 @@ def get_objects_matching(ids: Sequence[str]) -> dict[int, dict]
 For arguments that can be a single type or None, use the shorthand `|` instead of using the older `Optional` keyword:
 
 ```python
-def test(self, var: [None | int]) -> None:
+def test(self, var: None | int) -> None:
 ```
 
 For arguments that can be one of multiple types or None, use the shorthand `|` instead of using the older `Union` keyword:
@@ -102,9 +102,12 @@ To mark portions of the program that should not be covered by type hinting, use 
 `# type: ignore` should only be used when unavoidable. Ensure that a comment is added to explain why it has been used and have a prefix of `Type ignore:`
 
 ```python
-# Type ignore: Explain why type ignore has been used in this context
-x: int
-x: str  # type: ignore
+def sum(*args: tuple) -> int | float | decimal:
+    result = 0
+    for arg in args:
+        result += arg
+    # Type ignore: type ignore added as will only return int, float or decimal
+    return total # type: ignore
 ```
 
 ## ParamSpec
