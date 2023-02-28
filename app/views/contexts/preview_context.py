@@ -25,7 +25,7 @@ class PreviewContext(Context):
         response_metadata: Mapping[str, Union[str, int, list]],
     ):
         if not schema.preview_enabled:
-            raise PreviewNotEnabledException()
+            raise PreviewNotEnabledException
 
         super().__init__(
             language,
