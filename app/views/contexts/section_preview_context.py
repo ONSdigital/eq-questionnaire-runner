@@ -31,7 +31,7 @@ class SectionPreviewContext(Context):
         )
         self._section_id = section_id
 
-    def __call__(self) -> Mapping[str, dict]:
+    def __call__(self) -> dict[str, dict]:
         preview = self._build_preview()
         title_for_location = self._title_for_location()
 
