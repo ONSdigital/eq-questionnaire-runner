@@ -380,7 +380,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
             f'<p>If you are completing a business survey, please <a href="{DEFAULT_URL}/contact-us/">contact us</a>.</p>'
         )
 
-    def test_preview_not_enabled_results_in_500(self):
+    def test_preview_not_enabled_results_in_404(self):
         self.launchSurvey("test_checkbox")
         self.post(action="start_questionnaire")
         self.get("/questionnaire/preview/")

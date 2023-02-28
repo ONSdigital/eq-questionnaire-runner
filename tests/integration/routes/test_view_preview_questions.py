@@ -12,7 +12,7 @@ class TestPreviewPDF(IntegrationTestCase):
         # When I try to download preview of questions from the preview page
         download_pdf_url = (
             self.getHtmlSoup()
-            .find("a", {"href": "/questionnaire/download-pdf"})
+            .find("a", {"href": "/questionnaire/download-preview-pdf"})
             .attrs["href"]
         )
 

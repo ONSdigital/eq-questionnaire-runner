@@ -1,5 +1,6 @@
 from typing import Any, Union
 
+from flask_babel import lazy_gettext
 from werkzeug.datastructures import ImmutableDict
 
 
@@ -16,32 +17,35 @@ class PreviewQuestion:
         self._answers = self._build_answers()
         self._descriptions = self._question.get("description")
         self._guidance = self._question.get("guidance")
-        self._instruction = self._question.get("instruction")
         self._type = self._question.get("type")
 
     def _build_answers(self) -> list[dict]:
         answers_list = []
         for answer in self._question.get("answers", []):
             answer_dict = {}
-            if answer_label := answer.get("label"):
+            answer_type = answer.get("type")
+            if (answer_label := answer.get("label")) and (answer_type != "Checkbox"):
                 answer_dict["label"] = answer_label
 
             if options := answer.get("options"):
                 options_list = [option["label"] for option in options]
                 answer_dict["options"] = options_list
+                if answer_type == "Radio":
+                    answer_dict["options_text"] = lazy_gettext(
+                        "You can answer with one of the following options:"
+                    )
+                else:
+                    answer_dict["options_text"] = lazy_gettext(
+                        "You can answer with the following options:"
+                    )
 
             if description := answer.get("description"):
                 answer_dict["description"] = description
 
-            if instruction := answer.get("instruction"):
-                answer_dict["instruction"] = instruction
-
             if guidance := answer.get("guidance"):
                 answer_dict["guidance"] = guidance
 
-            if answer.get("type") == "TextArea" and (
-                length := answer.get("max_length")
-            ):
+            if answer_type == "TextArea" and (length := answer.get("max_length")):
                 answer_dict["max_length"] = length
 
             answers_list.append(answer_dict)
@@ -54,7 +58,6 @@ class PreviewQuestion:
             "answers": self._answers,
             "descriptions": self._descriptions,
             "guidance": self._guidance,
-            "instruction": self._instruction,
             "type": self._type,
         }
 

@@ -1,4 +1,5 @@
 import pytest
+from flask_babel import lazy_gettext
 
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.preview_context import (
@@ -56,7 +57,7 @@ def test_build_preview_context(
                         "question": {
                             "answers": [
                                 {
-                                    "description": "Choose Yes or No answer",
+                                    "description": "Select your answer",
                                     "guidance": {
                                         "contents": [
                                             {
@@ -67,14 +68,22 @@ def test_build_preview_context(
                                         "show_guidance": "Show more information",
                                     },
                                     "options": ["Yes", "No"],
+                                    "options_text": lazy_gettext(
+                                        "You can answer with one of the following options:"
+                                    ),
                                 }
                             ],
                             "descriptions": [
                                 "<p>Your return should relate to the calendar year 2021.</p>"
                             ],
-                            "guidance": None,
+                            "guidance": {
+                                "contents": [
+                                    {
+                                        "description": "Please provide figures for the period in which you were trading."
+                                    }
+                                ]
+                            },
                             "id": "report-radio",
-                            "instruction": ["Select your answer"],
                             "title": "Are you able to report for the calendar month 2 February 2016 to 3 March 2016?",
                             "type": "General",
                         }
@@ -85,7 +94,6 @@ def test_build_preview_context(
                             "descriptions": None,
                             "guidance": None,
                             "id": "start-date",
-                            "instruction": None,
                             "title": "Please provide optional start date",
                             "type": "General",
                         }
@@ -96,20 +104,25 @@ def test_build_preview_context(
                             "descriptions": None,
                             "guidance": None,
                             "id": "end-date",
-                            "instruction": None,
                             "title": "Please provide optional end date",
                             "type": "General",
                         }
                     },
                     {
                         "question": {
-                            "answers": [{"options": ["Yes", "No"]}],
+                            "answers": [
+                                {
+                                    "options": ["Yes", "No"],
+                                    "options_text": lazy_gettext(
+                                        "You can answer with one of the following options:"
+                                    ),
+                                }
+                            ],
                             "descriptions": [
                                 "<p>Your return should relate to the calendar year 2021.</p>"
                             ],
                             "guidance": None,
                             "id": "report-radio-second",
-                            "instruction": ["Select your answer"],
                             "title": "Are you sure you are able to report for the calendar month ref_p_start_date to ref_p_end_date?",
                             "type": "General",
                         }
@@ -118,11 +131,13 @@ def test_build_preview_context(
                         "question": {
                             "answers": [
                                 {
-                                    "instruction": "Select any answers that apply",
                                     "options": [
                                         "Public sector projects",
                                         "Private sector projects",
                                     ],
+                                    "options_text": lazy_gettext(
+                                        "You can answer with the following options:"
+                                    ),
                                 }
                             ],
                             "descriptions": None,
@@ -138,7 +153,6 @@ def test_build_preview_context(
                                 ]
                             },
                             "id": "projects-checkbox",
-                            "instruction": None,
                             "title": "Which sector did ESSENTIAL "
                             "ENTERPRISE LTD. carry out work "
                             "for?",
@@ -176,7 +190,6 @@ def test_build_preview_context(
                                 ]
                             },
                             "id": "turnover-variants-block",
-                            "instruction": None,
                             "title": "What was your total turnover",
                             "type": "General",
                         }
@@ -185,32 +198,42 @@ def test_build_preview_context(
                         "question": {
                             "answers": [
                                 {
-                                    "instruction": "Select an " "answer",
                                     "options": [
                                         "68 Abingdon Road, Goathill",
                                         "7 Evelyn Street, Barry",
                                         "251 Argae Lane, Barry",
                                     ],
+                                    "options_text": lazy_gettext(
+                                        "You can answer with the following options:"
+                                    ),
                                 },
-                                {"options": ["I prefer not to say"]},
+                                {
+                                    "options": ["I prefer not to say"],
+                                    "options_text": lazy_gettext(
+                                        "You can answer with the following options:"
+                                    ),
+                                },
                             ],
                             "descriptions": None,
                             "guidance": None,
                             "id": "address-mutually-exclusive-checkbox",
-                            "instruction": None,
                             "title": "Were your company based at any of the following addresses?",
                             "type": "MutuallyExclusive",
                         }
                     },
                     {
                         "question": {
-                            "answers": [{"label": "Comments", "max_length": 2000}],
+                            "answers": [
+                                {
+                                    "label": "Comments",
+                                    "max_length": 2000,
+                                }
+                            ],
                             "descriptions": [
                                 "<p>Answer for ESSENTIAL ENTERPRISE LTD.</p>"
                             ],
                             "guidance": None,
                             "id": "further-details-text-area",
-                            "instruction": None,
                             "title": "Please provide any further details",
                             "type": "General",
                         }

@@ -18,12 +18,6 @@
     {% endfor %}
   {% endif %}
 
-  {% if question.instruction %}
-    {% for instruction in question.instruction %}
-        <div class="ons-question__instruction ons-u-mb-m"><p>{{- instruction | safe -}}</p></div>
-    {% endfor %}
-  {% endif %}
-
   {%- if question.guidance -%}
     {% set contents = question.guidance.contents %}
     {% call onsPanel({
@@ -53,17 +47,12 @@
       <p>{{- description | safe -}}</p>
     {% endif %}
 
-    {% if answer.instruction %}
-      {% set instruction = answer.instruction %}
-      <p>{{- instruction | safe -}}</p>
-    {% endif %}
-
     {%  if loop.last and question.type == "MutuallyExclusive" %}
       <p><strong>{{ _("Or") }}</strong></p>
     {%  endif %}
 
     {%  if not loop.last or (answer.options and answers_length == 1) %}
-      <p>{{ _("You can answer with the following options:") }}</p>
+      <p>{{ answer.options_text }}</p>
     {%  endif %}
 
     {%  if answer.options %}

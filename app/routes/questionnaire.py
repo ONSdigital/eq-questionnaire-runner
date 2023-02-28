@@ -452,20 +452,17 @@ def get_view_submitted_response(schema, questionnaire_store):
     return view_submitted_response.get_rendered_html()
 
 
-@questionnaire_blueprint.route("download-pdf", methods=["GET"])
+@questionnaire_blueprint.route("download-preview-pdf", methods=["GET"])
 @with_questionnaire_store
 @with_schema
 def get_preview_questions_pdf(
     schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
 ) -> Response:
-    try:
-        view_preview_questions_pdf = PreviewQuestionsPDF(
-            schema,
-            questionnaire_store,
-            flask_babel.get_locale().language,
-        )
-    except PreviewNotEnabledException as exc:
-        raise NotFound from exc
+    view_preview_questions_pdf = PreviewQuestionsPDF(
+        schema,
+        questionnaire_store,
+        flask_babel.get_locale().language,
+    )
 
     return send_file(
         path_or_file=view_preview_questions_pdf.get_pdf(),
