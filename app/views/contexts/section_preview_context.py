@@ -33,11 +33,9 @@ class SectionPreviewContext(Context):
 
     def __call__(self) -> dict[str, dict]:
         preview = self._build_preview()
-        title_for_location = self._title_for_location()
 
         return {
             "preview": {
-                "title": title_for_location,
                 **preview,
             }
         }
@@ -50,11 +48,8 @@ class SectionPreviewContext(Context):
             PreviewGroup(group_schema=group).serialize() for group in section["groups"]
         ]
         section_dict: dict = {
-            "title": self._schema.get_title_for_section(self._section_id),
+            "title": section["title"],
             "blocks": [block for group in groups for block in group["blocks"]],
         }
 
         return {"groups": [section_dict]}
-
-    def _title_for_location(self) -> Optional[str]:
-        return self._schema.get_title_for_section(self._section_id)

@@ -42,11 +42,6 @@
         {% endcall %}
     {% endif %}
 
-    {% if answer.description %}
-      {% set description = answer.description %}
-      <p>{{- description | safe -}}</p>
-    {% endif %}
-
     {%  if loop.last and question.type == "MutuallyExclusive" %}
       <p><strong>{{ _("Or") }}</strong></p>
     {%  endif %}
@@ -60,6 +55,9 @@
         {% set label = answer.label %}
         <p><strong>{{- label | safe -}}</strong></p>
       {% endif %}
+      {% if answer.description %}
+        <p>{{- answer.description | safe -}}</p>
+      {% endif %}
       <ul>
         {% for option in answer.options %}
           <li>{{ option }}</li>
@@ -69,6 +67,9 @@
       {% if answer.label %}
         {% set label = answer.label %}
         <p><strong>{{- label | safe -}}</strong></p>
+      {% endif %}
+      {% if answer.description %}
+        <p>{{- answer.description | safe -}}</p>
       {% endif %}
       {% if answer.max_length %}
         <p>{{ _("{max_characters} characters can be added.").format(max_characters = answer.max_length) }}</p>
