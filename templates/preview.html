@@ -63,13 +63,13 @@
 
   <div class="ons-u-mt-l ons-u-mb-l">
 
-    {%- if content.preview.groups | length > 1 -%}
+    {%- if content.schema_type == "Hub" -%}
       {%- set itemList = [] -%}
-      {%- for group in content.preview.groups -%}
-        {%- if group["blocks"] | length -%}
+      {%- for section in content.preview.sections -%}
+        {%- if section["blocks"] | length -%}
           {%- set item = {
-            "title": group.title,
-            "id": group.id,
+            "title": section.title,
+            "id": section.id,
             "content": "",
             "button": {
               "open": _('Show'),
@@ -78,13 +78,13 @@
                 "data-ga": "click",
                 "data-ga-category": "Preview Survey",
                 "data-ga-action": "Open panel",
-                "data-ga-label": group.title
+                "data-ga-label": section.title
               }
             }
           } -%}
 
-          {%- set group %}
-            {% for block in group["blocks"] %}
+          {%- set section %}
+            {% for block in section["blocks"] %}
               {% if 'question' in block %}
                 {% set question = block['question'] %}
                 {% include 'partials/preview-question.html' %}
@@ -92,7 +92,7 @@
             {% endfor %}
           {%- endset -%}
 
-          {%- do item | setAttribute("content", item.content + group) -%}
+          {%- do item | setAttribute("content", item.content + section) -%}
 
           {%- do itemList.append(item) -%}
         {%- endif -%}
@@ -116,10 +116,10 @@
       }}
 
     {%- else %}
-      {%- for group in content.preview.groups if group.blocks -%}
+      {%- for section in content.preview.sections if section.blocks -%}
         <div class="ons-summary__group">
-          <h2 class="ons-summary__group-title">{{ group.title}}</h2>
-          {% for block in group["blocks"] %}
+          <h2 class="ons-summary__group-title">{{ section.title}}</h2>
+          {% for block in section["blocks"] %}
             {% if 'question' in block %}
               {% set question = block['question'] %}
               {% include 'partials/preview-question.html' %}

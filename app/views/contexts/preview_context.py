@@ -38,12 +38,12 @@ class PreviewContext(Context):
         )
 
     def __call__(self) -> dict[str, Union[str, list, bool]]:
-        groups = list(self.build_all_groups())
+        sections = list(self.build_all_sections())
         return {
-            "groups": groups,
+            "sections": sections,
         }
 
-    def build_all_groups(self) -> Generator[dict, None, None]:
+    def build_all_sections(self) -> Generator[dict, None, None]:
         """NB: Does not support repeating sections"""
 
         for section in self._schema.get_sections():
@@ -59,7 +59,7 @@ class PreviewContext(Context):
                 section_id=section_id,
             )
 
-            yield from section_preview_context()["preview"]["groups"]
+            yield from section_preview_context()["preview"]["sections"]
 
     @staticmethod
     def get_page_title() -> str:

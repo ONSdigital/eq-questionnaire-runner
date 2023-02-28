@@ -50,7 +50,7 @@ def test_build_preview_context(
     context = preview_context()
 
     expected_context = {
-        "groups": [
+        "sections": [
             {
                 "blocks": [
                     {
@@ -240,13 +240,14 @@ def test_build_preview_context(
                     },
                 ],
                 "title": "Main section",
+                "id": "introduction-section",
             }
         ]
     }
-    assert "groups" in context
+    assert "sections" in context
     assert_preview_context(context)
-    assert len(context["groups"][0]) == 2
-    assert "blocks" in context["groups"][0]
+    assert len(context["sections"][0]) == 3
+    assert "blocks" in context["sections"][0]
     assert context == expected_context
 
 

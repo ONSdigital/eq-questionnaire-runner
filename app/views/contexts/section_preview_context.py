@@ -49,7 +49,8 @@ class SectionPreviewContext(Context):
         ]
         section_dict: dict = {
             "title": section["title"],
+            "id": section["id"],
             "blocks": [block for group in groups for block in group["blocks"]],
         }
 
-        return {"groups": [section_dict]}
+        return {"sections": [section_dict]}
