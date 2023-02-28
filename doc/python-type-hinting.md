@@ -102,12 +102,10 @@ To mark portions of the program that should not be covered by type hinting, use 
 `# type: ignore` should only be used when unavoidable. Ensure that a comment is added to explain why it has been used and have a prefix of `Type ignore:`
 
 ```python
-def sum(*args: tuple) -> int | float | decimal:
-    result = 0
-    for arg in args:
-        result += arg
-    # Type ignore: type ignore added as will only return int, float or decimal
-    return total # type: ignore
+def format_number(number: int) -> str:
+    # Type ignore: babel.format_number is untyped therefore returns Any.
+    formatted_number: str = babel.format_number(number)  # type: ignore
+    return formatted_number
 ```
 
 ## ParamSpec
