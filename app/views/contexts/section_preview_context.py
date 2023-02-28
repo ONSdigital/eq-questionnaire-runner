@@ -51,10 +51,8 @@ class SectionPreviewContext(Context):
         ]
         section_dict: dict = {
             "title": self._schema.get_title_for_section(self._section_id),
-            "blocks": [],
+            "blocks": [block for group in groups for block in group["blocks"]],
         }
-        for group in groups:
-            section_dict["blocks"] += group["blocks"]
 
         return {"groups": [section_dict]}
 
