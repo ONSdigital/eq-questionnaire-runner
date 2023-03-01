@@ -32,9 +32,7 @@ class SectionPreviewContext(Context):
         self._section_id = section_id
 
     def __call__(self) -> dict[str, dict]:
-        return {
-            "preview": self._build_preview()
-        }
+        return {"preview": self._build_preview()}
 
     def _build_preview(self) -> dict[str, Union[str, dict, Any]]:
         # Type ignore: The section has to exist at this point
