@@ -23,7 +23,9 @@ SCHEMA = load_schema_from_name("test_view_submitted_response", "en")
 
 def test_build_view_submitted_response_context_summary(app: Flask):
     with app.app_context():
-        questionnaire_store = fake_questionnaire_store()
+        questionnaire_store = fake_questionnaire_store(
+            {"tx_id": "tx_id", "ru_name": "Apple"}, SUBMITTED_AT
+        )
         context = build_view_submitted_response_context(
             "en", SCHEMA, questionnaire_store, SurveyType.DEFAULT
         )
@@ -53,9 +55,11 @@ def test_build_view_submitted_response_context_summary(app: Flask):
         )
 
 
-def test_build_view_submitted_response_context_submitted_text(app: Flask):
+def test_view_submitted_response_context_submitted_text_with_ru_name(app: Flask):
     with app.app_context():
-        questionnaire_store = fake_questionnaire_store()
+        questionnaire_store = fake_questionnaire_store(
+            {"tx_id": "tx_id", "ru_name": "Apple"}, SUBMITTED_AT
+        )
         context = build_view_submitted_response_context(
             "en", SCHEMA, questionnaire_store, SurveyType.DEFAULT
         )
@@ -63,11 +67,20 @@ def test_build_view_submitted_response_context_submitted_text(app: Flask):
         assert context["submitted_text"] == "Answers submitted for <span>Apple</span>"
 
 
-def test_build_view_submitted_response_context_submitted_text_social(app: Flask):
+@pytest.mark.parametrize(
+    "survey_type",
+    (
+        (SurveyType.SOCIAL),
+        (SurveyType.HEALTH),
+    ),
+)
+def test_view_submitted_response_context_submitted_text_without_ru_name(
+    app: Flask, survey_type
+):
     with app.app_context():
-        questionnaire_store = fake_questionnaire_store()
+        questionnaire_store = fake_questionnaire_store({"tx_id": "tx_id"}, SUBMITTED_AT)
         context = build_view_submitted_response_context(
-            "en", SCHEMA, questionnaire_store, SurveyType.SOCIAL
+            "en", SCHEMA, questionnaire_store, survey_type
         )
 
         assert context["submitted_text"] == "Answers submitted."
@@ -75,7 +88,9 @@ def test_build_view_submitted_response_context_submitted_text_social(app: Flask)
 
 def test_build_view_submitted_response_context_submitted_text_with_trad_as(app: Flask):
     with app.app_context():
-        questionnaire_store = fake_questionnaire_store_with_trad_as()
+        questionnaire_store = fake_questionnaire_store(
+            {"tx_id": "tx_id", "ru_name": "Apple", "trad_as": "Apple Inc"}, SUBMITTED_AT
+        )
         context = build_view_submitted_response_context(
             "en", SCHEMA, questionnaire_store, SurveyType.DEFAULT
         )
@@ -90,7 +105,9 @@ def test_view_submitted_response_expired(
     app: Flask,
 ):
     with app.app_context():
-        questionnaire_store = fake_questionnaire_store()
+        questionnaire_store = fake_questionnaire_store(
+            {"tx_id": "tx_id", "ru_name": "Apple"}, SUBMITTED_AT
+        )
         questionnaire_store.submitted_at = datetime.now(timezone.utc) - timedelta(
             seconds=VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS
         )
@@ -104,7 +121,7 @@ def test_view_submitted_response_expired(
 
 def test_build_view_submitted_response_no_submitted_at(app: Flask):
     with app.app_context():
-        questionnaire_store = fake_questionnaire_store_no_submitted_at()
+        questionnaire_store = fake_questionnaire_store({}, None)
         with pytest.raises(Exception):
             build_view_submitted_response_context(
                 "en", SCHEMA, questionnaire_store, SurveyType.DEFAULT
@@ -115,7 +132,7 @@ def test_no_metadata_raises_error(
     app: Flask,
 ):
     with app.app_context():
-        questionnaire_store = fake_questionnaire_store()
+        questionnaire_store = fake_questionnaire_store({}, SUBMITTED_AT)
 
         questionnaire_store.metadata = None
 
@@ -125,12 +142,12 @@ def test_no_metadata_raises_error(
             )
 
 
-def fake_questionnaire_store():
+def fake_questionnaire_store(metadata, submitted_at):
     storage = Mock()
     storage.get_user_data = Mock(return_value=("{}", "ce_sid", 1, None))
     questionnaire_store = QuestionnaireStore(storage)
-    questionnaire_store.metadata = get_metadata({"tx_id": "tx_id", "ru_name": "Apple"})
-    questionnaire_store.submitted_at = SUBMITTED_AT
+    questionnaire_store.metadata = get_metadata(metadata)
+    questionnaire_store.submitted_at = submitted_at
     questionnaire_store.answer_store = AnswerStore(
         [
             Answer("name-answer", "John Smith", None).to_dict(),
@@ -140,29 +157,7 @@ def fake_questionnaire_store():
     return questionnaire_store
 
 
-def fake_questionnaire_store_with_trad_as():
-    storage = Mock()
-    storage.get_user_data = Mock(return_value=("{}", "ce_sid", 1, None))
-    questionnaire_store = QuestionnaireStore(storage)
-    questionnaire_store.metadata = get_metadata(
-        {"tx_id": "tx_id", "ru_name": "Apple", "trad_as": "Apple Inc"}
-    )
-    questionnaire_store.submitted_at = SUBMITTED_AT
-    questionnaire_store.answer_store = AnswerStore()
-    return questionnaire_store
-
-
 def format_submitted_on_description():
     date = format_datetime(SUBMITTED_AT, format="dd LLLL yyyy")
     time = format_datetime(SUBMITTED_AT, format="HH:mm")
     return f"{date} at {time}"
-
-
-def fake_questionnaire_store_no_submitted_at():
-    storage = Mock()
-    storage.get_user_data = Mock(return_value=("{}", "ce_sid", 1, None))
-    questionnaire_store = QuestionnaireStore(storage)
-    questionnaire_store.submitted_at = None
-    questionnaire_store.metadata = {}
-    questionnaire_store.answer_store = AnswerStore()
-    return questionnaire_store
