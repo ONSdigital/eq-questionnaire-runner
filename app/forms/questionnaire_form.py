@@ -642,7 +642,7 @@ def get_calculated_summary_block_dependencies(
         path_finder
         and progress_store
         and (
-            section_dependencies := schema.calculated_summary_section_dependencies_by_section.get(
+            section_dependencies := schema.calculated_summary_section_dependencies_by_block.get(
                 section_id
             )
         )

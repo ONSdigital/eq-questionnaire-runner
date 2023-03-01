@@ -57,7 +57,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             set
         )
         self._when_rules_section_dependencies_by_section: dict[str, set[str]] = {}
-        self.calculated_summary_section_dependencies_by_section: dict[
+        self.calculated_summary_section_dependencies_by_block: dict[
             str, set[str]
         ] = {}
         self._when_rules_section_dependencies_by_answer: dict[
@@ -782,10 +782,21 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         )
 
     def get_values_for_key(
-        self, block: Mapping, key: str, ignore_keys: Optional[list[str]] = None
+        self,
+        data: Mapping | list | tuple,
+        key: str,
+        ignore_keys: Optional[list[str]] = None,
     ) -> Generator:
         ignore_keys = ignore_keys or []
-        for k, v in block.items():
+
+        if isinstance(data, (list, tuple)):
+            for d in data:
+                try:
+                    yield from self.get_values_for_key(d, key, ignore_keys)
+                except AttributeError:
+                    continue
+
+        for k, v in data.items():
             try:
                 if k in ignore_keys:
                     continue
@@ -903,22 +914,39 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return rules_section_dependencies
 
     def _populate_calculated_summary_section_dependencies(self) -> None:
-        for section in self.get_sections():
-            sources = self.get_values_for_key(section, "value")
-            calculated_summary_values = [
-                value
-                for value in sources
-                if isinstance(value, dict)
-                and value.get("source") == "calculated_summary"
-            ]
 
-            self._get_calculated_summary_section_dependencies(
-                section["id"], calculated_summary_values
-            )
+
+
+
+        for section in self.get_sections():
+            for block in self.get_blocks_for_section(section):
+                values = self.get_values_for_key(block, "value")
+                transforms = self.get_values_for_key(block, "transforms")
+                sources_from_transform = self.get_values_for_key(list(transforms), "source")
+                calculated_summary_sources_for_transforms = [
+                    value
+                    for value in sources_from_transform
+                    if value["source"] == "calculated_summary"
+                ]
+
+                calculated_summary_sources_for_values = [
+                    value
+                    for value in values
+                    if isinstance(value, dict)
+                       and value.get("source") == "calculated_summary"
+                ]
+
+                self._get_calculated_summary_section_dependencies(
+                    current_section_id = section["id"],
+                    current_block_id=block["id"],
+                    calculated_summary_sources_for_transforms
+                    + calculated_summary_sources_for_values,
+                    )
 
     def _get_calculated_summary_section_dependencies(
         self,
-        current_section_id: str,
+        current_section_id:str,
+        current_block_id: str,
         values: list[dict],
     ) -> None:
         section_dependencies: set[str] = set()
@@ -938,17 +966,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 block = self.get_block_for_answer_id(answer_id)  # type: ignore
                 section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
 
-                if section_id != current_section_id:
-                    section_dependencies.add(section_id)  # type: ignore
-                    self.calculated_summary_section_dependencies_by_section[
-                        section_id  # type: ignore
-                    ] = section_dependencies
+                section_dependencies.add(section_id)
 
-            section_dependencies.add(current_section_id)
+        self.calculated_summary_section_dependencies_by_block[
+            current_section_id
+        ][current_block_id].update(section_dependencies)
 
-            self.calculated_summary_section_dependencies_by_section[
-                current_section_id
-            ] = section_dependencies
 
     def get_calculated_summary_answer_ids(
         self, calculated_summary_block: Mapping[str, Any]

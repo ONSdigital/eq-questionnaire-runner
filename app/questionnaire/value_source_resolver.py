@@ -42,16 +42,18 @@ class ValueSourceResolver:
     path_finder: Optional["PathFinder"] = None
 
     def _is_answer_on_path(self, answer_id: str) -> bool:
-        if self.assess_routing_path and self.routing_path_block_ids:
+        if self.routing_path_block_ids:
             block = self.schema.get_block_for_answer_id(answer_id)
             return block is not None and block["id"] in self.routing_path_block_ids
 
         return True
 
     def _get_answer_value(
-        self, answer_id: str, list_item_id: Optional[str]
+        self, answer_id: str, list_item_id: Optional[str], assess_routing_path: bool | None = None
     ) -> Optional[AnswerValueTypes]:
-        if not self._is_answer_on_path(answer_id):
+        assess_routing_path = assess_routing_path if assess_routing_path is True else self.assess_routing_path
+
+        if assess_routing_path and not self._is_answer_on_path(answer_id):
             return None
 
         if answer := self.answer_store.get_answer(answer_id, list_item_id):
@@ -127,7 +129,7 @@ class ValueSourceResolver:
         return list(list_model)
 
     def _resolve_calculated_summary_value_source(
-        self, value_source: Mapping
+        self, value_source: Mapping, *, assess_routing_path: bool
     ) -> IntOrDecimal:
         """Calculates the value for the 'calculation' used by the provided Calculated Summary.
 
@@ -139,7 +141,7 @@ class ValueSourceResolver:
             operator = self.get_calculation_operator(calculation["calculation_type"])
             list_item_id = self._resolve_list_item_id_for_value_source(value_source)
             values = [
-                self._get_answer_value(answer_id=answer_id, list_item_id=list_item_id)
+                self._get_answer_value(answer_id=answer_id, list_item_id=list_item_id, assess_routing_path=assess_routing_path)
                 for answer_id in calculation["answers_to_calculate"]
             ]
             return operator([value for value in values if value])  # type: ignore
@@ -172,9 +174,6 @@ class ValueSourceResolver:
 
         #  We always need to assess the routing path for calculated summary value sources
         #  as they may contain answers that are not on the path
-        if not self.assess_routing_path:
-            self.assess_routing_path = source == "calculated_summary"
-
         if source == "answers":
             return self._resolve_answer_value_source(value_source)
 
@@ -196,4 +195,6 @@ class ValueSourceResolver:
             return self.response_metadata.get(value_source.get("identifier"))
 
         if source == "calculated_summary":
-            return self._resolve_calculated_summary_value_source(value_source)
+            resolved_value = self._resolve_calculated_summary_value_source(value_source, assess_routing_path=True)
+            return resolved_value
+

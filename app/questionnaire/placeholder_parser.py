@@ -49,7 +49,6 @@ class PlaceholderParser:
         renderer: "PlaceholderRenderer",
         list_item_id: Optional[str] = None,
         location: Union[Location, RelationshipLocation, None] = None,
-        routing_path_block_ids: Optional[Iterable] = None,
         progress_store: Optional[ProgressStore] = None,
         path_finder: Optional["PathFinder"] = None,
     ):
@@ -57,33 +56,56 @@ class PlaceholderParser:
         self._placeholder_map: MutableMapping[
             str, Union[ValueSourceEscapedTypes, ValueSourceTypes, None]
         ] = {}
+        self._answer_store = answer_store
+        self._list_store = list_store
+        self._metadata = metadata
+        self._response_metadata = response_metadata
+        self._list_item_id = list_item_id
+        self._schema = schema
+        self._location = location
+        self._progress_store = progress_store
+        self._path_finder = path_finder
 
-        self._value_source_resolver = ValueSourceResolver(
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            schema=schema,
-            location=location,
-            list_item_id=list_item_id,
-            escape_answer_values=True,
-            response_metadata=response_metadata,
-            use_default_answer=True,
-            routing_path_block_ids=routing_path_block_ids,
-            assess_routing_path=False,
-            progress_store=progress_store,
-            path_finder=path_finder,
-        )
+        self._value_source_resolver = self._get_value_source_resolver()
+        self._routing_paths = {
+
+        }
+
+    def _get_block_id_for_calculated_summary_dependencies(self, placeholder_list: Sequence[Mapping]):
+        sources = self.get_values_for_key(placeholder_list, "source")
+        return
 
     def __call__(
         self, placeholder_list: Sequence[Mapping]
     ) -> MutableMapping[str, Union[ValueSourceEscapedTypes, ValueSourceTypes]]:
         placeholder_list = QuestionnaireSchema.get_mutable_deepcopy(placeholder_list)
+
+        if routing_path_block_ids := self._get_routing_path_block_ids():
+            self._value_source_resolver = self._get_value_source_resolver(routing_path_block_ids)
+
         for placeholder in placeholder_list:
             if placeholder["placeholder"] not in self._placeholder_map:
                 self._placeholder_map[
                     placeholder["placeholder"]
                 ] = self._parse_placeholder(placeholder)
         return self._placeholder_map
+
+    def _get_value_source_resolver(self, routing_path_block_ids: list[str] | None = None):
+        return ValueSourceResolver(
+            answer_store=self._answer_store,
+            list_store=self._list_store,
+            metadata=self._metadata,
+            schema=self._schema,
+            location=self._location,
+            list_item_id=self._list_item_id,
+            escape_answer_values=True,
+            response_metadata=self._response_metadata,
+            use_default_answer=True,
+            assess_routing_path=False,
+            routing_path_block_ids=routing_path_block_ids,
+            progress_store=self._progress_store,
+            path_finder=self._path_finder,
+        )
 
     def _parse_placeholder(
         self, placeholder: Mapping
@@ -137,3 +159,47 @@ class PlaceholderParser:
             else:
                 values.append(value)
         return values
+
+    def _get_routing_path_block_ids(
+        self, section_id: str, list_item_id: Optional[str]
+    ) -> list[str]:
+        block_ids = self._get_block_ids_for_calculated_summary_dependencies()
+
+        return block_ids
+
+    def _get_block_ids_for_calculated_summary_dependencies(self):
+        if not self._progress_store or not self._path_finder:
+            raise ValueError("ProgressStore or PathFinder not set")
+
+        if not self._location:
+            return []
+
+        if block_id := self._location.block_id:
+            dependent_sections = self._schema.calculated_summary_section_dependencies_by_block.get(
+                self._location.section_id
+            )[self._location.block_id]
+        else:
+            dpendencies_by_blocks = self._schema.calculated_summary_section_dependencies_by_block.get(
+                self._location.section_id
+            ).values()
+            dependent_sections = {section for dependents in dpendencies_by_blocks for section in dependents}
+
+        block_dependencies: list = []
+
+        for dependent_section in dependent_sections:
+            if (
+                dependent_section,
+                None,
+            ) in self._progress_store.started_section_keys():
+                key = dependent_section, None
+
+                if not (path := self._routing_paths.get(key)):
+                    path = self._path_finder.routing_path(
+                          key# type: ignore
+                    )
+                    self._routing_paths[key] = path
+
+                block_dependencies.extend(path)
+
+
+        return block_dependencies
