@@ -47,4 +47,4 @@ class SectionPreviewContext(Context):
             "blocks": [block for group in groups for block in group["blocks"]],
         }
 
-        return section_dict
+        return [section_dict]
