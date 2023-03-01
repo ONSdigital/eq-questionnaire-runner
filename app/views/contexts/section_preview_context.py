@@ -1,4 +1,4 @@
-from typing import Any, Mapping, Optional, Union
+from typing import Mapping, Optional, Union
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
