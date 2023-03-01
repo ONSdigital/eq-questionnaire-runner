@@ -65,7 +65,7 @@ describe("List Collector Driving Checkbox Question", () => {
       await $(ListCollectorTemporaryAwayPage.submit()).click();
 
       const householdMembersExpected = ["Suzy Clemens", "Christopher Pike"];
-      checkPeopleInList(householdMembersExpected, SummaryPage.peopleListLabel);
+      await checkPeopleInList(householdMembersExpected, SummaryPage.peopleListLabel);
     });
   });
 });
