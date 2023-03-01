@@ -34,7 +34,7 @@ class SectionPreviewContext(Context):
     def __call__(self) -> dict[str, dict]:
         return {"preview": self._build_preview()}
 
-    def _build_preview(self) -> dict[str, Union[str, dict, Any]]:
+    def _build_preview(self) -> list[dict]:
         # Type ignore: The section has to exist at this point
         section = self._placeholder_renderer.render(self._schema.get_section(self._section_id), None)  # type: ignore
 
