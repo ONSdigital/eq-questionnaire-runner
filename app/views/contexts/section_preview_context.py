@@ -31,7 +31,7 @@ class SectionPreviewContext(Context):
         )
         self._section_id = section_id
 
-    def __call__(self) -> dict[str, dict]:
+    def __call__(self) -> dict:
         return {"preview": self._build_preview()}
 
     def _build_preview(self) -> list[dict]:
