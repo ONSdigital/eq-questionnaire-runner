@@ -174,7 +174,7 @@ describe("Relationships", () => {
     });
 
     async function addThreePeopleAndCompleteRelationships() {
-     await addThreePeople();
+      await addThreePeople();
 
       await $(ListCollectorPage.no()).click();
       await $(ListCollectorPage.submit()).scrollIntoView();
