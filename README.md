@@ -1,7 +1,7 @@
 # eQ Questionnaire Runner
 
-![Build Status](https://github.com/ONSdigital/eq-questionnaire-runner/workflows/Master/badge.svg)
-[![codecov](https://codecov.io/gh/ONSdigital/eq-questionnaire-runner/branch/master/graph/badge.svg)](https://codecov.io/gh/ONSdigital/eq-questionnaire-runner/branch/master)
+![Build Status](https://github.com/ONSdigital/eq-questionnaire-runner/workflows/main/badge.svg)
+[![codecov](https://codecov.io/gh/ONSdigital/eq-questionnaire-runner/branch/main/graph/badge.svg)](https://codecov.io/gh/ONSdigital/eq-questionnaire-runner/branch/main)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4c39ddd3285748f8bfb6b70fd5aaf9cc)](https://www.codacy.com/manual/ONSDigital/eq-questionnaire-runner?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ONSdigital/eq-questionnaire-runner&amp;utm_campaign=Badge_Grade)
 
 ## Run with Docker

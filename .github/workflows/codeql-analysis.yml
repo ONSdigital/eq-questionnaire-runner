@@ -7,10 +7,10 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [master]
+    branches: [main]
   schedule:
     - cron: '0 15 * * 3'
 
@@ -47,7 +47,7 @@ jobs:
         # queries: ./path/to/local/query, your-org/your-repo/queries@main
         setup-python-dependencies: false
 
-    # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
+    # Autobuild attempts to build any compiled languages (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
     - name: Autobuild
       uses: github/codeql-action/autobuild@v2
