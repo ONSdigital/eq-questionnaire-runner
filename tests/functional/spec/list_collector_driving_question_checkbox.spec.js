@@ -35,7 +35,7 @@ describe("List Collector Driving Checkbox Question", () => {
       await $(ListCollectorTemporaryAwayPage.submit()).click();
 
       const householdMembersExpected = ["Marcus Twin (You)", "Suzy Clemens"];
-      checkPeopleInList(householdMembersExpected, SummaryPage.peopleListLabel);
+      await checkPeopleInList(householdMembersExpected, SummaryPage.peopleListLabel);
     });
   });
 
@@ -49,7 +49,7 @@ describe("List Collector Driving Checkbox Question", () => {
       await $(PrimaryPersonListCollectorPage.submit()).click();
 
       const householdMembersExpected = ["Suzy Clemens"];
-      checkPeopleInList(householdMembersExpected, SummaryPage.peopleListLabel);
+      await checkPeopleInList(householdMembersExpected, SummaryPage.peopleListLabel);
     });
   });
 
