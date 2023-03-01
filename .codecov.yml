@@ -10,5 +10,5 @@ coverage:
     changes:
       default: off
 codecov:
-  branch: master
+  branch: main
 comment: false
