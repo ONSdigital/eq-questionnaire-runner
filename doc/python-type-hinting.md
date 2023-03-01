@@ -7,7 +7,7 @@ As a team we have committed to adding type hints throughout the Python code. Thi
 Specify types for variables initialised with `None`:
 
 ```python
-description: Optional[str] = None
+description: var: str | None = None
 ```
 
 Specify types for empty collections:
@@ -16,8 +16,6 @@ Specify types for empty collections:
 items: list[str] = []
 mappings: dict[str, int] = {}
 ```
-
-In all other places, types for variables are optional.
 
 ## Standard collections
 
@@ -40,18 +38,16 @@ def get_objects_matching(ids: Sequence[str]) -> dict[int, dict]
 
 ## Optional arguments
 
-When `Optional` is used for function arguments, it means that the argument can have the value `None`, not that the argument is optional. 
-
-For arguments that can be a single type or `None`, use `Optional`:
+For arguments that can be a single type or None, use the shorthand `|` instead of using the older `Optional` keyword:
 
 ```python
-def test(self, var: Optional[int]) -> None:
+def test(self, var: None | int) -> None:
 ```
 
-For arguments that can be one of multiple types or `None`, use `Union` with `None`:
+For arguments that can be one of multiple types or None, use the shorthand `|` instead of using the older `Union` keyword:
 
 ```python
-def test(self, var: Union[None, int, str]) -> None:
+def test(self, var: None | int | str) -> None:
 ```
 
 ## Abstract vs concrete
@@ -64,21 +60,96 @@ def test(self, var: Union[None, int, str]) -> None:
         return [value + 1 for value in values]
 ```
 
-## Forward declarations
+## Self Type
 
-To reference a type before it has been declared e.g. using a class as a type within the class declaration, add the special `annotations` import:
+To annotate methods that return an instance of their class, use the `Self` type is as it is bound to it's encapsulating class. In the example below, the type checker will correctly infer the type of `Circle().set_scale(0.5)` to be `Circle`:
 
 ```python
-from __future__ import annotations
+from typing import Self
 
-class TestClass:
+class Shape:
+    def set_scale(self, scale: float) -> Self:
+        self.scale = scale
+        return self
 
-  def test(self, var: Sequence[TestClass]) -> None:
+
+class Circle(Shape):
+    def set_radius(self, radius: float) -> Self:
+        self.radius = radius
+        return self
 ```
 
-This import is not necessary in Python 3.10.
+This is recommended as forward declarations are now redundant in 3.10
+https://peps.python.org/pep-0673/
 
-https://www.python.org/dev/peps/pep-0563/
+## Type Alias
+
+Use the special annotation `TypeAlias` to declare type aliases more explicitly so type checkers are able to distinguish between type aliases and ordinary assignments:
+
+```python
+MyType: TypeAlias = "ClassName"
+def foo() -> MyType: ...
+```
+
+## Type Ignore
+
+To mark portions of the program that should not be covered by type hinting, use `# type: ignore` on the specific line. When used in a line by itself at the top of a file, it silences all errors in the file:
+
+```python
+# type: ignore
+```
+
+`# type: ignore` should only be used when unavoidable. Ensure that a comment is added to explain why it has been used and have a prefix of `Type ignore:`
+
+```python
+def format_number(number: int) -> str:
+    # Type ignore: babel.format_number is untyped therefore returns Any.
+    formatted_number: str = babel.format_number(number)  # type: ignore
+    return formatted_number
+```
+
+## ParamSpec
+
+Use to forward the parameter types of one callable to another callable.
+
+E.g. a basic logging function decorator:
+
+```python
+T = TypeVar('T')
+P = ParamSpec('P')
+
+def add_logging(f: Callable[P, T]) -> Callable[P, T]:
+    '''A type-safe decorator to add logging to a function.'''
+    def inner(*args: P.args, **kwargs: P.kwargs) -> T:
+        logging.info(f'{f.__name__} was called')
+        return f(*args, **kwargs)
+    return inner
+
+@add_logging
+def add_two(x: float, y: float) -> float:
+    '''Add two numbers together.'''
+    return x + y
+```
+
+## TypeVar
+
+Use `TypeVar` when the type returned by a function is the same as the type which was passed in:
+
+```python
+T = TypeVar('T')
+
+def increment_value(self, value: T) -> T:
+    return value + 1
+```
+
+`TypeVar` also accepts extra positional arguments to restrict the type parameter for improving code documentation and error prevention.
+
+```python
+T = TypeVar('T', int, float)
+
+def increment_value(self, value: T) -> T:
+    return value + 1
+```
 
 ## Useful links
 
