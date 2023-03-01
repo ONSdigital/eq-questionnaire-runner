@@ -59,7 +59,7 @@ class PreviewContext(Context):
                 section_id=section_id,
             )
 
-            yield from section_preview_context()["preview"]["sections"]
+            yield from section_preview_context()["preview"]
 
     @staticmethod
     def get_page_title() -> str:
