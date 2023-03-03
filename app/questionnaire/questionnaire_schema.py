@@ -388,15 +388,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             rules = self.get_operands(rules)
 
         for rule in rules:
-            if not isinstance(rule, Mapping):
-                continue
-
             # Old rules
-            if "list" in rule:
+            if isinstance(rule, Mapping) and "list" in rule:
                 return rule.get("list") == list_name
 
             # New rules
-            if "source" in rule:
+            if isinstance(rule, Mapping) and "source" in rule:
                 return (
                     rule.get("source") == "list" and rule.get("identifier") == list_name
                 )
@@ -420,9 +417,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             ignore_keys = ["question_variants", "content_variants"]
             when_rules = self.get_values_for_key(section, "when", ignore_keys)
 
-            rule: Union[Mapping, list] = next(when_rules, [])
-            if self._is_list_name_in_rule(rule, list_name):
-                section_ids.append(section["id"])
+            for when_rule in when_rules:
+                rule = when_rule["when"]
+
+                if self._is_list_name_in_rule(rule, list_name):
+                    section_ids.append(section["id"])
         return section_ids
 
     @staticmethod
@@ -852,8 +851,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             when_rules = self.get_values_for_key(section, "when")
             rules: Union[Mapping, list] = next(when_rules, [])
 
-            if rules_section_dependencies := self._get_rules_section_dependencies(
-                section["id"], rules
+            if isinstance(rules, Mapping) and (
+                rules_section_dependencies := self._get_rules_section_dependencies(
+                    section["id"], rules["when"]
+                )
             ):
                 self._when_rules_section_dependencies_by_section[
                     section["id"]

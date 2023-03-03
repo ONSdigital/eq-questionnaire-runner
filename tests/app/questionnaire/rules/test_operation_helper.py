@@ -23,7 +23,14 @@ def test_string_to_datetime(operation_helper):
         ("mandatory-radio-answer", "Google LTD", "Google LTD"),
     ],
 )
-def test_get_option_label_from_value(operation_helper, answer_id, value, expected):
+def test_get_option_label_from_value(
+    operation_helper, answer_id, value, expected, mocker
+):
+    mocker.patch(
+        "app.questionnaire.placeholder_parser.PlaceholderParser._get_block_ids_for_calculated_summary_dependencies",
+        return_value=[],
+    )
+
     actual = operation_helper.get_option_label_from_value(value, answer_id)
 
     assert actual == expected

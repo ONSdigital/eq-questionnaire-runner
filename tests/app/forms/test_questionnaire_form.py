@@ -1692,6 +1692,14 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
             metadata=get_metadata(),
             response_metadata={},
             schema=schema,
+            path_finder=PathFinder(
+                schema=schema,
+                metadata=get_metadata(),
+                response_metadata={},
+                progress_store=ProgressStore(),
+                answer_store=answer_store,
+                list_store=list_store,
+            ),
         )
         rendered_schema = renderer.render(
             data_to_render=question_schema, list_item_id=None

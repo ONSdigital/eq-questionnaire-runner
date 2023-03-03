@@ -489,8 +489,14 @@ def test_option_label_from_value_with_placeholder_label(
     expected,
     placeholder_renderer,
     option_label_from_value_schema,
+    mocker,
 ):
     label_renderer = placeholder_renderer
+
+    mocker.patch(
+        "app.questionnaire.placeholder_parser.PlaceholderParser._get_block_ids_for_calculated_summary_dependencies",
+        return_value=[],
+    )
 
     placeholder_transform = PlaceholderTransforms(
         language="en", schema=option_label_from_value_schema, renderer=label_renderer
