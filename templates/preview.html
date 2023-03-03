@@ -66,10 +66,20 @@
       {%- set itemList = [] -%}
       {%- for section in content.preview.sections -%}
         {%- if section["blocks"] | length -%}
+
+          {%- set section %}
+            {% for block in section["blocks"] %}
+              {% if 'question' in block %}
+                {% set question = block['question'] %}
+                {% include 'partials/preview-question.html' %}
+              {% endif %}
+            {% endfor %}
+          {%- endset -%}
+
           {%- set item = {
             "title": section.title,
             "id": section.id,
-            "content": "",
+            "content": item.content + section,
             "button": {
               "open": _('Show'),
               "close": _('Hide'),
@@ -81,17 +91,6 @@
               }
             }
           } -%}
-
-          {%- set section %}
-            {% for block in section["blocks"] %}
-              {% if 'question' in block %}
-                {% set question = block['question'] %}
-                {% include 'partials/preview-question.html' %}
-              {% endif %}
-            {% endfor %}
-          {%- endset -%}
-
-          {%- do item | setAttribute("content", item.content + section) -%}
 
           {%- do itemList.append(item) -%}
         {%- endif -%}
