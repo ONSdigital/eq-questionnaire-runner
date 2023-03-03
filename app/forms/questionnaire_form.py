@@ -459,12 +459,11 @@ def get_answer_fields(
     if section_id and "calculated_summary" in schema.get_values_for_key(
         question, "source"
     ):
-        block_ids = get_calculated_summary_block_dependencies(
+        block_ids = _get_block_ids_for_calculated_summary_dependencies(
             schema=schema,
+            location=location,
             path_finder=path_finder,
             progress_store=progress_store,
-            section_id=section_id,
-            list_item_id=list_item_id,
         )
 
     value_source_resolver = ValueSourceResolver(
@@ -629,34 +628,42 @@ def generate_form(
     )
 
 
-def get_calculated_summary_block_dependencies(
-    schema: QuestionnaireSchema,
-    path_finder: Optional[PathFinder],
-    progress_store: Optional[ProgressStore],
-    section_id: str,
-    list_item_id: Optional[str],
-) -> list[str]:
+def _get_block_ids_for_calculated_summary_dependencies(
+    progress_store, path_finder, location, schema
+):
+    if not progress_store or not path_finder:
+        raise ValueError("ProgressStore or PathFinder not set")
+
+    if not location:
+        return []
+
+    if block_id := location.block_id:
+        dependent_sections = (
+            schema.calculated_summary_section_dependencies_by_block.get(
+                location.section_id
+            )[block_id]
+        )
+    else:
+        dependencies_by_blocks = (
+            schema.calculated_summary_section_dependencies_by_block.get(
+                location.section_id
+            ).values()
+        )
+        dependent_sections = {
+            section
+            for dependents in dependencies_by_blocks
+            if dependents
+            for section in dependents
+        }
+
     block_dependencies: list = []
 
-    if (
-        path_finder
-        and progress_store
-        and (
-            section_dependencies := schema.calculated_summary_section_dependencies_by_block.get(
-                section_id
-            )
-        )
-    ):
-        for dependent_section in section_dependencies:
-            block_dependencies.extend(
-                iter(
-                    path_finder.routing_path(dependent_section, list_item_id)  # type: ignore
-                    or (
-                        dependent_section,
-                        list_item_id,
-                    )
-                    in progress_store.started_section_keys()
-                )
-            )
+    for dependent_section in dependent_sections:
+        if (
+            dependent_section,
+            None,
+        ) in progress_store.started_section_keys():
+            path = path_finder.routing_path(section_id=dependent_section, list_item_id=None)  # type: ignore
+            block_dependencies.extend(path)
 
     return block_dependencies

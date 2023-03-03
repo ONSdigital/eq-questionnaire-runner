@@ -9,6 +9,7 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
+from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.questionnaire.placeholder_renderer import (
     PlaceholderRenderer,
@@ -69,6 +70,14 @@ def parser(answer_store, location, mock_schema, mock_renderer):
         schema=mock_schema,
         location=location,
         renderer=mock_renderer,
+        path_finder=PathFinder(
+            schema=mock_schema,
+            answer_store=answer_store,
+            list_store=ListStore(),
+            progress_store=ProgressStore(),
+            metadata=get_metadata(),
+            response_metadata={},
+        ),
     )
 
 

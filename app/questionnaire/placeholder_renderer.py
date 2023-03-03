@@ -78,7 +78,6 @@ class PlaceholderRenderer:
         placeholder_data: MutableMapping[str, Any],
         list_item_id: Optional[str],
     ) -> str:
-
         placeholder_parser = PlaceholderParser(
             language=self._language,
             answer_store=self._answer_store,
@@ -136,4 +135,3 @@ class PlaceholderRenderer:
             set_pointer(data_to_render_mutable, pointer, rendered_text)
 
         return data_to_render_mutable
-
