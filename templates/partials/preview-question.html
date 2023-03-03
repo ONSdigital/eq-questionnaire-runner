@@ -32,14 +32,14 @@
   {% for answer in answers %}
 
     {%- if answer.guidance -%}
+      {% set contents = answer.guidance.contents %}
+      {% call onsPanel({
+        "id": "question-guidance-" ~ question.id,
+        "classes": "ons-u-mb-m"
+      }) %}
         {% set contents = answer.guidance.contents %}
-        {% call onsPanel({
-          "id": "question-guidance-" ~ question.id,
-          "classes": "ons-u-mb-m"
-        }) %}
-          {% set contents = answer.guidance.contents %}
-          {% include 'partials/contents.html' %}
-        {% endcall %}
+        {% include 'partials/contents.html' %}
+      {% endcall %}
     {% endif %}
 
     {%  if loop.last and question.type == "MutuallyExclusive" %}
