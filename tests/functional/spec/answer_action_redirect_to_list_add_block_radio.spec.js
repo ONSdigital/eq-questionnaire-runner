@@ -17,7 +17,7 @@ describe("Answer Action: Redirect To List Add Question (Radio)", () => {
     });
 
     it('When the user answers "Yes" then they should be taken to the list collector add question.', async () => {
-      browser.url(AnyoneUsuallyLiveAt.url());
+      await browser.url(AnyoneUsuallyLiveAt.url());
       await $(AnyoneUsuallyLiveAt.yes()).click();
       await $(AnyoneUsuallyLiveAt.submit()).click();
       await expect(await browser.getUrl()).to.contain(AnyoneLiveAtListCollectorAddPage.pageName);

@@ -17,7 +17,7 @@ describe("Answer Action: Redirect To List Add Question (Checkbox)", () => {
     });
 
     it('When the user selects "Yes" then they should be taken to the list collector add question.', async () => {
-      browser.url(AnyoneUsuallyLiveAt.url());
+      await browser.url(AnyoneUsuallyLiveAt.url());
       await $(AnyoneUsuallyLiveAt.iThinkSo()).click();
       await $(AnyoneUsuallyLiveAt.submit()).click();
       await expect(await browser.getUrl()).to.contain(AnyoneLiveAtListCollectorAddPage.pageName);
