@@ -271,11 +271,11 @@
                                         "mandatory": true,
                                         "description": "Select your answer",
                                         "guidance": {
-                                            "show_guidance": "Show more information",
-                                            "hide_guidance": "Show more information",
+                                            "show_guidance": "Additional guidance",
+                                            "hide_guidance": "Additional guidance",
                                             "contents": [
                                                 {
-                                                    "description": "You can only pick one answer"
+                                                    "description": "For example select `yes` if you can report for this period"
                                                 }
                                             ]
                                         },

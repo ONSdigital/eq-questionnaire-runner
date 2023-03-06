@@ -31,16 +31,6 @@
 
   {% for answer in answers %}
 
-    {% if answer.guidance %}
-      {% with answer_guidance = {
-        'id': answer.id,
-        'label': answer.label,
-        'schema_item': answer.guidance
-      } %}
-        {% include 'partials/answer-guidance.html' %}
-      {% endwith %}
-    {% endif %}
-
     {%  if loop.last and question.type == "MutuallyExclusive" %}
       <p><strong>{{ _("Or") }}</strong></p>
     {%  endif %}
@@ -74,6 +64,16 @@
         <p>{{ _("{max_characters} characters can be added.").format(max_characters = answer.max_length) }}</p>
       {% endif %}
     {%  endif %}
+
+    {% if answer.guidance %}
+      {% with answer_guidance = {
+        'id': answer.id,
+        'label': answer.label,
+        'schema_item': answer.guidance
+      } %}
+        {% include 'partials/answer-guidance.html' %}
+      {% endwith %}
+    {% endif %}
 
   {% endfor %}
 
