@@ -67,7 +67,7 @@
       {%- for section in content.preview.sections -%}
         {%- if section["blocks"] | length -%}
 
-          {%- set section %}
+          {%- set sectionContent %}
             {% for block in section["blocks"] %}
               {% if 'question' in block %}
                 {% set question = block['question'] %}
@@ -79,7 +79,6 @@
           {%- set item = {
             "title": section.title,
             "id": section.id,
-            "content": item.content + section,
             "button": {
               "open": _('Show'),
               "close": _('Hide'),
@@ -91,7 +90,7 @@
               }
             }
           } -%}
-
+          {%- do item | setAttribute("content", sectionContent) -%}
           {%- do itemList.append(item) -%}
         {%- endif -%}
       {%- endfor -%}
@@ -116,7 +115,7 @@
     {%- else %}
       {%- for section in content.preview.sections if section.blocks -%}
         <div class="ons-summary__group">
-          <h2 class="ons-summary__group-title">{{ section.title}}</h2>
+          <h2 class="ons-summary__group-title">{{ section.title }}</h2>
           {% for block in section["blocks"] %}
             {% if 'question' in block %}
               {% set question = block['question'] %}
