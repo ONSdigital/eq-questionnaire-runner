@@ -8,6 +8,8 @@ describe("Introduction preview questions", () => {
   const previewSummaryContent = "#summary-accordion-1-content";
   const previewSectionTitle = ".ons-summary__group-title";
   const previewQuestion = ".ons-summary__item";
+  const printButton = 'button[data-qa="btn-print"]';
+  const pdfButton = 'a[data-qa="btn-pdf"]';
 
   it("Given I start a survey, When I view the preview page, Then all preview elements should be visible", () => {
     browser.openQuestionnaire(introductionSchemaLinear);
@@ -18,17 +20,21 @@ describe("Introduction preview questions", () => {
     expect($(previewQuestion).$("h3").getText()).to.equal("Are you able to report for the calendar month 1 January 2017 to 1 February 2017?");
     expect($(previewQuestion).$(".ons-question__description").getText()).to.equal("Your return should relate to the calendar year 2016.");
     expect($(previewQuestion).$$(".ons-panel__body")[0].getText()).to.equal("Please provide figures for the period in which you were trading.");
+    expect($(showButton).length).to.be.undefined;
+    expect($(printButton).isClickable()).to.be.true;
+    expect($(pdfButton).isClickable()).to.be.true;
     $(".ons-details__heading").click();
     expect($(previewQuestion).$("#answer-guidance--content div p").getText()).to.equal("For example select `yes` if you can report for this period");
     expect($(previewQuestion).$$("p")[2].getText()).to.equal("You can answer with one of the following options:");
     expect($(previewQuestion).$$("p")[3].getText()).to.equal("Select your answer");
     expect($(previewQuestion).$$("ul")[0].getText()).to.equal("Yes\nNo");
-    expect($(showButton).length).to.be.undefined;
   });
   it("Given I start a survey, When I view the preview page of hub flow schema, Then the twisty button should read 'Show all' and answers should be invisible", () => {
     browser.openQuestionnaire(introductionSchema);
     $(IntroductionPage.previewQuestions()).click();
     expect(browser.getUrl()).to.contain("questionnaire/preview");
+    expect($(printButton).isClickable()).to.be.true;
+    expect($(pdfButton).isClickable()).to.be.true;
     expect($(showButton).getText()).to.equal("Show all");
     expect($(previewSummaryContent).isClickable()).to.be.false;
     it("and if the twisty button is clicked, Then the twisty button should read 'Hide all' and the answers should be visible", () => {
