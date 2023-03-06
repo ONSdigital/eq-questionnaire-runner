@@ -22,6 +22,15 @@
   ]
 } %}
 
+{% macro preview_blocks_for_sections(blocks) -%}
+  {% for block in blocks %}
+    {% if 'question' in block %}
+      {% set question = block['question'] %}
+      {% include 'partials/preview-question.html' %}
+    {% endif %}
+  {% endfor %}
+{%- endmacro %}
+
 {% block main %}
 
   <h1 class="ons-u-mt-m">{{ _("Preview of the questions in this survey") }}</h1>
@@ -64,35 +73,26 @@
 
     {%- if content.preview.sections | length > 1 -%}
       {%- set itemList = [] -%}
-      {%- for section in content.preview.sections -%}
-        {%- if section["blocks"] | length -%}
-
-          {%- set sectionContent %}
-            {% for block in section["blocks"] %}
-              {% if 'question' in block %}
-                {% set question = block['question'] %}
-                {% include 'partials/preview-question.html' %}
-              {% endif %}
-            {% endfor %}
-          {%- endset -%}
-
-          {%- set item = {
-            "title": section.title,
-            "id": section.id,
-            "button": {
-              "open": _('Show'),
-              "close": _('Hide'),
-              "attributes": {
-                "data-ga": "click",
-                "data-ga-category": "Preview Survey",
-                "data-ga-action": "Open panel",
-                "data-ga-label": section.title
-              }
+      {%- for section in content.preview.sections if section.blocks -%}
+        {%- set item = {
+          "title": section.title,
+          "id": section.id,
+          "button": {
+            "open": _('Show'),
+            "close": _('Hide'),
+            "attributes": {
+              "data-ga": "click",
+              "data-ga-category": "Preview Survey",
+              "data-ga-action": "Open panel",
+              "data-ga-label": section.title
             }
-          } -%}
-          {%- do item | setAttribute("content", sectionContent) -%}
-          {%- do itemList.append(item) -%}
-        {%- endif -%}
+          }
+        } -%}
+
+        {%- set block_previews = preview_blocks_for_sections(blocks=section["blocks"]) -%}
+        {%- do item | setAttribute("content", block_previews) -%}
+
+        {%- do itemList.append(item) -%}
       {%- endfor -%}
 
       {{
@@ -116,12 +116,7 @@
       {%- for section in content.preview.sections if section.blocks -%}
         <div class="ons-summary__group">
           <h2 class="ons-summary__group-title">{{ section.title }}</h2>
-          {% for block in section["blocks"] %}
-            {% if 'question' in block %}
-              {% set question = block['question'] %}
-              {% include 'partials/preview-question.html' %}
-            {% endif %}
-          {% endfor %}
+          {{ preview_blocks_for_sections(blocks=section["blocks"]) }}
         </div>
       {%- endfor -%}
     {%- endif -%}
