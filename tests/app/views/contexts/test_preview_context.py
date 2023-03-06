@@ -61,11 +61,11 @@ def test_build_preview_context(
                                     "guidance": {
                                         "contents": [
                                             {
-                                                "description": "You can only pick one answer"
+                                                "description": "For example select `yes` if you can report for this period"
                                             }
                                         ],
-                                        "hide_guidance": "Show more information",
-                                        "show_guidance": "Show more information",
+                                        "hide_guidance": "Additional guidance",
+                                        "show_guidance": "Additional guidance",
                                     },
                                     "options": ["Yes", "No"],
                                     "options_text": lazy_gettext(
@@ -74,7 +74,7 @@ def test_build_preview_context(
                                 }
                             ],
                             "descriptions": [
-                                "<p>Your return should relate to the calendar year 2021.</p>"
+                                "<p>Your return should relate to the calendar year 2016.</p>"
                             ],
                             "guidance": {
                                 "contents": [

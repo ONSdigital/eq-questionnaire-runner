@@ -23,6 +23,7 @@ describe("Introduction preview questions", () => {
     expect($(previewQuestion).$$("p")[2].getText()).to.equal("You can answer with one of the following options:");
     expect($(previewQuestion).$$("p")[3].getText()).to.equal("Select your answer");
     expect($(previewQuestion).$$("ul")[0].getText()).to.equal("Yes\nNo");
+    expect($(showButton).length).to.be.undefined;
   });
   it("Given I start a survey, When I view the preview page of hub flow schema, Then the twisty button should read 'Show all' and answers should be invisible", () => {
     browser.openQuestionnaire(introductionSchema);
@@ -30,7 +31,7 @@ describe("Introduction preview questions", () => {
     expect(browser.getUrl()).to.contain("questionnaire/preview");
     expect($(showButton).getText()).to.equal("Show all");
     expect($(previewSummaryContent).isClickable()).to.be.false;
-    it("and click the twisty button, Then the twisty button should read 'Hide all' and the answers should be visible", () => {
+    it("and if the twisty button is clicked, Then the twisty button should read 'Hide all' and the answers should be visible", () => {
       $(showButton).click();
       expect($(showButton).getText()).to.equal("Hide all");
       expect($(previewSummaryContent).isClickable()).to.be.true;
