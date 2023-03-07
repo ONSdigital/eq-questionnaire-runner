@@ -1,6 +1,7 @@
+# pylint: disable=too-many-lines
+import pytest
 from mock import Mock
 
-import pytest
 from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
