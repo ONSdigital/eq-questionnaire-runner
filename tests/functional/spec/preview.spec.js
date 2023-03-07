@@ -48,7 +48,7 @@ describe("Introduction preview questions", () => {
     $(IntroductionPageLinear.previewQuestions()).click();
     expect(browser.getUrl()).to.contain("questionnaire/preview");
     expect($(previewSectionTitle).getText()).to.equal("Main section");
-    // expect($(previewQuestion).$$("h3")[2].getText()).to.equal("Are you sure you are able to report for the calendar month start_date to end_date?");
+    expect($$(previewQuestion)[2].$("h3").getText()).to.equal("Are you sure you are able to report for the calendar month start_date to end_date?");
   });
 
   it("Given I start a survey, When I view the preview page of hub flow schema, Then the twisty button should read 'Show all' and answers should be invisible", () => {
