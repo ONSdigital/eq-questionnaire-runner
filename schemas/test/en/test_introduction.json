@@ -332,37 +332,69 @@
                             }
                         },
                         {
-                            "id": "start-date",
                             "type": "Question",
+                            "id": "reporting-date",
                             "question": {
-                                "id": "start-date-question",
-                                "title": "Please provide optional start date",
-                                "type": "General",
+                                "id": "projects-checkbox-question",
+                                "title": "What dates will you be reporting for?",
+                                "description": ["<p>If figures are not available for the calendar year 2021, your return should relate to a 12 month business year that ends between 6 April 2021 and 5 April 2022.</p>"],
+                                "type": "DateRange",
                                 "answers": [
                                     {
-                                        "id": "start-date-answer",
-                                        "mandatory": false,
+                                        "id": "answerfrom",
                                         "type": "Date",
-                                        "label": "Start date"
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "id": "end-date",
-                            "type": "Question",
-                            "question": {
-                                "id": "end-date-question",
-                                "title": "Please provide optional end date",
-                                "type": "General",
-                                "answers": [
+                                        "mandatory": true,
+                                        "label": "Period from",
+                                        "q_code": "11",
+                                        "minimum": {
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ref_p_start_date"
+                                            },
+                                            "offset_by": {
+                                                "days": -31
+                                            }
+                                        }
+                                    },
                                     {
-                                        "id": "end-date-answer",
-                                        "mandatory": false,
+                                        "id": "answerto",
                                         "type": "Date",
-                                        "label": "End date"
+                                        "mandatory": true,
+                                        "label": "Period to",
+                                        "q_code": "12",
+                                        "maximum": {
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ref_p_end_date"
+                                            },
+                                            "offset_by": {
+                                                "days": 31
+                                            }
+                                        }
                                     }
-                                ]
+                                ],
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "<p><strong>Only traded for a part of the year?</strong></p>"
+                                        },
+                                        {
+                                            "description": "<p>Please provide figures for the period in which you were trading.</p>"
+                                        },
+                                        {
+                                            "description": "<p><strong>Only commenced trading during 2021?</strong></p>"
+                                        },
+                                        {
+                                            "description": "<p>Your return should cover the period from the commencement of your business until 31 December 2021 or, alternatively, any date up to 5 April 2022.</p>"
+                                        },
+                                        {
+                                            "description": "<p><strong>Ceased trading during 2021?</strong></p>"
+                                        },
+                                        {
+                                            "description": "<p>Your return should cover the period 1 January 2021 to the date you ceased to trade or, alternatively, from the beginning of your last business year up to the cessation date.</p>"
+                                        }
+                                    ]
+                                }
                             }
                         },
                         {
