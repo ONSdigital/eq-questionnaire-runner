@@ -7,11 +7,11 @@
 
   <h3 class="ons-u-mt-m ons-u-fs-r--b">{{ question.title }}</h3>
 
-  {% set answers_length = answers|length %}
+  {% set answers_length = answers | length %}
 
   {% if question.descriptions %}
     {% set descriptions = question.descriptions %}
-    {% set descriptions_length = descriptions|length %}
+    {% set descriptions_length = descriptions | length %}
 
     {% for description in descriptions %}
       <div class="ons-question__description ons-u-mb-m">{{- description | safe -}}</div>

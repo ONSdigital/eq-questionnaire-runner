@@ -10,6 +10,8 @@ describe("Introduction preview questions", () => {
   const previewQuestion = ".ons-summary__item";
   const printButton = 'button[data-qa="btn-print"]';
   const pdfButton = 'a[data-qa="btn-pdf"]';
+  const detailsHeading = ".ons-details__heading";
+  const startSurveyButton = ".qa-btn-get-started";
 
   it("Given I start a survey, When I view the preview page, Then all preview elements should be visible", () => {
     browser.openQuestionnaire(introductionSchemaLinear);
@@ -23,11 +25,32 @@ describe("Introduction preview questions", () => {
     expect($(showButton).length).to.be.undefined;
     expect($(printButton).isClickable()).to.be.true;
     expect($(pdfButton).isClickable()).to.be.true;
-    $(".ons-details__heading").click();
+    $(detailsHeading).click();
     expect($(previewQuestion).$("#answer-guidance--content div p").getText()).to.equal("For example select `yes` if you can report for this period");
     expect($(previewQuestion).$$("p")[2].getText()).to.equal("You can answer with one of the following options:");
     expect($(previewQuestion).$$("ul")[0].getText()).to.equal("Yes\nNo");
   });
+
+  it("Given I complete some of a survey and the piped answers should be being populated, Then preview answers should still be showing placeholders", () => {
+    browser.openQuestionnaire(introductionSchemaLinear);
+    $(startSurveyButton).click();
+    $("#report-radio-answer-1").click();
+    $('button[data-qa="btn-submit"]').click();
+    $("#answer-from-day").setValue(5);
+    $("#answer-from-month").setValue(12);
+    $("#answer-from-year").setValue(2016);
+    $("#answer-to-day").setValue(20);
+    $("#answer-to-month").setValue(12);
+    $("#answer-to-year").setValue(2016);
+    $('button[data-qa="btn-submit"]').click();
+    expect($("h1").getText()).to.equal("Are you sure you are able to report for the calendar month 5 December 2016 to 20 December 2016?");
+    browser.url("questionnaire/introduction/");
+    $(IntroductionPageLinear.previewQuestions()).click();
+    expect(browser.getUrl()).to.contain("questionnaire/preview");
+    expect($(previewSectionTitle).getText()).to.equal("Main section");
+    // expect($(previewQuestion).$$("h3")[2].getText()).to.equal("Are you sure you are able to report for the calendar month start_date to end_date?");
+  });
+
   it("Given I start a survey, When I view the preview page of hub flow schema, Then the twisty button should read 'Show all' and answers should be invisible", () => {
     browser.openQuestionnaire(introductionSchema);
     $(IntroductionPage.previewQuestions()).click();
