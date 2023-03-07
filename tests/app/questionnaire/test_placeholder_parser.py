@@ -1,5 +1,6 @@
 from mock import Mock
 
+import pytest
 from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
@@ -1175,3 +1176,31 @@ def test_placeholder_default_value(default_placeholder_value_schema, mock_render
 
     placeholders = parser(placeholder_list)
     assert placeholders["answer_employee"] == "0"
+
+
+def test_parser_with_no_path_finder_raises_error(mock_renderer):
+    placeholder_list = [
+        {
+            "placeholder": "period",
+            "value": {
+                "source": "metadata",
+                "identifier": "period_str",
+            },
+        }
+    ]
+
+    period_str = "Aug 2018"
+
+    metadata = get_metadata({"period_str": period_str})
+    parser = PlaceholderParser(
+        language="en",
+        answer_store=AnswerStore(),
+        list_store=ListStore(),
+        metadata=metadata,
+        response_metadata={},
+        schema=QuestionnaireSchema({}),
+        renderer=mock_renderer,
+    )
+
+    with pytest.raises(ValueError):
+        parser(placeholder_list)
