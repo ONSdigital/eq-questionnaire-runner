@@ -200,14 +200,7 @@ class PlaceholderParser:
                 dependent_section,
                 None,
             ) in self._path_finder.progress_store.started_section_keys():
-                key = dependent_section, None
-
-                if not self._routing_paths.get(key):
-                    path = self._path_finder.routing_path(
-                        section_id=key[0], list_item_id=key[1]
-                    )
-                    self._routing_paths[key] = path.block_ids
-                    block_dependencies.extend(path.block_ids)
+                self.set_block_dependencies(block_dependencies, dependent_section)
 
             if (
                 self._location.list_item_id
@@ -217,13 +210,25 @@ class PlaceholderParser:
                 )
                 in self._path_finder.progress_store.started_section_keys()
             ):
-                key = dependent_section, self._location.list_item_id  # type: ignore
-
-                if not self._routing_paths.get(key):
-                    path = self._path_finder.routing_path(
-                        section_id=key[0], list_item_id=key[1]
-                    )
-                    self._routing_paths[key] = path.block_ids
-                    block_dependencies.extend(path.block_ids)
+                self.set_block_dependencies(
+                    block_dependencies,
+                    dependent_section,
+                    self._location.list_item_id,
+                )
 
         return block_dependencies
+
+    def set_block_dependencies(
+        self,
+        block_dependencies: list,
+        dependent_section: str,
+        list_item_id: Optional[str] = None,
+    ) -> None:
+        key = dependent_section, list_item_id  # type: ignore
+
+        if not self._routing_paths.get(key):
+            path = self._path_finder.routing_path(  # type: ignore
+                section_id=key[0], list_item_id=key[1]
+            )
+            self._routing_paths[key] = path.block_ids
+            block_dependencies.extend(path.block_ids)
