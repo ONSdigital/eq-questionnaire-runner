@@ -347,7 +347,6 @@
                                         "type": "Date",
                                         "mandatory": true,
                                         "label": "Period from",
-                                        "q_code": "11",
                                         "minimum": {
                                             "value": {
                                                 "source": "metadata",
@@ -363,7 +362,6 @@
                                         "type": "Date",
                                         "mandatory": true,
                                         "label": "Period to",
-                                        "q_code": "12",
                                         "maximum": {
                                             "value": {
                                                 "source": "metadata",
@@ -505,7 +503,7 @@
                                         "type": "Checkbox"
                                     }
                                 ],
-                                "id": "projects-checkbox-question",
+                                "id": "projects-checkbox-question-2",
                                 "title": {
                                     "text": "Which sector did {ru_name} carry out work for?",
                                     "placeholders": [
