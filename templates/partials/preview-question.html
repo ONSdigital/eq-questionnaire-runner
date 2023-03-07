@@ -53,6 +53,9 @@
       {% if answer.label %}
         {% set label = answer.label %}
         <p><strong>{{- label | safe -}}</strong></p>
+        {% if question.type == "DateRange" %}
+          <p data-qa = "question-type">{{ question.type }}</p>
+        {% endif %}
       {% endif %}
       {% if answer.max_length %}
         <p>{{ _("{max_characters} characters can be added.").format(max_characters = answer.max_length) }}</p>

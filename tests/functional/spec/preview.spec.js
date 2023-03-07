@@ -1,5 +1,6 @@
 import IntroductionPage from "../generated_pages/introduction_hub/introduction.page";
 import IntroductionPageLinear from "../generated_pages/introduction/introduction.page";
+import { expect } from "chai";
 
 describe("Introduction preview questions", () => {
   const introductionSchema = "test_introduction_hub.json";
@@ -29,6 +30,7 @@ describe("Introduction preview questions", () => {
     expect($(previewQuestion).$("#answer-guidance--content div p").getText()).to.equal("For example select `yes` if you can report for this period");
     expect($(previewQuestion).$$("p")[2].getText()).to.equal("You can answer with one of the following options:");
     expect($(previewQuestion).$$("ul")[0].getText()).to.equal("Yes\nNo");
+    expect($('p[data-qa="question-type"]').getText()).to.equal("DateRange");
   });
 
   it("Given I complete some of a survey and the piped answers should be being populated, Then preview answers should still be showing placeholders", () => {
