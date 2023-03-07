@@ -128,8 +128,7 @@ def test_routing_path_with_complete_introduction(answer_store, list_store):
         [
             "introduction",
             "report-radio",
-            "start-date",
-            "end-date",
+            "reporting-date",
             "report-radio-second",
             "projects-checkbox",
             "turnover-variants-block",
