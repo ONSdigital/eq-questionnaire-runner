@@ -31,34 +31,28 @@
 
   {% for answer in answers %}
 
-    {%  if loop.last and question.type == "MutuallyExclusive" %}
+    {% if loop.last and question.type == "MutuallyExclusive" %}
       <p><strong>{{ _("Or") }}</strong></p>
-    {%  endif %}
+    {% endif %}
 
-    {%  if not loop.last or (answer.options and answers_length == 1) %}
+    {% if not loop.last or (answer.options and answers_length == 1) %}
       <p>{{ answer.options_text }}</p>
     {%  endif %}
 
-    {%  if answer.options %}
+    {% if answer.options %}
       {% if answer.label %}
         {% set label = answer.label %}
         <p><strong>{{- label | safe -}}</strong></p>
-      {% endif %}
-      {% if answer.description %}
-        <p>{{- answer.description | safe -}}</p>
       {% endif %}
       <ul>
         {% for option in answer.options %}
           <li>{{ option }}</li>
         {% endfor %}
       </ul>
-    {%  else %}
+    {% else %}
       {% if answer.label %}
         {% set label = answer.label %}
         <p><strong>{{- label | safe -}}</strong></p>
-      {% endif %}
-      {% if answer.description %}
-        <p>{{- answer.description | safe -}}</p>
       {% endif %}
       {% if answer.max_length %}
         <p>{{ _("{max_characters} characters can be added.").format(max_characters = answer.max_length) }}</p>
