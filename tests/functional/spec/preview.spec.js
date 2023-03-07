@@ -13,6 +13,15 @@ describe("Introduction preview questions", () => {
   const pdfButton = 'a[data-qa="btn-pdf"]';
   const detailsHeading = ".ons-details__heading";
   const startSurveyButton = ".qa-btn-get-started";
+  const dateQuestionType = '[data-qa="question-type"]';
+  const noRadio = "#report-radio-answer-1";
+  const submitButton = 'button[data-qa="btn-submit"]';
+  const answerFromDay = "#answer-from-day";
+  const answerFromMonth = "#answer-from-month";
+  const answerFromYear = "#answer-from-year";
+  const answerToDay = "#answer-to-day";
+  const answerToMonth = "#answer-to-month";
+  const answerToYear = "#answer-to-year";
 
   it("Given I start a survey, When I view the preview page, Then all preview elements should be visible", () => {
     browser.openQuestionnaire(introductionSchemaLinear);
@@ -30,21 +39,21 @@ describe("Introduction preview questions", () => {
     expect($(previewQuestion).$("#answer-guidance--content div p").getText()).to.equal("For example select `yes` if you can report for this period");
     expect($(previewQuestion).$$("p")[2].getText()).to.equal("You can answer with one of the following options:");
     expect($(previewQuestion).$$("ul")[0].getText()).to.equal("Yes\nNo");
-    expect($('p[data-qa="question-type"]').getText()).to.equal("DateRange");
+    expect($(dateQuestionType).getText()).to.equal("DateRange");
   });
 
   it("Given I complete some of a survey and the piped answers should be being populated, Then preview answers should still be showing placeholders", () => {
     browser.openQuestionnaire(introductionSchemaLinear);
     $(startSurveyButton).click();
-    $("#report-radio-answer-1").click();
-    $('button[data-qa="btn-submit"]').click();
-    $("#answer-from-day").setValue(5);
-    $("#answer-from-month").setValue(12);
-    $("#answer-from-year").setValue(2016);
-    $("#answer-to-day").setValue(20);
-    $("#answer-to-month").setValue(12);
-    $("#answer-to-year").setValue(2016);
-    $('button[data-qa="btn-submit"]').click();
+    $(noRadio).click();
+    $(submitButton).click();
+    $(answerFromDay).setValue(5);
+    $(answerFromMonth).setValue(12);
+    $(answerFromYear).setValue(2016);
+    $(answerToDay).setValue(20);
+    $(answerToMonth).setValue(12);
+    $(answerToYear).setValue(2016);
+    $(submitButton).click();
     expect($("h1").getText()).to.equal("Are you sure you are able to report for the calendar month 5 December 2016 to 20 December 2016?");
     browser.url("questionnaire/introduction/");
     $(IntroductionPageLinear.previewQuestions()).click();
