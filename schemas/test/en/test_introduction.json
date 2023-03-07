@@ -294,10 +294,10 @@
                                 ],
                                 "id": "report-radio-question",
                                 "title": {
-                                    "text": "Are you able to report for the calendar month {ref_p_start_date} to {ref_p_end_date}?",
+                                    "text": "Are you able to report for the calendar month {start_date} to {end_date}?",
                                     "placeholders": [
                                         {
-                                            "placeholder": "ref_p_start_date",
+                                            "placeholder": "start_date",
                                             "transforms": [
                                                 {
                                                     "transform": "format_date",
@@ -312,7 +312,7 @@
                                             ]
                                         },
                                         {
-                                            "placeholder": "ref_p_end_date",
+                                            "placeholder": "end_date",
                                             "transforms": [
                                                 {
                                                     "transform": "format_date",
@@ -422,10 +422,10 @@
                                 ],
                                 "id": "report-radio-second-question",
                                 "title": {
-                                    "text": "Are you sure you are able to report for the calendar month {ref_p_start_date} to {ref_p_end_date}?",
+                                    "text": "Are you sure you are able to report for the calendar month {start_date} to {end_date}?",
                                     "placeholders": [
                                         {
-                                            "placeholder": "ref_p_start_date",
+                                            "placeholder": "start_date",
                                             "transforms": [
                                                 {
                                                     "transform": "first_non_empty_item",
@@ -454,7 +454,7 @@
                                             ]
                                         },
                                         {
-                                            "placeholder": "ref_p_end_date",
+                                            "placeholder": "end_date",
                                             "transforms": [
                                                 {
                                                     "transform": "first_non_empty_item",
