@@ -1,4 +1,4 @@
-from collections import defaultdict, OrderedDict
+from collections import OrderedDict, defaultdict
 from copy import deepcopy
 from dataclasses import dataclass
 from functools import cached_property
@@ -58,7 +58,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         )
         self._when_rules_section_dependencies_by_section: dict[str, set[str]] = {}
         self.calculated_summary_section_dependencies_by_block: OrderedDict[
-            OrderedDict
+            str, dict[str, set[str]]
         ] = OrderedDict()
         self._when_rules_section_dependencies_by_answer: dict[
             str, set[str]
@@ -943,15 +943,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 block = self.get_block_for_answer_id(answer_id)  # type: ignore
                 section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
 
-                section_dependencies.add(section_id)
+                if section_id:
+                    section_dependencies.add(section_id)
 
         if section_dependency := self.calculated_summary_section_dependencies_by_block.get(
             current_section_id
         ):
-            if section_dependency.get(current_block_id):
-                section_dependency[current_block_id].update(section_dependencies)
-            else:
-                section_dependency[current_block_id] = section_dependencies
+            section_dependency[current_block_id] = section_dependencies
         else:
             self.calculated_summary_section_dependencies_by_block[
                 current_section_id

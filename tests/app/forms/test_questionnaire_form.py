@@ -29,11 +29,16 @@ def error_exists(answer_id, msg, mapped_errors):
     )
 
 
-def test_form_ids_match_block_answer_ids(app, answer_store, list_store):
+def test_form_ids_match_block_answer_ids(app, answer_store, list_store, mocker):
     with app.test_request_context():
         schema = load_schema_from_name("test_textfield")
 
         question_schema = schema.get_block("name-block").get("question")
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
 
         form = generate_form(
             schema,
@@ -48,7 +53,7 @@ def test_form_ids_match_block_answer_ids(app, answer_store, list_store):
             assert hasattr(form, answer_id)
 
 
-def test_form_date_range_populates_data(app, answer_store, list_store):
+def test_form_date_range_populates_data(app, answer_store, list_store, mocker):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_range")
 
@@ -70,6 +75,12 @@ def test_form_date_range_populates_data(app, answer_store, list_store):
             "date-range-from-answer": "2016-03-01",
             "date-range-to-answer": "2016-03-31",
         }
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -83,7 +94,9 @@ def test_form_date_range_populates_data(app, answer_store, list_store):
         assert form.data == expected_form_data
 
 
-def test_date_range_matching_dates_raises_question_error(app, answer_store, list_store):
+def test_date_range_matching_dates_raises_question_error(
+    app, answer_store, list_store, mocker
+):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_range")
 
@@ -105,6 +118,12 @@ def test_date_range_matching_dates_raises_question_error(app, answer_store, list
             "date-range-from-answer": "2016-12-25",
             "date-range-to-answer": "2016-12-25",
         }
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -124,7 +143,7 @@ def test_date_range_matching_dates_raises_question_error(app, answer_store, list
 
 
 def test_date_range_to_precedes_from_raises_question_error(
-    app, answer_store, list_store
+    app, answer_store, list_store, mocker
 ):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_range")
@@ -148,6 +167,11 @@ def test_date_range_to_precedes_from_raises_question_error(
             "date-range-to-answer": "2016-12-24",
         }
 
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -167,7 +191,7 @@ def test_date_range_to_precedes_from_raises_question_error(
 
 
 def test_date_range_too_large_period_raises_question_error(
-    app, answer_store, list_store
+    app, answer_store, list_store, mocker
 ):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_range")
@@ -190,6 +214,12 @@ def test_date_range_too_large_period_raises_question_error(
             "date-range-from": "2016-12-25",
             "date-range-to": "2017-12-24",
         }
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -208,7 +238,7 @@ def test_date_range_too_large_period_raises_question_error(
 
 
 def test_date_range_too_small_period_raises_question_error(
-    app, answer_store, list_store
+    app, answer_store, list_store, mocker
 ):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_range")
@@ -231,6 +261,12 @@ def test_date_range_too_small_period_raises_question_error(
             "date-range-from": "2016-12-25",
             "date-range-to": "2016-12-26",
         }
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -248,7 +284,7 @@ def test_date_range_too_small_period_raises_question_error(
         ] % {"min": "23 days"}
 
 
-def test_date_range_valid_period(app, answer_store, list_store):
+def test_date_range_valid_period(app, answer_store, list_store, mocker):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_range")
 
@@ -270,6 +306,12 @@ def test_date_range_valid_period(app, answer_store, list_store):
             "date-range-from": "2016-12-25",
             "date-range-to": "2017-01-26",
         }
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -284,7 +326,7 @@ def test_date_range_valid_period(app, answer_store, list_store):
         assert form.data == expected_form_data
 
 
-def test_date_combined_single_validation(app, answer_store, list_store):
+def test_date_combined_single_validation(app, answer_store, list_store, mocker):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_combined")
 
@@ -315,6 +357,12 @@ def test_date_combined_single_validation(app, answer_store, list_store):
             "date-range-from": "2017-01-01",
             "date-range-to": "2017-03-14",
         }
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -336,7 +384,9 @@ def test_date_combined_single_validation(app, answer_store, list_store):
         ] % {"max": "14 March 2017"}
 
 
-def test_date_combined_range_too_small_validation(app, answer_store, list_store):
+def test_date_combined_range_too_small_validation(
+    app, answer_store, list_store, mocker
+):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_combined")
 
@@ -365,6 +415,12 @@ def test_date_combined_range_too_small_validation(app, answer_store, list_store)
             "date-range-from": "2017-01-01",
             "date-range-to": "2017-01-10",
         }
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -382,7 +438,9 @@ def test_date_combined_range_too_small_validation(app, answer_store, list_store)
         ] % {"min": "10 days"}
 
 
-def test_date_combined_range_too_large_validation(app, answer_store, list_store):
+def test_date_combined_range_too_large_validation(
+    app, answer_store, list_store, mocker
+):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_combined")
 
@@ -413,6 +471,12 @@ def test_date_combined_range_too_large_validation(app, answer_store, list_store)
             "date-range-from": "2017-01-01",
             "date-range-to": "2017-02-21",
         }
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -430,7 +494,7 @@ def test_date_combined_range_too_large_validation(app, answer_store, list_store)
         ] % {"max": "50 days"}
 
 
-def test_date_mm_yyyy_combined_single_validation(app, answer_store, list_store):
+def test_date_mm_yyyy_combined_single_validation(app, answer_store, list_store, mocker):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_mm_yyyy_combined")
 
@@ -459,6 +523,12 @@ def test_date_mm_yyyy_combined_single_validation(app, answer_store, list_store):
             "date-range-from": "2016-11",
             "date-range-to": "2017-06",
         }
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -481,7 +551,7 @@ def test_date_mm_yyyy_combined_single_validation(app, answer_store, list_store):
 
 
 def test_date_mm_yyyy_combined_range_too_small_validation(
-    app, answer_store, list_store
+    app, answer_store, list_store, mocker
 ):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_mm_yyyy_combined")
@@ -509,6 +579,12 @@ def test_date_mm_yyyy_combined_range_too_small_validation(
             "date-range-from": "2017-01",
             "date-range-to": "2017-02",
         }
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -527,7 +603,7 @@ def test_date_mm_yyyy_combined_range_too_small_validation(
 
 
 def test_date_mm_yyyy_combined_range_too_large_validation(
-    app, answer_store, list_store
+    app, answer_store, list_store, mocker
 ):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_mm_yyyy_combined")
@@ -557,6 +633,12 @@ def test_date_mm_yyyy_combined_range_too_large_validation(
             "date-range-from": "2017-01",
             "date-range-to": "2017-05",
         }
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -574,7 +656,7 @@ def test_date_mm_yyyy_combined_range_too_large_validation(
         ] % {"max": "3 months"}
 
 
-def test_date_yyyy_combined_single_validation(app, answer_store, list_store):
+def test_date_yyyy_combined_single_validation(app, answer_store, list_store, mocker):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_yyyy_combined")
 
@@ -596,6 +678,12 @@ def test_date_yyyy_combined_single_validation(app, answer_store, list_store):
             "date-range-from": "2015",
             "date-range-to": "2021",
         }
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -617,7 +705,9 @@ def test_date_yyyy_combined_single_validation(app, answer_store, list_store):
         ] % {"max": "2021"}
 
 
-def test_date_yyyy_combined_range_too_small_validation(app, answer_store, list_store):
+def test_date_yyyy_combined_range_too_small_validation(
+    app, answer_store, list_store, mocker
+):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_yyyy_combined")
 
@@ -639,6 +729,12 @@ def test_date_yyyy_combined_range_too_small_validation(app, answer_store, list_s
             "date-range-from": "2016",
             "date-range-to": "2017",
         }
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -656,7 +752,9 @@ def test_date_yyyy_combined_range_too_small_validation(app, answer_store, list_s
         ] % {"min": "2 years"}
 
 
-def test_date_yyyy_combined_range_too_large_validation(app, answer_store, list_store):
+def test_date_yyyy_combined_range_too_large_validation(
+    app, answer_store, list_store, mocker
+):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_yyyy_combined")
 
@@ -678,6 +776,12 @@ def test_date_yyyy_combined_range_too_large_validation(app, answer_store, list_s
             "date-range-from": "2016",
             "date-range-to": "2020",
         }
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -696,7 +800,7 @@ def test_date_yyyy_combined_range_too_large_validation(app, answer_store, list_s
 
 
 def test_date_raises_ValueError_when_any_date_range_parts_are_falsy(
-    app, answer_store, list_store
+    app, answer_store, list_store, mocker
 ):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_combined")
@@ -717,6 +821,11 @@ def test_date_raises_ValueError_when_any_date_range_parts_are_falsy(
         metadata = get_metadata()
 
         response_metadata = {}
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
 
         form = generate_form(
             schema,
@@ -768,6 +877,11 @@ def test_bespoke_message_for_date_validation_range(
                 "date-range-to-month": "1",
                 "date-range-to-year": "2018",
             }
+        )
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
         )
 
         form = generate_form(
@@ -825,6 +939,11 @@ def test_invalid_minimum_period_limit_and_single_date_periods(
                 "date-range-to-month": "1",
                 "date-range-to-year": "2018",
             }
+        )
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
         )
 
         form = generate_form(
@@ -887,6 +1006,11 @@ def test_invalid_maximum_period_limit_and_single_date_periods(
             }
         )
 
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -946,6 +1070,11 @@ def test_period_limits_minimum_not_set_and_single_date_periods(
                 "date-range-to-month": "1",
                 "date-range-to-year": "2018",
             }
+        )
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
         )
 
         form = generate_form(
@@ -1013,6 +1142,11 @@ def test_invalid_date_range_and_single_date_periods(
 
         metadata = {"schema_name": "test_date_validation_range"}
 
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -1058,6 +1192,11 @@ def test_invalid_calculation_type(app, answer_store, list_store, mocker):
 
         form_data = MultiDict({"breakdown-1": "3", "breakdown-2": "5"})
 
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -1094,6 +1233,11 @@ def test_bespoke_message_for_sum_validation(app, answer_store, list_store, mocke
         }
 
         form_data = MultiDict({"breakdown-1": "3", "breakdown-2": "5"})
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
 
         form = generate_form(
             schema,
@@ -1284,6 +1428,7 @@ def test_calculated_field(
     question,
     errors_text,
     value_dict,
+    mocker,
 ):  # pylint: disable=too-many-locals
     for answer in answers:
         answer_store.add_or_update(answer)
@@ -1322,6 +1467,11 @@ def test_calculated_field(
         )
 
         form_data = MultiDict(breakdowns)
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
 
         form = generate_form(
             schema,
@@ -1380,6 +1530,11 @@ def test_sum_calculated_field_value_source_calculated_summary_repeat_not_equal_v
             }
         )
 
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -1396,7 +1551,7 @@ def test_sum_calculated_field_value_source_calculated_summary_repeat_not_equal_v
         ] == schema.error_messages["TOTAL_SUM_NOT_EQUALS"] % {"total": "10"}
 
 
-def test_multi_calculation(app, answer_store, list_store):
+def test_multi_calculation(app, answer_store, list_store, mocker):
     answer_total = Answer(answer_id="total-answer", value=10)
 
     answer_store.add_or_update(answer_total)
@@ -1413,6 +1568,11 @@ def test_multi_calculation(app, answer_store, list_store):
                 "breakdown-3": "",
                 "breakdown-4": "",
             }
+        )
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
         )
 
         # With no answers question validation should pass
@@ -1464,7 +1624,9 @@ def test_multi_calculation(app, answer_store, list_store):
         ] % {"total": "10"}
 
 
-def test_generate_form_with_title_and_no_answer_label(app, answer_store, list_store):
+def test_generate_form_with_title_and_no_answer_label(
+    app, answer_store, list_store, mocker
+):
     """
     Checks that the form is still generated when there is no answer label but there is a question title
     """
@@ -1482,6 +1644,11 @@ def test_generate_form_with_title_and_no_answer_label(app, answer_store, list_st
         expected_form_data = {"csrf_token": None, "feeling-answer": "Good"}
 
         with patch("app.questionnaire.path_finder.evaluate_goto", return_value=False):
+            mocker.patch(
+                "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+                return_value=[],
+            )
+
             form = generate_form(
                 schema,
                 question_schema,
@@ -1496,11 +1663,16 @@ def test_generate_form_with_title_and_no_answer_label(app, answer_store, list_st
         assert form.data == expected_form_data
 
 
-def test_form_errors_are_correctly_mapped(app, answer_store, list_store):
+def test_form_errors_are_correctly_mapped(app, answer_store, list_store, mocker):
     with app.test_request_context():
         schema = load_schema_from_name("test_numbers")
 
         question_schema = schema.get_block("set-min-max-block").get("question")
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
 
         form = generate_form(
             schema,
@@ -1519,11 +1691,18 @@ def test_form_errors_are_correctly_mapped(app, answer_store, list_store):
         )
 
 
-def test_form_subfield_errors_are_correctly_mapped(app, answer_store, list_store):
+def test_form_subfield_errors_are_correctly_mapped(
+    app, answer_store, list_store, mocker
+):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_range")
 
         question_schema = schema.get_block("date-block").get("question")
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
 
         form = generate_form(
             schema,
@@ -1551,13 +1730,18 @@ def test_form_subfield_errors_are_correctly_mapped(app, answer_store, list_store
 
 
 def test_detail_answer_mandatory_only_checked_if_option_selected(
-    app, answer_store, list_store
+    app, answer_store, list_store, mocker
 ):
     # The detail_answer can only be mandatory if the option it is associated with is answered
     with app.test_request_context():
         schema = load_schema_from_name("test_checkbox_detail_answer_multiple")
 
         question_schema = schema.get_block("mandatory-checkbox").get("question")
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
 
         #  Option is selected therefore the detail answer should be mandatory (schema defined)
         form = generate_form(
@@ -1589,7 +1773,7 @@ def test_detail_answer_mandatory_only_checked_if_option_selected(
 
 
 def test_answer_with_detail_answer_errors_are_correctly_mapped(
-    app, answer_store, list_store
+    app, answer_store, list_store, mocker
 ):
     with app.test_request_context():
         schema = load_schema_from_name(
@@ -1597,6 +1781,11 @@ def test_answer_with_detail_answer_errors_are_correctly_mapped(
         )
 
         question_schema = schema.get_block("radio-mandatory").get("question")
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
 
         form = generate_form(
             schema,
@@ -1623,11 +1812,16 @@ def test_answer_with_detail_answer_errors_are_correctly_mapped(
         )
 
 
-def test_answer_errors_are_interpolated(app, answer_store, list_store):
+def test_answer_errors_are_interpolated(app, answer_store, list_store, mocker):
     with app.test_request_context():
         schema = load_schema_from_name("test_numbers")
 
         question_schema = schema.get_block("set-min-max-block").get("question")
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
 
         form = generate_form(
             schema,
@@ -1645,13 +1839,18 @@ def test_answer_errors_are_interpolated(app, answer_store, list_store):
 
 
 def test_mandatory_mutually_exclusive_question_raises_error_when_not_answered(
-    app, answer_store, list_store
+    app, answer_store, list_store, mocker
 ):
     with app.test_request_context():
         schema = load_schema_from_name("test_mutually_exclusive")
 
         question_schema = schema.get_block("mutually-exclusive-mandatory-date").get(
             "question"
+        )
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
         )
 
         form = generate_form(
@@ -1685,14 +1884,8 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
             [{"answer_id": "mandatory-checkbox-answer", "value": ["Tuna"]}]
         )
 
-        renderer = PlaceholderRenderer(
-            language="en",
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
-            schema=schema,
-            path_finder=PathFinder(
+        path_finder = (
+            PathFinder(
                 schema=schema,
                 metadata=get_metadata(),
                 response_metadata={},
@@ -1700,6 +1893,16 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
                 answer_store=answer_store,
                 list_store=list_store,
             ),
+        )
+
+        renderer = PlaceholderRenderer(
+            language="en",
+            answer_store=answer_store,
+            list_store=list_store,
+            metadata=get_metadata(),
+            response_metadata={},
+            schema=schema,
+            path_finder=path_finder,
         )
         rendered_schema = renderer.render(
             data_to_render=question_schema, list_item_id=None
@@ -1713,6 +1916,7 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
             metadata=get_metadata(),
             response_metadata={},
             form_data=MultiDict(),
+            path_finder=path_finder,
         )
         form.validate_mutually_exclusive_question(question_schema)
         error = form.question_errors["mutually-exclusive-checkbox-question"]
@@ -1724,7 +1928,7 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
 
 
 def test_mutually_exclusive_question_raises_error_when_both_answered(
-    app, answer_store, list_store
+    app, answer_store, list_store, mocker
 ):
     with app.test_request_context():
         schema = load_schema_from_name("test_mutually_exclusive")
@@ -1738,6 +1942,11 @@ def test_mutually_exclusive_question_raises_error_when_both_answered(
                 "date-answer-year": "2018",
                 "date-exclusive-answer": "I prefer not to say",
             }
+        )
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
         )
 
         form = generate_form(
@@ -1757,10 +1966,15 @@ def test_mutually_exclusive_question_raises_error_when_both_answered(
         )
 
 
-def test_date_range_form(app, answer_store, list_store):
+def test_date_range_form(app, answer_store, list_store, mocker):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_range")
         question_schema = schema.get_block("date-block").get("question")
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
 
         form = generate_form(
             schema,
@@ -1781,7 +1995,7 @@ def test_date_range_form(app, answer_store, list_store):
         assert isinstance(period_to_field.year.validators[0], DateRequired)
 
 
-def test_date_range_form_with_data(app, answer_store, list_store):
+def test_date_range_form_with_data(app, answer_store, list_store, mocker):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_range")
         question_schema = schema.get_block("date-block").get("question")
@@ -1795,6 +2009,11 @@ def test_date_range_form_with_data(app, answer_store, list_store):
                 "date-range-to-answer-month": "09",
                 "date-range-to-answer-year": "2017",
             }
+        )
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
         )
 
         form = generate_form(
@@ -1820,7 +2039,7 @@ def test_date_range_form_with_data(app, answer_store, list_store):
         assert period_to_field.data == "2017-09-01"
 
 
-def test_form_for_radio_other_not_selected(app, answer_store, list_store):
+def test_form_for_radio_other_not_selected(app, answer_store, list_store, mocker):
     with app.test_request_context():
         schema = load_schema_from_name(
             "test_radio_mandatory_with_detail_answer_mandatory"
@@ -1833,6 +2052,11 @@ def test_form_for_radio_other_not_selected(app, answer_store, list_store):
                 "radio-mandatory-answer": "Bacon",
                 "other-answer-mandatory": "Old other text",
             }
+        )
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
         )
 
         form = generate_form(
@@ -1850,7 +2074,7 @@ def test_form_for_radio_other_not_selected(app, answer_store, list_store):
         assert other_text_field.data == ""
 
 
-def test_form_for_radio_other_selected(app, answer_store, list_store):
+def test_form_for_radio_other_selected(app, answer_store, list_store, mocker):
     with app.test_request_context():
         schema = load_schema_from_name(
             "test_radio_mandatory_with_detail_answer_mandatory"
@@ -1864,6 +2088,12 @@ def test_form_for_radio_other_selected(app, answer_store, list_store):
                 "other-answer-mandatory": "Other text field value",
             }
         )
+
+        mocker.patch(
+            "app.forms.questionnaire_form._get_block_ids_for_calculated_summary_dependencies",
+            return_value=[],
+        )
+
         form = generate_form(
             schema,
             question_schema,
@@ -1876,3 +2106,20 @@ def test_form_for_radio_other_selected(app, answer_store, list_store):
 
         other_text_field = getattr(form, "other-answer-mandatory")
         assert other_text_field.data == "Other text field value"
+
+
+def test_generate_form_with_no_path_finder_raises_error(app, answer_store, list_store):
+    with app.test_request_context():
+        schema = load_schema_from_name("test_textfield")
+
+        question_schema = schema.get_block("name-block").get("question")
+
+        with pytest.raises(ValueError):
+            generate_form(
+                schema,
+                question_schema,
+                answer_store,
+                list_store,
+                metadata=get_metadata(),
+                response_metadata={},
+            )

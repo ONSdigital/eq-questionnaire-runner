@@ -66,12 +66,7 @@ class PlaceholderParser:
         self._path_finder = path_finder
 
         self._value_source_resolver = self._get_value_source_resolver()
-        self._routing_paths = {}
-
-    def _get_block_id_for_calculated_summary_dependencies(
-        self, placeholder_list: Sequence[Mapping]
-    ):
-        return self._schema.get_values_for_key(placeholder_list, "source")
+        self._routing_paths: dict = {}
 
     def __call__(
         self, placeholder_list: Sequence[Mapping]
@@ -92,7 +87,7 @@ class PlaceholderParser:
 
     def _get_value_source_resolver(
         self, routing_path_block_ids: list[str] | None = None
-    ):
+    ) -> ValueSourceResolver:
         return ValueSourceResolver(
             answer_store=self._answer_store,
             list_store=self._list_store,
@@ -165,25 +160,32 @@ class PlaceholderParser:
     def _get_routing_path_block_ids(self) -> list[str]:
         return self._get_block_ids_for_calculated_summary_dependencies()
 
-    def _get_block_ids_for_calculated_summary_dependencies(self):
+    def _get_block_ids_for_calculated_summary_dependencies(self) -> list:
         if not self._path_finder:
             raise ValueError("PathFinder not set")
 
         if not self._location:
             return []
 
+        dependent_sections: set = set()
         if block_id := self._location.block_id:
-            dependent_sections = (
-                self._schema.calculated_summary_section_dependencies_by_block.get(
+            if self._schema.get_block(block_id)["type"] not in [  # type: ignore
+                "ListEditQuestion",
+                "ListAddQuestion",
+                "ListRemoveQuestion",
+                "UnrelatedQuestion",
+                "PrimaryPersonListAddOrEditQuestion",
+            ]:
+                dependent_sections = self._schema.calculated_summary_section_dependencies_by_block.get(  # type: ignore
                     self._location.section_id
-                )[block_id]
-            )
+                )[
+                    block_id
+                ]
+
         else:
-            dependencies_by_blocks = (
-                self._schema.calculated_summary_section_dependencies_by_block.get(
-                    self._location.section_id
-                ).values()
-            )
+            dependencies_by_blocks = self._schema.calculated_summary_section_dependencies_by_block.get(  # type: ignore
+                self._location.section_id
+            ).values()
             dependent_sections = {
                 section
                 for dependents in dependencies_by_blocks
@@ -200,12 +202,28 @@ class PlaceholderParser:
             ) in self._path_finder.progress_store.started_section_keys():
                 key = dependent_section, None
 
-                if not (path := self._routing_paths.get(key)):
+                if not self._routing_paths.get(key):
                     path = self._path_finder.routing_path(
                         section_id=key[0], list_item_id=key[1]
                     )
                     self._routing_paths[key] = path.block_ids
+                    block_dependencies.extend(path.block_ids)
 
-                block_dependencies.extend(path.block_ids)
+            if (
+                self._location.list_item_id
+                and (
+                    dependent_section,
+                    self._location.list_item_id,
+                )
+                in self._path_finder.progress_store.started_section_keys()
+            ):
+                key = dependent_section, self._location.list_item_id  # type: ignore
+
+                if not self._routing_paths.get(key):
+                    path = self._path_finder.routing_path(
+                        section_id=key[0], list_item_id=key[1]
+                    )
+                    self._routing_paths[key] = path.block_ids
+                    block_dependencies.extend(path.block_ids)
 
         return block_dependencies

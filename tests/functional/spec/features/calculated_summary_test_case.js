@@ -26,6 +26,7 @@ import ThirdNumberBlockPageSectionTwo from "../../generated_pages/calculated_sum
 import SectionSummarySectionOne from "../../generated_pages/calculated_summary_cross_section_dependencies/questions-section-summary.page";
 import SectionSummarySectionTwo from "../../generated_pages/calculated_summary_cross_section_dependencies/calculated-summary-section-summary.page";
 import DependencyQuestionSectionTwo from "../../generated_pages/calculated_summary_cross_section_dependencies/mutually-exclusive-checkbox.page";
+import MinMaxSectionTwo from "../../generated_pages/calculated_summary_cross_section_dependencies/set-min-max-block.page";
 
 class TestCase {
   testCase(schema) {
@@ -385,9 +386,20 @@ class TestCase {
       expect($(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).to.contain("40 - calculated summary answer (current section)");
     });
 
-    it("Given I remove answers from the path for a calculated summary in a previous section by changing an answer, When I return to the question with the calculated summary value source, Then the value displayed should be correct", () => {
+    it("Given I have validation using a calculated summary value source, When the calculated summary value is from a previous section, Then the value used to validate should be correct", () => {
       $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1()).click();
       $(DependencyQuestionSectionTwo.submit()).click();
+      expect(browser.getUrl()).to.contain(MinMaxSectionTwo.pageName);
+      $(MinMaxSectionTwo.setMinimum()).setValue(59.0);
+      $(MinMaxSectionTwo.setMaximum()).setValue(1.0);
+      $(MinMaxSectionTwo.submit()).click();
+      expect($(MinMaxSectionTwo.errorNumber(1)).getText()).to.contain("Enter an answer more than or equal to £60.00");
+      $(MinMaxSectionTwo.setMinimum()).setValue(61.0);
+      $(MinMaxSectionTwo.setMaximum()).setValue(40.0);
+      $(MinMaxSectionTwo.submit()).click();
+    });
+
+    it("Given I remove answers from the path for a calculated summary in a previous section by changing an answer, When I return to the question with the calculated summary value source, Then the value displayed should be correct", () => {
       $(SectionSummarySectionTwo.submit()).click();
       $(HubPage.summaryRowLink("questions-section")).click();
       $(SectionSummarySectionOne.skipFirstBlockAnswerEdit()).click();

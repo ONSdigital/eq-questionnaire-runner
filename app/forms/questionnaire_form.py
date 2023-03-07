@@ -5,7 +5,7 @@ import logging
 from collections.abc import Callable
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
-from typing import Any, Iterable, Mapping, Optional, Sequence, Union
+from typing import Any, Mapping, Optional, Sequence, Union
 
 from dateutil.relativedelta import relativedelta
 from flask_wtf import FlaskForm
@@ -448,23 +448,16 @@ def get_answer_fields(
     metadata: Optional[MetadataProxy],
     response_metadata: Mapping[str, Any],
     location: Union[Location, RelationshipLocation, None],
-    routing_path_block_ids: Optional[Iterable] = None,
     progress_store: Optional[ProgressStore] = None,
     path_finder: Optional[PathFinder] = None,
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
-    section_id = location.section_id if location else None
 
-    block_ids: list = []
-    if section_id and "calculated_summary" in schema.get_values_for_key(
-        question, "source"
-    ):
-        block_ids = _get_block_ids_for_calculated_summary_dependencies(
-            schema=schema,
-            location=location,
-            path_finder=path_finder,
-            progress_store=progress_store,
-        )
+    block_ids = _get_block_ids_for_calculated_summary_dependencies(
+        schema=schema,
+        location=location,
+        path_finder=path_finder,
+    )
 
     value_source_resolver = ValueSourceResolver(
         answer_store=answer_store,
@@ -475,7 +468,7 @@ def get_answer_fields(
         list_item_id=list_item_id,
         escape_answer_values=False,
         response_metadata=response_metadata,
-        routing_path_block_ids=block_ids or routing_path_block_ids,
+        routing_path_block_ids=block_ids,
         assess_routing_path=False,
         path_finder=path_finder,
         progress_store=progress_store,
@@ -587,7 +580,6 @@ def generate_form(
     location: Union[None, Location, RelationshipLocation] = None,
     data: Optional[dict[str, Any]] = None,
     form_data: Optional[MultiDict[str, Any]] = None,
-    routing_path_block_ids: Optional[tuple] = None,
     progress_store: Optional[ProgressStore] = None,
     path_finder: Optional[PathFinder] = None,
 ) -> QuestionnaireForm:
@@ -607,7 +599,6 @@ def generate_form(
         metadata,
         response_metadata,
         location,
-        routing_path_block_ids,
         progress_store=progress_store,
         path_finder=path_finder,
     )
@@ -629,32 +620,30 @@ def generate_form(
 
 
 def _get_block_ids_for_calculated_summary_dependencies(
-    progress_store, path_finder, location, schema
-):
-    if not progress_store or not path_finder:
-        raise ValueError("ProgressStore or PathFinder not set")
+    path_finder: Optional[PathFinder],
+    location: Union[None, Location, RelationshipLocation],
+    schema: QuestionnaireSchema,
+) -> list:
+    if not path_finder:
+        raise ValueError("PathFinder not set")
 
     if not location:
         return []
 
+    dependent_sections: set = set()
     if block_id := location.block_id:
-        dependent_sections = (
-            schema.calculated_summary_section_dependencies_by_block.get(
+        if schema.get_block(block_id).get("type") not in [  # type: ignore
+            "ListEditQuestion",
+            "ListAddQuestion",
+            "ListRemoveQuestion",
+            "UnrelatedQuestion",
+            "PrimaryPersonListAddOrEditQuestion",
+        ]:
+            dependent_sections = schema.calculated_summary_section_dependencies_by_block.get(  # type: ignore
                 location.section_id
-            )[block_id]
-        )
-    else:
-        dependencies_by_blocks = (
-            schema.calculated_summary_section_dependencies_by_block.get(
-                location.section_id
-            ).values()
-        )
-        dependent_sections = {
-            section
-            for dependents in dependencies_by_blocks
-            if dependents
-            for section in dependents
-        }
+            )[
+                block_id
+            ]
 
     block_dependencies: list = []
 
@@ -662,8 +651,15 @@ def _get_block_ids_for_calculated_summary_dependencies(
         if (
             dependent_section,
             None,
-        ) in progress_store.started_section_keys():
+        ) in path_finder.progress_store.started_section_keys():
             path = path_finder.routing_path(section_id=dependent_section, list_item_id=None)  # type: ignore
+            block_dependencies.extend(path)
+
+        if (
+            dependent_section,
+            location.list_item_id,
+        ) in path_finder.progress_store.started_section_keys():
+            path = path_finder.routing_path(section_id=dependent_section, list_item_id=location.list_item_id)  # type: ignore
             block_dependencies.extend(path)
 
     return block_dependencies

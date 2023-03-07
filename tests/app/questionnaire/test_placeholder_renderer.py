@@ -1,7 +1,6 @@
 import pytest
 from mock import MagicMock
 
-
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer

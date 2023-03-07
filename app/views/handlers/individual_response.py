@@ -9,13 +9,7 @@ from flask_babel import lazy_gettext
 from itsdangerous import BadSignature
 from werkzeug.exceptions import BadRequest, NotFound
 
-from app.data_models import (
-    CompletionStatus,
-    FulfilmentRequest,
-    AnswerStore,
-    ListStore,
-    ProgressStore,
-)
+from app.data_models import CompletionStatus, FulfilmentRequest, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.forms.questionnaire_form import generate_form
 from app.forms.validators import sanitise_mobile_number
@@ -213,6 +207,14 @@ class IndividualResponseHandler:
             response_metadata=self._questionnaire_store.response_metadata,
             data=self._answers,
             form_data=self._form_data,
+            path_finder=PathFinder(
+                schema=self._schema,
+                answer_store=self._questionnaire_store.answer_store,
+                list_store=self._questionnaire_store.list_store,
+                progress_store=ProgressStore(),
+                metadata=self._metadata,
+                response_metadata=self._response_metadata,
+            ),
         )
 
     def get_context(self):

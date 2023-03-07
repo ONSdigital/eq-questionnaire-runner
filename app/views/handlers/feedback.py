@@ -14,6 +14,7 @@ from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.forms.questionnaire_form import QuestionnaireForm, generate_form
 from app.keys import KEY_PURPOSE_SUBMISSION
+from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,
@@ -71,6 +72,14 @@ class Feedback:
             response_metadata=self._questionnaire_store.response_metadata,
             data=None,
             form_data=self._form_data,
+            path_finder=PathFinder(
+                schema=self._schema,
+                answer_store=self._questionnaire_store.answer_store,
+                list_store=self._questionnaire_store.list_store,
+                progress_store=self._questionnaire_store.progress_store,
+                metadata=self._questionnaire_store.metadata,
+                response_metadata=self._questionnaire_store.response_metadata,
+            ),
         )
 
     def get_context(self) -> Mapping[str, Union[str, bool, dict]]:

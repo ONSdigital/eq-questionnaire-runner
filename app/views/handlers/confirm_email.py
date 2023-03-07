@@ -19,6 +19,7 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.forms.questionnaire_form import generate_form
 from app.helpers import url_safe_serializer
 from app.questionnaire import QuestionnaireSchema, QuestionSchemaType
+from app.questionnaire.path_finder import PathFinder
 from app.settings import (
     EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME,
     EQ_SUBMISSION_CONFIRMATION_QUEUE,
@@ -78,6 +79,14 @@ class ConfirmEmail:
             response_metadata=self._questionnaire_store.metadata,
             data=None,
             form_data=self._form_data,
+            path_finder=PathFinder(
+                schema=self._schema,
+                answer_store=self._questionnaire_store.answer_store,
+                list_store=self._questionnaire_store.list_store,
+                progress_store=self._questionnaire_store.progress_store,
+                metadata=self._questionnaire_store.metadata,
+                response_metadata=self._questionnaire_store.response_metadata,
+            ),
         )
 
     @cached_property

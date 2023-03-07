@@ -125,6 +125,18 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.post()
         self.assertInBody("60 - calculated summary answer (previous section)")
         self.assertInBody("40 - calculated summary answer (current section)")
+        self.post()
+
+        self.assertInBody(
+            "Set minimum and maximum values based on your calculated summary total of £60"
+        )
+        self.post(
+            {
+                "set-minimum-answer": "40",
+                "set-maximum-answer": "70",
+            }
+        )
+        self.assertInBody("Enter an answer more than or equal to £60.00")
 
     def test_calculated_summary_value_sources_across_sections_repeating(self):
         self.launchSurvey(
@@ -162,3 +174,15 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.post()
         self.assertInBody("60 - calculated summary answer (previous section)")
         self.assertInBody("40 - calculated summary answer (current section)")
+        self.post()
+
+        self.assertInBody(
+            "Set minimum and maximum values based on your calculated summary total of £60"
+        )
+        self.post(
+            {
+                "set-minimum-answer": "40",
+                "set-maximum-answer": "70",
+            }
+        )
+        self.assertInBody("Enter an answer more than or equal to £60.00")
