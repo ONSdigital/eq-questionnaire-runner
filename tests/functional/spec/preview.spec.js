@@ -11,7 +11,7 @@ describe("Introduction preview questions", () => {
   const previewQuestion = ".ons-summary__item";
   const printButton = 'button[data-qa="btn-print"]';
   const pdfButton = 'a[data-qa="btn-pdf"]';
-  const detailsHeading = ".ons-details__heading";
+  // const detailsHeading = ".ons-details__heading";
   const startSurveyButton = ".qa-btn-get-started";
   const noRadio = "#report-radio-answer-1";
   const submitButton = 'button[data-qa="btn-submit"]';
@@ -34,8 +34,9 @@ describe("Introduction preview questions", () => {
     expect($(showButton).length).to.be.undefined;
     expect($(printButton).isClickable()).to.be.true;
     expect($(pdfButton).isClickable()).to.be.true;
-    $(detailsHeading).click();
-    expect($(previewQuestion).$("#answer-guidance--content div p").getText()).to.equal("For example select `yes` if you can report for this period");
+    // answer guidance not implemented yet due to some work that needs to be done in the DS will be implemented in iteration 2
+    // $(detailsHeading).click();
+    // expect($(previewQuestion).$("#answer-guidance--content div p").getText()).to.equal("For example select `yes` if you can report for this period");
     expect($(previewQuestion).$$("p")[2].getText()).to.equal("You can answer with one of the following options:");
     expect($(previewQuestion).$$("ul")[0].getText()).to.equal("Yes\nNo");
   });
