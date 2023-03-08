@@ -41,8 +41,7 @@
 
     {% if answer.options %}
       {% if answer.label %}
-        {% set label = answer.label %}
-        <p><strong>{{- label | safe -}}</strong></p>
+        <p><strong>{{- answer.label | safe -}}</strong></p>
       {% endif %}
       <ul>
         {% for option in answer.options %}
