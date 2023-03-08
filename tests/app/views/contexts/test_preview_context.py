@@ -142,7 +142,7 @@ def test_build_preview_context(
                             ],
                             "guidance": None,
                             "id": "report-radio-second",
-                            "title": "Are you sure you are able to report for the calendar month start_date to end_date?",
+                            "title": "Are you sure you are able to report for the calendar month {start_date} to {end_date}?",
                             "type": "General",
                         }
                     },
