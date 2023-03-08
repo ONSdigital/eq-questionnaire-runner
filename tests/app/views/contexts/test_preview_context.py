@@ -90,22 +90,36 @@ def test_build_preview_context(
                     },
                     {
                         "question": {
-                            "answers": [{"label": "Start date"}],
-                            "descriptions": None,
-                            "guidance": None,
-                            "id": "start-date",
-                            "title": "Please provide optional start date",
-                            "type": "General",
-                        }
-                    },
-                    {
-                        "question": {
-                            "answers": [{"label": "End date"}],
-                            "descriptions": None,
-                            "guidance": None,
-                            "id": "end-date",
-                            "title": "Please provide optional end date",
-                            "type": "General",
+                            "answers": [
+                                {"label": "Period from"},
+                                {"label": "Period to"},
+                            ],
+                            "descriptions": "<p>If figures are not available for the calendar year 2021, your return should relate to a 12 month business year that ends between 6 April 2021 and 5 April 2022.</p>",
+                            "guidance": {
+                                "contents": [
+                                    {
+                                        "description": "<p><strong>Only traded for a part of the year?</strong></p>"
+                                    },
+                                    {
+                                        "description": "<p>Please provide figures for the period in which you were trading.</p>"
+                                    },
+                                    {
+                                        "description": "<p><strong>Only commenced trading during 2021?</strong></p>"
+                                    },
+                                    {
+                                        "description": "<p>Your return should cover the period from the commencement of your business until 31 December 2021 or, alternatively, any date up to 5 April 2022.</p>"
+                                    },
+                                    {
+                                        "description": "<p><strong>Ceased trading during 2021?</strong></p>"
+                                    },
+                                    {
+                                        "description": "<p>Your return should cover the period 1 January 2021 to the date you ceased to trade or, alternatively, from the beginning of your last business year up to the cessation date.</p>"
+                                    },
+                                ]
+                            },
+                            "id": "reporting-date",
+                            "title": "What dates will you be reporting for?",
+                            "type": "DateRange",
                         }
                     },
                     {
@@ -119,11 +133,11 @@ def test_build_preview_context(
                                 }
                             ],
                             "descriptions": [
-                                "<p>Your return should relate to the calendar year 2021.</p>"
+                                "<p>Your return should relate to the calendar year 2016.</p>"
                             ],
                             "guidance": None,
                             "id": "report-radio-second",
-                            "title": "Are you sure you are able to report for the calendar month ref_p_start_date to ref_p_end_date?",
+                            "title": "Are you sure you are able to report for the calendar month start_date to end_date?",
                             "type": "General",
                         }
                     },
