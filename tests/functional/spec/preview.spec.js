@@ -23,7 +23,7 @@ describe("Introduction preview questions", () => {
   const answerToMonth = "#answer-to-month";
   const answerToYear = "#answer-to-year";
 
-  it("Given I start a survey, When I view the preview page, Then all preview elements should be visible", () => {
+  it("Given I start a survey, When I view the preview page, Then all preview elements should be visible and any metadata piped answers are resolved", () => {
     browser.openQuestionnaire(introductionSchemaLinear);
     $(IntroductionPageLinear.previewQuestions()).click();
     expect(browser.getUrl()).to.contain("questionnaire/preview");
