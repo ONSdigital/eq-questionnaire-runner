@@ -388,12 +388,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             rules = self.get_operands(rules)
 
         for rule in rules:
+            if not isinstance(rule, Mapping):
+                continue
+
             # Old rules
-            if isinstance(rule, Mapping) and "list" in rule:
+            if "list" in rule:
                 return rule.get("list") == list_name
 
             # New rules
-            if isinstance(rule, Mapping) and "source" in rule:
+            if "source" in rule:
                 return (
                     rule.get("source") == "list" and rule.get("identifier") == list_name
                 )
@@ -417,11 +420,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             ignore_keys = ["question_variants", "content_variants"]
             when_rules = self.get_values_for_key(section, "when", ignore_keys)
 
-            for when_rule in when_rules:
-                rule = when_rule["when"]
-
-                if self._is_list_name_in_rule(rule, list_name):
-                    section_ids.append(section["id"])
+            rule: Union[Mapping, list] = next(when_rules, [])
+            if self._is_list_name_in_rule(rule, list_name):
+                section_ids.append(section["id"])
         return section_ids
 
     @staticmethod
@@ -789,7 +790,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 if k in ignore_keys:
                     continue
                 if k == key:
-                    yield from self._get_dictionaries_with_key(k, block)
+                    yield v
                 if isinstance(v, dict):
                     yield from self.get_values_for_key(v, key, ignore_keys)
                 elif isinstance(v, (list, tuple)):
@@ -799,14 +800,19 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 continue
 
     def _get_dictionaries_with_key(
-        self, key: str, dictionary: Mapping
+        self, key: str, dictionary: Mapping, ignore_keys: Optional[list[str]] = None
     ) -> Generator[Mapping, None, None]:
-        if key in dictionary:
+        ignore_keys = ignore_keys or []
+        if key in dictionary and key not in ignore_keys:
             yield dictionary
 
-        for value in dictionary.values():
-            if isinstance(value, Sequence):
-                for element in value:
+        for k, v in dictionary.items():
+            if k in ignore_keys:
+                continue
+            if isinstance(v, dict):
+                yield from self._get_dictionaries_with_key(key, v)
+            if isinstance(v, Sequence):
+                for element in v:
                     if isinstance(element, Mapping):
                         yield from self._get_dictionaries_with_key(key, element)
 
@@ -851,10 +857,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             when_rules = self.get_values_for_key(section, "when")
             rules: Union[Mapping, list] = next(when_rules, [])
 
-            if isinstance(rules, Mapping) and (
-                rules_section_dependencies := self._get_rules_section_dependencies(
-                    section["id"], rules["when"]
-                )
+            if rules_section_dependencies := self._get_rules_section_dependencies(
+                section["id"], rules
             ):
                 self._when_rules_section_dependencies_by_section[
                     section["id"]
@@ -906,7 +910,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _populate_calculated_summary_section_dependencies(self) -> None:
         for section in self.get_sections():
             for block in self.get_blocks_for_section(section):
-                sources = self.get_values_for_key(block, "source", ignore_keys=["when"])
+                sources = self._get_dictionaries_with_key(
+                    "source", block, ignore_keys=["when"]
+                )
 
                 calculated_summary_sources = [
                     source
@@ -924,7 +930,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self,
         current_section_id: str,
         current_block_id: str,
-        values: list[dict],
+        values: list[Mapping],
     ) -> None:
         section_dependencies: set[str] = set()
 
