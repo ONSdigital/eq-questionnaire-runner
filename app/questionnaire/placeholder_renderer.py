@@ -36,6 +36,7 @@ class PlaceholderRenderer:
         routing_path_block_ids: Optional[tuple] = None,
         path_finder: Optional["PathFinder"] = None,
     ):
+        self.placeholder_parser = None
         self._language = language
         self._answer_store = answer_store
         self._list_store = list_store
@@ -57,7 +58,21 @@ class PlaceholderRenderer:
     ) -> str:
         pointer_data = resolve_pointer(dict_to_render, pointer_to_render)
 
-        return self.render_placeholder(pointer_data, list_item_id)
+        placeholder_parser = PlaceholderParser(
+            language=self._language,
+            answer_store=self._answer_store,
+            list_store=self._list_store,
+            metadata=self._metadata,
+            response_metadata=self._response_metadata,
+            schema=self._schema,
+            list_item_id=list_item_id,
+            location=self._location,
+            renderer=self,
+            progress_store=self._progress_store,
+            path_finder=self._path_finder,
+        )
+
+        return self.render_placeholder(pointer_data, list_item_id, placeholder_parser)
 
     def get_plural_count(
         self, schema_partial: Mapping[str, str]
@@ -77,20 +92,22 @@ class PlaceholderRenderer:
         self,
         placeholder_data: MutableMapping[str, Any],
         list_item_id: Optional[str],
+        placeholder_parser: Optional[PlaceholderParser] = None,
     ) -> str:
-        placeholder_parser = PlaceholderParser(
-            language=self._language,
-            answer_store=self._answer_store,
-            list_store=self._list_store,
-            metadata=self._metadata,
-            response_metadata=self._response_metadata,
-            schema=self._schema,
-            list_item_id=list_item_id,
-            location=self._location,
-            renderer=self,
-            progress_store=self._progress_store,
-            path_finder=self._path_finder,
-        )
+        if not placeholder_parser:
+            placeholder_parser = PlaceholderParser(
+                language=self._language,
+                answer_store=self._answer_store,
+                list_store=self._list_store,
+                metadata=self._metadata,
+                response_metadata=self._response_metadata,
+                schema=self._schema,
+                list_item_id=list_item_id,
+                location=self._location,
+                renderer=self,
+                progress_store=self._progress_store,
+                path_finder=self._path_finder,
+            )
 
         placeholder_data = QuestionnaireSchema.get_mutable_deepcopy(placeholder_data)
 
