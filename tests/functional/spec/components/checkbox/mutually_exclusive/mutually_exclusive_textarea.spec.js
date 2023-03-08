@@ -4,12 +4,13 @@ import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually
 describe("Component: Mutually Exclusive TextArea With Single Checkbox Override", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive.json");
+    await browser.scroll(0, 200);
+    await browser.url("/questionnaire/mutually-exclusive-textarea");
   });
 
   describe("Given the user has not clicked the mutually exclusive checkbox answer", () => {
     it("When the user enters a value for the non-exclusive textarea answer, Then only the non-exclusive textarea answer should be answered.", async () => {
       // Given
-      await browser.url("/questionnaire/mutually-exclusive-textarea");
       await expect(await $(TextFieldPage.textareaExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
       // When
@@ -29,7 +30,6 @@ describe("Component: Mutually Exclusive TextArea With Single Checkbox Override",
   describe("Given the user has not answered the non-exclusive textarea answer", () => {
     it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", async () => {
       // Given
-      await browser.url("/questionnaire/mutually-exclusive-textarea");
       await expect(await $(TextFieldPage.textarea()).getValue()).to.contain("");
 
       // When
@@ -47,7 +47,6 @@ describe("Component: Mutually Exclusive TextArea With Single Checkbox Override",
   describe("Given the user has not answered the question and the question is optional", () => {
     it("When the user clicks the Continue button, Then it should display `No answer provided`", async () => {
       // Given
-      await browser.url("/questionnaire/mutually-exclusive-textarea");
       await expect(await $(TextFieldPage.textarea()).getValue()).to.contain("");
       await expect(await $(TextFieldPage.textareaExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 

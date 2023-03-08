@@ -4,12 +4,13 @@ import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually
 describe("Component: Mutually Exclusive Duration With Single Checkbox Override", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive.json");
+    await browser.scroll(0, 200);
+    await browser.url("/questionnaire/mutually-exclusive-duration");
   });
 
   describe("Given the user has entered a value for the non-exclusive duration answer", () => {
     it("When then user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", async () => {
       // Given
-      await browser.url("/questionnaire/mutually-exclusive-duration");
       await $(DurationPage.durationYears()).setValue("1");
       await $(DurationPage.durationMonths()).setValue("7");
 
@@ -34,7 +35,6 @@ describe("Component: Mutually Exclusive Duration With Single Checkbox Override",
   describe("Given the user has clicked the mutually exclusive checkbox answer", () => {
     it("When the user enters a value for the non-exclusive duration answer and removes focus, Then only the non-exclusive duration answer should be answered.", async () => {
       // Given
-      await browser.url("/questionnaire/mutually-exclusive-duration");
       await $(DurationPage.durationExclusiveIPreferNotToSay()).click();
       await expect(await $(DurationPage.durationExclusiveIPreferNotToSay()).isSelected()).to.be.true;
 
@@ -57,7 +57,6 @@ describe("Component: Mutually Exclusive Duration With Single Checkbox Override",
   describe("Given the user has not clicked the mutually exclusive checkbox answer", () => {
     it("When the user enters a value for the non-exclusive duration answer, Then only the non-exclusive duration answer should be answered.", async () => {
       // Given
-      await browser.url("/questionnaire/mutually-exclusive-duration");
       await expect(await $(DurationPage.durationExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
       // When
