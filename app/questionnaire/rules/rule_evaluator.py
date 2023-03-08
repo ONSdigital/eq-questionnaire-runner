@@ -37,12 +37,12 @@ class RuleEvaluator:
     schema: QuestionnaireSchema
     answer_store: AnswerStore
     list_store: ListStore
-    metadata: Optional[MetadataProxy]
+    metadata: MetadataProxy | None
     response_metadata: Mapping
     location: Union[None, Location, RelationshipLocation]
-    routing_path_block_ids: Optional[Iterable] = None
+    routing_path_block_ids: Iterable | None = None
     language: str = DEFAULT_LANGUAGE_CODE
-    progess_store: Optional[ProgressStore] = None
+    progess_store: ProgressStore | None = None
     path_finder: Optional["PathFinder"] = None
 
     # pylint: disable=attribute-defined-outside-init

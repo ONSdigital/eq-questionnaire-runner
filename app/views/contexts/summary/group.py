@@ -21,14 +21,14 @@ class Group:
         routing_path: RoutingPath,
         answer_store: AnswerStore,
         list_store: ListStore,
-        metadata: Optional[MetadataProxy],
+        metadata: MetadataProxy | None,
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
-        location: Optional[Location] = None,
+        location: Location | None = None,
         language: str,
         progress_store: ProgressStore,
-        return_to: Optional[str],
-        return_to_block_id: Optional[str] = None,
+        return_to: str | None,
+        return_to_block_id: str | None = None,
     ) -> None:
         self.id = group_schema["id"]
         self.title = group_schema.get("title")

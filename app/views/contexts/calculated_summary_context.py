@@ -160,7 +160,7 @@ class CalculatedSummaryContext(Context):
         return transformed_block
 
     def _get_formatted_total(
-        self, groups: list, calculation: Union[Callable, ImmutableDict]
+        self, groups: list, calculation: Callable | ImmutableDict
     ) -> str:
         answer_format, values_to_calculate = self._get_answer_format(groups)
 

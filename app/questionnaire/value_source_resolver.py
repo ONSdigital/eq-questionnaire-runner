@@ -29,16 +29,16 @@ IntOrDecimal = Union[int, Decimal]
 class ValueSourceResolver:
     answer_store: AnswerStore
     list_store: ListStore
-    metadata: Optional[MetadataProxy]
+    metadata: MetadataProxy | None
     response_metadata: Mapping
     schema: QuestionnaireSchema
-    location: Union[None, Location, RelationshipLocation]
-    list_item_id: Optional[str]
-    routing_path_block_ids: Optional[Iterable] = None
+    location: Location | RelationshipLocation | None
+    list_item_id: str | None
+    routing_path_block_ids: Iterable | None = None
     use_default_answer: bool = False
     escape_answer_values: bool = False
     assess_routing_path: bool = True
-    progress_store: Optional[ProgressStore] = None
+    progress_store: ProgressStore | None = None
     path_finder: Optional["PathFinder"] = None
 
     def _is_answer_on_path(self, answer_id: str) -> bool:
@@ -51,9 +51,9 @@ class ValueSourceResolver:
     def _get_answer_value(
         self,
         answer_id: str,
-        list_item_id: Optional[str],
+        list_item_id: str | None,
         assess_routing_path: bool | None = None,
-    ) -> Optional[AnswerValueTypes]:
+    ) -> AnswerValueTypes | None:
         assess_routing_path = (
             assess_routing_path
             if assess_routing_path is True
@@ -206,7 +206,6 @@ class ValueSourceResolver:
             return self.response_metadata.get(value_source.get("identifier"))
 
         if source == "calculated_summary":
-            resolved_value = self._resolve_calculated_summary_value_source(
+            return self._resolve_calculated_summary_value_source(
                 value_source, assess_routing_path=True
             )
-            return resolved_value

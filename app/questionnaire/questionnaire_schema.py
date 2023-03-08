@@ -782,7 +782,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         )
 
     def get_values_for_key(
-        self, block: Mapping, key: str, ignore_keys: Optional[list[str]] = None
+        self, block: Mapping, key: str, ignore_keys: list[str] | None = None
     ) -> Generator:
         ignore_keys = ignore_keys or []
         for k, v in block.items():
@@ -800,7 +800,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 continue
 
     def _get_dictionaries_with_key(
-        self, key: str, dictionary: Mapping, ignore_keys: Optional[list[str]] = None
+        self, key: str, dictionary: Mapping, ignore_keys: list[str] | None = None
     ) -> Generator[Mapping, None, None]:
         ignore_keys = ignore_keys or []
         if key in dictionary and key not in ignore_keys:

@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Mapping, Optional
+from typing import Mapping
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
@@ -20,9 +20,9 @@ class Context(ABC):
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: Optional[MetadataProxy],
+        metadata: MetadataProxy | None,
         response_metadata: Mapping,
-        location: Optional[Location] = None,
+        location: Location | None = None,
     ) -> None:
         self._language = language
         self._schema = schema

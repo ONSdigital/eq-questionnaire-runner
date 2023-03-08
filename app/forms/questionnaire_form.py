@@ -441,15 +441,15 @@ def _option_value_in_data(
 
 def get_answer_fields(
     question: QuestionSchemaType,
-    data: Union[None, MultiDict[str, Any], Mapping[str, Any]],
+    data: MultiDict[str, Any] | Mapping[str, Any] | None,
     schema: QuestionnaireSchema,
     answer_store: AnswerStore,
     list_store: ListStore,
-    metadata: Optional[MetadataProxy],
+    metadata: MetadataProxy | None,
     response_metadata: Mapping[str, Any],
-    location: Union[Location, RelationshipLocation, None],
-    progress_store: Optional[ProgressStore] = None,
-    path_finder: Optional[PathFinder] = None,
+    location: Location | RelationshipLocation | None,
+    progress_store: ProgressStore | None = None,
+    path_finder: PathFinder | None = None,
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
 
@@ -575,13 +575,13 @@ def generate_form(
     question_schema: QuestionSchemaType,
     answer_store: AnswerStore,
     list_store: ListStore,
-    metadata: Optional[MetadataProxy],
+    metadata: MetadataProxy | None,
     response_metadata: Mapping[str, Any],
-    location: Union[None, Location, RelationshipLocation] = None,
-    data: Optional[dict[str, Any]] = None,
-    form_data: Optional[MultiDict[str, Any]] = None,
-    progress_store: Optional[ProgressStore] = None,
-    path_finder: Optional[PathFinder] = None,
+    location: Location | RelationshipLocation | None = None,
+    data: dict[str, Any] | None = None,
+    form_data: MultiDict[str, Any] | None = None,
+    progress_store: ProgressStore | None = None,
+    path_finder: PathFinder | None = None,
 ) -> QuestionnaireForm:
     class DynamicForm(QuestionnaireForm):
         pass
@@ -620,10 +620,11 @@ def generate_form(
 
 
 def _get_block_ids_for_calculated_summary_dependencies(
-    path_finder: Optional[PathFinder],
-    location: Union[None, Location, RelationshipLocation],
+    path_finder: PathFinder | None,
+    location: Location | RelationshipLocation | None,
     schema: QuestionnaireSchema,
 ) -> list:
+    # Type ignore: Added to this method as the block will exist at this point
     if not path_finder:
         raise ValueError("PathFinder not set")
 
@@ -652,14 +653,18 @@ def _get_block_ids_for_calculated_summary_dependencies(
             dependent_section,
             None,
         ) in path_finder.progress_store.started_section_keys():
-            path = path_finder.routing_path(section_id=dependent_section, list_item_id=None)  # type: ignore
+            path = path_finder.routing_path(
+                section_id=dependent_section, list_item_id=None
+            )
             block_dependencies.extend(path)
 
         if (
             dependent_section,
             location.list_item_id,
         ) in path_finder.progress_store.started_section_keys():
-            path = path_finder.routing_path(section_id=dependent_section, list_item_id=location.list_item_id)  # type: ignore
+            path = path_finder.routing_path(
+                section_id=dependent_section, list_item_id=location.list_item_id
+            )
             block_dependencies.extend(path)
 
     return block_dependencies

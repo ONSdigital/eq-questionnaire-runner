@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Mapping, MutableMapping, Optional, Union
+from typing import TYPE_CHECKING, Any, Mapping, MutableMapping, Optional
 
 from jsonpointer import resolve_pointer, set_pointer
 
@@ -28,12 +28,12 @@ class PlaceholderRenderer:
         language: str,
         answer_store: AnswerStore,
         list_store: ListStore,
-        metadata: Optional[MetadataProxy],
+        metadata: MetadataProxy | None,
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
-        progress_store: Optional[ProgressStore] = None,
-        location: Union[None, Location, RelationshipLocation] = None,
-        routing_path_block_ids: Optional[tuple] = None,
+        progress_store: ProgressStore | None = None,
+        location: Location | RelationshipLocation | None = None,
+        routing_path_block_ids: tuple | None = None,
         path_finder: Optional["PathFinder"] = None,
     ):
         self.placeholder_parser = None
@@ -54,7 +54,7 @@ class PlaceholderRenderer:
         *,
         dict_to_render: Mapping[str, Any],
         pointer_to_render: str,
-        list_item_id: Optional[str],
+        list_item_id: str | None,
     ) -> str:
         pointer_data = resolve_pointer(dict_to_render, pointer_to_render)
 
@@ -76,7 +76,7 @@ class PlaceholderRenderer:
 
     def get_plural_count(
         self, schema_partial: Mapping[str, str]
-    ) -> Optional[AnswerValueTypes]:
+    ) -> AnswerValueTypes | None:
         source = schema_partial["source"]
         source_id = schema_partial["identifier"]
 
@@ -91,8 +91,8 @@ class PlaceholderRenderer:
     def render_placeholder(
         self,
         placeholder_data: MutableMapping[str, Any],
-        list_item_id: Optional[str],
-        placeholder_parser: Optional[PlaceholderParser] = None,
+        list_item_id: str | None,
+        placeholder_parser: PlaceholderParser | None = None,
     ) -> str:
         if not placeholder_parser:
             placeholder_parser = PlaceholderParser(
@@ -133,7 +133,7 @@ class PlaceholderRenderer:
         self,
         *,
         data_to_render: Mapping[str, Any],
-        list_item_id: Optional[str],
+        list_item_id: str | None,
     ) -> dict[str, Any]:
         """
         Transform the current schema json to a fully rendered dictionary

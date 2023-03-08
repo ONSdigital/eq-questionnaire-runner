@@ -46,9 +46,9 @@ class PlaceholderParser:
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
         renderer: "PlaceholderRenderer",
-        list_item_id: Optional[str] = None,
-        location: Union[Location, RelationshipLocation, None] = None,
-        progress_store: Optional[ProgressStore] = None,
+        list_item_id: str | None = None,
+        location: Location | RelationshipLocation | None = None,
+        progress_store: ProgressStore | None = None,
         path_finder: Optional["PathFinder"] = None,
     ):
         self._transformer = PlaceholderTransforms(language, schema, renderer)
@@ -161,6 +161,7 @@ class PlaceholderParser:
         return self._get_block_ids_for_calculated_summary_dependencies()
 
     def _get_block_ids_for_calculated_summary_dependencies(self) -> list:
+        # Type ignore: Added to this method as the block will exist at this point
         if not self._path_finder:
             raise ValueError("PathFinder not set")
 
@@ -222,11 +223,12 @@ class PlaceholderParser:
         self,
         block_dependencies: list,
         dependent_section: str,
-        list_item_id: Optional[str] = None,
+        list_item_id: str | None = None,
     ) -> None:
-        key = dependent_section, list_item_id  # type: ignore
+        key = dependent_section, list_item_id
 
         if not self._routing_paths.get(key):
+            # Type ignore: Path finder will exist at this point
             path = self._path_finder.routing_path(  # type: ignore
                 section_id=key[0], list_item_id=key[1]
             )
