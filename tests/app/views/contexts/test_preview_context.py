@@ -117,7 +117,7 @@ def test_build_preview_context(
                                         "description": "<p><strong>Ceased trading during 2021?</strong></p>"
                                     },
                                     {
-                                        "description": "<p>Your return should cover the period 1 January 2021 to the date"
+                                        "description": "<p>Your return should cover the period 1 January 2021 to the date "
                                         "you ceased to trade or, alternatively, from the beginning of your last business year up to the cessation date.</p>"
                                     },
                                 ]
