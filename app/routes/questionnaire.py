@@ -452,7 +452,7 @@ def get_view_submitted_response(schema, questionnaire_store):
     return view_submitted_response.get_rendered_html()
 
 
-@questionnaire_blueprint.route("download-preview-pdf", methods=["GET"])
+@questionnaire_blueprint.route("/preview/download-pdf", methods=["GET"])
 @with_questionnaire_store
 @with_schema
 def get_preview_questions_pdf(
