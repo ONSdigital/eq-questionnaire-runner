@@ -24,7 +24,7 @@ def test_view_preview_questions_context(storage, language):
 
     assert preview.get_context() == {
         "hide_sign_out_button": True,
-        "pdf_url": "/questionnaire/download-preview-pdf",
+        "pdf_url": "/questionnaire/preview/download-pdf",
         "preview": {"sections": []},
     }
 
