@@ -198,10 +198,10 @@
                                 ],
                                 "id": "report-radio-question",
                                 "title": {
-                                    "text": "Are you able to report for the calendar month {ref_p_start_date} to {ref_p_end_date}?",
+                                    "text": "Are you able to report for the calendar month {start_date} to {end_date}?",
                                     "placeholders": [
                                         {
-                                            "placeholder": "ref_p_start_date",
+                                            "placeholder": "start_date",
                                             "transforms": [
                                                 {
                                                     "transform": "format_date",
@@ -216,7 +216,7 @@
                                             ]
                                         },
                                         {
-                                            "placeholder": "ref_p_end_date",
+                                            "placeholder": "end_date",
                                             "transforms": [
                                                 {
                                                     "transform": "format_date",
@@ -224,6 +224,154 @@
                                                         "date_to_format": {
                                                             "source": "metadata",
                                                             "identifier": "ref_p_end_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "reporting-date",
+                            "question": {
+                                "id": "projects-checkbox-question",
+                                "title": "What dates will you be reporting for?",
+                                "description": [
+                                    "<p>If figures are not available for the calendar year 2021, your return should relate to a 12 month business year that ends between 6 April 2021 and 5 April 2022.</p>"
+                                ],
+                                "type": "DateRange",
+                                "answers": [
+                                    {
+                                        "id": "answer-from",
+                                        "type": "Date",
+                                        "mandatory": true,
+                                        "label": "Period from",
+                                        "minimum": {
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ref_p_start_date"
+                                            },
+                                            "offset_by": {
+                                                "days": -31
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "answer-to",
+                                        "type": "Date",
+                                        "mandatory": true,
+                                        "label": "Period to",
+                                        "maximum": {
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ref_p_end_date"
+                                            },
+                                            "offset_by": {
+                                                "days": 31
+                                            }
+                                        }
+                                    }
+                                ],
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "<p><strong>Only traded for a part of the year?</strong></p>"
+                                        },
+                                        {
+                                            "description": "<p>Please provide figures for the period in which you were trading.</p>"
+                                        },
+                                        {
+                                            "description": "<p><strong>Only commenced trading during 2021?</strong></p>"
+                                        },
+                                        {
+                                            "description": "<p>Your return should cover the period from the commencement of your business until 31 December 2021 or, alternatively, any date up to 5 April 2022.</p>"
+                                        },
+                                        {
+                                            "description": "<p><strong>Ceased trading during 2021?</strong></p>"
+                                        },
+                                        {
+                                            "description": "<p>Your return should cover the period 1 January 2021 to the date you ceased to trade or, alternatively, from the beginning of your last business year up to the cessation date.</p>"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "report-radio-second",
+                            "question": {
+                                "description": ["<p>Your return should relate to the calendar year 2021.</p>"],
+                                "instruction": ["Select your answer"],
+                                "answers": [
+                                    {
+                                        "id": "report-radio-second-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "id": "report-radio-second-question",
+                                "title": {
+                                    "text": "Are you sure you are able to report for the calendar month {start_date} to {end_date}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "start_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "first_non_empty_item",
+                                                    "arguments": {
+                                                        "items": [
+                                                            {
+                                                                "identifier": "answer-from",
+                                                                "source": "answers"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "previous_transform"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "end_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "first_non_empty_item",
+                                                    "arguments": {
+                                                        "items": [
+                                                            {
+                                                                "identifier": "answer-to",
+                                                                "source": "answers"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "previous_transform"
                                                         },
                                                         "date_format": "d MMMM yyyy"
                                                     }
@@ -259,7 +407,7 @@
                                         "type": "Checkbox"
                                     }
                                 ],
-                                "id": "projects-checkbox-question",
+                                "id": "projects-checkbox-question-2",
                                 "title": {
                                     "text": "Which sector did {ru_name} carry out work for?",
                                     "placeholders": [
@@ -346,7 +494,7 @@
                                 {
                                     "question": {
                                         "id": "turnover-variants-question",
-                                        "title": "Why are you not able to report",
+                                        "title": "Why are you not able to report?",
                                         "type": "General",
                                         "answers": [
                                             {
@@ -383,7 +531,6 @@
                                         "instruction": "Select an answer",
                                         "type": "Checkbox",
                                         "mandatory": false,
-                                        "label": "Select all that apply",
                                         "options": [
                                             {
                                                 "label": {
