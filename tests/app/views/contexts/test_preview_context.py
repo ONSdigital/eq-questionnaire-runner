@@ -94,7 +94,7 @@ def test_build_preview_context(
                                 {"label": "Period from"},
                                 {"label": "Period to"},
                             ],
-                            "descriptions": "<p>If figures are not available for the calendar year 2021, your return should relate to a 12 month business year that ends between 6 April 2021 and 5 April 2022.</p>",
+                            "descriptions": ["<p>If figures are not available for the calendar year 2021, your return should relate to a 12 month business year that ends between 6 April 2021 and 5 April 2022.</p>"],
                             "guidance": {
                                 "contents": [
                                     {
