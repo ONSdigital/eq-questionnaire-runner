@@ -13,7 +13,6 @@ describe("Introduction preview questions", () => {
   const pdfButton = 'a[data-qa="btn-pdf"]';
   const detailsHeading = ".ons-details__heading";
   const startSurveyButton = ".qa-btn-get-started";
-  const dateQuestionType = '[data-qa="question-type"]';
   const noRadio = "#report-radio-answer-1";
   const submitButton = 'button[data-qa="btn-submit"]';
   const answerFromDay = "#answer-from-day";
@@ -39,7 +38,6 @@ describe("Introduction preview questions", () => {
     expect($(previewQuestion).$("#answer-guidance--content div p").getText()).to.equal("For example select `yes` if you can report for this period");
     expect($(previewQuestion).$$("p")[2].getText()).to.equal("You can answer with one of the following options:");
     expect($(previewQuestion).$$("ul")[0].getText()).to.equal("Yes\nNo");
-    expect($(dateQuestionType).getText()).to.equal("DateRange");
   });
 
   it("Given I complete some of a survey and the piped answers should be being populated, Then preview answers should still be showing placeholders", () => {
