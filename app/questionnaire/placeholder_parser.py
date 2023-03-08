@@ -88,7 +88,7 @@ class PlaceholderParser:
         if self._placeholder_preview_mode and not self._all_value_sources_metadata(
             placeholder
         ):
-            return placeholder["placeholder"]
+            return f'{{{placeholder["placeholder"]}}}'
 
         try:
             return self._parse_transforms(placeholder["transforms"])
