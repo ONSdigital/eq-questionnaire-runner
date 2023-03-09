@@ -30,6 +30,7 @@
     "sections": [
         {
             "id": "household-section",
+            "title": "Household Section",
             "groups": [
                 {
                     "blocks": [
