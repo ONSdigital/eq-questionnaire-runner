@@ -458,17 +458,20 @@ def get_view_submitted_response(schema, questionnaire_store):
 def get_preview_questions_pdf(
     schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
 ) -> Response:
+
+    view_preview_questions_pdf = PreviewQuestionsPDF(
+        schema,
+        questionnaire_store,
+        flask_babel.get_locale().language,
+    )
+
     try:
-        view_preview_questions_pdf = PreviewQuestionsPDF(
-            schema,
-            questionnaire_store,
-            flask_babel.get_locale().language,
-        )
+        path_or_file = view_preview_questions_pdf.get_pdf()
     except PreviewNotEnabledException as exc:
         raise NotFound from exc
 
     return send_file(
-        path_or_file=view_preview_questions_pdf.get_pdf(),
+        path_or_file=path_or_file,
         mimetype=view_preview_questions_pdf.mimetype,
         as_attachment=True,
         download_name=view_preview_questions_pdf.filename,

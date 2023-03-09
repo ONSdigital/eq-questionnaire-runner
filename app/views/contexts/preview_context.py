@@ -7,7 +7,6 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts import Context
 from app.views.contexts.section_preview_context import SectionPreviewContext
-from werkzeug.exceptions import NotFound
 
 
 class PreviewNotEnabledException(Exception):
@@ -26,7 +25,7 @@ class PreviewContext(Context):
         response_metadata: Mapping[str, Union[str, int, list]],
     ):
         if not schema.preview_enabled:
-            raise NotFound
+            raise PreviewNotEnabledException
 
         super().__init__(
             language,
