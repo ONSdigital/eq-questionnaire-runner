@@ -1343,7 +1343,6 @@ def test_calculated_field(
             answer_store,
             list_store,
             path_finder=path_finder,
-            progress_store=progress_store,
             location=location,
             metadata=metadata,
             response_metadata={},

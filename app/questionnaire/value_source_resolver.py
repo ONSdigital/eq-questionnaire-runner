@@ -1,10 +1,9 @@
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import TYPE_CHECKING, Any, Callable, Iterable, Mapping, Optional, Union
+from typing import Any, Callable, Iterable, Mapping, Optional, Union
 
 from markupsafe import Markup
 
-from app.data_models import ProgressStore
 from app.data_models.answer import AnswerValueTypes, escape_answer_value
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListModel, ListStore
@@ -13,9 +12,6 @@ from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules import rule_evaluator
-
-if TYPE_CHECKING:
-    from app.questionnaire.path_finder import PathFinder  # pragma: no cover
 
 ValueSourceTypes = Union[None, str, int, Decimal, list]
 ValueSourceEscapedTypes = Union[
@@ -38,8 +34,6 @@ class ValueSourceResolver:
     use_default_answer: bool = False
     escape_answer_values: bool = False
     assess_routing_path: bool = True
-    progress_store: ProgressStore | None = None
-    path_finder: Optional["PathFinder"] = None
 
     def _is_answer_on_path(self, answer_id: str) -> bool:
         if self.routing_path_block_ids:

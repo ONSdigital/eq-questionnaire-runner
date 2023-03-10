@@ -33,7 +33,6 @@ class Question(BlockHandler):
                 response_metadata=self._questionnaire_store.response_metadata,
                 location=self._current_location,
                 form_data=self._form_data,
-                progress_store=self._questionnaire_store.progress_store,
                 path_finder=self._path_finder,
             )
 
@@ -47,7 +46,6 @@ class Question(BlockHandler):
             response_metadata=self._questionnaire_store.response_metadata,
             location=self._current_location,
             data=answers,
-            progress_store=self._questionnaire_store.progress_store,
             path_finder=self._path_finder,
         )
 

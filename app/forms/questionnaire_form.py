@@ -12,7 +12,7 @@ from flask_wtf import FlaskForm
 from werkzeug.datastructures import ImmutableMultiDict, MultiDict
 from wtforms import validators
 
-from app.data_models import AnswerStore, AnswerValueTypes, ListStore, ProgressStore
+from app.data_models import AnswerStore, AnswerValueTypes, ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.forms import error_messages
 from app.forms.field_handlers import DateHandler, FieldHandler, get_field_handler
@@ -452,7 +452,6 @@ def get_answer_fields(
     metadata: MetadataProxy | None,
     response_metadata: Mapping[str, Any],
     location: Location | RelationshipLocation | None,
-    progress_store: ProgressStore | None = None,
     path_finder: PathFinder | None = None,
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
@@ -479,8 +478,6 @@ def get_answer_fields(
         response_metadata=response_metadata,
         routing_path_block_ids=block_ids,
         assess_routing_path=False,
-        path_finder=path_finder,
-        progress_store=progress_store,
     )
 
     rule_evaluator = RuleEvaluator(
@@ -491,7 +488,6 @@ def get_answer_fields(
         response_metadata=response_metadata,
         location=location,
         path_finder=path_finder,
-        progess_store=progress_store,
     )
 
     answer_fields = {}
@@ -589,7 +585,6 @@ def generate_form(
     location: Location | RelationshipLocation | None = None,
     data: dict[str, Any] | None = None,
     form_data: MultiDict[str, Any] | None = None,
-    progress_store: ProgressStore | None = None,
     path_finder: PathFinder | None = None,
 ) -> QuestionnaireForm:
     class DynamicForm(QuestionnaireForm):
@@ -608,7 +603,6 @@ def generate_form(
         metadata,
         response_metadata,
         location,
-        progress_store=progress_store,
         path_finder=path_finder,
     )
 

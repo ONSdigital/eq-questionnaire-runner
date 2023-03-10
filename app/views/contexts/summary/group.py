@@ -52,26 +52,25 @@ class Group:
                 return_to_block_id=return_to_block_id,
             )
 
-            path_finder = PathFinder(
-                schema,
-                answer_store,
-                list_store,
-                progress_store,
-                metadata,
-                response_metadata,
-            )
+        path_finder = PathFinder(
+            schema,
+            answer_store,
+            list_store,
+            progress_store,
+            metadata,
+            response_metadata,
+        )
 
-            self.placeholder_renderer = PlaceholderRenderer(
-                language=language,
-                answer_store=answer_store,
-                list_store=list_store,
-                location=self.location,
-                metadata=metadata,
-                response_metadata=response_metadata,
-                schema=schema,
-                progress_store=progress_store,
-                path_finder=path_finder,
-            )
+        self.placeholder_renderer = PlaceholderRenderer(
+            language=language,
+            answer_store=answer_store,
+            list_store=list_store,
+            location=self.location,
+            metadata=metadata,
+            response_metadata=response_metadata,
+            schema=schema,
+            path_finder=path_finder,
+        )
 
     # pylint: disable=too-many-locals
     def _build_blocks_and_links(

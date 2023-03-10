@@ -2,7 +2,6 @@ from typing import TYPE_CHECKING, Any, Mapping, MutableMapping, Optional
 
 from jsonpointer import resolve_pointer, set_pointer
 
-from app.data_models import ProgressStore
 from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
@@ -31,7 +30,6 @@ class PlaceholderRenderer:
         metadata: MetadataProxy | None,
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
-        progress_store: ProgressStore | None = None,
         location: Location | RelationshipLocation | None = None,
         routing_path_block_ids: tuple | None = None,
         path_finder: Optional["PathFinder"] = None,
@@ -45,7 +43,6 @@ class PlaceholderRenderer:
         self._schema = schema
         self._location = location
         self._routing_path_block_ids = routing_path_block_ids
-        self._progress_store = progress_store
         self._path_finder = path_finder
         self._block_ids_calculated_summary: list = []
 
@@ -68,7 +65,6 @@ class PlaceholderRenderer:
             list_item_id=list_item_id,
             location=self._location,
             renderer=self,
-            progress_store=self._progress_store,
             path_finder=self._path_finder,
         )
 
@@ -105,7 +101,6 @@ class PlaceholderRenderer:
                 list_item_id=list_item_id,
                 location=self._location,
                 renderer=self,
-                progress_store=self._progress_store,
                 path_finder=self._path_finder,
             )
 

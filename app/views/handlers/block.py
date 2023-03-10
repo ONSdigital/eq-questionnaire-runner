@@ -83,7 +83,6 @@ class BlockHandler:
             schema=self._schema,
             location=self._current_location,
             routing_path_block_ids=self._routing_path.block_ids,
-            progress_store=self._questionnaire_store.progress_store,
             path_finder=self._path_finder,
         )
 

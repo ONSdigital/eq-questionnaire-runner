@@ -9,7 +9,6 @@ from typing import (
     Union,
 )
 
-from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
@@ -48,7 +47,6 @@ class PlaceholderParser:
         renderer: "PlaceholderRenderer",
         list_item_id: str | None = None,
         location: Location | RelationshipLocation | None = None,
-        progress_store: ProgressStore | None = None,
         path_finder: Optional["PathFinder"] = None,
     ):
         self._transformer = PlaceholderTransforms(language, schema, renderer)
@@ -62,7 +60,6 @@ class PlaceholderParser:
         self._list_item_id = list_item_id
         self._schema = schema
         self._location = location
-        self._progress_store = progress_store
         self._path_finder = path_finder
 
         self._value_source_resolver = self._get_value_source_resolver()
@@ -106,8 +103,6 @@ class PlaceholderParser:
             use_default_answer=True,
             assess_routing_path=False,
             routing_path_block_ids=routing_path_block_ids,
-            progress_store=self._progress_store,
-            path_finder=self._path_finder,
         )
 
     def _parse_placeholder(

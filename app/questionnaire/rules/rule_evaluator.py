@@ -11,7 +11,7 @@ from typing import (
     Union,
 )
 
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import AnswerStore, ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
@@ -42,7 +42,6 @@ class RuleEvaluator:
     location: Union[None, Location, RelationshipLocation]
     routing_path_block_ids: Iterable | None = None
     language: str = DEFAULT_LANGUAGE_CODE
-    progess_store: ProgressStore | None = None
     path_finder: Optional["PathFinder"] = None
 
     # pylint: disable=attribute-defined-outside-init
@@ -58,8 +57,6 @@ class RuleEvaluator:
             list_item_id=list_item_id,
             routing_path_block_ids=self.routing_path_block_ids,
             use_default_answer=True,
-            progress_store=self.progess_store,
-            path_finder=self.path_finder,
         )
         renderer: PlaceholderRenderer = PlaceholderRenderer(
             language=self.language,
@@ -70,7 +67,6 @@ class RuleEvaluator:
             schema=self.schema,
             location=self.location,
             path_finder=self.path_finder,
-            progress_store=self.progess_store,
         )
         self.operations = Operations(
             language=self.language, schema=self.schema, renderer=renderer
