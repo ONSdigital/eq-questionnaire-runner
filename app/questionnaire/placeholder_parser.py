@@ -186,7 +186,7 @@ def get_block_ids_for_calculated_summary_dependencies(
     blocks_id_by_section = {}
 
     sections_to_ignore = sections_to_ignore or []
-    dependent_sections = schema.calculated_summary_section_dependencies_by_block.get(  # type: ignore
+    dependent_sections = schema.calculated_summary_section_dependencies_by_block.get(
         location.section_id
     )
     dependents: set = set()

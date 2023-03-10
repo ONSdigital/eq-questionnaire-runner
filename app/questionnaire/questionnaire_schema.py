@@ -803,13 +803,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self, key: str, dictionary: Mapping, ignore_keys: list[str] | None = None
     ) -> Generator[Mapping, None, None]:
         ignore_keys = ignore_keys or []
-        if key in dictionary and key not in ignore_keys:
+        if key not in ignore_keys and key in dictionary:
             yield dictionary
 
         for k, v in dictionary.items():
             if k in ignore_keys:
                 continue
-            if isinstance(v, dict):
+            if isinstance(v, Mapping):
                 yield from self._get_dictionaries_with_key(key, v)
             if isinstance(v, Sequence):
                 for element in v:
@@ -917,7 +917,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 calculated_summary_sources = [
                     source
                     for source in sources
-                    if source.get("source") == "calculated_summary"
+                    if source["source"] == "calculated_summary"
                 ]
 
                 self._get_calculated_summary_section_dependencies(
@@ -936,21 +936,19 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         for value in values:
             answer_id_list: list = []
-            identifier: Optional[str] = value.get("identifier")
-            source: Optional[str] = value.get("source")
+            identifier: Optional[str] = value["identifier"]
 
-            if source == "calculated_summary" and identifier:
-                calculated_summary_block = self.get_block(identifier)
-                calculated_summary_answer_ids = self.get_calculated_summary_answer_ids(
-                    calculated_summary_block  # type: ignore
-                )
-                answer_id_list.extend(iter(calculated_summary_answer_ids))
+            calculated_summary_block = self.get_block(identifier)  # type: ignore
+            calculated_summary_answer_ids = self.get_calculated_summary_answer_ids(
+                calculated_summary_block  # type: ignore
+            )
+            answer_id_list.extend(iter(calculated_summary_answer_ids))
+
             for answer_id in answer_id_list:
                 block = self.get_block_for_answer_id(answer_id)  # type: ignore
                 section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
 
-                if section_id:
-                    section_dependencies.add(section_id)
+                section_dependencies.add(section_id)  # type: ignore
 
         if section_dependency := self.calculated_summary_section_dependencies_by_block.get(
             current_section_id
