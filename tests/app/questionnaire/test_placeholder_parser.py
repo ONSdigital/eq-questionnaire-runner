@@ -5,12 +5,12 @@ from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.questionnaire import Location
-from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.placeholder_parser import (
     PlaceholderParser,
     get_block_ids_for_calculated_summary_dependencies,
 )
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_name
 from tests.app.questionnaire.conftest import get_metadata
 
@@ -45,14 +45,6 @@ def test_metadata_placeholder(mock_renderer):
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=QuestionnaireSchema({}),
-            answer_store=AnswerStore(),
-            list_store=ListStore(),
-            progress_store=ProgressStore(),
-            metadata=metadata,
-            response_metadata={},
-        ),
     )
 
     placeholders = parser(placeholder_list)
@@ -91,14 +83,6 @@ def test_previous_answer_transform_placeholder(mock_renderer):
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=QuestionnaireSchema({}),
-            answer_store=answer_store,
-            list_store=ListStore(),
-            progress_store=ProgressStore(),
-            metadata=get_metadata(),
-            response_metadata={},
-        ),
     )
     placeholders = parser(placeholder_list)
 
@@ -134,14 +118,6 @@ def test_metadata_transform_placeholder(mock_renderer):
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=QuestionnaireSchema({}),
-            answer_store=AnswerStore(),
-            list_store=ListStore(),
-            progress_store=ProgressStore(),
-            metadata=metadata,
-            response_metadata={},
-        ),
     )
     placeholders = parser(placeholder_list)
 
@@ -179,14 +155,6 @@ def test_response_metadata_transform_placeholder(mock_renderer):
         response_metadata=response_metadata,
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=QuestionnaireSchema({}),
-            answer_store=AnswerStore(),
-            list_store=ListStore(),
-            progress_store=ProgressStore(),
-            metadata=metadata,
-            response_metadata=response_metadata,
-        ),
     )
     placeholders = parser(placeholder_list)
 
@@ -227,14 +195,6 @@ def test_multiple_answer_transform_placeholder(mock_renderer):
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=QuestionnaireSchema({}),
-            answer_store=answer_store,
-            list_store=ListStore(),
-            progress_store=ProgressStore(),
-            metadata=get_metadata(),
-            response_metadata={},
-        ),
     )
 
     placeholders = parser(placeholder_list)
@@ -270,14 +230,6 @@ def test_first_non_empty_item_transform_placeholder(mock_renderer):
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=QuestionnaireSchema({}),
-            answer_store=AnswerStore(),
-            list_store=ListStore(),
-            progress_store=ProgressStore(),
-            metadata=metadata,
-            response_metadata={},
-        ),
     )
 
     placeholders = parser(placeholder_list)
@@ -315,14 +267,6 @@ def test_format_list_answer_transform_placeholder(mock_renderer):
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=QuestionnaireSchema({}),
-            answer_store=answer_store,
-            list_store=ListStore(),
-            progress_store=ProgressStore(),
-            metadata=get_metadata(),
-            response_metadata={},
-        ),
     )
 
     placeholders = parser(placeholder_list)
@@ -365,14 +309,6 @@ def test_placeholder_parser_escapes_answers(mock_renderer):
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=QuestionnaireSchema({}),
-            answer_store=answer_store,
-            list_store=ListStore(),
-            progress_store=ProgressStore(),
-            metadata=get_metadata(),
-            response_metadata={},
-        ),
     )
 
     placeholders = parser(placeholder_list)
@@ -419,14 +355,6 @@ def test_multiple_metadata_transform_placeholder(mock_renderer):
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=QuestionnaireSchema({}),
-            answer_store=AnswerStore(),
-            list_store=ListStore(),
-            progress_store=ProgressStore(),
-            metadata=metadata,
-            response_metadata={},
-        ),
     )
 
     placeholders = parser(placeholder_list)
@@ -465,14 +393,6 @@ def test_multiple_metadata_list_transform_placeholder(mock_renderer):
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=QuestionnaireSchema({}),
-            answer_store=AnswerStore(),
-            list_store=ListStore(),
-            progress_store=ProgressStore(),
-            metadata=metadata,
-            response_metadata={},
-        ),
     )
     placeholders = parser(placeholder_list)
 
@@ -511,14 +431,6 @@ def test_checkbox_transform_placeholder(mock_renderer):
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=QuestionnaireSchema({}),
-            answer_store=answer_store,
-            list_store=ListStore(),
-            progress_store=ProgressStore(),
-            metadata=get_metadata(),
-            response_metadata={},
-        ),
     )
 
     placeholders = parser(placeholder_list)
@@ -561,14 +473,6 @@ def test_mixed_transform_placeholder(mock_renderer):
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=QuestionnaireSchema({}),
-            answer_store=answer_store,
-            list_store=ListStore(),
-            progress_store=ProgressStore(),
-            metadata=metadata,
-            response_metadata={},
-        ),
     )
     placeholders = parser(placeholder_list)
 
@@ -606,14 +510,6 @@ def test_mixed_transform_placeholder_value(mock_renderer):
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=QuestionnaireSchema({}),
-            answer_store=answer_store,
-            list_store=ListStore(),
-            progress_store=ProgressStore(),
-            metadata=get_metadata(),
-            response_metadata={},
-        ),
     )
     placeholders = parser(placeholder_list)
 
@@ -640,14 +536,6 @@ def test_list_source_count(mock_renderer):
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=QuestionnaireSchema({}),
-            answer_store=AnswerStore(),
-            list_store=list_store,
-            progress_store=ProgressStore(),
-            metadata=get_metadata(),
-            response_metadata={},
-        ),
     )
     placeholders = parser(placeholder_list)
 
@@ -685,14 +573,6 @@ def test_list_source_count_in_transform(mock_renderer):
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=QuestionnaireSchema({}),
-            answer_store=AnswerStore(),
-            list_store=list_store,
-            progress_store=ProgressStore(),
-            metadata=get_metadata(),
-            response_metadata={},
-        ),
     )
     placeholders = parser(placeholder_list)
 
@@ -737,14 +617,6 @@ def test_chain_transform_placeholder(mock_renderer):
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=QuestionnaireSchema({}),
-            answer_store=answer_store,
-            list_store=ListStore(),
-            progress_store=ProgressStore(),
-            metadata=get_metadata(),
-            response_metadata={},
-        ),
     )
 
     placeholders = parser(placeholder_list)
@@ -787,14 +659,6 @@ def test_placeholder_resolves_answer_value_based_on_first_item_in_list(mock_rend
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=QuestionnaireSchema({}),
-            answer_store=answer_store,
-            list_store=list_store,
-            progress_store=ProgressStore(),
-            metadata=get_metadata(),
-            response_metadata={},
-        ),
     )
 
     placeholders = parser(placeholder_list)
@@ -825,14 +689,6 @@ def test_placeholder_resolves_list_item_value_based_on_first_item_in_list(
         response_metadata={},
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=QuestionnaireSchema({}),
-            answer_store=AnswerStore(),
-            list_store=list_store,
-            progress_store=ProgressStore(),
-            metadata=get_metadata(),
-            response_metadata={},
-        ),
     )
 
     placeholders = parser(placeholder_list)
@@ -870,14 +726,6 @@ def test_placeholder_resolves_same_name_items(mock_renderer):
         schema=QuestionnaireSchema({}),
         renderer=mock_renderer,
         list_item_id="abc123",
-        path_finder=PathFinder(
-            schema=QuestionnaireSchema({}),
-            answer_store=AnswerStore(),
-            list_store=list_store,
-            progress_store=ProgressStore(),
-            metadata=get_metadata(),
-            response_metadata={},
-        ),
     )
 
     placeholders = parser(placeholder_list)
@@ -980,14 +828,6 @@ def test_placeholder_resolves_name_is_duplicate_chain(mock_schema, mock_renderer
         schema=mock_schema,
         list_item_id="abc123",
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=mock_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            progress_store=ProgressStore(),
-            metadata=get_metadata(),
-            response_metadata={},
-        ),
     )
 
     placeholders = parser(placeholder_transforms)
@@ -1003,14 +843,6 @@ def test_placeholder_resolves_name_is_duplicate_chain(mock_schema, mock_renderer
         schema=mock_schema,
         list_item_id="cde456",
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=mock_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            progress_store=ProgressStore(),
-            metadata=get_metadata(),
-            response_metadata={},
-        ),
     )
 
     placeholders = parser(placeholder_transforms)
@@ -1109,14 +941,6 @@ def test_placeholder_resolves_list_has_items_chain(mock_schema, mock_renderer):
         schema=mock_schema,
         list_item_id="abc123",
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=mock_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            progress_store=ProgressStore(),
-            metadata=get_metadata(),
-            response_metadata={},
-        ),
     )
 
     placeholders = parser(placeholder_transforms)
@@ -1132,14 +956,6 @@ def test_placeholder_resolves_list_has_items_chain(mock_schema, mock_renderer):
         schema=mock_schema,
         list_item_id="cde456",
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=mock_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            progress_store=ProgressStore(),
-            metadata=get_metadata(),
-            response_metadata={},
-        ),
     )
 
     placeholders = parser(placeholder_transforms)
@@ -1169,14 +985,6 @@ def test_placeholder_default_value(default_placeholder_value_schema, mock_render
         response_metadata={},
         schema=default_placeholder_value_schema,
         renderer=mock_renderer,
-        path_finder=PathFinder(
-            schema=default_placeholder_value_schema,
-            answer_store=AnswerStore(),
-            list_store=ListStore(),
-            progress_store=ProgressStore(),
-            metadata=get_metadata(),
-            response_metadata={},
-        ),
     )
 
     placeholders = parser(placeholder_list)
@@ -1214,18 +1022,18 @@ def test_get_block_ids_for_calculated_summary_dependencies():
         ]
     )
 
-    path_finder = PathFinder(
+    location = Location(
+        section_id="calculated-summary-section",
+        block_id="mutually-exclusive-checkbox",
+    )
+
+    router = Router(
         schema=schema,
         answer_store=answer_store,
         list_store=ListStore(),
         progress_store=progress_store,
         metadata=get_metadata(),
         response_metadata={},
-    )
-
-    location = Location(
-        section_id="calculated-summary-section",
-        block_id="mutually-exclusive-checkbox",
     )
 
     expected_dependencies = {
@@ -1243,7 +1051,7 @@ def test_get_block_ids_for_calculated_summary_dependencies():
     }
 
     dependencies = get_block_ids_for_calculated_summary_dependencies(
-        schema=schema, location=location, path_finder=path_finder
+        schema=schema, location=location, router=router
     )
 
     assert dependencies == expected_dependencies
@@ -1280,18 +1088,18 @@ def test_get_block_ids_for_calculated_summary_dependencies_with_sections_to_igno
         ]
     )
 
-    path_finder = PathFinder(
+    location = Location(
+        section_id="calculated-summary-section",
+        block_id="mutually-exclusive-checkbox",
+    )
+
+    router = Router(
         schema=schema,
         answer_store=answer_store,
         list_store=ListStore(),
         progress_store=progress_store,
         metadata=get_metadata(),
         response_metadata={},
-    )
-
-    location = Location(
-        section_id="calculated-summary-section",
-        block_id="mutually-exclusive-checkbox",
     )
 
     expected_dependencies = {
@@ -1305,7 +1113,7 @@ def test_get_block_ids_for_calculated_summary_dependencies_with_sections_to_igno
     dependencies = get_block_ids_for_calculated_summary_dependencies(
         schema=schema,
         location=location,
-        path_finder=path_finder,
+        router=router,
         sections_to_ignore=["calculated-summary-section"],
     )
 

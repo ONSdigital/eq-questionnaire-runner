@@ -26,7 +26,7 @@ class Router:
         self._schema = schema
         self._answer_store = answer_store
         self._list_store = list_store
-        self._progress_store = progress_store
+        self.progress_store = progress_store
         self._metadata = metadata
         self._response_metadata = response_metadata
 
@@ -34,7 +34,7 @@ class Router:
             self._schema,
             self._answer_store,
             self._list_store,
-            self._progress_store,
+            self.progress_store,
             self._metadata,
             self._response_metadata,
         )
@@ -97,7 +97,7 @@ class Router:
 
     def can_access_hub(self) -> bool:
         return self._schema.is_flow_hub and all(
-            self._progress_store.is_section_complete(section_id)
+            self.progress_store.is_section_complete(section_id)
             for section_id in self._schema.get_section_ids_required_for_hub()
             if section_id in self.enabled_section_ids
         )
@@ -107,7 +107,7 @@ class Router:
     ) -> bool:
         return bool(
             self._schema.get_summary_for_section(section_id)
-        ) and self._progress_store.is_section_complete(section_id, list_item_id)
+        ) and self.progress_store.is_section_complete(section_id, list_item_id)
 
     def routing_path(
         self, section_id: str, list_item_id: Optional[str] = None
@@ -126,7 +126,7 @@ class Router:
         Get the next location in the section. If the section is complete, determine where to go next,
         whether it be a summary, the hub or the next incomplete location.
         """
-        is_section_complete = self._progress_store.is_section_complete(
+        is_section_complete = self.progress_store.is_section_complete(
             location.section_id, location.list_item_id
         )
 
@@ -242,7 +242,7 @@ class Router:
             )
 
         if is_section_complete is None:
-            is_section_complete = self._progress_store.is_section_complete(
+            is_section_complete = self.progress_store.is_section_complete(
                 location.section_id, location.list_item_id
             )
 
@@ -270,7 +270,7 @@ class Router:
     def get_section_resume_url(self, routing_path: RoutingPath) -> str:
         section_key = (routing_path.section_id, routing_path.list_item_id)
 
-        if section_key in self._progress_store:
+        if section_key in self.progress_store:
             location = self._get_first_incomplete_location_in_section(routing_path)
             if location:
                 return location.url(resume=True)
@@ -319,7 +319,7 @@ class Router:
     def is_block_complete(
         self, *, block_id: str, section_id: str, list_item_id: str
     ) -> bool:
-        return block_id in self._progress_store.get_completed_block_ids(
+        return block_id in self.progress_store.get_completed_block_ids(
             section_id, list_item_id
         )
 
@@ -374,12 +374,12 @@ class Router:
 
     def _get_first_incomplete_section_key(self) -> Optional[tuple[str, Optional[str]]]:
         for section_id, list_item_id in self.get_enabled_section_keys():
-            if not self._progress_store.is_section_complete(section_id, list_item_id):
+            if not self.progress_store.is_section_complete(section_id, list_item_id):
                 return section_id, list_item_id
 
     def _get_last_complete_section_key(self) -> Optional[tuple[str, Optional[str]]]:
         for section_id, list_item_id in list(self.get_enabled_section_keys())[::-1]:
-            if self._progress_store.is_section_complete(section_id, list_item_id):
+            if self.progress_store.is_section_complete(section_id, list_item_id):
                 return section_id, list_item_id
 
     def _is_section_enabled(self, section: Mapping) -> bool:
@@ -401,7 +401,6 @@ class Router:
                 self._response_metadata,
                 location=None,
                 routing_path_block_ids=routing_path_block_ids,
-                path_finder=self._path_finder,
             )
 
             return bool(when_rule_evaluator.evaluate(enabled["when"]))

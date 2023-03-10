@@ -13,7 +13,7 @@ from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.schema_utils import find_pointers_containing
 
 if TYPE_CHECKING:
-    from app.questionnaire.path_finder import PathFinder  # pragma: no cover
+    from app.questionnaire.router import Router  # pragma: no cover
 
 
 class PlaceholderRenderer:
@@ -32,7 +32,7 @@ class PlaceholderRenderer:
         schema: QuestionnaireSchema,
         location: Location | RelationshipLocation | None = None,
         routing_path_block_ids: tuple | None = None,
-        path_finder: Optional["PathFinder"] = None,
+        router: Optional["Router"] = None,
     ):
         self.placeholder_parser = None
         self._language = language
@@ -43,7 +43,7 @@ class PlaceholderRenderer:
         self._schema = schema
         self._location = location
         self._routing_path_block_ids = routing_path_block_ids
-        self._path_finder = path_finder
+        self._router = router
         self._block_ids_calculated_summary: list = []
 
     def render_pointer(
@@ -65,7 +65,7 @@ class PlaceholderRenderer:
             list_item_id=list_item_id,
             location=self._location,
             renderer=self,
-            path_finder=self._path_finder,
+            router=self._router,
         )
 
         return self.render_placeholder(pointer_data, list_item_id, placeholder_parser)
@@ -101,7 +101,7 @@ class PlaceholderRenderer:
                 list_item_id=list_item_id,
                 location=self._location,
                 renderer=self,
-                path_finder=self._path_finder,
+                router=self._router,
             )
 
         placeholder_data = QuestionnaireSchema.get_mutable_deepcopy(placeholder_data)

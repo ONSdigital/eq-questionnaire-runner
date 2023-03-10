@@ -18,12 +18,12 @@ from app.forms import error_messages
 from app.forms.field_handlers import DateHandler, FieldHandler, get_field_handler
 from app.forms.validators import DateRangeCheck, MutuallyExclusiveCheck, SumCheck
 from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
-from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.placeholder_parser import (
     flatten_block_ids_map,
     get_block_ids_for_calculated_summary_dependencies,
 )
 from app.questionnaire.relationship_location import RelationshipLocation
+from app.questionnaire.router import Router
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 
@@ -452,17 +452,17 @@ def get_answer_fields(
     metadata: MetadataProxy | None,
     response_metadata: Mapping[str, Any],
     location: Location | RelationshipLocation | None,
-    path_finder: PathFinder | None = None,
+    router: Router | None,
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
 
     block_ids_map: dict[str, list[str]] = {}
 
-    if location and path_finder:
+    if location and router:
         block_ids_map = get_block_ids_for_calculated_summary_dependencies(
             schema=schema,
             location=location,
-            path_finder=path_finder,
+            router=router,
         )
 
     block_ids = flatten_block_ids_map(block_ids_map)
@@ -487,7 +487,7 @@ def get_answer_fields(
         metadata=metadata,
         response_metadata=response_metadata,
         location=location,
-        path_finder=path_finder,
+        router=router,
     )
 
     answer_fields = {}
@@ -585,7 +585,7 @@ def generate_form(
     location: Location | RelationshipLocation | None = None,
     data: dict[str, Any] | None = None,
     form_data: MultiDict[str, Any] | None = None,
-    path_finder: PathFinder | None = None,
+    router: Router | None = None,
 ) -> QuestionnaireForm:
     class DynamicForm(QuestionnaireForm):
         pass
@@ -603,7 +603,7 @@ def generate_form(
         metadata,
         response_metadata,
         location,
-        path_finder=path_finder,
+        router=router,
     )
 
     for answer_id, field in answer_fields.items():

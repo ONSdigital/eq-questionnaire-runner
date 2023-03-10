@@ -5,7 +5,7 @@ import pytest
 from mock import patch
 from werkzeug.datastructures import MultiDict
 
-from app.data_models import ListStore, ProgressStore
+from app.data_models import ListStore
 from app.data_models.answer_store import Answer, AnswerStore
 from app.forms import error_messages
 from app.forms.questionnaire_form import generate_form
@@ -15,7 +15,6 @@ from app.forms.validators import (
     format_message_with_title,
 )
 from app.questionnaire import Location, QuestionnaireSchema
-from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.utilities.schema import load_schema_from_name
 from tests.app.questionnaire.conftest import get_metadata
@@ -1313,27 +1312,7 @@ def test_calculated_field(
             list_item_id=None,
         )
 
-        progress_store = ProgressStore(
-            [
-                {
-                    "section_id": "default-section",
-                    "list_item_id": None,
-                    "status": "IN PROGRESS",
-                    "block_ids": [block],
-                }
-            ]
-        )
-
         metadata = get_metadata()
-
-        path_finder = PathFinder(
-            schema=schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            progress_store=progress_store,
-            response_metadata={},
-        )
 
         form_data = MultiDict(breakdowns)
 
@@ -1342,7 +1321,6 @@ def test_calculated_field(
             question_schema,
             answer_store,
             list_store,
-            path_finder=path_finder,
             location=location,
             metadata=metadata,
             response_metadata={},
@@ -1698,17 +1676,6 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
             [{"answer_id": "mandatory-checkbox-answer", "value": ["Tuna"]}]
         )
 
-        path_finder = (
-            PathFinder(
-                schema=schema,
-                metadata=get_metadata(),
-                response_metadata={},
-                progress_store=ProgressStore(),
-                answer_store=answer_store,
-                list_store=list_store,
-            ),
-        )
-
         renderer = PlaceholderRenderer(
             language="en",
             answer_store=answer_store,
@@ -1716,7 +1683,6 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
             metadata=get_metadata(),
             response_metadata={},
             schema=schema,
-            path_finder=path_finder,
         )
         rendered_schema = renderer.render(
             data_to_render=question_schema, list_item_id=None
@@ -1730,7 +1696,6 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
             metadata=get_metadata(),
             response_metadata={},
             form_data=MultiDict(),
-            path_finder=path_finder,
         )
         form.validate_mutually_exclusive_question(question_schema)
         error = form.question_errors["mutually-exclusive-checkbox-question"]

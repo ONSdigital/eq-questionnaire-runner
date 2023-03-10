@@ -25,7 +25,7 @@ from app.questionnaire.value_source_resolver import (
 )
 
 if TYPE_CHECKING:
-    from app.questionnaire.path_finder import PathFinder  # pragma: no cover
+    from app.questionnaire.router import Router  # pragma: no cover
 
 RuleEvaluatorTypes = Union[
     bool, Optional[date], list[str], list[date], int, float, Decimal
@@ -42,7 +42,7 @@ class RuleEvaluator:
     location: Union[None, Location, RelationshipLocation]
     routing_path_block_ids: Iterable | None = None
     language: str = DEFAULT_LANGUAGE_CODE
-    path_finder: Optional["PathFinder"] = None
+    router: Optional["Router"] = None
 
     # pylint: disable=attribute-defined-outside-init
     def __post_init__(self) -> None:
@@ -66,7 +66,7 @@ class RuleEvaluator:
             response_metadata=self.response_metadata,
             schema=self.schema,
             location=self.location,
-            path_finder=self.path_finder,
+            router=self.router,
         )
         self.operations = Operations(
             language=self.language, schema=self.schema, renderer=renderer

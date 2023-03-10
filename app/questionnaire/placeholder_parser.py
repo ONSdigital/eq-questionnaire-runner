@@ -22,10 +22,10 @@ from app.questionnaire.value_source_resolver import (
 )
 
 if TYPE_CHECKING:
-    from app.questionnaire.path_finder import PathFinder  # pragma: no cover
     from app.questionnaire.placeholder_renderer import (
         PlaceholderRenderer,  # pragma: no cover
     )
+    from app.questionnaire.router import Router  # pragma: no cover
 
 TransformedValueTypes = Union[None, str, int, Decimal, bool]
 
@@ -47,7 +47,7 @@ class PlaceholderParser:
         renderer: "PlaceholderRenderer",
         list_item_id: str | None = None,
         location: Location | RelationshipLocation | None = None,
-        path_finder: Optional["PathFinder"] = None,
+        router: Optional["Router"] = None,
     ):
         self._transformer = PlaceholderTransforms(language, schema, renderer)
         self._placeholder_map: MutableMapping[
@@ -60,7 +60,7 @@ class PlaceholderParser:
         self._list_item_id = list_item_id
         self._schema = schema
         self._location = location
-        self._path_finder = path_finder
+        self._router = router
 
         self._value_source_resolver = self._get_value_source_resolver()
         self._routing_paths: dict = {}
@@ -161,11 +161,11 @@ class PlaceholderParser:
     def _get_routing_path_block_ids(
         self, sections_to_ignore: list | None = None
     ) -> dict[str, list[str]]:
-        if self._location and self._path_finder:
+        if self._location and self._router:
             return get_block_ids_for_calculated_summary_dependencies(
                 schema=self._schema,
                 location=self._location,
-                path_finder=self._path_finder,
+                router=self._router,
                 sections_to_ignore=sections_to_ignore,
             )
         return {}
@@ -174,7 +174,7 @@ class PlaceholderParser:
 def get_block_ids_for_calculated_summary_dependencies(
     schema: QuestionnaireSchema,
     location: Location | RelationshipLocation,
-    path_finder: "PathFinder",
+    router: "Router",
     sections_to_ignore: list | None = None,
 ) -> dict[str, list[str]]:
     # Type ignore: Added to this method as the block will exist at this point
@@ -209,8 +209,8 @@ def get_block_ids_for_calculated_summary_dependencies(
 
         keys = [(section, location.list_item_id), (section, None)]
         for key in keys:
-            if key in path_finder.progress_store.started_section_keys():
-                path = path_finder.routing_path(*key)
+            if key in router.progress_store.started_section_keys():
+                path = router.routing_path(*key)
                 blocks_id_by_section[section] = path.block_ids
 
     return blocks_id_by_section
