@@ -74,7 +74,7 @@ def test_build_preview_context(
                                 }
                             ],
                             "descriptions": [
-                                "<p>Your return should relate to the calendar year 2016.</p>"
+                                "<p>Your return should relate to the calendar year 2021.</p>"
                             ],
                             "guidance": {
                                 "contents": [
@@ -138,7 +138,7 @@ def test_build_preview_context(
                                 }
                             ],
                             "descriptions": [
-                                "<p>Your return should relate to the calendar year 2016.</p>"
+                                "<p>Your return should relate to the calendar year 2021.</p>"
                             ],
                             "guidance": None,
                             "id": "report-radio-second",
