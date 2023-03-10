@@ -56,7 +56,7 @@ class ValueSourceResolver:
     ) -> AnswerValueTypes | None:
         assess_routing_path = (
             assess_routing_path
-            if assess_routing_path is True
+            if assess_routing_path is not None
             else self.assess_routing_path
         )
 
