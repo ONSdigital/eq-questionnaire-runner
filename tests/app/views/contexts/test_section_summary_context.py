@@ -124,7 +124,7 @@ def test_custom_section(
 
 
 @pytest.mark.usefixtures("app")
-def test_context_for_section_list_summary(people_answer_store, mocker):
+def test_context_for_section_list_summary(people_answer_store):
     schema = load_schema_from_name("test_list_collector_list_summary")
 
     summary_context = SectionSummaryContext(
@@ -149,11 +149,6 @@ def test_context_for_section_list_summary(people_answer_store, mocker):
             ],
             section_id="section",
         ),
-    )
-
-    mocker.patch(
-        "app.questionnaire.placeholder_parser.PlaceholderParser._get_block_ids_for_calculated_summary_dependencies",
-        return_value=[],
     )
 
     context = summary_context()
@@ -939,7 +934,7 @@ def test_titles_for_repeating_section_summary(people_answer_store):
 
 
 @pytest.mark.usefixtures("app")
-def test_primary_only_links_for_section_summary(people_answer_store, mocker):
+def test_primary_only_links_for_section_summary(people_answer_store):
     schema = load_schema_from_name("test_list_collector_list_summary")
 
     summary_context = SectionSummaryContext(
@@ -963,11 +958,6 @@ def test_primary_only_links_for_section_summary(people_answer_store, mocker):
         ),
     )
 
-    mocker.patch(
-        "app.questionnaire.placeholder_parser.PlaceholderParser._get_block_ids_for_calculated_summary_dependencies",
-        return_value=[],
-    )
-
     context = summary_context()
 
     list_items = context["summary"]["custom_summary"][0]["list"]["list_items"]
@@ -976,7 +966,7 @@ def test_primary_only_links_for_section_summary(people_answer_store, mocker):
 
 
 @pytest.mark.usefixtures("app")
-def test_primary_links_for_section_summary(people_answer_store, mocker):
+def test_primary_links_for_section_summary(people_answer_store):
     schema = load_schema_from_name("test_list_collector_list_summary")
 
     summary_context = SectionSummaryContext(
@@ -1004,11 +994,6 @@ def test_primary_links_for_section_summary(people_answer_store, mocker):
             ],
             section_id="section",
         ),
-    )
-
-    mocker.patch(
-        "app.questionnaire.placeholder_parser.PlaceholderParser._get_block_ids_for_calculated_summary_dependencies",
-        return_value=[],
     )
 
     context = summary_context()

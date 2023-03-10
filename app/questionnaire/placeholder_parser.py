@@ -67,13 +67,19 @@ class PlaceholderParser:
 
         self._value_source_resolver = self._get_value_source_resolver()
         self._routing_paths: dict = {}
+        self._sections_to_ignore: list = []
 
     def __call__(
         self, placeholder_list: Sequence[Mapping]
     ) -> MutableMapping[str, Union[ValueSourceEscapedTypes, ValueSourceTypes]]:
         placeholder_list = QuestionnaireSchema.get_mutable_deepcopy(placeholder_list)
 
-        if routing_path_block_ids := self._get_routing_path_block_ids():
+        if routing_path_block_ids_map := self._get_routing_path_block_ids(
+            self._sections_to_ignore
+        ):
+            self._sections_to_ignore.extend(iter(routing_path_block_ids_map.keys()))
+
+            routing_path_block_ids = flatten_block_ids_map(routing_path_block_ids_map)
             self._value_source_resolver = self._get_value_source_resolver(
                 routing_path_block_ids
             )
@@ -86,7 +92,7 @@ class PlaceholderParser:
         return self._placeholder_map
 
     def _get_value_source_resolver(
-        self, routing_path_block_ids: list[str] | None = None
+        self, routing_path_block_ids: set[str] | None = None
     ) -> ValueSourceResolver:
         return ValueSourceResolver(
             answer_store=self._answer_store,
@@ -157,80 +163,63 @@ class PlaceholderParser:
                 values.append(value)
         return values
 
-    def _get_routing_path_block_ids(self) -> list[str]:
-        return self._get_block_ids_for_calculated_summary_dependencies()
-
-    def _get_block_ids_for_calculated_summary_dependencies(self) -> list:
-        # Type ignore: Added to this method as the block will exist at this point
-        if not self._path_finder:
-            raise ValueError("PathFinder not set")
-
-        if not self._location:
-            return []
-
-        dependent_sections: set = set()
-        if block_id := self._location.block_id:
-            if self._schema.get_block(block_id)["type"] not in [  # type: ignore
-                "ListEditQuestion",
-                "ListAddQuestion",
-                "ListRemoveQuestion",
-                "UnrelatedQuestion",
-                "PrimaryPersonListAddOrEditQuestion",
-            ]:
-                dependent_sections = self._schema.calculated_summary_section_dependencies_by_block.get(  # type: ignore
-                    self._location.section_id
-                )[
-                    block_id
-                ]
-
-        else:
-            dependencies_by_blocks = self._schema.calculated_summary_section_dependencies_by_block.get(  # type: ignore
-                self._location.section_id
-            ).values()
-            dependent_sections = {
-                section
-                for dependents in dependencies_by_blocks
-                if dependents
-                for section in dependents
-            }
-
-        block_dependencies: list = []
-
-        for dependent_section in dependent_sections:
-            if (
-                dependent_section,
-                None,
-            ) in self._path_finder.progress_store.started_section_keys():
-                self.set_block_dependencies(block_dependencies, dependent_section)
-
-            if (
-                self._location.list_item_id
-                and (
-                    dependent_section,
-                    self._location.list_item_id,
-                )
-                in self._path_finder.progress_store.started_section_keys()
-            ):
-                self.set_block_dependencies(
-                    block_dependencies,
-                    dependent_section,
-                    self._location.list_item_id,
-                )
-
-        return block_dependencies
-
-    def set_block_dependencies(
-        self,
-        block_dependencies: list,
-        dependent_section: str,
-        list_item_id: str | None = None,
-    ) -> None:
-        key = dependent_section, list_item_id
-
-        if not self._routing_paths.get(key):
-            # Type ignore: Path finder will exist at this point
-            path = self._path_finder.routing_path(  # type: ignore
-                section_id=key[0], list_item_id=key[1]
+    def _get_routing_path_block_ids(
+        self, sections_to_ignore: list | None = None
+    ) -> dict[str, list[str]]:
+        if self._location and self._path_finder:
+            return get_block_ids_for_calculated_summary_dependencies(
+                schema=self._schema,
+                location=self._location,
+                path_finder=self._path_finder,
+                sections_to_ignore=sections_to_ignore,
             )
-            self._routing_paths[key] = path.block_ids
-            block_dependencies.extend(path.block_ids)
+        return {}
+
+
+def get_block_ids_for_calculated_summary_dependencies(
+    schema: QuestionnaireSchema,
+    location: Location | RelationshipLocation,
+    path_finder: "PathFinder",
+    sections_to_ignore: list | None = None,
+) -> dict[str, list[str]]:
+    # Type ignore: Added to this method as the block will exist at this point
+    blocks_id_by_section = {}
+
+    sections_to_ignore = sections_to_ignore or []
+    dependent_sections = schema.calculated_summary_section_dependencies_by_block.get(  # type: ignore
+        location.section_id
+    )
+    dependents: set = set()
+    if block_id := location.block_id:
+        if schema.get_block(block_id).get("type") not in [  # type: ignore
+            "ListEditQuestion",
+            "ListAddQuestion",
+            "ListRemoveQuestion",
+            "UnrelatedQuestion",
+            "PrimaryPersonListAddOrEditQuestion",
+        ]:
+            dependents = dependent_sections[block_id]  # type: ignore
+
+    else:
+        dependents = {
+            section
+            for dependents in dependent_sections.values()  # type: ignore
+            if dependents
+            for section in dependents
+        }
+
+    for section in dependents:
+        if section in sections_to_ignore:
+            continue
+
+        keys = [(section, location.list_item_id), (section, None)]
+        for key in keys:
+            if key in path_finder.progress_store.started_section_keys():
+                path = path_finder.routing_path(*key)
+                blocks_id_by_section[section] = path.block_ids
+
+    return blocks_id_by_section
+
+
+def flatten_block_ids_map(routing_path_block_ids_map: dict[str, list[str]]) -> set[str]:
+    return {x for v in routing_path_block_ids_map.values() for x in v}

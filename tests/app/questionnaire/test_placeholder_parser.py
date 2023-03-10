@@ -1,13 +1,17 @@
 # pylint: disable=too-many-lines
-import pytest
 from mock import Mock
 
 from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
+from app.questionnaire import Location
 from app.questionnaire.path_finder import PathFinder
-from app.questionnaire.placeholder_parser import PlaceholderParser
+from app.questionnaire.placeholder_parser import (
+    PlaceholderParser,
+    get_block_ids_for_calculated_summary_dependencies,
+)
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.utilities.schema import load_schema_from_name
 from tests.app.questionnaire.conftest import get_metadata
 
 
@@ -1179,29 +1183,130 @@ def test_placeholder_default_value(default_placeholder_value_schema, mock_render
     assert placeholders["answer_employee"] == "0"
 
 
-def test_parser_with_no_path_finder_raises_error(mock_renderer):
-    placeholder_list = [
-        {
-            "placeholder": "period",
-            "value": {
-                "source": "metadata",
-                "identifier": "period_str",
+def test_get_block_ids_for_calculated_summary_dependencies():
+    schema = load_schema_from_name("test_calculated_summary_cross_section_dependencies")
+
+    progress_store = ProgressStore(
+        [
+            {
+                "section_id": "questions-section",
+                "block_ids": [
+                    "skip-first-block",
+                    "second-number-block",
+                    "currency-total-playback-1",
+                ],
+                "status": "COMPLETED",
             },
-        }
-    ]
-
-    period_str = "Aug 2018"
-
-    metadata = get_metadata({"period_str": period_str})
-    parser = PlaceholderParser(
-        language="en",
-        answer_store=AnswerStore(),
-        list_store=ListStore(),
-        metadata=metadata,
-        response_metadata={},
-        schema=QuestionnaireSchema({}),
-        renderer=mock_renderer,
+            {
+                "section_id": "calculated-summary-section",
+                "block_ids": ["third-number-block", "currency-total-playback-2"],
+                "status": "IN_PROGRESS",
+            },
+        ]
     )
 
-    with pytest.raises(ValueError):
-        parser(placeholder_list)
+    answer_store = AnswerStore(
+        [
+            {"answer_id": "skip-first-block-answer", "value": "Yes"},
+            {"answer_id": "second-number-answer-also-in-total", "value": 1},
+            {"answer_id": "third-number-answer", "value": 1},
+            {"answer_id": "third-number-answer-also-in-total", "value": 1},
+        ]
+    )
+
+    path_finder = PathFinder(
+        schema=schema,
+        answer_store=answer_store,
+        list_store=ListStore(),
+        progress_store=progress_store,
+        metadata=get_metadata(),
+        response_metadata={},
+    )
+
+    location = Location(
+        section_id="calculated-summary-section",
+        block_id="mutually-exclusive-checkbox",
+    )
+
+    expected_dependencies = {
+        "questions-section": (
+            "skip-first-block",
+            "second-number-block",
+            "currency-total-playback-1",
+        ),
+        "calculated-summary-section": (
+            "third-number-block",
+            "currency-total-playback-2",
+            "mutually-exclusive-checkbox",
+            "set-min-max-block",
+        ),
+    }
+
+    dependencies = get_block_ids_for_calculated_summary_dependencies(
+        schema=schema, location=location, path_finder=path_finder
+    )
+
+    assert dependencies == expected_dependencies
+
+
+def test_get_block_ids_for_calculated_summary_dependencies_with_sections_to_ignore():
+    schema = load_schema_from_name("test_calculated_summary_cross_section_dependencies")
+
+    progress_store = ProgressStore(
+        [
+            {
+                "section_id": "questions-section",
+                "block_ids": [
+                    "skip-first-block",
+                    "second-number-block",
+                    "currency-total-playback-1",
+                ],
+                "status": "COMPLETED",
+            },
+            {
+                "section_id": "calculated-summary-section",
+                "block_ids": ["third-number-block", "currency-total-playback-2"],
+                "status": "IN_PROGRESS",
+            },
+        ]
+    )
+
+    answer_store = AnswerStore(
+        [
+            {"answer_id": "skip-first-block-answer", "value": "Yes"},
+            {"answer_id": "second-number-answer-also-in-total", "value": 1},
+            {"answer_id": "third-number-answer", "value": 1},
+            {"answer_id": "third-number-answer-also-in-total", "value": 1},
+        ]
+    )
+
+    path_finder = PathFinder(
+        schema=schema,
+        answer_store=answer_store,
+        list_store=ListStore(),
+        progress_store=progress_store,
+        metadata=get_metadata(),
+        response_metadata={},
+    )
+
+    location = Location(
+        section_id="calculated-summary-section",
+        block_id="mutually-exclusive-checkbox",
+    )
+
+    expected_dependencies = {
+        "questions-section": (
+            "skip-first-block",
+            "second-number-block",
+            "currency-total-playback-1",
+        ),
+    }
+
+    dependencies = get_block_ids_for_calculated_summary_dependencies(
+        schema=schema,
+        location=location,
+        path_finder=path_finder,
+        sections_to_ignore=["calculated-summary-section"],
+    )
+
+    assert dependencies == expected_dependencies

@@ -19,6 +19,10 @@ from app.forms.field_handlers import DateHandler, FieldHandler, get_field_handle
 from app.forms.validators import DateRangeCheck, MutuallyExclusiveCheck, SumCheck
 from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
 from app.questionnaire.path_finder import PathFinder
+from app.questionnaire.placeholder_parser import (
+    flatten_block_ids_map,
+    get_block_ids_for_calculated_summary_dependencies,
+)
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
@@ -453,11 +457,16 @@ def get_answer_fields(
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
 
-    block_ids = _get_block_ids_for_calculated_summary_dependencies(
-        schema=schema,
-        location=location,
-        path_finder=path_finder,
-    )
+    block_ids_map: dict[str, list[str]] = {}
+
+    if location and path_finder:
+        block_ids_map = get_block_ids_for_calculated_summary_dependencies(
+            schema=schema,
+            location=location,
+            path_finder=path_finder,
+        )
+
+    block_ids = flatten_block_ids_map(block_ids_map)
 
     value_source_resolver = ValueSourceResolver(
         answer_store=answer_store,
@@ -617,54 +626,3 @@ def generate_form(
         data=data,
         formdata=form_data,
     )
-
-
-def _get_block_ids_for_calculated_summary_dependencies(
-    path_finder: PathFinder | None,
-    location: Location | RelationshipLocation | None,
-    schema: QuestionnaireSchema,
-) -> list:
-    # Type ignore: Added to this method as the block will exist at this point
-    if not path_finder:
-        raise ValueError("PathFinder not set")
-
-    if not location:
-        return []
-
-    dependent_sections: set = set()
-    if block_id := location.block_id:
-        if schema.get_block(block_id).get("type") not in [  # type: ignore
-            "ListEditQuestion",
-            "ListAddQuestion",
-            "ListRemoveQuestion",
-            "UnrelatedQuestion",
-            "PrimaryPersonListAddOrEditQuestion",
-        ]:
-            dependent_sections = schema.calculated_summary_section_dependencies_by_block.get(  # type: ignore
-                location.section_id
-            )[
-                block_id
-            ]
-
-    block_dependencies: list = []
-
-    for dependent_section in dependent_sections:
-        if (
-            dependent_section,
-            None,
-        ) in path_finder.progress_store.started_section_keys():
-            path = path_finder.routing_path(
-                section_id=dependent_section, list_item_id=None
-            )
-            block_dependencies.extend(path)
-
-        if (
-            dependent_section,
-            location.list_item_id,
-        ) in path_finder.progress_store.started_section_keys():
-            path = path_finder.routing_path(
-                section_id=dependent_section, list_item_id=location.list_item_id
-            )
-            block_dependencies.extend(path)
-
-    return block_dependencies

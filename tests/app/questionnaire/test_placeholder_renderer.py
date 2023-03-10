@@ -10,7 +10,7 @@ def test_correct_pointers(placholder_transform_pointers):
     assert placholder_transform_pointers[0] == "/answers/0/options/0/label"
 
 
-def test_renders_pointer(placholder_transform_question_json, mocker):
+def test_renders_pointer(placholder_transform_question_json):
     mock_transform = {
         "transform": "calculate_date_difference",
         "arguments": {
@@ -35,11 +35,6 @@ def test_renders_pointer(placholder_transform_question_json, mocker):
         ]
     )
 
-    mocker.patch(
-        "app.questionnaire.placeholder_parser.PlaceholderParser._get_block_ids_for_calculated_summary_dependencies",
-        return_value=[],
-    )
-
     renderer = get_placeholder_render(answer_store=answer_store)
     rendered = renderer.render_pointer(
         dict_to_render=placholder_transform_question_json,
@@ -50,7 +45,7 @@ def test_renders_pointer(placholder_transform_question_json, mocker):
     assert rendered == "Hal Abelson’s age is 28 years. Is this correct?"
 
 
-def test_renders_json(placholder_transform_question_json, mocker):
+def test_renders_json(placholder_transform_question_json):
     mock_transform = {
         "transform": "calculate_date_difference",
         "arguments": {
@@ -72,11 +67,6 @@ def test_renders_json(placholder_transform_question_json, mocker):
             {"answer_id": "last-name", "value": "Aho"},
             {"answer_id": "date-of-birth-answer", "value": "1986-01-01"},
         ]
-    )
-
-    mocker.patch(
-        "app.questionnaire.placeholder_parser.PlaceholderParser._get_block_ids_for_calculated_summary_dependencies",
-        return_value=[],
     )
 
     renderer = get_placeholder_render(answer_store=answer_store)
@@ -86,7 +76,7 @@ def test_renders_json(placholder_transform_question_json, mocker):
     assert rendered_label == "Alfred Aho’s age is 33 years. Is this correct?"
 
 
-def test_renders_json_uses_language(placholder_transform_question_json, mocker):
+def test_renders_json_uses_language(placholder_transform_question_json):
     mock_transform = {
         "transform": "calculate_date_difference",
         "arguments": {
@@ -110,11 +100,6 @@ def test_renders_json_uses_language(placholder_transform_question_json, mocker):
         ]
     )
 
-    mocker.patch(
-        "app.questionnaire.placeholder_parser.PlaceholderParser._get_block_ids_for_calculated_summary_dependencies",
-        return_value=[],
-    )
-
     renderer = get_placeholder_render(language="cy", answer_store=answer_store)
     rendered_schema = renderer.render(data_to_render=json_to_render, list_item_id=None)
     rendered_label = rendered_schema["answers"][0]["options"][0]["label"]
@@ -122,15 +107,10 @@ def test_renders_json_uses_language(placholder_transform_question_json, mocker):
     assert rendered_label == "Alfred Aho age is 33 years. Is this correct?"
 
 
-def test_errors_on_invalid_pointer(placholder_transform_question_json, mocker):
+def test_errors_on_invalid_pointer(placholder_transform_question_json):
     renderer = get_placeholder_render()
 
     with pytest.raises(ValueError):
-        mocker.patch(
-            "app.questionnaire.placeholder_parser.PlaceholderParser._get_block_ids_for_calculated_summary_dependencies",
-            return_value=[],
-        )
-
         renderer.render_pointer(
             dict_to_render=placholder_transform_question_json,
             pointer_to_render="/title",
@@ -149,13 +129,8 @@ def test_errors_on_invalid_json():
         )
 
 
-def test_renders_text_plural_from_answers(mocker):
+def test_renders_text_plural_from_answers():
     answer_store = AnswerStore([{"answer_id": "number-of-people", "value": 1}])
-
-    mocker.patch(
-        "app.questionnaire.placeholder_parser.PlaceholderParser._get_block_ids_for_calculated_summary_dependencies",
-        return_value=[],
-    )
 
     renderer = get_placeholder_render(answer_store=answer_store)
     rendered_text = renderer.render_placeholder(
@@ -180,13 +155,8 @@ def test_renders_text_plural_from_answers(mocker):
     assert rendered_text == "Yes, 1 person lives here"
 
 
-def test_renders_text_plural_from_list(mocker):
+def test_renders_text_plural_from_list():
     renderer = get_placeholder_render()
-
-    mocker.patch(
-        "app.questionnaire.placeholder_parser.PlaceholderParser._get_block_ids_for_calculated_summary_dependencies",
-        return_value=[],
-    )
 
     rendered_text = renderer.render_placeholder(
         {
@@ -214,14 +184,9 @@ def test_renders_text_plural_from_list(mocker):
     assert rendered_text == "Yes, 0 people live here"
 
 
-def test_renders_text_plural_from_metadata(mocker):
+def test_renders_text_plural_from_metadata():
     metadata = {"some_value": 100}
     renderer = get_placeholder_render(metadata=metadata)
-
-    mocker.patch(
-        "app.questionnaire.placeholder_parser.PlaceholderParser._get_block_ids_for_calculated_summary_dependencies",
-        return_value=[],
-    )
 
     rendered_text = renderer.render_placeholder(
         {
