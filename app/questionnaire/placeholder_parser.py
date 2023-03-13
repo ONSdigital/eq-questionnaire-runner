@@ -66,17 +66,18 @@ class PlaceholderParser:
 
         self._value_source_resolver = self._get_value_source_resolver()
         self._routing_paths: dict = {}
-        self._sections_to_ignore: list = []
 
     def __call__(
         self, placeholder_list: Sequence[Mapping]
     ) -> MutableMapping[str, Union[ValueSourceEscapedTypes, ValueSourceTypes]]:
         placeholder_list = QuestionnaireSchema.get_mutable_deepcopy(placeholder_list)
 
+        sections_to_ignore = list(self._routing_paths)
+
         if routing_path_block_ids_map := self._get_routing_path_block_ids(
-            self._sections_to_ignore
+            sections_to_ignore
         ):
-            self._sections_to_ignore.extend(iter(routing_path_block_ids_map.keys()))
+            self._routing_paths.update(routing_path_block_ids_map)
 
             routing_path_block_ids = get_flattened_mapping_value(
                 routing_path_block_ids_map
