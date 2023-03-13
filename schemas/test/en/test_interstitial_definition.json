@@ -91,7 +91,6 @@
                                         "type": "Radio"
                                     }
                                 ],
-
                                 "id": "content-variant-definition-question",
                                 "type": "General",
                                 "title": "What would you like to see a definition about?"
@@ -130,13 +129,15 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "content-variant-definition-answer",
-                                            "condition": "equals",
-                                            "value": "Answer"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "content-variant-definition-answer"
+                                            },
+                                            "Answer"
+                                        ]
+                                    }
                                 },
                                 {
                                     "content": {
@@ -157,13 +158,15 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "content-variant-definition-answer",
-                                            "condition": "equals",
-                                            "value": "Question"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "content-variant-definition-answer"
+                                            },
+                                            "Question"
+                                        ]
+                                    }
                                 }
                             ]
                         }

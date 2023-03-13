@@ -171,39 +171,46 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "section": "End",
-                                        "when": [
+                                    "section": "End",
+                                    "when": {
+                                        "and": [
                                             {
-                                                "condition": "equals",
-                                                "id": "anyone-usually-live-at-answer",
-                                                "value": "No"
+                                                "==": [
+                                                    {
+                                                        "identifier": "anyone-usually-live-at-answer",
+                                                        "source": "answers"
+                                                    },
+                                                    "No"
+                                                ]
                                             },
                                             {
-                                                "condition": "less than",
-                                                "list": "people",
-                                                "value": 1
+                                                "<": [
+                                                    {
+                                                        "source": "list",
+                                                        "identifier": "people",
+                                                        "selector": "count"
+                                                    },
+                                                    1
+                                                ]
                                             }
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "list-collector"
-                                    }
+                                    "block": "list-collector"
                                 }
                             ],
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
                                         {
-                                            "condition": "equals",
-                                            "id": "you-live-here",
-                                            "value": "Yes"
-                                        }
+                                            "identifier": "you-live-here",
+                                            "source": "answers"
+                                        },
+                                        "Yes"
                                     ]
                                 }
-                            ],
+                            },
                             "type": "Question"
                         },
                         {
@@ -946,17 +953,18 @@
                                     }
                                 ]
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "<": [
                                         {
-                                            "list": "people",
-                                            "condition": "less than",
-                                            "value": 2
-                                        }
+                                            "source": "list",
+                                            "identifier": "people",
+                                            "selector": "count"
+                                        },
+                                        2
                                     ]
                                 }
-                            ]
+                            }
                         }
                     ],
                     "id": "relationship-group",

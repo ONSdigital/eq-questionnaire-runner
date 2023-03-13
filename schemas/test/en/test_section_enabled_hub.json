@@ -80,17 +80,17 @@
         {
             "id": "section-2",
             "title": "Section 2",
-            "enabled": [
-                {
-                    "when": [
+            "enabled": {
+                "when": {
+                    "in": [
+                        "Section 2",
                         {
-                            "id": "section-1-answer",
-                            "condition": "contains",
-                            "value": "Section 2"
+                            "source": "answers",
+                            "identifier": "section-1-answer"
                         }
                     ]
                 }
-            ],
+            },
             "groups": [
                 {
                     "blocks": [
@@ -121,17 +121,17 @@
         {
             "id": "section-3",
             "title": "Section 3",
-            "enabled": [
-                {
-                    "when": [
+            "enabled": {
+                "when": {
+                    "in": [
+                        "Section 3",
                         {
-                            "id": "section-1-answer",
-                            "condition": "contains",
-                            "value": "Section 3"
+                            "source": "answers",
+                            "identifier": "section-1-answer"
                         }
                     ]
                 }
-            ],
+            },
             "groups": [
                 {
                     "blocks": [

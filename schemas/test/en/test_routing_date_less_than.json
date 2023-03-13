@@ -53,23 +53,20 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "correct-answer",
-                                        "when": [
+                                    "block": "correct-answer",
+                                    "when": {
+                                        "<": [
                                             {
-                                                "id": "single-date-answer",
-                                                "condition": "less than",
-                                                "date_comparison": {
-                                                    "value": "now"
-                                                }
+                                                "date": [{ "source": "answers", "identifier": "single-date-answer" }]
+                                            },
+                                            {
+                                                "date": ["now"]
                                             }
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "incorrect-answer"
-                                    }
+                                    "block": "incorrect-answer"
                                 }
                             ]
                         },
@@ -86,9 +83,7 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         },

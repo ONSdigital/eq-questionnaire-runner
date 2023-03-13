@@ -2,7 +2,6 @@
 from decimal import Decimal
 
 import pytest
-from mock import patch
 from werkzeug.datastructures import MultiDict
 
 from app.data_models import ListStore
@@ -1472,16 +1471,15 @@ def test_generate_form_with_title_and_no_answer_label(app, answer_store, list_st
 
         expected_form_data = {"csrf_token": None, "feeling-answer": "Good"}
 
-        with patch("app.questionnaire.path_finder.evaluate_goto", return_value=False):
-            form = generate_form(
-                schema,
-                question_schema,
-                answer_store,
-                list_store,
-                metadata=get_metadata(),
-                response_metadata={},
-                form_data=form_data,
-            )
+        form = generate_form(
+            schema,
+            question_schema,
+            answer_store,
+            list_store,
+            metadata=get_metadata(),
+            response_metadata={},
+            form_data=form_data,
+        )
 
         form.validate()
         assert form.data == expected_form_data

@@ -1,19 +1,19 @@
-import CalculatedSummarySectionSummaryPage from "../generated_pages/new_routing_and_skipping_section_dependencies_calculated_summary/calculated-summary-section-summary.page";
-import CurrencyTotalPlaybackPage from "../generated_pages/new_routing_and_skipping_section_dependencies_calculated_summary/currency-total-playback.page";
-import DependentQuestionSectionSummaryPage from "../generated_pages/new_routing_and_skipping_section_dependencies_calculated_summary/dependent-question-section-summary.page";
-import FirstQuestionBlockPage from "../generated_pages/new_routing_and_skipping_section_dependencies_calculated_summary/first-question-block.page";
-import FruitPage from "../generated_pages/new_routing_and_skipping_section_dependencies_calculated_summary/fruit.page";
-import SecondQuestionBlockPage from "../generated_pages/new_routing_and_skipping_section_dependencies_calculated_summary/second-question-block.page";
-import VegetablesPage from "../generated_pages/new_routing_and_skipping_section_dependencies_calculated_summary/vegetables.page";
-import SkipQuestionPage from "../generated_pages/new_routing_and_skipping_section_dependencies_calculated_summary/skip-butter-block.page";
-import ButterPage from "../generated_pages/new_routing_and_skipping_section_dependencies_calculated_summary/butter-block.page";
+import CalculatedSummarySectionSummaryPage from "../generated_pages/routing_and_skipping_section_dependencies_calculated_summary/calculated-summary-section-summary.page";
+import CurrencyTotalPlaybackPage from "../generated_pages/routing_and_skipping_section_dependencies_calculated_summary/currency-total-playback.page";
+import DependentQuestionSectionSummaryPage from "../generated_pages/routing_and_skipping_section_dependencies_calculated_summary/dependent-question-section-summary.page";
+import FirstQuestionBlockPage from "../generated_pages/routing_and_skipping_section_dependencies_calculated_summary/first-question-block.page";
+import FruitPage from "../generated_pages/routing_and_skipping_section_dependencies_calculated_summary/fruit.page";
+import SecondQuestionBlockPage from "../generated_pages/routing_and_skipping_section_dependencies_calculated_summary/second-question-block.page";
+import VegetablesPage from "../generated_pages/routing_and_skipping_section_dependencies_calculated_summary/vegetables.page";
+import SkipQuestionPage from "../generated_pages/routing_and_skipping_section_dependencies_calculated_summary/skip-butter-block.page";
+import ButterPage from "../generated_pages/routing_and_skipping_section_dependencies_calculated_summary/butter-block.page";
 
 import HubPage from "../base_pages/hub.page";
 
 describe("Routing and skipping section dependencies based on calculated summaries", () => {
   describe("Given the section dependencies based on a calculated summary questionnaire", () => {
     beforeEach("Load the survey", () => {
-      browser.openQuestionnaire("test_new_routing_and_skipping_section_dependencies_calculated_summary.json");
+      browser.openQuestionnaire("test_routing_and_skipping_section_dependencies_calculated_summary.json");
     });
 
     it("When the calculated summary total has not been set, Then the dependent section should not be enabled", () => {

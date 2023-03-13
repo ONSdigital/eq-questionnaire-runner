@@ -81,7 +81,7 @@ class TestExitPostSubmissionWithHubDefaultTheme(IntegrationTestCase):
 
     def test_redirects_to_account_service_log_out_url_using_base_url_from_claims(self):
         self._launch_and_submit_questionnaire(
-            schema="test_new_hub_section_required_and_enabled",
+            schema="test_hub_section_required_and_enabled",
             account_service_url=ACCOUNT_SERVICE_BASE_URL,
         )
         self.signOut()

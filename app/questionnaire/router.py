@@ -10,7 +10,6 @@ from app.questionnaire.location import Location
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
-from app.questionnaire.when_rules import evaluate_when_rules
 
 
 class Router:
@@ -392,31 +391,17 @@ class Router:
             section["id"]
         )
 
-        if isinstance(enabled, dict):
-            when_rule_evaluator = RuleEvaluator(
-                self._schema,
-                self._answer_store,
-                self._list_store,
-                self._metadata,
-                self._response_metadata,
-                location=None,
-                routing_path_block_ids=routing_path_block_ids,
-            )
-
-            return bool(when_rule_evaluator.evaluate(enabled["when"]))
-
-        return any(
-            evaluate_when_rules(
-                condition["when"],
-                self._schema,
-                self._metadata,
-                self._answer_store,
-                self._list_store,
-                current_location=None,
-                routing_path_block_ids=routing_path_block_ids,
-            )
-            for condition in enabled
+        when_rule_evaluator = RuleEvaluator(
+            self._schema,
+            self._answer_store,
+            self._list_store,
+            self._metadata,
+            self._response_metadata,
+            location=None,
+            routing_path_block_ids=routing_path_block_ids,
         )
+
+        return bool(when_rule_evaluator.evaluate(enabled["when"]))
 
     @staticmethod
     def get_next_block_url(

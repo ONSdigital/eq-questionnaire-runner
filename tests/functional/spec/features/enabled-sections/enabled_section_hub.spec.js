@@ -3,7 +3,7 @@ import hubPage from "../../../base_pages/hub.page";
 
 describe("Feature: Section Enabled With Hub", () => {
   beforeEach("Open survey", () => {
-    browser.openQuestionnaire("test_new_section_enabled_hub.json");
+    browser.openQuestionnaire("test_section_enabled_hub.json");
   });
 
   it("When the user selects `Section 2` and submits, Then only section 2 should be displayed on the hub", () => {

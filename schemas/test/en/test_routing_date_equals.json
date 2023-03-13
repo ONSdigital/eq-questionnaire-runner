@@ -104,125 +104,172 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "correct-answer",
-                                        "when": [
+                                    "block": "correct-answer",
+                                    "when": {
+                                        "or": [
                                             {
-                                                "id": "single-date-answer",
-                                                "condition": "equals",
-                                                "date_comparison": {
-                                                    "id": "comparison-date-answer",
-                                                    "offset_by": {
-                                                        "days": -1
+                                                "==": [
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "single-date-answer"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "comparison-date-answer"
+                                                            },
+                                                            {
+                                                                "days": -1
+                                                            }
+                                                        ]
                                                     }
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "goto": {
-                                        "block": "correct-answer",
-                                        "when": [
+                                                ]
+                                            },
                                             {
-                                                "id": "single-date-answer",
-                                                "condition": "equals",
-                                                "date_comparison": {
-                                                    "id": "comparison-date-answer"
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "goto": {
-                                        "block": "correct-answer",
-                                        "when": [
-                                            {
-                                                "id": "single-date-answer",
-                                                "condition": "equals",
-                                                "date_comparison": {
-                                                    "id": "comparison-date-answer",
-                                                    "offset_by": {
-                                                        "days": 1
+                                                "==": [
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "single-date-answer"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "comparison-date-answer"
+                                                            }
+                                                        ]
                                                     }
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "goto": {
-                                        "block": "correct-answer",
-                                        "when": [
+                                                ]
+                                            },
                                             {
-                                                "id": "single-date-answer",
-                                                "condition": "equals",
-                                                "date_comparison": {
-                                                    "id": "comparison-date-answer",
-                                                    "offset_by": {
-                                                        "months": -1
+                                                "==": [
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "single-date-answer"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "comparison-date-answer"
+                                                            },
+                                                            {
+                                                                "days": 1
+                                                            }
+                                                        ]
                                                     }
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "goto": {
-                                        "block": "correct-answer",
-                                        "when": [
+                                                ]
+                                            },
                                             {
-                                                "id": "single-date-answer",
-                                                "condition": "equals",
-                                                "date_comparison": {
-                                                    "id": "comparison-date-answer",
-                                                    "offset_by": {
-                                                        "months": 1
+                                                "==": [
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "single-date-answer"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "comparison-date-answer"
+                                                            },
+                                                            {
+                                                                "months": -1
+                                                            }
+                                                        ]
                                                     }
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "goto": {
-                                        "block": "correct-answer",
-                                        "when": [
+                                                ]
+                                            },
                                             {
-                                                "id": "single-date-answer",
-                                                "condition": "equals",
-                                                "date_comparison": {
-                                                    "id": "comparison-date-answer",
-                                                    "offset_by": {
-                                                        "years": -1
+                                                "==": [
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "single-date-answer"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "comparison-date-answer"
+                                                            },
+                                                            {
+                                                                "months": 1
+                                                            }
+                                                        ]
                                                     }
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "goto": {
-                                        "block": "correct-answer",
-                                        "when": [
+                                                ]
+                                            },
                                             {
-                                                "id": "single-date-answer",
-                                                "condition": "equals",
-                                                "date_comparison": {
-                                                    "id": "comparison-date-answer",
-                                                    "offset_by": {
-                                                        "years": 1
+                                                "==": [
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "single-date-answer"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "comparison-date-answer"
+                                                            },
+                                                            {
+                                                                "years": -1
+                                                            }
+                                                        ]
                                                     }
-                                                }
+                                                ]
+                                            },
+                                            {
+                                                "==": [
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "single-date-answer"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "comparison-date-answer"
+                                                            },
+                                                            {
+                                                                "years": 1
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
                                             }
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "incorrect-answer"
-                                    }
+                                    "block": "incorrect-answer"
                                 }
                             ]
                         },
@@ -239,9 +286,7 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         },

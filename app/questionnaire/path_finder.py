@@ -10,7 +10,6 @@ from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
-from app.questionnaire.when_rules import evaluate_goto, evaluate_when_rules
 
 
 class PathFinder:
@@ -196,21 +195,13 @@ class PathFinder:
             routing_path_block_ids=routing_path_block_ids,
         )
         for rule in routing_rules:
-            if "goto" in rule:
-                rule = rule["goto"]
-                should_goto = evaluate_goto(
-                    rule,
-                    self.schema,
-                    self.metadata,
-                    self.answer_store,
-                    self.list_store,
-                    current_location=this_location,
-                    routing_path_block_ids=routing_path_block_ids,
-                )
-            else:
-                should_goto = should_goto_new(rule, when_rule_evaluator)
+            rule_valid = (
+                when_rule_evaluator.evaluate(when_rule)
+                if (when_rule := rule.get("when"))
+                else True
+            )
 
-            if should_goto:
+            if rule_valid:
                 if rule.get("section") == "End":
                     return None
 
@@ -246,32 +237,17 @@ class PathFinder:
                 when_rules_block_dependencies + routing_path_block_ids
             )
 
-        if isinstance(skip_conditions, dict):
-            when_rule_evaluator = RuleEvaluator(
-                self.schema,
-                self.answer_store,
-                self.list_store,
-                self.metadata,
-                self.response_metadata,
-                location=this_location,
-                routing_path_block_ids=routing_path_block_ids,
-            )
+        when_rule_evaluator = RuleEvaluator(
+            self.schema,
+            self.answer_store,
+            self.list_store,
+            self.metadata,
+            self.response_metadata,
+            location=this_location,
+            routing_path_block_ids=routing_path_block_ids,
+        )
 
-            return when_rule_evaluator.evaluate(skip_conditions["when"])
-
-        for when in skip_conditions:
-            condition = evaluate_when_rules(
-                when["when"],
-                self.schema,
-                self.metadata,
-                self.answer_store,
-                self.list_store,
-                current_location=this_location,
-                routing_path_block_ids=routing_path_block_ids,
-            )
-            if condition is True:
-                return True
-        return False
+        return when_rule_evaluator.evaluate(skip_conditions["when"])
 
     def _get_next_block_id(self, rule):
         if "group" in rule:
@@ -279,28 +255,23 @@ class PathFinder:
         return rule["block"]
 
     def _remove_current_blocks_answers_for_backwards_routing(
-        self, rules: dict, this_location: Location
+        self, rule: dict, this_location: Location
     ) -> None:
         if block_id := this_location.block_id:
             answer_ids_for_current_block = self.schema.get_answer_ids_for_block(
                 block_id
             )
-            if "when" in rules:
-                if isinstance(rules["when"], dict):
-                    self._remove_current_blocks_answers_for_new_backwards_routing(
-                        rules["when"], answer_ids_for_current_block
-                    )
-                else:
-                    for rule in rules["when"]:
-                        if "id" in rule and rule["id"] in answer_ids_for_current_block:
-                            self.answer_store.remove_answer(rule["id"])
+            if "when" in rule:
+                self._remove_block_anwers_for_backward_routing_according_to_when_rule(
+                    rule["when"], answer_ids_for_current_block
+                )
 
             self.progress_store.remove_location_for_backwards_routing(this_location)
             self.progress_store.update_section_status(
                 CompletionStatus.IN_PROGRESS, this_location.section_id
             )
 
-    def _remove_current_blocks_answers_for_new_backwards_routing(
+    def _remove_block_anwers_for_backward_routing_according_to_when_rule(
         self, rules: dict, answer_ids_for_current_block: list[str]
     ) -> None:
         operands = self.schema.get_operands(rules)
@@ -313,13 +284,6 @@ class PathFinder:
                 self.answer_store.remove_answer(rule["identifier"])
 
             if QuestionnaireSchema.has_operator(rule):
-                return self._remove_current_blocks_answers_for_new_backwards_routing(
+                return self._remove_block_anwers_for_backward_routing_according_to_when_rule(
                     rule, answer_ids_for_current_block
                 )
-
-
-def should_goto_new(rule, when_rule_evaluator):
-    if when_rule := rule.get("when"):
-        return when_rule_evaluator.evaluate(when_rule)
-
-    return True

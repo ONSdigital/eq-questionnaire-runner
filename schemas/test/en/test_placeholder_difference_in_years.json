@@ -103,21 +103,19 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "age-block",
-                                        "when": [
+                                    "block": "age-block",
+                                    "when": {
+                                        "==": [
                                             {
-                                                "id": "date-test-answer",
-                                                "condition": "equals",
-                                                "value": "No"
-                                            }
+                                                "source": "answers",
+                                                "identifier": "date-test-answer"
+                                            },
+                                            "No"
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         }

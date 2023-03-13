@@ -175,7 +175,9 @@
         {
             "id": "personal-details-section",
             "title": "Personal Details",
-            "summary": { "show_on_completion": true },
+            "summary": {
+                "show_on_completion": true
+            },
             "repeat": {
                 "for_list": "people",
                 "title": {
@@ -221,17 +223,19 @@
                                         ],
                                         "title": "List Status"
                                     },
-                                    "when": [
-                                        {
-                                            "list": "people",
-                                            "id_selector": "first",
-                                            "condition": "equals",
-                                            "comparison": {
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "identifier": "people",
+                                                "source": "list",
+                                                "selector": "first"
+                                            },
+                                            {
                                                 "source": "location",
-                                                "id": "list_item_id"
+                                                "identifier": "list_item_id"
                                             }
-                                        }
-                                    ]
+                                        ]
+                                    }
                                 },
                                 {
                                     "content": {
@@ -242,17 +246,19 @@
                                         ],
                                         "title": "List Status"
                                     },
-                                    "when": [
-                                        {
-                                            "list": "people",
-                                            "id_selector": "first",
-                                            "condition": "not equals",
-                                            "comparison": {
+                                    "when": {
+                                        "!=": [
+                                            {
+                                                "identifier": "people",
+                                                "source": "list",
+                                                "selector": "first"
+                                            },
+                                            {
                                                 "source": "location",
-                                                "id": "list_item_id"
+                                                "identifier": "list_item_id"
                                             }
-                                        }
-                                    ]
+                                        ]
+                                    }
                                 }
                             ],
                             "id": "list-status",
@@ -302,17 +308,19 @@
                                         "title": "What is your second favourite drink?",
                                         "type": "General"
                                     },
-                                    "when": [
-                                        {
-                                            "list": "people",
-                                            "id_selector": "first",
-                                            "condition": "equals",
-                                            "comparison": {
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "identifier": "people",
+                                                "source": "list",
+                                                "selector": "first"
+                                            },
+                                            {
                                                 "source": "location",
-                                                "id": "list_item_id"
+                                                "identifier": "list_item_id"
                                             }
-                                        }
-                                    ]
+                                        ]
+                                    }
                                 },
                                 {
                                     "question": {
@@ -353,17 +361,19 @@
                                         "title": "What is your second favourite drink?",
                                         "type": "General"
                                     },
-                                    "when": [
-                                        {
-                                            "list": "people",
-                                            "id_selector": "first",
-                                            "condition": "not equals",
-                                            "comparison": {
+                                    "when": {
+                                        "!=": [
+                                            {
+                                                "identifier": "people",
+                                                "source": "list",
+                                                "selector": "first"
+                                            },
+                                            {
                                                 "source": "location",
-                                                "id": "list_item_id"
+                                                "identifier": "list_item_id"
                                             }
-                                        }
-                                    ]
+                                        ]
+                                    }
                                 }
                             ],
                             "type": "Question"

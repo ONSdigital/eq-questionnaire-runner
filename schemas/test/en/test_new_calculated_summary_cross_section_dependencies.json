@@ -62,17 +62,17 @@
                             }
                         },
                         {
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
                                         {
-                                            "id": "skip-first-block-answer",
-                                            "condition": "equals",
-                                            "value": "Yes"
-                                        }
+                                            "identifier": "skip-first-block-answer",
+                                            "source": "answers"
+                                        },
+                                        "Yes"
                                     ]
                                 }
-                            ],
+                            },
                             "type": "Question",
                             "id": "first-number-block",
                             "question": {
@@ -92,17 +92,17 @@
                             }
                         },
                         {
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
                                         {
-                                            "id": "skip-first-block-answer",
-                                            "condition": "equals",
-                                            "value": "Yes"
-                                        }
+                                            "identifier": "skip-first-block-answer",
+                                            "source": "answers"
+                                        },
+                                        "Yes"
                                     ]
                                 }
-                            ],
+                            },
                             "type": "Question",
                             "id": "first-and-a-half-number-block",
                             "question": {

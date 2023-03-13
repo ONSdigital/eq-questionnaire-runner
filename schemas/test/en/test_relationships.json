@@ -889,17 +889,18 @@
                                     }
                                 ]
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "<": [
                                         {
-                                            "list": "people",
-                                            "condition": "less than",
-                                            "value": 2
-                                        }
+                                            "source": "list",
+                                            "identifier": "people",
+                                            "selector": "count"
+                                        },
+                                        2
                                     ]
                                 }
-                            ]
+                            }
                         },
                         {
                             "id": "relationship-interstitial",
@@ -912,17 +913,18 @@
                                 ]
                             },
                             "type": "Interstitial",
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "<": [
                                         {
-                                            "list": "people",
-                                            "condition": "less than",
-                                            "value": 2
-                                        }
+                                            "source": "list",
+                                            "identifier": "people",
+                                            "selector": "count"
+                                        },
+                                        2
                                     ]
                                 }
-                            ]
+                            }
                         }
                     ]
                 }

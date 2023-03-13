@@ -154,13 +154,15 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "you-live-here",
-                                            "condition": "equals",
-                                            "value": "Yes, I usually live here"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "identifier": "you-live-here",
+                                                "source": "answers"
+                                            },
+                                            "Yes, I usually live here"
+                                        ]
+                                    }
                                 },
                                 {
                                     "question": {
@@ -212,44 +214,44 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "you-live-here",
-                                            "condition": "equals",
-                                            "value": "No, I don’t usually live here"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "identifier": "you-live-here",
+                                                "source": "answers"
+                                            },
+                                            "No, I don’t usually live here"
+                                        ]
+                                    }
                                 }
                             ],
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "list-collector-temporary-away-stay",
-                                        "when": [
+                                    "block": "list-collector-temporary-away-stay",
+                                    "when": {
+                                        "in": [
+                                            "None of these apply, no-one usually lives here",
                                             {
-                                                "id": "anyone-usually-live-at-answer-exclusive",
-                                                "condition": "contains",
-                                                "value": "None of these apply, no-one usually lives here"
+                                                "identifier": "anyone-usually-live-at-answer-exclusive",
+                                                "source": "answers"
                                             }
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "list-collector-temporary-away-stay",
-                                        "when": [
+                                    "block": "list-collector-temporary-away-stay",
+                                    "when": {
+                                        "in": [
+                                            "None of the these apply, I am the only person who usually lives here",
                                             {
-                                                "id": "anyone-usually-live-at-answer-exclusive",
-                                                "condition": "contains",
-                                                "value": "None of the these apply, I am the only person who usually lives here"
+                                                "identifier": "anyone-usually-live-at-answer-exclusive",
+                                                "source": "answers"
                                             }
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "list-collector"
-                                    }
+                                    "block": "list-collector"
                                 }
                             ]
                         },
@@ -306,13 +308,16 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "condition": "equals",
-                                                "list": "people",
-                                                "value": 0
-                                            }
-                                        ]
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "people",
+                                                    "selector": "count"
+                                                },
+                                                0
+                                            ]
+                                        }
                                     },
                                     {
                                         "question": {
@@ -334,13 +339,16 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "condition": "greater than",
-                                                "list": "people",
-                                                "value": 0
-                                            }
-                                        ]
+                                        "when": {
+                                            ">": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "people",
+                                                    "selector": "count"
+                                                },
+                                                0
+                                            ]
+                                        }
                                     }
                                 ]
                             },
@@ -539,13 +547,16 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "condition": "equals",
-                                                "list": "people",
-                                                "value": 0
-                                            }
-                                        ]
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "people",
+                                                    "selector": "count"
+                                                },
+                                                0
+                                            ]
+                                        }
                                     },
                                     {
                                         "question": {
@@ -567,13 +578,16 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "condition": "greater than",
-                                                "list": "people",
-                                                "value": 0
-                                            }
-                                        ]
+                                        "when": {
+                                            ">": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "people",
+                                                    "selector": "count"
+                                                },
+                                                0
+                                            ]
+                                        }
                                     }
                                 ]
                             },

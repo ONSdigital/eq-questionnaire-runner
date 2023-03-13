@@ -605,17 +605,18 @@
                                     }
                                 ]
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "<": [
                                         {
-                                            "list": "people",
-                                            "condition": "less than",
-                                            "value": 2
-                                        }
+                                            "identifier": "people",
+                                            "source": "list",
+                                            "selector": "count"
+                                        },
+                                        2
                                     ]
                                 }
-                            ],
+                            },
                             "unrelated_block": {
                                 "type": "UnrelatedQuestion",
                                 "id": "related-to-anyone-else",
@@ -689,17 +690,19 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "comparison": {
-                                                    "id": "list_item_id",
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "identifier": "list_item_id",
                                                     "source": "location"
                                                 },
-                                                "condition": "equals",
-                                                "id_selector": "first",
-                                                "list": "people"
-                                            }
-                                        ]
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "people",
+                                                    "selector": "first"
+                                                }
+                                            ]
+                                        }
                                     },
                                     {
                                         "question": {
@@ -803,17 +806,19 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "comparison": {
-                                                    "id": "list_item_id",
+                                        "when": {
+                                            "!=": [
+                                                {
+                                                    "identifier": "list_item_id",
                                                     "source": "location"
                                                 },
-                                                "condition": "not equals",
-                                                "id_selector": "first",
-                                                "list": "people"
-                                            }
-                                        ]
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "people",
+                                                    "selector": "first"
+                                                }
+                                            ]
+                                        }
                                     }
                                 ]
                             }
@@ -829,17 +834,18 @@
                                 ]
                             },
                             "type": "Interstitial",
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "<": [
                                         {
-                                            "list": "people",
-                                            "condition": "less than",
-                                            "value": 2
-                                        }
+                                            "source": "list",
+                                            "identifier": "people",
+                                            "selector": "count"
+                                        },
+                                        2
                                     ]
                                 }
-                            ]
+                            }
                         }
                     ]
                 }

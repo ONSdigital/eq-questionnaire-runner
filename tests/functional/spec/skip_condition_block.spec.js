@@ -3,7 +3,7 @@ import SkipPage from "../generated_pages/skip_condition_block/should-skip.page";
 import SubmitPage from "../generated_pages/skip_condition_block/submit.page";
 
 describe("Skip Conditions - Block", () => {
-  const schema = "test_new_skip_condition_block.json";
+  const schema = "test_skip_condition_block.json";
 
   describe("Given I am completing the test skip condition block survey,", () => {
     beforeEach("load the survey", () => {

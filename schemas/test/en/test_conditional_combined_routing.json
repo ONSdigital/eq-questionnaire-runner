@@ -74,33 +74,32 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "response-any",
-                                        "when": [
+                                    "block": "response-any",
+                                    "when": {
+                                        "in": [
                                             {
-                                                "id": "conditional-routing-answer",
-                                                "condition": "equals any",
-                                                "values": ["Yes", "Sometimes"]
+                                                "identifier": "conditional-routing-answer",
+                                                "source": "answers"
+                                            },
+                                            ["Yes", "Sometimes"]
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "response-not-any",
+                                    "when": {
+                                        "not": [
+                                            {
+                                                "in": [
+                                                    { "identifier": "conditional-routing-answer", "source": "answers" },
+                                                    ["Yes", "Sometimes", "I don’t like coffee", "No, I don’t drink any hot drinks"]
+                                                ]
                                             }
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "response-not-any",
-                                        "when": [
-                                            {
-                                                "id": "conditional-routing-answer",
-                                                "condition": "not equals any",
-                                                "values": ["Yes", "Sometimes", "I don’t like coffee", "No, I don’t drink any hot drinks"]
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         },

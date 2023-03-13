@@ -4,7 +4,7 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Skip group",
+    "title": "Skip block",
     "theme": "default",
     "metadata": [
         {
@@ -33,20 +33,21 @@
             "id": "default-section",
             "groups": [
                 {
-                    "id": "do-you-want-to-skip-group",
-                    "title": "Do you want to skip the next block?",
+                    "id": "default-group",
+                    "title": "Group 1",
                     "blocks": [
                         {
                             "type": "Question",
                             "id": "do-you-want-to-skip",
                             "question": {
                                 "id": "do-you-want-to-skip-question",
-                                "title": "Do you want to skip?",
+                                "title": "Do you want to skip the next question?",
                                 "type": "General",
+                                "description": ["Select “Yes” to skip the next question and go straight to the summary"],
                                 "answers": [
                                     {
                                         "id": "do-you-want-to-skip-answer",
-                                        "label": "Do you want to skip?",
+                                        "label": "Select an answer",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -58,10 +59,7 @@
                                                 "value": "No"
                                             }
                                         ],
-                                        "type": "Radio",
-                                        "validation": {
-                                            "messages": {}
-                                        }
+                                        "type": "Radio"
                                     }
                                 ]
                             }
@@ -71,44 +69,27 @@
                             "id": "should-skip",
                             "question": {
                                 "id": "should-skip-question",
-                                "title": "Do you want to skip?",
+                                "title": "Why didn’t you skip the block?",
                                 "type": "General",
                                 "answers": [
                                     {
                                         "id": "should-skip-answer",
-                                        "label": "Why didn’t you skip the block?",
+                                        "label": "Enter your answer",
                                         "mandatory": true,
                                         "type": "TextArea"
                                     }
                                 ]
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
                                         {
-                                            "id": "do-you-want-to-skip-answer",
-                                            "condition": "equals",
-                                            "value": "Yes"
-                                        }
+                                            "source": "answers",
+                                            "identifier": "do-you-want-to-skip-answer"
+                                        },
+                                        "Yes"
                                     ]
                                 }
-                            ]
-                        },
-                        {
-                            "type": "Question",
-                            "id": "a-non-skipped-block",
-                            "question": {
-                                "id": "will-not-be-skipped-question",
-                                "title": "Always ask this question",
-                                "type": "General",
-                                "answers": [
-                                    {
-                                        "id": "will-not-be-skipped-answer",
-                                        "label": "never skipped",
-                                        "mandatory": true,
-                                        "type": "TextArea"
-                                    }
-                                ]
                             }
                         }
                     ]
