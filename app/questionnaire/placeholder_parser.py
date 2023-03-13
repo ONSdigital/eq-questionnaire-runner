@@ -184,17 +184,12 @@ def get_block_ids_for_calculated_summary_dependencies(
     dependent_sections = schema.calculated_summary_section_dependencies_by_block.get(
         location.section_id
     )
-    dependents: set = set()
-    if block_id := location.block_id:
-        if schema.get_block(block_id).get("type") not in [  # type: ignore
-            "ListEditQuestion",
-            "ListAddQuestion",
-            "ListRemoveQuestion",
-            "UnrelatedQuestion",
-            "PrimaryPersonListAddOrEditQuestion",
-        ]:
-            dependents = dependent_sections[block_id]  # type: ignore
 
+    if block_id := location.block_id:
+        try:
+            dependents = dependent_sections[block_id]  # type: ignore
+        except KeyError:
+            dependents = set()
     else:
         dependents = {
             section
