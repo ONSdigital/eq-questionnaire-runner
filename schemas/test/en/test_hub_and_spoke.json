@@ -217,7 +217,7 @@
                                     }
                                 ],
                                 "id": "does-anyone-live-here-question",
-                                "title": "Does anyone live here? ",
+                                "title": "Does anyone live here?",
                                 "type": "General"
                             },
                             "type": "Question"
