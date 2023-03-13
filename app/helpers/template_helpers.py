@@ -54,6 +54,11 @@ class ContextHelper:
             "EQ_GOOGLE_TAG_MANAGER_AUTH"
         )
         self._survey_type = cookie_session.get("theme")
+        self._preview_enabled = (
+            self._survey_config.schema.preview_enabled
+            if self._survey_config.schema
+            else False
+        )
 
     @property
     def context(self) -> dict[str, Any]:
@@ -77,6 +82,7 @@ class ContextHelper:
             "google_tag_manager_id": self._google_tag_manager_id,
             "google_tag_manager_auth": self._google_tag_manager_auth,
             "survey_type": self._survey_type,
+            "preview_enabled": self._preview_enabled,
             "masthead_logo": self._survey_config.masthead_logo,
             "masthead_logo_mobile": self._survey_config.masthead_logo_mobile,
         }

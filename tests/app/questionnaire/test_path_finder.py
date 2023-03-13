@@ -88,7 +88,17 @@ def test_routing_path_with_complete_introduction(answer_store, list_store):
         ]
     )
     expected_routing_path = RoutingPath(
-        ["introduction", "general-business-information-completed"],
+        [
+            "introduction",
+            "report-radio",
+            "reporting-date",
+            "report-radio-second",
+            "projects-checkbox",
+            "turnover-variants-block",
+            "address-mutually-exclusive-checkbox",
+            "further-details-text-area",
+            "general-business-information-completed",
+        ],
         section_id="introduction-section",
     )
 

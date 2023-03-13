@@ -84,7 +84,7 @@ def transform_variants(
     answer_store,
     list_store,
     current_location,
-):
+) -> ImmutableDict:
     output_block = dict(block)
     if "question_variants" in block:
         question = choose_question_to_display(

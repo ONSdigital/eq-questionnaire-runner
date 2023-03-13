@@ -218,7 +218,7 @@
                             "id": "answered-question-3",
                             "type": "Interstitial",
                             "content": {
-                                "title": "You chose  at least 1 slice"
+                                "title": "You chose at least 1 slice"
                             },
                             "routing_rules": [
                                 {

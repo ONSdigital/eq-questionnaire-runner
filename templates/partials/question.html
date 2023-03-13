@@ -1,5 +1,4 @@
 {% from "components/question/_macro.njk" import onsQuestion %}
-{% from "components/fieldset/_macro.njk" import onsFieldset %}
 {% from "components/panel/_macro.njk" import onsPanel %}
 {% from "components/error/_macro.njk" import onsError %}
 
@@ -33,7 +32,7 @@
       "id": "question-warning-" ~ question.id,
       "type": "warn"
     }) %}
-      <p>{{question.warning}}</p>
+      <p>{{ question.warning }}</p>
     {% endcall %}
   {% endif %}
 {% endset %}

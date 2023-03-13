@@ -33,6 +33,10 @@ from app.questionnaire.router import Router
 from app.submitter.previously_submitted_exception import PreviouslySubmittedException
 from app.utilities.schema import load_schema_from_metadata
 from app.views.contexts import HubContext
+from app.views.contexts.preview_context import (
+    PreviewContext,
+    PreviewNotEnabledException,
+)
 from app.views.handlers.block_factory import get_block_handler
 from app.views.handlers.confirm_email import ConfirmEmail
 from app.views.handlers.confirmation_email import (
@@ -41,6 +45,7 @@ from app.views.handlers.confirmation_email import (
     ConfirmationEmailNotEnabled,
 )
 from app.views.handlers.feedback import Feedback, FeedbackNotEnabled
+from app.views.handlers.preview_questions_pdf import PreviewQuestionsPDF
 from app.views.handlers.section import SectionHandler
 from app.views.handlers.submission import SubmissionHandler
 from app.views.handlers.submit_questionnaire import SubmitQuestionnaireHandler
@@ -221,6 +226,36 @@ def submit_questionnaire(
         content=context,
         page_title=context["title"],
         previous_location_url=submit_questionnaire_handler.get_previous_location_url(),
+    )
+
+
+@questionnaire_blueprint.route("/preview", methods=["GET"])
+@with_questionnaire_store
+@with_schema
+def get_preview(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore):
+    try:
+        preview_context = PreviewContext(
+            language=flask_babel.get_locale().language,
+            schema=schema,
+            answer_store=questionnaire_store.answer_store,
+            list_store=questionnaire_store.list_store,
+            progress_store=questionnaire_store.progress_store,
+            metadata=questionnaire_store.metadata,
+            response_metadata=questionnaire_store.response_metadata,
+        )
+    except PreviewNotEnabledException as exc:
+        raise NotFound from exc
+
+    schema_type = schema.json["questionnaire_flow"].get("type")
+
+    context = {
+        "schema_type": schema_type,
+        "preview": preview_context(),
+        "pdf_url": url_for(".get_preview_questions_pdf"),
+    }
+
+    return render_template(
+        template="preview", content=context, page_title=preview_context.get_page_title()
     )
 
 
@@ -415,6 +450,31 @@ def get_view_submitted_response(schema, questionnaire_store):
         raise NotFound from exc
 
     return view_submitted_response.get_rendered_html()
+
+
+@questionnaire_blueprint.route("/preview/download-pdf", methods=["GET"])
+@with_questionnaire_store
+@with_schema
+def get_preview_questions_pdf(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+) -> Response:
+    view_preview_questions_pdf = PreviewQuestionsPDF(
+        schema,
+        questionnaire_store,
+        flask_babel.get_locale().language,
+    )
+
+    try:
+        path_or_file = view_preview_questions_pdf.get_pdf()
+    except PreviewNotEnabledException as exc:
+        raise NotFound from exc
+
+    return send_file(
+        path_or_file=path_or_file,
+        mimetype=view_preview_questions_pdf.mimetype,
+        as_attachment=True,
+        download_name=view_preview_questions_pdf.filename,
+    )
 
 
 @post_submission_blueprint.route("download-pdf", methods=["GET"])
