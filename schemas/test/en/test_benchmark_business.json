@@ -214,7 +214,7 @@
                                 "type": "DateRange",
                                 "answers": [
                                     {
-                                        "id": "answerfrom",
+                                        "id": "answer-from",
                                         "type": "Date",
                                         "mandatory": true,
                                         "label": "Period from",
@@ -230,7 +230,7 @@
                                         }
                                     },
                                     {
-                                        "id": "answerto",
+                                        "id": "answer-to",
                                         "type": "Date",
                                         "mandatory": true,
                                         "label": "Period to",
@@ -525,7 +525,7 @@
                             "question": {
                                 "id": "question383",
                                 "title": "Explain any differences between this quarter&apos;s opening value and the previously returned closing value",
-                                "description": ["<p>  Include any unusual fluctuations in figures  </p>"],
+                                "description": ["<p>Include any unusual fluctuations in figures</p>"],
                                 "type": "General",
                                 "answers": [
                                     {

@@ -116,6 +116,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return region_code
 
     @cached_property
+    def preview_enabled(self) -> bool:
+        preview_enabled: bool = self.json.get("preview_questions", False)
+        return preview_enabled
+
+    @cached_property
     def parent_id_map(self) -> Any:
         return self.serialize(self._parent_id_map)
 
@@ -414,7 +419,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         for section in self.get_sections():
             ignore_keys = ["question_variants", "content_variants"]
-            when_rules = self._get_values_for_key(section, "when", ignore_keys)
+            when_rules = self.get_values_for_key(section, "when", ignore_keys)
 
             rule: Union[Mapping, list] = next(when_rules, [])
             if self._is_list_name_in_rule(rule, list_name):
@@ -777,7 +782,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             operator in rule for operator in OPERATION_MAPPING
         )
 
-    def _get_values_for_key(
+    def get_values_for_key(
         self, block: Mapping, key: str, ignore_keys: Optional[list[str]] = None
     ) -> Generator:
         ignore_keys = ignore_keys or []
@@ -788,10 +793,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 if k == key:
                     yield v
                 if isinstance(v, dict):
-                    yield from self._get_values_for_key(v, key, ignore_keys)
+                    yield from self.get_values_for_key(v, key, ignore_keys)
                 elif isinstance(v, (list, tuple)):
                     for d in v:
-                        yield from self._get_values_for_key(d, key, ignore_keys)
+                        yield from self.get_values_for_key(d, key, ignore_keys)
             except AttributeError:
                 continue
 
@@ -845,7 +850,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _populate_when_rules_section_dependencies(self) -> None:
         for section in self.get_sections():
-            when_rules = self._get_values_for_key(section, "when")
+            when_rules = self.get_values_for_key(section, "when")
             rules: Union[Mapping, list] = next(when_rules, [])
 
             if rules_section_dependencies := self._get_rules_section_dependencies(

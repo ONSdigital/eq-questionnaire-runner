@@ -32,6 +32,10 @@ class IntroductionBasePage extends BasePage {
   introDescription() {
     return "#use-of-information p";
   }
+
+  previewQuestions() {
+    return 'a[href="/questionnaire/preview"]';
+  }
 }
 
 export default IntroductionBasePage;
