@@ -33,8 +33,9 @@ class PlaceholderRenderer:
         location: Location | RelationshipLocation | None = None,
         routing_path_block_ids: tuple | None = None,
         router: Optional["Router"] = None,
+        placeholder_preview_mode: bool | None = False,
     ):
-        self.placeholder_parser = None
+        self._placeholder_preview_mode = placeholder_preview_mode
         self._language = language
         self._answer_store = answer_store
         self._list_store = list_store
@@ -66,6 +67,7 @@ class PlaceholderRenderer:
             location=self._location,
             renderer=self,
             router=self._router,
+            placeholder_preview_mode=self._placeholder_preview_mode,
         )
 
         return self.render_placeholder(pointer_data, list_item_id, placeholder_parser)
@@ -102,13 +104,18 @@ class PlaceholderRenderer:
                 location=self._location,
                 renderer=self,
                 router=self._router,
+                placeholder_preview_mode=self._placeholder_preview_mode,
             )
 
         placeholder_data = QuestionnaireSchema.get_mutable_deepcopy(placeholder_data)
 
         if "text_plural" in placeholder_data:
             plural_schema: Mapping[str, dict] = placeholder_data["text_plural"]
-            count = self.get_plural_count(plural_schema["count"])
+            count = (
+                0
+                if self._placeholder_preview_mode
+                else self.get_plural_count(plural_schema["count"])
+            )
 
             plural_form_key = get_plural_form_key(count, self._language)
             plural_forms: Mapping[str, str] = plural_schema["forms"]

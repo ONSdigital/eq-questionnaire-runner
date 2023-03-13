@@ -45,9 +45,10 @@ class PlaceholderParser:
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
         renderer: "PlaceholderRenderer",
-        list_item_id: str | None = None,
-        location: Location | RelationshipLocation | None = None,
         router: Optional["Router"] = None,
+        list_item_id: Optional[str] = None,
+        location: Union[Location, RelationshipLocation, None] = None,
+        placeholder_preview_mode: Optional[bool] = False,
     ):
         self._transformer = PlaceholderTransforms(language, schema, renderer)
         self._placeholder_map: MutableMapping[
@@ -61,6 +62,7 @@ class PlaceholderParser:
         self._schema = schema
         self._location = location
         self._router = router
+        self._placeholder_preview_mode = placeholder_preview_mode
 
         self._value_source_resolver = self._get_value_source_resolver()
         self._routing_paths: dict = {}
@@ -105,9 +107,12 @@ class PlaceholderParser:
             routing_path_block_ids=routing_path_block_ids,
         )
 
-    def _parse_placeholder(
-        self, placeholder: Mapping
-    ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes, TransformedValueTypes]:
+    def _parse_placeholder(self, placeholder: Mapping) -> Any:
+        if self._placeholder_preview_mode and not self._all_value_sources_metadata(
+            placeholder
+        ):
+            return f'{{{placeholder["placeholder"]}}}'
+
         try:
             return self._parse_transforms(placeholder["transforms"])
         except KeyError:
@@ -169,6 +174,10 @@ class PlaceholderParser:
                 sections_to_ignore=sections_to_ignore,
             )
         return {}
+
+    def _all_value_sources_metadata(self, placeholder: Mapping) -> bool:
+        sources = self._schema.get_values_for_key(placeholder, key="source")
+        return all(source == "metadata" for source in sources)
 
 
 def get_block_ids_for_calculated_summary_dependencies(

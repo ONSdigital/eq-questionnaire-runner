@@ -558,7 +558,7 @@
                             "type": "CalculatedSummary",
                             "id": "percentage-total-playback",
                             "title": "We calculate the total of percentage values entered to be %(total)s. Is this correct?",
-                            "page_title": "Percentage Calculated Summary:  Person {list_item_position}",
+                            "page_title": "Percentage Calculated Summary: Person {list_item_position}",
                             "calculation": {
                                 "operation": {
                                     "+": [
