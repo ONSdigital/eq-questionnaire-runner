@@ -4,7 +4,7 @@ import SubmitPage from "../../../../generated_pages/mutually_exclusive/mutually-
 describe("Component: Mutually Exclusive Year Date With Single Checkbox Override", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive.json");
-    await browser.scroll(0, 200);
+    await browser.pause(100);
     await browser.url("/questionnaire/mutually-exclusive-year-date");
   });
 

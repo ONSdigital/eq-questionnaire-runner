@@ -4,7 +4,7 @@ import SummaryPage from "../../../../generated_pages/mutually_exclusive_multiple
 describe("Component: Mutually Exclusive Textfield With Multiple Radio Override", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive_multiple.json");
-    await browser.scroll(0, 200);
+    await browser.pause(100);
     await browser.url("/questionnaire/mutually-exclusive-textfield");
   });
 
