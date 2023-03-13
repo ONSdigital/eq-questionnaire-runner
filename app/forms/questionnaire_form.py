@@ -19,8 +19,8 @@ from app.forms.field_handlers import DateHandler, FieldHandler, get_field_handle
 from app.forms.validators import DateRangeCheck, MutuallyExclusiveCheck, SumCheck
 from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
 from app.questionnaire.placeholder_parser import (
-    flatten_block_ids_map,
     get_block_ids_for_calculated_summary_dependencies,
+    get_flattened_mapping_value,
 )
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.router import Router
@@ -465,7 +465,7 @@ def get_answer_fields(
             router=router,
         )
 
-    block_ids = flatten_block_ids_map(block_ids_map)
+    block_ids = get_flattened_mapping_value(block_ids_map)
 
     value_source_resolver = ValueSourceResolver(
         answer_store=answer_store,

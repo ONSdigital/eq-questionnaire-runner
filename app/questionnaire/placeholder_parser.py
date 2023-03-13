@@ -78,7 +78,9 @@ class PlaceholderParser:
         ):
             self._sections_to_ignore.extend(iter(routing_path_block_ids_map.keys()))
 
-            routing_path_block_ids = flatten_block_ids_map(routing_path_block_ids_map)
+            routing_path_block_ids = get_flattened_mapping_value(
+                routing_path_block_ids_map
+            )
             self._value_source_resolver = self._get_value_source_resolver(
                 routing_path_block_ids
             )
@@ -220,5 +222,7 @@ def get_block_ids_for_calculated_summary_dependencies(
     return blocks_id_by_section
 
 
-def flatten_block_ids_map(routing_path_block_ids_map: dict[str, list[str]]) -> set[str]:
+def get_flattened_mapping_value(
+    routing_path_block_ids_map: dict[str, list[str]]
+) -> set[str]:
     return {x for v in routing_path_block_ids_map.values() for x in v}
