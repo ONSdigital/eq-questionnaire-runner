@@ -58,6 +58,71 @@
                                 "title": "Do you want to skip all age questions in all sections",
                                 "type": "General"
                             }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "skip-household-section",
+                            "question": {
+                                "id": "skip-household-section-question",
+                                "title": "Do you want to skip the question about skipping the household summary section?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "skip-household-section-answer",
+                                        "label": "It will remove the enable section question from the routing path",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "enable-section",
+                            "question": {
+                                "id": "enable-section-question",
+                                "title": "Do you want to enable the household summary section?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "enable-section-answer",
+                                        "label": "Depending on the answer it will enable or disable the household summary section",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "identifier": "skip-household-section-answer",
+                                            "source": "answers"
+                                        },
+                                        "Yes"
+                                    ]
+                                }
+                            }
                         }
                     ],
                     "id": "skip-age-group"
@@ -98,21 +163,19 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "skip-confirmation",
-                                        "when": [
+                                    "block": "skip-confirmation",
+                                    "when": {
+                                        "==": [
+                                            "Yes",
                                             {
-                                                "id": "skip-age-answer",
-                                                "condition": "equals",
-                                                "value": "Yes"
+                                                "source": "answers",
+                                                "identifier": "skip-age-answer"
                                             }
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         },
@@ -187,22 +250,30 @@
                                 "title": "What is your age?",
                                 "type": "General"
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "and": [
                                         {
-                                            "id": "skip-age-answer",
-                                            "condition": "equals",
-                                            "value": "Yes"
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "skip-age-answer"
+                                                },
+                                                "Yes"
+                                            ]
                                         },
                                         {
-                                            "id": "skip-confirmation-answer",
-                                            "condition": "not equals",
-                                            "value": "No"
+                                            "!=": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "skip-confirmation-answer"
+                                                },
+                                                "No"
+                                            ]
                                         }
                                     ]
                                 }
-                            ]
+                            }
                         }
                     ],
                     "id": "primary-person-group",
@@ -239,30 +310,45 @@
                     ],
                     "id": "confirmation-group",
                     "title": "Confirmation Question",
-                    "skip_conditions": [
-                        {
-                            "when": [
+                    "skip_conditions": {
+                        "when": {
+                            "or": [
                                 {
-                                    "id": "skip-confirmation-answer",
-                                    "condition": "equals",
-                                    "value": "Yes"
-                                }
-                            ]
-                        },
-                        {
-                            "when": [
+                                    "==": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "skip-confirmation-answer"
+                                        },
+                                        "Yes"
+                                    ]
+                                },
                                 {
-                                    "id": "skip-confirmation-answer",
-                                    "condition": "equals",
-                                    "value": "No"
+                                    "==": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "skip-confirmation-answer"
+                                        },
+                                        "No"
+                                    ]
                                 }
                             ]
                         }
-                    ]
+                    }
                 }
             ]
         },
         {
+            "enabled": {
+                "when": {
+                    "==": [
+                        "Yes",
+                        {
+                            "source": "answers",
+                            "identifier": "enable-section-answer"
+                        }
+                    ]
+                }
+            },
             "id": "household-section",
             "title": "Household Summary",
             "summary": {
@@ -467,7 +553,7 @@
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "repeating-answer",
+                                        "id": "repeating-sex-answer",
                                         "mandatory": false,
                                         "options": [
                                             {
@@ -504,22 +590,30 @@
                                 "title": "What age is this person?",
                                 "type": "General"
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "and": [
                                         {
-                                            "id": "skip-age-answer",
-                                            "condition": "equals",
-                                            "value": "Yes"
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "skip-age-answer"
+                                                },
+                                                "Yes"
+                                            ]
                                         },
                                         {
-                                            "id": "skip-confirmation-answer",
-                                            "condition": "not equals",
-                                            "value": "No"
+                                            "!=": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "skip-confirmation-answer"
+                                                },
+                                                "No"
+                                            ]
                                         }
                                     ]
                                 }
-                            ]
+                            }
                         }
                     ]
                 }

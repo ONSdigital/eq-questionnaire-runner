@@ -33,20 +33,21 @@
             "id": "default-section",
             "groups": [
                 {
-                    "id": "do-you-want-to-skip-group",
-                    "title": "Do you want to skip the next group?",
+                    "id": "default-group",
+                    "title": "Group 1",
                     "blocks": [
                         {
                             "type": "Question",
                             "id": "do-you-want-to-skip",
                             "question": {
                                 "id": "do-you-want-to-skip-question",
-                                "title": "Do you want to skip?",
+                                "title": "Do you want to skip the next question?",
                                 "type": "General",
+                                "description": ["Select “Yes” to skip the next question and go straight to the summary"],
                                 "answers": [
                                     {
                                         "id": "do-you-want-to-skip-answer",
-                                        "label": "Do you want to skip?",
+                                        "label": "Select an answer",
                                         "mandatory": true,
                                         "options": [
                                             {
@@ -58,10 +59,7 @@
                                                 "value": "No"
                                             }
                                         ],
-                                        "type": "Radio",
-                                        "validation": {
-                                            "messages": {}
-                                        }
+                                        "type": "Radio"
                                     }
                                 ]
                             }
@@ -70,30 +68,30 @@
                 },
                 {
                     "id": "should-skip-group",
-                    "title": "This question may or may not be skipped",
-                    "skip_conditions": [
-                        {
-                            "when": [
+                    "title": "Group 2 (Skippable)",
+                    "skip_conditions": {
+                        "when": {
+                            "==": [
                                 {
-                                    "id": "do-you-want-to-skip-answer",
-                                    "condition": "equals",
-                                    "value": "Yes"
-                                }
+                                    "source": "answers",
+                                    "identifier": "do-you-want-to-skip-answer"
+                                },
+                                "Yes"
                             ]
                         }
-                    ],
+                    },
                     "blocks": [
                         {
                             "type": "Question",
                             "id": "should-skip",
                             "question": {
                                 "id": "should-skip-question",
-                                "title": "Do you want to skip?",
+                                "title": "Why didn’t you skip the group?",
                                 "type": "General",
                                 "answers": [
                                     {
                                         "id": "should-skip-answer",
-                                        "label": "Why didn’t you skip the group?",
+                                        "label": "Enter your answer",
                                         "mandatory": true,
                                         "type": "TextArea"
                                     }

@@ -250,21 +250,19 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "group": "dob-input-group",
-                                        "when": [
+                                    "group": "dob-input-group",
+                                    "when": {
+                                        "==": [
                                             {
-                                                "id": "confirm-date-of-birth-answer-proxy",
-                                                "condition": "equals",
-                                                "value": "No, I need to change their date of birth"
-                                            }
+                                                "source": "answers",
+                                                "identifier": "confirm-date-of-birth-answer-proxy"
+                                            },
+                                            "No, I need to change their date of birth"
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         }

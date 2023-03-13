@@ -90,13 +90,15 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "you-live-here-answer",
-                                            "condition": "equals",
-                                            "value": "Yes"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "you-live-here-answer"
+                                            },
+                                            "Yes"
+                                        ]
+                                    }
                                 },
                                 {
                                     "question": {
@@ -124,13 +126,15 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "you-live-here-answer",
-                                            "condition": "equals",
-                                            "value": "No"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "you-live-here-answer"
+                                            },
+                                            "No"
+                                        ]
+                                    }
                                 }
                             ],
                             "add_block": {
@@ -157,13 +161,15 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "id": "you-live-here-answer",
-                                                "condition": "equals",
-                                                "value": "No"
-                                            }
-                                        ]
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "you-live-here-answer"
+                                                },
+                                                "No"
+                                            ]
+                                        }
                                     },
                                     {
                                         "question": {
@@ -185,13 +191,15 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "id": "you-live-here-answer",
-                                                "condition": "equals",
-                                                "value": "Yes"
-                                            }
-                                        ]
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "you-live-here-answer"
+                                                },
+                                                "Yes"
+                                            ]
+                                        }
                                     }
                                 ]
                             },
@@ -219,13 +227,15 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "id": "you-live-here-answer",
-                                                "condition": "equals",
-                                                "value": "Yes"
-                                            }
-                                        ]
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "you-live-here-answer"
+                                                },
+                                                "Yes"
+                                            ]
+                                        }
                                     },
                                     {
                                         "question": {
@@ -247,13 +257,15 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "id": "you-live-here-answer",
-                                                "condition": "equals",
-                                                "value": "No"
-                                            }
-                                        ]
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "you-live-here-answer"
+                                                },
+                                                "No"
+                                            ]
+                                        }
                                     }
                                 ]
                             },
@@ -287,13 +299,15 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "id": "you-live-here-answer",
-                                                "condition": "equals",
-                                                "value": "Yes"
-                                            }
-                                        ]
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "you-live-here-answer"
+                                                },
+                                                "Yes"
+                                            ]
+                                        }
                                     },
                                     {
                                         "question": {
@@ -321,13 +335,15 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "id": "you-live-here-answer",
-                                                "condition": "equals",
-                                                "value": "No"
-                                            }
-                                        ]
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "you-live-here-answer"
+                                                },
+                                                "No"
+                                            ]
+                                        }
                                     }
                                 ]
                             },

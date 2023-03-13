@@ -23,7 +23,9 @@
     ],
     "questionnaire_flow": {
         "type": "Hub",
-        "options": { "required_completed_sections": ["employment-section"] }
+        "options": {
+            "required_completed_sections": ["employment-section"]
+        }
     },
     "sections": [
         {
@@ -95,20 +97,19 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "group": "checkboxes",
-                                        "when": [
+                                    "block": "employment-type",
+                                    "when": {
+                                        "==": [
                                             {
-                                                "id": "employment-status-answer",
-                                                "condition": "set"
-                                            }
+                                                "identifier": "employment-status-answer",
+                                                "source": "answers"
+                                            },
+                                            null
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "employment-type"
-                                    }
+                                    "group": "checkboxes"
                                 }
                             ]
                         },

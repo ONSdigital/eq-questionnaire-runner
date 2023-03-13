@@ -238,7 +238,9 @@
             ]
         },
         {
-            "summary": { "show_on_completion": true },
+            "summary": {
+                "show_on_completion": true
+            },
             "groups": [
                 {
                     "blocks": [
@@ -295,21 +297,20 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "section": "End",
-                                        "when": [
+                                    "section": "End",
+                                    "when": {
+                                        "==": [
                                             {
-                                                "condition": "equals",
-                                                "list": "people",
-                                                "value": 0
-                                            }
+                                                "source": "list",
+                                                "identifier": "people",
+                                                "selector": "count"
+                                            },
+                                            0
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "own-or-rent"
-                                    }
+                                    "block": "own-or-rent"
                                 }
                             ],
                             "type": "Question"

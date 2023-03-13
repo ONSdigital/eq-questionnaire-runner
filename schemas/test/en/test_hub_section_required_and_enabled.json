@@ -106,17 +106,17 @@
                     "title": "Relationships count"
                 }
             ],
-            "enabled": [
-                {
-                    "when": [
+            "enabled": {
+                "when": {
+                    "==": [
+                        "Yes",
                         {
-                            "id": "household-relationships-answer",
-                            "condition": "equals",
-                            "value": "Yes"
+                            "source": "answers",
+                            "identifier": "household-relationships-answer"
                         }
                     ]
                 }
-            ]
+            }
         }
     ]
 }

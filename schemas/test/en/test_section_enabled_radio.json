@@ -73,17 +73,17 @@
         {
             "id": "section-2",
             "title": "Section 2",
-            "enabled": [
-                {
-                    "when": [
+            "enabled": {
+                "when": {
+                    "==": [
+                        "Yes, enable section 2",
                         {
-                            "id": "section-1-answer",
-                            "condition": "equals",
-                            "value": "Yes, enable section 2"
+                            "source": "answers",
+                            "identifier": "section-1-answer"
                         }
                     ]
                 }
-            ],
+            },
             "groups": [
                 {
                     "blocks": [

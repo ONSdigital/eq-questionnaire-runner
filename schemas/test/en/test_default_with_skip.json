@@ -70,17 +70,17 @@
                                 "title": "Question Two",
                                 "type": "General"
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
                                         {
-                                            "condition": "not equals",
-                                            "id": "answer-one",
-                                            "value": 1
-                                        }
+                                            "source": "answers",
+                                            "identifier": "answer-one"
+                                        },
+                                        1
                                     ]
                                 }
-                            ]
+                            }
                         },
                         {
                             "type": "Question",
@@ -98,17 +98,17 @@
                                 "title": "Question Three",
                                 "type": "General"
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
                                         {
-                                            "condition": "equals",
-                                            "id": "answer-two",
-                                            "value": 1
-                                        }
+                                            "source": "answers",
+                                            "identifier": "answer-two"
+                                        },
+                                        1
                                     ]
                                 }
-                            ]
+                            }
                         }
                     ],
                     "id": "group"

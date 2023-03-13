@@ -151,3 +151,13 @@ def test_first_raises_index_error_when_list_is_empty():
     assert "unable to access first item in list, list 'people' is empty" in str(
         error.value
     )
+
+
+def test_get_item_using_method():
+    store = ListStore()
+
+    first_id = store.add_list_item("people")
+
+    item = store.get("people")
+
+    assert item.items[0] == first_id

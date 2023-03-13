@@ -187,21 +187,13 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "block381",
-                                        "when": [
-                                            {
-                                                "id": "answer434",
-                                                "condition": "equals any",
-                                                "values": ["Yes"]
-                                            }
-                                        ]
+                                    "block": "block381",
+                                    "when": {
+                                        "==": [{ "identifier": "answer434", "source": "answers" }, "Yes"]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "block380"
-                                    }
+                                    "block": "block380"
                                 }
                             ]
                         },
@@ -424,21 +416,13 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "block4953",
-                                        "when": [
-                                            {
-                                                "id": "answer6287",
-                                                "condition": "equals any",
-                                                "values": ["Yes"]
-                                            }
-                                        ]
+                                    "block": "block4953",
+                                    "when": {
+                                        "==": [{ "identifier": "answer6287", "source": "answers" }, "Yes"]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "block383"
-                                    }
+                                    "block": "block383"
                                 }
                             ]
                         },

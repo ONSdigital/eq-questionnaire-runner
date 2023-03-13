@@ -228,7 +228,9 @@
         {
             "id": "personal-details-section",
             "title": "Personal Details",
-            "summary": { "show_on_completion": true },
+            "summary": {
+                "show_on_completion": true
+            },
             "repeat": {
                 "for_list": "people",
                 "title": {
@@ -322,13 +324,15 @@
                                         "title": "What is your date of birth?",
                                         "type": "General"
                                     },
-                                    "when": [
-                                        {
-                                            "condition": "equals",
-                                            "id": "proxy-answer",
-                                            "value": "No, I’m answering for myself"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "proxy-answer"
+                                            },
+                                            "No, I’m answering for myself"
+                                        ]
+                                    }
                                 },
                                 {
                                     "question": {
@@ -386,13 +390,15 @@
                                         },
                                         "type": "General"
                                     },
-                                    "when": [
-                                        {
-                                            "condition": "equals",
-                                            "id": "proxy-answer",
-                                            "value": "Yes"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "proxy-answer"
+                                            },
+                                            "Yes"
+                                        ]
+                                    }
                                 }
                             ],
                             "type": "Question"

@@ -1,9 +1,9 @@
-import Comparison1Page from "../../../generated_pages/new_skip_condition_answer_comparison/comparison-1.page.js";
-import Comparison2Page from "../../../generated_pages/new_skip_condition_answer_comparison/comparison-2.page.js";
+import Comparison1Page from "../../../generated_pages/skip_condition_answer_comparison/comparison-1.page.js";
+import Comparison2Page from "../../../generated_pages/skip_condition_answer_comparison/comparison-2.page.js";
 
 describe("Test skip condition answer comparisons", () => {
   beforeEach(() => {
-    browser.openQuestionnaire("test_new_skip_condition_answer_comparison.json");
+    browser.openQuestionnaire("test_skip_condition_answer_comparison.json");
   });
 
   it("Given we start the skip condition survey, when we enter the same answers, then the interstitial should show that the answers are the same", () => {

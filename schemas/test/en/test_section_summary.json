@@ -122,17 +122,17 @@
                                     }
                                 ]
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
                                         {
-                                            "id": "insurance-type-answer",
-                                            "condition": "equals",
-                                            "value": "Both"
-                                        }
+                                            "source": "answers",
+                                            "identifier": "insurance-type-answer"
+                                        },
+                                        "Both"
                                     ]
                                 }
-                            ]
+                            }
                         }
                     ]
                 },

@@ -892,17 +892,18 @@
                                     }
                                 ]
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "<": [
                                         {
-                                            "list": "household",
-                                            "condition": "less than",
-                                            "value": 2
-                                        }
+                                            "source": "list",
+                                            "identifier": "household",
+                                            "selector": "count"
+                                        },
+                                        2
                                     ]
                                 }
-                            ]
+                            }
                         }
                     ]
                 }

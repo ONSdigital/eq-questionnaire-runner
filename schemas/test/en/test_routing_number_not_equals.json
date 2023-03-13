@@ -53,21 +53,19 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "correct-answer",
-                                        "when": [
+                                    "block": "correct-answer",
+                                    "when": {
+                                        "!=": [
                                             {
-                                                "id": "answer",
-                                                "condition": "not equals",
-                                                "value": 123
-                                            }
+                                                "source": "answers",
+                                                "identifier": "answer"
+                                            },
+                                            123
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "incorrect-answer"
-                                    }
+                                    "block": "incorrect-answer"
                                 }
                             ]
                         },
@@ -95,9 +93,7 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         },

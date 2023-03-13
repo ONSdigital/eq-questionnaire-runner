@@ -3,7 +3,7 @@ import SubmitPage from "../../../generated_pages/section_enabled_radio/submit.pa
 
 describe("Feature: Section Enabled Based On Radio Answers", () => {
   beforeEach("Open survey", () => {
-    browser.openQuestionnaire("test_new_section_enabled_radio.json");
+    browser.openQuestionnaire("test_section_enabled_radio.json");
   });
 
   it("When the user answers `Yes, enable section 2` and submits, Then section 2 should be displayed", () => {

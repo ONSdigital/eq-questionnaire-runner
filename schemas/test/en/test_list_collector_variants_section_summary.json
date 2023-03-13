@@ -123,21 +123,19 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "confirmation-checkbox",
-                                        "when": [
+                                    "block": "confirmation-checkbox",
+                                    "when": {
+                                        "==": [
                                             {
-                                                "id": "any-companies-or-branches-answer",
-                                                "condition": "equals",
-                                                "value": "No"
-                                            }
+                                                "source": "answers",
+                                                "identifier": "any-companies-or-branches-answer"
+                                            },
+                                            "No"
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "any-other-companies-or-branches"
-                                    }
+                                    "block": "any-other-companies-or-branches"
                                 }
                             ]
                         },
@@ -172,13 +170,15 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "uk-based-answer",
-                                            "condition": "equals",
-                                            "value": "Yes"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "uk-based-answer"
+                                            },
+                                            "Yes"
+                                        ]
+                                    }
                                 },
                                 {
                                     "question": {
@@ -206,13 +206,15 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "uk-based-answer",
-                                            "condition": "equals",
-                                            "value": "No"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "uk-based-answer"
+                                            },
+                                            "No"
+                                        ]
+                                    }
                                 }
                             ],
                             "add_block": {
@@ -260,13 +262,15 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "id": "uk-based-answer",
-                                                "condition": "equals",
-                                                "value": "Yes"
-                                            }
-                                        ]
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "uk-based-answer"
+                                                },
+                                                "Yes"
+                                            ]
+                                        }
                                     },
                                     {
                                         "question": {
@@ -309,13 +313,15 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "id": "uk-based-answer",
-                                                "condition": "equals",
-                                                "value": "No"
-                                            }
-                                        ]
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "uk-based-answer"
+                                                },
+                                                "No"
+                                            ]
+                                        }
                                     }
                                 ]
                             },
@@ -359,13 +365,15 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "id": "uk-based-answer",
-                                                "condition": "equals",
-                                                "value": "Yes"
-                                            }
-                                        ]
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "uk-based-answer"
+                                                },
+                                                "Yes"
+                                            ]
+                                        }
                                     },
                                     {
                                         "question": {
@@ -403,13 +411,15 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "id": "uk-based-answer",
-                                                "condition": "equals",
-                                                "value": "No"
-                                            }
-                                        ]
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "uk-based-answer"
+                                                },
+                                                "No"
+                                            ]
+                                        }
                                     }
                                 ]
                             },
@@ -443,13 +453,15 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "id": "uk-based-answer",
-                                                "condition": "equals",
-                                                "value": "No"
-                                            }
-                                        ]
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "uk-based-answer"
+                                                },
+                                                "No"
+                                            ]
+                                        }
                                     },
                                     {
                                         "question": {
@@ -477,13 +489,15 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "id": "uk-based-answer",
-                                                "condition": "equals",
-                                                "value": "Yes"
-                                            }
-                                        ]
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "uk-based-answer"
+                                                },
+                                                "Yes"
+                                            ]
+                                        }
                                     }
                                 ]
                             },
