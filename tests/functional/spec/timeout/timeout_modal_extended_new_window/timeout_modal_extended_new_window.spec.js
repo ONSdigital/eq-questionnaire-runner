@@ -3,8 +3,8 @@ import { TimeoutModalTestCase } from "../timeout_modal.js";
 
 describe("Timeout Modal Expired", () => {
   describe("Given I am completing the survey,", () => {
-    before(() => {
-      browser.openQuestionnaire("test_timeout_modal.json");
+    before(async () => {
+      await browser.openQuestionnaire("test_timeout_modal.json");
     });
     TimeoutModalTestCase.testCaseExtendedNewWindow(TimeoutInterstitialPage);
   });

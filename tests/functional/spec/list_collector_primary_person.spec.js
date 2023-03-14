@@ -10,117 +10,117 @@ import AnyoneUsuallyLiveAtPage from "../generated_pages/list_collector_primary_p
 
 describe("Primary Person List Collector Survey", () => {
   describe("Given the user starts on the 'do you live here' question", () => {
-    before("Load the survey", () => {
-      browser.openQuestionnaire("test_list_collector_primary_person.json");
+    before("Load the survey", async () => {
+      await browser.openQuestionnaire("test_list_collector_primary_person.json");
     });
 
-    it.skip("When the user says they do not live there, and changes their answer to yes, then the user can't navigate to the list collector", () => {
-      $(PrimaryPersonListCollectorPage.noLabel()).click();
-      $(PrimaryPersonListCollectorPage.submit()).click();
-      $(PrimaryPersonListCollectorAddPage.previous()).click();
-      $(PrimaryPersonListCollectorPage.yesLabel()).click();
-      $(PrimaryPersonListCollectorPage.submit()).click();
-      browser.url("questionnaire/list-collector");
-      expect($(PrimaryPersonListCollectorPage.questionText()).getText()).to.contain("Do you live here");
-    });
-  });
-
-  describe("Given the user starts on the 'do you live here' question", () => {
-    before("Load the survey", () => {
-      browser.openQuestionnaire("test_list_collector_primary_person.json");
-    });
-
-    it("When the user says that they do live there, then they are shown as the primary person", () => {
-      $(PrimaryPersonListCollectorPage.yesLabel()).click();
-      $(PrimaryPersonListCollectorPage.submit()).click();
-      $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Mark");
-      $(PrimaryPersonListCollectorAddPage.lastName()).setValue("Twin");
-      $(PrimaryPersonListCollectorAddPage.submit()).click();
-      expect($(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twin (You)");
-    });
-
-    it("When the user adds another person, they are shown in the summary", () => {
-      $(ListCollectorPage.yesLabel()).click();
-      $(ListCollectorPage.submit()).click();
-      $(ListCollectorAddPage.firstName()).setValue("Samuel");
-      $(ListCollectorAddPage.lastName()).setValue("Clemens");
-      $(ListCollectorAddPage.submit()).click();
-      expect($(ListCollectorPage.listLabel(2)).getText()).to.equal("Samuel Clemens");
-    });
-
-    it("When the user goes back and answers No, the primary person is not shown", () => {
-      $(ListCollectorPage.previous()).click();
-      $(PrimaryPersonListCollectorPage.no()).click();
-      $(PrimaryPersonListCollectorPage.submit()).click();
-      $(AnyoneUsuallyLiveAtPage.no()).click();
-      $(AnyoneUsuallyLiveAtPage.submit()).click();
-      expect($(ListCollectorPage.listLabel(1)).getText()).to.equal("Samuel Clemens");
-    });
-
-    it("When the user adds the primary person again, then the primary person is first in the list", () => {
-      $(ListCollectorPage.previous()).click();
-      $(AnyoneUsuallyLiveAtPage.previous()).click();
-      $(PrimaryPersonListCollectorPage.yes()).click();
-      $(PrimaryPersonListCollectorPage.submit()).click();
-      $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Mark");
-      $(PrimaryPersonListCollectorAddPage.lastName()).setValue("Twin");
-      $(PrimaryPersonListCollectorAddPage.submit()).click();
-      expect($(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twin (You)");
-    });
-
-    it("When the user views the summary, then it does not show the remove link for the primary person", () => {
-      expect($(ListCollectorPage.listRemoveLink(1)).isExisting()).to.be.false;
-      expect($(ListCollectorPage.listRemoveLink(2)).isExisting()).to.be.true;
-    });
-
-    it("When the user changes the primary person's name on the summary, then the name should be updated", () => {
-      $(ListCollectorPage.listEditLink(1)).click();
-      $(ListCollectorEditPage.firstName()).setValue("Mark");
-      $(ListCollectorEditPage.lastName()).setValue("Twain");
-      $(ListCollectorEditPage.submit()).click();
-      expect($(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twain (You)");
-      expect($(ListCollectorPage.listLabel(2)).getText()).to.equal("Samuel Clemens");
-    });
-
-    it("When the user views the summary, then it does not show the does anyone usually live here question", () => {
-      $(ListCollectorPage.no()).click();
-      $(ListCollectorPage.submit()).click();
-      expect($("body").getText()).to.not.equal("usually live here");
-    });
-
-    it("When the user attempts to submit, then they are shown the confirmation page", () => {
-      $(SectionSummaryPage.submit()).click();
-      expect($(SubmitPage.guidance()).getText()).to.contain("Thank you for your answers, do you wish to submit");
-    });
-
-    it("When the user submits, then they are allowed to submit the survey", () => {
-      $(SubmitPage.submit()).click();
-      expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
+    it.skip("When the user says they do not live there, and changes their answer to yes, then the user can't navigate to the list collector", async () => {
+      await $(PrimaryPersonListCollectorPage.noLabel()).click();
+      await $(PrimaryPersonListCollectorPage.submit()).click();
+      await $(PrimaryPersonListCollectorAddPage.previous()).click();
+      await $(PrimaryPersonListCollectorPage.yesLabel()).click();
+      await $(PrimaryPersonListCollectorPage.submit()).click();
+      await browser.url("questionnaire/list-collector");
+      await expect(await $(PrimaryPersonListCollectorPage.questionText()).getText()).to.contain("Do you live here");
     });
   });
 
   describe("Given the user starts on the 'do you live here' question", () => {
-    before("Load the survey", () => {
-      browser.openQuestionnaire("test_list_collector_primary_person.json");
+    before("Load the survey", async () => {
+      await browser.openQuestionnaire("test_list_collector_primary_person.json");
     });
 
-    it("When the user says they do not live there, then an empty list is displayed", () => {
-      $(PrimaryPersonListCollectorPage.no()).click();
-      $(PrimaryPersonListCollectorPage.submit()).click();
-      $(AnyoneUsuallyLiveAtPage.no()).click();
-      expect($(ListCollectorPage.listLabel(1)).isExisting()).to.be.false;
+    it("When the user says that they do live there, then they are shown as the primary person", async () => {
+      await $(PrimaryPersonListCollectorPage.yesLabel()).click();
+      await $(PrimaryPersonListCollectorPage.submit()).click();
+      await $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Mark");
+      await $(PrimaryPersonListCollectorAddPage.lastName()).setValue("Twin");
+      await $(PrimaryPersonListCollectorAddPage.submit()).click();
+      await expect(await $(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twin (You)");
     });
 
-    it("When the user clicks on the add person button multiple times, then only one person is added", () => {
-      $(ListCollectorPage.previous()).click();
-      $(PrimaryPersonListCollectorPage.yes()).click();
-      $(PrimaryPersonListCollectorPage.submit()).click();
-      $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Mark");
-      $(PrimaryPersonListCollectorAddPage.lastName()).setValue("Twain");
-      $(PrimaryPersonListCollectorPage.submit()).click();
-      $(PrimaryPersonListCollectorPage.submit()).click();
-      expect($(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twain (You)");
-      expect($(ListCollectorPage.listLabel(2)).isExisting()).to.be.false;
+    it("When the user adds another person, they are shown in the summary", async () => {
+      await $(ListCollectorPage.yesLabel()).click();
+      await $(ListCollectorPage.submit()).click();
+      await $(ListCollectorAddPage.firstName()).setValue("Samuel");
+      await $(ListCollectorAddPage.lastName()).setValue("Clemens");
+      await $(ListCollectorAddPage.submit()).click();
+      await expect(await $(ListCollectorPage.listLabel(2)).getText()).to.equal("Samuel Clemens");
+    });
+
+    it("When the user goes back and answers No, the primary person is not shown", async () => {
+      await $(ListCollectorPage.previous()).click();
+      await $(PrimaryPersonListCollectorPage.no()).click();
+      await $(PrimaryPersonListCollectorPage.submit()).click();
+      await $(AnyoneUsuallyLiveAtPage.no()).click();
+      await $(AnyoneUsuallyLiveAtPage.submit()).click();
+      await expect(await $(ListCollectorPage.listLabel(1)).getText()).to.equal("Samuel Clemens");
+    });
+
+    it("When the user adds the primary person again, then the primary person is first in the list", async () => {
+      await $(ListCollectorPage.previous()).click();
+      await $(AnyoneUsuallyLiveAtPage.previous()).click();
+      await $(PrimaryPersonListCollectorPage.yes()).click();
+      await $(PrimaryPersonListCollectorPage.submit()).click();
+      await $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Mark");
+      await $(PrimaryPersonListCollectorAddPage.lastName()).setValue("Twin");
+      await $(PrimaryPersonListCollectorAddPage.submit()).click();
+      await expect(await $(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twin (You)");
+    });
+
+    it("When the user views the summary, then it does not show the remove link for the primary person", async () => {
+      await expect(await $(ListCollectorPage.listRemoveLink(1)).isExisting()).to.be.false;
+      await expect(await $(ListCollectorPage.listRemoveLink(2)).isExisting()).to.be.true;
+    });
+
+    it("When the user changes the primary person's name on the summary, then the name should be updated", async () => {
+      await $(ListCollectorPage.listEditLink(1)).click();
+      await $(ListCollectorEditPage.firstName()).setValue("Mark");
+      await $(ListCollectorEditPage.lastName()).setValue("Twain");
+      await $(ListCollectorEditPage.submit()).click();
+      await expect(await $(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twain (You)");
+      await expect(await $(ListCollectorPage.listLabel(2)).getText()).to.equal("Samuel Clemens");
+    });
+
+    it("When the user views the summary, then it does not show the does anyone usually live here question", async () => {
+      await $(ListCollectorPage.no()).click();
+      await $(ListCollectorPage.submit()).click();
+      await expect($("body").getText()).to.not.equal("usually live here");
+    });
+
+    it("When the user attempts to submit, then they are shown the confirmation page", async () => {
+      await $(SectionSummaryPage.submit()).click();
+      await expect(await $(SubmitPage.guidance()).getText()).to.contain("Thank you for your answers, do you wish to submit");
+    });
+
+    it("When the user submits, then they are allowed to submit the survey", async () => {
+      await $(SubmitPage.submit()).click();
+      await expect(await browser.getUrl()).to.contain(ThankYouPage.pageName);
+    });
+  });
+
+  describe("Given the user starts on the 'do you live here' question", () => {
+    before("Load the survey", async () => {
+      await browser.openQuestionnaire("test_list_collector_primary_person.json");
+    });
+
+    it("When the user says they do not live there, then an empty list is displayed", async () => {
+      await $(PrimaryPersonListCollectorPage.no()).click();
+      await $(PrimaryPersonListCollectorPage.submit()).click();
+      await $(AnyoneUsuallyLiveAtPage.no()).click();
+      await expect(await $(ListCollectorPage.listLabel(1)).isExisting()).to.be.false;
+    });
+
+    it("When the user clicks on the add person button multiple times, then only one person is added", async () => {
+      await $(ListCollectorPage.previous()).click();
+      await $(PrimaryPersonListCollectorPage.yes()).click();
+      await $(PrimaryPersonListCollectorPage.submit()).click();
+      await $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Mark");
+      await $(PrimaryPersonListCollectorAddPage.lastName()).setValue("Twain");
+      await $(PrimaryPersonListCollectorPage.submit()).click();
+      await $(PrimaryPersonListCollectorPage.submit()).click();
+      await expect(await $(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twain (You)");
+      await expect(await $(ListCollectorPage.listLabel(2)).isExisting()).to.be.false;
     });
   });
 });

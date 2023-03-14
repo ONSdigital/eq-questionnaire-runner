@@ -18,128 +18,128 @@ import RadioNonMandatoryDetailAnswerSummary from "../../../generated_pages/radio
 
 describe("Component: Radio", () => {
   describe("Given I start a Mandatory Radio survey", () => {
-    before(() => {
-      browser.openQuestionnaire("test_radio_mandatory.json");
+    before(async () => {
+      await browser.openQuestionnaire("test_radio_mandatory.json");
     });
 
-    it("When I have selected a radio option that contains an escaped character, Then the selected option should be displayed in the summary", () => {
-      $(RadioMandatoryPage.teaCoffee()).click();
-      $(RadioMandatoryPage.submit()).click();
-      expect(browser.getUrl()).to.contain(RadioMandatorySummary.pageName);
-      expect($(RadioMandatorySummary.radioMandatoryAnswer()).getText()).to.contain("Tea & Coffee");
+    it("When I have selected a radio option that contains an escaped character, Then the selected option should be displayed in the summary", async () => {
+      await $(RadioMandatoryPage.teaCoffee()).click();
+      await $(RadioMandatoryPage.submit()).click();
+      await expect(await browser.getUrl()).to.contain(RadioMandatorySummary.pageName);
+      await expect(await $(RadioMandatorySummary.radioMandatoryAnswer()).getText()).to.contain("Tea & Coffee");
     });
   });
 
   describe("Given I start a Mandatory Radio survey", () => {
-    before(() => {
-      browser.openQuestionnaire("test_radio_mandatory.json");
+    before(async () => {
+      await browser.openQuestionnaire("test_radio_mandatory.json");
     });
 
-    it("When I have selected a radio option, Then the selected option should be displayed in the summary", () => {
-      $(RadioMandatoryPage.coffee()).click();
-      $(RadioMandatoryPage.submit()).click();
-      expect(browser.getUrl()).to.contain(RadioMandatorySummary.pageName);
-      expect($(RadioMandatorySummary.radioMandatoryAnswer()).getText()).to.contain("Coffee");
+    it("When I have selected a radio option, Then the selected option should be displayed in the summary", async () => {
+      await $(RadioMandatoryPage.coffee()).click();
+      await $(RadioMandatoryPage.submit()).click();
+      await expect(await browser.getUrl()).to.contain(RadioMandatorySummary.pageName);
+      await expect(await $(RadioMandatorySummary.radioMandatoryAnswer()).getText()).to.contain("Coffee");
     });
   });
 
   describe("Given I start a Mandatory Radio survey  ", () => {
-    before(() => {
-      browser.openQuestionnaire("test_radio_mandatory.json");
+    before(async () => {
+      await browser.openQuestionnaire("test_radio_mandatory.json");
     });
 
-    it("When I have submitted the page without any option, Then the question text is hidden in the error message using a span element", () => {
-      $(RadioMandatoryOverriddenPage.submit()).click();
-      expect($(RadioMandatoryOverriddenPage.errorNumber(1)).getHTML()).to.contain(
+    it("When I have submitted the page without any option, Then the question text is hidden in the error message using a span element", async () => {
+      await $(RadioMandatoryOverriddenPage.submit()).click();
+      await expect(await $(RadioMandatoryOverriddenPage.errorNumber(1)).getHTML()).to.contain(
         'Select an answer <span class="ons-u-vh">to ‘What do you prefer for breakfast?’</span></a>'
       );
     });
   });
 
   describe("Given I start a Mandatory Radio DetailAnswer survey", () => {
-    before(() => {
-      browser.openQuestionnaire("test_radio_mandatory_with_detail_answer_mandatory.json");
+    before(async () => {
+      await browser.openQuestionnaire("test_radio_mandatory_with_detail_answer_mandatory.json");
     });
 
-    it("When I have selected a other text field, Then the selected option should be displayed in the summary", () => {
-      $(RadioMandatoryOptionalDetailAnswerPage.other()).click();
-      $(RadioMandatoryOptionalDetailAnswerPage.otherDetail()).setValue("Hello World");
-      $(RadioMandatoryOptionalDetailAnswerPage.submit()).click();
-      expect(browser.getUrl()).to.contain(RadioMandatoryOptionDetailAnswerSummary.pageName);
-      expect($(RadioMandatoryOptionDetailAnswerSummary.radioMandatoryAnswer()).getText()).to.contain("Hello World");
+    it("When I have selected a other text field, Then the selected option should be displayed in the summary", async () => {
+      await $(RadioMandatoryOptionalDetailAnswerPage.other()).click();
+      await $(RadioMandatoryOptionalDetailAnswerPage.otherDetail()).setValue("Hello World");
+      await $(RadioMandatoryOptionalDetailAnswerPage.submit()).click();
+      await expect(await browser.getUrl()).to.contain(RadioMandatoryOptionDetailAnswerSummary.pageName);
+      await expect(await $(RadioMandatoryOptionDetailAnswerSummary.radioMandatoryAnswer()).getText()).to.contain("Hello World");
     });
   });
 
   describe("Given I start a Mandatory Radio DetailAnswer Overridden Error survey ", () => {
-    before(() => {
-      browser.openQuestionnaire("test_radio_mandatory_with_detail_answer_mandatory_with_overridden_error.json");
+    before(async () => {
+      await browser.openQuestionnaire("test_radio_mandatory_with_detail_answer_mandatory_with_overridden_error.json");
     });
 
-    it("When I submit without any data in the other text field it should Then throw an overridden error", () => {
-      $(RadioMandatoryDetailAnswerOverriddenPage.other()).click();
-      $(RadioMandatoryDetailAnswerOverriddenPage.submit()).click();
-      expect($(RadioMandatoryDetailAnswerOverriddenPage.errorNumber(1)).getText()).to.contain("Test error message is overridden");
+    it("When I submit without any data in the other text field it should Then throw an overridden error", async () => {
+      await $(RadioMandatoryDetailAnswerOverriddenPage.other()).click();
+      await $(RadioMandatoryDetailAnswerOverriddenPage.submit()).click();
+      await expect(await $(RadioMandatoryDetailAnswerOverriddenPage.errorNumber(1)).getText()).to.contain("Test error message is overridden");
     });
   });
 
   describe("Given I start a Mandatory Radio DetailAnswer survey ", () => {
-    before(() => {
-      browser.openQuestionnaire("test_radio_mandatory_with_detail_answer_optional.json");
+    before(async () => {
+      await browser.openQuestionnaire("test_radio_mandatory_with_detail_answer_optional.json");
     });
 
-    it("When I submit without any data in the other text field is selected, Then the selected option should be displayed in the summary", () => {
-      $(RadioMandatoryOptionalDetailAnswerPage.submit()).click();
-      expect(browser.getUrl()).to.contain(RadioMandatoryOptionDetailAnswerSummary.pageName);
-      expect($(RadioMandatoryOptionDetailAnswerSummary.radioMandatoryAnswer()).getText()).to.contain("No answer provided");
+    it("When I submit without any data in the other text field is selected, Then the selected option should be displayed in the summary", async () => {
+      await $(RadioMandatoryOptionalDetailAnswerPage.submit()).click();
+      await expect(await browser.getUrl()).to.contain(RadioMandatoryOptionDetailAnswerSummary.pageName);
+      await expect(await $(RadioMandatoryOptionDetailAnswerSummary.radioMandatoryAnswer()).getText()).to.contain("No answer provided");
     });
   });
 
   describe("Given I start a Mandatory Radio DetailAnswer Overridden error survey  ", () => {
-    before(() => {
-      browser.openQuestionnaire("test_radio_mandatory_with_overridden_error.json");
+    before(async () => {
+      await browser.openQuestionnaire("test_radio_mandatory_with_overridden_error.json");
     });
 
-    it("When I have submitted the page without any option, Then an overridden error is displayed", () => {
-      $(RadioMandatoryOverriddenPage.submit()).click();
-      expect($(RadioMandatoryOverriddenPage.errorNumber(1)).getText()).to.contain("Test error message is overridden");
+    it("When I have submitted the page without any option, Then an overridden error is displayed", async () => {
+      await $(RadioMandatoryOverriddenPage.submit()).click();
+      await expect(await $(RadioMandatoryOverriddenPage.errorNumber(1)).getText()).to.contain("Test error message is overridden");
     });
   });
 
   describe("Given I start a Optional survey", () => {
-    before(() => {
-      browser.openQuestionnaire("test_radio_optional.json");
+    before(async () => {
+      await browser.openQuestionnaire("test_radio_optional.json");
     });
 
-    it("When I have selected no option, Then the selected option should be displayed in the summary", () => {
-      $(RadioNonMandatoryPage.submit()).click();
-      expect(browser.getUrl()).to.contain(RadioNonMandatorySummary.pageName);
-      expect($(RadioNonMandatorySummary.radioNonMandatoryAnswer()).getText()).to.contain("No answer provided");
+    it("When I have selected no option, Then the selected option should be displayed in the summary", async () => {
+      await $(RadioNonMandatoryPage.submit()).click();
+      await expect(await browser.getUrl()).to.contain(RadioNonMandatorySummary.pageName);
+      await expect(await $(RadioNonMandatorySummary.radioNonMandatoryAnswer()).getText()).to.contain("No answer provided");
     });
   });
 
   describe("Given I start a Optional DetailAnswer Overridden error survey", () => {
-    before(() => {
-      browser.openQuestionnaire("test_radio_optional_with_detail_answer_mandatory_with_overridden_error.json");
+    before(async () => {
+      await browser.openQuestionnaire("test_radio_optional_with_detail_answer_mandatory_with_overridden_error.json");
     });
 
-    it("When I have submitted an other option with an empty text field, Then an overridden error is displayed", () => {
-      $(RadioNonMandatoryDetailAnswerOverriddenPage.other()).click();
-      $(RadioNonMandatoryDetailAnswerOverriddenPage.submit()).click();
-      expect($(RadioNonMandatoryDetailAnswerOverriddenPage.errorNumber(1)).getText()).to.contain("Test error message is overridden");
+    it("When I have submitted an other option with an empty text field, Then an overridden error is displayed", async () => {
+      await $(RadioNonMandatoryDetailAnswerOverriddenPage.other()).click();
+      await $(RadioNonMandatoryDetailAnswerOverriddenPage.submit()).click();
+      await expect(await $(RadioNonMandatoryDetailAnswerOverriddenPage.errorNumber(1)).getText()).to.contain("Test error message is overridden");
     });
   });
 
   describe("Given I Start a Optional Mandatory DetailAnswer survey", () => {
-    before(() => {
-      browser.openQuestionnaire("test_radio_optional_with_detail_answer_mandatory.json");
+    before(async () => {
+      await browser.openQuestionnaire("test_radio_optional_with_detail_answer_mandatory.json");
     });
 
-    it("When I submit data in the other text field it should be persisted and Then displayed on the summary", () => {
-      $(RadioNonMandatoryDetailAnswerPage.other()).click();
-      $(RadioNonMandatoryDetailAnswerPage.otherDetail()).setValue("Hello World");
-      $(RadioNonMandatoryDetailAnswerPage.submit()).click();
-      expect(browser.getUrl()).to.contain(RadioNonMandatoryDetailAnswerSummary.pageName);
-      expect($(RadioNonMandatoryDetailAnswerSummary.radioNonMandatoryAnswer()).getText()).to.contain("Hello World");
+    it("When I submit data in the other text field it should be persisted and Then displayed on the summary", async () => {
+      await $(RadioNonMandatoryDetailAnswerPage.other()).click();
+      await $(RadioNonMandatoryDetailAnswerPage.otherDetail()).setValue("Hello World");
+      await $(RadioNonMandatoryDetailAnswerPage.submit()).click();
+      await expect(await browser.getUrl()).to.contain(RadioNonMandatoryDetailAnswerSummary.pageName);
+      await expect(await $(RadioNonMandatoryDetailAnswerSummary.radioNonMandatoryAnswer()).getText()).to.contain("Hello World");
     });
   });
 });

@@ -5,39 +5,41 @@ import SetVolumeUnitsBlockPage from "../../generated_pages/unit_patterns/set-vol
 import SubmitPage from "../../generated_pages/unit_patterns/submit.page.js";
 
 describe("Units", () => {
-  it("Given we do not set a language code and run the questionnaire, when we enter values for durations, they should be displayed on the summary with their units.", () => {
-    browser.openQuestionnaire("test_unit_patterns.json", { language: "en" });
-    $(SetLengthUnitsBlockPage.submit()).click();
-    expect($(SetDurationUnitsBlockPage.durationHourUnit()).getText()).to.equal("hours");
-    expect($(SetDurationUnitsBlockPage.durationYearUnit()).getText()).to.equal("years");
-    $(SetDurationUnitsBlockPage.durationHour()).setValue(6);
-    $(SetDurationUnitsBlockPage.durationYear()).setValue(20);
-    $(SetDurationUnitsBlockPage.submit()).click();
-    $(SetAreaUnitsBlockPage.submit()).click();
-    $(SetVolumeUnitsBlockPage.submit()).click();
-    expect($(SubmitPage.durationHour()).getText()).to.equal("6 hours");
-    expect($(SubmitPage.durationYear()).getText()).to.equal("20 years");
+  it("Given we do not set a language code and run the questionnaire, when we enter values for durations, they should be displayed on the summary with their units.", async () => {
+    await browser.openQuestionnaire("test_unit_patterns.json", { language: "en" });
+    await $(SetLengthUnitsBlockPage.submit()).click();
+    await expect(await $(SetDurationUnitsBlockPage.durationHourUnit()).getText()).to.equal("hours");
+    await expect(await $(SetDurationUnitsBlockPage.durationYearUnit()).getText()).to.equal("years");
+    await $(SetDurationUnitsBlockPage.durationHour()).setValue(6);
+    await $(SetDurationUnitsBlockPage.durationYear()).setValue(20);
+    await $(SetDurationUnitsBlockPage.submit()).click();
+    await $(SetAreaUnitsBlockPage.submit()).click();
+    await $(SetVolumeUnitsBlockPage.submit()).click();
+    await expect(await $(SubmitPage.durationHour()).getText()).to.equal("6 hours");
+    await expect(await $(SubmitPage.durationYear()).getText()).to.equal("20 years");
   });
 
-  it("Given we set a language code for welsh and run the questionnaire, when we enter values for durations, they should be displayed on the summary with their units.", () => {
-    browser.openQuestionnaire("test_unit_patterns.json", { language: "cy" });
-    $(SetLengthUnitsBlockPage.submit()).click();
-    expect($(SetDurationUnitsBlockPage.durationHourUnit()).getText()).to.equal("awr");
-    expect($(SetDurationUnitsBlockPage.durationYearUnit()).getText()).to.equal("flynedd");
-    $(SetDurationUnitsBlockPage.durationHour()).setValue(6);
-    $(SetDurationUnitsBlockPage.durationYear()).setValue(20);
-    $(SetDurationUnitsBlockPage.submit()).click();
-    $(SetAreaUnitsBlockPage.submit()).click();
-    $(SetVolumeUnitsBlockPage.submit()).click();
-    expect($(SubmitPage.durationHour()).getText()).to.equal("6 awr");
-    expect($(SubmitPage.durationYear()).getText()).to.equal("20 mlynedd");
+  it("Given we set a language code for welsh and run the questionnaire, when we enter values for durations, they should be displayed on the summary with their units.", async () => {
+    await browser.openQuestionnaire("test_unit_patterns.json", { language: "cy" });
+    await $(SetLengthUnitsBlockPage.submit()).scrollIntoView();
+    await $(SetLengthUnitsBlockPage.submit()).click();
+    await expect(await $(SetDurationUnitsBlockPage.durationHourUnit()).getText()).to.equal("awr");
+    await expect(await $(SetDurationUnitsBlockPage.durationYearUnit()).getText()).to.equal("flynedd");
+    await $(SetDurationUnitsBlockPage.durationHour()).setValue(6);
+    await $(SetDurationUnitsBlockPage.durationYear()).setValue(20);
+    await $(SetDurationUnitsBlockPage.submit()).scrollIntoView();
+    await $(SetDurationUnitsBlockPage.submit()).click();
+    await $(SetAreaUnitsBlockPage.submit()).click();
+    await $(SetVolumeUnitsBlockPage.submit()).click();
+    await expect(await $(SubmitPage.durationHour()).getText()).to.equal("6 awr");
+    await expect(await $(SubmitPage.durationYear()).getText()).to.equal("20 mlynedd");
   });
 
-  it("Given we open a questionnaire with unit labels, when the label is highlighted by the tooltip, then the long unit label should be displayed.", () => {
-    browser.openQuestionnaire("test_unit_patterns.json", { language: "en" });
-    expect($(SetLengthUnitsBlockPage.centimetresUnit()).getAttribute("title")).to.equal("centimeters");
-    expect($(SetLengthUnitsBlockPage.metresUnit()).getAttribute("title")).to.equal("meters");
-    expect($(SetLengthUnitsBlockPage.kilometresUnit()).getAttribute("title")).to.equal("kilometers");
-    expect($(SetLengthUnitsBlockPage.milesUnit()).getAttribute("title")).to.equal("miles");
+  it("Given we open a questionnaire with unit labels, when the label is highlighted by the tooltip, then the long unit label should be displayed.", async () => {
+    await browser.openQuestionnaire("test_unit_patterns.json", { language: "en" });
+    await expect(await $(SetLengthUnitsBlockPage.centimetresUnit()).getAttribute("title")).to.equal("centimeters");
+    await expect(await $(SetLengthUnitsBlockPage.metresUnit()).getAttribute("title")).to.equal("meters");
+    await expect(await $(SetLengthUnitsBlockPage.kilometresUnit()).getAttribute("title")).to.equal("kilometers");
+    await expect(await $(SetLengthUnitsBlockPage.milesUnit()).getAttribute("title")).to.equal("miles");
   });
 });

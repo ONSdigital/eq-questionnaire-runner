@@ -2,31 +2,31 @@ import DefinitionPage from "../generated_pages/question_definition/definition-bl
 
 describe("Component: Definition", () => {
   describe("Given I start a survey which contains question definition", () => {
-    beforeEach(() => {
-      browser.openQuestionnaire("test_question_definition.json");
+    beforeEach(async () => {
+      await browser.openQuestionnaire("test_question_definition.json");
     });
 
-    it("When I click the title link, then the description should be visible", () => {
-      expect($(DefinitionPage.definitionContent(1)).getText()).to.equal("");
+    it("When I click the title link, then the description should be visible", async () => {
+      await expect(await $(DefinitionPage.definitionContent(1)).getText()).to.equal("");
 
       // When
-      $(DefinitionPage.definitionTitle("1")).click();
+      await $(DefinitionPage.definitionTitle("1")).click();
 
       // Then
-      expect($(DefinitionPage.definitionContent(1)).getText()).to.contain(
+      await expect(await $(DefinitionPage.definitionContent(1)).getText()).to.contain(
         "A typical photovoltaic system employs solar panels, each comprising a number of solar cells, which generate electrical power."
       );
     });
 
-    it("When I click the title link twice, then the description should not be visible", () => {
-      expect($(DefinitionPage.definitionContent(1)).getText()).to.equal("");
+    it("When I click the title link twice, then the description should not be visible", async () => {
+      await expect(await $(DefinitionPage.definitionContent(1)).getText()).to.equal("");
 
       // When
-      $(DefinitionPage.definitionTitle("1")).click();
-      $(DefinitionPage.definitionTitle("1")).click();
+      await $(DefinitionPage.definitionTitle("1")).click();
+      await $(DefinitionPage.definitionTitle("1")).click();
 
       // Then
-      expect($(DefinitionPage.definitionContent(1)).getText()).to.equal("");
+      await expect(await $(DefinitionPage.definitionContent(1)).getText()).to.equal("");
     });
   });
 });

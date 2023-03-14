@@ -19,203 +19,203 @@ import SecondNumberBlockPage from "../../generated_pages/calculated_summary/seco
 
 class TestCase {
   testCase(schema) {
-    before("Get to Calculated Summary", () => {
-      browser.openQuestionnaire(schema);
+    before("Get to Calculated Summary", async () => {
+      await browser.openQuestionnaire(schema);
 
-      $(FirstNumberBlockPage.firstNumber()).setValue(1.23);
-      $(FirstNumberBlockPage.submit()).click();
+      await $(FirstNumberBlockPage.firstNumber()).setValue(1.23);
+      await $(FirstNumberBlockPage.submit()).click();
 
-      $(SecondNumberBlockPage.secondNumber()).setValue(4.56);
-      $(SecondNumberBlockPage.secondNumberUnitTotal()).setValue(789);
-      $(SecondNumberBlockPage.secondNumberAlsoInTotal()).setValue(0.12);
-      $(SecondNumberBlockPage.submit()).click();
+      await $(SecondNumberBlockPage.secondNumber()).setValue(4.56);
+      await $(SecondNumberBlockPage.secondNumberUnitTotal()).setValue(789);
+      await $(SecondNumberBlockPage.secondNumberAlsoInTotal()).setValue(0.12);
+      await $(SecondNumberBlockPage.submit()).click();
 
-      $(ThirdNumberBlockPage.thirdNumber()).setValue(3.45);
-      $(ThirdNumberBlockPage.submit()).click();
-      $(ThirdAndAHalfNumberBlockPage.thirdAndAHalfNumberUnitTotal()).setValue(678);
-      $(ThirdAndAHalfNumberBlockPage.submit()).click();
+      await $(ThirdNumberBlockPage.thirdNumber()).setValue(3.45);
+      await $(ThirdNumberBlockPage.submit()).click();
+      await $(ThirdAndAHalfNumberBlockPage.thirdAndAHalfNumberUnitTotal()).setValue(678);
+      await $(ThirdAndAHalfNumberBlockPage.submit()).click();
 
-      $(SkipFourthBlockPage.no()).click();
-      $(SkipFourthBlockPage.submit()).click();
+      await $(SkipFourthBlockPage.no()).click();
+      await $(SkipFourthBlockPage.submit()).click();
 
-      $(FourthNumberBlockPage.fourthNumber()).setValue(9.01);
-      $(FourthNumberBlockPage.submit()).click();
-      $(FourthAndAHalfNumberBlockPage.fourthAndAHalfNumberAlsoInTotal()).setValue(2.34);
-      $(FourthAndAHalfNumberBlockPage.submit()).click();
+      await $(FourthNumberBlockPage.fourthNumber()).setValue(9.01);
+      await $(FourthNumberBlockPage.submit()).click();
+      await $(FourthAndAHalfNumberBlockPage.fourthAndAHalfNumberAlsoInTotal()).setValue(2.34);
+      await $(FourthAndAHalfNumberBlockPage.submit()).click();
 
-      $(FifthNumberBlockPage.fifthPercent()).setValue(56);
-      $(FifthNumberBlockPage.fifthNumber()).setValue(78.91);
-      $(FifthNumberBlockPage.submit()).click();
+      await $(FifthNumberBlockPage.fifthPercent()).setValue(56);
+      await $(FifthNumberBlockPage.fifthNumber()).setValue(78.91);
+      await $(FifthNumberBlockPage.submit()).click();
 
-      $(SixthNumberBlockPage.sixthPercent()).setValue(23);
-      $(SixthNumberBlockPage.sixthNumber()).setValue(45.67);
-      $(SixthNumberBlockPage.submit()).click();
+      await $(SixthNumberBlockPage.sixthPercent()).setValue(23);
+      await $(SixthNumberBlockPage.sixthNumber()).setValue(45.67);
+      await $(SixthNumberBlockPage.submit()).click();
 
-      const browserUrl = browser.getUrl();
+      const browserUrl = await browser.getUrl();
 
-      expect(browserUrl).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
+      await expect(await browserUrl).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
     });
 
-    it("Given I have completed all questions, When I am on the calculated summary, Then the page title should use the calculation's title", () => {
-      expect(browser.getTitle()).to.equal("Grand total of previous values - A test schema to demo Calculated Summary");
+    it("Given I have completed all questions, When I am on the calculated summary, Then the page title should use the calculation's title", async () => {
+      await expect(await browser.getTitle()).to.equal("Grand total of previous values - A test schema to demo Calculated Summary");
     });
 
-    it("Given I complete every question, When I get to the currency summary, Then I should see the correct total", () => {
+    it("Given I complete every question, When I get to the currency summary, Then I should see the correct total", async () => {
       // Totals and titles should be shown
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £20.71. Is this correct?"
       );
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£20.71");
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£20.71");
 
       // Answers included in calculation should be shown
-      expect($(CurrencyTotalPlaybackPageWithFourth.firstNumberAnswerLabel()).getText()).to.contain("First answer label");
-      expect($(CurrencyTotalPlaybackPageWithFourth.firstNumberAnswer()).getText()).to.contain("£1.23");
-      expect($(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswerLabel()).getText()).to.contain("Second answer in currency label");
-      expect($(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswer()).getText()).to.contain("£4.56");
-      expect($(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswerAlsoInTotalLabel()).getText()).to.contain(
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.firstNumberAnswerLabel()).getText()).to.contain("First answer label");
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.firstNumberAnswer()).getText()).to.contain("£1.23");
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswerLabel()).getText()).to.contain("Second answer in currency label");
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswer()).getText()).to.contain("£4.56");
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswerAlsoInTotalLabel()).getText()).to.contain(
         "Second answer label also in currency total (optional)"
       );
-      expect($(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswerAlsoInTotal()).getText()).to.contain("£0.12");
-      expect($(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerLabel()).getText()).to.contain("Third answer label");
-      expect($(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswer()).getText()).to.contain("£3.45");
-      expect($(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswerLabel()).getText()).to.contain("Fourth answer label (optional)");
-      expect($(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswer()).getText()).to.contain("£9.01");
-      expect($(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotalLabel()).getText()).to.contain(
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswerAlsoInTotal()).getText()).to.contain("£0.12");
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerLabel()).getText()).to.contain("Third answer label");
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswer()).getText()).to.contain("£3.45");
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswerLabel()).getText()).to.contain("Fourth answer label (optional)");
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswer()).getText()).to.contain("£9.01");
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotalLabel()).getText()).to.contain(
         "Fourth answer label also in total (optional)"
       );
-      expect($(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).to.contain("£2.34");
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).to.contain("£2.34");
 
       // Answers not included in calculation should not be shown
-      expect($$(UnitTotalPlaybackPage.secondNumberAnswerUnitTotal())).to.be.empty;
-      expect($$(UnitTotalPlaybackPage.thirdAndAHalfNumberAnswerUnitTotal())).to.be.empty;
-      expect($$(NumberTotalPlaybackPage.fifthNumberAnswer())).to.be.empty;
-      expect($$(NumberTotalPlaybackPage.sixthNumberAnswer())).to.be.empty;
+      await expect(await $$(UnitTotalPlaybackPage.secondNumberAnswerUnitTotal())).to.be.empty;
+      await expect(await $$(UnitTotalPlaybackPage.thirdAndAHalfNumberAnswerUnitTotal())).to.be.empty;
+      await expect(await $$(NumberTotalPlaybackPage.fifthNumberAnswer())).to.be.empty;
+      await expect(await $$(NumberTotalPlaybackPage.sixthNumberAnswer())).to.be.empty;
     });
 
-    it("Given I reach the calculated summary page, Then the Change link url should contain return_to, return_to_answer_id and return_to_block_id query params", () => {
-      expect($(CurrencyTotalPlaybackPageWithFourth.firstNumberAnswerEdit()).getAttribute("href")).to.contain(
+    it("Given I reach the calculated summary page, Then the Change link url should contain return_to, return_to_answer_id and return_to_block_id query params", async () => {
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.firstNumberAnswerEdit()).getAttribute("href")).to.contain(
         "/questionnaire/first-number-block/?return_to=calculated-summary&return_to_answer_id=first-number-answer&return_to_block_id=currency-total-playback-with-fourth#first-number-answer"
       );
     });
 
-    it("Given I edit an answer from the calculated summary page and click the Previous button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", () => {
-      $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
-      $(ThirdNumberBlockPage.previous()).click();
-      expect(browser.getUrl()).to.contain("/questionnaire/currency-total-playback-with-fourth/?return_to=calculated-summary#third-number-answer");
+    it("Given I edit an answer from the calculated summary page and click the Previous button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", async () => {
+      await $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
+      await $(ThirdNumberBlockPage.previous()).click();
+      await expect(await browser.getUrl()).to.contain("/questionnaire/currency-total-playback-with-fourth/?return_to=calculated-summary#third-number-answer");
     });
 
-    it("Given I edit an answer from the calculated summary page and click the Submit button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", () => {
-      $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
-      $(ThirdNumberBlockPage.submit()).click();
-      expect(browser.getUrl()).to.contain("/questionnaire/currency-total-playback-with-fourth/?return_to=calculated-summary#third-number-answer");
+    it("Given I edit an answer from the calculated summary page and click the Submit button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", async () => {
+      await $(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerEdit()).click();
+      await $(ThirdNumberBlockPage.submit()).click();
+      await expect(await browser.getUrl()).to.contain("/questionnaire/currency-total-playback-with-fourth/?return_to=calculated-summary#third-number-answer");
     });
 
-    it("Given I change an answer, When I get to the currency summary, Then I should see the new total", () => {
-      $(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswerEdit()).click();
-      $(FourthNumberBlockPage.fourthNumber()).setValue(19.01);
-      $(FourthNumberBlockPage.submit()).click();
+    it("Given I change an answer, When I get to the currency summary, Then I should see the new total", async () => {
+      await $(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswerEdit()).click();
+      await $(FourthNumberBlockPage.fourthNumber()).setValue(19.01);
+      await $(FourthNumberBlockPage.submit()).click();
 
-      expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
+      await expect(await browser.getUrl()).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £30.71. Is this correct?"
       );
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£30.71");
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£30.71");
     });
 
-    it("Given I leave an answer empty, When I get to the currency summary, Then I should see no answer provided and new total", () => {
-      $(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotalEdit()).click();
-      $(FourthAndAHalfNumberBlockPage.fourthAndAHalfNumberAlsoInTotal()).setValue("");
-      $(FourthAndAHalfNumberBlockPage.submit()).click();
+    it("Given I leave an answer empty, When I get to the currency summary, Then I should see no answer provided and new total", async () => {
+      await $(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotalEdit()).click();
+      await $(FourthAndAHalfNumberBlockPage.fourthAndAHalfNumberAlsoInTotal()).setValue("");
+      await $(FourthAndAHalfNumberBlockPage.submit()).click();
 
-      expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
+      await expect(await browser.getUrl()).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £28.37. Is this correct?"
       );
-      expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£28.37");
-      expect($(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).to.contain("No answer provided");
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£28.37");
+      await expect(await $(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).to.contain("No answer provided");
     });
 
-    it("Given I skip the fourth page, When I get to the playback, Then I can should not see it in the total", () => {
-      $(CurrencyTotalPlaybackPageWithFourth.previous()).click();
-      $(SixthNumberBlockPage.previous()).click();
-      $(FifthNumberBlockPage.previous()).click();
-      $(FourthAndAHalfNumberBlockPage.previous()).click();
-      $(FourthNumberBlockPage.previous()).click();
+    it("Given I skip the fourth page, When I get to the playback, Then I can should not see it in the total", async () => {
+      await $(CurrencyTotalPlaybackPageWithFourth.previous()).click();
+      await $(SixthNumberBlockPage.previous()).click();
+      await $(FifthNumberBlockPage.previous()).click();
+      await $(FourthAndAHalfNumberBlockPage.previous()).click();
+      await $(FourthNumberBlockPage.previous()).click();
 
-      $(SkipFourthBlockPage.yes()).click();
-      $(SkipFourthBlockPage.submit()).click();
+      await $(SkipFourthBlockPage.yes()).click();
+      await $(SkipFourthBlockPage.submit()).click();
 
-      $(FifthNumberBlockPage.submit()).click();
-      $(SixthNumberBlockPage.submit()).click();
+      await $(FifthNumberBlockPage.submit()).click();
+      await $(SixthNumberBlockPage.submit()).click();
 
-      const expectedUrl = browser.getUrl();
+      const expectedUrl = await browser.getUrl();
 
-      expect(expectedUrl).to.contain(CurrencyTotalPlaybackPageSkippedFourth.pageName);
-      expect($$(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswer())).to.be.empty;
-      expect($$(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotal())).to.be.empty;
-      expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
+      await expect(expectedUrl).to.contain(CurrencyTotalPlaybackPageSkippedFourth.pageName);
+      await expect(await $$(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswer())).to.be.empty;
+      await expect(await $$(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotal())).to.be.empty;
+      await expect(await $(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £9.36. Is this correct?"
       );
-      expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryAnswer()).getText()).to.contain("£9.36");
+      await expect(await $(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryAnswer()).getText()).to.contain("£9.36");
     });
 
-    it("Given I complete every question, When I get to the unit summary, Then I should see the correct total", () => {
+    it("Given I complete every question, When I get to the unit summary, Then I should see the correct total", async () => {
       // Totals and titles should be shown
-      $(CurrencyTotalPlaybackPageWithFourth.submit()).click();
-      expect($(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
+      await $(CurrencyTotalPlaybackPageWithFourth.submit()).click();
+      await expect(await $(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of unit values entered to be 1,467 cm. Is this correct?"
       );
-      expect($(UnitTotalPlaybackPage.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
-      expect($(UnitTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("1,467 cm");
+      await expect(await $(UnitTotalPlaybackPage.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
+      await expect(await $(UnitTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("1,467 cm");
 
       // Answers included in calculation should be shown
-      expect($(UnitTotalPlaybackPage.secondNumberAnswerUnitTotalLabel()).getText()).to.contain("Second answer label in unit total");
-      expect($(UnitTotalPlaybackPage.secondNumberAnswerUnitTotal()).getText()).to.contain("789 cm");
-      expect($(UnitTotalPlaybackPage.thirdAndAHalfNumberAnswerUnitTotalLabel()).getText()).to.contain("Third answer label in unit total");
-      expect($(UnitTotalPlaybackPage.thirdAndAHalfNumberAnswerUnitTotal()).getText()).to.contain("678 cm");
+      await expect(await $(UnitTotalPlaybackPage.secondNumberAnswerUnitTotalLabel()).getText()).to.contain("Second answer label in unit total");
+      await expect(await $(UnitTotalPlaybackPage.secondNumberAnswerUnitTotal()).getText()).to.contain("789 cm");
+      await expect(await $(UnitTotalPlaybackPage.thirdAndAHalfNumberAnswerUnitTotalLabel()).getText()).to.contain("Third answer label in unit total");
+      await expect(await $(UnitTotalPlaybackPage.thirdAndAHalfNumberAnswerUnitTotal()).getText()).to.contain("678 cm");
     });
 
-    it("Given the calculated summary has a custom title, When I am on the unit calculated summary, Then the page title should use the custom title", () => {
-      expect(browser.getTitle()).to.equal("Total Unit Values - A test schema to demo Calculated Summary");
+    it("Given the calculated summary has a custom title, When I am on the unit calculated summary, Then the page title should use the custom title", async () => {
+      await expect(await browser.getTitle()).to.equal("Total Unit Values - A test schema to demo Calculated Summary");
     });
 
-    it("Given I complete every question, When I get to the percentage summary, Then I should see the correct total", () => {
+    it("Given I complete every question, When I get to the percentage summary, Then I should see the correct total", async () => {
       // Totals and titles should be shown
-      $(UnitTotalPlaybackPage.submit()).click();
-      expect($(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
+      await $(UnitTotalPlaybackPage.submit()).click();
+      await expect(await $(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of percentage values entered to be 79%. Is this correct?"
       );
-      expect($(UnitTotalPlaybackPage.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
-      expect($(UnitTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("79%");
+      await expect(await $(UnitTotalPlaybackPage.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
+      await expect(await $(UnitTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("79%");
 
       // Answers included in calculation should be shown
-      expect($(PercentageTotalPlaybackPage.fifthPercentAnswerLabel()).getText()).to.contain("Fifth answer label percentage tota");
-      expect($(PercentageTotalPlaybackPage.fifthPercentAnswer()).getText()).to.contain("56%");
-      expect($(PercentageTotalPlaybackPage.sixthPercentAnswerLabel()).getText()).to.contain("Sixth answer label percentage tota");
-      expect($(PercentageTotalPlaybackPage.sixthPercentAnswer()).getText()).to.contain("23%");
+      await expect(await $(PercentageTotalPlaybackPage.fifthPercentAnswerLabel()).getText()).to.contain("Fifth answer label percentage tota");
+      await expect(await $(PercentageTotalPlaybackPage.fifthPercentAnswer()).getText()).to.contain("56%");
+      await expect(await $(PercentageTotalPlaybackPage.sixthPercentAnswerLabel()).getText()).to.contain("Sixth answer label percentage tota");
+      await expect(await $(PercentageTotalPlaybackPage.sixthPercentAnswer()).getText()).to.contain("23%");
     });
 
-    it("Given I complete every question, When I get to the number summary, Then I should see the correct total", () => {
+    it("Given I complete every question, When I get to the number summary, Then I should see the correct total", async () => {
       // Totals and titles should be shown
-      $(UnitTotalPlaybackPage.submit()).click();
-      expect($(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
+      await $(UnitTotalPlaybackPage.submit()).click();
+      await expect(await $(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of number values entered to be 124.58. Is this correct?"
       );
-      expect($(UnitTotalPlaybackPage.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
-      expect($(UnitTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("124.58");
+      await expect(await $(UnitTotalPlaybackPage.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
+      await expect(await $(UnitTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("124.58");
 
       // Answers included in calculation should be shown
-      expect($(NumberTotalPlaybackPage.fifthNumberAnswerLabel()).getText()).to.contain("Fifth answer label number total");
-      expect($(NumberTotalPlaybackPage.fifthNumberAnswer()).getText()).to.contain("78.91");
-      expect($(NumberTotalPlaybackPage.sixthNumberAnswerLabel()).getText()).to.contain("Sixth answer label number total");
-      expect($(NumberTotalPlaybackPage.sixthNumberAnswer()).getText()).to.contain("45.67");
+      await expect(await $(NumberTotalPlaybackPage.fifthNumberAnswerLabel()).getText()).to.contain("Fifth answer label number total");
+      await expect(await $(NumberTotalPlaybackPage.fifthNumberAnswer()).getText()).to.contain("78.91");
+      await expect(await $(NumberTotalPlaybackPage.sixthNumberAnswerLabel()).getText()).to.contain("Sixth answer label number total");
+      await expect(await $(NumberTotalPlaybackPage.sixthNumberAnswer()).getText()).to.contain("45.67");
     });
 
-    it("Given I complete every calculated summary, When I go to a page with calculated summary piping, Then I should the see the piped calculated summary total for each summary", () => {
-      $(NumberTotalPlaybackPage.submit()).click();
+    it("Given I complete every calculated summary, When I go to a page with calculated summary piping, Then I should the see the piped calculated summary total for each summary", async () => {
+      await $(NumberTotalPlaybackPage.submit()).click();
 
-      const content = $("h1 + ul").getText();
+      const content = await $("h1 + ul").getText();
       const textsToAssert = [
         "Total currency values (if Q4 not skipped): £28.37",
         "Total currency values (if Q4 skipped)): £9.36",
@@ -224,112 +224,112 @@ class TestCase {
         "Total number values: 124.58",
       ];
 
-      textsToAssert.forEach((text) => expect(content).to.contain(text));
+      textsToAssert.forEach(async (text) => await expect(content).to.containasync(text));
     });
 
-    it("Given I have an answer minimum based on a calculated summary total, When I enter an invalid answer, Then I should see an error message on the page", () => {
-      $(CalculatedSummaryTotalConfirmation.submit()).click();
-      expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
-      $(SetMinMaxBlockPage.setMinimum()).setValue(8.0);
-      $(SetMinMaxBlockPage.submit()).click();
-      expect($(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer more than or equal to £9.36");
-      $(SetMinMaxBlockPage.setMinimum()).setValue(10.0);
-      $(SetMinMaxBlockPage.submit()).click();
+    it("Given I have an answer minimum based on a calculated summary total, When I enter an invalid answer, Then I should see an error message on the page", async () => {
+      await $(CalculatedSummaryTotalConfirmation.submit()).click();
+      await expect(await browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
+      await $(SetMinMaxBlockPage.setMinimum()).setValue(8.0);
+      await $(SetMinMaxBlockPage.submit()).click();
+      await expect(await $(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer more than or equal to £9.36");
+      await $(SetMinMaxBlockPage.setMinimum()).setValue(10.0);
+      await $(SetMinMaxBlockPage.submit()).click();
     });
 
-    it("Given I have an answer maximum based on a calculated summary total, When I enter an invalid answer, Then I should see an error message on the page", () => {
-      $(SubmitPage.submit()).click();
-      expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
-      $(SetMinMaxBlockPage.setMaximum()).setValue(10.0);
-      $(SetMinMaxBlockPage.submit()).click();
-      expect($(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer less than or equal to £9.36");
-      $(SetMinMaxBlockPage.setMaximum()).setValue(7.0);
-      $(SetMinMaxBlockPage.submit()).click();
+    it("Given I have an answer maximum based on a calculated summary total, When I enter an invalid answer, Then I should see an error message on the page", async () => {
+      await $(SubmitPage.submit()).click();
+      await expect(await browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
+      await $(SetMinMaxBlockPage.setMaximum()).setValue(10.0);
+      await $(SetMinMaxBlockPage.submit()).click();
+      await expect(await $(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer less than or equal to £9.36");
+      await $(SetMinMaxBlockPage.setMaximum()).setValue(7.0);
+      await $(SetMinMaxBlockPage.submit()).click();
     });
 
-    it("Given I confirm the totals and am on the summary, When I edit and change an answer, Then I must re-confirm the dependant calculated summary page and min max question page before I can return to the summary", () => {
-      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
-      $(SubmitPage.thirdNumberAnswerEdit()).click();
-      $(ThirdNumberBlockPage.thirdNumber()).setValue(3.5);
-      $(ThirdNumberBlockPage.submit()).click();
-      $(ThirdAndAHalfNumberBlockPage.submit()).click();
-      $(SkipFourthBlockPage.submit()).click();
-      $(FifthNumberBlockPage.submit()).click();
-      $(SixthNumberBlockPage.submit()).click();
+    it("Given I confirm the totals and am on the summary, When I edit and change an answer, Then I must re-confirm the dependant calculated summary page and min max question page before I can return to the summary", async () => {
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+      await $(SubmitPage.thirdNumberAnswerEdit()).click();
+      await $(ThirdNumberBlockPage.thirdNumber()).setValue(3.5);
+      await $(ThirdNumberBlockPage.submit()).click();
+      await $(ThirdAndAHalfNumberBlockPage.submit()).click();
+      await $(SkipFourthBlockPage.submit()).click();
+      await $(FifthNumberBlockPage.submit()).click();
+      await $(SixthNumberBlockPage.submit()).click();
 
-      expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
+      await expect(await $(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £9.41. Is this correct?"
       );
 
-      $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
-      $(UnitTotalPlaybackPage.submit()).click();
-      $(PercentageTotalPlaybackPage.submit()).click();
-      $(NumberTotalPlaybackPage.submit()).click();
-      $(CalculatedSummaryTotalConfirmation.submit()).click();
-      expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
-      $(SetMinMaxBlockPage.setMinimum()).setValue(10.0);
-      $(SetMinMaxBlockPage.setMaximum()).setValue(9.0);
-      $(SetMinMaxBlockPage.submit()).click();
-      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
+      await $(UnitTotalPlaybackPage.submit()).click();
+      await $(PercentageTotalPlaybackPage.submit()).click();
+      await $(NumberTotalPlaybackPage.submit()).click();
+      await $(CalculatedSummaryTotalConfirmation.submit()).click();
+      await expect(await browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
+      await $(SetMinMaxBlockPage.setMinimum()).setValue(10.0);
+      await $(SetMinMaxBlockPage.setMaximum()).setValue(9.0);
+      await $(SetMinMaxBlockPage.submit()).click();
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
-    it("Given I confirm the totals and am on the summary, When I edit and change an answer that has a dependent minimum value from a calculated summary total, And the minimum value has been changed, Then I must re-validate before I get to the summary", () => {
-      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
-      $(SubmitPage.thirdNumberAnswerEdit()).click();
-      $(ThirdNumberBlockPage.thirdNumber()).setValue(10.0);
-      $(ThirdNumberBlockPage.submit()).click();
-      $(ThirdAndAHalfNumberBlockPage.submit()).click();
-      $(SkipFourthBlockPage.submit()).click();
-      $(FifthNumberBlockPage.submit()).click();
-      $(SixthNumberBlockPage.submit()).click();
+    it("Given I confirm the totals and am on the summary, When I edit and change an answer that has a dependent minimum value from a calculated summary total, And the minimum value has been changed, Then I must re-validate before I get to the summary", async () => {
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+      await $(SubmitPage.thirdNumberAnswerEdit()).click();
+      await $(ThirdNumberBlockPage.thirdNumber()).setValue(10.0);
+      await $(ThirdNumberBlockPage.submit()).click();
+      await $(ThirdAndAHalfNumberBlockPage.submit()).click();
+      await $(SkipFourthBlockPage.submit()).click();
+      await $(FifthNumberBlockPage.submit()).click();
+      await $(SixthNumberBlockPage.submit()).click();
 
-      expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
+      await expect(await $(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £15.91. Is this correct?"
       );
 
-      $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
-      $(UnitTotalPlaybackPage.submit()).click();
-      $(PercentageTotalPlaybackPage.submit()).click();
-      $(NumberTotalPlaybackPage.submit()).click();
-      $(CalculatedSummaryTotalConfirmation.submit()).click();
-      expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
-      $(SetMinMaxBlockPage.submit()).click();
-      expect($(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer more than or equal to £15.91");
-      $(SetMinMaxBlockPage.setMinimum()).setValue(16.0);
-      $(SetMinMaxBlockPage.submit()).click();
-      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
+      await $(UnitTotalPlaybackPage.submit()).click();
+      await $(PercentageTotalPlaybackPage.submit()).click();
+      await $(NumberTotalPlaybackPage.submit()).click();
+      await $(CalculatedSummaryTotalConfirmation.submit()).click();
+      await expect(await browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
+      await $(SetMinMaxBlockPage.submit()).click();
+      await expect(await $(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer more than or equal to £15.91");
+      await $(SetMinMaxBlockPage.setMinimum()).setValue(16.0);
+      await $(SetMinMaxBlockPage.submit()).click();
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
-    it("Given I confirm the totals and am on the summary, When I edit and change an answer that has a dependent maximum value from a calculated summary total, And the maximum value has been changed, Then I must re-validate before I get to the summary", () => {
-      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
-      $(SubmitPage.thirdNumberAnswerEdit()).click();
-      $(ThirdNumberBlockPage.thirdNumber()).setValue(1.0);
-      $(ThirdNumberBlockPage.submit()).click();
-      $(ThirdAndAHalfNumberBlockPage.submit()).click();
-      $(SkipFourthBlockPage.submit()).click();
-      $(FifthNumberBlockPage.submit()).click();
-      $(SixthNumberBlockPage.submit()).click();
+    it("Given I confirm the totals and am on the summary, When I edit and change an answer that has a dependent maximum value from a calculated summary total, And the maximum value has been changed, Then I must re-validate before I get to the summary", async () => {
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+      await $(SubmitPage.thirdNumberAnswerEdit()).click();
+      await $(ThirdNumberBlockPage.thirdNumber()).setValue(1.0);
+      await $(ThirdNumberBlockPage.submit()).click();
+      await $(ThirdAndAHalfNumberBlockPage.submit()).click();
+      await $(SkipFourthBlockPage.submit()).click();
+      await $(FifthNumberBlockPage.submit()).click();
+      await $(SixthNumberBlockPage.submit()).click();
 
-      expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
+      await expect(await $(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £6.91. Is this correct?"
       );
 
-      $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
-      $(UnitTotalPlaybackPage.submit()).click();
-      $(PercentageTotalPlaybackPage.submit()).click();
-      $(NumberTotalPlaybackPage.submit()).click();
-      $(CalculatedSummaryTotalConfirmation.submit()).click();
-      expect(browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
-      $(SetMinMaxBlockPage.submit()).click();
-      expect($(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer less than or equal to £6.91");
-      $(SetMinMaxBlockPage.setMaximum()).setValue(6.0);
-      $(SetMinMaxBlockPage.submit()).click();
-      expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await $(CurrencyTotalPlaybackPageSkippedFourth.submit()).click();
+      await $(UnitTotalPlaybackPage.submit()).click();
+      await $(PercentageTotalPlaybackPage.submit()).click();
+      await $(NumberTotalPlaybackPage.submit()).click();
+      await $(CalculatedSummaryTotalConfirmation.submit()).click();
+      await expect(await browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
+      await $(SetMinMaxBlockPage.submit()).click();
+      await expect(await $(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer less than or equal to £6.91");
+      await $(SetMinMaxBlockPage.setMaximum()).setValue(6.0);
+      await $(SetMinMaxBlockPage.submit()).click();
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
-    it("Given I am on the summary, When I submit the questionnaire, Then I should see the thank you page", () => {
-      $(SubmitPage.submit()).click();
-      expect(browser.getUrl()).to.contain(ThankYouPage.pageName);
+    it("Given I am on the summary, When I submit the questionnaire, Then I should see the thank you page", async () => {
+      await $(SubmitPage.submit()).click();
+      await expect(await browser.getUrl()).to.contain(ThankYouPage.pageName);
     });
   }
 }

@@ -9,59 +9,61 @@ import HubPage from "../../../base_pages/hub.page.js";
 
 describe("Feature: Repeating Section Summaries", () => {
   describe("Given the user has added some members to the household and is on the Hub", () => {
-    before("Open survey and add household members", () => {
-      browser.openQuestionnaire("test_repeating_section_summaries.json");
+    before("Open survey and add household members", async () => {
+      await browser.openQuestionnaire("test_repeating_section_summaries.json");
+      // Ensure the questionnaire fully loads
+      await browser.pause(100);
       // Ensure we are on the Hub
-      expect(browser.getUrl()).to.contain(HubPage.url());
+      await expect(await browser.getUrl()).to.contain(HubPage.url());
       // Start first section to add household members
-      $(HubPage.summaryRowLink("section")).click();
+      await $(HubPage.summaryRowLink("section")).click();
 
       // Add a primary person
-      $(PrimaryPersonPage.yes()).click();
-      $(PrimaryPersonPage.submit()).click();
-      $(PrimaryPersonAddPage.firstName()).setValue("Mark");
-      $(PrimaryPersonAddPage.lastName()).setValue("Twain");
-      $(PrimaryPersonPage.submit()).click();
+      await $(PrimaryPersonPage.yes()).click();
+      await $(PrimaryPersonPage.submit()).click();
+      await $(PrimaryPersonAddPage.firstName()).setValue("Mark");
+      await $(PrimaryPersonAddPage.lastName()).setValue("Twain");
+      await $(PrimaryPersonPage.submit()).click();
 
       // Add other household members
 
-      $(FirstListCollectorPage.yes()).click();
-      $(FirstListCollectorPage.submit()).click();
-      $(FirstListCollectorAddPage.firstName()).setValue("Jean");
-      $(FirstListCollectorAddPage.lastName()).setValue("Clemens");
-      $(FirstListCollectorAddPage.submit()).click();
+      await $(FirstListCollectorPage.yes()).click();
+      await $(FirstListCollectorPage.submit()).click();
+      await $(FirstListCollectorAddPage.firstName()).setValue("Jean");
+      await $(FirstListCollectorAddPage.lastName()).setValue("Clemens");
+      await $(FirstListCollectorAddPage.submit()).click();
 
-      $(FirstListCollectorPage.no()).click();
-      $(FirstListCollectorPage.submit()).click();
+      await $(FirstListCollectorPage.no()).click();
+      await $(FirstListCollectorPage.submit()).click();
     });
 
     describe("When the user finishes a repeating section", () => {
-      before("Enter information for a repeating section", () => {
-        $(HubPage.summaryRowLink("personal-details-section-1")).click();
-        $(ProxyPage.yes()).click();
-        $(ProxyPage.submit()).click();
+      before("Enter information for a repeating section", async () => {
+        await $(HubPage.summaryRowLink("personal-details-section-1")).click();
+        await $(ProxyPage.yes()).click();
+        await $(ProxyPage.submit()).click();
 
-        $(DateOfBirthPage.day()).setValue("30");
-        $(DateOfBirthPage.month()).setValue("11");
-        $(DateOfBirthPage.year()).setValue("1835");
-        $(DateOfBirthPage.submit()).click();
+        await $(DateOfBirthPage.day()).setValue("30");
+        await $(DateOfBirthPage.month()).setValue("11");
+        await $(DateOfBirthPage.year()).setValue("1835");
+        await $(DateOfBirthPage.submit()).click();
       });
 
-      beforeEach("Navigate to the Section Summary", () => {
-        browser.url(HubPage.url());
-        $(HubPage.summaryRowLink("personal-details-section-1")).click();
+      beforeEach("Navigate to the Section Summary", async () => {
+        await browser.url(HubPage.url());
+        await $(HubPage.summaryRowLink("personal-details-section-1")).click();
       });
 
-      it("the title set in the repeating block is used for the section summary title", () => {
-        expect($(PersonalSummaryPage.heading()).getText()).to.contain("Mark Twain");
+      it("the title set in the repeating block is used for the section summary title", async () => {
+        await expect(await $(PersonalSummaryPage.heading()).getText()).to.contain("Mark Twain");
       });
 
-      it("renders their name as part of the question title on the section summary", () => {
-        expect($(PersonalSummaryPage.dateOfBirthQuestion()).getText()).to.contain("Mark Twain’s");
+      it("renders their name as part of the question title on the section summary", async () => {
+        await expect(await $(PersonalSummaryPage.dateOfBirthQuestion()).getText()).to.contain("Mark Twain’s");
       });
 
-      it("renders the correct date of birth answer", () => {
-        expect($(PersonalSummaryPage.dateOfBirthAnswer()).getText()).to.contain("30 November 1835");
+      it("renders the correct date of birth answer", async () => {
+        await expect(await $(PersonalSummaryPage.dateOfBirthAnswer()).getText()).to.contain("30 November 1835");
       });
     });
   });
