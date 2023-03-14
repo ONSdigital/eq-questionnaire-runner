@@ -6,7 +6,7 @@ describe("Feature: Routing - Not Operator", () => {
   describe("Equals", () => {
     describe("Given I start the not operator routing survey", () => {
       beforeEach(async () => {
-        await browser.openQuestionnaire("test_routing_not.json";
+        await browser.openQuestionnaire("test_routing_not.json");
       });
 
       it("When I do not select India, Then I should be routed to the not India interstitial page", async () => {

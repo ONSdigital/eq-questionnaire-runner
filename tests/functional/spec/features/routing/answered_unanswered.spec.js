@@ -65,7 +65,7 @@ describe("Test routing question answered/unanswered", () => {
 
   describe("Given I am on the third question", () => {
     beforeEach("Load the questionnaire and get to the third question", async () => {
-      await browser.openQuestionnaire(test_routing_answered_unanswered.json");
+      await browser.openQuestionnaire("test_routing_answered_unanswered.json");
       await $(QuestionOne.submit()).click();
       await $(QuestionOneUnanswered.submit()).click();
       await $(QuestionTwo.submit()).click();

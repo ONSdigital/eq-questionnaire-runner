@@ -134,7 +134,7 @@ describe("Feature: Routing on a Date", () => {
   describe("Greater Than", () => {
     describe("Given I start date routing greater than survey", () => {
       beforeEach(async () => {
-        await browser.openQuestionnaire("test_routing_date_greater_than.json);
+        await browser.openQuestionnaire("test_routing_date_greater_than.json");
       });
 
       it("When I enter a date greater than the 1st March 2017, Then I should be routed to the correct page", async () => {
@@ -251,7 +251,7 @@ describe("Feature: Routing on a Date", () => {
   describe("Less Than Or Equals", () => {
     describe("Given I start date routing less than or equals survey", () => {
       beforeEach(async () => {
-        await browser.openQuestionnaire(""test_routing_date_less_than_or_equals.json");
+        await browser.openQuestionnaire("test_routing_date_less_than_or_equals.json");
       });
 
       it("When I enter a date less than today, Then I should be routed to the correct page", async () => {
