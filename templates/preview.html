@@ -76,17 +76,7 @@
       {%- for section in content.preview.sections if section.blocks -%}
         {%- set item = {
           "title": section.title,
-          "id": section.id,
-          "button": {
-            "open": _('Show'),
-            "close": _('Hide'),
-            "attributes": {
-              "data-ga": "click",
-              "data-ga-category": "Preview Survey",
-              "data-ga-action": "Open panel",
-              "data-ga-label": section.title
-            }
-          }
+          "id": section.id
         } -%}
 
         {%- set block_previews = preview_blocks_for_sections(blocks=section["blocks"]) -%}
