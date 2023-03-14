@@ -296,7 +296,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await $(FifthNumberBlockPage.submit()).click();
       await $(SixthNumberBlockPage.submit()).click();
 
-      expect($(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
+      await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £15.91. Is this correct?"
       );
 
@@ -312,7 +312,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(await $(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer more than or equal to £15.91");
       await $(SetMinMaxBlockPage.setMinimum()).setValue(16.0);
       await $(SetMinMaxBlockPage.submit()).click();
-      await expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
     it("Given I confirm the totals and am on the summary, When I edit and change an answer that has a dependent maximum value from a calculated summary total, And the maximum value has been changed, Then I must re-validate before I get to the summary", async () => {
@@ -444,8 +444,12 @@ describe("Feature: Calculated Summary Repeating Section", () => {
 
     it("Given I have a placeholder displaying a calculated summary value source, When the calculated summary value is from a previous section, Then the value displayed should be correct", async () => {
       await expect(await browser.getUrl()).to.contain(DependencyQuestionSectionTwo.pageName);
-      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).to.contain("60 - calculated summary answer (previous section)");
-      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).to.contain("40 - calculated summary answer (current section)");
+      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).to.contain(
+        "60 - calculated summary answer (previous section)"
+      );
+      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).to.contain(
+        "40 - calculated summary answer (current section)"
+      );
     });
 
     it("Given I have validation using a calculated summary value source, When the calculated summary value is from a previous section, Then the value used to validate should be correct", async () => {
@@ -471,8 +475,12 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await $(HubPage.summaryRowLink("calculated-summary-section-1")).click();
       await expect(await $("body").getText()).to.have.string("30 - calculated summary answer (previous section)");
       await $(SectionSummarySectionTwo.checkboxAnswerEdit()).click();
-      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).to.contain("30 - calculated summary answer (previous section)");
-      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).to.contain("40 - calculated summary answer (current section)");
+      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).to.contain(
+        "30 - calculated summary answer (previous section)"
+      );
+      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).to.contain(
+        "40 - calculated summary answer (current section)"
+      );
     });
   });
 });

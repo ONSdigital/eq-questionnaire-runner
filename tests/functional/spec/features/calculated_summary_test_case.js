@@ -355,7 +355,9 @@ class TestCase {
     it("Given I am on a page with a dependent question based on a calculated summary value, When I have updated the calculated summary so that additional answers are on the path, Then the question should display the updated value", async () => {
       await $(SubmitPage.setMinimumAnswerEdit()).click();
       await expect(await browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
-      await expect(await $(SetMinMaxBlockPage.questionTitle()).getText()).to.contain("Set minimum and maximum values based on your calculated summary total of £25.92");
+      await expect(await $(SetMinMaxBlockPage.questionTitle()).getText()).to.contain(
+        "Set minimum and maximum values based on your calculated summary total of £25.92"
+      );
       await $(SetMinMaxBlockPage.submit()).click();
       await expect(await $(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer more than or equal to £25.92");
       await $(SetMinMaxBlockPage.setMinimum()).setValue(30.0);
@@ -392,8 +394,12 @@ class TestCase {
 
     it("Given I have a placeholder displaying a calculated summary value source, When the calculated summary value is from a previous section, Then the value displayed should be correct", async () => {
       await expect(await browser.getUrl()).to.contain(DependencyQuestionSectionTwo.pageName);
-      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).to.contain("60 - calculated summary answer (previous section)");
-      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).to.contain("40 - calculated summary answer (current section)");
+      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).to.contain(
+        "60 - calculated summary answer (previous section)"
+      );
+      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).to.contain(
+        "40 - calculated summary answer (current section)"
+      );
     });
 
     it("Given I have validation using a calculated summary value source, When the calculated summary value is from a previous section, Then the value used to validate should be correct", async () => {
@@ -419,8 +425,12 @@ class TestCase {
       await $(HubPage.summaryRowLink("calculated-summary-section")).click();
       await expect(await $("body").getText()).to.have.string("30 - calculated summary answer (previous section)");
       await $(SectionSummarySectionTwo.checkboxAnswerEdit()).click();
-      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).to.contain("30 - calculated summary answer (previous section)");
-      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).to.contain("40 - calculated summary answer (current section)");
+      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).to.contain(
+        "30 - calculated summary answer (previous section)"
+      );
+      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).to.contain(
+        "40 - calculated summary answer (current section)"
+      );
     });
   }
 }
