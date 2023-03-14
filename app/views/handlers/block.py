@@ -7,7 +7,6 @@ from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import QuestionnaireStore
 from app.questionnaire.location import InvalidLocationException, Location
-from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
@@ -44,14 +43,6 @@ class BlockHandler:
         self._return_to_answer_id = request_args.get("return_to_answer_id")
         self._return_to_block_id = request_args.get("return_to_block_id")
         self.resume = "resume" in request_args
-        self._path_finder = PathFinder(
-            schema=self._schema,
-            answer_store=self._questionnaire_store.answer_store,
-            list_store=self._questionnaire_store.list_store,
-            progress_store=self._questionnaire_store.progress_store,
-            metadata=self._questionnaire_store.metadata,
-            response_metadata=self._questionnaire_store.response_metadata,
-        )
 
         if not self.is_location_valid():
             raise InvalidLocationException(
@@ -83,7 +74,7 @@ class BlockHandler:
             schema=self._schema,
             location=self._current_location,
             routing_path_block_ids=self._routing_path.block_ids,
-            router=self.router,
+            progress_store=self._questionnaire_store.progress_store,
         )
 
     @cached_property

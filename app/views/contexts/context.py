@@ -68,6 +68,6 @@ class Context(ABC):
             response_metadata=self._response_metadata,
             schema=self._schema,
             routing_path_block_ids=self._routing_path_block_ids,
-            router=self._router,
+            progress_store=self._progress_store,
             placeholder_preview_mode=self._placeholder_preview_mode,
         )

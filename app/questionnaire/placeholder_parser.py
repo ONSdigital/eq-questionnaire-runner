@@ -1,18 +1,11 @@
 from decimal import Decimal
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Mapping,
-    MutableMapping,
-    Optional,
-    Sequence,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, Mapping, MutableMapping, Sequence, Union
 
+from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import Location, QuestionnaireSchema, path_finder
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.value_source_resolver import (
@@ -22,10 +15,10 @@ from app.questionnaire.value_source_resolver import (
 )
 
 if TYPE_CHECKING:
+    from app.questionnaire.path_finder import PathFinder  # pragma: no cover
     from app.questionnaire.placeholder_renderer import (
         PlaceholderRenderer,  # pragma: no cover
     )
-    from app.questionnaire.router import Router  # pragma: no cover
 
 TransformedValueTypes = Union[None, str, int, Decimal, bool]
 
@@ -41,14 +34,14 @@ class PlaceholderParser:
         language: str,
         answer_store: AnswerStore,
         list_store: ListStore,
-        metadata: Optional[MetadataProxy],
+        metadata: MetadataProxy | None,
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
         renderer: "PlaceholderRenderer",
-        router: Optional["Router"] = None,
-        list_item_id: Optional[str] = None,
-        location: Union[Location, RelationshipLocation, None] = None,
-        placeholder_preview_mode: Optional[bool] = False,
+        progress_store: ProgressStore,
+        list_item_id: str | None = None,
+        location: Location | RelationshipLocation | None = None,
+        placeholder_preview_mode: bool | None = False,
     ):
         self._transformer = PlaceholderTransforms(language, schema, renderer)
         self._placeholder_map: MutableMapping[
@@ -61,8 +54,17 @@ class PlaceholderParser:
         self._list_item_id = list_item_id
         self._schema = schema
         self._location = location
-        self._router = router
+        self._progress_store = progress_store
         self._placeholder_preview_mode = placeholder_preview_mode
+
+        self._path_finder = path_finder.PathFinder(
+            schema=self._schema,
+            answer_store=self._answer_store,
+            list_store=self._list_store,
+            progress_store=self._progress_store,
+            metadata=self._metadata,
+            response_metadata=self._response_metadata,
+        )
 
         self._value_source_resolver = self._get_value_source_resolver()
         self._routing_paths: dict = {}
@@ -169,11 +171,12 @@ class PlaceholderParser:
     def _get_routing_path_block_ids(
         self, sections_to_ignore: list | None = None
     ) -> dict[str, list[str]]:
-        if self._location and self._router:
+        if self._location:
             return get_block_ids_for_calculated_summary_dependencies(
                 schema=self._schema,
                 location=self._location,
-                router=self._router,
+                progress_store=self._progress_store,
+                path=self._path_finder,
                 sections_to_ignore=sections_to_ignore,
             )
         return {}
@@ -186,7 +189,8 @@ class PlaceholderParser:
 def get_block_ids_for_calculated_summary_dependencies(
     schema: QuestionnaireSchema,
     location: Location | RelationshipLocation,
-    router: "Router",
+    progress_store: ProgressStore,
+    path: "PathFinder",
     sections_to_ignore: list | None = None,
 ) -> dict[str, list[str]]:
     # Type ignore: Added to this method as the block will exist at this point
@@ -216,9 +220,9 @@ def get_block_ids_for_calculated_summary_dependencies(
 
         keys = [(section, location.list_item_id), (section, None)]
         for key in keys:
-            if key in router.progress_store.started_section_keys():
-                path = router.routing_path(*key)
-                blocks_id_by_section[section] = path.block_ids
+            if key in progress_store.started_section_keys():
+                routing_path = path.routing_path(*key)
+                blocks_id_by_section[section] = routing_path.block_ids
 
     return blocks_id_by_section
 

@@ -6,7 +6,6 @@ from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
-from app.questionnaire.router import Router
 from app.questionnaire.routing_path import RoutingPath
 from app.survey_config.link import Link
 from app.views.contexts.summary.block import Block
@@ -28,7 +27,6 @@ class Group:
         language: str,
         progress_store: ProgressStore,
         return_to: str | None,
-        router: Router,
         return_to_block_id: str | None = None,
     ) -> None:
         self.id = group_schema["id"]
@@ -61,7 +59,7 @@ class Group:
             metadata=metadata,
             response_metadata=response_metadata,
             schema=schema,
-            router=router,
+            progress_store=progress_store,
         )
 
     # pylint: disable=too-many-locals

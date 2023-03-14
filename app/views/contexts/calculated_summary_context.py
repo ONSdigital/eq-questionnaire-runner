@@ -39,7 +39,6 @@ class CalculatedSummaryContext(Context):
                 progress_store=self._progress_store,
                 return_to="calculated-summary",
                 return_to_block_id=return_to_block_id,
-                router=self._router,
             ).serialize()
             for group in section["groups"]
         ]

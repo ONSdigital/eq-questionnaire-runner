@@ -1,17 +1,9 @@
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
-from typing import (
-    TYPE_CHECKING,
-    Generator,
-    Iterable,
-    Mapping,
-    Optional,
-    Sequence,
-    Union,
-)
+from typing import Generator, Iterable, Mapping, Optional, Sequence, Union
 
-from app.data_models import AnswerStore, ListStore
+from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
@@ -23,9 +15,6 @@ from app.questionnaire.value_source_resolver import (
     ValueSourceResolver,
     ValueSourceTypes,
 )
-
-if TYPE_CHECKING:
-    from app.questionnaire.router import Router  # pragma: no cover
 
 RuleEvaluatorTypes = Union[
     bool, Optional[date], list[str], list[date], int, float, Decimal
@@ -39,10 +28,10 @@ class RuleEvaluator:
     list_store: ListStore
     metadata: MetadataProxy | None
     response_metadata: Mapping
-    location: Union[None, Location, RelationshipLocation]
+    location: Location | RelationshipLocation | None
+    progress_store: ProgressStore | None = None
     routing_path_block_ids: Iterable | None = None
     language: str = DEFAULT_LANGUAGE_CODE
-    router: Optional["Router"] = None
 
     # pylint: disable=attribute-defined-outside-init
     def __post_init__(self) -> None:
@@ -58,6 +47,7 @@ class RuleEvaluator:
             routing_path_block_ids=self.routing_path_block_ids,
             use_default_answer=True,
         )
+
         renderer: PlaceholderRenderer = PlaceholderRenderer(
             language=self.language,
             answer_store=self.answer_store,
@@ -66,7 +56,7 @@ class RuleEvaluator:
             response_metadata=self.response_metadata,
             schema=self.schema,
             location=self.location,
-            router=self.router,
+            progress_store=self.progress_store,  # type: ignore
         )
         self.operations = Operations(
             language=self.language, schema=self.schema, renderer=renderer

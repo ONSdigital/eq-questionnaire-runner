@@ -9,7 +9,6 @@ from app.data_models.list_store import ListModel, ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
-from app.questionnaire.router import Router
 from app.questionnaire.routing_path import RoutingPath
 from app.views.contexts.list_context import ListContext
 from app.views.contexts.summary.block import Block
@@ -36,14 +35,7 @@ class ListCollectorBlock:
             metadata=metadata,
             response_metadata=response_metadata,
             schema=schema,
-            router=Router(
-                schema=schema,
-                answer_store=answer_store,
-                list_store=list_store,
-                progress_store=progress_store,
-                metadata=metadata,
-                response_metadata=response_metadata,
-            ),
+            progress_store=progress_store,
         )
         self._list_store = list_store
         self._schema = schema

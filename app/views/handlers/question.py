@@ -33,7 +33,7 @@ class Question(BlockHandler):
                 response_metadata=self._questionnaire_store.response_metadata,
                 location=self._current_location,
                 form_data=self._form_data,
-                router=self.router,
+                progress_store=self._questionnaire_store.progress_store,
             )
 
         answers = self._get_answers_for_question(question_json)
@@ -46,7 +46,7 @@ class Question(BlockHandler):
             response_metadata=self._questionnaire_store.response_metadata,
             location=self._current_location,
             data=answers,
-            router=self.router,
+            progress_store=self._questionnaire_store.progress_store,
         )
 
     @cached_property

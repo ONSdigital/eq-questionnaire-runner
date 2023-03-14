@@ -170,6 +170,7 @@ class IndividualResponseHandler:
             response_metadata=self._questionnaire_store.response_metadata,
             schema=self._schema,
             location=None,
+            progress_store=self._questionnaire_store.progress_store,
         )
 
     @cached_property

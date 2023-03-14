@@ -1,7 +1,8 @@
-from typing import TYPE_CHECKING, Any, Mapping, MutableMapping, Optional
+from typing import Any, Mapping, MutableMapping
 
 from jsonpointer import resolve_pointer, set_pointer
 
+from app.data_models import ProgressStore
 from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
@@ -11,9 +12,6 @@ from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.questionnaire.plural_forms import get_plural_form_key
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.schema_utils import find_pointers_containing
-
-if TYPE_CHECKING:
-    from app.questionnaire.router import Router  # pragma: no cover
 
 
 class PlaceholderRenderer:
@@ -30,9 +28,9 @@ class PlaceholderRenderer:
         metadata: MetadataProxy | None,
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
+        progress_store: ProgressStore,
         location: Location | RelationshipLocation | None = None,
         routing_path_block_ids: tuple | None = None,
-        router: Optional["Router"] = None,
         placeholder_preview_mode: bool | None = False,
     ):
         self._placeholder_preview_mode = placeholder_preview_mode
@@ -44,7 +42,7 @@ class PlaceholderRenderer:
         self._schema = schema
         self._location = location
         self._routing_path_block_ids = routing_path_block_ids
-        self._router = router
+        self._progress_store = progress_store
         self._block_ids_calculated_summary: list = []
 
     def render_pointer(
@@ -66,8 +64,8 @@ class PlaceholderRenderer:
             list_item_id=list_item_id,
             location=self._location,
             renderer=self,
-            router=self._router,
             placeholder_preview_mode=self._placeholder_preview_mode,
+            progress_store=self._progress_store,
         )
 
         return self.render_placeholder(pointer_data, list_item_id, placeholder_parser)
@@ -103,7 +101,7 @@ class PlaceholderRenderer:
                 list_item_id=list_item_id,
                 location=self._location,
                 renderer=self,
-                router=self._router,
+                progress_store=self._progress_store,
                 placeholder_preview_mode=self._placeholder_preview_mode,
             )
 

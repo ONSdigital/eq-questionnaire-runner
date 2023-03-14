@@ -1,6 +1,7 @@
 import pytest
 from mock import MagicMock
 
+from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
@@ -225,5 +226,6 @@ def get_placeholder_render(
         metadata=metadata or {},
         response_metadata=response_metadata or {},
         schema=MagicMock(),
+        progress_store=ProgressStore(),
     )
     return renderer

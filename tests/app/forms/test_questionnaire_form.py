@@ -4,7 +4,7 @@ from decimal import Decimal
 import pytest
 from werkzeug.datastructures import MultiDict
 
-from app.data_models import ListStore
+from app.data_models import ListStore, ProgressStore
 from app.data_models.answer_store import Answer, AnswerStore
 from app.forms import error_messages
 from app.forms.questionnaire_form import generate_form
@@ -1681,6 +1681,7 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
             metadata=get_metadata(),
             response_metadata={},
             schema=schema,
+            progress_store=ProgressStore(),
         )
         rendered_schema = renderer.render(
             data_to_render=question_schema, list_item_id=None

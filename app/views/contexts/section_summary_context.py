@@ -131,7 +131,6 @@ class SectionSummaryContext(Context):
                     progress_store=self._progress_store,
                     return_to=return_to,
                     return_to_block_id=None,
-                    router=self._router,
                 ).serialize()
                 for group in refactored_groups
             ],

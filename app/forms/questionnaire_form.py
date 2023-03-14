@@ -12,18 +12,18 @@ from flask_wtf import FlaskForm
 from werkzeug.datastructures import ImmutableMultiDict, MultiDict
 from wtforms import validators
 
-from app.data_models import AnswerStore, AnswerValueTypes, ListStore
+from app.data_models import AnswerStore, AnswerValueTypes, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.forms import error_messages
 from app.forms.field_handlers import DateHandler, FieldHandler, get_field_handler
 from app.forms.validators import DateRangeCheck, MutuallyExclusiveCheck, SumCheck
 from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
+from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.placeholder_parser import (
     get_block_ids_for_calculated_summary_dependencies,
     get_flattened_mapping_value,
 )
 from app.questionnaire.relationship_location import RelationshipLocation
-from app.questionnaire.router import Router
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 
@@ -452,17 +452,25 @@ def get_answer_fields(
     metadata: MetadataProxy | None,
     response_metadata: Mapping[str, Any],
     location: Location | RelationshipLocation | None,
-    router: Router | None,
+    progress_store: ProgressStore | None,
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
 
     block_ids_map: dict[str, list[str]] = {}
 
-    if location and router:
+    if location and progress_store:
         block_ids_map = get_block_ids_for_calculated_summary_dependencies(
             schema=schema,
             location=location,
-            router=router,
+            progress_store=progress_store,
+            path=PathFinder(
+                schema=schema,
+                answer_store=answer_store,
+                list_store=list_store,
+                progress_store=progress_store,
+                metadata=metadata,
+                response_metadata=response_metadata,
+            ),
         )
 
     block_ids = get_flattened_mapping_value(block_ids_map)
@@ -487,7 +495,7 @@ def get_answer_fields(
         metadata=metadata,
         response_metadata=response_metadata,
         location=location,
-        router=router,
+        progress_store=progress_store,
     )
 
     answer_fields = {}
@@ -585,7 +593,7 @@ def generate_form(
     location: Location | RelationshipLocation | None = None,
     data: dict[str, Any] | None = None,
     form_data: MultiDict[str, Any] | None = None,
-    router: Router | None = None,
+    progress_store: ProgressStore | None = None,
 ) -> QuestionnaireForm:
     class DynamicForm(QuestionnaireForm):
         pass
@@ -603,7 +611,7 @@ def generate_form(
         metadata,
         response_metadata,
         location,
-        router=router,
+        progress_store=progress_store,
     )
 
     for answer_id, field in answer_fields.items():
