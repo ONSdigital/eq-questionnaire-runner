@@ -206,7 +206,7 @@
                                 "type": "DateRange",
                                 "answers": [
                                     {
-                                        "id": "answer-from",
+                                        "id": "answerfrom",
                                         "type": "Date",
                                         "mandatory": true,
                                         "label": "Period from",
@@ -222,7 +222,7 @@
                                         }
                                     },
                                     {
-                                        "id": "answer-to",
+                                        "id": "answerto",
                                         "type": "Date",
                                         "mandatory": true,
                                         "label": "Period to",
