@@ -2,116 +2,117 @@ import DatePage from "../../../../generated_pages/mutually_exclusive/mutually-ex
 import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-date-section-summary.page";
 
 describe("Component: Mutually Exclusive Day Month Year Date With Single Checkbox Override", () => {
-  beforeEach(() => {
-    browser.openQuestionnaire("test_mutually_exclusive.json");
-    browser.url("/questionnaire/mutually-exclusive-date");
+  beforeEach(async () => {
+    await browser.openQuestionnaire("test_mutually_exclusive.json");
+    await browser.pause(100);
+    await browser.url("/questionnaire/mutually-exclusive-date");
   });
 
   describe("Given the user has entered a value for the non-exclusive month year date answer", () => {
-    it("When then user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", () => {
+    it("When then user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", async () => {
       // Given
-      $(DatePage.dateday()).setValue("17");
-      $(DatePage.datemonth()).setValue("3");
-      $(DatePage.dateyear()).setValue("2018");
-      expect($(DatePage.dateday()).getValue()).to.contain("17");
-      expect($(DatePage.datemonth()).getValue()).to.contain("3");
-      expect($(DatePage.dateyear()).getValue()).to.contain("2018");
+      await $(DatePage.dateday()).setValue("17");
+      await $(DatePage.datemonth()).setValue("3");
+      await $(DatePage.dateyear()).setValue("2018");
+      await expect(await $(DatePage.dateday()).getValue()).to.contain("17");
+      await expect(await $(DatePage.datemonth()).getValue()).to.contain("3");
+      await expect(await $(DatePage.dateyear()).getValue()).to.contain("2018");
 
       // When
-      $(DatePage.dateExclusiveIPreferNotToSay()).click();
+      await $(DatePage.dateExclusiveIPreferNotToSay()).click();
 
       // Then
-      expect($(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).to.be.true;
-      expect($(DatePage.dateday()).getValue()).to.contain("");
-      expect($(DatePage.datemonth()).getValue()).to.contain("");
-      expect($(DatePage.dateyear()).getValue()).to.contain("");
+      await expect(await $(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).to.be.true;
+      await expect(await $(DatePage.dateday()).getValue()).to.contain("");
+      await expect(await $(DatePage.datemonth()).getValue()).to.contain("");
+      await expect(await $(DatePage.dateyear()).getValue()).to.contain("");
 
-      $(DatePage.submit()).click();
+      await $(DatePage.submit()).click();
 
-      expect($(SummaryPage.dateExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
-      expect($(SummaryPage.dateExclusiveAnswer()).getText()).to.not.have.string("17 March 2018");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).to.not.have.string("17 March 2018");
     });
   });
 
   describe("Given the user has clicked the mutually exclusive checkbox answer", () => {
-    it("When the user enters a value for the non-exclusive month year date answer and removes focus, Then only the non-exclusive month year date answer should be answered.", () => {
+    it("When the user enters a value for the non-exclusive month year date answer and removes focus, Then only the non-exclusive month year date answer should be answered.", async () => {
       // Given
-      $(DatePage.dateExclusiveIPreferNotToSay()).click();
-      expect($(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).to.be.true;
+      await $(DatePage.dateExclusiveIPreferNotToSay()).click();
+      await expect(await $(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).to.be.true;
 
       // When
-      $(DatePage.dateday()).setValue("17");
-      $(DatePage.datemonth()).setValue("3");
-      $(DatePage.dateyear()).setValue("2018");
+      await $(DatePage.dateday()).setValue("17");
+      await $(DatePage.datemonth()).setValue("3");
+      await $(DatePage.dateyear()).setValue("2018");
 
       // Then
-      expect($(DatePage.dateday()).getValue()).to.contain("17");
-      expect($(DatePage.datemonth()).getValue()).to.contain("3");
-      expect($(DatePage.dateyear()).getValue()).to.contain("2018");
+      await expect(await $(DatePage.dateday()).getValue()).to.contain("17");
+      await expect(await $(DatePage.datemonth()).getValue()).to.contain("3");
+      await expect(await $(DatePage.dateyear()).getValue()).to.contain("2018");
 
-      expect($(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).to.be.false;
+      await expect(await $(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      $(DatePage.submit()).click();
+      await $(DatePage.submit()).click();
 
-      expect($(SummaryPage.dateAnswer()).getText()).to.have.string("17 March 2018");
-      expect($(SummaryPage.dateAnswer()).getText()).to.not.have.string("I prefer not to say");
+      await expect(await $(SummaryPage.dateAnswer()).getText()).to.have.string("17 March 2018");
+      await expect(await $(SummaryPage.dateAnswer()).getText()).to.not.have.string("I prefer not to say");
     });
   });
 
   describe("Given the user has not clicked the mutually exclusive checkbox answer", () => {
-    it("When the user enters a value for the non-exclusive month year date answer, Then only the non-exclusive month year date answer should be answered.", () => {
+    it("When the user enters a value for the non-exclusive month year date answer, Then only the non-exclusive month year date answer should be answered.", async () => {
       // Given
-      expect($(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).to.be.false;
+      await expect(await $(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
       // When
-      $(DatePage.dateday()).setValue("17");
-      $(DatePage.datemonth()).setValue("3");
-      $(DatePage.dateyear()).setValue("2018");
+      await $(DatePage.dateday()).setValue("17");
+      await $(DatePage.datemonth()).setValue("3");
+      await $(DatePage.dateyear()).setValue("2018");
 
       // Then
-      expect($(DatePage.dateday()).getValue()).to.contain("17");
-      expect($(DatePage.datemonth()).getValue()).to.contain("3");
-      expect($(DatePage.dateyear()).getValue()).to.contain("2018");
-      expect($(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).to.be.false;
+      await expect(await $(DatePage.dateday()).getValue()).to.contain("17");
+      await expect(await $(DatePage.datemonth()).getValue()).to.contain("3");
+      await expect(await $(DatePage.dateyear()).getValue()).to.contain("2018");
+      await expect(await $(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      $(DatePage.submit()).click();
-      expect($(SummaryPage.dateAnswer()).getText()).to.have.string("17 March 2018");
-      expect($(SummaryPage.dateAnswer()).getText()).to.not.have.string("I prefer not to say");
+      await $(DatePage.submit()).click();
+      await expect(await $(SummaryPage.dateAnswer()).getText()).to.have.string("17 March 2018");
+      await expect(await $(SummaryPage.dateAnswer()).getText()).to.not.have.string("I prefer not to say");
     });
   });
 
   describe("Given the user has not answered the non-exclusive month year date answer", () => {
-    it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", () => {
+    it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", async () => {
       // Given
-      expect($(DatePage.dateday()).getValue()).to.contain("");
-      expect($(DatePage.datemonth()).getValue()).to.contain("");
-      expect($(DatePage.dateyear()).getValue()).to.contain("");
+      await expect(await $(DatePage.dateday()).getValue()).to.contain("");
+      await expect(await $(DatePage.datemonth()).getValue()).to.contain("");
+      await expect(await $(DatePage.dateyear()).getValue()).to.contain("");
 
       // When
-      $(DatePage.dateExclusiveIPreferNotToSay()).click();
-      expect($(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).to.be.true;
+      await $(DatePage.dateExclusiveIPreferNotToSay()).click();
+      await expect(await $(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).to.be.true;
 
       // Then
-      $(DatePage.submit()).click();
+      await $(DatePage.submit()).click();
 
-      expect($(SummaryPage.dateExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
-      expect($(SummaryPage.dateExclusiveAnswer()).getText()).to.not.have.string("17 March 2018");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).to.not.have.string("17 March 2018");
     });
   });
 
   describe("Given the user has not answered the question and the question is optional", () => {
-    it("When the user clicks the Continue button, Then it should display `No answer provided`", () => {
+    it("When the user clicks the Continue button, Then it should display `No answer provided`", async () => {
       // Given
-      expect($(DatePage.dateday()).getValue()).to.contain("");
-      expect($(DatePage.datemonth()).getValue()).to.contain("");
-      expect($(DatePage.dateyear()).getValue()).to.contain("");
-      expect($(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).to.be.false;
+      await expect(await $(DatePage.dateday()).getValue()).to.contain("");
+      await expect(await $(DatePage.datemonth()).getValue()).to.contain("");
+      await expect(await $(DatePage.dateyear()).getValue()).to.contain("");
+      await expect(await $(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
       // When
-      $(DatePage.submit()).click();
+      await $(DatePage.submit()).click();
 
       // Then
-      expect($(SummaryPage.dateAnswer()).getText()).to.contain("No answer provided");
+      await expect(await $(SummaryPage.dateAnswer()).getText()).to.contain("No answer provided");
     });
   });
 });

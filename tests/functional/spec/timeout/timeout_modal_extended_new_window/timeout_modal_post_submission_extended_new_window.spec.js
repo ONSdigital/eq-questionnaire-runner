@@ -5,10 +5,10 @@ import { TimeoutModalTestCase } from "../timeout_modal.js";
 
 describe("Timeout Modal Post Submission Expired", () => {
   describe("Given I am completing the survey and get to post submission page,", () => {
-    before(() => {
-      browser.openQuestionnaire("test_timeout_modal.json");
-      $(TimeoutInterstitialPage.submit()).click();
-      $(TimeoutSubmitPage.submit()).click();
+    before(async () => {
+      await browser.openQuestionnaire("test_timeout_modal.json");
+      await $(TimeoutInterstitialPage.submit()).click();
+      await $(TimeoutSubmitPage.submit()).click();
     });
     TimeoutModalTestCase.testCaseExtendedNewWindow(ThankYouPage);
   });

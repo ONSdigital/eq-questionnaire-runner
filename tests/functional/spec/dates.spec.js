@@ -6,207 +6,207 @@ import DateYearDatePage from "../generated_pages/dates/date-year-date-block.page
 import SubmitPage from "../generated_pages/dates/submit.page";
 
 describe("Date checks", () => {
-  beforeEach("Load the survey", () => {
-    browser.openQuestionnaire("test_dates.json");
+  beforeEach("Load the survey", async () => {
+    await browser.openQuestionnaire("test_dates.json");
   });
 
-  it("Given an answer label is provided for a date question then the label should be displayed ", () => {
-    expect($(DateRangePage.legend()).getText()).to.contain("Period from");
+  it("Given an answer label is provided for a date question then the label should be displayed ", async () => {
+    await expect(await $(DateRangePage.legend()).getText()).to.contain("Period from");
   });
 
-  it("Given an answer label is not provided for a date question then the question title should be used within the legend ", () => {
-    $(DateRangePage.dateRangeFromday()).setValue(1);
-    $(DateRangePage.dateRangeFrommonth()).setValue(1);
-    $(DateRangePage.dateRangeFromyear()).setValue(1901);
+  it("Given an answer label is not provided for a date question then the question title should be used within the legend ", async () => {
+    await $(DateRangePage.dateRangeFromday()).setValue(1);
+    await $(DateRangePage.dateRangeFrommonth()).setValue(1);
+    await $(DateRangePage.dateRangeFromyear()).setValue(1901);
 
-    $(DateRangePage.dateRangeToday()).setValue(3);
-    $(DateRangePage.dateRangeTomonth()).setValue(5);
-    $(DateRangePage.dateRangeToyear()).setValue(2017);
+    await $(DateRangePage.dateRangeToday()).setValue(3);
+    await $(DateRangePage.dateRangeTomonth()).setValue(5);
+    await $(DateRangePage.dateRangeToyear()).setValue(2017);
 
-    $(DateRangePage.submit()).click();
+    await $(DateRangePage.submit()).click();
 
-    expect($(DateMonthYearPage.legend()).getText()).to.contain("Date with month and year");
+    await expect(await $(DateMonthYearPage.legend()).getText()).to.contain("Date with month and year");
   });
 
-  it("Given the test_dates survey is selected when dates are entered then the summary screen shows the dates entered formatted", () => {
+  it("Given the test_dates survey is selected when dates are entered then the summary screen shows the dates entered formatted", async () => {
     // When dates are entered
-    $(DateRangePage.dateRangeFromday()).setValue(1);
-    $(DateRangePage.dateRangeFrommonth()).setValue(1);
-    $(DateRangePage.dateRangeFromyear()).setValue(1901);
+    await $(DateRangePage.dateRangeFromday()).setValue(1);
+    await $(DateRangePage.dateRangeFrommonth()).setValue(1);
+    await $(DateRangePage.dateRangeFromyear()).setValue(1901);
 
-    $(DateRangePage.dateRangeToday()).setValue(3);
-    $(DateRangePage.dateRangeTomonth()).setValue(5);
-    $(DateRangePage.dateRangeToyear()).setValue(2017);
+    await $(DateRangePage.dateRangeToday()).setValue(3);
+    await $(DateRangePage.dateRangeTomonth()).setValue(5);
+    await $(DateRangePage.dateRangeToyear()).setValue(2017);
 
-    $(DateRangePage.submit()).click();
+    await $(DateRangePage.submit()).click();
 
-    $(DateMonthYearPage.Month()).setValue(4);
-    $(DateMonthYearPage.Year()).setValue(2018);
+    await $(DateMonthYearPage.Month()).setValue(4);
+    await $(DateMonthYearPage.Year()).setValue(2018);
 
-    $(DateMonthYearPage.submit()).click();
+    await $(DateMonthYearPage.submit()).click();
 
-    $(DateSinglePage.day()).setValue(4);
-    $(DateSinglePage.month()).setValue(1);
-    $(DateSinglePage.year()).setValue(1999);
+    await $(DateSinglePage.day()).setValue(4);
+    await $(DateSinglePage.month()).setValue(1);
+    await $(DateSinglePage.year()).setValue(1999);
 
-    $(DateSinglePage.submit()).click();
+    await $(DateSinglePage.submit()).click();
 
-    $(DateNonMandatoryPage.submit()).click();
+    await $(DateNonMandatoryPage.submit()).click();
 
-    $(DateYearDatePage.Year()).setValue(2005);
+    await $(DateYearDatePage.Year()).setValue(2005);
 
-    $(DateYearDatePage.submit()).click();
+    await $(DateYearDatePage.submit()).click();
 
-    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
 
     // Then the summary screen shows the dates entered formatted
-    expect($(SubmitPage.dateRangeFromAnswer()).getText()).to.contain("1 January 1901 to 3 May 2017");
-    expect($(SubmitPage.monthYearAnswer()).getText()).to.contain("April 2018");
-    expect($(SubmitPage.singleDateAnswer()).getText()).to.contain("4 January 1999");
-    expect($(SubmitPage.nonMandatoryDateAnswer()).getText()).to.contain("No answer provided");
-    expect($(SubmitPage.yearDateAnswer()).getText()).to.contain("2005");
+    await expect(await $(SubmitPage.dateRangeFromAnswer()).getText()).to.contain("1 January 1901 to 3 May 2017");
+    await expect(await $(SubmitPage.monthYearAnswer()).getText()).to.contain("April 2018");
+    await expect(await $(SubmitPage.singleDateAnswer()).getText()).to.contain("4 January 1999");
+    await expect(await $(SubmitPage.nonMandatoryDateAnswer()).getText()).to.contain("No answer provided");
+    await expect(await $(SubmitPage.yearDateAnswer()).getText()).to.contain("2005");
   });
 
-  it("Given the test_dates survey is selected when the from date is greater than the to date then an error message is shown", () => {
+  it("Given the test_dates survey is selected when the from date is greater than the to date then an error message is shown", async () => {
     // When the from date is greater than the to date
-    $(DateRangePage.dateRangeFromday()).setValue(1);
-    $(DateRangePage.dateRangeFrommonth()).setValue(1);
-    $(DateRangePage.dateRangeFromyear()).setValue(2016);
+    await $(DateRangePage.dateRangeFromday()).setValue(1);
+    await $(DateRangePage.dateRangeFrommonth()).setValue(1);
+    await $(DateRangePage.dateRangeFromyear()).setValue(2016);
 
-    $(DateRangePage.dateRangeToday()).setValue(1);
-    $(DateRangePage.dateRangeTomonth()).setValue(1);
-    $(DateRangePage.dateRangeToyear()).setValue(2015);
+    await $(DateRangePage.dateRangeToday()).setValue(1);
+    await $(DateRangePage.dateRangeTomonth()).setValue(1);
+    await $(DateRangePage.dateRangeToyear()).setValue(2015);
 
-    $(DateRangePage.submit()).click();
+    await $(DateRangePage.submit()).click();
 
     // Then an error message is shown and the question panel is highlighted
-    expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date");
-    expect($(DateRangePage.dateRangeQuestionErrorPanel()).isExisting()).to.be.true;
+    await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date");
+    await expect(await $(DateRangePage.dateRangeQuestionErrorPanel()).isExisting()).to.be.true;
 
     // Then clicking error should focus on first input field
-    $(DateRangePage.errorNumber(1)).click();
-    expect($(DateRangePage.dateRangeFromday()).isFocused()).to.be.true;
+    await $(DateRangePage.errorNumber(1)).click();
+    await expect(await $(DateRangePage.dateRangeFromday()).isFocused()).to.be.true;
   });
 
-  it("Given the test_dates survey is selected when the from date and the to date are the same then an error message is shown", () => {
+  it("Given the test_dates survey is selected when the from date and the to date are the same then an error message is shown", async () => {
     // When the from date is greater than the to date
-    $(DateRangePage.dateRangeFromday()).setValue(1);
-    $(DateRangePage.dateRangeFrommonth()).setValue(1);
-    $(DateRangePage.dateRangeFromyear()).setValue(2016);
+    await $(DateRangePage.dateRangeFromday()).setValue(1);
+    await $(DateRangePage.dateRangeFrommonth()).setValue(1);
+    await $(DateRangePage.dateRangeFromyear()).setValue(2016);
 
-    $(DateRangePage.dateRangeToday()).setValue(1);
-    $(DateRangePage.dateRangeTomonth()).setValue(1);
-    $(DateRangePage.dateRangeToyear()).setValue(2016);
+    await $(DateRangePage.dateRangeToday()).setValue(1);
+    await $(DateRangePage.dateRangeTomonth()).setValue(1);
+    await $(DateRangePage.dateRangeToyear()).setValue(2016);
 
-    $(DateRangePage.submit()).click();
+    await $(DateRangePage.submit()).click();
 
     // Then an error message is shown and the question panel is highlighted
-    expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date");
-    expect($(DateRangePage.dateRangeQuestionErrorPanel()).isExisting()).to.be.true;
+    await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date");
+    await expect(await $(DateRangePage.dateRangeQuestionErrorPanel()).isExisting()).to.be.true;
   });
 
-  it("Given the test_dates survey is selected when an invalid date is entered in a date range then an error message is shown", () => {
+  it("Given the test_dates survey is selected when an invalid date is entered in a date range then an error message is shown", async () => {
     // When the from date is greater than the to date
-    $(DateRangePage.dateRangeFromday()).setValue(1);
-    $(DateRangePage.dateRangeFrommonth()).setValue(1);
-    $(DateRangePage.dateRangeFromyear()).setValue(2016);
+    await $(DateRangePage.dateRangeFromday()).setValue(1);
+    await $(DateRangePage.dateRangeFrommonth()).setValue(1);
+    await $(DateRangePage.dateRangeFromyear()).setValue(2016);
 
-    $(DateRangePage.dateRangeToday()).setValue(1);
-    $(DateRangePage.dateRangeTomonth()).setValue(1);
-    $(DateRangePage.dateRangeToyear()).setValue("");
+    await $(DateRangePage.dateRangeToday()).setValue(1);
+    await $(DateRangePage.dateRangeTomonth()).setValue(1);
+    await $(DateRangePage.dateRangeToyear()).setValue("");
 
-    $(DateRangePage.submit()).click();
+    await $(DateRangePage.submit()).click();
 
     // Then an error message is shown
-    expect($(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a valid date");
+    await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a valid date");
   });
 
-  it("Given the test_dates survey is selected when the year (month year type) is left empty then an error message is shown", () => {
-    $(DateRangePage.dateRangeFromday()).setValue(1);
-    $(DateRangePage.dateRangeFrommonth()).setValue(1);
-    $(DateRangePage.dateRangeFromyear()).setValue(2016);
-    $(DateRangePage.dateRangeToday()).setValue(1);
-    $(DateRangePage.dateRangeTomonth()).setValue(1);
-    $(DateRangePage.dateRangeToyear()).setValue(2017);
-    $(DateRangePage.submit()).click();
+  it("Given the test_dates survey is selected when the year (month year type) is left empty then an error message is shown", async () => {
+    await $(DateRangePage.dateRangeFromday()).setValue(1);
+    await $(DateRangePage.dateRangeFrommonth()).setValue(1);
+    await $(DateRangePage.dateRangeFromyear()).setValue(2016);
+    await $(DateRangePage.dateRangeToday()).setValue(1);
+    await $(DateRangePage.dateRangeTomonth()).setValue(1);
+    await $(DateRangePage.dateRangeToyear()).setValue(2017);
+    await $(DateRangePage.submit()).click();
 
     // When the year (month year type) is left empty
-    $(DateMonthYearPage.Month()).setValue(4);
-    $(DateMonthYearPage.Year()).setValue("");
+    await $(DateMonthYearPage.Month()).setValue(4);
+    await $(DateMonthYearPage.Year()).setValue("");
 
-    $(DateMonthYearPage.submit()).click();
+    await $(DateMonthYearPage.submit()).click();
 
     // Then an error message is shown
-    expect($(DateMonthYearPage.errorNumber(1)).getText()).to.contain("Enter a valid date");
+    await expect(await $(DateMonthYearPage.errorNumber(1)).getText()).to.contain("Enter a valid date");
   });
 
-  it("Given the test_dates survey is selected, " + "When an error message is shown and it is corrected, " + "Then the next question is displayed", () => {
-    $(DateRangePage.dateRangeFromday()).setValue(1);
-    $(DateRangePage.dateRangeFrommonth()).setValue(1);
-    $(DateRangePage.dateRangeFromyear()).setValue(2016);
-    $(DateRangePage.dateRangeToday()).setValue(1);
-    $(DateRangePage.dateRangeTomonth()).setValue(1);
-    $(DateRangePage.dateRangeToyear()).setValue(2017);
-    $(DateRangePage.submit()).click();
+  it("Given the test_dates survey is selected, " + "When an error message is shown and it is corrected, " + "Then the next question is displayed", async () => {
+    await $(DateRangePage.dateRangeFromday()).setValue(1);
+    await $(DateRangePage.dateRangeFrommonth()).setValue(1);
+    await $(DateRangePage.dateRangeFromyear()).setValue(2016);
+    await $(DateRangePage.dateRangeToday()).setValue(1);
+    await $(DateRangePage.dateRangeTomonth()).setValue(1);
+    await $(DateRangePage.dateRangeToyear()).setValue(2017);
+    await $(DateRangePage.submit()).click();
 
     // When an error message is shown
-    $(DateMonthYearPage.Month()).setValue(4);
-    $(DateMonthYearPage.Year()).setValue("");
-    $(DateMonthYearPage.submit()).click();
+    await $(DateMonthYearPage.Month()).setValue(4);
+    await $(DateMonthYearPage.Year()).setValue("");
+    await $(DateMonthYearPage.submit()).click();
 
-    expect($(DateMonthYearPage.error()).getText()).to.contain("Enter a valid date");
+    await expect(await $(DateMonthYearPage.error()).getText()).to.contain("Enter a valid date");
 
     // Then when it is corrected, it goes to the next question
-    $(DateMonthYearPage.Year()).setValue(2018);
-    $(DateMonthYearPage.submit()).click();
+    await $(DateMonthYearPage.Year()).setValue(2018);
+    await $(DateMonthYearPage.submit()).click();
 
-    expect(browser.getUrl()).to.contain(DateSinglePage.url());
+    await expect(await browser.getUrl()).to.contain(DateSinglePage.url());
   });
 
-  it("Given the test_dates survey is selected when an error message is shown then when it is corrected, it goes to the summary page and the information is correct", () => {
-    $(DateRangePage.dateRangeFromday()).setValue(1);
-    $(DateRangePage.dateRangeFrommonth()).setValue(1);
-    $(DateRangePage.dateRangeFromyear()).setValue(2016);
-    $(DateRangePage.dateRangeToday()).setValue(1);
-    $(DateRangePage.dateRangeTomonth()).setValue(1);
-    $(DateRangePage.dateRangeToyear()).setValue(2017);
-    $(DateRangePage.submit()).click();
+  it("Given the test_dates survey is selected when an error message is shown then when it is corrected, it goes to the summary page and the information is correct", async () => {
+    await $(DateRangePage.dateRangeFromday()).setValue(1);
+    await $(DateRangePage.dateRangeFrommonth()).setValue(1);
+    await $(DateRangePage.dateRangeFromyear()).setValue(2016);
+    await $(DateRangePage.dateRangeToday()).setValue(1);
+    await $(DateRangePage.dateRangeTomonth()).setValue(1);
+    await $(DateRangePage.dateRangeToyear()).setValue(2017);
+    await $(DateRangePage.submit()).click();
 
-    $(DateMonthYearPage.Month()).setValue(1);
-    $(DateMonthYearPage.Year()).setValue(2016);
-    $(DateMonthYearPage.submit()).click();
+    await $(DateMonthYearPage.Month()).setValue(1);
+    await $(DateMonthYearPage.Year()).setValue(2016);
+    await $(DateMonthYearPage.submit()).click();
 
-    $(DateSinglePage.day()).setValue(1);
-    $(DateSinglePage.month()).setValue(1);
-    $(DateSinglePage.year()).setValue(2016);
-    $(DateMonthYearPage.submit()).click();
+    await $(DateSinglePage.day()).setValue(1);
+    await $(DateSinglePage.month()).setValue(1);
+    await $(DateSinglePage.year()).setValue(2016);
+    await $(DateMonthYearPage.submit()).click();
 
     // When non-mandatory is partially completed
-    $(DateNonMandatoryPage.day()).setValue(4);
-    $(DateNonMandatoryPage.month()).setValue(1);
-    $(DateNonMandatoryPage.submit()).click();
+    await $(DateNonMandatoryPage.day()).setValue(4);
+    await $(DateNonMandatoryPage.month()).setValue(1);
+    await $(DateNonMandatoryPage.submit()).click();
 
     // Then an error message is shown
-    expect($(DateNonMandatoryPage.errorNumber(1)).getText()).to.contain("Enter a valid date");
+    await expect(await $(DateNonMandatoryPage.errorNumber(1)).getText()).to.contain("Enter a valid date");
   });
 
-  it("Given the test_dates survey is selected, when a user clicks the day label then the day subfield should gain the focus", () => {
-    $(DateRangePage.dateRangeFromday()).setValue(1);
-    $(DateRangePage.dateRangeFrommonth()).setValue(1);
-    $(DateRangePage.dateRangeFromyear()).setValue(2016);
-    $(DateRangePage.dateRangeToday()).setValue(1);
-    $(DateRangePage.dateRangeTomonth()).setValue(1);
-    $(DateRangePage.dateRangeToyear()).setValue(2017);
-    $(DateRangePage.submit()).click();
+  it("Given the test_dates survey is selected, when a user clicks the day label then the day subfield should gain the focus", async () => {
+    await $(DateRangePage.dateRangeFromday()).setValue(1);
+    await $(DateRangePage.dateRangeFrommonth()).setValue(1);
+    await $(DateRangePage.dateRangeFromyear()).setValue(2016);
+    await $(DateRangePage.dateRangeToday()).setValue(1);
+    await $(DateRangePage.dateRangeTomonth()).setValue(1);
+    await $(DateRangePage.dateRangeToyear()).setValue(2017);
+    await $(DateRangePage.submit()).click();
 
-    $(DateMonthYearPage.Month()).setValue(1);
-    $(DateMonthYearPage.Year()).setValue(2016);
-    $(DateMonthYearPage.submit()).click();
+    await $(DateMonthYearPage.Month()).setValue(1);
+    await $(DateMonthYearPage.Year()).setValue(2016);
+    await $(DateMonthYearPage.submit()).click();
 
     // When a user clicks the day label
-    $(DateSinglePage.dayLabel()).click();
+    await $(DateSinglePage.dayLabel()).click();
 
     // Then the day subfield should gain the focus
-    expect($(DateSinglePage.day()).isFocused()).to.be.true;
+    await expect(await $(DateSinglePage.day()).isFocused()).to.be.true;
   });
 });

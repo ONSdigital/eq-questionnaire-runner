@@ -11,65 +11,65 @@ import { getRandomString } from "../jwt_helper";
 describe("Save sign out / Exit", () => {
   const responseId = getRandomString(16);
 
-  it("Given I am on an introduction page, when I click the exit button, then I am redirected to sign out page and my session is cleared", () => {
-    browser.openQuestionnaire("test_introduction.json");
-    $(IntroductionPage.exitButton()).click();
+  it("Given I am on an introduction page, when I click the exit button, then I am redirected to sign out page and my session is cleared", async () => {
+    await browser.openQuestionnaire("test_introduction.json");
+    await $(IntroductionPage.exitButton()).click();
 
-    expect(browser.getUrl()).to.contain("/surveys/todo");
+    await expect(await browser.getUrl()).to.contain("/surveys/todo");
 
-    browser.back();
-    expect($("body").getHTML()).to.contain("Sorry, you need to sign in again");
+    await browser.back();
+    await expect(await $("body").getHTML()).to.contain("Sorry, you need to sign in again");
   });
 
-  it("Given I am completing a questionnaire, when I select save and sign out, then I am redirected to sign out page and my session is cleared", () => {
-    browser.openQuestionnaire("test_numbers.json", { userId: "test_user", responseId });
-    $(SetMinMax.setMinimum()).setValue("10");
-    $(SetMinMax.setMaximum()).setValue("1020");
-    $(SetMinMax.submit()).click();
-    $(TestMinMax.saveSignOut()).click();
+  it("Given I am completing a questionnaire, when I select save and sign out, then I am redirected to sign out page and my session is cleared", async () => {
+    await browser.openQuestionnaire("test_numbers.json", { userId: "test_user", responseId });
+    await $(SetMinMax.setMinimum()).setValue("10");
+    await $(SetMinMax.setMaximum()).setValue("1020");
+    await $(SetMinMax.submit()).click();
+    await $(TestMinMax.saveSignOut()).click();
 
-    expect(browser.getUrl()).to.contain("/surveys/todo");
+    await expect(await browser.getUrl()).to.contain("/surveys/todo");
 
-    browser.back();
-    expect($("body").getHTML()).to.contain("Sorry, you need to sign in again");
+    await browser.back();
+    await expect(await $("body").getHTML()).to.contain("Sorry, you need to sign in again");
   });
 
-  it("Given I have started a questionnaire, when I return to the questionnaire, then I am returned to the page I was on and can then complete the questionnaire", () => {
-    browser.openQuestionnaire("test_numbers.json", { userId: "test_user", responseId });
+  it("Given I have started a questionnaire, when I return to the questionnaire, then I am returned to the page I was on and can then complete the questionnaire", async () => {
+    await browser.openQuestionnaire("test_numbers.json", { userId: "test_user", responseId });
 
-    $(TestMinMax.testRange()).setValue("10");
-    $(TestMinMax.testMin()).setValue("123");
-    $(TestMinMax.testMax()).setValue("1000");
-    $(TestMinMax.testPercent()).setValue("100");
-    $(TestMinMax.submit()).click();
-    $(DetailAnswer.answer1()).click();
-    $(DetailAnswer.submit()).click();
+    await $(TestMinMax.testRange()).setValue("10");
+    await $(TestMinMax.testMin()).setValue("123");
+    await $(TestMinMax.testMax()).setValue("1000");
+    await $(TestMinMax.testPercent()).setValue("100");
+    await $(TestMinMax.submit()).click();
+    await $(DetailAnswer.answer1()).click();
+    await $(DetailAnswer.submit()).click();
 
-    $(SubmitPage.submit()).click();
-    expect(browser.getUrl()).to.contain("thank-you");
+    await $(SubmitPage.submit()).click();
+    await expect(await browser.getUrl()).to.contain("thank-you");
   });
 
-  it("Given a business questionnaire, when I navigate the questionnaire, then I see the correct sign out buttons", () => {
-    browser.openQuestionnaire("test_introduction.json");
+  it("Given a business questionnaire, when I navigate the questionnaire, then I see the correct sign out buttons", async () => {
+    await browser.openQuestionnaire("test_introduction.json");
 
-    expect($(IntroductionPage.exitButton()).getText()).to.contain("Exit");
-    $(IntroductionPage.getStarted()).click();
+    await expect(await $(IntroductionPage.exitButton()).getText()).to.contain("Exit");
+    await $(IntroductionPage.getStarted()).click();
 
-    expect($(IntroInterstitialPage.saveSignOut()).getText()).to.contain("Save and exit survey");
-    $(IntroInterstitialPage.submit()).click();
+    await expect(await $(IntroInterstitialPage.saveSignOut()).getText()).to.contain("Save and exit survey");
+    await $(IntroInterstitialPage.submit()).click();
 
-    expect($(SubmitPage.saveSignOut()).getText()).to.contain("Save and exit survey");
-    $(SubmitPage.submit()).click();
+    await expect(await $(SubmitPage.saveSignOut()).getText()).to.contain("Save and exit survey");
+    await $(SubmitPage.submit()).click();
 
-    expect($(IntroThankYouPagePage.exitButton()).isExisting()).to.be.false;
+    await expect(await $(IntroThankYouPagePage.exitButton()).isExisting()).to.be.false;
   });
 
-  it("Given a Census questionnaire, when I navigate the questionnaire, then I see the correct sign out buttons", () => {
-    browser.openQuestionnaire("test_thank_you_census_household.json");
+  it("Given a Census questionnaire, when I navigate the questionnaire, then I see the correct sign out buttons", async () => {
+    await browser.openQuestionnaire("test_thank_you_census_household.json");
 
-    expect($(HouseHolderConfirmationPage.saveSignOut()).getText()).to.contain("Save and complete later");
-    $(HouseHolderConfirmationPage.submit()).click();
+    await expect(await $(HouseHolderConfirmationPage.saveSignOut()).getText()).to.contain("Save and complete later");
+    await $(HouseHolderConfirmationPage.submit()).click();
 
-    expect($(SubmitPage.saveSignOut()).getText()).to.contain("Save and complete later");
+    await expect(await $(SubmitPage.saveSignOut()).getText()).to.contain("Save and complete later");
   });
 });

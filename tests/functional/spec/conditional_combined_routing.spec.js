@@ -4,41 +4,41 @@ import ResponseNotAny from "../generated_pages/conditional_combined_routing/resp
 import SubmitPage from "../generated_pages/conditional_combined_routing/submit.page";
 
 describe("Conditional combined routing.", () => {
-  beforeEach(() => {
-    browser.openQuestionnaire("test_conditional_combined_routing.json");
+  beforeEach(async () => {
+    await browser.openQuestionnaire("test_conditional_combined_routing.json");
   });
 
-  it('Given a list of radio options, when I choose the option "Yes" or the option "Sometimes" then I should be routed to the relevant page', () => {
+  it('Given a list of radio options, when I choose the option "Yes" or the option "Sometimes" then I should be routed to the relevant page', async () => {
     // When
-    $(ConditionalCombinedRoutingPage.yes()).click();
-    $(ConditionalCombinedRoutingPage.submit()).click();
+    await $(ConditionalCombinedRoutingPage.yes()).click();
+    await $(ConditionalCombinedRoutingPage.submit()).click();
     // Then
-    expect(browser.getUrl()).to.contain(ResponseAny.pageName);
+    await expect(await browser.getUrl()).to.contain(ResponseAny.pageName);
 
     // Or
-    $(ResponseAny.previous()).click();
+    await $(ResponseAny.previous()).click();
 
     // When
-    $(ConditionalCombinedRoutingPage.sometimes()).click();
-    $(ConditionalCombinedRoutingPage.submit()).click();
+    await $(ConditionalCombinedRoutingPage.sometimes()).click();
+    await $(ConditionalCombinedRoutingPage.submit()).click();
 
     // Then
-    expect(browser.getUrl()).to.contain(ResponseAny.pageName);
+    await expect(await browser.getUrl()).to.contain(ResponseAny.pageName);
   });
 
-  it('Given a list of radio options, when I choose the option "No, I prefer tea" then I should be routed to the relevant page', () => {
+  it('Given a list of radio options, when I choose the option "No, I prefer tea" then I should be routed to the relevant page', async () => {
     // When
-    $(ConditionalCombinedRoutingPage.noIPreferTea()).click();
-    $(ConditionalCombinedRoutingPage.submit()).click();
+    await $(ConditionalCombinedRoutingPage.noIPreferTea()).click();
+    await $(ConditionalCombinedRoutingPage.submit()).click();
     // Then
-    expect(browser.getUrl()).to.contain(ResponseNotAny.pageName);
+    await expect(await browser.getUrl()).to.contain(ResponseNotAny.pageName);
   });
 
-  it('Given a list of radio options, when I choose the option "No, I don\'t drink any hot drinks" then I should be routed to the submit page', () => {
+  it('Given a list of radio options, when I choose the option "No, I don\'t drink any hot drinks" then I should be routed to the submit page', async () => {
     // When
-    $(ConditionalCombinedRoutingPage.noIDonTDrinkAnyHotDrinks()).click();
-    $(ConditionalCombinedRoutingPage.submit()).click();
+    await $(ConditionalCombinedRoutingPage.noIDonTDrinkAnyHotDrinks()).click();
+    await $(ConditionalCombinedRoutingPage.submit()).click();
     // Then
-    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
   });
 });

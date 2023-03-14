@@ -4,77 +4,77 @@ import ContainsAnyPage from "../generated_pages/routing_checkbox_contains/countr
 import SubmitPage from "../generated_pages/routing_checkbox_contains/submit.page";
 
 describe("Routing Checkbox Contains Condition.", () => {
-  beforeEach(() => {
-    browser.openQuestionnaire("test_routing_checkbox_contains.json");
+  beforeEach(async () => {
+    await browser.openQuestionnaire("test_routing_checkbox_contains.json");
   });
 
-  it('Given a list of checkbox options, when I have don\'t select "Liechtenstein" and select the option "India" or the option "Azerbaijan" or both then I should be routed to the "contains any" condition page', () => {
+  it('Given a list of checkbox options, when I have don\'t select "Liechtenstein" and select the option "India" or the option "Azerbaijan" or both then I should be routed to the "contains any" condition page', async () => {
     // When
-    expect($(RoutingCheckboxContains.liechtenstein()).isSelected()).to.be.false;
+    await expect(await $(RoutingCheckboxContains.liechtenstein()).isSelected()).to.be.false;
 
-    $(RoutingCheckboxContains.india()).click();
-    $(RoutingCheckboxContains.submit()).click();
+    await $(RoutingCheckboxContains.india()).click();
+    await $(RoutingCheckboxContains.submit()).click();
     // Then
-    expect(browser.getUrl()).to.contain(ContainsAnyPage.pageName);
+    await expect(await browser.getUrl()).to.contain(ContainsAnyPage.pageName);
 
     // Or
-    $(ContainsAnyPage.previous()).click();
+    await $(ContainsAnyPage.previous()).click();
 
     // When
-    $(RoutingCheckboxContains.india()).click();
-    $(RoutingCheckboxContains.azerbaijan()).click();
-    $(RoutingCheckboxContains.submit()).click();
+    await $(RoutingCheckboxContains.india()).click();
+    await $(RoutingCheckboxContains.azerbaijan()).click();
+    await $(RoutingCheckboxContains.submit()).click();
 
     // Then
-    expect(browser.getUrl()).to.contain(ContainsAnyPage.pageName);
+    await expect(await browser.getUrl()).to.contain(ContainsAnyPage.pageName);
 
     // Or
-    $(ContainsAnyPage.previous()).click();
+    await $(ContainsAnyPage.previous()).click();
 
     // When
-    $(RoutingCheckboxContains.india()).click();
-    $(RoutingCheckboxContains.submit()).click();
+    await $(RoutingCheckboxContains.india()).click();
+    await $(RoutingCheckboxContains.submit()).click();
 
     // Then
-    expect(browser.getUrl()).to.contain(ContainsAnyPage.pageName);
+    await expect(await browser.getUrl()).to.contain(ContainsAnyPage.pageName);
   });
 
-  it('Given a list of checkbox options, when I select the option "Malta" or the option "Liechtenstein" or both then I should be routed to the summary condition page', () => {
+  it('Given a list of checkbox options, when I select the option "Malta" or the option "Liechtenstein" or both then I should be routed to the summary condition page', async () => {
     // When
-    $(RoutingCheckboxContains.liechtenstein()).click();
-    $(RoutingCheckboxContains.submit()).click();
+    await $(RoutingCheckboxContains.liechtenstein()).click();
+    await $(RoutingCheckboxContains.submit()).click();
     // Then
-    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
 
     // Or
-    $(ContainsAnyPage.previous()).click();
+    await $(ContainsAnyPage.previous()).click();
 
     // When
-    $(RoutingCheckboxContains.liechtenstein()).click();
-    $(RoutingCheckboxContains.malta()).click();
-    $(RoutingCheckboxContains.submit()).click();
+    await $(RoutingCheckboxContains.liechtenstein()).click();
+    await $(RoutingCheckboxContains.malta()).click();
+    await $(RoutingCheckboxContains.submit()).click();
 
     // Then
-    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
 
     // Or
-    $(ContainsAnyPage.previous()).click();
+    await $(ContainsAnyPage.previous()).click();
 
     // When
-    $(RoutingCheckboxContains.liechtenstein()).click();
-    $(RoutingCheckboxContains.submit()).click();
+    await $(RoutingCheckboxContains.liechtenstein()).click();
+    await $(RoutingCheckboxContains.submit()).click();
 
     // Then
-    expect(browser.getUrl()).to.contain(SubmitPage.pageName);
+    await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
   });
 
-  it('Given a list of checkbox options, when I select the options "India", "Azerbaijan" and "Liechtenstein" then I should be routed to the "contains all" condition page', () => {
+  it('Given a list of checkbox options, when I select the options "India", "Azerbaijan" and "Liechtenstein" then I should be routed to the "contains all" condition page', async () => {
     // When
-    $(RoutingCheckboxContains.india()).click();
-    $(RoutingCheckboxContains.azerbaijan()).click();
-    $(RoutingCheckboxContains.liechtenstein()).click();
-    $(RoutingCheckboxContains.submit()).click();
+    await $(RoutingCheckboxContains.india()).click();
+    await $(RoutingCheckboxContains.azerbaijan()).click();
+    await $(RoutingCheckboxContains.liechtenstein()).click();
+    await $(RoutingCheckboxContains.submit()).click();
     // Then
-    expect(browser.getUrl()).to.contain(ContainsAllPage.pageName);
+    await expect(await browser.getUrl()).to.contain(ContainsAllPage.pageName);
   });
 });

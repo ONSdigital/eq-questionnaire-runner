@@ -2,98 +2,100 @@ import PercentagePage from "../../../../generated_pages/mutually_exclusive/mutua
 import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-percentage-section-summary.page";
 
 describe("Component: Mutually Exclusive Percentage With Single Checkbox Override", () => {
-  beforeEach(() => {
-    browser.openQuestionnaire("test_mutually_exclusive.json");
-    browser.url("/questionnaire/mutually-exclusive-percentage");
+  beforeEach(async () => {
+    await browser.openQuestionnaire("test_mutually_exclusive.json");
+    await browser.pause(100);
+    await browser.url("/questionnaire/mutually-exclusive-percentage");
   });
 
   describe("Given the user has entered a value for the non-exclusive percentage answer", () => {
-    it("When then user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", () => {
+    it("When then user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", async () => {
       // Given
-      $(PercentagePage.percentage()).setValue("99");
-      expect($(PercentagePage.percentage()).getValue()).to.contain("99");
+      await $(PercentagePage.percentage()).setValue("99");
+      await expect(await $(PercentagePage.percentage()).getValue()).to.contain("99");
 
       // When
-      $(PercentagePage.percentageExclusiveIPreferNotToSay()).click();
+      await $(PercentagePage.percentageExclusiveIPreferNotToSay()).click();
 
       // Then
-      expect($(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.true;
-      expect($(PercentagePage.percentage()).getValue()).to.contain("");
+      await expect(await $(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.true;
+      await expect(await $(PercentagePage.percentage()).getValue()).to.contain("");
 
-      $(PercentagePage.submit()).click();
+      await $(PercentagePage.submit()).click();
 
-      expect($(SummaryPage.percentageExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
-      expect($(SummaryPage.percentageExclusiveAnswer()).getText()).to.not.have.string("99");
+      await expect(await $(SummaryPage.percentageExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
+      await expect(await $(SummaryPage.percentageExclusiveAnswer()).getText()).to.not.have.string("99");
     });
   });
 
   describe("Given the user has clicked the mutually exclusive checkbox answer", () => {
-    it("When the user enters a value for the non-exclusive percentage answer and removes focus, Then only the non-exclusive percentage answer should be answered.", () => {
+    it("When the user enters a value for the non-exclusive percentage answer and removes focus, Then only the non-exclusive percentage answer should be answered.", async () => {
       // Given
-      $(PercentagePage.percentageExclusiveIPreferNotToSay()).click();
-      expect($(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.true;
+      await browser.url("/questionnaire/mutually-exclusive-percentage");
+      await $(PercentagePage.percentageExclusiveIPreferNotToSay()).click();
+      await expect(await $(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.true;
 
       // When
-      $(PercentagePage.percentage()).setValue("99");
+      await $(PercentagePage.percentage()).setValue("99");
 
       // Then
-      expect($(PercentagePage.percentage()).getValue()).to.contain("99");
-      expect($(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.false;
+      await expect(await $(PercentagePage.percentage()).getValue()).to.contain("99");
+      await expect(await $(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      $(PercentagePage.submit()).click();
+      await $(PercentagePage.submit()).click();
 
-      expect($(SummaryPage.percentageAnswer()).getText()).to.have.string("99");
-      expect($(SummaryPage.percentageAnswer()).getText()).to.not.have.string("I prefer not to say");
+      await expect(await $(SummaryPage.percentageAnswer()).getText()).to.have.string("99");
+      await expect(await $(SummaryPage.percentageAnswer()).getText()).to.not.have.string("I prefer not to say");
     });
   });
 
   describe("Given the user has not clicked the mutually exclusive checkbox answer", () => {
-    it("When the user enters a value for the non-exclusive percentage answer, Then only the non-exclusive percentage answer should be answered.", () => {
+    it("When the user enters a value for the non-exclusive percentage answer, Then only the non-exclusive percentage answer should be answered.", async () => {
       // Given
-      expect($(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.false;
+      await expect(await $(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
       // When
-      $(PercentagePage.percentage()).setValue("99");
+      await $(PercentagePage.percentage()).setValue("99");
 
       // Then
-      expect($(PercentagePage.percentage()).getValue()).to.contain("99");
-      expect($(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.false;
+      await expect(await $(PercentagePage.percentage()).getValue()).to.contain("99");
+      await expect(await $(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      $(PercentagePage.submit()).click();
+      await $(PercentagePage.submit()).click();
 
-      expect($(SummaryPage.percentageAnswer()).getText()).to.have.string("99");
-      expect($(SummaryPage.percentageAnswer()).getText()).to.not.have.string("I prefer not to say");
+      await expect(await $(SummaryPage.percentageAnswer()).getText()).to.have.string("99");
+      await expect(await $(SummaryPage.percentageAnswer()).getText()).to.not.have.string("I prefer not to say");
     });
   });
 
   describe("Given the user has not answered the non-exclusive percentage answer", () => {
-    it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", () => {
+    it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", async () => {
       // Given
-      expect($(PercentagePage.percentage()).getValue()).to.contain("");
+      await expect(await $(PercentagePage.percentage()).getValue()).to.contain("");
 
       // When
-      $(PercentagePage.percentageExclusiveIPreferNotToSay()).click();
-      expect($(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.true;
+      await $(PercentagePage.percentageExclusiveIPreferNotToSay()).click();
+      await expect(await $(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.true;
 
       // Then
-      $(PercentagePage.submit()).click();
+      await $(PercentagePage.submit()).click();
 
-      expect($(SummaryPage.percentageExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
-      expect($(SummaryPage.percentageExclusiveAnswer()).getText()).to.not.have.string("British\nIrish");
+      await expect(await $(SummaryPage.percentageExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
+      await expect(await $(SummaryPage.percentageExclusiveAnswer()).getText()).to.not.have.string("British\nIrish");
     });
   });
 
   describe("Given the user has not answered the question and the question is optional", () => {
-    it("When the user clicks the Continue button, Then it should display `No answer provided`", () => {
+    it("When the user clicks the Continue button, Then it should display `No answer provided`", async () => {
       // Given
-      expect($(PercentagePage.percentage()).getValue()).to.contain("");
-      expect($(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.false;
+      await expect(await $(PercentagePage.percentage()).getValue()).to.contain("");
+      await expect(await $(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
       // When
-      $(PercentagePage.submit()).click();
+      await $(PercentagePage.submit()).click();
 
       // Then
-      expect($(SummaryPage.percentageAnswer()).getText()).to.contain("No answer provided");
+      await expect(await $(SummaryPage.percentageAnswer()).getText()).to.contain("No answer provided");
     });
   });
 });

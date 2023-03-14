@@ -9,53 +9,53 @@ import proxyBlock from "../generated_pages/variants_question/proxy-block.page.js
 import secondNumberBlock from "../generated_pages/variants_question/second-number-block.page.js";
 
 describe("QuestionVariants", () => {
-  beforeEach(() => {
-    browser.openQuestionnaire("test_variants_question.json");
+  beforeEach(async () => {
+    await browser.openQuestionnaire("test_variants_question.json");
   });
 
-  it("Given I am completing the survey, then the correct questions are shown based on my previous answers", () => {
-    $(nameBlock.firstName()).setValue("Guido");
-    $(nameBlock.lastName()).setValue("van Rossum");
-    $(nameBlock.submit()).click();
+  it("Given I am completing the survey, then the correct questions are shown based on my previous answers", async () => {
+    await $(nameBlock.firstName()).setValue("Guido");
+    await $(nameBlock.lastName()).setValue("van Rossum");
+    await $(nameBlock.submit()).click();
 
-    expect($(proxyBlock.questionText()).getText()).to.contain("Are you Guido van Rossum?");
+    await expect(await $(proxyBlock.questionText()).getText()).to.contain("Are you Guido van Rossum?");
 
-    $(proxyBlock.noIAmAnsweringOnTheirBehalf()).click();
-    $(proxyBlock.submit()).click();
+    await $(proxyBlock.noIAmAnsweringOnTheirBehalf()).click();
+    await $(proxyBlock.submit()).click();
 
-    expect($(ageBlock.questionText()).getText()).to.contain("What age is Guido van Rossum");
+    await expect(await $(ageBlock.questionText()).getText()).to.contain("What age is Guido van Rossum");
 
-    $(ageBlock.age()).setValue(63);
-    $(ageBlock.submit()).click();
+    await $(ageBlock.age()).setValue(63);
+    await $(ageBlock.submit()).click();
 
-    expect($(ageConfirmationBlock.questionText()).getText()).to.contain("Guido van Rossum is over 16?");
+    await expect(await $(ageConfirmationBlock.questionText()).getText()).to.contain("Guido van Rossum is over 16?");
 
-    $(ageConfirmationBlock.ageConfirmYes()).click();
-    $(ageConfirmationBlock.submit()).click();
+    await $(ageConfirmationBlock.ageConfirmYes()).click();
+    await $(ageConfirmationBlock.submit()).click();
 
-    expect($(basicVariantsSummary.ageQuestion()).getText()).to.contain("What age is Guido van Rossum");
-    expect($(basicVariantsSummary.ageAnswer()).getText()).to.contain("63");
+    await expect(await $(basicVariantsSummary.ageQuestion()).getText()).to.contain("What age is Guido van Rossum");
+    await expect(await $(basicVariantsSummary.ageAnswer()).getText()).to.contain("63");
 
-    $(basicVariantsSummary.submit()).click();
+    await $(basicVariantsSummary.submit()).click();
 
-    $(currencyBlock.sterling()).click();
-    $(currencyBlock.submit()).click();
+    await $(currencyBlock.sterling()).click();
+    await $(currencyBlock.submit()).click();
 
-    expect($(firstNumberBlock.firstNumberLabel()).getText()).to.contain("First answer in GBP");
+    await expect(await $(firstNumberBlock.firstNumberLabel()).getText()).to.contain("First answer in GBP");
 
-    $(firstNumberBlock.firstNumber()).setValue(123);
-    $(firstNumberBlock.submit()).click();
+    await $(firstNumberBlock.firstNumber()).setValue(123);
+    await $(firstNumberBlock.submit()).click();
 
-    $(secondNumberBlock.secondNumber()).setValue(321);
-    $(secondNumberBlock.submit()).click();
+    await $(secondNumberBlock.secondNumber()).setValue(321);
+    await $(secondNumberBlock.submit()).click();
 
-    expect($(currencySectionSummary.currencyAnswer()).getText()).to.contain("Sterling");
-    expect($(currencySectionSummary.firstNumberAnswer()).getText()).to.contain("£");
+    await expect(await $(currencySectionSummary.currencyAnswer()).getText()).to.contain("Sterling");
+    await expect(await $(currencySectionSummary.firstNumberAnswer()).getText()).to.contain("£");
 
-    $(currencySectionSummary.currencyAnswerEdit()).click();
-    $(currencyBlock.usDollars()).click();
-    $(currencyBlock.submit()).click();
+    await $(currencySectionSummary.currencyAnswerEdit()).click();
+    await $(currencyBlock.usDollars()).click();
+    await $(currencyBlock.submit()).click();
 
-    expect($(currencySectionSummary.firstNumberAnswer()).getText()).to.contain("$");
+    await expect(await $(currencySectionSummary.firstNumberAnswer()).getText()).to.contain("$");
   });
 });

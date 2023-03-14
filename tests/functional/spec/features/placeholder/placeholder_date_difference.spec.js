@@ -8,70 +8,70 @@ import AgeBlockMonthYearRangePage from "../../../generated_pages/placeholder_dif
 import AgeTestMonthYearRangePage from "../../../generated_pages/placeholder_difference_in_years_month_year_range/age-test.page";
 
 describe("Difference check (years)", () => {
-  before("Load the survey", () => {
-    browser.openQuestionnaire("test_placeholder_difference_in_years.json");
+  before("Load the survey", async () => {
+    await browser.openQuestionnaire("test_placeholder_difference_in_years.json");
   });
 
-  it("Given a day, month and year answer is provided for a date question then the age in years should be calculated and displayed on the page ", () => {
-    $(AgeBlockYearPage.day()).setValue(1);
-    $(AgeBlockYearPage.month()).setValue(1);
-    $(AgeBlockYearPage.year()).setValue(1990);
-    $(AgeBlockYearPage.submit()).click();
-    expect($(AgeTestYearPage.heading()).getText()).to.equal(`You are ${getYears("1990/01/01")} years old. Is this correct?`);
+  it("Given a day, month and year answer is provided for a date question then the age in years should be calculated and displayed on the page ", async () => {
+    await $(AgeBlockYearPage.day()).setValue(1);
+    await $(AgeBlockYearPage.month()).setValue(1);
+    await $(AgeBlockYearPage.year()).setValue(1990);
+    await $(AgeBlockYearPage.submit()).click();
+    await expect(await $(AgeTestYearPage.heading()).getText()).to.equal(`You are ${getYears("1990/01/01")} years old. Is this correct?`);
   });
 });
 
 describe("Difference check (months and years)", () => {
-  before("Load the survey", () => {
-    browser.openQuestionnaire("test_placeholder_difference_in_years_month_year.json");
+  before("Load the survey", async () => {
+    await browser.openQuestionnaire("test_placeholder_difference_in_years_month_year.json");
   });
 
-  it("Given a month and year answer is provided for a date question then the difference in years should be calculated and displayed on the page ", () => {
-    $(AgeBlockMonthYearPage.Month()).setValue(1);
-    $(AgeBlockMonthYearPage.Year()).setValue(1990);
+  it("Given a month and year answer is provided for a date question then the difference in years should be calculated and displayed on the page ", async () => {
+    await $(AgeBlockMonthYearPage.Month()).setValue(1);
+    await $(AgeBlockMonthYearPage.Year()).setValue(1990);
 
-    $(AgeBlockMonthYearPage.submit()).click();
+    await $(AgeBlockMonthYearPage.submit()).click();
 
-    expect($(AgeTestMonthYearPage.heading()).getText()).to.equal(
+    await expect(await $(AgeTestMonthYearPage.heading()).getText()).to.equal(
       `It has been ${getYears("1990/01/01")} years since you last went on holiday. Is this correct?`
     );
   });
 });
 
 describe("Difference check (months and years range)", () => {
-  before("Load the survey", () => {
-    browser.openQuestionnaire("test_placeholder_difference_in_years_month_year_range.json");
+  before("Load the survey", async () => {
+    await browser.openQuestionnaire("test_placeholder_difference_in_years_month_year_range.json");
   });
 
-  it("Given a month and year answers 'from' and 'to' are provided for a date question then the difference in years should be calculated and displayed on the page ", () => {
-    $(AgeBlockMonthYearRangePage.periodFromMonth()).setValue(1);
-    $(AgeBlockMonthYearRangePage.periodFromYear()).setValue(1990);
-    $(AgeBlockMonthYearRangePage.periodToMonth()).setValue(1);
-    $(AgeBlockMonthYearRangePage.periodToYear()).setValue(1991);
+  it("Given a month and year answers 'from' and 'to' are provided for a date question then the difference in years should be calculated and displayed on the page ", async () => {
+    await $(AgeBlockMonthYearRangePage.periodFromMonth()).setValue(1);
+    await $(AgeBlockMonthYearRangePage.periodFromYear()).setValue(1990);
+    await $(AgeBlockMonthYearRangePage.periodToMonth()).setValue(1);
+    await $(AgeBlockMonthYearRangePage.periodToYear()).setValue(1991);
 
-    $(AgeBlockMonthYearRangePage.submit()).click();
+    await $(AgeBlockMonthYearRangePage.submit()).click();
 
-    expect($(AgeTestMonthYearRangePage.heading()).getText()).to.have.string("You were out of the UK for 1 year. Is this correct?");
+    await expect(await $(AgeTestMonthYearRangePage.heading()).getText()).to.have.string("You were out of the UK for 1 year. Is this correct?");
   });
 });
 
 describe("Difference check (years range)", () => {
-  before("Load the survey", () => {
-    browser.openQuestionnaire("test_placeholder_difference_in_years_range.json");
+  before("Load the survey", async () => {
+    await browser.openQuestionnaire("test_placeholder_difference_in_years_range.json");
   });
 
-  it("Given a day, month and year answers 'from' and 'to' are provided for a date question then the difference in years should be calculated and displayed on the page ", () => {
-    $(AgeBlockDayMonthYearRangePage.periodFromday()).setValue(1);
-    $(AgeBlockDayMonthYearRangePage.periodFrommonth()).setValue(1);
-    $(AgeBlockDayMonthYearRangePage.periodFromyear()).setValue(1990);
+  it("Given a day, month and year answers 'from' and 'to' are provided for a date question then the difference in years should be calculated and displayed on the page ", async () => {
+    await $(AgeBlockDayMonthYearRangePage.periodFromday()).setValue(1);
+    await $(AgeBlockDayMonthYearRangePage.periodFrommonth()).setValue(1);
+    await $(AgeBlockDayMonthYearRangePage.periodFromyear()).setValue(1990);
 
-    $(AgeBlockDayMonthYearRangePage.periodToday()).setValue(1);
-    $(AgeBlockDayMonthYearRangePage.periodTomonth()).setValue(1);
-    $(AgeBlockDayMonthYearRangePage.periodToyear()).setValue(1991);
+    await $(AgeBlockDayMonthYearRangePage.periodToday()).setValue(1);
+    await $(AgeBlockDayMonthYearRangePage.periodTomonth()).setValue(1);
+    await $(AgeBlockDayMonthYearRangePage.periodToyear()).setValue(1991);
 
-    $(AgeBlockDayMonthYearRangePage.submit()).click();
+    await $(AgeBlockDayMonthYearRangePage.submit()).click();
 
-    expect($(AgeTestDayMonthYearRangePage.heading()).getText()).to.have.string("You were out of the UK for 1 year. Is this correct?");
+    await expect(await $(AgeTestDayMonthYearRangePage.heading()).getText()).to.have.string("You were out of the UK for 1 year. Is this correct?");
   });
 });
 

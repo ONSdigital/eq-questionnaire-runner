@@ -96,151 +96,151 @@ const PLURAL_TEST_DATA_SETS = [
 ];
 
 describe("Language Code", () => {
-  it("Given a launch language of Welsh, I should see Welsh text", () => {
-    browser.openQuestionnaire("test_language.json", {
+  it("Given a launch language of Welsh, I should see Welsh text", async () => {
+    await browser.openQuestionnaire("test_language.json", {
       language: "cy",
     });
-    $(HubPage.submit()).click();
-    expect($(NamePage.questionText()).getText()).to.contain("Rhowch enw");
+    await $(HubPage.submit()).click();
+    await expect(await $(NamePage.questionText()).getText()).to.contain("Rhowch enw");
 
-    $(NamePage.firstName()).setValue("Catherine");
-    $(NamePage.lastName()).setValue("Zeta-Jones");
-    $(NamePage.submit()).click();
+    await $(NamePage.firstName()).setValue("Catherine");
+    await $(NamePage.lastName()).setValue("Zeta-Jones");
+    await $(NamePage.submit()).click();
 
-    $(DobPage.day()).setValue(25);
-    $(DobPage.month()).setValue(9);
-    $(DobPage.year()).setValue(1969);
-    $(DobPage.submit()).click();
+    await $(DobPage.day()).setValue(25);
+    await $(DobPage.month()).setValue(9);
+    await $(DobPage.year()).setValue(1969);
+    await $(DobPage.submit()).click();
 
-    $(NumberOfPeoplePage.numberOfPeople()).setValue(0);
-    $(NumberOfPeoplePage.submit()).click();
-    $(ConfirmNumberOfPeoplePage.yes()).click();
-    $(ConfirmNumberOfPeoplePage.submit()).click();
+    await $(NumberOfPeoplePage.numberOfPeople()).setValue(0);
+    await $(NumberOfPeoplePage.submit()).click();
+    await $(ConfirmNumberOfPeoplePage.yes()).click();
+    await $(ConfirmNumberOfPeoplePage.submit()).click();
 
-    expect($(HubPage.heading()).getText()).to.contain("Teitl cyflwyno");
-    expect($(HubPage.warning()).getText()).to.contain("Rhybudd cyflwyno");
-    expect($(HubPage.guidance()).getText()).to.contain("Canllawiau cyflwyno");
-    expect($(HubPage.submit()).getText()).to.contain("Botwm cyflwyno");
-    $(HubPage.submit()).click();
+    await expect(await $(HubPage.heading()).getText()).to.contain("Teitl cyflwyno");
+    await expect(await $(HubPage.warning()).getText()).to.contain("Rhybudd cyflwyno");
+    await expect(await $(HubPage.guidance()).getText()).to.contain("Canllawiau cyflwyno");
+    await expect(await $(HubPage.submit()).getText()).to.contain("Botwm cyflwyno");
+    await $(HubPage.submit()).click();
 
-    expect(browser.getUrl()).to.contain("thank-you");
+    await expect(await browser.getUrl()).to.contain("thank-you");
   });
 
-  it("Given a launch language of English, I should see English text", () => {
-    browser.openQuestionnaire("test_language.json", {
+  it("Given a launch language of English, I should see English text", async () => {
+    await browser.openQuestionnaire("test_language.json", {
       language: "en",
     });
 
-    $(HubPage.submit()).click();
-    expect($(NamePage.questionText()).getText()).to.contain("Please enter a name");
-    $(NamePage.firstName()).setValue("Catherine");
-    $(NamePage.lastName()).setValue("Zeta-Jones");
-    $(NamePage.submit()).click();
+    await $(HubPage.submit()).click();
+    await expect(await $(NamePage.questionText()).getText()).to.contain("Please enter a name");
+    await $(NamePage.firstName()).setValue("Catherine");
+    await $(NamePage.lastName()).setValue("Zeta-Jones");
+    await $(NamePage.submit()).click();
 
-    $(DobPage.day()).setValue(25);
-    $(DobPage.month()).setValue(9);
-    $(DobPage.year()).setValue(1969);
-    $(DobPage.submit()).click();
+    await $(DobPage.day()).setValue(25);
+    await $(DobPage.month()).setValue(9);
+    await $(DobPage.year()).setValue(1969);
+    await $(DobPage.submit()).click();
 
-    $(NumberOfPeoplePage.numberOfPeople()).setValue(0);
-    $(NumberOfPeoplePage.submit()).click();
-    $(ConfirmNumberOfPeoplePage.yes()).click();
-    $(ConfirmNumberOfPeoplePage.submit()).click();
+    await $(NumberOfPeoplePage.numberOfPeople()).setValue(0);
+    await $(NumberOfPeoplePage.submit()).click();
+    await $(ConfirmNumberOfPeoplePage.yes()).click();
+    await $(ConfirmNumberOfPeoplePage.submit()).click();
 
-    expect($(HubPage.heading()).getText()).to.contain("Submission title");
-    expect($(HubPage.warning()).getText()).to.contain("Submission warning");
-    expect($(HubPage.guidance()).getText()).to.contain("Submission guidance");
-    expect($(HubPage.submit()).getText()).to.contain("Submission button");
-    $(HubPage.submit()).click();
+    await expect(await $(HubPage.heading()).getText()).to.contain("Submission title");
+    await expect(await $(HubPage.warning()).getText()).to.contain("Submission warning");
+    await expect(await $(HubPage.guidance()).getText()).to.contain("Submission guidance");
+    await expect(await $(HubPage.submit()).getText()).to.contain("Submission button");
+    await $(HubPage.submit()).click();
 
-    expect(browser.getUrl()).to.contain("thank-you");
+    await expect(await browser.getUrl()).to.contain("thank-you");
   });
 
-  it("Given a launch language of English, When I select Cymraeg, Then the language should be switched to Welsh", () => {
-    browser.openQuestionnaire("test_language.json", {
+  it("Given a launch language of English, When I select Cymraeg, Then the language should be switched to Welsh", async () => {
+    await browser.openQuestionnaire("test_language.json", {
       language: "en",
     });
 
-    $(HubPage.submit()).click();
-    expect($(NamePage.questionText()).getText()).to.contain("Please enter a name");
-    expect($("header").getText()).to.contain("Test Language Survey");
-    $(NamePage.switchLanguage("cy")).click();
-    expect($(NamePage.questionText()).getText()).to.contain("Rhowch enw");
-    expect($("header").getText()).to.contain("Arolwg Iaith Prawf");
-    $(NamePage.switchLanguage("en")).click();
+    await $(HubPage.submit()).click();
+    await expect(await $(NamePage.questionText()).getText()).to.contain("Please enter a name");
+    await expect(await $("header").getText()).to.contain("Test Language Survey");
+    await $(NamePage.switchLanguage("cy")).click();
+    await expect(await $(NamePage.questionText()).getText()).to.contain("Rhowch enw");
+    await expect(await $("header").getText()).to.contain("Arolwg Iaith Prawf");
+    await $(NamePage.switchLanguage("en")).click();
 
-    $(NamePage.firstName()).setValue("Catherine");
-    $(NamePage.lastName()).setValue("Zeta-Jones");
-    $(NamePage.submit()).click();
+    await $(NamePage.firstName()).setValue("Catherine");
+    await $(NamePage.lastName()).setValue("Zeta-Jones");
+    await $(NamePage.submit()).click();
 
-    $(DobPage.day()).setValue(25);
-    $(DobPage.month()).setValue(9);
-    $(DobPage.year()).setValue(1969);
-    $(DobPage.submit()).click();
+    await $(DobPage.day()).setValue(25);
+    await $(DobPage.month()).setValue(9);
+    await $(DobPage.year()).setValue(1969);
+    await $(DobPage.submit()).click();
 
-    $(NumberOfPeoplePage.numberOfPeople()).setValue(0);
-    $(NumberOfPeoplePage.submit()).click();
-    $(ConfirmNumberOfPeoplePage.yes()).click();
-    $(ConfirmNumberOfPeoplePage.submit()).click();
+    await $(NumberOfPeoplePage.numberOfPeople()).setValue(0);
+    await $(NumberOfPeoplePage.submit()).click();
+    await $(ConfirmNumberOfPeoplePage.yes()).click();
+    await $(ConfirmNumberOfPeoplePage.submit()).click();
 
-    expect($(HubPage.heading()).getText()).to.contain("Submission title");
-    expect($(HubPage.warning()).getText()).to.contain("Submission warning");
-    expect($(HubPage.guidance()).getText()).to.contain("Submission guidance");
-    expect($(HubPage.submit()).getText()).to.contain("Submission button");
-    $(HubPage.switchLanguage("cy")).click();
-    expect($(HubPage.heading()).getText()).to.contain("Teitl cyflwyno");
-    expect($(HubPage.warning()).getText()).to.contain("Rhybudd cyflwyno");
-    expect($(HubPage.guidance()).getText()).to.contain("Canllawiau cyflwyno");
-    expect($(HubPage.submit()).getText()).to.contain("Botwm cyflwyno");
-    $(HubPage.submit()).click();
+    await expect(await $(HubPage.heading()).getText()).to.contain("Submission title");
+    await expect(await $(HubPage.warning()).getText()).to.contain("Submission warning");
+    await expect(await $(HubPage.guidance()).getText()).to.contain("Submission guidance");
+    await expect(await $(HubPage.submit()).getText()).to.contain("Submission button");
+    await $(HubPage.switchLanguage("cy")).click();
+    await expect(await $(HubPage.heading()).getText()).to.contain("Teitl cyflwyno");
+    await expect(await $(HubPage.warning()).getText()).to.contain("Rhybudd cyflwyno");
+    await expect(await $(HubPage.guidance()).getText()).to.contain("Canllawiau cyflwyno");
+    await expect(await $(HubPage.submit()).getText()).to.contain("Botwm cyflwyno");
+    await $(HubPage.submit()).click();
 
-    expect(browser.getUrl()).to.contain("thank-you");
+    await expect(await browser.getUrl()).to.contain("thank-you");
   });
 
-  it("Given a launch language of Welsh, When I select English, Then the language should be switched to English", () => {
-    browser.openQuestionnaire("test_language.json", {
+  it("Given a launch language of Welsh, When I select English, Then the language should be switched to English", async () => {
+    await browser.openQuestionnaire("test_language.json", {
       language: "cy",
     });
 
-    $(HubPage.submit()).click();
-    expect($(NamePage.questionText()).getText()).to.contain("Rhowch enw");
-    $(NamePage.switchLanguage("en")).click();
-    expect($(NamePage.questionText()).getText()).to.contain("Please enter a name");
+    await $(HubPage.submit()).click();
+    await expect(await $(NamePage.questionText()).getText()).to.contain("Rhowch enw");
+    await $(NamePage.switchLanguage("en")).click();
+    await expect(await $(NamePage.questionText()).getText()).to.contain("Please enter a name");
   });
 
   describe("Given a launch language of English and a question with plural forms, When I select switch languages, Then the plural forms are displayed correctly for the chosen language", () => {
     for (const dataSet of PLURAL_TEST_DATA_SETS) {
       const numberOfPeople = dataSet.count;
 
-      it(`Test plural count: ${numberOfPeople}`, () => {
-        browser.openQuestionnaire("test_language.json", {
+      it(`Test plural count: ${numberOfPeople}`, async () => {
+        await browser.openQuestionnaire("test_language.json", {
           language: "en",
         });
 
-        $(HubPage.submit()).click();
-        expect($(NamePage.questionText()).getText()).to.contain("Please enter a name");
-        $(NamePage.firstName()).setValue("Catherine");
-        $(NamePage.lastName()).setValue("Zeta-Jones");
-        $(NamePage.submit()).click();
+        await $(HubPage.submit()).click();
+        await expect(await $(NamePage.questionText()).getText()).to.contain("Please enter a name");
+        await $(NamePage.firstName()).setValue("Catherine");
+        await $(NamePage.lastName()).setValue("Zeta-Jones");
+        await $(NamePage.submit()).click();
 
-        $(DobPage.day()).setValue(25);
-        $(DobPage.month()).setValue(9);
-        $(DobPage.year()).setValue(1969);
-        $(DobPage.submit()).click();
+        await $(DobPage.day()).setValue(25);
+        await $(DobPage.month()).setValue(9);
+        await $(DobPage.year()).setValue(1969);
+        await $(DobPage.submit()).click();
 
-        $(NumberOfPeoplePage.numberOfPeople()).setValue(numberOfPeople);
-        $(NumberOfPeoplePage.submit()).click();
+        await $(NumberOfPeoplePage.numberOfPeople()).setValue(numberOfPeople);
+        await $(NumberOfPeoplePage.submit()).click();
 
-        expect($(ConfirmNumberOfPeoplePage.questionText()).getText()).to.contain(dataSet.question_title.en);
-        expect($(ConfirmNumberOfPeoplePage.yesLabel()).getText()).to.contain(dataSet.answer.en);
+        await expect(await $(ConfirmNumberOfPeoplePage.questionText()).getText()).to.contain(dataSet.question_title.en);
+        await expect(await $(ConfirmNumberOfPeoplePage.yesLabel()).getText()).to.contain(dataSet.answer.en);
 
-        $(ConfirmNumberOfPeoplePage.switchLanguage("cy")).click();
+        await $(ConfirmNumberOfPeoplePage.switchLanguage("cy")).click();
 
-        expect($(ConfirmNumberOfPeoplePage.questionText()).getText()).to.contain(dataSet.question_title.cy);
-        expect($(ConfirmNumberOfPeoplePage.yesLabel()).getText()).to.contain(dataSet.answer.cy);
+        await expect(await $(ConfirmNumberOfPeoplePage.questionText()).getText()).to.contain(dataSet.question_title.cy);
+        await expect(await $(ConfirmNumberOfPeoplePage.yesLabel()).getText()).to.contain(dataSet.answer.cy);
 
-        $(ConfirmNumberOfPeoplePage.yes()).click();
-        $(ConfirmNumberOfPeoplePage.submit()).click();
+        await $(ConfirmNumberOfPeoplePage.yes()).click();
+        await $(ConfirmNumberOfPeoplePage.submit()).click();
       });
     }
   });
