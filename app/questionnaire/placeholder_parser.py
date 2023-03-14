@@ -218,11 +218,14 @@ def get_block_ids_for_calculated_summary_dependencies(
         if section in sections_to_ignore:
             continue
 
-        keys = [(section, location.list_item_id), (section, None)]
-        for key in keys:
-            if key in progress_store.started_section_keys():
-                routing_path = path.routing_path(*key)
-                blocks_id_by_section[section] = routing_path.block_ids
+        if schema.get_repeat_for_section(section):
+            key = (section, location.list_item_id)
+        else:
+            key = (section, None)
+
+        if key in progress_store.started_section_keys():
+            routing_path = path.routing_path(*key)
+            blocks_id_by_section[section] = routing_path.block_ids
 
     return blocks_id_by_section
 
