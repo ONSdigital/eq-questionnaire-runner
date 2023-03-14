@@ -58,43 +58,43 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "over-sixteen",
-                                        "when": [
+                                    "block": "over-sixteen",
+                                    "when": {
+                                        "<": [
                                             {
-                                                "id": "date-of-birth-answer",
-                                                "condition": "less than",
-                                                "date_comparison": {
-                                                    "value": "now",
-                                                    "offset_by": {
-                                                        "years": -16
+                                                "date": [
+                                                    {
+                                                        "identifier": "date-of-birth-answer",
+                                                        "source": "answers"
                                                     }
-                                                }
+                                                ]
+                                            },
+                                            {
+                                                "date": ["now", { "years": -16 }]
                                             }
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "under-sixteen",
-                                        "when": [
+                                    "block": "under-sixteen",
+                                    "when": {
+                                        ">=": [
                                             {
-                                                "id": "date-of-birth-answer",
-                                                "condition": "greater than or equal to",
-                                                "date_comparison": {
-                                                    "value": "now",
-                                                    "offset_by": {
-                                                        "years": -16
+                                                "date": [
+                                                    {
+                                                        "identifier": "date-of-birth-answer",
+                                                        "source": "answers"
                                                     }
-                                                }
+                                                ]
+                                            },
+                                            {
+                                                "date": ["now", { "years": -16 }]
                                             }
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "dob-age"
-                                    }
+                                    "block": "dob-age"
                                 }
                             ]
                         },
@@ -121,21 +121,19 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "over-sixteen",
-                                        "when": [
+                                    "block": "over-sixteen",
+                                    "when": {
+                                        ">=": [
                                             {
-                                                "id": "dob-age-answer",
-                                                "condition": "greater than or equal to",
-                                                "value": 16
-                                            }
+                                                "source": "answers",
+                                                "identifier": "dob-age-answer"
+                                            },
+                                            16
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "under-sixteen"
-                                    }
+                                    "block": "under-sixteen"
                                 }
                             ]
                         },
@@ -182,31 +180,29 @@
                                     }
                                 ]
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "or": [
                                         {
-                                            "id": "dob-age-answer",
-                                            "condition": "greater than or equal to",
-                                            "value": 16
-                                        }
-                                    ]
-                                },
-                                {
-                                    "when": [
+                                            ">=": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "dob-age-answer"
+                                                },
+                                                16
+                                            ]
+                                        },
                                         {
-                                            "id": "date-of-birth-answer",
-                                            "condition": "less than",
-                                            "date_comparison": {
-                                                "value": "now",
-                                                "offset_by": {
-                                                    "years": -16
+                                            "<": [
+                                                { "date": [{ "identifier": "date-of-birth-answer", "source": "answers" }] },
+                                                {
+                                                    "date": ["now", { "years": -16 }]
                                                 }
-                                            }
+                                            ]
                                         }
                                     ]
                                 }
-                            ]
+                            }
                         }
                     ],
                     "id": "test"

@@ -1,10 +1,10 @@
-import FoodPage from "../generated_pages/new_skip_condition_not_set/food-block.page";
-import DrinkPage from "../generated_pages/new_skip_condition_not_set/drink-block.page";
-import SubmitPage from "../generated_pages/new_skip_condition_not_set/submit.page";
+import FoodPage from "../generated_pages/skip_condition_not_set/food-block.page";
+import DrinkPage from "../generated_pages/skip_condition_not_set/drink-block.page";
+import SubmitPage from "../generated_pages/skip_condition_not_set/submit.page";
 
 describe("Skip Conditions - Not Set", () => {
   beforeEach("Load the survey", async () => {
-    await browser.openQuestionnaire("test_new_skip_condition_not_set.json");
+    await browser.openQuestionnaire("test_skip_condition_not_set.json");
   });
 
   it("Given I do not complete the first page, Then I should see the summary page", async () => {

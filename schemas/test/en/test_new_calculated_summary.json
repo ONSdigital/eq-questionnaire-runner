@@ -156,17 +156,17 @@
                             }
                         },
                         {
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
                                         {
-                                            "id": "skip-fourth-block-answer",
-                                            "condition": "equals",
-                                            "value": "Yes"
-                                        }
+                                            "source": "answers",
+                                            "identifier": "skip-fourth-block-answer"
+                                        },
+                                        "Yes"
                                     ]
                                 }
-                            ],
+                            },
                             "type": "Question",
                             "id": "fourth-number-block",
                             "question": {
@@ -186,17 +186,17 @@
                             }
                         },
                         {
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
                                         {
-                                            "id": "skip-fourth-block-answer",
-                                            "condition": "equals",
-                                            "value": "Yes"
-                                        }
+                                            "source": "answers",
+                                            "identifier": "skip-fourth-block-answer"
+                                        },
+                                        "Yes"
                                     ]
                                 }
-                            ],
+                            },
                             "type": "Question",
                             "id": "fourth-and-a-half-number-block",
                             "question": {
@@ -343,17 +343,17 @@
                                 },
                                 "title": "Grand total of previous values"
                             },
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
                                         {
-                                            "id": "skip-fourth-block-answer",
-                                            "condition": "equals",
-                                            "value": "Yes"
-                                        }
+                                            "identifier": "skip-fourth-block-answer",
+                                            "source": "answers"
+                                        },
+                                        "Yes"
                                     ]
                                 }
-                            ]
+                            }
                         },
                         {
                             "type": "CalculatedSummary",

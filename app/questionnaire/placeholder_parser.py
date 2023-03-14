@@ -46,6 +46,7 @@ class PlaceholderParser:
         renderer: "PlaceholderRenderer",
         list_item_id: Optional[str] = None,
         location: Union[Location, RelationshipLocation, None] = None,
+        placeholder_preview_mode: Optional[bool] = False,
     ):
         self._answer_store = answer_store
         self._list_store = list_store
@@ -58,6 +59,7 @@ class PlaceholderParser:
         self._placeholder_map: MutableMapping[
             str, Union[ValueSourceEscapedTypes, ValueSourceTypes, None]
         ] = {}
+        self._placeholder_preview_mode = placeholder_preview_mode
 
         self._value_source_resolver = ValueSourceResolver(
             answer_store=self._answer_store,
@@ -82,9 +84,12 @@ class PlaceholderParser:
                 ] = self._parse_placeholder(placeholder)
         return self._placeholder_map
 
-    def _parse_placeholder(
-        self, placeholder: Mapping
-    ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes, TransformedValueTypes]:
+    def _parse_placeholder(self, placeholder: Mapping) -> Any:
+        if self._placeholder_preview_mode and not self._all_value_sources_metadata(
+            placeholder
+        ):
+            return f'{{{placeholder["placeholder"]}}}'
+
         try:
             return self._parse_transforms(placeholder["transforms"])
         except KeyError:
@@ -134,3 +139,7 @@ class PlaceholderParser:
             else:
                 values.append(value)
         return values
+
+    def _all_value_sources_metadata(self, placeholder: Mapping) -> bool:
+        sources = self._schema.get_values_for_key(placeholder, key="source")
+        return all(source == "metadata" for source in sources)

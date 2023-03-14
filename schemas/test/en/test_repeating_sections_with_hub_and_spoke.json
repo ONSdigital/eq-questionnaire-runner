@@ -635,13 +635,15 @@
                                         "title": "What is your date of birth?",
                                         "type": "General"
                                     },
-                                    "when": [
-                                        {
-                                            "condition": "equals",
-                                            "id": "proxy-answer",
-                                            "value": "No, I’m answering for myself"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "proxy-answer"
+                                            },
+                                            "No, I’m answering for myself"
+                                        ]
+                                    }
                                 },
                                 {
                                     "question": {
@@ -705,13 +707,15 @@
                                         },
                                         "type": "General"
                                     },
-                                    "when": [
-                                        {
-                                            "condition": "equals",
-                                            "id": "proxy-answer",
-                                            "value": "Yes"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "proxy-answer"
+                                            },
+                                            "Yes"
+                                        ]
+                                    }
                                 }
                             ],
                             "type": "Question"
@@ -784,13 +788,15 @@
                                         },
                                         "type": "General"
                                     },
-                                    "when": [
-                                        {
-                                            "condition": "equals",
-                                            "id": "proxy-answer",
-                                            "value": "No, I’m answering for myself"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "proxy-answer"
+                                            },
+                                            "No, I’m answering for myself"
+                                        ]
+                                    }
                                 },
                                 {
                                     "question": {
@@ -899,44 +905,44 @@
                                         },
                                         "type": "General"
                                     },
-                                    "when": [
-                                        {
-                                            "condition": "equals",
-                                            "id": "proxy-answer",
-                                            "value": "Yes"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "proxy-answer"
+                                            },
+                                            "Yes"
+                                        ]
+                                    }
                                 }
                             ],
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "date-of-birth",
-                                        "when": [
+                                    "block": "date-of-birth",
+                                    "when": {
+                                        "==": [
                                             {
-                                                "condition": "equals",
-                                                "id": "confirm-date-of-birth-answer",
-                                                "value": "No, I need to change my date of birth"
-                                            }
+                                                "source": "answers",
+                                                "identifier": "confirm-date-of-birth-answer"
+                                            },
+                                            "No, I need to change my date of birth"
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "date-of-birth",
-                                        "when": [
+                                    "block": "date-of-birth",
+                                    "when": {
+                                        "==": [
                                             {
-                                                "condition": "equals",
-                                                "id": "confirm-date-of-birth-answer",
-                                                "value": "No, I need to change their date of birth"
-                                            }
+                                                "source": "answers",
+                                                "identifier": "confirm-date-of-birth-answer"
+                                            },
+                                            "No, I need to change their date of birth"
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "sex"
-                                    }
+                                    "block": "sex"
                                 }
                             ],
                             "type": "ConfirmationQuestion"
@@ -974,23 +980,34 @@
                                         "title": "What is your sex?",
                                         "type": "General"
                                     },
-                                    "when": [
-                                        {
-                                            "condition": "equals",
-                                            "id": "proxy-answer",
-                                            "value": "No, I’m answering for myself"
-                                        },
-                                        {
-                                            "condition": "less than or equal to",
-                                            "date_comparison": {
-                                                "offset_by": {
-                                                    "years": -16
-                                                },
-                                                "value": "now"
+                                    "when": {
+                                        "and": [
+                                            {
+                                                "==": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "proxy-answer"
+                                                    },
+                                                    "No, I’m answering for myself"
+                                                ]
                                             },
-                                            "id": "date-of-birth-answer"
-                                        }
-                                    ]
+                                            {
+                                                "<=": [
+                                                    {
+                                                        "date": ["now", { "years": -16 }]
+                                                    },
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "date-of-birth-answer"
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
                                 },
                                 {
                                     "question": {
@@ -1055,23 +1072,29 @@
                                         },
                                         "type": "General"
                                     },
-                                    "when": [
-                                        {
-                                            "condition": "equals",
-                                            "id": "proxy-answer",
-                                            "value": "Yes"
-                                        },
-                                        {
-                                            "condition": "less than or equal to",
-                                            "date_comparison": {
-                                                "offset_by": {
-                                                    "years": -16
-                                                },
-                                                "value": "now"
+                                    "when": {
+                                        "and": [
+                                            {
+                                                "==": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "proxy-answer"
+                                                    },
+                                                    "Yes"
+                                                ]
                                             },
-                                            "id": "date-of-birth-answer"
-                                        }
-                                    ]
+                                            {
+                                                "<=": [
+                                                    {
+                                                        "date": ["now", { "years": -16 }]
+                                                    },
+                                                    {
+                                                        "date": [{ "source": "answers", "identifier": "date-of-birth-answer" }]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
                                 },
                                 {
                                     "question": {
@@ -1096,13 +1119,15 @@
                                         "title": "What is your sex?",
                                         "type": "General"
                                     },
-                                    "when": [
-                                        {
-                                            "condition": "equals",
-                                            "id": "proxy-answer",
-                                            "value": "No, I’m answering for myself"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "proxy-answer"
+                                            },
+                                            "No, I’m answering for myself"
+                                        ]
+                                    }
                                 },
                                 {
                                     "question": {
@@ -1160,13 +1185,15 @@
                                         },
                                         "type": "General"
                                     },
-                                    "when": [
-                                        {
-                                            "condition": "equals",
-                                            "id": "proxy-answer",
-                                            "value": "Yes"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "proxy-answer"
+                                            },
+                                            "Yes"
+                                        ]
+                                    }
                                 }
                             ],
                             "type": "Question"

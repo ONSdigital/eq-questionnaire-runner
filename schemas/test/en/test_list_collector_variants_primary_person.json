@@ -91,13 +91,15 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "id": "variant-answer",
-                                                "condition": "equals",
-                                                "value": "No"
-                                            }
-                                        ]
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "variant-answer"
+                                                },
+                                                "No"
+                                            ]
+                                        }
                                     },
                                     {
                                         "question": {
@@ -119,13 +121,15 @@
                                                 }
                                             ]
                                         },
-                                        "when": [
-                                            {
-                                                "id": "variant-answer",
-                                                "condition": "equals",
-                                                "value": "Yes"
-                                            }
-                                        ]
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "variant-answer"
+                                                },
+                                                "Yes"
+                                            ]
+                                        }
                                     }
                                 ]
                             },
@@ -156,13 +160,15 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "variant-answer",
-                                            "condition": "equals",
-                                            "value": "Yes"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "variant-answer"
+                                            },
+                                            "Yes"
+                                        ]
+                                    }
                                 },
                                 {
                                     "question": {
@@ -190,13 +196,15 @@
                                             }
                                         ]
                                     },
-                                    "when": [
-                                        {
-                                            "id": "variant-answer",
-                                            "condition": "equals",
-                                            "value": "No"
-                                        }
-                                    ]
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "variant-answer"
+                                            },
+                                            "No"
+                                        ]
+                                    }
                                 }
                             ]
                         },

@@ -4,7 +4,8 @@ import SubmitPage from "../../../generated_pages/section_enabled_checkbox/submit
 
 describe("Feature: Section Enabled Based On Checkbox Answers", () => {
   beforeEach("Open survey", async () => {
-    await browser.openQuestionnaire("test_new_section_enabled_checkbox.json");
+    await browser.openQuestionnaire("test_section_enabled_checkbox.json");
+
   });
 
   it("When the user selects `Section 2` and submits, Then section 2 should be displayed", async () => {

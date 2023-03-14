@@ -1,10 +1,10 @@
-import ToppingCheckboxPage from "../../../generated_pages/new_routing_checkbox_count/topping-checkbox.page.js";
-import CorrectAnswerPage from "../../../generated_pages/new_routing_checkbox_count/correct-answer.page";
-import IncorrectAnswerPage from "../../../generated_pages/new_routing_checkbox_count/incorrect-answer.page";
+import ToppingCheckboxPage from "../../../generated_pages/routing_checkbox_count/topping-checkbox.page.js";
+import CorrectAnswerPage from "../../../generated_pages/routing_checkbox_count/correct-answer.page";
+import IncorrectAnswerPage from "../../../generated_pages/routing_checkbox_count/incorrect-answer.page";
 
 describe("Test routing using count of checkboxes checked", () => {
   beforeEach(async () => {
-    await browser.openQuestionnaire("test_new_routing_checkbox_count.json");
+    await browser.openQuestionnaire("test_routing_checkbox_count.json");
   });
 
   it("Given a user selects 2 checkboxes, When they submit, Then they should be routed to the correct page", async () => {

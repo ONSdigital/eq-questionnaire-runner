@@ -187,21 +187,13 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "block381",
-                                        "when": [
-                                            {
-                                                "id": "answer434",
-                                                "condition": "equals any",
-                                                "values": ["Yes"]
-                                            }
-                                        ]
+                                    "block": "block381",
+                                    "when": {
+                                        "==": [{ "identifier": "answer434", "source": "answers" }, "Yes"]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "block380"
-                                    }
+                                    "block": "block380"
                                 }
                             ]
                         },
@@ -214,7 +206,7 @@
                                 "type": "DateRange",
                                 "answers": [
                                     {
-                                        "id": "answerfrom",
+                                        "id": "answer-from",
                                         "type": "Date",
                                         "mandatory": true,
                                         "label": "Period from",
@@ -230,7 +222,7 @@
                                         }
                                     },
                                     {
-                                        "id": "answerto",
+                                        "id": "answer-to",
                                         "type": "Date",
                                         "mandatory": true,
                                         "label": "Period to",
@@ -424,21 +416,13 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "block4953",
-                                        "when": [
-                                            {
-                                                "id": "answer6287",
-                                                "condition": "equals any",
-                                                "values": ["Yes"]
-                                            }
-                                        ]
+                                    "block": "block4953",
+                                    "when": {
+                                        "==": [{ "identifier": "answer6287", "source": "answers" }, "Yes"]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "block383"
-                                    }
+                                    "block": "block383"
                                 }
                             ]
                         },
@@ -525,7 +509,7 @@
                             "question": {
                                 "id": "question383",
                                 "title": "Explain any differences between this quarter&apos;s opening value and the previously returned closing value",
-                                "description": ["<p>  Include any unusual fluctuations in figures  </p>"],
+                                "description": ["<p>Include any unusual fluctuations in figures</p>"],
                                 "type": "General",
                                 "answers": [
                                     {

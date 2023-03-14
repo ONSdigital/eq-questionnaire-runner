@@ -28,6 +28,7 @@ class Context(ABC):
         self._progress_store = progress_store
         self._metadata = metadata
         self._response_metadata = response_metadata
+        self._placeholder_preview_mode = self._schema.preview_enabled
 
         self._router = Router(
             self._schema,
@@ -45,4 +46,5 @@ class Context(ABC):
             metadata=self._metadata,
             response_metadata=self._response_metadata,
             schema=self._schema,
+            placeholder_preview_mode=self._placeholder_preview_mode,
         )

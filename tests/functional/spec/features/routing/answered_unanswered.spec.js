@@ -1,19 +1,19 @@
-import QuestionOne from "../../../generated_pages/new_routing_answered_unanswered/block-1.page";
-import QuestionOneAnswered from "../../../generated_pages/new_routing_answered_unanswered/answered-question-1.page";
-import QuestionOneUnanswered from "../../../generated_pages/new_routing_answered_unanswered/unanswered-question-1.page";
+import QuestionOne from "../../../generated_pages/routing_answered_unanswered/block-1.page";
+import QuestionOneAnswered from "../../../generated_pages/routing_answered_unanswered/answered-question-1.page";
+import QuestionOneUnanswered from "../../../generated_pages/routing_answered_unanswered/unanswered-question-1.page";
 
-import QuestionTwo from "../../../generated_pages/new_routing_answered_unanswered/block-2.page";
-import QuestionTwoAnswered from "../../../generated_pages/new_routing_answered_unanswered/answered-question-2.page";
-import QuestionTwoUnanswered from "../../../generated_pages/new_routing_answered_unanswered/unanswered-question-2.page";
+import QuestionTwo from "../../../generated_pages/routing_answered_unanswered/block-2.page";
+import QuestionTwoAnswered from "../../../generated_pages/routing_answered_unanswered/answered-question-2.page";
+import QuestionTwoUnanswered from "../../../generated_pages/routing_answered_unanswered/unanswered-question-2.page";
 
-import QuestionThree from "../../../generated_pages/new_routing_answered_unanswered/block-3.page";
-import QuestionThreeAnsweredOrNotZero from "../../../generated_pages/new_routing_answered_unanswered/answered-question-3.page";
-import QuestionThreeUnansweredOrAnswerZero from "../../../generated_pages/new_routing_answered_unanswered/unanswered-or-zero-question-3.page";
+import QuestionThree from "../../../generated_pages/routing_answered_unanswered/block-3.page";
+import QuestionThreeAnsweredOrNotZero from "../../../generated_pages/routing_answered_unanswered/answered-question-3.page";
+import QuestionThreeUnansweredOrAnswerZero from "../../../generated_pages/routing_answered_unanswered/unanswered-or-zero-question-3.page";
 
 describe("Test routing question answered/unanswered", () => {
   describe("Given I am on the first question", () => {
     beforeEach("Load the questionnaire", async () => {
-      await browser.openQuestionnaire("test_new_routing_answered_unanswered.json");
+      await browser.openQuestionnaire("test_routing_answered_unanswered.json");
     });
 
     it("When I select any answer and submit, Then I should see a page saying I have answered the first question", async () => {
@@ -38,8 +38,7 @@ describe("Test routing question answered/unanswered", () => {
 
   describe("Given I am on the second question", () => {
     beforeEach("Load the questionnaire and get to the second question", async () => {
-      await browser.openQuestionnaire("test_new_routing_answered_unanswered.json");
-
+      await browser.openQuestionnaire("test_routing_answered_unanswered.json");
       await $(QuestionOne.submit()).click();
       await $(QuestionOneUnanswered.submit()).click();
     });
@@ -66,8 +65,7 @@ describe("Test routing question answered/unanswered", () => {
 
   describe("Given I am on the third question", () => {
     beforeEach("Load the questionnaire and get to the third question", async () => {
-      await browser.openQuestionnaire("test_new_routing_answered_unanswered.json");
-
+      await browser.openQuestionnaire(test_routing_answered_unanswered.json");
       await $(QuestionOne.submit()).click();
       await $(QuestionOneUnanswered.submit()).click();
       await $(QuestionTwo.submit()).click();

@@ -116,6 +116,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return region_code
 
     @cached_property
+    def preview_enabled(self) -> bool:
+        preview_enabled: bool = self.json.get("preview_questions", False)
+        return preview_enabled
+
+    @cached_property
     def parent_id_map(self) -> Any:
         return self.serialize(self._parent_id_map)
 
@@ -377,29 +382,24 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         schema: ImmutableDict = self.json.get("post_submission", ImmutableDict({}))
         return schema
 
-    def _is_list_name_in_rule(
-        self, rules: Union[Mapping, Sequence], list_name: str
-    ) -> bool:
-        if isinstance(rules, Mapping) and QuestionnaireSchema.has_operator(rules):
-            rules = self.get_operands(rules)
+    def _is_list_name_in_rule(self, when_rule: Mapping, list_name: str) -> bool:
+        if not QuestionnaireSchema.has_operator(when_rule):
+            return False
 
-        for rule in rules:
-            if not isinstance(rule, Mapping):
+        operands = self.get_operands(when_rule)
+
+        for operand in operands:
+            if not isinstance(operand, Mapping):
                 continue
-
-            # Old rules
-            if "list" in rule:
-                return rule.get("list") == list_name
-
-            # New rules
-            if "source" in rule:
-                return (
-                    rule.get("source") == "list" and rule.get("identifier") == list_name
+            if "source" in operand:
+                return bool(
+                    operand.get("source") == "list"
+                    and operand.get("identifier") == list_name
                 )
 
             # Nested rules
-            if QuestionnaireSchema.has_operator(rule):
-                return self._is_list_name_in_rule(rule, list_name)
+            if QuestionnaireSchema.has_operator(operand):
+                return self._is_list_name_in_rule(operand, list_name)
 
         return False
 
@@ -414,9 +414,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         for section in self.get_sections():
             ignore_keys = ["question_variants", "content_variants"]
-            when_rules = self._get_values_for_key(section, "when", ignore_keys)
+            when_rules = self.get_values_for_key(section, "when", ignore_keys)
 
-            rule: Union[Mapping, list] = next(when_rules, [])
+            rule: Mapping = next(when_rules, {})
             if self._is_list_name_in_rule(rule, list_name):
                 section_ids.append(section["id"])
         return section_ids
@@ -777,7 +777,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             operator in rule for operator in OPERATION_MAPPING
         )
 
-    def _get_values_for_key(
+    def get_values_for_key(
         self, block: Mapping, key: str, ignore_keys: Optional[list[str]] = None
     ) -> Generator:
         ignore_keys = ignore_keys or []
@@ -788,10 +788,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 if k == key:
                     yield v
                 if isinstance(v, dict):
-                    yield from self._get_values_for_key(v, key, ignore_keys)
+                    yield from self.get_values_for_key(v, key, ignore_keys)
                 elif isinstance(v, (list, tuple)):
                     for d in v:
-                        yield from self._get_values_for_key(d, key, ignore_keys)
+                        yield from self.get_values_for_key(d, key, ignore_keys)
             except AttributeError:
                 continue
 
@@ -845,7 +845,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _populate_when_rules_section_dependencies(self) -> None:
         for section in self.get_sections():
-            when_rules = self._get_values_for_key(section, "when")
+            when_rules = self.get_values_for_key(section, "when")
             rules: Union[Mapping, list] = next(when_rules, [])
 
             if rules_section_dependencies := self._get_rules_section_dependencies(
@@ -871,9 +871,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             identifier: Optional[str] = rule.get("identifier")
             source: Optional[str] = rule.get("source")
 
-            if "id" in rule:
-                answer_id_list.append(rule["id"])
-            elif source == "answers" and identifier:
+            if source == "answers" and identifier:
                 answer_id_list.append(identifier)
             elif source == "calculated_summary" and identifier:
                 calculated_summary_block = self.get_block(identifier)

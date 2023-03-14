@@ -91,17 +91,17 @@
                         {
                             "type": "ConfirmationQuestion",
                             "id": "confirm-zero-employees-block",
-                            "skip_conditions": [
-                                {
-                                    "when": [
+                            "skip_conditions": {
+                                "when": {
+                                    ">": [
                                         {
-                                            "id": "number-of-employees-total",
-                                            "condition": "greater than",
-                                            "value": 0
-                                        }
+                                            "source": "answers",
+                                            "identifier": "number-of-employees-total"
+                                        },
+                                        0
                                     ]
                                 }
-                            ],
+                            },
                             "question": {
                                 "type": "General",
                                 "answers": [
@@ -150,21 +150,19 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "when": [
+                                    "when": {
+                                        "==": [
                                             {
-                                                "value": "No I need to correct this",
-                                                "id": "confirm-zero-employees-answer",
-                                                "condition": "equals"
-                                            }
-                                        ],
-                                        "block": "number-of-employees-total-block"
-                                    }
+                                                "identifier": "confirm-zero-employees-answer",
+                                                "source": "answers"
+                                            },
+                                            "No I need to correct this"
+                                        ]
+                                    },
+                                    "block": "number-of-employees-total-block"
                                 },
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         },

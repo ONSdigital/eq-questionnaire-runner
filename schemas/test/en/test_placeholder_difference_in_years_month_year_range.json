@@ -110,21 +110,19 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "date-block",
-                                        "when": [
+                                    "block": "date-block",
+                                    "when": {
+                                        "==": [
                                             {
-                                                "id": "date-test-answer",
-                                                "condition": "equals",
-                                                "value": "No"
-                                            }
+                                                "source": "answers",
+                                                "identifier": "date-test-answer"
+                                            },
+                                            "No"
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         }

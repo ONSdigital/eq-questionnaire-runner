@@ -12,7 +12,7 @@ class TestRoutingToQuestionnaireEndSingleSection(TestRoutingToQuestionnaireEndBa
     def test_able_to_route_to_questionnaire_end(self):
         # Given I launch a questionnaire with a single section and answer "No" to the first question
         self._launch_and_complete_questionnaire(
-            "test_new_routing_to_questionnaire_end_single_section"
+            "test_routing_to_questionnaire_end_single_section"
         )
 
         # Then I should be routed to the end of the questionnaire and be shown the submit page
@@ -25,7 +25,7 @@ class TestRoutingToQuestionnaireEndMultipleSections(TestRoutingToQuestionnaireEn
         # Given I launch a questionnaire with multiple sections
         # When I answer "No" to the first question
         self._launch_and_complete_questionnaire(
-            "test_new_routing_to_questionnaire_end_multiple_sections"
+            "test_routing_to_questionnaire_end_multiple_sections"
         )
 
         # Then I should be routed to the end of the questionnaire and be shown the submit page with only 1 section
@@ -39,7 +39,7 @@ class TestRoutingToQuestionnaireEndMultipleSections(TestRoutingToQuestionnaireEn
     ):
         # Given I am able to route to the questionnaire end by completing only section 1
         self._launch_and_complete_questionnaire(
-            "test_new_routing_to_questionnaire_end_multiple_sections"
+            "test_routing_to_questionnaire_end_multiple_sections"
         )
         self.assertInUrl(SUBMIT_URL_PATH)
 

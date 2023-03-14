@@ -3,7 +3,7 @@ import SkipPage from "../generated_pages/skip_condition_group/should-skip.page";
 import SubmitPage from "../generated_pages/skip_condition_group/submit.page";
 
 describe("Skip Conditions - Group", () => {
-  const schema = "test_new_skip_condition_group.json";
+  const schema = "test_skip_condition_group.json";
 
   describe("Given I am completing the test skip condition group survey,", () => {
     beforeEach("load the survey", async () => {

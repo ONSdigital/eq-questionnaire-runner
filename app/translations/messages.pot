@@ -223,15 +223,15 @@ msgstr ""
 msgid "ONS Surveys"
 msgstr ""
 
-#: app/helpers/template_helpers.py:106
+#: app/helpers/template_helpers.py:112
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:137
+#: app/helpers/template_helpers.py:143
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:162
+#: app/helpers/template_helpers.py:168
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -470,6 +470,10 @@ msgstr ""
 msgid " (You)"
 msgstr ""
 
+#: app/views/contexts/preview_context.py:66
+msgid "Preview survey questions"
+msgstr ""
+
 #: app/views/contexts/submission_metadata_context.py:14
 msgid "Submitted on:"
 msgstr ""
@@ -518,6 +522,14 @@ msgstr ""
 
 #: app/views/contexts/view_submitted_response_context.py:41
 msgid "Answers submitted."
+msgstr ""
+
+#: app/views/contexts/preview/preview_question.py:31
+msgid "You can answer with the following options:"
+msgstr ""
+
+#: app/views/contexts/preview/preview_question.py:35
+msgid "You can answer with one of the following options:"
 msgstr ""
 
 #: app/views/handlers/confirm_email.py:38
@@ -876,7 +888,11 @@ msgstr ""
 msgid "Introduction"
 msgstr ""
 
-#: templates/introduction.html:23
+#: templates/introduction.html:24
+msgid "<a href='{url}'>View the questions you will be asked in this survey</a>"
+msgstr ""
+
+#: templates/introduction.html:29
 msgid "Your response is legally required"
 msgstr ""
 
@@ -1260,6 +1276,15 @@ msgid ""
 " of the section</a>"
 msgstr ""
 
+#: templates/partials/preview-question.html:46
+#: templates/partials/question.html:69
+msgid "Or"
+msgstr ""
+
+#: templates/partials/preview-question.html:75
+msgid "{max_characters} characters can be added."
+msgstr ""
+
 #: templates/partials/question.html:60
 msgid "Selecting this will clear your answer"
 msgstr ""
@@ -1274,10 +1299,6 @@ msgstr ""
 
 #: templates/partials/question.html:65 templates/partials/question.html:73
 msgid "deselected"
-msgstr ""
-
-#: templates/partials/question.html:69
-msgid "Or"
 msgstr ""
 
 #: templates/partials/answers/address.html:9

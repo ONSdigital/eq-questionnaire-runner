@@ -1,13 +1,13 @@
-import FirstNumberQuestionPage from "../../../generated_pages/new_routing_or/number-question-1.page";
-import SecondNumberQuestionPage from "../../../generated_pages/new_routing_or/number-question-2.page";
-import CorrectAnswerPage from "../../../generated_pages/new_routing_or/correct-answer.page";
-import IncorrectAnswerPage from "../../../generated_pages/new_routing_or/incorrect-answer.page";
+import FirstNumberQuestionPage from "../../../generated_pages/routing_or/number-question-1.page";
+import SecondNumberQuestionPage from "../../../generated_pages/routing_or/number-question-2.page";
+import CorrectAnswerPage from "../../../generated_pages/routing_or/correct-answer.page";
+import IncorrectAnswerPage from "../../../generated_pages/routing_or/incorrect-answer.page";
 
 describe("Feature: Routing - OR Operator", () => {
   describe("Equals", () => {
     describe("Given I start the or operator routing survey", () => {
       beforeEach(async () => {
-        await browser.openQuestionnaire("test_new_routing_or.json");
+        await browser.openQuestionnaire("test_routing_or.json");
       });
 
       it("When I enter both answers correctly with 123 and 321, Then I should be routed to the correct page", async () => {

@@ -44,32 +44,29 @@
                                         "id": "single-date-answer",
                                         "label": "Today",
                                         "mandatory": true,
-                                        "type": "Date"
+                                        "type": "MonthYearDate"
                                     }
                                 ],
                                 "id": "date-questions",
-                                "title": "Enter a date other than 28 February 2018",
+                                "title": "Enter a date other than February 2018",
                                 "type": "General"
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "block": "correct-answer",
-                                        "when": [
+                                    "block": "correct-answer",
+                                    "when": {
+                                        "!=": [
                                             {
-                                                "id": "single-date-answer",
-                                                "condition": "not equals",
-                                                "date_comparison": {
-                                                    "value": "2018-02-28"
-                                                }
+                                                "date": [{ "source": "answers", "identifier": "single-date-answer" }]
+                                            },
+                                            {
+                                                "date": ["2018-02"]
                                             }
                                         ]
                                     }
                                 },
                                 {
-                                    "goto": {
-                                        "block": "incorrect-answer"
-                                    }
+                                    "block": "incorrect-answer"
                                 }
                             ]
                         },
@@ -86,9 +83,7 @@
                             },
                             "routing_rules": [
                                 {
-                                    "goto": {
-                                        "section": "End"
-                                    }
+                                    "section": "End"
                                 }
                             ]
                         },
