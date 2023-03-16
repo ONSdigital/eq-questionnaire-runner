@@ -572,7 +572,18 @@
                                 "title": "What sex is this person?",
                                 "type": "General"
                             },
-                            "type": "Question"
+                            "type": "Question",
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "skip-age-answer"
+                                        },
+                                        "Yes"
+                                    ]
+                                }
+                            }
                         },
                         {
                             "type": "Question",

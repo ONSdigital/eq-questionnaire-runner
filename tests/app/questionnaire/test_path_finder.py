@@ -557,7 +557,7 @@ def test_routing_path_block_ids_dependent_on_other_sections_when_rules(
             # Answering 'Yes' to the skip age question
             # means in all repeating sections you won't be asked their age
             "Yes",
-            ["repeating-sex"],
+            [],
         ),
         (
             # Answering 'No' to the skip age question
