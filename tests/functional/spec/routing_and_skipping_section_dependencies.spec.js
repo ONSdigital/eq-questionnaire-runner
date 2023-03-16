@@ -247,8 +247,6 @@ describe("Routing and skipping section dependencies", () => {
     });
   });
 
-  // NEW FUNCTION -----------------------------------
-
   describe("Given the routing and skipping section dependencies questionnaire", () => {
     beforeEach("Load the survey", async () => {
       await browser.openQuestionnaire("test_routing_and_skipping_section_dependencies.json");
@@ -346,8 +344,6 @@ describe("Routing and skipping section dependencies", () => {
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).isExisting()).to.be.false;
     });
   });
-
-  // NEW FUNCTION -----------------------------------
 });
 
 const addHouseholdMembers = async () => {
