@@ -238,6 +238,7 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
                 "ONS Surveys",
                 read_file("./templates/assets/images/dbt-logo-stacked.svg")
                 + read_file("./templates/assets/images/dsit-logo-stacked.svg"),
+                None,
             ],
         ),
         (
@@ -248,6 +249,7 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
                 "Test",
                 read_file("./templates/assets/images/dbt-logo-stacked.svg")
                 + read_file("./templates/assets/images/dsit-logo-stacked.svg"),
+                None,
             ],
         ),
         (
@@ -259,6 +261,7 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
                 read_file("./templates/assets/images/dbt-logo-stacked.svg")
                 + read_file("./templates/assets/images/dsit-logo-stacked.svg")
                 + read_file("./templates/assets/images/finance-ni-logo-stacked.svg"),
+                None,
             ],
         ),
         (
@@ -270,6 +273,7 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
                 read_file("./templates/assets/images/dbt-logo-stacked.svg")
                 + read_file("./templates/assets/images/dsit-logo-stacked.svg")
                 + read_file("./templates/assets/images/finance-ni-logo-stacked.svg"),
+                None,
             ],
         ),
         (
