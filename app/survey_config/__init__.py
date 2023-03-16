@@ -1,7 +1,7 @@
 from .business_config import (
+    BusinessSurveyConfig,
     DBTDSITBusinessSurveyConfig,
     DBTDSITNIBusinessSurveyConfig,
-    BusinessSurveyConfig,
     NIBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
 )

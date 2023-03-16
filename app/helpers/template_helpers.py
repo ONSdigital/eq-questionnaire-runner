@@ -14,11 +14,11 @@ from app.helpers.language_helper import get_languages_context
 from app.questionnaire import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config import (
-    DBTDSITBusinessSurveyConfig,
-    DBTDSITNIBusinessSurveyConfig,
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
+    DBTDSITBusinessSurveyConfig,
+    DBTDSITNIBusinessSurveyConfig,
     NIBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
     SocialSurveyConfig,

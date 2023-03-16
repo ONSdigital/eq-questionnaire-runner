@@ -131,14 +131,18 @@ class NIBusinessSurveyConfig(BusinessSurveyConfig):
 
 @dataclass
 class DBTDSITBusinessSurveyConfig(BusinessSurveyConfig):
-    masthead_logo: str = read_file("./templates/assets/images/dbt-logo-stacked-stacked-stacked.svg") + read_file("./templates/assets/images/dsit-logo-stacked-stacked.svg")
+    masthead_logo: str = read_file(
+        "./templates/assets/images/dbt-logo-stacked-stacked-stacked.svg"
+    ) + read_file("./templates/assets/images/dsit-logo-stacked-stacked.svg")
 
 
 @dataclass
 class DBTDSITNIBusinessSurveyConfig(BusinessSurveyConfig):
-    masthead_logo: str = read_file(
-        "./templates/assets/images/dbt-logo-stacked-stacked.svg"
-    ) + read_file("./templates/assets/images/dsit-logo-stacked-stacked.svg") + read_file("./templates/assets/images/finance-ni-logo-stacked.svg")
+    masthead_logo: str = (
+        read_file("./templates/assets/images/dbt-logo-stacked-stacked.svg")
+        + read_file("./templates/assets/images/dsit-logo-stacked-stacked.svg")
+        + read_file("./templates/assets/images/finance-ni-logo-stacked.svg")
+    )
 
 
 @dataclass

@@ -15,11 +15,11 @@ from app.settings import (
     read_file,
 )
 from app.survey_config import (
-    DBTDSITBusinessSurveyConfig,
-    DBTDSITNIBusinessSurveyConfig,
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
+    DBTDSITBusinessSurveyConfig,
+    DBTDSITNIBusinessSurveyConfig,
     NIBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
     SocialSurveyConfig,
@@ -236,7 +236,8 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             DBTDSITBusinessSurveyConfig(),
             [
                 "ONS Surveys",
-                read_file("./templates/assets/images/dbt-logo-stacked.svg") + read_file("./templates/assets/images/dsit-logo-stacked.svg"),
+                read_file("./templates/assets/images/dbt-logo-stacked.svg")
+                + read_file("./templates/assets/images/dsit-logo-stacked.svg"),
             ],
         ),
         (
@@ -245,7 +246,8 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             DBTDSITBusinessSurveyConfig(),
             [
                 "Test",
-                read_file("./templates/assets/images/dbt-logo-stacked.svg") + read_file("./templates/assets/images/dsit-logo-stacked.svg"),
+                read_file("./templates/assets/images/dbt-logo-stacked.svg")
+                + read_file("./templates/assets/images/dsit-logo-stacked.svg"),
             ],
         ),
         (
