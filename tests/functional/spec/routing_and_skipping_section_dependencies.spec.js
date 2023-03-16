@@ -15,6 +15,8 @@ import EnableSectionPage from "../generated_pages/routing_and_skipping_section_d
 import SkipConfirmationPage from "../generated_pages/routing_and_skipping_section_dependencies/skip-confirmation.page";
 import SkipConfirmationSectionSummaryPage from "../generated_pages/routing_and_skipping_section_dependencies/skip-confirmation-section-summary.page";
 import SkipSectionSummaryPage from "../generated_pages/routing_and_skipping_section_dependencies/skip-section-summary.page";
+import RepeatingIsDependentPage from "../generated_pages/routing_and_skipping_section_dependencies/repeating-is-dependent.page";
+import RepeatingIsSmokerPage from "../generated_pages/routing_and_skipping_section_dependencies/repeating-is-smoker.page";
 
 import HubPage from "../base_pages/hub.page";
 
@@ -88,6 +90,10 @@ describe("Routing and skipping section dependencies", () => {
       await $(RepeatingSexPage.submit()).click();
       await $(RepeatingAgePage.answer()).setValue("45");
       await $(RepeatingAgePage.submit()).click();
+      await $(RepeatingIsDependentPage.no()).click();
+      await $(RepeatingIsDependentPage.submit()).click();
+      await $(RepeatingIsSmokerPage.no()).click();
+      await $(RepeatingIsSmokerPage.submit()).click();
 
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Female");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("45");
@@ -98,6 +104,8 @@ describe("Routing and skipping section dependencies", () => {
       await $(RepeatingSexPage.submit()).click();
       await $(RepeatingAgePage.answer()).setValue("10");
       await $(RepeatingAgePage.submit()).click();
+      await $(RepeatingIsDependentPage.yes()).click();
+      await $(RepeatingIsDependentPage.submit()).click();
 
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("10");
@@ -111,13 +119,17 @@ describe("Routing and skipping section dependencies", () => {
       await $(HubPage.summaryRowLink("household-personal-details-section-1")).click();
       await $(RepeatingSexPage.female()).click();
       await $(RepeatingSexPage.submit()).click();
+      await $(RepeatingIsDependentPage.no()).click();
+      await $(RepeatingIsDependentPage.submit()).click();
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Female");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).to.be.false;
 
       await $(HouseHoldPersonalDetailsSectionSummaryPage.submit()).click();
       await $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
       await $(RepeatingSexPage.male()).click();
-      await $(RepeatingAgePage.submit()).click();
+      await $(RepeatingSexPage.submit()).click();
+      await $(RepeatingIsDependentPage.yes()).click();
+      await $(RepeatingIsDependentPage.submit()).click();
 
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).to.be.false;
@@ -217,6 +229,8 @@ describe("Routing and skipping section dependencies", () => {
       await $(HubPage.summaryRowLink("household-personal-details-section-1")).click();
       await $(RepeatingSexPage.female()).click();
       await $(RepeatingSexPage.submit()).click();
+      await $(RepeatingIsDependentPage.no()).click();
+      await $(RepeatingIsDependentPage.submit()).click();
       await $(HouseHoldPersonalDetailsSectionSummaryPage.submit()).click();
 
       await editNoToSkipAgeQuestion();
@@ -232,6 +246,108 @@ describe("Routing and skipping section dependencies", () => {
       await expect(await $(HubPage.summaryRowState("household-personal-details-section-2")).getText()).to.equal("Not started");
     });
   });
+
+  // NEW FUNCTION -----------------------------------
+
+  describe("Given the routing and skipping section dependencies questionnaire", () => {
+    beforeEach("Load the survey", async () => {
+      await browser.openQuestionnaire("test_routing_and_skipping_section_dependencies.json");
+    });
+
+    it("When I answer 'No' to skipping the age question and populate the household with Repeating Age > 18, Then in each repeating section I am asked if they are smoker", async () => {
+      await answerNoToSkipAgeQuestion();
+
+      await addHouseholdMembers();
+
+      await $(HubPage.summaryRowLink("household-personal-details-section-1")).click();
+      await $(RepeatingSexPage.female()).click();
+      await $(RepeatingSexPage.submit()).click();
+      await $(RepeatingAgePage.answer()).setValue("45");
+      await $(RepeatingAgePage.submit()).click();
+      await $(RepeatingIsDependentPage.no()).click();
+      await $(RepeatingIsDependentPage.submit()).click();
+      await $(RepeatingIsSmokerPage.no()).click();
+      await $(RepeatingIsSmokerPage.submit()).click();
+
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Female");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("45");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).getText()).to.contain("No");
+
+      await $(HouseHoldPersonalDetailsSectionSummaryPage.submit()).click();
+      await $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
+      await $(RepeatingSexPage.male()).click();
+      await $(RepeatingSexPage.submit()).click();
+      await $(RepeatingAgePage.answer()).setValue("19");
+      await $(RepeatingAgePage.submit()).click();
+      await $(RepeatingIsDependentPage.yes()).click();
+      await $(RepeatingIsDependentPage.submit()).click();
+      await $(RepeatingIsSmokerPage.no()).click();
+      await $(RepeatingIsSmokerPage.submit()).click();
+
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("19");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).getText()).to.contain("No");
+    });
+
+    it("When I answer 'No' to skipping the age question and populate the household with Repeating Age < 18, Then in each repeating section I am not asked if they are smoker", async () => {
+      await answerNoToSkipAgeQuestion();
+
+      await addHouseholdMembers();
+
+      await $(HubPage.summaryRowLink("household-personal-details-section-1")).click();
+      await $(RepeatingSexPage.female()).click();
+      await $(RepeatingSexPage.submit()).click();
+      await $(RepeatingAgePage.answer()).setValue("15");
+      await $(RepeatingAgePage.submit()).click();
+      await $(RepeatingIsDependentPage.yes()).click();
+      await $(RepeatingIsDependentPage.submit()).click();
+
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Female");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("15");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).isExisting()).to.be.false;
+
+      await $(HouseHoldPersonalDetailsSectionSummaryPage.submit()).click();
+      await $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
+      await $(RepeatingSexPage.male()).click();
+      await $(RepeatingSexPage.submit()).click();
+      await $(RepeatingAgePage.answer()).setValue("10");
+      await $(RepeatingAgePage.submit()).click();
+      await $(RepeatingIsDependentPage.yes()).click();
+      await $(RepeatingIsDependentPage.submit()).click();
+
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("10");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).isExisting()).to.be.false;
+    });
+
+    it("When I answer 'Yes' to skipping the age question and populate the household, Then in each repeating section I am not asked if they are smoker", async () => {
+      await answerYesToSkipAgeQuestion();
+
+      await addHouseholdMembers();
+
+      await $(HubPage.summaryRowLink("household-personal-details-section-1")).click();
+      await $(RepeatingSexPage.female()).click();
+      await $(RepeatingSexPage.submit()).click();
+      await $(RepeatingIsDependentPage.no()).click();
+      await $(RepeatingIsDependentPage.submit()).click();
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Female");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).to.be.false;
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).isExisting()).to.be.false;
+
+      await $(HouseHoldPersonalDetailsSectionSummaryPage.submit()).click();
+      await $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
+      await $(RepeatingSexPage.male()).click();
+      await $(RepeatingSexPage.submit()).click();
+      await $(RepeatingIsDependentPage.yes()).click();
+      await $(RepeatingIsDependentPage.submit()).click();
+
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).to.be.false;
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).isExisting()).to.be.false;
+    });
+  });
+
+  // NEW FUNCTION -----------------------------------
 });
 
 const addHouseholdMembers = async () => {
