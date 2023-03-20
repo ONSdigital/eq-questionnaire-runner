@@ -812,3 +812,67 @@ def test_when_rules_section_dependencies_new_calculated_summary(
 def test_has_operator_returns_correct_value(rule, expected_result):
     result = QuestionnaireSchema.has_operator(rule)
     assert result == expected_result
+
+
+@pytest.mark.parametrize(
+    "answer_id, schema, expected_result",
+    (
+        (
+            "mandatory-checkbox-answer",
+            QuestionnaireSchema(
+                {
+                    "sections": [
+                        {
+                            "id": "default-section",
+                            "groups": [
+                                {
+                                    "blocks": [
+                                        {
+                                            "type": "Question",
+                                            "id": "mandatory-checkbox",
+                                            "question": {
+                                                "answers": [
+                                                    {
+                                                        "id": "mandatory-checkbox-answer",
+                                                        "options": [
+                                                            {
+                                                                "label": "Tesco",
+                                                                "value": "Tesco",
+                                                            },
+                                                            {
+                                                                "label": "Aldi",
+                                                                "value": "Aldi",
+                                                            },
+                                                            {
+                                                                "label": "Asda",
+                                                                "value": "Asda",
+                                                            },
+                                                            {
+                                                                "label": "Sainsbury’s",
+                                                                "value": "Sainsbury’s",
+                                                            },
+                                                        ],
+                                                        "type": "Checkbox",
+                                                    }
+                                                ],
+                                                "id": "mandatory-checkbox-question",
+                                                "type": "General",
+                                            },
+                                        },
+                                    ],
+                                    "id": "checkboxes",
+                                }
+                            ],
+                        }
+                    ]
+                }
+            ),
+            ["Tesco", "Aldi", "Asda", "Sainsbury’s"],
+        ),
+    ),
+)
+def test_get_answer_values_by_answer_id(answer_id, schema, expected_result):
+    result = QuestionnaireSchema.get_answer_values_by_answer_id(
+        answer_id=answer_id, self=schema
+    )
+    assert result == expected_result

@@ -274,7 +274,21 @@ class QuestionnaireStoreUpdater:
         is_repeating_answer = self._schema.is_answer_in_repeating_section(answer_id)
 
         for dependency in dependencies:
-            for list_item_id in self._get_list_item_ids_for_dependency(
+            possible_answers = set(
+                self._schema.get_answer_values_by_answer_id(answer_id)
+            )
+            if (answers := self._answer_store.get_answer(answer_id)) and isinstance(
+                answers.value, list
+            ):
+                # previous mandatory Answer is not optional at this point, similar issues below
+                answers = set(answers.value)  # type: ignore
+
+                for list_item_id in list(possible_answers.difference(answers)):  # type: ignore
+                    self._answer_store.remove_answer(
+                        dependency.answer_id, list_item_id=list_item_id  # type: ignore
+                    )
+
+            for list_item_id in self._get_list_item_ids_for_dependency(  # type: ignore
                 dependency, is_repeating_answer
             ):
                 if dependency.answer_id:
@@ -322,18 +336,32 @@ class QuestionnaireStoreUpdater:
                 self.dependent_sections.add(DependentSection(section_id, None, None))
 
     def update_answers(
-        self, form_data: Mapping[str, Any], list_item_id: Optional[str] = None
+        self,
+        form_data: Mapping[str, Any],
+        list_item_id: Optional[str] = None,
+        dynamic_answer_ids=None,
     ) -> None:
         list_item_id = list_item_id or self._current_location.list_item_id
         answer_ids_for_question = self._schema.get_answer_ids_for_question(
             self._current_question
         )
 
-        for answer_id, answer_value in form_data.items():
+        for index, (answer_id, answer_value) in enumerate(form_data.items()):
             if answer_id not in answer_ids_for_question:
                 continue
+            if dynamic_answer_ids:
+                for dynamic_answer_id in dynamic_answer_ids:
+                    if dynamic_answer_id in answer_id:
+                        answer_updated = self._update_answer(
+                            dynamic_answer_id,
+                            dynamic_answer_ids[dynamic_answer_id][index],
+                            answer_value,
+                        )
+            else:
+                answer_updated = self._update_answer(
+                    answer_id, list_item_id, answer_value
+                )
 
-            answer_updated = self._update_answer(answer_id, list_item_id, answer_value)
             if answer_updated:
                 self._capture_section_dependencies_for_answer(answer_id)
                 self._capture_block_dependencies_for_answer(answer_id)

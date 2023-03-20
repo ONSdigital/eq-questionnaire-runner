@@ -1,6 +1,7 @@
 from copy import deepcopy
 from datetime import date
 from decimal import Decimal
+from html import unescape
 from typing import (
     TYPE_CHECKING,
     Iterable,
@@ -232,7 +233,7 @@ class Operations:
             options["label"]
             for answer in answers
             for options in answer["options"]
-            if value == options["value"]
+            if unescape(value) == options["value"]
         ][0]
 
         if isinstance(label_options, str):

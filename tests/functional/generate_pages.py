@@ -472,11 +472,15 @@ def process_question(question, page_spec, num_questions, page_name):
     for answer in question.get("answers", []):
         process_answer(answer, page_spec, long_names, page_name)
 
-    question_or_answer_id = (
-        question["id"]
-        if question["type"] in ["DateRange", "MutuallyExclusive"]
-        else question["answers"][0]["id"]
-    )
+    try:
+        question_or_answer_id = (
+            question["id"]
+            if question["type"] in ["DateRange", "MutuallyExclusive"]
+            else question["answers"][0]["id"]
+        )
+    except IndexError:
+        question_or_answer_id = None
+
     question_name = generate_pascal_case_from_id(question["id"]).replace(page_name, "")
     question_context = {
         "questionName": camel_case(question_name),

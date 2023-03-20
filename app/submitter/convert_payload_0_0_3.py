@@ -69,6 +69,13 @@ def convert_answers_to_payload_0_0_3(
                         answers_payload=answers_payload,
                     )
 
+                if block.get("question") and (
+                    dynamic_answers := block["question"].get("dynamic_answers")
+                ):
+                    resolve_dynamic_answers(
+                        dynamic_answers, answer_store, answers_payload
+                    )
+
                 answer_ids = schema.get_answer_ids_for_block(block_id)
                 answers_in_block = answer_store.get_answers_by_answer_id(
                     answer_ids, list_item_id=routing_path.list_item_id
@@ -145,3 +152,21 @@ def add_relationships_unrelated_answers(
             )
         ):
             answers_payload.add_or_update(unrelated_answer)
+
+
+def resolve_dynamic_answers(
+    dynamic_answers: dict, answer_store: AnswerStore, answers_payload: AnswerStore
+) -> None:
+    answer_id = dynamic_answers["values"].get("identifier")
+    if answer := answer_store.get_answer(answer_id):
+        # list_item_ids is always a list since the only answer value source is checkbox answer options
+        list_item_ids = answer.value  # type: ignore
+        answers = []
+        for list_item_id in list_item_ids:  # type: ignore
+            for answer in dynamic_answers["answers"]:
+                answers += answer_store.get_answers_by_answer_id(
+                    [answer["id"]], list_item_id=list_item_id  # type: ignore
+                )
+
+        for answer in answers:
+            answers_payload.add_or_update(answer)

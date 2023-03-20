@@ -1,13 +1,17 @@
 from functools import cached_property
-from typing import Any
+from typing import Any, MutableMapping, Union
 
 from flask import url_for
 from flask_babel import gettext
 
+from app.data_models import QuestionnaireStore
 from app.forms.questionnaire_form import generate_form
 from app.helpers import get_address_lookup_api_auth_token
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
+from app.questionnaire.placeholder_renderer import resolve_dynamic_id
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
+from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.variants import transform_variants
 from app.views.contexts import ListContext
 from app.views.contexts.question import build_question_context
@@ -15,12 +19,41 @@ from app.views.handlers.block import BlockHandler
 
 
 class Question(BlockHandler):
+    def __init__(
+        self,
+        schema: QuestionnaireSchema,
+        questionnaire_store: QuestionnaireStore,
+        language: str,
+        current_location: Union[Location, RelationshipLocation],
+        request_args: MutableMapping,
+        form_data: MutableMapping,
+    ) -> None:
+        super().__init__(
+            schema,
+            questionnaire_store,
+            language,
+            current_location,
+            request_args,
+            form_data,
+        )
+        self.dynamic_answer_ids: dict[str, list] = {}
+
     @staticmethod
     def _has_redirect_to_list_add_action(answer_action):
         return answer_action and answer_action["type"] == "RedirectToListAddBlock"
 
     @cached_property
     def form(self):
+        self.dynamic_answer_ids = {}
+        if question := self.block.get("question"):
+            if dynamic_answers := question.get("dynamic_answers"):
+                for answer in dynamic_answers.get("answers"):
+                    self.dynamic_answer_ids[
+                        answer["id"]
+                    ] = self._questionnaire_store.answer_store.get_answer(
+                        dynamic_answers["values"].get("identifier")
+                    ).value
+
         question_json = self.rendered_block.get("question")
         if self._form_data:
             return generate_form(
@@ -110,6 +143,21 @@ class Question(BlockHandler):
 
     def _get_answers_for_question(self, question_json) -> dict[str, Any]:
         answer_ids = self._schema.get_answer_ids_for_question(question_json)
+        if self.dynamic_answer_ids:
+            answers = []
+            for dynamic_answer_id in self.dynamic_answer_ids.items():
+                for list_item_id in dynamic_answer_id[1]:
+                    answers += (
+                        self._questionnaire_store.answer_store.get_answers_by_answer_id(
+                            answer_ids=[dynamic_answer_id[0]], list_item_id=list_item_id
+                        )
+                    )
+
+            return {
+                resolve_dynamic_id(answer.answer_id, answer.list_item_id): answer.value
+                for answer in answers
+                if answer.list_item_id
+            }
         answers = self._questionnaire_store.answer_store.get_answers_by_answer_id(
             answer_ids=answer_ids, list_item_id=self._current_location.list_item_id
         )
@@ -189,7 +237,11 @@ class Question(BlockHandler):
     def handle_post(self):
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
-        self.questionnaire_store_updater.update_answers(self.form.data)
+        self.questionnaire_store_updater.update_answers(
+            form_data=self.form.data,
+            list_item_id=None,
+            dynamic_answer_ids=self.dynamic_answer_ids,
+        )
         self.questionnaire_store_updater.update_progress_for_dependent_sections()
         if self.questionnaire_store_updater.is_dirty():
             self._routing_path = self.router.routing_path(

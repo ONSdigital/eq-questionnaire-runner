@@ -1458,3 +1458,47 @@ def test_no_answers_codes_in_payload_when_no_questions_answered(version):
 
     # Then
     assert "answer_codes" not in data_payload
+
+
+@pytest.mark.parametrize(
+    "version",
+    (AuthPayloadVersion.V2,),
+)
+def test_payload_dynamic_answers(version):
+    questionnaire_store = get_questionnaire_store(version)
+
+    full_routing_path = [
+        RoutingPath(
+            ["mandatory-checkbox", "dynamic-answer"],
+            section_id="default-section",
+        )
+    ]
+
+    questionnaire_store.answer_store = AnswerStore(
+        [
+            Answer("mandatory-checkbox-answer", ["Tesco", "Aldi"], None).to_dict(),
+            Answer("percentage-of-shopping", 12, "Tesco").to_dict(),
+            Answer("percentage-of-shopping", 21, "Aldi").to_dict(),
+        ]
+    )
+
+    schema = load_schema_from_name("test_dynamic_answers_checkbox")
+
+    data_payload = get_payload_data(
+        questionnaire_store.answer_store,
+        questionnaire_store.list_store,
+        schema,
+        full_routing_path,
+        questionnaire_store.metadata,
+        questionnaire_store.response_metadata,
+    )
+
+    # Then
+    assert (
+        Answer(answer_id="percentage-of-shopping", value=12, list_item_id="Tesco")
+        in data_payload["answers"]
+    )
+    assert (
+        Answer(answer_id="percentage-of-shopping", value=21, list_item_id="Aldi")
+        in data_payload["answers"]
+    )

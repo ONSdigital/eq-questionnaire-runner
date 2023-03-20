@@ -49,6 +49,147 @@ def test_save_answers_with_form_data(
     }
 
 
+def test_update_dynamic_answers(
+    mock_location,
+    mock_empty_schema,
+    mock_questionnaire_store,
+    mock_router,
+):
+    mock_empty_schema.get_answer_ids_for_question.return_value = [
+        "percentage-of-shopping-tesco",
+        "percentage-of-shopping-aldi",
+    ]
+    mock_empty_schema.answer_dependencies = {
+        "mandatory-checkbox-answer": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="non-mandatory-checkbox",
+                for_list=None,
+                answer_id="percentage-of-shopping",
+            )
+        }
+    }
+
+    mock_questionnaire_store.answer_store = AnswerStore(
+        [
+            {"answer_id": "mandatory-checkbox-answer", "value": ["Tesco", "Aldi"]},
+            {
+                "answer_id": "percentage-of-shopping",
+                "value": 12,
+                "list_item_id": "Tesco",
+            },
+            {
+                "answer_id": "percentage-of-shopping",
+                "value": 21,
+                "list_item_id": "Aldi",
+            },
+        ]
+    )
+
+    form_data = {"percentage-of-shopping-tesco": 12, "percentage-of-shopping-aldi": 11}
+
+    current_question = mock_empty_schema.get_block(mock_location.block_id)["question"]
+
+    questionnaire_store_updater = QuestionnaireStoreUpdater(
+        mock_location,
+        mock_empty_schema,
+        mock_questionnaire_store,
+        mock_router,
+        current_question,
+    )
+    questionnaire_store_updater.update_answers(
+        form_data, dynamic_answer_ids={"percentage-of-shopping": ["Tesco", "Aldi"]}
+    )
+
+    assert mock_questionnaire_store.answer_store == AnswerStore(
+        [
+            {"answer_id": "mandatory-checkbox-answer", "value": ["Tesco", "Aldi"]},
+            {
+                "answer_id": "percentage-of-shopping",
+                "value": 12,
+                "list_item_id": "Tesco",
+            },
+            {
+                "answer_id": "percentage-of-shopping",
+                "value": 11,
+                "list_item_id": "Aldi",
+            },
+        ]
+    )
+
+
+def test_remove_dynamic_answers(
+    mock_location,
+    mock_empty_schema,
+    mock_questionnaire_store,
+    mock_router,
+):
+    mock_empty_schema.get_answer_ids_for_question.return_value = [
+        "mandatory-checkbox-answer"
+    ]
+    mock_empty_schema.get_answer_values_by_answer_id.return_value = [
+        "Tesco",
+        "Aldi",
+        "Asda",
+        "Sainsburys",
+    ]
+    mock_empty_schema.answer_dependencies = {
+        "mandatory-checkbox-answer": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="non-mandatory-checkbox",
+                for_list=None,
+                answer_id="percentage-of-shopping",
+            )
+        }
+    }
+
+    mock_questionnaire_store.answer_store = AnswerStore(
+        [
+            {"answer_id": "mandatory-checkbox-answer", "value": ["Tesco", "Aldi"]},
+            {
+                "answer_id": "percentage-of-shopping",
+                "value": 12,
+                "list_item_id": "Tesco",
+            },
+            {
+                "answer_id": "percentage-of-shopping",
+                "value": 21,
+                "list_item_id": "Aldi",
+            },
+        ]
+    )
+
+    form_data = {"mandatory-checkbox-answer": ["Tesco"]}
+
+    current_question = mock_empty_schema.get_block(mock_location.block_id)["question"]
+
+    questionnaire_store_updater = QuestionnaireStoreUpdater(
+        mock_location,
+        mock_empty_schema,
+        mock_questionnaire_store,
+        mock_router,
+        current_question,
+    )
+    questionnaire_store_updater.update_answers(form_data)
+
+    assert mock_questionnaire_store.answer_store == AnswerStore(
+        [
+            {
+                "answer_id": "mandatory-checkbox-answer",
+                "value": [
+                    "Tesco",
+                ],
+            },
+            {
+                "answer_id": "percentage-of-shopping",
+                "value": 12,
+                "list_item_id": "Tesco",
+            },
+        ]
+    )
+
+
 def test_save_empty_answer_removes_existing_answer(
     mock_empty_schema, mock_empty_answer_store, mock_questionnaire_store, mock_router
 ):

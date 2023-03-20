@@ -7,6 +7,7 @@ from app.data_models import AnswerStore
 from app.data_models.answer import AnswerValueEscapedTypes, escape_answer_value
 from app.forms.field_handlers.select_handlers import DynamicAnswerOptions
 from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
+from app.questionnaire.placeholder_renderer import resolve_dynamic_id, resolve_value
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.views.contexts.summary.answer import (
@@ -35,6 +36,13 @@ class Question:
         self.type = question_schema["type"]
         self.schema = schema
         self.answer_schemas = iter(question_schema["answers"])
+        if dynamic_answers := question_schema.get("dynamic_answers"):
+            self.dynamic_answer_schemas = iter(dynamic_answers.get("answers", {}))
+            self.dynamic_answer_identifier = dynamic_answers.get("values")["identifier"]
+        else:
+            self.dynamic_answer_schemas = None
+            self.dynamic_answer_identifier = None
+        self.answer_store = answer_store
         self.summary = question_schema.get("summary")
         self.title = (
             question_schema.get("title") or question_schema["answers"][0]["label"]
@@ -62,6 +70,7 @@ class Question:
 
         return escape_answer_value(answer.value) if answer else None
 
+    # pylint: disable=too-many-locals
     def _build_answers(
         self,
         *,
@@ -113,6 +122,46 @@ class Question:
                 return_to_block_id=return_to_block_id,
             ).serialize()
             summary_answers.append(summary_answer)
+
+        if self.dynamic_answer_schemas:
+            for answer_schema in self.dynamic_answer_schemas:
+                for answer in self.get_answer(
+                    self.answer_store, self.dynamic_answer_identifier
+                ):  # type: ignore
+                    # get_answer always returns a list since the only answer value source is checkbox answer options
+                    self.list_item_id = answer  # type: ignore
+                    # Not optional string at this point
+                    if self.list_item_id:
+                        dynamic_answer_value: Optional[
+                            AnswerValueEscapedTypes
+                        ] = self.get_answer(answer_store, f"{answer_schema['id']}")
+
+                        resolved_answer_schema = self.schema.get_mutable_deepcopy(
+                            answer_schema
+                        )
+                        resolved_answer_schema["id"] = resolve_dynamic_id(
+                            answer_schema["id"], self.list_item_id
+                        )
+
+                        resolve_value(resolved_answer_schema, self.list_item_id)
+
+                        answer = self._build_answer(
+                            answer_store,
+                            question_schema,
+                            answer_schema,
+                            dynamic_answer_value,
+                        )
+
+                        summary_answer = Answer(
+                            answer_schema=resolved_answer_schema,
+                            answer_value=answer,
+                            block_id=block_id,
+                            list_name=list_name,
+                            list_item_id=self.list_item_id,
+                            return_to=return_to,
+                            return_to_block_id=return_to_block_id,
+                        ).serialize()
+                        summary_answers.append(summary_answer)
 
         if question_schema["type"] == "MutuallyExclusive":
             exclusive_option = summary_answers[-1]["value"]

@@ -251,6 +251,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     )
                     continue
 
+                if dynamic_answers := question.get("dynamic_answers"):
+                    for answer in dynamic_answers.get("answers"):
+                        value_source = dynamic_answers["values"]
+                        self._update_answer_dependencies_for_value_source(
+                            value_source, block_id=block["id"], answer_id=answer["id"]
+                        )
+
                 for answer in question.get("answers", []):
                     self._update_answer_dependencies_for_answer(
                         answer, block_id=block["id"]
@@ -935,3 +942,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             for item in summary.get("items", []):
                 if item["for_list"] == list_name and item.get("item_anchor_answer_id"):
                     return f"#{str(item['item_anchor_answer_id'])}"
+
+    def get_answer_values_by_answer_id(self, answer_id: str) -> list[str]:
+        answer_block = self.get_answers_by_answer_id(answer_id)
+        values: list = []
+        for answer in answer_block:
+            if options := answer.get("options"):
+                values.extend(option.get("value") for option in options)
+        return values

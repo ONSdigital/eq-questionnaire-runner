@@ -1,0 +1,127 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Dynamic Answers Checkbox Answer Source",
+    "theme": "default",
+    "description": "A questionnaire to demo dynamic answers checkbox answer source.",
+    "messages": {
+        "NUMBER_TOO_LARGE": "Number is too large",
+        "NUMBER_TOO_SMALL": "Number cannot be less than zero",
+        "INVALID_NUMBER": "Please enter an integer"
+    },
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "mandatory-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "mandatory-checkbox-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Tesco",
+                                                "value": "Tesco"
+                                            },
+                                            {
+                                                "label": "Aldi",
+                                                "value": "Aldi"
+                                            },
+                                            {
+                                                "label": "Asda",
+                                                "value": "Asda"
+                                            },
+                                            {
+                                                "label": "Sainsbury’s",
+                                                "value": "Sainsbury’s"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "mandatory-checkbox-question",
+                                "title": "Which supermarkets do you use for your weekly shopping?",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "dynamic-answer",
+                            "question": {
+                                "dynamic_answers": {
+                                    "values": {
+                                        "source": "answers",
+                                        "identifier": "mandatory-checkbox-answer"
+                                    },
+                                    "answers": [
+                                        {
+                                            "label": {
+                                                "text": "Percentage of shopping at {transformed_value}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "transformed_value",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "option_label_from_value",
+                                                                "arguments": {
+                                                                    "value": "self",
+                                                                    "answer_id": "mandatory-checkbox-answer"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            "id": "percentage-of-shopping",
+                                            "mandatory": false,
+                                            "type": "Percentage",
+                                            "maximum": {
+                                                "value": 100
+                                            },
+                                            "decimal_places": 0
+                                        }
+                                    ]
+                                },
+                                "answers": [],
+                                "id": "dynamic-answer-question",
+                                "title": "What percent of your shopping do you do at each of the following supermarket?",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "dynamic"
+                }
+            ]
+        }
+    ]
+}

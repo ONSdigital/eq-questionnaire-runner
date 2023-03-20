@@ -1,5 +1,6 @@
 # pylint: disable=too-many-lines
 import pytest
+from markupsafe import Markup
 from mock import MagicMock
 
 from app.data_models import Answer
@@ -983,3 +984,141 @@ def test_get_answer(answer_schema, answer_store, expected, list_store):
 
     # Then
     assert question.get_answer(answer_store, "building") == expected
+
+
+@pytest.mark.usefixtures("app")
+@pytest.mark.parametrize(
+    "answer_store, expected",
+    (
+        (
+            AnswerStore(
+                [
+                    {
+                        "answer_id": "mandatory-checkbox-answer",
+                        "value": ["Tesco", "Aldi"],
+                    },
+                    {
+                        "answer_id": "percentage-of-shopping",
+                        "value": 12,
+                        "list_item_id": "Tesco",
+                    },
+                    {
+                        "answer_id": "percentage-of-shopping",
+                        "value": 21,
+                        "list_item_id": "Aldi",
+                    },
+                ]
+            ),
+            [
+                {
+                    "id": "percentage-of-shopping-tesco",
+                    "label": {
+                        "text": "Percentage of shopping at {transformed_value}",
+                        "placeholders": [
+                            {
+                                "placeholder": "transformed_value",
+                                "transforms": [
+                                    {
+                                        "transform": "option_label_from_value",
+                                        "arguments": {
+                                            "value": Markup("Tesco"),
+                                            "answer_id": "mandatory-checkbox-answer",
+                                        },
+                                    }
+                                ],
+                            }
+                        ],
+                    },
+                    "value": 12,
+                    "type": "percentage",
+                    "unit": None,
+                    "unit_length": None,
+                    "currency": None,
+                    "link": "/questionnaire/address-group/?list_item_id=Tesco#percentage-of-shopping-tesco",
+                },
+                {
+                    "id": "percentage-of-shopping-aldi",
+                    "label": {
+                        "text": "Percentage of shopping at {transformed_value}",
+                        "placeholders": [
+                            {
+                                "placeholder": "transformed_value",
+                                "transforms": [
+                                    {
+                                        "transform": "option_label_from_value",
+                                        "arguments": {
+                                            "value": Markup("Aldi"),
+                                            "answer_id": "mandatory-checkbox-answer",
+                                        },
+                                    }
+                                ],
+                            }
+                        ],
+                    },
+                    "value": 21,
+                    "type": "percentage",
+                    "unit": None,
+                    "unit_length": None,
+                    "currency": None,
+                    "link": "/questionnaire/address-group/?list_item_id=Aldi#percentage-of-shopping-aldi",
+                },
+            ],
+        ),
+    ),
+)
+def test_dynamic_answers(answer_store, expected, list_store):
+    schema = address_questionnaire_schema("Newline")
+
+    # Given
+    question_schema = {
+        "dynamic_answers": {
+            "values": {"source": "answers", "identifier": "mandatory-checkbox-answer"},
+            "answers": [
+                {
+                    "label": {
+                        "text": "Percentage of shopping at {transformed_value}",
+                        "placeholders": [
+                            {
+                                "placeholder": "transformed_value",
+                                "transforms": [
+                                    {
+                                        "transform": "option_label_from_value",
+                                        "arguments": {
+                                            "value": "self",
+                                            "answer_id": "mandatory-checkbox-answer",
+                                        },
+                                    }
+                                ],
+                            }
+                        ],
+                    },
+                    "id": "percentage-of-shopping",
+                    "mandatory": False,
+                    "type": "Percentage",
+                    "maximum": {"value": 100},
+                    "decimal_places": 0,
+                }
+            ],
+        },
+        "answers": [],
+        "id": "non-mandatory-checkbox-question",
+        "title": "What percent of your shopping do you do at each of the following supermarket?",
+        "type": "General",
+    }
+
+    # When
+    question = Question(
+        question_schema,
+        answer_store=answer_store,
+        schema=schema,
+        rule_evaluator=get_rule_evaluator(answer_store, list_store, schema),
+        value_source_resolver=get_value_source_resolver(
+            answer_store, list_store, schema
+        ),
+        location=None,
+        block_id="address-group",
+        return_to=None,
+    )
+
+    # Then
+    assert question.answers == expected

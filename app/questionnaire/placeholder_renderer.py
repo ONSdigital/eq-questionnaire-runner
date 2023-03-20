@@ -114,6 +114,34 @@ class PlaceholderRenderer:
         data_to_render_mutable: dict[
             str, Any
         ] = QuestionnaireSchema.get_mutable_deepcopy(data_to_render)
+        if dynamic_answers := data_to_render_mutable.get("dynamic_answers", {}):
+            # previous mandatory Answer is not optional at this point, always exists and has .value attribute
+            answer_values_list = self._answer_store.get_answer(  # type: ignore
+                dynamic_answers["values"].get("identifier")
+            ).value
+            resolved_dynamic_answers = []
+            for dynamic_answer in dynamic_answers["answers"]:
+                # answer is always a sequence in case of dynamic answers answer value source (checkbox)
+                for answer_value in answer_values_list:  # type: ignore
+                    resolved_dynamic_answer = self._schema.get_mutable_deepcopy(
+                        dynamic_answer
+                    )
+                    resolve_value(resolved_dynamic_answer, answer_value)
+                    resolved_id = resolve_dynamic_id(dynamic_answer["id"], answer_value)
+                    resolved_dynamic_answer["id"] = resolved_id
+                    # pylint: disable=protected-access
+                    self._schema._parent_id_map[
+                        resolved_id
+                    ] = data_to_render_mutable.get(
+                        "id"
+                        # "id" is always a string at this point
+                    )  # type: ignore
+
+                    resolved_dynamic_answers.append(resolved_dynamic_answer)
+
+            data_to_render_mutable["answers"] += resolved_dynamic_answers
+            del data_to_render_mutable["dynamic_answers"]
+
         pointers = find_pointers_containing(data_to_render_mutable, "placeholders")
 
         for pointer in pointers:
@@ -123,3 +151,18 @@ class PlaceholderRenderer:
             set_pointer(data_to_render_mutable, pointer, rendered_text)
 
         return data_to_render_mutable
+
+
+def resolve_value(answer_dict: dict, answer_value: str) -> None:
+    for key in answer_dict:
+        if isinstance(answer_dict[key], dict):
+            resolve_value(answer_dict[key], answer_value)
+        if isinstance(answer_dict[key], list):
+            for item in answer_dict[key]:
+                resolve_value(item, answer_value)
+        if key == "value" and answer_dict[key] == "self":
+            answer_dict[key] = answer_value
+
+
+def resolve_dynamic_id(answer_id: str, answer_value: str) -> str:
+    return f"{answer_id}-{answer_value.lower().replace(' ', '-').replace('’', '')}"

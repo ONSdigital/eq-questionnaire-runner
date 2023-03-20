@@ -1117,6 +1117,46 @@ def placholder_transform_question_json():
 
 
 @pytest.fixture
+@pytest.mark.usefixtures("app", "gb_locale")
+def placeholder_transform_question_dynamic_answers_json():
+    return {
+        "dynamic_answers": {
+            "values": {"source": "answers", "identifier": "mandatory-checkbox-answer"},
+            "answers": [
+                {
+                    "label": {
+                        "text": "Percentage of shopping at {transformed_value}",
+                        "placeholders": [
+                            {
+                                "placeholder": "transformed_value",
+                                "transforms": [
+                                    {
+                                        "transform": "option_label_from_value",
+                                        "arguments": {
+                                            "value": "self",
+                                            "answer_id": "mandatory-checkbox-answer",
+                                        },
+                                    }
+                                ],
+                            }
+                        ],
+                    },
+                    "id": "percentage-of-shopping",
+                    "mandatory": False,
+                    "type": "Percentage",
+                    "maximum": {"value": 100},
+                    "decimal_places": 0,
+                }
+            ],
+        },
+        "answers": [],
+        "id": "non-mandatory-checkbox-question",
+        "title": "What percent of your shopping do you do at each of the following supermarket?",
+        "type": "General",
+    }
+
+
+@pytest.fixture
 def placholder_transform_pointers(placholder_transform_question_json):
     return list(
         find_pointers_containing(placholder_transform_question_json, "placeholders")
