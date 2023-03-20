@@ -1,9 +1,9 @@
 from .business_config import (
-    BEISBusinessSurveyConfig,
-    BEISNIBusinessSurveyConfig,
     BusinessSurveyConfig,
     DBTBusinessSurveyConfig,
     DBTNIBusinessSurveyConfig,
+    DBTDSITBusinessSurveyConfig,
+    DBTDSITNIBusinessSurveyConfig,
     NIBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
 )
@@ -24,10 +24,10 @@ __all__ = [
     "WelshCensusSurveyConfig",
     "BusinessSurveyConfig",
     "NIBusinessSurveyConfig",
-    "BEISBusinessSurveyConfig",
-    "BEISNIBusinessSurveyConfig",
     "DBTBusinessSurveyConfig",
     "DBTNIBusinessSurveyConfig",
+    "DBTDSITBusinessSurveyConfig",
+    "DBTDSITNIBusinessSurveyConfig",
     "ORRBusinessSurveyConfig",
     "Link",
 ]
