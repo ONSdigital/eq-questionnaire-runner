@@ -16,6 +16,8 @@ from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config import (
     BEISBusinessSurveyConfig,
     BEISNIBusinessSurveyConfig,
+    DBTBusinessSurveyConfig,
+    DBTNIBusinessSurveyConfig,
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
@@ -184,6 +186,8 @@ def survey_config_mapping(
         SurveyType.NORTHERN_IRELAND: NIBusinessSurveyConfig,
         SurveyType.BEIS: BEISBusinessSurveyConfig,
         SurveyType.BEIS_NI: BEISNIBusinessSurveyConfig,
+        SurveyType.DBT: DBTBusinessSurveyConfig,
+        SurveyType.DBT_NI: DBTNIBusinessSurveyConfig,
         SurveyType.ORR: ORRBusinessSurveyConfig,
         SurveyType.CENSUS: (
             WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig

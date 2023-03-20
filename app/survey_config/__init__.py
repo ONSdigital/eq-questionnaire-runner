@@ -1,6 +1,8 @@
 from .business_config import (
     BEISBusinessSurveyConfig,
     BEISNIBusinessSurveyConfig,
+    DBTBusinessSurveyConfig,
+    DBTNIBusinessSurveyConfig,
     BusinessSurveyConfig,
     NIBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
@@ -24,6 +26,8 @@ __all__ = [
     "NIBusinessSurveyConfig",
     "BEISBusinessSurveyConfig",
     "BEISNIBusinessSurveyConfig",
+    "DBTBusinessSurveyConfig",
+    "DBTNIBusinessSurveyConfig",
     "ORRBusinessSurveyConfig",
     "Link",
 ]

@@ -17,6 +17,8 @@ from app.settings import (
 from app.survey_config import (
     BEISBusinessSurveyConfig,
     BEISNIBusinessSurveyConfig,
+    DBTBusinessSurveyConfig,
+    DBTNIBusinessSurveyConfig,
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
@@ -275,6 +277,46 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
         (
             None,
             None,
+            DBTBusinessSurveyConfig(),
+            [
+                "ONS Surveys",
+                read_file("./templates/assets/images/dbt-logo-stacked.svg"),
+            ],
+        ),
+        (
+            SurveyType.DBT,
+            "Test",
+            DBTBusinessSurveyConfig(),
+            [
+                "Test",
+                read_file("./templates/assets/images/dbt-logo-stacked.svg"),
+            ],
+        ),
+        (
+            None,
+            None,
+            DBTNIBusinessSurveyConfig(),
+            [
+                "ONS Surveys",
+                read_file("./templates/assets/images/dbt-logo-stacked.svg")
+                + read_file("./templates/assets/images/finance-ni-logo-stacked.svg"),
+                None,
+            ],
+        ),
+        (
+            SurveyType.DBT_NI,
+            "Test",
+            DBTNIBusinessSurveyConfig(),
+            [
+                "Test",
+                read_file("./templates/assets/images/dbt-logo-stacked.svg")
+                + read_file("./templates/assets/images/finance-ni-logo-stacked.svg"),
+                None,
+            ],
+        ),
+        (
+            None,
+            None,
             ORRBusinessSurveyConfig(),
             [
                 "ONS Surveys",
@@ -436,6 +478,16 @@ def test_service_links_context(
             "en",
             f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
+                (
+            DBTBusinessSurveyConfig(),
+            "en",
+            f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
+        ),
+        (
+            DBTNIBusinessSurveyConfig(),
+            "en",
+            f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
+        ),
         (
             ORRBusinessSurveyConfig(),
             "en",
@@ -516,6 +568,16 @@ def test_sign_out_button_text_context(
             f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
         ),
         (
+            DBTBusinessSurveyConfig(),
+            True,
+            f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
+        ),
+        (
+            DBTNIBusinessSurveyConfig(),
+            True,
+            f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
+        ),
+        (
             ORRBusinessSurveyConfig(),
             True,
             f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
@@ -575,6 +637,16 @@ def test_cookie_settings_url_context(
             ACCOUNT_SERVICE_BASE_URL,
         ),
         (
+            DBTBusinessSurveyConfig(),
+            "en",
+            ACCOUNT_SERVICE_BASE_URL,
+        ),
+        (
+            DBTNIBusinessSurveyConfig(),
+            "en",
+            ACCOUNT_SERVICE_BASE_URL,
+        ),
+        (
             ORRBusinessSurveyConfig(),
             "en",
             ACCOUNT_SERVICE_BASE_URL,
@@ -618,6 +690,8 @@ def test_cookie_domain_context(
         NIBusinessSurveyConfig(),
         BEISBusinessSurveyConfig(),
         BEISNIBusinessSurveyConfig(),
+        DBTBusinessSurveyConfig(),
+        DBTNIBusinessSurveyConfig(),
         ORRBusinessSurveyConfig(),
     ],
 )
@@ -700,6 +774,14 @@ def test_account_service_my_todo_url_context(
             BEISNIBusinessSurveyConfig(),
             f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
         ),
+         (
+            DBTBusinessSurveyConfig(),
+            f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
+        ),
+        (
+            DBTNIBusinessSurveyConfig(),
+            f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
+        ),
         (
             ORRBusinessSurveyConfig(),
             f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
@@ -735,6 +817,8 @@ def test_account_service_log_out_url_context(
         (SurveyType.NORTHERN_IRELAND, "en", NIBusinessSurveyConfig),
         (SurveyType.BEIS, "en", BEISBusinessSurveyConfig),
         (SurveyType.BEIS_NI, "en", BEISNIBusinessSurveyConfig),
+        (SurveyType.DBT, "en", DBTBusinessSurveyConfig),
+        (SurveyType.DBT_NI, "en", DBTNIBusinessSurveyConfig),
         (SurveyType.ORR, "en", ORRBusinessSurveyConfig),
         (SurveyType.CENSUS, "en", CensusSurveyConfig),
         (SurveyType.CENSUS, "cy", WelshCensusSurveyConfig),
@@ -843,6 +927,8 @@ def test_context_set_from_app_config(app):
         (SurveyType.NORTHERN_IRELAND, "en", None),
         (SurveyType.BEIS, "en", None),
         (SurveyType.BEIS_NI, "en", None),
+        (SurveyType.DBT, "en", None),
+        (SurveyType.DBT_NI, "en", None),
         (SurveyType.ORR, "en", None),
         (SurveyType.CENSUS, "en", "census"),
         (SurveyType.CENSUS, "cy", "census"),
@@ -872,6 +958,8 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
         (SurveyType.NORTHERN_IRELAND, "en", "ONS Surveys"),
         (SurveyType.BEIS, "en", "ONS Surveys"),
         (SurveyType.BEIS_NI, "en", "ONS Surveys"),
+        (SurveyType.DBT, "en", "ONS Surveys"),
+        (SurveyType.DBT_NI, "en", "ONS Surveys"),
         (SurveyType.ORR, "en", "ONS Surveys"),
         (SurveyType.CENSUS, "en", "ONS Surveys"),
         (SurveyType.CENSUS, "cy", "ONS Surveys"),
@@ -945,6 +1033,18 @@ def test_use_default_survey_title_in_context_when_no_cookie(
         ),
         (
             SurveyType.BEIS_NI,
+            "en",
+            QuestionnaireSchema({"survey_id": "001"}),
+            [{"survey_id": "001"}],
+        ),
+        (
+            SurveyType.DBT,
+            "en",
+            QuestionnaireSchema({"survey_id": "001"}),
+            [{"survey_id": "001"}],
+        ),
+        (
+            SurveyType.DBT_NI,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
             [{"survey_id": "001"}],
