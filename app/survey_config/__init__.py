@@ -1,9 +1,9 @@
 from .business_config import (
     BEISBusinessSurveyConfig,
     BEISNIBusinessSurveyConfig,
+    BusinessSurveyConfig,
     DBTBusinessSurveyConfig,
     DBTNIBusinessSurveyConfig,
-    BusinessSurveyConfig,
     NIBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
 )

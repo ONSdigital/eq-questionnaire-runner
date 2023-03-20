@@ -17,11 +17,11 @@ from app.settings import (
 from app.survey_config import (
     BEISBusinessSurveyConfig,
     BEISNIBusinessSurveyConfig,
-    DBTBusinessSurveyConfig,
-    DBTNIBusinessSurveyConfig,
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
+    DBTBusinessSurveyConfig,
+    DBTNIBusinessSurveyConfig,
     NIBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
     SocialSurveyConfig,
@@ -478,7 +478,7 @@ def test_service_links_context(
             "en",
             f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
-                (
+        (
             DBTBusinessSurveyConfig(),
             "en",
             f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
@@ -774,7 +774,7 @@ def test_account_service_my_todo_url_context(
             BEISNIBusinessSurveyConfig(),
             f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
         ),
-         (
+        (
             DBTBusinessSurveyConfig(),
             f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
         ),

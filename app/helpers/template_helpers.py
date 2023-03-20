@@ -16,11 +16,11 @@ from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config import (
     BEISBusinessSurveyConfig,
     BEISNIBusinessSurveyConfig,
-    DBTBusinessSurveyConfig,
-    DBTNIBusinessSurveyConfig,
     BusinessSurveyConfig,
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
+    DBTBusinessSurveyConfig,
+    DBTNIBusinessSurveyConfig,
     NIBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
     SocialSurveyConfig,
