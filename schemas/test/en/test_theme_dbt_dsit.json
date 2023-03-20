@@ -4,7 +4,7 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Test Department for Business, Energy and Industrial Strategy",
+    "title": "Test Department for Business and Trade and Department for Science, Innovation and Technology",
     "theme": "dbt-dsit",
     "description": "A questionnaire to demo the DBT-DSIT survey theme",
     "metadata": [
