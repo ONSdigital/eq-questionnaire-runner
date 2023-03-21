@@ -375,10 +375,10 @@
                                     {
                                         "list": [
                                             {
-                                                "text": "Total currency values: <em>{total}</em>",
+                                                "text": "Total currency values: <em>{currency_total}</em>",
                                                 "placeholders": [
                                                     {
-                                                        "placeholder": "total",
+                                                        "placeholder": "currency_total",
                                                         "transforms": [
                                                             {
                                                                 "transform": "format_currency",
@@ -394,10 +394,10 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Total unit values: <em>{total}</em>",
+                                                "text": "Total unit values: <em>{unit_total}</em>",
                                                 "placeholders": [
                                                     {
-                                                        "placeholder": "total",
+                                                        "placeholder": "unit_total",
                                                         "transforms": [
                                                             {
                                                                 "transform": "format_number",
@@ -413,10 +413,10 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Total percentage values: <em>{total}</em>",
+                                                "text": "Total percentage values: <em>{percentage_total}</em>",
                                                 "placeholders": [
                                                     {
-                                                        "placeholder": "total",
+                                                        "placeholder": "percentage_total",
                                                         "transforms": [
                                                             {
                                                                 "transform": "format_number",
@@ -432,10 +432,10 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Total number values: <em>{total}</em>",
+                                                "text": "Total number values: <em>{number_total}</em>",
                                                 "placeholders": [
                                                     {
-                                                        "placeholder": "total",
+                                                        "placeholder": "number_total",
                                                         "transforms": [
                                                             {
                                                                 "transform": "format_number",
