@@ -1,3 +1,4 @@
+from collections import defaultdict
 from decimal import Decimal
 from typing import TYPE_CHECKING, Any, Mapping, MutableMapping, Sequence, Union
 
@@ -193,23 +194,20 @@ def get_block_ids_for_calculated_summary_dependencies(
     path: "PathFinder",
     sections_to_ignore: list | None = None,
 ) -> dict[str, list[str]]:
-    # Type ignore: Added to this method as the block will exist at this point
     blocks_id_by_section = {}
 
     sections_to_ignore = sections_to_ignore or []
-    dependent_sections = schema.calculated_summary_section_dependencies_by_block.get(
-        location.section_id
+    dependent_sections = defaultdict(
+        set,
+        schema.calculated_summary_section_dependencies_by_block[location.section_id],
     )
 
     if block_id := location.block_id:
-        try:
-            dependents = dependent_sections[block_id]  # type: ignore
-        except KeyError:
-            dependents = set()
+        dependents = dependent_sections[block_id]
     else:
         dependents = {
             section
-            for dependents in dependent_sections.values()  # type: ignore
+            for dependents in dependent_sections.values()
             if dependents
             for section in dependents
         }
