@@ -19,7 +19,7 @@ describe("Piping", () => {
       await $(TextfieldPage.firstText()).setValue("Fireman");
       await $(TextfieldPage.secondText()).setValue("Sam");
       await $(TextfieldPage.submit()).click();
-      await expect(await $(MultiplePipingPage.answerAddressLabel()).getText()).to.contain("1 The ONS, Newport, NP10 8XG, Wales");
+      await expect(await $(MultiplePipingPage.answerAddressOptionLabel()).getText()).to.contain("1 The ONS, Newport, NP10 8XG, Wales");
     });
 
     it("Given I enter values in multiple questions, When I navigate to the multiple piping question, Then I should see both values piped into the question", async () => {
