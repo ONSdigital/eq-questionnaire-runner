@@ -51,22 +51,9 @@ class PlaceholderRenderer:
         dict_to_render: Mapping[str, Any],
         pointer_to_render: str,
         list_item_id: str | None,
+        placeholder_parser: PlaceholderParser,
     ) -> str:
         pointer_data = resolve_pointer(dict_to_render, pointer_to_render)
-
-        placeholder_parser = PlaceholderParser(
-            language=self._language,
-            answer_store=self._answer_store,
-            list_store=self._list_store,
-            metadata=self._metadata,
-            response_metadata=self._response_metadata,
-            schema=self._schema,
-            list_item_id=list_item_id,
-            location=self._location,
-            renderer=self,
-            placeholder_preview_mode=self._placeholder_preview_mode,
-            progress_store=self._progress_store,
-        )
 
         return self.render_placeholder(pointer_data, list_item_id, placeholder_parser)
 
@@ -143,11 +130,26 @@ class PlaceholderRenderer:
         ] = QuestionnaireSchema.get_mutable_deepcopy(data_to_render)
         pointers = find_pointers_containing(data_to_render_mutable, "placeholders")
 
+        placeholder_parser = PlaceholderParser(
+            language=self._language,
+            answer_store=self._answer_store,
+            list_store=self._list_store,
+            metadata=self._metadata,
+            response_metadata=self._response_metadata,
+            schema=self._schema,
+            list_item_id=list_item_id,
+            location=self._location,
+            renderer=self,
+            placeholder_preview_mode=self._placeholder_preview_mode,
+            progress_store=self._progress_store,
+        )
+
         for pointer in pointers:
             rendered_text = self.render_pointer(
                 dict_to_render=data_to_render_mutable,
                 pointer_to_render=pointer,
                 list_item_id=list_item_id,
+                placeholder_parser=placeholder_parser,
             )
             set_pointer(data_to_render_mutable, pointer, rendered_text)
 

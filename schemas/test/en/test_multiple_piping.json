@@ -176,10 +176,10 @@
                                         "options": [
                                             {
                                                 "label": {
-                                                    "text": "{address}",
+                                                    "text": "{address_option}",
                                                     "placeholders": [
                                                         {
-                                                            "placeholder": "address",
+                                                            "placeholder": "address_option",
                                                             "transforms": [
                                                                 {
                                                                     "transform": "concatenate_list",
@@ -225,7 +225,7 @@
                                                         }
                                                     ]
                                                 },
-                                                "value": "{address}"
+                                                "value": "{address_option}"
                                             },
                                             {
                                                 "label": "at another address",

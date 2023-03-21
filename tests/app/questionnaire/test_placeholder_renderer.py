@@ -4,6 +4,7 @@ from mock import MagicMock
 from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
+from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 
 
@@ -11,7 +12,9 @@ def test_correct_pointers(placholder_transform_pointers):
     assert placholder_transform_pointers[0] == "/answers/0/options/0/label"
 
 
-def test_renders_pointer(placholder_transform_question_json):
+def test_renders_pointer(
+    placholder_transform_question_json, mock_schema, mock_renderer
+):
     mock_transform = {
         "transform": "calculate_date_difference",
         "arguments": {
@@ -41,6 +44,17 @@ def test_renders_pointer(placholder_transform_question_json):
         dict_to_render=placholder_transform_question_json,
         pointer_to_render="/answers/0/options/0/label",
         list_item_id=None,
+        placeholder_parser=PlaceholderParser(
+            language="en",
+            answer_store=answer_store,
+            list_store=ListStore(),
+            metadata=None,
+            response_metadata={},
+            schema=mock_schema,
+            location=None,
+            renderer=mock_renderer,
+            progress_store=ProgressStore(),
+        ),
     )
 
     assert rendered == "Hal Abelson’s age is 28 years. Is this correct?"
@@ -108,7 +122,7 @@ def test_renders_json_uses_language(placholder_transform_question_json):
     assert rendered_label == "Alfred Aho age is 33 years. Is this correct?"
 
 
-def test_errors_on_invalid_pointer(placholder_transform_question_json):
+def test_errors_on_invalid_pointer(placholder_transform_question_json, mock_schema):
     renderer = get_placeholder_render()
 
     with pytest.raises(ValueError):
@@ -116,10 +130,21 @@ def test_errors_on_invalid_pointer(placholder_transform_question_json):
             dict_to_render=placholder_transform_question_json,
             pointer_to_render="/title",
             list_item_id=None,
+            placeholder_parser=PlaceholderParser(
+                language="en",
+                answer_store=AnswerStore(),
+                list_store=ListStore(),
+                metadata=None,
+                response_metadata={},
+                schema=mock_schema,
+                location=None,
+                renderer=renderer,
+                progress_store=ProgressStore(),
+            ),
         )
 
 
-def test_errors_on_invalid_json():
+def test_errors_on_invalid_json(mock_schema):
     renderer = get_placeholder_render()
     with pytest.raises(ValueError):
         dict_to_render = {"invalid": {"no": "placeholders", "in": "this"}}
@@ -127,6 +152,17 @@ def test_errors_on_invalid_json():
             dict_to_render=dict_to_render,
             pointer_to_render="/invalid",
             list_item_id=None,
+            placeholder_parser=PlaceholderParser(
+                language="en",
+                answer_store=AnswerStore(),
+                list_store=ListStore(),
+                metadata=None,
+                response_metadata={},
+                schema=mock_schema,
+                location=None,
+                renderer=renderer,
+                progress_store=ProgressStore(),
+            ),
         )
 
 
