@@ -24,10 +24,10 @@
 {%- endset -%}
 
 {% set individual_response_guidance %}
-   {%- if show_individual_response_guidance == True -%}
-      {% set title = _("If you can’t answer questions for this person") %}
-      {% include 'partials/individual-response-guidance.html' %}
-   {%- endif -%}
+  {%- if show_individual_response_guidance == True -%}
+    {% set title = _("If you can’t answer questions for this person") %}
+    {% include 'partials/individual-response-guidance.html' %}
+  {%- endif -%}
 {% endset %}
 
 {%- if question.warning -%}
