@@ -85,13 +85,13 @@ SECTION_SUMMARY_PAGE_URL = r"""  url() { return `/questionnaire/sections/${this.
 """
 
 DEFINITION_TITLE_GETTER = Template(
-    r"""  definitionTitle(definitionIndex) { return `[data-qa='${definitionId}-${definitionIndex}-title']`; }
+    r"""  definitionTitle(definitionIndex) { return `[data-qa='${definitionId}-title']`; }
 
 """
 )
 
 DEFINITION_CONTENT_GETTER = Template(
-    r"""  definitionContent(definitionIndex) { return `[data-qa='${definitionId}-${definitionIndex}-content']`; }
+    r"""  definitionContent(definitionIndex) { return `[data-qa='${definitionId}-content']`; }
 
 """
 )
@@ -465,7 +465,7 @@ def process_answer(answer, page_spec, long_names, page_name):
 def process_question(question, page_spec, num_questions, page_name):
     long_names = long_names_required(question, num_questions)
 
-    if "definitions" in question:
+    if "definition" in question:
         context = {"definitionId": "question-definition"}
         process_definition(context, page_spec)
 

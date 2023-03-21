@@ -13,15 +13,24 @@
 {% set question_instruction = format_paragraphs(question.instruction) %}
 {% set question_error = form.question_errors[question.id] %}
 
-{%- set question_definition -%}
-  {%- if question.definitions -%}
-    {% for definition in question.definitions %}
-      {% set definition_id = "question-definition-" ~ loop.index %}
-      {% set category = 'Question definition' %}
-      {%- include 'partials/definition.html' -%}
-    {% endfor %}
-  {%- endif -%}
-{%- endset -%}
+{%- if question.definition -%}
+  {% set definition_id = "question-definition" %}
+  {% set question_definition = {
+      "title": question.definition.title,
+      "id": definition_id,
+      "content": question.definition.content,
+      "headingAttributes": {
+        "data-ga": "click",
+        "data-ga-category": "Question definition",
+        "data-ga-action": "Open panel",
+        "data-ga-label": question.definition.title,
+        "data-qa": definition_id ~ "-title"
+      },
+      "contentAttributes": {
+        "data-qa": definition_id ~ "-content"
+      }
+  } %}
+{%- endif -%}
 
 {% set individual_response_guidance %}
   {%- if show_individual_response_guidance == True -%}
@@ -85,6 +94,7 @@
   "description": question_description,
   "instruction": question_instruction,
   "warning": question_warning,
+  "definition": question_definition,
   "legendIsQuestionTitle": should_wrap_with_fieldset(question)
 }) %}
   {%- if content.list and content.list.list_items -%}
@@ -94,7 +104,6 @@
     </div>
   {% endif %}
   {{ individual_response_guidance }}
-  {{ question_definition }}
   {{ question_guidance }}
 
   {% if question_error %}

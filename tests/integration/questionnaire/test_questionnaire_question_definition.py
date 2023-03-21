@@ -19,12 +19,6 @@ class TestQuestionnaireQuestionDefinition(IntegrationTestCase):
             "The mount may be fixed, or use a solar tracker to follow the sun across the sky."
         )
 
-        self.assertInBody("Why use LiFePO4 batteries?")
-        self.assertInBody("3 Benefits of LifePO4 batteries.")
-        self.assertInBody(
-            "LifePO4 batteries have a life span 10 times longer than that of traditional lead acid batteries. "
-            "This dramatically reduces the need for battery changes."
-        )
         self.assertInBody(
             "Lithium iron phosphate batteries operate with much lower resistance and consequently recharge at a faster rate."
         )
