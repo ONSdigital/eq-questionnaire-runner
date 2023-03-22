@@ -614,6 +614,90 @@
                                     ]
                                 }
                             }
+                        },
+                        {
+                            "id": "repeating-is-dependent",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "repeating-is-dependent-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            },
+                                            {
+                                                "label": "Prefer not to say",
+                                                "value": "Prefer not to say"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "repeating-is-dependent-question",
+                                "title": "Is this person dependent on you?",
+                                "type": "General"
+                            },
+                            "type": "Question"
+                        },
+                        {
+                            "id": "repeating-is-smoker",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "repeating-is-smoker-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            },
+                                            {
+                                                "label": "Prefer not to say",
+                                                "value": "Prefer not to say"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "repeating-is-smoker-question",
+                                "title": "Is this person smoke or use nicotine products?",
+                                "type": "General"
+                            },
+                            "type": "Question",
+                            "skip_conditions": {
+                                "when": {
+                                    "or": [
+                                        {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "skip-age-answer"
+                                                },
+                                                "Yes"
+                                            ]
+                                        },
+                                        {
+                                            "<=": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "repeating-age-answer"
+                                                },
+                                                18
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
                         }
                     ]
                 }
