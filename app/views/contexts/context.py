@@ -56,9 +56,6 @@ class Context(ABC):
             self._routing_path = self._path_finder.routing_path(
                 self._location.section_id, self._location.list_item_id
             )
-            self._routing_path_block_ids = self._routing_path.block_ids
-        else:
-            self._routing_path_block_ids = None
 
         self._placeholder_renderer = PlaceholderRenderer(
             language=self._language,
@@ -67,7 +64,7 @@ class Context(ABC):
             metadata=self._metadata,
             response_metadata=self._response_metadata,
             schema=self._schema,
-            routing_path_block_ids=self._routing_path_block_ids,
             progress_store=self._progress_store,
             placeholder_preview_mode=self._placeholder_preview_mode,
+            location=self._location,
         )

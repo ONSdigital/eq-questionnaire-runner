@@ -135,6 +135,7 @@ class ListCollectorBlock:
             self._progress_store,
             self._metadata,
             self._response_metadata,
+            self._location,
         )
 
     def _add_link(

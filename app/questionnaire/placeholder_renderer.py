@@ -30,7 +30,6 @@ class PlaceholderRenderer:
         schema: QuestionnaireSchema,
         progress_store: ProgressStore,
         location: Location | RelationshipLocation | None = None,
-        routing_path_block_ids: tuple | None = None,
         placeholder_preview_mode: bool | None = False,
     ):
         self._placeholder_preview_mode = placeholder_preview_mode
@@ -41,7 +40,6 @@ class PlaceholderRenderer:
         self._response_metadata = response_metadata
         self._schema = schema
         self._location = location
-        self._routing_path_block_ids = routing_path_block_ids
         self._progress_store = progress_store
         self._block_ids_calculated_summary: list = []
 
