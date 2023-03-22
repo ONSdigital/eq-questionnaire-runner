@@ -14,6 +14,7 @@ from app.questionnaire.value_source_resolver import (
     ValueSourceResolver,
     ValueSourceTypes,
 )
+from app.utilities.mappings import get_flattened_mapping_value
 
 if TYPE_CHECKING:
     from app.questionnaire.path_finder import PathFinder  # pragma: no cover
@@ -227,9 +228,3 @@ def get_block_ids_for_calculated_summary_dependencies(
             blocks_id_by_section[section] = routing_path.block_ids
 
     return blocks_id_by_section
-
-
-def get_flattened_mapping_value(
-    routing_path_block_ids_map: dict[str, list[str]]
-) -> set[str]:
-    return {x for v in routing_path_block_ids_map.values() for x in v}

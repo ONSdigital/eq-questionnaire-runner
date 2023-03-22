@@ -21,11 +21,11 @@ from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.placeholder_parser import (
     get_block_ids_for_calculated_summary_dependencies,
-    get_flattened_mapping_value,
 )
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
+from app.utilities.mappings import get_flattened_mapping_value
 
 logger = logging.getLogger(__name__)
 
