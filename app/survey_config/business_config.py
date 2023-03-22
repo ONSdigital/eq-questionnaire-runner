@@ -146,6 +146,18 @@ class DBTDSITNIBusinessSurveyConfig(BusinessSurveyConfig):
 
 
 @dataclass
+class DBTBusinessSurveyConfig(BusinessSurveyConfig):
+    masthead_logo: str = read_file("./templates/assets/images/dbt-logo-stacked.svg")
+
+
+@dataclass
+class DBTNIBusinessSurveyConfig(BusinessSurveyConfig):
+    masthead_logo: str = read_file(
+        "./templates/assets/images/dbt-logo-stacked.svg"
+    ) + read_file("./templates/assets/images/finance-ni-logo-stacked.svg")
+
+
+@dataclass
 class ORRBusinessSurveyConfig(BusinessSurveyConfig):
     masthead_logo: str = read_file("./templates/assets/images/orr-logo.svg")
     masthead_logo_mobile: str = read_file(
