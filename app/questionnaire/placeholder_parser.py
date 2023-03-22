@@ -90,10 +90,11 @@ class PlaceholderParser:
             )
 
         for placeholder in placeholder_list:
-            if placeholder["placeholder"] not in self._placeholder_map:
-                self._placeholder_map[
-                    placeholder["placeholder"]
-                ] = self._parse_placeholder(placeholder)
+            # :TODO: Caching of placeholder values will need to be revisited once validation is added to ensure that placeholders are globally unique
+            # if placeholder["placeholder"] not in self._placeholder_map:
+            self._placeholder_map[placeholder["placeholder"]] = self._parse_placeholder(
+                placeholder
+            )
         return self._placeholder_map
 
     def _get_value_source_resolver(
