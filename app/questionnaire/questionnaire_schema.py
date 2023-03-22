@@ -846,7 +846,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _populate_when_rules_section_dependencies(self) -> None:
         for section in self.get_sections():
             when_rules = self.get_values_for_key(section, "when")
-            rules: Union[Mapping, list] = next(when_rules, [])
+            rules: list = list(when_rules)
 
             if rules_section_dependencies := self._get_rules_section_dependencies(
                 section["id"], rules
