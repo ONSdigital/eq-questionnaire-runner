@@ -87,13 +87,14 @@ class Question(BlockHandler):
     @cached_property
     def list_context(self):
         return ListContext(
-            self._language,
-            self._schema,
-            self._questionnaire_store.answer_store,
-            self._questionnaire_store.list_store,
-            self._questionnaire_store.progress_store,
-            self._questionnaire_store.metadata,
-            self._questionnaire_store.response_metadata,
+            language=self._language,
+            schema=self._schema,
+            answer_store=self._questionnaire_store.answer_store,
+            list_store=self._questionnaire_store.list_store,
+            progress_store=self._questionnaire_store.progress_store,
+            metadata=self._questionnaire_store.metadata,
+            response_metadata=self._questionnaire_store.response_metadata,
+            location=self.current_location,
         )
 
     def get_next_location_url(self):

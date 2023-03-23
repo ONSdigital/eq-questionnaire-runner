@@ -4,6 +4,7 @@ from mock import MagicMock
 from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
+from app.questionnaire import Location
 from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 
@@ -13,7 +14,7 @@ def test_correct_pointers(placholder_transform_pointers):
 
 
 def test_renders_pointer(
-    placholder_transform_question_json, mock_schema, mock_renderer
+    placholder_transform_question_json, mock_schema, mock_renderer, mock_location
 ):
     mock_transform = {
         "transform": "calculate_date_difference",
@@ -51,7 +52,7 @@ def test_renders_pointer(
             metadata=None,
             response_metadata={},
             schema=mock_schema,
-            location=None,
+            location=mock_location,
             renderer=mock_renderer,
             progress_store=ProgressStore(),
         ),
@@ -263,5 +264,6 @@ def get_placeholder_render(
         response_metadata=response_metadata or {},
         schema=MagicMock(),
         progress_store=ProgressStore(),
+        location=Location(section_id="default-section"),
     )
     return renderer
