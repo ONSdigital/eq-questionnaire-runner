@@ -6,7 +6,6 @@ from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire import Location
-from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.router import Router
@@ -43,18 +42,10 @@ class Context(ABC):
             self._response_metadata,
         )
 
-        self._path_finder = PathFinder(
-            self._schema,
-            self._answer_store,
-            self._list_store,
-            self._progress_store,
-            self._metadata,
-            self._response_metadata,
-        )
-
         if self._location:
-            self._routing_path = self._path_finder.routing_path(
-                self._location.section_id, self._location.list_item_id
+            self._routing_path = self._router.routing_path(
+                section_id=self._location.section_id,
+                list_item_id=self._location.list_item_id,
             )
 
         self._placeholder_renderer = PlaceholderRenderer(
