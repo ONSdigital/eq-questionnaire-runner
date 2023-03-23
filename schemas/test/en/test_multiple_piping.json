@@ -176,10 +176,10 @@
                                         "options": [
                                             {
                                                 "label": {
-                                                    "text": "{address_option}",
+                                                    "text": "{address}",
                                                     "placeholders": [
                                                         {
-                                                            "placeholder": "address_option",
+                                                            "placeholder": "address",
                                                             "transforms": [
                                                                 {
                                                                     "transform": "concatenate_list",
