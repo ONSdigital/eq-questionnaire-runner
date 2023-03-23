@@ -1,16 +1,20 @@
 from copy import deepcopy
 from decimal import Decimal
-from typing import Any, Callable, Iterable, Mapping, Tuple, Union
+from typing import Any, Callable, Iterable, Mapping, Optional, Tuple, Union
 
 from werkzeug.datastructures import ImmutableDict
 
+from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.jinja_filters import (
     format_number,
     format_percentage,
     format_unit,
     get_formatted_currency,
 )
+from app.questionnaire import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.schema_utils import get_answer_ids_in_block
 from app.questionnaire.value_source_resolver import ValueSourceResolver
@@ -20,6 +24,31 @@ from app.views.contexts.summary.group import Group
 
 
 class CalculatedSummaryContext(Context):
+    def __init__(
+        self,
+        language: str,
+        schema: QuestionnaireSchema,
+        answer_store: AnswerStore,
+        list_store: ListStore,
+        progress_store: ProgressStore,
+        metadata: Optional[MetadataProxy],
+        response_metadata: Mapping,
+        routing_path: RoutingPath,
+        current_location: Location,
+    ) -> None:
+        super().__init__(
+            language,
+            schema,
+            answer_store,
+            list_store,
+            progress_store,
+            metadata,
+            response_metadata,
+            current_location,
+        )
+        self.routing_path = routing_path
+        self.current_location = current_location
+
     def build_groups_for_section(
         self,
         section: Mapping[str, Any],
@@ -28,7 +57,7 @@ class CalculatedSummaryContext(Context):
         return [
             Group(
                 group_schema=group,
-                routing_path=self._routing_path,
+                routing_path=self.routing_path,
                 answer_store=self._answer_store,
                 list_store=self._list_store,
                 metadata=self._metadata,
@@ -171,7 +200,7 @@ class CalculatedSummaryContext(Context):
                 self._list_store,
                 self._metadata,
                 self._response_metadata,
-                routing_path_block_ids=self._routing_path.block_ids,
+                routing_path_block_ids=self.routing_path.block_ids,
                 location=self._location,
             )
 

@@ -42,12 +42,6 @@ class Context(ABC):
             self._response_metadata,
         )
 
-        if self._location:
-            self._routing_path = self._router.routing_path(
-                section_id=self._location.section_id,
-                list_item_id=self._location.list_item_id,
-            )
-
         self._placeholder_renderer = PlaceholderRenderer(
             language=self._language,
             answer_store=self._answer_store,

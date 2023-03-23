@@ -1,6 +1,7 @@
 import pytest
 
 from app.questionnaire import Location
+from app.questionnaire.routing_path import RoutingPath
 from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
 from tests.app.views.contexts import assert_summary_context
 
@@ -83,17 +84,42 @@ def test_build_view_context_for_currency_calculated_summary(
         mocker.MagicMock(return_value=locale),
     )
 
+    block_ids = (
+        [
+            "first-number-block",
+            "second-number-block",
+            "third-number-block",
+            "third-and-a-half-number-block",
+            "skip-fourth-block",
+            "fifth-number-block",
+            "sixth-number-block",
+        ]
+        if skip_fourth
+        else [
+            "first-number-block",
+            "second-number-block",
+            "third-number-block",
+            "third-and-a-half-number-block",
+            "skip-fourth-block",
+            "fourth-number-block",
+            "fourth-and-a-half-number-block",
+            "fifth-number-block",
+            "sixth-number-block",
+        ]
+    )
+
     calculated_summary_context = CalculatedSummaryContext(
-        language,
-        test_calculated_summary_schema,
-        test_calculated_summary_answers_skipped_fourth
+        language=language,
+        schema=test_calculated_summary_schema,
+        answer_store=test_calculated_summary_answers_skipped_fourth
         if skip_fourth
         else test_calculated_summary_answers,
-        list_store,
-        progress_store,
+        list_store=list_store,
+        progress_store=progress_store,
         metadata=None,
         response_metadata={},
-        location=Location(section_id="default-section", block_id=block_id),
+        routing_path=RoutingPath(section_id="default-section", block_ids=block_ids),
+        current_location=Location(section_id="default-section", block_id=block_id),
     )
 
     context = calculated_summary_context.build_view_context_for_calculated_summary()

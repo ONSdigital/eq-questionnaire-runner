@@ -94,7 +94,6 @@ class Question(BlockHandler):
             progress_store=self._questionnaire_store.progress_store,
             metadata=self._questionnaire_store.metadata,
             response_metadata=self._questionnaire_store.response_metadata,
-            location=self.current_location,
         )
 
     def get_next_location_url(self):
