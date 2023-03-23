@@ -59,7 +59,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._when_rules_section_dependencies_by_section: dict[str, set[str]] = {}
         self.calculated_summary_section_dependencies_by_block: dict[
             str, dict[str, set[str]]
-        ] = {}
+        ] = defaultdict(lambda: defaultdict(set))
         self._when_rules_section_dependencies_by_answer: dict[
             str, set[str]
         ] = defaultdict(set)
@@ -956,7 +956,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         else:
             self.calculated_summary_section_dependencies_by_block[
                 current_section_id
-            ] = {current_block_id: section_dependencies}
+            ] = defaultdict(set, {current_block_id: section_dependencies})
 
     def get_calculated_summary_answer_ids(
         self, calculated_summary_block: Mapping[str, Any]

@@ -1,4 +1,3 @@
-from collections import defaultdict
 from decimal import Decimal
 from typing import TYPE_CHECKING, Any, Mapping, MutableMapping, Sequence, Union
 
@@ -199,10 +198,9 @@ def get_block_ids_for_calculated_summary_dependencies(
     blocks_id_by_section = {}
 
     sections_to_ignore = sections_to_ignore or []
-    dependent_sections = defaultdict(
-        set,
-        schema.calculated_summary_section_dependencies_by_block[location.section_id],
-    )
+    dependent_sections = schema.calculated_summary_section_dependencies_by_block[
+        location.section_id
+    ]
 
     if block_id := location.block_id:
         dependents = dependent_sections[block_id]
