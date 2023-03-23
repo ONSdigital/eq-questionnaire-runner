@@ -921,20 +921,20 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 self._get_calculated_summary_section_dependencies(
                     current_section_id=section["id"],
                     current_block_id=block["id"],
-                    values=calculated_summary_sources,
+                    sources=calculated_summary_sources,
                 )
 
     def _get_calculated_summary_section_dependencies(
         self,
         current_section_id: str,
         current_block_id: str,
-        values: list[Mapping],
+        sources: list[Mapping],
     ) -> None:
         section_dependencies: set[str] = set()
 
-        for value in values:
+        for source in sources:
             answer_id_list: list = []
-            identifier: str = value["identifier"]
+            identifier: str = source["identifier"]
 
             calculated_summary_block = self.get_block(identifier)  # type: ignore
             calculated_summary_answer_ids = self.get_calculated_summary_answer_ids(
