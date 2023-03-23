@@ -456,10 +456,10 @@ def get_answer_fields(
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
 
-    block_ids_map: dict[str, list[str]] = {}
+    routing_path_block_ids: dict[str, list[str]] = {}
 
     if location and progress_store:
-        block_ids_map = get_block_ids_for_calculated_summary_dependencies(
+        routing_path_block_ids = get_block_ids_for_calculated_summary_dependencies(
             schema=schema,
             location=location,
             progress_store=progress_store,
@@ -473,7 +473,7 @@ def get_answer_fields(
             ),
         )
 
-    block_ids = get_flattened_mapping_value(block_ids_map)
+    block_ids = get_flattened_mapping_value(routing_path_block_ids)
 
     value_source_resolver = ValueSourceResolver(
         answer_store=answer_store,

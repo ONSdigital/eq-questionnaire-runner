@@ -207,12 +207,7 @@ def get_block_ids_for_calculated_summary_dependencies(
     if block_id := location.block_id:
         dependents = dependent_sections[block_id]
     else:
-        dependents = {
-            section
-            for dependents in dependent_sections.values()
-            if dependents
-            for section in dependents
-        }
+        dependents = get_flattened_mapping_value(dependent_sections)
 
     for section in dependents:
         if section in sections_to_ignore:
