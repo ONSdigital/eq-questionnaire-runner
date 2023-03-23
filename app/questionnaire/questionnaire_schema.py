@@ -808,11 +808,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             if k in ignore_keys:
                 continue
             if isinstance(v, Mapping):
-                yield from self._get_mappings_with_key(key, v)
+                yield from self._get_mappings_with_key(key, v, ignore_keys)
             if isinstance(v, Sequence):
                 for element in v:
                     if isinstance(element, Mapping):
-                        yield from self._get_mappings_with_key(key, element)
+                        yield from self._get_mappings_with_key(
+                            key, element, ignore_keys
+                        )
 
     def _get_parent_section_id_for_block(self, block_id: str) -> str:
         parent_block_id = self._parent_id_map[block_id]
