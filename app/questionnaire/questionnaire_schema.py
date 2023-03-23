@@ -930,6 +930,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         current_block_id: str,
         sources: list[Mapping],
     ) -> None:
+        # Type ignore: Added to this method as the block will exist at this point
         section_dependencies: set[str] = set()
 
         for source in sources:
