@@ -36,6 +36,7 @@ class ListCollectorBlock:
             response_metadata=response_metadata,
             schema=schema,
             progress_store=progress_store,
+            location=location,
         )
         self._list_store = list_store
         self._schema = schema

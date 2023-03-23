@@ -1,6 +1,7 @@
 import pytest
 
 from app.data_models.progress_store import ProgressStore
+from app.questionnaire import Location
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import ListContext
@@ -18,6 +19,7 @@ def test_build_list_collector_context(
         None,
         metadata={},
         response_metadata={},
+        location=Location(section_id="section"),
     )
 
     list_context = list_context(list_collector_block["summary"], for_list="people")
@@ -73,6 +75,7 @@ def test_build_list_summary_context(
         None,
         metadata={},
         response_metadata={},
+        location=Location(section_id="section"),
     )
 
     list_context = list_context(
@@ -100,6 +103,7 @@ def test_assert_primary_person_string_appended(
         answer_store=people_answer_store,
         metadata=None,
         response_metadata={},
+        location=Location(section_id="section"),
     )
     list_context = list_context(
         list_collector_block["summary"], list_collector_block["for_list"]
@@ -124,6 +128,7 @@ def test_for_list_item_ids(
         answer_store=people_answer_store,
         metadata=None,
         response_metadata={},
+        location=Location(section_id="section"),
     )
     list_context = list_context(
         list_collector_block["summary"],

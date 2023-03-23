@@ -1682,6 +1682,7 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
             response_metadata={},
             schema=schema,
             progress_store=ProgressStore(),
+            location=Location(section_id="mutually-exclusive-checkbox-section"),
         )
         rendered_schema = renderer.render(
             data_to_render=question_schema, list_item_id=None

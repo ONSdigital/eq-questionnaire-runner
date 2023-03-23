@@ -1007,6 +1007,7 @@ def placeholder_renderer(option_label_from_value_schema):
         response_metadata={},
         schema=option_label_from_value_schema,
         progress_store=ProgressStore(),
+        location=Location(section_id="checkbox-section"),
     )
     return renderer
 
