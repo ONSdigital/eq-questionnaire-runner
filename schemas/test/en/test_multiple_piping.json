@@ -225,7 +225,7 @@
                                                         }
                                                     ]
                                                 },
-                                                "value": "{address_option}"
+                                                "value": "{address}"
                                             },
                                             {
                                                 "label": "at another address",
