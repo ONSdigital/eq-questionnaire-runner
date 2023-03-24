@@ -1100,12 +1100,12 @@ def test_get_block_ids_for_calculated_summary_dependencies():
     )
 
     expected_dependencies = {
-        "questions-section": (
+        ("questions-section", None): (
             "skip-first-block",
             "second-number-block",
             "currency-total-playback-1",
         ),
-        "calculated-summary-section": (
+        ("calculated-summary-section", None): (
             "third-number-block",
             "currency-total-playback-2",
             "mutually-exclusive-checkbox",
@@ -1173,7 +1173,7 @@ def test_get_block_ids_for_calculated_summary_dependencies_with_sections_to_igno
     )
 
     expected_dependencies = {
-        "questions-section": (
+        ("questions-section", None): (
             "skip-first-block",
             "second-number-block",
             "currency-total-playback-1",

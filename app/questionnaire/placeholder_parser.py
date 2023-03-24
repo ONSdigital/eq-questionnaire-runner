@@ -175,7 +175,7 @@ class PlaceholderParser:
 
     def _get_routing_path_block_ids(
         self, data: Mapping | Sequence, sections_to_ignore: list | None = None
-    ) -> dict[str, list[str]] | None:
+    ) -> dict[tuple, list[str]] | None:
         if self._location:
             return get_block_ids_for_calculated_summary_dependencies(
                 schema=self._schema,
@@ -224,8 +224,8 @@ def get_block_ids_for_calculated_summary_dependencies(
     path_finder: "PathFinder",
     data: MultiDict | Mapping | Sequence,
     sections_to_ignore: list | None = None,
-) -> dict[str, list[str]] | None:
-    blocks_id_by_section: dict[str, list[str]] = {}
+) -> dict[tuple, list[str]]:
+    block_ids_by_section: dict[tuple, list[str]] = {}
 
     sections_to_ignore = sections_to_ignore or []
     dependent_sections = schema.calculated_summary_section_dependencies_by_block[
@@ -243,7 +243,7 @@ def get_block_ids_for_calculated_summary_dependencies(
         data=data,
         ignore_keys=["when"],
     ):
-        return blocks_id_by_section
+        return block_ids_by_section
 
     for section in dependents:
         if section in sections_to_ignore:
@@ -255,6 +255,6 @@ def get_block_ids_for_calculated_summary_dependencies(
 
         if key in progress_store.started_section_keys():
             routing_path = path_finder.routing_path(*key)
-            blocks_id_by_section[section] = routing_path.block_ids
+            block_ids_by_section[key] = routing_path.block_ids
 
-    return blocks_id_by_section
+    return block_ids_by_section
