@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-03-03 11:01+0000\n"
+"POT-Creation-Date: 2023-03-24 12:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -219,19 +219,19 @@ msgstr[1] ""
 msgid "Not a valid choice."
 msgstr ""
 
-#: app/helpers/template_helpers.py:46
+#: app/helpers/template_helpers.py:48
 msgid "ONS Surveys"
 msgstr ""
 
-#: app/helpers/template_helpers.py:112
+#: app/helpers/template_helpers.py:114
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:143
+#: app/helpers/template_helpers.py:145
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:168
+#: app/helpers/template_helpers.py:170
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -876,7 +876,7 @@ msgstr ""
 msgid "If you can’t answer someone else’s questions"
 msgstr ""
 
-#: templates/interstitial.html:23 templates/partials/question.html:25
+#: templates/interstitial.html:23 templates/partials/question.html:24
 msgid "If you can’t answer questions for this person"
 msgstr ""
 
@@ -913,15 +913,21 @@ msgid "Close this window to continue with your current survey"
 msgstr ""
 
 #: templates/signed-out.html:3
-msgid "Signed out"
+msgid "Save and sign out confirmation"
 msgstr ""
 
-#: templates/signed-out.html:6
-msgid "Your survey answers have been saved. You are now signed out"
+#: templates/signed-out.html:14
+msgid "<h1>Your survey answers have been saved</h1>"
 msgstr ""
 
-#: templates/signed-out.html:9
-msgid "Return to your account"
+#: templates/signed-out.html:21
+msgid ""
+"To find further information or resume the survey, <a href='{url}'>return "
+"to your account</a>."
+msgstr ""
+
+#: templates/signed-out.html:27
+msgid "To resume the survey, <a href='{url}'>re-enter your access code</a>."
 msgstr ""
 
 #: templates/thank-you.html:6
@@ -1276,28 +1282,28 @@ msgid ""
 " of the section</a>"
 msgstr ""
 
-#: templates/partials/preview-question.html:46
-#: templates/partials/question.html:69
+#: templates/partials/preview-question.html:35
+#: templates/partials/question.html:68
 msgid "Or"
 msgstr ""
 
-#: templates/partials/preview-question.html:75
+#: templates/partials/preview-question.html:56
 msgid "{max_characters} characters can be added."
 msgstr ""
 
-#: templates/partials/question.html:60
+#: templates/partials/question.html:59
 msgid "Selecting this will clear your answer"
 msgstr ""
 
-#: templates/partials/question.html:61
+#: templates/partials/question.html:60
 msgid "cleared"
 msgstr ""
 
-#: templates/partials/question.html:64
+#: templates/partials/question.html:63
 msgid "Selecting this will deselect any selected options"
 msgstr ""
 
-#: templates/partials/question.html:65 templates/partials/question.html:73
+#: templates/partials/question.html:64 templates/partials/question.html:72
 msgid "deselected"
 msgstr ""
 

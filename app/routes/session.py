@@ -20,6 +20,8 @@ from app.helpers.template_helpers import (
     render_template,
 )
 from app.routes.errors import _render_error_page
+from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL
+from app.survey_config.survey_type import SurveyType
 from app.utilities.metadata_parser import validate_runner_claims
 from app.utilities.metadata_parser_v2 import (
     validate_questionnaire_claims,
@@ -163,11 +165,10 @@ def get_sign_out():
     """
     survey_config = get_survey_config()
     log_out_url = (
-        survey_config.account_service_todo_url if "todo" in request.args else None
+        url_for("session.get_signed_out")
+        if "save" in request.args
+        else survey_config.account_service_log_out_url
     )
-
-    if not log_out_url:
-        log_out_url = survey_config.account_service_log_out_url
 
     # Check for GET as we don't want to log out for HEAD requests
     if request.method == "GET":
@@ -178,7 +179,18 @@ def get_sign_out():
 
 @session_blueprint.route("/signed-out", methods=["GET"])
 def get_signed_out():
-    return render_template(template="signed-out")
+    business_survey_config = get_survey_config(theme=SurveyType.BUSINESS)
+    other_survey_config = get_survey_config(
+        theme=SurveyType.SOCIAL, base_url=ACCOUNT_SERVICE_BASE_URL_SOCIAL
+    )
+
+    business_logout_url = business_survey_config.account_service_todo_url
+    other_logout_url = other_survey_config.account_service_log_out_url
+    return render_template(
+        template="signed-out",
+        business_logout_url=business_logout_url,
+        other_logout_url=other_logout_url,
+    )
 
 
 def get_runner_claims(decrypted_token):

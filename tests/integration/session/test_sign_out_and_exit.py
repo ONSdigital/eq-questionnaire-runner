@@ -16,12 +16,12 @@ DEFAULT_ACCOUNT_SERVICE_LOG_OUT_URL = (
 class TestSaveAndSignOut(IntegrationTestCase):
     def test_sign_out_button_link(self):
         self.launchSurvey("test_textfield")
-        self.assertEqual("/sign-out?todo=True", self.getSignOutButton()["href"])
+        self.assertEqual("/sign-out?save=True", self.getSignOutButton()["href"])
 
     def test_sign_out_url(self):
         self.launchSurvey("test_textfield")
         self.saveAndSignOut()
-        self.assertInRedirect("/surveys/todo")
+        self.assertInRedirect("/signed-out")
 
     def test_sign_out_button_text(self):
         self.launchSurvey("test_textfield")
@@ -95,7 +95,7 @@ class TestCensusSignOut(IntegrationTestCase):
     def test_sign_out_url(self):
         self.launchSurvey(schema_name="test_individual_response")
         self.saveAndSignOut()
-        self.assertInRedirect("census.gov.uk")
+        self.assertInRedirect("/signed-out")
 
     def test_sign_out_button_text(self):
         self.launchSurvey(schema_name="test_individual_response")

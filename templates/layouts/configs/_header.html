@@ -1,12 +1,13 @@
 {% if current_user.is_authenticated and not hide_sign_out_button %}
-    {% set sign_out_url = url_for('session.get_sign_out', todo=true) %}
 
     {% if save_on_signout %}
+        {% set sign_out_url = url_for('session.get_sign_out', save=true) %}
         {% set header_button_text = sign_out_button_text %}
         {% set header_button_data_qa = "btn-save-sign-out" %}
         {% set header_button_data_ga_action = "Save and sign out" %}
         {% set header_button_data_ga_label = "Save and sign out button click" %}
     {% else %}
+        {% set sign_out_url = url_for('session.get_sign_out') %}
         {% set header_button_text = _("Exit") %}
         {% set header_button_data_qa = "btn-exit" %}
         {% set header_button_data_ga_action = "Exit" %}
