@@ -311,7 +311,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _update_answer_dependencies_for_dynamic_options(
         self, dynamic_options_values: Mapping, *, block_id: str, answer_id: str
     ) -> None:
-        value_sources = self._get_mappings_with_key("source", dynamic_options_values)
+        value_sources = self.get_mappings_with_key("source", dynamic_options_values)
         for value_source in value_sources:
             self._update_answer_dependencies_for_value_source(
                 value_source, block_id=block_id, answer_id=answer_id
@@ -797,7 +797,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             except AttributeError:
                 continue
 
-    def _get_mappings_with_key(
+    def get_mappings_with_key(
         self, key: str, dictionary: Mapping, ignore_keys: list[str] | None = None
     ) -> Generator[Mapping, None, None]:
         ignore_keys = ignore_keys or []
@@ -808,13 +808,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             if k in ignore_keys:
                 continue
             if isinstance(v, Mapping):
-                yield from self._get_mappings_with_key(key, v, ignore_keys)
+                yield from self.get_mappings_with_key(key, v, ignore_keys)
             if isinstance(v, Sequence):
                 for element in v:
                     if isinstance(element, Mapping):
-                        yield from self._get_mappings_with_key(
-                            key, element, ignore_keys
-                        )
+                        yield from self.get_mappings_with_key(key, element, ignore_keys)
 
     def _get_parent_section_id_for_block(self, block_id: str) -> str:
         parent_block_id = self._parent_id_map[block_id]
@@ -908,7 +906,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _populate_calculated_summary_section_dependencies(self) -> None:
         for section in self.get_sections():
             for block in self.get_blocks_for_section(section):
-                sources = self._get_mappings_with_key(
+                sources = self.get_mappings_with_key(
                     "source", block, ignore_keys=["when"]
                 )
 
@@ -964,7 +962,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         if calculated_summary_block["calculation"].get("answers_to_calculate"):
             return calculated_summary_block["calculation"]["answers_to_calculate"]  # type: ignore
 
-        values = self._get_mappings_with_key(
+        values = self.get_mappings_with_key(
             "source", calculated_summary_block["calculation"]["operation"]
         )
 

@@ -1113,11 +1113,16 @@ def test_get_block_ids_for_calculated_summary_dependencies():
         ),
     }
 
+    data = {
+        "identifier": "currency-total-playback-2",
+        "source": "calculated_summary",
+    }
+
     dependencies = get_block_ids_for_calculated_summary_dependencies(
         schema=schema,
         location=location,
         progress_store=progress_store,
-        path=PathFinder(
+        path_finder=PathFinder(
             schema=schema,
             answer_store=answer_store,
             list_store=ListStore(),
@@ -1125,6 +1130,7 @@ def test_get_block_ids_for_calculated_summary_dependencies():
             metadata=get_metadata(),
             response_metadata={},
         ),
+        data=data,
     )
 
     assert dependencies == expected_dependencies
@@ -1174,12 +1180,17 @@ def test_get_block_ids_for_calculated_summary_dependencies_with_sections_to_igno
         ),
     }
 
+    data = {
+        "identifier": "currency-total-playback-2",
+        "source": "calculated_summary",
+    }
+
     dependencies = get_block_ids_for_calculated_summary_dependencies(
         schema=schema,
         location=location,
         progress_store=progress_store,
         sections_to_ignore=["calculated-summary-section"],
-        path=PathFinder(
+        path_finder=PathFinder(
             schema=schema,
             answer_store=answer_store,
             list_store=ListStore(),
@@ -1187,6 +1198,7 @@ def test_get_block_ids_for_calculated_summary_dependencies_with_sections_to_igno
             metadata=get_metadata(),
             response_metadata={},
         ),
+        data=data,
     )
 
     assert dependencies == expected_dependencies

@@ -456,14 +456,14 @@ def get_answer_fields(
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
 
-    routing_path_block_ids: dict[str, list[str]] = {}
+    routing_path_block_ids: Optional[dict[str, list[str]]] = {}
 
     if location and progress_store:
         routing_path_block_ids = get_block_ids_for_calculated_summary_dependencies(
             schema=schema,
             location=location,
             progress_store=progress_store,
-            path=PathFinder(
+            path_finder=PathFinder(
                 schema=schema,
                 answer_store=answer_store,
                 list_store=list_store,
@@ -471,9 +471,12 @@ def get_answer_fields(
                 metadata=metadata,
                 response_metadata=response_metadata,
             ),
+            data=question,
         )
 
-    block_ids = get_flattened_mapping_values(routing_path_block_ids)
+    block_ids = None
+    if routing_path_block_ids:
+        block_ids = get_flattened_mapping_values(routing_path_block_ids)
 
     value_source_resolver = ValueSourceResolver(
         answer_store=answer_store,

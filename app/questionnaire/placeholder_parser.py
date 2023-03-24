@@ -1,11 +1,14 @@
 from decimal import Decimal
 from typing import TYPE_CHECKING, Any, Mapping, MutableMapping, Sequence, Union
 
+from werkzeug.datastructures import MultiDict
+
 from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
-from app.questionnaire import Location, QuestionnaireSchema, path_finder
+from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import path_finder as pf
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.value_source_resolver import (
@@ -58,7 +61,7 @@ class PlaceholderParser:
         self._progress_store = progress_store
         self._placeholder_preview_mode = placeholder_preview_mode
 
-        self._path_finder = path_finder.PathFinder(
+        self._path_finder = pf.PathFinder(
             schema=self._schema,
             answer_store=self._answer_store,
             list_store=self._list_store,
@@ -78,7 +81,7 @@ class PlaceholderParser:
         sections_to_ignore = list(self._routing_paths)
 
         if routing_path_block_ids_map := self._get_routing_path_block_ids(
-            sections_to_ignore
+            sections_to_ignore=sections_to_ignore, data=placeholder_list
         ):
             self._routing_paths.update(routing_path_block_ids_map)
 
@@ -171,15 +174,16 @@ class PlaceholderParser:
         return values
 
     def _get_routing_path_block_ids(
-        self, sections_to_ignore: list | None = None
-    ) -> dict[str, list[str]]:
+        self, data: Mapping | Sequence, sections_to_ignore: list | None = None
+    ) -> dict[str, list[str]] | None:
         if self._location:
             return get_block_ids_for_calculated_summary_dependencies(
                 schema=self._schema,
                 location=self._location,
                 progress_store=self._progress_store,
-                path=self._path_finder,
                 sections_to_ignore=sections_to_ignore,
+                data=data,
+                path_finder=self._path_finder,
             )
         return {}
 
@@ -188,14 +192,42 @@ class PlaceholderParser:
         return all(source == "metadata" for source in sources)
 
 
+def get_sources_for_type_from_data(
+    *,
+    schema: QuestionnaireSchema,
+    source_type: str,
+    data: MultiDict | Mapping | Sequence | None,
+    ignore_keys: list,
+) -> list | None:
+    if not data:
+        return []
+    if isinstance(data, list):
+        placeholder_sources = [
+            schema.get_mappings_with_key("source", placeholder, ignore_keys=ignore_keys)
+            for placeholder in data
+        ]
+        source_to_return: list = []
+        for sources in placeholder_sources:
+            source_to_return.extend(
+                source for source in sources if source["source"] == source_type
+            )
+        return source_to_return
+
+    if isinstance(data, Mapping):
+        sources = schema.get_mappings_with_key("source", data, ignore_keys=ignore_keys)
+
+        return [source for source in sources if source["source"] == source_type]
+
+
 def get_block_ids_for_calculated_summary_dependencies(
     schema: QuestionnaireSchema,
     location: Location | RelationshipLocation,
     progress_store: ProgressStore,
-    path: "PathFinder",
+    path_finder: "PathFinder",
+    data: MultiDict[str, Any] | Mapping[str, Any] | None | Sequence,
     sections_to_ignore: list | None = None,
-) -> dict[str, list[str]]:
-    blocks_id_by_section = {}
+) -> dict[str, list[str]] | None:
+    blocks_id_by_section: dict[str, list[str]] = {}
 
     sections_to_ignore = sections_to_ignore or []
     dependent_sections = schema.calculated_summary_section_dependencies_by_block[
@@ -207,6 +239,14 @@ def get_block_ids_for_calculated_summary_dependencies(
     else:
         dependents = get_flattened_mapping_values(dependent_sections)
 
+    if dependents and not get_sources_for_type_from_data(
+        schema=schema,
+        source_type="calculated_summary",
+        data=data,
+        ignore_keys=["when"],
+    ):
+        return blocks_id_by_section
+
     for section in dependents:
         if section in sections_to_ignore:
             continue
@@ -216,7 +256,7 @@ def get_block_ids_for_calculated_summary_dependencies(
         key = (section, list_item_id)
 
         if key in progress_store.started_section_keys():
-            routing_path = path.routing_path(*key)
+            routing_path = path_finder.routing_path(*key)
             blocks_id_by_section[section] = routing_path.block_ids
 
     return blocks_id_by_section
