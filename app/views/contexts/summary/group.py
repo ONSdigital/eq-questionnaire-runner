@@ -23,7 +23,7 @@ class Group:
         metadata: MetadataProxy | None,
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
-        location: Location | None = None,
+        location: Location,
         language: str,
         progress_store: ProgressStore,
         return_to: str | None,
@@ -35,21 +35,20 @@ class Group:
         self.placeholder_text = None
         self.links: dict[str, Link] = {}
 
-        if self.location:
-            self.blocks = self._build_blocks_and_links(
-                group_schema=group_schema,
-                routing_path=routing_path,
-                answer_store=answer_store,
-                list_store=list_store,
-                metadata=metadata,
-                response_metadata=response_metadata,
-                schema=schema,
-                location=self.location,
-                return_to=return_to,
-                progress_store=progress_store,
-                language=language,
-                return_to_block_id=return_to_block_id,
-            )
+        self.blocks = self._build_blocks_and_links(
+            group_schema=group_schema,
+            routing_path=routing_path,
+            answer_store=answer_store,
+            list_store=list_store,
+            metadata=metadata,
+            response_metadata=response_metadata,
+            schema=schema,
+            location=self.location,
+            return_to=return_to,
+            progress_store=progress_store,
+            language=language,
+            return_to_block_id=return_to_block_id,
+        )
 
         self.placeholder_renderer = PlaceholderRenderer(
             language=language,

@@ -196,11 +196,9 @@ def get_sources_for_type_from_data(
     *,
     schema: QuestionnaireSchema,
     source_type: str,
-    data: MultiDict | Mapping | Sequence | None,
+    data: MultiDict | Mapping | Sequence,
     ignore_keys: list,
 ) -> list | None:
-    if not data:
-        return []
     if isinstance(data, list):
         placeholder_sources = [
             schema.get_mappings_with_key("source", placeholder, ignore_keys=ignore_keys)
@@ -224,7 +222,7 @@ def get_block_ids_for_calculated_summary_dependencies(
     location: Location | RelationshipLocation,
     progress_store: ProgressStore,
     path_finder: "PathFinder",
-    data: MultiDict[str, Any] | Mapping[str, Any] | None | Sequence,
+    data: MultiDict | Mapping | Sequence,
     sections_to_ignore: list | None = None,
 ) -> dict[str, list[str]] | None:
     blocks_id_by_section: dict[str, list[str]] = {}

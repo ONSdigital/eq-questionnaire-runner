@@ -63,7 +63,7 @@ class CalculatedSummaryContext(Context):
                 metadata=self._metadata,
                 response_metadata=self._response_metadata,
                 schema=self._schema,
-                location=self._location,
+                location=self.current_location,
                 language=self._language,
                 progress_store=self._progress_store,
                 return_to="calculated-summary",
@@ -74,7 +74,7 @@ class CalculatedSummaryContext(Context):
 
     def build_view_context_for_calculated_summary(self) -> dict[str, dict[str, Any]]:
         # type ignores added as block will exist at this point
-        block_id: str = self._location.block_id  # type: ignore
+        block_id: str = self.current_location.block_id  # type: ignore
         block: ImmutableDict = self._schema.get_block(block_id)  # type: ignore
 
         calculated_section: dict[str, Any] = self._build_calculated_summary_section(
@@ -117,7 +117,7 @@ class CalculatedSummaryContext(Context):
     ) -> dict[str, Any]:
         """Build up the list of blocks only including blocks / questions / answers which are relevant to the summary"""
         # type ignores added as block will exist at this point
-        block_id: str = self._location.block_id  # type: ignore
+        block_id: str = self.current_location.block_id  # type: ignore
         group: ImmutableDict = self._schema.get_group_for_block_id(block_id)  # type: ignore
         # type ignores it is not valid to not have a section at this point
         section_id: str = self._schema.get_section_id_for_block_id(block_id)  # type: ignore
@@ -164,7 +164,7 @@ class CalculatedSummaryContext(Context):
             self._response_metadata,
             self._answer_store,
             self._list_store,
-            self._location,
+            self.current_location,
         )
         transformed_block = deepcopy(transformed_block)
         transformed_block = QuestionnaireSchema.get_mutable_deepcopy(transformed_block)
@@ -201,7 +201,7 @@ class CalculatedSummaryContext(Context):
                 self._metadata,
                 self._response_metadata,
                 routing_path_block_ids=self.routing_path.block_ids,
-                location=self._location,
+                location=self.current_location,
             )
 
             calculated_total: Union[int, float, Decimal] = evaluate_calculated_summary.evaluate(calculation)  # type: ignore
@@ -222,7 +222,7 @@ class CalculatedSummaryContext(Context):
                     self._response_metadata,
                     self._answer_store,
                     self._list_store,
-                    current_location=self._location,
+                    current_location=self.current_location,
                 )
                 for answer in question["answers"]:
                     if not answer_format["type"]:
