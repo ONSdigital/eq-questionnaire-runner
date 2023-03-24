@@ -40,7 +40,7 @@
                                 "id": "first-question",
                                 "title": "How much do you spend on the following items?",
                                 "description": [
-                                    "If the total is equal to £100 a new section will appear on the hub and if it is greater than or equal to £100 a dependent question will appear in the dependent question section"
+                                    "If the total is equal to £100 a new section will appear on the hub and if it is less than or equal to £10 a dependent question will appear in the dependent question section"
                                 ],
                                 "type": "General",
                                 "answers": [
