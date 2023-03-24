@@ -199,22 +199,9 @@ def get_sources_for_type_from_data(
     data: MultiDict | Mapping | Sequence,
     ignore_keys: list,
 ) -> list | None:
-    if isinstance(data, list):
-        placeholder_sources = [
-            schema.get_mappings_with_key("source", placeholder, ignore_keys=ignore_keys)
-            for placeholder in data
-        ]
-        source_to_return: list = []
-        for sources in placeholder_sources:
-            source_to_return.extend(
-                source for source in sources if source["source"] == source_type
-            )
-        return source_to_return
+    sources = schema.get_mappings_with_key("source", data, ignore_keys=ignore_keys)
 
-    if isinstance(data, Mapping):
-        sources = schema.get_mappings_with_key("source", data, ignore_keys=ignore_keys)
-
-        return [source for source in sources if source["source"] == source_type]
+    return [source for source in sources if source["source"] == source_type]
 
 
 def get_block_ids_for_calculated_summary_dependencies(

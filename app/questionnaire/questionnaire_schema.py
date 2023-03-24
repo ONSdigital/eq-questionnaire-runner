@@ -797,22 +797,30 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             except AttributeError:
                 continue
 
-    def get_mappings_with_key(
-        self, key: str, dictionary: Mapping, ignore_keys: list[str] | None = None
+    def get_mappings_with_key(  # noqa: C901 pylint: disable=too-complex
+        self, key: str, data: Mapping | Sequence, ignore_keys: list[str] | None = None
     ) -> Generator[Mapping, None, None]:
         ignore_keys = ignore_keys or []
-        if key not in ignore_keys and key in dictionary:
-            yield dictionary
 
-        for k, v in dictionary.items():
-            if k in ignore_keys:
-                continue
-            if isinstance(v, Mapping):
-                yield from self.get_mappings_with_key(key, v, ignore_keys)
-            if isinstance(v, Sequence):
-                for element in v:
-                    if isinstance(element, Mapping):
-                        yield from self.get_mappings_with_key(key, element, ignore_keys)
+        def _handle_sequence(value: Sequence) -> Generator[Mapping, None, None]:
+            for element in value:
+                if isinstance(element, Mapping):
+                    yield from self.get_mappings_with_key(key, element, ignore_keys)
+
+        if isinstance(data, Sequence):
+            yield from _handle_sequence(data)
+
+        if isinstance(data, Mapping):
+            if key not in ignore_keys and key in data:
+                yield data
+
+            for k, v in data.items():
+                if k in ignore_keys:
+                    continue
+                if isinstance(v, Mapping):
+                    yield from self.get_mappings_with_key(key, v, ignore_keys)
+                if isinstance(v, Sequence):
+                    yield from _handle_sequence(v)
 
     def _get_parent_section_id_for_block(self, block_id: str) -> str:
         parent_block_id = self._parent_id_map[block_id]
