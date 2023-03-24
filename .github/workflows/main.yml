@@ -3,7 +3,7 @@ name: Main
 on:
   push:
     branches:
-      - main
+      - fix-deprecated-warning
 
 jobs:
   docker-push:
