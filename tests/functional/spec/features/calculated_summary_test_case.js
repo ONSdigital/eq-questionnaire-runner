@@ -372,7 +372,7 @@ class TestCase {
   }
 
   testCrossSectionDependencies(schema) {
-    before("Get to the question containing calcualted summary values with cross section dependcies", async () => {
+    before("Get to the question containing calculated summary values with cross section dependencies", async () => {
       await browser.openQuestionnaire(schema);
       await $(HubPage.submit()).click();
       await $(SkipFirstNumberBlockPageSectionOne.no()).click();

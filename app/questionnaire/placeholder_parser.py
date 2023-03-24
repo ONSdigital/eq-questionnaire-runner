@@ -13,7 +13,7 @@ from app.questionnaire.value_source_resolver import (
     ValueSourceResolver,
     ValueSourceTypes,
 )
-from app.utilities.mappings import get_flattened_mapping_value
+from app.utilities.mappings import get_flattened_mapping_values
 
 if TYPE_CHECKING:
     from app.questionnaire.path_finder import PathFinder  # pragma: no cover
@@ -82,7 +82,7 @@ class PlaceholderParser:
         ):
             self._routing_paths.update(routing_path_block_ids_map)
 
-            routing_path_block_ids = get_flattened_mapping_value(
+            routing_path_block_ids = get_flattened_mapping_values(
                 routing_path_block_ids_map
             )
             self._value_source_resolver = self._get_value_source_resolver(
@@ -205,7 +205,7 @@ def get_block_ids_for_calculated_summary_dependencies(
     if block_id := location.block_id:
         dependents = dependent_sections[block_id]
     else:
-        dependents = get_flattened_mapping_value(dependent_sections)
+        dependents = get_flattened_mapping_values(dependent_sections)
 
     for section in dependents:
         if section in sections_to_ignore:

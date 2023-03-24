@@ -25,7 +25,7 @@ from app.questionnaire.placeholder_parser import (
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
-from app.utilities.mappings import get_flattened_mapping_value
+from app.utilities.mappings import get_flattened_mapping_values
 
 logger = logging.getLogger(__name__)
 
@@ -473,7 +473,7 @@ def get_answer_fields(
             ),
         )
 
-    block_ids = get_flattened_mapping_value(routing_path_block_ids)
+    block_ids = get_flattened_mapping_values(routing_path_block_ids)
 
     value_source_resolver = ValueSourceResolver(
         answer_store=answer_store,
