@@ -1,7 +1,6 @@
 import time
 from datetime import datetime, timedelta, timezone
 
-from flask import session as cookie_session
 from freezegun import freeze_time
 
 from app.helpers.template_helpers import ContextHelper, get_survey_config
