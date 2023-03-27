@@ -56,7 +56,9 @@ class TestSession(IntegrationTestCase):
         self.assertStatusOK()
 
     def test_head_request_on_session_signed_out(self):
-        self.launchSurvey("test_introduction", account_service_url=ACCOUNT_SERVICE_BASE_URL_TEST)
+        self.launchSurvey(
+            "test_introduction", account_service_url=ACCOUNT_SERVICE_BASE_URL_TEST
+        )
         self.get("/session-expired")
         self.assertInBody(
             '<p>You will need to <a href="http://localhost/sign-in/logout">sign back in</a>to access your account</p>'
