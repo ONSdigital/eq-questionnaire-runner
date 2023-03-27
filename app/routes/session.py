@@ -179,7 +179,6 @@ def get_sign_out():
 
 @session_blueprint.route("/signed-out", methods=["GET"])
 def get_signed_out():
-
     if not cookie_session:
         return redirect("/session-expired")
 
