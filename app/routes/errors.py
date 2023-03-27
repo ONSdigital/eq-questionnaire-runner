@@ -1,6 +1,7 @@
 from typing import Tuple
 
 from flask import Blueprint, request
+from flask import session as cookie_session
 from flask.helpers import url_for
 from flask_babel import lazy_gettext
 from flask_login import current_user
@@ -52,7 +53,9 @@ def _render_error_page(status_code, template=None, **kwargs):
     handle_language()
     business_survey_config = get_survey_config(theme=SurveyType.BUSINESS)
     other_survey_config = get_survey_config(
-        theme=SurveyType.SOCIAL, base_url=ACCOUNT_SERVICE_BASE_URL_SOCIAL
+        theme=SurveyType.SOCIAL,
+        base_url=cookie_session.get("account_service_base_url")
+        or ACCOUNT_SERVICE_BASE_URL_SOCIAL,
     )
 
     business_logout_url = business_survey_config.account_service_log_out_url
