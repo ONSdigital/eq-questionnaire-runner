@@ -65,7 +65,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
             # gets called
             with patch(
                 "app.routes.questionnaire.get_block_handler",
-                side_effect=Exception("You broked it"),
+                side_effect=Exception("You broke it"),
             ):
                 self.post({"answer": "5000000"})
                 self.assertStatusCode(500)
@@ -80,12 +80,12 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
             # gets called
             with patch(
                 "app.routes.questionnaire.get_block_handler",
-                side_effect=Exception("You broked it"),
+                side_effect=Exception("You broke it"),
             ):
                 # Another exception occurs during exception handling
                 with patch(
                     "app.routes.errors.log_exception",
-                    side_effect=Exception("You broked it again"),
+                    side_effect=Exception("You broke it again"),
                 ):
                     self.post({"answer": "5000000"})
 
@@ -319,7 +319,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         # When
         with patch(
             "app.routes.questionnaire.get_block_handler",
-            side_effect=Exception("You broked it"),
+            side_effect=Exception("You broke it"),
         ):
             self.post({"answer": "test"})
 
