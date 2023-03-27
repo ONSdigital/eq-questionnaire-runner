@@ -1,6 +1,7 @@
 import time
 from datetime import datetime, timedelta, timezone
 
+from flask import session as cookie_session
 from freezegun import freeze_time
 
 from app.helpers.template_helpers import ContextHelper, get_survey_config
@@ -13,6 +14,10 @@ TIME_TO_FREEZE = datetime(2020, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
 EQ_SESSION_TIMEOUT_SECONDS = 45 * 60
 BUSINESS_URL = ACCOUNT_SERVICE_BASE_URL
 SOCIAL_URL = ACCOUNT_SERVICE_BASE_URL_SOCIAL
+<<<<<<< Updated upstream
+=======
+ACCOUNT_SERVICE_BASE_URL_TEST = "http://localhost"
+>>>>>>> Stashed changes
 
 
 class TestSession(IntegrationTestCase):
@@ -52,6 +57,13 @@ class TestSession(IntegrationTestCase):
     def test_head_request_on_session_signed_out(self):
         self.head("/signed-out")
         self.assertStatusOK()
+
+    def test_head_request_on_session_signed_out(self):
+        self.launchSurvey("test_introduction", account_service_url=ACCOUNT_SERVICE_BASE_URL_TEST)
+        self.get("/session-expired")
+        self.assertInBody(
+            '<p>You will need to <a href="http://localhost/sign-in/logout">sign back in</a>to access your account</p>'
+        )
 
     @freeze_time(TIME_TO_FREEZE)
     def test_get_session_expiry_doesnt_extend_session(self):
