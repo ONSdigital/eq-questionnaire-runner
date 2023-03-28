@@ -924,18 +924,27 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     if source["source"] == "calculated_summary"
                 ]
 
-                self._get_calculated_summary_section_dependencies(
-                    current_section_id=section["id"],
-                    current_block_id=block["id"],
-                    sources=calculated_summary_sources,
+                section_dependencies = (
+                    self._get_calculated_summary_section_dependencies(
+                        sources=calculated_summary_sources,
+                    )
                 )
+
+                if self.calculated_summary_section_dependencies_by_block.get(
+                    section["id"]
+                ):
+                    self.calculated_summary_section_dependencies_by_block[
+                        section["id"]
+                    ][block["id"]] = section_dependencies
+                else:
+                    self.calculated_summary_section_dependencies_by_block[
+                        section["id"]
+                    ] = defaultdict(set, {block["id"]: section_dependencies})
 
     def _get_calculated_summary_section_dependencies(
         self,
-        current_section_id: str,
-        current_block_id: str,
         sources: list[Mapping],
-    ) -> None:
+    ) -> set[str]:
         # Type ignore: Added to this method as the block will exist at this point
         section_dependencies: set[str] = set()
 
@@ -955,14 +964,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
                 section_dependencies.add(section_id)  # type: ignore
 
-        if section_dependency := self.calculated_summary_section_dependencies_by_block.get(
-            current_section_id
-        ):
-            section_dependency[current_block_id] = section_dependencies
-        else:
-            self.calculated_summary_section_dependencies_by_block[
-                current_section_id
-            ] = defaultdict(set, {current_block_id: section_dependencies})
+        return section_dependencies
 
     def get_calculated_summary_answer_ids(
         self, calculated_summary_block: Mapping[str, Any]
