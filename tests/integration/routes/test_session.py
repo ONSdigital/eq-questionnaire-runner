@@ -3,7 +3,6 @@ from datetime import datetime, timedelta, timezone
 
 from freezegun import freeze_time
 
-from app.helpers.template_helpers import ContextHelper, get_survey_config
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.utilities.json import json_loads
