@@ -18,7 +18,7 @@ class TestSaveAndSignOut(IntegrationTestCase):
     def test_sign_out_button_link(self):
         self.launchSurvey("test_textfield")
         self.assertEqual(
-            "/sign-out?externalRedirect=True", self.getSignOutButton()["href"]
+            "/sign-out?external_redirect=True", self.getSignOutButton()["href"]
         )
 
     def test_sign_out_url(self):

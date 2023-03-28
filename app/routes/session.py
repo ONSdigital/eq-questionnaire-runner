@@ -166,7 +166,7 @@ def get_sign_out():
     survey_config = get_survey_config()
     log_out_url = (
         url_for("session.get_signed_out")
-        if "externalRedirect" in request.args
+        if "external_redirect" in request.args
         else survey_config.account_service_log_out_url
     )
 
