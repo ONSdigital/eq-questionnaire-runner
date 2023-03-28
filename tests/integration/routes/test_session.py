@@ -51,7 +51,8 @@ class TestSession(IntegrationTestCase):
         self.assertStatusOK()
 
     def test_head_request_on_session_signed_out(self):
-        self.head("/signed-out")
+        self.launchSurvey("test_introduction")
+        self.get("/signed-out")
         self.assertStatusOK()
 
     def test_sign_back_in_link_on_session_signed_out(self):

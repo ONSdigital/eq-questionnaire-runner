@@ -3,6 +3,7 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 SIGN_OUT_URL_PATH = "/sign-out"
 SIGNED_OUT_URL_PATH = "/signed-out"
+SESSION_EXPIRY_PATH = "/session-expiry"
 ACCOUNT_SERVICE_BASE_URL = "http://localhost"
 ACCOUNT_SERVICE_LOG_OUT_URL_PATH = "/sign-in/logout"
 ACCOUNT_SERVICE_LOG_OUT_URL = (
@@ -16,12 +17,14 @@ DEFAULT_ACCOUNT_SERVICE_LOG_OUT_URL = (
 class TestSaveAndSignOut(IntegrationTestCase):
     def test_sign_out_button_link(self):
         self.launchSurvey("test_textfield")
-        self.assertEqual("/sign-out?save=True", self.getSignOutButton()["href"])
+        self.assertEqual(
+            "/sign-out?externalRedirect=True", self.getSignOutButton()["href"]
+        )
 
     def test_sign_out_url(self):
         self.launchSurvey("test_textfield")
         self.saveAndSignOut()
-        self.assertInRedirect("/signed-out")
+        self.assertInRedirect(SIGNED_OUT_URL_PATH)
 
     def test_sign_out_button_text(self):
         self.launchSurvey("test_textfield")
@@ -35,6 +38,11 @@ class TestSaveAndSignOut(IntegrationTestCase):
         self.deleteCookie()
         self.get(SIGN_OUT_URL_PATH, follow_redirects=False)
         self.assertInRedirect(DEFAULT_ACCOUNT_SERVICE_LOG_OUT_URL)
+
+    def test_no_session_cookie_signed_out_redirects_to_session_expiry(self):
+        self.deleteCookie()
+        self.get(SIGNED_OUT_URL_PATH, follow_redirects=False)
+        self.assertInRedirect(SESSION_EXPIRY_PATH)
 
     # Test the behaviour when using Hub/No Hub
     def test_redirects_to_account_service_log_out_url_using_base_url_from_claims(self):
