@@ -166,7 +166,7 @@ def get_sign_out():
     survey_config = get_survey_config()
     log_out_url = (
         url_for("session.get_signed_out")
-        if "externalRedirect" in request.args
+        if "internal_redirect" in request.args
         else survey_config.account_service_log_out_url
     )
 
@@ -178,10 +178,8 @@ def get_sign_out():
 
 
 @session_blueprint.route("/signed-out", methods=["GET"])
+@login_required
 def get_signed_out():
-    if not cookie_session:
-        return redirect(url_for("session.session_expiry"))
-
     business_survey_config = get_survey_config(theme=SurveyType.BUSINESS)
     other_survey_config = get_survey_config(
         theme=SurveyType.SOCIAL,
