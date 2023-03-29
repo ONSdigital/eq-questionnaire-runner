@@ -88,6 +88,7 @@ class Block:
         return Question(
             variant,
             answer_store=answer_store,
+            list_store=list_store,
             schema=schema,
             rule_evaluator=self._rule_evaluator,
             value_source_resolver=self._value_source_resolver,

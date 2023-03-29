@@ -3,10 +3,12 @@ from typing import Any, Mapping, Optional
 from flask import url_for
 from markupsafe import Markup, escape
 
-from app.data_models import AnswerStore
+from app.data_models import AnswerStore, ListStore
 from app.data_models.answer import AnswerValueEscapedTypes, escape_answer_value
+from app.data_models.metadata_proxy import MetadataProxy
 from app.forms.field_handlers.select_handlers import DynamicAnswerOptions
 from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
+from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.views.contexts.summary.answer import (
@@ -22,6 +24,7 @@ class Question:
         question_schema: QuestionSchemaType,
         *,
         answer_store: AnswerStore,
+        list_store: ListStore,
         schema: QuestionnaireSchema,
         rule_evaluator: RuleEvaluator,
         value_source_resolver: ValueSourceResolver,
@@ -35,6 +38,14 @@ class Question:
         self.type = question_schema["type"]
         self.schema = schema
         self.answer_schemas = iter(question_schema["answers"])
+        if dynamic_answers := question_schema.get("dynamic_answers"):
+            self.dynamic_answer_schemas = iter(dynamic_answers.get("answers", {}))
+            self.dynamic_answer_identifier = dynamic_answers.get("values")["identifier"]
+        else:
+            self.dynamic_answer_schemas = None
+            self.dynamic_answer_identifier = None
+        self.answer_store = answer_store
+        self.list_store = list_store
         self.summary = question_schema.get("summary")
         self.title = (
             question_schema.get("title") or question_schema["answers"][0]["label"]
@@ -95,6 +106,34 @@ class Question:
             ]
 
         summary_answers = []
+
+        if self.dynamic_answer_schemas:
+            for answer_schema in self.dynamic_answer_schemas:
+                for list_item_id in self.list_store.get(self.dynamic_answer_identifier).items:
+                    placeholder_renderer = PlaceholderRenderer(answer_store=self.answer_store, list_store=self.list_store, schema=self.schema, language="en", metadata={}, response_metadata={})
+                    self.list_item_id = list_item_id
+                    answer_value: Optional[AnswerValueEscapedTypes] = self.get_answer(
+                        answer_store, answer_schema["id"]
+                    )
+                    answer = self._build_answer(
+                        answer_store, question_schema, answer_schema, answer_value
+                    )
+
+                    resolved_answer_schema  = self.schema.get_mutable_deepcopy(answer_schema)
+                    resolved_answer_schema["id"] = answer_schema["id"] + f"-{self.list_item_id}"
+                    rendered_schema = placeholder_renderer.render(resolved_answer_schema, self.list_item_id)
+
+                    summary_answer = Answer(
+                        answer_schema=rendered_schema,
+                        answer_value=answer,
+                        block_id=block_id,
+                        list_name=list_name,
+                        list_item_id=self.list_item_id,
+                        return_to=return_to,
+                        return_to_block_id=return_to_block_id,
+                    ).serialize()
+                    summary_answers.append(summary_answer)
+
         for answer_schema in self.answer_schemas:
             answer_value: Optional[AnswerValueEscapedTypes] = self.get_answer(
                 answer_store, answer_schema["id"]

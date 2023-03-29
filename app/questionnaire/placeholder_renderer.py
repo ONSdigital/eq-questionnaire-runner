@@ -114,12 +114,40 @@ class PlaceholderRenderer:
         data_to_render_mutable: dict[
             str, Any
         ] = QuestionnaireSchema.get_mutable_deepcopy(data_to_render)
+        resolved_dynamic_answers = []
+        list_items = []
+        if dynamic_answers := data_to_render_mutable.get("dynamic_answers", {}):
+            list_items = self._list_store.get(dynamic_answers["values"].get("identifier")).serialize().get("items")
+            for dynamic_answer in dynamic_answers["answers"]:
+                for item in list_items:
+                    resolved_dynamic_answer = self._schema.get_mutable_deepcopy(
+                        dynamic_answer
+                    )
+                    resolved_id = f"{dynamic_answer['id']}-{item}"
+                    resolved_dynamic_answer["id"] = resolved_id
+
+                    # Updating parent id map for dependencies purposes (used later by questionnaire store updater on post)
+                    # self._schema._parent_id_map[
+                    #     dynamic_answer['id']
+                    # ] = data_to_render_mutable.get("id")
+                    self._schema._parent_id_map[dynamic_answer['id']] = data_to_render_mutable.get("id")
+
+                    resolved_dynamic_answers.append(resolved_dynamic_answer)
+
+            data_to_render_mutable["answers"] += resolved_dynamic_answers
+            data_to_render_mutable["dynamic_answers_list_id"] = data_to_render_mutable["dynamic_answers"]["values"]["identifier"]
+            del data_to_render_mutable["dynamic_answers"]
+
         pointers = find_pointers_containing(data_to_render_mutable, "placeholders")
 
-        for pointer in pointers:
-            rendered_text = self.render_pointer(
-                data_to_render_mutable, pointer, list_item_id
-            )
+        for index, pointer in enumerate(pointers):
+            if list_items:
+                rendered_text = self.render_pointer(
+                    data_to_render_mutable, pointer, list_items[index]
+                )
+            else:
+                rendered_text = self.render_pointer(
+                    data_to_render_mutable, pointer, list_item_id
+                )
             set_pointer(data_to_render_mutable, pointer, rendered_text)
-
         return data_to_render_mutable

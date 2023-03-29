@@ -251,6 +251,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     )
                     continue
 
+                if dynamic_answers := question.get("dynamic_answers"):
+                    for answer in dynamic_answers.get("answers"):
+                        value_source = dynamic_answers["values"]
+                        self._update_answer_dependencies_for_value_source(
+                            value_source, block_id=block["id"], answer_id=answer["id"]
+                        )
+
                 for answer in question.get("answers", []):
                     self._update_answer_dependencies_for_answer(
                         answer, block_id=block["id"]

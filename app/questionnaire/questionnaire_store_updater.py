@@ -328,6 +328,10 @@ class QuestionnaireStoreUpdater:
         answer_ids_for_question = self._schema.get_answer_ids_for_question(
             self._current_question
         )
+        for item in answer_ids_for_question:
+            if item.split("-")[-1] in self._list_store._list_item_ids():
+                answer_ids_for_question.append(list(form_data.keys())[0])
+                answer_ids_for_question.remove(item)
 
         for answer_id, answer_value in form_data.items():
             if answer_id not in answer_ids_for_question:
