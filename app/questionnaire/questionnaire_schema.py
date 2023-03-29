@@ -923,7 +923,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             calculated_summary_answer_ids = get_calculated_summary_answer_ids(
                 calculated_summary_block  # type: ignore
             )
-            answer_id_list.extend(iter(calculated_summary_answer_ids))
+            answer_id_list.extend(calculated_summary_answer_ids)
 
             for answer_id in answer_id_list:
                 block = self.get_block_for_answer_id(answer_id)  # type: ignore

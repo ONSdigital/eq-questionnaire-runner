@@ -1189,7 +1189,7 @@ def test_get_block_ids_for_calculated_summary_dependencies_with_sections_to_igno
         schema=schema,
         location=location,
         progress_store=progress_store,
-        sections_to_ignore=["calculated-summary-section"],
+        sections_to_ignore=[("calculated-summary-section", None)],
         path_finder=PathFinder(
             schema=schema,
             answer_store=answer_store,

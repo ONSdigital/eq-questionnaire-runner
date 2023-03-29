@@ -233,12 +233,12 @@ def get_block_ids_for_calculated_summary_dependencies(
         return block_ids_by_section
 
     for section in dependents:
-        if section in sections_to_ignore:
-            continue
-
         # Dependent sections other than the current section cannot be a repeating section
         list_item_id = location.list_item_id if section == location.section_id else None
         key = (section, list_item_id)
+
+        if key in sections_to_ignore:
+            continue
 
         if key in progress_store.started_section_keys():
             routing_path = path_finder.routing_path(*key)
