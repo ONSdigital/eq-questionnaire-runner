@@ -33,7 +33,6 @@ class ListCollector(Question):
             self._questionnaire_store.progress_store,
             self._questionnaire_store.metadata,
             self._questionnaire_store.response_metadata,
-            self.current_location,
         )
 
         return {

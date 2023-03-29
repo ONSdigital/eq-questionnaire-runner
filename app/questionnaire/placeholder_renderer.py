@@ -41,7 +41,6 @@ class PlaceholderRenderer:
         self._schema = schema
         self._location = location
         self._progress_store = progress_store
-        self._block_ids_calculated_summary: list = []
 
     def render_pointer(
         self,

@@ -5,7 +5,6 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
-from app.questionnaire import Location
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.router import Router
@@ -21,7 +20,6 @@ class Context(ABC):
         progress_store: ProgressStore,
         metadata: MetadataProxy | None,
         response_metadata: Mapping,
-        location: Location | None = None,
     ) -> None:
         self._language = language
         self._schema = schema
@@ -30,7 +28,6 @@ class Context(ABC):
         self._progress_store = progress_store
         self._metadata = metadata
         self._response_metadata = response_metadata
-        self._location = location
         self._placeholder_preview_mode = self._schema.preview_enabled
 
         self._router = Router(
@@ -51,5 +48,4 @@ class Context(ABC):
             schema=self._schema,
             progress_store=self._progress_store,
             placeholder_preview_mode=self._placeholder_preview_mode,
-            location=self._location,
         )

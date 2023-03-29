@@ -44,7 +44,6 @@ class CalculatedSummaryContext(Context):
             progress_store,
             metadata,
             response_metadata,
-            current_location,
         )
         self.routing_path = routing_path
         self.current_location = current_location

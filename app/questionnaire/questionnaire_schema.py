@@ -930,16 +930,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     )
                 )
 
-                if self.calculated_summary_section_dependencies_by_block.get(
-                    section["id"]
-                ):
-                    self.calculated_summary_section_dependencies_by_block[
-                        section["id"]
-                    ][block["id"]] = section_dependencies
-                else:
-                    self.calculated_summary_section_dependencies_by_block[
-                        section["id"]
-                    ] = defaultdict(set, {block["id"]: section_dependencies})
+                self.calculated_summary_section_dependencies_by_block[section["id"]][
+                    block["id"]
+                ].update(section_dependencies)
 
     def _get_calculated_summary_section_dependencies(
         self,
