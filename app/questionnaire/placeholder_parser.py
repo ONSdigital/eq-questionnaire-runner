@@ -16,7 +16,7 @@ from app.questionnaire.value_source_resolver import (
     ValueSourceResolver,
     ValueSourceTypes,
 )
-from app.utilities.mappings import get_flattened_mapping_values
+from app.utilities.mappings import get_flattened_mapping_values, get_mappings_with_key
 
 if TYPE_CHECKING:
     from app.questionnaire.path_finder import PathFinder  # pragma: no cover
@@ -196,12 +196,11 @@ class PlaceholderParser:
 
 def get_sources_for_type_from_data(
     *,
-    schema: QuestionnaireSchema,
     source_type: str,
     data: MultiDict | Mapping | Sequence,
     ignore_keys: list,
 ) -> list | None:
-    sources = schema.get_mappings_with_key("source", data, ignore_keys=ignore_keys)
+    sources = get_mappings_with_key("source", data, ignore_keys=ignore_keys)
 
     return [source for source in sources if source["source"] == source_type]
 
@@ -227,7 +226,6 @@ def get_block_ids_for_calculated_summary_dependencies(
         dependents = get_flattened_mapping_values(dependent_sections)
 
     if dependents and not get_sources_for_type_from_data(
-        schema=schema,
         source_type="calculated_summary",
         data=data,
         ignore_keys=["when"],

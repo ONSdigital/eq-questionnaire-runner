@@ -11,6 +11,7 @@ from app.data_models.answer import Answer
 from app.forms import error_messages
 from app.questionnaire.rules.operator import OPERATION_MAPPING
 from app.utilities.make_immutable import make_immutable
+from app.utilities.mappings import get_mappings_with_key
 
 DEFAULT_LANGUAGE_CODE = "en"
 
@@ -242,7 +243,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _populate_answer_dependencies(self) -> None:
         for block in self.get_blocks():
             if block["type"] == "CalculatedSummary":
-                answer_ids_for_block = self.get_calculated_summary_answer_ids(block)
+                answer_ids_for_block = get_calculated_summary_answer_ids(block)
                 self._update_answer_dependencies_for_calculated_summary(
                     answer_ids_for_block, block["id"]
                 )
@@ -311,7 +312,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _update_answer_dependencies_for_dynamic_options(
         self, dynamic_options_values: Mapping, *, block_id: str, answer_id: str
     ) -> None:
-        value_sources = self.get_mappings_with_key("source", dynamic_options_values)
+        value_sources = get_mappings_with_key("source", dynamic_options_values)
         for value_source in value_sources:
             self._update_answer_dependencies_for_value_source(
                 value_source, block_id=block_id, answer_id=answer_id
@@ -327,7 +328,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         if value_source["source"] == "calculated_summary":
             identifier = value_source["identifier"]
             if calculated_summary_block := self.get_block(identifier):
-                answer_ids_for_block = self.get_calculated_summary_answer_ids(
+                answer_ids_for_block = get_calculated_summary_answer_ids(
                     calculated_summary_block
                 )
 
@@ -797,31 +798,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             except AttributeError:
                 continue
 
-    def get_mappings_with_key(  # noqa: C901 pylint: disable=too-complex
-        self, key: str, data: Mapping | Sequence, ignore_keys: list[str] | None = None
-    ) -> Generator[Mapping, None, None]:
-        ignore_keys = ignore_keys or []
-
-        def _handle_sequence(value: Sequence) -> Generator[Mapping, None, None]:
-            for element in value:
-                if isinstance(element, Mapping):
-                    yield from self.get_mappings_with_key(key, element, ignore_keys)
-
-        if isinstance(data, Sequence):
-            yield from _handle_sequence(data)
-
-        if isinstance(data, Mapping):
-            if key not in ignore_keys and key in data:
-                yield data
-
-            for k, v in data.items():
-                if k in ignore_keys:
-                    continue
-                if isinstance(v, Mapping):
-                    yield from self.get_mappings_with_key(key, v, ignore_keys)
-                if isinstance(v, Sequence):
-                    yield from _handle_sequence(v)
-
     def _get_parent_section_id_for_block(self, block_id: str) -> str:
         parent_block_id = self._parent_id_map[block_id]
         group_id = self._parent_id_map[parent_block_id]
@@ -890,7 +866,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 answer_id_list.append(identifier)
             elif source == "calculated_summary" and identifier:
                 calculated_summary_block = self.get_block(identifier)
-                calculated_summary_answer_ids = self.get_calculated_summary_answer_ids(
+                calculated_summary_answer_ids = get_calculated_summary_answer_ids(
                     calculated_summary_block  # type: ignore
                 )
                 answer_id_list.extend(iter(calculated_summary_answer_ids))
@@ -914,9 +890,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _populate_calculated_summary_section_dependencies(self) -> None:
         for section in self.get_sections():
             for block in self.get_blocks_for_section(section):
-                sources = self.get_mappings_with_key(
-                    "source", block, ignore_keys=["when"]
-                )
+                sources = get_mappings_with_key("source", block, ignore_keys=["when"])
 
                 calculated_summary_sources = [
                     source
@@ -946,7 +920,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             identifier: str = source["identifier"]
 
             calculated_summary_block = self.get_block(identifier)  # type: ignore
-            calculated_summary_answer_ids = self.get_calculated_summary_answer_ids(
+            calculated_summary_answer_ids = get_calculated_summary_answer_ids(
                 calculated_summary_block  # type: ignore
             )
             answer_id_list.extend(iter(calculated_summary_answer_ids))
@@ -958,18 +932,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 section_dependencies.add(section_id)  # type: ignore
 
         return section_dependencies
-
-    def get_calculated_summary_answer_ids(
-        self, calculated_summary_block: Mapping[str, Any]
-    ) -> list[str]:
-        if calculated_summary_block["calculation"].get("answers_to_calculate"):
-            return calculated_summary_block["calculation"]["answers_to_calculate"]  # type: ignore
-
-        values = self.get_mappings_with_key(
-            "source", calculated_summary_block["calculation"]["operation"]
-        )
-
-        return [value["identifier"] for value in values if value["source"] == "answers"]
 
     def get_summary_item_for_list_for_section(
         self, *, section_id: str, list_name: str
@@ -998,3 +960,16 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             for item in summary.get("items", []):
                 if item["for_list"] == list_name and item.get("item_anchor_answer_id"):
                     return f"#{str(item['item_anchor_answer_id'])}"
+
+
+def get_calculated_summary_answer_ids(
+    calculated_summary_block: Mapping[str, Any]
+) -> list[str]:
+    if calculated_summary_block["calculation"].get("answers_to_calculate"):
+        return calculated_summary_block["calculation"]["answers_to_calculate"]  # type: ignore
+
+    values = get_mappings_with_key(
+        "source", calculated_summary_block["calculation"]["operation"]
+    )
+
+    return [value["identifier"] for value in values if value["source"] == "answers"]

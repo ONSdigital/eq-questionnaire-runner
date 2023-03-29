@@ -13,7 +13,10 @@ from app.jinja_filters import (
     get_formatted_currency,
 )
 from app.questionnaire import Location
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import (
+    QuestionnaireSchema,
+    get_calculated_summary_answer_ids,
+)
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.schema_utils import get_answer_ids_in_block
@@ -125,9 +128,7 @@ class CalculatedSummaryContext(Context):
         if rendered_block["calculation"].get("answers_to_calculate"):
             answers_to_calculate = rendered_block["calculation"]["answers_to_calculate"]
         else:
-            answers_to_calculate = self._schema.get_calculated_summary_answer_ids(
-                rendered_block
-            )
+            answers_to_calculate = get_calculated_summary_answer_ids(rendered_block)
 
         blocks_to_calculate: list = [
             self._schema.get_block_for_answer_id(answer_id)
