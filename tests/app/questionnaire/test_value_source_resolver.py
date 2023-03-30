@@ -4,7 +4,7 @@ import pytest
 from mock import Mock
 
 from app.authentication.auth_payload_version import AuthPayloadVersion
-from app.data_models import AnswerStore, ListStore
+from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.answer import Answer, AnswerDict
 from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
 from app.questionnaire import Location, QuestionnaireSchema
@@ -65,6 +65,7 @@ def get_value_source_resolver(
         routing_path_block_ids=routing_path_block_ids,
         use_default_answer=use_default_answer,
         escape_answer_values=escape_answer_values,
+        progress_store=ProgressStore(),
     )
 
 

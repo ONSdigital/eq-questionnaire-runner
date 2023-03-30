@@ -117,6 +117,7 @@ class PlaceholderParser:
             use_default_answer=True,
             assess_routing_path=False,
             routing_path_block_ids=routing_path_block_ids,
+            progress_store=self._progress_store,
         )
 
     def _parse_placeholder(self, placeholder: Mapping) -> Any:

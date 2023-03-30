@@ -78,6 +78,7 @@ class ConfirmEmail:
             response_metadata=self._questionnaire_store.metadata,
             data=None,
             form_data=self._form_data,
+            progress_store=self._questionnaire_store.progress_store,
         )
 
     @cached_property

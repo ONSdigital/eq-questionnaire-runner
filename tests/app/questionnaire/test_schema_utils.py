@@ -1,3 +1,4 @@
+from app.data_models import ProgressStore
 from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.list_store import ListStore
 from app.questionnaire.location import Location
@@ -33,6 +34,7 @@ def test_transform_variants_with_question_variants(question_variant_schema):
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
+        progress_store=ProgressStore(),
     )
 
     compare_transformed_block(block, transformed_block, "Question 1, No")
@@ -47,6 +49,7 @@ def test_transform_variants_with_question_variants(question_variant_schema):
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
+        progress_store=ProgressStore(),
     )
 
     compare_transformed_block(block, transformed_block, "Question 1, Yes")
@@ -70,6 +73,7 @@ def test_transform_variants_with_content(content_variant_schema):
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
+        progress_store=ProgressStore(),
     )
 
     assert transformed_block != block
@@ -94,6 +98,7 @@ def test_transform_variants_with_no_variants(question_schema):
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
+        progress_store=ProgressStore(),
     )
 
     assert transformed_block == block
@@ -117,6 +122,7 @@ def test_transform_variants_list_collector(list_collector_variant_schema):
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
+        progress_store=ProgressStore(),
     )
 
     compare_transformed_block(
@@ -139,6 +145,7 @@ def test_transform_variants_list_collector(list_collector_variant_schema):
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
+        progress_store=ProgressStore(),
     )
 
     compare_transformed_block(
@@ -170,6 +177,7 @@ def test_choose_content_to_display(content_variant_schema):
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
+        progress_store=ProgressStore(),
     )
 
     assert content_to_display[0]["title"] == "You are over 16"
@@ -184,6 +192,7 @@ def test_choose_content_to_display(content_variant_schema):
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
+        progress_store=ProgressStore(),
     )
 
     assert content_to_display[0]["title"] == "You are ageless"
@@ -207,6 +216,7 @@ def test_choose_question_to_display(question_variant_schema):
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
+        progress_store=ProgressStore(),
     )
 
     assert question_to_display["title"] == "Question 1, Yes"
@@ -221,6 +231,7 @@ def test_choose_question_to_display(question_variant_schema):
         answer_store,
         ListStore({}),
         Location(section_id=section_id, block_id=block["id"]),
+        progress_store=ProgressStore(),
     )
 
     assert question_to_display["title"] == "Question 1, No"

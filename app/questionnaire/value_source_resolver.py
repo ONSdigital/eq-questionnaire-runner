@@ -4,6 +4,7 @@ from typing import Any, Callable, Iterable, Mapping, Optional, Union
 
 from markupsafe import Markup
 
+from app.data_models import ProgressStore
 from app.data_models.answer import AnswerValueTypes, escape_answer_value
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListModel, ListStore
@@ -30,6 +31,7 @@ class ValueSourceResolver:
     schema: QuestionnaireSchema
     location: Location | RelationshipLocation | None
     list_item_id: str | None
+    progress_store: ProgressStore
     routing_path_block_ids: Iterable[str] | None = None
     use_default_answer: bool = False
     escape_answer_values: bool = False
@@ -159,6 +161,7 @@ class ValueSourceResolver:
             self.response_metadata,
             location=self.location,
             routing_path_block_ids=self.routing_path_block_ids,
+            progress_store=self.progress_store,
         )
 
         return evaluator.evaluate(calculation["operation"])  # type: ignore

@@ -165,6 +165,7 @@ class CalculatedSummaryContext(Context):
             self._answer_store,
             self._list_store,
             self.current_location,
+            self._progress_store,
         )
         transformed_block = deepcopy(transformed_block)
         transformed_block = QuestionnaireSchema.get_mutable_deepcopy(transformed_block)
@@ -202,6 +203,7 @@ class CalculatedSummaryContext(Context):
                 self._response_metadata,
                 routing_path_block_ids=self.routing_path.block_ids,
                 location=self.current_location,
+                progress_store=self._progress_store,
             )
 
             calculated_total: Union[int, float, Decimal] = evaluate_calculated_summary.evaluate(calculation)  # type: ignore
@@ -223,6 +225,7 @@ class CalculatedSummaryContext(Context):
                     self._answer_store,
                     self._list_store,
                     current_location=self.current_location,
+                    progress_store=self._progress_store,
                 )
                 for answer in question["answers"]:
                     if not answer_format["type"]:

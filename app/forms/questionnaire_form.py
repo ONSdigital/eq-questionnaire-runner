@@ -49,6 +49,7 @@ class QuestionnaireForm(FlaskForm):
         metadata: Optional[MetadataProxy],
         response_metadata: Mapping[str, Any],
         location: Union[None, Location, RelationshipLocation],
+        progress_store: ProgressStore,
         **kwargs: Union[MultiDict[str, Any], Mapping[str, Any], None],
     ):
         self.schema = schema
@@ -61,6 +62,7 @@ class QuestionnaireForm(FlaskForm):
         self.question_errors: dict[str, str] = {}
         self.options_with_detail_answer: dict = {}
         self.question_title = self.question.get("title", "")
+        self.progress_store = progress_store
         self.value_source_resolver = ValueSourceResolver(
             answer_store=self.answer_store,
             schema=self.schema,
@@ -69,6 +71,7 @@ class QuestionnaireForm(FlaskForm):
             list_store=self.list_store,
             location=self.location,
             list_item_id=self.location.list_item_id if self.location else None,
+            progress_store=self.progress_store,
         )
 
         super().__init__(**kwargs)
@@ -313,6 +316,7 @@ class QuestionnaireForm(FlaskForm):
             location=self.location,
             list_item_id=list_item_id,
             escape_answer_values=False,
+            progress_store=self.progress_store,
         )
 
         rule_evaluator = RuleEvaluator(
@@ -322,6 +326,7 @@ class QuestionnaireForm(FlaskForm):
             metadata=self.metadata,
             response_metadata=self.response_metadata,
             location=self.location,
+            progress_store=self.progress_store,
         )
 
         handler = DateHandler(
@@ -452,7 +457,7 @@ def get_answer_fields(
     metadata: MetadataProxy | None,
     response_metadata: Mapping[str, Any],
     location: Location | RelationshipLocation | None,
-    progress_store: ProgressStore | None,
+    progress_store: ProgressStore,
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
 
@@ -489,6 +494,7 @@ def get_answer_fields(
         response_metadata=response_metadata,
         routing_path_block_ids=block_ids,
         assess_routing_path=False,
+        progress_store=progress_store,
     )
 
     rule_evaluator = RuleEvaluator(
@@ -593,10 +599,10 @@ def generate_form(
     list_store: ListStore,
     metadata: MetadataProxy | None,
     response_metadata: Mapping[str, Any],
+    progress_store: ProgressStore,
     location: Location | RelationshipLocation | None = None,
     data: dict[str, Any] | None = None,
     form_data: MultiDict[str, Any] | None = None,
-    progress_store: ProgressStore | None = None,
 ) -> QuestionnaireForm:
     class DynamicForm(QuestionnaireForm):
         pass
@@ -630,4 +636,5 @@ def generate_form(
         location,
         data=data,
         formdata=form_data,
+        progress_store=progress_store,
     )

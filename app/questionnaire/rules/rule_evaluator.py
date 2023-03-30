@@ -29,7 +29,7 @@ class RuleEvaluator:
     metadata: MetadataProxy | None
     response_metadata: Mapping
     location: Location | RelationshipLocation | None
-    progress_store: ProgressStore | None = None
+    progress_store: ProgressStore
     routing_path_block_ids: Iterable | None = None
     language: str = DEFAULT_LANGUAGE_CODE
 
@@ -46,6 +46,7 @@ class RuleEvaluator:
             list_item_id=list_item_id,
             routing_path_block_ids=self.routing_path_block_ids,
             use_default_answer=True,
+            progress_store=self.progress_store,
         )
 
         renderer: PlaceholderRenderer = PlaceholderRenderer(
@@ -56,7 +57,7 @@ class RuleEvaluator:
             response_metadata=self.response_metadata,
             schema=self.schema,
             location=self.location,
-            progress_store=self.progress_store,  # type: ignore
+            progress_store=self.progress_store,
         )
         self.operations = Operations(
             language=self.language, schema=self.schema, renderer=renderer

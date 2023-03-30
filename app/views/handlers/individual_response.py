@@ -199,6 +199,7 @@ class IndividualResponseHandler:
             response_metadata=self._questionnaire_store.response_metadata,
             data=self._answers,
             form_data=self._form_data,
+            progress_store=self._questionnaire_store.progress_store,
         )
 
     def get_context(self):

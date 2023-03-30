@@ -40,6 +40,7 @@ def test_form_ids_match_block_answer_ids(app, answer_store, list_store):
             list_store,
             metadata=get_metadata(),
             response_metadata={},
+            progress_store=ProgressStore(),
         )
 
         for answer_id in schema.get_answer_ids_for_block("name-block"):
@@ -77,6 +78,7 @@ def test_form_date_range_populates_data(app, answer_store, list_store):
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         assert form.data == expected_form_data
@@ -113,6 +115,7 @@ def test_date_range_matching_dates_raises_question_error(app, answer_store, list
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -156,6 +159,7 @@ def test_date_range_to_precedes_from_raises_question_error(
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -199,6 +203,7 @@ def test_date_range_too_large_period_raises_question_error(
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -241,6 +246,7 @@ def test_date_range_too_small_period_raises_question_error(
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -281,6 +287,7 @@ def test_date_range_valid_period(app, answer_store, list_store):
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -327,6 +334,7 @@ def test_date_combined_single_validation(app, answer_store, list_store):
             metadata,
             response_metadata,
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -378,6 +386,7 @@ def test_date_combined_range_too_small_validation(app, answer_store, list_store)
             metadata,
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -427,6 +436,7 @@ def test_date_combined_range_too_large_validation(app, answer_store, list_store)
             metadata,
             response_metadata,
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -474,6 +484,7 @@ def test_date_mm_yyyy_combined_single_validation(app, answer_store, list_store):
             metadata,
             response_metadata,
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -525,6 +536,7 @@ def test_date_mm_yyyy_combined_range_too_small_validation(
             metadata,
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -574,6 +586,7 @@ def test_date_mm_yyyy_combined_range_too_large_validation(
             metadata,
             response_metadata,
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -614,6 +627,7 @@ def test_date_yyyy_combined_single_validation(app, answer_store, list_store):
             metadata,
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -658,6 +672,7 @@ def test_date_yyyy_combined_range_too_small_validation(app, answer_store, list_s
             metadata,
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -698,6 +713,7 @@ def test_date_yyyy_combined_range_too_large_validation(app, answer_store, list_s
             metadata,
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -738,6 +754,7 @@ def test_date_raises_ValueError_when_any_date_range_parts_are_falsy(
             metadata,
             response_metadata,
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         with pytest.raises(ValueError):
@@ -790,6 +807,7 @@ def test_bespoke_message_for_date_validation_range(
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         mocker.patch(
@@ -847,6 +865,7 @@ def test_invalid_minimum_period_limit_and_single_date_periods(
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         with pytest.raises(Exception) as exc:
@@ -907,6 +926,7 @@ def test_invalid_maximum_period_limit_and_single_date_periods(
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         with pytest.raises(Exception) as exc:
@@ -968,6 +988,7 @@ def test_period_limits_minimum_not_set_and_single_date_periods(
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         with mocker.patch(
@@ -1033,6 +1054,7 @@ def test_invalid_date_range_and_single_date_periods(
             metadata=get_metadata(metadata),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         with pytest.raises(Exception) as exc:
@@ -1078,6 +1100,7 @@ def test_invalid_calculation_type(app, answer_store, list_store, mocker):
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         with pytest.raises(Exception) as exc:
@@ -1115,6 +1138,7 @@ def test_bespoke_message_for_sum_validation(app, answer_store, list_store, mocke
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         mocker.patch(
@@ -1324,6 +1348,7 @@ def test_calculated_field(
             metadata=metadata,
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -1378,6 +1403,7 @@ def test_sum_calculated_field_value_source_calculated_summary_repeat_not_equal_v
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -1414,6 +1440,7 @@ def test_multi_calculation(app, answer_store, list_store):
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
         form.validate()
 
@@ -1430,6 +1457,7 @@ def test_multi_calculation(app, answer_store, list_store):
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
         form.validate()
 
@@ -1446,6 +1474,7 @@ def test_multi_calculation(app, answer_store, list_store):
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
         form.validate()
 
@@ -1479,6 +1508,7 @@ def test_generate_form_with_title_and_no_answer_label(app, answer_store, list_st
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -1498,6 +1528,7 @@ def test_form_errors_are_correctly_mapped(app, answer_store, list_store):
             list_store,
             metadata=get_metadata(),
             response_metadata={},
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -1521,6 +1552,7 @@ def test_form_subfield_errors_are_correctly_mapped(app, answer_store, list_store
             list_store,
             metadata=get_metadata(),
             response_metadata={},
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -1557,6 +1589,7 @@ def test_detail_answer_mandatory_only_checked_if_option_selected(
             metadata=get_metadata(),
             response_metadata={},
             form_data=MultiDict({"mandatory-checkbox-answer": "Your choice"}),
+            progress_store=ProgressStore(),
         )
 
         detail_answer_field = getattr(form, "your-choice-answer-mandatory")
@@ -1571,6 +1604,7 @@ def test_detail_answer_mandatory_only_checked_if_option_selected(
             metadata=get_metadata(),
             response_metadata={},
             data={"mandatory-checkbox-answer": "Ham"},
+            progress_store=ProgressStore(),
         )
 
         detail_answer_field = getattr(form, "your-choice-answer-mandatory")
@@ -1595,6 +1629,7 @@ def test_answer_with_detail_answer_errors_are_correctly_mapped(
             metadata=get_metadata(),
             response_metadata={},
             form_data=MultiDict({"radio-mandatory-answer": "Other"}),
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -1626,6 +1661,7 @@ def test_answer_errors_are_interpolated(app, answer_store, list_store):
             metadata=get_metadata(),
             response_metadata={},
             form_data=MultiDict({"set-minimum": "-1"}),
+            progress_store=ProgressStore(),
         )
 
         form.validate()
@@ -1651,6 +1687,7 @@ def test_mandatory_mutually_exclusive_question_raises_error_when_not_answered(
             metadata=get_metadata(),
             response_metadata={},
             form_data=MultiDict(),
+            progress_store=ProgressStore(),
         )
         form.validate_mutually_exclusive_question(question_schema)
 
@@ -1696,6 +1733,7 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
             metadata=get_metadata(),
             response_metadata={},
             form_data=MultiDict(),
+            progress_store=ProgressStore(),
         )
         form.validate_mutually_exclusive_question(question_schema)
         error = form.question_errors["mutually-exclusive-checkbox-question"]
@@ -1731,6 +1769,7 @@ def test_mutually_exclusive_question_raises_error_when_both_answered(
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
         form.validate_mutually_exclusive_question(question_schema)
 
@@ -1752,6 +1791,7 @@ def test_date_range_form(app, answer_store, list_store):
             list_store,
             metadata=get_metadata(),
             response_metadata={},
+            progress_store=ProgressStore(),
         )
 
         assert hasattr(form, "date-range-from-answer")
@@ -1788,6 +1828,7 @@ def test_date_range_form_with_data(app, answer_store, list_store):
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         assert hasattr(form, "date-range-from-answer")
@@ -1826,6 +1867,7 @@ def test_form_for_radio_other_not_selected(app, answer_store, list_store):
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         assert hasattr(form, "radio-mandatory-answer")
@@ -1856,6 +1898,7 @@ def test_form_for_radio_other_selected(app, answer_store, list_store):
             metadata=get_metadata(),
             response_metadata={},
             form_data=form_data,
+            progress_store=ProgressStore(),
         )
 
         other_text_field = getattr(form, "other-answer-mandatory")

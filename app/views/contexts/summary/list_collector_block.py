@@ -191,6 +191,7 @@ class ListCollectorBlock:
                     ),
                     return_to="section-summary",
                     return_to_block_id=None,
+                    progress_store=self._progress_store,
                 ).serialize()
                 for block in blocks
             ]
