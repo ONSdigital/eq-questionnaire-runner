@@ -12,7 +12,6 @@ TIME_TO_FREEZE = datetime(2020, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
 EQ_SESSION_TIMEOUT_SECONDS = 45 * 60
 BUSINESS_URL = ACCOUNT_SERVICE_BASE_URL
 SOCIAL_URL = ACCOUNT_SERVICE_BASE_URL_SOCIAL
-ACCOUNT_SERVICE_BASE_URL_TEST = "http://localhost"
 
 
 class TestSession(IntegrationTestCase):
