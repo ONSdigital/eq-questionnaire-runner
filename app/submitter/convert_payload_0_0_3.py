@@ -68,6 +68,12 @@ def convert_answers_to_payload_0_0_3(
                         list_collector_block=block,
                         answers_payload=answers_payload,
                     )
+                if (question := block.get("question")) and (
+                    question.get("dynamic_answers")
+                ):
+                    resolve_dynamic_answers(
+                        question, answer_store, answers_payload, list_store
+                    )
 
                 answer_ids = schema.get_answer_ids_for_block(block_id)
                 answers_in_block = answer_store.get_answers_by_answer_id(
@@ -145,3 +151,13 @@ def add_relationships_unrelated_answers(
             )
         ):
             answers_payload.add_or_update(unrelated_answer)
+
+def resolve_dynamic_answers(
+    block: dict, answer_store: AnswerStore, answers_payload: AnswerStore, list_store: ListStore
+) -> None:
+    for answer in block["dynamic_answers"].get("answers"):
+        for list_item_id in list_store.get(block["dynamic_answers"]["values"].get("identifier")):
+            answer = answer_store.get_answer(
+                answer["id"], list_item_id=list_item_id
+            )
+            answers_payload.add_or_update(answer)
