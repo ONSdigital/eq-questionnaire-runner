@@ -40,8 +40,8 @@ def test_valid_schema_names_from_params():
         ("test_language", None, ["en"]),
     ],
 )
-def test_get_allowed_languages(schema_name, launch_language, expected):
-    assert get_allowed_languages(schema_name, launch_language) == expected
+def test_get_allowed_languages(launch_language, expected):
+    assert get_allowed_languages(launch_language) == expected
 
 
 def test_get_schema_path_map():

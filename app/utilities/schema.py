@@ -22,7 +22,7 @@ logger = get_logger()
 SCHEMA_DIR = "schemas"
 LANGUAGE_CODES = ("en", "cy")
 
-LANGUAGES_MAP = {"test_language": [["en", "cy"]]}
+LANGUAGES_MAP = [["en", "cy"]]
 
 SCHEMA_REQUEST_MAX_BACKOFF = 0.2
 SCHEMA_REQUEST_MAX_RETRIES = 2  # Totals no. of request should be 3. The initial request + SCHEMA_REQUEST_MAX_RETRIES
@@ -92,8 +92,8 @@ def _schema_exists(language_code, schema_name):
     )
 
 
-def get_allowed_languages(schema_name, launch_language):
-    for language_combination in LANGUAGES_MAP.get(schema_name, []):
+def get_allowed_languages(launch_language):
+    for language_combination in LANGUAGES_MAP:
         if launch_language in language_combination:
             return language_combination
     return [DEFAULT_LANGUAGE_CODE]
