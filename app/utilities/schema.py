@@ -93,8 +93,10 @@ def _schema_exists(language_code, schema_name):
 
 
 def get_allowed_languages(launch_language):
-    for language in LANGUAGES:
-        return LANGUAGES if launch_language in language else [DEFAULT_LANGUAGE_CODE]
+    for language_combination in LANGUAGES:
+        if launch_language in language_combination:
+            return language_combination
+    return [DEFAULT_LANGUAGE_CODE]
 
 
 def load_schema_from_metadata(
