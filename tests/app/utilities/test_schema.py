@@ -35,7 +35,7 @@ def test_valid_schema_names_from_params():
 @pytest.mark.parametrize(
     "launch_language, expected",
     [
-        ("en", ['en', 'cy']),
+        ("en", ["en", "cy"]),
         ("invalid_language", ["en"]),
         (None, ["en"]),
     ],
