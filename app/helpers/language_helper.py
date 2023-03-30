@@ -23,7 +23,6 @@ def handle_language(metadata: Optional[MetadataProxy] = None) -> None:
         if not metadata:
             metadata = get_metadata(current_user)
 
-        schema_name = metadata.schema_name if metadata else None
         language_code = metadata.language_code if metadata else None
 
         launch_language = language_code or DEFAULT_LANGUAGE_CODE
