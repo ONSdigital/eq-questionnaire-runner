@@ -6,10 +6,7 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.questionnaire import Location
 from app.questionnaire.path_finder import PathFinder
-from app.questionnaire.placeholder_parser import (
-    PlaceholderParser,
-    get_block_ids_for_calculated_summary_dependencies,
-)
+from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.utilities.schema import load_schema_from_name
 from tests.app.questionnaire.conftest import get_metadata
 
@@ -1118,8 +1115,7 @@ def test_get_block_ids_for_calculated_summary_dependencies():
         "source": "calculated_summary",
     }
 
-    dependencies = get_block_ids_for_calculated_summary_dependencies(
-        schema=schema,
+    dependencies = schema.get_block_ids_for_calculated_summary_dependencies(
         location=location,
         progress_store=progress_store,
         path_finder=PathFinder(
@@ -1185,8 +1181,7 @@ def test_get_block_ids_for_calculated_summary_dependencies_with_sections_to_igno
         "source": "calculated_summary",
     }
 
-    dependencies = get_block_ids_for_calculated_summary_dependencies(
-        schema=schema,
+    dependencies = schema.get_block_ids_for_calculated_summary_dependencies(
         location=location,
         progress_store=progress_store,
         sections_to_ignore=[("calculated-summary-section", None)],

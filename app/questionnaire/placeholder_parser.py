@@ -1,8 +1,6 @@
 from decimal import Decimal
 from typing import TYPE_CHECKING, Any, Mapping, MutableMapping, Sequence, Union
 
-from werkzeug.datastructures import MultiDict
-
 from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
@@ -16,10 +14,9 @@ from app.questionnaire.value_source_resolver import (
     ValueSourceResolver,
     ValueSourceTypes,
 )
-from app.utilities.mappings import get_flattened_mapping_values, get_mappings_with_key
+from app.utilities.mappings import get_flattened_mapping_values
 
 if TYPE_CHECKING:
-    from app.questionnaire.path_finder import PathFinder  # pragma: no cover
     from app.questionnaire.placeholder_renderer import (
         PlaceholderRenderer,  # pragma: no cover
     )
@@ -180,8 +177,7 @@ class PlaceholderParser:
         self, data: Mapping | Sequence, sections_to_ignore: list | None = None
     ) -> dict[tuple, list[str]] | None:
         if self._location:
-            return get_block_ids_for_calculated_summary_dependencies(
-                schema=self._schema,
+            return self._schema.get_block_ids_for_calculated_summary_dependencies(
                 location=self._location,
                 progress_store=self._progress_store,
                 sections_to_ignore=sections_to_ignore,
@@ -193,56 +189,3 @@ class PlaceholderParser:
     def _all_value_sources_metadata(self, placeholder: Mapping) -> bool:
         sources = self._schema.get_values_for_key(placeholder, key="source")
         return all(source == "metadata" for source in sources)
-
-
-def get_sources_for_type_from_data(
-    *,
-    source_type: str,
-    data: MultiDict | Mapping | Sequence,
-    ignore_keys: list,
-) -> list | None:
-    sources = get_mappings_with_key("source", data, ignore_keys=ignore_keys)
-
-    return [source for source in sources if source["source"] == source_type]
-
-
-def get_block_ids_for_calculated_summary_dependencies(
-    schema: QuestionnaireSchema,
-    location: Location | RelationshipLocation,
-    progress_store: ProgressStore,
-    path_finder: "PathFinder",
-    data: MultiDict | Mapping | Sequence,
-    sections_to_ignore: list | None = None,
-) -> dict[tuple, list[str]]:
-    block_ids_by_section: dict[tuple, list[str]] = {}
-
-    sections_to_ignore = sections_to_ignore or []
-    dependent_sections = schema.calculated_summary_section_dependencies_by_block[
-        location.section_id
-    ]
-
-    if block_id := location.block_id:
-        dependents = dependent_sections[block_id]
-    else:
-        dependents = get_flattened_mapping_values(dependent_sections)
-
-    if dependents and not get_sources_for_type_from_data(
-        source_type="calculated_summary",
-        data=data,
-        ignore_keys=["when"],
-    ):
-        return block_ids_by_section
-
-    for section in dependents:
-        # Dependent sections other than the current section cannot be a repeating section
-        list_item_id = location.list_item_id if section == location.section_id else None
-        key = (section, list_item_id)
-
-        if key in sections_to_ignore:
-            continue
-
-        if key in progress_store.started_section_keys():
-            routing_path = path_finder.routing_path(*key)
-            block_ids_by_section[key] = routing_path.block_ids
-
-    return block_ids_by_section

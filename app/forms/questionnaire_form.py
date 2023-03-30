@@ -19,9 +19,6 @@ from app.forms.field_handlers import DateHandler, FieldHandler, get_field_handle
 from app.forms.validators import DateRangeCheck, MutuallyExclusiveCheck, SumCheck
 from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
 from app.questionnaire.path_finder import PathFinder
-from app.questionnaire.placeholder_parser import (
-    get_block_ids_for_calculated_summary_dependencies,
-)
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
@@ -464,19 +461,20 @@ def get_answer_fields(
     routing_path_block_ids: dict[tuple, list[str]] = {}
 
     if location and progress_store:
-        routing_path_block_ids = get_block_ids_for_calculated_summary_dependencies(
-            schema=schema,
-            location=location,
-            progress_store=progress_store,
-            path_finder=PathFinder(
-                schema=schema,
-                answer_store=answer_store,
-                list_store=list_store,
+        routing_path_block_ids = (
+            schema.get_block_ids_for_calculated_summary_dependencies(
+                location=location,
                 progress_store=progress_store,
-                metadata=metadata,
-                response_metadata=response_metadata,
-            ),
-            data=question,
+                path_finder=PathFinder(
+                    schema=schema,
+                    answer_store=answer_store,
+                    list_store=list_store,
+                    progress_store=progress_store,
+                    metadata=metadata,
+                    response_metadata=response_metadata,
+                ),
+                data=question,
+            )
         )
 
     block_ids = None
