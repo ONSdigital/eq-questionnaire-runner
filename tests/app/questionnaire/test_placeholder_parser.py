@@ -5,7 +5,6 @@ from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.questionnaire import Location
-from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.utilities.schema import load_schema_from_name
 from tests.app.questionnaire.conftest import get_metadata
@@ -1060,7 +1059,7 @@ def test_placeholder_default_value(default_placeholder_value_schema, mock_render
     assert placeholders["answer_employee"] == "0"
 
 
-def test_get_block_ids_for_calculated_summary_dependencies():
+def test_placeholder_parser_calculated_summary_dependencies(mock_renderer):
     schema = load_schema_from_name("test_calculated_summary_cross_section_dependencies")
 
     progress_store = ProgressStore(
@@ -1094,6 +1093,186 @@ def test_get_block_ids_for_calculated_summary_dependencies():
     location = Location(
         section_id="calculated-summary-section",
         block_id="mutually-exclusive-checkbox",
+    )
+
+    data = {
+        "identifier": "currency-total-playback-2",
+        "source": "calculated_summary",
+    }
+
+    expected_block_ids = {
+        ("questions-section", None): (
+            "skip-first-block",
+            "second-number-block",
+            "currency-total-playback-1",
+        ),
+        ("calculated-summary-section", None): (
+            "third-number-block",
+            "currency-total-playback-2",
+            "mutually-exclusive-checkbox",
+            "set-min-max-block",
+        ),
+    }
+
+    parser = PlaceholderParser(
+        language="en",
+        answer_store=answer_store,
+        list_store=ListStore(),
+        metadata=get_metadata(),
+        response_metadata={},
+        schema=schema,
+        renderer=mock_renderer,
+        progress_store=progress_store,
+        location=location,
+    )
+
+    routing_path_block_ids = (
+        parser._get_routing_path_block_ids(  # pylint: disable=protected-access
+            sections_to_ignore=[], data=data
+        )
+    )
+
+    assert routing_path_block_ids == expected_block_ids
+
+
+def test_placeholder_parser_calculated_summary_dependencies_with_sections_to_ignore(
+    mock_renderer,
+):
+    schema = load_schema_from_name("test_calculated_summary_cross_section_dependencies")
+
+    progress_store = ProgressStore(
+        [
+            {
+                "section_id": "questions-section",
+                "block_ids": [
+                    "skip-first-block",
+                    "second-number-block",
+                    "currency-total-playback-1",
+                ],
+                "status": "COMPLETED",
+            },
+            {
+                "section_id": "calculated-summary-section",
+                "block_ids": ["third-number-block", "currency-total-playback-2"],
+                "status": "IN_PROGRESS",
+            },
+        ]
+    )
+
+    answer_store = AnswerStore(
+        [
+            {"answer_id": "skip-first-block-answer", "value": "Yes"},
+            {"answer_id": "second-number-answer-also-in-total", "value": 1},
+            {"answer_id": "third-number-answer", "value": 1},
+            {"answer_id": "third-number-answer-also-in-total", "value": 1},
+        ]
+    )
+
+    location = Location(
+        section_id="calculated-summary-section",
+        block_id="mutually-exclusive-checkbox",
+    )
+
+    data = {
+        "identifier": "currency-total-playback-2",
+        "source": "calculated_summary",
+    }
+
+    expected_block_ids = {
+        ("questions-section", None): (
+            "skip-first-block",
+            "second-number-block",
+            "currency-total-playback-1",
+        ),
+    }
+
+    parser = PlaceholderParser(
+        language="en",
+        answer_store=answer_store,
+        list_store=ListStore(),
+        metadata=get_metadata(),
+        response_metadata={},
+        schema=schema,
+        renderer=mock_renderer,
+        progress_store=progress_store,
+        location=location,
+    )
+
+    routing_path_block_ids = (
+        parser._get_routing_path_block_ids(  # pylint: disable=protected-access
+            sections_to_ignore=[("calculated-summary-section", None)], data=data
+        )
+    )
+
+    assert routing_path_block_ids == expected_block_ids
+
+
+def test_placeholder_parser_calculated_summary_dependencies_cache(mock_renderer):
+    schema = load_schema_from_name("test_calculated_summary_cross_section_dependencies")
+
+    placeholder_list_1 = [
+        {
+            "placeholder": "currency-total-playback-1",
+            "value": {
+                "source": "calculated_summary",
+                "identifier": "currency-total-playback-1",
+            },
+        },
+    ]
+
+    placeholder_list_2 = [
+        {
+            "placeholder": "currency-total-playback-2",
+            "value": {
+                "source": "calculated_summary",
+                "identifier": "currency-total-playback-2",
+            },
+        },
+    ]
+
+    progress_store = ProgressStore(
+        [
+            {
+                "section_id": "questions-section",
+                "block_ids": [
+                    "skip-first-block",
+                    "second-number-block",
+                    "currency-total-playback-1",
+                ],
+                "status": "COMPLETED",
+            },
+            {
+                "section_id": "calculated-summary-section",
+                "block_ids": ["third-number-block", "currency-total-playback-2"],
+                "status": "IN_PROGRESS",
+            },
+        ]
+    )
+
+    answer_store = AnswerStore(
+        [
+            {"answer_id": "skip-first-block-answer", "value": "Yes"},
+            {"answer_id": "second-number-answer-also-in-total", "value": 10},
+            {"answer_id": "third-number-answer", "value": 1},
+            {"answer_id": "third-number-answer-also-in-total", "value": 20},
+        ]
+    )
+
+    location = Location(
+        section_id="calculated-summary-section",
+        block_id="mutually-exclusive-checkbox",
+    )
+
+    placeholder_parser = PlaceholderParser(
+        language="en",
+        answer_store=answer_store,
+        list_store=ListStore(),
+        metadata=get_metadata(),
+        response_metadata={},
+        schema=schema,
+        renderer=mock_renderer,
+        progress_store=progress_store,
+        location=location,
     )
 
     expected_dependencies = {
@@ -1110,90 +1289,17 @@ def test_get_block_ids_for_calculated_summary_dependencies():
         ),
     }
 
-    data = {
-        "identifier": "currency-total-playback-2",
-        "source": "calculated_summary",
-    }
-
-    dependencies = schema.get_block_ids_for_calculated_summary_dependencies(
-        location=location,
-        progress_store=progress_store,
-        path_finder=PathFinder(
-            schema=schema,
-            answer_store=answer_store,
-            list_store=ListStore(),
-            progress_store=progress_store,
-            metadata=get_metadata(),
-            response_metadata={},
-        ),
-        data=data,
+    assert (
+        not placeholder_parser._routing_path_block_ids_by_section_key  # pylint: disable=protected-access
     )
 
-    assert dependencies == expected_dependencies
+    placeholder_1 = placeholder_parser(placeholder_list=placeholder_list_1)
+    assert placeholder_1["currency-total-playback-1"] == 10
 
-
-def test_get_block_ids_for_calculated_summary_dependencies_with_sections_to_ignore():
-    schema = load_schema_from_name("test_calculated_summary_cross_section_dependencies")
-
-    progress_store = ProgressStore(
-        [
-            {
-                "section_id": "questions-section",
-                "block_ids": [
-                    "skip-first-block",
-                    "second-number-block",
-                    "currency-total-playback-1",
-                ],
-                "status": "COMPLETED",
-            },
-            {
-                "section_id": "calculated-summary-section",
-                "block_ids": ["third-number-block", "currency-total-playback-2"],
-                "status": "IN_PROGRESS",
-            },
-        ]
+    assert (
+        placeholder_parser._routing_path_block_ids_by_section_key  # pylint: disable=protected-access
+        == expected_dependencies
     )
 
-    answer_store = AnswerStore(
-        [
-            {"answer_id": "skip-first-block-answer", "value": "Yes"},
-            {"answer_id": "second-number-answer-also-in-total", "value": 1},
-            {"answer_id": "third-number-answer", "value": 1},
-            {"answer_id": "third-number-answer-also-in-total", "value": 1},
-        ]
-    )
-
-    location = Location(
-        section_id="calculated-summary-section",
-        block_id="mutually-exclusive-checkbox",
-    )
-
-    expected_dependencies = {
-        ("questions-section", None): (
-            "skip-first-block",
-            "second-number-block",
-            "currency-total-playback-1",
-        ),
-    }
-
-    data = {
-        "identifier": "currency-total-playback-2",
-        "source": "calculated_summary",
-    }
-
-    dependencies = schema.get_block_ids_for_calculated_summary_dependencies(
-        location=location,
-        progress_store=progress_store,
-        sections_to_ignore=[("calculated-summary-section", None)],
-        path_finder=PathFinder(
-            schema=schema,
-            answer_store=answer_store,
-            list_store=ListStore(),
-            progress_store=progress_store,
-            metadata=get_metadata(),
-            response_metadata={},
-        ),
-        data=data,
-    )
-
-    assert dependencies == expected_dependencies
+    placeholder_2 = placeholder_parser(placeholder_list=placeholder_list_2)
+    assert placeholder_2["currency-total-playback-2"] == 21
