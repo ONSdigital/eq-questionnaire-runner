@@ -340,12 +340,22 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     self._answer_dependencies_map[answer_id_for_block] |= {
                         self._get_answer_dependent_for_block_id(block_id=block_id, answer_id=answer_id)  # type: ignore
                     }
+        if value_source["source"] == "list":
+            section = self.get_section_for_block_id(block_id)
+            list_collector = self.get_list_collector_for_list(section=section, for_list=value_source["identifier"])
+            add_block_question = self.get_add_block_for_list_collector(list_collector["id"])["question"]
+            answer_id_for_block = list(self.get_answers_for_question_by_id(add_block_question).keys())[0]
+            self._answer_dependencies_map[answer_id_for_block] |= {
+                self._get_answer_dependent_for_block_id(block_id=block_id, for_list=value_source["identifier"])  # type: ignore
+            }
+
 
     def _get_answer_dependent_for_block_id(
-        self, *, block_id: str, answer_id: Optional[str] = None
+        self, *, block_id: str, answer_id: Optional[str] = None, for_list: Optional[str] = None
     ) -> AnswerDependent:
         section_id: str = self.get_section_id_for_block_id(block_id)  # type: ignore
-        for_list = self.get_repeating_list_for_section(section_id)
+        if not for_list:
+            for_list = self.get_repeating_list_for_section(section_id)
 
         return AnswerDependent(
             block_id=block_id,
