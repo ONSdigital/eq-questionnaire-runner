@@ -23,7 +23,7 @@ SCHEMA_DIR = "schemas"
 LANGUAGE_CODES = ("en", "cy")
 
 LANGUAGES_MAP = {
-    "test_language": [["en", "cy"], ["en", "ga"]],
+    "test_language": [["en", "cy"]],
     "cris_0001": [["en", "cy"]],
     "phm_0001": [["en", "cy"]],
 }
