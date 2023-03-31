@@ -1458,3 +1458,54 @@ def test_no_answers_codes_in_payload_when_no_questions_answered(version):
 
     # Then
     assert "answer_codes" not in data_payload
+
+
+@pytest.mark.parametrize(
+    "version",
+    (AuthPayloadVersion.V2,),
+)
+def test_payload_dynamic_answers(version):
+    questionnaire_store = get_questionnaire_store(version)
+
+    full_routing_path = [
+        RoutingPath(
+            ["any-supermarket", "list-collector", "dynamic-answer"],
+            section_id="section",
+        )
+    ]
+
+    questionnaire_store.answer_store = AnswerStore(
+        [
+            Answer("any-supermarket-answer", "Yes", None).to_dict(),
+            Answer("supermarket-name", "Tesco", "tUJzGV").to_dict(),
+            Answer("supermarket-name", "Aldi", "vhECeh").to_dict(),
+            Answer("list-collector-answer", "No", None).to_dict(),
+            Answer("percentage-of-shopping", 12, "tUJzGV").to_dict(),
+            Answer("percentage-of-shopping", 21, "vhECeh").to_dict(),
+        ]
+    )
+
+    questionnaire_store.list_store = ListStore(
+        [{"items": ["tUJzGV", "vhECeh"], "name": "supermarkets"}]
+    )
+
+    schema = load_schema_from_name("test_dynamic_answers_list")
+
+    data_payload = get_payload_data(
+        questionnaire_store.answer_store,
+        questionnaire_store.list_store,
+        schema,
+        full_routing_path,
+        questionnaire_store.metadata,
+        questionnaire_store.response_metadata,
+    )
+
+    # Then
+    assert (
+        Answer(answer_id="percentage-of-shopping", value=12, list_item_id="tUJzGV")
+        in data_payload["answers"]
+    )
+    assert (
+        Answer(answer_id="percentage-of-shopping", value=21, list_item_id="vhECeh")
+        in data_payload["answers"]
+    )

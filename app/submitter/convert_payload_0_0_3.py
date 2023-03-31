@@ -162,6 +162,8 @@ def resolve_dynamic_answers(
     for answer in block["dynamic_answers"].get("answers"):
         for list_item_id in list_store.get(
             block["dynamic_answers"]["values"].get("identifier")
-        ):
-            answer = answer_store.get_answer(answer["id"], list_item_id=list_item_id)
-            answers_payload.add_or_update(answer)
+        ).items:
+            extracted_answer = answer_store.get_answer(
+                answer["id"], list_item_id=list_item_id
+            )
+            answers_payload.add_or_update(extracted_answer)

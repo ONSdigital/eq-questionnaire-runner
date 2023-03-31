@@ -49,6 +49,92 @@ def test_save_answers_with_form_data(
     }
 
 
+def test_update_dynamic_answers(
+    mock_location,
+    mock_empty_schema,
+    mock_questionnaire_store,
+    mock_router,
+):
+    mock_empty_schema.get_answer_ids_for_question.return_value = [
+        "percentage-of-shopping-vhECeh"
+    ]
+    mock_empty_schema.answer_dependencies = {
+        "supermarket-name": {
+            AnswerDependent(
+                section_id="section",
+                block_id="dynamic-answer",
+                for_list="supermarkets",
+                answer_id="percentage-of-shopping",
+            )
+        }
+    }
+
+    mock_questionnaire_store.answer_store = AnswerStore(
+        [
+            {"answer_id": "any-supermarket-answer", "value": "Yes"},
+            {
+                "answer_id": "supermarket-name",
+                "value": "Tesco",
+                "list_item_id": "tUJzGV",
+            },
+            {
+                "answer_id": "supermarket-name",
+                "value": "Aldi",
+                "list_item_id": "vhECeh",
+            },
+            {"answer_id": "list-collector-answer", "value": "No"},
+            {
+                "answer_id": "percentage-of-shopping",
+                "value": 12,
+                "list_item_id": "tUJzGV",
+            },
+        ]
+    )
+
+    form_data = {"percentage-of-shopping": 21}
+
+    current_question = mock_empty_schema.get_block(mock_location.block_id)["question"]
+
+    questionnaire_store_updater = QuestionnaireStoreUpdater(
+        mock_location,
+        mock_empty_schema,
+        mock_questionnaire_store,
+        mock_router,
+        current_question,
+    )
+    questionnaire_store_updater._list_store = ListStore(
+        [{"items": ["tUJzGV", "vhECeh"], "name": "supermarkets"}]
+    )
+    questionnaire_store_updater.update_answers(form_data, list_item_id="vhECeh")
+
+    assert mock_questionnaire_store.answer_store == AnswerStore(
+        [
+            {"answer_id": "any-supermarket-answer", "value": "Yes"},
+            {
+                "answer_id": "supermarket-name",
+                "value": "Tesco",
+                "list_item_id": "tUJzGV",
+            },
+            {
+                "answer_id": "supermarket-name",
+                "value": "Aldi",
+                "list_item_id": "vhECeh",
+            },
+            {"answer_id": "list-collector-answer", "value": "No"},
+            {
+                "answer_id": "percentage-of-shopping",
+                "value": 12,
+                "list_item_id": "tUJzGV",
+            },
+            {
+                "answer_id": "percentage-of-shopping",
+                "value": 21,
+                "list_item_id": "vhECeh",
+            },
+        ]
+    )
+
+
 def test_save_empty_answer_removes_existing_answer(
     mock_empty_schema, mock_empty_answer_store, mock_questionnaire_store, mock_router
 ):
