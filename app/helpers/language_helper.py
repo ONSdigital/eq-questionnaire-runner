@@ -23,11 +23,12 @@ def handle_language(metadata: Optional[MetadataProxy] = None) -> None:
         if not metadata:
             metadata = get_metadata(current_user)
 
+        schema_name = metadata.schema_name if metadata else None
         language_code = metadata.language_code if metadata else None
 
         launch_language = language_code or DEFAULT_LANGUAGE_CODE
         # pylint: disable=assigning-non-slot
-        g.allowed_languages = get_allowed_languages(launch_language)
+        g.allowed_languages = get_allowed_languages(schema_name, launch_language)
         request_language = request.args.get("language_code")
         if request_language and request_language in g.allowed_languages:
             if metadata:
