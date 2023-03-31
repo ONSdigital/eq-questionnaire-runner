@@ -60,7 +60,7 @@ class TestSession(IntegrationTestCase):
         )
         self.get("/session-expired")
         self.assertInBody(
-            f'<p>You will need to <a href="{ACCOUNT_SERVICE_BASE_URL_TEST}/sign-in/logout">sign back in</a>to access your account</p>'
+            f'<p>You will need to <a href="{ACCOUNT_SERVICE_BASE_URL_TEST}/sign-in/logout">sign back in</a> to access your account</p>'
         )
 
     @freeze_time(TIME_TO_FREEZE)
