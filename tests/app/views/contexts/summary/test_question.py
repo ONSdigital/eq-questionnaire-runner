@@ -131,6 +131,7 @@ def address_question(answer_store, list_store, schema):
     return Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
         schema=schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, schema),
         location=None,
@@ -177,6 +178,7 @@ def test_create_question(
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -301,6 +303,7 @@ def test_concatenate_number_and_checkbox_answers(
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -339,6 +342,7 @@ def test_merge_date_range_answers(answer_store, list_store, mock_schema):
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -382,6 +386,7 @@ def test_merge_multiple_date_range_answers(answer_store, list_store, mock_schema
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -423,6 +428,7 @@ def test_create_question_with_multiple_answers(answer_store, list_store, mock_sc
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -467,6 +473,7 @@ def test_checkbox_button_options(answer_store, list_store, mock_schema):
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -513,6 +520,7 @@ def test_checkbox_button_detail_answer_empty(answer_store, list_store, mock_sche
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -598,6 +606,7 @@ def test_checkbox_answer_with_detail_answer_returns_the_value(
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -646,6 +655,7 @@ def test_checkbox_button_other_option_text(answer_store, list_store, mock_schema
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -724,6 +734,7 @@ def test_radio_answer_with_detail_answers_returns_correct_value(
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -795,6 +806,7 @@ def test_answer_types_selected_option_label(
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -837,6 +849,7 @@ def test_dynamic_checkbox_answer_options(
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(
             answer_store, list_store, mock_schema, response_metadata
@@ -909,6 +922,7 @@ def test_dynamic_answer_options(
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(
             answer_store, list_store, mock_schema, response_metadata
@@ -971,6 +985,7 @@ def test_get_answer(answer_schema, answer_store, expected, list_store):
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
         schema=schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, schema),
         value_source_resolver=get_value_source_resolver(
