@@ -113,15 +113,22 @@ class Question(BlockHandler):
         if question_json.get("dynamic_answers_list_id"):
             dynamic_answers = []
             for answer_id in answer_ids:
-                for list_item_id in self.questionnaire_store_updater._questionnaire_store.list_store._list_item_ids():
-
+                for (
+                    list_item_id
+                ) in (
+                    self.questionnaire_store_updater._questionnaire_store.list_store._list_item_ids()
+                ):
                     answer = self._questionnaire_store.answer_store.get_answer(
-                        answer_id=answer_id.replace(f"-{list_item_id}", ""), list_item_id=list_item_id
+                        answer_id=answer_id.replace(f"-{list_item_id}", ""),
+                        list_item_id=list_item_id,
                     )
                     dynamic_answers.append(answer)
 
-            return {f"{answer.answer_id}-{answer.list_item_id}": answer.value for answer in dynamic_answers if answer}
-
+            return {
+                f"{answer.answer_id}-{answer.list_item_id}": answer.value
+                for answer in dynamic_answers
+                if answer
+            }
 
         answers = self._questionnaire_store.answer_store.get_answers_by_answer_id(
             answer_ids=answer_ids, list_item_id=self._current_location.list_item_id
@@ -205,10 +212,15 @@ class Question(BlockHandler):
         dynamic_answers = False
         for item in self.form.data:
             if list_item_id := item.split("-")[-1]:
-                if list_item_id in self.questionnaire_store_updater._list_store._list_item_ids():
+                if (
+                    list_item_id
+                    in self.questionnaire_store_updater._list_store._list_item_ids()
+                ):
                     item_id = item.replace(f"-{list_item_id}", "")
                     form_data = {item_id: self.form.data[item]}
-                    self.questionnaire_store_updater.update_answers(form_data, list_item_id)
+                    self.questionnaire_store_updater.update_answers(
+                        form_data, list_item_id
+                    )
                     dynamic_answers = True
         if not dynamic_answers:
             self.questionnaire_store_updater.update_answers(self.form.data)

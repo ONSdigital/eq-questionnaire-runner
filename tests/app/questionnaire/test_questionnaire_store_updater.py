@@ -498,6 +498,7 @@ def test_update_answers_captures_answer_dependencies(
     is_repeating,
     expected_output,
     mock_schema,
+    mocker,
 ):
     location = Location(
         section_id="default-section", block_id="default-block", list_item_id="person-1"
@@ -527,6 +528,10 @@ def test_update_answers_captures_answer_dependencies(
         router=mock_router,
         current_location=location,
         current_question=current_question,
+    )
+    mocker.patch(
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater.dependency_has_dynamic_answers",
+        return_value=False,
     )
 
     questionnaire_store_updater.update_answers(form_data)

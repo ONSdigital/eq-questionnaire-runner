@@ -109,8 +109,17 @@ class Question:
 
         if self.dynamic_answer_schemas:
             for answer_schema in self.dynamic_answer_schemas:
-                for list_item_id in self.list_store.get(self.dynamic_answer_identifier).items:
-                    placeholder_renderer = PlaceholderRenderer(answer_store=self.answer_store, list_store=self.list_store, schema=self.schema, language="en", metadata={}, response_metadata={})
+                for list_item_id in self.list_store.get(
+                    self.dynamic_answer_identifier
+                ).items:
+                    placeholder_renderer = PlaceholderRenderer(
+                        answer_store=self.answer_store,
+                        list_store=self.list_store,
+                        schema=self.schema,
+                        language="en",
+                        metadata={},
+                        response_metadata={},
+                    )
                     self.list_item_id = list_item_id
                     answer_value: Optional[AnswerValueEscapedTypes] = self.get_answer(
                         answer_store, answer_schema["id"]
@@ -119,9 +128,15 @@ class Question:
                         answer_store, question_schema, answer_schema, answer_value
                     )
 
-                    resolved_answer_schema  = self.schema.get_mutable_deepcopy(answer_schema)
-                    resolved_answer_schema["id"] = answer_schema["id"] + f"-{self.list_item_id}"
-                    rendered_schema = placeholder_renderer.render(resolved_answer_schema, self.list_item_id)
+                    resolved_answer_schema = self.schema.get_mutable_deepcopy(
+                        answer_schema
+                    )
+                    resolved_answer_schema["id"] = (
+                        answer_schema["id"] + f"-{self.list_item_id}"
+                    )
+                    rendered_schema = placeholder_renderer.render(
+                        resolved_answer_schema, self.list_item_id
+                    )
 
                     summary_answer = Answer(
                         answer_schema=rendered_schema,

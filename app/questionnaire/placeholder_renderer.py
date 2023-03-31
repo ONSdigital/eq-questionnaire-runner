@@ -117,7 +117,11 @@ class PlaceholderRenderer:
         resolved_dynamic_answers = []
         list_items = []
         if dynamic_answers := data_to_render_mutable.get("dynamic_answers", {}):
-            list_items = self._list_store.get(dynamic_answers["values"].get("identifier")).serialize().get("items")
+            list_items = (
+                self._list_store.get(dynamic_answers["values"].get("identifier"))
+                .serialize()
+                .get("items")
+            )
             for dynamic_answer in dynamic_answers["answers"]:
                 for item in list_items:
                     resolved_dynamic_answer = self._schema.get_mutable_deepcopy(
@@ -130,12 +134,16 @@ class PlaceholderRenderer:
                     # self._schema._parent_id_map[
                     #     dynamic_answer['id']
                     # ] = data_to_render_mutable.get("id")
-                    self._schema._parent_id_map[dynamic_answer['id']] = data_to_render_mutable.get("id")
+                    self._schema._parent_id_map[
+                        dynamic_answer["id"]
+                    ] = data_to_render_mutable.get("id")
 
                     resolved_dynamic_answers.append(resolved_dynamic_answer)
 
             data_to_render_mutable["answers"] += resolved_dynamic_answers
-            data_to_render_mutable["dynamic_answers_list_id"] = data_to_render_mutable["dynamic_answers"]["values"]["identifier"]
+            data_to_render_mutable["dynamic_answers_list_id"] = data_to_render_mutable[
+                "dynamic_answers"
+            ]["values"]["identifier"]
             del data_to_render_mutable["dynamic_answers"]
 
         pointers = find_pointers_containing(data_to_render_mutable, "placeholders")

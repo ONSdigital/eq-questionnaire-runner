@@ -152,12 +152,16 @@ def add_relationships_unrelated_answers(
         ):
             answers_payload.add_or_update(unrelated_answer)
 
+
 def resolve_dynamic_answers(
-    block: dict, answer_store: AnswerStore, answers_payload: AnswerStore, list_store: ListStore
+    block: dict,
+    answer_store: AnswerStore,
+    answers_payload: AnswerStore,
+    list_store: ListStore,
 ) -> None:
     for answer in block["dynamic_answers"].get("answers"):
-        for list_item_id in list_store.get(block["dynamic_answers"]["values"].get("identifier")):
-            answer = answer_store.get_answer(
-                answer["id"], list_item_id=list_item_id
-            )
+        for list_item_id in list_store.get(
+            block["dynamic_answers"]["values"].get("identifier")
+        ):
+            answer = answer_store.get_answer(answer["id"], list_item_id=list_item_id)
             answers_payload.add_or_update(answer)
