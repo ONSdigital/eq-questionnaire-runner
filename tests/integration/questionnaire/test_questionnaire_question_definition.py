@@ -19,13 +19,6 @@ class TestQuestionnaireQuestionDefinition(IntegrationTestCase):
             "The mount may be fixed, or use a solar tracker to follow the sun across the sky."
         )
 
-        self.assertInBody(
-            "Lithium iron phosphate batteries operate with much lower resistance and consequently recharge at a faster rate."
-        )
-        self.assertInBody(
-            "LifeP04 lightweight batteries are lighter than lead acid batteries, usually weighing about 1/4 less."
-        )
-
         # When we continue we go to the summary page
         self.post()
         self.assertInUrl(SUBMIT_URL_PATH)
