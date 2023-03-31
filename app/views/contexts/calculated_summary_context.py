@@ -184,6 +184,7 @@ class CalculatedSummaryContext(Context):
                 self._list_store,
                 self._metadata,
                 self._response_metadata,
+                progress_store=self._progress_store,
                 location=current_location,
             )
 

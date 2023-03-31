@@ -1,3 +1,4 @@
+import pytest
 from mock import Mock
 
 from app.data_models.answer_store import AnswerStore
@@ -953,3 +954,29 @@ def test_placeholder_default_value(default_placeholder_value_schema, mock_render
 
     placeholders = parser(placeholder_list)
     assert placeholders["answer_employee"] == "0"
+
+
+def test_invalid_progress_placeholder(mock_renderer):
+    placeholder_list = [
+        {
+            "placeholder": "period",
+            "value": {
+                "source": "progress",
+                "selector": "block",
+                "identifier": "block_id",
+            },
+        }
+    ]
+
+    with pytest.raises(NotImplementedError):
+        parser = PlaceholderParser(
+            language="en",
+            answer_store=AnswerStore(),
+            list_store=ListStore(),
+            metadata=get_metadata({}),
+            response_metadata={},
+            schema=QuestionnaireSchema({}),
+            renderer=mock_renderer,
+        )
+
+        parser(placeholder_list)

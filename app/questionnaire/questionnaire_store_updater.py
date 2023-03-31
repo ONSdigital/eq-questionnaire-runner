@@ -321,6 +321,46 @@ class QuestionnaireStoreUpdater:
             else:
                 self.dependent_sections.add(DependentSection(section_id, None, None))
 
+    def _capture_section_dependencies_progress_value_source_for_current_section(
+        self,
+    ) -> None:
+        """
+        Captures a unique list of section ids that are dependents of the current section, for progress value sources.
+        """
+        current_section_id = self._current_location.section_id
+        progress_deps_mapping = (
+            self._schema.when_rules_section_dependencies_by_section_for_progress_value_source
+        )
+        for section_dependency_id in progress_deps_mapping:
+            if current_section_id in progress_deps_mapping[section_dependency_id]:
+                self.dependent_sections.add(
+                    DependentSection(section_dependency_id, None, None)
+                )
+
+    def _capture_section_dependencies_progress_value_source_for_current_block(
+        self,
+    ) -> None:
+        """
+        Captures a unique list of section ids that are dependents of the current block, for progress value sources.
+        """
+        current_block_id = self._current_location.block_id
+        progress_deps_mapping = (
+            self._schema.when_rules_block_dependencies_by_section_for_progress_value_source
+        )
+        for section_dependency_id in progress_deps_mapping:
+            if current_block_id in progress_deps_mapping[section_dependency_id]:
+                if repeating_list := self._schema.get_repeating_list_for_section(
+                    section_dependency_id
+                ):
+                    for list_item_id in self._list_store[repeating_list].items:
+                        self.dependent_sections.add(
+                            DependentSection(section_dependency_id, list_item_id, None)
+                        )
+                else:
+                    self.dependent_sections.add(
+                        DependentSection(section_dependency_id, None, None)
+                    )
+
     def update_answers(
         self, form_data: Mapping[str, Any], list_item_id: Optional[str] = None
     ) -> None:
@@ -329,14 +369,26 @@ class QuestionnaireStoreUpdater:
             self._current_question
         )
 
+        any_answer_updated = False
+
         for answer_id, answer_value in form_data.items():
             if answer_id not in answer_ids_for_question:
                 continue
 
             answer_updated = self._update_answer(answer_id, list_item_id, answer_value)
             if answer_updated:
+                any_answer_updated = True
                 self._capture_section_dependencies_for_answer(answer_id)
                 self._capture_block_dependencies_for_answer(answer_id)
+
+        if any_answer_updated:
+            self._capture_section_dependencies_progress_value_source_for_current_block()
+            self._capture_section_dependencies_progress_value_source_for_current_section()
+
+    def complete_calculated_summary_block(self):
+        self._capture_section_dependencies_progress_value_source_for_current_block()
+        self._capture_section_dependencies_progress_value_source_for_current_section()
+        self.update_progress_for_dependent_sections()
 
     def update_progress_for_dependent_sections(self) -> None:
         """Removes dependent blocks from the progress store and updates the progress to IN_PROGRESS.

@@ -552,7 +552,7 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
 
     def _update_section_completeness(self):
         if not self._questionnaire_store.progress_store.get_completed_block_ids(
-            self.individual_section_id, self._list_item_id
+            section_id=self.individual_section_id, list_item_id=self._list_item_id
         ):
             status = CompletionStatus.NOT_STARTED
         else:

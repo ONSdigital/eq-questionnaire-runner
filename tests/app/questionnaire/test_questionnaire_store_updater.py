@@ -1004,7 +1004,7 @@ def test_dependent_sections_completed_dependant_blocks_removed_and_status_update
     }
 
     assert dependent_block_id in progress_store.get_completed_block_ids(
-        *dependent_section_key
+        section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
     )
 
     # When
@@ -1012,10 +1012,12 @@ def test_dependent_sections_completed_dependant_blocks_removed_and_status_update
 
     # Then
     assert dependent_block_id not in progress_store.get_completed_block_ids(
-        *dependent_section_key
+        section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
     )
     assert (
-        progress_store.get_section_status(*dependent_section_key)
+        progress_store.get_section_status(
+            section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        )
         == CompletionStatus.IN_PROGRESS
     )
 
@@ -1049,7 +1051,7 @@ def test_dependent_sections_current_section_status_not_updated(mocker):
 
     questionnaire_store_updater.update_section_status = mocker.Mock()
     assert dependent_block_id in progress_store.get_completed_block_ids(
-        *dependent_section_key
+        section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
     )
 
     # When
@@ -1057,7 +1059,7 @@ def test_dependent_sections_current_section_status_not_updated(mocker):
 
     # Then
     assert dependent_block_id not in progress_store.get_completed_block_ids(
-        *dependent_section_key
+        section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
     )
     # Status for current section is handled separately by handle post.
     assert questionnaire_store_updater.update_section_status.call_count == 0
@@ -1137,7 +1139,7 @@ def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
     questionnaire_store_updater.update_section_status = mocker.Mock()
 
     assert dependent_block_id not in progress_store.get_completed_block_ids(
-        *dependent_section_key
+        section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
     )
 
     # When
@@ -1215,7 +1217,7 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
     for list_item in list_store["some-list"]:
         section_id, list_item_id = "breakdown-section", list_item
         assert "turnover-breakdown-block" not in progress_store.get_completed_block_ids(
-            section_id, list_item_id
+            section_id=section_id, list_item_id=list_item_id
         )
         assert (
             progress_store.get_section_status(section_id, list_item_id)

@@ -319,7 +319,7 @@ class Router:
         self, *, block_id: str, section_id: str, list_item_id: str
     ) -> bool:
         return block_id in self._progress_store.get_completed_block_ids(
-            section_id, list_item_id
+            section_id=section_id, list_item_id=list_item_id
         )
 
     def _get_first_incomplete_location_in_section(
@@ -397,7 +397,8 @@ class Router:
             self._list_store,
             self._metadata,
             self._response_metadata,
-            location=None,
+            progress_store=self._progress_store,
+            location=Location(section_id=section["id"]),
             routing_path_block_ids=routing_path_block_ids,
         )
 

@@ -57,6 +57,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             set
         )
         self._when_rules_section_dependencies_by_section: dict[str, set[str]] = {}
+        self._when_rules_section_dependencies_by_section_for_progress_value_source: dict[
+            str, set[str]
+        ] = {}
+        self._when_rules_block_dependencies_by_section_for_progress_value_source: dict[
+            str, set[str]
+        ] = {}
         self._when_rules_section_dependencies_by_answer: dict[
             str, set[str]
         ] = defaultdict(set)
@@ -83,6 +89,22 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self,
     ) -> ImmutableDict[str, set[str]]:
         return ImmutableDict(self._when_rules_section_dependencies_by_section)
+
+    @cached_property
+    def when_rules_section_dependencies_by_section_for_progress_value_source(
+        self,
+    ) -> ImmutableDict[str, set[str]]:
+        return ImmutableDict(
+            self._when_rules_section_dependencies_by_section_for_progress_value_source
+        )
+
+    @cached_property
+    def when_rules_block_dependencies_by_section_for_progress_value_source(
+        self,
+    ) -> ImmutableDict[str, set[str]]:
+        return ImmutableDict(
+            self._when_rules_block_dependencies_by_section_for_progress_value_source
+        )
 
     @cached_property
     def when_rules_section_dependencies_by_answer(self) -> ImmutableDict[str, set[str]]:
@@ -160,6 +182,27 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         schema: Mapping = self.get_post_submission()
         is_enabled: bool = schema.get("view_response", False)
         return is_enabled
+
+    def get_all_when_rules_section_dependencies_for_section(
+        self, section_id: str
+    ) -> set[str]:
+        all_section_dependencies = self.when_rules_section_dependencies_by_section.get(
+            section_id, set()
+        ).union(
+            self.when_rules_section_dependencies_by_section_for_progress_value_source.get(
+                section_id, set()
+            )
+        )
+
+        for (
+            block_id
+        ) in self.when_rules_block_dependencies_by_section_for_progress_value_source.get(
+            section_id, set()
+        ):
+            if dep_section_id := self.get_section_id_for_block_id(block_id):
+                all_section_dependencies.add(dep_section_id)
+
+        return all_section_dependencies
 
     def _get_sections_by_id(self) -> dict[str, ImmutableDict]:
         return {section["id"]: section for section in self.json.get("sections", [])}
@@ -848,17 +891,70 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             when_rules = self.get_values_for_key(section, "when")
             rules: list = list(when_rules)
 
-            if rules_section_dependencies := self._get_rules_section_dependencies(
-                section["id"], rules
-            ):
+            (
+                rules_section_dependencies,
+                rule_section_dependencies_for_progress_value_source,
+                rule_block_dependencies_for_progress_value_source,
+            ) = self._get_rules_section_dependencies(section["id"], rules)
+
+            if rules_section_dependencies:
                 self._when_rules_section_dependencies_by_section[
                     section["id"]
                 ] = rules_section_dependencies
 
+            if rule_section_dependencies_for_progress_value_source:
+                self._when_rules_section_dependencies_by_section_for_progress_value_source[
+                    section["id"]
+                ] = rule_section_dependencies_for_progress_value_source
+
+            if rule_block_dependencies_for_progress_value_source:
+                self._when_rules_block_dependencies_by_section_for_progress_value_source[
+                    section["id"]
+                ] = rule_block_dependencies_for_progress_value_source
+
+    def _get_section_and_block_ids_dependencies_for_progress_source_and_answer_ids_from_rule(
+        self, current_section_id: str, rule: Mapping
+    ) -> tuple[set[str], dict[str, set[str]]]:
+        answer_id_list: set[str] = set()
+        dependencies_ids_for_progress_value_source: dict[str, set[str]] = {
+            "sections": set(),
+            "blocks": set(),
+        }
+        identifier: Optional[str] = rule.get("identifier")
+        source: Optional[str] = rule.get("source")
+        selector: Optional[str] = rule.get("selector")
+
+        if source == "answers" and identifier:
+            answer_id_list.add(identifier)
+        elif source == "calculated_summary" and identifier:
+            calculated_summary_block = self.get_block(identifier)
+            calculated_summary_answer_ids = self.get_calculated_summary_answer_ids(
+                calculated_summary_block  # type: ignore
+            )
+            answer_id_list.update(calculated_summary_answer_ids)
+        elif source == "progress" and identifier and selector:
+            if selector == "section":
+                if identifier != current_section_id:
+                    dependencies_ids_for_progress_value_source["sections"].add(
+                        identifier
+                    )
+            elif selector == "block" and (
+                section_id := self.get_section_id_for_block_id(identifier)
+            ):
+                if section_id != current_section_id:
+                    dependencies_ids_for_progress_value_source["blocks"].add(identifier)
+
+        return (answer_id_list, dependencies_ids_for_progress_value_source)
+
     def _get_rules_section_dependencies(
         self, current_section_id: str, rules: Union[Mapping, Sequence]
-    ) -> set[str]:
-        rules_section_dependencies: set[str] = set()
+    ) -> tuple[set[str], set[str], set[str]]:
+        """
+        Returns a set of sections ids that the current sections depends on.
+        """
+        section_dependencies: set[str] = set()
+        section_dependencies_for_progress_value_source: set[str] = set()
+        block_dependencies_for_progress_value_source: set[str] = set()
 
         if isinstance(rules, Mapping) and QuestionnaireSchema.has_operator(rules):
             rules = self.get_operands(rules)
@@ -867,18 +963,20 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             if not isinstance(rule, Mapping):
                 continue
 
-            answer_id_list: list = []
-            identifier: Optional[str] = rule.get("identifier")
-            source: Optional[str] = rule.get("source")
+            [
+                answer_id_list,
+                dependencies_for_progress_value_source,
+            ] = self._get_section_and_block_ids_dependencies_for_progress_source_and_answer_ids_from_rule(
+                current_section_id, rule
+            )
 
-            if source == "answers" and identifier:
-                answer_id_list.append(identifier)
-            elif source == "calculated_summary" and identifier:
-                calculated_summary_block = self.get_block(identifier)
-                calculated_summary_answer_ids = self.get_calculated_summary_answer_ids(
-                    calculated_summary_block  # type: ignore
-                )
-                answer_id_list.extend(iter(calculated_summary_answer_ids))
+            section_dependencies_for_progress_value_source.update(
+                dependencies_for_progress_value_source["sections"]
+            )
+            block_dependencies_for_progress_value_source.update(
+                dependencies_for_progress_value_source["blocks"]
+            )
+
             for answer_id in answer_id_list:
                 block = self.get_block_for_answer_id(answer_id)  # type: ignore
                 section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
@@ -887,14 +985,27 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     self._when_rules_section_dependencies_by_answer[answer_id].add(
                         current_section_id
                     )
-                    rules_section_dependencies.add(section_id)  # type: ignore
+                    section_dependencies.add(section_id)  # type: ignore
 
             if QuestionnaireSchema.has_operator(rule):
-                rules_section_dependencies.update(
-                    self._get_rules_section_dependencies(current_section_id, rule)
+                (
+                    nested_section_dependencies,
+                    nested_section_dependencies_for_progress_value_source,
+                    nested_block_dependencies_for_progress_value_source,
+                ) = self._get_rules_section_dependencies(current_section_id, rule)
+                section_dependencies.update(nested_section_dependencies)
+                section_dependencies_for_progress_value_source.update(
+                    nested_section_dependencies_for_progress_value_source
+                )
+                block_dependencies_for_progress_value_source.update(
+                    nested_block_dependencies_for_progress_value_source
                 )
 
-        return rules_section_dependencies
+        return (
+            section_dependencies,
+            section_dependencies_for_progress_value_source,
+            block_dependencies_for_progress_value_source,
+        )
 
     def get_calculated_summary_answer_ids(
         self, calculated_summary_block: Mapping[str, Any]
