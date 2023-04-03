@@ -172,7 +172,7 @@
                             "question": {
                                 "id": "s1-b6-q1",
                                 "title": "Section 1 Question 6",
-                                "description": ["Showing this question because question 5 was completed"],
+                                "description": ["Showing this question because question 4 was completed"],
                                 "type": "General",
                                 "answers": [
                                     {
