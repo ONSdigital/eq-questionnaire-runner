@@ -55,7 +55,7 @@ def get_schema_list(language_code: str = DEFAULT_LANGUAGE_CODE) -> dict[str, lis
 
 
 @lru_cache(maxsize=None)
-def get_schema_path(language_code: str, schema_name: str) -> str:
+def get_schema_path(language_code: str, schema_name: str) -> str | None:
     for schemas_by_language in get_schema_path_map(include_test_schemas=True).values():
         schema_path = schemas_by_language.get(language_code, {}).get(schema_name)
         if schema_path:
@@ -102,7 +102,7 @@ def get_allowed_languages(schema_name: str, launch_language: str):
 def load_schema_from_metadata(
     metadata: MetadataProxy, *, language_code: str
 ) -> QuestionnaireSchema:
-    if metadata and (schema_url := metadata.schema_url):
+    if schema_url := metadata.schema_url:
         # :TODO: Remove before production uses schema_url
         # This is temporary and is only for development/integration purposes.
         # This should not be used in production.
@@ -125,7 +125,9 @@ def load_schema_from_metadata(
         return schema
 
     return load_schema_from_name(
-        metadata.schema_name,
+        # Type ignore: Metadata is validated to have either schema_name or schema_url populated.
+        # This code runs only if schema_url was not present, thus schema_name is present (not None).
+        metadata.schema_name,  # type: ignore
         language_code=language_code,
     )
 
@@ -178,7 +180,10 @@ def _load_schema_file(schema_name: str, language_code: str) -> Any:
         schema_path=schema_path,
     )
 
-    with open(schema_path, encoding="utf8") as json_file:
+    # Type ignore: Existence of the file is checked prior to call for the path
+    with open(
+        schema_path,  # type: ignore
+        encoding="utf8") as json_file:
         return json_load(json_file)
 
 
