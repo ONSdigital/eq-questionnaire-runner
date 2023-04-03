@@ -2,11 +2,12 @@
 import pytest
 from mock import MagicMock
 
-from app.data_models import Answer
+from app.data_models import Answer, ListStore
 from app.data_models.answer_store import AnswerStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
+from app.utilities.schema import load_schema_from_name
 from app.views.contexts.summary.question import Question
 
 
@@ -998,3 +999,114 @@ def test_get_answer(answer_schema, answer_store, expected, list_store):
 
     # Then
     assert question.get_answer(answer_store, "building") == expected
+
+
+@pytest.mark.usefixtures("app")
+@pytest.mark.parametrize(
+    "answer_store, list_store, expected",
+    (
+        (
+            AnswerStore(
+                [
+                    {"answer_id": "any-supermarket-answer", "value": "Yes"},
+                    {
+                        "answer_id": "supermarket-name",
+                        "value": "Tesco",
+                        "list_item_id": "awTNTI",
+                    },
+                    {
+                        "answer_id": "supermarket-name",
+                        "value": "Aldi",
+                        "list_item_id": "FMOByU",
+                    },
+                    {"answer_id": "list-collector-answer", "value": "No"},
+                    {
+                        "answer_id": "percentage-of-shopping",
+                        "value": 12,
+                        "list_item_id": "awTNTI",
+                    },
+                    {
+                        "answer_id": "percentage-of-shopping",
+                        "value": 21,
+                        "list_item_id": "FMOByU",
+                    },
+                ],
+            ),
+            ListStore([{"items": ["awTNTI", "FMOByU"], "name": "supermarkets"}]),
+            [
+                {
+                    "currency": None,
+                    "id": "percentage-of-shopping-awTNTI",
+                    "label": "Percentage of shopping at Tesco",
+                    "link": "/questionnaire/group/?list_item_id=awTNTI#percentage-of-shopping-awTNTI",
+                    "type": "percentage",
+                    "unit": None,
+                    "unit_length": None,
+                    "value": 12,
+                },
+                {
+                    "currency": None,
+                    "id": "percentage-of-shopping-FMOByU",
+                    "label": "Percentage of shopping at Aldi",
+                    "link": "/questionnaire/group/?list_item_id=FMOByU#percentage-of-shopping-FMOByU",
+                    "type": "percentage",
+                    "unit": None,
+                    "unit_length": None,
+                    "value": 21,
+                },
+            ],
+        ),
+    ),
+)
+def test_dynamic_answers(answer_store, list_store, expected):
+    schema = load_schema_from_name("test_dynamic_answers_list", "en")
+
+    # Given
+    question_schema = {
+        "dynamic_answers": {
+            "values": {"source": "list", "identifier": "supermarkets"},
+            "answers": [
+                {
+                    "label": {
+                        "text": "Percentage of shopping at {transformed_value}",
+                        "placeholders": [
+                            {
+                                "placeholder": "transformed_value",
+                                "value": {
+                                    "source": "answers",
+                                    "identifier": "supermarket-name",
+                                },
+                            }
+                        ],
+                    },
+                    "id": "percentage-of-shopping",
+                    "mandatory": False,
+                    "type": "Percentage",
+                    "maximum": {"value": 100},
+                    "decimal_places": 0,
+                }
+            ],
+        },
+        "answers": [],
+        "id": "dynamic-answer-question",
+        "title": "What percent of your shopping do you do at each of the following supermarket?",
+        "type": "General",
+    }
+
+    # When
+    question = Question(
+        question_schema,
+        answer_store=answer_store,
+        list_store=list_store,
+        schema=schema,
+        rule_evaluator=get_rule_evaluator(answer_store, list_store, schema),
+        value_source_resolver=get_value_source_resolver(
+            answer_store, list_store, schema
+        ),
+        location=None,
+        block_id="group",
+        return_to=None,
+    )
+
+    # Then
+    assert question.answers == expected
