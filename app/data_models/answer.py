@@ -8,10 +8,11 @@ from markupsafe import Markup, escape
 
 DictAnswer = dict[str, Union[int, str]]
 ListAnswer = list[str]
+ListDictAnswer = list[DictAnswer]
 DictAnswerEscaped = dict[str, Union[int, Markup]]
 ListAnswerEscaped = list[Markup]
 
-AnswerValueTypes = Union[str, int, Decimal, DictAnswer, ListAnswer]
+AnswerValueTypes = Union[str, int, Decimal, DictAnswer, ListAnswer, ListDictAnswer]
 AnswerValueEscapedTypes = Union[
     Markup,
     int,

@@ -16,9 +16,9 @@ class RelationshipRouter:
         list_name: str,
         list_item_ids: list[str],
         relationships_block_id: str,
-        unrelated_block_id: Optional[str] = None,
-        unrelated_answer_id: Optional[str] = None,
-        unrelated_no_answer_values: Optional[List[str]] = None,
+        unrelated_block_id: str | None = None,
+        unrelated_answer_id: str | None = None,
+        unrelated_no_answer_values: list[str] | None = None,
     ):
         self.answer_store = answer_store
         self.relationship_store = relationship_store
@@ -31,42 +31,42 @@ class RelationshipRouter:
         self.unrelated_no_answer_values = unrelated_no_answer_values
         self.path = self._relationships_routing_path()
 
-    def can_access_location(self, location):
+    def can_access_location(self, location: RelationshipLocation) -> bool:
         return location in self.path
 
-    def get_first_location(self):
+    def get_first_location(self) -> RelationshipLocation:
         return self.path[0]
 
-    def get_last_location(self):
+    def get_last_location(self) -> RelationshipLocation:
         return self.path[-1]
 
-    def get_next_location(self, location):
+    def get_next_location(self, location: RelationshipLocation) -> RelationshipLocation | None:
         try:
             location_index = self.path.index(location)
             return self.path[location_index + 1]
         except IndexError:
             return None
 
-    def get_previous_location(self, location):
+    def get_previous_location(self, location: RelationshipLocation) -> RelationshipLocation | None:
         location_index = self.path.index(location)
         if not location_index:
             return None
         return self.path[location_index - 1]
 
-    def _relationships_routing_path(self):
-        path = []
+    def _relationships_routing_path(self) -> list[RelationshipLocation]:
+        path: list[RelationshipLocation] = []
         for from_index, from_list_item_id in enumerate(self.list_item_ids):
             path += self._individual_relationships_routing_path(
                 from_list_item_id=from_list_item_id,
-                to_list_item_ids=self.list_item_ids[from_index + 1 :],
+                to_list_item_ids=self.list_item_ids[from_index + 1:],
             )
 
         return path
 
     def _individual_relationships_routing_path(
-        self, from_list_item_id, to_list_item_ids
-    ):
-        path = []
+        self, from_list_item_id: str, to_list_item_ids: list[str]
+    ) -> list[RelationshipLocation]:
+        path: list[RelationshipLocation] = []
         number_of_unrelated_relationships = 0
         number_of_relationships_left = len(to_list_item_ids)
         unrelated_block_in_path = False
@@ -87,12 +87,11 @@ class RelationshipRouter:
                 )
                 unrelated_block_in_path = True
                 unrelated_answer = self.answer_store.get_answer(
-                    self.unrelated_answer_id, from_list_item_id
+                    # unrelated_answer_id will exist if the unrelated_block_id does
+                    self.unrelated_answer_id, from_list_item_id  # type: ignore
                 )
-                if (
-                    unrelated_answer
-                    and unrelated_answer.value in self.unrelated_no_answer_values
-                ):
+                # unrelated_no_answer_values exists when the unrelated answer does
+                if unrelated_answer and unrelated_answer.value in self.unrelated_no_answer_values:  # type: ignore
                     return path
 
             path.append(

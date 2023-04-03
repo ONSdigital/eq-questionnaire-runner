@@ -1,5 +1,4 @@
-from typing import Iterator, SupportsIndex
-
+from typing import Iterator, Any
 
 class RoutingPath:
     """Holds a list of block_ids and has section_id, list_item_id and list_name attributes"""
@@ -36,5 +35,5 @@ class RoutingPath:
 
         return self.block_ids == other
 
-    def index(self, value: str, start: int | None = None, stop: int | None = None) -> int: #TODO extra params needed?
-        return self.block_ids.index(value, start, stop)
+    def index(self, *args: Any) -> int: #TODO
+        return self.block_ids.index(*args)

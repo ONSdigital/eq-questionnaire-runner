@@ -693,7 +693,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def get_relationship_collectors_by_list_name(
         self, list_name: str
-    ) -> Optional[list[ImmutableDict]]:
+    ) -> list[ImmutableDict] | None:
         relationship_collectors = self.get_relationship_collectors()
         if relationship_collectors:
             return [

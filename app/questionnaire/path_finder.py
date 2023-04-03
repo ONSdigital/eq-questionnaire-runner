@@ -9,7 +9,7 @@ from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
-from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator, RuleEvaluatorTypes
 
 
 class PathFinder:
@@ -98,7 +98,7 @@ class PathFinder:
             return not_skipped_blocks
 
     @staticmethod
-    def _block_index_for_block_id(blocks, block_id):
+    def _block_index_for_block_id(blocks: dict, block_id: str) -> int | None: #TODO check 
         return next(
             (index for (index, block) in enumerate(blocks) if block["id"] == block_id),
             None,
@@ -179,7 +179,7 @@ class PathFinder:
         block_index,
         routing_path_block_ids,
         when_rules_block_dependencies,
-    ):
+    ) -> int | None:
         if when_rules_block_dependencies:
             routing_path_block_ids = (
                 when_rules_block_dependencies + routing_path_block_ids
@@ -229,7 +229,7 @@ class PathFinder:
         routing_path_block_ids,
         skip_conditions,
         when_rules_block_dependencies,
-    ):
+    ) -> RuleEvaluatorTypes:
         if not skip_conditions:
             return False
 
