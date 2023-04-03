@@ -461,7 +461,7 @@ def get_answer_fields(
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
 
-    routing_path_block_ids: dict[tuple, list[str]] = {}
+    routing_path_block_ids: dict[tuple, tuple[str, ...]] = {}
 
     if location and progress_store:
         routing_path_block_ids = get_block_ids_for_calculated_summary_dependencies(

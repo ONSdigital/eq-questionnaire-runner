@@ -19,8 +19,8 @@ def get_block_ids_for_calculated_summary_dependencies(
     path_finder: "PathFinder",
     data: MultiDict | Mapping | Sequence,
     sections_to_ignore: list | None = None,
-) -> dict[tuple, list[str]]:
-    block_ids_by_section: dict[tuple, list[str]] = {}
+) -> dict[tuple, tuple[str, ...]]:
+    block_ids_by_section: dict[tuple, tuple[str, ...]] = {}
 
     sections_to_ignore = sections_to_ignore or []
     dependent_sections = schema.calculated_summary_section_dependencies_by_block[

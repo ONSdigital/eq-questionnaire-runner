@@ -21,7 +21,7 @@ def convert_answers_to_payload_0_0_1(
     answer_store: AnswerStore,
     list_store: ListStore,
     schema: QuestionnaireSchema,
-    full_routing_path: RoutingPath,
+    full_routing_path: list[RoutingPath],
     progress_store: ProgressStore,
 ) -> OrderedDict[str, Any]:
     """

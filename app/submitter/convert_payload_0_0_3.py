@@ -14,7 +14,7 @@ def convert_answers_to_payload_0_0_3(
     answer_store: AnswerStore,
     list_store: ListStore,
     schema: QuestionnaireSchema,
-    full_routing_path: RoutingPath,
+    full_routing_path: list[RoutingPath],
 ) -> list[Answer]:
     """
     Convert answers into the data format below

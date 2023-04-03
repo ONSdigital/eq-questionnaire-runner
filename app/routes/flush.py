@@ -110,7 +110,7 @@ def _submit_data(user):
 
 
 def _get_converted_answers_message(
-    full_routing_path: RoutingPath,
+    full_routing_path: list[RoutingPath],
     metadata: MetadataProxy,
     questionnaire_store: QuestionnaireStore,
     schema: QuestionnaireSchema,

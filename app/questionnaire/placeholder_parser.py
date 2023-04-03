@@ -178,7 +178,7 @@ class PlaceholderParser:
 
     def _get_routing_path_block_ids(
         self, data: Mapping | Sequence, sections_to_ignore: list | None = None
-    ) -> dict[tuple, list[str]] | None:
+    ) -> dict[tuple, tuple[str, ...]] | None:
         if self._location:
             return get_block_ids_for_calculated_summary_dependencies(
                 schema=self._schema,

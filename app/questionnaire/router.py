@@ -342,7 +342,7 @@ class Router:
         """
         The allowable path is the completed path plus the next location
         """
-        allowable_path = []
+        allowable_path: list[str] = []
 
         if routing_path:
             for block_id in routing_path:
