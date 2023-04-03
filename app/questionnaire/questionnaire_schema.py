@@ -2,31 +2,16 @@ from collections import defaultdict
 from copy import deepcopy
 from dataclasses import dataclass
 from functools import cached_property
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Generator,
-    Iterable,
-    Mapping,
-    Optional,
-    Sequence,
-    Union,
-)
+from typing import Any, Generator, Iterable, Mapping, Optional, Sequence, Union
 
 from flask_babel import force_locale
 from werkzeug.datastructures import ImmutableDict, MultiDict
 
 from app.data_models.answer import Answer
 from app.forms import error_messages
-from app.questionnaire import Location
-from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.operator import OPERATION_MAPPING
 from app.utilities.make_immutable import make_immutable
-from app.utilities.mappings import get_flattened_mapping_values, get_mappings_with_key
-
-if TYPE_CHECKING:
-    from app.data_models import ProgressStore  # pragma: no cover
-    from app.questionnaire.path_finder import PathFinder  # pragma: no cover
+from app.utilities.mappings import get_mappings_with_key
 
 DEFAULT_LANGUAGE_CODE = "en"
 
@@ -975,49 +960,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             for item in summary.get("items", []):
                 if item["for_list"] == list_name and item.get("item_anchor_answer_id"):
                     return f"#{str(item['item_anchor_answer_id'])}"
-
-    def get_block_ids_for_calculated_summary_dependencies(
-        self,
-        location: Location | RelationshipLocation,
-        progress_store: "ProgressStore",
-        path_finder: "PathFinder",
-        data: MultiDict | Mapping | Sequence,
-        sections_to_ignore: list | None = None,
-    ) -> dict[tuple, list[str]]:
-        block_ids_by_section: dict[tuple, list[str]] = {}
-
-        sections_to_ignore = sections_to_ignore or []
-        dependent_sections = self.calculated_summary_section_dependencies_by_block[
-            location.section_id
-        ]
-
-        if block_id := location.block_id:
-            dependents = dependent_sections[block_id]
-        else:
-            dependents = get_flattened_mapping_values(dependent_sections)
-
-        if dependents and not get_sources_for_type_from_data(
-            source_type="calculated_summary",
-            data=data,
-            ignore_keys=["when"],
-        ):
-            return block_ids_by_section
-
-        for section in dependents:
-            # Dependent sections other than the current section cannot be a repeating section
-            list_item_id = (
-                location.list_item_id if section == location.section_id else None
-            )
-            key = (section, list_item_id)
-
-            if key in sections_to_ignore:
-                continue
-
-            if key in progress_store.started_section_keys():
-                routing_path = path_finder.routing_path(*key)
-                block_ids_by_section[key] = routing_path.block_ids
-
-        return block_ids_by_section
 
 
 def get_sources_for_type_from_data(
