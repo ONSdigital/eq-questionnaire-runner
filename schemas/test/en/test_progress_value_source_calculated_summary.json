@@ -324,7 +324,7 @@
                                 "answers": [
                                     {
                                         "id": "date-of-birth-answer",
-                                        "mandatory": true,
+                                        "mandatory": false,
                                         "maximum": {
                                             "value": "now"
                                         },
