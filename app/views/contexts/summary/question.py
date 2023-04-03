@@ -3,7 +3,7 @@ from typing import Any, Mapping, Optional
 from flask import url_for
 from markupsafe import Markup, escape
 
-from app.data_models import AnswerStore, ListStore
+from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.answer import AnswerValueEscapedTypes, escape_answer_value
 from app.forms.field_handlers.select_handlers import DynamicAnswerOptions
 from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
@@ -24,6 +24,7 @@ class Question:
         *,
         answer_store: AnswerStore,
         list_store: ListStore,
+        progress_store: ProgressStore,
         schema: QuestionnaireSchema,
         rule_evaluator: RuleEvaluator,
         value_source_resolver: ValueSourceResolver,
@@ -45,6 +46,7 @@ class Question:
             self.dynamic_answer_identifier = None
         self.answer_store = answer_store
         self.list_store = list_store
+        self.progress_store = progress_store
         self.summary = question_schema.get("summary")
         self.title = (
             question_schema.get("title") or question_schema["answers"][0]["label"]
@@ -115,6 +117,7 @@ class Question:
                     placeholder_renderer = PlaceholderRenderer(
                         answer_store=self.answer_store,
                         list_store=self.list_store,
+                        progress_store=self.progress_store,
                         schema=self.schema,
                         language="en",
                         metadata=None,
@@ -138,7 +141,8 @@ class Question:
                         answer_schema["id"] + f"-{self.list_item_id}"
                     )
                     rendered_schema = placeholder_renderer.render(
-                        resolved_answer_schema, self.list_item_id
+                        data_to_render=resolved_answer_schema,
+                        list_item_id=self.list_item_id,
                     )
 
                     summary_answer = Answer(

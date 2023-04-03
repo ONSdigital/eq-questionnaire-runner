@@ -1523,6 +1523,7 @@ def test_payload_dynamic_answers(version):
         full_routing_path,
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
     )
 
     # Then

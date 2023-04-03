@@ -95,6 +95,7 @@ class Block:
             variant,
             answer_store=answer_store,
             list_store=list_store,
+            progress_store=progress_store,
             schema=schema,
             rule_evaluator=self._rule_evaluator,
             value_source_resolver=self._value_source_resolver,

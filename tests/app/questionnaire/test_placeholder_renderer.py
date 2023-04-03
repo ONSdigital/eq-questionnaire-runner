@@ -276,7 +276,7 @@ def test_renders_json_dynamic_answers(
     renderer = get_placeholder_render_dynamic_answers(
         answer_store=answer_store, list_store=list_store
     )
-    rendered_schema = renderer.render(json_to_render, list_item_id=None)
+    rendered_schema = renderer.render(data_to_render=json_to_render, list_item_id=None)
     rendered_label_first = rendered_schema["answers"][0]["label"]
     rendered_id_first = rendered_schema["answers"][0]["id"]
     rendered_label_second = rendered_schema["answers"][1]["label"]
@@ -293,6 +293,7 @@ def get_placeholder_render_dynamic_answers(
     language="en",
     answer_store=AnswerStore(),
     list_store=ListStore(),
+    progress_store=ProgressStore(),
     metadata=None,
     response_metadata=None,
 ):
@@ -301,6 +302,7 @@ def get_placeholder_render_dynamic_answers(
         language=language,
         answer_store=answer_store,
         list_store=list_store,
+        progress_store=progress_store,
         metadata=metadata or {},
         response_metadata=response_metadata or {},
         schema=schema,
