@@ -2,7 +2,7 @@
 import pytest
 from mock import MagicMock
 
-from app.data_models import Answer, ListStore
+from app.data_models import Answer, ListStore, ProgressStore
 from app.data_models.answer_store import AnswerStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
@@ -19,6 +19,7 @@ def get_rule_evaluator(answer_store, list_store, schema, response_metadata=None)
         metadata={},
         response_metadata=response_metadata or {},
         location=None,
+        progress_store=ProgressStore(),
     )
 
 
@@ -33,6 +34,7 @@ def get_value_source_resolver(answer_store, list_store, schema, response_metadat
         list_item_id=None,
         routing_path_block_ids=None,
         use_default_answer=True,
+        progress_store=ProgressStore(),
     )
 
 

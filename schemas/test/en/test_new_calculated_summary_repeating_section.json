@@ -228,7 +228,9 @@
         {
             "id": "personal-details-section",
             "title": "Personal Details",
-            "summary": { "show_on_completion": true },
+            "summary": {
+                "show_on_completion": true
+            },
             "repeat": {
                 "for_list": "people",
                 "title": {
@@ -497,47 +499,8 @@
                         },
                         {
                             "type": "CalculatedSummary",
-                            "id": "currency-total-playback-skipped-fourth",
-                            "title": "We calculate the total of currency values entered to be %(total)s. Is this correct? (Skipped Fourth)",
-                            "calculation": {
-                                "operation": {
-                                    "+": [
-                                        {
-                                            "source": "answers",
-                                            "identifier": "first-number-answer"
-                                        },
-                                        {
-                                            "source": "answers",
-                                            "identifier": "second-number-answer"
-                                        },
-                                        {
-                                            "source": "answers",
-                                            "identifier": "second-number-answer-also-in-total"
-                                        },
-                                        {
-                                            "source": "answers",
-                                            "identifier": "third-number-answer"
-                                        }
-                                    ]
-                                },
-                                "title": "Grand total of previous values"
-                            },
-                            "skip_conditions": {
-                                "when": {
-                                    "==": [
-                                        {
-                                            "identifier": "skip-fourth-block-answer",
-                                            "source": "answers"
-                                        },
-                                        "No"
-                                    ]
-                                }
-                            }
-                        },
-                        {
-                            "type": "CalculatedSummary",
-                            "id": "currency-total-playback-with-fourth",
-                            "title": "We calculate the total of currency values entered to be %(total)s. Is this correct? (With Fourth)",
+                            "id": "currency-total-playback",
+                            "title": "We calculate the total of currency values entered to be %(total)s. Is this correct?",
                             "calculation": {
                                 "operation": {
                                     "+": [
@@ -568,17 +531,6 @@
                                     ]
                                 },
                                 "title": "Grand total of previous values"
-                            },
-                            "skip_conditions": {
-                                "when": {
-                                    "==": [
-                                        {
-                                            "identifier": "skip-fourth-block-answer",
-                                            "source": "answers"
-                                        },
-                                        "Yes"
-                                    ]
-                                }
                             }
                         },
                         {
@@ -717,17 +669,17 @@
                                     {
                                         "list": [
                                             {
-                                                "text": "Total currency values (if Q4 not skipped): <em>{total}</em>",
+                                                "text": "Total currency values: <em>{currency_total}</em>",
                                                 "placeholders": [
                                                     {
-                                                        "placeholder": "total",
+                                                        "placeholder": "currency_total",
                                                         "transforms": [
                                                             {
                                                                 "transform": "format_currency",
                                                                 "arguments": {
                                                                     "number": {
                                                                         "source": "calculated_summary",
-                                                                        "identifier": "currency-total-playback-with-fourth"
+                                                                        "identifier": "currency-total-playback"
                                                                     }
                                                                 }
                                                             }
@@ -736,29 +688,10 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Total currency values (if Q4 skipped)): <em>{total}</em>",
+                                                "text": "Total unit values: <em>{unit_total}</em>",
                                                 "placeholders": [
                                                     {
-                                                        "placeholder": "total",
-                                                        "transforms": [
-                                                            {
-                                                                "transform": "format_currency",
-                                                                "arguments": {
-                                                                    "number": {
-                                                                        "source": "calculated_summary",
-                                                                        "identifier": "currency-total-playback-skipped-fourth"
-                                                                    }
-                                                                }
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "text": "Total unit values: <em>{total}</em>",
-                                                "placeholders": [
-                                                    {
-                                                        "placeholder": "total",
+                                                        "placeholder": "unit_total",
                                                         "transforms": [
                                                             {
                                                                 "transform": "format_number",
@@ -774,10 +707,10 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Total percentage values: <em>{total}</em>",
+                                                "text": "Total percentage values: <em>{percentage_total}</em>",
                                                 "placeholders": [
                                                     {
-                                                        "placeholder": "total",
+                                                        "placeholder": "percentage_total",
                                                         "transforms": [
                                                             {
                                                                 "transform": "format_number",
@@ -793,10 +726,10 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Total number values: <em>{total}</em>",
+                                                "text": "Total number values: <em>{number_total}</em>",
                                                 "placeholders": [
                                                     {
-                                                        "placeholder": "total",
+                                                        "placeholder": "number_total",
                                                         "transforms": [
                                                             {
                                                                 "transform": "format_number",
@@ -843,7 +776,7 @@
                                         "minimum": {
                                             "value": {
                                                 "source": "calculated_summary",
-                                                "identifier": "currency-total-playback-skipped-fourth"
+                                                "identifier": "currency-total-playback"
                                             }
                                         }
                                     },
@@ -858,7 +791,7 @@
                                         "maximum": {
                                             "value": {
                                                 "source": "calculated_summary",
-                                                "identifier": "currency-total-playback-skipped-fourth"
+                                                "identifier": "currency-total-playback"
                                             }
                                         }
                                     }
@@ -869,7 +802,7 @@
                                         {
                                             "placeholder": "calculated_summary_answer",
                                             "value": {
-                                                "identifier": "currency-total-playback-skipped-fourth",
+                                                "identifier": "currency-total-playback",
                                                 "source": "calculated_summary"
                                             }
                                         }

@@ -20,20 +20,21 @@ class Group:
         routing_path: RoutingPath,
         answer_store: AnswerStore,
         list_store: ListStore,
-        metadata: Optional[MetadataProxy],
+        metadata: MetadataProxy | None,
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
         location: Location,
         language: str,
         progress_store: ProgressStore,
-        return_to: Optional[str],
-        return_to_block_id: Optional[str] = None,
+        return_to: str | None,
+        return_to_block_id: str | None = None,
     ) -> None:
         self.id = group_schema["id"]
         self.title = group_schema.get("title")
         self.location = location
         self.placeholder_text = None
         self.links: dict[str, Link] = {}
+
         self.blocks = self._build_blocks_and_links(
             group_schema=group_schema,
             routing_path=routing_path,
@@ -42,20 +43,22 @@ class Group:
             metadata=metadata,
             response_metadata=response_metadata,
             schema=schema,
-            location=location,
+            location=self.location,
             return_to=return_to,
             progress_store=progress_store,
             language=language,
             return_to_block_id=return_to_block_id,
         )
+
         self.placeholder_renderer = PlaceholderRenderer(
             language=language,
             answer_store=answer_store,
             list_store=list_store,
-            location=location,
+            location=self.location,
             metadata=metadata,
             response_metadata=response_metadata,
             schema=schema,
+            progress_store=progress_store,
         )
 
     # pylint: disable=too-many-locals
@@ -96,6 +99,7 @@ class Group:
                             location=location,
                             return_to=return_to,
                             return_to_block_id=return_to_block_id,
+                            progress_store=progress_store,
                         ).serialize()
                     ]
                 )
@@ -138,14 +142,14 @@ class Group:
 
         return blocks
 
-    def serialize(self) -> dict[str, Any]:
+    def serialize(self) -> Mapping[str, Any]:
         return self.placeholder_renderer.render(
-            {
+            data_to_render={
                 "id": self.id,
                 "title": self.title,
                 "blocks": self.blocks,
                 "links": self.links,
                 "placeholder_text": self.placeholder_text,
             },
-            self.location.list_item_id,
+            list_item_id=self.location.list_item_id if self.location else None,
         )

@@ -35,6 +35,8 @@ class ListCollectorBlock:
             metadata=metadata,
             response_metadata=response_metadata,
             schema=schema,
+            progress_store=progress_store,
+            location=location,
         )
         self._list_store = list_store
         self._schema = schema
@@ -82,7 +84,7 @@ class ListCollectorBlock:
         )
 
         rendered_summary = self._placeholder_renderer.render(
-            summary, self._location.list_item_id
+            data_to_render=summary, list_item_id=self._location.list_item_id
         )
 
         section_id = self._section["id"]
@@ -189,6 +191,7 @@ class ListCollectorBlock:
                     ),
                     return_to="section-summary",
                     return_to_block_id=None,
+                    progress_store=self._progress_store,
                 ).serialize()
                 for block in blocks
             ]

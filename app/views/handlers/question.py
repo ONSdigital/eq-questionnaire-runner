@@ -22,28 +22,31 @@ class Question(BlockHandler):
     @cached_property
     def form(self):
         question_json = self.rendered_block.get("question")
+
         if self._form_data:
             return generate_form(
-                self._schema,
-                question_json,
-                self._questionnaire_store.answer_store,
-                self._questionnaire_store.list_store,
-                self._questionnaire_store.metadata,
-                self._questionnaire_store.response_metadata,
-                self._current_location,
+                schema=self._schema,
+                question_schema=question_json,
+                answer_store=self._questionnaire_store.answer_store,
+                list_store=self._questionnaire_store.list_store,
+                metadata=self._questionnaire_store.metadata,
+                response_metadata=self._questionnaire_store.response_metadata,
+                location=self._current_location,
                 form_data=self._form_data,
+                progress_store=self._questionnaire_store.progress_store,
             )
 
         answers = self._get_answers_for_question(question_json)
         return generate_form(
-            self._schema,
-            question_json,
-            self._questionnaire_store.answer_store,
-            self._questionnaire_store.list_store,
-            self._questionnaire_store.metadata,
-            self._questionnaire_store.response_metadata,
-            self._current_location,
+            schema=self._schema,
+            question_schema=question_json,
+            answer_store=self._questionnaire_store.answer_store,
+            list_store=self._questionnaire_store.list_store,
+            metadata=self._questionnaire_store.metadata,
+            response_metadata=self._questionnaire_store.response_metadata,
+            location=self._current_location,
             data=answers,
+            progress_store=self._questionnaire_store.progress_store,
         )
 
     @cached_property
@@ -66,6 +69,7 @@ class Question(BlockHandler):
             self._questionnaire_store.answer_store,
             self._questionnaire_store.list_store,
             self._current_location,
+            self._questionnaire_store.progress_store,
         )
         page_title = transformed_block.get("page_title") or self._get_safe_page_title(
             transformed_block["question"]["title"]
@@ -73,7 +77,8 @@ class Question(BlockHandler):
 
         self._set_page_title(page_title)
         rendered_question = self.placeholder_renderer.render(
-            transformed_block["question"], self._current_location.list_item_id
+            data_to_render=transformed_block["question"],
+            list_item_id=self._current_location.list_item_id,
         )
         return {
             **transformed_block,
@@ -83,13 +88,13 @@ class Question(BlockHandler):
     @cached_property
     def list_context(self):
         return ListContext(
-            self._language,
-            self._schema,
-            self._questionnaire_store.answer_store,
-            self._questionnaire_store.list_store,
-            self._questionnaire_store.progress_store,
-            self._questionnaire_store.metadata,
-            self._questionnaire_store.response_metadata,
+            language=self._language,
+            schema=self._schema,
+            answer_store=self._questionnaire_store.answer_store,
+            list_store=self._questionnaire_store.list_store,
+            progress_store=self._questionnaire_store.progress_store,
+            metadata=self._questionnaire_store.metadata,
+            response_metadata=self._questionnaire_store.response_metadata,
         )
 
     def get_next_location_url(self):
