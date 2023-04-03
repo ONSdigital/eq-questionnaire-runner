@@ -39,7 +39,6 @@
                         "add_link_text": "Add another supermarket",
                         "empty_list_text": "There are no supermarkets"
                     }
-
                 ],
                 "show_non_item_answers": true
             },
@@ -244,8 +243,8 @@
                                                     {
                                                         "placeholder": "transformed_value",
                                                         "value": {
-                                                          "source": "answers",
-                                                          "identifier": "supermarket-name"
+                                                            "source": "answers",
+                                                            "identifier": "supermarket-name"
                                                         }
                                                     }
                                                 ]
