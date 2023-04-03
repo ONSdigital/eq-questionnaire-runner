@@ -26,15 +26,16 @@ IntOrDecimal = Union[int, Decimal]
 class ValueSourceResolver:
     answer_store: AnswerStore
     list_store: ListStore
-    metadata: Optional[MetadataProxy]
+    metadata: MetadataProxy | None
     response_metadata: Mapping
     schema: QuestionnaireSchema
-    location: Union[None, Location, RelationshipLocation]
-    list_item_id: Optional[str]
-    routing_path_block_ids: Optional[list] = None
-    progress_store: Optional[ProgressStore] = None
+    location: Location | RelationshipLocation | None
+    list_item_id: str | None
+    progress_store: ProgressStore
+    routing_path_block_ids: Iterable[str] | None = None
     use_default_answer: bool = False
     escape_answer_values: bool = False
+    assess_routing_path: bool = True
 
     def _is_answer_on_path(self, answer_id: str) -> bool:
         if self.routing_path_block_ids:
@@ -49,9 +50,18 @@ class ValueSourceResolver:
         )
 
     def _get_answer_value(
-        self, answer_id: str, list_item_id: Optional[str]
-    ) -> Optional[AnswerValueTypes]:
-        if not self._is_answer_on_path(answer_id):
+        self,
+        answer_id: str,
+        list_item_id: str | None,
+        assess_routing_path: bool | None = None,
+    ) -> AnswerValueTypes | None:
+        assess_routing_path = (
+            assess_routing_path
+            if assess_routing_path is not None
+            else self.assess_routing_path
+        )
+
+        if assess_routing_path and not self._is_answer_on_path(answer_id):
             return None
 
         if answer := self.answer_store.get_answer(answer_id, list_item_id):
@@ -117,9 +127,6 @@ class ValueSourceResolver:
     def _resolve_progress_value_source(
         self, value_source: Mapping
     ) -> ValueSourceEscapedTypes | ValueSourceTypes | None:
-        if not self.progress_store:
-            raise NotImplementedError
-
         identifier = value_source["identifier"]
         selector = value_source["selector"]
         if selector == "section":
@@ -156,7 +163,7 @@ class ValueSourceResolver:
         return list(list_model)
 
     def _resolve_calculated_summary_value_source(
-        self, value_source: Mapping
+        self, value_source: Mapping, *, assess_routing_path: bool
     ) -> IntOrDecimal:
         """Calculates the value for the 'calculation' used by the provided Calculated Summary.
 
@@ -168,12 +175,16 @@ class ValueSourceResolver:
             operator = self.get_calculation_operator(calculation["calculation_type"])
             list_item_id = self._resolve_list_item_id_for_value_source(value_source)
             values = [
-                self._get_answer_value(answer_id=answer_id, list_item_id=list_item_id)
+                self._get_answer_value(
+                    answer_id=answer_id,
+                    list_item_id=list_item_id,
+                    assess_routing_path=assess_routing_path,
+                )
                 for answer_id in calculation["answers_to_calculate"]
             ]
             return operator([value for value in values if value])  # type: ignore
 
-        evaluate_calculated_summary = rule_evaluator.RuleEvaluator(
+        evaluator = rule_evaluator.RuleEvaluator(
             self.schema,
             self.answer_store,
             self.list_store,
@@ -181,9 +192,10 @@ class ValueSourceResolver:
             self.response_metadata,
             progress_store=self.progress_store,
             location=self.location,
+            routing_path_block_ids=self.routing_path_block_ids,
         )
 
-        return evaluate_calculated_summary.evaluate(calculation["operation"])  # type: ignore
+        return evaluator.evaluate(calculation["operation"])  # type: ignore
 
     def _resolve_metadata_source(self, value_source: Mapping) -> str | None:
         if not self.metadata:
@@ -212,13 +224,17 @@ class ValueSourceResolver:
     ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
         source = value_source["source"]
 
+        if source == "calculated_summary":
+            return self._resolve_calculated_summary_value_source(
+                value_source=value_source, assess_routing_path=True
+            )
+
         resolve_method_mapping = {
             "answers": self._resolve_answer_value_source,
             "list": self._resolve_list_value_source,
             "metadata": self._resolve_metadata_source,
             "location": self._resolve_location_source,
             "response_metadata": self._resolve_response_metadata_source,
-            "calculated_summary": self._resolve_calculated_summary_value_source,
             "progress": self._resolve_progress_value_source,
         }
 

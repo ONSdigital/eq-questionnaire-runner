@@ -66,7 +66,7 @@ describe("Feature: Routing rules based on progress value sources", () => {
   });
 
   describe("Given I have routing based on the completeness of a block", () => {
-  it("When an answer is changed so that the block being evaluated is completed, Then the dependent questions (Q4 + Q6) should be on the path and displayed on the summary", async () => {
+    it("When an answer is changed so that the block being evaluated is completed, Then the dependent questions (Q4 + Q6) should be on the path and displayed on the summary", async () => {
       await $(FirstQuestionPage.q1A1()).setValue("0");
       await $(FirstQuestionPage.submit()).click();
 
@@ -107,8 +107,8 @@ describe("Feature: Routing rules based on progress value sources", () => {
     });
   });
 
-    describe("Given I have routing based on the completeness of a block", () => {
-  it("When an answer is removed form the path block being evaluated is no longer completed, Then the dependent questions (Q4 + Q6) should not be on the path and not be displayed on the summary", async () => {
+  describe("Given I have routing based on the completeness of a block", () => {
+    it("When an answer is removed form the path block being evaluated is no longer completed, Then the dependent questions (Q4 + Q6) should not be on the path and not be displayed on the summary", async () => {
       await $(FirstQuestionPage.q1A1()).setValue("1");
       await $(FirstQuestionPage.submit()).click();
 
@@ -134,7 +134,7 @@ describe("Feature: Routing rules based on progress value sources", () => {
       await $(SeventhQuestionPage.submit()).click();
 
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
-       await $(SubmitPage.s1B1Q1A1Edit()).click();
+      await $(SubmitPage.s1B1Q1A1Edit()).click();
       await expect(await browser.getUrl()).to.contain(FirstQuestionPage.pageName);
       await $(FirstQuestionPage.q1A1()).setValue("0");
       await $(FirstQuestionPage.submit()).click();

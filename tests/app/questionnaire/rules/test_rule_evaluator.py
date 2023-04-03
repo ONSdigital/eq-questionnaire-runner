@@ -5,7 +5,7 @@ import pytest
 from freezegun import freeze_time
 from mock import Mock
 
-from app.data_models import AnswerStore, ListStore
+from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.answer import Answer
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
@@ -60,6 +60,7 @@ def get_rule_evaluator(
         list_store=list_store,
         location=location,
         routing_path_block_ids=routing_path_block_ids,
+        progress_store=ProgressStore(),
     )
 
 

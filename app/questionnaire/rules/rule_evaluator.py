@@ -26,11 +26,11 @@ class RuleEvaluator:
     schema: QuestionnaireSchema
     answer_store: AnswerStore
     list_store: ListStore
-    metadata: Optional[MetadataProxy]
+    metadata: MetadataProxy | None
     response_metadata: Mapping
-    location: Union[None, Location, RelationshipLocation]
-    progress_store: Optional[ProgressStore] = None
-    routing_path_block_ids: Optional[list] = None
+    location: Location | RelationshipLocation | None
+    progress_store: ProgressStore
+    routing_path_block_ids: Iterable | None = None
     language: str = DEFAULT_LANGUAGE_CODE
 
     # pylint: disable=attribute-defined-outside-init
@@ -48,6 +48,7 @@ class RuleEvaluator:
             progress_store=self.progress_store,
             use_default_answer=True,
         )
+
         renderer: PlaceholderRenderer = PlaceholderRenderer(
             language=self.language,
             answer_store=self.answer_store,
@@ -56,6 +57,7 @@ class RuleEvaluator:
             response_metadata=self.response_metadata,
             schema=self.schema,
             location=self.location,
+            progress_store=self.progress_store,
         )
         self.operations = Operations(
             language=self.language, schema=self.schema, renderer=renderer

@@ -392,11 +392,11 @@ class Router:
         )
 
         when_rule_evaluator = RuleEvaluator(
-            self._schema,
-            self._answer_store,
-            self._list_store,
-            self._metadata,
-            self._response_metadata,
+            schema=self._schema,
+            answer_store=self._answer_store,
+            list_store=self._list_store,
+            metadata=self._metadata,
+            response_metadata=self._response_metadata,
             progress_store=self._progress_store,
             location=Location(section_id=section["id"]),
             routing_path_block_ids=routing_path_block_ids,

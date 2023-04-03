@@ -1,9 +1,11 @@
 from copy import deepcopy
 from decimal import Decimal
-from typing import Any, Callable, Iterable, Mapping, Tuple, Union
+from typing import Any, Callable, Iterable, Mapping, Optional, Tuple, Union
 
 from werkzeug.datastructures import ImmutableDict
 
+from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.jinja_filters import (
     format_number,
     format_percentage,
@@ -11,7 +13,11 @@ from app.jinja_filters import (
     get_formatted_currency,
 )
 from app.questionnaire import Location
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import (
+    QuestionnaireSchema,
+    get_calculated_summary_answer_ids,
+)
+from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.schema_utils import get_answer_ids_in_block
 from app.questionnaire.value_source_resolver import ValueSourceResolver
@@ -21,23 +27,45 @@ from app.views.contexts.summary.group import Group
 
 
 class CalculatedSummaryContext(Context):
+    def __init__(
+        self,
+        language: str,
+        schema: QuestionnaireSchema,
+        answer_store: AnswerStore,
+        list_store: ListStore,
+        progress_store: ProgressStore,
+        metadata: Optional[MetadataProxy],
+        response_metadata: Mapping,
+        routing_path: RoutingPath,
+        current_location: Location,
+    ) -> None:
+        super().__init__(
+            language,
+            schema,
+            answer_store,
+            list_store,
+            progress_store,
+            metadata,
+            response_metadata,
+        )
+        self.routing_path = routing_path
+        self.current_location = current_location
+
     def build_groups_for_section(
         self,
         section: Mapping[str, Any],
         return_to_block_id: str,
-        current_location: Location,
-    ) -> list[dict[str, Group]]:
-        routing_path = self._router.routing_path(section["id"])
+    ) -> list[Mapping[str, Group]]:
         return [
             Group(
                 group_schema=group,
-                routing_path=routing_path,
+                routing_path=self.routing_path,
                 answer_store=self._answer_store,
                 list_store=self._list_store,
                 metadata=self._metadata,
                 response_metadata=self._response_metadata,
                 schema=self._schema,
-                location=current_location,
+                location=self.current_location,
                 language=self._language,
                 progress_store=self._progress_store,
                 return_to="calculated-summary",
@@ -46,25 +74,23 @@ class CalculatedSummaryContext(Context):
             for group in section["groups"]
         ]
 
-    def build_view_context_for_calculated_summary(
-        self, current_location: Location
-    ) -> dict[str, dict[str, Any]]:
+    def build_view_context_for_calculated_summary(self) -> dict[str, dict[str, Any]]:
         # type ignores added as block will exist at this point
-        block_id: str = current_location.block_id  # type: ignore
+        block_id: str = self.current_location.block_id  # type: ignore
         block: ImmutableDict = self._schema.get_block(block_id)  # type: ignore
 
         calculated_section: dict[str, Any] = self._build_calculated_summary_section(
-            block, current_location
+            block
         )
         calculation = block["calculation"]
 
         groups = self.build_groups_for_section(
-            calculated_section, block_id, current_location
+            calculated_section,
+            block_id,
         )
 
         formatted_total = self._get_formatted_total(
-            groups or [],
-            current_location=current_location,
+            groups=groups or [],
             calculation=ValueSourceResolver.get_calculation_operator(
                 calculation["calculation_type"]
             )
@@ -89,11 +115,11 @@ class CalculatedSummaryContext(Context):
         }
 
     def _build_calculated_summary_section(
-        self, rendered_block: ImmutableDict[str, Any], current_location: Location
+        self, rendered_block: ImmutableDict[str, Any]
     ) -> dict[str, Any]:
         """Build up the list of blocks only including blocks / questions / answers which are relevant to the summary"""
         # type ignores added as block will exist at this point
-        block_id: str = current_location.block_id  # type: ignore
+        block_id: str = self.current_location.block_id  # type: ignore
         group: ImmutableDict = self._schema.get_group_for_block_id(block_id)  # type: ignore
         # type ignores it is not valid to not have a section at this point
         section_id: str = self._schema.get_section_id_for_block_id(block_id)  # type: ignore
@@ -102,9 +128,7 @@ class CalculatedSummaryContext(Context):
         if rendered_block["calculation"].get("answers_to_calculate"):
             answers_to_calculate = rendered_block["calculation"]["answers_to_calculate"]
         else:
-            answers_to_calculate = self._schema.get_calculated_summary_answer_ids(
-                rendered_block
-            )
+            answers_to_calculate = get_calculated_summary_answer_ids(rendered_block)
 
         blocks_to_calculate: list = [
             self._schema.get_block_for_answer_id(answer_id)
@@ -118,7 +142,7 @@ class CalculatedSummaryContext(Context):
         for block in unique_blocks:
             if QuestionnaireSchema.is_question_block_type(block["type"]):
                 transformed_block = self._remove_unwanted_questions_answers(
-                    block, answers_to_calculate, current_location=current_location
+                    block, answers_to_calculate
                 )
                 if set(get_answer_ids_in_block(transformed_block)) & set(
                     answers_to_calculate
@@ -128,10 +152,7 @@ class CalculatedSummaryContext(Context):
         return {"id": section_id, "groups": [{"id": group["id"], "blocks": blocks}]}
 
     def _remove_unwanted_questions_answers(
-        self,
-        block: Mapping[str, Any],
-        answer_ids_to_keep: Iterable[str],
-        current_location: Location,
+        self, block: Mapping[str, Any], answer_ids_to_keep: Iterable[str]
     ) -> dict[str, Any]:
         """
         Evaluates questions in a block and removes any questions not containing a relevant answer
@@ -143,7 +164,8 @@ class CalculatedSummaryContext(Context):
             self._response_metadata,
             self._answer_store,
             self._list_store,
-            current_location=current_location,
+            self.current_location,
+            self._progress_store,
         )
         transformed_block = deepcopy(transformed_block)
         transformed_block = QuestionnaireSchema.get_mutable_deepcopy(transformed_block)
@@ -168,14 +190,9 @@ class CalculatedSummaryContext(Context):
         return transformed_block
 
     def _get_formatted_total(
-        self,
-        groups: list,
-        current_location: Location,
-        calculation: Union[Callable, ImmutableDict],
+        self, groups: list, calculation: Callable | ImmutableDict
     ) -> str:
-        answer_format, values_to_calculate = self._get_answer_format(
-            groups, current_location
-        )
+        answer_format, values_to_calculate = self._get_answer_format(groups)
 
         if isinstance(calculation, ImmutableDict):
             evaluate_calculated_summary = RuleEvaluator(
@@ -184,8 +201,9 @@ class CalculatedSummaryContext(Context):
                 self._list_store,
                 self._metadata,
                 self._response_metadata,
+                routing_path_block_ids=self.routing_path.block_ids,
+                location=self.current_location,
                 progress_store=self._progress_store,
-                location=current_location,
             )
 
             calculated_total: Union[int, float, Decimal] = evaluate_calculated_summary.evaluate(calculation)  # type: ignore
@@ -194,9 +212,7 @@ class CalculatedSummaryContext(Context):
 
         return self._format_total(answer_format, calculated_total)
 
-    def _get_answer_format(
-        self, groups: list, current_location: Location
-    ) -> Tuple[dict[str, Any], list]:
+    def _get_answer_format(self, groups: list) -> Tuple[dict[str, Any], list]:
         values_to_calculate: list = []
         answer_format: dict = {"type": None}
         for group in groups:
@@ -208,7 +224,8 @@ class CalculatedSummaryContext(Context):
                     self._response_metadata,
                     self._answer_store,
                     self._list_store,
-                    current_location=current_location,
+                    current_location=self.current_location,
+                    progress_store=self._progress_store,
                 )
                 for answer in question["answers"]:
                     if not answer_format["type"]:

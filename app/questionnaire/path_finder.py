@@ -241,11 +241,11 @@ class PathFinder:
             )
 
         when_rule_evaluator = RuleEvaluator(
-            self.schema,
-            self.answer_store,
-            self.list_store,
-            self.metadata,
-            self.response_metadata,
+            schema=self.schema,
+            answer_store=self.answer_store,
+            list_store=self.list_store,
+            metadata=self.metadata,
+            response_metadata=self.response_metadata,
             progress_store=self.progress_store,
             location=this_location,
             routing_path_block_ids=routing_path_block_ids,
