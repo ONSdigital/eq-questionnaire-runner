@@ -69,6 +69,8 @@ class TestQuestionnaireProgressValueSourceInRepeatingSections(IntegrationTestCas
         self.assertInSelector("James Bond", self.row_selector(2))
         self.post({"anyone-else": "No"})
 
+        self.post()
+
         # 3. Assert random question is there
         self.assertInBody("Random question enabler")
 
@@ -117,6 +119,8 @@ class TestQuestionnaireProgressValueSourceInRepeatingSections(IntegrationTestCas
         self.assertInSelector("James Bond", self.row_selector(2))
         self.post({"anyone-else": "No"})
 
+        self.post()
+
         self.assertInBody("Random question enabler")
         self.post({"random-question-enabler-answer": 1})
 
@@ -163,6 +167,8 @@ class TestQuestionnaireProgressValueSourceInRepeatingSections(IntegrationTestCas
         self.assertInSelector("James Bond", self.row_selector(2))
         self.post({"anyone-else": "No"})
 
+        self.post()
+
         self.assertInBody("Random question enabler")
 
         # 2. Go back to the hub and leave random question block incomplete
@@ -189,7 +195,7 @@ class TestQuestionnaireProgressValueSourceInRepeatingSections(IntegrationTestCas
         # 7. Go back to the hub
         self.go_to_hub()
 
-        # 8. Assert sections 1 is completed and repeating sections are partially copmleted
+        # 8. Assert sections 1 is completed and repeating sections are partially completed
         self.assertInBody("Choose another section to complete")
         self.assert_section_status(1, "Completed", ["List collector + random question"])
         self.assert_section_status(

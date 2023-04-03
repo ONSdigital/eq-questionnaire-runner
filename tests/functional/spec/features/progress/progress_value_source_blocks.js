@@ -7,7 +7,7 @@ import SixthQuestionPage from "../../../generated_pages/progress_value_source_bl
 import SeventhQuestionPage from "../../../generated_pages/progress_value_source_blocks/s1-b7.page";
 import SubmitPage from "../../../generated_pages/progress_value_source_blocks/submit.page";
 
-describe("Feature: Routing rules based on progress value sources", () => {
+describe("Feature: Routing  based on progress value sources using block identifiers", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_progress_value_source_blocks.json");
   });

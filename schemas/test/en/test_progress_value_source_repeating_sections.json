@@ -178,6 +178,24 @@
                         },
                         {
                             "type": "Question",
+                            "id": "question-block",
+                            "question": {
+                                "id": "question",
+                                "title": "Question",
+                                "description": ["The next question is used as a dependency in the repeating sections."],
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer",
+                                        "mandatory": false,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
                             "id": "random-question-enabler-block",
                             "question": {
                                 "id": "random-question-enabler-question",
@@ -245,7 +263,7 @@
                                 "answers": [
                                     {
                                         "id": "date-of-birth-answer",
-                                        "mandatory": true,
+                                        "mandatory": false,
                                         "maximum": {
                                             "value": "now"
                                         },
