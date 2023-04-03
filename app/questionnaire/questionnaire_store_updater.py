@@ -333,7 +333,10 @@ class QuestionnaireStoreUpdater:
             self._current_question
         )
         for item in answer_ids_for_question:
-            if item.split("-")[-1] in self._list_store._list_item_ids():
+            if (
+                item.split("-")[-1]
+                in self._list_store._list_item_ids()  # pylint: disable=protected-access
+            ):
                 answer_ids_for_question.append(list(form_data.keys())[0])
                 answer_ids_for_question.remove(item)
 

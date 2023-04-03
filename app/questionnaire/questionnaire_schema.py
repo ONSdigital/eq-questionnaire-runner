@@ -343,10 +343,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         if value_source["source"] == "list":
             section = self.get_section_for_block_id(block_id)
             list_collector = self.get_list_collector_for_list(
-                section=section, for_list=value_source["identifier"]
+                section=section, for_list=value_source["identifier"]  # type: ignore
             )
-            add_block_question = self.get_add_block_for_list_collector(
-                list_collector["id"]
+            add_block_question = self.get_add_block_for_list_collector(  # type: ignore
+                list_collector["id"]  # type: ignore
             )["question"]
             answer_id_for_block = list(
                 self.get_answers_for_question_by_id(add_block_question).keys()

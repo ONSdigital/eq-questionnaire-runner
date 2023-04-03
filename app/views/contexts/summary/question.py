@@ -5,7 +5,6 @@ from markupsafe import Markup, escape
 
 from app.data_models import AnswerStore, ListStore
 from app.data_models.answer import AnswerValueEscapedTypes, escape_answer_value
-from app.data_models.metadata_proxy import MetadataProxy
 from app.forms.field_handlers.select_handlers import DynamicAnswerOptions
 from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
@@ -73,6 +72,7 @@ class Question:
 
         return escape_answer_value(answer.value) if answer else None
 
+    # pylint: disable=too-many-locals
     def _build_answers(
         self,
         *,
@@ -117,15 +117,18 @@ class Question:
                         list_store=self.list_store,
                         schema=self.schema,
                         language="en",
-                        metadata={},
+                        metadata=None,
                         response_metadata={},
                     )
                     self.list_item_id = list_item_id
-                    answer_value: Optional[AnswerValueEscapedTypes] = self.get_answer(
-                        answer_store, answer_schema["id"]
-                    )
+                    dynamic_answer_value: Optional[
+                        AnswerValueEscapedTypes
+                    ] = self.get_answer(answer_store, answer_schema["id"])
                     answer = self._build_answer(
-                        answer_store, question_schema, answer_schema, answer_value
+                        answer_store,
+                        question_schema,
+                        answer_schema,
+                        dynamic_answer_value,
                     )
 
                     resolved_answer_schema = self.schema.get_mutable_deepcopy(

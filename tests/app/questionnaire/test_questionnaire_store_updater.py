@@ -102,8 +102,8 @@ def test_update_dynamic_answers(
         mock_router,
         current_question,
     )
-    questionnaire_store_updater._list_store = ListStore(
-        [{"items": ["tUJzGV", "vhECeh"], "name": "supermarkets"}]
+    questionnaire_store_updater._list_store = (  # pylint: disable=protected-access
+        ListStore([{"items": ["tUJzGV", "vhECeh"], "name": "supermarkets"}])
     )
     questionnaire_store_updater.update_answers(form_data, list_item_id="vhECeh")
 

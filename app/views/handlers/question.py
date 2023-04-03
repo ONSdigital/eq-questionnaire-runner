@@ -108,6 +108,7 @@ class Question(BlockHandler):
             self._return_to_block_id,
         )
 
+    # pylint: disable=protected-access
     def _get_answers_for_question(self, question_json) -> dict[str, Any]:
         answer_ids = self._schema.get_answer_ids_for_question(question_json)
         if question_json.get("dynamic_answers_list_id"):

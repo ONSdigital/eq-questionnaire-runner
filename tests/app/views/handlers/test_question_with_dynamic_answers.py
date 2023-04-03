@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 import pytest
 from freezegun import freeze_time
 
-from app.data_models import AnswerStore, QuestionnaireStore, ListStore
+from app.data_models import AnswerStore, ListStore, QuestionnaireStore
 from app.questionnaire import Location, QuestionnaireSchema
 from app.views.handlers.question import Question
 
@@ -224,6 +224,8 @@ def test_question_with_dynamic_answers(storage, language, mocker):
     )
 
     form = question.form
+    question.handle_post()
+
     assert form.question["answers"] == [
         {
             "decimal_places": 0,

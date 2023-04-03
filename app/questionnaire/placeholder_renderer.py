@@ -115,10 +115,10 @@ class PlaceholderRenderer:
             str, Any
         ] = QuestionnaireSchema.get_mutable_deepcopy(data_to_render)
         resolved_dynamic_answers = []
-        list_items = []
+        list_items: list = []
         if dynamic_answers := data_to_render_mutable.get("dynamic_answers", {}):
             list_items = (
-                self._list_store.get(dynamic_answers["values"].get("identifier"))
+                self._list_store.get(dynamic_answers["values"].get("identifier"))  # type: ignore
                 .serialize()
                 .get("items")
             )
@@ -130,13 +130,11 @@ class PlaceholderRenderer:
                     resolved_id = f"{dynamic_answer['id']}-{item}"
                     resolved_dynamic_answer["id"] = resolved_id
 
-                    # Updating parent id map for dependencies purposes (used later by questionnaire store updater on post)
-                    # self._schema._parent_id_map[
-                    #     dynamic_answer['id']
-                    # ] = data_to_render_mutable.get("id")
-                    self._schema._parent_id_map[
+                    self._schema._parent_id_map[  # pylint: disable=protected-access
                         dynamic_answer["id"]
-                    ] = data_to_render_mutable.get("id")
+                    ] = data_to_render_mutable.get(
+                        "id"
+                    )  # type: ignore
 
                     resolved_dynamic_answers.append(resolved_dynamic_answer)
 

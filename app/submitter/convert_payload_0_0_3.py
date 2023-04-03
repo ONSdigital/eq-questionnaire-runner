@@ -166,4 +166,4 @@ def resolve_dynamic_answers(
             extracted_answer = answer_store.get_answer(
                 answer["id"], list_item_id=list_item_id
             )
-            answers_payload.add_or_update(extracted_answer)
+            answers_payload.add_or_update(extracted_answer)  # type: ignore
