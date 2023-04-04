@@ -69,6 +69,7 @@ def convert_answers(
     response_metadata = questionnaire_store.response_metadata
     answer_store = questionnaire_store.answer_store
     list_store = questionnaire_store.list_store
+    progress_store = questionnaire_store.progress_store
 
     survey_id = schema.json["survey_id"]
 
@@ -95,6 +96,7 @@ def convert_answers(
         routing_path=routing_path,
         metadata=metadata,
         response_metadata=response_metadata,
+        progress_store=progress_store,
     )
 
     return payload | optional_properties

@@ -150,6 +150,7 @@ def test_context_for_section_list_summary(people_answer_store):
             section_id="section",
         ),
     )
+
     context = summary_context()
     expected = {
         "summary": {
@@ -956,6 +957,7 @@ def test_primary_only_links_for_section_summary(people_answer_store):
             section_id="section",
         ),
     )
+
     context = summary_context()
 
     list_items = context["summary"]["custom_summary"][0]["list"]["list_items"]
@@ -993,6 +995,7 @@ def test_primary_links_for_section_summary(people_answer_store):
             section_id="section",
         ),
     )
+
     context = summary_context()
 
     list_items = context["summary"]["custom_summary"][0]["list"]["list_items"]

@@ -170,6 +170,7 @@ class IndividualResponseHandler:
             response_metadata=self._questionnaire_store.response_metadata,
             schema=self._schema,
             location=None,
+            progress_store=self._questionnaire_store.progress_store,
         )
 
     @cached_property
@@ -198,6 +199,7 @@ class IndividualResponseHandler:
             response_metadata=self._questionnaire_store.response_metadata,
             data=self._answers,
             form_data=self._form_data,
+            progress_store=self._questionnaire_store.progress_store,
         )
 
     def get_context(self):
@@ -296,7 +298,7 @@ class IndividualResponseHandler:
 
     def _render_block(self):
         return self.placeholder_renderer.render(
-            self.block_definition, self._list_item_id
+            data_to_render=self.block_definition, list_item_id=self._list_item_id
         )
 
     def _update_section_status(self, status):

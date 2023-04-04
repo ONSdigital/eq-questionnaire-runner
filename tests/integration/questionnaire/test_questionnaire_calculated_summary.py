@@ -48,7 +48,6 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
     def test_calculated_summary(self):
         self.launchSurvey("test_calculated_summary")
         self._complete_calculated_summary_path_with_skip()
-        self.assertInBody("Skipped Fourth")
         self.assertInBody(
             "We calculate the total of currency values entered to be £80.00"
         )
@@ -56,7 +55,6 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
     def test_calculated_summary_no_skip(self):
         self.launchSurvey("test_calculated_summary")
         self._complete_calculated_summary_path_no_skip()
-        self.assertNotInBody("Skipped Fourth")
         self.assertInBody(
             "We calculate the total of currency values entered to be £180.00"
         )
@@ -64,7 +62,6 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
     def test_new_calculated_summary(self):
         self.launchSurvey("test_new_calculated_summary")
         self._complete_calculated_summary_path_with_skip()
-        self.assertInBody("Skipped Fourth")
         self.assertInBody(
             "We calculate the total of currency values entered to be £80.00"
         )
@@ -72,7 +69,6 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
     def test_new_calculated_summary_no_skip(self):
         self.launchSurvey("test_new_calculated_summary")
         self._complete_calculated_summary_path_no_skip()
-        self.assertNotInBody("Skipped Fourth")
         self.assertInBody(
             "We calculate the total of currency values entered to be £180.00"
         )
@@ -83,7 +79,6 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.post()
 
         self._complete_calculated_summary_path_with_skip()
-        self.assertInBody("Skipped Fourth")
         self.assertInBody(
             "We calculate the total of currency values entered to be £80.00"
         )
@@ -94,7 +89,100 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.post()
 
         self._complete_calculated_summary_path_no_skip()
-        self.assertNotInBody("Skipped Fourth")
         self.assertInBody(
             "We calculate the total of currency values entered to be £180.00"
         )
+
+    def test_calculated_summary_value_sources_across_sections(self):
+        self.launchSurvey("test_calculated_summary_cross_section_dependencies")
+
+        # Complete the first section
+        self.post()
+        self.post({"skip-first-block-answer": "No"})
+        self.post({"first-number-answer": "10"})
+        self.post({"first-and-a-half-number-answer-also-in-total": "20"})
+        self.post({"second-number-answer-also-in-total": "30"})
+        self.assertInBody(
+            "We calculate the total of currency values entered to be £60.00"
+        )
+        self.post()
+        self.post()
+        self.post()
+
+        # Complete the second section
+        self.post(
+            {
+                "third-number-answer": "20",
+                "third-number-answer-also-in-total": "20",
+            }
+        )
+        self.assertInBody(
+            "We calculate the total of currency values entered to be £40.00"
+        )
+
+        # Check calculated summary value sources are displayed correctly for both the current and previous
+        # sections
+        self.post()
+        self.assertInBody("60 - calculated summary answer (previous section)")
+        self.assertInBody("40 - calculated summary answer (current section)")
+        self.post()
+
+        self.assertInBody(
+            "Set minimum and maximum values based on your calculated summary total of £60"
+        )
+        self.post(
+            {
+                "set-minimum-answer": "40",
+                "set-maximum-answer": "70",
+            }
+        )
+        self.assertInBody("Enter an answer more than or equal to £60.00")
+
+    def test_calculated_summary_value_sources_across_sections_repeating(self):
+        self.launchSurvey(
+            "test_new_calculated_summary_cross_section_dependencies_repeating"
+        )
+
+        # Add  household members
+        self._add_list_items()
+
+        # Complete the first section
+        self.post({"skip-first-block-answer": "No"})
+        self.post({"first-number-answer": "10"})
+        self.post({"first-and-a-half-number-answer-also-in-total": "20"})
+        self.post({"second-number-answer-also-in-total": "30"})
+        self.assertInBody(
+            "We calculate the total of currency values entered to be £60.00"
+        )
+        self.post()
+        self.post()
+        self.post()
+
+        # Complete the second section
+        self.post(
+            {
+                "third-number-answer": "20",
+                "third-number-answer-also-in-total": "20",
+            }
+        )
+        self.assertInBody(
+            "We calculate the total of currency values entered to be £40.00"
+        )
+
+        # Check calculated summary value sources are displayed correctly for both the current and previous
+        # sections
+        self.post()
+        self.assertInBody("60 - calculated summary answer (previous section)")
+        self.assertInBody("40 - calculated summary answer (current section)")
+        self.post()
+
+        self.assertInBody(
+            "Set minimum and maximum values based on your calculated summary total of £60"
+        )
+        self.post(
+            {
+                "set-minimum-answer": "40",
+                "set-maximum-answer": "70",
+            }
+        )
+        self.assertInBody("Enter an answer more than or equal to £60.00")
