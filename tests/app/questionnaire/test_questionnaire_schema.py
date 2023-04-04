@@ -494,13 +494,7 @@ def test_answer_dependencies_for_calculated_summary(
         "first-number-answer": {
             AnswerDependent(
                 section_id="default-section",
-                block_id="currency-total-playback-skipped-fourth",
-                for_list=None,
-                answer_id=None,
-            ),
-            AnswerDependent(
-                section_id="default-section",
-                block_id="currency-total-playback-with-fourth",
+                block_id="currency-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
@@ -514,13 +508,7 @@ def test_answer_dependencies_for_calculated_summary(
         "second-number-answer": {
             AnswerDependent(
                 section_id="default-section",
-                block_id="currency-total-playback-skipped-fourth",
-                for_list=None,
-                answer_id=None,
-            ),
-            AnswerDependent(
-                section_id="default-section",
-                block_id="currency-total-playback-with-fourth",
+                block_id="currency-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
@@ -534,13 +522,7 @@ def test_answer_dependencies_for_calculated_summary(
         "second-number-answer-also-in-total": {
             AnswerDependent(
                 section_id="default-section",
-                block_id="currency-total-playback-skipped-fourth",
-                for_list=None,
-                answer_id=None,
-            ),
-            AnswerDependent(
-                section_id="default-section",
-                block_id="currency-total-playback-with-fourth",
+                block_id="currency-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
@@ -554,13 +536,7 @@ def test_answer_dependencies_for_calculated_summary(
         "third-number-answer": {
             AnswerDependent(
                 section_id="default-section",
-                block_id="currency-total-playback-skipped-fourth",
-                for_list=None,
-                answer_id=None,
-            ),
-            AnswerDependent(
-                section_id="default-section",
-                block_id="currency-total-playback-with-fourth",
+                block_id="currency-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
@@ -574,18 +550,30 @@ def test_answer_dependencies_for_calculated_summary(
         "fourth-number-answer": {
             AnswerDependent(
                 section_id="default-section",
-                block_id="currency-total-playback-with-fourth",
+                block_id="currency-total-playback",
                 for_list=None,
                 answer_id=None,
-            )
+            ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="set-min-max-block",
+                for_list=None,
+                answer_id=None,
+            ),
         },
         "fourth-and-a-half-number-answer-also-in-total": {
             AnswerDependent(
                 section_id="default-section",
-                block_id="currency-total-playback-with-fourth",
+                block_id="currency-total-playback",
                 for_list=None,
                 answer_id=None,
-            )
+            ),
+            AnswerDependent(
+                section_id="default-section",
+                block_id="set-min-max-block",
+                for_list=None,
+                answer_id=None,
+            ),
         },
         "second-number-answer-unit-total": {
             AnswerDependent(
@@ -770,6 +758,7 @@ def test_when_rules_section_dependencies_calculated_summary(
         "eggs-answer": {"dependent-enabled-section", "dependent-question-section"},
         "bread-answer": {"dependent-enabled-section", "dependent-question-section"},
         "cheese-answer": {"dependent-enabled-section", "dependent-question-section"},
+        "butter-answer": {"dependent-enabled-section", "dependent-question-section"},
     } == schema.when_rules_section_dependencies_by_answer
 
 
@@ -783,6 +772,7 @@ def test_when_rules_section_dependencies_new_calculated_summary(
         "eggs-answer": {"dependent-enabled-section", "dependent-question-section"},
         "bread-answer": {"dependent-enabled-section", "dependent-question-section"},
         "cheese-answer": {"dependent-enabled-section", "dependent-question-section"},
+        "butter-answer": {"dependent-enabled-section", "dependent-question-section"},
     } == schema.when_rules_section_dependencies_by_answer
 
 

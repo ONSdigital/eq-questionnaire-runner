@@ -13,6 +13,7 @@ def choose_variant(
     variants_key,
     single_key,
     current_location,
+    progress_store,
 ):
     if block.get(single_key):
         return block[single_key]
@@ -26,6 +27,7 @@ def choose_variant(
             metadata,
             response_metadata,
             location=current_location,
+            progress_store=progress_store,
         )
 
         if when_rule_evaluator.evaluate(when_rules):
@@ -40,6 +42,7 @@ def choose_question_to_display(
     answer_store,
     list_store,
     current_location,
+    progress_store,
 ):
     return choose_variant(
         block,
@@ -51,6 +54,7 @@ def choose_question_to_display(
         variants_key="question_variants",
         single_key="question",
         current_location=current_location,
+        progress_store=progress_store,
     )
 
 
@@ -62,6 +66,7 @@ def choose_content_to_display(
     answer_store,
     list_store,
     current_location,
+    progress_store,
 ):
     return choose_variant(
         block,
@@ -73,6 +78,7 @@ def choose_content_to_display(
         variants_key="content_variants",
         single_key="content",
         current_location=current_location,
+        progress_store=progress_store,
     )
 
 
@@ -84,6 +90,7 @@ def transform_variants(
     answer_store,
     list_store,
     current_location,
+    progress_store,
 ) -> ImmutableDict:
     output_block = dict(block)
     if "question_variants" in block:
@@ -95,6 +102,7 @@ def transform_variants(
             answer_store,
             list_store,
             current_location,
+            progress_store=progress_store,
         )
         output_block.pop("question_variants", None)
         output_block.pop("question", None)
@@ -110,6 +118,7 @@ def transform_variants(
             answer_store,
             list_store,
             current_location,
+            progress_store=progress_store,
         )
         output_block.pop("content_variants", None)
         output_block.pop("content", None)
@@ -128,6 +137,7 @@ def transform_variants(
                     answer_store,
                     list_store,
                     current_location,
+                    progress_store=progress_store,
                 )
 
     return ImmutableDict(output_block)

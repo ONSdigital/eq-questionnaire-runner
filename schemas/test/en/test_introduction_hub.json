@@ -333,10 +333,10 @@
                                 ],
                                 "id": "report-radio-second-question",
                                 "title": {
-                                    "text": "Are you sure you are able to report for the calendar month {start_date} to {end_date}?",
+                                    "text": "Are you sure you are able to report for the calendar month {calendar_start_date} to {calendar_end_date}?",
                                     "placeholders": [
                                         {
-                                            "placeholder": "start_date",
+                                            "placeholder": "calendar_start_date",
                                             "transforms": [
                                                 {
                                                     "transform": "first_non_empty_item",
@@ -361,7 +361,7 @@
                                             ]
                                         },
                                         {
-                                            "placeholder": "end_date",
+                                            "placeholder": "calendar_end_date",
                                             "transforms": [
                                                 {
                                                     "transform": "first_non_empty_item",

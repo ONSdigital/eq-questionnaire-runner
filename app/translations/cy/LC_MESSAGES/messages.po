@@ -1386,4 +1386,3 @@ msgstr "Newid"
 #: templates/partials/summary/list-summary.html:8
 msgid "Change details for {item_name}"
 msgstr "Newid manylion ar gyfer {item_name}"
-

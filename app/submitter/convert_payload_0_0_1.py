@@ -2,7 +2,7 @@ from collections import OrderedDict
 from datetime import datetime, timezone
 from typing import Any, Mapping, Optional, Union
 
-from app.data_models import AnswerStore, ListStore
+from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.answer import AnswerValueTypes, ListAnswer
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
@@ -22,6 +22,7 @@ def convert_answers_to_payload_0_0_1(
     list_store: ListStore,
     schema: QuestionnaireSchema,
     full_routing_path: RoutingPath,
+    progress_store: ProgressStore,
 ) -> OrderedDict[str, Any]:
     """
     Convert answers into the data format below
@@ -63,6 +64,7 @@ def convert_answers_to_payload_0_0_1(
                     answer_store,
                     list_store,
                     current_location=current_location,
+                    progress_store=progress_store,
                 )
                 for answer_id, answer in schema.get_answers_for_question_by_id(
                     question

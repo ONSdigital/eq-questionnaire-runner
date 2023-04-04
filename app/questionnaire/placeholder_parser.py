@@ -1,18 +1,15 @@
 from decimal import Decimal
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Mapping,
-    MutableMapping,
-    Optional,
-    Sequence,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, Mapping, MutableMapping, Sequence, Union
 
+from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import path_finder as pf
+from app.questionnaire.dependencies import (
+    get_block_ids_for_calculated_summary_dependencies,
+)
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.value_source_resolver import (
@@ -20,6 +17,7 @@ from app.questionnaire.value_source_resolver import (
     ValueSourceResolver,
     ValueSourceTypes,
 )
+from app.utilities.mappings import get_flattened_mapping_values
 
 if TYPE_CHECKING:
     from app.questionnaire.placeholder_renderer import (
@@ -40,28 +38,74 @@ class PlaceholderParser:
         language: str,
         answer_store: AnswerStore,
         list_store: ListStore,
-        metadata: Optional[MetadataProxy],
+        metadata: MetadataProxy | None,
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
         renderer: "PlaceholderRenderer",
-        list_item_id: Optional[str] = None,
-        location: Union[Location, RelationshipLocation, None] = None,
-        placeholder_preview_mode: Optional[bool] = False,
+        progress_store: ProgressStore,
+        list_item_id: str | None = None,
+        location: Location | RelationshipLocation | None = None,
+        placeholder_preview_mode: bool | None = False,
     ):
-        self._answer_store = answer_store
-        self._list_store = list_store
-        self._metadata = metadata
-        self._response_metadata = response_metadata
-        self._schema = schema
-        self._list_item_id = list_item_id
-        self._location = location
         self._transformer = PlaceholderTransforms(language, schema, renderer)
         self._placeholder_map: MutableMapping[
             str, Union[ValueSourceEscapedTypes, ValueSourceTypes, None]
         ] = {}
+        self._answer_store = answer_store
+        self._list_store = list_store
+        self._metadata = metadata
+        self._response_metadata = response_metadata
+        self._list_item_id = list_item_id
+        self._schema = schema
+        self._location = location
+        self._progress_store = progress_store
         self._placeholder_preview_mode = placeholder_preview_mode
 
-        self._value_source_resolver = ValueSourceResolver(
+        self._path_finder = pf.PathFinder(
+            schema=self._schema,
+            answer_store=self._answer_store,
+            list_store=self._list_store,
+            progress_store=self._progress_store,
+            metadata=self._metadata,
+            response_metadata=self._response_metadata,
+        )
+
+        self._value_source_resolver = self._get_value_source_resolver()
+        self._routing_path_block_ids_by_section_key: dict = {}
+
+    def __call__(
+        self, placeholder_list: Sequence[Mapping]
+    ) -> MutableMapping[str, Union[ValueSourceEscapedTypes, ValueSourceTypes]]:
+        placeholder_list = QuestionnaireSchema.get_mutable_deepcopy(placeholder_list)
+
+        sections_to_ignore = list(self._routing_path_block_ids_by_section_key)
+
+        if routing_path_block_ids_map := self._get_routing_path_block_ids(
+            sections_to_ignore=sections_to_ignore, data=placeholder_list
+        ):
+            self._routing_path_block_ids_by_section_key.update(
+                routing_path_block_ids_map
+            )
+
+            routing_path_block_ids = get_flattened_mapping_values(
+                routing_path_block_ids_map
+            )
+            self._value_source_resolver = self._get_value_source_resolver(
+                routing_path_block_ids
+            )
+
+        for placeholder in placeholder_list:
+            # :TODO: Caching of placeholder values will need to be revisited once validation is added to ensure that placeholders are globally unique
+            # if placeholder["placeholder"] not in self._placeholder_map:
+            self._placeholder_map[placeholder["placeholder"]] = self._parse_placeholder(
+                placeholder
+            )
+        return self._placeholder_map
+
+    def _get_value_source_resolver(
+        self, routing_path_block_ids: set[str] | None = None
+    ) -> ValueSourceResolver:
+        return ValueSourceResolver(
             answer_store=self._answer_store,
             list_store=self._list_store,
             metadata=self._metadata,
@@ -71,18 +115,10 @@ class PlaceholderParser:
             escape_answer_values=True,
             response_metadata=self._response_metadata,
             use_default_answer=True,
+            assess_routing_path=False,
+            routing_path_block_ids=routing_path_block_ids,
+            progress_store=self._progress_store,
         )
-
-    def __call__(
-        self, placeholder_list: Sequence[Mapping]
-    ) -> MutableMapping[str, Union[ValueSourceEscapedTypes, ValueSourceTypes]]:
-        placeholder_list = QuestionnaireSchema.get_mutable_deepcopy(placeholder_list)
-        for placeholder in placeholder_list:
-            if placeholder["placeholder"] not in self._placeholder_map:
-                self._placeholder_map[
-                    placeholder["placeholder"]
-                ] = self._parse_placeholder(placeholder)
-        return self._placeholder_map
 
     def _parse_placeholder(self, placeholder: Mapping) -> Any:
         if self._placeholder_preview_mode and not self._all_value_sources_metadata(
@@ -139,6 +175,20 @@ class PlaceholderParser:
             else:
                 values.append(value)
         return values
+
+    def _get_routing_path_block_ids(
+        self, data: Mapping | Sequence, sections_to_ignore: list | None = None
+    ) -> dict[tuple, list[str]] | None:
+        if self._location:
+            return get_block_ids_for_calculated_summary_dependencies(
+                schema=self._schema,
+                location=self._location,
+                progress_store=self._progress_store,
+                sections_to_ignore=sections_to_ignore,
+                data=data,
+                path_finder=self._path_finder,
+            )
+        return {}
 
     def _all_value_sources_metadata(self, placeholder: Mapping) -> bool:
         sources = self._schema.get_values_for_key(placeholder, key="source")
