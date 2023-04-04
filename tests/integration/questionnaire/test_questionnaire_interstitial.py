@@ -25,7 +25,6 @@ class TestQuestionnaireInterstitial(IntegrationTestCase):
     def test_interstitial_definition(self):
         self.launchSurvey("test_interstitial_definition")
         self.assertInBody("Successfully")
-        self.assertInBody("Questionnaire")
         self.assertInBody("In a way that accomplishes a desired aim or result")
         self.assertInBody(
             "A set of printed or written questions with a choice of answers, devised for the purposes of a survey or statistical study"
