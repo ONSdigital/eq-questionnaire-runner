@@ -1,6 +1,6 @@
 from collections import OrderedDict
 from datetime import datetime, timezone
-from typing import Any, Mapping, Optional, Union
+from typing import Any, Mapping, Optional, Sequence, Union
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.answer import AnswerValueTypes, ListAnswer
@@ -21,7 +21,7 @@ def convert_answers_to_payload_0_0_1(
     answer_store: AnswerStore,
     list_store: ListStore,
     schema: QuestionnaireSchema,
-    full_routing_path: RoutingPath,
+    full_routing_path: Sequence[RoutingPath],
     progress_store: ProgressStore,
 ) -> OrderedDict[str, Any]:
     """

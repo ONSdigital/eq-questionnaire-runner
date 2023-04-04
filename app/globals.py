@@ -92,7 +92,7 @@ def create_session_store(
     )
 
 
-def get_metadata(user: User) -> Optional[MetadataProxy]:
+def get_metadata(user: User) -> MetadataProxy | None:
     if user.is_anonymous:
         logger.debug("anonymous user requesting metadata get instance")
         return None
