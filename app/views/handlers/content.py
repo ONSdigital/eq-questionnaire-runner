@@ -16,6 +16,7 @@ class Content(BlockHandler):
             self._questionnaire_store.answer_store,
             self._questionnaire_store.list_store,
             self._current_location,
+            self._questionnaire_store.progress_store,
         )
 
         content_page_title = transformed_block.get(
@@ -23,7 +24,8 @@ class Content(BlockHandler):
         ) or self._get_content_title(transformed_block)
         self._set_page_title(content_page_title)
         return self.placeholder_renderer.render(
-            transformed_block, self._current_location.list_item_id
+            data_to_render=transformed_block,
+            list_item_id=self._current_location.list_item_id,
         )
 
     def get_context(self):

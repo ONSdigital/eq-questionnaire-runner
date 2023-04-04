@@ -1,7 +1,8 @@
-from typing import Any, Mapping, MutableMapping, Optional, Union
+from typing import Any, Mapping, MutableMapping
 
 from jsonpointer import resolve_pointer, set_pointer
 
+from app.data_models import ProgressStore
 from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
@@ -24,11 +25,12 @@ class PlaceholderRenderer:
         language: str,
         answer_store: AnswerStore,
         list_store: ListStore,
-        metadata: Optional[MetadataProxy],
+        metadata: MetadataProxy | None,
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
-        location: Union[None, Location, RelationshipLocation] = None,
-        placeholder_preview_mode: Optional[bool] = False,
+        progress_store: ProgressStore,
+        location: Location | RelationshipLocation | None = None,
+        placeholder_preview_mode: bool | None = False,
     ):
         self._placeholder_preview_mode = placeholder_preview_mode
         self._language = language
@@ -38,20 +40,23 @@ class PlaceholderRenderer:
         self._response_metadata = response_metadata
         self._schema = schema
         self._location = location
+        self._progress_store = progress_store
 
     def render_pointer(
         self,
+        *,
         dict_to_render: Mapping[str, Any],
         pointer_to_render: str,
-        list_item_id: Optional[str],
+        list_item_id: str | None,
+        placeholder_parser: PlaceholderParser,
     ) -> str:
         pointer_data = resolve_pointer(dict_to_render, pointer_to_render)
 
-        return self.render_placeholder(pointer_data, list_item_id)
+        return self.render_placeholder(pointer_data, list_item_id, placeholder_parser)
 
     def get_plural_count(
         self, schema_partial: Mapping[str, str]
-    ) -> Optional[AnswerValueTypes]:
+    ) -> AnswerValueTypes | None:
         source = schema_partial["source"]
         source_id = schema_partial["identifier"]
 
@@ -66,20 +71,23 @@ class PlaceholderRenderer:
     def render_placeholder(
         self,
         placeholder_data: MutableMapping[str, Any],
-        list_item_id: Optional[str],
+        list_item_id: str | None,
+        placeholder_parser: PlaceholderParser | None = None,
     ) -> str:
-        placeholder_parser = PlaceholderParser(
-            language=self._language,
-            answer_store=self._answer_store,
-            list_store=self._list_store,
-            metadata=self._metadata,
-            response_metadata=self._response_metadata,
-            schema=self._schema,
-            list_item_id=list_item_id,
-            location=self._location,
-            renderer=self,
-            placeholder_preview_mode=self._placeholder_preview_mode,
-        )
+        if not placeholder_parser:
+            placeholder_parser = PlaceholderParser(
+                language=self._language,
+                answer_store=self._answer_store,
+                list_store=self._list_store,
+                metadata=self._metadata,
+                response_metadata=self._response_metadata,
+                schema=self._schema,
+                list_item_id=list_item_id,
+                location=self._location,
+                renderer=self,
+                progress_store=self._progress_store,
+                placeholder_preview_mode=self._placeholder_preview_mode,
+            )
 
         placeholder_data = QuestionnaireSchema.get_mutable_deepcopy(placeholder_data)
 
@@ -106,7 +114,10 @@ class PlaceholderRenderer:
         return formatted_placeholder_data
 
     def render(
-        self, data_to_render: Mapping[str, Any], list_item_id: Optional[str]
+        self,
+        *,
+        data_to_render: Mapping[str, Any],
+        list_item_id: str | None,
     ) -> dict[str, Any]:
         """
         Transform the current schema json to a fully rendered dictionary
@@ -116,9 +127,26 @@ class PlaceholderRenderer:
         ] = QuestionnaireSchema.get_mutable_deepcopy(data_to_render)
         pointers = find_pointers_containing(data_to_render_mutable, "placeholders")
 
+        placeholder_parser = PlaceholderParser(
+            language=self._language,
+            answer_store=self._answer_store,
+            list_store=self._list_store,
+            metadata=self._metadata,
+            response_metadata=self._response_metadata,
+            schema=self._schema,
+            list_item_id=list_item_id,
+            location=self._location,
+            renderer=self,
+            placeholder_preview_mode=self._placeholder_preview_mode,
+            progress_store=self._progress_store,
+        )
+
         for pointer in pointers:
             rendered_text = self.render_pointer(
-                data_to_render_mutable, pointer, list_item_id
+                dict_to_render=data_to_render_mutable,
+                pointer_to_render=pointer,
+                list_item_id=list_item_id,
+                placeholder_parser=placeholder_parser,
             )
             set_pointer(data_to_render_mutable, pointer, rendered_text)
 

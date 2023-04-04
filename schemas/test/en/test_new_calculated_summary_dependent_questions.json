@@ -133,7 +133,6 @@
                                 ]
                             }
                         },
-
                         {
                             "id": "calculated-summary-block",
                             "type": "CalculatedSummary",

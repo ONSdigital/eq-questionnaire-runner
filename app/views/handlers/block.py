@@ -73,6 +73,7 @@ class BlockHandler:
             response_metadata=self._questionnaire_store.response_metadata,
             schema=self._schema,
             location=self._current_location,
+            progress_store=self._questionnaire_store.progress_store,
         )
 
     @cached_property

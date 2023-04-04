@@ -103,7 +103,7 @@ class ListContext(Context):
         is_primary: bool,
     ) -> str:
         rendered_summary: dict[str, Any] = self._placeholder_renderer.render(
-            summary_definition, list_item_id
+            data_to_render=summary_definition, list_item_id=list_item_id
         )
         if is_primary:
             rendered_summary["item_title"] += lazy_gettext(" (You)")
