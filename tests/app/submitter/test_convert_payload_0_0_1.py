@@ -59,6 +59,7 @@ def test_convert_answers_v2_to_payload_0_0_1_with_key_error(version):
         list_store=questionnaire_store.list_store,
         schema=QuestionnaireSchema(questionnaire),
         full_routing_path=full_routing_path,
+        progress_store=questionnaire_store.progress_store,
     )
     assert answer_object["002"] == "2016-03-30"
     assert len(answer_object) == 1
@@ -97,6 +98,7 @@ def test_answer_with_zero(version):
         full_routing_path,
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
     )
 
     assert data_payload["003"] == "0"
@@ -135,6 +137,7 @@ def test_answer_with_float(version):
         full_routing_path,
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
     )
 
     # Check the converter correctly
@@ -176,6 +179,7 @@ def test_answer_with_string(version):
         full_routing_path,
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
     )
 
     # Check the converter correctly
@@ -217,6 +221,7 @@ def test_answer_without_qcode(version):
         full_routing_path,
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
     )
 
     assert not data_payload
@@ -283,6 +288,7 @@ def test_converter_checkboxes_with_q_codes(version):
         full_routing_path,
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
     )
 
     # Then
@@ -361,6 +367,7 @@ def test_converter_checkboxes_with_q_codes_and_other_value(
         full_routing_path,
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
     )
 
     # Then
@@ -437,6 +444,7 @@ def test_converter_checkboxes_with_missing_detail_answer_value_in_answer_store(v
         full_routing_path,
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
     )
 
     # Then
@@ -508,6 +516,7 @@ def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(version):
         full_routing_path,
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
     )
 
     # Then
@@ -561,6 +570,7 @@ def test_converter_q_codes_for_empty_strings(version):
         full_routing_path,
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
     )
 
     # Then
@@ -628,6 +638,7 @@ def test_radio_answer(version):
         full_routing_path,
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
     )
 
     # Then
@@ -673,6 +684,7 @@ def test_number_answer(version):
         full_routing_path,
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
     )
 
     # Then
@@ -717,6 +729,7 @@ def test_percentage_answer(version):
         full_routing_path,
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
     )
 
     # Then
@@ -761,6 +774,7 @@ def test_textarea_answer(version):
         full_routing_path,
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
     )
 
     # Then
@@ -805,6 +819,7 @@ def test_currency_answer(version):
         full_routing_path,
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
     )
 
     # Then
@@ -860,6 +875,7 @@ def test_dropdown_answer(version):
         full_routing_path,
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
     )
 
     # Then
@@ -911,6 +927,7 @@ def test_date_answer(version):
         full_routing_path,
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
     )
 
     # Then
@@ -956,6 +973,7 @@ def test_unit_answer(version):
         full_routing_path,
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
     )
 
     # Then

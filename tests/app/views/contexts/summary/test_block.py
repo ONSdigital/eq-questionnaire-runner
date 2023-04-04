@@ -1,3 +1,4 @@
+from app.data_models import ProgressStore
 from app.questionnaire.location import Location
 from app.views.contexts.summary.block import Block
 
@@ -29,6 +30,7 @@ def test_create_block(mocker):
         schema=mocker.MagicMock(),
         location=location,
         return_to="final-summary",
+        progress_store=ProgressStore(),
     )
 
     # Then
