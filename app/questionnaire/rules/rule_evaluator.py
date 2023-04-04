@@ -3,7 +3,7 @@ from datetime import date
 from decimal import Decimal
 from typing import Generator, Iterable, Mapping, Optional, Sequence, Union
 
-from app.data_models import AnswerStore, ListStore
+from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
@@ -26,10 +26,11 @@ class RuleEvaluator:
     schema: QuestionnaireSchema
     answer_store: AnswerStore
     list_store: ListStore
-    metadata: Optional[MetadataProxy]
+    metadata: MetadataProxy | None
     response_metadata: Mapping
-    location: Union[None, Location, RelationshipLocation]
-    routing_path_block_ids: Optional[list] = None
+    location: Location | RelationshipLocation | None
+    progress_store: ProgressStore
+    routing_path_block_ids: Iterable | None = None
     language: str = DEFAULT_LANGUAGE_CODE
 
     # pylint: disable=attribute-defined-outside-init
@@ -45,7 +46,9 @@ class RuleEvaluator:
             list_item_id=list_item_id,
             routing_path_block_ids=self.routing_path_block_ids,
             use_default_answer=True,
+            progress_store=self.progress_store,
         )
+
         renderer: PlaceholderRenderer = PlaceholderRenderer(
             language=self.language,
             answer_store=self.answer_store,
@@ -54,6 +57,7 @@ class RuleEvaluator:
             response_metadata=self.response_metadata,
             schema=self.schema,
             location=self.location,
+            progress_store=self.progress_store,
         )
         self.operations = Operations(
             language=self.language, schema=self.schema, renderer=renderer

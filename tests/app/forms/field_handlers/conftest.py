@@ -1,5 +1,6 @@
 import pytest
 
+from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.forms.field_handlers.select_handlers import Choice, ChoiceWithDetailAnswer
@@ -32,6 +33,7 @@ def rule_evaluator():
         response_metadata=get_mock_response_metadata(),
         schema=get_mock_schema(),
         location=None,
+        progress_store=ProgressStore(),
     )
 
     return evaluator
@@ -48,6 +50,7 @@ def value_source_resolver():
         location=None,
         list_item_id=None,
         escape_answer_values=False,
+        progress_store=ProgressStore(),
     )
 
     return resolver

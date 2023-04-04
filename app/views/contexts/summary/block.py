@@ -1,6 +1,6 @@
 from typing import Any, Mapping, Optional
 
-from app.data_models import AnswerStore, ListStore
+from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
@@ -22,6 +22,7 @@ class Block:
         location: Location,
         return_to: Optional[str],
         return_to_block_id: Optional[str] = None,
+        progress_store: ProgressStore,
     ) -> None:
         self.id = block_schema["id"]
         self.title = block_schema.get("title")
@@ -34,6 +35,7 @@ class Block:
             metadata=metadata,
             response_metadata=response_metadata,
             location=location,
+            progress_store=progress_store,
         )
 
         self._value_source_resolver = ValueSourceResolver(
@@ -45,6 +47,7 @@ class Block:
             location=location,
             list_item_id=location.list_item_id if location else None,
             use_default_answer=True,
+            progress_store=progress_store,
         )
 
         self.question = self.get_question(
@@ -57,6 +60,7 @@ class Block:
             location=location,
             return_to=return_to,
             return_to_block_id=return_to_block_id,
+            progress_store=progress_store,
         )
 
     def get_question(
@@ -71,6 +75,7 @@ class Block:
         location: Location,
         return_to: Optional[str],
         return_to_block_id: Optional[str],
+        progress_store: ProgressStore,
     ) -> dict[str, Question]:
         """Taking question variants into account, return the question which was displayed to the user"""
 
@@ -84,6 +89,7 @@ class Block:
             variants_key="question_variants",
             single_key="question",
             current_location=location,
+            progress_store=progress_store,
         )
         return Question(
             variant,

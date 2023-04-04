@@ -69,6 +69,7 @@ def parser(answer_store, location, mock_schema, mock_renderer):
         schema=mock_schema,
         location=location,
         renderer=mock_renderer,
+        progress_store=ProgressStore(),
     )
 
 
@@ -1005,6 +1006,8 @@ def placeholder_renderer(option_label_from_value_schema):
         metadata=get_metadata({"trad_as": "ESSENTIAL SERVICES LTD"}),
         response_metadata={},
         schema=option_label_from_value_schema,
+        progress_store=ProgressStore(),
+        location=Location(section_id="checkbox-section"),
     )
     return renderer
 
@@ -1018,6 +1021,7 @@ def mock_renderer(mock_schema):
         metadata=get_metadata(),
         response_metadata={},
         schema=mock_schema,
+        progress_store=ProgressStore(),
     )
 
 

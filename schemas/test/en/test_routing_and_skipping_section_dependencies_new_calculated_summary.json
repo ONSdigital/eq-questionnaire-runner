@@ -40,7 +40,7 @@
                                 "id": "first-question",
                                 "title": "How much do you spend on the following items?",
                                 "description": [
-                                    "If the total is equal to £100 a new section will appear on the hub and if it is greater than or equal to £100 a dependent question will appear in the dependent question section"
+                                    "If the total is equal to £100 a new section will appear on the hub and if it is less than or equal to £10 a dependent question will appear in the dependent question section"
                                 ],
                                 "type": "General",
                                 "answers": [
@@ -80,6 +80,62 @@
                             }
                         },
                         {
+                            "type": "Question",
+                            "id": "skip-butter-block",
+                            "question": {
+                                "type": "General",
+                                "id": "skip-butter-block-question",
+                                "title": "Skip optional question about butter so that it doesn’t appear in the Total?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "skip-butter-block-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "identifier": "skip-butter-block-answer",
+                                            "source": "answers"
+                                        },
+                                        "Yes"
+                                    ]
+                                }
+                            },
+                            "type": "Question",
+                            "id": "butter-block",
+                            "question": {
+                                "id": "butter-question",
+                                "title": "How much do you spend on butter?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "butter-answer",
+                                        "label": "Butter",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
                             "type": "CalculatedSummary",
                             "id": "currency-total-playback",
                             "title": "We calculate the total of currency values entered to be %(total)s. Is this correct?",
@@ -101,6 +157,10 @@
                                         {
                                             "source": "answers",
                                             "identifier": "cheese-answer"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "butter-answer"
                                         }
                                     ]
                                 },

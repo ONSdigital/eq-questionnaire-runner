@@ -1,6 +1,7 @@
 import pytest
 
-from app.questionnaire.location import Location
+from app.questionnaire import Location
+from app.questionnaire.routing_path import RoutingPath
 from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
 from tests.app.views.contexts import assert_summary_context
 
@@ -8,25 +9,27 @@ from tests.app.views.contexts import assert_summary_context
 # pylint: disable=too-many-locals
 @pytest.mark.usefixtures("app")
 @pytest.mark.parametrize(
-    "block_id, locale, language, title, value, total_blocks, return_to_answer_id",
+    "block_id, locale, language, title, value, total_blocks, return_to_answer_id, skip_fourth",
     (
         (
-            "currency-total-playback-with-fourth",
+            "currency-total-playback",
             "en_GB",
             "en",
-            "We calculate the total of currency values entered to be £27.00. Is this correct? (With Fourth)",
+            "We calculate the total of currency values entered to be £27.00. Is this correct?",
             "£27.00",
             5,
             "first-number-answer",
+            False,
         ),
         (
-            "currency-total-playback-skipped-fourth",
+            "currency-total-playback",
             "en_GB",
             "en",
-            "We calculate the total of currency values entered to be £12.00. Is this correct? (Skipped Fourth)",
+            "We calculate the total of currency values entered to be £12.00. Is this correct?",
             "£12.00",
             3,
             "first-number-answer",
+            True,
         ),
         (
             "unit-total-playback",
@@ -36,6 +39,7 @@ from tests.app.views.contexts import assert_summary_context
             "9 cm",
             2,
             "second-number-answer-unit-total",
+            False,
         ),
         (
             "percentage-total-playback",
@@ -45,6 +49,7 @@ from tests.app.views.contexts import assert_summary_context
             "20%",
             2,
             "fifth-percent-answer",
+            False,
         ),
         (
             "number-total-playback",
@@ -54,6 +59,7 @@ from tests.app.views.contexts import assert_summary_context
             "22",
             2,
             "fifth-number-answer",
+            False,
         ),
     ),
 )
@@ -66,31 +72,57 @@ def test_build_view_context_for_currency_calculated_summary(
     total_blocks,
     test_calculated_summary_schema,
     test_calculated_summary_answers,
+    test_calculated_summary_answers_skipped_fourth,
     list_store,
     progress_store,
     mocker,
     return_to_answer_id,
+    skip_fourth,
 ):
     mocker.patch(
         "app.jinja_filters.flask_babel.get_locale",
         mocker.MagicMock(return_value=locale),
     )
 
-    current_location = Location(section_id="default-section", block_id=block_id)
+    block_ids = (
+        [
+            "first-number-block",
+            "second-number-block",
+            "third-number-block",
+            "third-and-a-half-number-block",
+            "skip-fourth-block",
+            "fifth-number-block",
+            "sixth-number-block",
+        ]
+        if skip_fourth
+        else [
+            "first-number-block",
+            "second-number-block",
+            "third-number-block",
+            "third-and-a-half-number-block",
+            "skip-fourth-block",
+            "fourth-number-block",
+            "fourth-and-a-half-number-block",
+            "fifth-number-block",
+            "sixth-number-block",
+        ]
+    )
 
     calculated_summary_context = CalculatedSummaryContext(
-        language,
-        test_calculated_summary_schema,
-        test_calculated_summary_answers,
-        list_store,
-        progress_store,
-        metadata={},
+        language=language,
+        schema=test_calculated_summary_schema,
+        answer_store=test_calculated_summary_answers_skipped_fourth
+        if skip_fourth
+        else test_calculated_summary_answers,
+        list_store=list_store,
+        progress_store=progress_store,
+        metadata=None,
         response_metadata={},
+        routing_path=RoutingPath(section_id="default-section", block_ids=block_ids),
+        current_location=Location(section_id="default-section", block_id=block_id),
     )
 
-    context = calculated_summary_context.build_view_context_for_calculated_summary(
-        current_location
-    )
+    context = calculated_summary_context.build_view_context_for_calculated_summary()
 
     assert "summary" in context
     assert_summary_context(context)

@@ -4,7 +4,7 @@ from typing import Any, Iterable, Mapping, Optional, OrderedDict, Union
 from structlog import get_logger
 
 from app.authentication.auth_payload_version import AuthPayloadVersion
-from app.data_models import AnswerStore, ListStore, QuestionnaireStore
+from app.data_models import AnswerStore, ListStore, ProgressStore, QuestionnaireStore
 from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
 from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
@@ -55,6 +55,7 @@ def convert_answers_v2(
     response_metadata = questionnaire_store.response_metadata
     answer_store = questionnaire_store.answer_store
     list_store = questionnaire_store.list_store
+    progress_store = questionnaire_store.progress_store
 
     survey_id = schema.json["survey_id"]
 
@@ -85,6 +86,7 @@ def convert_answers_v2(
         routing_path=routing_path,
         metadata=metadata,
         response_metadata=response_metadata,
+        progress_store=progress_store,
     )
 
     logger.info("converted answer ready for submission")
@@ -113,6 +115,7 @@ def get_payload_data(
     routing_path: RoutingPath,
     metadata: MetadataProxy,
     response_metadata: Mapping,
+    progress_store: ProgressStore,
 ) -> Union[OrderedDict[str, Any], dict[str, Union[list[Any]]]]:
     if schema.json["data_version"] == "0.0.1":
         return convert_answers_to_payload_0_0_1(
@@ -122,6 +125,7 @@ def get_payload_data(
             list_store=list_store,
             schema=schema,
             full_routing_path=routing_path,
+            progress_store=progress_store,
         )
 
     if schema.json["data_version"] == "0.0.3":
