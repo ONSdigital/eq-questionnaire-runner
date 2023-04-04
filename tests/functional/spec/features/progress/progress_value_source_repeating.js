@@ -131,6 +131,43 @@ describe("Feature: Routing rules based on progress value sources in repeating se
   });
 
   describe("Given I have routing in a repeating section based on the completeness of a calculated summary", () => {
+    it("When the calculated summary block is incomplete but is updated so that it is completed, then I should see the dependency should be updated in the repeating section", async () => {
+      await $(HubPage.submit()).click();
+      await $(FirstNumberBlockPage.firstNumber()).setValue(1);
+      await $(FirstNumberBlockPage.submit()).click();
+      await browser.url(HubPage.url());
+
+      await $(HubPage.summaryRowLink("section-2")).click();
+
+      await $(ListCollectorPage.yes()).click();
+      await $(ListCollectorPage.submit()).click();
+      await $(ListCollectorAddPage.firstName()).setValue("John");
+      await $(ListCollectorAddPage.lastName()).setValue("Doe");
+      await $(ListCollectorAddPage.submit()).click();
+      await $(ListCollectorPage.no()).click();
+      await $(ListCollectorPage.submit()).click();
+      await expect(await browser.getUrl()).to.contain(HubPage.pageName);
+
+      await $(HubPage.summaryRowLink("section-3-1")).click();
+      await $(DOBQuestionBlockPage.submit()).click();
+      await $(SectionThreeSummaryPage.submit()).click();
+
+      await expect(await $(HubPage.summaryRowState("section-1")).getText()).to.equal("Partially completed");
+      await expect(await $(HubPage.summaryRowState("section-2")).getText()).to.equal("Completed");
+      await expect(await $(HubPage.summaryRowState("section-3-1")).getText()).to.equal("Completed");
+
+      await $(HubPage.summaryRowLink("section-1")).click();
+      await $(SecondNumberBlockPage.secondNumber()).setValue(2);
+      await $(SecondNumberBlockPage.submit()).click();
+      await $(CalculatedSummaryBlockPage.submit()).click();
+
+      await expect(await $(HubPage.summaryRowState("section-1")).getText()).to.equal("Completed");
+      await expect(await $(HubPage.summaryRowState("section-2")).getText()).to.equal("Partially completed");
+      await expect(await $(HubPage.summaryRowState("section-3-1")).getText()).to.equal("Partially completed");
+    });
+  });
+
+  describe("Given I have routing in a repeating section based on the completeness of a calculated summary", () => {
     it("When the calculated summary block is complete, then I should see the dependent question in the repeating section", async () => {
       await $(HubPage.submit()).click();
       await $(FirstNumberBlockPage.firstNumber()).setValue(1);
