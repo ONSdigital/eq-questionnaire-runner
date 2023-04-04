@@ -348,6 +348,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             list_collector = self.get_list_collector_for_list(
                 section=section, for_list=value_source["identifier"]  # type: ignore
             )
+            # Returns optional, but it always returns at this point, same with optional returns below
             add_block_question = self.get_add_block_for_list_collector(  # type: ignore
                 list_collector["id"]  # type: ignore
             )["question"]
