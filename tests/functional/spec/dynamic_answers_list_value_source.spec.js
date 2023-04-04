@@ -110,6 +110,7 @@ describe("Dynamic answers list value source", () => {
     await $(SectionSummaryPage.supermarketsListRemoveLink(1)).click();
     await $(ListCollectorRemovePage.yes()).click();
     await $(ListCollectorRemovePage.submit()).click();
+    await $(DynamicAnswerPage.submit()).click();
     await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
     await expect(await $(group).$$(summaryTitles)[0].getText()).to.equal("What percent of your shopping do you do at each of the following supermarket?");
     await expect(await $(group).$$(summaryValues)[0].getText()).to.equal("21%");
