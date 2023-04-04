@@ -98,7 +98,7 @@ class PathFinder:
             return not_skipped_blocks
 
     @staticmethod
-    def _block_index_for_block_id(blocks: dict, block_id: str) -> int | None: #TODO check 
+    def _block_index_for_block_id(blocks: list[Mapping], block_id: str) -> int | None:  # TODO check
         return next(
             (index for (index, block) in enumerate(blocks) if block["id"] == block_id),
             None,
@@ -147,9 +147,9 @@ class PathFinder:
                     routing_path_block_ids.append(block_id)
 
                 # If routing rules exist then a rule must match (i.e. default goto)
-                routing_rules = block.get("routing_rules")
+                routing_rules: list[Mapping] | None = block.get("routing_rules")
                 if routing_rules:
-                    block_index = self._evaluate_routing_rules(
+                    block_index: int | None = self._evaluate_routing_rules( 
                         this_location,
                         blocks,
                         routing_rules,
@@ -173,12 +173,12 @@ class PathFinder:
 
     def _evaluate_routing_rules(
         self,
-        this_location,
-        blocks,
-        routing_rules,
-        block_index,
-        routing_path_block_ids,
-        when_rules_block_dependencies,
+        this_location: Location,
+        blocks: list[Mapping],
+        routing_rules: list[Mapping],
+        block_index: int,
+        routing_path_block_ids: list[str],
+        when_rules_block_dependencies: list[str],
     ) -> int | None:
         if when_rules_block_dependencies:
             routing_path_block_ids = (
@@ -225,10 +225,10 @@ class PathFinder:
 
     def evaluate_skip_conditions(
         self,
-        this_location,
-        routing_path_block_ids,
-        skip_conditions,
-        when_rules_block_dependencies,
+        this_location: Location,
+        routing_path_block_ids: list[str],
+        skip_conditions: ImmutableDict | None,
+        when_rules_block_dependencies: list[str],
     ) -> RuleEvaluatorTypes:
         if not skip_conditions:
             return False
@@ -251,13 +251,15 @@ class PathFinder:
 
         return when_rule_evaluator.evaluate(skip_conditions["when"])
 
-    def _get_next_block_id(self, rule):
+    def _get_next_block_id(self, rule: Mapping) -> str:
         if "group" in rule:
-            return self.schema.get_first_block_id_for_group(rule["group"])
-        return rule["block"]
+            # by this point the block for the rule will exist
+            return self.schema.get_first_block_id_for_group(rule["group"]) # type: ignore
+        # the rules block will be a string
+        return rule["block"] # type: ignore
 
     def _remove_current_blocks_answers_for_backwards_routing(
-        self, rule: dict, this_location: Location
+        self, rule: Mapping, this_location: Location
     ) -> None:
         if block_id := this_location.block_id:
             answer_ids_for_current_block = self.schema.get_answer_ids_for_block(

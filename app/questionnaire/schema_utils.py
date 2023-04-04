@@ -1,4 +1,7 @@
-def find_pointers_containing(input_data, search_key, pointer=None):
+from typing import Any, Generator
+
+
+def find_pointers_containing(input_data: dict[str, Any] | list[dict] | tuple[dict], search_key: str, pointer: str | None = None) -> Generator[str, None, None]:
     """
     Recursive function which lists pointers which contain a search key
 
@@ -22,10 +25,7 @@ def find_pointers_containing(input_data, search_key, pointer=None):
             yield from find_pointers_containing(item, search_key, f"{pointer}/{index}")
 
 
-def get_answer_ids_in_block(block):
+def get_answer_ids_in_block(block: dict[str, Any]) -> list[str]:
     question = block["question"]
-    answer_ids = []
-    for answer in question["answers"]:
-        answer_ids.append(answer["id"])
-
+    answer_ids = [answer["id"] for answer in question["answers"]]
     return answer_ids

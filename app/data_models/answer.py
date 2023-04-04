@@ -11,6 +11,7 @@ ListAnswer = list[str]
 ListDictAnswer = list[DictAnswer]
 DictAnswerEscaped = dict[str, Union[int, Markup]]
 ListAnswerEscaped = list[Markup]
+ListDictAnswerEscaped = list[DictAnswerEscaped]
 
 AnswerValueTypes = Union[str, int, Decimal, DictAnswer, ListAnswer, ListDictAnswer]
 AnswerValueEscapedTypes = Union[
@@ -19,6 +20,7 @@ AnswerValueEscapedTypes = Union[
     Decimal,
     DictAnswerEscaped,
     ListAnswerEscaped,
+    ListDictAnswerEscaped
 ]
 
 
@@ -59,6 +61,11 @@ def escape_answer_value(value: ListAnswer) -> ListAnswerEscaped:
 
 @overload
 def escape_answer_value(value: DictAnswer) -> DictAnswerEscaped:
+    ...  # pragma: no cover
+
+
+@overload
+def escape_answer_value(value: ListDictAnswer) -> ListDictAnswerEscaped:
     ...  # pragma: no cover
 
 

@@ -1,22 +1,33 @@
+from typing import Mapping, Any
+
 from werkzeug.datastructures import ImmutableDict
 
+from app.data_models.answer_store import AnswerStore
+from app.data_models.list_store import ListStore
+from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.progress_store import ProgressStore
+from app.questionnaire import Location
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 
 
-def choose_variant(
-    block,
-    schema,
-    metadata,
-    response_metadata,
-    answer_store,
-    list_store,
-    variants_key,
-    single_key,
-    current_location,
-    progress_store,
-):
+# this always returns something
+def choose_variant(  # type: ignore
+    block: Mapping[str, Any],
+    schema: QuestionnaireSchema,
+    metadata: MetadataProxy | None,
+    response_metadata: Mapping[str, Any],
+    answer_store: AnswerStore,
+    list_store: ListStore,
+    variants_key: str,
+    single_key: str,
+    current_location: Location | RelationshipLocation,
+    progress_store: ProgressStore,
+) -> Mapping[str, Any]:
     if block.get(single_key):
-        return block[single_key]
+        # can assume this is a dictionary
+        return block[single_key]  # type: ignore
     for variant in block.get(variants_key, []):
         when_rules = variant["when"]
 
@@ -31,20 +42,21 @@ def choose_variant(
         )
 
         if when_rule_evaluator.evaluate(when_rules):
-            return variant[single_key]
+            # the variant item will always be a question or content dictionary
+            return variant[single_key]  # type: ignore
 
 
 def choose_question_to_display(
-    block,
-    schema,
-    metadata,
-    response_metadata,
-    answer_store,
-    list_store,
-    current_location,
-    progress_store,
-):
-    return choose_variant(
+    block: ImmutableDict,
+    schema: QuestionnaireSchema,
+    metadata: MetadataProxy | None,
+    response_metadata: Mapping[str, Any],
+    answer_store: AnswerStore,
+    list_store: ListStore,
+    current_location: Location | RelationshipLocation,
+    progress_store: ProgressStore,
+) -> ImmutableDict:
+    return choose_variant(  # type: ignore
         block,
         schema,
         metadata,
@@ -59,16 +71,16 @@ def choose_question_to_display(
 
 
 def choose_content_to_display(
-    block,
-    schema,
-    metadata,
-    response_metadata,
-    answer_store,
-    list_store,
-    current_location,
-    progress_store,
-):
-    return choose_variant(
+    block: ImmutableDict,
+    schema: QuestionnaireSchema,
+    metadata: MetadataProxy | None,
+    response_metadata: Mapping[str, Any],
+    answer_store: AnswerStore,
+    list_store: ListStore,
+    current_location: Location | RelationshipLocation,
+    progress_store: ProgressStore,
+) -> ImmutableDict:
+    return choose_variant(  # type: ignore
         block,
         schema,
         metadata,
@@ -83,14 +95,14 @@ def choose_content_to_display(
 
 
 def transform_variants(
-    block,
-    schema,
-    metadata,
-    response_metadata,
-    answer_store,
-    list_store,
-    current_location,
-    progress_store,
+    block: ImmutableDict,
+    schema: QuestionnaireSchema,
+    metadata: MetadataProxy | None,
+    response_metadata: Mapping[str, Any],
+    answer_store: AnswerStore,
+    list_store: ListStore,
+    current_location: Location | RelationshipLocation,
+    progress_store: ProgressStore,
 ) -> ImmutableDict:
     output_block = dict(block)
     if "question_variants" in block:

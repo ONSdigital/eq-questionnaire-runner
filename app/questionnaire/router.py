@@ -184,7 +184,8 @@ class Router:
         ):
             return return_to_url
 
-        block_id_index = routing_path.index(location.block_id)
+        # the location will have a block id at this point
+        block_id_index = routing_path.index(location.block_id) # type: ignore
 
         if block_id_index != 0:
             previous_block_id = routing_path[block_id_index - 1]
@@ -316,7 +317,7 @@ class Router:
         return full_routing_path
 
     def is_block_complete(
-        self, *, block_id: str, section_id: str, list_item_id: str
+        self, *, block_id: str, section_id: str, list_item_id: str | None
     ) -> bool:
         return block_id in self._progress_store.get_completed_block_ids(
             section_id, list_item_id
@@ -408,7 +409,8 @@ class Router:
     def get_next_block_url(
         location: Location, routing_path: RoutingPath, **kwargs: Optional[str]
     ) -> str:
-        next_block_id = routing_path[routing_path.index(location.block_id) + 1]
+        # the location will have a block
+        next_block_id = routing_path[routing_path.index(location.block_id) + 1] #type: ignore
         return url_for(
             "questionnaire.block",
             block_id=next_block_id,
