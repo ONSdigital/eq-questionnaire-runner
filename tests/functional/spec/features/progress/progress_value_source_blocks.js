@@ -1,11 +1,13 @@
 import FirstQuestionPage from "../../../generated_pages/progress_value_source_blocks/s1-b1.page";
 import SecondQuestionPage from "../../../generated_pages/progress_value_source_blocks/s1-b2.page";
 import ThirdQuestionPage from "../../../generated_pages/progress_value_source_blocks/s1-b3.page";
+import ThirdQuestionSectionTwoPage from "../../../generated_pages/progress_value_source_section_enabled_no_hub/s2-b1.page";
 import FourthQuestionPage from "../../../generated_pages/progress_value_source_blocks/s1-b4.page";
 import FifthQuestionPage from "../../../generated_pages/progress_value_source_blocks/s1-b5.page";
 import SixthQuestionPage from "../../../generated_pages/progress_value_source_blocks/s1-b6.page";
 import SeventhQuestionPage from "../../../generated_pages/progress_value_source_blocks/s1-b7.page";
 import SubmitPage from "../../../generated_pages/progress_value_source_blocks/submit.page";
+import HubPage from "../../../base_pages/hub.page";
 
 describe("Feature: Routing  based on progress value sources using block identifiers", () => {
   beforeEach(async () => {
@@ -141,6 +143,51 @@ describe("Feature: Routing  based on progress value sources using block identifi
 
       await expect(await $("body").getText()).to.not.have.string("Section 1 Question 4");
       await expect(await $("body").getText()).to.not.have.string("Section 1 Question 6");
+    });
+  });
+});
+
+describe("Feature: Section enabled based on progress value sources using block identifiers (no hub)", () => {
+  beforeEach(async () => {
+    await browser.openQuestionnaire("test_progress_value_source_section_enabled_no_hub.json");
+  });
+
+  describe("Given I have a section enabled based on the completeness of a block", () => {
+    it("When the block being evaluated is complete, Then the dependent section should be enabled", async () => {
+      await $(FirstQuestionPage.q1A1()).setValue("0");
+      await $(FirstQuestionPage.submit()).click();
+      await $(SecondQuestionPage.q1A1()).setValue("1");
+      await $(SecondQuestionPage.submit()).click();
+      await expect(await browser.getUrl()).to.contain(ThirdQuestionSectionTwoPage.pageName);
+    });
+  });
+});
+
+describe("Feature: Section enabled based on progress value sources using section identifiers", () => {
+  beforeEach(async () => {
+    await browser.openQuestionnaire("test_progress_value_source_section_enabled_hub.json");
+  });
+
+  describe("Given I have a section enabled based on the completeness of another section", () => {
+    it("When the section being evaluated is complete, Then the dependent section should be enabled", async () => {
+      await $(HubPage.submit()).click();
+      await $(FirstQuestionPage.q1A1()).setValue("0");
+      await $(FirstQuestionPage.submit()).click();
+      await $(SecondQuestionPage.q1A1()).setValue("1");
+      await $(SecondQuestionPage.submit()).click();
+      await expect(await $(HubPage.summaryRowState("section-2")).getText()).to.equal("Not started");
+    });
+  });
+
+  describe("Given I have a section enabled based on the completeness of another section", () => {
+    it("When the section being evaluated is incomplete, Then the dependent section should not be enabled", async () => {
+      await $(HubPage.submit()).click();
+      await $(FirstQuestionPage.q1A1()).setValue("0");
+      await $(FirstQuestionPage.submit()).click();
+      await browser.url(HubPage.url());
+
+      await expect(await $(HubPage.summaryRowState("section-1")).getText()).to.equal("Partially completed");
+      await expect(await $("body").getText()).to.not.have.string("Section 2");
     });
   });
 });
