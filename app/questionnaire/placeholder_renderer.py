@@ -113,7 +113,6 @@ class PlaceholderRenderer:
 
         return formatted_placeholder_data
 
-    # pylint: disable=too-many-locals
     def render(
         self,
         *,
@@ -126,35 +125,11 @@ class PlaceholderRenderer:
         data_to_render_mutable: dict[
             str, Any
         ] = QuestionnaireSchema.get_mutable_deepcopy(data_to_render)
-        resolved_dynamic_answers = []
+
         list_items: list = []
-        if dynamic_answers := data_to_render_mutable.get("dynamic_answers", {}):
-            list_items = (
-                self._list_store.get(dynamic_answers["values"].get("identifier"))  # type: ignore
-                .serialize()
-                .get("items")
-            )
-            for dynamic_answer in dynamic_answers["answers"]:
-                for item in list_items:
-                    resolved_dynamic_answer = self._schema.get_mutable_deepcopy(
-                        dynamic_answer
-                    )
-                    resolved_id = f"{dynamic_answer['id']}-{item}"
-                    resolved_dynamic_answer["id"] = resolved_id
 
-                    self._schema._parent_id_map[  # pylint: disable=protected-access
-                        dynamic_answer["id"]
-                    ] = data_to_render_mutable.get(
-                        "id"
-                    )  # type: ignore
-
-                    resolved_dynamic_answers.append(resolved_dynamic_answer)
-
-            data_to_render_mutable["answers"] += resolved_dynamic_answers
-            data_to_render_mutable["dynamic_answers_list_id"] = data_to_render_mutable[
-                "dynamic_answers"
-            ]["values"]["identifier"]
-            del data_to_render_mutable["dynamic_answers"]
+        if data_to_render_mutable.get("dynamic_answers", {}):
+            self.resolve_dynamic_answers(data_to_render_mutable, list_items)
 
         pointers = find_pointers_containing(data_to_render_mutable, "placeholders")
 
@@ -202,3 +177,37 @@ class PlaceholderRenderer:
                 )
             set_pointer(data_to_render_mutable, pointer, rendered_text)
         return data_to_render_mutable
+
+    def resolve_dynamic_answers(
+        self, data_to_render_mutable: dict, list_items: list
+    ) -> None:
+        resolved_dynamic_answers = []
+        dynamic_answers = data_to_render_mutable.get("dynamic_answers", {})
+        list_items.extend(
+            (
+                self._list_store.get(dynamic_answers["values"].get("identifier"))  # type: ignore
+                # Always exists at this point, same below
+                .serialize().get("items")
+            )
+        )
+        for dynamic_answer in dynamic_answers["answers"]:
+            for item in list_items:  # type: ignore
+                resolved_dynamic_answer = self._schema.get_mutable_deepcopy(
+                    dynamic_answer
+                )
+                resolved_id = f"{dynamic_answer['id']}-{item}"
+                resolved_dynamic_answer["id"] = resolved_id
+
+                self._schema._parent_id_map[  # pylint: disable=protected-access
+                    dynamic_answer["id"]
+                ] = data_to_render_mutable.get(
+                    "id"
+                )  # type: ignore
+
+                resolved_dynamic_answers.append(resolved_dynamic_answer)
+
+        data_to_render_mutable["answers"] += resolved_dynamic_answers
+        data_to_render_mutable["dynamic_answers_list_id"] = data_to_render_mutable[
+            "dynamic_answers"
+        ]["values"]["identifier"]
+        del data_to_render_mutable["dynamic_answers"]
