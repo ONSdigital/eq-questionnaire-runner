@@ -85,13 +85,13 @@ SECTION_SUMMARY_PAGE_URL = r"""  url() { return `/questionnaire/sections/${this.
 """
 
 DEFINITION_TITLE_GETTER = Template(
-    r"""  definitionTitle(definitionIndex) { return `[data-qa='${definitionId}-${definitionIndex}-title']`; }
+    r"""  definitionTitle() { return `[data-qa='${definitionId}-title']`; }
 
 """
 )
 
 DEFINITION_CONTENT_GETTER = Template(
-    r"""  definitionContent(definitionIndex) { return `[data-qa='${definitionId}-${definitionIndex}-content']`; }
+    r"""  definitionContent() { return `[data-qa='${definitionId}-content']`; }
 
 """
 )
