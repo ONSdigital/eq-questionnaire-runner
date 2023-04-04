@@ -9,6 +9,9 @@ describe("Component: Interstitial Definition", () => {
     it("When there is a definition on an interstitial, then the page is displayed correctly", async () => {
       await expect(await $(InterstitialDefinitionPage.definitionTitle(1)).isDisplayed()).to.be.true;
       await expect(await $(InterstitialDefinitionPage.definitionContent(1)).getText()).to.equal("");
+
+      await expect(await $(InterstitialDefinitionPage.definitionTitle(2)).isDisplayed()).to.be.true;
+      await expect(await $(InterstitialDefinitionPage.definitionContent(2)).getText()).to.equal("");
     });
 
     it("When I click on a definition title, the content is displayed for just that definition", async () => {
@@ -16,6 +19,9 @@ describe("Component: Interstitial Definition", () => {
 
       await expect(await $(InterstitialDefinitionPage.definitionTitle(1)).isDisplayed()).to.be.true;
       await expect(await $(InterstitialDefinitionPage.definitionContent(1)).getText()).to.equal("In a way that accomplishes a desired aim or result");
+
+      await expect(await $(InterstitialDefinitionPage.definitionTitle(2)).isDisplayed()).to.be.true;
+      await expect(await $(InterstitialDefinitionPage.definitionContent(2)).getText()).to.equal("");
     });
   });
 });
