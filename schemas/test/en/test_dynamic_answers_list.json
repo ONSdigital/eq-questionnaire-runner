@@ -229,6 +229,21 @@
                         {
                             "type": "Question",
                             "id": "dynamic-answer",
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "supermarkets"
+                                                }
+                                            ]
+                                        },
+                                        0
+                                    ]
+                                }
+                            },
                             "question": {
                                 "dynamic_answers": {
                                     "values": {
