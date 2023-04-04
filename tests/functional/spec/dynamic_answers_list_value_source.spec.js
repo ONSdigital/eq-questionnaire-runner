@@ -6,7 +6,7 @@ import ListCollectorRemovePage from "../generated_pages/dynamic_answers_list/lis
 import SectionSummaryPage from "../generated_pages/dynamic_answers_list/section-summary.page";
 import { expect } from "chai";
 
-describe("Dynamic answers checkbox answer value source", () => {
+describe("Dynamic answers list value source", () => {
   const labels = 'label[class="ons-label"]';
   const inputs = 'input[class="ons-input ons-input--text ons-input-type__input ons-input-number--w-3"]';
   const group = 'div[id="group-2"]';
