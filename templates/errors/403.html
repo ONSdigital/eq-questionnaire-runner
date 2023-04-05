@@ -6,7 +6,7 @@
     <h1>{{ _("Sorry, there is a problem") }}</h1>
     <p>{{ _("You may need to update your browser to a newer version.") }}</p>
     <p>{{ _("If the problem still occurs, try using a different browser or device.") }}</p>
-  {% if survey_type and (survey_type in SURVEY_TYPES_BUSINESS or survey_type in SURVEY_TYPES_DEFAULT or survey_type in SURVEY_TYPES_SOCIAL or survey_type in SURVEY_TYPES_HEALTH) %}
+  {% if survey_type in SURVEY_TYPES_ALL %}
     <p>{{ _("For further help, please <a href='{url}'>contact us</a>.").format(url=contact_us_url) }}</p>
   {% else %}
     <h2>{{ _("Business surveys") }}</h2>
