@@ -131,7 +131,7 @@ class ValueSourceResolver:
         selector = value_source["selector"]
         if selector == "section":
             return self.progress_store.get_section_status(
-                identifier, self.location.list_item_id if self.location else None
+                section_id=identifier, list_item_id=None
             )
 
         if selector == "block":

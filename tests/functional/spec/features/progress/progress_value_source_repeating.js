@@ -1,12 +1,12 @@
 import HubPage from "../../../base_pages/hub.page";
 import ListCollectorPage from "../../../generated_pages/new_calculated_summary_repeating_section/list-collector.page";
 import ListCollectorAddPage from "../../../generated_pages/new_calculated_summary_repeating_section/list-collector-add.page";
-import QuestionBlockPage from "../../../generated_pages/progress_value_source_repeating_sections/question-block.page";
-import DOBQuestionBlockPage from "../../../generated_pages/progress_value_source_repeating_sections/dob-block.page";
-import RandomQuestionEnablerBlockPage from "../../../generated_pages/progress_value_source_repeating_sections/random-question-enabler-block.page";
-import SectionTwoSummaryPage from "../../../generated_pages/progress_value_source_repeating_sections/section-2-summary.page";
+import QuestionBlockPage from "../../../generated_pages/progress_block_value_source_repeating_sections/question-block.page";
+import DOBQuestionBlockPage from "../../../generated_pages/progress_block_value_source_repeating_sections/dob-block.page";
+import RandomQuestionEnablerBlockPage from "../../../generated_pages/progress_block_value_source_repeating_sections/random-question-enabler-block.page";
+import SectionTwoSummaryPage from "../../../generated_pages/progress_block_value_source_repeating_sections/section-2-summary.page";
 import SectionThreeSummaryPage from "../../../generated_pages/progress_value_source_calculated_summary/section-3-summary.page";
-import OtherQuestionBlockPage from "../../../generated_pages/progress_value_source_repeating_sections/other-question-block.page";
+import OtherQuestionBlockPage from "../../../generated_pages/progress_block_value_source_repeating_sections/other-question-block.page";
 import FirstNumberBlockPage from "../../../generated_pages/progress_value_source_calculated_summary/first-number-block.page";
 import SecondNumberBlockPage from "../../../generated_pages/progress_value_source_calculated_summary/second-number-block.page";
 import SectionTwoQuestionBlockPage from "../../../generated_pages/progress_value_source_calculated_summary/s2-b1.page";
@@ -14,7 +14,7 @@ import CalculatedSummaryBlockPage from "../../../generated_pages/progress_value_
 
 describe("Feature: Routing rules based on progress value sources in repeating sections", () => {
   beforeEach(async () => {
-    await browser.openQuestionnaire("test_progress_value_source_repeating_sections.json");
+    await browser.openQuestionnaire("test_progress_block_value_source_repeating_sections.json");
   });
 
   describe("Given I have routing in a repeating section based on the completeness of a block", () => {

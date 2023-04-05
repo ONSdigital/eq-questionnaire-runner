@@ -328,14 +328,22 @@ class QuestionnaireStoreUpdater:
         Captures a unique list of section ids that are dependents of the current section, for progress value sources.
         """
         current_section_id = self._current_location.section_id
-        progress_deps_mapping = (
+        progress_dependencies_map = (
             self._schema.when_rules_section_dependencies_by_section_for_progress_value_source
         )
-        for section_dependency_id in progress_deps_mapping:
-            if current_section_id in progress_deps_mapping[section_dependency_id]:
-                self.dependent_sections.add(
-                    DependentSection(section_dependency_id, None, None)
-                )
+        for section_dependency_id in progress_dependencies_map:
+            if current_section_id in progress_dependencies_map[section_dependency_id]:
+                if repeating_list := self._schema.get_repeating_list_for_section(
+                    section_dependency_id
+                ):
+                    for list_item_id in self._list_store[repeating_list].items:
+                        self.dependent_sections.add(
+                            DependentSection(section_dependency_id, list_item_id, None)
+                        )
+                else:
+                    self.dependent_sections.add(
+                        DependentSection(section_dependency_id, None, None)
+                    )
 
     def _capture_section_dependencies_progress_value_source_for_current_block(
         self,
@@ -344,11 +352,11 @@ class QuestionnaireStoreUpdater:
         Captures a unique list of section ids that are dependents of the current block, for progress value sources.
         """
         current_block_id = self._current_location.block_id
-        progress_deps_mapping = (
+        progress_dependencies_map = (
             self._schema.when_rules_block_dependencies_by_section_for_progress_value_source
         )
-        for section_dependency_id in progress_deps_mapping:
-            if current_block_id in progress_deps_mapping[section_dependency_id]:
+        for section_dependency_id in progress_dependencies_map:
+            if current_block_id in progress_dependencies_map[section_dependency_id]:
                 if repeating_list := self._schema.get_repeating_list_for_section(
                     section_dependency_id
                 ):

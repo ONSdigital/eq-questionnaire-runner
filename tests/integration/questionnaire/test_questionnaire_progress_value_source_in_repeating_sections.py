@@ -37,13 +37,15 @@ class TestQuestionnaireProgressValueSourceInRepeatingSections(IntegrationTestCas
     def go_to_hub(self):
         self.get("/questionnaire/")
 
-    def test_disable_block_in_repeating_section_if_source_progress_not_completed(self):
+    def test_disable_block_in_repeating_section_if_block_source_progress_not_completed(
+        self,
+    ):
         """
         Test that a block inside a repeating section is disabled if the progress value source
         from a block in another section is not completed
         """
 
-        self.launchSurvey("test_progress_value_source_repeating_sections")
+        self.launchSurvey("test_progress_block_value_source_repeating_sections")
 
         self.assertInBody("Choose another section to complete")
 
@@ -91,13 +93,71 @@ class TestQuestionnaireProgressValueSourceInRepeatingSections(IntegrationTestCas
         # Assert random question not there
         self.assertNotInBody("Random question about")
 
-    def test_enable_block_in_repeating_section_if_source_progress_is_completed(self):
+    def test_disable_block_in_repeating_section_if_section_source_progress_not_completed(
+        self,
+    ):
+        """
+        Test that a block inside a repeating section is disabled if the progress value source
+        from a block in another section is not completed
+        """
+
+        self.launchSurvey("test_progress_section_value_source_repeating_sections")
+
+        self.assertInBody("Choose another section to complete")
+
+        # 1. First section shows as not started
+        self.assertInSelector("List collector + random question", self.row_selector(1))
+        self.assert_section_status(1, "Not started")
+
+        # 2. Start completing section 1 and add 2 people
+        # Don't answer the random question enabler
+        self.go_to_section("section-1")
+        self.assertInBody("Does anyone else live here?")
+        self.post({"anyone-else": "Yes"})
+
+        self.add_person("John", "Doe")
+
+        self.assertInBody("Does anyone else live here?")
+        self.assertInSelector("John Doe", self.row_selector(1))
+        self.post({"anyone-else": "Yes"})
+
+        self.add_person("James", "Bond")
+
+        self.assertInBody("Does anyone else live here?")
+        self.assertInSelector("James Bond", self.row_selector(2))
+        self.post({"anyone-else": "No"})
+
+        self.post()
+
+        # 3. Assert random question is there
+        self.assertInBody("Random question enabler")
+
+        # 4. Go back to the hub and leave random question block incomplete
+        self.go_to_hub()
+
+        # 5. The two repeating sections should show as "not started"
+        self.assertInBody("Choose another section to complete")
+        self.assert_section_status(2, "Not started", ["John Doe"])
+        self.assert_section_status(3, "Not started", ["James Bond"])
+
+        # 5. Complete John Doe section
+        # Random question doesn't show
+        self.get(self.john_doe_link())
+        self.assertInBody("John Doe")
+        self.answer_dob()
+
+        # Assert random question not there
+        self.assertNotInBody("Random question about")
+
+    def test_enable_block_in_repeating_section_if_block_source_progress_is_completed(
+        self,
+    ):
         """
         Test that a block inside a repeating section is enabled if the progress value source
         from a block in another section is completeted
         """
 
-        self.launchSurvey("test_progress_value_source_repeating_sections")
+        self.launchSurvey("test_progress_block_value_source_repeating_sections")
 
         self.assertInBody("Choose another section to complete")
 
@@ -139,13 +199,64 @@ class TestQuestionnaireProgressValueSourceInRepeatingSections(IntegrationTestCas
         # 3. Assert random question shows up
         self.assertInBody("Random question")
 
+    def test_enable_block_in_repeating_section_if_section_source_progress_is_completed(
+        self,
+    ):
+        """
+        Test that a block inside a repeating section is enabled if the progress value source
+        from a block in another section is completeted
+        """
+        self.launchSurvey("test_progress_section_value_source_repeating_sections")
+
+        self.assertInBody("Choose another section to complete")
+
+        # 1. Complete 1st section and add 2 people
+        # And answer the random question enabler
+        self.go_to_section("section-1")
+        self.assertInBody("Does anyone else live here?")
+        self.post({"anyone-else": "Yes"})
+
+        self.add_person("John", "Doe")
+
+        self.assertInBody("Does anyone else live here?")
+        self.assertInSelector("John Doe", self.row_selector(1))
+        self.post({"anyone-else": "Yes"})
+
+        self.add_person("James", "Bond")
+
+        self.assertInBody("Does anyone else live here?")
+        self.assertInSelector("James Bond", self.row_selector(2))
+        self.post({"anyone-else": "No"})
+
+        self.post()
+
+        self.assertInBody("Random question enabler")
+        self.post({"random-question-enabler-answer": 1})
+
+        self.post()
+
+        # Go back to the hub
+        self.go_to_hub()
+        self.assertInBody("Choose another section to complete")
+
+        # Assert first section completed
+        self.assert_section_status(1, "Completed", ["List collector + random question"])
+
+        # 2. Complete John Doe section
+        self.get(self.john_doe_link())
+        self.assertInBody("John Doe")
+        self.answer_dob()
+
+        # 3. Assert random question shows up
+        self.assertInBody("Random question")
+
     # pylint: disable=locally-disabled, too-many-statements
     def test_block_progress_dependencies_updated_in_repeating_sections(self):
         """
         Test that dependency blocks inside repeating sections are updated properly
         """
 
-        self.launchSurvey("test_progress_value_source_repeating_sections")
+        self.launchSurvey("test_progress_block_value_source_repeating_sections")
 
         self.assertInBody("Choose another section to complete")
 
