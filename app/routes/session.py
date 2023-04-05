@@ -21,7 +21,6 @@ from app.helpers.template_helpers import (
     render_template,
 )
 from app.routes.errors import _render_error_page
-from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.survey_config.survey_type import SurveyType
 from app.utilities.metadata_parser import validate_runner_claims
 from app.utilities.metadata_parser_v2 import (
