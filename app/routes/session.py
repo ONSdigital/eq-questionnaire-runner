@@ -185,8 +185,7 @@ def get_signed_out():
     if not cookie_session:
         return redirect(url_for("session.get_session_expired"))
 
-    survey_type = get_survey_type()
-    survey_config = get_survey_config(theme=survey_type)
+    survey_config = get_survey_config()
     redirect_url = (
         survey_config.account_service_todo_url
         or survey_config.account_service_log_out_url
