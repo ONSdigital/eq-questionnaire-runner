@@ -12,7 +12,7 @@ from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 
 
-# this always returns something
+# Won't return none
 def choose_variant(  # type: ignore
     block: Mapping[str, Any],
     schema: QuestionnaireSchema,
@@ -55,8 +55,8 @@ def choose_question_to_display(
     list_store: ListStore,
     current_location: Location | RelationshipLocation,
     progress_store: ProgressStore,
-) -> ImmutableDict:
-    return choose_variant(  # type: ignore
+) -> Mapping[str, Any]:
+    return choose_variant(
         block,
         schema,
         metadata,
@@ -79,8 +79,8 @@ def choose_content_to_display(
     list_store: ListStore,
     current_location: Location | RelationshipLocation,
     progress_store: ProgressStore,
-) -> ImmutableDict:
-    return choose_variant(  # type: ignore
+) -> Mapping[str, Any]:
+    return choose_variant(
         block,
         schema,
         metadata,

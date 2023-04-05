@@ -18,7 +18,7 @@ class RelationshipLocation:
         attributes = vars(self)
         return {k: v for k, v in attributes.items() if v is not None}
 
-    def url(self, **kwargs: Any) -> str: #TODO check
+    def url(self, **kwargs: Any) -> str:
         if self.to_list_item_id:
             return url_for(
                 "questionnaire.relationships",

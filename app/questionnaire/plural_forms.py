@@ -3,7 +3,7 @@ from babel.plural import PluralRule
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 
 
-def get_plural_form_key(count: int, language: str=DEFAULT_LANGUAGE_CODE) -> PluralRule:
+def get_plural_form_key(count: int, language: str = DEFAULT_LANGUAGE_CODE) -> str:
     mappings = {
         "en": {"one": "n is 1"},
         "cy": {
@@ -24,4 +24,5 @@ def get_plural_form_key(count: int, language: str=DEFAULT_LANGUAGE_CODE) -> Plur
 
     plural_rule = PluralRule(mappings[language])
 
-    return plural_rule(count)
+    # untyped in current babel version, but requires a number and returns string
+    return plural_rule(count)  # type: ignore

@@ -26,7 +26,7 @@ class QuestionnaireStoreUpdater:
         schema: QuestionnaireSchema,
         questionnaire_store: QuestionnaireStore,
         router: Router,
-        current_question: Mapping[str, Any],
+        current_question: Mapping[str, Any] | None,
     ):
         self._current_location = current_location
         self._current_question = current_question or {}

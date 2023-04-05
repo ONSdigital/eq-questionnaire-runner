@@ -1,7 +1,7 @@
-from typing import Any, Generator
+from typing import Any, Generator, Mapping, Iterable
 
 
-def find_pointers_containing(input_data: dict[str, Any] | list[dict] | tuple[dict], search_key: str, pointer: str | None = None) -> Generator[str, None, None]:
+def find_pointers_containing(input_data: Mapping[str, Any] | Iterable[Mapping], search_key: str, pointer: str | None = None) -> Generator[str, None, None]:
     """
     Recursive function which lists pointers which contain a search key
 
@@ -16,7 +16,7 @@ def find_pointers_containing(input_data: dict[str, Any] | list[dict] | tuple[dic
         for k, v in input_data.items():
             if (isinstance(v, dict)) and search_key in v:
                 yield pointer + "/" + k if pointer else "/" + k
-            else:
+            elif isinstance(v, (list, tuple)):
                 yield from find_pointers_containing(
                     v, search_key, pointer + "/" + k if pointer else "/" + k
                 )

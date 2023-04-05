@@ -1,4 +1,4 @@
-from typing import Mapping, Optional
+from typing import Mapping, Optional, Iterable
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -30,7 +30,7 @@ class PathFinder:
         self.list_store = list_store
 
     def routing_path(
-        self, section_id: str, list_item_id: Optional[str] = None
+        self, section_id: str, list_item_id: str | None = None
     ) -> RoutingPath:
         """
         Visits all the blocks in a section and returns a path given a list of answers.
@@ -62,7 +62,7 @@ class PathFinder:
 
     def get_when_rules_block_dependencies(self, section_id: str) -> list[str]:
         """NB: At present when rules block dependencies does not fully support repeating sections.
-        It is supported when the section is dependent i.e the current section is repeating and building the routing path for sections that are not,
+        It is supported when the section is dependent i.e. the current section is repeating and building the routing path for sections that are not,
         It isn't supported if it needs to build the path for repeating sections"""
         return [
             block_id
@@ -98,7 +98,7 @@ class PathFinder:
             return not_skipped_blocks
 
     @staticmethod
-    def _block_index_for_block_id(blocks: list[Mapping], block_id: str) -> int | None:  # TODO check
+    def _block_index_for_block_id(blocks: Iterable[Mapping], block_id: str) -> int | None:
         return next(
             (index for (index, block) in enumerate(blocks) if block["id"] == block_id),
             None,
@@ -147,9 +147,10 @@ class PathFinder:
                     routing_path_block_ids.append(block_id)
 
                 # If routing rules exist then a rule must match (i.e. default goto)
-                routing_rules: list[Mapping] | None = block.get("routing_rules")
+                routing_rules: Iterable[Mapping] | None = block.get("routing_rules")
                 if routing_rules:
-                    block_index: int | None = self._evaluate_routing_rules( 
+                    # block_index will always be non-null when evaluate is called
+                    block_index = self._evaluate_routing_rules(  # type: ignore
                         this_location,
                         blocks,
                         routing_rules,
@@ -174,8 +175,8 @@ class PathFinder:
     def _evaluate_routing_rules(
         self,
         this_location: Location,
-        blocks: list[Mapping],
-        routing_rules: list[Mapping],
+        blocks: Iterable[Mapping],
+        routing_rules: Iterable[Mapping],
         block_index: int,
         routing_path_block_ids: list[str],
         when_rules_block_dependencies: list[str],
@@ -254,9 +255,9 @@ class PathFinder:
     def _get_next_block_id(self, rule: Mapping) -> str:
         if "group" in rule:
             # by this point the block for the rule will exist
-            return self.schema.get_first_block_id_for_group(rule["group"]) # type: ignore
+            return self.schema.get_first_block_id_for_group(rule["group"])  # type: ignore
         # the rules block will be a string
-        return rule["block"] # type: ignore
+        return rule["block"]  # type: ignore
 
     def _remove_current_blocks_answers_for_backwards_routing(
         self, rule: Mapping, this_location: Location

@@ -185,7 +185,7 @@ class Router:
             return return_to_url
 
         # the location will have a block id at this point
-        block_id_index = routing_path.index(location.block_id) # type: ignore
+        block_id_index = routing_path.index(location.block_id)  # type: ignore
 
         if block_id_index != 0:
             previous_block_id = routing_path[block_id_index - 1]
@@ -410,7 +410,7 @@ class Router:
         location: Location, routing_path: RoutingPath, **kwargs: Optional[str]
     ) -> str:
         # the location will have a block
-        next_block_id = routing_path[routing_path.index(location.block_id) + 1] #type: ignore
+        next_block_id = routing_path[routing_path.index(location.block_id) + 1]  # type: ignore
         return url_for(
             "questionnaire.block",
             block_id=next_block_id,

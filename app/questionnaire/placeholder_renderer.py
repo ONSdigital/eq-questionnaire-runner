@@ -26,7 +26,7 @@ class PlaceholderRenderer:
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: MetadataProxy | None,
-        response_metadata: Mapping,
+        response_metadata: Mapping[str, Any],
         schema: QuestionnaireSchema,
         progress_store: ProgressStore,
         location: Location | RelationshipLocation | None = None,
@@ -93,9 +93,10 @@ class PlaceholderRenderer:
 
         if "text_plural" in placeholder_data:
             plural_schema: Mapping[str, dict] = placeholder_data["text_plural"]
-            count = (
-                0
+            count: int = (
+                0  # type: ignore
                 if self._placeholder_preview_mode
+                # will return int
                 else self.get_plural_count(plural_schema["count"])
             )
 

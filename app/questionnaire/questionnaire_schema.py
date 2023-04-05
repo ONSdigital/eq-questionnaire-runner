@@ -267,7 +267,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                             )
 
     def _update_answer_dependencies_for_calculated_summary(
-        self, calculated_summary_answer_ids: list[str], block_id: str
+        self, calculated_summary_answer_ids: Iterable[str], block_id: str
     ) -> None:
         for answer_id in calculated_summary_answer_ids:
             self._answer_dependencies_map[answer_id] |= {
@@ -275,7 +275,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             }
 
     def _update_answer_dependencies_for_calculations(
-        self, calculations: tuple[ImmutableDict[str, Any]], *, block_id: str
+        self, calculations: tuple[ImmutableDict[str, Any], ...], *, block_id: str
     ) -> None:
         for calculation in calculations:
             if source_answer_id := calculation.get("answer_id"):
@@ -357,11 +357,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             for question in questions
         ]
 
-    def get_section_ids_required_for_hub(self) -> list[str]:
-        return self.flow_options.get("required_completed_sections", [])
+    def get_section_ids_required_for_hub(self) -> tuple[str, ...]:
+        return self.flow_options.get("required_completed_sections", tuple())
 
     def get_summary_options(self) -> ImmutableDict[str, Any]:
-        return self.flow_options.get("summary", {})
+        return self.flow_options.get("summary", ImmutableDict({}))
 
     def get_sections(self) -> Iterable[ImmutableDict]:
         return self._sections_by_id.values()
@@ -785,18 +785,17 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     ) -> Generator:
         ignore_keys = ignore_keys or []
         for k, v in block.items():
-            try:
-                if k in ignore_keys:
-                    continue
-                if k == key:
-                    yield v
-                if isinstance(v, dict):
-                    yield from self.get_values_for_key(v, key, ignore_keys)
-                elif isinstance(v, (list, tuple)):
-                    for d in v:
-                        yield from self.get_values_for_key(d, key, ignore_keys)
-            except AttributeError:
+            if k in ignore_keys:
                 continue
+            if k == key:
+                yield v
+            if isinstance(v, dict):
+                yield from self.get_values_for_key(v, key, ignore_keys)
+            elif isinstance(v, (list, tuple)):
+                for d in v:
+                    # in the case of a when_rule "==": {dict, "Yes"} d could be a string
+                    if isinstance(d, dict):
+                        yield from self.get_values_for_key(d, key, ignore_keys)
 
     def _get_parent_section_id_for_block(self, block_id: str) -> str:
         parent_block_id = self._parent_id_map[block_id]
