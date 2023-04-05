@@ -3,7 +3,7 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 SIGN_OUT_URL_PATH = "/sign-out"
 SIGNED_OUT_URL_PATH = "/signed-out"
-SESSION_EXPIRY_PATH = "/session-expiry"
+SESSION_EXPIRED_PATH = "/session-expired"
 ACCOUNT_SERVICE_BASE_URL = "http://localhost"
 ACCOUNT_SERVICE_LOG_OUT_URL_PATH = "/sign-in/logout"
 ACCOUNT_SERVICE_LOG_OUT_URL = (
@@ -42,7 +42,7 @@ class TestSaveAndSignOut(IntegrationTestCase):
     def test_no_session_cookie_signed_out_redirects_to_session_expiry(self):
         self.deleteCookie()
         self.get(SIGNED_OUT_URL_PATH, follow_redirects=False)
-        self.assertInRedirect(SESSION_EXPIRY_PATH)
+        self.assertInRedirect(SESSION_EXPIRED_PATH)
 
     # Test the behaviour when using Hub/No Hub
     def test_redirects_to_account_service_log_out_url_using_base_url_from_claims(self):
