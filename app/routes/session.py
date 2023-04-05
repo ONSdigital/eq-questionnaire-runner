@@ -165,11 +165,14 @@ def get_sign_out():
     Signs the user out of eQ and redirects to the log out url.
     """
     survey_config = get_survey_config()
-    log_out_url = (
-        url_for("session.get_signed_out")
-        if "internal_redirect" in request.args
-        else survey_config.account_service_log_out_url
-    )
+    log_out_url = None
+    if "internal_redirect" in request.args:
+        log_out_url = url_for("session.get_signed_out")
+    elif "todo" in request.args:
+        log_out_url = survey_config.account_service_todo_url
+
+    if not log_out_url:
+        log_out_url = survey_config.account_service_log_out_url
 
     # Check for GET as we don't want to log out for HEAD requests
     if request.method == "GET":
