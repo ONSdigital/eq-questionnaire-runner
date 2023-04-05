@@ -7,7 +7,7 @@
         {% set header_button_data_ga_action = "Save and sign out" %}
         {% set header_button_data_ga_label = "Save and sign out button click" %}
     {% else %}
-        {% set sign_out_url = url_for('session.get_sign_out') %}
+        {% set sign_out_url = url_for('session.get_sign_out', todo=true) %}
         {% set header_button_text = _("Exit") %}
         {% set header_button_data_qa = "btn-exit" %}
         {% set header_button_data_ga_action = "Exit" %}
