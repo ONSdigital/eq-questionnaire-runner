@@ -1,5 +1,3 @@
-from typing import List, Optional
-
 from app.data_models.answer_store import AnswerStore
 from app.data_models.relationship_store import RelationshipStore
 from app.questionnaire.relationship_location import RelationshipLocation

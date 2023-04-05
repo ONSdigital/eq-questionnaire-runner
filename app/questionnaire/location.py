@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Mapping, Optional, Any
+from typing import Mapping, Any
 
 from flask import url_for
 
@@ -24,9 +24,9 @@ class Location:
     """
 
     section_id: str
-    block_id: Optional[str] = None
-    list_name: Optional[str] = None
-    list_item_id: Optional[str] = None
+    block_id: str | None = None
+    list_name: str | None = None
+    list_item_id: str | None = None
 
     def __hash__(self) -> int:
         return hash(frozenset(self.__dict__.values()))

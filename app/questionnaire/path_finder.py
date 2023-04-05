@@ -1,4 +1,4 @@
-from typing import Mapping, Optional, Iterable
+from typing import Mapping, Iterable
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -19,7 +19,7 @@ class PathFinder:
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: Optional[MetadataProxy],
+        metadata: MetadataProxy | None,
         response_metadata: Mapping,
     ):
         self.answer_store = answer_store
@@ -79,7 +79,7 @@ class PathFinder:
         routing_path_block_ids: list[str],
         section: ImmutableDict,
         when_rules_block_dependencies: list[str],
-    ) -> Optional[list[Mapping]]:
+    ) -> list[Mapping] | None:
         # :TODO: Fix group skipping in its own section. Routing path will be empty and therefore not checked
         if section:
             not_skipped_blocks: list[Mapping] = []

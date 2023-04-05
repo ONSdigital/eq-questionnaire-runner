@@ -1,5 +1,5 @@
 from decimal import Decimal
-from typing import TYPE_CHECKING, Any, Mapping, MutableMapping, Sequence, Union
+from typing import TYPE_CHECKING, Any, Mapping, MutableMapping, Sequence
 
 from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
@@ -24,7 +24,7 @@ if TYPE_CHECKING:
         PlaceholderRenderer,  # pragma: no cover
     )
 
-TransformedValueTypes = Union[None, str, int, Decimal, bool]
+TransformedValueTypes = None | str | int | Decimal | bool
 
 
 class PlaceholderParser:
@@ -49,7 +49,7 @@ class PlaceholderParser:
     ):
         self._transformer = PlaceholderTransforms(language, schema, renderer)
         self._placeholder_map: MutableMapping[
-            str, Union[ValueSourceEscapedTypes, ValueSourceTypes, None]
+            str, ValueSourceEscapedTypes | ValueSourceTypes | None
         ] = {}
         self._answer_store = answer_store
         self._list_store = list_store
@@ -75,7 +75,7 @@ class PlaceholderParser:
 
     def __call__(
         self, placeholder_list: Sequence[Mapping]
-    ) -> MutableMapping[str, Union[ValueSourceEscapedTypes, ValueSourceTypes]]:
+    ) -> MutableMapping[str, ValueSourceEscapedTypes | ValueSourceTypes]:
         placeholder_list = QuestionnaireSchema.get_mutable_deepcopy(placeholder_list)
 
         sections_to_ignore = list(self._routing_path_block_ids_by_section_key)
@@ -140,9 +140,7 @@ class PlaceholderParser:
             transform_args: MutableMapping[str, Any] = {}
 
             for arg_key, arg_value in transform["arguments"].items():
-                resolved_value: Union[
-                    ValueSourceEscapedTypes, ValueSourceTypes, TransformedValueTypes
-                ]
+                resolved_value: ValueSourceEscapedTypes | ValueSourceTypes | TransformedValueTypes
 
                 if isinstance(arg_value, list):
                     resolved_value = self._resolve_value_source_list(arg_value)

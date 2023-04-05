@@ -2,6 +2,8 @@ from collections import OrderedDict
 from datetime import datetime, timezone
 from typing import Any, Mapping, Optional, Union
 
+from werkzeug.datastructures import ImmutableDict
+
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.answer import AnswerValueTypes, ListAnswer
 from app.data_models.metadata_proxy import MetadataProxy
@@ -37,6 +39,7 @@ def convert_answers_to_payload_0_0_1(
     :param list_store: list store
     :param schema: QuestionnaireSchema class with populated schema json
     :param full_routing_path: a list of section routing paths followed in the questionnaire
+    :param progress_store: progress store
     :return: data in a formatted form
     """
     data = OrderedDict()
@@ -50,7 +53,7 @@ def convert_answers_to_payload_0_0_1(
             for answer_in_block in answers_in_block:
                 answer_schema = None
 
-                block = schema.get_block_for_answer_id(answer_in_block.answer_id)
+                block: ImmutableDict = schema.get_block_for_answer_id(answer_in_block.answer_id)  # type: ignore
                 current_location = Location(
                     block_id=block_id,
                     section_id=routing_path.section_id,

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Any, Callable, Iterable, Mapping, Optional, Union
+from typing import Any, Callable, Iterable, Mapping
 
 from markupsafe import Markup
 
@@ -14,12 +14,9 @@ from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules import rule_evaluator
 
-ValueSourceTypes = Union[None, str, int, Decimal, list]
-ValueSourceEscapedTypes = Union[
-    Markup,
-    list[Markup],
-]
-IntOrDecimal = Union[int, Decimal]
+ValueSourceTypes = None | str | int | Decimal | list
+ValueSourceEscapedTypes = Markup | list[Markup]
+IntOrDecimal = int | Decimal
 
 
 @dataclass
@@ -69,8 +66,8 @@ class ValueSourceResolver:
 
     def _resolve_list_item_id_for_value_source(
         self, value_source: Mapping
-    ) -> Optional[str]:
-        list_item_id: Optional[str] = None
+    ) -> str | None:
+        list_item_id: str | None = None
 
         if list_item_selector := value_source.get("list_item_selector"):
             if list_item_selector["source"] == "location":
@@ -99,7 +96,7 @@ class ValueSourceResolver:
 
     def _resolve_answer_value_source(
         self, value_source: Mapping
-    ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
+    ) -> ValueSourceEscapedTypes | ValueSourceTypes:
         list_item_id = self._resolve_list_item_id_for_value_source(value_source)
         answer_id = value_source["identifier"]
 
@@ -121,12 +118,12 @@ class ValueSourceResolver:
 
     def _resolve_list_value_source(
         self, value_source: Mapping
-    ) -> Union[int, str, list]:
+    ) -> int | str | list:
         identifier = value_source["identifier"]
         list_model: ListModel = self.list_store[identifier]
 
         if selector := value_source.get("selector"):
-            value: Union[str, list, int] = getattr(list_model, selector)
+            value: str | list | int = getattr(list_model, selector)
             return value
 
         return list(list_model)
@@ -177,7 +174,7 @@ class ValueSourceResolver:
 
     def resolve(
         self, value_source: Mapping
-    ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
+    ) -> ValueSourceEscapedTypes | ValueSourceTypes:
         source = value_source["source"]
 
         #  We always need to assess the routing path for calculated summary value sources
