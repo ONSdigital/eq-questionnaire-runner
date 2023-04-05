@@ -15,7 +15,7 @@ describe("Save sign out / Exit", () => {
     await browser.openQuestionnaire("test_introduction.json");
     await $(IntroductionPage.exitButton()).click();
 
-    await expect(await browser.getUrl()).to.contain("/sign-in/logout");
+    await expect(await browser.getUrl()).to.contain("/surveys/todo");
 
     await browser.back();
     await expect(await $("body").getHTML()).to.contain("Sorry, you need to sign in again");
