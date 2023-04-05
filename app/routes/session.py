@@ -162,9 +162,11 @@ def get_sign_out():
     Signs the user out of eQ and redirects to the log out url.
     """
     survey_config = get_survey_config()
-    log_out_url = (
-        survey_config.account_service_todo_url if "todo" in request.args else None
-    )
+    log_out_url = None
+    if "internal_redirect" in request.args:
+        log_out_url = url_for("session.get_signed_out")
+    elif "todo" in request.args:
+        log_out_url = survey_config.account_service_todo_url
 
     if not log_out_url:
         log_out_url = survey_config.account_service_log_out_url
@@ -178,7 +180,18 @@ def get_sign_out():
 
 @session_blueprint.route("/signed-out", methods=["GET"])
 def get_signed_out():
-    return render_template(template="signed-out")
+    if not cookie_session:
+        return redirect(url_for("session.get_session_expired"))
+
+    survey_config = get_survey_config()
+    redirect_url = (
+        survey_config.account_service_todo_url
+        or survey_config.account_service_log_out_url
+    )
+    return render_template(
+        template="signed-out",
+        redirect_url=redirect_url,
+    )
 
 
 def get_runner_claims(decrypted_token):
