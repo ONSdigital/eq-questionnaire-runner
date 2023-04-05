@@ -103,7 +103,7 @@ class TestCensusSignOut(IntegrationTestCase):
     def test_sign_out_url(self):
         self.launchSurvey(schema_name="test_individual_response")
         self.saveAndSignOut()
-        self.assertInRedirect("/signed-out")
+        self.assertInRedirect(SIGNED_OUT_URL_PATH)
 
     def test_sign_out_button_text(self):
         self.launchSurvey(schema_name="test_individual_response")
