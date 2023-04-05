@@ -53,7 +53,7 @@ describe("Save sign out / Exit", () => {
     await browser.openQuestionnaire("test_theme_social.json", { version: "v2", theme: "social" });
     await $(SubmitPage.saveSignOut()).click();
     await expect(await browser.getUrl()).to.contain("/signed-out");
-    await expect(await $("body").getHTML()).to.contain("Your survey answers have been saved");
+    await expect(await $("body").getHTML()).to.contain("Your progress has been saved");
     await expect(await $("body").getHTML()).to.contain("To resume the survey,");
   });
 
@@ -62,7 +62,7 @@ describe("Save sign out / Exit", () => {
     await $(IntroductionPage.getStarted()).click();
     await $(IntroInterstitialPage.saveSignOut()).click();
     await expect(await browser.getUrl()).to.contain("/signed-out");
-    await expect(await $("body").getHTML()).to.contain("Your survey answers have been saved");
+    await expect(await $("body").getHTML()).to.contain("Your progress has been saved");
     await expect(await $("body").getHTML()).to.contain("To find further information or resume the survey,");
   });
 
