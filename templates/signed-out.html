@@ -20,7 +20,7 @@
   {% if survey_type and (survey_type in SURVEY_TYPES_BUSINESS or survey_type in SURVEY_TYPES_DEFAULT) %}
 
     {% if business_logout_url %}
-      <p>{{ _("To find further information or resume the survey, <a href='{url}'>return to your account</a>.").format(url = business_logout_url) }}</p>
+      <p>{{ _("To find further information or resume the survey, <a href='{url}'>return to My Account</a>.").format(url = business_logout_url) }}</p>
     {% endif %}
 
   {% elif survey_type and survey_type in SURVEY_TYPES_SOCIAL or survey_type in SURVEY_TYPES_HEALTH %}
