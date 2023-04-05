@@ -30,6 +30,20 @@ def test_question_with_dynamic_answers(storage, language, mocker):
                 "value": "Aldi",
                 "list_item_id": "vhECeh",
             },
+            {
+                "answer_id": "based-checkbox-answer",
+                "value": ["Non UK based supermarkets"],
+            },
+            {
+                "answer_id": "percentage-of-shopping",
+                "value": 12,
+                "list_item_id": "tUJzGV",
+            },
+            {
+                "answer_id": "percentage-of-shopping",
+                "value": 21,
+                "list_item_id": "vhECeh",
+            },
         ]
     )
     questionnaire_store.list_store = ListStore(
@@ -54,6 +68,20 @@ def test_question_with_dynamic_answers(storage, language, mocker):
     question.handle_post()
 
     assert form.question["answers"] == [
+        {
+            "id": "based-checkbox-answer",
+            "instruction": "Select any answers that apply",
+            "label": "Are supermarkets UK or non UK based?",
+            "mandatory": False,
+            "options": [
+                {"label": "UK based supermarkets", "value": "UK based supermarkets"},
+                {
+                    "label": "Non UK based supermarkets",
+                    "value": "Non UK based supermarkets",
+                },
+            ],
+            "type": "Checkbox",
+        },
         {
             "decimal_places": 0,
             "id": "percentage-of-shopping-tUJzGV",

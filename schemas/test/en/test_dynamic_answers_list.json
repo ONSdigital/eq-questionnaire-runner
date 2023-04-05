@@ -274,7 +274,25 @@
                                         }
                                     ]
                                 },
-                                "answers": [],
+                                "answers": [
+                                    {
+                                        "id": "based-checkbox-answer",
+                                        "label": "Are supermarkets UK or non UK based?",
+                                        "instruction": "Select any answers that apply",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "UK based supermarkets",
+                                                "value": "UK based supermarkets"
+                                            },
+                                            {
+                                                "label": "Non UK based supermarkets",
+                                                "value": "Non UK based supermarkets"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
                                 "id": "dynamic-answer-question",
                                 "title": "What percent of your shopping do you do at each of the following supermarket?",
                                 "type": "General"

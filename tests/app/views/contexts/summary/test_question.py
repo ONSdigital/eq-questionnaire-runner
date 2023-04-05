@@ -1078,6 +1078,10 @@ def test_get_answer(answer_schema, answer_store, expected, list_store, progress_
                     },
                     {"answer_id": "list-collector-answer", "value": "No"},
                     {
+                        "answer_id": "based-checkbox-answer",
+                        "value": ["Non UK based supermarkets"],
+                    },
+                    {
                         "answer_id": "percentage-of-shopping",
                         "value": 12,
                         "list_item_id": "awTNTI",
@@ -1091,6 +1095,21 @@ def test_get_answer(answer_schema, answer_store, expected, list_store, progress_
             ),
             ListStore([{"items": ["awTNTI", "FMOByU"], "name": "supermarkets"}]),
             [
+                {
+                    "currency": None,
+                    "id": "based-checkbox-answer",
+                    "label": "Are supermarkets UK or non UK based?",
+                    "link": "/questionnaire/group/#based-checkbox-answer",
+                    "type": "checkbox",
+                    "unit": None,
+                    "unit_length": None,
+                    "value": [
+                        {
+                            "detail_answer_value": None,
+                            "label": "Non UK based supermarkets",
+                        }
+                    ],
+                },
                 {
                     "currency": None,
                     "id": "percentage-of-shopping-awTNTI",
@@ -1144,7 +1163,25 @@ def test_dynamic_answers(answer_store, list_store, progress_store, expected):
                 }
             ],
         },
-        "answers": [],
+        "answers": [
+            {
+                "id": "based-checkbox-answer",
+                "label": "Are supermarkets UK or non UK based?",
+                "instruction": "Select any answers that apply",
+                "mandatory": False,
+                "options": [
+                    {
+                        "label": "UK based supermarkets",
+                        "value": "UK based supermarkets",
+                    },
+                    {
+                        "label": "Non UK based supermarkets",
+                        "value": "Non UK based supermarkets",
+                    },
+                ],
+                "type": "Checkbox",
+            }
+        ],
         "id": "dynamic-answer-question",
         "title": "What percent of your shopping do you do at each of the following supermarket?",
         "type": "General",

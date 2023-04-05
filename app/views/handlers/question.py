@@ -118,23 +118,34 @@ class Question(BlockHandler):
         answer_ids = self._schema.get_answer_ids_for_question(question_json)
         if question_json.get("dynamic_answers_list_id"):
             dynamic_answers = []
+            static_answers = []
             for answer_id in answer_ids:
                 for (
                     list_item_id
                 ) in (
                     self.questionnaire_store_updater._questionnaire_store.list_store._list_item_ids()
                 ):
-                    answer = self._questionnaire_store.answer_store.get_answer(
+                    if answer := self._questionnaire_store.answer_store.get_answer(
                         answer_id=answer_id.replace(f"-{list_item_id}", ""),
                         list_item_id=list_item_id,
-                    )
-                    dynamic_answers.append(answer)
+                    ):
+                        dynamic_answers.append(answer)
+                    elif answer := self._questionnaire_store.answer_store.get_answer(
+                        answer_id=answer_id
+                    ):
+                        static_answers.append(answer)
 
-            return {
+            dynamic_answers_dict = {
                 f"{answer.answer_id}-{answer.list_item_id}": answer.value
                 for answer in dynamic_answers
                 if answer
             }
+            static_answers_dict = {
+                answer.answer_id: answer.value for answer in static_answers if answer
+            }
+            merged_answers = {**dynamic_answers_dict, **static_answers_dict}
+
+            return merged_answers
 
         answers = self._questionnaire_store.answer_store.get_answers_by_answer_id(
             answer_ids=answer_ids, list_item_id=self._current_location.list_item_id
@@ -228,6 +239,12 @@ class Question(BlockHandler):
                         form_data, list_item_id
                     )
                     dynamic_answers = True
+                elif item in self._schema.get_answer_ids_for_question(
+                    self.rendered_block["question"]
+                ):
+                    form_data = {item: self.form.data[item]}
+                    self.questionnaire_store_updater.update_answers(form_data)
+
         if not dynamic_answers:
             self.questionnaire_store_updater.update_answers(self.form.data)
         self.questionnaire_store_updater.update_progress_for_dependent_sections()
