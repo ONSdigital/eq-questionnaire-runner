@@ -17,9 +17,9 @@
     <p>{{ _("To access this page you need to <a href='{url}'>re-enter your access code</a>.").format(url = other_logout_url) }}</p>
 
   {% else %}
-    <h2>Business surveys</h2>
+    <h2>{{ _("Business surveys") }}</h2>
     <p>{{ _("If you are completing a business survey, you need to sign back in to <a href='{url}'>your account</a>.").format(url = business_logout_url) }}</p>
-    <h2>All other surveys</h2>
+    <h2>{{ _("All other surveys") }}</h2>
     <p>{{ _("If you started your survey using an access code, you need to <a href='{url}'>re-enter your code</a>.").format(url = other_logout_url) }}</p>
   {% endif %}
 {% endblock %}
