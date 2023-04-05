@@ -17,12 +17,10 @@
     })
   }}
 
-  {% if redirect_url %}
-    {% if (survey_type in SURVEY_TYPES_BUSINESS or survey_type in SURVEY_TYPES_DEFAULT) %}
-        <p>{{ _("To find further information or resume the survey, <a href='{url}'>return to My Account</a>.").format(url = redirect_url) }}</p>
-    {% elif (survey_type in SURVEY_TYPES_SOCIAL or survey_type in SURVEY_TYPES_HEALTH) %}
-        <p>{{ _("To resume the survey, <a href='{url}'>re-enter your access code</a>.").format(url = redirect_url) }}</p>
-    {% endif %}
+  {% if (survey_type in SURVEY_TYPES_BUSINESS or survey_type in SURVEY_TYPES_DEFAULT) %}
+      <p>{{ _("To find further information or resume the survey, <a href='{url}'>return to My Account</a>.").format(url = redirect_url) }}</p>
+  {% elif (survey_type in SURVEY_TYPES_SOCIAL or survey_type in SURVEY_TYPES_HEALTH) %}
+      <p>{{ _("To resume the survey, <a href='{url}'>re-enter your access code</a>.").format(url = redirect_url) }}</p>
   {% endif %}
 
 {% endblock %}
