@@ -17,6 +17,7 @@ from app.globals import get_session_store, get_session_timeout_in_seconds
 from app.helpers.template_helpers import (
     DATA_LAYER_KEYS,
     get_survey_config,
+    get_survey_type,
     render_template,
 )
 from app.routes.errors import _render_error_page
@@ -182,17 +183,16 @@ def get_signed_out():
     if not cookie_session:
         return redirect(url_for("session.get_session_expired"))
 
-    business_survey_config = get_survey_config(theme=SurveyType.BUSINESS)
-    other_survey_config = get_survey_config(
-        theme=SurveyType.SOCIAL, base_url=ACCOUNT_SERVICE_BASE_URL_SOCIAL
+    survey_type = get_survey_type()
+    survey_config = get_survey_config(theme=survey_type)
+    redirect_url = (
+        survey_config.account_service_todo_url
+        if survey_type is SurveyType.BUSINESS
+        else survey_config.account_service_log_out_url
     )
-
-    business_logout_url = business_survey_config.account_service_todo_url
-    other_logout_url = other_survey_config.account_service_log_out_url
     return render_template(
         template="signed-out",
-        business_logout_url=business_logout_url,
-        other_logout_url=other_logout_url,
+        redirect_url=redirect_url,
     )
 
 
