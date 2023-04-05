@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-05 08:50+0100\n"
+"POT-Creation-Date: 2023-04-05 09:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -923,7 +923,7 @@ msgstr ""
 #: templates/signed-out.html:23
 msgid ""
 "To find further information or resume the survey, <a href='{url}'>return "
-"to your account</a>."
+"to My Account</a>."
 msgstr ""
 
 #: templates/signed-out.html:29
