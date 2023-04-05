@@ -51,6 +51,7 @@ describe("Save sign out / Exit", () => {
 
   it("Given a I have started a social questionnaire, when I select save and sign out, then I am redirected to the signed out page and the correct access code link is shown", async () => {
     await browser.openQuestionnaire("test_theme_social.json", { version: "v2", theme: "social" });
+    await expect(await $(SubmitPage.saveSignOut()).getAttribute("href")).to.contain("/sign-out?internal_redirect=True");
     await $(SubmitPage.saveSignOut()).click();
     await expect(await browser.getUrl()).to.contain("/signed-out");
     await expect(await $("body").getHTML()).to.contain("Your progress has been saved");
@@ -60,6 +61,7 @@ describe("Save sign out / Exit", () => {
   it("Given a I have started a business questionnaire, when I select save and sign out, then I am redirected to the signed out page and the correct access code link is shown", async () => {
     await browser.openQuestionnaire("test_introduction.json");
     await $(IntroductionPage.getStarted()).click();
+    await expect(await $(IntroInterstitialPage.saveSignOut()).getAttribute("href")).to.contain("/sign-out?internal_redirect=True");
     await $(IntroInterstitialPage.saveSignOut()).click();
     await expect(await browser.getUrl()).to.contain("/signed-out");
     await expect(await $("body").getHTML()).to.contain("Your progress has been saved");
