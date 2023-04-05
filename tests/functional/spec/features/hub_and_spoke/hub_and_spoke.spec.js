@@ -40,7 +40,7 @@ describe("Feature: Hub and Spoke", () => {
 
       const expectedUrl = await browser.getUrl();
 
-      await expect(expectedUrl).to.contain("/surveys/todo");
+      await expect(expectedUrl).to.contain("/signed-out");
     });
 
     it("When a user views the Hub, Then the page title should be Choose another section to complete", async () => {
