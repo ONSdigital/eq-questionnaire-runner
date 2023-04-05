@@ -189,8 +189,7 @@ def get_signed_out():
     survey_config = get_survey_config(theme=survey_type)
     redirect_url = (
         survey_config.account_service_todo_url
-        if survey_type is SurveyType.BUSINESS
-        else survey_config.account_service_log_out_url
+        or survey_config.account_service_log_out_url
     )
     return render_template(
         template="signed-out",
