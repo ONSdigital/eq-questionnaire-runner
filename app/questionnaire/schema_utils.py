@@ -1,4 +1,4 @@
-from typing import Any, Generator, Mapping, Iterable
+from typing import Any, Generator, Iterable, Mapping
 
 
 def find_pointers_containing(input_data: Mapping[str, Any] | Iterable[Mapping], search_key: str, pointer: str | None = None) -> Generator[str, None, None]:

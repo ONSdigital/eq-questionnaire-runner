@@ -7,7 +7,7 @@ from werkzeug.datastructures import ImmutableDict
 from app.data_models import AnswerValueTypes, QuestionnaireStore
 from app.data_models.answer_store import Answer
 from app.data_models.progress_store import CompletionStatus, SectionKeyType
-from app.data_models.relationship_store import RelationshipStore, RelationshipDict
+from app.data_models.relationship_store import RelationshipDict, RelationshipStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import AnswerDependent
