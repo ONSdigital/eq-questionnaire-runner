@@ -22,7 +22,11 @@ logger = get_logger()
 SCHEMA_DIR = "schemas"
 LANGUAGE_CODES = ("en", "cy")
 
-LANGUAGES_MAP = {"test_language": [["en", "cy"]]}
+LANGUAGES_MAP = {
+    "test_language": [["en", "cy"]],
+    "cris_0001": [["en", "cy"]],
+    "phm_0001": [["en", "cy"]],
+}
 
 SCHEMA_REQUEST_MAX_BACKOFF = 0.2
 SCHEMA_REQUEST_MAX_RETRIES = 2  # Totals no. of request should be 3. The initial request + SCHEMA_REQUEST_MAX_RETRIES

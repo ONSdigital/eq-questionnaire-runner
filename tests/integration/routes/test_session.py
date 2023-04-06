@@ -3,11 +3,15 @@ from datetime import datetime, timedelta, timezone
 
 from freezegun import freeze_time
 
+from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
+from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.utilities.json import json_loads
 from tests.integration.integration_test_case import IntegrationTestCase
 
 TIME_TO_FREEZE = datetime(2020, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
 EQ_SESSION_TIMEOUT_SECONDS = 45 * 60
+BUSINESS_URL = ACCOUNT_SERVICE_BASE_URL
+SOCIAL_URL = ACCOUNT_SERVICE_BASE_URL_SOCIAL
 
 
 class TestSession(IntegrationTestCase):
@@ -30,10 +34,10 @@ class TestSession(IntegrationTestCase):
         self.get("/session-expired")
         self.assertInBody("Sorry, you need to sign in again")
         self.assertInBody(
-            '<p>If you are completing a business survey, you need to sign back in to <a href="https://surveys.ons.gov.uk/sign-in/logout">your account</a>.</p>'
+            f'<p>If you are completing a business survey, you need to sign back in to <a href="{BUSINESS_URL}/sign-in/logout">your account</a>.</p>'
         )
         self.assertInBody(
-            '<p>If you started your survey using an access code, you need to <a href="https://start.surveys.ons.gov.uk/en/start/">re-enter your code</a>.</p>'
+            f'<p>If you started your survey using an access code, you need to <a href="{SOCIAL_URL}/{DEFAULT_LANGUAGE_CODE}/start/">re-enter your code</a>.</p>'
         )
 
     def test_session_jti_token_expired(self):
@@ -45,7 +49,8 @@ class TestSession(IntegrationTestCase):
         self.assertStatusOK()
 
     def test_head_request_on_session_signed_out(self):
-        self.head("/signed-out")
+        self.launchSurvey("test_introduction")
+        self.get("/signed-out")
         self.assertStatusOK()
 
     @freeze_time(TIME_TO_FREEZE)
