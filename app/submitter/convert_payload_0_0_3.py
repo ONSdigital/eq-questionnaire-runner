@@ -1,4 +1,4 @@
-from typing import Mapping, Optional
+from typing import Mapping
 
 from app.data_models import Answer, ListStore
 from app.data_models.answer_store import AnswerStore
@@ -109,7 +109,7 @@ def add_relationships_unrelated_answers(
     section_id: str,
     relationships_block: Mapping,
     answers_payload: AnswerStore,
-) -> Optional[RelationshipStore]:
+) -> RelationshipStore | None:
     relationships_answer_id = schema.get_first_answer_id_for_block(
         relationships_block["id"]
     )

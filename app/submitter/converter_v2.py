@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Iterable, Mapping, Optional, OrderedDict, Union
+from typing import Any, Iterable, Mapping, OrderedDict
 
 from structlog import get_logger
 
@@ -16,7 +16,7 @@ from app.submitter.convert_payload_0_0_3 import convert_answers_to_payload_0_0_3
 
 logger = get_logger()
 
-MetadataType = Mapping[str, Optional[Union[str, list]]]
+MetadataType = Mapping[str, str | list | None]
 
 
 class DataVersionError(Exception):
@@ -116,7 +116,7 @@ def get_payload_data(
     metadata: MetadataProxy,
     response_metadata: Mapping,
     progress_store: ProgressStore,
-) -> Union[OrderedDict[str, Any], dict[str, list[Any]]]:
+) -> OrderedDict[str, Any] | dict[str, list[Any]]:
     if schema.json["data_version"] == "0.0.1":
         return convert_answers_to_payload_0_0_1(
             metadata=metadata,

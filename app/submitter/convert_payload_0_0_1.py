@@ -1,6 +1,6 @@
 from collections import OrderedDict
 from datetime import datetime, timezone
-from typing import Any, Mapping, Optional, Union
+from typing import Any, Mapping
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -12,7 +12,7 @@ from app.questionnaire.location import Location
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.variants import choose_question_to_display
 
-MetadataType = Mapping[str, Union[str, int, list]]
+MetadataType = Mapping[str, str | int | list]
 
 
 # pylint: disable=too-many-locals,too-many-nested-blocks
@@ -154,7 +154,7 @@ def _get_checkbox_answer_data(
     return checkbox_answer_data
 
 
-def _encode_value(value: AnswerValueTypes) -> Optional[str]:
+def _encode_value(value: AnswerValueTypes) -> str | None:
     if isinstance(value, str):
         if value == "":
             return None

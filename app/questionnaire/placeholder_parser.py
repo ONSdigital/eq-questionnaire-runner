@@ -1,3 +1,4 @@
+from __future__ import annotations
 from decimal import Decimal
 from typing import TYPE_CHECKING, Any, Mapping, MutableMapping, Sequence
 
@@ -41,7 +42,7 @@ class PlaceholderParser:
         metadata: MetadataProxy | None,
         response_metadata: Mapping,
         schema: QuestionnaireSchema,
-        renderer: "PlaceholderRenderer",
+        renderer: PlaceholderRenderer,
         progress_store: ProgressStore,
         list_item_id: str | None = None,
         location: Location | RelationshipLocation | None = None,

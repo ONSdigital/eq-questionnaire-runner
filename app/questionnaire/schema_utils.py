@@ -16,7 +16,7 @@ def find_pointers_containing(input_data: Mapping[str, Any] | Iterable[Mapping], 
         for k, v in input_data.items():
             if (isinstance(v, dict)) and search_key in v:
                 yield pointer + "/" + k if pointer else "/" + k
-            elif isinstance(v, (list, tuple)):
+            elif isinstance(v, (list, tuple, dict)):
                 yield from find_pointers_containing(
                     v, search_key, pointer + "/" + k if pointer else "/" + k
                 )

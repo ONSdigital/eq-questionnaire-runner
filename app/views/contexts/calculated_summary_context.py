@@ -158,7 +158,7 @@ class CalculatedSummaryContext(Context):
         """
         Evaluates questions in a block and removes any questions not containing a relevant answer
         """
-        transformed_block: ImmutableDict = transform_variants(
+        transformed_block: ImmutableDict[str, Any] = transform_variants(
             block,
             self._schema,
             self._metadata,

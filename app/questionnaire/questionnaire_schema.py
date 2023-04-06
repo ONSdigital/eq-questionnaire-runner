@@ -732,7 +732,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return placeholder_string
 
     @staticmethod
-    def get_all_questions_for_block(block: Mapping) -> list[ImmutableDict]:
+    def get_all_questions_for_block(block: Mapping[str, Any]) -> list[ImmutableDict]:
         all_questions: list[ImmutableDict] = []
         if block:
             if block.get("question"):
@@ -781,7 +781,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         )
 
     def get_values_for_key(
-        self, block: Mapping, key: str, ignore_keys: list[str] | None = None
+        self, block: Mapping[str, Any], key: str, ignore_keys: list[str] | None = None
     ) -> Generator:
         ignore_keys = ignore_keys or []
         for k, v in block.items():

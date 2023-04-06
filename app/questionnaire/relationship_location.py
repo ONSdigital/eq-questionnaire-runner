@@ -14,7 +14,7 @@ class RelationshipLocation:
     list_item_id: str
     to_list_item_id: str | None = None
 
-    def for_json(self) -> Mapping:
+    def for_json(self) -> Mapping[str, Any]:
         attributes = vars(self)
         return {k: v for k, v in attributes.items() if v is not None}
 

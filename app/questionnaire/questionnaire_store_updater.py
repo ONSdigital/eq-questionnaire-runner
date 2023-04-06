@@ -1,6 +1,6 @@
 from collections import defaultdict, namedtuple
 from itertools import combinations
-from typing import Any, Dict, Iterable, Mapping, Tuple
+from typing import Any, Iterable, Mapping
 from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerValueTypes, QuestionnaireStore
@@ -18,7 +18,7 @@ DependentSection = namedtuple("DependentSection", "section_id list_item_id is_co
 class QuestionnaireStoreUpdater:
     """Component responsible for any actions that need to happen as a result of updating the questionnaire_store"""
 
-    EMPTY_ANSWER_VALUES: Tuple = (None, [], "", {})
+    EMPTY_ANSWER_VALUES: tuple = (None, [], "", {})
 
     def __init__(
         self,
@@ -61,6 +61,7 @@ class QuestionnaireStoreUpdater:
         relationships_answer_id: str,
     ) -> None:
         self._answer_store.add_or_update(
+            # serialize returns a list of typed dicts, so it is a valid answer type
             Answer(relationships_answer_id, relationship_store.serialize())  # type: ignore
         )
 
@@ -118,11 +119,11 @@ class QuestionnaireStoreUpdater:
         for answer_id in answer_ids:
             self._answer_store.remove_answer(answer_id, list_item_id=list_item_id)
 
-    def add_primary_person(self, list_name: str) -> str | None:
+    def add_primary_person(self, list_name: str) -> str:
         self.remove_completed_relationship_locations_for_list_name(list_name)
 
-        if self._list_store[list_name].primary_person:
-            return self._list_store[list_name].primary_person
+        if primary_person := self._list_store[list_name].primary_person:
+            return primary_person
 
         # If a primary person was initially answered negatively, then changed to positive,
         # the location must be removed from the progress store.
@@ -183,7 +184,7 @@ class QuestionnaireStoreUpdater:
             return
 
         same_name_items = set()
-        people_names: Dict[str, list] = {}
+        people_names: dict[str, str] = {}
 
         list_model = self._questionnaire_store.list_store[list_name]
 
@@ -197,12 +198,12 @@ class QuestionnaireStoreUpdater:
             if matching_list_item_id := people_names.get(current_list_item_name):
                 same_name_items |= {current_list_item_id, matching_list_item_id}
             else:
-                people_names[current_list_item_name] = current_list_item_id  # type: ignore
+                people_names[current_list_item_name] = current_list_item_id
 
         list_model.same_name_items = list(same_name_items)  # type: ignore
 
     def remove_relationship_answers_for_list_item_id(
-        self, list_item_id: str, answers: list
+        self, list_item_id: str, answers: list[Any]
     ) -> None:
         for answer in answers:
             answers_to_keep = [

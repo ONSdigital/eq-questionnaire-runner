@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import TYPE_CHECKING, Mapping, Sequence
 
 from werkzeug.datastructures import MultiDict
@@ -16,7 +17,7 @@ def get_block_ids_for_calculated_summary_dependencies(
     schema: QuestionnaireSchema,
     location: Location | RelationshipLocation,
     progress_store: ProgressStore,
-    path_finder: "PathFinder",
+    path_finder: PathFinder,
     data: MultiDict | Mapping | Sequence,
     sections_to_ignore: list | None = None,
 ) -> dict[tuple, tuple[str, ...]]:

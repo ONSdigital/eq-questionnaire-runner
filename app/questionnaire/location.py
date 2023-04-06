@@ -32,7 +32,7 @@ class Location:
         return hash(frozenset(self.__dict__.values()))
 
     @classmethod
-    def from_dict(cls, location_dict: Mapping) -> Location:
+    def from_dict(cls, location_dict: Mapping[str, str]) -> Location:
         section_id = location_dict["section_id"]
         block_id = location_dict["block_id"]
         list_item_id = location_dict.get("list_item_id")

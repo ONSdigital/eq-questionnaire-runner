@@ -1,4 +1,4 @@
-from typing import Mapping, Iterable
+from typing import Mapping, Iterable, Any
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -79,10 +79,10 @@ class PathFinder:
         routing_path_block_ids: list[str],
         section: ImmutableDict,
         when_rules_block_dependencies: list[str],
-    ) -> list[Mapping] | None:
+    ) -> list[Mapping[str, Any]] | None:
         # :TODO: Fix group skipping in its own section. Routing path will be empty and therefore not checked
         if section:
-            not_skipped_blocks: list[Mapping] = []
+            not_skipped_blocks: list[Mapping[str, Any]] = []
             for group in section["groups"]:
                 if "skip_conditions" in group:
                     skip_conditions = group.get("skip_conditions")
@@ -98,7 +98,7 @@ class PathFinder:
             return not_skipped_blocks
 
     @staticmethod
-    def _block_index_for_block_id(blocks: Iterable[Mapping], block_id: str) -> int | None:
+    def _block_index_for_block_id(blocks: Iterable[Mapping[str, Any]], block_id: str) -> int | None:
         return next(
             (index for (index, block) in enumerate(blocks) if block["id"] == block_id),
             None,
@@ -106,7 +106,7 @@ class PathFinder:
 
     def _build_routing_path_block_ids(
         self,
-        blocks: list[Mapping],
+        blocks: list[Mapping[str, Any]],
         current_location: Location,
         when_rules_block_dependencies: list[str],
     ) -> list[str]:
@@ -175,7 +175,7 @@ class PathFinder:
     def _evaluate_routing_rules(
         self,
         this_location: Location,
-        blocks: Iterable[Mapping],
+        blocks: Iterable[Mapping[str, Any]],
         routing_rules: Iterable[Mapping],
         block_index: int,
         routing_path_block_ids: list[str],

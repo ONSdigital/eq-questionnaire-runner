@@ -12,7 +12,7 @@ from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 
 
-# Won't return none
+# validation should ensure the variant exists when this is called
 def choose_variant(  # type: ignore
     block: Mapping[str, Any],
     schema: QuestionnaireSchema,
@@ -26,7 +26,7 @@ def choose_variant(  # type: ignore
     progress_store: ProgressStore,
 ) -> Mapping[str, Any]:
     if block.get(single_key):
-        # can assume this is a dictionary
+        # the key passed in will be for a dictionary
         return block[single_key]  # type: ignore
     for variant in block.get(variants_key, []):
         when_rules = variant["when"]
@@ -42,7 +42,7 @@ def choose_variant(  # type: ignore
         )
 
         if when_rule_evaluator.evaluate(when_rules):
-            # the variant item will always be a question or content dictionary
+            # question/content key is for a dictionary
             return variant[single_key]  # type: ignore
 
 
@@ -103,7 +103,7 @@ def transform_variants(
     list_store: ListStore,
     current_location: Location | RelationshipLocation,
     progress_store: ProgressStore,
-) -> ImmutableDict:
+) -> ImmutableDict[str, Any]:
     output_block = dict(block)
     if "question_variants" in block:
         question = choose_question_to_display(
