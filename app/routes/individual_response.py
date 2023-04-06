@@ -4,16 +4,19 @@ from flask_login import current_user, login_required
 from itsdangerous import BadSignature
 from structlog import contextvars, get_logger
 from werkzeug.exceptions import BadRequest
+from werkzeug.wrappers.response import Response
 
 from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
 )
+from app.data_models import QuestionnaireStore
 from app.globals import get_metadata, get_questionnaire_store, get_session_store
 from app.helpers import url_safe_serializer
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store
 from app.helpers.template_helpers import render_template
+from app.questionnaire import QuestionnaireSchema
 from app.utilities.schema import load_schema_from_metadata
 from app.views.handlers.individual_response import (
     IndividualResponseChangeHandler,
@@ -35,7 +38,7 @@ individual_response_blueprint = Blueprint(
 
 @login_required
 @individual_response_blueprint.before_request
-def before_individual_response_request():
+def before_individual_response_request() -> Response | None:
     if request.method == "OPTIONS":
         return None
 
@@ -77,9 +80,10 @@ def before_individual_response_request():
 @individual_response_blueprint.route("/", methods=["GET"])
 @with_questionnaire_store
 @with_schema
-def request_individual_response(schema, questionnaire_store):
-    language_code = get_session_store().session_data.language_code
-    list_item_id = request.args.get("list_item_id")
+def request_individual_response(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore) -> str:
+    # Type ignore: @login_required via Blueprint & @with_schema used together guarantee that sessions_store and session_data are not None
+    language_code: str | None = get_session_store().session_data.language_code  # type: ignore
+    list_item_id: str | None = request.args.get("list_item_id")
 
     individual_response_handler = IndividualResponseHandler(
         schema=schema,

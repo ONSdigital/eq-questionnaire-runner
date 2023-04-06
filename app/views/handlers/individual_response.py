@@ -7,15 +7,17 @@ from flask import current_app, redirect
 from flask.helpers import url_for
 from flask_babel import lazy_gettext
 from itsdangerous import BadSignature
+from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.exceptions import BadRequest, NotFound
 
-from app.data_models import CompletionStatus, FulfilmentRequest
+from app.data_models import CompletionStatus, FulfilmentRequest, QuestionnaireStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.forms.questionnaire_form import generate_form
 from app.forms.validators import sanitise_mobile_number
 from app.helpers import url_safe_serializer
 from app.helpers.template_helpers import render_template
 from app.publisher.exceptions import PublicationFailed
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.router import Router
 from app.views.contexts.question import build_question_context
@@ -81,14 +83,14 @@ class IndividualResponseHandler:
             {
                 "placeholder": "person_name_possessive",
                 "transforms": name_transforms
-                + [
-                    {
-                        "arguments": {
-                            "string_to_format": {"source": "previous_transform"}
-                        },
-                        "transform": "format_possessive",
-                    }
-                ],
+                              + [
+                                  {
+                                      "arguments": {
+                                          "string_to_format": {"source": "previous_transform"}
+                                      },
+                                      "transform": "format_possessive",
+                                  }
+                              ],
             }
         ]
 
@@ -101,17 +103,17 @@ class IndividualResponseHandler:
 
     def __init__(
         self,
-        schema,
-        questionnaire_store,
-        language,
-        request_args,
-        form_data,
-        list_item_id=None,
+        schema: QuestionnaireSchema,
+        questionnaire_store: QuestionnaireStore,
+        language: str | None,
+        request_args: dict[str, str] | None,
+        form_data: ImmutableMultiDict[str, str],
+        list_item_id: str | None = None,
     ):
         self._schema = schema
         self._questionnaire_store = questionnaire_store
         self._language = language
-        self._request_args = request_args or {}
+        self._request_args: dict[str, str] = request_args or {}
         self._form_data = form_data
         self._answers = None
         self._list_item_id = list_item_id

@@ -100,7 +100,7 @@ def get_allowed_languages(schema_name: str, launch_language: str):
 
 
 def load_schema_from_metadata(
-    metadata: MetadataProxy, *, language_code: str
+    metadata: MetadataProxy, *, language_code: str | None
 ) -> QuestionnaireSchema:
     if schema_url := metadata.schema_url:
         # :TODO: Remove before production uses schema_url
@@ -132,7 +132,8 @@ def load_schema_from_metadata(
     )
 
 
-def load_schema_from_name(schema_name: str, language_code: str = DEFAULT_LANGUAGE_CODE) -> QuestionnaireSchema:
+def load_schema_from_name(schema_name: str, language_code: str | None) -> QuestionnaireSchema:
+    language_code = language_code or DEFAULT_LANGUAGE_CODE
     return _load_schema_from_name(schema_name, language_code)
 
 
@@ -188,7 +189,7 @@ def _load_schema_file(schema_name: str, language_code: str) -> Any:
 
 
 @lru_cache(maxsize=None)
-def load_schema_from_url(schema_url: str, language_code: str) -> QuestionnaireSchema:
+def load_schema_from_url(schema_url: str, language_code: str | None) -> QuestionnaireSchema:
     language_code = language_code or DEFAULT_LANGUAGE_CODE
     pid = os.getpid()
     logger.info(

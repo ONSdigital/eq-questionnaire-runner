@@ -35,7 +35,7 @@ def with_schema(function: Callable[Concatenate[QuestionnaireSchema, P], T]) -> C
         language_code = session_store.session_data.language_code
 
         schema = load_schema_from_metadata(
-            metadata=metadata, language_code=language_code  # type: ignore
+            metadata=metadata, language_code=language_code
         )
         return function(schema, *args, **kwargs)
 
