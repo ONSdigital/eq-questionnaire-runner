@@ -15,12 +15,7 @@ ListDictAnswerEscaped = list[DictAnswerEscaped]
 
 AnswerValueTypes = Union[str, int, Decimal, DictAnswer, ListAnswer, ListDictAnswer]
 AnswerValueEscapedTypes = Union[
-    Markup,
-    int,
-    Decimal,
-    DictAnswerEscaped,
-    ListAnswerEscaped,
-    ListDictAnswerEscaped
+    Markup, int, Decimal, DictAnswerEscaped, ListAnswerEscaped, ListDictAnswerEscaped
 ]
 
 

@@ -98,7 +98,9 @@ class PathFinder:
             return not_skipped_blocks
 
     @staticmethod
-    def _block_index_for_block_id(blocks: Iterable[Mapping[str, Any]], block_id: str) -> int | None:
+    def _block_index_for_block_id(
+        blocks: Iterable[Mapping[str, Any]], block_id: str
+    ) -> int | None:
         return next(
             (index for (index, block) in enumerate(blocks) if block["id"] == block_id),
             None,

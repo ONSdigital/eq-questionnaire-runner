@@ -448,9 +448,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 return remove_block_id
 
     def get_individual_response_list(self) -> str | None:
-        list_name: str | None = self.json.get("individual_response", {}).get(
-            "for_list"
-        )
+        list_name: str | None = self.json.get("individual_response", {}).get("for_list")
         return list_name
 
     def get_individual_response_show_on_hub(self) -> bool:
@@ -493,9 +491,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         if repeat := self.get_repeat_for_section(section_id):
             return repeat.get("for_list")
 
-    def get_repeating_title_for_section(
-        self, section_id: str
-    ) -> ImmutableDict | None:
+    def get_repeating_title_for_section(self, section_id: str) -> ImmutableDict | None:
         if repeat := self.get_repeat_for_section(section_id):
             title: ImmutableDict = repeat["title"]
             return title
@@ -610,9 +606,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             ]
             return add_block
 
-    def get_answer_ids_for_list_items(
-        self, list_collector_id: str
-    ) -> list[str] | None:
+    def get_answer_ids_for_list_items(self, list_collector_id: str) -> list[str] | None:
         """
         Get answer ids used to add items to a list.
         """

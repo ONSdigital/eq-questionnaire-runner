@@ -116,9 +116,7 @@ class ValueSourceResolver:
 
         return answer_value
 
-    def _resolve_list_value_source(
-        self, value_source: Mapping
-    ) -> int | str | list:
+    def _resolve_list_value_source(self, value_source: Mapping) -> int | str | list:
         identifier = value_source["identifier"]
         list_model: ListModel = self.list_store[identifier]
 

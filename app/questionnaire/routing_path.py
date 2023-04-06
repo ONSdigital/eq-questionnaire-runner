@@ -4,7 +4,13 @@ from typing import Iterator, SupportsIndex
 class RoutingPath:
     """Holds a list of block_ids and has section_id, list_item_id and list_name attributes"""
 
-    def __init__(self, block_ids: list[str], section_id: str, list_item_id: str | None = None, list_name: str | None = None):
+    def __init__(
+        self,
+        block_ids: list[str],
+        section_id: str,
+        list_item_id: str | None = None,
+        list_name: str | None = None,
+    ):
         self.block_ids = tuple(block_ids)
         self.section_id = section_id
         self.list_item_id = list_item_id

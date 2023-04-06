@@ -1,7 +1,11 @@
 from typing import Any, Generator, Iterable, Mapping
 
 
-def find_pointers_containing(input_data: Mapping[str, Any] | Iterable[Mapping], search_key: str, pointer: str | None = None) -> Generator[str, None, None]:
+def find_pointers_containing(
+    input_data: Mapping[str, Any] | Iterable[Mapping],
+    search_key: str,
+    pointer: str | None = None,
+) -> Generator[str, None, None]:
     """
     Recursive function which lists pointers which contain a search key
 

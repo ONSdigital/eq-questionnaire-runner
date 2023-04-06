@@ -38,14 +38,18 @@ class RelationshipRouter:
     def get_last_location(self) -> RelationshipLocation:
         return self.path[-1]
 
-    def get_next_location(self, location: RelationshipLocation) -> RelationshipLocation | None:
+    def get_next_location(
+        self, location: RelationshipLocation
+    ) -> RelationshipLocation | None:
         try:
             location_index = self.path.index(location)
             return self.path[location_index + 1]
         except IndexError:
             return None
 
-    def get_previous_location(self, location: RelationshipLocation) -> RelationshipLocation | None:
+    def get_previous_location(
+        self, location: RelationshipLocation
+    ) -> RelationshipLocation | None:
         location_index = self.path.index(location)
         if not location_index:
             return None
@@ -56,7 +60,7 @@ class RelationshipRouter:
         for from_index, from_list_item_id in enumerate(self.list_item_ids):
             path += self._individual_relationships_routing_path(
                 from_list_item_id=from_list_item_id,
-                to_list_item_ids=self.list_item_ids[from_index + 1:],
+                to_list_item_ids=self.list_item_ids[from_index + 1 :],
             )
 
         return path
@@ -86,7 +90,8 @@ class RelationshipRouter:
                 unrelated_block_in_path = True
                 unrelated_answer = self.answer_store.get_answer(
                     # unrelated_answer_id will exist if the unrelated_block_id does
-                    self.unrelated_answer_id, from_list_item_id  # type: ignore
+                    self.unrelated_answer_id,
+                    from_list_item_id,  # type: ignore
                 )
                 # unrelated_no_answer_values exists when the unrelated answer does
                 if unrelated_answer and unrelated_answer.value in self.unrelated_no_answer_values:  # type: ignore

@@ -110,13 +110,17 @@ class QuestionnaireStoreUpdater:
                     location = Location(section_id, collector["id"])
                     self.add_completed_location(location)
 
-    def _get_relationship_collectors_by_list_name(self, list_name: str) -> list[ImmutableDict] | None:
+    def _get_relationship_collectors_by_list_name(
+        self, list_name: str
+    ) -> list[ImmutableDict] | None:
         return self._schema.get_relationship_collectors_by_list_name(list_name)
 
     def _get_relationships_in_answer_store(self, relationship_answer_id: str) -> list[RelationshipDict]:  # type: ignore
         return self._answer_store.get_answer(relationship_answer_id).value  # type: ignore
 
-    def remove_answers(self, answer_ids: list[str], list_item_id: str | None = None) -> None:
+    def remove_answers(
+        self, answer_ids: list[str], list_item_id: str | None = None
+    ) -> None:
         for answer_id in answer_ids:
             self._answer_store.remove_answer(answer_id, list_item_id=list_item_id)
 
@@ -405,5 +409,7 @@ class QuestionnaireStoreUpdater:
                     DependentSection(section_id, list_item_id, False)
                 )
 
-    def started_section_keys(self, section_ids: Iterable[str] | None = None) -> list[SectionKeyType]:
+    def started_section_keys(
+        self, section_ids: Iterable[str] | None = None
+    ) -> list[SectionKeyType]:
         return self._progress_store.started_section_keys(section_ids)
