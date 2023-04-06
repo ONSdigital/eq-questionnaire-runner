@@ -90,8 +90,8 @@ class RelationshipRouter:
                 unrelated_block_in_path = True
                 unrelated_answer = self.answer_store.get_answer(
                     # unrelated_answer_id will exist if the unrelated_block_id does
-                    self.unrelated_answer_id,
-                    from_list_item_id,  # type: ignore
+                    self.unrelated_answer_id,  # type: ignore
+                    from_list_item_id,
                 )
                 # unrelated_no_answer_values exists when the unrelated answer does
                 if unrelated_answer and unrelated_answer.value in self.unrelated_no_answer_values:  # type: ignore
