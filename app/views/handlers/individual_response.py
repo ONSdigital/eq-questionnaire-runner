@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from functools import cached_property
-from typing import List, Mapping, Optional
+from typing import Mapping, Optional
 from uuid import uuid4
 
 from flask import current_app, redirect
@@ -11,6 +11,7 @@ from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.exceptions import BadRequest, NotFound
 
 from app.data_models import CompletionStatus, FulfilmentRequest, QuestionnaireStore
+from app.data_models.list_store import ListModel
 from app.data_models.metadata_proxy import MetadataProxy
 from app.forms.questionnaire_form import generate_form
 from app.forms.validators import sanitise_mobile_number
@@ -41,7 +42,7 @@ class IndividualResponsePostalDeadlinePast(Exception):
 
 class IndividualResponseHandler:
     @staticmethod
-    def _person_name_transforms(list_name) -> List[Mapping]:
+    def _person_name_transforms(list_name: str) -> list[Mapping]:
         return [
             {
                 "transform": "contains",
@@ -66,7 +67,7 @@ class IndividualResponseHandler:
         ]
 
     @staticmethod
-    def _person_name_placeholder(list_name) -> List[Mapping]:
+    def _person_name_placeholder(list_name: str) -> list[Mapping]:
         return [
             {
                 "placeholder": "person_name",
@@ -77,8 +78,8 @@ class IndividualResponseHandler:
         ]
 
     @staticmethod
-    def _person_name_placeholder_possessive(list_name) -> List[Mapping]:
-        name_transforms = IndividualResponseHandler._person_name_transforms(list_name)
+    def _person_name_placeholder_possessive(list_name: str) -> list[Mapping]:
+        name_transforms: list[Mapping] = IndividualResponseHandler._person_name_transforms(list_name)
         return [
             {
                 "placeholder": "person_name_possessive",
@@ -95,7 +96,7 @@ class IndividualResponseHandler:
         ]
 
     @cached_property
-    def has_postal_deadline_passed(self):
+    def has_postal_deadline_passed(self) -> bool:
         individual_response_postal_deadline = current_app.config[
             "EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE"
         ]
@@ -127,7 +128,7 @@ class IndividualResponseHandler:
             raise NotFound
 
     @cached_property
-    def _list_model(self):
+    def _list_model(self) -> ListModel:
         return self._questionnaire_store.list_store[self._list_name]
 
     @cached_property
@@ -136,7 +137,7 @@ class IndividualResponseHandler:
             self._list_name, self._list_item_id
         )
 
-    def page_title(self, page_title):
+    def page_title(self, page_title: str) -> str:
         if self._list_item_id:
             page_title += ": " + lazy_gettext(
                 "Person {list_item_position}".format(  # pylint: disable=consider-using-f-string
