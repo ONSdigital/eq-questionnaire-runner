@@ -13,6 +13,7 @@ from app.questionnaire.router import Router
 DependentSection = namedtuple("DependentSection", "section_id list_item_id is_complete")
 
 
+# pylint: disable=too-many-public-methods
 class QuestionnaireStoreUpdater:
     """Component responsible for any actions that need to happen as a result of updating the questionnaire_store"""
 
@@ -327,23 +328,16 @@ class QuestionnaireStoreUpdater:
         """
         Captures a unique list of section ids that are dependents of the current section, for progress value sources.
         """
-        current_section_id = self._current_location.section_id
-        progress_dependencies_map = (
-            self._schema.when_rules_section_dependencies_by_section_for_progress_value_source
-        )
-        for section_dependency_id in progress_dependencies_map:
-            if current_section_id in progress_dependencies_map[section_dependency_id]:
-                if repeating_list := self._schema.get_repeating_list_for_section(
-                    section_dependency_id
-                ):
-                    for list_item_id in self._list_store[repeating_list].items:
-                        self.dependent_sections.add(
-                            DependentSection(section_dependency_id, list_item_id, None)
-                        )
-                else:
-                    self.dependent_sections.add(
-                        DependentSection(section_dependency_id, None, None)
-                    )
+        dependent_sections = [
+            section_key
+            for section_key, dependent_sections in self._schema.when_rules_section_dependencies_by_section_for_progress_value_source.items()
+            if any(
+                self._current_location.section_id in section_ids
+                for section_ids in dependent_sections
+            )
+        ]
+
+        self.update_section_dependencies(dependent_sections)
 
     def _capture_section_dependencies_progress_value_source_for_current_block(
         self,
@@ -351,23 +345,28 @@ class QuestionnaireStoreUpdater:
         """
         Captures a unique list of section ids that are dependents of the current block, for progress value sources.
         """
-        current_block_id = self._current_location.block_id
-        progress_dependencies_map = (
-            self._schema.when_rules_block_dependencies_by_section_for_progress_value_source
-        )
-        for section_dependency_id in progress_dependencies_map:
-            if current_block_id in progress_dependencies_map[section_dependency_id]:
-                if repeating_list := self._schema.get_repeating_list_for_section(
-                    section_dependency_id
-                ):
-                    for list_item_id in self._list_store[repeating_list].items:
-                        self.dependent_sections.add(
-                            DependentSection(section_dependency_id, list_item_id, None)
-                        )
-                else:
+        # Type ignore: block id will exist at this point
+        dependent_sections = [
+            section_key
+            for section_key, dependent_blocks in self._schema.when_rules_block_dependencies_by_section_for_progress_value_source.items()
+            if any(
+                self._current_location.block_id in block_ids  # type: ignore
+                for block_ids in dependent_blocks
+            )
+        ]
+        self.update_section_dependencies(dependent_sections)
+
+    def update_section_dependencies(self, dependent_sections: list) -> None:
+        for section_id in dependent_sections:
+            if repeating_list := self._schema.get_repeating_list_for_section(
+                section_id
+            ):
+                for list_item_id in self._list_store[repeating_list].items:
                     self.dependent_sections.add(
-                        DependentSection(section_dependency_id, None, None)
+                        DependentSection(section_id, list_item_id, None)
                     )
+            else:
+                self.dependent_sections.add(DependentSection(section_id, None, None))
 
     def update_answers(
         self, form_data: Mapping[str, Any], list_item_id: Optional[str] = None
