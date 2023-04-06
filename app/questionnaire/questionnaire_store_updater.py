@@ -1,6 +1,7 @@
 from collections import defaultdict, namedtuple
 from itertools import combinations
 from typing import Any, Iterable, Mapping
+
 from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerValueTypes, QuestionnaireStore

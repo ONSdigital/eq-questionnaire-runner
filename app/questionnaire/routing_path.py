@@ -1,5 +1,6 @@
 from typing import Iterator, SupportsIndex
 
+
 class RoutingPath:
     """Holds a list of block_ids and has section_id, list_item_id and list_name attributes"""
 
