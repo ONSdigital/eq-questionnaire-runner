@@ -8,8 +8,8 @@ from app.globals import get_metadata, get_session_store
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.utilities.schema import load_schema_from_metadata
 
-T = TypeVar('T')
-P = ParamSpec('P')
+T = TypeVar("T")
+P = ParamSpec("P")
 
 
 def with_schema(function: Callable[Concatenate[QuestionnaireSchema, P], T]) -> Callable[P, T]:

@@ -66,11 +66,7 @@ def _submit_data(user: User) -> bool:
     # Type ignore: The presence of an answer_store implicitly verifies that there must be metadata populated and thus can safely be used non-optionally.
     # Where 'type: ignore' has been used for metadata, it is because the invoked function expects a non-optional MetadataProxy.
     if questionnaire_store and questionnaire_store.answer_store:
-        answer_store = questionnaire_store.answer_store
         metadata = questionnaire_store.metadata
-        response_metadata = questionnaire_store.response_metadata
-        progress_store = questionnaire_store.progress_store
-        list_store = questionnaire_store.list_store
         submitted_at = datetime.now(timezone.utc)
         schema = load_schema_from_metadata(
             metadata=metadata, language_code=metadata.language_code  # type: ignore
@@ -78,17 +74,17 @@ def _submit_data(user: User) -> bool:
 
         router = Router(
             schema,
-            answer_store,
-            list_store,
-            progress_store,
-            metadata,
-            response_metadata,
+            questionnaire_store.answer_store,
+            questionnaire_store.list_store,
+            questionnaire_store.progress_store,
+            questionnaire_store.metadata,
+            questionnaire_store.response_metadata,
         )
         full_routing_path = router.full_routing_path()
 
         message: str = _get_converted_answers_message(
             full_routing_path,
-            metadata,  # type: ignore
+            questionnaire_store.metadata,  # type: ignore
             questionnaire_store,
             schema,
             submitted_at
@@ -100,15 +96,15 @@ def _submit_data(user: User) -> bool:
             KEY_PURPOSE_SUBMISSION
         )
 
-        additional_metadata = get_receipting_metadata(metadata)  # type: ignore
+        additional_metadata = get_receipting_metadata(questionnaire_store.metadata)  # type: ignore
 
         # Type ignore: Instance attribute 'eq' is a dict with key "submitter" with value of type GCSSubmitter
         submitter: GCSSubmitter = current_app.eq["submitter"]  # type: ignore
 
         sent = submitter.send_message(
             encrypted_message,
-            tx_id=metadata.tx_id,  # type: ignore
-            case_id=metadata.case_id,  # type: ignore
+            tx_id=questionnaire_store.metadata.tx_id,  # type: ignore
+            case_id=questionnaire_store.metadata.case_id,  # type: ignore
             **additional_metadata,
         )
 
