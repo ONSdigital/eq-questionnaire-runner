@@ -1,4 +1,4 @@
-from typing import Mapping, Any
+from typing import Any, Mapping
 
 from app.data_models import QuestionnaireStore
 from app.questionnaire import QuestionnaireSchema

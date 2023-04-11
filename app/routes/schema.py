@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, Response
+from flask import Blueprint, Response, jsonify
 
 from app.utilities.schema import get_schema_list, load_schema_from_name
 

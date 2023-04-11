@@ -5,7 +5,7 @@ from flask_login import current_user
 from flask_wtf.csrf import CSRFError
 from sdc.crypto.exceptions import InvalidTokenException
 from structlog import contextvars, get_logger
-from werkzeug.exceptions import BadRequestKeyError, HTTPException, NotFound, Forbidden
+from werkzeug.exceptions import BadRequestKeyError, Forbidden, HTTPException, NotFound
 
 from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
