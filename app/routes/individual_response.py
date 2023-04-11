@@ -81,7 +81,9 @@ def before_individual_response_request() -> Response | None:
 @individual_response_blueprint.route("/", methods=["GET"])
 @with_questionnaire_store
 @with_schema
-def request_individual_response(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore) -> str:
+def request_individual_response(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+) -> str:
     # Type ignore: @login_required via Blueprint & @with_schema used together guarantee that sessions_store and session_data are not None
     language_code: str | None = get_session_store().session_data.language_code  # type: ignore
     list_item_id: str | None = request.args.get("list_item_id")
@@ -101,7 +103,11 @@ def request_individual_response(schema: QuestionnaireSchema, questionnaire_store
 @individual_response_blueprint.route("/<list_item_id>/how", methods=["GET", "POST"])
 @with_questionnaire_store
 @with_schema
-def individual_response_how(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore, list_item_id: str) -> Response | str:
+def individual_response_how(
+    schema: QuestionnaireSchema,
+    questionnaire_store: QuestionnaireStore,
+    list_item_id: str,
+) -> Response | str:
     # Type ignore: @login_required via Blueprint & @with_schema used together guarantee that sessions_store and session_data are not None
     language_code: str | None = get_session_store().session_data.language_code  # type: ignore
     individual_response_handler = IndividualResponseHowHandler(
@@ -122,7 +128,11 @@ def individual_response_how(schema: QuestionnaireSchema, questionnaire_store: Qu
 @individual_response_blueprint.route("/<list_item_id>/change", methods=["GET", "POST"])
 @with_questionnaire_store
 @with_schema
-def individual_response_change(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore, list_item_id: str) -> Response | str:
+def individual_response_change(
+    schema: QuestionnaireSchema,
+    questionnaire_store: QuestionnaireStore,
+    list_item_id: str,
+) -> Response | str:
     # Type ignore: @login_required via Blueprint & @with_schema used together guarantee that sessions_store and session_data are not None
     language_code: str | None = get_session_store().session_data.language_code  # type: ignore
     individual_response_handler = IndividualResponseChangeHandler(
@@ -145,7 +155,11 @@ def individual_response_change(schema: QuestionnaireSchema, questionnaire_store:
 )
 @with_questionnaire_store
 @with_schema
-def individual_response_post_address_confirm(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore, list_item_id: str) -> Response | str:
+def individual_response_post_address_confirm(
+    schema: QuestionnaireSchema,
+    questionnaire_store: QuestionnaireStore,
+    list_item_id: str,
+) -> Response | str:
     # Type ignore: @login_required via Blueprint & @with_schema used together guarantee that sessions_store and session_data are not None
     language_code: str | None = get_session_store().session_data.language_code  # type: ignore
     try:
@@ -169,7 +183,9 @@ def individual_response_post_address_confirm(schema: QuestionnaireSchema, questi
 @individual_response_blueprint.route("/post/confirmation", methods=["GET", "POST"])
 @with_questionnaire_store
 @with_schema
-def individual_response_post_address_confirmation(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore) -> Response | str:
+def individual_response_post_address_confirmation(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+) -> Response | str:
     # Type ignore: @login_required via Blueprint & @with_schema used together guarantee that sessions_store and session_data are not None
     language_code: str | None = get_session_store().session_data.language_code  # type: ignore
     individual_response_handler = IndividualResponseHandler(
@@ -199,7 +215,9 @@ def individual_response_post_address_confirmation(schema: QuestionnaireSchema, q
 @individual_response_blueprint.route("/who", methods=["GET", "POST"])
 @with_questionnaire_store
 @with_schema
-def individual_response_who(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore) -> Response | str:
+def individual_response_who(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+) -> Response | str:
     # Type ignore: @login_required via Blueprint & @with_schema used together guarantee that sessions_store and session_data are not None
     language_code: str | None = get_session_store().session_data.language_code  # type: ignore
     individual_response_handler = IndividualResponseWhoHandler(
@@ -221,7 +239,11 @@ def individual_response_who(schema: QuestionnaireSchema, questionnaire_store: Qu
 )
 @with_questionnaire_store
 @with_schema
-def individual_response_text_message(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore, list_item_id: str) -> Response | str:
+def individual_response_text_message(
+    schema: QuestionnaireSchema,
+    questionnaire_store: QuestionnaireStore,
+    list_item_id: str,
+) -> Response | str:
     # Type ignore: @login_required via Blueprint & @with_schema used together guarantee that sessions_store and session_data are not None
     language_code: str | None = get_session_store().session_data.language_code  # type: ignore
     individual_response_handler = IndividualResponseTextHandler(
@@ -244,7 +266,11 @@ def individual_response_text_message(schema: QuestionnaireSchema, questionnaire_
 )
 @with_questionnaire_store
 @with_schema
-def individual_response_text_message_confirm(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore, list_item_id: str) -> Response | str:
+def individual_response_text_message_confirm(
+    schema: QuestionnaireSchema,
+    questionnaire_store: QuestionnaireStore,
+    list_item_id: str,
+) -> Response | str:
     # Type ignore: @login_required via Blueprint & @with_schema used together guarantee that sessions_store and session_data are not None
     language_code: str | None = get_session_store().session_data.language_code  # type: ignore
     individual_response_handler = IndividualResponseTextConfirmHandler(
@@ -265,7 +291,9 @@ def individual_response_text_message_confirm(schema: QuestionnaireSchema, questi
 @individual_response_blueprint.route("/text/confirmation", methods=["GET", "POST"])
 @with_questionnaire_store
 @with_schema
-def individual_response_text_message_confirmation(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore) -> Response | str:
+def individual_response_text_message_confirmation(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+) -> Response | str:
     # Type ignore: @login_required via Blueprint & @with_schema used together guarantee that sessions_store and session_data are not None
     language_code = get_session_store().session_data.language_code  # type: ignore
     individual_response_handler = IndividualResponseHandler(

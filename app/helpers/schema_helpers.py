@@ -12,7 +12,9 @@ T = TypeVar("T")
 P = ParamSpec("P")
 
 
-def with_schema(function: Callable[Concatenate[QuestionnaireSchema, P], T]) -> Callable[P, T]:
+def with_schema(
+    function: Callable[Concatenate[QuestionnaireSchema, P], T]
+) -> Callable[P, T]:
     """Adds the survey schema as the first argument to the function being wrapped.
     Use on flask request handlers or methods called by flask request handlers.
 
@@ -29,7 +31,11 @@ def with_schema(function: Callable[Concatenate[QuestionnaireSchema, P], T]) -> C
     @wraps(function)
     def wrapped_function(*args: P.args, **kwargs: P.kwargs) -> T:
         session_store = get_session_store()
-        if not session_store or not session_store.session_data or not (metadata := get_metadata(current_user)):
+        if (
+            not session_store
+            or not session_store.session_data
+            or not (metadata := get_metadata(current_user))
+        ):
             raise Unauthorized
 
         language_code = session_store.session_data.language_code

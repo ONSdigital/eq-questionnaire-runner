@@ -29,7 +29,9 @@ def dump_debug() -> str:
 @role_required("dumper")
 @with_questionnaire_store
 @with_schema
-def dump_routing(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore) -> tuple[str, int]:
+def dump_routing(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+) -> tuple[str, int]:
     router = Router(
         schema,
         questionnaire_store.answer_store,
@@ -56,7 +58,9 @@ def dump_routing(schema: QuestionnaireSchema, questionnaire_store: Questionnaire
 @role_required("dumper")
 @with_questionnaire_store
 @with_schema
-def dump_submission(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore) -> tuple[str, int]:
+def dump_submission(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+) -> tuple[str, int]:
     router = Router(
         schema,
         questionnaire_store.answer_store,

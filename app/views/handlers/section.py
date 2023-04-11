@@ -8,12 +8,14 @@ from app.views.contexts import SectionSummaryContext
 
 
 class SectionHandler:
-    def __init__(self,
-                 schema: QuestionnaireSchema,
-                 questionnaire_store: QuestionnaireStore,
-                 section_id: str,
-                 list_item_id: str | None,
-                 language: str):
+    def __init__(
+        self,
+        schema: QuestionnaireSchema,
+        questionnaire_store: QuestionnaireStore,
+        section_id: str,
+        list_item_id: str | None,
+        language: str,
+    ):
         self._schema = schema
         self._questionnaire_store = questionnaire_store
         self._section_id = section_id

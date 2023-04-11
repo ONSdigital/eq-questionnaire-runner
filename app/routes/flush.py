@@ -87,13 +87,11 @@ def _submit_data(user: User) -> bool:
             questionnaire_store.metadata,  # type: ignore
             questionnaire_store,
             schema,
-            submitted_at
+            submitted_at,
         )
 
         encrypted_message = encrypt(
-            message,
-            _get_keystore(current_app),
-            KEY_PURPOSE_SUBMISSION
+            message, _get_keystore(current_app), KEY_PURPOSE_SUBMISSION
         )
 
         additional_metadata = get_receipting_metadata(questionnaire_store.metadata)  # type: ignore

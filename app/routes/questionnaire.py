@@ -151,7 +151,9 @@ def before_post_submission_request():
 @questionnaire_blueprint.route("/", methods=["GET", "POST"])
 @with_questionnaire_store
 @with_schema
-def get_questionnaire(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore) -> Response | str:
+def get_questionnaire(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+) -> Response | str:
     router = Router(
         schema,
         questionnaire_store.answer_store,
@@ -230,7 +232,9 @@ def submit_questionnaire(
 @questionnaire_blueprint.route("/preview", methods=["GET"])
 @with_questionnaire_store
 @with_schema
-def get_preview(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore) -> str:
+def get_preview(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+) -> str:
     try:
         preview_context = PreviewContext(
             language=flask_babel.get_locale().language,
@@ -263,7 +267,12 @@ def get_preview(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireS
 )
 @with_questionnaire_store
 @with_schema
-def get_section(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore, section_id: str, list_item_id: str | None = None) -> Response | str:
+def get_section(
+    schema: QuestionnaireSchema,
+    questionnaire_store: QuestionnaireStore,
+    section_id: str,
+    list_item_id: str | None = None,
+) -> Response | str:
     try:
         section_handler = SectionHandler(
             schema=schema,

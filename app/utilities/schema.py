@@ -67,7 +67,9 @@ def get_schema_path(language_code: str, schema_name: str) -> str | None:
 
 
 @lru_cache(maxsize=None)
-def get_schema_path_map(include_test_schemas: bool | None = False) -> dict[str, dict[str, dict[str, str]]]:
+def get_schema_path_map(
+    include_test_schemas: bool | None = False,
+) -> dict[str, dict[str, dict[str, str]]]:
     schemas = {}
     for survey_type in os.listdir(SCHEMA_DIR):
         if not include_test_schemas and survey_type == "test":
@@ -136,7 +138,9 @@ def load_schema_from_metadata(
     )
 
 
-def load_schema_from_name(schema_name: str, language_code: str | None = DEFAULT_LANGUAGE_CODE) -> QuestionnaireSchema:
+def load_schema_from_name(
+    schema_name: str, language_code: str | None = DEFAULT_LANGUAGE_CODE
+) -> QuestionnaireSchema:
     language_code = language_code or DEFAULT_LANGUAGE_CODE
     return _load_schema_from_name(schema_name, language_code)
 
@@ -191,7 +195,9 @@ def _load_schema_file(schema_name: str, language_code: str) -> Any:
 
 
 @lru_cache(maxsize=None)
-def load_schema_from_url(schema_url: str, language_code: str | None) -> QuestionnaireSchema:
+def load_schema_from_url(
+    schema_url: str, language_code: str | None
+) -> QuestionnaireSchema:
     language_code = language_code or DEFAULT_LANGUAGE_CODE
     pid = os.getpid()
     logger.info(

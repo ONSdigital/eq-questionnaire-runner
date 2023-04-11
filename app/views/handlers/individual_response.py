@@ -79,11 +79,14 @@ class IndividualResponseHandler:
 
     @staticmethod
     def _person_name_placeholder_possessive(list_name: str) -> list[Mapping]:
-        name_transforms: list[Mapping] = IndividualResponseHandler._person_name_transforms(list_name)
+        name_transforms: list[
+            Mapping
+        ] = IndividualResponseHandler._person_name_transforms(list_name)
         return [
             {
                 "placeholder": "person_name_possessive",
-                "transforms": name_transforms + [
+                "transforms": name_transforms
+                + [
                     {
                         "arguments": {
                             "string_to_format": {"source": "previous_transform"}
