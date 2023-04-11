@@ -1,4 +1,3 @@
-from typing import Optional, Union
 from urllib.parse import urlencode
 
 from flask import g, request
@@ -16,7 +15,7 @@ LANGUAGE_TEXT = {
 }
 
 
-def handle_language(metadata: Optional[MetadataProxy] = None) -> None:
+def handle_language(metadata: MetadataProxy | None = None) -> None:
     session_store = get_session_store()
 
     if session_store and session_store.session_data:
@@ -42,7 +41,7 @@ def handle_language(metadata: Optional[MetadataProxy] = None) -> None:
             session_store.save()
 
 
-def get_languages_context(current_language: str) -> Optional[dict[str, list[dict]]]:
+def get_languages_context(current_language: str) -> dict[str, list[dict]] | None:
     context = []
     allowed_languages = g.get("allowed_languages")
     if allowed_languages and len(allowed_languages) > 1:
@@ -54,7 +53,7 @@ def get_languages_context(current_language: str) -> Optional[dict[str, list[dict
 
 def _get_language_context(
     language_code: str, current_language: str
-) -> dict[str, Union[str, bool]]:
+) -> dict[str, str | bool]:
     return {
         "ISOCode": language_code,
         "url": _get_query_string_with_language(language_code),

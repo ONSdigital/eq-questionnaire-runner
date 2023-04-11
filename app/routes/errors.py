@@ -89,10 +89,10 @@ def bad_request(
 @errors_blueprint.app_errorhandler(NoQuestionnaireStateException)
 def unauthorized(
     exception: HTTPException
-    | CSRFError
-    | NoTokenException
-    | NoQuestionnaireStateException
-    | None = None,
+               | CSRFError
+               | NoTokenException
+               | NoQuestionnaireStateException
+               | None = None,
 ) -> tuple[str, int]:
     log_exception(exception, 401)
     return _render_error_page(401, template="401")
@@ -208,7 +208,7 @@ def individual_response_fulfilment_request_publication_failed(
     retry_url = url_for(
         blueprint_method,
         # Type ignore: Request will be not None as this function will only run when a request handle raises and exception
-        list_item_id=request.view_args["list_item_id"],
+        list_item_id=request.view_args["list_item_id"],  # type: ignore
         **request.args,  # type: ignore
     )
     retry_message = lazy_gettext(

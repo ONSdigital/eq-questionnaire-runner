@@ -98,10 +98,11 @@ def _schema_exists(language_code: str, schema_name: str) -> bool:
     )
 
 
-def get_allowed_languages(schema_name: str, launch_language: str):
-    for language_combination in LANGUAGES_MAP.get(schema_name, []):
-        if launch_language in language_combination:
-            return language_combination
+def get_allowed_languages(schema_name: str | None, launch_language: str):
+    if schema_name:
+        for language_combination in LANGUAGES_MAP.get(schema_name, []):
+            if launch_language in language_combination:
+                return language_combination
     return [DEFAULT_LANGUAGE_CODE]
 
 
@@ -216,7 +217,8 @@ def load_schema_from_url(
         status_forcelist=SCHEMA_REQUEST_RETRY_STATUS_CODES,
     )  # Codes to retry according to Google Docs https://cloud.google.com/storage/docs/retry-strategy#client-libraries
 
-    retries.BACKOFF_MAX = SCHEMA_REQUEST_MAX_BACKOFF
+    # Type ignore: MyPy does not recognise BACKOFF_MAX however it is a property, albeit deprecated
+    retries.BACKOFF_MAX = SCHEMA_REQUEST_MAX_BACKOFF  # type: ignore
 
     session.mount("http://", HTTPAdapter(max_retries=retries))
     session.mount("https://", HTTPAdapter(max_retries=retries))
