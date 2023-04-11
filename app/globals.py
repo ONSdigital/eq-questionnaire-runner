@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta, timezone
-from typing import Optional
 
 from flask import current_app, g
 from flask import session as cookie_session
@@ -33,7 +32,7 @@ def get_questionnaire_store(user_id: str, user_ik: str) -> QuestionnaireStore:
     return store
 
 
-def get_session_store() -> Optional[SessionStore]:
+def get_session_store() -> SessionStore | None:
     if USER_IK not in cookie_session or EQ_SESSION_ID not in cookie_session:
         return None
 
