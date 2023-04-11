@@ -37,7 +37,7 @@ def handle_language(metadata: Optional[MetadataProxy] = None) -> None:
                 )
                 if schema.json["title"] != cookie_session.get("title"):
                     cookie_session["title"] = schema.json["title"]
-
+            cookie_session["language_code"] = request_language
             session_store.session_data.language_code = request_language
             session_store.save()
 
