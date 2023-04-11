@@ -186,9 +186,7 @@ def _load_schema_file(schema_name: str, language_code: str) -> Any:
     )
 
     # Type ignore: Existence of the file is checked prior to call for the path
-    with open(
-        schema_path,  # type: ignore
-        encoding="utf8") as json_file:
+    with open(schema_path, encoding="utf8") as json_file:  # type: ignore
         return json_load(json_file)
 
 

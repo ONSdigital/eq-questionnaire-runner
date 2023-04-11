@@ -83,15 +83,14 @@ class IndividualResponseHandler:
         return [
             {
                 "placeholder": "person_name_possessive",
-                "transforms": name_transforms
-                              + [
-                                  {
-                                      "arguments": {
-                                          "string_to_format": {"source": "previous_transform"}
-                                      },
-                                      "transform": "format_possessive",
-                                  }
-                              ],
+                "transforms": name_transforms + [
+                    {
+                        "arguments": {
+                            "string_to_format": {"source": "previous_transform"}
+                        },
+                        "transform": "format_possessive",
+                    }
+                ],
             }
         ]
 
