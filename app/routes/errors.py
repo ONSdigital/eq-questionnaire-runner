@@ -1,5 +1,3 @@
-from typing import Tuple
-
 from flask import Blueprint, request
 from flask.helpers import url_for
 from flask_babel import lazy_gettext
@@ -7,7 +5,7 @@ from flask_login import current_user
 from flask_wtf.csrf import CSRFError
 from sdc.crypto.exceptions import InvalidTokenException
 from structlog import contextvars, get_logger
-from werkzeug.exceptions import BadRequestKeyError
+from werkzeug.exceptions import BadRequestKeyError, HTTPException, NotFound, Forbidden
 
 from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
@@ -34,7 +32,7 @@ logger = get_logger()
 errors_blueprint = Blueprint("errors", __name__)
 
 
-def log_exception(exception: Exception, status_code: int) -> None:
+def log_exception(exception: Exception | None, status_code: int) -> None:
     if metadata := get_metadata(current_user):
         contextvars.bind_contextvars(tx_id=metadata.tx_id)
 
@@ -48,7 +46,7 @@ def log_exception(exception: Exception, status_code: int) -> None:
     )
 
 
-def _render_error_page(status_code: int, template: str | int | None = None, **kwargs):
+def _render_error_page(status_code: int, template: str | int | None = None, **kwargs) -> tuple[str, int]:
     handle_language()
     business_survey_config = get_survey_config(theme=SurveyType.BUSINESS)
     other_survey_config = get_survey_config(
@@ -76,7 +74,7 @@ def _render_error_page(status_code: int, template: str | int | None = None, **kw
 
 @errors_blueprint.app_errorhandler(400)
 @errors_blueprint.app_errorhandler(BadRequestKeyError)
-def bad_request(exception=None):
+def bad_request(exception: HTTPException | BadRequestKeyError | None = None) -> tuple[str, int]:
     log_exception(exception, 400)
     return _render_error_page(400, template="500")
 
@@ -85,38 +83,38 @@ def bad_request(exception=None):
 @errors_blueprint.app_errorhandler(CSRFError)
 @errors_blueprint.app_errorhandler(NoTokenException)
 @errors_blueprint.app_errorhandler(NoQuestionnaireStateException)
-def unauthorized(exception=None) -> Tuple[str, int]:
+def unauthorized(exception: HTTPException | CSRFError | NoTokenException | NoQuestionnaireStateException | None = None) -> tuple[str, int]:
     log_exception(exception, 401)
     return _render_error_page(401, template="401")
 
 
 @errors_blueprint.app_errorhandler(PreviouslySubmittedException)
-def previously_submitted(exception=None):
+def previously_submitted(exception: PreviouslySubmittedException | None = None) -> tuple[str, int]:
     log_exception(exception, 401)
     return _render_error_page(401, "previously-submitted")
 
 
 @errors_blueprint.app_errorhandler(InvalidTokenException)
-def forbidden(exception=None):
+def forbidden(exception: InvalidTokenException | None = None) -> tuple[str, int]:
     log_exception(exception, 403)
     return _render_error_page(403)
 
 
 @errors_blueprint.app_errorhandler(405)
-def method_not_allowed(exception=None):
+def method_not_allowed(exception: HTTPException | None = None) -> tuple[str, int]:
     log_exception(exception, 405)
     return _render_error_page(405, template="404")
 
 
 @errors_blueprint.app_errorhandler(403)
 @errors_blueprint.app_errorhandler(404)
-def http_exception(exception):
+def http_exception(exception: NotFound | Forbidden) -> tuple[str, int]:
     log_exception(exception, exception.code)
     return _render_error_page(exception.code)
 
 
 @errors_blueprint.app_errorhandler(Exception)
-def internal_server_error(exception=None):
+def internal_server_error(exception: Exception | None = None) -> tuple[str, int]:
     try:
         log_exception(exception, 500)
         return _render_error_page(500)
@@ -130,7 +128,7 @@ def internal_server_error(exception=None):
 
 
 @errors_blueprint.app_errorhandler(IndividualResponseLimitReached)
-def too_many_individual_response_requests(exception=None):
+def too_many_individual_response_requests(exception: IndividualResponseLimitReached | None = None) -> tuple[str, int]:
     log_exception(exception, 429)
     title = lazy_gettext(
         "You have reached the maximum number of individual access codes"
@@ -149,7 +147,7 @@ def too_many_individual_response_requests(exception=None):
 
 
 @errors_blueprint.app_errorhandler(FeedbackLimitReached)
-def too_many_feedback_requests(exception=None):
+def too_many_feedback_requests(exception: FeedbackLimitReached | None = None) -> tuple[str, int]:
     log_exception(exception, 429)
     title = lazy_gettext(
         "You have reached the maximum number of times for submitting feedback"
@@ -168,13 +166,13 @@ def too_many_feedback_requests(exception=None):
 
 
 @errors_blueprint.app_errorhandler(SubmissionFailedException)
-def submission_failed(exception=None):
+def submission_failed(exception: SubmissionFailedException | None = None) -> tuple[str, int]:
     log_exception(exception, 500)
     return _render_error_page(500, template="submission-failed")
 
 
 @errors_blueprint.app_errorhandler(IndividualResponseFulfilmentRequestPublicationFailed)
-def individual_response_fulfilment_request_publication_failed(exception):
+def individual_response_fulfilment_request_publication_failed(exception: IndividualResponseFulfilmentRequestPublicationFailed) -> tuple[str, int]:
     log_exception(exception, 500)
 
     if "mobile_number" in request.args:
@@ -189,8 +187,8 @@ def individual_response_fulfilment_request_publication_failed(exception):
     title = lazy_gettext("Sorry, there was a problem sending the access code")
     retry_url = url_for(
         blueprint_method,
-        list_item_id=request.view_args["list_item_id"],
-        **request.args,
+        # Type ignore: Request will be not None as this function will only run when a request handle raises and exception
+        list_item_id=request.view_args["list_item_id"], **request.args,  # type: ignore
     )
     retry_message = lazy_gettext(
         "You can try to <a href='{retry_url}'>request a new access code again</a>."
@@ -211,7 +209,7 @@ def individual_response_fulfilment_request_publication_failed(exception):
 
 
 @errors_blueprint.app_errorhandler(ConfirmationEmailFulfilmentRequestPublicationFailed)
-def confirmation_email_fulfilment_request_publication_failed(exception):
+def confirmation_email_fulfilment_request_publication_failed(exception: ConfirmationEmailFulfilmentRequestPublicationFailed) -> tuple[str, int]:
     log_exception(exception, 500)
 
     title = lazy_gettext("Sorry, there was a problem sending the confirmation email")
@@ -234,7 +232,7 @@ def confirmation_email_fulfilment_request_publication_failed(exception):
 
 
 @errors_blueprint.app_errorhandler(FeedbackUploadFailed)
-def feedback_upload_failed(exception):
+def feedback_upload_failed(exception: FeedbackUploadFailed) -> tuple[str, int]:
     log_exception(exception, 500)
     title = lazy_gettext("Sorry, there is a problem")
     retry_message = lazy_gettext(

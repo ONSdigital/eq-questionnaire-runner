@@ -203,7 +203,7 @@ def survey_config_mapping(
 def get_survey_config(
     *,
     base_url: str | None = None,
-    theme: str | None = None,
+    theme: SurveyType | None = None,
     language: str | None = None,
     schema: QuestionnaireSchema | None = None,
 ) -> SurveyConfig:
