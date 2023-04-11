@@ -126,10 +126,12 @@ class PlaceholderRenderer:
             str, Any
         ] = QuestionnaireSchema.get_mutable_deepcopy(data_to_render)
 
-        list_items: list = []
-
         if data_to_render_mutable.get("dynamic_answers", {}):
-            self.resolve_dynamic_answers(data_to_render_mutable, list_items)
+            data_to_render_mutable, list_items = self.resolve_dynamic_answers(
+                data_to_render_mutable
+            )
+        else:
+            list_items = []
 
         pointers = find_pointers_containing(data_to_render_mutable, "placeholders")
 
@@ -179,8 +181,9 @@ class PlaceholderRenderer:
         return data_to_render_mutable
 
     def resolve_dynamic_answers(
-        self, data_to_render_mutable: dict, list_items: list
-    ) -> None:
+        self, data_to_render_mutable: dict
+    ) -> tuple[dict, list]:
+        list_items: list = []
         resolved_dynamic_answers = []
         dynamic_answers = data_to_render_mutable.get("dynamic_answers", {})
         list_items.extend(
@@ -211,3 +214,5 @@ class PlaceholderRenderer:
             "dynamic_answers"
         ]["values"]["identifier"]
         del data_to_render_mutable["dynamic_answers"]
+
+        return data_to_render_mutable, list_items
