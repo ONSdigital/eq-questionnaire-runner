@@ -129,7 +129,8 @@ class IndividualResponseHandler:
 
     @cached_property
     def _list_model(self) -> ListModel:
-        return self._questionnaire_store.list_store[self._list_name]
+        # Type ignore: List name will exist and be not None at this point
+        return self._questionnaire_store.list_store[self._list_name]  # type: ignore
 
     @cached_property
     def _list_item_position(self):
@@ -328,7 +329,8 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                         "How would you like <em>{person_name}</em> to receive a separate census?"
                     ),
                     "placeholders": IndividualResponseHandler._person_name_placeholder(
-                        self._list_name
+                        # Type ignore: List name will exist and be not None at this point
+                        self._list_name  # type: ignore
                     ),
                 },
                 "description": self._build_question_description(),
@@ -454,7 +456,8 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
                         "How would you like to answer <em>{person_name_possessive}</em> questions?"
                     ),
                     "placeholders": IndividualResponseHandler._person_name_placeholder_possessive(
-                        self._list_name
+                        # Type ignore: List name will exist and be not None at this point
+                        self._list_name  # type: ignore
                     ),
                 },
                 "answers": [
@@ -485,7 +488,8 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
                                         "I will answer for {person_name}"
                                     ),
                                     "placeholders": IndividualResponseHandler._person_name_placeholder(
-                                        self._list_name
+                                        # Type ignore: List name will exist and be not None at this point
+                                        self._list_name  # type: ignore
                                     ),
                                 },
                                 "value": "I will answer for {person_name}",
@@ -592,7 +596,8 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
                         "Do you want to send an individual access code for {person_name} by post?"
                     ),
                     "placeholders": IndividualResponseHandler._person_name_placeholder(
-                        self._list_name
+                        # Type ignore: List name will exist and be not None at this point
+                        self._list_name  # type: ignore
                     ),
                 },
                 "description": [
@@ -776,7 +781,8 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
                         "What is <em>{person_name_possessive}</em> mobile number?"
                     ),
                     "placeholders": IndividualResponseHandler._person_name_placeholder_possessive(
-                        self._list_name
+                        # Type ignore: List name will exist and be not None at this point
+                        self._list_name  # type: ignore
                     ),
                 },
                 "answers": [
