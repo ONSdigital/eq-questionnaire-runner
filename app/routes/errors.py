@@ -34,7 +34,7 @@ logger = get_logger()
 errors_blueprint = Blueprint("errors", __name__)
 
 
-def log_exception(exception, status_code):
+def log_exception(exception: Exception, status_code: int) -> None:
     if metadata := get_metadata(current_user):
         contextvars.bind_contextvars(tx_id=metadata.tx_id)
 
@@ -48,7 +48,7 @@ def log_exception(exception, status_code):
     )
 
 
-def _render_error_page(status_code, template=None, **kwargs):
+def _render_error_page(status_code: int, template: str | int | None = None, **kwargs):
     handle_language()
     business_survey_config = get_survey_config(theme=SurveyType.BUSINESS)
     other_survey_config = get_survey_config(

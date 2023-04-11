@@ -132,7 +132,7 @@ def load_schema_from_metadata(
     )
 
 
-def load_schema_from_name(schema_name: str, language_code: str | None) -> QuestionnaireSchema:
+def load_schema_from_name(schema_name: str, language_code: str | None = DEFAULT_LANGUAGE_CODE) -> QuestionnaireSchema:
     language_code = language_code or DEFAULT_LANGUAGE_CODE
     return _load_schema_from_name(schema_name, language_code)
 
