@@ -1124,7 +1124,4 @@ def test_get_survey_config_language_retrieved_from_cookie(app: Flask):
         cookie_session["theme"] = "social"
         result = get_survey_config()
 
-    assert (
-        result.account_service_log_out_url
-        == f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cy/start/"
-    )
+    assert result.account_service_log_out_url == f"{ACCOUNT_SERVICE_BASE_URL}/cy/start/"
