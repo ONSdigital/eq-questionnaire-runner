@@ -881,7 +881,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             when_rules = self.get_values_for_key(section, "when")
             rules: list = list(when_rules)
 
-            for rule_dependency, when_rules in zip(
+            # Type ignore: Added due to zip returning a generator object
+            for rule_dependency, when_rules in zip(  # type: ignore
                 self._get_rules_section_dependencies(section["id"], rules),
                 [
                     self._when_rules_section_dependencies_by_section,
@@ -890,7 +891,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 ],
             ):
                 if rule_dependency:
-                    when_rules[section["id"]] = rule_dependency
+                    when_rules[section["id"]] = rule_dependency  # type: ignore
 
     def _get_section_and_block_ids_dependencies_for_progress_source_and_answer_ids_from_rule(
         self, current_section_id: str, rule: Mapping
