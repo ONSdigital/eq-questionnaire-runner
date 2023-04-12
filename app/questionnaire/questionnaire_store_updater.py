@@ -376,19 +376,17 @@ class QuestionnaireStoreUpdater:
             self._current_question
         )
 
-        any_answer_updated = False
+        answers_updated = None
 
         for answer_id, answer_value in form_data.items():
             if answer_id not in answer_ids_for_question:
                 continue
 
-            answer_updated = self._update_answer(answer_id, list_item_id, answer_value)
-            if answer_updated:
-                any_answer_updated = True
+            if answers_updated := self._update_answer(answer_id, list_item_id, answer_value):
                 self._capture_section_dependencies_for_answer(answer_id)
                 self._capture_block_dependencies_for_answer(answer_id)
 
-        if any_answer_updated:
+        if answers_updated:
             self._capture_section_dependencies_progress_value_source_for_current_block()
             self._capture_section_dependencies_progress_value_source_for_current_section()
 
