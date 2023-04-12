@@ -213,4 +213,6 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
         self.launchSurvey("test_language", language_code="cy")
         # Then: sign out
         self.get(self.getSignOutButton()["href"], follow_redirects=True)
+        # Check the text and logos are in Welsh
         self.assertInBody("Mae eich cynnydd wedi'i gadw")
+        self.assertInBody("Swyddfa Ystadegau Gwladol")

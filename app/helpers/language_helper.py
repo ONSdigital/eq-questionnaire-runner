@@ -37,6 +37,7 @@ def handle_language(metadata: Optional[MetadataProxy] = None) -> None:
                 )
                 if schema.json["title"] != cookie_session.get("title"):
                     cookie_session["title"] = schema.json["title"]
+
             cookie_session["language_code"] = request_language
             session_store.session_data.language_code = request_language
             session_store.save()
@@ -49,6 +50,10 @@ def get_languages_context(current_language: str) -> Optional[dict[str, list[dict
         for language in allowed_languages:
             context.append(_get_language_context(language, current_language))
         return {"languages": context}
+
+    if (language := cookie_session.get("language_code")) and language in LANGUAGE_TEXT:
+        return {"languages": [_get_language_context(language, language)]}
+
     return None
 
 
