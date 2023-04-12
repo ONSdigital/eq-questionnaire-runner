@@ -382,7 +382,9 @@ class QuestionnaireStoreUpdater:
             if answer_id not in answer_ids_for_question:
                 continue
 
-            if answers_updated := self._update_answer(answer_id, list_item_id, answer_value):
+            if answers_updated := self._update_answer(
+                answer_id, list_item_id, answer_value
+            ):
                 self._capture_section_dependencies_for_answer(answer_id)
                 self._capture_block_dependencies_for_answer(answer_id)
 
