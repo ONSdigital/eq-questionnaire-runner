@@ -207,3 +207,12 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
         # Switch the language to welsh and check that the last viewed guidance is still being displayed (in welsh)
         self.get(f"{self.last_url}&language_code=cy")
         self.assertInBody("Dyma'r cwestiwn a gafodd ei weld ddiwethaf yn yr adran hon")
+
+    def test_sign_out_cy_survey(self):
+        # When: load a cy survey
+        self.launchSurvey("test_language", language_code="cy")
+        # Then: sign out
+        self.get(self.getSignOutButton()["href"], follow_redirects=True)
+        # Check the text and logos are in Welsh
+        self.assertInBody("Mae eich cynnydd wedi'i gadw")
+        self.assertInBody("Swyddfa Ystadegau Gwladol")
