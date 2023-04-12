@@ -204,8 +204,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ) in self.when_rules_block_dependencies_by_section_for_progress_value_source.get(
             section_id, set()
         ):
-            if dep_section_id := self.get_section_id_for_block_id(block_id):
-                all_section_dependencies.add(dep_section_id)
+            all_section_dependencies.add(self.get_section_id_for_block_id(block_id))  # type: ignore
 
         return all_section_dependencies
 
@@ -911,14 +910,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             "sections": set(),
             "blocks": set(),
         }
-        identifier: Optional[str] = rule.get("identifier")
-        source: Optional[str] = rule.get("source")
-        selector: Optional[str] = rule.get("selector")
+        identifier: str | None = rule.get("identifier")
+        source: str | None = rule.get("source")
+        selector: str | None = rule.get("selector")
 
         if source == "answers" and identifier:
             answer_id_list.add(identifier)
         elif source == "calculated_summary" and identifier:
             calculated_summary_block = self.get_block(identifier)
+            # Type Ignore: Calculated summary block will exist at this point
             calculated_summary_answer_ids = get_calculated_summary_answer_ids(
                 calculated_summary_block  # type: ignore
             )
@@ -938,7 +938,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return (answer_id_list, dependencies_ids_for_progress_value_source)
 
     def _get_rules_section_dependencies(
-        self, current_section_id: str, rules: Union[Mapping, Sequence]
+        self, current_section_id: str, rules: Mapping | Sequence
     ) -> tuple[set[str], set[str], set[str]]:
         """
         Returns a set of sections ids that the current sections depends on.

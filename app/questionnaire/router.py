@@ -386,9 +386,10 @@ class Router:
             return True
 
         enabled = section["enabled"]
+        section_id = section["id"]
 
         routing_path_block_ids = self._path_finder.get_when_rules_block_dependencies(
-            section["id"]
+            section_id
         )
 
         when_rule_evaluator = RuleEvaluator(
@@ -398,7 +399,7 @@ class Router:
             metadata=self._metadata,
             response_metadata=self._response_metadata,
             progress_store=self._progress_store,
-            location=Location(section_id=section["id"]),
+            location=Location(section_id=section_id),
             routing_path_block_ids=routing_path_block_ids,
         )
 

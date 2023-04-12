@@ -221,7 +221,7 @@ class ValueSourceResolver:
 
     def resolve(
         self, value_source: Mapping
-    ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
+    ) -> ValueSourceEscapedTypes | ValueSourceTypes:
         source = value_source["source"]
 
         if source == "calculated_summary":
