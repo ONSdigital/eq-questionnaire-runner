@@ -881,26 +881,16 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             when_rules = self.get_values_for_key(section, "when")
             rules: list = list(when_rules)
 
-            (
-                rules_section_dependencies,
-                rule_section_dependencies_for_progress_value_source,
-                rule_block_dependencies_for_progress_value_source,
-            ) = self._get_rules_section_dependencies(section["id"], rules)
-
-            if rules_section_dependencies:
-                self._when_rules_section_dependencies_by_section[
-                    section["id"]
-                ] = rules_section_dependencies
-
-            if rule_section_dependencies_for_progress_value_source:
-                self._when_rules_section_dependencies_by_section_for_progress_value_source[
-                    section["id"]
-                ] = rule_section_dependencies_for_progress_value_source
-
-            if rule_block_dependencies_for_progress_value_source:
-                self._when_rules_block_dependencies_by_section_for_progress_value_source[
-                    section["id"]
-                ] = rule_block_dependencies_for_progress_value_source
+            for rule_dependency, when_rules in zip(
+                self._get_rules_section_dependencies(section["id"], rules),
+                [
+                    self._when_rules_section_dependencies_by_section,
+                    self._when_rules_section_dependencies_by_section_for_progress_value_source,
+                    self._when_rules_block_dependencies_by_section_for_progress_value_source,
+                ],
+            ):
+                if rule_dependency:
+                    when_rules[section["id"]] = rule_dependency
 
     def _get_section_and_block_ids_dependencies_for_progress_source_and_answer_ids_from_rule(
         self, current_section_id: str, rule: Mapping
