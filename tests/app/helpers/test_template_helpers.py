@@ -1116,3 +1116,12 @@ def test_include_csrf_token(app: Flask, include_csrf_token: bool):
         ).context["include_csrf_token"]
 
     assert result == include_csrf_token
+
+
+def test_get_survey_config_language_retrieved_from_cookie(app: Flask):
+    with app.app_context():
+        cookie_session["language_code"] = "cy"
+        cookie_session["theme"] = SurveyType.SOCIAL
+        result = get_survey_config()
+
+    assert result.account_service_log_out_url == f"{ACCOUNT_SERVICE_BASE_URL}/cy/start/"
