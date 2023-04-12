@@ -479,10 +479,7 @@ def get_minimized_asset(filename):
 
 
 def get_locale():
-    if language_code := cookie_session.get("language_code"):
-        return language_code
-
-    return None
+    return cookie_session.get("language_code")
 
 
 def get_timezone():
