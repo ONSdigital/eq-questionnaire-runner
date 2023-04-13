@@ -159,12 +159,14 @@ def resolve_dynamic_answers(
     answers_payload: AnswerStore,
     list_store: ListStore,
 ) -> None:
-    for answer in block["dynamic_answers"].get("answers"):
-        for list_item_id in list_store.get(
-            block["dynamic_answers"]["values"].get("identifier")
-        ).items:
-            extracted_answer = answer_store.get_answer(
-                answer["id"], list_item_id=list_item_id
-            )
-            answers_payload.add_or_update(extracted_answer)  # type: ignore
-            # answer store's get_answer return is optional but at this point it always returns an Answer
+    dynamic_answers = block["dynamic_answers"]
+    for answer in dynamic_answers["answers"]:
+        values = dynamic_answers["values"]
+        if values["source"] == "list":
+            for list_item_id in list_store[values["identifier"]].items:
+                extracted_answer = answer_store.get_answer(
+                    answer["id"], list_item_id=list_item_id
+                )
+                answers_payload.add_or_update(extracted_answer)  # type: ignore
+                # answer store's get_answer return is optional but at this point it always returns an Answer
+
