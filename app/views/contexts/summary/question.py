@@ -110,26 +110,6 @@ class Question:
         summary_answers = []
 
         if self.dynamic_answer_schemas:
-            for answer_schema in self.answer_schemas:
-                self.list_item_id = None
-                answer_value: Optional[AnswerValueEscapedTypes] = self.get_answer(
-                    answer_store, answer_schema["id"]
-                )
-                answer = self._build_answer(
-                    answer_store, question_schema, answer_schema, answer_value
-                )
-
-                summary_answer = Answer(
-                    answer_schema=answer_schema,
-                    answer_value=answer,
-                    block_id=block_id,
-                    list_name=list_name,
-                    list_item_id=self.list_item_id,
-                    return_to=return_to,
-                    return_to_block_id=return_to_block_id,
-                ).serialize()
-                summary_answers.append(summary_answer)
-
             for answer_schema in self.dynamic_answer_schemas:
                 for list_item_id in self.list_store.get(
                     self.dynamic_answer_identifier
@@ -176,23 +156,24 @@ class Question:
                     ).serialize()
                     summary_answers.append(summary_answer)
 
-        else:
-            for answer_schema in self.answer_schemas:
-                answer_value = self.get_answer(answer_store, answer_schema["id"])
-                answer = self._build_answer(
-                    answer_store, question_schema, answer_schema, answer_value
-                )
+        for answer_schema in self.answer_schemas:
+            if self.dynamic_answer_schemas:
+                self.list_item_id = None
+            answer_value = self.get_answer(answer_store, answer_schema["id"])
+            answer = self._build_answer(
+                answer_store, question_schema, answer_schema, answer_value
+            )
 
-                summary_answer = Answer(
-                    answer_schema=answer_schema,
-                    answer_value=answer,
-                    block_id=block_id,
-                    list_name=list_name,
-                    list_item_id=self.list_item_id,
-                    return_to=return_to,
-                    return_to_block_id=return_to_block_id,
-                ).serialize()
-                summary_answers.append(summary_answer)
+            summary_answer = Answer(
+                answer_schema=answer_schema,
+                answer_value=answer,
+                block_id=block_id,
+                list_name=list_name,
+                list_item_id=self.list_item_id,
+                return_to=return_to,
+                return_to_block_id=return_to_block_id,
+            ).serialize()
+            summary_answers.append(summary_answer)
 
         if question_schema["type"] == "MutuallyExclusive":
             exclusive_option = summary_answers[-1]["value"]
