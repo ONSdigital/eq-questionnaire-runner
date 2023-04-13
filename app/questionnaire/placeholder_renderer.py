@@ -203,7 +203,9 @@ class PlaceholderRenderer:
 
                     resolved_dynamic_answers.append(resolved_dynamic_answer)
 
-            data_to_render_mutable["answers"] += resolved_dynamic_answers
+            data_to_render_mutable["answers"] = (
+                resolved_dynamic_answers + data_to_render_mutable["answers"]
+            )
             data_to_render_mutable["dynamic_answers_list_id"] = data_to_render_mutable[
                 "dynamic_answers"
             ]["values"]["identifier"]

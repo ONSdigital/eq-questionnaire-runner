@@ -69,20 +69,6 @@ def test_question_with_dynamic_answers(storage, language, mocker):
 
     assert form.question["answers"] == [
         {
-            "id": "based-checkbox-answer",
-            "instruction": "Select any answers that apply",
-            "label": "Are supermarkets UK or non UK based?",
-            "mandatory": False,
-            "options": [
-                {"label": "UK based supermarkets", "value": "UK based supermarkets"},
-                {
-                    "label": "Non UK based supermarkets",
-                    "value": "Non UK based supermarkets",
-                },
-            ],
-            "type": "Checkbox",
-        },
-        {
             "decimal_places": 0,
             "id": "percentage-of-shopping-tUJzGV",
             "label": "Percentage of shopping at Tesco",
@@ -97,5 +83,19 @@ def test_question_with_dynamic_answers(storage, language, mocker):
             "mandatory": False,
             "maximum": {"value": 100},
             "type": "Percentage",
+        },
+        {
+            "id": "based-checkbox-answer",
+            "instruction": "Select any answers that apply",
+            "label": "Are supermarkets UK or non UK based?",
+            "mandatory": False,
+            "options": [
+                {"label": "UK based supermarkets", "value": "UK based supermarkets"},
+                {
+                    "label": "Non UK based supermarkets",
+                    "value": "Non UK based supermarkets",
+                },
+            ],
+            "type": "Checkbox",
         },
     ]
