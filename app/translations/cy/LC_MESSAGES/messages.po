@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: phm\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-01-31 13:07+0000\n"
-"PO-Revision-Date: 2023-03-03 11:11\n"
+"POT-Creation-Date: 2023-04-05 10:55+0100\n"
+"PO-Revision-Date: 2023-04-05 16:08\n"
 "Last-Translator: \n"
 "Language-Team: Welsh\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Crowdin-File-ID: 1\n"
 "Language: cy_GB\n"
 
-#: app/forms/validators.py:376 app/jinja_filters.py:115
+#: app/forms/validators.py:377 app/jinja_filters.py:115
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
@@ -29,7 +29,7 @@ msgstr[3] "%(num)s blynedd"
 msgstr[4] "%(num)s blynedd"
 msgstr[5] "%(num)s o flynyddoedd"
 
-#: app/forms/validators.py:380 app/jinja_filters.py:123
+#: app/forms/validators.py:381 app/jinja_filters.py:123
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
@@ -50,15 +50,15 @@ msgstr "%(date)s am %(time)s"
 msgid "%(from_date)s to %(to_date)s"
 msgstr "%(from_date)s i %(to_date)s"
 
-#: app/jinja_filters.py:600 templates/partials/summary/list-summary.html:9
+#: app/jinja_filters.py:598 templates/partials/summary/list-summary.html:9
 msgid "Remove"
 msgstr "Dileu"
 
-#: app/jinja_filters.py:601 templates/partials/summary/list-summary.html:10
+#: app/jinja_filters.py:599 templates/partials/summary/list-summary.html:10
 msgid "Remove {item_name}"
 msgstr "Dileu{item_name}"
 
-#: app/jinja_filters.py:701
+#: app/jinja_filters.py:699
 msgid "No answer provided"
 msgstr "Dim ateb wedi'i roi"
 
@@ -213,7 +213,7 @@ msgstr "Dileu ateb"
 msgid "Enter the year in a valid format. For example, 2023."
 msgstr "Rhowch y flwyddyn mewn fformat dilys. Er enghraifft, 2023."
 
-#: app/forms/validators.py:387
+#: app/forms/validators.py:388
 #, python-format
 msgid "%(num)s day"
 msgid_plural "%(num)s days"
@@ -224,27 +224,27 @@ msgstr[3] "%(num)s diwrnod"
 msgstr[4] "%(num)s diwrnod"
 msgstr[5] "%(num)s diwrnod"
 
-#: app/forms/fields/select_field_with_detail_answer.py:36
+#: app/forms/fields/select_field_with_detail_answer.py:39
 msgid "Not a valid choice."
 msgstr "Nid yw'n ddewis dilys."
 
-#: app/helpers/template_helpers.py:46
+#: app/helpers/template_helpers.py:48
 msgid "ONS Surveys"
 msgstr "Arolygon SYG"
 
-#: app/helpers/template_helpers.py:107
+#: app/helpers/template_helpers.py:114
 msgid "Menu"
 msgstr "Dewislen"
 
-#: app/helpers/template_helpers.py:138
+#: app/helpers/template_helpers.py:145
 msgid "The following links open in a new tab"
 msgstr "Mae'r dolenni canlynol yn agor mewn tab newydd"
 
-#: app/helpers/template_helpers.py:163
+#: app/helpers/template_helpers.py:170
 msgid "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device"
 msgstr "Cofiwch <a href='{sign_out_url}'> adael y dudalen hon</a> neu gau eich porwr os ydych chi'n defnyddio dyfais sy'n cael ei rhannu"
 
-#: app/questionnaire/placeholder_transforms.py:164
+#: app/questionnaire/placeholder_transforms.py:160
 msgid "{number_of_years} year"
 msgid_plural "{number_of_years} years"
 msgstr[0] "{number_of_years} blwyddyn"
@@ -254,7 +254,7 @@ msgstr[3] "{number_of_years} blynedd"
 msgstr[4] "{number_of_years} blynedd"
 msgstr[5] "{number_of_years} o flynyddoedd"
 
-#: app/questionnaire/placeholder_transforms.py:170
+#: app/questionnaire/placeholder_transforms.py:166
 msgid "{number_of_months} month"
 msgid_plural "{number_of_months} months"
 msgstr[0] "{number_of_months} mis"
@@ -264,7 +264,7 @@ msgstr[3] "{number_of_months} mis"
 msgstr[4] "{number_of_months} mis"
 msgstr[5] "{number_of_months} mis"
 
-#: app/questionnaire/placeholder_transforms.py:175
+#: app/questionnaire/placeholder_transforms.py:171
 msgid "{number_of_days} day"
 msgid_plural "{number_of_days} days"
 msgstr[0] "{number_of_days} diwrnod"
@@ -329,8 +329,8 @@ msgid "An individual access code has been sent by text"
 msgstr "Mae cod mynediad unigol wedi cael ei anfon drwy neges destun"
 
 #: app/survey_config/business_config.py:59
-#: app/survey_config/census_config.py:33 app/survey_config/census_config.py:90
-#: app/survey_config/census_config.py:156
+#: app/survey_config/census_config.py:33 app/survey_config/census_config.py:89
+#: app/survey_config/census_config.py:154
 msgid "Help"
 msgstr "Help"
 
@@ -348,8 +348,8 @@ msgid "What we do"
 msgstr "Beth rydym yn ei wneud"
 
 #: app/survey_config/business_config.py:92
-#: app/survey_config/census_config.py:40 app/survey_config/census_config.py:98
-#: app/survey_config/census_config.py:164
+#: app/survey_config/census_config.py:40 app/survey_config/census_config.py:97
+#: app/survey_config/census_config.py:162
 #: app/survey_config/social_survey_config.py:43
 msgid "Contact us"
 msgstr "Cysylltu â ni"
@@ -360,15 +360,15 @@ msgid "Accessibility"
 msgstr "Hygyrchedd"
 
 #: app/survey_config/business_config.py:107
-#: app/survey_config/census_config.py:61 app/survey_config/census_config.py:118
-#: app/survey_config/census_config.py:173
+#: app/survey_config/census_config.py:61 app/survey_config/census_config.py:117
+#: app/survey_config/census_config.py:171
 #: app/survey_config/social_survey_config.py:58
 msgid "Cookies"
 msgstr "Cwcis"
 
 #: app/survey_config/business_config.py:109
-#: app/survey_config/census_config.py:67 app/survey_config/census_config.py:124
-#: app/survey_config/census_config.py:179
+#: app/survey_config/census_config.py:67 app/survey_config/census_config.py:123
+#: app/survey_config/census_config.py:177
 #: app/survey_config/social_survey_config.py:60
 msgid "Privacy and data protection"
 msgstr "Preifatrwydd a diogelu data"
@@ -381,29 +381,29 @@ msgstr "Cyfrifiad 2021"
 msgid "Save and complete later"
 msgstr "Cadw a chwblhau yn nes ymlaen"
 
-#: app/survey_config/census_config.py:46 app/survey_config/census_config.py:104
+#: app/survey_config/census_config.py:46 app/survey_config/census_config.py:103
 msgid "Languages"
 msgstr "Ieithoedd"
 
-#: app/survey_config/census_config.py:50 app/survey_config/census_config.py:108
+#: app/survey_config/census_config.py:50 app/survey_config/census_config.py:107
 msgid "BSL and audio videos"
 msgstr "Fideos sain ac Iaith Arwyddion Prydain"
 
-#: app/survey_config/census_config.py:63 app/survey_config/census_config.py:120
-#: app/survey_config/census_config.py:175
+#: app/survey_config/census_config.py:63 app/survey_config/census_config.py:119
+#: app/survey_config/census_config.py:173
 msgid "Accessibility statement"
 msgstr "Datganiad hygyrchedd"
 
-#: app/survey_config/census_config.py:71 app/survey_config/census_config.py:128
-#: app/survey_config/census_config.py:183
+#: app/survey_config/census_config.py:71 app/survey_config/census_config.py:127
+#: app/survey_config/census_config.py:181
 msgid "Terms and conditions"
 msgstr "Telerau ac amodau"
 
-#: app/survey_config/census_config.py:144
+#: app/survey_config/census_config.py:143
 msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
 msgstr "Hawlfraint y goron a hawliau cronfa ddata 2021 NIMA MOU577.501."
 
-#: app/survey_config/census_config.py:147 app/survey_config/survey_config.py:20
+#: app/survey_config/census_config.py:146 app/survey_config/survey_config.py:20
 msgid "Use of address data is subject to the terms and conditions."
 msgstr "Mae defnyddio data cyfeiriadau yn ddarostyngedig i’r telerau ac amodau."
 
@@ -415,63 +415,63 @@ msgstr "Hawlfraint y goron a hawliau cronfa ddata 2020 OS 100019153."
 msgid "Save and exit survey"
 msgstr "Cadw a gadael yr arolwg"
 
-#: app/views/contexts/hub_context.py:14
+#: app/views/contexts/hub_context.py:15
 msgid "Completed"
 msgstr "Cwblhawyd"
 
-#: app/views/contexts/hub_context.py:16
+#: app/views/contexts/hub_context.py:17
 msgid "View answers"
 msgstr "Gweld yr atebion"
 
-#: app/views/contexts/hub_context.py:17
+#: app/views/contexts/hub_context.py:18
 msgid "View answers for {section_name}"
 msgstr "Gweld yr atebion ar gyfer {section_name}"
 
-#: app/views/contexts/hub_context.py:21
+#: app/views/contexts/hub_context.py:22
 msgid "Partially completed"
 msgstr "Wedi’i chwblhau’n rhannol"
 
-#: app/views/contexts/hub_context.py:23
+#: app/views/contexts/hub_context.py:24
 msgid "Continue with section"
 msgstr "Parhau â'r adran"
 
-#: app/views/contexts/hub_context.py:24
+#: app/views/contexts/hub_context.py:25
 msgid "Continue with {section_name} section"
 msgstr "Parhau ag adran {section_name}"
 
-#: app/views/contexts/hub_context.py:28
+#: app/views/contexts/hub_context.py:29
 msgid "Not started"
 msgstr "Heb ddechrau"
 
-#: app/views/contexts/hub_context.py:30
+#: app/views/contexts/hub_context.py:31
 msgid "Start section"
 msgstr "Dechrau'r adran"
 
-#: app/views/contexts/hub_context.py:31
+#: app/views/contexts/hub_context.py:32
 msgid "Start {section_name} section"
 msgstr "Dechrau adran {section_name}"
 
-#: app/views/contexts/hub_context.py:35
+#: app/views/contexts/hub_context.py:36
 msgid "Separate census requested"
 msgstr "Cais am gyfrifiad ar wahân wedi'i wneud"
 
-#: app/views/contexts/hub_context.py:37 app/views/contexts/hub_context.py:38
+#: app/views/contexts/hub_context.py:38 app/views/contexts/hub_context.py:39
 msgid "Change or resend"
 msgstr "Newid neu ailanfon"
 
-#: app/views/contexts/hub_context.py:48 app/views/contexts/hub_context.py:49
+#: app/views/contexts/hub_context.py:51 app/views/contexts/hub_context.py:52
 msgid "Submit survey"
 msgstr "Cyflwyno'r arolwg"
 
-#: app/views/contexts/hub_context.py:53
+#: app/views/contexts/hub_context.py:56
 msgid "You must submit this survey to complete it"
 msgstr "Mae'n rhaid i chi gyflwyno'r arolwg hwn er mwyn ei gwblhau"
 
-#: app/views/contexts/hub_context.py:60
+#: app/views/contexts/hub_context.py:63
 msgid "Choose another section to complete"
 msgstr "Dewiswch adran arall i'w chwblhau"
 
-#: app/views/contexts/hub_context.py:61 templates/confirm-email.html:25
+#: app/views/contexts/hub_context.py:64 templates/confirm-email.html:25
 #: templates/individual_response/confirmation-post.html:21
 #: templates/individual_response/confirmation-text-message.html:29
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
@@ -479,19 +479,23 @@ msgstr "Dewiswch adran arall i'w chwblhau"
 msgid "Continue"
 msgstr "Parhau"
 
-#: app/views/contexts/list_context.py:104
+#: app/views/contexts/list_context.py:109
 msgid " (You)"
 msgstr " (Chi)"
 
-#: app/views/contexts/submission_metadata_context.py:13
+#: app/views/contexts/preview_context.py:66
+msgid "Preview survey questions"
+msgstr "Rhagolwg o gwestiynau'r arolwg"
+
+#: app/views/contexts/submission_metadata_context.py:14
 msgid "Submitted on:"
 msgstr "Cyflwynwyd ar:"
 
-#: app/views/contexts/submission_metadata_context.py:16
+#: app/views/contexts/submission_metadata_context.py:17
 msgid "{date} at {time}"
 msgstr "{date} am {time}"
 
-#: app/views/contexts/submission_metadata_context.py:25
+#: app/views/contexts/submission_metadata_context.py:26
 msgid "Submission reference:"
 msgstr "Cyfeirnod cyflwyno:"
 
@@ -507,35 +511,43 @@ msgstr "Cyflwyno atebion"
 msgid "Please submit this survey to complete it"
 msgstr "Cyflwynwch yr arolwg hwn i'w gwblhau"
 
-#: app/views/contexts/thank_you_context.py:28
-msgid "Your answers have been submitted."
-msgstr "Mae eich atebion wedi cael eu cyflwyno."
-
-#: app/views/contexts/thank_you_context.py:30
+#: app/views/contexts/thank_you_context.py:29
 msgid "Your answers have been submitted for <span>{company_name}</span> ({trading_name})"
 msgstr "Mae eich atebion wedi cael eu cyflwyno ar gyfer <span>{company_name}</span> ({trading_name})"
 
-#: app/views/contexts/thank_you_context.py:37
+#: app/views/contexts/thank_you_context.py:36
 msgid "Your answers have been submitted for <span>{company_name}</span>"
 msgstr "Mae eich atebion wedi cael eu cyflwyno ar gyfer <span>{company_name}</span>"
 
-#: app/views/contexts/view_submitted_response_context.py:37
-msgid "Answers submitted."
-msgstr "Atebion wedi'u cyflwyno."
+#: app/views/contexts/thank_you_context.py:40
+msgid "Your answers have been submitted."
+msgstr "Mae eich atebion wedi cael eu cyflwyno."
 
-#: app/views/contexts/view_submitted_response_context.py:39
+#: app/views/contexts/view_submitted_response_context.py:33
 msgid "Answers submitted for <span>{ru_name}</span> ({trad_as})"
 msgstr "Atebion wedi'u cyflwyno ar gyfer <span>{ru_name}</span> ({trad_as})"
 
-#: app/views/contexts/view_submitted_response_context.py:43
+#: app/views/contexts/view_submitted_response_context.py:37
 msgid "Answers submitted for <span>{ru_name}</span>"
 msgstr "Atebion wedi'u cyflwyno ar gyfer <span>{ru_name}</span>"
+
+#: app/views/contexts/view_submitted_response_context.py:41
+msgid "Answers submitted."
+msgstr "Atebion wedi'u cyflwyno."
+
+#: app/views/contexts/preview/preview_question.py:31
+msgid "You can answer with the following options:"
+msgstr "Gallwch ateb gyda'r opsiynau canlynol:"
+
+#: app/views/contexts/preview/preview_question.py:35
+msgid "You can answer with one of the following options:"
+msgstr "Gallwch ateb gydag un o'r opsiynau canlynol:"
 
 #: app/views/handlers/confirm_email.py:38
 msgid "Yes, send the confirmation email"
 msgstr "Ydy, anfonwch yr e-bost cadarnhau"
 
-#: app/views/handlers/confirm_email.py:69
+#: app/views/handlers/confirm_email.py:68
 msgid "Confirm your email address"
 msgstr "Cadarnhewch eich cyfeiriad e-bost"
 
@@ -545,17 +557,17 @@ msgstr "Ydy'r cyfeiriad e-bost hwn yn gywir?"
 
 #: app/views/handlers/confirm_email.py:102
 #: app/views/handlers/confirm_email.py:103
-#: app/views/handlers/individual_response.py:878
+#: app/views/handlers/individual_response.py:880
 msgid "No, I need to change it"
 msgstr "Nac ydy, mae angen i mi ei newid"
 
 #: app/views/handlers/confirm_email.py:129
-#: app/views/handlers/confirmation_email.py:68
-#: app/views/handlers/feedback.py:83 app/views/handlers/question.py:165
+#: app/views/handlers/confirmation_email.py:67
+#: app/views/handlers/feedback.py:84 app/views/handlers/question.py:170
 msgid "Error: {page_title}"
 msgstr "Gwall: {page_title}"
 
-#: app/views/handlers/confirmation_email.py:46
+#: app/views/handlers/confirmation_email.py:45
 msgid "Confirmation email"
 msgstr "E-bost cadarnhau"
 
@@ -599,128 +611,128 @@ msgstr "Peidiwch â chynnwys gwybodaeth gyfrinachol, fel eich manylion cyswllt"
 msgid "Person {list_item_position}"
 msgstr "Person {list_item_position}"
 
-#: app/views/handlers/individual_response.py:252
+#: app/views/handlers/individual_response.py:254
 msgid "Cannot answer questions for others in your household"
 msgstr "Methu ateb cwestiynau ar ran pobl eraill yn eich cartref"
 
-#: app/views/handlers/individual_response.py:322
+#: app/views/handlers/individual_response.py:324
 msgid "How would you like <em>{person_name}</em> to receive a separate census?"
 msgstr "Sut hoffech chi i <em>{person_name}</em> gael cyfrifiad ar wahân?"
 
-#: app/views/handlers/individual_response.py:345
+#: app/views/handlers/individual_response.py:347
 msgid "Text message"
 msgstr "Neges destun"
 
-#: app/views/handlers/individual_response.py:347
+#: app/views/handlers/individual_response.py:349
 msgid "We will need their mobile number for this"
 msgstr "Bydd angen rhif ffôn symudol yr unigolyn arnom ar gyfer hyn"
 
-#: app/views/handlers/individual_response.py:355
+#: app/views/handlers/individual_response.py:357
 msgid "Post"
 msgstr "Post"
 
-#: app/views/handlers/individual_response.py:357
+#: app/views/handlers/individual_response.py:359
 msgid "We can only send this to an unnamed resident at the registered household address"
 msgstr "Dim ond at breswylydd dienw yng nghyfeiriad cofrestredig y cartref y gallwn anfon hwn"
 
-#: app/views/handlers/individual_response.py:366
+#: app/views/handlers/individual_response.py:368
 msgid "It is no longer possible to receive an access code by post."
 msgstr "Ni ellir cael cod myneidad drwy'r post mwyach."
 
-#: app/views/handlers/individual_response.py:368
+#: app/views/handlers/individual_response.py:370
 msgid "Select how to send access code."
 msgstr "Dewiswch sut i anfon y cod mynediad."
 
-#: app/views/handlers/individual_response.py:371
+#: app/views/handlers/individual_response.py:373
 msgid "For someone to complete a separate census, we need to send them an individual access code."
 msgstr "Er mwyn i rywun allu cwblhau cyfrifiad ar wahân, bydd angen i ni anfon cod mynediad unigol ato."
 
-#: app/views/handlers/individual_response.py:417
+#: app/views/handlers/individual_response.py:419
 msgid "Send individual access code"
 msgstr "Anfon cod mynediad unigol"
 
-#: app/views/handlers/individual_response.py:448
+#: app/views/handlers/individual_response.py:450
 msgid "How would you like to answer <em>{person_name_possessive}</em> questions?"
 msgstr "Sut hoffech chi ateb cwestiynau <em>{person_name_possessive}</em>?"
 
-#: app/views/handlers/individual_response.py:463
+#: app/views/handlers/individual_response.py:465
 msgid "I would like to request a separate census for them to complete"
 msgstr "Hoffwn i wneud cais am gyfrifiad ar wahân i’r unigolyn ei gwblhau"
 
-#: app/views/handlers/individual_response.py:469
+#: app/views/handlers/individual_response.py:471
 msgid "I will ask them to answer their own questions"
 msgstr "Byddaf yn gofyn i’r unigolyn ateb ei gwestiynau ei hun"
 
-#: app/views/handlers/individual_response.py:473
+#: app/views/handlers/individual_response.py:475
 msgid "They will need the household access code from the letter we sent you"
 msgstr "Bydd angen cod mynediad y cartref ar yr unigolyn o’r llythyr y gwnaethom ei anfon atoch"
 
-#: app/views/handlers/individual_response.py:479
+#: app/views/handlers/individual_response.py:481
 msgid "I will answer for {person_name}"
 msgstr "Byddaf yn ateb ar ran {person_name}"
 
-#: app/views/handlers/individual_response.py:521
+#: app/views/handlers/individual_response.py:523
 msgid "How to answer questions"
 msgstr "Sut i ateb cwestiynau"
 
-#: app/views/handlers/individual_response.py:586
+#: app/views/handlers/individual_response.py:588
 msgid "Do you want to send an individual access code for {person_name} by post?"
 msgstr "Ydych chi am anfon cod mynediad unigol at {person_name} drwy’r post?"
 
-#: app/views/handlers/individual_response.py:594
+#: app/views/handlers/individual_response.py:596
 msgid "A letter with an individual access code will be sent to your registered household address"
 msgstr "Bydd llythyr â chod mynediad unigol yn cael ei anfon i gyfeiriad cofrestredig eich cartref"
 
-#: app/views/handlers/individual_response.py:601
+#: app/views/handlers/individual_response.py:603
 msgid "The letter will be addressed to <strong>Individual Resident</strong> instead of the name provided"
 msgstr "Bydd y llythyr wedi'i gyfeirio at y <strong>Preswylydd Unigol</strong> yn hytrach na'r enw a gafodd ei roi"
 
-#: app/views/handlers/individual_response.py:614
+#: app/views/handlers/individual_response.py:616
 msgid "Yes, send the access code by post"
 msgstr "Ydw, anfonwch y cod mynediad drwy'r post"
 
-#: app/views/handlers/individual_response.py:620
+#: app/views/handlers/individual_response.py:622
 msgid "No, send it another way"
 msgstr "Nac ydw, anfonwch y cod mynediad mewn ffordd arall"
 
-#: app/views/handlers/individual_response.py:653
+#: app/views/handlers/individual_response.py:655
 msgid "Confirm address"
 msgstr "Cadarnhau'r cyfeiriad"
 
-#: app/views/handlers/individual_response.py:708
-#: app/views/handlers/individual_response.py:746
+#: app/views/handlers/individual_response.py:710
+#: app/views/handlers/individual_response.py:748
 msgid "Separate Census"
 msgstr "Cyfrifiad ar wahân"
 
-#: app/views/handlers/individual_response.py:712
+#: app/views/handlers/individual_response.py:714
 msgid "Who do you need to request a separate census for?"
 msgstr "Ar gyfer pwy y mae angen i chi wneud cais am gyfrifiad ar wahân?"
 
-#: app/views/handlers/individual_response.py:770
+#: app/views/handlers/individual_response.py:772
 msgid "What is <em>{person_name_possessive}</em> mobile number?"
 msgstr "Beth yw rhif ffôn symudol <em>{person_name_possessive}</em>?"
 
-#: app/views/handlers/individual_response.py:782
+#: app/views/handlers/individual_response.py:784
 msgid "UK mobile number"
 msgstr "Rhif ffôn symudol yn y Deyrnas Unedig"
 
-#: app/views/handlers/individual_response.py:783
+#: app/views/handlers/individual_response.py:785
 msgid "This will not be stored and only used once to send the access code"
 msgstr "Ni chaiff ei storio a bydd ond yn cael ei ddefnyddio unwaith i anfon y cod mynediad"
 
-#: app/views/handlers/individual_response.py:816
+#: app/views/handlers/individual_response.py:818
 msgid "Mobile number"
 msgstr "Rhif ffôn symudol"
 
-#: app/views/handlers/individual_response.py:865
+#: app/views/handlers/individual_response.py:867
 msgid "Is this mobile number correct?"
 msgstr "Ydy’r rhif ffôn symudol hwn yn gywir?"
 
-#: app/views/handlers/individual_response.py:874
+#: app/views/handlers/individual_response.py:876
 msgid "Yes, send the text"
 msgstr "Ydy, anfonwch y neges destun"
 
-#: app/views/handlers/individual_response.py:912
+#: app/views/handlers/individual_response.py:914
 msgid "Confirm mobile number"
 msgstr "Cadarnhau'r rhif ffôn symudol"
 
@@ -855,7 +867,7 @@ msgstr "Anfon adborth"
 msgid "If you can’t answer someone else’s questions"
 msgstr "Os na allwch chi ateb cwestiynau rhywun arall"
 
-#: templates/interstitial.html:23 templates/partials/question.html:25
+#: templates/interstitial.html:23 templates/partials/question.html:24
 msgid "If you can’t answer questions for this person"
 msgstr "Os na allwch chi ateb cwestiynau ar ran yr unigolyn hwn"
 
@@ -867,7 +879,11 @@ msgstr "Cadw a pharhau"
 msgid "Introduction"
 msgstr "Cyflwyniad"
 
-#: templates/introduction.html:23
+#: templates/introduction.html:24
+msgid "<a href='{url}'>View the questions you will be asked in this survey</a>"
+msgstr "<a href='{url}'>Gweld y cwestiynau a ofynnir i chi yn yr arolwg hwn</a>"
+
+#: templates/introduction.html:29
 msgid "Your response is legally required"
 msgstr "Mae eich ymateb yn ofynnol yn gyfreithiol"
 
@@ -887,17 +903,21 @@ msgstr "Yn anffodus, dim ond un arolwg y gallwch chi ei gwblhau ar y tro"
 msgid "Close this window to continue with your current survey"
 msgstr "Caewch y ffenestr hon i barhau â'ch arolwg presennol"
 
-#: templates/signed-out.html:3
+#: templates/signed-out.html:5
 msgid "Signed out"
 msgstr "Wedi allgofnodi"
 
-#: templates/signed-out.html:6
-msgid "Your survey answers have been saved. You are now signed out"
-msgstr "Mae eich atebion i'r arolwg wedi'u cadw. Rydych chi nawr wedi'ch allgofnodi"
+#: templates/signed-out.html:16
+msgid "<h1>Your progress has been saved</h1>"
+msgstr "<h1>Mae eich cynnydd wedi'i gadw</h1>"
 
-#: templates/signed-out.html:9
-msgid "Return to your account"
-msgstr "Dychwelyd i'ch cyfrif"
+#: templates/signed-out.html:23
+msgid "To find further information or resume the survey, <a href='{url}'>return to My Account</a>."
+msgstr "I ddod o hyd i ragor o wybodaeth neu i ailddechrau'r arolwg, <a href='{url}'>dychwelwch i Fy Nghyfrif</a>."
+
+#: templates/signed-out.html:29
+msgid "To resume the survey, <a href='{url}'>re-enter your access code</a>."
+msgstr "I ailddechrau'r arolwg, <a href='{url}'>ail-nodwch eich cod mynediad</a>."
 
 #: templates/thank-you.html:6
 msgid "We’ve received your answers"
@@ -999,9 +1019,21 @@ msgstr "Bydd angen i chi <a href='{url}'>fewngofnodi eto</a> i gael mynediad i'c
 msgid "To access this page you need to <a href='{url}'>re-enter your access code</a>."
 msgstr "I fynd i'r dudalen hon, bydd angen i chi <a href='{url}'> roi eich cod mynediad eto</a>."
 
+#: templates/errors/401.html:20 templates/errors/403.html:12
+#: templates/errors/404.html:13 templates/errors/500.html:12
+#: templates/errors/submission-failed.html:14
+msgid "Business surveys"
+msgstr "Arolygon busnes"
+
 #: templates/errors/401.html:21
 msgid "If you are completing a business survey, you need to sign back in to <a href='{url}'>your account</a>."
 msgstr "Os ydych chi'n cwblhau arolwg busnes, bydd angen i chi fewngofnodi eto <a href='{url}'>i'ch cyfrif</a>."
+
+#: templates/errors/401.html:22 templates/errors/403.html:14
+#: templates/errors/404.html:15 templates/errors/500.html:14
+#: templates/errors/submission-failed.html:16
+msgid "All other surveys"
+msgstr "Pob arolwg arall"
 
 #: templates/errors/401.html:23
 msgid "If you started your survey using an access code, you need to <a href='{url}'>re-enter your code</a>."
@@ -1205,25 +1237,30 @@ msgstr "Dyma'r cwestiwn a gafodd ei weld ddiwethaf yn yr adran hon"
 msgid "You can also <a id='section-start-link' href='{url}'>go back to the start of the section</a>"
 msgstr "Gallwch chi <a id='section-start-link' href='{url}'>hefyd fynd yn ôl i ddechrau'r adran</a>"
 
-#: templates/partials/question.html:60
+#: templates/partials/preview-question.html:35
+#: templates/partials/question.html:68
+msgid "Or"
+msgstr "Neu"
+
+#: templates/partials/preview-question.html:56
+msgid "{max_characters} characters can be added."
+msgstr "Mae modd ychwanegu {max_characters} nod."
+
+#: templates/partials/question.html:59
 msgid "Selecting this will clear your answer"
 msgstr "Bydd dewis hwn yn clirio eich ateb"
 
-#: templates/partials/question.html:61
+#: templates/partials/question.html:60
 msgid "cleared"
 msgstr "wedi'i glirio"
 
-#: templates/partials/question.html:64
+#: templates/partials/question.html:63
 msgid "Selecting this will deselect any selected options"
 msgstr "Bydd dewis hwn yn dad-ddewis unrhyw opsiynau sydd wedi'u dewis"
 
-#: templates/partials/question.html:65 templates/partials/question.html:73
+#: templates/partials/question.html:64 templates/partials/question.html:72
 msgid "deselected"
 msgstr "dad-ddewiswyd"
-
-#: templates/partials/question.html:69
-msgid "Or"
-msgstr "Neu"
 
 #: templates/partials/answers/address.html:9
 msgid "Address line 1"
@@ -1386,3 +1423,4 @@ msgstr "Newid"
 #: templates/partials/summary/list-summary.html:8
 msgid "Change details for {item_name}"
 msgstr "Newid manylion ar gyfer {item_name}"
+
