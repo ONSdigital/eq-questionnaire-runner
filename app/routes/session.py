@@ -17,11 +17,9 @@ from app.globals import get_session_store, get_session_timeout_in_seconds
 from app.helpers.template_helpers import (
     DATA_LAYER_KEYS,
     get_survey_config,
-    get_survey_type,
     render_template,
 )
 from app.routes.errors import _render_error_page
-from app.survey_config.survey_type import SurveyType
 from app.utilities.metadata_parser import validate_runner_claims
 from app.utilities.metadata_parser_v2 import (
     validate_questionnaire_claims,
