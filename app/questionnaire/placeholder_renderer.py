@@ -1,5 +1,5 @@
 from copy import deepcopy
-from typing import Any, Mapping, MutableMapping
+from typing import Any, Mapping, MutableMapping, Optional
 
 from jsonpointer import resolve_pointer, set_pointer
 
@@ -128,9 +128,10 @@ class PlaceholderRenderer:
         ] = QuestionnaireSchema.get_mutable_deepcopy(data_to_render)
 
         if data_to_render_mutable.get("dynamic_answers", {}):
-            data_to_render_mutable, list_items = self.resolve_dynamic_answers(
+            if resolved_dynamic_answers := self.resolve_dynamic_answers(
                 data_to_render_mutable
-            )
+            ):
+                data_to_render_mutable, list_items = resolved_dynamic_answers
         else:
             list_items = []
 
@@ -183,24 +184,29 @@ class PlaceholderRenderer:
 
     def resolve_dynamic_answers(
         self, data_to_render_mutable: dict
-    ) -> tuple[dict, list]:
-        resolved_dynamic_answers = []
+    ) -> Optional[tuple[dict, list]]:
         dynamic_answers = data_to_render_mutable.get("dynamic_answers", {})
-        list_name = dynamic_answers["values"]["identifier"]
-        list_items = self._list_store[list_name].items
+        if dynamic_answers["values"]["source"] == "list":
+            resolved_dynamic_answers = []
+            list_name = dynamic_answers["values"]["identifier"]
+            list_items = self._list_store[list_name].items
 
-        for dynamic_answer in dynamic_answers["answers"]:
-            for item in list_items:
-                resolved_dynamic_answer = deepcopy(dynamic_answer)
-                resolved_id = f"{dynamic_answer['id']}-{item}"
-                resolved_dynamic_answer["id"] = resolved_id
+            for dynamic_answer in dynamic_answers["answers"]:
+                for item in list_items:
+                    resolved_dynamic_answer = deepcopy(dynamic_answer)
+                    resolved_id = f"{dynamic_answer['id']}-{item}"
+                    resolved_dynamic_answer["id"] = resolved_id
 
-                resolved_dynamic_answers.append(resolved_dynamic_answer)
+                    self._schema._parent_id_map[  # pylint: disable=protected-access
+                        dynamic_answer["id"]
+                    ] = data_to_render_mutable["id"]
 
-        data_to_render_mutable["answers"] += resolved_dynamic_answers
-        data_to_render_mutable["dynamic_answers_list_id"] = data_to_render_mutable[
-            "dynamic_answers"
-        ]["values"]["identifier"]
-        del data_to_render_mutable["dynamic_answers"]
+                    resolved_dynamic_answers.append(resolved_dynamic_answer)
 
-        return data_to_render_mutable, list_items
+            data_to_render_mutable["answers"] += resolved_dynamic_answers
+            data_to_render_mutable["dynamic_answers_list_id"] = data_to_render_mutable[
+                "dynamic_answers"
+            ]["values"]["identifier"]
+            del data_to_render_mutable["dynamic_answers"]
+
+            return data_to_render_mutable, list_items
