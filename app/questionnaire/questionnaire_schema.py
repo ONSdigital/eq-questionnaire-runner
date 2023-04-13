@@ -257,7 +257,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     continue
 
                 if dynamic_answers := question.get("dynamic_answers"):
-                    for answer in dynamic_answers.get("answers"):
+                    for answer in dynamic_answers["answers"]:
                         value_source = dynamic_answers["values"]
                         self._update_answer_dependencies_for_value_source(
                             value_source, block_id=block["id"], answer_id=answer["id"]
@@ -353,7 +353,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 list_collector["id"]  # type: ignore
             )["question"]
             answer_id_for_block = list(
-                self.get_answers_for_question_by_id(add_block_question).keys()
+                self.get_answers_for_question_by_id(add_block_question)
             )[0]
             self._answer_dependencies_map[answer_id_for_block] |= {
                 self._get_answer_dependent_for_block_id(block_id=block_id, for_list=value_source["identifier"])  # type: ignore

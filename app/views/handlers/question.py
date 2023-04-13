@@ -116,12 +116,14 @@ class Question(BlockHandler):
     # pylint: disable=protected-access
     def _get_answers_for_question(self, question_json) -> dict[str, Any]:
         answer_ids = self._schema.get_answer_ids_for_question(question_json)
+        dynamic_answers_dict = {}
+
         if (
             question_json.get("dynamic_answers")
             and question_json["dynamic_answers"]["values"]["identifier"]
         ):
             dynamic_answers = []
-            static_answers = []
+
             for answer_id in answer_ids:
                 for (
                     list_item_id
@@ -133,27 +135,20 @@ class Question(BlockHandler):
                         list_item_id=list_item_id,
                     ):
                         dynamic_answers.append(answer)
-                    elif answer := self._questionnaire_store.answer_store.get_answer(
-                        answer_id=answer_id
-                    ):
-                        static_answers.append(answer)
 
             dynamic_answers_dict = {
                 f"{answer.answer_id}-{answer.list_item_id}": answer.value
                 for answer in dynamic_answers
                 if answer
             }
-            static_answers_dict = {
-                answer.answer_id: answer.value for answer in static_answers if answer
-            }
-            merged_answers = {**dynamic_answers_dict, **static_answers_dict}
-
-            return merged_answers
 
         answers = self._questionnaire_store.answer_store.get_answers_by_answer_id(
             answer_ids=answer_ids, list_item_id=self._current_location.list_item_id
         )
-        return {answer.answer_id: answer.value for answer in answers if answer}
+        static_answers_dict = {
+            answer.answer_id: answer.value for answer in answers if answer
+        }
+        return dynamic_answers_dict | static_answers_dict
 
     def _get_list_add_question_url(self, params):
         block_id = params["block_id"]
