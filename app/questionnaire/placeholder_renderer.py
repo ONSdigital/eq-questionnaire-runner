@@ -183,18 +183,13 @@ class PlaceholderRenderer:
     def resolve_dynamic_answers(
         self, data_to_render_mutable: dict
     ) -> tuple[dict, list]:
-        list_items: list = []
         resolved_dynamic_answers = []
         dynamic_answers = data_to_render_mutable.get("dynamic_answers", {})
-        list_items.extend(
-            (
-                self._list_store.get(dynamic_answers["values"].get("identifier"))  # type: ignore
-                # Always exists at this point, same below
-                .serialize().get("items")
-            )
-        )
+        list_name = dynamic_answers["values"]["identifier"]
+        list_items = self._list_store[list_name].items
+
         for dynamic_answer in dynamic_answers["answers"]:
-            for item in list_items:  # type: ignore
+            for item in list_items:
                 resolved_dynamic_answer = self._schema.get_mutable_deepcopy(
                     dynamic_answer
                 )
@@ -203,9 +198,7 @@ class PlaceholderRenderer:
 
                 self._schema._parent_id_map[  # pylint: disable=protected-access
                     dynamic_answer["id"]
-                ] = data_to_render_mutable.get(
-                    "id"
-                )  # type: ignore
+                ] = data_to_render_mutable["id"]
 
                 resolved_dynamic_answers.append(resolved_dynamic_answer)
 
