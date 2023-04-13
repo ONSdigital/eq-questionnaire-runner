@@ -24,7 +24,6 @@ from app.authentication.authenticator import login_manager
 from app.authentication.cookie_session import SHA256SecureCookieSessionInterface
 from app.authentication.user_id_generator import UserIDGenerator
 from app.cloud_tasks import CloudTaskPublisher, LogCloudTaskPublisher
-from app.globals import get_session_store
 from app.helpers import get_span_and_trace
 from app.jinja_filters import blueprint as filter_blueprint
 from app.keys import KEY_PURPOSE_SUBMISSION
@@ -480,12 +479,7 @@ def get_minimized_asset(filename):
 
 
 def get_locale():
-    session = get_session_store()
-
-    if session and (session_data := session.session_data):
-        return session_data.language_code
-
-    return None
+    return cookie_session.get("language_code")
 
 
 def get_timezone():
