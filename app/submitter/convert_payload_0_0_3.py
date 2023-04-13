@@ -169,4 +169,3 @@ def resolve_dynamic_answers(
                 )
                 answers_payload.add_or_update(extracted_answer)  # type: ignore
                 # answer store's get_answer return is optional but at this point it always returns an Answer
-

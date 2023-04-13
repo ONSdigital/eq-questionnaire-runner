@@ -1,3 +1,4 @@
+from copy import deepcopy
 from typing import Any, Mapping, MutableMapping
 
 from jsonpointer import resolve_pointer, set_pointer
@@ -190,15 +191,9 @@ class PlaceholderRenderer:
 
         for dynamic_answer in dynamic_answers["answers"]:
             for item in list_items:
-                resolved_dynamic_answer = self._schema.get_mutable_deepcopy(
-                    dynamic_answer
-                )
+                resolved_dynamic_answer = deepcopy(dynamic_answer)
                 resolved_id = f"{dynamic_answer['id']}-{item}"
                 resolved_dynamic_answer["id"] = resolved_id
-
-                self._schema._parent_id_map[  # pylint: disable=protected-access
-                    dynamic_answer["id"]
-                ] = data_to_render_mutable["id"]
 
                 resolved_dynamic_answers.append(resolved_dynamic_answer)
 
