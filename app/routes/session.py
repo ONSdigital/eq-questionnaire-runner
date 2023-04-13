@@ -123,6 +123,8 @@ def login():
             "account_service_log_out_url"
         )
 
+    cookie_session["language_code"] = metadata.language_code
+
     return redirect(url_for("questionnaire.get_questionnaire"))
 
 
