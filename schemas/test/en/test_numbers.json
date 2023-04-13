@@ -48,7 +48,7 @@
                                         "type": "Number",
                                         "decimal_places": 2,
                                         "minimum": {
-                                            "value": 0
+                                            "value": -1000
                                         },
                                         "maximum": {
                                             "value": 1000
@@ -187,11 +187,11 @@
                                     },
                                     {
                                         "id": "test-min",
-                                        "label": "Min Test (123 to 9,999,999,999)",
+                                        "label": "Min Test (-999,999,999,999 to 9,999,999,999,999)",
                                         "mandatory": false,
                                         "type": "Number",
                                         "minimum": {
-                                            "value": 123
+                                            "value": -999999999999
                                         }
                                     },
                                     {
@@ -205,7 +205,7 @@
                                     },
                                     {
                                         "id": "test-min-exclusive",
-                                        "label": "Min Exclusive Test (124 to 9,999,999,999 - 123 Exclusive)",
+                                        "label": "Min Exclusive Test (124 to 9,999,999,999,999 - 123 Exclusive)",
                                         "mandatory": false,
                                         "type": "Number",
                                         "minimum": {
