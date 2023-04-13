@@ -328,7 +328,7 @@ class QuestionnaireStoreUpdater:
         """
         Captures a unique list of section ids that are dependents of the current section, for progress value sources.
         """
-        dependent_sections: Iterable = self._schema.when_rules_block_dependencies_by_section_for_progress_value_source.get(
+        dependent_sections: Iterable = self._schema.when_rules_section_dependencies_by_section_for_progress_value_source.get(
             self._current_location.section_id, []
         )
         self.update_section_dependencies(dependent_sections)
@@ -339,16 +339,15 @@ class QuestionnaireStoreUpdater:
         """
         Captures a unique list of section ids that are dependents of the current block, for progress value sources.
         """
-        # Type ignore: block id will exist at this point
-        dependent_sections = [
-            section_key
-            for section_key, dependent_blocks in self._schema.when_rules_block_dependencies_by_section_for_progress_value_source.items()
-            if any(
-                self._current_location.block_id in block_ids  # type: ignore
-                for block_ids in dependent_blocks
-            )
-        ]
-        self.update_section_dependencies(dependent_sections)
+        dependent_sections = self._schema.get_values_for_key(
+            self._schema.when_rules_block_dependencies_by_section_for_progress_value_source,
+            self._current_location.block_id,  # type: ignore
+        )
+        sections_set = set()
+        for dependent_section in dependent_sections:
+            sections_set.update(dependent_section)
+
+        self.update_section_dependencies(sections_set)
 
     def update_section_dependencies(self, dependent_sections: Iterable) -> None:
         for section_id in dependent_sections:
