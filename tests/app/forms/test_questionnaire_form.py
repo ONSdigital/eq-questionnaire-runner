@@ -1660,13 +1660,13 @@ def test_answer_errors_are_interpolated(app, answer_store, list_store):
             list_store,
             metadata=get_metadata(),
             response_metadata={},
-            form_data=MultiDict({"set-minimum": "-1"}),
+            form_data=MultiDict({"set-minimum": "-10001"}),
             progress_store=ProgressStore(),
         )
 
         form.validate()
         answer_errors = form.answer_errors("set-minimum")
-        assert schema.error_messages["NUMBER_TOO_SMALL"] % {"min": "0"} in answer_errors
+        assert schema.error_messages["NUMBER_TOO_SMALL"] % {"min": "-1,000"} in answer_errors
 
 
 def test_mandatory_mutually_exclusive_question_raises_error_when_not_answered(
