@@ -69,6 +69,7 @@ def before_individual_response_request() -> Response | None:
         "individual-response request", method=request.method, url_path=request.full_path
     )
 
+    # Ensures langauge is set in the SessionStore
     handle_language(metadata)
 
     # pylint: disable=assigning-non-slot

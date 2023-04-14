@@ -22,7 +22,7 @@ class PlaceholderRenderer:
 
     def __init__(
         self,
-        language: str | None,
+        language: str,
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: MetadataProxy | None,

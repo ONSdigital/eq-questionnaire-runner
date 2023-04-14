@@ -1,5 +1,5 @@
 from functools import cached_property, lru_cache
-from typing import Any, Mapping, Type
+from typing import Any, Type
 
 from flask import current_app
 from flask import render_template as flask_render_template
@@ -228,7 +228,7 @@ def get_survey_config(
     )
 
 
-def render_template(template: str, **kwargs: str | Mapping | None) -> str:
+def render_template(template: str, **kwargs: Any) -> str:
     session_expires_at = None
     language = get_locale().language
     if session_store := get_session_store():

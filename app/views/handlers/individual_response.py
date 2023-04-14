@@ -5,7 +5,7 @@ from uuid import uuid4
 
 from flask import current_app, redirect
 from flask.helpers import url_for
-from flask_babel import lazy_gettext
+from flask_babel import lazy_gettext, LazyString
 from itsdangerous import BadSignature
 from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.exceptions import BadRequest, NotFound
@@ -132,13 +132,14 @@ class IndividualResponseHandler:
 
     @cached_property
     def _list_model(self) -> ListModel:
-        # Type ignore: List name will exist and be not None at this point
+        # Type ignore: Current usages of this cached property occur when List Name will exist and be not None
         return self._questionnaire_store.list_store[self._list_name]  # type: ignore
 
     @cached_property
     def _list_item_position(self) -> int:
+        # Type ignore: Current usages of this cached property occur when List Name and List Item ID exist and be not None
         return self._questionnaire_store.list_store.list_item_position(
-            self._list_name, self._list_item_id
+            self._list_name, self._list_item_id  # type: ignore
         )
 
     def page_title(self, page_title: str) -> str:
@@ -164,13 +165,14 @@ class IndividualResponseHandler:
         return True
 
     @cached_property
-    def rendered_block(self) -> Mapping:
+    def rendered_block(self) -> Mapping[str, Any]:
         return self._render_block()
 
     @cached_property
     def placeholder_renderer(self) -> PlaceholderRenderer:
         return PlaceholderRenderer(
-            language=self._language,
+            # Type ignore: Language is defaulted via handle_language in the individual_response blueprint before_request which triggers this
+            language=self._language,  # type: ignore
             answer_store=self._questionnaire_store.answer_store,
             list_store=self._questionnaire_store.list_store,
             metadata=self._questionnaire_store.metadata,
@@ -266,7 +268,8 @@ class IndividualResponseHandler:
         )
 
     def _get_next_location_url(self) -> str:
-        list_model = self._questionnaire_store.list_store[self._list_name]
+        # Type ignore: Current usages of this method occur when List Name exists and is not None
+        list_model = self._questionnaire_store.list_store[self._list_name]  # type: ignore
 
         if self._list_item_id:
             return url_for(
@@ -290,12 +293,14 @@ class IndividualResponseHandler:
                 "questionnaire.block",
                 list_name=self._list_name,
                 list_item_id=self._list_item_id,
-                block_id=self._schema.get_remove_block_id_for_list(self._list_name),
+                # Type ignore: Current usages of this method occur when List Name exists and is not None
+                block_id=self._schema.get_remove_block_id_for_list(self._list_name),  # type: ignore
             )
 
         if self._list_item_id:
             individual_section_first_block_id = (
-                self._schema.get_first_block_id_for_section(self.individual_section_id)
+                # Type ignore: Current usages of this method occur when Individual Section ID exists and is not None
+                self._schema.get_first_block_id_for_section(self.individual_section_id)  # type: ignore
             )
             return url_for(
                 "questionnaire.block",
@@ -313,17 +318,18 @@ class IndividualResponseHandler:
 
     def _update_section_status(self, status: str) -> None:
         self._questionnaire_store.progress_store.update_section_status(
-            status, self.individual_section_id, self._list_item_id
+            # Type ignore: Current usages of this method occur when Individual Section ID exists and is not None
+            status, self.individual_section_id, self._list_item_id  # type: ignore
         )
 
     @property
-    def block_definition(self):  # pragma: no cover
+    def block_definition(self) -> Mapping[str, Any]:  # pragma: no cover
         raise NotImplementedError
 
 
 class IndividualResponseHowHandler(IndividualResponseHandler):
     @cached_property
-    def block_definition(self) -> Mapping:
+    def block_definition(self) -> Mapping[str, Any]:
         return {
             "type": "IndividualResponse",
             "id": "individual-response",
@@ -352,7 +358,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
             },
         }
 
-    def _build_handler_answer_options(self):
+    def _build_handler_answer_options(self) -> list[dict[str, str | LazyString]]:
         handler_options = [
             {
                 "label": lazy_gettext("Text message"),
@@ -374,7 +380,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
             )
         return handler_options
 
-    def _build_question_description(self):
+    def _build_question_description(self) -> list[LazyString]:
         description = (
             lazy_gettext("It is no longer possible to receive an access code by post.")
             if self.has_postal_deadline_passed
@@ -388,11 +394,11 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         ]
 
     @cached_property
-    def selected_option(self):
+    def selected_option(self) -> str:
         answer_id = self.rendered_block["question"]["answers"][0]["id"]
         return self.form.get_data(answer_id)
 
-    def handle_get(self):
+    def handle_get(self) -> str:
         if self._request_args.get("journey") == "hub":
             if len(self._list_model.non_primary_people) == 1:
                 previous_location_url = url_for(
@@ -450,7 +456,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
 
 class IndividualResponseChangeHandler(IndividualResponseHandler):
     @cached_property
-    def block_definition(self) -> Mapping:
+    def block_definition(self) -> Mapping[str, Any]:
         return {
             "type": "IndividualResponse",
             "id": "individual-response-change",
