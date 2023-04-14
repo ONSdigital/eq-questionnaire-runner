@@ -1,4 +1,4 @@
-from typing import Mapping, Optional, Union
+from typing import Optional, Any, MutableMapping
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
@@ -17,7 +17,7 @@ class SectionPreviewContext(Context):
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: Optional[MetadataProxy],
-        response_metadata: Mapping[str, Union[str, int, list]],
+        response_metadata: MutableMapping[str, Any],
         section_id: str,
     ):
         super().__init__(
