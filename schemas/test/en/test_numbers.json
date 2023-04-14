@@ -187,11 +187,11 @@
                                     },
                                     {
                                         "id": "test-min",
-                                        "label": "Min Test (-999,999,999,999 to 9,999,999,999,999)",
+                                        "label": "Min Test (-123 to 9,999,999,999,999)",
                                         "mandatory": false,
                                         "type": "Number",
                                         "minimum": {
-                                            "value": -999999999999
+                                            "value": -123
                                         }
                                     },
                                     {

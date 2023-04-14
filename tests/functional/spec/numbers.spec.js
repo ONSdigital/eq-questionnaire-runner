@@ -20,7 +20,7 @@ describe("Number validation", () => {
 
       await $(TestMinMax.testRange()).setValue("9");
       await $(TestMinMax.testRangeExclusive()).setValue("10");
-      await $(TestMinMax.testMin()).setValue("0");
+      await $(TestMinMax.testMin()).setValue("-124");
       await $(TestMinMax.testMax()).setValue("12345");
       await $(TestMinMax.testMinExclusive()).setValue("123");
       await $(TestMinMax.testMaxExclusive()).setValue("12345");
