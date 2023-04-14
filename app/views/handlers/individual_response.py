@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from functools import cached_property
-from typing import Mapping, Optional
+from typing import Mapping, Optional, Any
 from uuid import uuid4
 
 from flask import current_app, redirect
@@ -9,11 +9,12 @@ from flask_babel import lazy_gettext
 from itsdangerous import BadSignature
 from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.exceptions import BadRequest, NotFound
+from werkzeug.wrappers.response import Response
 
 from app.data_models import CompletionStatus, FulfilmentRequest, QuestionnaireStore
 from app.data_models.list_store import ListModel
 from app.data_models.metadata_proxy import MetadataProxy
-from app.forms.questionnaire_form import generate_form
+from app.forms.questionnaire_form import generate_form, QuestionnaireForm
 from app.forms.validators import sanitise_mobile_number
 from app.helpers import url_safe_serializer
 from app.helpers.template_helpers import render_template
@@ -86,14 +87,14 @@ class IndividualResponseHandler:
             {
                 "placeholder": "person_name_possessive",
                 "transforms": name_transforms
-                + [
-                    {
-                        "arguments": {
-                            "string_to_format": {"source": "previous_transform"}
-                        },
-                        "transform": "format_possessive",
-                    }
-                ],
+                              + [
+                                  {
+                                      "arguments": {
+                                          "string_to_format": {"source": "previous_transform"}
+                                      },
+                                      "transform": "format_possessive",
+                                  }
+                              ],
             }
         ]
 
@@ -135,7 +136,7 @@ class IndividualResponseHandler:
         return self._questionnaire_store.list_store[self._list_name]  # type: ignore
 
     @cached_property
-    def _list_item_position(self):
+    def _list_item_position(self) -> int:
         return self._questionnaire_store.list_store.list_item_position(
             self._list_name, self._list_item_id
         )
@@ -149,7 +150,7 @@ class IndividualResponseHandler:
             )
         return page_title
 
-    def _is_location_valid(self):
+    def _is_location_valid(self) -> bool:
         if not self._list_model:
             return False
 
@@ -167,7 +168,7 @@ class IndividualResponseHandler:
         return self._render_block()
 
     @cached_property
-    def placeholder_renderer(self):
+    def placeholder_renderer(self) -> PlaceholderRenderer:
         return PlaceholderRenderer(
             language=self._language,
             answer_store=self._questionnaire_store.answer_store,
@@ -180,7 +181,7 @@ class IndividualResponseHandler:
         )
 
     @cached_property
-    def router(self):
+    def router(self) -> Router:
         return Router(
             schema=self._schema,
             answer_store=self._questionnaire_store.answer_store,
@@ -191,11 +192,11 @@ class IndividualResponseHandler:
         )
 
     @cached_property
-    def individual_section_id(self):
+    def individual_section_id(self) -> str | None:
         return self._schema.get_individual_response_individual_section_id()
 
     @cached_property
-    def form(self):
+    def form(self) -> QuestionnaireForm:
         return generate_form(
             schema=self._schema,
             question_schema=self.rendered_block["question"],
@@ -211,14 +212,16 @@ class IndividualResponseHandler:
     def get_context(self):
         return build_question_context(self.rendered_block, self.form)
 
-    def _publish_fulfilment_request(self, mobile_number=None):
+    def _publish_fulfilment_request(self, mobile_number=None) -> None:
         self._check_individual_response_count()
         topic_id = current_app.config["EQ_FULFILMENT_TOPIC_ID"]
         fulfilment_request = IndividualResponseFulfilmentRequest(
-            self._metadata, mobile_number
+            # Type ignore: _metadata will exist at point of publish
+            self._metadata, mobile_number  # type: ignore
         )
         try:
-            return current_app.eq["publisher"].publish(
+            # Type ignore: Instance attribute 'eq' is a dict with key "publisher" with value of abstract type Publisher
+            return current_app.eq["publisher"].publish(  # type: ignore
                 topic_id,
                 message=fulfilment_request.message,
                 fulfilment_request_transaction_id=fulfilment_request.transaction_id,
@@ -226,7 +229,7 @@ class IndividualResponseHandler:
         except PublicationFailed as exc:
             raise IndividualResponseFulfilmentRequestPublicationFailed from exc
 
-    def _check_individual_response_count(self):
+    def _check_individual_response_count(self) -> None:
         if (
             self._questionnaire_store.response_metadata.get(
                 "individual_response_count", 0
@@ -237,20 +240,21 @@ class IndividualResponseHandler:
                 "Individual response limit has been reached"
             )
 
-    def _update_individual_response_count(self):
+    def _update_individual_response_count(self) -> None:
         response_metadata = self._questionnaire_store.response_metadata
 
+        # Type ignore:
         if response_metadata.get("individual_response_count"):
             response_metadata["individual_response_count"] += 1
         else:
             response_metadata["individual_response_count"] = 1
 
-    def _update_questionnaire_store_on_publish(self):
+    def _update_questionnaire_store_on_publish(self) -> None:
         self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
         self._update_individual_response_count()
         self._questionnaire_store.save()
 
-    def handle_get(self):
+    def handle_get(self) -> str:
         return render_template(
             template="individual_response/interstitial",
             language=self._language,
@@ -261,7 +265,7 @@ class IndividualResponseHandler:
             ),
         )
 
-    def _get_next_location_url(self):
+    def _get_next_location_url(self) -> str:
         list_model = self._questionnaire_store.list_store[self._list_name]
 
         if self._list_item_id:
@@ -280,7 +284,7 @@ class IndividualResponseHandler:
 
         return url_for(".individual_response_who", journey="hub")
 
-    def _get_previous_location_url(self):
+    def _get_previous_location_url(self) -> str:
         if self._request_args.get("journey") == "remove-person":
             return url_for(
                 "questionnaire.block",
@@ -302,12 +306,12 @@ class IndividualResponseHandler:
 
         return url_for("questionnaire.get_questionnaire")
 
-    def _render_block(self):
+    def _render_block(self) -> dict[str, Any]:
         return self.placeholder_renderer.render(
             data_to_render=self.block_definition, list_item_id=self._list_item_id
         )
 
-    def _update_section_status(self, status):
+    def _update_section_status(self, status: str) -> None:
         self._questionnaire_store.progress_store.update_section_status(
             status, self.individual_section_id, self._list_item_id
         )
@@ -426,7 +430,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
             page_title=self.page_title(lazy_gettext("Send individual access code")),
         )
 
-    def handle_post(self):
+    def handle_post(self) -> Response:
         if self.selected_option == "Post":
             return redirect(
                 url_for(

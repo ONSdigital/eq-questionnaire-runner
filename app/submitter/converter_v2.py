@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Iterable, Mapping, Optional, OrderedDict, Sequence, Union
+from typing import Any, Iterable, Mapping, Optional, OrderedDict, Sequence, Union, MutableMapping
 
 from structlog import get_logger
 
@@ -95,7 +95,7 @@ def convert_answers_v2(
 
 
 def get_optional_payload_properties(
-    metadata: MetadataProxy, response_metadata: Mapping
+    metadata: MetadataProxy, response_metadata: MutableMapping[str, Any]
 ) -> MetadataType:
     payload = {}
 

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, Mapping, Optional
+from typing import TYPE_CHECKING, Any, Optional, MutableMapping
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
@@ -31,7 +31,7 @@ class QuestionnaireStore:
         self.metadata: Optional[MetadataProxy] = (
             MetadataProxy.from_dict(self._metadata) if self._metadata else None
         )
-        self.response_metadata: Mapping[str, Any] = {}
+        self.response_metadata: MutableMapping[str, Any] = {}
         self.list_store = ListStore()
         self.answer_store = AnswerStore()
         self.progress_store = ProgressStore()

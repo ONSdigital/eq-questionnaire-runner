@@ -1,3 +1,5 @@
+from typing import MutableMapping, Any
+
 from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
@@ -86,7 +88,7 @@ def transform_variants(
     block,
     schema,
     metadata,
-    response_metadata,
+    response_metadata: MutableMapping[str, Any],
     answer_store,
     list_store,
     current_location,

@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Mapping, Optional, Sequence, Union
+from typing import Any, Mapping, Optional, Sequence, Union, MutableMapping
 
 from structlog import get_logger
 
@@ -132,7 +132,7 @@ def build_metadata(metadata: MetadataProxy) -> MetadataType:
 
 
 def get_optional_payload_properties(
-    metadata: MetadataProxy, response_metadata: Mapping
+    metadata: MetadataProxy, response_metadata: MutableMapping[str, Any]
 ) -> MetadataType:
     payload = {}
 

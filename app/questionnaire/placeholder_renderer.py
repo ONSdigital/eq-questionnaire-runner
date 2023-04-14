@@ -22,11 +22,11 @@ class PlaceholderRenderer:
 
     def __init__(
         self,
-        language: str,
+        language: str | None,
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: MetadataProxy | None,
-        response_metadata: Mapping,
+        response_metadata: MutableMapping[str, Any],
         schema: QuestionnaireSchema,
         progress_store: ProgressStore,
         location: Location | RelationshipLocation | None = None,

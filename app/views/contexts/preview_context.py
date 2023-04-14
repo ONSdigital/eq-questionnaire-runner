@@ -1,4 +1,4 @@
-from typing import Generator, Mapping, Optional, Union
+from typing import Generator, Optional, Union, MutableMapping
 
 from flask_babel import lazy_gettext
 
@@ -22,7 +22,7 @@ class PreviewContext(Context):
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: Optional[MetadataProxy],
-        response_metadata: Mapping[str, Union[str, int, list]],
+        response_metadata: MutableMapping[str, Union[str, int, list]],
     ):
         if not schema.preview_enabled:
             raise PreviewNotEnabledException

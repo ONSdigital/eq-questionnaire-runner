@@ -1,4 +1,4 @@
-from typing import Generator, Mapping, Optional
+from typing import Generator, Mapping, Optional, MutableMapping
 
 from flask import url_for
 
@@ -20,7 +20,7 @@ class Router:
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: Optional[MetadataProxy],
-        response_metadata: Mapping,
+        response_metadata: MutableMapping,
     ):
         self._schema = schema
         self._answer_store = answer_store
@@ -87,8 +87,8 @@ class Router:
             location.list_item_id
             and location.list_name
             and not self.is_list_item_in_list_store(
-                location.list_item_id, location.list_name
-            )
+            location.list_item_id, location.list_name
+        )
         ):
             return False
 
