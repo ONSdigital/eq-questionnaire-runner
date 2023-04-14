@@ -1097,21 +1097,6 @@ def test_get_answer(answer_schema, answer_store, expected, list_store, progress_
             [
                 {
                     "currency": None,
-                    "id": "based-checkbox-answer",
-                    "label": "Are supermarkets UK or non UK based?",
-                    "link": "/questionnaire/group/#based-checkbox-answer",
-                    "type": "checkbox",
-                    "unit": None,
-                    "unit_length": None,
-                    "value": [
-                        {
-                            "detail_answer_value": None,
-                            "label": "Non UK based supermarkets",
-                        }
-                    ],
-                },
-                {
-                    "currency": None,
                     "id": "percentage-of-shopping-awTNTI",
                     "label": "Percentage of shopping at Tesco",
                     "link": "/questionnaire/group/?list_item_id=awTNTI#percentage-of-shopping-awTNTI",
@@ -1129,6 +1114,21 @@ def test_get_answer(answer_schema, answer_store, expected, list_store, progress_
                     "unit": None,
                     "unit_length": None,
                     "value": 21,
+                },
+                {
+                    "currency": None,
+                    "id": "based-checkbox-answer",
+                    "label": "Are supermarkets UK or non UK based?",
+                    "link": "/questionnaire/group/#based-checkbox-answer",
+                    "type": "checkbox",
+                    "unit": None,
+                    "unit_length": None,
+                    "value": [
+                        {
+                            "detail_answer_value": None,
+                            "label": "Non UK based supermarkets",
+                        }
+                    ],
                 },
             ],
         ),
