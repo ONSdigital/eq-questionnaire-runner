@@ -339,15 +339,13 @@ class QuestionnaireStoreUpdater:
         """
         Captures a unique list of section ids that are dependents of the current block, for progress value sources.
         """
-        dependent_sections = self._schema.get_values_for_key(
-            self._schema.when_rules_block_dependencies_by_section_for_progress_value_source,
-            self._current_location.block_id,  # type: ignore
+        dependent_sections: Iterable = self._schema.when_rules_block_dependencies_by_section_for_progress_value_source.get(
+            self._current_location.section_id, {}
+        ).get(
+            self._current_location.block_id, set()
         )
-        sections_set = set()
-        for dependent_section in dependent_sections:
-            sections_set.update(dependent_section)
 
-        self.update_section_dependencies(sections_set)
+        self.update_section_dependencies(dependent_sections)
 
     def update_section_dependencies(self, dependent_sections: Iterable) -> None:
         for section_id in dependent_sections:
