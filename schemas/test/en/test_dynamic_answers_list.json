@@ -297,6 +297,58 @@
                                 "title": "What percent of your shopping do you do at each of the following supermarket?",
                                 "type": "General"
                             }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "dynamic-answer-only",
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "supermarkets"
+                                                }
+                                            ]
+                                        },
+                                        0
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "dynamic_answers": {
+                                    "values": {
+                                        "source": "list",
+                                        "identifier": "supermarkets"
+                                    },
+                                    "answers": [
+                                        {
+                                            "label": {
+                                                "text": "How much do you spend at {transformed_value}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "transformed_value",
+                                                        "value": {
+                                                            "source": "answers",
+                                                            "identifier": "supermarket-name"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "id": "amount-of-shopping",
+                                            "mandatory": false,
+                                            "type": "Currency",
+                                            "currency": "GBP",
+                                            "decimal_places": 2
+                                        }
+                                    ]
+                                },
+                                "answers": [],
+                                "id": "dynamic-answer-only-question",
+                                "title": "How much do you spend at each of the following supermarket?",
+                                "type": "General"
+                            }
                         }
                     ]
                 }

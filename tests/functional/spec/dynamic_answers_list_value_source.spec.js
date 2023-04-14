@@ -1,10 +1,10 @@
 import DriverPage from "../generated_pages/dynamic_answers_list/any-supermarket.page";
 import DynamicAnswerPage from "../generated_pages/dynamic_answers_list/dynamic-answer.page";
+import DynamicAnswerOnlyPage from "../generated_pages/dynamic_answers_list/dynamic-answer-only.page";
 import ListCollectorPage from "../generated_pages/dynamic_answers_list/list-collector.page";
 import ListCollectorAddPage from "../generated_pages/dynamic_answers_list/list-collector-add.page";
 import ListCollectorRemovePage from "../generated_pages/dynamic_answers_list/list-collector-remove.page";
 import SectionSummaryPage from "../generated_pages/dynamic_answers_list/section-summary.page";
-import { expect } from "chai";
 
 describe("Dynamic answers list value source", () => {
   const labels = 'label[class="ons-label"]';
@@ -33,6 +33,7 @@ describe("Dynamic answers list value source", () => {
     await expect(await $$(labels)[0].getText()).to.equal("Percentage of shopping at Tesco");
     await expect(await $$(labels).length).to.equal(1);
     await $(DynamicAnswerPage.submit()).click();
+    await $(DynamicAnswerOnlyPage.submit()).click();
     await $(SectionSummaryPage.supermarketsListAddLink()).click();
     await $(ListCollectorAddPage.supermarketName()).setValue("Aldi");
     await $(ListCollectorAddPage.submit()).click();
@@ -47,19 +48,22 @@ describe("Dynamic answers list value source", () => {
     await $$(inputs)[0].setValue(12);
     await $$(inputs)[1].setValue(21);
     await $(DynamicAnswerPage.submit()).click();
+    await $(DynamicAnswerOnlyPage.submit()).click();
     await expect(await $(group).$$(summaryTitles)[0].getText()).to.equal("Percentage of shopping at Tesco");
     await expect(await $(group).$$(summaryValues)[0].getText()).to.equal("12%");
     await expect(await $(group).$$(summaryTitles)[1].getText()).to.equal("Percentage of shopping at Aldi");
     await expect(await $(group).$$(summaryValues)[1].getText()).to.equal("21%");
-    await expect(await $(group).$$(summaryTitles).length).to.equal(3);
-    await expect(await $(group).$$(summaryValues).length).to.equal(3);
+    await expect(await $(group).$$(summaryTitles).length).to.equal(5);
+    await expect(await $(group).$$(summaryValues).length).to.equal(5);
   });
   it("Given list items have been added and the dynamic answers are submitted, When the dynamic answers are revisited, Then they should be visible and have correct values", async () => {
     await addTwoSupermarkets();
     await $$(inputs)[0].setValue(12);
     await $$(inputs)[1].setValue(21);
     await $(DynamicAnswerPage.submit()).click();
+    await $(DynamicAnswerOnlyPage.submit()).click();
     await $(SectionSummaryPage.previous()).click();
+    await $(DynamicAnswerOnlyPage.previous()).click();
     await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
     await expect(await $$(inputs)[0].getValue()).to.equal("12");
     await expect(await $$(inputs)[1].getValue()).to.equal("21");
@@ -71,7 +75,9 @@ describe("Dynamic answers list value source", () => {
     await $$(inputs)[0].setValue(12);
     await $$(inputs)[1].setValue(21);
     await $(DynamicAnswerPage.submit()).click();
+    await $(DynamicAnswerOnlyPage.submit()).click();
     await $(SectionSummaryPage.previous()).click();
+    await $(DynamicAnswerOnlyPage.previous()).click();
     await $$(inputs)[0].setValue(21);
     await $$(inputs)[1].setValue(12);
     await $(DynamicAnswerPage.submit()).click();
@@ -83,6 +89,7 @@ describe("Dynamic answers list value source", () => {
     await $$(inputs)[0].setValue(12);
     await $$(inputs)[1].setValue(21);
     await $(DynamicAnswerPage.submit()).click();
+    await $(DynamicAnswerOnlyPage.submit()).click();
     await $(group).$$(summaryActions)[0].$("a").click();
     await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
     await expect(await $$(inputs)[0].isFocused()).to.be.true;
@@ -96,6 +103,7 @@ describe("Dynamic answers list value source", () => {
     await $$(inputs)[0].setValue(12);
     await $$(inputs)[1].setValue(21);
     await $(DynamicAnswerPage.submit()).click();
+    await $(DynamicAnswerOnlyPage.submit()).click();
     await $(group).$$(summaryActions)[0].$("a").click();
     await $$(inputs)[0].setValue(21);
     await $(DynamicAnswerPage.submit()).click();
@@ -107,21 +115,24 @@ describe("Dynamic answers list value source", () => {
     await $$(inputs)[0].setValue(12);
     await $$(inputs)[1].setValue(21);
     await $(DynamicAnswerPage.submit()).click();
+    await $(DynamicAnswerOnlyPage.submit()).click();
     await $(SectionSummaryPage.supermarketsListRemoveLink(1)).click();
     await $(ListCollectorRemovePage.yes()).click();
     await $(ListCollectorRemovePage.submit()).click();
     await $(DynamicAnswerPage.submit()).click();
+    await $(DynamicAnswerOnlyPage.submit()).click();
     await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
     await expect(await $(group).$$(summaryTitles)[0].getText()).to.equal("Percentage of shopping at Aldi");
     await expect(await $(group).$$(summaryValues)[0].getText()).to.equal("21%");
-    await expect(await $(group).$$(summaryTitles).length).to.equal(2);
-    await expect(await $(group).$$(summaryValues).length).to.equal(2);
+    await expect(await $(group).$$(summaryTitles).length).to.equal(3);
+    await expect(await $(group).$$(summaryValues).length).to.equal(3);
   });
   it("Given list items have been added and the dynamic answers are submitted, When the driving question is changed to 'No', Then after changing answer to 'Yes' all answers should re-appear on summary", async () => {
     await addTwoSupermarkets();
     await $$(inputs)[0].setValue(12);
     await $$(inputs)[1].setValue(21);
     await $(DynamicAnswerPage.submit()).click();
+    await $(DynamicAnswerOnlyPage.submit()).click();
     await $(SectionSummaryPage.anySupermarketAnswerEdit()).click();
     await $(DriverPage.no()).click();
     await $(DriverPage.submit()).click();
@@ -137,8 +148,8 @@ describe("Dynamic answers list value source", () => {
     await expect(await $(group).$$(summaryValues)[0].getText()).to.equal("12%");
     await expect(await $(group).$$(summaryTitles)[1].getText()).to.equal("Percentage of shopping at Aldi");
     await expect(await $(group).$$(summaryValues)[1].getText()).to.equal("21%");
-    await expect(await $(group).$$(summaryTitles).length).to.equal(3);
-    await expect(await $(group).$$(summaryValues).length).to.equal(3);
+    await expect(await $(group).$$(summaryTitles).length).to.equal(5);
+    await expect(await $(group).$$(summaryValues).length).to.equal(5);
   });
 });
 
