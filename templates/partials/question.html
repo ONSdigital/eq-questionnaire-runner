@@ -30,6 +30,14 @@
         "data-qa": definition_id ~ "-content"
       }
   } %}
+{% elif question.definitions %}
+  {%- set question_definitions -%}
+    {% for definition in question.definitions %}
+      {% set definition_id = "question-definition" %}
+      {% set category = 'Question definition' %}
+      {%- include 'partials/definition.html' -%}
+    {% endfor %}
+  {%- endset -%}
 {%- endif -%}
 
 {% set individual_response_guidance %}
@@ -104,6 +112,7 @@
     </div>
   {% endif %}
   {{ individual_response_guidance }}
+  {{ question_definitions }}
   {{ question_guidance }}
 
   {% if question_error %}

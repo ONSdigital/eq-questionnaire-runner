@@ -465,7 +465,7 @@ def process_answer(answer, page_spec, long_names, page_name):
 def process_question(question, page_spec, num_questions, page_name):
     long_names = long_names_required(question, num_questions)
 
-    if "definition" in question:
+    if ("definition" in question) or ("definitions" in question):
         context = {"definitionId": "question-definition"}
         process_definition(context, page_spec)
 
