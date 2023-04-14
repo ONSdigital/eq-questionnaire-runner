@@ -171,7 +171,7 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
         # 5. Section 2 should show as complete
         self.assert_section_status(2, "Completed")
 
-        # 6. Complete the John Doe section. Random question DOES NOT shows because section 1 is not complete
+        # 6. Complete the John Doe section. Random question DOES NOT show because section 1 is not complete
         self.get(self.john_doe_link())
 
         self.answer_dob()
@@ -184,7 +184,7 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
         # 7. On the hub, John Doe section shows as completted
         self.assert_section_status(3, "Completed", ["John Doe"])
 
-        # 8. Complete the James Bond section. Random question DOES NOT shows because section 1 is not complete
+        # 8. Complete the James Bond section. Random question DOES NOT show because section 1 is not complete
         self.get(self.james_bond_link())
 
         self.assertInBody("James Bond")
@@ -204,7 +204,7 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
         self.assertInBody("We calculate the total of currency values entered to be")
         self.post()
 
-        # 11. Dependend sections should have been updated to partially completed
+        # 11. Dependent sections should have been updated to partially completed
         self.assert_section_status(1, "Completed")
         self.assert_section_status(
             2, "Partially completed", ["Skippable random question + List collector"]

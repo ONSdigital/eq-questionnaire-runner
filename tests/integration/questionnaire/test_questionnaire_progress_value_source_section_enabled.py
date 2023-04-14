@@ -14,106 +14,106 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
     def go_to_hub(self):
         self.get("/questionnaire/")
 
-    # def test_enable_section_by_progress_linear_flow(self):
-    #     """
-    #     Test that a section is enabled by progress value source
-    #     In a linear flow with no hub
-    #     """
-    #
-    #     self.launchSurvey("test_progress_value_source_section_enabled_no_hub")
-    #
-    #     self.assertInBody("Section 1 Question 1")
-    #     self.post({"s1-b1-q1-a1": 1})
-    #
-    #     self.assertInBody("Section 1 Question 2")
-    #     self.post({"s1-b2-q1-a1": 1})
-    #
-    #     self.assertInBody("Section 2 Question 1")
-    #     self.post({"s2-b1-q1-a1": 1})
-    #
-    # def test_enable_section_by_progress_hub_flow(self):
-    #     """
-    #     Test that a section is enabled by progress value source
-    #     In a hub flow
-    #     """
-    #
-    #     self.launchSurvey("test_progress_value_source_section_enabled_hub")
-    #
-    #     # 1. Only section 1 shows on the hub
-    #     self.assertInBody("Choose another section to complete")
-    #     self.assertInBody("Section 1")
-    #     self.assertNotInBody("Section 2")
-    #
-    #     # 2. Complete section 1
-    #     self.go_to_section("section-1")
-    #     self.assertInBody("Section 1 Question 1")
-    #     self.post({"s1-b1-q1-a1": 1})
-    #
-    #     self.assertInUrl("/questionnaire/s1-b2")
-    #     self.post({"s1-b2-q1-a1": 1})
-    #
-    #     # 3. Assert section 1 completed on the hub
-    #     self.assertEqualUrl("/questionnaire/")
-    #
-    #     self.assert_section_status(1, "Completed", ["View answers"])
-    #
-    #     # 4. Assert section 2 is now available on the hub
-    #     self.assert_section_status(2, "Not started", ["Start section"])
-    #
-    #     # 5. Complete section 2
-    #     self.go_to_section("section-2")
-    #     self.assertInUrl("/questionnaire/s2-b1")
-    #     self.post({"s2-b1-q1-a1": 1})
-    #
-    #     self.assertEqualUrl("/questionnaire/")
-    #
-    #     # 6. Assert section 2 completed on the hub
-    #     self.assert_section_status(1, "Completed", ["View answers"])
-    #     self.assert_section_status(2, "Completed", ["View answers"])
-    #
-    #     self.assertInBody("Submit survey")
-    #
-    # def test_value_source_dependency_enable_section_by_progress_hub_flow(self):
-    #     """
-    #     Test that dependencies that rely on a a section's progress
-    #     are updated when the section progess changes
-    #     """
-    #
-    #     self.launchSurvey("test_progress_value_source_section_enabled_hub")
-    #
-    #     self.assertInBody("Choose another section to complete")
-    #     self.assertInBody("Section 1")
-    #     self.assertNotInBody("Section 2")
-    #
-    #     # 1. Start section 1
-    #     self.go_to_section("section-1")
-    #     self.assertInBody("Section 1 Question 1")
-    #     self.post({"s1-b1-q1-a1": 1})
-    #
-    #     self.assertInBody("Section 1 Question 2")
-    #
-    #     # 2. Leave section 1 incomplete
-    #     self.get("/questionnaire/")
-    #
-    #     # 3. Assert that section 2 is not enabled
-    #     self.assertNotInBody("Section 2")
-    #
-    #     # 4. Assert section 1 is in progress
-    #     self.assert_section_status(1, "Partially completed", ["Continue with section"])
-    #
-    #     # 5. Go back to section 1 and complete it
-    #     self.get("/questionnaire/sections/section-1/?resume=True")
-    #
-    #     self.assertInBody("Section 1 Question 2")
-    #     self.post({"s1-b2-q1-a1": 1})
-    #
-    #     self.assertEqualUrl("/questionnaire/")
-    #
-    #     # 6. Assert section 1 completed on the hub
-    #     self.assert_section_status(1, "Completed", ["View answers"])
-    #
-    #     # 7. Assert that section 2 is now enabled
-    #     self.assert_section_status(2, "Not started", ["Start section"])
+    def test_enable_section_by_progress_linear_flow(self):
+        """
+        Test that a section is enabled by progress value source
+        In a linear flow with no hub
+        """
+
+        self.launchSurvey("test_progress_value_source_section_enabled_no_hub")
+
+        self.assertInBody("Section 1 Question 1")
+        self.post({"s1-b1-q1-a1": 1})
+
+        self.assertInBody("Section 1 Question 2")
+        self.post({"s1-b2-q1-a1": 1})
+
+        self.assertInBody("Section 2 Question 1")
+        self.post({"s2-b1-q1-a1": 1})
+
+    def test_enable_section_by_progress_hub_flow(self):
+        """
+        Test that a section is enabled by progress value source
+        In a hub flow
+        """
+
+        self.launchSurvey("test_progress_value_source_section_enabled_hub")
+
+        # 1. Only section 1 shows on the hub
+        self.assertInBody("Choose another section to complete")
+        self.assertInBody("Section 1")
+        self.assertNotInBody("Section 2")
+
+        # 2. Complete section 1
+        self.go_to_section("section-1")
+        self.assertInBody("Section 1 Question 1")
+        self.post({"s1-b1-q1-a1": 1})
+
+        self.assertInUrl("/questionnaire/s1-b2")
+        self.post({"s1-b2-q1-a1": 1})
+
+        # 3. Assert section 1 completed on the hub
+        self.assertEqualUrl("/questionnaire/")
+
+        self.assert_section_status(1, "Completed", ["View answers"])
+
+        # 4. Assert section 2 is now available on the hub
+        self.assert_section_status(2, "Not started", ["Start section"])
+
+        # 5. Complete section 2
+        self.go_to_section("section-2")
+        self.assertInUrl("/questionnaire/s2-b1")
+        self.post({"s2-b1-q1-a1": 1})
+
+        self.assertEqualUrl("/questionnaire/")
+
+        # 6. Assert section 2 completed on the hub
+        self.assert_section_status(1, "Completed", ["View answers"])
+        self.assert_section_status(2, "Completed", ["View answers"])
+
+        self.assertInBody("Submit survey")
+
+    def test_value_source_dependency_enable_section_by_progress_hub_flow(self):
+        """
+        Test that dependencies that rely on a section's progress
+        are updated when the section progress changes
+        """
+
+        self.launchSurvey("test_progress_value_source_section_enabled_hub")
+
+        self.assertInBody("Choose another section to complete")
+        self.assertInBody("Section 1")
+        self.assertNotInBody("Section 2")
+
+        # 1. Start section 1
+        self.go_to_section("section-1")
+        self.assertInBody("Section 1 Question 1")
+        self.post({"s1-b1-q1-a1": 1})
+
+        self.assertInBody("Section 1 Question 2")
+
+        # 2. Leave section 1 incomplete
+        self.get("/questionnaire/")
+
+        # 3. Assert that section 2 is not enabled
+        self.assertNotInBody("Section 2")
+
+        # 4. Assert section 1 is in progress
+        self.assert_section_status(1, "Partially completed", ["Continue with section"])
+
+        # 5. Go back to section 1 and complete it
+        self.get("/questionnaire/sections/section-1/?resume=True")
+
+        self.assertInBody("Section 1 Question 2")
+        self.post({"s1-b2-q1-a1": 1})
+
+        self.assertEqualUrl("/questionnaire/")
+
+        # 6. Assert section 1 completed on the hub
+        self.assert_section_status(1, "Completed", ["View answers"])
+
+        # 7. Assert that section 2 is now enabled
+        self.assert_section_status(2, "Not started", ["Start section"])
 
     def test_enable_section_by_progress_hub_complex_happy_path(self):
         self.launchSurvey("test_progress_value_source_section_enabled_hub_complex")

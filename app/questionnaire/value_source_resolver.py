@@ -138,6 +138,11 @@ class ValueSourceResolver:
             if not self.location:
                 raise ValueError("location is required to resolve block progress")
 
+            if self.location.section_id == self.schema.get_section_id_for_block_id(
+                identifier
+            ) and not self._is_block_on_path(identifier):
+                return None
+
             if section_id := self.schema.get_section_id_for_block_id(identifier):
                 return self.progress_store.get_block_status(
                     block_id=identifier,
