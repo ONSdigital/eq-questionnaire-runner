@@ -133,7 +133,7 @@ def individual_response_change(
     schema: QuestionnaireSchema,
     questionnaire_store: QuestionnaireStore,
     list_item_id: str,
-) -> Response | str:
+) -> Response | str | None:
     # Type ignore: @login_required via Blueprint & @with_schema used together guarantee that sessions_store and session_data are not None
     language_code: str | None = get_session_store().session_data.language_code  # type: ignore
     individual_response_handler = IndividualResponseChangeHandler(

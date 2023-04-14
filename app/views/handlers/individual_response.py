@@ -119,7 +119,7 @@ class IndividualResponseHandler:
         self._language = language
         self._request_args: dict[str, str] = request_args or {}
         self._form_data = form_data
-        self._answers = None
+        self._answers: dict[str, Any] | None = None
         self._list_item_id = list_item_id
         self._list_name = self._schema.get_individual_response_list()
 
@@ -529,7 +529,7 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
         answer_id = self.rendered_block["question"]["answers"][0]["id"]
         return self.form.get_data(answer_id)
 
-    def handle_get(self):
+    def handle_get(self) -> str:
         self._answers = {
             "individual-response-change-answer": self.request_separate_census_option
         }
@@ -542,7 +542,7 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
             page_title=self.page_title(lazy_gettext("How to answer questions")),
         )
 
-    def handle_post(self):
+    def handle_post(self) -> Response | None:
         if self.selected_option == self.request_separate_census_option:
             return redirect(
                 url_for(
@@ -559,7 +559,8 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
         if self.selected_option == self.cancel_go_to_section_option:
             self._update_section_completeness()
             individual_section_first_block_id = (
-                self._schema.get_first_block_id_for_section(self.individual_section_id)
+                # Type ignore: Current usages of this method occur when Individual Section ID exists and is not None
+                self._schema.get_first_block_id_for_section(self.individual_section_id)  # type: ignore
             )
             return redirect(
                 url_for(
@@ -660,7 +661,7 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
     def selected_option(self):
         return self.form.get_data(self.answer_id)
 
-    def handle_get(self):
+    def handle_get(self) -> str:
         previous_location_url = url_for(
             "individual_response.individual_response_how",
             list_item_id=self._list_item_id,
@@ -675,7 +676,7 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
             page_title=self.page_title(lazy_gettext("Confirm address")),
         )
 
-    def handle_post(self):
+    def handle_post(self) -> Response:
         if self.selected_option == self.confirm_option:
             self._publish_fulfilment_request()
             self._update_questionnaire_store_on_publish()
@@ -753,7 +754,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
         answer_id = self.rendered_block["question"]["answers"][0]["id"]
         return self.form.get_data(answer_id)
 
-    def handle_get(self):
+    def handle_get(self) -> str:
         if len(self.non_primary_people_names) > 1:
             previous_location_url = url_for(
                 "individual_response.request_individual_response",
@@ -770,7 +771,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
 
         raise NotFound
 
-    def handle_post(self):
+    def handle_post(self) -> Response:
         return redirect(
             url_for(
                 ".individual_response_how",
@@ -819,7 +820,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
     def mobile_number(self):
         return self.form.get_data(self.answer_id)
 
-    def handle_get(self):
+    def handle_get(self) -> str:
         if "mobile_number" in self._request_args:
             mobile_number = url_safe_serializer().loads(
                 self._request_args["mobile_number"]
@@ -839,7 +840,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
             page_title=self.page_title(lazy_gettext("Mobile number")),
         )
 
-    def handle_post(self):
+    def handle_post(self) -> Response:
         mobile_number = url_safe_serializer().dumps(self.mobile_number)
 
         return redirect(
@@ -919,7 +920,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
     def selected_option(self):
         return self.form.get_data(self.answer_id)
 
-    def handle_get(self):
+    def handle_get(self) -> str:
         previous_location_url = url_for(
             "individual_response.individual_response_text_message",
             list_item_id=self._list_item_id,
@@ -935,7 +936,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
             page_title=self.page_title(lazy_gettext("Confirm mobile number")),
         )
 
-    def handle_post(self):
+    def handle_post(self) -> Response:
         if self.selected_option == self.confirm_option:
             self._publish_fulfilment_request(self.mobile_number)
             self._update_questionnaire_store_on_publish()
