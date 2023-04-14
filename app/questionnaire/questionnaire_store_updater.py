@@ -158,6 +158,17 @@ class QuestionnaireStoreUpdater:
 
         self._progress_store.remove_progress_for_list_item_id(list_item_id=list_item_id)
 
+        for list_collector in self._schema.get_list_collectors_for_list(
+            for_list=list_name,
+            section=self._schema.get_section(self._current_location.section_id),  # type: ignore
+            # Section and answer_id below must exist at this point
+        ):
+            answer_block = self._schema.get_add_block_for_list_collector(
+                list_collector["id"]
+            )
+            answer_id = self._schema.get_first_answer_id_for_block(answer_block["id"])  # type: ignore
+            self._capture_block_dependencies_for_answer(answer_id)
+
     def get_relationship_answers_for_list_name(
         self, list_name: str
     ) -> Union[List[Answer], None]:

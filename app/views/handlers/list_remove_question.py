@@ -21,14 +21,6 @@ class ListRemoveQuestion(ListAction):
         return True
 
     def handle_post(self):
-        answer_block = self._schema.get_add_block_for_list_collector(  # pylint: disable=protected-access
-            self.parent_block["id"]
-        )
-        answer_id = self._schema.get_first_answer_id_for_block(answer_block["id"])
-        self.questionnaire_store_updater._capture_block_dependencies_for_answer(  # pylint: disable=protected-access
-            answer_id
-        )
-
         answer_action = self._get_answer_action()
 
         if answer_action and answer_action["type"] == "RemoveListItemAndAnswers":
