@@ -36,7 +36,7 @@ class BlockHandler:
 
         if self._current_location.block_id:
             # Type ignore: Block has to exist at this point. Block existence is checked beforehand in block_factory.py
-            self.block: ImmutableDict = self._schema.get_block(self._current_location.block_id)  # type: ignore
+            self.block: ImmutableDict[str, Any] = self._schema.get_block(self._current_location.block_id)  # type: ignore
         self._routing_path = self._get_routing_path()
         self.page_title: Optional[str] = None
         self._return_to = request_args.get("return_to")

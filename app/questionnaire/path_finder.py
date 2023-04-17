@@ -77,7 +77,7 @@ class PathFinder:
         self,
         location: Location,
         routing_path_block_ids: list[str],
-        section: ImmutableDict,
+        section: ImmutableDict[str, Any],
         when_rules_block_dependencies: list[str],
     ) -> list[Mapping[str, Any]] | None:
         # :TODO: Fix group skipping in its own section. Routing path will be empty and therefore not checked
@@ -151,7 +151,7 @@ class PathFinder:
                 # If routing rules exist then a rule must match (i.e. default goto)
                 routing_rules: Iterable[Mapping] | None = block.get("routing_rules")
                 if routing_rules:
-                    # block_index will always be non-null when evaluate is called
+                    # Type ignore: block_index will always be non-null when evaluate is called
                     block_index = self._evaluate_routing_rules(  # type: ignore
                         this_location,
                         blocks,
@@ -254,22 +254,22 @@ class PathFinder:
 
         return when_rule_evaluator.evaluate(skip_conditions["when"])
 
-    def _get_next_block_id(self, rule: Mapping) -> str:
+    def _get_next_block_id(self, rule: Mapping[str, Any]) -> str:
         if "group" in rule:
-            # by this point the block for the rule will exist
+            # Type ignore: by this point the block for the rule will exist
             return self.schema.get_first_block_id_for_group(rule["group"])  # type: ignore
-        # the rules block will be a string
+        # Type ignore: the rules block will be a string
         return rule["block"]  # type: ignore
 
     def _remove_current_blocks_answers_for_backwards_routing(
-        self, rule: Mapping, this_location: Location
+        self, rule: Mapping[str, Any], this_location: Location
     ) -> None:
         if block_id := this_location.block_id:
             answer_ids_for_current_block = self.schema.get_answer_ids_for_block(
                 block_id
             )
             if "when" in rule:
-                self._remove_block_anwers_for_backward_routing_according_to_when_rule(
+                self._remove_block_answers_for_backward_routing_according_to_when_rule(
                     rule["when"], answer_ids_for_current_block
                 )
 
@@ -278,8 +278,8 @@ class PathFinder:
                 CompletionStatus.IN_PROGRESS, this_location.section_id
             )
 
-    def _remove_block_anwers_for_backward_routing_according_to_when_rule(
-        self, rules: dict, answer_ids_for_current_block: list[str]
+    def _remove_block_answers_for_backward_routing_according_to_when_rule(
+        self, rules: Mapping[str, Any], answer_ids_for_current_block: list[str]
     ) -> None:
         operands = self.schema.get_operands(rules)
 
@@ -291,6 +291,6 @@ class PathFinder:
                 self.answer_store.remove_answer(rule["identifier"])
 
             if QuestionnaireSchema.has_operator(rule):
-                return self._remove_block_anwers_for_backward_routing_according_to_when_rule(
+                return self._remove_block_answers_for_backward_routing_according_to_when_rule(
                     rule, answer_ids_for_current_block
                 )

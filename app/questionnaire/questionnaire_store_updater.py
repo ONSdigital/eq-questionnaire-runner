@@ -62,7 +62,7 @@ class QuestionnaireStoreUpdater:
         relationships_answer_id: str,
     ) -> None:
         self._answer_store.add_or_update(
-            # serialize returns a list of typed dicts, so it is a valid answer type
+            # Type ignore: serialize returns a list of typed dicts, so it is a valid answer type
             Answer(relationships_answer_id, relationship_store.serialize())  # type: ignore
         )
 
@@ -115,7 +115,9 @@ class QuestionnaireStoreUpdater:
     ) -> list[ImmutableDict] | None:
         return self._schema.get_relationship_collectors_by_list_name(list_name)
 
-    def _get_relationships_in_answer_store(self, relationship_answer_id: str) -> list[RelationshipDict]:  # type: ignore
+    def _get_relationships_in_answer_store(
+        self, relationship_answer_id: str
+    ) -> list[RelationshipDict]:
         return self._answer_store.get_answer(relationship_answer_id).value  # type: ignore
 
     def remove_answers(

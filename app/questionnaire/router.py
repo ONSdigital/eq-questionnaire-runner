@@ -1,4 +1,4 @@
-from typing import Generator, Mapping
+from typing import Any, Generator, Mapping
 
 from flask import url_for
 
@@ -184,7 +184,7 @@ class Router:
         ):
             return return_to_url
 
-        # the location will have a block id at this point
+        # Type ignore: the location will have a block id at this point
         block_id_index = routing_path.index(location.block_id)  # type: ignore
 
         if block_id_index != 0:
@@ -382,7 +382,7 @@ class Router:
             if self._progress_store.is_section_complete(section_id, list_item_id):
                 return section_id, list_item_id
 
-    def _is_section_enabled(self, section: Mapping) -> bool:
+    def _is_section_enabled(self, section: Mapping[str, Any]) -> bool:
         if "enabled" not in section:
             return True
 
@@ -409,7 +409,7 @@ class Router:
     def get_next_block_url(
         location: Location, routing_path: RoutingPath, **kwargs: str | None
     ) -> str:
-        # the location will have a block
+        # Type ignore: the location will have a block
         next_block_id = routing_path[routing_path.index(location.block_id) + 1]  # type: ignore
         return url_for(
             "questionnaire.block",

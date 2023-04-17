@@ -93,10 +93,10 @@ class PlaceholderRenderer:
 
         if "text_plural" in placeholder_data:
             plural_schema: Mapping[str, dict] = placeholder_data["text_plural"]
+            # Type ignore: For a valid schema the plural count will return an integer
             count: int = (
                 0  # type: ignore
                 if self._placeholder_preview_mode
-                # will return int
                 else self.get_plural_count(plural_schema["count"])
             )
 

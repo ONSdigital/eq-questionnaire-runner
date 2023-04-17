@@ -65,7 +65,7 @@ class ValueSourceResolver:
             return answer.value
 
     def _resolve_list_item_id_for_value_source(
-        self, value_source: Mapping
+        self, value_source: Mapping[str, Any]
     ) -> str | None:
         list_item_id: str | None = None
 
@@ -95,7 +95,7 @@ class ValueSourceResolver:
         )
 
     def _resolve_answer_value_source(
-        self, value_source: Mapping
+        self, value_source: Mapping[str, Any]
     ) -> ValueSourceEscapedTypes | ValueSourceTypes:
         list_item_id = self._resolve_list_item_id_for_value_source(value_source)
         answer_id = value_source["identifier"]
@@ -116,7 +116,9 @@ class ValueSourceResolver:
 
         return answer_value
 
-    def _resolve_list_value_source(self, value_source: Mapping) -> int | str | list:
+    def _resolve_list_value_source(
+        self, value_source: Mapping[str, Any]
+    ) -> int | str | list:
         identifier = value_source["identifier"]
         list_model: ListModel = self.list_store[identifier]
 
@@ -127,7 +129,7 @@ class ValueSourceResolver:
         return list(list_model)
 
     def _resolve_calculated_summary_value_source(
-        self, value_source: Mapping, *, assess_routing_path: bool
+        self, value_source: Mapping[str, Any], *, assess_routing_path: bool
     ) -> IntOrDecimal:
         """Calculates the value for the 'calculation' used by the provided Calculated Summary.
 
@@ -171,7 +173,7 @@ class ValueSourceResolver:
         raise NotImplementedError(f"Invalid calculation_type: {calculation_type}")
 
     def resolve(
-        self, value_source: Mapping
+        self, value_source: Mapping[str, Any]
     ) -> ValueSourceEscapedTypes | ValueSourceTypes:
         source = value_source["source"]
 

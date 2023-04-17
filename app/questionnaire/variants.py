@@ -12,7 +12,7 @@ from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 
 
-# validation should ensure the variant exists when this is called
+# Type ignore: validation should ensure the variant exists when this is called
 def choose_variant(  # type: ignore
     block: Mapping[str, Any],
     schema: QuestionnaireSchema,
@@ -26,7 +26,7 @@ def choose_variant(  # type: ignore
     progress_store: ProgressStore,
 ) -> Mapping[str, Any]:
     if block.get(single_key):
-        # the key passed in will be for a dictionary
+        # Type ignore: the key passed in will be for a dictionary
         return block[single_key]  # type: ignore
     for variant in block.get(variants_key, []):
         when_rules = variant["when"]
@@ -42,12 +42,12 @@ def choose_variant(  # type: ignore
         )
 
         if when_rule_evaluator.evaluate(when_rules):
-            # question/content key is for a dictionary
+            # Type ignore: question/content key is for a dictionary
             return variant[single_key]  # type: ignore
 
 
 def choose_question_to_display(
-    block: ImmutableDict,
+    block: ImmutableDict[str, Any],
     schema: QuestionnaireSchema,
     metadata: MetadataProxy | None,
     response_metadata: Mapping[str, Any],
@@ -71,7 +71,7 @@ def choose_question_to_display(
 
 
 def choose_content_to_display(
-    block: ImmutableDict,
+    block: ImmutableDict[str, Any],
     schema: QuestionnaireSchema,
     metadata: MetadataProxy | None,
     response_metadata: Mapping[str, Any],
@@ -95,7 +95,7 @@ def choose_content_to_display(
 
 
 def transform_variants(
-    block: ImmutableDict,
+    block: ImmutableDict[str, Any],
     schema: QuestionnaireSchema,
     metadata: MetadataProxy | None,
     response_metadata: Mapping[str, Any],

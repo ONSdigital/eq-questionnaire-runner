@@ -131,7 +131,7 @@ class CalculatedSummaryContext(Context):
             answers_to_calculate = get_calculated_summary_answer_ids(rendered_block)
 
         blocks_to_calculate: list[ImmutableDict] = [
-            # the answer blocks will always exist at this point
+            # Type ignore: the answer blocks will always exist at this point
             self._schema.get_block_for_answer_id(answer_id)  # type: ignore
             for answer_id in answers_to_calculate
         ]

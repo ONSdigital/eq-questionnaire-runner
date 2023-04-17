@@ -76,7 +76,7 @@ class PlaceholderParser:
         self._routing_path_block_ids_by_section_key: dict = {}
 
     def __call__(
-        self, placeholder_list: Sequence[Mapping]
+        self, placeholder_list: Sequence[Mapping[str, Any]]
     ) -> MutableMapping[str, ValueSourceEscapedTypes | ValueSourceTypes]:
         placeholder_list = QuestionnaireSchema.get_mutable_deepcopy(placeholder_list)
 
@@ -122,7 +122,7 @@ class PlaceholderParser:
             progress_store=self._progress_store,
         )
 
-    def _parse_placeholder(self, placeholder: Mapping) -> Any:
+    def _parse_placeholder(self, placeholder: Mapping[str, Any]) -> Any:
         if self._placeholder_preview_mode and not self._all_value_sources_metadata(
             placeholder
         ):
@@ -177,7 +177,7 @@ class PlaceholderParser:
         return values
 
     def _get_routing_path_block_ids(
-        self, data: Mapping | Sequence, sections_to_ignore: list | None = None
+        self, data: Sequence[Mapping[str, Any]], sections_to_ignore: list | None = None
     ) -> dict[tuple, tuple[str, ...]] | None:
         if self._location:
             return get_block_ids_for_calculated_summary_dependencies(
@@ -190,6 +190,6 @@ class PlaceholderParser:
             )
         return {}
 
-    def _all_value_sources_metadata(self, placeholder: Mapping) -> bool:
+    def _all_value_sources_metadata(self, placeholder: Mapping[str, Any]) -> bool:
         sources = self._schema.get_values_for_key(placeholder, key="source")
         return all(source == "metadata" for source in sources)
