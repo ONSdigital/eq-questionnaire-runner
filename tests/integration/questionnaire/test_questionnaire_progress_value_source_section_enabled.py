@@ -126,7 +126,7 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
         # 1. Complete section 1
         self.go_to_section("section-1")
         self.assertInBody("Section 1 Question 1")
-        self.post({"s1-b1-q1-a1": 0})
+        self.post({"s1-b1-q1-a1": 1})
 
         self.assertInBody("Section 1 Question 2")
         self.post({"s1-b2-q1-a1": 1})
@@ -137,7 +137,7 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
         self.go_to_section("section-2")
 
         self.assertInBody("Section 2 Question 1")
-        self.post({"s2-b1-q1-a1": 0})
+        self.post({"s2-b1-q1-a1": 1})
 
         self.assertInBody("Section 2 Question 2")
         self.post({"s2-b2-q1-a1": 0})
