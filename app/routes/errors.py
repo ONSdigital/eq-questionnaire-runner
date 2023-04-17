@@ -1,3 +1,5 @@
+from typing import Any
+
 from flask import Blueprint, request
 from flask.helpers import url_for
 from flask_babel import lazy_gettext
@@ -47,7 +49,7 @@ def log_exception(exception: Exception | None, status_code: int) -> None:
 
 
 def _render_error_page(
-    status_code: int, template: str | int | None = None, **kwargs
+    status_code: int, template: str | int | None = None, **kwargs: Any
 ) -> tuple[str, int]:
     handle_language()
     business_survey_config = get_survey_config(theme=SurveyType.BUSINESS)
@@ -89,10 +91,10 @@ def bad_request(
 @errors_blueprint.app_errorhandler(NoQuestionnaireStateException)
 def unauthorized(
     exception: HTTPException
-    | CSRFError
-    | NoTokenException
-    | NoQuestionnaireStateException
-    | None = None,
+               | CSRFError
+               | NoTokenException
+               | NoQuestionnaireStateException
+               | None = None,
 ) -> tuple[str, int]:
     log_exception(exception, 401)
     return _render_error_page(401, template="401")
