@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from functools import cached_property
-from typing import MutableMapping, Optional, Union
+from typing import Any, MutableMapping, Optional, Union
 
 from structlog import get_logger
 from werkzeug.datastructures import ImmutableDict
