@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Any, Callable, Iterable, Mapping, Optional, Union, MutableMapping
+from typing import Any, Callable, Iterable, Mapping, MutableMapping, Optional, Union
 
 from markupsafe import Markup
 
@@ -93,7 +93,7 @@ class ValueSourceResolver:
         return (
             self.list_item_id
             if self.list_item_id
-               and self.schema.is_repeating_answer(value_source["identifier"])
+            and self.schema.is_repeating_answer(value_source["identifier"])
             else None
         )
 

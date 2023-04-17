@@ -1,4 +1,4 @@
-from werkzeug.datastructures import MultiDict, ImmutableMultiDict
+from werkzeug.datastructures import ImmutableMultiDict, MultiDict
 
 from app.data_models import QuestionnaireStore
 from app.questionnaire import QuestionnaireSchema

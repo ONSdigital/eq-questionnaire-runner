@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Any, Generator, Iterable, Mapping, Optional, Union, MutableMapping
+from typing import Any, Generator, Iterable, Mapping, MutableMapping, Optional, Union
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -8,10 +8,11 @@ from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities import safe_content
+
+from ...data_models.metadata_proxy import MetadataProxy
 from .context import Context
 from .summary import Group
 from .summary.list_collector_block import ListCollectorBlock
-from ...data_models.metadata_proxy import MetadataProxy
 
 
 class SectionSummaryContext(Context):

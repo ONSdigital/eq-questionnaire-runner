@@ -1,4 +1,4 @@
-from typing import MutableMapping, Any
+from typing import Any, MutableMapping
 
 from werkzeug.datastructures import ImmutableDict
 

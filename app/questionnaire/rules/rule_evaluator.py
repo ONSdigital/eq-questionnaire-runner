@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
-from typing import Generator, Iterable, Optional, Sequence, Union, Any, MutableMapping
+from typing import Any, Generator, Iterable, MutableMapping, Optional, Sequence, Union
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy

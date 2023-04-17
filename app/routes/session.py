@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Any, Mapping, Iterable, MutableMapping
+from typing import Any, Iterable, Mapping, MutableMapping
 
 from flask import Blueprint, g, jsonify, redirect, request
 from flask import session as cookie_session
@@ -216,7 +216,9 @@ def get_runner_claims(decrypted_token: Mapping[str, Any]) -> MutableMapping[str,
         raise InvalidTokenException("Invalid runner claims") from e
 
 
-def get_questionnaire_claims(decrypted_token: Mapping[str, Any], schema_metadata: Iterable[Mapping[str, str]]) -> MutableMapping[str, Any]:
+def get_questionnaire_claims(
+    decrypted_token: Mapping[str, Any], schema_metadata: Iterable[Mapping[str, str]]
+) -> MutableMapping[str, Any]:
     try:
         if decrypted_token.get("version") == AuthPayloadVersion.V2.value:
             claims = decrypted_token.get("survey_metadata", {}).get("data", {})

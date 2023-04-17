@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from typing import Any, Mapping, Optional, MutableMapping
+from typing import Any, Mapping, MutableMapping, Optional
 from uuid import uuid4
 
 from blinker import ANY

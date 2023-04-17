@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from functools import cached_property
-from typing import Any, Mapping, Optional, Union, MutableMapping
+from typing import Any, Mapping, MutableMapping, Optional, Union
 
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
@@ -300,7 +300,7 @@ class FeedbackPayload:
             "tx_id": self.metadata.tx_id,
             "type": "uk.gov.ons.edc.eq:feedback",
             "launch_language_code": self.metadata.language_code
-                                    or DEFAULT_LANGUAGE_CODE,
+            or DEFAULT_LANGUAGE_CODE,
             "version": "0.0.1",
         }
 
@@ -366,7 +366,7 @@ class FeedbackPayloadV2:
             "flushed": False,
             "submitted_at": datetime.now(tz=timezone.utc).isoformat(),
             "launch_language_code": self.metadata.language_code
-                                    or DEFAULT_LANGUAGE_CODE,
+            or DEFAULT_LANGUAGE_CODE,
             "submission_language_code": (
                 self.submission_language_code or DEFAULT_LANGUAGE_CODE
             ),

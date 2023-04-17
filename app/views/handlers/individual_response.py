@@ -1,11 +1,11 @@
 from datetime import datetime, timezone
 from functools import cached_property
-from typing import Mapping, Optional, Any
+from typing import Any, Mapping, Optional
 from uuid import uuid4
 
 from flask import current_app, redirect
 from flask.helpers import url_for
-from flask_babel import lazy_gettext, LazyString
+from flask_babel import LazyString, lazy_gettext
 from itsdangerous import BadSignature
 from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.exceptions import BadRequest, NotFound
@@ -14,7 +14,7 @@ from werkzeug.wrappers.response import Response
 from app.data_models import CompletionStatus, FulfilmentRequest, QuestionnaireStore
 from app.data_models.list_store import ListModel
 from app.data_models.metadata_proxy import MetadataProxy
-from app.forms.questionnaire_form import generate_form, QuestionnaireForm
+from app.forms.questionnaire_form import QuestionnaireForm, generate_form
 from app.forms.validators import sanitise_mobile_number
 from app.helpers import url_safe_serializer
 from app.helpers.template_helpers import render_template
@@ -87,14 +87,14 @@ class IndividualResponseHandler:
             {
                 "placeholder": "person_name_possessive",
                 "transforms": name_transforms
-                              + [
-                                  {
-                                      "arguments": {
-                                          "string_to_format": {"source": "previous_transform"}
-                                      },
-                                      "transform": "format_possessive",
-                                  }
-                              ],
+                + [
+                    {
+                        "arguments": {
+                            "string_to_format": {"source": "previous_transform"}
+                        },
+                        "transform": "format_possessive",
+                    }
+                ],
             }
         ]
 
@@ -219,7 +219,8 @@ class IndividualResponseHandler:
         topic_id = current_app.config["EQ_FULFILMENT_TOPIC_ID"]
         fulfilment_request = IndividualResponseFulfilmentRequest(
             # Type ignore: _metadata will exist at point of publish
-            self._metadata, mobile_number  # type: ignore
+            self._metadata,
+            mobile_number,  # type: ignore
         )
         try:
             # Type ignore: Instance attribute 'eq' is a dict with key "publisher" with value of abstract type Publisher
@@ -319,7 +320,9 @@ class IndividualResponseHandler:
     def _update_section_status(self, status: str) -> None:
         self._questionnaire_store.progress_store.update_section_status(
             # Type ignore: Current usages of this method occur when Individual Section ID exists and is not None
-            status, self.individual_section_id, self._list_item_id  # type: ignore
+            status,
+            self.individual_section_id,
+            self._list_item_id,  # type: ignore
         )
 
     @property

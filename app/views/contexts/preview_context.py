@@ -1,4 +1,4 @@
-from typing import Generator, Optional, Union, MutableMapping
+from typing import Generator, MutableMapping, Optional, Union
 
 from flask_babel import lazy_gettext
 

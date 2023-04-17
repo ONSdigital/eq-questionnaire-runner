@@ -1,6 +1,15 @@
 from copy import deepcopy
 from decimal import Decimal
-from typing import Any, Callable, Iterable, Mapping, Optional, Tuple, Union, MutableMapping
+from typing import (
+    Any,
+    Callable,
+    Iterable,
+    Mapping,
+    MutableMapping,
+    Optional,
+    Tuple,
+    Union,
+)
 
 from werkzeug.datastructures import ImmutableDict
 

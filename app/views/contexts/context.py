@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import MutableMapping, Any
+from typing import Any, MutableMapping
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore

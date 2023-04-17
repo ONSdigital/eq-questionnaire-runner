@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Mapping, Optional, Sequence, Union, MutableMapping
+from typing import Any, Mapping, MutableMapping, Optional, Sequence, Union
 
 from structlog import get_logger
 

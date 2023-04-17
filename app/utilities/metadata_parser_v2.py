@@ -1,6 +1,6 @@
 import functools
 from datetime import datetime, timezone
-from typing import Any, Mapping, Iterable, MutableMapping
+from typing import Any, Iterable, Mapping, MutableMapping
 
 from marshmallow import (
     EXCLUDE,
@@ -109,7 +109,9 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
 
 
 def validate_questionnaire_claims(
-    claims: Mapping[str, Any], questionnaire_specific_metadata: Iterable[Mapping[str, Any]], unknown=EXCLUDE
+    claims: Mapping[str, Any],
+    questionnaire_specific_metadata: Iterable[Mapping[str, Any]],
+    unknown=EXCLUDE,
 ) -> MutableMapping[str, Any]:
     """Validate any survey specific claims required for a questionnaire"""
     dynamic_fields = {}

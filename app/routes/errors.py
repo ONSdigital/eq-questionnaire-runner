@@ -91,10 +91,10 @@ def bad_request(
 @errors_blueprint.app_errorhandler(NoQuestionnaireStateException)
 def unauthorized(
     exception: HTTPException
-               | CSRFError
-               | NoTokenException
-               | NoQuestionnaireStateException
-               | None = None,
+    | CSRFError
+    | NoTokenException
+    | NoQuestionnaireStateException
+    | None = None,
 ) -> tuple[str, int]:
     log_exception(exception, 401)
     return _render_error_page(401, template="401")

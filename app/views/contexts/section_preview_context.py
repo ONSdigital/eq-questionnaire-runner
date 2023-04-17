@@ -1,4 +1,4 @@
-from typing import Optional, Any, MutableMapping
+from typing import Any, MutableMapping, Optional
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy

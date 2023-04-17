@@ -5,7 +5,7 @@ import logging
 from collections.abc import Callable
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
-from typing import Any, Mapping, Optional, Sequence, Union, MutableMapping
+from typing import Any, Mapping, MutableMapping, Optional, Sequence, Union
 
 from dateutil.relativedelta import relativedelta
 from flask_wtf import FlaskForm
@@ -137,12 +137,12 @@ class QuestionnaireForm(FlaskForm):
         if not (
             self.answers_all_valid([period_from_id, period_to_id])
             and self._validate_date_range_question(
-            question["id"],
-            period_from_id,
-            period_to_id,
-            messages,
-            question.get("period_limits"),
-        )
+                question["id"],
+                period_from_id,
+                period_to_id,
+                messages,
+                question.get("period_limits"),
+            )
         ):
             return False
 

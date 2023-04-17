@@ -1,5 +1,14 @@
 from datetime import datetime
-from typing import Any, Iterable, Mapping, Optional, OrderedDict, Sequence, Union, MutableMapping
+from typing import (
+    Any,
+    Iterable,
+    Mapping,
+    MutableMapping,
+    Optional,
+    OrderedDict,
+    Sequence,
+    Union,
+)
 
 from structlog import get_logger
 

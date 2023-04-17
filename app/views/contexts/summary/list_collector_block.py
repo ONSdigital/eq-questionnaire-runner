@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Any, Mapping, Optional, MutableMapping
+from typing import Any, Mapping, MutableMapping, Optional
 
 from flask import url_for
 from werkzeug.datastructures import ImmutableDict
