@@ -1,3 +1,7 @@
+from werkzeug.datastructures import MultiDict, ImmutableMultiDict
+
+from app.data_models import QuestionnaireStore
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException, Location
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.views.handlers.calculated_summary import CalculatedSummary
@@ -30,15 +34,15 @@ BLOCK_MAPPINGS = {
 
 
 def get_block_handler(
-    schema,
-    block_id,
-    list_item_id,
-    questionnaire_store,
-    language,
-    list_name=None,
-    to_list_item_id=None,
-    request_args=None,
-    form_data=None,
+    schema: QuestionnaireSchema,
+    block_id: str,
+    list_item_id: str | None,
+    questionnaire_store: QuestionnaireStore,
+    language: str | None,
+    list_name: str | None = None,
+    to_list_item_id: str | None = None,
+    request_args: MultiDict[str, str] | None = None,
+    form_data: ImmutableMultiDict[str, str] | None = None,
 ):
     block = schema.get_block(block_id)
 
@@ -63,7 +67,8 @@ def get_block_handler(
 
     if to_list_item_id or block_type == "UnrelatedQuestion":
         location = RelationshipLocation(
-            section_id=section_id,
+            # Type ignore: Block is fetched from schema so must have a corresponding section
+            section_id=section_id,  # type: ignore
             block_id=block_id,
             list_item_id=list_item_id,
             to_list_item_id=to_list_item_id,
@@ -71,7 +76,8 @@ def get_block_handler(
         )
     else:
         location = Location(
-            section_id=section_id,
+            # Type ignore: Block is fetched from schema so must have a corresponding section
+            section_id=section_id,  # type: ignore
             block_id=block_id,
             list_name=list_name,
             list_item_id=list_item_id,
