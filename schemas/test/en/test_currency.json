@@ -103,7 +103,7 @@
                                     }
                                     
                                 ],
-                                "id": "question",
+                                "id": "currency-question",
                                 "title": "Currency Input Test Positve",
                                 "type": "General"
                             }
@@ -179,7 +179,7 @@
                                         }
                                     }
                                 ],
-                                "id": "question",
+                                "id": "negative-currency-question",
                                 "title": "Currency Input Test Including Negative Values",
                                 "type": "General"
                             }  
