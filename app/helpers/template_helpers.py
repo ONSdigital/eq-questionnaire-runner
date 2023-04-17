@@ -209,9 +209,9 @@ def get_survey_config(
 ) -> SurveyConfig:
     # The fallback to assigning SURVEY_TYPE to theme is only being added until
     # business feedback on the differentiation between theme and SURVEY_TYPE.
+    language = language or get_locale().language
 
     if metadata := get_metadata(current_user):
-        language = language or get_locale().language
         schema = load_schema_from_metadata(metadata=metadata, language_code=language)
 
     survey_theme = theme or get_survey_type()
