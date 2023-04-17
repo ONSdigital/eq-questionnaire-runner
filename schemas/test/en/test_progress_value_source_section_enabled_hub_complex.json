@@ -38,7 +38,7 @@
                             "question": {
                                 "id": "s1-b1-q1",
                                 "title": "Section 1 Question 1",
-                                "description": ["Always shows"],
+                                "description": ["Always shows. The next question in the section also shows when the answer is 0"],
                                 "type": "General",
                                 "answers": [
                                     {
@@ -48,7 +48,24 @@
                                         "type": "Number"
                                     }
                                 ]
-                            }
+                            },
+                            "routing_rules": [
+                                {
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "identifier": "s1-b1-q1-a1",
+                                                "source": "answers"
+                                            },
+                                            0
+                                        ]
+                                    },
+                                    "block": "s1-b2"
+                                },
+                                {
+                                    "section": "End"
+                                }
+                            ]
                         },
                         {
                             "type": "Question",
@@ -57,7 +74,7 @@
                                 "id": "s1-b2-q1",
                                 "title": "Section 1 Question 2",
                                 "type": "General",
-                                "description": ["Shows if the answer to the previous question is not 0"],
+                                "description": ["Shows if the answer to the previous question is 0"],
                                 "answers": [
                                     {
                                         "id": "s1-b2-q1-a1",
@@ -66,11 +83,6 @@
                                         "type": "Number"
                                     }
                                 ]
-                            },
-                            "skip_conditions": {
-                                "when": {
-                                    "!=": [{ "source": "answers", "identifier": "s1-b1-q1-a1" }, 0]
-                                }
                             }
                         }
                     ],
