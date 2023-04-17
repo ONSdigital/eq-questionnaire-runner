@@ -444,8 +444,8 @@ def get_thank_you(
     show_feedback_call_to_action = Feedback.is_enabled(
         schema
     ) and not Feedback.is_limit_reached(
-        session_store.session_data
-    )  # type: ignore
+        session_store.session_data  # type: ignore
+    )
 
     return render_template(
         template=thank_you.template,
@@ -626,8 +626,8 @@ def get_confirmation_email_sent(
     show_feedback_call_to_action = Feedback.is_enabled(
         schema
     ) and not Feedback.is_limit_reached(
-        session_store.session_data
-    )  # type: ignore
+        session_store.session_data  # type: ignore
+    )
 
     return render_template(
         template="confirmation-email-sent",

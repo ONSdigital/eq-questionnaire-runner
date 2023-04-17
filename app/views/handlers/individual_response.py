@@ -219,8 +219,8 @@ class IndividualResponseHandler:
         topic_id = current_app.config["EQ_FULFILMENT_TOPIC_ID"]
         fulfilment_request = IndividualResponseFulfilmentRequest(
             # Type ignore: _metadata will exist at point of publish
-            self._metadata,
-            mobile_number,  # type: ignore
+            self._metadata,  # type: ignore
+            mobile_number,
         )
         try:
             # Type ignore: Instance attribute 'eq' is a dict with key "publisher" with value of abstract type Publisher
@@ -321,8 +321,8 @@ class IndividualResponseHandler:
         self._questionnaire_store.progress_store.update_section_status(
             # Type ignore: Current usages of this method occur when Individual Section ID exists and is not None
             status,
-            self.individual_section_id,
-            self._list_item_id,  # type: ignore
+            self.individual_section_id,  # type: ignore
+            self._list_item_id,
         )
 
     @property
