@@ -1006,10 +1006,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             )
 
             section_dependencies_for_progress_value_source |= (
-                dependencies_for_progress_value_source["sections"]  # type: ignore
+                dependencies_for_progress_value_source["sections"]
             )
             block_dependencies_for_progress_value_source |= (
-                dependencies_for_progress_value_source["blocks"]  # type: ignore
+                dependencies_for_progress_value_source["blocks"]
             )
 
             for answer_id in answer_id_list:

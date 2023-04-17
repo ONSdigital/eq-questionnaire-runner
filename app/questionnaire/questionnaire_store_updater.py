@@ -339,6 +339,7 @@ class QuestionnaireStoreUpdater:
         """
         Captures a unique list of section ids that are dependents of the current block, for progress value sources.
         """
+        # Type ignore: Added as block_id will exist at this point
         dependent_sections: Iterable = self._schema.when_rules_block_dependencies_by_section_for_progress_value_source.get(
             self._current_location.section_id, {}
         ).get(
