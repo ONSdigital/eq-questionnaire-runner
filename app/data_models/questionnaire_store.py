@@ -26,7 +26,7 @@ class QuestionnaireStore:
         if version is None:
             version = self.get_latest_version_number()
         self.version = version
-        self._metadata: dict[str, Any] = {}
+        self._metadata: MutableMapping[str, Any] = {}
         # self.metadata is a read-only view over self._metadata
         self.metadata: Optional[MetadataProxy] = (
             MetadataProxy.from_dict(self._metadata) if self._metadata else None
@@ -53,7 +53,7 @@ class QuestionnaireStore:
     def get_latest_version_number(self) -> int:
         return self.LATEST_VERSION
 
-    def set_metadata(self, to_set: dict[str, Any]) -> QuestionnaireStore:
+    def set_metadata(self, to_set: MutableMapping[str, Any]) -> QuestionnaireStore:
         """
         Set metadata. This should only be used where absolutely necessary.
         Metadata should normally be read only.

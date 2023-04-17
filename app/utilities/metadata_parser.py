@@ -1,6 +1,6 @@
 import functools
 from datetime import datetime, timezone
-from typing import Dict
+from typing import Any, Mapping, MutableMapping
 
 from marshmallow import (
     EXCLUDE,
@@ -144,7 +144,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         )
 
 
-def validate_runner_claims(claims: Dict):
+def validate_runner_claims(claims: Mapping[str, Any]) -> MutableMapping[str, Any]:
     """Validate claims required for runner to function"""
     runner_metadata_schema = RunnerMetadataSchema(unknown=EXCLUDE)
     return runner_metadata_schema.load(claims)

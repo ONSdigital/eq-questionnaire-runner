@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from typing import Any, Mapping, Iterable, MutableMapping
 
 from flask import Blueprint, g, jsonify, redirect, request
 from flask import session as cookie_session
@@ -8,6 +9,7 @@ from marshmallow import INCLUDE, ValidationError
 from sdc.crypto.exceptions import InvalidTokenException
 from structlog import contextvars, get_logger
 from werkzeug.exceptions import Unauthorized
+from werkzeug.wrappers.response import Response
 
 from app.authentication.auth_payload_version import AuthPayloadVersion
 from app.authentication.authenticator import decrypt_token, store_session
@@ -19,6 +21,7 @@ from app.helpers.template_helpers import (
     get_survey_config,
     render_template,
 )
+from app.questionnaire import QuestionnaireSchema
 from app.routes.errors import _render_error_page
 from app.utilities.metadata_parser import validate_runner_claims
 from app.utilities.metadata_parser_v2 import (
@@ -33,24 +36,24 @@ session_blueprint = Blueprint("session", __name__)
 
 
 @session_blueprint.after_request
-def add_cache_control(response):
+def add_cache_control(response: Response) -> Response:
     response.cache_control.no_cache = True
     return response
 
 
 @session_blueprint.route("/session", methods=["HEAD"])
-def login_head():
+def login_head() -> tuple[str, int]:
     return "", 204
 
 
-def set_schema_context_in_cookie(schema) -> None:
+def set_schema_context_in_cookie(schema: QuestionnaireSchema) -> None:
     for key in [*DATA_LAYER_KEYS, "theme"]:
         if value := schema.json.get(key):
             cookie_session[key] = value
 
 
 @session_blueprint.route("/session", methods=["GET", "POST"])
-def login():
+def login() -> Response:
     """
     Initial url processing - expects a token parameter and then will authenticate this token. Once authenticated
     it will be placed in the users session
@@ -128,15 +131,17 @@ def login():
     return redirect(url_for("questionnaire.get_questionnaire"))
 
 
-def validate_jti(decrypted_token):
-    expires_at = datetime.fromtimestamp(decrypted_token["exp"], tz=timezone.utc)
+def validate_jti(decrypted_token: dict[str, str | list | int]) -> None:
+    # Type ignore: decrypted_token["exp"] will return a valid timestamp with compatible typing
+    expires_at = datetime.fromtimestamp(decrypted_token["exp"], tz=timezone.utc)  # type: ignore
     jwt_expired = expires_at < datetime.now(tz=timezone.utc)
     if jwt_expired:
         raise Unauthorized
 
     jti_claim = decrypted_token.get("jti")
     try:
-        use_jti_claim(jti_claim, expires_at)
+        # Type ignore: decrypted_token.get("jti") will return a valid JTI with compatible typing
+        use_jti_claim(jti_claim, expires_at)  # type: ignore
     except JtiTokenUsed as e:
         raise Unauthorized from e
     except (TypeError, ValueError) as e:
@@ -144,7 +149,7 @@ def validate_jti(decrypted_token):
 
 
 @session_blueprint.route("/session-expired", methods=["GET"])
-def get_session_expired():
+def get_session_expired() -> tuple[str, int]:
     # Check for GET as we don't want to log out for HEAD requests
     if request.method == "GET":
         logout_user()
@@ -154,12 +159,13 @@ def get_session_expired():
 
 @session_blueprint.route("/session-expiry", methods=["GET", "PATCH"])
 @login_required
-def session_expiry():
-    return jsonify(expires_at=get_session_store().expiration_time.isoformat())
+def session_expiry() -> Response:
+    # Type ignore: @login_required endpoint will ensure a session store exists
+    return jsonify(expires_at=get_session_store().expiration_time.isoformat())  # type: ignore
 
 
 @session_blueprint.route("/sign-out", methods=["GET"])
-def get_sign_out():
+def get_sign_out() -> Response:
     """
     Signs the user out of eQ and redirects to the log out url.
     """
@@ -177,11 +183,12 @@ def get_sign_out():
     if request.method == "GET":
         logout_user()
 
-    return redirect(log_out_url)
+    # Type ignore: Logic above to set log_out_url ensures it is not None
+    return redirect(log_out_url)  # type: ignore
 
 
 @session_blueprint.route("/signed-out", methods=["GET"])
-def get_signed_out():
+def get_signed_out() -> Response | str:
     if not cookie_session:
         return redirect(url_for("session.get_session_expired"))
 
@@ -196,7 +203,7 @@ def get_signed_out():
     )
 
 
-def get_runner_claims(decrypted_token):
+def get_runner_claims(decrypted_token: Mapping[str, Any]) -> MutableMapping[str, Any]:
     try:
         if version := decrypted_token.get("version"):
             if version == AuthPayloadVersion.V2.value:
@@ -209,7 +216,7 @@ def get_runner_claims(decrypted_token):
         raise InvalidTokenException("Invalid runner claims") from e
 
 
-def get_questionnaire_claims(decrypted_token, schema_metadata):
+def get_questionnaire_claims(decrypted_token: Mapping[str, Any], schema_metadata: Iterable[Mapping[str, str]]) -> MutableMapping[str, Any]:
     try:
         if decrypted_token.get("version") == AuthPayloadVersion.V2.value:
             claims = decrypted_token.get("survey_metadata", {}).get("data", {})

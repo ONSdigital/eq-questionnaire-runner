@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from typing import Any, Mapping, Optional, Union
+from typing import Any, Mapping, Optional, MutableMapping
 from uuid import uuid4
 
 from blinker import ANY
@@ -132,7 +132,7 @@ def _create_session_data_from_metadata(metadata: Mapping[str, Any]) -> SessionDa
     )
 
 
-def store_session(metadata: dict[str, Any]) -> None:
+def store_session(metadata: MutableMapping[str, Any]) -> None:
     """
     Store new session and metadata
     :param metadata: metadata parsed from jwt token
@@ -161,12 +161,12 @@ def store_session(metadata: dict[str, Any]) -> None:
     logger.info("user authenticated")
 
 
-def decrypt_token(encrypted_token: str) -> dict[str, Union[str, list, int]]:
+def decrypt_token(encrypted_token: str | None) -> dict[str, Any]:
     if not encrypted_token:
         raise NoTokenException("Please provide a token")
 
     logger.debug("decrypting token")
-    decrypted_token: dict[str, Union[str, list, int]] = decrypt(
+    decrypted_token: dict[str, Any] = decrypt(
         token=encrypted_token,
         key_store=current_app.eq["key_store"],  # type: ignore
         key_purpose=KEY_PURPOSE_AUTHENTICATION,
