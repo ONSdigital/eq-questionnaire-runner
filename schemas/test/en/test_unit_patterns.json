@@ -83,6 +83,17 @@
                                         "maximum": {
                                             "value": 1000
                                         }
+                                    },
+                                    {
+                                        "id": "min-max-miles",
+                                        "label": "Length in Miles - Min Max Range",
+                                        "mandatory": false,
+                                        "type": "Unit",
+                                        "unit": "length-mile",
+                                        "unit_length": "short",
+                                        "minimum": {
+                                            "value": -999999999999
+                                        }
                                     }
                                 ],
                                 "id": "set-length-units-question",
