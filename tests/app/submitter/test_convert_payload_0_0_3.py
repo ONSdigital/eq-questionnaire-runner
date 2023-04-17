@@ -1514,7 +1514,7 @@ def test_payload_dynamic_answers(version):
         [{"items": ["tUJzGV", "vhECeh"], "name": "supermarkets"}]
     )
 
-    schema = load_schema_from_name("test_dynamic_answers_list")
+    schema = load_schema_from_name("test_dynamic_answers_list_source")
 
     data_payload = get_payload_data(
         questionnaire_store.answer_store,

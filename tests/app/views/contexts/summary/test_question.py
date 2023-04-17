@@ -1135,7 +1135,7 @@ def test_get_answer(answer_schema, answer_store, expected, list_store, progress_
     ),
 )
 def test_dynamic_answers(answer_store, list_store, progress_store, expected):
-    schema = load_schema_from_name("test_dynamic_answers_list", "en")
+    schema = load_schema_from_name("test_dynamic_answers_list_source", "en")
 
     # Given
     question_schema = {

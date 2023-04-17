@@ -297,7 +297,7 @@ def get_placeholder_render_dynamic_answers(
     metadata=None,
     response_metadata=None,
 ):
-    schema = load_schema_from_name("test_dynamic_answers_list")
+    schema = load_schema_from_name("test_dynamic_answers_list_source")
     return PlaceholderRenderer(
         language=language,
         answer_store=answer_store,
