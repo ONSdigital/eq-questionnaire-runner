@@ -1,10 +1,10 @@
-import DriverPage from "../generated_pages/dynamic_answers_list/any-supermarket.page";
-import DynamicAnswerPage from "../generated_pages/dynamic_answers_list/dynamic-answer.page";
-import DynamicAnswerOnlyPage from "../generated_pages/dynamic_answers_list/dynamic-answer-only.page";
-import ListCollectorPage from "../generated_pages/dynamic_answers_list/list-collector.page";
-import ListCollectorAddPage from "../generated_pages/dynamic_answers_list/list-collector-add.page";
-import ListCollectorRemovePage from "../generated_pages/dynamic_answers_list/list-collector-remove.page";
-import SectionSummaryPage from "../generated_pages/dynamic_answers_list/section-summary.page";
+import DriverPage from "../../generated_pages/dynamic_answers_list_source/any-supermarket.page";
+import DynamicAnswerPage from "../../generated_pages/dynamic_answers_list_source/dynamic-answer.page";
+import DynamicAnswerOnlyPage from "../../generated_pages/dynamic_answers_list_source/dynamic-answer-only.page";
+import ListCollectorPage from "../../generated_pages/dynamic_answers_list_source/list-collector.page";
+import ListCollectorAddPage from "../../generated_pages/dynamic_answers_list_source/list-collector-add.page";
+import ListCollectorRemovePage from "../../generated_pages/dynamic_answers_list_source/list-collector-remove.page";
+import SectionSummaryPage from "../../generated_pages/dynamic_answers_list_source/section-summary.page";
 
 describe("Dynamic answers list value source", () => {
   const labels = 'label[class="ons-label"]';
@@ -14,7 +14,7 @@ describe("Dynamic answers list value source", () => {
   const summaryValues = 'dd[class="ons-summary__values"]';
   const summaryActions = 'dd[class="ons-summary__actions"]';
   beforeEach("Load the survey", async () => {
-    await browser.openQuestionnaire("test_dynamic_answers_list.json");
+    await browser.openQuestionnaire("test_dynamic_answers_list_source.json");
   });
 
   it("Given list items have been added, When the dynamic answers are displayed, Then the correct answers should be visible", async () => {

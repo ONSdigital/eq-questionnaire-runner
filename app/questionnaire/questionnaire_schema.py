@@ -330,7 +330,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     ) -> None:
         if value_source["source"] == "answers":
             self._answer_dependencies_map[value_source["identifier"]] |= {
-                self._get_answer_dependent_for_block_id(block_id=block_id, answer_id=answer_id)  # type: ignore
+                self._get_answer_dependent_for_block_id(
+                    block_id=block_id, answer_id=answer_id
+                )
             }
         if value_source["source"] == "calculated_summary":
             identifier = value_source["identifier"]
@@ -341,14 +343,17 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
                 for answer_id_for_block in answer_ids_for_block:
                     self._answer_dependencies_map[answer_id_for_block] |= {
-                        self._get_answer_dependent_for_block_id(block_id=block_id, answer_id=answer_id)  # type: ignore
+                        self._get_answer_dependent_for_block_id(
+                            block_id=block_id, answer_id=answer_id
+                        )
                     }
         if value_source["source"] == "list":
             section = self.get_section_for_block_id(block_id)
             list_collector = self.get_list_collector_for_list(
-                section=section, for_list=value_source["identifier"]  # type: ignore
+                # Returns of methods are optional, but they always exist at this point, same with optional returns below
+                section=section,  # type: ignore
+                for_list=value_source["identifier"],  # type: ignore
             )
-            # Returns optional, but it always returns at this point, same with optional returns below
             add_block_question = self.get_add_block_for_list_collector(  # type: ignore
                 list_collector["id"]  # type: ignore
             )["question"]
@@ -363,8 +368,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self,
         *,
         block_id: str,
-        answer_id: Optional[str] = None,
-        for_list: Optional[str] = None,
+        answer_id: str | None = None,
+        for_list: str | None = None,
     ) -> AnswerDependent:
         section_id: str = self.get_section_id_for_block_id(block_id)  # type: ignore
         if not for_list:
