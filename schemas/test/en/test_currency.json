@@ -9,7 +9,8 @@
     "description": "A questionnaire to test currency input type",
     "messages": {
         "NUMBER_TOO_LARGE": "Number is too large",
-        "INVALID_DECIMAL": "Please enter a number to %(max)d decimal places"
+        "INVALID_DECIMAL": "Please enter a number to %(max)d decimal places",
+        "NUMBER_TOO_SMALL": "Number is too small"
     },
     "metadata": [
         {
