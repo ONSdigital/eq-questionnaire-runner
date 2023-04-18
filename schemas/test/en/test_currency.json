@@ -9,7 +9,6 @@
     "description": "A questionnaire to test currency input type",
     "messages": {
         "NUMBER_TOO_LARGE": "Number is too large",
-        "NUMBER_TOO_SMALL": "Number cannot be less than zero",
         "INVALID_DECIMAL": "Please enter a number to %(max)d decimal places"
     },
     "metadata": [
@@ -95,7 +94,7 @@
                                         }
                                     },
                                     {
-                                        "id": "answer-jpy",
+                                        "id": "answer-gbp-max-range",
                                         "label": "How much did you spend? (Max range)",
                                         "mandatory": false,
                                         "type": "Currency",
@@ -168,8 +167,8 @@
                                         }
                                     },
                                     {
-                                        "id": "negative-answer-min-max-range",
-                                        "label": "How much did you spend? (Max range)",
+                                        "id": "answer-gbp-min-range",
+                                        "label": "How much did you spend? (Min range)",
                                         "mandatory": false,
                                         "type": "Currency",
                                         "currency": "GBP",
