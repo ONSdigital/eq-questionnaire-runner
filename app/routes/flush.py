@@ -83,11 +83,11 @@ def _submit_data(user: User) -> bool:
         full_routing_path = router.full_routing_path()
 
         message: str = _get_converted_answers_message(
-            full_routing_path,
-            questionnaire_store.metadata,  # type: ignore
-            questionnaire_store,
-            schema,
-            submitted_at,
+            full_routing_path=full_routing_path,
+            metadata=questionnaire_store.metadata,  # type: ignore
+            questionnaire_store=questionnaire_store,
+            schema=schema,
+            submitted_at=submitted_at,
         )
 
         encrypted_message = encrypt(
