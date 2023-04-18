@@ -22,12 +22,12 @@ class SectionHandler:
         self._list_item_id = list_item_id
         self._language = language
         self._router = Router(
-            schema,
-            questionnaire_store.answer_store,
-            questionnaire_store.list_store,
-            questionnaire_store.progress_store,
-            questionnaire_store.metadata,
-            questionnaire_store.response_metadata,
+            schema=schema,
+            answer_store=questionnaire_store.answer_store,
+            list_store=questionnaire_store.list_store,
+            progress_store=questionnaire_store.progress_store,
+            metadata=questionnaire_store.metadata,
+            response_metadata=questionnaire_store.response_metadata,
         )
         if not self._is_valid_location():
             raise InvalidLocationException(f"location {self._section_id} is not valid")
