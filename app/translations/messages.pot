@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-18 11:11+0100\n"
+"POT-Creation-Date: 2023-04-14 12:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,6 +50,8 @@ msgid "Remove {item_name}"
 msgstr ""
 
 #: app/jinja_filters.py:699
+#: templates/partials/summary/collapsible-summary.html:36
+#: templates/partials/summary/summary.html:20
 msgid "No answer provided"
 msgstr ""
 
@@ -857,7 +859,8 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: templates/feedback.html:14 templates/view-submitted-response.html:16
+#: templates/feedback.html:14 templates/preview.html:15
+#: templates/view-submitted-response.html:16
 msgid "Back"
 msgstr ""
 
@@ -880,7 +883,7 @@ msgstr ""
 msgid "If you can’t answer questions for this person"
 msgstr ""
 
-#: templates/interstitial.html:31 templates/layouts/_questionnaire.html:27
+#: templates/interstitial.html:31 templates/layouts/_questionnaire.html:26
 msgid "Save and continue"
 msgstr ""
 
@@ -910,6 +913,53 @@ msgstr ""
 
 #: templates/multiple_survey.html:17
 msgid "Close this window to continue with your current survey"
+msgstr ""
+
+#: templates/preview.html:36
+msgid "Preview of the questions in this survey"
+msgstr ""
+
+#: templates/preview.html:41
+msgid "To answer these questions you need to <a href='{url}'>start survey</a>"
+msgstr ""
+
+#: templates/preview.html:43
+msgid ""
+"You may not have to answer all of these questions. The questions you see "
+"will depend on the answers you provide."
+msgstr ""
+
+#: templates/preview.html:48
+msgid "Print questions"
+msgstr ""
+
+#: templates/preview.html:60
+msgid "Save questions as PDF"
+msgstr ""
+
+#: templates/partials/introduction/preview.html:29
+#: templates/partials/summary/collapsible-summary.html:14
+#: templates/preview.html:81
+msgid "Show"
+msgstr ""
+
+#: templates/layouts/_base.html:74
+#: templates/partials/introduction/preview.html:30
+#: templates/partials/summary/collapsible-summary.html:15
+#: templates/preview.html:82
+msgid "Hide"
+msgstr ""
+
+#: templates/partials/introduction/preview.html:47
+#: templates/partials/summary/collapsible-summary.html:59
+#: templates/preview.html:102
+msgid "Show all"
+msgstr ""
+
+#: templates/partials/introduction/preview.html:48
+#: templates/partials/summary/collapsible-summary.html:60
+#: templates/preview.html:103
+msgid "Hide all"
 msgstr ""
 
 #: templates/signed-out.html:5
@@ -972,19 +1022,19 @@ msgid ""
 "your answers</a> for your records."
 msgstr ""
 
-#: templates/thank-you.html:71
+#: templates/layouts/_base.html:157 templates/thank-you.html:71
 msgid "minute"
 msgstr ""
 
-#: templates/thank-you.html:72
+#: templates/layouts/_base.html:158 templates/thank-you.html:72
 msgid "minutes"
 msgstr ""
 
-#: templates/thank-you.html:73
+#: templates/layouts/_base.html:159 templates/thank-you.html:73
 msgid "second"
 msgstr ""
 
-#: templates/thank-you.html:74
+#: templates/layouts/_base.html:160 templates/thank-you.html:74
 msgid "seconds"
 msgstr ""
 
@@ -1234,8 +1284,68 @@ msgid ""
 "href='{contact_us_url}'>contact us</a>"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:40
+#: templates/layouts/_base.html:20
+msgid "Previous"
+msgstr ""
+
+#: templates/layouts/_base.html:69
+msgid "Tell us whether you accept cookies"
+msgstr ""
+
+#: templates/layouts/_base.html:70
+msgid ""
+"We use <a href='{cookie_settings_url}'>cookies to collect information</a>"
+" about how you use {cookie_domain}. We use this information to make the "
+"website work as well as possible and improve our services."
+msgstr ""
+
+#: templates/layouts/_base.html:71
+msgid ""
+"You’ve accepted all cookies. You can <a "
+"href='{cookie_settings_url}'>change your cookie preferences</a> at any "
+"time."
+msgstr ""
+
+#: templates/layouts/_base.html:72
+msgid "Accept all cookies"
+msgstr ""
+
+#: templates/layouts/_base.html:73
+msgid "Set cookie preferences"
+msgstr ""
+
+#: templates/layouts/_base.html:130
+msgid "Skip to main content"
+msgstr ""
+
+#: templates/layouts/_base.html:152
+msgid "You will be signed out soon"
+msgstr ""
+
+#: templates/layouts/_base.html:153
+msgid "It appears you have been inactive for a while."
+msgstr ""
+
+#: templates/layouts/_base.html:154
+msgid ""
+"To protect your information, your progress will be saved and you will be "
+"signed out in"
+msgstr ""
+
+#: templates/layouts/_base.html:155
+msgid "You are being signed out"
+msgstr ""
+
+#: templates/layouts/_base.html:156
+msgid "Continue survey"
+msgstr ""
+
+#: templates/layouts/_questionnaire.html:39
 msgid "Choose another section and return to this later"
+msgstr ""
+
+#: templates/layouts/configs/_header.html:11
+msgid "Exit"
 msgstr ""
 
 #: templates/macros/helpers.html:13
@@ -1475,8 +1585,15 @@ msgstr ""
 msgid "Start survey"
 msgstr ""
 
+#: templates/partials/summary/collapsible-summary.html:37
 #: templates/partials/summary/list-summary.html:7
+#: templates/partials/summary/summary.html:21
 msgid "Change"
+msgstr ""
+
+#: templates/partials/summary/collapsible-summary.html:38
+#: templates/partials/summary/summary.html:22
+msgid "Change your answer for:"
 msgstr ""
 
 #: templates/partials/summary/list-summary.html:8
