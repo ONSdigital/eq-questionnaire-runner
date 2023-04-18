@@ -87,8 +87,8 @@ class Router:
             location.list_item_id
             and location.list_name
             and not self.is_list_item_in_list_store(
-            location.list_item_id, location.list_name
-        )
+                location.list_item_id, location.list_name
+            )
         ):
             return False
 
