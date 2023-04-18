@@ -31,12 +31,12 @@ class Context(ABC):
         self._placeholder_preview_mode = self._schema.preview_enabled
 
         self._router = Router(
-            self._schema,
-            self._answer_store,
-            self._list_store,
-            self._progress_store,
-            self._metadata,
-            self._response_metadata,
+            schema=self._schema,
+            answer_store=self._answer_store,
+            list_store=self._list_store,
+            progress_store=self._progress_store,
+            metadata=self._metadata,
+            response_metadata=self._response_metadata,
         )
 
         self._placeholder_renderer = PlaceholderRenderer(
