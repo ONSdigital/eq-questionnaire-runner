@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-05 10:55+0100\n"
+"POT-Creation-Date: 2023-04-18 11:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -876,7 +876,7 @@ msgstr ""
 msgid "If you can’t answer someone else’s questions"
 msgstr ""
 
-#: templates/interstitial.html:23 templates/partials/question.html:24
+#: templates/interstitial.html:23 templates/partials/question.html:45
 msgid "If you can’t answer questions for this person"
 msgstr ""
 
@@ -920,13 +920,13 @@ msgstr ""
 msgid "<h1>Your progress has been saved</h1>"
 msgstr ""
 
-#: templates/signed-out.html:23
+#: templates/signed-out.html:21
 msgid ""
 "To find further information or resume the survey, <a href='{url}'>return "
 "to My Account</a>."
 msgstr ""
 
-#: templates/signed-out.html:29
+#: templates/signed-out.html:23
 msgid "To resume the survey, <a href='{url}'>re-enter your access code</a>."
 msgstr ""
 
@@ -1288,28 +1288,28 @@ msgid ""
 " of the section</a>"
 msgstr ""
 
-#: templates/partials/preview-question.html:35
-#: templates/partials/question.html:68
+#: templates/partials/preview-question.html:34
+#: templates/partials/question.html:81
 msgid "Or"
 msgstr ""
 
-#: templates/partials/preview-question.html:56
+#: templates/partials/preview-question.html:55
 msgid "{max_characters} characters can be added."
 msgstr ""
 
-#: templates/partials/question.html:59
+#: templates/partials/question.html:72
 msgid "Selecting this will clear your answer"
 msgstr ""
 
-#: templates/partials/question.html:60
+#: templates/partials/question.html:73
 msgid "cleared"
 msgstr ""
 
-#: templates/partials/question.html:63
+#: templates/partials/question.html:76
 msgid "Selecting this will deselect any selected options"
 msgstr ""
 
-#: templates/partials/question.html:64 templates/partials/question.html:72
+#: templates/partials/question.html:77 templates/partials/question.html:85
 msgid "deselected"
 msgstr ""
 
