@@ -15,7 +15,6 @@ from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 class Router:
     def __init__(
         self,
-        *,
         schema: QuestionnaireSchema,
         answer_store: AnswerStore,
         list_store: ListStore,
@@ -88,8 +87,8 @@ class Router:
             location.list_item_id
             and location.list_name
             and not self.is_list_item_in_list_store(
-                location.list_item_id, location.list_name
-            )
+            location.list_item_id, location.list_name
+        )
         ):
             return False
 
