@@ -43,7 +43,7 @@ class SectionSummaryContext(Context):
     def __call__(
         self, return_to: Optional[str] = "section-summary"
     ) -> Mapping[str, Any]:
-        summary = self._build_summary(return_to)
+        summary = self.build_summary(return_to)
         title_for_location = self._title_for_location()
         title = (
             self._placeholder_renderer.render_placeholder(
@@ -91,7 +91,7 @@ class SectionSummaryContext(Context):
             page_title = page_title.format(list_item_position=list_item_position)
         return page_title
 
-    def _build_summary(self, return_to: Optional[str]) -> dict[str, Any]:
+    def build_summary(self, return_to: Optional[str]) -> dict[str, Any]:
         """
         Build a summary context for a particular location.
 

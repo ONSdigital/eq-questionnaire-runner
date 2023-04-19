@@ -26,26 +26,48 @@ class SummaryContext(Context):
     def _build_all_groups(
         self, return_to: Optional[str]
     ) -> Generator[ImmutableDict[str, Any], None, None]:
-        """NB: Does not support repeating sections"""
-
         for section_id in self._router.enabled_section_ids:
-            location = Location(section_id=section_id)
-            section_summary_context = SectionSummaryContext(
-                language=self._language,
-                schema=self._schema,
-                answer_store=self._answer_store,
-                list_store=self._list_store,
-                progress_store=self._progress_store,
-                metadata=self._metadata,
-                response_metadata=self._response_metadata,
-                current_location=location,
-                routing_path=self._router.routing_path(section_id),
-            )
-            section: Mapping = self._schema.get_section(section_id) or {}
-            if section.get("summary", {}).get("items"):
-                break
+            if repeat := self._schema.get_repeat_for_section(section_id):
+                for_repeat = self._list_store[repeat["for_list"]]
 
-            for group in section_summary_context(return_to=return_to)["summary"][
-                "groups"
-            ]:
-                yield group
+                if for_repeat.count > 0:
+                    for item in for_repeat.items:
+                        location = Location(
+                            section_id=section_id,
+                            list_name=for_repeat.name,
+                            list_item_id=item,
+                        )
+                        section_summary_context = SectionSummaryContext(
+                            language=self._language,
+                            schema=self._schema,
+                            answer_store=self._answer_store,
+                            list_store=self._list_store,
+                            progress_store=self._progress_store,
+                            metadata=self._metadata,
+                            response_metadata=self._response_metadata,
+                            current_location=location,
+                            routing_path=self._router.routing_path(
+                                section_id=section_id, list_item_id=item
+                            ),
+                        )
+
+                        yield from section_summary_context.build_summary(
+                            return_to=return_to
+                        ).get("groups", [])
+            else:
+                location = Location(section_id=section_id, list_item_id=None)
+                section_summary_context = SectionSummaryContext(
+                    language=self._language,
+                    schema=self._schema,
+                    answer_store=self._answer_store,
+                    list_store=self._list_store,
+                    progress_store=self._progress_store,
+                    metadata=self._metadata,
+                    response_metadata=self._response_metadata,
+                    current_location=location,
+                    routing_path=self._router.routing_path(section_id),
+                )
+
+                yield from section_summary_context.build_summary(
+                    return_to=return_to
+                ).get("groups", [])
