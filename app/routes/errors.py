@@ -7,7 +7,12 @@ from flask_login import current_user
 from flask_wtf.csrf import CSRFError
 from sdc.crypto.exceptions import InvalidTokenException
 from structlog import contextvars, get_logger
-from werkzeug.exceptions import BadRequestKeyError, Forbidden, NotFound, MethodNotAllowed
+from werkzeug.exceptions import (
+    BadRequestKeyError,
+    Forbidden,
+    MethodNotAllowed,
+    NotFound,
+)
 
 from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
@@ -90,9 +95,7 @@ def bad_request(
 @errors_blueprint.app_errorhandler(NoTokenException)
 @errors_blueprint.app_errorhandler(NoQuestionnaireStateException)
 def unauthorized(
-    exception: CSRFError
-               | NoTokenException
-               | NoQuestionnaireStateException,
+    exception: CSRFError | NoTokenException | NoQuestionnaireStateException,
 ) -> tuple[str, int]:
     log_exception(exception, 401)
     return _render_error_page(401, template="401")

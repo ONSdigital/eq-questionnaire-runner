@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Mapping, MutableMapping, Optional, Sequence, Union
+from typing import Any, Iterable, Mapping, MutableMapping, Optional, Union
 
 from structlog import get_logger
 
@@ -20,7 +20,7 @@ MetadataType = Mapping[str, Optional[Union[str, list]]]
 def convert_answers(
     schema: QuestionnaireSchema,
     questionnaire_store: QuestionnaireStore,
-    routing_path: Sequence[RoutingPath],
+    routing_path: Iterable[RoutingPath],
     submitted_at: datetime,
     flushed: bool = False,
 ) -> dict[str, Any]:

@@ -1,4 +1,4 @@
-from typing import Mapping, Optional, Sequence
+from typing import Iterable, Mapping, Optional
 
 from app.data_models import Answer, ListStore
 from app.data_models.answer_store import AnswerStore
@@ -14,7 +14,7 @@ def convert_answers_to_payload_0_0_3(
     answer_store: AnswerStore,
     list_store: ListStore,
     schema: QuestionnaireSchema,
-    full_routing_path: Sequence[RoutingPath],
+    full_routing_path: Iterable[RoutingPath],
 ) -> list[Answer]:
     """
     Convert answers into the data format below

@@ -1,14 +1,5 @@
 from datetime import datetime
-from typing import (
-    Any,
-    Iterable,
-    Mapping,
-    MutableMapping,
-    Optional,
-    OrderedDict,
-    Sequence,
-    Union,
-)
+from typing import Any, Iterable, Mapping, MutableMapping, Optional, OrderedDict, Union
 
 from structlog import get_logger
 
@@ -40,7 +31,7 @@ class DataVersionError(Exception):
 def convert_answers_v2(
     schema: QuestionnaireSchema,
     questionnaire_store: QuestionnaireStore,
-    routing_path: Sequence[RoutingPath],
+    routing_path: Iterable[RoutingPath],
     submitted_at: datetime,
     flushed: bool = False,
 ) -> dict[str, Any]:
@@ -121,7 +112,7 @@ def get_payload_data(
     answer_store: AnswerStore,
     list_store: ListStore,
     schema: QuestionnaireSchema,
-    routing_path: Sequence[RoutingPath],
+    routing_path: Iterable[RoutingPath],
     metadata: MetadataProxy,
     response_metadata: Mapping,
     progress_store: ProgressStore,
