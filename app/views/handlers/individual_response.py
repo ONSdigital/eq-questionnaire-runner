@@ -109,7 +109,7 @@ class IndividualResponseHandler:
         self,
         schema: QuestionnaireSchema,
         questionnaire_store: QuestionnaireStore,
-        language: str | None,
+        language: str,
         request_args: dict[str, str] | None,
         form_data: ImmutableMultiDict[str, str],
         list_item_id: str | None = None,
