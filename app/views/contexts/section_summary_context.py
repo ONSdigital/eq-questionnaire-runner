@@ -91,7 +91,9 @@ class SectionSummaryContext(Context):
             page_title = page_title.format(list_item_position=list_item_position)
         return page_title
 
-    def build_summary(self, return_to: Optional[str]) -> dict[str, Any]:
+    def build_summary(
+        self, return_to: Optional[str], get_refactored_groups: bool = True
+    ) -> dict[str, Any]:
         """
         Build a summary context for a particular location.
 
@@ -113,7 +115,11 @@ class SectionSummaryContext(Context):
 
             return collapsible | summary_elements
 
-        refactored_groups = self._get_refactored_groups(self.section["groups"])
+        refactored_groups = (
+            self._get_refactored_groups(self.section["groups"])
+            if get_refactored_groups
+            else self.section["groups"]
+        )
 
         groups = {
             **collapsible,

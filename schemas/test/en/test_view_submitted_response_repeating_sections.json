@@ -86,7 +86,6 @@
         {
             "id": "section",
             "title": "Household",
-            "summary": { "show_on_completion": true},
             "groups": [
                 {
                     "id": "group",

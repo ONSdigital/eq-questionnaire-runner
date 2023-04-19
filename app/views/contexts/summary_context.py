@@ -1,4 +1,4 @@
-from typing import Any, Generator, Mapping, Optional, Union
+from typing import Any, Generator, Optional, Union
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -16,8 +16,10 @@ class SummaryContext(Context):
         summary_options = self._schema.get_summary_options()
         collapsible = summary_options.get("collapsible", False)
 
+        refactored_groups = set_unique_group_ids(groups)
+
         return {
-            "groups": groups,
+            "groups": refactored_groups,
             "answers_are_editable": answers_are_editable,
             "collapsible": collapsible,
             "summary_type": "Summary",
@@ -52,7 +54,7 @@ class SummaryContext(Context):
                         )
 
                         yield from section_summary_context.build_summary(
-                            return_to=return_to
+                            return_to=return_to, get_refactored_groups=False
                         ).get("groups", [])
             else:
                 location = Location(section_id=section_id, list_item_id=None)
@@ -69,5 +71,20 @@ class SummaryContext(Context):
                 )
 
                 yield from section_summary_context.build_summary(
-                    return_to=return_to
+                    return_to=return_to, get_refactored_groups=False
                 ).get("groups", [])
+
+
+def set_unique_group_ids(groups: list[ImmutableDict]) -> list[ImmutableDict]:
+    checked_ids = set()
+    id_value = 0
+
+    for group in groups:
+        if "id" in group:
+            group_id = group["id"]
+            if group_id in checked_ids:
+                id_value += 1
+            checked_ids.add(group_id)
+            group["id"] = f"{group_id}-{id_value}"
+
+    return groups
