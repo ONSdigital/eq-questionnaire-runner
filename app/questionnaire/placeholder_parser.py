@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from decimal import Decimal
-from typing import TYPE_CHECKING, Any, Mapping, MutableMapping, Sequence
+from typing import TYPE_CHECKING, Any, Mapping, MutableMapping, Sequence, TypeAlias
 
 from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
@@ -26,7 +26,7 @@ if TYPE_CHECKING:
         PlaceholderRenderer,  # pragma: no cover
     )
 
-TransformedValueTypes = None | str | int | Decimal | bool
+TransformedValueTypes: TypeAlias = None | str | int | Decimal | bool
 
 
 class PlaceholderParser:

@@ -19,7 +19,7 @@ DependentSection = namedtuple("DependentSection", "section_id list_item_id is_co
 class QuestionnaireStoreUpdater:
     """Component responsible for any actions that need to happen as a result of updating the questionnaire_store"""
 
-    EMPTY_ANSWER_VALUES: tuple = (None, [], "", {})
+    EMPTY_ANSWER_VALUES: tuple[None, list, str, dict] = (None, [], "", {})
 
     def __init__(
         self,
@@ -210,7 +210,7 @@ class QuestionnaireStoreUpdater:
         list_model.same_name_items = list(same_name_items)  # type: ignore
 
     def remove_relationship_answers_for_list_item_id(
-        self, list_item_id: str, answers: list[Any]
+        self, list_item_id: str, answers: list
     ) -> None:
         for answer in answers:
             answers_to_keep = [

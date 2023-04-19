@@ -24,7 +24,7 @@ def choose_variant(  # type: ignore
     single_key: str,
     current_location: Location | RelationshipLocation,
     progress_store: ProgressStore,
-) -> Mapping[str, Any]:
+) -> dict[str, Any]:
     if block.get(single_key):
         # Type ignore: the key passed in will be for a dictionary
         return block[single_key]  # type: ignore
@@ -55,7 +55,7 @@ def choose_question_to_display(
     list_store: ListStore,
     current_location: Location | RelationshipLocation,
     progress_store: ProgressStore,
-) -> Mapping[str, Any]:
+) -> dict[str, Any]:
     return choose_variant(
         block,
         schema,
@@ -79,7 +79,7 @@ def choose_content_to_display(
     list_store: ListStore,
     current_location: Location | RelationshipLocation,
     progress_store: ProgressStore,
-) -> Mapping[str, Any]:
+) -> dict[str, Any]:
     return choose_variant(
         block,
         schema,

@@ -29,7 +29,7 @@ def find_pointers_containing(
             yield from find_pointers_containing(item, search_key, f"{pointer}/{index}")
 
 
-def get_answer_ids_in_block(block: dict[str, Any]) -> list[str]:
+def get_answer_ids_in_block(block: Mapping[str, Any]) -> list[str]:
     question = block["question"]
     answer_ids = [answer["id"] for answer in question["answers"]]
     return answer_ids

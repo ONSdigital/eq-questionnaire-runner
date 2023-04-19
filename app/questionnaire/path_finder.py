@@ -79,10 +79,10 @@ class PathFinder:
         routing_path_block_ids: list[str],
         section: ImmutableDict[str, Any],
         when_rules_block_dependencies: list[str],
-    ) -> list[Mapping[str, Any]] | None:
+    ) -> list[dict] | None:
         # :TODO: Fix group skipping in its own section. Routing path will be empty and therefore not checked
         if section:
-            not_skipped_blocks: list[Mapping[str, Any]] = []
+            not_skipped_blocks: list[dict] = []
             for group in section["groups"]:
                 if "skip_conditions" in group:
                     skip_conditions = group.get("skip_conditions")
@@ -108,7 +108,7 @@ class PathFinder:
 
     def _build_routing_path_block_ids(
         self,
-        blocks: list[Mapping[str, Any]],
+        blocks: list[dict],
         current_location: Location,
         when_rules_block_dependencies: list[str],
     ) -> list[str]:

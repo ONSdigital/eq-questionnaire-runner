@@ -23,6 +23,6 @@ def get_plural_form_key(count: int, language: str = DEFAULT_LANGUAGE_CODE) -> st
     }
 
     plural_rule = PluralRule(mappings[language])
+    plural_form: str = plural_rule(count)
 
-    # Type ignore: untyped in current babel version, but requires a number and returns string
-    return plural_rule(count)  # type: ignore
+    return plural_form

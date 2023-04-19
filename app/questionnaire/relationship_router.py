@@ -26,7 +26,7 @@ class RelationshipRouter:
         self.relationships_block_id = relationships_block_id
         self.unrelated_block_id = unrelated_block_id
         self.unrelated_answer_id = unrelated_answer_id
-        self.unrelated_no_answer_values = unrelated_no_answer_values
+        self.unrelated_no_answer_values = unrelated_no_answer_values or []
         self.path = self._relationships_routing_path()
 
     def can_access_location(self, location: RelationshipLocation) -> bool:
@@ -93,8 +93,10 @@ class RelationshipRouter:
                     self.unrelated_answer_id,  # type: ignore
                     from_list_item_id,
                 )
-                # Type ignore: unrelated_no_answer_values exists when the unrelated answer does
-                if unrelated_answer and unrelated_answer.value in self.unrelated_no_answer_values:  # type: ignore
+                if (
+                    unrelated_answer
+                    and unrelated_answer.value in self.unrelated_no_answer_values
+                ):
                     return path
 
             path.append(

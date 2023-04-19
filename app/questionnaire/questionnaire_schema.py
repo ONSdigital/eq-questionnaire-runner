@@ -422,7 +422,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return False
 
     @staticmethod
-    def get_operands(rules: Mapping[str, Any]) -> Sequence[Any]:
+    def get_operands(rules: Mapping[str, Any]) -> Sequence:
         operator = next(iter(rules))
         operands: Sequence[Any] = rules[operator]
         return operands
