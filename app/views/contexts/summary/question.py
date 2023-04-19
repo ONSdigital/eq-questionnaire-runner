@@ -37,7 +37,7 @@ class Question:
         self.id = question_schema["id"]
         self.type = question_schema["type"]
         self.schema = schema
-        self.answer_schemas = iter(question_schema["answers"])
+        self.answer_schemas = iter(question_schema.get("answers", []))
         if dynamic_answers := question_schema.get("dynamic_answers"):
             self.dynamic_answer_schemas = iter(dynamic_answers.get("answers", {}))
             self.dynamic_answer_identifier = dynamic_answers.get("values")["identifier"]

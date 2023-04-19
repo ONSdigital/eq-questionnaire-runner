@@ -23,8 +23,6 @@ def build_question_context(
 
     answer_ids = []
 
-    question["answers"] = get_answers_from_question(question)
-
     for answer in question["answers"]:
         answer_ids.append(answer["id"])
 

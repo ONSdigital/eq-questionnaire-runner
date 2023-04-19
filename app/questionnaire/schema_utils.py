@@ -21,6 +21,7 @@ def find_pointers_containing(input_data, search_key, pointer=None):
         for index, item in enumerate(input_data):
             yield from find_pointers_containing(item, search_key, f"{pointer}/{index}")
 
+
 def get_answers_from_question(question):
     static_answers = question.get("answers", [])
     dynamic_answers = question.get("dynamic_answers", {}).get("answers", [])

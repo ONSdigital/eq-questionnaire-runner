@@ -418,7 +418,7 @@ class QuestionnaireForm(FlaskForm):
             ]
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
-        for answer in get_answers_from_question(self.question):
+        for answer in self.question["answers"]:
             if answer["id"] in self.errors:
                 ordered_errors += map_subfield_errors(self.errors, answer["id"])
             if "options" in answer:
@@ -499,7 +499,26 @@ def get_answer_fields(
             progress_store=progress_store,
         )
 
-    def _resolve_answer_fields(answer, value_source_resolver):
+    rule_evaluator = RuleEvaluator(
+        schema=schema,
+        answer_store=answer_store,
+        list_store=list_store,
+        metadata=metadata,
+        response_metadata=response_metadata,
+        location=location,
+        progress_store=progress_store,
+    )
+
+    answer_fields = {}
+    question_title = question.get("title")
+
+    value_source_resolved_for_location = _get_value_source_resolver(list_item_id)
+    for answer in question["answers"]:
+        if "list_item_id" in answer:
+            value_source_resolver = _get_value_source_resolver(answer["list_item_id"])
+        else:
+            value_source_resolver = value_source_resolved_for_location
+
         for option in answer.get("options", []):
             if "detail_answer" in option:
                 if data:
@@ -524,27 +543,6 @@ def get_answer_fields(
             error_messages=schema.error_messages,
             question_title=question_title,
         ).get_field()
-
-    rule_evaluator = RuleEvaluator(
-        schema=schema,
-        answer_store=answer_store,
-        list_store=list_store,
-        metadata=metadata,
-        response_metadata=response_metadata,
-        location=location,
-        progress_store=progress_store,
-    )
-
-    answer_fields = {}
-    question_title = question.get("title")
-
-    for dynamic_answer in question.get("dynamic_answers", {}).get("answers", []):
-        value_source_resolver_for_answer = _get_value_source_resolver(dynamic_answer["list_item_id"])
-        _resolve_answer_fields(dynamic_answer, value_source_resolver_for_answer)
-
-    value_source_resolved_for_location = _get_value_source_resolver(list_item_id)
-    for static_answer in question.get("answers", []):
-        _resolve_answer_fields(static_answer, value_source_resolved_for_location)
 
     return answer_fields
 

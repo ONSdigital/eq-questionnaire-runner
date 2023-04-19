@@ -130,9 +130,7 @@ class PlaceholderRenderer:
 
         if dynamic_answers and dynamic_answers["values"]["source"] == "list":
             self.resolve_dynamic_answers_ids(data_to_render_mutable)
-            self.resolve_dynamic_answers_placeholders(
-                data_to_render_mutable
-            )
+            self.resolve_dynamic_answers(data_to_render_mutable)
 
         pointers = find_pointers_containing(data_to_render_mutable, "placeholders")
 
@@ -160,7 +158,8 @@ class PlaceholderRenderer:
             set_pointer(data_to_render_mutable, pointer, rendered_text)
         return data_to_render_mutable
 
-    def resolve_dynamic_answers_ids(self,
+    def resolve_dynamic_answers_ids(
+        self,
         data_to_render_mutable: dict,
     ) -> None:
         dynamic_answers = data_to_render_mutable["dynamic_answers"]
@@ -177,12 +176,11 @@ class PlaceholderRenderer:
 
                 resolved_dynamic_answers.append(resolved_dynamic_answer)
 
-        data_to_render_mutable["dynamic_answers"][
-            "answers"
-        ] = resolved_dynamic_answers
+        data_to_render_mutable["dynamic_answers"]["answers"] = resolved_dynamic_answers
 
-    def resolve_dynamic_answers_placeholders(
-        self, data_to_render_mutable: dict,
+    def resolve_dynamic_answers(
+        self,
+        data_to_render_mutable: dict,
     ) -> None:
         dynamic_answers = data_to_render_mutable["dynamic_answers"]
         for answer in dynamic_answers["answers"]:
@@ -210,4 +208,7 @@ class PlaceholderRenderer:
                 )
                 set_pointer(answer, pointer, rendered_text)
 
-        data_to_render_mutable["dynamic_answers"] = dynamic_answers
+        data_to_render_mutable["answers"] = dynamic_answers[
+            "answers"
+        ] + data_to_render_mutable.get("answers", [])
+        del data_to_render_mutable["dynamic_answers"]["answers"]
