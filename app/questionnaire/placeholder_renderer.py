@@ -126,20 +126,12 @@ class PlaceholderRenderer:
         data_to_render_mutable: dict[
             str, Any
         ] = QuestionnaireSchema.get_mutable_deepcopy(data_to_render)
+        dynamic_answers = data_to_render_mutable.get("dynamic_answers", {})
 
-        if data_to_render_mutable.get("dynamic_answers", {}):
-            list_name = data_to_render_mutable["dynamic_answers"]["values"][
-                "identifier"
-            ]
-            list_items = self._list_store[list_name].items
-            self.resolve_dynamic_answers(data_to_render_mutable, list_items)
+        if dynamic_answers and dynamic_answers["values"]["source"] == "list":
+            self.resolve_dynamic_answers_ids(data_to_render_mutable)
             self.resolve_dynamic_answers_placeholders(
-                data_to_render_mutable, list_items
-            )
-
-            data_to_render_mutable["answers"] = (
-                data_to_render_mutable["dynamic_answers"]["answers"]
-                + data_to_render_mutable["answers"]
+                data_to_render_mutable
             )
 
         pointers = find_pointers_containing(data_to_render_mutable, "placeholders")
@@ -168,54 +160,54 @@ class PlaceholderRenderer:
             set_pointer(data_to_render_mutable, pointer, rendered_text)
         return data_to_render_mutable
 
-    def resolve_dynamic_answers(
-        self, data_to_render_mutable: dict, list_items: list[str]
+    def resolve_dynamic_answers_ids(self,
+        data_to_render_mutable: dict,
     ) -> None:
         dynamic_answers = data_to_render_mutable["dynamic_answers"]
-        if dynamic_answers["values"]["source"] == "list":
-            resolved_dynamic_answers = []
+        list_name = dynamic_answers["values"]["identifier"]
+        list_items = self._list_store[list_name].items
 
-            for dynamic_answer in dynamic_answers["answers"]:
-                for item in list_items:
-                    resolved_dynamic_answer = deepcopy(dynamic_answer)
-                    resolved_id = f"{dynamic_answer['id']}-{item}"
-                    resolved_dynamic_answer["id"] = resolved_id
+        resolved_dynamic_answers = []
 
-                    self._schema._parent_id_map[  # pylint: disable=protected-access
-                        dynamic_answer["id"]
-                    ] = data_to_render_mutable["id"]
+        for dynamic_answer in dynamic_answers["answers"]:
+            for item in list_items:
+                resolved_dynamic_answer = deepcopy(dynamic_answer)
+                resolved_dynamic_answer["id"] = f"{dynamic_answer['id']}-{item}"
+                resolved_dynamic_answer["list_item_id"] = item
 
-                    resolved_dynamic_answers.append(resolved_dynamic_answer)
+                resolved_dynamic_answers.append(resolved_dynamic_answer)
 
-            data_to_render_mutable["dynamic_answers"][
-                "answers"
-            ] = resolved_dynamic_answers
+        data_to_render_mutable["dynamic_answers"][
+            "answers"
+        ] = resolved_dynamic_answers
 
     def resolve_dynamic_answers_placeholders(
-        self, data_to_render_mutable: dict, list_items: list[str]
+        self, data_to_render_mutable: dict,
     ) -> None:
         dynamic_answers = data_to_render_mutable["dynamic_answers"]
-        pointers = find_pointers_containing(dynamic_answers, "placeholders")
+        for answer in dynamic_answers["answers"]:
+            pointers = find_pointers_containing(answer, "placeholders")
 
-        for pointer, list_item_id in zip(pointers, list_items):
-            placeholder_parser = PlaceholderParser(
-                language=self._language,
-                answer_store=self._answer_store,
-                list_store=self._list_store,
-                metadata=self._metadata,
-                response_metadata=self._response_metadata,
-                schema=self._schema,
-                list_item_id=list_item_id,
-                location=self._location,
-                renderer=self,
-                placeholder_preview_mode=self._placeholder_preview_mode,
-                progress_store=self._progress_store,
-            )
-            rendered_text = self.render_pointer(
-                dict_to_render=dynamic_answers,
-                pointer_to_render=pointer,
-                list_item_id=list_item_id,
-                placeholder_parser=placeholder_parser,
-            )
-            set_pointer(dynamic_answers, pointer, rendered_text)
+            for pointer in pointers:
+                placeholder_parser = PlaceholderParser(
+                    language=self._language,
+                    answer_store=self._answer_store,
+                    list_store=self._list_store,
+                    metadata=self._metadata,
+                    response_metadata=self._response_metadata,
+                    schema=self._schema,
+                    list_item_id=answer["list_item_id"],
+                    location=self._location,
+                    renderer=self,
+                    placeholder_preview_mode=self._placeholder_preview_mode,
+                    progress_store=self._progress_store,
+                )
+                rendered_text = self.render_pointer(
+                    dict_to_render=answer,
+                    pointer_to_render=pointer,
+                    list_item_id=answer["list_item_id"],
+                    placeholder_parser=placeholder_parser,
+                )
+                set_pointer(answer, pointer, rendered_text)
+
         data_to_render_mutable["dynamic_answers"] = dynamic_answers

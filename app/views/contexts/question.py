@@ -2,6 +2,7 @@ from typing import Any
 
 from app.forms.questionnaire_form import QuestionnaireForm
 from app.questionnaire import QuestionSchemaType
+from app.questionnaire.schema_utils import get_answers_from_question
 
 
 def build_question_context(
@@ -21,6 +22,8 @@ def build_question_context(
     }
 
     answer_ids = []
+
+    question["answers"] = get_answers_from_question(question)
 
     for answer in question["answers"]:
         answer_ids.append(answer["id"])

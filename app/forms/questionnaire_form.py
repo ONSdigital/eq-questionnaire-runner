@@ -24,6 +24,7 @@ from app.questionnaire.dependencies import (
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from app.questionnaire.schema_utils import get_answers_from_question
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.mappings import get_flattened_mapping_values
 
@@ -417,7 +418,7 @@ class QuestionnaireForm(FlaskForm):
             ]
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
-        for answer in self.question["answers"]:
+        for answer in get_answers_from_question(self.question):
             if answer["id"] in self.errors:
                 ordered_errors += map_subfield_errors(self.errors, answer["id"])
             if "options" in answer:
@@ -483,33 +484,22 @@ def get_answer_fields(
     if routing_path_block_ids:
         block_ids = get_flattened_mapping_values(routing_path_block_ids)
 
-    value_source_resolver = ValueSourceResolver(
-        answer_store=answer_store,
-        list_store=list_store,
-        metadata=metadata,
-        schema=schema,
-        location=location,
-        list_item_id=list_item_id,
-        escape_answer_values=False,
-        response_metadata=response_metadata,
-        routing_path_block_ids=block_ids,
-        assess_routing_path=False,
-        progress_store=progress_store,
-    )
+    def _get_value_source_resolver(list_item: str | None = None) -> ValueSourceResolver:
+        return ValueSourceResolver(
+            answer_store=answer_store,
+            list_store=list_store,
+            metadata=metadata,
+            schema=schema,
+            location=location,
+            list_item_id=list_item,
+            escape_answer_values=False,
+            response_metadata=response_metadata,
+            routing_path_block_ids=block_ids,
+            assess_routing_path=False,
+            progress_store=progress_store,
+        )
 
-    rule_evaluator = RuleEvaluator(
-        schema=schema,
-        answer_store=answer_store,
-        list_store=list_store,
-        metadata=metadata,
-        response_metadata=response_metadata,
-        location=location,
-        progress_store=progress_store,
-    )
-
-    answer_fields = {}
-    question_title = question.get("title")
-    for answer in question.get("answers", []):
+    def _resolve_answer_fields(answer, value_source_resolver):
         for option in answer.get("options", []):
             if "detail_answer" in option:
                 if data:
@@ -534,6 +524,27 @@ def get_answer_fields(
             error_messages=schema.error_messages,
             question_title=question_title,
         ).get_field()
+
+    rule_evaluator = RuleEvaluator(
+        schema=schema,
+        answer_store=answer_store,
+        list_store=list_store,
+        metadata=metadata,
+        response_metadata=response_metadata,
+        location=location,
+        progress_store=progress_store,
+    )
+
+    answer_fields = {}
+    question_title = question.get("title")
+
+    for dynamic_answer in question.get("dynamic_answers", {}).get("answers", []):
+        value_source_resolver_for_answer = _get_value_source_resolver(dynamic_answer["list_item_id"])
+        _resolve_answer_fields(dynamic_answer, value_source_resolver_for_answer)
+
+    value_source_resolved_for_location = _get_value_source_resolver(list_item_id)
+    for static_answer in question.get("answers", []):
+        _resolve_answer_fields(static_answer, value_source_resolved_for_location)
 
     return answer_fields
 
@@ -581,7 +592,7 @@ def _clear_detail_answer_field(
     """
     Clears the detail answer field if the parent option is not selected
     """
-    for answer in question_schema["answers"]:
+    for answer in question_schema.get("answers", []):
         for option in answer.get("options", []):
             if "detail_answer" in option and option["value"] not in form_data.getlist(
                 answer["id"]

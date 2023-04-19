@@ -10,6 +10,7 @@ from werkzeug.datastructures import ImmutableDict, MultiDict
 from app.data_models.answer import Answer
 from app.forms import error_messages
 from app.questionnaire.rules.operator import OPERATION_MAPPING
+from app.questionnaire.schema_utils import get_answers_from_question
 from app.utilities.make_immutable import make_immutable
 from app.utilities.mappings import get_mappings_with_key
 
@@ -73,6 +74,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._blocks_by_id = self._get_blocks_by_id()
         self._questions_by_id = self._get_questions_by_id()
         self._answers_by_id = self._get_answers_by_id()
+        self._dynamic_answer_ids = set()
 
         # Post schema parsing.
         self._populate_answer_dependencies()
@@ -226,7 +228,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         for question in self._get_flattened_questions():
             question_id = question["id"]
-            for answer in question["answers"]:
+
+            for answer in get_answers_from_question(question):
                 answer_id = answer["id"]
                 self._parent_id_map[answer_id] = question_id
 
@@ -262,6 +265,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                         self._update_answer_dependencies_for_value_source(
                             value_source, block_id=block["id"], answer_id=answer["id"]
                         )
+
+                        self._dynamic_answer_ids.add(answer["id"])
 
                 for answer in question.get("answers", []):
                     self._update_answer_dependencies_for_answer(
@@ -604,6 +609,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         if block := self.get_block_for_answer_id(answer_id):
             return self.is_block_in_repeating_section(block_id=block["id"])
 
+    def is_answer_dynamic(self, answer_id: str) -> Optional[bool]:
+        return answer_id in self._dynamic_answer_ids
+
     def is_repeating_answer(
         self,
         answer_id: str,
@@ -611,6 +619,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return bool(
             self.is_answer_in_list_collector_block(answer_id)
             or self.is_answer_in_repeating_section(answer_id)
+            or self.is_answer_dynamic(answer_id)
         )
 
     def get_answers_by_answer_id(self, answer_id: str) -> list[ImmutableDict]:
@@ -688,7 +697,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     ) -> dict[str, dict[str, Any]]:
         answers: dict[str, dict[str, Any]] = {}
 
-        for answer in question.get("answers", {}):
+        for answer in get_answers_from_question(question):
             answers[answer["id"]] = answer
             for option in answer.get("options", {}):
                 if "detail_answer" in option:

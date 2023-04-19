@@ -147,6 +147,20 @@
                                             "label": "Supermarket",
                                             "mandatory": true,
                                             "type": "TextField"
+                                        },
+                                        {
+                                            "id": "set-maximum",
+                                            "description": "This is a description of the maximum value",
+                                            "label": "Maximum Value",
+                                            "mandatory": true,
+                                            "type": "Number",
+                                            "decimal_places": 2,
+                                            "minimum": {
+                                                "value": 1001
+                                            },
+                                            "maximum": {
+                                                "value": 10000
+                                            }
                                         }
                                     ]
                                 }
@@ -300,6 +314,31 @@
                         },
                         {
                             "type": "Question",
+                            "id": "set-min-max-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "set-minimum",
+                                        "label": "Minimum Value",
+                                        "description": "This is a description of the minimum value",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "decimal_places": 2,
+                                        "minimum": {
+                                            "value": 0
+                                        },
+                                        "maximum": {
+                                            "value": 1000
+                                        }
+                                    }
+                                ],
+                                "id": "set-min-question",
+                                "title": "Please set the minimum and maximum used for future questions",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
                             "id": "dynamic-answer-only",
                             "skip_conditions": {
                                 "when": {
@@ -340,11 +379,41 @@
                                             "mandatory": false,
                                             "type": "Currency",
                                             "currency": "GBP",
-                                            "decimal_places": 2
+                                            "decimal_places": 2,
+                                            "description": {
+                                                "text": "The answers must be less than {max_value} and greater than {min_value}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "min_value",
+                                                        "value": {
+                                                            "source": "answers",
+                                                            "identifier": "set-minimum"
+                                                        }
+                                                    },
+                                                    {
+                                                        "placeholder": "max_value",
+                                                        "value": {
+                                                            "source": "answers",
+                                                            "identifier": "set-maximum"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "maximum": {
+                                                "value": {
+                                                    "source": "answers",
+                                                    "identifier": "set-maximum"
+                                                }
+                                            },
+                                            "minimum": {
+                                                "value": {
+                                                    "source": "answers",
+                                                    "identifier": "set-minimum"
+                                                }
+                                            }
                                         }
                                     ]
                                 },
-                                "answers": [],
                                 "id": "dynamic-answer-only-question",
                                 "title": "How much do you spend at each of the following supermarket?",
                                 "type": "General"
