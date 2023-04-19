@@ -7,7 +7,7 @@ from flask_login import current_user
 from flask_wtf.csrf import CSRFError
 from sdc.crypto.exceptions import InvalidTokenException
 from structlog import contextvars, get_logger
-from werkzeug.exceptions import BadRequestKeyError, Forbidden, HTTPException, NotFound
+from werkzeug.exceptions import BadRequestKeyError, Forbidden, NotFound, MethodNotAllowed
 
 from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
@@ -34,7 +34,7 @@ logger = get_logger()
 errors_blueprint = Blueprint("errors", __name__)
 
 
-def log_exception(exception: Exception | None, status_code: int) -> None:
+def log_exception(exception: Exception, status_code: int) -> None:
     if metadata := get_metadata(current_user):
         contextvars.bind_contextvars(tx_id=metadata.tx_id)
 
@@ -79,7 +79,7 @@ def _render_error_page(
 @errors_blueprint.app_errorhandler(400)
 @errors_blueprint.app_errorhandler(BadRequestKeyError)
 def bad_request(
-    exception: HTTPException | BadRequestKeyError | None = None,
+    exception: BadRequestKeyError,
 ) -> tuple[str, int]:
     log_exception(exception, 400)
     return _render_error_page(400, template="500")
@@ -90,11 +90,9 @@ def bad_request(
 @errors_blueprint.app_errorhandler(NoTokenException)
 @errors_blueprint.app_errorhandler(NoQuestionnaireStateException)
 def unauthorized(
-    exception: HTTPException
-    | CSRFError
-    | NoTokenException
-    | NoQuestionnaireStateException
-    | None = None,
+    exception: CSRFError
+               | NoTokenException
+               | NoQuestionnaireStateException,
 ) -> tuple[str, int]:
     log_exception(exception, 401)
     return _render_error_page(401, template="401")
@@ -102,20 +100,20 @@ def unauthorized(
 
 @errors_blueprint.app_errorhandler(PreviouslySubmittedException)
 def previously_submitted(
-    exception: PreviouslySubmittedException | None = None,
+    exception: PreviouslySubmittedException,
 ) -> tuple[str, int]:
     log_exception(exception, 401)
     return _render_error_page(401, "previously-submitted")
 
 
 @errors_blueprint.app_errorhandler(InvalidTokenException)
-def forbidden(exception: InvalidTokenException | None = None) -> tuple[str, int]:
+def forbidden(exception: InvalidTokenException) -> tuple[str, int]:
     log_exception(exception, 403)
     return _render_error_page(403)
 
 
 @errors_blueprint.app_errorhandler(405)
-def method_not_allowed(exception: HTTPException | None = None) -> tuple[str, int]:
+def method_not_allowed(exception: MethodNotAllowed) -> tuple[str, int]:
     log_exception(exception, 405)
     return _render_error_page(405, template="404")
 
@@ -128,7 +126,7 @@ def http_exception(exception: NotFound | Forbidden) -> tuple[str, int]:
 
 
 @errors_blueprint.app_errorhandler(Exception)
-def internal_server_error(exception: Exception | None = None) -> tuple[str, int]:
+def internal_server_error(exception: Exception) -> tuple[str, int]:
     try:
         log_exception(exception, 500)
         return _render_error_page(500)
@@ -143,7 +141,7 @@ def internal_server_error(exception: Exception | None = None) -> tuple[str, int]
 
 @errors_blueprint.app_errorhandler(IndividualResponseLimitReached)
 def too_many_individual_response_requests(
-    exception: IndividualResponseLimitReached | None = None,
+    exception: IndividualResponseLimitReached,
 ) -> tuple[str, int]:
     log_exception(exception, 429)
     title = lazy_gettext(
@@ -164,7 +162,7 @@ def too_many_individual_response_requests(
 
 @errors_blueprint.app_errorhandler(FeedbackLimitReached)
 def too_many_feedback_requests(
-    exception: FeedbackLimitReached | None = None,
+    exception: FeedbackLimitReached,
 ) -> tuple[str, int]:
     log_exception(exception, 429)
     title = lazy_gettext(
@@ -185,7 +183,7 @@ def too_many_feedback_requests(
 
 @errors_blueprint.app_errorhandler(SubmissionFailedException)
 def submission_failed(
-    exception: SubmissionFailedException | None = None,
+    exception: SubmissionFailedException,
 ) -> tuple[str, int]:
     log_exception(exception, 500)
     return _render_error_page(500, template="submission-failed")
