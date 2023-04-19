@@ -27,6 +27,7 @@ def get_answers_from_question(question):
     dynamic_answers = question.get("dynamic_answers", {}).get("answers", [])
     return [*dynamic_answers, *static_answers]
 
+
 def get_answer_ids_in_block(block):
     question = block["question"]
     answer_ids = []

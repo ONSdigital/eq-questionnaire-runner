@@ -126,11 +126,8 @@ class PlaceholderRenderer:
         data_to_render_mutable: dict[
             str, Any
         ] = QuestionnaireSchema.get_mutable_deepcopy(data_to_render)
-        dynamic_answers = data_to_render_mutable.get("dynamic_answers", {})
 
-        if dynamic_answers and dynamic_answers["values"]["source"] == "list":
-            self.resolve_dynamic_answers_ids(data_to_render_mutable)
-            self.resolve_dynamic_answers(data_to_render_mutable)
+        self._handle_and_resolve_dynamic_answers(data_to_render_mutable)
 
         pointers = find_pointers_containing(data_to_render_mutable, "placeholders")
 
@@ -158,11 +155,30 @@ class PlaceholderRenderer:
             set_pointer(data_to_render_mutable, pointer, rendered_text)
         return data_to_render_mutable
 
+    def _handle_and_resolve_dynamic_answers(self, data_to_render_mutable):
+        pointers = find_pointers_containing(data_to_render_mutable, "dynamic_answers")
+
+        for pointer in pointers:
+            data = resolve_pointer(data_to_render_mutable, pointer)
+            dynamic_answers = data["dynamic_answers"]
+
+            if dynamic_answers["values"]["source"] == "list":
+                self.resolve_dynamic_answers_ids(dynamic_answers)
+                self.resolve_dynamic_answers(dynamic_answers)
+
+                updated_value = {
+                    "answers": dynamic_answers["answers"] + data.get("answers", [])
+                }
+                if pointer:
+                    set_pointer(data_to_render_mutable, pointer, updated_value)
+                else:
+                    data_to_render_mutable.update(updated_value)
+                    del data_to_render_mutable["dynamic_answers"]["answers"]
+
     def resolve_dynamic_answers_ids(
         self,
-        data_to_render_mutable: dict,
+        dynamic_answers: dict,
     ) -> None:
-        dynamic_answers = data_to_render_mutable["dynamic_answers"]
         list_name = dynamic_answers["values"]["identifier"]
         list_items = self._list_store[list_name].items
 
@@ -171,18 +187,18 @@ class PlaceholderRenderer:
         for dynamic_answer in dynamic_answers["answers"]:
             for item in list_items:
                 resolved_dynamic_answer = deepcopy(dynamic_answer)
+                resolved_dynamic_answer["original_answer_id"] = dynamic_answer["id"]
                 resolved_dynamic_answer["id"] = f"{dynamic_answer['id']}-{item}"
                 resolved_dynamic_answer["list_item_id"] = item
 
                 resolved_dynamic_answers.append(resolved_dynamic_answer)
 
-        data_to_render_mutable["dynamic_answers"]["answers"] = resolved_dynamic_answers
+        dynamic_answers["answers"] = resolved_dynamic_answers
 
     def resolve_dynamic_answers(
         self,
-        data_to_render_mutable: dict,
+        dynamic_answers: dict,
     ) -> None:
-        dynamic_answers = data_to_render_mutable["dynamic_answers"]
         for answer in dynamic_answers["answers"]:
             pointers = find_pointers_containing(answer, "placeholders")
 
@@ -207,8 +223,3 @@ class PlaceholderRenderer:
                     placeholder_parser=placeholder_parser,
                 )
                 set_pointer(answer, pointer, rendered_text)
-
-        data_to_render_mutable["answers"] = dynamic_answers[
-            "answers"
-        ] + data_to_render_mutable.get("answers", [])
-        del data_to_render_mutable["dynamic_answers"]["answers"]
