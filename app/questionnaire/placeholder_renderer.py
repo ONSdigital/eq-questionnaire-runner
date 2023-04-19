@@ -200,22 +200,23 @@ class PlaceholderRenderer:
         dynamic_answers: dict,
     ) -> None:
         for answer in dynamic_answers["answers"]:
+            placeholder_parser = PlaceholderParser(
+                language=self._language,
+                answer_store=self._answer_store,
+                list_store=self._list_store,
+                metadata=self._metadata,
+                response_metadata=self._response_metadata,
+                schema=self._schema,
+                list_item_id=answer["list_item_id"],
+                location=self._location,
+                renderer=self,
+                placeholder_preview_mode=self._placeholder_preview_mode,
+                progress_store=self._progress_store,
+            )
+
             pointers = find_pointers_containing(answer, "placeholders")
 
             for pointer in pointers:
-                placeholder_parser = PlaceholderParser(
-                    language=self._language,
-                    answer_store=self._answer_store,
-                    list_store=self._list_store,
-                    metadata=self._metadata,
-                    response_metadata=self._response_metadata,
-                    schema=self._schema,
-                    list_item_id=answer["list_item_id"],
-                    location=self._location,
-                    renderer=self,
-                    placeholder_preview_mode=self._placeholder_preview_mode,
-                    progress_store=self._progress_store,
-                )
                 rendered_text = self.render_pointer(
                     dict_to_render=answer,
                     pointer_to_render=pointer,
