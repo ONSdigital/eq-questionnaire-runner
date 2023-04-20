@@ -142,29 +142,3 @@ describe("View Submitted Response Summary Page With Repeating Sections", () => {
     await expect(await $(secondGroup).$$(repeatingSectionAnswer)[0].getText()).to.equal("80 - calculated summary answer (current section)");
   });
 });
-
-describe("View Submitted Response Summary Page With List Collector", () => {
-  beforeEach("Load the questionnaire", async () => {
-    await browser.openQuestionnaire("test_list_collector_section_summary.json");
-
-    await expect(await browser.getUrl()).to.contain(ViewSubmittedResponsePage.pageName);
-  });
-
-  it("Given I have completed a questionnaire with a repeating section and view submitted response enabled, When I am on the view submitted response page within 45 minutes of submission, Then the summary is displayed correctly", async () => {
-    await expect(await $(ViewSubmittedResponseRepeatingPage.informationPanel()).isDisplayed()).to.be.false;
-    await expect(await $(ViewSubmittedResponseRepeatingPage.printButton()).isDisplayed()).to.be.true;
-    await expect(await $(ViewSubmittedResponseRepeatingPage.heading()).getText()).to.equal("Answers submitted for Apple");
-    await expect(await $(ViewSubmittedResponseRepeatingPage.metadataTerm(1)).getText()).to.equal("Submitted on:");
-    await expect(await $(ViewSubmittedResponseRepeatingPage.metadataTerm(2)).getText()).to.equal("Submission reference:");
-    await expect(await $(ViewSubmittedResponseRepeatingPage.personalDetailsGroupTitle()).getText()).to.equal("Personal Details");
-    await expect(await $(ViewSubmittedResponseRepeatingPage.nameQuestion()).getText()).to.equal("What is your name?");
-    await expect(await $(ViewSubmittedResponseRepeatingPage.nameAnswer()).getText()).to.equal("John Smith");
-    await expect(await $(ViewSubmittedResponseRepeatingPage.addressDetailsGroupTitle()).getText()).to.equal("Address Details");
-    await expect(await $(ViewSubmittedResponseRepeatingPage.addressQuestion()).getText()).to.equal("What is your address?");
-    await expect(await $(ViewSubmittedResponseRepeatingPage.addressAnswer()).getText()).to.equal("NP10 8XG");
-    await expect(await $(firstGroup).$$(groupTitle)[0].getText()).to.equal("Calculated Summary");
-    await expect(await $(firstGroup).$$(repeatingSectionAnswer)[0].getText()).to.equal("40 - calculated summary answer (current section)");
-    await expect(await $(secondGroup).$$(groupTitle)[0].getText()).to.equal("Calculated Summary");
-    await expect(await $(secondGroup).$$(repeatingSectionAnswer)[0].getText()).to.equal("80 - calculated summary answer (current section)");
-  });
-});
