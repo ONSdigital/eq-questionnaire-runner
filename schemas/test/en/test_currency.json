@@ -172,7 +172,7 @@
                                         "type": "Currency",
                                         "currency": "GBP",
                                         "minimum": {
-                                            "value": -999999999999
+                                            "value": -99999999999999
                                         }
                                     }
                                 ],
