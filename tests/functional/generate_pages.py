@@ -476,7 +476,7 @@ def process_question(question, page_spec, num_questions, page_name):
         question_or_answer_id = (
             question["id"]
             if question["type"] in ["DateRange", "MutuallyExclusive"]
-            else question["answers"][0]["id"]
+            else question.get("answers", [])[0].get("id", None)
         )
     except IndexError:
         question_or_answer_id = None

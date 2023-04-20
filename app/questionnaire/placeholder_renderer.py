@@ -171,11 +171,9 @@ class PlaceholderRenderer:
                 updated_value = {
                     "answers": dynamic_answers["answers"] + data.get("answers", [])
                 }
-                if pointer:
-                    set_pointer(data_to_render_mutable, pointer, updated_value)
-                else:
-                    data_to_render_mutable.update(updated_value)
-                    del data_to_render_mutable["dynamic_answers"]["answers"]
+
+                data_to_render_mutable |= updated_value
+                del data_to_render_mutable["dynamic_answers"]["answers"]
 
     def resolve_dynamic_answers_ids(
         self,

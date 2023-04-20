@@ -160,12 +160,11 @@ def resolve_dynamic_answers(
     list_store: ListStore,
 ) -> None:
     dynamic_answers = block["dynamic_answers"]
+    values = dynamic_answers["values"]
     for answer in dynamic_answers["answers"]:
-        values = dynamic_answers["values"]
         if values["source"] == "list":
             for list_item_id in list_store[values["identifier"]].items:
-                extracted_answer = answer_store.get_answer(
+                if extracted_answer := answer_store.get_answer(
                     answer["id"], list_item_id=list_item_id
-                )
-                answers_payload.add_or_update(extracted_answer)  # type: ignore
-                # Type Ignore: answer store's get_answer return is optional but at this point it always returns an Answer
+                ):
+                    answers_payload.add_or_update(extracted_answer)
