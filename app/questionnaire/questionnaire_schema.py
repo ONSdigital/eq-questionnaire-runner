@@ -11,7 +11,7 @@ from app.data_models.answer import Answer
 from app.forms import error_messages
 from app.questionnaire.rules.operator import OPERATION_MAPPING
 from app.utilities.make_immutable import make_immutable
-from app.utilities.mappings import get_mappings_with_key
+from app.utilities.mappings import get_flattened_mapping_values, get_mappings_with_key
 
 DEFAULT_LANGUAGE_CODE = "en"
 
@@ -204,9 +204,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 section_id, {}
             )
         )
-        section_ids: set = {
-            value for values in block_dependencies.values() for value in values
-        }
+
+        section_ids = get_flattened_mapping_values(block_dependencies)
 
         return all_section_dependencies.union(section_ids)
 
@@ -929,10 +928,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _get_section_and_block_ids_dependencies_for_progress_source_and_answer_ids_from_rule(
         self, current_section_id: str, rule: Mapping
-    ) -> tuple[set[str], dict[str, dict[str, dict[str, set[str]]]]]:
+    ) -> tuple[set[str], dict[str, dict[str, set[str] | dict[str, set[str]]]]]:
         answer_id_list: set[str] = set()
         dependencies_ids_for_progress_value_source: dict[
-            str, dict[str, dict[str, set[str]]]
+            str, dict[str, set[str] | dict[str, set[str]]]
         ] = {
             "sections": {},
             "blocks": {},
@@ -955,9 +954,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 if identifier != current_section_id:
                     dependencies_ids_for_progress_value_source["sections"][
                         identifier
-                    ] = {
-                        current_section_id
-                    }  # type: ignore
+                    ] = {current_section_id}
             elif selector == "block" and (
                 section_id := self.get_section_id_for_block_id(identifier)
             ):
@@ -999,6 +996,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 dependencies_for_progress_value_source["blocks"]
             )
 
+            # Type Ignore: Added to this method as the block will exist at this point
             for answer_id in answer_id_list:
                 block = self.get_block_for_answer_id(answer_id)  # type: ignore
                 section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
