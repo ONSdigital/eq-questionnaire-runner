@@ -104,6 +104,7 @@ def test_context_for_summary():
         progress_store=progress_store,
         metadata=None,
         response_metadata={},
+        view_submitted_response=False,
     )
     context = summary_context()
     expected = {
@@ -397,6 +398,7 @@ def test_context_for_summary():
             },
         ],
         "summary_type": "Summary",
+        "view_submitted_response": False,
     }
 
     assert context == expected

@@ -1,14 +1,39 @@
-from typing import Any, Generator, Optional, Union
+from typing import Any, Generator, Mapping, Optional, Union
 
 from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire.location import Location
 
+from ...data_models import AnswerStore, ListStore, ProgressStore
+from ...data_models.metadata_proxy import MetadataProxy
+from ...questionnaire import QuestionnaireSchema
 from .context import Context
 from .section_summary_context import SectionSummaryContext
 
 
 class SummaryContext(Context):
+    def __init__(
+        self,
+        language: str,
+        schema: QuestionnaireSchema,
+        answer_store: AnswerStore,
+        list_store: ListStore,
+        progress_store: ProgressStore,
+        metadata: Optional[MetadataProxy],
+        response_metadata: Mapping,
+        view_submitted_response: bool,
+    ) -> None:
+        super().__init__(
+            language,
+            schema,
+            answer_store,
+            list_store,
+            progress_store,
+            metadata,
+            response_metadata,
+        )
+        self.view_submitted_response = view_submitted_response
+
     def __call__(
         self, answers_are_editable: bool = False, return_to: Optional[str] = None
     ) -> dict[str, Union[str, list, bool]]:
@@ -23,6 +48,7 @@ class SummaryContext(Context):
             "answers_are_editable": answers_are_editable,
             "collapsible": collapsible,
             "summary_type": "Summary",
+            "view_submitted_response": self.view_submitted_response,
         }
 
     def _build_all_groups(
@@ -57,6 +83,7 @@ class SummaryContext(Context):
                             return_to=return_to,
                             get_refactored_groups=False,
                             summary_type="Summary",
+                            view_submitted_response=self.view_submitted_response,
                         ).get("groups", [])
             else:
                 location = Location(section_id=section_id, list_item_id=None)
@@ -76,6 +103,7 @@ class SummaryContext(Context):
                     return_to=return_to,
                     get_refactored_groups=False,
                     summary_type="Summary",
+                    view_submitted_response=self.view_submitted_response,
                 ).get("groups", [])
 
 

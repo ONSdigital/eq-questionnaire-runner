@@ -794,11 +794,7 @@ def test_summary_item_config_with_list_collector():
                         {
                             "ariaLabel": "Remove Company A",
                             "attributes": {"data-qa": "list-item-remove-1-link"},
-                            "text": {
-                                "_args": ["Remove"],
-                                "_func": {},
-                                "_kwargs": {},
-                            },
+                            "text": "Remove",
                             "url": "remove_link_url",
                         },
                     ],
@@ -927,6 +923,8 @@ def test_summary_item_config_with_list_collector():
         summary_type="SectionSummary",
         answers_are_editable=True,
         no_answer_provided="No answer Provided",
+        remove_link_aria_label="Remove Company A",
+        remove_link_text="Remove",
         edit_link_text="Change",
         edit_link_aria_label="Change your answer for:",
         calculated_question={},

@@ -4,6 +4,8 @@
   {% from "components/summary/_macro.njk" import onsSummary %}
 
   {% set summaryGroups = [] %}
+  {% set summaryType = content.summary.summary_type %}
+  {% set viewSubmittedResponse = content.summary.view_submitted_response %}
 
   {%- for group in content.summary.groups if group.blocks -%}
     {% do summaryGroups.append
@@ -15,11 +17,13 @@
               "id": group.id if group.id else None,
               "rows": map_summary_item_config(
                 group=group,
-                summary_type=content.summary.summary_type,
+                summary_type=summaryType,
                 answers_are_editable=content.summary.answers_are_editable,
                 no_answer_provided=_("No answer provided"),
-                edit_link_text=_("Change"),
-                edit_link_aria_label=_("Change your answer for:"),
+                remove_link_text=_("Remove") if not viewSubmittedResponse else "",
+                remove_link_aria_label=_("Remove your answer for:") if not viewSubmittedResponse else "",
+                edit_link_text=_("Change") if not viewSubmittedResponse else "",
+                edit_link_aria_label=_("Change your answer for:") if not viewSubmittedResponse else "",
                 calculated_question=content.summary.calculated_question,
                 icon=None
               ),

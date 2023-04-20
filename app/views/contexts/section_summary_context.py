@@ -96,6 +96,7 @@ class SectionSummaryContext(Context):
         return_to: Optional[str],
         get_refactored_groups: bool = True,
         summary_type: str = "SectionSummary",
+        view_submitted_response: bool = False,
     ) -> dict[str, Any]:
         """
         Build a summary context for a particular location.
@@ -141,6 +142,7 @@ class SectionSummaryContext(Context):
                     return_to=return_to,
                     return_to_block_id=None,
                     summary_type=summary_type,
+                    view_submitted_response=view_submitted_response,
                 ).serialize()
                 for group in refactored_groups
             ],
