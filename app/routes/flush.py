@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Iterable
+from typing import Iterable, TypeAlias
 
 from flask import Blueprint, Response, current_app, request, session
 from sdc.crypto.decrypter import decrypt
@@ -29,7 +29,7 @@ flush_blueprint = Blueprint("flush", __name__)
 
 logger = get_logger()
 
-Submitter = GCSSubmitter | LogSubmitter | RabbitMQSubmitter
+Submitter: TypeAlias = GCSSubmitter | LogSubmitter | RabbitMQSubmitter
 
 
 @flush_blueprint.route("/flush", methods=["POST"])
