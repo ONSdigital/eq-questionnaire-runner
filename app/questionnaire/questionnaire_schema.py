@@ -268,6 +268,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
                         self._dynamic_answer_ids.add(answer["id"])
 
+                        self._update_answer_dependencies_for_answer(
+                            answer, block_id=block["id"]
+                        )
+
                 for answer in question.get("answers", []):
                     self._update_answer_dependencies_for_answer(
                         answer, block_id=block["id"]
