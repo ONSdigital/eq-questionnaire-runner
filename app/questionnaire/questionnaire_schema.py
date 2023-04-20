@@ -910,35 +910,22 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             str, dict[str, set[str]]
         ],
     ) -> None:
-        for dependent_section in rule_block_dependencies_for_progress_value_source:
-            if (
-                dependent_section
-                in self._when_rules_block_dependencies_by_section_for_progress_value_source
-            ):
-                for block_id in rule_block_dependencies_for_progress_value_source[
-                    dependent_section
-                ]:
-                    if (
-                        block_id
-                        in self._when_rules_block_dependencies_by_section_for_progress_value_source[
-                            dependent_section
-                        ]
-                    ):
-                        self._when_rules_block_dependencies_by_section_for_progress_value_source[
-                            dependent_section
-                        ][
-                            block_id
-                        ].add(
-                            *rule_block_dependencies_for_progress_value_source[
-                                dependent_section
-                            ][block_id]
-                        )
+        dependencies = (
+            self._when_rules_block_dependencies_by_section_for_progress_value_source
+        )
+
+        for (
+            dependent_section,
+            section_dependencies_by_block,
+        ) in rule_block_dependencies_for_progress_value_source.items():
+            if dependent_section in dependencies:
+                for block_id, section_ids in section_dependencies_by_block.items():
+                    if block_id in dependencies[dependent_section]:
+                        dependencies[dependent_section][block_id].add(*section_ids)
             else:
-                self._when_rules_block_dependencies_by_section_for_progress_value_source[
+                dependencies[
                     dependent_section
-                ] = rule_block_dependencies_for_progress_value_source[
-                    dependent_section
-                ]
+                ] = rule_block_dependencies_for_progress_value_source[dependent_section]
 
     def _get_section_and_block_ids_dependencies_for_progress_source_and_answer_ids_from_rule(
         self, current_section_id: str, rule: Mapping
