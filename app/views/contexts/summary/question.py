@@ -37,7 +37,7 @@ class Question:
         self.id = question_schema["id"]
         self.type = question_schema["type"]
         self.schema = schema
-        self.answer_schemas = iter(question_schema["answers"])
+        self.answer_schemas = iter(question_schema.get("answers", []))
         if dynamic_answers := question_schema.get("dynamic_answers"):
             self.dynamic_answer_schemas = iter(dynamic_answers.get("answers", {}))
             self.dynamic_answer_identifier = dynamic_answers.get("values")["identifier"]
@@ -66,10 +66,10 @@ class Question:
         )
 
     def get_answer(
-        self, answer_store: AnswerStore, answer_id: str
+        self, answer_store: AnswerStore, answer_id: str, list_item_id: str | None = None
     ) -> Optional[AnswerValueEscapedTypes]:
         answer = answer_store.get_answer(
-            answer_id, self.list_item_id
+            answer_id, list_item_id or self.list_item_id
         ) or self.schema.get_default_answer(answer_id)
 
         return escape_answer_value(answer.value) if answer else None
@@ -109,57 +109,26 @@ class Question:
 
         summary_answers = []
 
-        if self.dynamic_answer_schemas:
-            for answer_schema in self.dynamic_answer_schemas:
-                for list_item_id in self.list_store.get(
-                    self.dynamic_answer_identifier
-                ).items:
-                    placeholder_renderer = PlaceholderRenderer(
-                        answer_store=self.answer_store,
-                        list_store=self.list_store,
-                        progress_store=self.progress_store,
-                        schema=self.schema,
-                        language="en",
-                        metadata=None,
-                        response_metadata={},
-                    )
-                    self.list_item_id = list_item_id
-                    dynamic_answer_value: Optional[
-                        AnswerValueEscapedTypes
-                    ] = self.get_answer(answer_store, answer_schema["id"])
-                    answer = self._build_answer(
-                        answer_store,
-                        question_schema,
-                        answer_schema,
-                        dynamic_answer_value,
-                    )
+        placeholder_renderer = PlaceholderRenderer(
+            answer_store=self.answer_store,
+            list_store=self.list_store,
+            progress_store=self.progress_store,
+            schema=self.schema,
+            # :TODO: These should be passed in, not set manually.
+            language="en",
+            metadata=None,
+            response_metadata={},
+        )
 
-                    resolved_answer_schema = self.schema.get_mutable_deepcopy(
-                        answer_schema
-                    )
-                    resolved_answer_schema["id"] = (
-                        answer_schema["id"] + f"-{self.list_item_id}"
-                    )
-                    rendered_schema = placeholder_renderer.render(
-                        data_to_render=resolved_answer_schema,
-                        list_item_id=self.list_item_id,
-                    )
-
-                    summary_answer = Answer(
-                        answer_schema=rendered_schema,
-                        answer_value=answer,
-                        block_id=block_id,
-                        list_name=list_name,
-                        list_item_id=self.list_item_id,
-                        return_to=return_to,
-                        return_to_block_id=return_to_block_id,
-                    ).serialize()
-                    summary_answers.append(summary_answer)
-
-        for answer_schema in self.answer_schemas:
-            if self.dynamic_answer_schemas:
-                self.list_item_id = None
-            answer_value = self.get_answer(answer_store, answer_schema["id"])
+        resolved_question = placeholder_renderer.render(
+            data_to_render=question_schema, list_item_id=self.list_item_id
+        )
+        for answer_schema in resolved_question["answers"]:
+            list_item_id = answer_schema.get("list_item_id")
+            answer_id = answer_schema.get("original_answer_id") or answer_schema["id"]
+            answer_value = self.get_answer(
+                answer_store, answer_id, list_item_id=list_item_id
+            )
             answer = self._build_answer(
                 answer_store, question_schema, answer_schema, answer_value
             )
@@ -169,7 +138,7 @@ class Question:
                 answer_value=answer,
                 block_id=block_id,
                 list_name=list_name,
-                list_item_id=self.list_item_id,
+                list_item_id=list_item_id or self.list_item_id,
                 return_to=return_to,
                 return_to_block_id=return_to_block_id,
             ).serialize()

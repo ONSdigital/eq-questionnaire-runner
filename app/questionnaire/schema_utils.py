@@ -22,10 +22,16 @@ def find_pointers_containing(input_data, search_key, pointer=None):
             yield from find_pointers_containing(item, search_key, f"{pointer}/{index}")
 
 
+def get_answers_from_question(question):
+    static_answers = question.get("answers", [])
+    dynamic_answers = question.get("dynamic_answers", {}).get("answers", [])
+    return [*dynamic_answers, *static_answers]
+
+
 def get_answer_ids_in_block(block):
     question = block["question"]
     answer_ids = []
-    for answer in question["answers"]:
+    for answer in get_answers_from_question(question):
         answer_ids.append(answer["id"])
 
     return answer_ids

@@ -2,6 +2,7 @@ from typing import Any
 
 from app.forms.questionnaire_form import QuestionnaireForm
 from app.questionnaire import QuestionSchemaType
+from app.questionnaire.schema_utils import get_answers_from_question
 
 
 def build_question_context(
