@@ -179,6 +179,20 @@
                                             "label": "Supermarket",
                                             "mandatory": true,
                                             "type": "TextField"
+                                        },
+                                        {
+                                            "id": "set-maximum",
+                                            "description": "This is a description of the maximum value",
+                                            "label": "Maximum Value",
+                                            "mandatory": true,
+                                            "type": "Number",
+                                            "decimal_places": 2,
+                                            "minimum": {
+                                                "value": 1001
+                                            },
+                                            "maximum": {
+                                                "value": 10000
+                                            }
                                         }
                                     ]
                                 }
