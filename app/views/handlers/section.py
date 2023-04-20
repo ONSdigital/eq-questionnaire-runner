@@ -1,4 +1,4 @@
-from typing import Any, Mapping
+from typing import Mapping
 
 from app.data_models import QuestionnaireStore
 from app.questionnaire import QuestionnaireSchema
@@ -42,7 +42,7 @@ class SectionHandler:
             section_id=self._section_id, list_item_id=self._list_item_id
         )
 
-    def get_context(self) -> Mapping[str, Any]:
+    def get_context(self) -> Mapping:
         section_summary_context = SectionSummaryContext(
             self._language,
             self._schema,

@@ -95,7 +95,7 @@ def convert_answers_v2(
 
 
 def get_optional_payload_properties(
-    metadata: MetadataProxy, response_metadata: MutableMapping[str, Any]
+    metadata: MetadataProxy, response_metadata: MutableMapping
 ) -> MetadataType:
     payload = {}
 

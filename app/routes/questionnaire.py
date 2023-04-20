@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Mapping
+from typing import Mapping
 
 import flask_babel
 from flask import Blueprint, g, redirect, request, send_file
@@ -689,7 +689,7 @@ def get_feedback_sent(session_store: SessionStore) -> str:
 
 def _render_page(
     template: str,
-    context: Mapping[str, Any],
+    context: Mapping,
     previous_location_url: str,
     schema: QuestionnaireSchema,
     page_title: str,

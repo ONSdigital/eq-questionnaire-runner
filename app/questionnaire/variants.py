@@ -1,4 +1,4 @@
-from typing import Any, MutableMapping
+from typing import MutableMapping
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -88,7 +88,7 @@ def transform_variants(
     block,
     schema,
     metadata,
-    response_metadata: MutableMapping[str, Any],
+    response_metadata: MutableMapping,
     answer_store,
     list_store,
     current_location,

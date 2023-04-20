@@ -17,7 +17,7 @@ class Block:
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: Optional[MetadataProxy],
-        response_metadata: MutableMapping[str, Any],
+        response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         location: Location,
         return_to: Optional[str],

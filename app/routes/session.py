@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Any, Iterable, Mapping, MutableMapping
+from typing import Any, Iterable, Mapping
 
 from flask import Blueprint, g, jsonify, redirect, request
 from flask import session as cookie_session
@@ -203,7 +203,7 @@ def get_signed_out() -> Response | str:
     )
 
 
-def get_runner_claims(decrypted_token: Mapping[str, Any]) -> MutableMapping[str, Any]:
+def get_runner_claims(decrypted_token: Mapping[str, Any]) -> dict:
     try:
         if version := decrypted_token.get("version"):
             if version == AuthPayloadVersion.V2.value:
@@ -217,8 +217,8 @@ def get_runner_claims(decrypted_token: Mapping[str, Any]) -> MutableMapping[str,
 
 
 def get_questionnaire_claims(
-    decrypted_token: Mapping[str, Any], schema_metadata: Iterable[Mapping[str, str]]
-) -> MutableMapping[str, Any]:
+    decrypted_token: Mapping, schema_metadata: Iterable[Mapping[str, str]]
+) -> dict:
     try:
         if decrypted_token.get("version") == AuthPayloadVersion.V2.value:
             claims = decrypted_token.get("survey_metadata", {}).get("data", {})

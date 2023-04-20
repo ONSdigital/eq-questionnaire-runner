@@ -132,7 +132,7 @@ def _create_session_data_from_metadata(metadata: Mapping[str, Any]) -> SessionDa
     )
 
 
-def store_session(metadata: MutableMapping[str, Any]) -> None:
+def store_session(metadata: MutableMapping) -> None:
     """
     Store new session and metadata
     :param metadata: metadata parsed from jwt token

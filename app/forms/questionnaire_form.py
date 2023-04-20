@@ -47,10 +47,10 @@ class QuestionnaireForm(FlaskForm):
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: Optional[MetadataProxy],
-        response_metadata: MutableMapping[str, Any],
+        response_metadata: MutableMapping,
         location: Union[None, Location, RelationshipLocation],
         progress_store: ProgressStore,
-        **kwargs: Union[MultiDict[str, Any], Mapping[str, Any], None],
+        **kwargs: Union[MultiDict, Mapping, None],
     ):
         self.schema = schema
         self.question = question_schema
@@ -455,7 +455,7 @@ def get_answer_fields(
     answer_store: AnswerStore,
     list_store: ListStore,
     metadata: MetadataProxy | None,
-    response_metadata: MutableMapping[str, Any],
+    response_metadata: MutableMapping,
     location: Location | RelationshipLocation | None,
     progress_store: ProgressStore,
 ) -> dict[str, FieldHandler]:
@@ -598,7 +598,7 @@ def generate_form(
     answer_store: AnswerStore,
     list_store: ListStore,
     metadata: MetadataProxy | None,
-    response_metadata: MutableMapping[str, Any],
+    response_metadata: MutableMapping,
     progress_store: ProgressStore,
     location: Location | RelationshipLocation | None = None,
     data: dict[str, Any] | None = None,

@@ -44,7 +44,7 @@ class CalculatedSummaryContext(Context):
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: Optional[MetadataProxy],
-        response_metadata: MutableMapping[str, Any],
+        response_metadata: MutableMapping,
         routing_path: RoutingPath,
         current_location: Location,
     ) -> None:

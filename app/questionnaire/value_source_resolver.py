@@ -176,7 +176,7 @@ class ValueSourceResolver:
         raise NotImplementedError(f"Invalid calculation_type: {calculation_type}")
 
     def resolve(
-        self, value_source: Mapping[str, Any]
+        self, value_source: Mapping
     ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
         source = value_source["source"]
 

@@ -22,7 +22,7 @@ class ListCollectorBlock:
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: Optional[MetadataProxy],
-        response_metadata: MutableMapping[str, Any],
+        response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         location: Location,
         language: str,
