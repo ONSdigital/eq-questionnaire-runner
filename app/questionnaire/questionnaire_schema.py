@@ -362,12 +362,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             add_block_question = self.get_add_block_for_list_collector(  # type: ignore
                 list_collector["id"]  # type: ignore
             )["question"]
-            answer_id_for_block = list(
+            answer_ids_for_block = list(
                 self.get_answers_for_question_by_id(add_block_question)
-            )[0]
-            self._answer_dependencies_map[answer_id_for_block] |= {
-                self._get_answer_dependent_for_block_id(block_id=block_id, for_list=value_source["identifier"])  # type: ignore
-            }
+            )
+            for block_answer_id in answer_ids_for_block:
+                self._answer_dependencies_map[block_answer_id] |= {
+                    self._get_answer_dependent_for_block_id(block_id=block_id, for_list=value_source["identifier"])  # type: ignore
+                }
 
     def _get_answer_dependent_for_block_id(
         self,
