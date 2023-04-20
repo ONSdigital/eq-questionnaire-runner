@@ -230,7 +230,7 @@ class PathFinder:
         self,
         this_location: Location,
         routing_path_block_ids: list[str],
-        skip_conditions: ImmutableDict | None,
+        skip_conditions: ImmutableDict[str, dict] | None,
         when_rules_block_dependencies: list[str],
     ) -> RuleEvaluatorTypes:
         if not skip_conditions:

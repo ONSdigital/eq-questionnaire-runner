@@ -314,7 +314,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _update_answer_dependencies_for_dynamic_options(
         self,
-        dynamic_options_values: Mapping,
+        dynamic_options_values: Mapping[str, Mapping],
         *,
         block_id: str,
         answer_id: str,
