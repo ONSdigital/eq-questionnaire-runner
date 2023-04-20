@@ -1,8 +1,8 @@
-from typing import Any, Generator, Iterable, Mapping
+from typing import Generator, Iterable, Mapping
 
 
 def find_pointers_containing(
-    input_data: Mapping[str, Any] | Iterable[Mapping],
+    input_data: Mapping | Iterable[Mapping],
     search_key: str,
     pointer: str | None = None,
 ) -> Generator[str, None, None]:
@@ -29,7 +29,7 @@ def find_pointers_containing(
             yield from find_pointers_containing(item, search_key, f"{pointer}/{index}")
 
 
-def get_answer_ids_in_block(block: Mapping[str, Any]) -> list[str]:
+def get_answer_ids_in_block(block: Mapping) -> list[str]:
     question = block["question"]
     answer_ids = [answer["id"] for answer in question["answers"]]
     return answer_ids

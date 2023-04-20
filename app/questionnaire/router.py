@@ -1,4 +1,4 @@
-from typing import Any, Generator, Mapping
+from typing import Generator, Mapping
 
 from flask import url_for
 
@@ -382,7 +382,7 @@ class Router:
             if self._progress_store.is_section_complete(section_id, list_item_id):
                 return section_id, list_item_id
 
-    def _is_section_enabled(self, section: Mapping[str, Any]) -> bool:
+    def _is_section_enabled(self, section: Mapping) -> bool:
         if "enabled" not in section:
             return True
 

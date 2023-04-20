@@ -1,4 +1,4 @@
-from typing import Any, Iterable, Mapping
+from typing import Iterable, Mapping
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -77,7 +77,7 @@ class PathFinder:
         self,
         location: Location,
         routing_path_block_ids: list[str],
-        section: ImmutableDict[str, Any],
+        section: ImmutableDict,
         when_rules_block_dependencies: list[str],
     ) -> list[dict] | None:
         # :TODO: Fix group skipping in its own section. Routing path will be empty and therefore not checked
@@ -99,7 +99,7 @@ class PathFinder:
 
     @staticmethod
     def _block_index_for_block_id(
-        blocks: Iterable[Mapping[str, Any]], block_id: str
+        blocks: Iterable[Mapping], block_id: str
     ) -> int | None:
         return next(
             (index for (index, block) in enumerate(blocks) if block["id"] == block_id),
@@ -177,7 +177,7 @@ class PathFinder:
     def _evaluate_routing_rules(
         self,
         this_location: Location,
-        blocks: Iterable[Mapping[str, Any]],
+        blocks: Iterable[Mapping],
         routing_rules: Iterable[Mapping],
         block_index: int,
         routing_path_block_ids: list[str],
@@ -254,7 +254,7 @@ class PathFinder:
 
         return when_rule_evaluator.evaluate(skip_conditions["when"])
 
-    def _get_next_block_id(self, rule: Mapping[str, Any]) -> str:
+    def _get_next_block_id(self, rule: Mapping) -> str:
         if "group" in rule:
             # Type ignore: by this point the block for the rule will exist
             return self.schema.get_first_block_id_for_group(rule["group"])  # type: ignore
@@ -262,7 +262,7 @@ class PathFinder:
         return rule["block"]  # type: ignore
 
     def _remove_current_blocks_answers_for_backwards_routing(
-        self, rule: Mapping[str, Any], this_location: Location
+        self, rule: Mapping, this_location: Location
     ) -> None:
         if block_id := this_location.block_id:
             answer_ids_for_current_block = self.schema.get_answer_ids_for_block(
@@ -279,7 +279,7 @@ class PathFinder:
             )
 
     def _remove_block_answers_for_backward_routing_according_to_when_rule(
-        self, rules: Mapping[str, Any], answer_ids_for_current_block: list[str]
+        self, rules: Mapping, answer_ids_for_current_block: list[str]
     ) -> None:
         operands = self.schema.get_operands(rules)
 

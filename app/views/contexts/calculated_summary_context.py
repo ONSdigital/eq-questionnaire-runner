@@ -153,12 +153,12 @@ class CalculatedSummaryContext(Context):
         return {"id": section_id, "groups": [{"id": group["id"], "blocks": blocks}]}
 
     def _remove_unwanted_questions_answers(
-        self, block: ImmutableDict[str, Any], answer_ids_to_keep: Iterable[str]
-    ) -> dict[str, Any]:
+        self, block: ImmutableDict, answer_ids_to_keep: Iterable[str]
+    ) -> dict:
         """
         Evaluates questions in a block and removes any questions not containing a relevant answer
         """
-        transformed_block: ImmutableDict[str, Any] = transform_variants(
+        transformed_block: ImmutableDict = transform_variants(
             block,
             self._schema,
             self._metadata,

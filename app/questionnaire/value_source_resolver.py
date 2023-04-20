@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Any, Callable, Iterable, Mapping
+from typing import Callable, Iterable, Mapping
 
 from markupsafe import Markup
 
@@ -65,7 +65,7 @@ class ValueSourceResolver:
             return answer.value
 
     def _resolve_list_item_id_for_value_source(
-        self, value_source: Mapping[str, Any]
+        self, value_source: Mapping
     ) -> str | None:
         list_item_id: str | None = None
 
@@ -95,7 +95,7 @@ class ValueSourceResolver:
         )
 
     def _resolve_answer_value_source(
-        self, value_source: Mapping[str, Any]
+        self, value_source: Mapping
     ) -> ValueSourceEscapedTypes | ValueSourceTypes:
         list_item_id = self._resolve_list_item_id_for_value_source(value_source)
         answer_id = value_source["identifier"]
@@ -116,9 +116,7 @@ class ValueSourceResolver:
 
         return answer_value
 
-    def _resolve_list_value_source(
-        self, value_source: Mapping[str, Any]
-    ) -> int | str | list:
+    def _resolve_list_value_source(self, value_source: Mapping) -> int | str | list:
         identifier = value_source["identifier"]
         list_model: ListModel = self.list_store[identifier]
 
@@ -129,13 +127,13 @@ class ValueSourceResolver:
         return list(list_model)
 
     def _resolve_calculated_summary_value_source(
-        self, value_source: Mapping[str, Any], *, assess_routing_path: bool
+        self, value_source: Mapping, *, assess_routing_path: bool
     ) -> IntOrDecimal:
         """Calculates the value for the 'calculation' used by the provided Calculated Summary.
 
         The caller is responsible for ensuring the provided Calculated Summary and its answers are on the path.
         """
-        calculated_summary_block: Mapping[str, Any] = self.schema.get_block(value_source["identifier"])  # type: ignore
+        calculated_summary_block: Mapping = self.schema.get_block(value_source["identifier"])  # type: ignore
         calculation = calculated_summary_block["calculation"]
         if calculation.get("answers_to_calculate"):
             operator = self.get_calculation_operator(calculation["calculation_type"])
@@ -173,7 +171,7 @@ class ValueSourceResolver:
         raise NotImplementedError(f"Invalid calculation_type: {calculation_type}")
 
     def resolve(
-        self, value_source: Mapping[str, Any]
+        self, value_source: Mapping
     ) -> ValueSourceEscapedTypes | ValueSourceTypes:
         source = value_source["source"]
 

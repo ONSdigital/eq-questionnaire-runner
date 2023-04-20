@@ -1,4 +1,4 @@
-from typing import Any, Mapping
+from typing import Mapping
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -14,17 +14,17 @@ from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 
 # Type ignore: validation should ensure the variant exists when this is called
 def choose_variant(  # type: ignore
-    block: Mapping[str, Any],
+    block: Mapping,
     schema: QuestionnaireSchema,
     metadata: MetadataProxy | None,
-    response_metadata: Mapping[str, Any],
+    response_metadata: Mapping,
     answer_store: AnswerStore,
     list_store: ListStore,
     variants_key: str,
     single_key: str,
     current_location: Location | RelationshipLocation,
     progress_store: ProgressStore,
-) -> dict[str, Any]:
+) -> dict:
     if block.get(single_key):
         # Type ignore: the key passed in will be for a dictionary
         return block[single_key]  # type: ignore
@@ -47,15 +47,15 @@ def choose_variant(  # type: ignore
 
 
 def choose_question_to_display(
-    block: ImmutableDict[str, Any],
+    block: ImmutableDict,
     schema: QuestionnaireSchema,
     metadata: MetadataProxy | None,
-    response_metadata: Mapping[str, Any],
+    response_metadata: Mapping,
     answer_store: AnswerStore,
     list_store: ListStore,
     current_location: Location | RelationshipLocation,
     progress_store: ProgressStore,
-) -> dict[str, Any]:
+) -> dict:
     return choose_variant(
         block,
         schema,
@@ -71,15 +71,15 @@ def choose_question_to_display(
 
 
 def choose_content_to_display(
-    block: ImmutableDict[str, Any],
+    block: ImmutableDict,
     schema: QuestionnaireSchema,
     metadata: MetadataProxy | None,
-    response_metadata: Mapping[str, Any],
+    response_metadata: Mapping,
     answer_store: AnswerStore,
     list_store: ListStore,
     current_location: Location | RelationshipLocation,
     progress_store: ProgressStore,
-) -> dict[str, Any]:
+) -> dict:
     return choose_variant(
         block,
         schema,
@@ -95,15 +95,15 @@ def choose_content_to_display(
 
 
 def transform_variants(
-    block: ImmutableDict[str, Any],
+    block: ImmutableDict,
     schema: QuestionnaireSchema,
     metadata: MetadataProxy | None,
-    response_metadata: Mapping[str, Any],
+    response_metadata: Mapping,
     answer_store: AnswerStore,
     list_store: ListStore,
     current_location: Location | RelationshipLocation,
     progress_store: ProgressStore,
-) -> ImmutableDict[str, Any]:
+) -> ImmutableDict:
     output_block = dict(block)
     if "question_variants" in block:
         question = choose_question_to_display(

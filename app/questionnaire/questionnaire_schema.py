@@ -24,7 +24,7 @@ LIST_COLLECTOR_CHILDREN = [
 
 RELATIONSHIP_CHILDREN = ["UnrelatedQuestion"]
 
-QuestionSchemaType = Mapping[str, Any]
+QuestionSchemaType = Mapping
 
 
 class InvalidSchemaConfigurationException(Exception):
@@ -143,13 +143,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return deepcopy(data)
 
     @cached_property
-    def _flow(self) -> ImmutableDict[str, Any]:
-        questionnaire_flow: ImmutableDict[str, Any] = self.json["questionnaire_flow"]
+    def _flow(self) -> ImmutableDict:
+        questionnaire_flow: ImmutableDict = self.json["questionnaire_flow"]
         return questionnaire_flow
 
     @cached_property
-    def flow_options(self) -> ImmutableDict[str, Any]:
-        options: ImmutableDict[str, Any] = self._flow["options"]
+    def flow_options(self) -> ImmutableDict:
+        options: ImmutableDict = self._flow["options"]
         return options
 
     @cached_property
@@ -166,7 +166,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         is_enabled: bool = schema.get("view_response", False)
         return is_enabled
 
-    def _get_sections_by_id(self) -> dict[str, ImmutableDict[str, Any]]:
+    def _get_sections_by_id(self) -> dict[str, ImmutableDict]:
         return {
             section["id"]: section
             for section in self.json.get("sections", ImmutableDict({}))
@@ -278,7 +278,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             }
 
     def _update_answer_dependencies_for_calculations(
-        self, calculations: tuple[ImmutableDict[str, Any], ...], *, block_id: str
+        self, calculations: tuple[ImmutableDict, ...], *, block_id: str
     ) -> None:
         for calculation in calculations:
             if source_answer_id := calculation.get("answer_id"):
@@ -297,7 +297,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 )
 
     def _update_answer_dependencies_for_answer(
-        self, answer: Mapping[str, Any], *, block_id: str
+        self, answer: Mapping, *, block_id: str
     ) -> None:
         for key in ["minimum", "maximum"]:
             value = answer.get(key, {}).get("value")
@@ -314,7 +314,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _update_answer_dependencies_for_dynamic_options(
         self,
-        dynamic_options_values: Mapping[str, Any],
+        dynamic_options_values: Mapping,
         *,
         block_id: str,
         answer_id: str,
@@ -327,7 +327,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _update_answer_dependencies_for_value_source(
         self,
-        value_source: Mapping[str, Any],
+        value_source: Mapping,
         *,
         block_id: str,
         answer_id: str | None = None,
@@ -361,7 +361,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             answer_id=answer_id,
         )
 
-    def _get_flattened_questions(self) -> list[ImmutableDict[str, Any]]:
+    def _get_flattened_questions(self) -> list[ImmutableDict]:
         return [
             question
             for questions in self._questions_by_id.values()
@@ -371,13 +371,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_section_ids_required_for_hub(self) -> tuple[str, ...]:
         return self.flow_options.get("required_completed_sections", tuple())
 
-    def get_summary_options(self) -> ImmutableDict[str, Any]:
+    def get_summary_options(self) -> ImmutableDict[str, bool]:
         return self.flow_options.get("summary", ImmutableDict({}))
 
     def get_sections(self) -> Iterable[ImmutableDict]:
         return self._sections_by_id.values()
 
-    def get_section(self, section_id: str) -> ImmutableDict[str, Any] | None:
+    def get_section(self, section_id: str) -> ImmutableDict | None:
         return self._sections_by_id.get(section_id)
 
     def get_section_ids_dependent_on_list(self, list_name: str) -> list[str]:
@@ -388,14 +388,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             self._list_name_to_section_map[list_name] = section_ids
             return section_ids
 
-    def get_submission(self) -> ImmutableDict[str, Any]:
-        schema: ImmutableDict[str, Any] = self.json.get("submission", ImmutableDict({}))
+    def get_submission(self) -> ImmutableDict:
+        schema: ImmutableDict = self.json.get("submission", ImmutableDict({}))
         return schema
 
-    def get_post_submission(self) -> ImmutableDict[str, Any]:
-        schema: ImmutableDict[str, Any] = self.json.get(
-            "post_submission", ImmutableDict({})
-        )
+    def get_post_submission(self) -> ImmutableDict:
+        schema: ImmutableDict = self.json.get("post_submission", ImmutableDict({}))
         return schema
 
     def _is_list_name_in_rule(
@@ -422,7 +420,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return False
 
     @staticmethod
-    def get_operands(rules: Mapping[str, Any]) -> Sequence:
+    def get_operands(rules: Mapping) -> Sequence:
         operator = next(iter(rules))
         operands: Sequence[Any] = rules[operator]
         return operands
@@ -434,20 +432,20 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             ignore_keys = ["question_variants", "content_variants"]
             when_rules = self.get_values_for_key(section, "when", ignore_keys)
 
-            rule: Mapping[str, Any] = next(when_rules, {})
+            rule: Mapping = next(when_rules, {})
             if self._is_list_name_in_rule(rule, list_name):
                 section_ids.append(section["id"])
         return section_ids
 
     @staticmethod
     def get_blocks_for_section(
-        section: Mapping[str, Any],
+        section: Mapping,
     ) -> Generator[ImmutableDict, None, None]:
         return (block for group in section["groups"] for block in group["blocks"])
 
     @classmethod
     def get_driving_question_for_list(
-        cls, section: Mapping[str, Any], list_name: str
+        cls, section: Mapping, list_name: str
     ) -> ImmutableDict | None:
         for block in cls.get_blocks_for_section(section):
             if (
@@ -562,7 +560,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_blocks(self) -> Iterable[ImmutableDict]:
         return self._blocks_by_id.values()
 
-    def get_block(self, block_id: str) -> ImmutableDict[str, Any] | None:
+    def get_block(self, block_id: str) -> ImmutableDict | None:
         return self._blocks_by_id.get(block_id)
 
     def is_block_valid(self, block_id: str) -> bool:
@@ -636,7 +634,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @staticmethod
     def get_list_collectors_for_list(
-        section: Mapping[str, Any], for_list: str, primary: bool = False
+        section: Mapping, for_list: str, primary: bool = False
     ) -> Generator[ImmutableDict, None, None]:
         collector_type = "PrimaryPersonListCollector" if primary else "ListCollector"
 
@@ -648,7 +646,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @staticmethod
     def get_list_collector_for_list(
-        section: Mapping[str, Any], for_list: str, primary: bool = False
+        section: Mapping, for_list: str, primary: bool = False
     ) -> ImmutableDict | None:
         try:
             return next(
@@ -662,8 +660,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     @classmethod
     def get_answers_for_question_by_id(
         cls, question: QuestionSchemaType
-    ) -> dict[str, dict[str, Any]]:
-        answers: dict[str, dict[str, Any]] = {}
+    ) -> dict[str, dict]:
+        answers: dict[str, dict] = {}
 
         for answer in question.get("answers", {}):
             answers[answer["id"]] = answer
@@ -741,7 +739,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return placeholder_string
 
     @staticmethod
-    def get_all_questions_for_block(block: Mapping[str, Any]) -> list[ImmutableDict]:
+    def get_all_questions_for_block(block: Mapping) -> list[ImmutableDict]:
         all_questions: list[ImmutableDict] = []
         if block:
             if block.get("question"):
@@ -776,7 +774,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ]
 
     @staticmethod
-    def has_address_lookup_answer(question: Mapping[str, Any]) -> bool:
+    def has_address_lookup_answer(question: Mapping) -> bool:
         return any(
             answer
             for answer in question["answers"]
@@ -790,7 +788,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         )
 
     def get_values_for_key(
-        self, block: Mapping[str, Any], key: str, ignore_keys: list[str] | None = None
+        self, block: Mapping, key: str, ignore_keys: list[str] | None = None
     ) -> Generator:
         ignore_keys = ignore_keys or []
         for k, v in block.items():
@@ -981,9 +979,7 @@ def get_sources_for_type_from_data(
     return [source for source in sources if source["source"] == source_type]
 
 
-def get_calculated_summary_answer_ids(
-    calculated_summary_block: Mapping[str, Any]
-) -> list[str]:
+def get_calculated_summary_answer_ids(calculated_summary_block: Mapping) -> list[str]:
     if calculated_summary_block["calculation"].get("answers_to_calculate"):
         return calculated_summary_block["calculation"]["answers_to_calculate"]  # type: ignore
 
