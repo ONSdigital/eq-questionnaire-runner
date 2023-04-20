@@ -92,7 +92,10 @@ class SectionSummaryContext(Context):
         return page_title
 
     def build_summary(
-        self, return_to: Optional[str], get_refactored_groups: bool = True
+        self,
+        return_to: Optional[str],
+        get_refactored_groups: bool = True,
+        summary_type: str = "SectionSummary",
     ) -> dict[str, Any]:
         """
         Build a summary context for a particular location.
@@ -137,6 +140,7 @@ class SectionSummaryContext(Context):
                     progress_store=self._progress_store,
                     return_to=return_to,
                     return_to_block_id=None,
+                    summary_type=summary_type,
                 ).serialize()
                 for group in refactored_groups
             ],

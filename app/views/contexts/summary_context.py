@@ -54,7 +54,9 @@ class SummaryContext(Context):
                         )
 
                         yield from section_summary_context.build_summary(
-                            return_to=return_to, get_refactored_groups=False
+                            return_to=return_to,
+                            get_refactored_groups=False,
+                            summary_type="Summary",
                         ).get("groups", [])
             else:
                 location = Location(section_id=section_id, list_item_id=None)
@@ -71,7 +73,9 @@ class SummaryContext(Context):
                 )
 
                 yield from section_summary_context.build_summary(
-                    return_to=return_to, get_refactored_groups=False
+                    return_to=return_to,
+                    get_refactored_groups=False,
+                    summary_type="Summary",
                 ).get("groups", [])
 
 

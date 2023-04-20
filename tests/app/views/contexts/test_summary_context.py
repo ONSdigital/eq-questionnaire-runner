@@ -315,7 +315,7 @@ def test_context_for_summary():
                 "id": "calculated-summary-0",
                 "links": {},
                 "placeholder_text": None,
-                "title": "James Bond",
+                "title": "Calculated Summary",
             },
             {
                 "blocks": [
@@ -393,7 +393,7 @@ def test_context_for_summary():
                 "id": "calculated-summary-1",
                 "links": {},
                 "placeholder_text": None,
-                "title": "Jane Doe",
+                "title": "Calculated Summary",
             },
         ],
         "summary_type": "Summary",
