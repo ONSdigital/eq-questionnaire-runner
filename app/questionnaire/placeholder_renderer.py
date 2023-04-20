@@ -155,7 +155,9 @@ class PlaceholderRenderer:
             set_pointer(data_to_render_mutable, pointer, rendered_text)
         return data_to_render_mutable
 
-    def _handle_and_resolve_dynamic_answers(self, data_to_render_mutable):
+    def _handle_and_resolve_dynamic_answers(
+        self, data_to_render_mutable: dict[str, Any]
+    ) -> None:
         pointers = find_pointers_containing(data_to_render_mutable, "dynamic_answers")
 
         for pointer in pointers:

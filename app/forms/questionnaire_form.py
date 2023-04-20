@@ -24,7 +24,6 @@ from app.questionnaire.dependencies import (
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
-from app.questionnaire.schema_utils import get_answers_from_question
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.mappings import get_flattened_mapping_values
 

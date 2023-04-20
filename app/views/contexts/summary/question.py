@@ -108,21 +108,24 @@ class Question:
             ]
 
         summary_answers = []
+        resolved_question = {"answers": self.answer_schemas}
 
-        placeholder_renderer = PlaceholderRenderer(
-            answer_store=self.answer_store,
-            list_store=self.list_store,
-            progress_store=self.progress_store,
-            schema=self.schema,
-            # :TODO: These should be passed in, not set manually.
-            language="en",
-            metadata=None,
-            response_metadata={},
-        )
+        if "dynamic_answers" in question_schema:
+            placeholder_renderer = PlaceholderRenderer(
+                answer_store=self.answer_store,
+                list_store=self.list_store,
+                progress_store=self.progress_store,
+                schema=self.schema,
+                # :TODO: These should be passed in, not set manually.
+                language="en",
+                metadata=None,
+                response_metadata={},
+            )
 
-        resolved_question = placeholder_renderer.render(
-            data_to_render=question_schema, list_item_id=self.list_item_id
-        )
+            resolved_question = placeholder_renderer.render(
+                data_to_render=question_schema, list_item_id=self.list_item_id
+            )
+
         for answer_schema in resolved_question["answers"]:
             list_item_id = answer_schema.get("list_item_id")
             answer_id = answer_schema.get("original_answer_id") or answer_schema["id"]

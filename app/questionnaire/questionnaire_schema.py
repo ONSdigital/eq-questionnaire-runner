@@ -74,7 +74,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._blocks_by_id = self._get_blocks_by_id()
         self._questions_by_id = self._get_questions_by_id()
         self._answers_by_id = self._get_answers_by_id()
-        self._dynamic_answer_ids = set()
+        self._dynamic_answer_ids: set[None] = set()
 
         # Post schema parsing.
         self._populate_answer_dependencies()
