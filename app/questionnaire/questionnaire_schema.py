@@ -59,10 +59,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         )
         self._when_rules_section_dependencies_by_section: dict[str, set[str]] = {}
         self._when_rules_section_dependencies_by_section_for_progress_value_source: dict[
-            str, set[str]
+            str, list[str]
         ] = {}
         self._when_rules_block_dependencies_by_section_for_progress_value_source: dict[
-            str, dict[str, set[str]]
+            str, dict[str, list[str]]
         ] = {}
         self.calculated_summary_section_dependencies_by_block: dict[
             str, dict[str, set[str]]
@@ -98,7 +98,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     @cached_property
     def when_rules_section_dependencies_by_section_for_progress_value_source(
         self,
-    ) -> ImmutableDict[str, set[str]]:
+    ) -> ImmutableDict[str, list[str]]:
         return ImmutableDict(
             self._when_rules_section_dependencies_by_section_for_progress_value_source
         )
@@ -106,7 +106,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     @cached_property
     def when_rules_block_dependencies_by_section_for_progress_value_source(
         self,
-    ) -> ImmutableDict[str, dict[str, set[str]]]:
+    ) -> ImmutableDict[str, dict[str, list[str]]]:
         return ImmutableDict(
             self._when_rules_block_dependencies_by_section_for_progress_value_source
         )
@@ -191,13 +191,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_all_when_rules_section_dependencies_for_section(
         self, section_id: str
     ) -> set[str]:
+        section_dependencies = self.when_rules_section_dependencies_by_section_for_progress_value_source.get(
+            section_id, []
+        )
+        progress_section_dependencies = set(section_dependencies)
+
         all_section_dependencies = self.when_rules_section_dependencies_by_section.get(
             section_id, set()
-        ).union(
-            self.when_rules_section_dependencies_by_section_for_progress_value_source.get(
-                section_id, set()
-            )
-        )
+        ).union(progress_section_dependencies)
 
         block_dependencies: dict = (
             self.when_rules_block_dependencies_by_section_for_progress_value_source.get(
@@ -906,7 +907,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _populate_block_dependencies_for_progress_value_source(
         self,
         rule_block_dependencies_for_progress_value_source: dict[
-            str, dict[str, set[str]]
+            str, dict[str, list[str]]
         ],
     ) -> None:
         dependencies = (
@@ -920,7 +921,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             if dependent_section in dependencies:
                 for block_id, section_ids in section_dependencies_by_block.items():
                     if block_id in dependencies[dependent_section]:
-                        dependencies[dependent_section][block_id].add(*section_ids)
+                        dependencies[dependent_section][block_id].extend(section_ids)
             else:
                 dependencies[
                     dependent_section
@@ -928,10 +929,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _get_section_and_block_ids_dependencies_for_progress_source_and_answer_ids_from_rule(
         self, current_section_id: str, rule: Mapping
-    ) -> tuple[set[str], dict[str, dict[str, set[str] | dict[str, set[str]]]]]:
+    ) -> tuple[set[str], dict[str, dict[str, list[str] | dict[str, list[str]]]]]:
         answer_id_list: set[str] = set()
         dependencies_ids_for_progress_value_source: dict[
-            str, dict[str, set[str] | dict[str, set[str]]]
+            str, dict[str, list[str] | dict[str, list[str]]]
         ] = {
             "sections": {},
             "blocks": {},
@@ -954,20 +955,22 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 if identifier != current_section_id:
                     dependencies_ids_for_progress_value_source["sections"][
                         identifier
-                    ] = {current_section_id}
+                    ] = [current_section_id]
             elif selector == "block" and (
                 section_id := self.get_section_id_for_block_id(identifier)
             ):
+                # Type ignore: The identifier key will return a list
                 if section_id != current_section_id:
                     dependencies_ids_for_progress_value_source["blocks"][section_id] = {
-                        identifier: {current_section_id}
+                        identifier: []
                     }
+                    dependencies_ids_for_progress_value_source["blocks"][section_id][identifier].append(current_section_id)  # type: ignore
 
         return answer_id_list, dependencies_ids_for_progress_value_source
 
     def _get_rules_section_dependencies(
         self, current_section_id: str, rules: Mapping | Sequence
-    ) -> tuple[set[str], dict[str, set[str]], dict[str, dict[str, set[str]]]]:
+    ) -> tuple[set[str], dict[str, list[str]], dict[str, dict[str, list[str]]]]:
         """
         Returns a set of sections ids that the current sections depends on.
         """
@@ -1014,10 +1017,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     nested_block_dependencies_for_progress_value_source,
                 ) = self._get_rules_section_dependencies(current_section_id, rule)
                 section_dependencies.update(nested_section_dependencies)
-                section_dependencies_for_progress_value_source.update(
+                section_dependencies_for_progress_value_source |= (
                     nested_section_dependencies_for_progress_value_source
                 )
-                block_dependencies_for_progress_value_source.update(
+                block_dependencies_for_progress_value_source |= (
                     nested_block_dependencies_for_progress_value_source
                 )
 
