@@ -1,4 +1,4 @@
-from typing import Any, Mapping, MutableMapping, Optional
+from typing import Any, Mapping, MutableMapping, Optional, Iterable
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -6,7 +6,6 @@ from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
-from app.questionnaire.routing_path import RoutingPath
 from app.survey_config.link import Link
 from app.views.contexts.summary.block import Block
 from app.views.contexts.summary.list_collector_block import ListCollectorBlock
@@ -17,7 +16,7 @@ class Group:
         self,
         *,
         group_schema: Mapping[str, Any],
-        routing_path: RoutingPath,
+        routing_path_block_ids: Iterable[str],
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: MetadataProxy | None,
@@ -35,9 +34,10 @@ class Group:
         self.placeholder_text = None
         self.links: dict[str, Link] = {}
 
+        # Build the links to the calculated summaries here?
         self.blocks = self._build_blocks_and_links(
             group_schema=group_schema,
-            routing_path=routing_path,
+            routing_path_block_ids=routing_path_block_ids,
             answer_store=answer_store,
             list_store=list_store,
             metadata=metadata,
@@ -66,7 +66,7 @@ class Group:
         self,
         *,
         group_schema: Mapping[str, Any],
-        routing_path: RoutingPath,
+        routing_path_block_ids: Iterable[str],
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: Optional[MetadataProxy],
@@ -81,7 +81,7 @@ class Group:
         blocks = []
 
         for block in group_schema["blocks"]:
-            if block["id"] not in routing_path:
+            if block["id"] not in routing_path_block_ids:
                 continue
             if block["type"] in [
                 "Question",
@@ -116,7 +116,7 @@ class Group:
                     list_name=block["for_list"],
                 ):
                     list_collector_block = ListCollectorBlock(
-                        routing_path=routing_path,
+                        routing_path_block_ids=routing_path_block_ids,
                         answer_store=answer_store,
                         list_store=list_store,
                         progress_store=progress_store,

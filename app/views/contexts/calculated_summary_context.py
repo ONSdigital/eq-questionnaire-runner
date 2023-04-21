@@ -34,6 +34,8 @@ from app.questionnaire.variants import choose_question_to_display, transform_var
 from app.views.contexts.context import Context
 from app.views.contexts.summary.group import Group
 
+NumericType = int | float | Decimal
+
 
 class CalculatedSummaryContext(Context):
     def __init__(
@@ -57,18 +59,20 @@ class CalculatedSummaryContext(Context):
             metadata,
             response_metadata,
         )
-        self.routing_path = routing_path
+        self.routing_path_block_ids = routing_path.block_ids
         self.current_location = current_location
 
     def build_groups_for_section(
         self,
         section: Mapping[str, Any],
         return_to_block_id: str,
+        routing_path_block_ids: Iterable[str] | None = None,
     ) -> list[Mapping[str, Group]]:
         return [
             Group(
                 group_schema=group,
-                routing_path=self.routing_path,
+                routing_path_block_ids=routing_path_block_ids
+                or self.routing_path_block_ids,  # make this nicer
                 answer_store=self._answer_store,
                 list_store=self._list_store,
                 metadata=self._metadata,
@@ -199,24 +203,37 @@ class CalculatedSummaryContext(Context):
 
         return transformed_block
 
+    def _get_evaluated_total(
+        self,
+        calculation: Callable | ImmutableDict,
+        routing_path_block_ids: Iterable[str],
+    ) -> NumericType:
+        """
+        For a calculation in the new style and the list of involved block ids (possibly across sections) evaluate the total
+        """
+        evaluate_calculated_summary = RuleEvaluator(
+            self._schema,
+            self._answer_store,
+            self._list_store,
+            self._metadata,
+            self._response_metadata,
+            routing_path_block_ids=routing_path_block_ids,  # block ids for current routing path
+            location=self.current_location,
+            progress_store=self._progress_store,
+        )
+
+        calculated_total: NumericType = evaluate_calculated_summary.evaluate(calculation)  # type: ignore
+        return calculated_total
+
     def _get_formatted_total(
         self, groups: list, calculation: Callable | ImmutableDict
     ) -> str:
         answer_format, values_to_calculate = self._get_answer_format(groups)
 
         if isinstance(calculation, ImmutableDict):
-            evaluate_calculated_summary = RuleEvaluator(
-                self._schema,
-                self._answer_store,
-                self._list_store,
-                self._metadata,
-                self._response_metadata,
-                routing_path_block_ids=self.routing_path.block_ids,
-                location=self.current_location,
-                progress_store=self._progress_store,
+            calculated_total = self._get_evaluated_total(
+                calculation, self.routing_path_block_ids
             )
-
-            calculated_total: Union[int, float, Decimal] = evaluate_calculated_summary.evaluate(calculation)  # type: ignore
         else:
             calculated_total = calculation(values_to_calculate)
 
@@ -251,9 +268,7 @@ class CalculatedSummaryContext(Context):
         return answer_format, values_to_calculate
 
     @staticmethod
-    def _format_total(
-        answer_format: Mapping[str, str], total: Union[int, float, Decimal]
-    ) -> str:
+    def _format_total(answer_format: Mapping[str, str], total: NumericType) -> str:
         if answer_format["type"] == "currency":
             return get_formatted_currency(total, answer_format["currency"])
 

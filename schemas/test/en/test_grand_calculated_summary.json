@@ -1,0 +1,332 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Simple Grand Calculated Summary demo",
+    "theme": "default",
+    "description": "A schema to showcase Grand Calculated Summary.",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "id": "group",
+                    "title": "Add currency values",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "first-number-block",
+                            "question": {
+                                "id": "first-number-question",
+                                "title": "The first two values will be included in the calculated and grand calculated summaries.",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "q1-a1",
+                                        "label": "First currency value (included)",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "q1-a2",
+                                        "label": "Second currency value (included)",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "q1-a3",
+                                        "label": "Third currency value (excluded)",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "currency-calculated-summary-1",
+                            "title": "We calculate the total of currency values entered to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q1-a1"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q1-a2"
+                                        }
+                                    ]
+                                },
+                                "title": "Calculated total of currencies 1"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "second-number-block",
+                            "question": {
+                                "id": "first-number-question",
+                                "title": "Add length values.",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "q2-a1",
+                                        "label": "Length 1",
+                                        "mandatory": true,
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "length-centimeter"
+                                    },
+                                     {
+                                        "id": "q2-a2",
+                                        "label": "Length 2",
+                                        "mandatory": true,
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "length-centimeter"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "length-calculated-summary-1",
+                            "title": "We calculate the total of length values entered to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q2-a1"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q2-a2"
+                                        }
+                                    ]
+                                },
+                                "title": "Calculated total of lengths 1"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "third-number-block",
+                            "question": {
+                                "id": "third-number-question",
+                                "title": "Add more currency values.",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "q3-a1",
+                                        "label": "Value 1",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "q3-a2",
+                                        "label": "Value 2",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "currency-calculated-summary-2",
+                            "title": "We calculate the total of currency values in the previous question entered to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q3-a1"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q3-a2"
+                                        }
+                                    ]
+                                },
+                                "title": "Calculated total of currencies 2"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "fourth-number-block",
+                            "question": {
+                                "id": "fourth-number-question",
+                                "title": "More length values.",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "q4-a1",
+                                        "label": "Length 3",
+                                        "mandatory": true,
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "length-centimeter"
+                                    },
+                                     {
+                                        "id": "q4-a2",
+                                        "label": "Length 4",
+                                        "mandatory": true,
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "length-centimeter"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "length-calculated-summary-2",
+                            "title": "We calculate the total of length values in the previous question entered to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q4-a1"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q4-a2"
+                                        }
+                                    ]
+                                },
+                                "title": "Calculated total of lengths 2"
+                            }
+                        },
+                        {
+                            "type": "GrandCalculatedSummary",
+                            "id": "currency-grand-total-playback",
+                            "title": "We calculate the total of the total of the currency values entered to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "currency-calculated-summary-1"
+                                        },
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "currency-calculated-summary-2"
+                                        }
+                                    ]
+                                },
+                                "title": "Grand calculated summary of currency values"
+                            }
+                        },
+                        {
+                            "type": "GrandCalculatedSummary",
+                            "id": "length-grand-total-playback",
+                            "title": "We calculate the total of the total of the length values entered to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "length-calculated-summary-1"
+                                        },
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "length-calculated-summary-2"
+                                        }
+                                    ]
+                                },
+                                "title": "Grand calculated summary of length values"
+                            }
+                        },
+                        {
+                            "type": "Interstitial",
+                            "id": "grand-calculated-summary-total-confirmation",
+                            "content": {
+                                "title": "You have provided the following grand totals.",
+                                "contents": [
+                                    {
+                                        "list": [
+                                            {
+                                                "text": "Total currency values: <em>{currency_total}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "currency_total",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_currency",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "source": "calculated_summary",
+                                                                        "identifier": "currency-grand-total-playback"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Total length values: <em>{length_total}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "length_total",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_number",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "source": "calculated_summary",
+                                                                        "identifier": "length-grand-total-playback"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

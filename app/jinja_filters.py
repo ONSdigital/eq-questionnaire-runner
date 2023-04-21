@@ -589,6 +589,17 @@ def map_summary_item_config(
                     edit_link_aria_label,
                 )
             )
+        elif block.get("calculated_summary"):
+            rows.append(
+                SummaryRow(
+                    block["calculated_summary"],
+                    summary_type,
+                    answers_are_editable,
+                    no_answer_provided,
+                    edit_link_text,
+                    edit_link_aria_label,
+                )
+            )
         else:
             list_collector_rows = map_list_collector_config(
                 list_items=block["list"]["list_items"],

@@ -5,6 +5,7 @@ from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException, Location
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.views.handlers.calculated_summary import CalculatedSummary
+from app.views.handlers.grand_calculated_summary import GrandCalculatedSummary
 from app.views.handlers.content import Content
 from app.views.handlers.list_add_question import ListAddQuestion
 from app.views.handlers.list_collector import ListCollector
@@ -30,6 +31,7 @@ BLOCK_MAPPINGS = {
     "Introduction": Content,
     "Interstitial": Content,
     "CalculatedSummary": CalculatedSummary,
+    "GrandCalculatedSummary": GrandCalculatedSummary,
 }
 
 

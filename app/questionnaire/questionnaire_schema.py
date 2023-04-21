@@ -988,3 +988,17 @@ def get_calculated_summary_answer_ids(calculated_summary_block: Mapping) -> list
     )
 
     return [value["identifier"] for value in values if value["source"] == "answers"]
+
+
+def get_grand_calculated_summary_block_ids(
+    calculated_summary_block: Mapping[str, Any]
+) -> list[str]:
+    values = get_mappings_with_key(
+        "source", calculated_summary_block["calculation"]["operation"]
+    )
+
+    return [
+        value["identifier"]
+        for value in values
+        if value["source"] == "calculated_summary"
+    ]
