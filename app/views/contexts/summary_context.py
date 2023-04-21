@@ -112,11 +112,10 @@ def set_unique_group_ids(groups: list[ImmutableDict]) -> list[ImmutableDict]:
     id_value = 0
 
     for group in groups:
-        if "id" in group:
-            group_id = group["id"]
-            if group_id in checked_ids:
-                id_value += 1
-            checked_ids.add(group_id)
-            group["id"] = f"{group_id}-{id_value}"
+        group_id = group["id"]
+        if group_id in checked_ids:
+            id_value += 1
+        checked_ids.add(group_id)
+        group["id"] = f"{group_id}-{id_value}"
 
     return groups

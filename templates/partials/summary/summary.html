@@ -3,12 +3,12 @@
 {%- else -%}
   {% from "components/summary/_macro.njk" import onsSummary %}
 
-  {% set summaryGroups = [] %}
-  {% set summaryType = content.summary.summary_type %}
-  {% set viewSubmittedResponse = content.summary.view_submitted_response %}
+  {% set summary_groups = [] %}
+  {% set summary_types = content.summary.summary_type %}
+  {% set view_submitted_response = content.summary.view_submitted_response %}
 
   {%- for group in content.summary.groups if group.blocks -%}
-    {% do summaryGroups.append
+    {% do summary_groups.append
       (
         {
           "groups": [
@@ -17,13 +17,13 @@
               "id": group.id if group.id else None,
               "rows": map_summary_item_config(
                 group=group,
-                summary_type=summaryType,
+                summary_type=summary_types,
                 answers_are_editable=content.summary.answers_are_editable,
                 no_answer_provided=_("No answer provided"),
-                remove_link_text=_("Remove") if not viewSubmittedResponse else "",
-                remove_link_aria_label=_("Remove your answer for:") if not viewSubmittedResponse else "",
-                edit_link_text=_("Change") if not viewSubmittedResponse else "",
-                edit_link_aria_label=_("Change your answer for:") if not viewSubmittedResponse else "",
+                remove_link_text=_("Remove") if not view_submitted_response else "",
+                remove_link_aria_label=_("Remove your answer for:") if not view_submitted_response else "",
+                edit_link_text=_("Change") if not view_submitted_response else "",
+                edit_link_aria_label=_("Change your answer for:") if not view_submitted_response else "",
                 calculated_question=content.summary.calculated_question,
                 icon=None
               ),
@@ -39,7 +39,7 @@
 
 
   {{ onsSummary({
-    "summaries": summaryGroups
+    "summaries": summary_groups
   }) }}
 
 {%- endif -%}
