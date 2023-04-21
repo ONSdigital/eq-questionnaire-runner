@@ -144,6 +144,9 @@ def address_question(answer_store, list_store, progress_store, schema):
         value_source_resolver=get_value_source_resolver(
             answer_store, list_store, schema
         ),
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
 
@@ -193,6 +196,9 @@ def test_create_question(
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -332,6 +338,9 @@ def test_concatenate_number_and_checkbox_answers(
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -374,6 +383,9 @@ def test_merge_date_range_answers(
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -421,6 +433,9 @@ def test_merge_multiple_date_range_answers(
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -466,6 +481,9 @@ def test_create_question_with_multiple_answers(
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -512,6 +530,9 @@ def test_checkbox_button_options(answer_store, list_store, progress_store, mock_
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -562,6 +583,9 @@ def test_checkbox_button_detail_answer_empty(
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -650,6 +674,9 @@ def test_checkbox_answer_with_detail_answer_returns_the_value(
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -702,6 +729,9 @@ def test_checkbox_button_other_option_text(
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -789,6 +819,9 @@ def test_radio_answer_with_detail_answers_returns_correct_value(
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -869,6 +902,9 @@ def test_answer_types_selected_option_label(
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -915,6 +951,9 @@ def test_dynamic_checkbox_answer_options(
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -990,6 +1029,9 @@ def test_dynamic_answer_options(
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -1052,6 +1094,9 @@ def test_get_answer(answer_schema, answer_store, expected, list_store, progress_
         location=None,
         block_id="address-group",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -1201,6 +1246,9 @@ def test_dynamic_answers(answer_store, list_store, progress_store, expected):
         location=None,
         block_id="group",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then

@@ -5,6 +5,7 @@ from markupsafe import Markup, escape
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.answer import AnswerValueEscapedTypes, escape_answer_value
+from app.data_models.metadata_proxy import MetadataProxy
 from app.forms.field_handlers.select_handlers import DynamicAnswerOptions
 from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
@@ -17,6 +18,7 @@ from app.views.contexts.summary.answer import (
 )
 
 
+# pylint: disable=too-many-locals
 class Question:
     def __init__(
         self,
@@ -32,6 +34,9 @@ class Question:
         block_id: str,
         return_to: Optional[str],
         return_to_block_id: Optional[str] = None,
+        metadata: MetadataProxy | None,
+        response_metadata: Mapping,
+        language: str,
     ) -> None:
         self.list_item_id = location.list_item_id if location else None
         self.id = question_schema["id"]
@@ -63,6 +68,9 @@ class Question:
             list_name=location.list_name if location else None,
             return_to=return_to,
             return_to_block_id=return_to_block_id,
+            metadata=metadata,
+            response_metadata=response_metadata,
+            language=language,
         )
 
     def get_answer(
@@ -84,6 +92,9 @@ class Question:
         list_name: Optional[str],
         return_to: Optional[str],
         return_to_block_id: Optional[str],
+        metadata: MetadataProxy | None,
+        response_metadata: Mapping,
+        language: str,
     ) -> list[dict[str, Any]]:
         if self.summary:
             answer_id = f"{self.id}-concatenated-answer"
@@ -117,9 +128,9 @@ class Question:
                 progress_store=self.progress_store,
                 schema=self.schema,
                 # :TODO: These should be passed in, not set manually.
-                language="en",
-                metadata=None,
-                response_metadata={},
+                language=language,
+                metadata=metadata,
+                response_metadata=response_metadata,
             )
 
             resolved_question = placeholder_renderer.render(
