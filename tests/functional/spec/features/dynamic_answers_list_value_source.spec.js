@@ -4,7 +4,7 @@ import DynamicAnswerOnlyPage from "../../generated_pages/dynamic_answers_list_so
 import ListCollectorPage from "../../generated_pages/dynamic_answers_list_source/list-collector.page";
 import ListCollectorAddPage from "../../generated_pages/dynamic_answers_list_source/list-collector-add.page";
 import ListCollectorRemovePage from "../../generated_pages/dynamic_answers_list_source/list-collector-remove.page";
-import SetMinimumPage from "../../generated_pages/dynamic_answers_list_source/set-min-max-block.page";
+import SetMinimumPage from "../../generated_pages/dynamic_answers_list_source/minimum-spending.page";
 import SectionSummaryPage from "../../generated_pages/dynamic_answers_list_source/section-summary.page";
 
 describe("Dynamic answers list value source", () => {

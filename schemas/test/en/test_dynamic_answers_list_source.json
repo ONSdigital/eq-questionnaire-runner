@@ -134,7 +134,7 @@
                                     "guidance": {
                                         "contents": [
                                             {
-                                                "description": "If you need to add multiple supermarkets, you can do this on the next page."
+                                                "description": "Maximum spending value will be used for each supermarket’s max spending validation and placeholders."
                                             }
                                         ]
                                     },
@@ -150,8 +150,8 @@
                                         },
                                         {
                                             "id": "set-maximum",
-                                            "description": "This is a description of the maximum value",
-                                            "label": "Maximum Value",
+                                            "description": "Maximum amount of spending at this supermarket",
+                                            "label": "Maximum Spending",
                                             "mandatory": true,
                                             "type": "Number",
                                             "decimal_places": 2,
@@ -170,6 +170,13 @@
                                 "type": "ListEditQuestion",
                                 "cancel_text": "Don’t need to change anything?",
                                 "question": {
+                                    "guidance": {
+                                        "contents": [
+                                            {
+                                                "description": "Maximum spending value will be used for each supermarket’s max spending validation and placeholders."
+                                            }
+                                        ]
+                                    },
                                     "id": "edit-question",
                                     "type": "General",
                                     "title": "What is the name of the supermarket?",
@@ -182,8 +189,8 @@
                                         },
                                         {
                                             "id": "set-maximum",
-                                            "description": "This is a description of the maximum value",
-                                            "label": "Maximum Value",
+                                            "description": "Maximum amount of spending at this supermarket",
+                                            "label": "Maximum amount of spending",
                                             "mandatory": true,
                                             "type": "Number",
                                             "decimal_places": 2,
@@ -328,13 +335,20 @@
                         },
                         {
                             "type": "Question",
-                            "id": "set-min-max-block",
+                            "id": "minimum-spending",
                             "question": {
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "This value will be used for all supermarkets minimum spending validation and placeholders."
+                                        }
+                                    ]
+                                },
                                 "answers": [
                                     {
                                         "id": "set-minimum",
-                                        "label": "Minimum Value",
-                                        "description": "This is a description of the minimum value",
+                                        "label": "Minimum Spending",
+                                        "description": "Minium amount of spending at all supermarkets",
                                         "mandatory": true,
                                         "type": "Number",
                                         "decimal_places": 2,
@@ -346,8 +360,8 @@
                                         }
                                     }
                                 ],
-                                "id": "set-min-question",
-                                "title": "Please set the minimum and maximum used for future questions",
+                                "id": "minimum-spending-question",
+                                "title": "What is your minimum amount of spending?",
                                 "type": "General"
                             }
                         },
@@ -370,6 +384,13 @@
                                 }
                             },
                             "question": {
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Answers are validated against values piped from previous questions, maximum from repeated question for each supermarket, minimum from non-repeated question. Answer label’s placeholders are resolved from these as well."
+                                        }
+                                    ]
+                                },
                                 "dynamic_answers": {
                                     "values": {
                                         "source": "list",
