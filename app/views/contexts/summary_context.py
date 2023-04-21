@@ -60,51 +60,45 @@ class SummaryContext(Context):
 
                 if for_repeat.count > 0:
                     for item in for_repeat.items:
-                        location = Location(
+                        yield from self.build_summary_item(
                             section_id=section_id,
-                            list_name=for_repeat.name,
-                            list_item_id=item,
-                        )
-                        section_summary_context = SectionSummaryContext(
-                            language=self._language,
-                            schema=self._schema,
-                            answer_store=self._answer_store,
-                            list_store=self._list_store,
-                            progress_store=self._progress_store,
-                            metadata=self._metadata,
-                            response_metadata=self._response_metadata,
-                            current_location=location,
-                            routing_path=self._router.routing_path(
-                                section_id=section_id, list_item_id=item
-                            ),
-                        )
-
-                        yield from section_summary_context.build_summary(
                             return_to=return_to,
-                            get_refactored_groups=False,
-                            summary_type="Summary",
-                            view_submitted_response=self.view_submitted_response,
-                        ).get("groups", [])
+                            list_item_id=item,
+                            list_name=for_repeat.name,
+                        )
             else:
-                location = Location(section_id=section_id, list_item_id=None)
-                section_summary_context = SectionSummaryContext(
-                    language=self._language,
-                    schema=self._schema,
-                    answer_store=self._answer_store,
-                    list_store=self._list_store,
-                    progress_store=self._progress_store,
-                    metadata=self._metadata,
-                    response_metadata=self._response_metadata,
-                    current_location=location,
-                    routing_path=self._router.routing_path(section_id),
+                yield from self.build_summary_item(
+                    section_id=section_id, return_to=return_to
                 )
 
-                yield from section_summary_context.build_summary(
-                    return_to=return_to,
-                    get_refactored_groups=False,
-                    summary_type="Summary",
-                    view_submitted_response=self.view_submitted_response,
-                ).get("groups", [])
+    def build_summary_item(
+        self,
+        section_id: str,
+        return_to: str | None,
+        list_name: str | None = None,
+        list_item_id: str | None = None,
+    ) -> Generator[ImmutableDict[str, Any], None, None]:
+        location = Location(
+            section_id=section_id, list_name=list_name, list_item_id=list_item_id
+        )
+        section_summary_context = SectionSummaryContext(
+            language=self._language,
+            schema=self._schema,
+            answer_store=self._answer_store,
+            list_store=self._list_store,
+            progress_store=self._progress_store,
+            metadata=self._metadata,
+            response_metadata=self._response_metadata,
+            current_location=location,
+            routing_path=self._router.routing_path(section_id),
+        )
+
+        return section_summary_context.build_summary(
+            return_to=return_to,
+            get_refactored_groups=False,
+            summary_type="Summary",
+            view_submitted_response=self.view_submitted_response,
+        ).get("groups", [])
 
 
 def set_unique_group_ids(groups: list[ImmutableDict]) -> list[ImmutableDict]:
