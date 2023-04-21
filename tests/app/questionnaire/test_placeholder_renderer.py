@@ -288,6 +288,45 @@ def test_renders_json_dynamic_answers(
     assert rendered_id_second == "percentage-of-shopping-vtbSnC"
 
 
+def test_renders_json_dynamic_answers_pointer(
+    placeholder_transform_question_dynamic_answers_pointer_json,
+):
+    json_to_render = placeholder_transform_question_dynamic_answers_pointer_json
+
+    answer_store = AnswerStore(
+        [
+            {"answer_id": "any-supermarket-answer", "value": "Yes"},
+            {
+                "answer_id": "supermarket-name",
+                "value": "Tesco",
+                "list_item_id": "yWKpNY",
+            },
+            {
+                "answer_id": "supermarket-name",
+                "value": "Aldi",
+                "list_item_id": "vtbSnC",
+            },
+            {"answer_id": "list-collector-answer", "value": "No"},
+        ]
+    )
+
+    list_store = ListStore([{"items": ["yWKpNY", "vtbSnC"], "name": "supermarkets"}])
+
+    renderer = get_placeholder_render_dynamic_answers(
+        answer_store=answer_store, list_store=list_store
+    )
+    rendered_schema = renderer.render(data_to_render=json_to_render, list_item_id=None)
+    rendered_label_first = rendered_schema["question"]["answers"][0]["label"]
+    rendered_id_first = rendered_schema["question"]["answers"][0]["id"]
+    rendered_label_second = rendered_schema["question"]["answers"][1]["label"]
+    rendered_id_second = rendered_schema["question"]["answers"][1]["id"]
+
+    assert rendered_label_first == "Percentage of shopping at Tesco"
+    assert rendered_id_first == "percentage-of-shopping-yWKpNY"
+    assert rendered_label_second == "Percentage of shopping at Aldi"
+    assert rendered_id_second == "percentage-of-shopping-vtbSnC"
+
+
 def get_placeholder_render_dynamic_answers(
     *,
     language="en",
