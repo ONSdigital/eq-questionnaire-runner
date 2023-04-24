@@ -187,10 +187,10 @@
                             "question": {
                                 "id": "total-turnover-question",
                                 "title": {
-                                    "text": "For the period {date-entry-answer-from} to {date-entry-answer-to}, what was {ru_name}&#39;s total turnover, excluding VAT?",
+                                    "text": "For the period {date_entry_answer_from} to {date_entry_answer_to}, what was {ru_name}&#39;s total turnover, excluding VAT?",
                                     "placeholders": [
                                         {
-                                            "placeholder": "date-entry-answer-from",
+                                            "placeholder": "date_entry_answer_from",
                                             "transforms": [
                                                 {
                                                     "transform": "first_non_empty_item",
@@ -219,7 +219,7 @@
                                             ]
                                         },
                                         {
-                                            "placeholder": "date-entry-answer-to",
+                                            "placeholder": "date_entry_answer_to",
                                             "transforms": [
                                                 {
                                                     "transform": "first_non_empty_item",
