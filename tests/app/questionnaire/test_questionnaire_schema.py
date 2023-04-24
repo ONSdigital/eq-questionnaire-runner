@@ -776,6 +776,51 @@ def test_when_rules_section_dependencies_new_calculated_summary(
     } == schema.when_rules_section_dependencies_by_answer
 
 
+def test_progress_block_dependencies(
+    progress_block_dependencies_schema,
+):
+    schema = progress_block_dependencies_schema
+
+    assert {
+        "section-1": {"calculated-summary-block": ["section-2", "section-3"]}
+    } == schema.when_rules_block_dependencies_by_section_for_progress_value_source
+
+
+def test_progress_section_dependencies(
+    progress_section_dependencies_schema,
+):
+    schema = progress_section_dependencies_schema
+
+    assert {
+        "section-1": ["section-2"],
+        "section-2": ["section-4"],
+    } == schema.when_rules_section_dependencies_by_section_for_progress_value_source
+
+
+def test_progress_block_and_section_dependencies_are_ordered(
+    progress_dependencies_schema,
+):
+    schema = progress_dependencies_schema
+
+    assert {
+        "section-3": ["section-7", "section-8", "section-9"],
+        "section-4": ["section-6"],
+        "section-5": ["section-7"],
+        "section-7": ["section-8"],
+    } == schema.when_rules_section_dependencies_by_section_for_progress_value_source
+
+    assert {
+        "section-1": {
+            "calculated-summary-block": [
+                "section-2",
+                "section-3",
+                "section-4",
+                "section-5",
+            ]
+        }
+    } == schema.when_rules_block_dependencies_by_section_for_progress_value_source
+
+
 @pytest.mark.parametrize(
     "rule, expected_result",
     (

@@ -895,9 +895,22 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 ] = rules_section_dependencies
 
             if rule_section_dependencies_for_progress_value_source:
-                self._when_rules_section_dependencies_by_section_for_progress_value_source |= (
-                    rule_section_dependencies_for_progress_value_source
-                )
+                for key in rule_section_dependencies_for_progress_value_source:
+                    if (
+                        key
+                        in self._when_rules_section_dependencies_by_section_for_progress_value_source
+                    ):
+                        self._when_rules_section_dependencies_by_section_for_progress_value_source[
+                            key
+                        ].append(
+                            *rule_section_dependencies_for_progress_value_source[key]
+                        )
+                    else:
+                        self._when_rules_section_dependencies_by_section_for_progress_value_source[
+                            key
+                        ] = rule_section_dependencies_for_progress_value_source[
+                            key
+                        ]
 
             if rule_block_dependencies_for_progress_value_source:
                 self._populate_block_dependencies_for_progress_value_source(
