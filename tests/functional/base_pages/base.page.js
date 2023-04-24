@@ -20,7 +20,7 @@ export default class BasePage {
   }
 
   acceptCookies() {
-    return ".ons-js-accept-cookies";
+    return '[data-button="accept"]';
   }
 
   submit() {
