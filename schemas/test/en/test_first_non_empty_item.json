@@ -8,35 +8,35 @@
     "theme": "default",
     "description": "Questionnaire to check placeholder takes account on a path",
     "metadata": [
-            {
-      "name": "user_id",
-      "type": "string"
-    },
-    {
-      "name": "period_id",
-      "type": "string"
-    },
-    {
-      "name": "ru_name",
-      "type": "string"
-    },
-    {
-      "name": "ru_ref",
-      "type": "string"
-    },
-    {
-      "name": "trad_as",
-      "type": "string",
-      "optional": true
-    },
-            {
-      "name": "ref_p_start_date",
-      "type": "date"
-    },
-    {
-      "name": "ref_p_end_date",
-      "type": "date"
-    }
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        },
+        {
+            "name": "ru_ref",
+            "type": "string"
+        },
+        {
+            "name": "trad_as",
+            "type": "string",
+            "optional": true
+        },
+        {
+            "name": "ref_p_start_date",
+            "type": "date"
+        },
+        {
+            "name": "ref_p_end_date",
+            "type": "date"
+        }
     ],
     "questionnaire_flow": {
         "type": "Linear",
@@ -121,9 +121,7 @@
                                                 "identifier": "date-answer",
                                                 "source": "answers"
                                             },
-                                            [
-                                                "Yes, I can report for this period"
-                                            ]
+                                            ["Yes, I can report for this period"]
                                         ]
                                     }
                                 },
