@@ -694,7 +694,7 @@
                                         {
                                             "source": "progress",
                                             "selector": "section",
-                                            "identifier": "section-3"
+                                            "identifier": "section-2"
                                         },
                                         "COMPLETED"
                                     ]
@@ -764,7 +764,7 @@
                                         {
                                             "source": "progress",
                                             "selector": "section",
-                                            "identifier": "section-3"
+                                            "identifier": "section-2"
                                         },
                                         "COMPLETED"
                                     ]
@@ -805,7 +805,7 @@
                                         {
                                             "source": "progress",
                                             "selector": "section",
-                                            "identifier": "section-3"
+                                            "identifier": "section-2"
                                         },
                                         "COMPLETED"
                                     ]

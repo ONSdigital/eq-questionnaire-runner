@@ -803,7 +803,7 @@ def test_progress_block_and_section_dependencies_are_ordered(
     schema = progress_dependencies_schema
 
     assert {
-        "section-3": ["section-7", "section-8", "section-9"],
+        "section-2": ["section-7", "section-8", "section-9"],
         "section-4": ["section-6"],
         "section-5": ["section-7"],
         "section-7": ["section-8"],
