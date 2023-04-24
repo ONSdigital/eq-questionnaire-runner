@@ -68,7 +68,7 @@ def get_schema_path(language_code: str, schema_name: str) -> str | None:
 
 @lru_cache(maxsize=None)
 def get_schema_path_map(
-    include_test_schemas: bool | None = False,
+    include_test_schemas: bool = False,
 ) -> dict[str, dict[str, dict[str, str]]]:
     schemas = {}
     for survey_type in os.listdir(SCHEMA_DIR):

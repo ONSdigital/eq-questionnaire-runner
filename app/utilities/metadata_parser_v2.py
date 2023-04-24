@@ -1,6 +1,6 @@
 import functools
 from datetime import datetime, timezone
-from typing import Any, Iterable, Mapping
+from typing import Callable, Iterable, Mapping
 
 from marshmallow import (
     EXCLUDE,
@@ -20,7 +20,7 @@ from app.utilities.metadata_validators import DateString, RegionCode, UUIDString
 
 logger = get_logger()
 
-VALIDATORS: Mapping[str, Any] = {
+VALIDATORS: Mapping[str, Callable] = {
     "date": functools.partial(DateString, format="%Y-%m-%d", required=True),
     "uuid": functools.partial(UUIDString, required=True),
     "boolean": functools.partial(fields.Boolean, required=True),
