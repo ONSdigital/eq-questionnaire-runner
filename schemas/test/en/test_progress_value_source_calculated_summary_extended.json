@@ -517,7 +517,7 @@
             "title": "Skippable random question",
             "groups": [
                 {
-                    "id": "group",
+                    "id": "group-4",
                     "title": "List",
                     "blocks": [
                         {
@@ -558,7 +558,7 @@
             "title": "Skippable random question",
             "groups": [
                 {
-                    "id": "group",
+                    "id": "group-5",
                     "title": "List",
                     "blocks": [
                         {
@@ -570,7 +570,7 @@
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "s4-b1-q1-a1",
+                                        "id": "s5-b1-q1-a1",
                                         "mandatory": true,
                                         "label": "Enter any number",
                                         "type": "Number"
@@ -599,7 +599,7 @@
             "title": "Skippable random question",
             "groups": [
                 {
-                    "id": "group",
+                    "id": "group-6",
                     "title": "List",
                     "blocks": [
                         {
@@ -640,7 +640,7 @@
             "title": "Skippable random question",
             "groups": [
                 {
-                    "id": "group",
+                    "id": "group-7",
                     "title": "List",
                     "blocks": [
                         {
@@ -710,7 +710,7 @@
             "title": "Skippable random question",
             "groups": [
                 {
-                    "id": "group",
+                    "id": "group-8",
                     "title": "List",
                     "blocks": [
                         {
@@ -780,7 +780,7 @@
             "title": "Skippable random question",
             "groups": [
                 {
-                    "id": "group",
+                    "id": "group-9",
                     "title": "List",
                     "blocks": [
                         {
