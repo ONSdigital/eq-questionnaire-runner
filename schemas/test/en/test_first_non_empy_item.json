@@ -51,13 +51,13 @@
             "id": "default-section",
             "groups": [
                 {
-                    "id": "group2ce8ca5e-af3c-4596-8654-898dd3da4076",
+                    "id": "default-group",
                     "blocks": [
                         {
-                            "id": "blockfbd9837d-1916-4ae0-8460-7d917952eee8",
+                            "id": "date-question-block",
                             "type": "Question",
                             "question": {
-                                "id": "questionfbd9837d-1916-4ae0-8460-7d917952eee8",
+                                "id": "date-question",
                                 "title": {
                                     "text": "Are you able to report for the period from {ref_p_start_date} to {ref_p_end_date}?",
                                     "placeholders": [
@@ -96,7 +96,7 @@
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "answer15433b80-794b-4425-a6f2-deca4f97bcff",
+                                        "id": "date-answer",
                                         "mandatory": true,
                                         "type": "Radio",
                                         "options": [
@@ -114,11 +114,11 @@
                             },
                             "routing_rules": [
                                 {
-                                    "block": "block84f2ba79-2dfb-4456-805e-2253590d5197",
+                                    "block": "total-turnover-block",
                                     "when": {
                                         "in": [
                                             {
-                                                "identifier": "answer15433b80-794b-4425-a6f2-deca4f97bcff",
+                                                "identifier": "date-answer",
                                                 "source": "answers"
                                             },
                                             [
@@ -128,20 +128,20 @@
                                     }
                                 },
                                 {
-                                    "block": "blockb4974ce2-26e6-4028-84d6-a1ccf1212c79"
+                                    "block": "date-entry-block"
                                 }
                             ]
                         },
                         {
-                            "id": "blockb4974ce2-26e6-4028-84d6-a1ccf1212c79",
+                            "id": "date-entry-block",
                             "type": "Question",
                             "question": {
-                                "id": "questionb4974ce2-26e6-4028-84d6-a1ccf1212c79",
+                                "id": "date-entry-question",
                                 "title": "What are the dates of the period that you will be reporting for?",
                                 "type": "DateRange",
                                 "answers": [
                                     {
-                                        "id": "answereec57e81-d42d-469b-9d41-067cd02428f3from",
+                                        "id": "date-entry-answer-from",
                                         "type": "Date",
                                         "mandatory": true,
                                         "label": "From",
@@ -156,7 +156,7 @@
                                         }
                                     },
                                     {
-                                        "id": "answereec57e81-d42d-469b-9d41-067cd02428f3to",
+                                        "id": "date-entry-answer-to",
                                         "type": "Date",
                                         "mandatory": true,
                                         "label": "To",
@@ -182,15 +182,15 @@
                             }
                         },
                         {
-                            "id": "block84f2ba79-2dfb-4456-805e-2253590d5197",
+                            "id": "total-turnover-block",
                             "type": "Question",
                             "question": {
-                                "id": "question84f2ba79-2dfb-4456-805e-2253590d5197",
+                                "id": "total-turnover-question",
                                 "title": {
-                                    "text": "For the period {answer90fe9593_5570_46f4_938e_87e1b75f8660from} to {answer90fe9593_5570_46f4_938e_87e1b75f8660to}, what was {ru_name}&#39;s total turnover, excluding VAT?",
+                                    "text": "For the period {date-entry-answer-from} to {date-entry-answer-to}, what was {ru_name}&#39;s total turnover, excluding VAT?",
                                     "placeholders": [
                                         {
-                                            "placeholder": "answer90fe9593_5570_46f4_938e_87e1b75f8660from",
+                                            "placeholder": "date-entry-answer-from",
                                             "transforms": [
                                                 {
                                                     "transform": "first_non_empty_item",
@@ -198,7 +198,7 @@
                                                         "items": [
                                                             {
                                                                 "source": "answers",
-                                                                "identifier": "answereec57e81-d42d-469b-9d41-067cd02428f3from"
+                                                                "identifier": "date-entry-answer-from"
                                                             },
                                                             {
                                                                 "source": "metadata",
@@ -219,7 +219,7 @@
                                             ]
                                         },
                                         {
-                                            "placeholder": "answer90fe9593_5570_46f4_938e_87e1b75f8660to",
+                                            "placeholder": "date-entry-answer-to",
                                             "transforms": [
                                                 {
                                                     "transform": "first_non_empty_item",
@@ -227,7 +227,7 @@
                                                         "items": [
                                                             {
                                                                 "source": "answers",
-                                                                "identifier": "answereec57e81-d42d-469b-9d41-067cd02428f3to"
+                                                                "identifier": "date-entry-answer-to"
                                                             },
                                                             {
                                                                 "source": "metadata",
@@ -256,41 +256,10 @@
                                         }
                                     ]
                                 },
-                                "guidance": {
-                                    "contents": [
-                                        {
-                                            "description": "<strong>Include:</strong>"
-                                        },
-                                        {
-                                            "list": [
-                                                "exports",
-                                                "payments for work in progress",
-                                                "costs incurred and passed on to customers",
-                                                "income from sub-contracted activities",
-                                                "commission",
-                                                "sales of goods purchased for resale",
-                                                "revenue earned from other parts of the business not named, please supply at fair value"
-                                            ]
-                                        },
-                                        {
-                                            "description": "<strong>Exclude:</strong>"
-                                        },
-                                        {
-                                            "list": [
-                                                "VAT",
-                                                "excise duties",
-                                                "income from the sale of fixed capital assets",
-                                                "grants and subsidies",
-                                                "insurance claims",
-                                                "interest received"
-                                            ]
-                                        }
-                                    ]
-                                },
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "answer0893fc66-fa85-4dcc-b61e-455add66a8b7",
+                                        "id": "total-turnover-answer",
                                         "mandatory": true,
                                         "type": "Currency",
                                         "label": "Total turnover excluding VAT",
