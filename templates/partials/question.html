@@ -13,29 +13,43 @@
 {% set question_instruction = format_paragraphs(question.instruction) %}
 {% set question_error = form.question_errors[question.id] %}
 
-{%- set question_definition -%}
-  {%- if question.definitions -%}
-    {%- include 'partials/question-definition.html' -%}
-  {%- endif -%}
-{%- endset -%}
+{%- if question.definition -%}
+  {% set definition_id = "question-definition" %}
+  {% set question_definition = {
+      "title": question.definition.title,
+      "id": definition_id,
+      "content": question.definition.content,
+      "headingAttributes": {
+        "data-ga": "click",
+        "data-ga-category": "Question definition",
+        "data-ga-action": "Open panel",
+        "data-ga-label": question.definition.title,
+        "data-qa": definition_id ~ "-title"
+      },
+      "contentAttributes": {
+        "data-qa": definition_id ~ "-content"
+      }
+  } %}
+{% elif question.definitions %}
+  {%- set question_definitions -%}
+    {% for definition in question.definitions %}
+      {% set definition_id = "question-definition" %}
+      {% set category = 'Question definition' %}
+      {%- include 'partials/definition.html' -%}
+    {% endfor %}
+  {%- endset -%}
+{%- endif -%}
 
 {% set individual_response_guidance %}
-   {%- if show_individual_response_guidance == True -%}
-      {% set title = _("If you can’t answer questions for this person") %}
-      {% include 'partials/individual-response-guidance.html' %}
-   {%- endif -%}
+  {%- if show_individual_response_guidance == True -%}
+    {% set title = _("If you can’t answer questions for this person") %}
+    {% include 'partials/individual-response-guidance.html' %}
+  {%- endif -%}
 {% endset %}
 
-{% set question_warning %}
-  {%- if question.warning -%}
-    {% call onsPanel({
-      "id": "question-warning-" ~ question.id,
-      "type": "warn"
-    }) %}
-      <p>{{ question.warning }}</p>
-    {% endcall %}
-  {% endif %}
-{% endset %}
+{%- if question.warning -%}
+  {% set question_warning = {"body": question.warning} %}
+{% endif %}
 
 {% set question_guidance %}
   {%- if question.guidance -%}
@@ -44,7 +58,6 @@
       "id": "question-guidance-" ~ question.id,
       "classes": "ons-u-mb-m"
     }) %}
-      {% set contents = question.guidance.contents %}
       {% include 'partials/contents.html' %}
     {% endcall %}
   {% endif %}
@@ -88,6 +101,8 @@
   "title": title,
   "description": question_description,
   "instruction": question_instruction,
+  "warning": question_warning,
+  "definition": question_definition,
   "legendIsQuestionTitle": should_wrap_with_fieldset(question)
 }) %}
   {%- if content.list and content.list.list_items -%}
@@ -96,9 +111,8 @@
       {% include 'partials/summary/list-summary.html' %}
     </div>
   {% endif %}
-  {{ question_warning }}
   {{ individual_response_guidance }}
-  {{ question_definition }}
+  {{ question_definitions }}
   {{ question_guidance }}
 
   {% if question_error %}
@@ -111,7 +125,7 @@
         "data-ga-action": question.type,
         "data-ga-label": question.id
       }
-    }%}
+    } %}
     {% call onsError(config) %}
       {{ question_answers }}
     {% endcall %}
