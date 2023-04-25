@@ -28,15 +28,11 @@ class Group:
         progress_store: ProgressStore,
         return_to: str | None,
         return_to_block_id: str | None = None,
-        summary_type: str | None = None,
         view_submitted_response: bool | None = False,
     ) -> None:
         self.id = group_schema["id"]
 
-        if summary_type == "Summary" and not group_schema.get("title"):
-            self.title = schema.get_title_for_section(location.section_id)
-        else:
-            self.title = group_schema.get("title")
+        self.title = group_schema.get("title")
         self.location = location
         self.placeholder_text = None
         self.links: dict[str, Link] = {}

@@ -253,15 +253,15 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(SectionSummaryTwoPage.submit()).click();
 
       await expect(await browser.getUrl()).to.contain(SubmitPage.url());
-      await expect(await $(companiesListRowItemSubmitPage(2, 1)).getText()).to.contain("Company A");
-      await expect(await $(companiesListRowItemSubmitPage(2, 2)).getText()).to.contain("123");
-      await expect(await $(companiesListRowItemSubmitPage(2, 3)).getText()).to.contain("Change");
-      await expect(await $(companiesListRowItemSubmitPage(3, 1)).getText()).to.contain("Company B");
-      await expect(await $(companiesListRowItemSubmitPage(3, 2)).getText()).to.contain("456");
-      await expect(await $(companiesListRowItemSubmitPage(3, 3)).getText()).to.contain("Change");
-      await expect(await $(companiesListRowItemSubmitPage(4, 1)).getText()).to.contain("Company C");
-      await expect(await $(companiesListRowItemSubmitPage(4, 2)).getText()).to.contain("234");
-      await expect(await $(companiesListRowItemSubmitPage(4, 3)).getText()).to.contain("Change");
+      await expect(await $(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
+      await expect(await $(companiesListRowItem(1, 2)).getText()).to.contain("123");
+      await expect(await $(companiesListRowItem(1, 3)).getText()).to.contain("Change");
+      await expect(await $(companiesListRowItem(2, 1)).getText()).to.contain("Company B");
+      await expect(await $(companiesListRowItem(2, 2)).getText()).to.contain("456");
+      await expect(await $(companiesListRowItem(2, 3)).getText()).to.contain("Change");
+      await expect(await $(companiesListRowItem(3, 1)).getText()).to.contain("Company C");
+      await expect(await $(companiesListRowItem(3, 2)).getText()).to.contain("234");
+      await expect(await $(companiesListRowItem(3, 3)).getText()).to.contain("Change");
       await expect(await $(SubmitPage.householderCheckboxAnswer()).getText()).to.contain("No");
       await expect(await $("body").getHTML()).to.contain("Add another UK company or branch");
       await expect(await $("body").getHTML()).to.contain("Remove");
@@ -289,12 +289,12 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ThankYouPage.savePrintAnswersLink()).click();
 
       await expect(await browser.getUrl()).to.contain(ViewSubmittedResponsePage.pageName);
-      await expect(await $(companiesListRowItemSubmitPage(2, 1)).getText()).to.contain("Company A");
-      await expect(await $(companiesListRowItemSubmitPage(2, 2)).getText()).to.contain("123");
-      await expect(await $(companiesListRowItemSubmitPage(3, 1)).getText()).to.contain("Company B");
-      await expect(await $(companiesListRowItemSubmitPage(3, 2)).getText()).to.contain("456");
-      await expect(await $(companiesListRowItemSubmitPage(4, 1)).getText()).to.contain("Company C");
-      await expect(await $(companiesListRowItemSubmitPage(4, 2)).getText()).to.contain("234");
+      await expect(await $(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
+      await expect(await $(companiesListRowItem(1, 2)).getText()).to.contain("123");
+      await expect(await $(companiesListRowItem(2, 1)).getText()).to.contain("Company B");
+      await expect(await $(companiesListRowItem(2, 2)).getText()).to.contain("456");
+      await expect(await $(companiesListRowItem(3, 1)).getText()).to.contain("Company C");
+      await expect(await $(companiesListRowItem(3, 2)).getText()).to.contain("234");
       await expect(await $("body").getHTML()).to.not.contain("Change");
       await expect(await $("body").getHTML()).to.not.contain("Remove");
       await expect(await $("body").getHTML()).to.not.contain("Add another UK company or branch");
@@ -350,8 +350,4 @@ const companiesListRowItem = (row, index) => {
 
 const companiesListRowItemAnchor = (index) => {
   return `#group-companies-1 .ons-summary__items .ons-summary__item .ons-summary__row:nth-of-type(${index}) a`;
-};
-
-const companiesListRowItemSubmitPage = (row, index) => {
-  return `#group-companies-0 .ons-summary__items .ons-summary__item:nth-of-type(${row}) .ons-summary__row:nth-of-type(${index})`;
 };

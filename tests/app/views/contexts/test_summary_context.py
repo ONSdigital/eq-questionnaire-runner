@@ -178,7 +178,17 @@ def test_context_for_summary():
                 "id": "group-0",
                 "links": {},
                 "placeholder_text": None,
-                "title": "List",
+                "title": None},
+            {"blocks": [],
+             "id": "group-1",
+             "links": {},
+             "placeholder_text": None,
+             "title": None},
+            {"blocks": [],
+             "id": "group-2",
+             "links": {},
+             "placeholder_text": None,
+             "title": "List"
             },
             {
                 "blocks": [
@@ -316,7 +326,7 @@ def test_context_for_summary():
                 "id": "calculated-summary-0",
                 "links": {},
                 "placeholder_text": None,
-                "title": "Calculated Summary",
+                "title": "Calculated Summary Group",
             },
             {
                 "blocks": [
@@ -391,10 +401,10 @@ def test_context_for_summary():
                         "title": None,
                     },
                 ],
-                "id": "calculated-summary-1",
+                "id": "calculated-summary-0-1",
                 "links": {},
                 "placeholder_text": None,
-                "title": "Calculated Summary",
+                "title": "Calculated Summary Group",
             },
         ],
         "summary_type": "Summary",

@@ -95,8 +95,6 @@ class SummaryContext(Context):
 
         return section_summary_context.build_summary(
             return_to=return_to,
-            get_refactored_groups=False,
-            summary_type="Summary",
             view_submitted_response=self.view_submitted_response,
         ).get("groups", [])
 
@@ -109,7 +107,7 @@ def set_unique_group_ids(groups: list[ImmutableDict]) -> list[ImmutableDict]:
         group_id = group["id"]
         if group_id in checked_ids:
             id_value += 1
+            group["id"] = f"{group_id}-{id_value}"
         checked_ids.add(group_id)
-        group["id"] = f"{group_id}-{id_value}"
 
     return groups

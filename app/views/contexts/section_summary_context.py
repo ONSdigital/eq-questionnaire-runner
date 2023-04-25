@@ -94,8 +94,6 @@ class SectionSummaryContext(Context):
     def build_summary(
         self,
         return_to: Optional[str],
-        get_refactored_groups: bool = True,
-        summary_type: str = "SectionSummary",
         view_submitted_response: bool = False,
     ) -> dict[str, Any]:
         """
@@ -119,11 +117,7 @@ class SectionSummaryContext(Context):
 
             return collapsible | summary_elements
 
-        refactored_groups = (
-            self._get_refactored_groups(self.section["groups"])
-            if get_refactored_groups
-            else self.section["groups"]
-        )
+        refactored_groups = self._get_refactored_groups(self.section["groups"])
 
         groups = {
             **collapsible,
@@ -141,7 +135,6 @@ class SectionSummaryContext(Context):
                     progress_store=self._progress_store,
                     return_to=return_to,
                     return_to_block_id=None,
-                    summary_type=summary_type,
                     view_submitted_response=view_submitted_response,
                 ).serialize()
                 for group in refactored_groups
