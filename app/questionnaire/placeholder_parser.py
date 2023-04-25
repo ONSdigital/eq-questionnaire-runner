@@ -26,6 +26,8 @@ if TYPE_CHECKING:
 
 TransformedValueTypes = Union[None, str, int, Decimal, bool]
 
+TRANSFORMS_REQUIRING_ROUTING_PATH = ["first_non_empty_item"]
+
 
 class PlaceholderParser:
     """
@@ -139,9 +141,13 @@ class PlaceholderParser:
         for transform in transform_list:
             transform_args: MutableMapping[str, Any] = {}
             transform_name = transform["transform"]
-            value_source_resolver = self._get_value_source_resolver_for_transform(
-                "first_non_empty_item"
-            )
+
+            value_source_resolver = self._value_source_resolver
+
+            if transform_name in TRANSFORMS_REQUIRING_ROUTING_PATH:
+                value_source_resolver = self._get_value_source_resolver_for_transform(
+                    transform_name
+                )
 
             for arg_key, arg_value in transform["arguments"].items():
                 resolved_value: Union[
@@ -170,8 +176,9 @@ class PlaceholderParser:
 
         return transformed_value
 
+    @staticmethod
     def _resolve_value_source_list(
-        self, value_source_list: list[dict], value_source_resolver: ValueSourceResolver
+        value_source_list: list[dict], value_source_resolver: ValueSourceResolver
     ) -> list[ValueSourceTypes]:
         values: list[ValueSourceTypes] = []
         for value_source in value_source_list:
@@ -203,14 +210,17 @@ class PlaceholderParser:
     def _get_value_source_resolver_for_transform(
         self, transform_name: str
     ) -> ValueSourceResolver:
-        if not (section_ids := self._schema.get_placeholder_dependencies(transform_name)):
+        if not (
+            section_ids := self._schema.get_placeholder_dependencies(transform_name)
+        ):
             return self._value_source_resolver
 
         complete_routing_path_block_ids = []
 
         for section_id in section_ids:
             routing_path_block_ids = self._path_finder.routing_path(
-                section_id=section_id
+                section_id=section_id  # type: ignore
+                # section_id always exists
             ).block_ids
             complete_routing_path_block_ids += routing_path_block_ids
 

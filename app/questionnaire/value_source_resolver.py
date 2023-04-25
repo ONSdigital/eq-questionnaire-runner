@@ -104,7 +104,7 @@ class ValueSourceResolver:
         answer_id = value_source["identifier"]
 
         answer_value = self._get_answer_value(
-            answer_id=answer_id, list_item_id=list_item_id
+            answer_id=answer_id, list_item_id=list_item_id, assess_routing_path=True
         )
 
         if isinstance(answer_value, Mapping):
@@ -113,11 +113,6 @@ class ValueSourceResolver:
                 if "selector" in value_source
                 else None
             )
-        if self.routing_path_block_ids:
-            block_id = self.schema.get_block_for_answer_id(answer_id).get("id")
-
-            if block_id not in self.routing_path_block_ids:
-                return None
 
         if answer_value is not None and self.escape_answer_values:
             return escape_answer_value(answer_value)
