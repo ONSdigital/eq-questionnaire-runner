@@ -154,7 +154,7 @@ def add_relationships_unrelated_answers(
 
 
 def resolve_dynamic_answers(
-    block: dict,
+    block: Mapping,
     answer_store: AnswerStore,
     answers_payload: AnswerStore,
     list_store: ListStore,

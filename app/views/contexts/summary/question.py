@@ -76,16 +76,15 @@ class Question:
 
         return escape_answer_value(answer.value) if answer else None
 
-    # pylint: disable=too-many-locals
     def _build_answers(
         self,
         *,
         answer_store: AnswerStore,
         question_schema: QuestionSchemaType,
         block_id: str,
-        list_name: Optional[str],
-        return_to: Optional[str],
-        return_to_block_id: Optional[str],
+        list_name: str | None,
+        return_to: str | None,
+        return_to_block_id: str | None,
         metadata: MetadataProxy | None,
         response_metadata: Mapping,
         language: str,
@@ -113,24 +112,13 @@ class Question:
             ]
 
         summary_answers = []
-        resolved_question = {"answers": self.answer_schemas}
 
-        if "dynamic_answers" in question_schema:
-            placeholder_renderer = PlaceholderRenderer(
-                answer_store=self.answer_store,
-                list_store=self.list_store,
-                progress_store=self.progress_store,
-                schema=self.schema,
-                language=language,
-                metadata=metadata,
-                response_metadata=response_metadata,
-            )
-
-            resolved_question = placeholder_renderer.render(
-                data_to_render=question_schema, list_item_id=self.list_item_id
-            )
-
-        for answer_schema in resolved_question["answers"]:
+        for answer_schema in self._get_resolved_answers(
+            question_schema=question_schema,
+            language=language,
+            metadata=metadata,
+            response_metadata=response_metadata,
+        ):
             list_item_id = answer_schema.get("list_item_id")
             answer_id = answer_schema.get("original_answer_id") or answer_schema["id"]
             answer_value = self.get_answer(
@@ -288,6 +276,32 @@ class Question:
         for option in self.get_answer_options(answer_schema):
             if answer == option["value"]:
                 return option["label"]
+
+    def _get_resolved_answers(
+        self,
+        *,
+        question_schema: QuestionSchemaType,
+        language: str,
+        metadata: MetadataProxy | None = None,
+        response_metadata: Mapping,
+    ):
+        resolved_question = {"answers": self.answer_schemas}
+
+        if "dynamic_answers" in question_schema:
+            placeholder_renderer = PlaceholderRenderer(
+                answer_store=self.answer_store,
+                list_store=self.list_store,
+                progress_store=self.progress_store,
+                schema=self.schema,
+                language=language,
+                metadata=metadata,
+                response_metadata=response_metadata,
+            )
+
+            resolved_question = placeholder_renderer.render(
+                data_to_render=question_schema, list_item_id=self.list_item_id
+            )
+        return resolved_question["answers"]
 
     def serialize(self) -> dict[str, Any]:
         return {
