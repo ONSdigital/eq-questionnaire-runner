@@ -614,7 +614,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         if block := self.get_block_for_answer_id(answer_id):
             return self.is_block_in_repeating_section(block_id=block["id"])
 
-    def is_answer_dynamic(self, answer_id: str) -> Optional[bool]:
+    def is_answer_dynamic(self, answer_id: str) -> bool:
         return answer_id in self._dynamic_answer_ids
 
     def is_repeating_answer(

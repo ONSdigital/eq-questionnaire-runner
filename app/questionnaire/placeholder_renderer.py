@@ -168,9 +168,9 @@ class PlaceholderRenderer:
                 self.resolve_dynamic_answers_ids(dynamic_answers)
                 self.resolve_dynamic_answers(dynamic_answers)
 
-                 updated_value = {
+                updated_value = {
                     "answers": dynamic_answers["answers"] + data.get("answers", []),
-                    "dynamic_answers": dynamic_answers
+                    "dynamic_answers": dynamic_answers,
                 }
 
                 del updated_value["dynamic_answers"]["answers"]

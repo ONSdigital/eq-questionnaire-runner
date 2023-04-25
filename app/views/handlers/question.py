@@ -113,42 +113,24 @@ class Question(BlockHandler):
             self._return_to_block_id,
         )
 
-    # pylint: disable=protected-access
     def _get_answers_for_question(self, question_json) -> dict[str, Any]:
-        answer_ids = self._schema.get_answer_ids_for_question(question_json)
-        dynamic_answers_dict = {}
-
-        if (
-            question_json.get("dynamic_answers")
-            and question_json["dynamic_answers"]["values"]["identifier"]
-        ):
-            dynamic_answers = []
-
-            for answer_id in answer_ids:
-                for (
-                    list_item_id
-                ) in (
-                    self.questionnaire_store_updater._questionnaire_store.list_store._list_item_ids()
-                ):
-                    if answer := self._questionnaire_store.answer_store.get_answer(
-                        answer_id=answer_id.replace(f"-{list_item_id}", ""),
-                        list_item_id=list_item_id,
-                    ):
-                        dynamic_answers.append(answer)
-
-            dynamic_answers_dict = {
-                f"{answer.answer_id}-{answer.list_item_id}": answer.value
-                for answer in dynamic_answers
-                if answer
-            }
-
-        answers = self._questionnaire_store.answer_store.get_answers_by_answer_id(
-            answer_ids=answer_ids, list_item_id=self._current_location.list_item_id
+        answers_by_answer_id = self._schema.get_answers_for_question_by_id(
+            question_json
         )
-        static_answers_dict = {
-            answer.answer_id: answer.value for answer in answers if answer
-        }
-        return dynamic_answers_dict | static_answers_dict
+        answer_value_by_answer_id = {}
+
+        for answer_id, resolved_answer in answers_by_answer_id.items():
+            list_item_id = (
+                resolved_answer.get("list_item_id")
+                or self._current_location.list_item_id
+            )
+            answer_id_to_use = resolved_answer.get("original_answer_id") or answer_id
+            if answer := self._questionnaire_store.answer_store.get_answer(
+                answer_id=answer_id_to_use, list_item_id=list_item_id
+            ):
+                answer_value_by_answer_id[answer_id] = answer.value
+
+        return answer_value_by_answer_id
 
     def _get_list_add_question_url(self, params):
         block_id = params["block_id"]
@@ -229,6 +211,7 @@ class Question(BlockHandler):
             if list_item_id := item.split("-")[-1]:
                 if (
                     list_item_id
+                    # pylint: disable=protected-access
                     in self.questionnaire_store_updater._list_store._list_item_ids()
                 ):
                     item_id = item.replace(f"-{list_item_id}", "")

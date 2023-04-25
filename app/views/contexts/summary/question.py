@@ -43,12 +43,6 @@ class Question:
         self.type = question_schema["type"]
         self.schema = schema
         self.answer_schemas = iter(question_schema.get("answers", []))
-        if dynamic_answers := question_schema.get("dynamic_answers"):
-            self.dynamic_answer_schemas = dynamic_answers.get("answers", {})
-            self.dynamic_answer_identifier = dynamic_answers.get("values")["identifier"]
-        else:
-            self.dynamic_answer_schemas = None
-            self.dynamic_answer_identifier = None
         self.answer_store = answer_store
         self.list_store = list_store
         self.progress_store = progress_store
@@ -127,7 +121,6 @@ class Question:
                 list_store=self.list_store,
                 progress_store=self.progress_store,
                 schema=self.schema,
-                # :TODO: These should be passed in, not set manually.
                 language=language,
                 metadata=metadata,
                 response_metadata=response_metadata,
