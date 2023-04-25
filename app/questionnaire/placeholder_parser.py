@@ -139,7 +139,9 @@ class PlaceholderParser:
         for transform in transform_list:
             transform_args: MutableMapping[str, Any] = {}
             transform_name = transform["transform"]
-            value_source_resolver = self._get_value_source_resolver_for_transform('first_non_empty_item')
+            value_source_resolver = self._get_value_source_resolver_for_transform(
+                "first_non_empty_item"
+            )
 
             for arg_key, arg_value in transform["arguments"].items():
                 resolved_value: Union[
@@ -147,14 +149,16 @@ class PlaceholderParser:
                 ]
 
                 if isinstance(arg_value, list):
-                    resolved_value = self._resolve_value_source_list(arg_value)
+                    resolved_value = self._resolve_value_source_list(
+                        arg_value, value_source_resolver=value_source_resolver
+                    )
                 elif isinstance(arg_value, dict):
                     if "value" in arg_value:
                         resolved_value = arg_value["value"]
                     elif arg_value["source"] == "previous_transform":
                         resolved_value = transformed_value
                     else:
-                        resolved_value = self._value_source_resolver.resolve(arg_value)
+                        resolved_value = value_source_resolver.resolve(arg_value)
                 else:
                     resolved_value = arg_value
 
@@ -167,11 +171,11 @@ class PlaceholderParser:
         return transformed_value
 
     def _resolve_value_source_list(
-        self, value_source_list: list[dict]
+        self, value_source_list: list[dict], value_source_resolver: ValueSourceResolver
     ) -> list[ValueSourceTypes]:
         values: list[ValueSourceTypes] = []
         for value_source in value_source_list:
-            value = self._value_source_resolver.resolve(value_source)
+            value = value_source_resolver.resolve(value_source)
             if isinstance(value, list):
                 values.extend(value)
             else:
@@ -196,5 +200,18 @@ class PlaceholderParser:
         sources = self._schema.get_values_for_key(placeholder, key="source")
         return all(source == "metadata" for source in sources)
 
-    def _get_value_source_resolver_for_transform(self, transform_name):
-        section_ids = self._schema.get_placeholder_dependencies()    
+    def _get_value_source_resolver_for_transform(
+        self, transform_name: str
+    ) -> ValueSourceResolver:
+        if not (section_ids := self._schema.get_placeholder_dependencies(transform_name)):
+            return self._value_source_resolver
+
+        complete_routing_path_block_ids = []
+
+        for section_id in section_ids:
+            routing_path_block_ids = self._path_finder.routing_path(
+                section_id=section_id
+            ).block_ids
+            complete_routing_path_block_ids += routing_path_block_ids
+
+        return self._get_value_source_resolver(set(complete_routing_path_block_ids))

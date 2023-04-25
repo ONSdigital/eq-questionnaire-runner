@@ -22,6 +22,6 @@ describe("First Non Empty Item Transform", () => {
     await $(DateQuestionBlockPage.yesICanReportForThisPeriod()).click();
     await $(DateQuestionBlockPage.submit()).click();
     await expect(await browser.getUrl()).to.contain(TotalTurnoverBlockPage.pageName);
-    await expect(await $(TotalTurnoverBlockPage.questionTitle()).getText()).to.contain("5 January 2017 to 25 January 2017");
+    await expect(await $(TotalTurnoverBlockPage.questionTitle()).getText()).to.contain("1 January 2017 to 1 February 2017");
   });
 });

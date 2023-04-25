@@ -961,6 +961,22 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 if item["for_list"] == list_name and item.get("item_anchor_answer_id"):
                     return f"#{str(item['item_anchor_answer_id'])}"
 
+    def get_placeholder_dependencies(self, transform_name: str) -> list[str] | None:
+        section_ids = []
+        mapping = list(get_mappings_with_key("transform", self.json.get("sections")))
+        for transform in mapping:
+            if transform["transform"] == transform_name:
+                if items := transform.get("arguments").get("items"):
+                    for item in items:
+                        if item.get("source") == "answers":
+                            identifier = item.get("identifier")
+                            block = self.get_block_for_answer_id(identifier)
+                            section_id = self.get_section_id_for_block_id(block["id"])
+                            if section_id not in section_ids:
+                                section_ids.append(section_id)
+
+        return section_ids
+
 
 def get_sources_for_type_from_data(
     *,
@@ -984,10 +1000,3 @@ def get_calculated_summary_answer_ids(
     )
 
     return [value["identifier"] for value in values if value["source"] == "answers"]
-
-def get_placeholder_dependencies(self,transform_name):
-    mapping = get_mappings_with_key("first_non_empty_item", self.json.get("sections"))
-    for transform in mapping:
-        if transform['transform'] == transform_name:
-            for argument in transform.get('arguments'):
-                pass
