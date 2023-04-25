@@ -188,7 +188,7 @@ def get_sign_out() -> Response:
 
 
 @session_blueprint.route("/signed-out", methods=["GET"])
-def get_signed_out() -> Response | str:
+def get_signed_out():
     if not cookie_session:
         return redirect(url_for("session.get_session_expired"))
 
@@ -201,6 +201,7 @@ def get_signed_out() -> Response | str:
         template="signed-out",
         redirect_url=redirect_url,
     )
+
 
 
 def get_runner_claims(decrypted_token: Mapping[str, Any]) -> dict:
