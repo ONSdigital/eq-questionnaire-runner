@@ -113,10 +113,11 @@ class ValueSourceResolver:
                 if "selector" in value_source
                 else None
             )
-        block_id = self.schema.get_block_for_answer_id(answer_id).get("id")
+        if self.routing_path_block_ids:
+            block_id = self.schema.get_block_for_answer_id(answer_id).get("id")
 
-        if self.routing_path_block_ids and block_id not in self.routing_path_block_ids:
-            return None
+            if block_id not in self.routing_path_block_ids:
+                return None
 
         if answer_value is not None and self.escape_answer_values:
             return escape_answer_value(answer_value)
