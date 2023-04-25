@@ -3,7 +3,7 @@ import DefinitionPage from "../generated_pages/question_definition/definition-bl
 describe("Component: Definition", () => {
   describe("Given I start a survey which contains question definition", () => {
     beforeEach(async () => {
-      await browser.openQuestionnaire("test_question_definition.json");
+      await browser.openQuestionnaire("test_array_type_definitions.json");
     });
 
     it("When I click the title link, then the description should be visible", async () => {

@@ -4,7 +4,7 @@
 {% for item in contents %}
     {%- if item.definition -%}
         {% set definition = item.definition %}
-        {% set definition_id = 'definition-' ~ definition_count.value %}
+        {% set definition_id = 'definition' %}
         {% set category = 'Definition' %}
         {%- include 'partials/definition.html' -%}
         {% set definition_count.value = definition_count.value + 1 %}
