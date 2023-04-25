@@ -3,7 +3,7 @@ import time
 from functools import lru_cache
 from glob import glob
 from pathlib import Path
-from typing import Mapping, Optional
+from typing import Any
 
 import requests
 from requests import RequestException
@@ -55,7 +55,7 @@ def get_schema_list(language_code: str = DEFAULT_LANGUAGE_CODE) -> dict[str, lis
 
 
 @lru_cache(maxsize=None)
-def get_schema_path(language_code, schema_name):
+def get_schema_path(language_code: str, schema_name: str) -> str:
     for schemas_by_language in get_schema_path_map(include_test_schemas=True).values():
         schema_path = schemas_by_language.get(language_code, {}).get(schema_name)
         if schema_path:
@@ -63,7 +63,7 @@ def get_schema_path(language_code, schema_name):
 
 
 @lru_cache(maxsize=None)
-def get_schema_path_map(include_test_schemas: Optional[bool] = False) -> Mapping:
+def get_schema_path_map(include_test_schemas: bool | None = False) -> dict[str, dict[str, dict[str, str]]]:
     schemas = {}
     for survey_type in os.listdir(SCHEMA_DIR):
         if not include_test_schemas and survey_type == "test":
@@ -82,7 +82,7 @@ def get_schema_path_map(include_test_schemas: Optional[bool] = False) -> Mapping
     return schemas
 
 
-def _schema_exists(language_code, schema_name):
+def _schema_exists(language_code: str, schema_name: str) -> bool:
     schema_path_map = get_schema_path_map(include_test_schemas=True)
     return any(
         True
@@ -92,7 +92,7 @@ def _schema_exists(language_code, schema_name):
     )
 
 
-def get_allowed_languages(schema_name, launch_language):
+def get_allowed_languages(schema_name: str, launch_language: str):
     for language_combination in LANGUAGES_MAP.get(schema_name, []):
         if launch_language in language_combination:
             return language_combination
@@ -130,22 +130,22 @@ def load_schema_from_metadata(
     )
 
 
-def load_schema_from_name(schema_name, language_code=DEFAULT_LANGUAGE_CODE):
+def load_schema_from_name(schema_name: str, language_code: str = DEFAULT_LANGUAGE_CODE) -> QuestionnaireSchema:
     return _load_schema_from_name(schema_name, language_code)
 
 
 @lru_cache(maxsize=None)
-def _load_schema_from_name(schema_name, language_code):
+def _load_schema_from_name(schema_name: str, language_code: str) -> QuestionnaireSchema:
     schema_json = _load_schema_file(schema_name, language_code)
 
     return QuestionnaireSchema(schema_json, language_code)
 
 
-def get_schema_name_from_params(eq_id, form_type):
+def get_schema_name_from_params(eq_id, form_type) -> str:
     return f"{eq_id}_{form_type}"
 
 
-def _load_schema_file(schema_name, language_code):
+def _load_schema_file(schema_name: str, language_code: str) -> Any:
     """
     Load a schema, optionally for a specified language.
     :param schema_name: The name of the schema e.g. census_household
@@ -183,7 +183,7 @@ def _load_schema_file(schema_name, language_code):
 
 
 @lru_cache(maxsize=None)
-def load_schema_from_url(schema_url, language_code):
+def load_schema_from_url(schema_url: str, language_code: str) -> QuestionnaireSchema:
     language_code = language_code or DEFAULT_LANGUAGE_CODE
     pid = os.getpid()
     logger.info(
