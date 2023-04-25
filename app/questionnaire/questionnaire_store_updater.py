@@ -387,7 +387,6 @@ class QuestionnaireStoreUpdater:
     def complete_calculated_summary_block(self):
         self._capture_section_dependencies_progress_value_source_for_current_block()
         self._capture_section_dependencies_progress_value_source_for_current_section()
-        self.update_progress_for_dependent_sections()
 
     def update_progress_for_dependent_sections(self) -> None:
         """Removes dependent blocks from the progress store and updates the progress to IN_PROGRESS.

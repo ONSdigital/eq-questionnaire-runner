@@ -114,6 +114,7 @@ class BlockHandler:
         self._set_started_at_metadata()
         self.questionnaire_store_updater.add_completed_location()
         self._update_section_completeness()
+        self.questionnaire_store_updater.update_progress_for_dependent_sections()
         self.questionnaire_store_updater.save()
 
     def _get_routing_path(self):
@@ -132,7 +133,6 @@ class BlockHandler:
             section_id=location.section_id,
             list_item_id=location.list_item_id,
         )
-        self.questionnaire_store_updater.update_progress_for_dependent_sections()
 
     def _set_started_at_metadata(self):
         response_metadata = self._questionnaire_store.response_metadata
