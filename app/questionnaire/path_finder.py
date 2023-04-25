@@ -1,4 +1,4 @@
-from typing import Iterable, Mapping
+from typing import Iterable, Mapping, Sequence
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -108,7 +108,7 @@ class PathFinder:
 
     def _build_routing_path_block_ids(
         self,
-        blocks: list[dict],
+        blocks: Sequence[Mapping],
         current_location: Location,
         when_rules_block_dependencies: list[str],
     ) -> list[str]:

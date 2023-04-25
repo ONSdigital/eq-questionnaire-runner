@@ -12,7 +12,7 @@ from app.questionnaire.value_source_resolver import (
 
 @dataclass
 class DynamicAnswerOptions:
-    dynamic_options_schema: Mapping[str, Any]
+    dynamic_options_schema: Mapping
     rule_evaluator: RuleEvaluator
     value_source_resolver: ValueSourceResolver
 

@@ -27,7 +27,7 @@ class QuestionnaireStoreUpdater:
         schema: QuestionnaireSchema,
         questionnaire_store: QuestionnaireStore,
         router: Router,
-        current_question: Mapping[str, Any] | None,
+        current_question: Mapping | None,
     ):
         self._current_location = current_location
         self._current_question = current_question or {}
@@ -332,7 +332,7 @@ class QuestionnaireStoreUpdater:
                 self.dependent_sections.add(DependentSection(section_id, None, None))
 
     def update_answers(
-        self, form_data: Mapping[str, Any], list_item_id: str | None = None
+        self, form_data: Mapping, list_item_id: str | None = None
     ) -> None:
         list_item_id = list_item_id or self._current_location.list_item_id
         answer_ids_for_question = self._schema.get_answer_ids_for_question(
