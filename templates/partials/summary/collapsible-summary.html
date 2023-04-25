@@ -9,17 +9,7 @@
       {%- set item = {
         "title": group.title,
         "id": group.id,
-        "content": "",
-        "button": {
-          "open": _('Show'),
-          "close": _('Hide'),
-          "attributes": {
-            "data-ga": "click",
-            "data-ga-category": "Preview Survey",
-            "data-ga-action": "Open panel",
-            "data-ga-label": group.title
-          }
-        }
+        "content": ""
       } -%}
 
       {%- set summary %}
