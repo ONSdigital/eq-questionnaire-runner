@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Mapping, Union
+from typing import Mapping, Union
 
 from app.questionnaire.rules.operator import Operator
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator, RuleEvaluatorTypes

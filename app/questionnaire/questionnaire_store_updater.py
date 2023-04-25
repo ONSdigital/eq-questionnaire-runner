@@ -1,6 +1,6 @@
 from collections import defaultdict, namedtuple
 from itertools import combinations
-from typing import Any, Iterable, Mapping
+from typing import Iterable, Mapping
 
 from werkzeug.datastructures import ImmutableDict
 
