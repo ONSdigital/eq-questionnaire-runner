@@ -138,6 +138,8 @@ class PlaceholderParser:
 
         for transform in transform_list:
             transform_args: MutableMapping[str, Any] = {}
+            transform_name = transform["transform"]
+            value_source_resolver = self._get_value_source_resolver_for_transform('first_non_empty_item')
 
             for arg_key, arg_value in transform["arguments"].items():
                 resolved_value: Union[
@@ -193,3 +195,6 @@ class PlaceholderParser:
     def _all_value_sources_metadata(self, placeholder: Mapping) -> bool:
         sources = self._schema.get_values_for_key(placeholder, key="source")
         return all(source == "metadata" for source in sources)
+
+    def _get_value_source_resolver_for_transform(self, transform_name):
+        section_ids = self._schema.get_placeholder_dependencies()    

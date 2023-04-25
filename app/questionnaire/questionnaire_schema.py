@@ -984,3 +984,10 @@ def get_calculated_summary_answer_ids(
     )
 
     return [value["identifier"] for value in values if value["source"] == "answers"]
+
+def get_placeholder_dependencies(self,transform_name):
+    mapping = get_mappings_with_key("first_non_empty_item", self.json.get("sections"))
+    for transform in mapping:
+        if transform['transform'] == transform_name:
+            for argument in transform.get('arguments'):
+                pass
