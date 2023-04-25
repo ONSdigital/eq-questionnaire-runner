@@ -341,3 +341,94 @@ class TestQuestionnaireProgressValueSourceInRepeatingSections(IntegrationTestCas
 
         # 16. Assert random question shows up
         self.assertInBody("Random question about")
+
+    def test_section_progress_dependencies_updated_in_repeating_sections(self):
+        """
+        Test that dependency blocks inside repeating sections are updated properly
+        """
+
+        self.launchSurvey("test_progress_section_value_source_repeating_sections")
+
+        self.assertInBody("Choose another section to complete")
+
+        # 1. Complete 1st section and add 2 people
+        # Don't answer the random question enabler
+        self.go_to_section("section-1")
+        self.assertInBody("Does anyone else live here?")
+        self.post({"anyone-else": "Yes"})
+
+        self.add_person("John", "Doe")
+
+        self.assertInBody("Does anyone else live here?")
+        self.assertInSelector("John Doe", self.row_selector(1))
+        self.post({"anyone-else": "Yes"})
+
+        self.add_person("James", "Bond")
+
+        self.assertInBody("Does anyone else live here?")
+        self.assertInSelector("James Bond", self.row_selector(2))
+        self.post({"anyone-else": "No"})
+
+        self.post()
+
+        self.assertInBody("Random question enabler")
+
+        # 2. Go back to the hub and leave random question block incomplete
+        self.go_to_hub()
+
+        # 3. Repeating sections show as "Not started"
+        self.assertInBody("Choose another section to complete")
+        self.assert_section_status(2, "Not started", ["John Doe"])
+        self.assert_section_status(3, "Not started", ["James Bond"])
+
+        # 4. Complete John Doe section
+        self.get(self.john_doe_link())
+        self.assertInBody("John Doe")
+        self.answer_dob()
+
+        # 5. Assert random question not there
+        self.assertNotInBody("Random question about")
+
+        # 6. Go back to section 1 and complete random question
+        self.go_to_section("section-1")
+        self.assertInBody("Random question enabler")
+        self.post({"random-question-enabler-answer": 1})
+
+        # 7. Go back to the hub
+        self.go_to_hub()
+
+        # 8. Assert sections 1 is completed and repeating sections are partially completed
+        self.assertInBody("Choose another section to complete")
+        self.assert_section_status(1, "Completed", ["List collector + random question"])
+        self.assert_section_status(
+            2, "Partially completed", ["John Doe", "Continue with section"]
+        )
+        self.assert_section_status(3, "Not started", ["James Bond"])
+
+        # 9. Go back to John Doe section
+        self.get(self.john_doe_link())
+
+        # 10. Assert prompts for random question
+        self.assertInBody("Random question about")
+        self.post({"other-answer": 1})
+
+        # 12. Assert it goes to the section summary
+        self.assertInUrl("questionnaire/sections/section-2")
+
+        # 13. Assert answer was provided
+        self.assertInSelector("Random question about", self.row_selector(2))
+        self.assertNotInSelector("No answer provided", self.row_selector(2))
+
+        # 14. Go back to summary
+        self.go_to_hub()
+
+        # 15. Assert John Doe section is completed
+        self.assert_section_status(2, "Completed", ["John Doe"])
+
+        # 15. Edit James Bond section
+        self.get(self.james_bond_link())
+        self.assertInBody("James Bond")
+        self.answer_dob()
+
+        # 16. Assert random question shows up
+        self.assertInBody("Random question about")

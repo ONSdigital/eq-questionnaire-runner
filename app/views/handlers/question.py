@@ -199,14 +199,11 @@ class Question(BlockHandler):
             # We prematurely complete the block, as we need it completed to build the routing path
             # In order to support progress value source references of the previous block
             self.questionnaire_store_updater.add_completed_location()
-            self.questionnaire_store_updater.update_progress_for_dependent_sections()
             self._routing_path = self.router.routing_path(
                 section_id=self._current_location.section_id,
                 list_item_id=self._current_location.list_item_id,
             )
-        else:
-            self.questionnaire_store_updater.update_progress_for_dependent_sections()
-
+        self.questionnaire_store_updater.update_progress_for_dependent_sections()
         super().handle_post()
 
     def get_return_to_hub_url(self):
@@ -233,6 +230,7 @@ class Question(BlockHandler):
                 section_id=section_id,
                 list_item_id=list_item_id,
             )
+            self.questionnaire_store_updater.update_progress_for_dependent_sections()
 
     def clear_radio_answers(self):
         answer_ids_to_remove = []

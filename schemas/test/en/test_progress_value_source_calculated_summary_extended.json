@@ -514,7 +514,7 @@
         },
         {
             "id": "section-4",
-            "title": "Skippable random question",
+            "title": "Section 4 (Dependent on Section 1)",
             "groups": [
                 {
                     "id": "group-4",
@@ -541,12 +541,29 @@
                                     "!=": [
                                         {
                                             "source": "progress",
-                                            "selector": "block",
-                                            "identifier": "calculated-summary-block"
+                                            "selector": "section",
+                                            "identifier": "section-1"
                                         },
                                         "COMPLETED"
                                     ]
                                 }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s4-b2",
+                            "question": {
+                                "id": "s4-b2-q1",
+                                "title": "Random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s4-b2-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
                             }
                         }
                     ]
@@ -555,7 +572,7 @@
         },
         {
             "id": "section-5",
-            "title": "Skippable random question",
+            "title": "Section 5 (Dependent on Calc Summary Block Section 1)",
             "groups": [
                 {
                     "id": "group-5",
@@ -589,6 +606,23 @@
                                     ]
                                 }
                             }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s5-b2",
+                            "question": {
+                                "id": "s5-b2-q1",
+                                "title": "Random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s5-b2-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
                         }
                     ]
                 }
@@ -596,7 +630,7 @@
         },
         {
             "id": "section-6",
-            "title": "Skippable random question",
+            "title": "Section 6 (Dependent on Section 4)",
             "groups": [
                 {
                     "id": "group-6",
@@ -630,6 +664,23 @@
                                     ]
                                 }
                             }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s6-b2",
+                            "question": {
+                                "id": "s6-b2-q1",
+                                "title": "Random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s6-b2-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
                         }
                     ]
                 }
@@ -637,7 +688,7 @@
         },
         {
             "id": "section-7",
-            "title": "Skippable random question",
+            "title": "Section 7 (Dependent on Section 5)",
             "groups": [
                 {
                     "id": "group-7",
@@ -700,6 +751,23 @@
                                     ]
                                 }
                             }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s7-b3",
+                            "question": {
+                                "id": "s7-b3-q1",
+                                "title": "Random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s7-b3-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
                         }
                     ]
                 }
@@ -707,7 +775,7 @@
         },
         {
             "id": "section-8",
-            "title": "Skippable random question",
+            "title": "Section 8 (Dependent on Section 7 and Section 2)",
             "groups": [
                 {
                     "id": "group-8",
@@ -770,6 +838,23 @@
                                     ]
                                 }
                             }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s8-b3",
+                            "question": {
+                                "id": "s8-b3-q1",
+                                "title": "Random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s8-b3-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
                         }
                     ]
                 }
@@ -777,7 +862,7 @@
         },
         {
             "id": "section-9",
-            "title": "Skippable random question",
+            "title": "Section 9 (Dependent on Section 2)",
             "groups": [
                 {
                     "id": "group-9",
@@ -810,6 +895,23 @@
                                         "COMPLETED"
                                     ]
                                 }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s9-b2",
+                            "question": {
+                                "id": "s9-b2-q1",
+                                "title": "Random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s9-b2-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
                             }
                         }
                     ]
