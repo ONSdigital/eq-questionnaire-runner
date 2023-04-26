@@ -1,6 +1,15 @@
 from copy import deepcopy
 from decimal import Decimal
-from typing import Any, Callable, Iterable, Mapping, Optional, Tuple, Union
+from typing import (
+    Any,
+    Callable,
+    Iterable,
+    Mapping,
+    MutableMapping,
+    Optional,
+    Tuple,
+    Union,
+)
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -35,7 +44,7 @@ class CalculatedSummaryContext(Context):
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: Optional[MetadataProxy],
-        response_metadata: Mapping,
+        response_metadata: MutableMapping,
         routing_path: RoutingPath,
         current_location: Location,
     ) -> None:
