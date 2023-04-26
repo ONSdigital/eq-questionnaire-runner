@@ -161,10 +161,11 @@ class QuestionnaireStoreUpdater:
         for list_collector in self._schema.get_list_collectors_for_list(
             for_list=list_name,
             section=self._schema.get_section(self._current_location.section_id),  # type: ignore
-            # Section and answer_id below must exist at this point
+            # type ignore Section and answer_id below must exist at this point
         ):
             block = self._schema.get_add_block_for_list_collector(list_collector["id"])
-            answer_ids = self._schema.get_answer_ids_for_block(block["id"])
+            answer_ids = self._schema.get_answer_ids_for_block(block["id"])  # type: ignore
+            # type ignore non-optional return, always exists
             for answer_id in answer_ids:
                 self._capture_block_dependencies_for_answer(answer_id)
 

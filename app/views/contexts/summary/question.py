@@ -284,7 +284,7 @@ class Question:
         language: str,
         metadata: MetadataProxy | None = None,
         response_metadata: Mapping,
-    ):
+    ) -> Any:
         resolved_question = {"answers": self.answer_schemas}
 
         if "dynamic_answers" in question_schema:
