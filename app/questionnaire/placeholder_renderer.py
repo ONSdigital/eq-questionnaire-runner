@@ -1,7 +1,6 @@
 from copy import deepcopy
 from typing import Any, Mapping, MutableMapping
 
-
 from jsonpointer import resolve_pointer, set_pointer
 
 from app.data_models import ProgressStore

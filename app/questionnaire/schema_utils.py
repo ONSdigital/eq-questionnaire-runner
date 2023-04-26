@@ -29,7 +29,7 @@ def find_pointers_containing(
             yield from find_pointers_containing(item, search_key, f"{pointer}/{index}")
 
 
-def get_answers_from_question(question: Mapping) -> Mapping:
+def get_answers_from_question(question: Mapping) -> list:
     static_answers = question.get("answers", [])
     dynamic_answers = question.get("dynamic_answers", {}).get("answers", [])
     return [*dynamic_answers, *static_answers]

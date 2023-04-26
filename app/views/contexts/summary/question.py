@@ -1,4 +1,4 @@
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping, MutableMapping, Optional
 
 from flask import url_for
 from markupsafe import Markup, escape
@@ -35,7 +35,7 @@ class Question:
         return_to: Optional[str],
         return_to_block_id: Optional[str] = None,
         metadata: MetadataProxy | None,
-        response_metadata: Mapping,
+        response_metadata: MutableMapping,
         language: str,
     ) -> None:
         self.list_item_id = location.list_item_id if location else None
@@ -86,7 +86,7 @@ class Question:
         return_to: str | None,
         return_to_block_id: str | None,
         metadata: MetadataProxy | None,
-        response_metadata: Mapping,
+        response_metadata: MutableMapping,
         language: str,
     ) -> list[dict[str, Any]]:
         if self.summary:
@@ -283,7 +283,7 @@ class Question:
         question_schema: QuestionSchemaType,
         language: str,
         metadata: MetadataProxy | None = None,
-        response_metadata: Mapping,
+        response_metadata: MutableMapping,
     ) -> Any:
         resolved_question = {"answers": self.answer_schemas}
 
