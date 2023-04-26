@@ -1,4 +1,11 @@
-def find_pointers_containing(input_data, search_key, pointer=None):
+from typing import Generator, Iterable, Mapping
+
+
+def find_pointers_containing(
+    input_data: Mapping | Iterable[Mapping],
+    search_key: str,
+    pointer: str | None = None,
+) -> Generator[str, None, None]:
     """
     Recursive function which lists pointers which contain a search key
 
@@ -13,7 +20,7 @@ def find_pointers_containing(input_data, search_key, pointer=None):
         for k, v in input_data.items():
             if (isinstance(v, dict)) and search_key in v:
                 yield pointer + "/" + k if pointer else "/" + k
-            else:
+            elif isinstance(v, (list, tuple, dict)):
                 yield from find_pointers_containing(
                     v, search_key, pointer + "/" + k if pointer else "/" + k
                 )
@@ -22,10 +29,7 @@ def find_pointers_containing(input_data, search_key, pointer=None):
             yield from find_pointers_containing(item, search_key, f"{pointer}/{index}")
 
 
-def get_answer_ids_in_block(block):
+def get_answer_ids_in_block(block: Mapping) -> list[str]:
     question = block["question"]
-    answer_ids = []
-    for answer in question["answers"]:
-        answer_ids.append(answer["id"])
-
+    answer_ids = [answer["id"] for answer in question["answers"]]
     return answer_ids

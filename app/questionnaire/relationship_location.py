@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from dataclasses import dataclass
-from typing import Mapping
+from typing import Any, Mapping
 
 from flask import url_for
 
@@ -18,7 +16,7 @@ class RelationshipLocation:
         attributes = vars(self)
         return {k: v for k, v in attributes.items() if v is not None}
 
-    def url(self, **kwargs) -> str:
+    def url(self, **kwargs: Any) -> str:
         if self.to_list_item_id:
             return url_for(
                 "questionnaire.relationships",

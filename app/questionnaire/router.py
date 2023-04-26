@@ -1,4 +1,4 @@
-from typing import Generator, Mapping, MutableMapping, Optional
+from typing import Generator, Mapping, MutableMapping
 
 from flask import url_for
 
@@ -19,7 +19,7 @@ class Router:
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: Optional[MetadataProxy],
+        metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
     ):
         self._schema = schema
@@ -64,7 +64,7 @@ class Router:
 
         return self.get_next_location_url_for_end_of_section()
 
-    def get_last_location_in_questionnaire_url(self) -> Optional[str]:
+    def get_last_location_in_questionnaire_url(self) -> str | None:
         section_key = self._get_last_complete_section_key()
         if section_key:
             routing_path = self.routing_path(*section_key)
@@ -102,14 +102,14 @@ class Router:
         )
 
     def can_display_section_summary(
-        self, section_id: str, list_item_id: Optional[str] = None
+        self, section_id: str, list_item_id: str | None = None
     ) -> bool:
         return bool(
             self._schema.get_summary_for_section(section_id)
         ) and self._progress_store.is_section_complete(section_id, list_item_id)
 
     def routing_path(
-        self, section_id: str, list_item_id: Optional[str] = None
+        self, section_id: str, list_item_id: str | None = None
     ) -> RoutingPath:
         return self._path_finder.routing_path(section_id, list_item_id)
 
@@ -117,9 +117,9 @@ class Router:
         self,
         location: Location,
         routing_path: RoutingPath,
-        return_to: Optional[str] = None,
-        return_to_answer_id: Optional[str] = None,
-        return_to_block_id: Optional[str] = None,
+        return_to: str | None = None,
+        return_to_answer_id: str | None = None,
+        return_to_block_id: str | None = None,
     ) -> str:
         """
         Get the next location in the section. If the section is complete, determine where to go next,
@@ -167,10 +167,10 @@ class Router:
         self,
         location: Location,
         routing_path: RoutingPath,
-        return_to: Optional[str] = None,
-        return_to_answer_id: Optional[str] = None,
-        return_to_block_id: Optional[str] = None,
-    ) -> Optional[str]:
+        return_to: str | None = None,
+        return_to_answer_id: str | None = None,
+        return_to_block_id: str | None = None,
+    ) -> str | None:
         """
         Returns the previous 'location' to visit given a set of user answers or returns to the summary if
         the `return_to` var is set and the section is complete.
@@ -184,7 +184,8 @@ class Router:
         ):
             return return_to_url
 
-        block_id_index = routing_path.index(location.block_id)
+        # Type ignore: the location will have a block id at this point
+        block_id_index = routing_path.index(location.block_id)  # type: ignore
 
         if block_id_index != 0:
             previous_block_id = routing_path[block_id_index - 1]
@@ -214,12 +215,12 @@ class Router:
     def _get_return_to_location_url(
         self,
         location: Location,
-        return_to: Optional[str],
+        return_to: str | None,
         routing_path: RoutingPath,
-        is_section_complete: Optional[bool] = None,
-        return_to_answer_id: Optional[str] = None,
-        return_to_block_id: Optional[str] = None,
-    ) -> Optional[str]:
+        is_section_complete: bool | None = None,
+        return_to_answer_id: str | None = None,
+        return_to_block_id: str | None = None,
+    ) -> str | None:
         if not return_to:
             return None
 
@@ -316,7 +317,7 @@ class Router:
         return full_routing_path
 
     def is_block_complete(
-        self, *, block_id: str, section_id: str, list_item_id: str
+        self, *, block_id: str, section_id: str, list_item_id: str | None
     ) -> bool:
         return block_id in self._progress_store.get_completed_block_ids(
             section_id, list_item_id
@@ -324,7 +325,7 @@ class Router:
 
     def _get_first_incomplete_location_in_section(
         self, routing_path: RoutingPath
-    ) -> Optional[Location]:
+    ) -> Location | None:
         for block_id in routing_path:
             if not self.is_block_complete(
                 block_id=block_id,
@@ -342,7 +343,7 @@ class Router:
         """
         The allowable path is the completed path plus the next location
         """
-        allowable_path = []
+        allowable_path: list[str] = []
 
         if routing_path:
             for block_id in routing_path:
@@ -371,12 +372,12 @@ class Router:
                 section_key = (section_id, None)
                 yield section_key
 
-    def _get_first_incomplete_section_key(self) -> Optional[tuple[str, Optional[str]]]:
+    def _get_first_incomplete_section_key(self) -> tuple[str, str | None] | None:
         for section_id, list_item_id in self.get_enabled_section_keys():
             if not self._progress_store.is_section_complete(section_id, list_item_id):
                 return section_id, list_item_id
 
-    def _get_last_complete_section_key(self) -> Optional[tuple[str, Optional[str]]]:
+    def _get_last_complete_section_key(self) -> tuple[str, str | None] | None:
         for section_id, list_item_id in list(self.get_enabled_section_keys())[::-1]:
             if self._progress_store.is_section_complete(section_id, list_item_id):
                 return section_id, list_item_id
@@ -406,9 +407,10 @@ class Router:
 
     @staticmethod
     def get_next_block_url(
-        location: Location, routing_path: RoutingPath, **kwargs: Optional[str]
+        location: Location, routing_path: RoutingPath, **kwargs: str | None
     ) -> str:
-        next_block_id = routing_path[routing_path.index(location.block_id) + 1]
+        # Type ignore: the location will have a block
+        next_block_id = routing_path[routing_path.index(location.block_id) + 1]  # type: ignore
         return url_for(
             "questionnaire.block",
             block_id=next_block_id,
@@ -420,7 +422,7 @@ class Router:
 
     @staticmethod
     def _get_section_url(
-        location: Location, return_to_answer_id: Optional[str] = None
+        location: Location, return_to_answer_id: str | None = None
     ) -> str:
         return url_for(
             "questionnaire.get_section",

@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Iterable, Mapping, MutableMapping, Optional, OrderedDict, Union
+from typing import Any, Iterable, Mapping, MutableMapping, OrderedDict
 
 from structlog import get_logger
 
@@ -16,7 +16,7 @@ from app.submitter.convert_payload_0_0_3 import convert_answers_to_payload_0_0_3
 
 logger = get_logger()
 
-MetadataType = Mapping[str, Optional[Union[str, list]]]
+MetadataType = Mapping[str, str | list | None]
 
 
 class DataVersionError(Exception):
@@ -31,7 +31,7 @@ class DataVersionError(Exception):
 def convert_answers_v2(
     schema: QuestionnaireSchema,
     questionnaire_store: QuestionnaireStore,
-    routing_path: Iterable[RoutingPath],
+    full_routing_path: Iterable[RoutingPath],
     submitted_at: datetime,
     flushed: bool = False,
 ) -> dict[str, Any]:
@@ -42,7 +42,7 @@ def convert_answers_v2(
     Args:
         schema: QuestionnaireSchema instance with populated schema json
         questionnaire_store: EncryptedQuestionnaireStorage instance for accessing current questionnaire data
-        routing_path: The full routing path followed by the user when answering the questionnaire
+        full_routing_path: The full routing path followed by the user when answering the questionnaire
         submitted_at: The date and time of submission
         flushed: True when system submits the users answers, False when submitted by user.
     Returns:
@@ -83,7 +83,7 @@ def convert_answers_v2(
         answer_store=answer_store,
         list_store=list_store,
         schema=schema,
-        routing_path=routing_path,
+        full_routing_path=full_routing_path,
         metadata=metadata,
         response_metadata=response_metadata,
         progress_store=progress_store,
@@ -112,11 +112,11 @@ def get_payload_data(
     answer_store: AnswerStore,
     list_store: ListStore,
     schema: QuestionnaireSchema,
-    routing_path: Iterable[RoutingPath],
+    full_routing_path: Iterable[RoutingPath],
     metadata: MetadataProxy,
-    response_metadata: Mapping,
+    response_metadata: MutableMapping,
     progress_store: ProgressStore,
-) -> Union[OrderedDict[str, Any], dict[str, Union[list[Any]]]]:
+) -> OrderedDict[str, Any] | dict[str, list[Any]]:
     if schema.json["data_version"] == "0.0.1":
         return convert_answers_to_payload_0_0_1(
             metadata=metadata,
@@ -124,7 +124,7 @@ def get_payload_data(
             answer_store=answer_store,
             list_store=list_store,
             schema=schema,
-            full_routing_path=routing_path,
+            full_routing_path=full_routing_path,
             progress_store=progress_store,
         )
 
@@ -133,10 +133,10 @@ def get_payload_data(
             answer_store=answer_store,
             list_store=list_store,
             schema=schema,
-            full_routing_path=routing_path,
+            full_routing_path=full_routing_path,
         )
 
-        data: dict[str, Union[list[Any]]] = {
+        data: dict[str, list[Any]] = {
             "answers": answers,
             "lists": list_store.serialize(),
         }
