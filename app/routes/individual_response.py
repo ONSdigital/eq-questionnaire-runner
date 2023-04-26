@@ -4,16 +4,20 @@ from flask_login import current_user, login_required
 from itsdangerous import BadSignature
 from structlog import contextvars, get_logger
 from werkzeug.exceptions import BadRequest
+from werkzeug.wrappers.response import Response
 
 from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
 )
-from app.globals import get_metadata, get_questionnaire_store, get_session_store
+from app.data_models import QuestionnaireStore
+from app.data_models.metadata_proxy import MetadataProxy
+from app.globals import get_metadata, get_questionnaire_store
 from app.helpers import url_safe_serializer
 from app.helpers.language_helper import handle_language
 from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store
 from app.helpers.template_helpers import render_template
+from app.questionnaire import QuestionnaireSchema
 from app.utilities.schema import load_schema_from_metadata
 from app.views.handlers.individual_response import (
     IndividualResponseChangeHandler,
@@ -35,7 +39,7 @@ individual_response_blueprint = Blueprint(
 
 @login_required
 @individual_response_blueprint.before_request
-def before_individual_response_request():
+def before_individual_response_request() -> Response | None:
     if request.method == "OPTIONS":
         return None
 
@@ -65,6 +69,7 @@ def before_individual_response_request():
         "individual-response request", method=request.method, url_path=request.full_path
     )
 
+    # Ensures langauge is set in the SessionStore
     handle_language(metadata)
 
     # pylint: disable=assigning-non-slot
@@ -77,9 +82,11 @@ def before_individual_response_request():
 @individual_response_blueprint.route("/", methods=["GET"])
 @with_questionnaire_store
 @with_schema
-def request_individual_response(schema, questionnaire_store):
-    language_code = get_session_store().session_data.language_code
-    list_item_id = request.args.get("list_item_id")
+def request_individual_response(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+) -> str:
+    language_code: str = get_locale().language
+    list_item_id: str | None = request.args.get("list_item_id")
 
     individual_response_handler = IndividualResponseHandler(
         schema=schema,
@@ -96,8 +103,12 @@ def request_individual_response(schema, questionnaire_store):
 @individual_response_blueprint.route("/<list_item_id>/how", methods=["GET", "POST"])
 @with_questionnaire_store
 @with_schema
-def individual_response_how(schema, questionnaire_store, list_item_id):
-    language_code = get_session_store().session_data.language_code
+def individual_response_how(
+    schema: QuestionnaireSchema,
+    questionnaire_store: QuestionnaireStore,
+    list_item_id: str,
+) -> Response | str:
+    language_code: str = get_locale().language
     individual_response_handler = IndividualResponseHowHandler(
         schema=schema,
         questionnaire_store=questionnaire_store,
@@ -116,8 +127,12 @@ def individual_response_how(schema, questionnaire_store, list_item_id):
 @individual_response_blueprint.route("/<list_item_id>/change", methods=["GET", "POST"])
 @with_questionnaire_store
 @with_schema
-def individual_response_change(schema, questionnaire_store, list_item_id):
-    language_code = get_session_store().session_data.language_code
+def individual_response_change(
+    schema: QuestionnaireSchema,
+    questionnaire_store: QuestionnaireStore,
+    list_item_id: str,
+) -> Response | str | None:
+    language_code: str = get_locale().language
     individual_response_handler = IndividualResponseChangeHandler(
         schema=schema,
         questionnaire_store=questionnaire_store,
@@ -138,8 +153,12 @@ def individual_response_change(schema, questionnaire_store, list_item_id):
 )
 @with_questionnaire_store
 @with_schema
-def individual_response_post_address_confirm(schema, questionnaire_store, list_item_id):
-    language_code = get_session_store().session_data.language_code
+def individual_response_post_address_confirm(
+    schema: QuestionnaireSchema,
+    questionnaire_store: QuestionnaireStore,
+    list_item_id: str,
+) -> Response | str:
+    language_code: str = get_locale().language
     try:
         individual_response_handler = IndividualResponsePostAddressConfirmHandler(
             schema=schema,
@@ -161,8 +180,10 @@ def individual_response_post_address_confirm(schema, questionnaire_store, list_i
 @individual_response_blueprint.route("/post/confirmation", methods=["GET", "POST"])
 @with_questionnaire_store
 @with_schema
-def individual_response_post_address_confirmation(schema, questionnaire_store):
-    language_code = get_session_store().session_data.language_code
+def individual_response_post_address_confirmation(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+) -> Response | str:
+    language_code: str = get_locale().language
     individual_response_handler = IndividualResponseHandler(
         schema=schema,
         questionnaire_store=questionnaire_store,
@@ -175,7 +196,8 @@ def individual_response_post_address_confirmation(schema, questionnaire_store):
     if request.method == "POST":
         return redirect(url_for("questionnaire.get_questionnaire"))
 
-    metadata = questionnaire_store.metadata
+    # Type ignore: @with_schema guarantees that metadata is present via QuestionnaireStore
+    metadata: MetadataProxy = questionnaire_store.metadata  # type: ignore
 
     return render_template(
         template="individual_response/confirmation-post",
@@ -189,8 +211,10 @@ def individual_response_post_address_confirmation(schema, questionnaire_store):
 @individual_response_blueprint.route("/who", methods=["GET", "POST"])
 @with_questionnaire_store
 @with_schema
-def individual_response_who(schema, questionnaire_store):
-    language_code = get_session_store().session_data.language_code
+def individual_response_who(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+) -> Response | str:
+    language_code: str = get_locale().language
     individual_response_handler = IndividualResponseWhoHandler(
         schema=schema,
         questionnaire_store=questionnaire_store,
@@ -210,8 +234,12 @@ def individual_response_who(schema, questionnaire_store):
 )
 @with_questionnaire_store
 @with_schema
-def individual_response_text_message(schema, questionnaire_store, list_item_id):
-    language_code = get_session_store().session_data.language_code
+def individual_response_text_message(
+    schema: QuestionnaireSchema,
+    questionnaire_store: QuestionnaireStore,
+    list_item_id: str,
+) -> Response | str:
+    language_code: str = get_locale().language
     individual_response_handler = IndividualResponseTextHandler(
         schema=schema,
         questionnaire_store=questionnaire_store,
@@ -232,8 +260,12 @@ def individual_response_text_message(schema, questionnaire_store, list_item_id):
 )
 @with_questionnaire_store
 @with_schema
-def individual_response_text_message_confirm(schema, questionnaire_store, list_item_id):
-    language_code = get_session_store().session_data.language_code
+def individual_response_text_message_confirm(
+    schema: QuestionnaireSchema,
+    questionnaire_store: QuestionnaireStore,
+    list_item_id: str,
+) -> Response | str:
+    language_code: str = get_locale().language
     individual_response_handler = IndividualResponseTextConfirmHandler(
         schema=schema,
         questionnaire_store=questionnaire_store,
@@ -252,8 +284,10 @@ def individual_response_text_message_confirm(schema, questionnaire_store, list_i
 @individual_response_blueprint.route("/text/confirmation", methods=["GET", "POST"])
 @with_questionnaire_store
 @with_schema
-def individual_response_text_message_confirmation(schema, questionnaire_store):
-    language_code = get_session_store().session_data.language_code
+def individual_response_text_message_confirmation(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+) -> Response | str:
+    language_code: str = get_locale().language
     individual_response_handler = IndividualResponseHandler(
         schema=schema,
         questionnaire_store=questionnaire_store,

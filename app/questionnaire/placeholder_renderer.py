@@ -26,7 +26,7 @@ class PlaceholderRenderer:
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: MetadataProxy | None,
-        response_metadata: Mapping,
+        response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         progress_store: ProgressStore,
         location: Location | RelationshipLocation | None = None,

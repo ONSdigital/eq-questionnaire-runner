@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Any, Generator, Iterable, Mapping, Optional, Union
+from typing import Any, Generator, Iterable, Mapping, MutableMapping, Optional, Union
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -24,7 +24,7 @@ class SectionSummaryContext(Context):
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: Optional[MetadataProxy],
-        response_metadata: Mapping,
+        response_metadata: MutableMapping,
         routing_path: RoutingPath,
         current_location: Location,
     ) -> None:

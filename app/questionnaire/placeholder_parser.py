@@ -41,7 +41,7 @@ class PlaceholderParser:
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: MetadataProxy | None,
-        response_metadata: Mapping,
+        response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         renderer: "PlaceholderRenderer",
         progress_store: ProgressStore,
