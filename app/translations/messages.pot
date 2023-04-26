@@ -50,7 +50,7 @@ msgid "Remove {item_name}"
 msgstr ""
 
 #: app/jinja_filters.py:699
-#: templates/partials/summary/collapsible-summary.html:36
+#: templates/partials/summary/collapsible-summary.html:26
 #: templates/partials/summary/summary.html:20
 msgid "No answer provided"
 msgstr ""
@@ -879,7 +879,7 @@ msgstr ""
 msgid "If you can’t answer someone else’s questions"
 msgstr ""
 
-#: templates/interstitial.html:23 templates/partials/question.html:24
+#: templates/interstitial.html:23 templates/partials/question.html:45
 msgid "If you can’t answer questions for this person"
 msgstr ""
 
@@ -937,28 +937,15 @@ msgstr ""
 msgid "Save questions as PDF"
 msgstr ""
 
-#: templates/partials/introduction/preview.html:29
-#: templates/partials/summary/collapsible-summary.html:14
-#: templates/preview.html:81
-msgid "Show"
-msgstr ""
-
-#: templates/layouts/_base.html:74
-#: templates/partials/introduction/preview.html:30
-#: templates/partials/summary/collapsible-summary.html:15
-#: templates/preview.html:82
-msgid "Hide"
-msgstr ""
-
-#: templates/partials/introduction/preview.html:47
-#: templates/partials/summary/collapsible-summary.html:59
-#: templates/preview.html:102
+#: templates/partials/introduction/preview.html:37
+#: templates/partials/summary/collapsible-summary.html:49
+#: templates/preview.html:92
 msgid "Show all"
 msgstr ""
 
-#: templates/partials/introduction/preview.html:48
-#: templates/partials/summary/collapsible-summary.html:60
-#: templates/preview.html:103
+#: templates/partials/introduction/preview.html:38
+#: templates/partials/summary/collapsible-summary.html:50
+#: templates/preview.html:93
 msgid "Hide all"
 msgstr ""
 
@@ -1314,6 +1301,10 @@ msgstr ""
 msgid "Set cookie preferences"
 msgstr ""
 
+#: templates/layouts/_base.html:74
+msgid "Hide"
+msgstr ""
+
 #: templates/layouts/_base.html:130
 msgid "Skip to main content"
 msgstr ""
@@ -1352,12 +1343,6 @@ msgstr ""
 msgid "Interviewer note:"
 msgstr ""
 
-#: templates/partials/answer-guidance.html:18
-#: templates/partials/definition.html:18
-#: templates/partials/individual-response-guidance.html:13
-msgid "Hide this"
-msgstr ""
-
 #: templates/partials/email-form.html:25
 msgid "Email address"
 msgstr ""
@@ -1382,13 +1367,13 @@ msgstr ""
 msgid "Give feedback"
 msgstr ""
 
-#: templates/partials/individual-response-guidance.html:24
+#: templates/partials/individual-response-guidance.html:14
 msgid ""
 "You can <em>share your household access code</em> with the people you "
 "live with so they can complete their own sections."
 msgstr ""
 
-#: templates/partials/individual-response-guidance.html:25
+#: templates/partials/individual-response-guidance.html:15
 msgid ""
 "If this is not possible, there are <a href={url}>other ways each person "
 "can complete their own census.</a>"
@@ -1404,28 +1389,28 @@ msgid ""
 " of the section</a>"
 msgstr ""
 
-#: templates/partials/preview-question.html:35
-#: templates/partials/question.html:68
+#: templates/partials/preview-question.html:34
+#: templates/partials/question.html:81
 msgid "Or"
 msgstr ""
 
-#: templates/partials/preview-question.html:56
+#: templates/partials/preview-question.html:55
 msgid "{max_characters} characters can be added."
 msgstr ""
 
-#: templates/partials/question.html:59
+#: templates/partials/question.html:72
 msgid "Selecting this will clear your answer"
 msgstr ""
 
-#: templates/partials/question.html:60
+#: templates/partials/question.html:73
 msgid "cleared"
 msgstr ""
 
-#: templates/partials/question.html:63
+#: templates/partials/question.html:76
 msgid "Selecting this will deselect any selected options"
 msgstr ""
 
-#: templates/partials/question.html:64 templates/partials/question.html:72
+#: templates/partials/question.html:77 templates/partials/question.html:85
 msgid "deselected"
 msgstr ""
 
@@ -1591,13 +1576,13 @@ msgstr ""
 msgid "Start survey"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:37
+#: templates/partials/summary/collapsible-summary.html:27
 #: templates/partials/summary/list-summary.html:7
 #: templates/partials/summary/summary.html:21
 msgid "Change"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:38
+#: templates/partials/summary/collapsible-summary.html:28
 #: templates/partials/summary/summary.html:22
 msgid "Change your answer for:"
 msgstr ""
