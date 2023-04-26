@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from dataclasses import dataclass
-from typing import Mapping, Optional
+from typing import Any, Mapping
 
 from flask import url_for
 
@@ -10,15 +8,15 @@ from flask import url_for
 class RelationshipLocation:
     section_id: str
     block_id: str
-    list_name: str
-    list_item_id: str
-    to_list_item_id: Optional[str] = None
+    list_name: str | None
+    list_item_id: str | None
+    to_list_item_id: str | None = None
 
     def for_json(self) -> Mapping:
         attributes = vars(self)
         return {k: v for k, v in attributes.items() if v is not None}
 
-    def url(self, **kwargs) -> str:
+    def url(self, **kwargs: Any) -> str:
         if self.to_list_item_id:
             return url_for(
                 "questionnaire.relationships",

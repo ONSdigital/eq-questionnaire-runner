@@ -78,7 +78,7 @@ def test_transform_variants_with_content(content_variant_schema):
 
     assert transformed_block != block
     assert "content_variants" not in transformed_block
-    assert transformed_block["content"][0]["title"] == "You are over 16"
+    assert transformed_block["content"]["title"] == "You are over 16"
 
 
 def test_transform_variants_with_no_variants(question_schema):
@@ -180,7 +180,7 @@ def test_choose_content_to_display(content_variant_schema):
         progress_store=ProgressStore(),
     )
 
-    assert content_to_display[0]["title"] == "You are over 16"
+    assert content_to_display["title"] == "You are over 16"
 
     answer_store = AnswerStore({})
 
@@ -195,7 +195,7 @@ def test_choose_content_to_display(content_variant_schema):
         progress_store=ProgressStore(),
     )
 
-    assert content_to_display[0]["title"] == "You are ageless"
+    assert content_to_display["title"] == "You are ageless"
 
 
 def test_choose_question_to_display(question_variant_schema):

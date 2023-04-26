@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta, timezone
-from typing import Optional
 
 from flask import current_app, g
 from flask import session as cookie_session
@@ -7,7 +6,6 @@ from structlog import get_logger
 
 from app.authentication.user import User
 from app.data_models import QuestionnaireStore
-from app.data_models.answer_store import AnswerStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
@@ -33,7 +31,7 @@ def get_questionnaire_store(user_id: str, user_ik: str) -> QuestionnaireStore:
     return store
 
 
-def get_session_store() -> Optional[SessionStore]:
+def get_session_store() -> SessionStore | None:
     if USER_IK not in cookie_session or EQ_SESSION_ID not in cookie_session:
         return None
 
@@ -92,18 +90,13 @@ def create_session_store(
     )
 
 
-def get_metadata(user: User) -> Optional[MetadataProxy]:
+def get_metadata(user: User) -> MetadataProxy | None:
     if user.is_anonymous:
         logger.debug("anonymous user requesting metadata get instance")
         return None
 
     questionnaire_store = get_questionnaire_store(user.user_id, user.user_ik)
     return questionnaire_store.metadata
-
-
-def get_answer_store(user: User) -> AnswerStore:
-    questionnaire_store = get_questionnaire_store(user.user_id, user.user_ik)
-    return questionnaire_store.answer_store
 
 
 def get_view_submitted_response_expiration_time(submitted_at: datetime) -> datetime:

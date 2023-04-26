@@ -1,21 +1,25 @@
 from datetime import datetime, timezone
 from functools import cached_property
-from typing import List, Mapping, Optional
+from typing import Any, Mapping, Optional
 from uuid import uuid4
 
 from flask import current_app, redirect
 from flask.helpers import url_for
-from flask_babel import lazy_gettext
+from flask_babel import LazyString, lazy_gettext
 from itsdangerous import BadSignature
+from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.exceptions import BadRequest, NotFound
+from werkzeug.wrappers.response import Response
 
-from app.data_models import CompletionStatus, FulfilmentRequest
+from app.data_models import CompletionStatus, FulfilmentRequest, QuestionnaireStore
+from app.data_models.list_store import ListModel
 from app.data_models.metadata_proxy import MetadataProxy
-from app.forms.questionnaire_form import generate_form
+from app.forms.questionnaire_form import QuestionnaireForm, generate_form
 from app.forms.validators import sanitise_mobile_number
 from app.helpers import url_safe_serializer
 from app.helpers.template_helpers import render_template
 from app.publisher.exceptions import PublicationFailed
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.router import Router
 from app.views.contexts.question import build_question_context
@@ -39,7 +43,7 @@ class IndividualResponsePostalDeadlinePast(Exception):
 
 class IndividualResponseHandler:
     @staticmethod
-    def _person_name_transforms(list_name) -> List[Mapping]:
+    def _person_name_transforms(list_name: str) -> list[Mapping]:
         return [
             {
                 "transform": "contains",
@@ -64,7 +68,7 @@ class IndividualResponseHandler:
         ]
 
     @staticmethod
-    def _person_name_placeholder(list_name) -> List[Mapping]:
+    def _person_name_placeholder(list_name: str) -> list[Mapping]:
         return [
             {
                 "placeholder": "person_name",
@@ -75,8 +79,10 @@ class IndividualResponseHandler:
         ]
 
     @staticmethod
-    def _person_name_placeholder_possessive(list_name) -> List[Mapping]:
-        name_transforms = IndividualResponseHandler._person_name_transforms(list_name)
+    def _person_name_placeholder_possessive(list_name: str) -> list[Mapping]:
+        name_transforms: list[
+            Mapping
+        ] = IndividualResponseHandler._person_name_transforms(list_name)
         return [
             {
                 "placeholder": "person_name_possessive",
@@ -93,7 +99,7 @@ class IndividualResponseHandler:
         ]
 
     @cached_property
-    def has_postal_deadline_passed(self):
+    def has_postal_deadline_passed(self) -> bool:
         individual_response_postal_deadline = current_app.config[
             "EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE"
         ]
@@ -101,19 +107,19 @@ class IndividualResponseHandler:
 
     def __init__(
         self,
-        schema,
-        questionnaire_store,
-        language,
-        request_args,
-        form_data,
-        list_item_id=None,
+        schema: QuestionnaireSchema,
+        questionnaire_store: QuestionnaireStore,
+        language: str,
+        request_args: dict[str, str] | None,
+        form_data: ImmutableMultiDict[str, str],
+        list_item_id: str | None = None,
     ):
         self._schema = schema
         self._questionnaire_store = questionnaire_store
         self._language = language
-        self._request_args = request_args or {}
+        self._request_args: dict[str, str] = request_args or {}
         self._form_data = form_data
-        self._answers = None
+        self._answers: dict[str, Any] | None = None
         self._list_item_id = list_item_id
         self._list_name = self._schema.get_individual_response_list()
 
@@ -125,16 +131,18 @@ class IndividualResponseHandler:
             raise NotFound
 
     @cached_property
-    def _list_model(self):
-        return self._questionnaire_store.list_store[self._list_name]
+    def _list_model(self) -> ListModel:
+        # Type ignore: Current usages of this cached property occur when List Name will exist and be not None
+        return self._questionnaire_store.list_store[self._list_name]  # type: ignore
 
     @cached_property
-    def _list_item_position(self):
+    def _list_item_position(self) -> int:
+        # Type ignore: Current usages of this cached property occur when List Name and List Item ID exist and be not None
         return self._questionnaire_store.list_store.list_item_position(
-            self._list_name, self._list_item_id
+            self._list_name, self._list_item_id  # type: ignore
         )
 
-    def page_title(self, page_title):
+    def page_title(self, page_title: str) -> str:
         if self._list_item_id:
             page_title += ": " + lazy_gettext(
                 "Person {list_item_position}".format(  # pylint: disable=consider-using-f-string
@@ -143,7 +151,7 @@ class IndividualResponseHandler:
             )
         return page_title
 
-    def _is_location_valid(self):
+    def _is_location_valid(self) -> bool:
         if not self._list_model:
             return False
 
@@ -157,13 +165,14 @@ class IndividualResponseHandler:
         return True
 
     @cached_property
-    def rendered_block(self) -> Mapping:
+    def rendered_block(self) -> Mapping[str, Any]:
         return self._render_block()
 
     @cached_property
-    def placeholder_renderer(self):
+    def placeholder_renderer(self) -> PlaceholderRenderer:
         return PlaceholderRenderer(
-            language=self._language,
+            # Type ignore: Language is defaulted via handle_language in the individual_response blueprint before_request which triggers this
+            language=self._language,  # type: ignore
             answer_store=self._questionnaire_store.answer_store,
             list_store=self._questionnaire_store.list_store,
             metadata=self._questionnaire_store.metadata,
@@ -174,7 +183,7 @@ class IndividualResponseHandler:
         )
 
     @cached_property
-    def router(self):
+    def router(self) -> Router:
         return Router(
             schema=self._schema,
             answer_store=self._questionnaire_store.answer_store,
@@ -185,11 +194,11 @@ class IndividualResponseHandler:
         )
 
     @cached_property
-    def individual_section_id(self):
+    def individual_section_id(self) -> str | None:
         return self._schema.get_individual_response_individual_section_id()
 
     @cached_property
-    def form(self):
+    def form(self) -> QuestionnaireForm:
         return generate_form(
             schema=self._schema,
             question_schema=self.rendered_block["question"],
@@ -205,14 +214,17 @@ class IndividualResponseHandler:
     def get_context(self):
         return build_question_context(self.rendered_block, self.form)
 
-    def _publish_fulfilment_request(self, mobile_number=None):
+    def _publish_fulfilment_request(self, mobile_number=None) -> None:
         self._check_individual_response_count()
         topic_id = current_app.config["EQ_FULFILMENT_TOPIC_ID"]
         fulfilment_request = IndividualResponseFulfilmentRequest(
-            self._metadata, mobile_number
+            # Type ignore: _metadata will exist at point of publish
+            self._metadata,  # type: ignore
+            mobile_number,
         )
         try:
-            return current_app.eq["publisher"].publish(
+            # Type ignore: Instance attribute 'eq' is a dict with key "publisher" with value of abstract type Publisher
+            return current_app.eq["publisher"].publish(  # type: ignore
                 topic_id,
                 message=fulfilment_request.message,
                 fulfilment_request_transaction_id=fulfilment_request.transaction_id,
@@ -220,7 +232,7 @@ class IndividualResponseHandler:
         except PublicationFailed as exc:
             raise IndividualResponseFulfilmentRequestPublicationFailed from exc
 
-    def _check_individual_response_count(self):
+    def _check_individual_response_count(self) -> None:
         if (
             self._questionnaire_store.response_metadata.get(
                 "individual_response_count", 0
@@ -231,20 +243,21 @@ class IndividualResponseHandler:
                 "Individual response limit has been reached"
             )
 
-    def _update_individual_response_count(self):
+    def _update_individual_response_count(self) -> None:
         response_metadata = self._questionnaire_store.response_metadata
 
+        # Type ignore:
         if response_metadata.get("individual_response_count"):
             response_metadata["individual_response_count"] += 1
         else:
             response_metadata["individual_response_count"] = 1
 
-    def _update_questionnaire_store_on_publish(self):
+    def _update_questionnaire_store_on_publish(self) -> None:
         self._update_section_status(CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED)
         self._update_individual_response_count()
         self._questionnaire_store.save()
 
-    def handle_get(self):
+    def handle_get(self) -> str:
         return render_template(
             template="individual_response/interstitial",
             language=self._language,
@@ -255,8 +268,9 @@ class IndividualResponseHandler:
             ),
         )
 
-    def _get_next_location_url(self):
-        list_model = self._questionnaire_store.list_store[self._list_name]
+    def _get_next_location_url(self) -> str:
+        # Type ignore: Current usages of this method occur when List Name exists and is not None
+        list_model = self._questionnaire_store.list_store[self._list_name]  # type: ignore
 
         if self._list_item_id:
             return url_for(
@@ -274,18 +288,20 @@ class IndividualResponseHandler:
 
         return url_for(".individual_response_who", journey="hub")
 
-    def _get_previous_location_url(self):
+    def _get_previous_location_url(self) -> str:
         if self._request_args.get("journey") == "remove-person":
             return url_for(
                 "questionnaire.block",
                 list_name=self._list_name,
                 list_item_id=self._list_item_id,
-                block_id=self._schema.get_remove_block_id_for_list(self._list_name),
+                # Type ignore: Current usages of this method occur when List Name exists and is not None
+                block_id=self._schema.get_remove_block_id_for_list(self._list_name),  # type: ignore
             )
 
         if self._list_item_id:
             individual_section_first_block_id = (
-                self._schema.get_first_block_id_for_section(self.individual_section_id)
+                # Type ignore: Current usages of this method occur when Individual Section ID exists and is not None
+                self._schema.get_first_block_id_for_section(self.individual_section_id)  # type: ignore
             )
             return url_for(
                 "questionnaire.block",
@@ -296,24 +312,27 @@ class IndividualResponseHandler:
 
         return url_for("questionnaire.get_questionnaire")
 
-    def _render_block(self):
+    def _render_block(self) -> dict[str, Any]:
         return self.placeholder_renderer.render(
             data_to_render=self.block_definition, list_item_id=self._list_item_id
         )
 
-    def _update_section_status(self, status):
+    def _update_section_status(self, status: str) -> None:
         self._questionnaire_store.progress_store.update_section_status(
-            status, self.individual_section_id, self._list_item_id
+            # Type ignore: Current usages of this method occur when Individual Section ID exists and is not None
+            status,
+            self.individual_section_id,  # type: ignore
+            self._list_item_id,
         )
 
     @property
-    def block_definition(self):  # pragma: no cover
+    def block_definition(self) -> Mapping[str, Any]:  # pragma: no cover
         raise NotImplementedError
 
 
 class IndividualResponseHowHandler(IndividualResponseHandler):
     @cached_property
-    def block_definition(self) -> Mapping:
+    def block_definition(self) -> Mapping[str, Any]:
         return {
             "type": "IndividualResponse",
             "id": "individual-response",
@@ -325,7 +344,8 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                         "How would you like <em>{person_name}</em> to receive a separate census?"
                     ),
                     "placeholders": IndividualResponseHandler._person_name_placeholder(
-                        self._list_name
+                        # Type ignore: List name will exist and be not None at this point
+                        self._list_name  # type: ignore
                     ),
                 },
                 "description": self._build_question_description(),
@@ -341,7 +361,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
             },
         }
 
-    def _build_handler_answer_options(self):
+    def _build_handler_answer_options(self) -> list[dict[str, str | LazyString]]:
         handler_options = [
             {
                 "label": lazy_gettext("Text message"),
@@ -363,7 +383,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
             )
         return handler_options
 
-    def _build_question_description(self):
+    def _build_question_description(self) -> list[LazyString]:
         description = (
             lazy_gettext("It is no longer possible to receive an access code by post.")
             if self.has_postal_deadline_passed
@@ -377,11 +397,11 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
         ]
 
     @cached_property
-    def selected_option(self):
+    def selected_option(self) -> str:
         answer_id = self.rendered_block["question"]["answers"][0]["id"]
         return self.form.get_data(answer_id)
 
-    def handle_get(self):
+    def handle_get(self) -> str:
         if self._request_args.get("journey") == "hub":
             if len(self._list_model.non_primary_people) == 1:
                 previous_location_url = url_for(
@@ -419,7 +439,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
             page_title=self.page_title(lazy_gettext("Send individual access code")),
         )
 
-    def handle_post(self):
+    def handle_post(self) -> Response:
         if self.selected_option == "Post":
             return redirect(
                 url_for(
@@ -439,7 +459,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
 
 class IndividualResponseChangeHandler(IndividualResponseHandler):
     @cached_property
-    def block_definition(self) -> Mapping:
+    def block_definition(self) -> Mapping[str, Any]:
         return {
             "type": "IndividualResponse",
             "id": "individual-response-change",
@@ -451,7 +471,8 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
                         "How would you like to answer <em>{person_name_possessive}</em> questions?"
                     ),
                     "placeholders": IndividualResponseHandler._person_name_placeholder_possessive(
-                        self._list_name
+                        # Type ignore: List name will exist and be not None at this point
+                        self._list_name  # type: ignore
                     ),
                 },
                 "answers": [
@@ -482,7 +503,8 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
                                         "I will answer for {person_name}"
                                     ),
                                     "placeholders": IndividualResponseHandler._person_name_placeholder(
-                                        self._list_name
+                                        # Type ignore: List name will exist and be not None at this point
+                                        self._list_name  # type: ignore
                                     ),
                                 },
                                 "value": "I will answer for {person_name}",
@@ -510,7 +532,7 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
         answer_id = self.rendered_block["question"]["answers"][0]["id"]
         return self.form.get_data(answer_id)
 
-    def handle_get(self):
+    def handle_get(self) -> str:
         self._answers = {
             "individual-response-change-answer": self.request_separate_census_option
         }
@@ -523,7 +545,7 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
             page_title=self.page_title(lazy_gettext("How to answer questions")),
         )
 
-    def handle_post(self):
+    def handle_post(self) -> Response | None:
         if self.selected_option == self.request_separate_census_option:
             return redirect(
                 url_for(
@@ -540,7 +562,8 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
         if self.selected_option == self.cancel_go_to_section_option:
             self._update_section_completeness()
             individual_section_first_block_id = (
-                self._schema.get_first_block_id_for_section(self.individual_section_id)
+                # Type ignore: Current usages of this method occur when Individual Section ID exists and is not None
+                self._schema.get_first_block_id_for_section(self.individual_section_id)  # type: ignore
             )
             return redirect(
                 url_for(
@@ -589,7 +612,8 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
                         "Do you want to send an individual access code for {person_name} by post?"
                     ),
                     "placeholders": IndividualResponseHandler._person_name_placeholder(
-                        self._list_name
+                        # Type ignore: List name will exist and be not None at this point
+                        self._list_name  # type: ignore
                     ),
                 },
                 "description": [
@@ -640,7 +664,7 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
     def selected_option(self):
         return self.form.get_data(self.answer_id)
 
-    def handle_get(self):
+    def handle_get(self) -> str:
         previous_location_url = url_for(
             "individual_response.individual_response_how",
             list_item_id=self._list_item_id,
@@ -655,7 +679,7 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
             page_title=self.page_title(lazy_gettext("Confirm address")),
         )
 
-    def handle_post(self):
+    def handle_post(self) -> Response:
         if self.selected_option == self.confirm_option:
             self._publish_fulfilment_request()
             self._update_questionnaire_store_on_publish()
@@ -733,7 +757,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
         answer_id = self.rendered_block["question"]["answers"][0]["id"]
         return self.form.get_data(answer_id)
 
-    def handle_get(self):
+    def handle_get(self) -> str:
         if len(self.non_primary_people_names) > 1:
             previous_location_url = url_for(
                 "individual_response.request_individual_response",
@@ -750,7 +774,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
 
         raise NotFound
 
-    def handle_post(self):
+    def handle_post(self) -> Response:
         return redirect(
             url_for(
                 ".individual_response_how",
@@ -773,7 +797,8 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
                         "What is <em>{person_name_possessive}</em> mobile number?"
                     ),
                     "placeholders": IndividualResponseHandler._person_name_placeholder_possessive(
-                        self._list_name
+                        # Type ignore: List name will exist and be not None at this point
+                        self._list_name  # type: ignore
                     ),
                 },
                 "answers": [
@@ -798,7 +823,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
     def mobile_number(self):
         return self.form.get_data(self.answer_id)
 
-    def handle_get(self):
+    def handle_get(self) -> str:
         if "mobile_number" in self._request_args:
             mobile_number = url_safe_serializer().loads(
                 self._request_args["mobile_number"]
@@ -818,7 +843,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
             page_title=self.page_title(lazy_gettext("Mobile number")),
         )
 
-    def handle_post(self):
+    def handle_post(self) -> Response:
         mobile_number = url_safe_serializer().dumps(self.mobile_number)
 
         return redirect(
@@ -898,7 +923,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
     def selected_option(self):
         return self.form.get_data(self.answer_id)
 
-    def handle_get(self):
+    def handle_get(self) -> str:
         previous_location_url = url_for(
             "individual_response.individual_response_text_message",
             list_item_id=self._list_item_id,
@@ -914,7 +939,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
             page_title=self.page_title(lazy_gettext("Confirm mobile number")),
         )
 
-    def handle_post(self):
+    def handle_post(self) -> Response:
         if self.selected_option == self.confirm_option:
             self._publish_fulfilment_request(self.mobile_number)
             self._update_questionnaire_store_on_publish()

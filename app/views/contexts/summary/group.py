@@ -1,4 +1,4 @@
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping, MutableMapping, Optional
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -21,7 +21,7 @@ class Group:
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: MetadataProxy | None,
-        response_metadata: Mapping,
+        response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         location: Location,
         language: str,
@@ -70,7 +70,7 @@ class Group:
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: Optional[MetadataProxy],
-        response_metadata: Mapping,
+        response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         location: Location,
         return_to: Optional[str],

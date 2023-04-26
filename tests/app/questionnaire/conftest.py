@@ -756,7 +756,7 @@ def content_variant_schema():
                                 "title": "Block 1",
                                 "content_variants": [
                                     {
-                                        "content": [{"title": "You are over 16"}],
+                                        "content": {"title": "You are over 16"},
                                         "when": {
                                             ">": [
                                                 {
@@ -768,7 +768,7 @@ def content_variant_schema():
                                         },
                                     },
                                     {
-                                        "content": [{"title": "You are under 16"}],
+                                        "content": {"title": "You are under 16"},
                                         "when": {
                                             "<=": [
                                                 {
@@ -780,7 +780,7 @@ def content_variant_schema():
                                         },
                                     },
                                     {
-                                        "content": [{"title": "You are ageless"}],
+                                        "content": {"title": "You are ageless"},
                                         "when": {
                                             "==": [
                                                 {

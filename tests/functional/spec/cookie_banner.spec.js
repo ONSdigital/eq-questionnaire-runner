@@ -1,4 +1,5 @@
 import InitialPage from "../generated_pages/checkbox/mandatory-checkbox.page";
+import HubPage from "../base_pages/hub.page.js";
 
 describe("Given I am not authenticated and have no cookie,", () => {
   it("When I visit a page in runner, Then the cookie banner shouldn‘t be displayed", async () => {
@@ -28,5 +29,31 @@ describe("Given I start a survey,", () => {
     await $(InitialPage.acceptCookies()).click();
     await browser.refresh();
     await expect(await $(InitialPage.acceptCookies()).isDisplayed()).to.be.false;
+  });
+});
+
+describe("Given I start a survey with multiple languages,", () => {
+  beforeEach(async () => {
+    await browser.deleteAllCookies();
+  });
+  it("When I open the page in english, Then the cookie banner should be displayed in english", async () => {
+    await browser.openQuestionnaire("test_language.json", {
+      language: "en",
+    });
+    await expect(await $(HubPage.acceptCookies()).getText()).to.contain("Accept additional cookies");
+  });
+  it("When I open the page in welsh, Then the cookie banner should be displayed in welsh", async () => {
+    await browser.openQuestionnaire("test_language.json", {
+      language: "cy",
+    });
+    await expect(await $(HubPage.acceptCookies()).getText()).to.contain("Derbyn cwcis ychwanegol");
+  });
+  it("When I open the page in english, Then change the language to welsh the cookie banner should be displayed in welsh", async () => {
+    await browser.openQuestionnaire("test_language.json", {
+      language: "en",
+    });
+    await expect(await $(HubPage.acceptCookies()).getText()).to.contain("Accept additional cookies");
+    await $(HubPage.switchLanguage("cy")).click();
+    await expect(await $(HubPage.acceptCookies()).getText()).to.contain("Derbyn cwcis ychwanegol");
   });
 });

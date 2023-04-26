@@ -3,7 +3,7 @@ from babel.plural import PluralRule
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 
 
-def get_plural_form_key(count, language=DEFAULT_LANGUAGE_CODE):
+def get_plural_form_key(count: int, language: str = DEFAULT_LANGUAGE_CODE) -> str:
     mappings = {
         "en": {"one": "n is 1"},
         "cy": {
@@ -23,5 +23,6 @@ def get_plural_form_key(count, language=DEFAULT_LANGUAGE_CODE):
     }
 
     plural_rule = PluralRule(mappings[language])
+    plural_form: str = plural_rule(count)
 
-    return plural_rule(count)
+    return plural_form
