@@ -1,4 +1,4 @@
-from typing import Generator, Mapping
+from typing import Generator, Mapping, MutableMapping
 
 from flask import url_for
 
@@ -20,7 +20,7 @@ class Router:
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: MetadataProxy | None,
-        response_metadata: Mapping,
+        response_metadata: MutableMapping,
     ):
         self._schema = schema
         self._answer_store = answer_store

@@ -1,8 +1,6 @@
 from collections import OrderedDict
 from datetime import datetime, timezone
-from typing import Any, Mapping
-
-from werkzeug.datastructures import ImmutableDict
+from typing import Any, Iterable, Mapping
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.answer import AnswerValueTypes, ListAnswer
@@ -23,7 +21,7 @@ def convert_answers_to_payload_0_0_1(
     answer_store: AnswerStore,
     list_store: ListStore,
     schema: QuestionnaireSchema,
-    full_routing_path: list[RoutingPath],
+    full_routing_path: Iterable[RoutingPath],
     progress_store: ProgressStore,
 ) -> OrderedDict[str, Any]:
     """

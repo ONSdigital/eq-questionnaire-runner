@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Callable, Iterable, Mapping
+from typing import Callable, Iterable, Mapping, MutableMapping
 
 from markupsafe import Markup
 
@@ -24,7 +24,7 @@ class ValueSourceResolver:
     answer_store: AnswerStore
     list_store: ListStore
     metadata: MetadataProxy | None
-    response_metadata: Mapping
+    response_metadata: MutableMapping
     schema: QuestionnaireSchema
     location: Location | RelationshipLocation | None
     list_item_id: str | None
@@ -195,7 +195,7 @@ class ValueSourceResolver:
             return self.list_item_id
 
         if source == "response_metadata":
-            return self.response_metadata.get(value_source.get("identifier"))
+            return self.response_metadata.get(value_source["identifier"])
 
         if source == "calculated_summary":
             return self._resolve_calculated_summary_value_source(

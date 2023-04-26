@@ -8,8 +8,8 @@ from flask import url_for
 class RelationshipLocation:
     section_id: str
     block_id: str
-    list_name: str
-    list_item_id: str
+    list_name: str | None
+    list_item_id: str | None
     to_list_item_id: str | None = None
 
     def for_json(self) -> Mapping:

@@ -1,4 +1,4 @@
-from typing import Mapping
+from typing import Mapping, MutableMapping
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -98,7 +98,7 @@ def transform_variants(
     block: ImmutableDict,
     schema: QuestionnaireSchema,
     metadata: MetadataProxy | None,
-    response_metadata: Mapping,
+    response_metadata: MutableMapping,
     answer_store: AnswerStore,
     list_store: ListStore,
     current_location: Location | RelationshipLocation,

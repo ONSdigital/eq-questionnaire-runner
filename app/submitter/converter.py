@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Mapping, Optional, Union
+from typing import Any, Iterable, Mapping, MutableMapping, Optional, Union
 
 from structlog import get_logger
 
@@ -20,7 +20,7 @@ MetadataType = Mapping[str, Optional[Union[str, list]]]
 def convert_answers(
     schema: QuestionnaireSchema,
     questionnaire_store: QuestionnaireStore,
-    full_routing_path: list[RoutingPath],
+    full_routing_path: Iterable[RoutingPath],
     submitted_at: datetime,
     flushed: bool = False,
 ) -> dict[str, Any]:
@@ -132,7 +132,7 @@ def build_metadata(metadata: MetadataProxy) -> MetadataType:
 
 
 def get_optional_payload_properties(
-    metadata: MetadataProxy, response_metadata: Mapping
+    metadata: MetadataProxy, response_metadata: MutableMapping
 ) -> MetadataType:
     payload = {}
 

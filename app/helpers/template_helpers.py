@@ -1,5 +1,5 @@
 from functools import cached_property, lru_cache
-from typing import Any, Mapping, Optional, Type, Union
+from typing import Any, Type
 
 from flask import current_app
 from flask import render_template as flask_render_template
@@ -98,7 +98,7 @@ class ContextHelper:
     @property
     def service_links_context(
         self,
-    ) -> Optional[dict[str, Union[dict[str, str], list[dict]]]]:
+    ) -> dict[str, dict[str, str] | list[dict]] | None:
         ru_ref = (
             metadata["ru_ref"] if (metadata := get_metadata(current_user)) else None
         )
@@ -165,7 +165,7 @@ class ContextHelper:
         return context
 
     @cached_property
-    def _footer_warning(self) -> Optional[str]:
+    def _footer_warning(self) -> str | None:
         if self._is_post_submission:
             footer_warning: str = lazy_gettext(
                 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your browser if using a shared device"
@@ -202,10 +202,10 @@ def survey_config_mapping(
 
 def get_survey_config(
     *,
-    base_url: Optional[str] = None,
-    theme: Optional[SurveyType] = None,
-    language: Optional[str] = None,
-    schema: Optional[QuestionnaireSchema] = None,
+    base_url: str | None = None,
+    theme: SurveyType | None = None,
+    language: str | None = None,
+    schema: QuestionnaireSchema | None = None,
 ) -> SurveyConfig:
     # The fallback to assigning SURVEY_TYPE to theme is only being added until
     # business feedback on the differentiation between theme and SURVEY_TYPE.
@@ -228,7 +228,7 @@ def get_survey_config(
     )
 
 
-def render_template(template: str, **kwargs: Union[None, str, Mapping]) -> str:
+def render_template(template: str, **kwargs: Any) -> str:
     session_expires_at = None
     language = get_locale().language
     if session_store := get_session_store():
