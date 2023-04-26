@@ -114,7 +114,7 @@ def get_payload_data(
     schema: QuestionnaireSchema,
     full_routing_path: Iterable[RoutingPath],
     metadata: MetadataProxy,
-    response_metadata: Mapping,
+    response_metadata: MutableMapping,
     progress_store: ProgressStore,
 ) -> OrderedDict[str, Any] | dict[str, list[Any]]:
     if schema.json["data_version"] == "0.0.1":

@@ -1,4 +1,4 @@
-from typing import Iterable, Mapping, Sequence
+from typing import Iterable, Mapping, MutableMapping, Sequence
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -20,7 +20,7 @@ class PathFinder:
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: MetadataProxy | None,
-        response_metadata: Mapping,
+        response_metadata: MutableMapping,
     ):
         self.answer_store = answer_store
         self.metadata = metadata

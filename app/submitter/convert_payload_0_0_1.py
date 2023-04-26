@@ -1,6 +1,8 @@
 from collections import OrderedDict
 from datetime import datetime, timezone
-from typing import Any, Iterable, Mapping
+from typing import Any, Iterable, Mapping, MutableMapping
+
+from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.answer import AnswerValueTypes, ListAnswer
@@ -10,7 +12,7 @@ from app.questionnaire.location import Location
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.variants import choose_question_to_display
 
-MetadataType = Mapping[str, str | int | list]
+MetadataType = MutableMapping[str, str | int | list]
 
 
 # pylint: disable=too-many-locals,too-many-nested-blocks
