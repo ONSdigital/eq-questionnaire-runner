@@ -220,6 +220,43 @@
                             }
                         },
                         {
+                            "type": "Question",
+                            "id": "skip-calculated-summary",
+                            "question": {
+                                "type": "General",
+                                "id": "skip-question-2",
+                                "title": "Skip the calculated summary so it isn't included in the calculated and grand calculated summaries?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "skip-answer-2",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "identifier": "skip-answer-2",
+                                            "source": "answers"
+                                        },
+                                        "Yes"
+                                    ]
+                                }
+                            },
                             "type": "CalculatedSummary",
                             "id": "currency-question-3",
                             "title": "We calculate the total of currency values entered for question 3 to be %(total)s. Is this correct?",
@@ -240,45 +277,9 @@
                             }
                         },
                         {
-                            "type": "CalculatedSummary",
-                            "id": "currency-section-1-2",
-                            "title": "We calculate the total of currency values so far to be %(total)s. Is this correct?",
-                            "calculation": {
-                                "operation": {
-                                    "+": [
-                                         {
-                                            "source": "answers",
-                                            "identifier": "second-number-answer-a"
-                                        },
-                                        {
-                                            "source": "answers",
-                                            "identifier": "second-number-answer-b"
-                                        },
-                                        {
-                                            "source": "answers",
-                                            "identifier": "first-number-answer-a"
-                                        },
-                                        {
-                                            "source": "answers",
-                                            "identifier": "first-number-answer-b"
-                                        },
-                                        {
-                                            "source": "answers",
-                                            "identifier": "third-number-answer-part-a"
-                                        },
-                                        {
-                                            "source": "answers",
-                                            "identifier": "third-number-answer-part-b"
-                                        }
-                                    ]
-                                },
-                                "title": "Calculated total of previous values"
-                            }
-                        },
-                        {
                             "type": "GrandCalculatedSummary",
                             "id": "currency-grand-playback",
-                            "title": "The grand calculated summary which should match is calculated to be %(total)s. Is this correct?",
+                            "title": "The grand calculated summary is calculated to be %(total)s. Is this correct?",
                             "calculation": {
                                 "operation": {
                                     "+": [
@@ -301,7 +302,7 @@
         },
         {
             "id": "grand-calculated-summary-section",
-            "title": "Grand Calculated Summary should only show if all calculated summaries have been confirmed - enabled to be replaced by routing on questionnaire progress once available",
+            "title": "Grand Calculated Summary should only show if all calculated summaries have been confirmed",
             "summary": {
                 "show_on_completion": true
             },

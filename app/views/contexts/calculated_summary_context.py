@@ -67,6 +67,7 @@ class CalculatedSummaryContext(Context):
         section: Mapping[str, Any],
         return_to_block_id: str,
         routing_path_block_ids: Iterable[str] | None = None,
+        answer_format: Mapping | None = None,
     ) -> list[Mapping[str, Group]]:
         return [
             Group(
@@ -83,6 +84,7 @@ class CalculatedSummaryContext(Context):
                 progress_store=self._progress_store,
                 return_to="calculated-summary",
                 return_to_block_id=return_to_block_id,
+                answer_format=answer_format,
             ).serialize()
             for group in section["groups"]
         ]

@@ -96,7 +96,7 @@
                             "type": "Question",
                             "id": "second-number-block",
                             "question": {
-                                "id": "first-number-question",
+                                "id": "second-number-question",
                                 "title": "Add length values.",
                                 "type": "General",
                                 "answers": [
@@ -108,7 +108,7 @@
                                         "unit_length": "short",
                                         "unit": "length-centimeter"
                                     },
-                                     {
+                                    {
                                         "id": "q2-a2",
                                         "label": "Length 2",
                                         "mandatory": true,
@@ -202,7 +202,7 @@
                                         "unit_length": "short",
                                         "unit": "length-centimeter"
                                     },
-                                     {
+                                    {
                                         "id": "q4-a2",
                                         "label": "Length 4",
                                         "mandatory": true,
@@ -307,12 +307,13 @@
                                                         "placeholder": "length_total",
                                                         "transforms": [
                                                             {
-                                                                "transform": "format_number",
+                                                                "transform": "format_unit",
                                                                 "arguments": {
-                                                                    "number": {
+                                                                    "value": {
                                                                         "source": "calculated_summary",
                                                                         "identifier": "length-grand-total-playback"
-                                                                    }
+                                                                    },
+                                                                    "unit": "length-centimeter"
                                                                 }
                                                             }
                                                         ]

@@ -1,3 +1,4 @@
+from decimal import Decimal
 from typing import Mapping
 
 from flask import url_for
@@ -11,7 +12,8 @@ class CalculatedSummary:
         block_id: str,
         return_to: str | None,
         return_to_block_id: str | None,
-        answers: list[Mapping],
+        calculated_total: int | float | Decimal | None,
+        answer_format: Mapping,
     ) -> None:
         self.link = self._build_link(
             block_id=block_id,
@@ -19,7 +21,15 @@ class CalculatedSummary:
             return_to_block_id=return_to_block_id,
         )
         self.title = title
-        self.answers = answers
+        self.answers = [
+            {
+                "id": block_id,
+                "label": self.title,
+                "value": calculated_total,
+                "link": block_id,
+                **answer_format,
+            }
+        ]
         self.block_id = block_id
 
     def serialize(self) -> dict:

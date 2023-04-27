@@ -1,4 +1,4 @@
-from typing import Any, Mapping, MutableMapping, Optional, Iterable
+from typing import Any, Iterable, Mapping, MutableMapping, Optional
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -8,6 +8,7 @@ from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.survey_config.link import Link
 from app.views.contexts.summary.block import Block
+from app.views.contexts.summary.calculated_summary_block import CalculatedSummaryBlock
 from app.views.contexts.summary.list_collector_block import ListCollectorBlock
 
 
@@ -27,6 +28,7 @@ class Group:
         progress_store: ProgressStore,
         return_to: str | None,
         return_to_block_id: str | None = None,
+        answer_format: Mapping | None = None,
     ) -> None:
         self.id = group_schema["id"]
         self.title = group_schema.get("title")
@@ -48,6 +50,7 @@ class Group:
             progress_store=progress_store,
             language=language,
             return_to_block_id=return_to_block_id,
+            answer_format=answer_format,
         )
 
         self.placeholder_renderer = PlaceholderRenderer(
@@ -77,6 +80,7 @@ class Group:
         progress_store: ProgressStore,
         language: str,
         return_to_block_id: Optional[str],
+        answer_format: Mapping | None = None,
     ) -> list[dict[str, Block]]:
         blocks = []
 
@@ -100,6 +104,27 @@ class Group:
                             return_to=return_to,
                             return_to_block_id=return_to_block_id,
                             progress_store=progress_store,
+                        ).serialize()
+                    ]
+                )
+
+            # checking for presence of answer_format stops the group rendering on summary pages
+            # when called from the grand calculated summary context, the answer format won't be None
+            elif block["type"] == "CalculatedSummary" and answer_format:
+                blocks.extend(
+                    [
+                        CalculatedSummaryBlock(
+                            block,
+                            answer_store=answer_store,
+                            list_store=list_store,
+                            metadata=metadata,
+                            response_metadata=response_metadata,
+                            schema=schema,
+                            location=location,
+                            return_to=return_to,
+                            return_to_block_id=return_to_block_id,
+                            progress_store=progress_store,
+                            answer_format=answer_format,
                         ).serialize()
                     ]
                 )
