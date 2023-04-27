@@ -10,6 +10,7 @@ from app.views.contexts.calculated_summary_context import CalculatedSummaryConte
 
 
 class GrandCalculatedSummaryContext(CalculatedSummaryContext):
+
     def _build_grand_calculated_summary_section(self, rendered_block: Mapping) -> dict:
         """Build up the list of blocks only including blocks / questions / answers which are relevant to the summary"""
         # Type ignore: the block, group and section will all exist at this point
@@ -23,15 +24,35 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
             self._schema.get_block(block_id) for block_id in calculated_summary_ids
         ]
 
-        # this currently includes calculated summaries and answers that are not on the path
-        # TODO Fix
-
         return {
             "id": section_id,
             "groups": [
                 {"id": calculated_summary_group["id"], "blocks": blocks_to_calculate}
             ],
         }
+
+    def _blocks_on_routing_path(self, calculated_summary_ids: list[str]) -> list[str]:
+        """
+        Find all blocks on the routing path for each of the calculated summaries
+        """
+        # Type ignore: each block must have a section id
+        section_ids: set[str] = {self._schema.get_section_id_for_block_id(block_id) for block_id in calculated_summary_ids}  # type: ignore
+        # find any sections involved in the grand calculated summary (but only if they have started, to avoid evaluating the path if not necessary)
+        started_sections = [
+            key for key, _ in self._progress_store.started_section_keys(section_ids)
+        ]
+        routing_path_block_ids: list[str] = []
+
+        for section_id in started_sections:
+            if section_id == self.current_location.section_id:
+                routing_path_block_ids.extend(self.routing_path_block_ids)
+            else:
+                routing_path_block_ids.extend(
+                    # repeating calculated summaries are not supported at the moment, so no list item is needed
+                    self._router.routing_path(section_id).block_ids
+                )
+
+        return routing_path_block_ids
 
     def build_view_context_for_grand_calculated_summary(
         self,
@@ -48,13 +69,23 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         block_title = block["title"]
 
         calculated_summary_ids = get_grand_calculated_summary_block_ids(block)
-        # TODO exclude if not on path
+        routing_path_block_ids = self._blocks_on_routing_path(calculated_summary_ids)
+
+        # remove calculated summaries not on the path
+        calculated_summary_ids = [
+            block_id
+            for block_id in calculated_summary_ids
+            if block_id in routing_path_block_ids
+        ]
+
+        # TODO check this
         routing_path_block_ids = [
             block["id"]
             for calculated_summary_id in calculated_summary_ids
             # Type ignore: section must exist at this time
             for group in self._schema.get_section_for_block_id(calculated_summary_id)["groups"]  # type: ignore
             for block in group["blocks"]
+            if block["id"] in routing_path_block_ids
         ]
 
         answer_format = self._get_summary_format(calculated_summary_ids)

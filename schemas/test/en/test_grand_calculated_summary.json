@@ -31,51 +31,69 @@
     },
     "sections": [
         {
-            "id": "default-section",
+            "id": "section-1",
+            "title": "Commuting",
             "groups": [
                 {
                     "id": "group",
-                    "title": "Add currency values",
+                    "title": "Commuting",
                     "blocks": [
                         {
                             "type": "Question",
                             "id": "first-number-block",
                             "question": {
                                 "id": "first-number-question",
-                                "title": "The first two values will be included in the calculated and grand calculated summaries.",
+                                "title": "How much do you walk per week?",
                                 "type": "General",
                                 "answers": [
                                     {
                                         "id": "q1-a1",
-                                        "label": "First currency value (included)",
+                                        "label": "Weekly distance travelled on foot",
                                         "mandatory": true,
-                                        "type": "Currency",
-                                        "currency": "GBP",
-                                        "decimal_places": 2
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "length-mile",
+                                        "decimal-places": 2
                                     },
                                     {
                                         "id": "q1-a2",
-                                        "label": "Second currency value (included)",
+                                        "label": "Number of walks per week",
                                         "mandatory": true,
-                                        "type": "Currency",
-                                        "currency": "GBP",
-                                        "decimal_places": 2
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "second-number-block",
+                            "question": {
+                                "id": "second-number-question",
+                                "title": "How much do you drive per week?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "q2-a1",
+                                        "label": "Weekly distance travelled by car",
+                                        "mandatory": true,
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "length-mile",
+                                        "decimal-places": 2
                                     },
                                     {
-                                        "id": "q1-a3",
-                                        "label": "Third currency value (excluded)",
+                                        "id": "q2-a2",
+                                        "label": "Number of car journeys per week",
                                         "mandatory": true,
-                                        "type": "Currency",
-                                        "currency": "GBP",
-                                        "decimal_places": 2
+                                        "type": "Number"
                                     }
                                 ]
                             }
                         },
                         {
                             "type": "CalculatedSummary",
-                            "id": "currency-calculated-summary-1",
-                            "title": "We calculate the total of currency values entered to be %(total)s. Is this correct?",
+                            "id": "distance-calculated-summary-1",
+                            "title": "We calculate the total of distance travelled by foot and car to be %(total)s. Is this correct?",
                             "calculation": {
                                 "operation": {
                                     "+": [
@@ -85,50 +103,23 @@
                                         },
                                         {
                                             "source": "answers",
-                                            "identifier": "q1-a2"
+                                            "identifier": "q2-a1"
                                         }
                                     ]
                                 },
-                                "title": "Calculated total of currencies 1"
-                            }
-                        },
-                        {
-                            "type": "Question",
-                            "id": "second-number-block",
-                            "question": {
-                                "id": "second-number-question",
-                                "title": "Add length values.",
-                                "type": "General",
-                                "answers": [
-                                    {
-                                        "id": "q2-a1",
-                                        "label": "Length 1",
-                                        "mandatory": true,
-                                        "type": "Unit",
-                                        "unit_length": "short",
-                                        "unit": "length-centimeter"
-                                    },
-                                    {
-                                        "id": "q2-a2",
-                                        "label": "Length 2",
-                                        "mandatory": true,
-                                        "type": "Unit",
-                                        "unit_length": "short",
-                                        "unit": "length-centimeter"
-                                    }
-                                ]
+                                "title": "Calculated distance on foot and driving"
                             }
                         },
                         {
                             "type": "CalculatedSummary",
-                            "id": "length-calculated-summary-1",
-                            "title": "We calculate the total of length values entered to be %(total)s. Is this correct?",
+                            "id": "number-calculated-summary-1",
+                            "title": "We calculate the total number of journeys on foot and in a car to be %(total)s. Is this correct?",
                             "calculation": {
                                 "operation": {
                                     "+": [
                                         {
                                             "source": "answers",
-                                            "identifier": "q2-a1"
+                                            "identifier": "q1-a2"
                                         },
                                         {
                                             "source": "answers",
@@ -136,40 +127,77 @@
                                         }
                                     ]
                                 },
-                                "title": "Calculated total of lengths 1"
+                                "title": "Calculated journeys on foot and driving"
                             }
-                        },
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-2",
+            "title": "Alternative Transport",
+            "groups": [
+                {
+                    "id": "transport-group",
+                    "title": "Alternative Transport",
+                    "blocks": [
                         {
                             "type": "Question",
                             "id": "third-number-block",
                             "question": {
                                 "id": "third-number-question",
-                                "title": "Add more currency values.",
+                                "title": "How much do you cycle per week?",
                                 "type": "General",
                                 "answers": [
                                     {
                                         "id": "q3-a1",
-                                        "label": "Value 1",
+                                        "label": "Weekly distance travelled by bike",
                                         "mandatory": true,
-                                        "type": "Currency",
-                                        "currency": "GBP",
-                                        "decimal_places": 2
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "length-mile",
+                                        "decimal-places": 2
                                     },
                                     {
                                         "id": "q3-a2",
-                                        "label": "Value 2",
+                                        "label": "Number of bicycle journeys per week",
                                         "mandatory": true,
-                                        "type": "Currency",
-                                        "currency": "GBP",
-                                        "decimal_places": 2
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "fourth-number-block",
+                            "question": {
+                                "id": "fourth-number-question",
+                                "title": "How much do you voi per week?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "q4-a1",
+                                        "label": "Weekly distance travelled on a Voi",
+                                        "mandatory": true,
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "length-mile",
+                                        "decimal-places": 2
+                                    },
+                                    {
+                                        "id": "q4-a2",
+                                        "label": "Number of scooter trips per week",
+                                        "mandatory": true,
+                                        "type": "Number"
                                     }
                                 ]
                             }
                         },
                         {
                             "type": "CalculatedSummary",
-                            "id": "currency-calculated-summary-2",
-                            "title": "We calculate the total of currency values in the previous question entered to be %(total)s. Is this correct?",
+                            "id": "distance-calculated-summary-2",
+                            "title": "We calculate the total of distance travelled by bike and voi to be %(total)s. Is this correct?",
                             "calculation": {
                                 "operation": {
                                     "+": [
@@ -179,50 +207,23 @@
                                         },
                                         {
                                             "source": "answers",
-                                            "identifier": "q3-a2"
+                                            "identifier": "q4-a1"
                                         }
                                     ]
                                 },
-                                "title": "Calculated total of currencies 2"
-                            }
-                        },
-                        {
-                            "type": "Question",
-                            "id": "fourth-number-block",
-                            "question": {
-                                "id": "fourth-number-question",
-                                "title": "More length values.",
-                                "type": "General",
-                                "answers": [
-                                    {
-                                        "id": "q4-a1",
-                                        "label": "Length 3",
-                                        "mandatory": true,
-                                        "type": "Unit",
-                                        "unit_length": "short",
-                                        "unit": "length-centimeter"
-                                    },
-                                    {
-                                        "id": "q4-a2",
-                                        "label": "Length 4",
-                                        "mandatory": true,
-                                        "type": "Unit",
-                                        "unit_length": "short",
-                                        "unit": "length-centimeter"
-                                    }
-                                ]
+                                "title": "Calculated weekly distance on bike and scooter"
                             }
                         },
                         {
                             "type": "CalculatedSummary",
-                            "id": "length-calculated-summary-2",
-                            "title": "We calculate the total of length values in the previous question entered to be %(total)s. Is this correct?",
+                            "id": "number-calculated-summary-2",
+                            "title": "We calculate the total number of journeys on bike and on a voi to be %(total)s. Is this correct?",
                             "calculation": {
                                 "operation": {
                                     "+": [
                                         {
                                             "source": "answers",
-                                            "identifier": "q4-a1"
+                                            "identifier": "q3-a2"
                                         },
                                         {
                                             "source": "answers",
@@ -230,47 +231,59 @@
                                         }
                                     ]
                                 },
-                                "title": "Calculated total of lengths 2"
+                                "title": "Calculated journeys on bike and scooter"
                             }
-                        },
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-3",
+            "title": "Grand calculated summaries",
+            "groups": [
+                {
+                    "id": "summary-group",
+                    "title": "Grand calculated summary group",
+                    "blocks": [
                         {
                             "type": "GrandCalculatedSummary",
-                            "id": "currency-grand-total-playback",
-                            "title": "We calculate the total of the total of the currency values entered to be %(total)s. Is this correct?",
+                            "id": "distance-all",
+                            "title": "The grand total weekly distance travelled is %(total)s. Is this correct?",
                             "calculation": {
                                 "operation": {
                                     "+": [
                                         {
                                             "source": "calculated_summary",
-                                            "identifier": "currency-calculated-summary-1"
+                                            "identifier": "distance-calculated-summary-1"
                                         },
                                         {
                                             "source": "calculated_summary",
-                                            "identifier": "currency-calculated-summary-2"
+                                            "identifier": "distance-calculated-summary-2"
                                         }
                                     ]
                                 },
-                                "title": "Grand calculated summary of currency values"
+                                "title": "Grand calculated summary of distance travelled"
                             }
                         },
                         {
                             "type": "GrandCalculatedSummary",
-                            "id": "length-grand-total-playback",
-                            "title": "We calculate the total of the total of the length values entered to be %(total)s. Is this correct?",
+                            "id": "number-all",
+                            "title": "The grand total number of journeys per week is calculated to be %(total)s. Is this correct?",
                             "calculation": {
                                 "operation": {
                                     "+": [
                                         {
                                             "source": "calculated_summary",
-                                            "identifier": "length-calculated-summary-1"
+                                            "identifier": "number-calculated-summary-1"
                                         },
                                         {
                                             "source": "calculated_summary",
-                                            "identifier": "length-calculated-summary-2"
+                                            "identifier": "number-calculated-summary-2"
                                         }
                                     ]
                                 },
-                                "title": "Grand calculated summary of length values"
+                                "title": "Grand calculated summary of journeys"
                             }
                         },
                         {
@@ -282,18 +295,20 @@
                                     {
                                         "list": [
                                             {
-                                                "text": "Total currency values: <em>{currency_total}</em>",
+                                                "text": "Total weekly distance travelled: <em>{distance_total}</em>",
                                                 "placeholders": [
                                                     {
-                                                        "placeholder": "currency_total",
+                                                        "placeholder": "distance_total",
                                                         "transforms": [
                                                             {
-                                                                "transform": "format_currency",
+                                                                "transform": "format_unit",
                                                                 "arguments": {
-                                                                    "number": {
-                                                                        "source": "calculated_summary",
-                                                                        "identifier": "currency-grand-total-playback"
-                                                                    }
+                                                                    "value": {
+                                                                        "source": "grand_calculated_summary",
+                                                                        "identifier": "distance-all"
+                                                                    },
+                                                                    "unit": "mile",
+                                                                    "unit_length": "long"
                                                                 }
                                                             }
                                                         ]
@@ -301,19 +316,18 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Total length values: <em>{length_total}</em>",
+                                                "text": "Total weekly journeys: <em>{number_total}</em>",
                                                 "placeholders": [
                                                     {
-                                                        "placeholder": "length_total",
+                                                        "placeholder": "number_total",
                                                         "transforms": [
                                                             {
-                                                                "transform": "format_unit",
+                                                                "transform": "format_number",
                                                                 "arguments": {
-                                                                    "value": {
-                                                                        "source": "calculated_summary",
-                                                                        "identifier": "length-grand-total-playback"
-                                                                    },
-                                                                    "unit": "length-centimeter"
+                                                                    "number": {
+                                                                        "source": "grand_calculated_summary",
+                                                                        "identifier": "number-all"
+                                                                    }
                                                                 }
                                                             }
                                                         ]
@@ -331,3 +345,4 @@
         }
     ]
 }
+

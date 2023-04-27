@@ -28,7 +28,8 @@ class Group:
         progress_store: ProgressStore,
         return_to: str | None,
         return_to_block_id: str | None = None,
-        answer_format: Mapping | None = None,
+        calculated_summary_format: Mapping | None = None,
+        summary_type: str | None = None,
     ) -> None:
         self.id = group_schema["id"]
         self.title = group_schema.get("title")
@@ -50,7 +51,8 @@ class Group:
             progress_store=progress_store,
             language=language,
             return_to_block_id=return_to_block_id,
-            answer_format=answer_format,
+            calculated_summary_format=calculated_summary_format,
+            summary_type=summary_type
         )
 
         self.placeholder_renderer = PlaceholderRenderer(
@@ -80,7 +82,8 @@ class Group:
         progress_store: ProgressStore,
         language: str,
         return_to_block_id: Optional[str],
-        answer_format: Mapping | None = None,
+        calculated_summary_format: Mapping | None = None,
+        summary_type: str | None = None,
     ) -> list[dict[str, Block]]:
         blocks = []
 
@@ -108,9 +111,9 @@ class Group:
                     ]
                 )
 
-            # checking for presence of answer_format stops the group rendering on summary pages
-            # when called from the grand calculated summary context, the answer format won't be None
-            elif block["type"] == "CalculatedSummary" and answer_format:
+            elif summary_type == "GrandCalculatedSummary":
+                if not calculated_summary_format:
+                    raise ValueError("No answer format provided for grand calculated summary")
                 blocks.extend(
                     [
                         CalculatedSummaryBlock(
@@ -124,7 +127,8 @@ class Group:
                             return_to=return_to,
                             return_to_block_id=return_to_block_id,
                             progress_store=progress_store,
-                            answer_format=answer_format,
+                            answer_format=calculated_summary_format,
+                            routing_path_block_ids=routing_path_block_ids,
                         ).serialize()
                     ]
                 )

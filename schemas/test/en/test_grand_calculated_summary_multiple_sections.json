@@ -39,16 +39,16 @@
             "groups": [
                 {
                     "id": "group-1",
-                    "title": "Group title for group 1",
+                    "title": "Group title for questions about food",
                     "blocks": [
                         {
                             "type": "Question",
                             "id": "block-1",
-                            "title": "Block 1",
+                            "title": "Fruit and veg block",
                             "question": {
                                 "type": "General",
                                 "id": "question-1",
-                                "title": "How much do you spend per week on fruit and veg? (Question 1 Section 1, Group 1)",
+                                "title": "How much do you spend per week on fruit and veg? (Question 1, Group 1, Section 1)",
                                 "answers": [
                                     {
                                         "id": "q1-a1",
@@ -70,11 +70,11 @@
                         {
                             "type": "Question",
                             "id": "block-2",
-                            "title": "Block 2",
+                            "title": "Other food block",
                             "question": {
                                 "type": "General",
                                 "id": "question-2",
-                                "title": "How much do you spend per week on other food? (Question 2 Section 1, Group 1)",
+                                "title": "How much do you spend per week on other food? (Question 2, Group 1, Section 1)",
                                 "answers": [
                                     {
                                         "id": "q2-a1",
@@ -96,7 +96,7 @@
                         {
                             "type": "CalculatedSummary",
                             "id": "calculated-summary-1",
-                            "title": "Calculated Summary for Question 1",
+                            "title": "Calculated Summary for Question 1 is calculated to be %(total)s. Is this correct?",
                             "calculation": {
                                 "title": "Total food expenditure",
                                 "operation": {
@@ -125,16 +125,16 @@
                 },
                 {
                     "id": "group-2",
-                    "title": "Group title for group 2",
+                    "title": "Group title for clothing questions",
                     "blocks": [
                         {
                             "type": "Question",
                             "id": "block-3",
-                            "title": "Block 3",
+                            "title": "Clothing block",
                             "question": {
                                 "type": "General",
                                 "id": "question-3",
-                                "title": "How much do you spend per week on clothes? (Question 3, Section 1, Group 2)",
+                                "title": "How much do you spend per week on clothes? (Question 3, Group 2, Section 1)",
                                 "answers": [
                                     {
                                         "id": "q3-a1",
@@ -156,7 +156,7 @@
                         {
                             "type": "CalculatedSummary",
                             "id": "calculated-summary-2",
-                            "title": "Calculated summary for question 3",
+                            "title": "Calculated summary for question 3 is calculated to be %(total)s. Is this correct?",
                             "calculation": {
                                 "title": "Total clothes expenditure",
                                 "operation": {
@@ -176,7 +176,7 @@
                         {
                             "type": "CalculatedSummary",
                             "id": "calculated-summary-3",
-                            "title": "Calculated summary for section 1",
+                            "title": "Calculated summary for section 1 is calculated to be %(total)s. Is this correct?",
                             "calculation": {
                                 "title": "Total food and clothes expenditure",
                                 "operation": {
@@ -212,7 +212,7 @@
                         {
                             "type": "GrandCalculatedSummary",
                             "id": "grand-calculated-summary-1",
-                            "title": "Grand Calculated Summary which should match the previous calculated summary",
+                            "title": "Grand Calculated Summary which should match the previous calculated summary is calculated to be %(total)s. Is this correct?",
                             "calculation": {
                                 "title": "Grand calculated summary",
                                 "operation": {
@@ -242,12 +242,12 @@
             "groups": [
                 {
                     "id": "group-3",
-                    "title": "Group title for group 3",
+                    "title": "Group title for questions about games",
                     "blocks": [
                         {
                             "type": "Question",
                             "id": "block-4",
-                            "title": "Question 4",
+                            "title": "Games block",
                             "question": {
                                 "type": "General",
                                 "id": "question-4",
@@ -273,7 +273,7 @@
                         {
                             "type": "CalculatedSummary",
                             "id": "calculated-summary-4",
-                            "title": "Calculated Summary for Question 4",
+                            "title": "Calculated Summary for Question 4 is calculated to be %(total)s. Is this correct?",
                             "calculation": {
                                 "title": "Total games expenditure",
                                 "operation": {
@@ -297,9 +297,6 @@
         {
             "id": "section-3",
             "title": "Grand calculated summary section",
-            "summary": {
-                "show_on_completion": true
-            },
             "enabled": {
                 "when": {
                     "!=": [
@@ -314,12 +311,12 @@
             "groups": [
                 {
                     "id": "group-4",
-                    "title": "Group title for group 4",
+                    "title": "Group title for the grand calculated summary of both sections",
                     "blocks": [
                         {
                             "type": "GrandCalculatedSummary",
                             "id": "grand-calculated-summary-2",
-                            "title": "Grand Calculated Summary for section 1 and 2",
+                            "title": "Grand Calculated Summary for section 1 and 2 is calculated to be %(total)s. Is this correct?",
                             "calculation": {
                                 "title": "Total food clothes and games expenditure",
                                 "operation": {

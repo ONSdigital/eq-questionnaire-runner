@@ -49,6 +49,7 @@ class CalculatedSummaryContext(Context):
         response_metadata: MutableMapping,
         routing_path: RoutingPath,
         current_location: Location,
+        summary_type: str
     ) -> None:
         super().__init__(
             language,
@@ -61,19 +62,19 @@ class CalculatedSummaryContext(Context):
         )
         self.routing_path_block_ids = routing_path.block_ids
         self.current_location = current_location
+        self._summary_type = summary_type
 
     def build_groups_for_section(
         self,
         section: Mapping[str, Any],
         return_to_block_id: str,
-        routing_path_block_ids: Iterable[str] | None = None,
-        answer_format: Mapping | None = None,
+        routing_path_block_ids: Iterable[str],
+        answer_format: Mapping | None = None
     ) -> list[Mapping[str, Group]]:
         return [
             Group(
                 group_schema=group,
-                routing_path_block_ids=routing_path_block_ids
-                or self.routing_path_block_ids,  # make this nicer
+                routing_path_block_ids=routing_path_block_ids,
                 answer_store=self._answer_store,
                 list_store=self._list_store,
                 metadata=self._metadata,
@@ -84,7 +85,8 @@ class CalculatedSummaryContext(Context):
                 progress_store=self._progress_store,
                 return_to="calculated-summary",
                 return_to_block_id=return_to_block_id,
-                answer_format=answer_format,
+                calculated_summary_format=answer_format,
+                summary_type=self._summary_type
             ).serialize()
             for group in section["groups"]
         ]
@@ -100,8 +102,7 @@ class CalculatedSummaryContext(Context):
         calculation = block["calculation"]
 
         groups = self.build_groups_for_section(
-            calculated_section,
-            block_id,
+            calculated_section, block_id, self.routing_path_block_ids
         )
 
         formatted_total = self._get_formatted_total(
