@@ -1,6 +1,6 @@
 from collections import defaultdict, namedtuple
 from itertools import combinations
-from typing import Iterable, Mapping
+from typing import Any, Iterable, Mapping
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -302,10 +302,6 @@ class QuestionnaireStoreUpdater:
                     self._answer_store.remove_answer(
                         dependency.answer_id, list_item_id=list_item_id
                     )
-                if self.dependency_has_dynamic_answers(dependency.block_id):
-                    self.dependent_block_id_by_section_key[
-                        (dependency.section_id, None)
-                    ].add(dependency.block_id)
                 else:
                     self.dependent_block_id_by_section_key[
                         (dependency.section_id, list_item_id)
@@ -347,28 +343,27 @@ class QuestionnaireStoreUpdater:
                 self.dependent_sections.add(DependentSection(section_id, None, None))
 
     def update_answers(
-        self, form_data: Mapping, list_item_id: str | None = None
+        self, form_data: Mapping[str, Any], list_item_id: str | None = None
     ) -> None:
         list_item_id = list_item_id or self._current_location.list_item_id
-        answer_ids_for_question = self._schema.get_answer_ids_for_question(
+        answers_by_answer_id = self._schema.get_answers_for_question_by_id(
             self._current_question
         )
-        for item in answer_ids_for_question:
-            if (
-                item.split("-")[-1]
-                in self._list_store._list_item_ids()  # pylint: disable=protected-access
-            ):
-                answer_ids_for_question.append(list(form_data.keys())[0])
-                answer_ids_for_question.remove(item)
 
         for answer_id, answer_value in form_data.items():
-            if answer_id not in answer_ids_for_question:
+            if answer_id not in answers_by_answer_id:
                 continue
 
-            answer_updated = self._update_answer(answer_id, list_item_id, answer_value)
+            resolved_answer = answers_by_answer_id[answer_id]
+            answer_id_to_use = resolved_answer.get("original_answer_id") or answer_id
+            list_item_id_to_use = resolved_answer.get("list_item_id") or list_item_id
+
+            answer_updated = self._update_answer(
+                answer_id_to_use, list_item_id_to_use, answer_value
+            )
             if answer_updated:
-                self._capture_section_dependencies_for_answer(answer_id)
-                self._capture_block_dependencies_for_answer(answer_id)
+                self._capture_section_dependencies_for_answer(answer_id_to_use)
+                self._capture_block_dependencies_for_answer(answer_id_to_use)
 
     def update_progress_for_dependent_sections(self) -> None:
         """Removes dependent blocks from the progress store and updates the progress to IN_PROGRESS.
@@ -437,10 +432,3 @@ class QuestionnaireStoreUpdater:
         self, section_ids: Iterable[str] | None = None
     ) -> list[SectionKeyType]:
         return self._progress_store.started_section_keys(section_ids)
-
-    def dependency_has_dynamic_answers(self, block_id: str) -> bool:
-        if question := self._schema.get_block(block_id).get("question"):  # type: ignore
-            # Type ignore always returns at this point
-            if question.get("dynamic_answers"):
-                return True
-        return False
