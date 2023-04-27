@@ -1,6 +1,6 @@
 import functools
 from datetime import datetime, timezone
-from typing import Dict
+from typing import Callable, Iterable, Mapping
 
 from marshmallow import (
     EXCLUDE,
@@ -20,8 +20,7 @@ from app.utilities.metadata_validators import DateString, RegionCode, UUIDString
 
 logger = get_logger()
 
-
-VALIDATORS = {
+VALIDATORS: Mapping[str, Callable] = {
     "date": functools.partial(DateString, format="%Y-%m-%d", required=True),
     "uuid": functools.partial(UUIDString, required=True),
     "boolean": functools.partial(fields.Boolean, required=True),
@@ -110,8 +109,10 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
 
 
 def validate_questionnaire_claims(
-    claims, questionnaire_specific_metadata, unknown=EXCLUDE
-):
+    claims: Mapping,
+    questionnaire_specific_metadata: Iterable[Mapping],
+    unknown=EXCLUDE,
+) -> dict:
     """Validate any survey specific claims required for a questionnaire"""
     dynamic_fields = {}
 
@@ -146,7 +147,7 @@ def validate_questionnaire_claims(
     return questionnaire_metadata_schema.load(claims)
 
 
-def validate_runner_claims_v2(claims: Dict):
+def validate_runner_claims_v2(claims: Mapping) -> dict:
     """Validate claims required for runner to function"""
     runner_metadata_schema = RunnerMetadataSchema(unknown=EXCLUDE)
     return runner_metadata_schema.load(claims)

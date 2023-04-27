@@ -8,16 +8,14 @@ from markupsafe import Markup, escape
 
 DictAnswer = dict[str, Union[int, str]]
 ListAnswer = list[str]
+ListDictAnswer = list[DictAnswer]
 DictAnswerEscaped = dict[str, Union[int, Markup]]
 ListAnswerEscaped = list[Markup]
+ListDictAnswerEscaped = list[DictAnswerEscaped]
 
-AnswerValueTypes = Union[str, int, Decimal, DictAnswer, ListAnswer]
+AnswerValueTypes = Union[str, int, Decimal, DictAnswer, ListAnswer, ListDictAnswer]
 AnswerValueEscapedTypes = Union[
-    Markup,
-    int,
-    Decimal,
-    DictAnswerEscaped,
-    ListAnswerEscaped,
+    Markup, int, Decimal, DictAnswerEscaped, ListAnswerEscaped, ListDictAnswerEscaped
 ]
 
 
@@ -58,6 +56,11 @@ def escape_answer_value(value: ListAnswer) -> ListAnswerEscaped:
 
 @overload
 def escape_answer_value(value: DictAnswer) -> DictAnswerEscaped:
+    ...  # pragma: no cover
+
+
+@overload
+def escape_answer_value(value: ListDictAnswer) -> ListDictAnswerEscaped:
     ...  # pragma: no cover
 
 

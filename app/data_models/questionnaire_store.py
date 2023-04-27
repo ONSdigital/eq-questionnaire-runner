@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, Mapping, Optional
+from typing import TYPE_CHECKING, MutableMapping, Optional
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
@@ -26,12 +26,12 @@ class QuestionnaireStore:
         if version is None:
             version = self.get_latest_version_number()
         self.version = version
-        self._metadata: dict[str, Any] = {}
+        self._metadata: MutableMapping = {}
         # self.metadata is a read-only view over self._metadata
         self.metadata: Optional[MetadataProxy] = (
             MetadataProxy.from_dict(self._metadata) if self._metadata else None
         )
-        self.response_metadata: Mapping[str, Any] = {}
+        self.response_metadata: MutableMapping = {}
         self.list_store = ListStore()
         self.answer_store = AnswerStore()
         self.progress_store = ProgressStore()
@@ -53,7 +53,7 @@ class QuestionnaireStore:
     def get_latest_version_number(self) -> int:
         return self.LATEST_VERSION
 
-    def set_metadata(self, to_set: dict[str, Any]) -> QuestionnaireStore:
+    def set_metadata(self, to_set: MutableMapping) -> QuestionnaireStore:
         """
         Set metadata. This should only be used where absolutely necessary.
         Metadata should normally be read only.

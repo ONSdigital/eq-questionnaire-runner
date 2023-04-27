@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Mapping, Optional, Union
+from typing import Any, Iterable, Mapping, MutableMapping, Optional, Union
 
 from structlog import get_logger
 
@@ -20,7 +20,7 @@ MetadataType = Mapping[str, Optional[Union[str, list]]]
 def convert_answers(
     schema: QuestionnaireSchema,
     questionnaire_store: QuestionnaireStore,
-    routing_path: RoutingPath,
+    full_routing_path: Iterable[RoutingPath],
     submitted_at: datetime,
     flushed: bool = False,
 ) -> dict[str, Any]:
@@ -56,7 +56,7 @@ def convert_answers(
     Args:
         schema: QuestionnaireSchema instance with populated schema json
         questionnaire_store: EncryptedQuestionnaireStorage instance for accessing current questionnaire data
-        routing_path: The full routing path followed by the user when answering the questionnaire
+        full_routing_path: The full routing path followed by the user when answering the questionnaire
         submitted_at: The date and time of submission
         flushed: True when system submits the users answers, False when submitted by user.
     Returns:
@@ -93,7 +93,7 @@ def convert_answers(
         answer_store=answer_store,
         list_store=list_store,
         schema=schema,
-        routing_path=routing_path,
+        full_routing_path=full_routing_path,
         metadata=metadata,
         response_metadata=response_metadata,
         progress_store=progress_store,
@@ -132,7 +132,7 @@ def build_metadata(metadata: MetadataProxy) -> MetadataType:
 
 
 def get_optional_payload_properties(
-    metadata: MetadataProxy, response_metadata: Mapping
+    metadata: MetadataProxy, response_metadata: MutableMapping
 ) -> MetadataType:
     payload = {}
 

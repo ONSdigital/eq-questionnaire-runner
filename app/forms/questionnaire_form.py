@@ -5,7 +5,7 @@ import logging
 from collections.abc import Callable
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
-from typing import Any, Mapping, Optional, Sequence, Union
+from typing import Any, Mapping, MutableMapping, Optional, Sequence, Union
 
 from dateutil.relativedelta import relativedelta
 from flask_wtf import FlaskForm
@@ -47,10 +47,10 @@ class QuestionnaireForm(FlaskForm):
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: Optional[MetadataProxy],
-        response_metadata: Mapping[str, Any],
+        response_metadata: MutableMapping,
         location: Union[None, Location, RelationshipLocation],
         progress_store: ProgressStore,
-        **kwargs: Union[MultiDict[str, Any], Mapping[str, Any], None],
+        **kwargs: Union[MultiDict, Mapping, None],
     ):
         self.schema = schema
         self.question = question_schema
@@ -455,13 +455,13 @@ def get_answer_fields(
     answer_store: AnswerStore,
     list_store: ListStore,
     metadata: MetadataProxy | None,
-    response_metadata: Mapping[str, Any],
+    response_metadata: MutableMapping,
     location: Location | RelationshipLocation | None,
     progress_store: ProgressStore,
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
 
-    routing_path_block_ids: dict[tuple, list[str]] = {}
+    routing_path_block_ids: dict[tuple, tuple[str, ...]] = {}
 
     if location and progress_store:
         routing_path_block_ids = get_block_ids_for_calculated_summary_dependencies(
@@ -598,7 +598,7 @@ def generate_form(
     answer_store: AnswerStore,
     list_store: ListStore,
     metadata: MetadataProxy | None,
-    response_metadata: Mapping[str, Any],
+    response_metadata: MutableMapping,
     progress_store: ProgressStore,
     location: Location | RelationshipLocation | None = None,
     data: dict[str, Any] | None = None,

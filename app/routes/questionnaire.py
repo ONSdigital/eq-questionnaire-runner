@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Union
+from typing import Mapping
 
 import flask_babel
 from flask import Blueprint, g, redirect, request, send_file
@@ -16,7 +16,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
 )
-from app.data_models import QuestionnaireStore
+from app.data_models import QuestionnaireStore, SessionStore
 from app.globals import (
     get_metadata,
     get_questionnaire_store,
@@ -70,7 +70,7 @@ post_submission_blueprint = Blueprint(
 
 @questionnaire_blueprint.before_request
 @login_required
-def before_questionnaire_request():
+def before_questionnaire_request() -> Response | None:
     if request.method == "OPTIONS":
         return None
 
@@ -115,7 +115,7 @@ def before_questionnaire_request():
 
 @post_submission_blueprint.before_request
 @login_required
-def before_post_submission_request():
+def before_post_submission_request() -> None:
     if request.method == "OPTIONS":
         return None
 
@@ -153,14 +153,16 @@ def before_post_submission_request():
 @questionnaire_blueprint.route("/", methods=["GET", "POST"])
 @with_questionnaire_store
 @with_schema
-def get_questionnaire(schema, questionnaire_store):
+def get_questionnaire(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+) -> Response | str:
     router = Router(
-        schema,
-        questionnaire_store.answer_store,
-        questionnaire_store.list_store,
-        questionnaire_store.progress_store,
-        questionnaire_store.metadata,
-        questionnaire_store.response_metadata,
+        schema=schema,
+        answer_store=questionnaire_store.answer_store,
+        list_store=questionnaire_store.list_store,
+        progress_store=questionnaire_store.progress_store,
+        metadata=questionnaire_store.metadata,
+        response_metadata=questionnaire_store.response_metadata,
     )
 
     if not router.can_access_hub():
@@ -203,7 +205,7 @@ def get_questionnaire(schema, questionnaire_store):
 @with_schema
 def submit_questionnaire(
     schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
-) -> Union[Response, str]:
+) -> Response | str:
     try:
         submit_questionnaire_handler = SubmitQuestionnaireHandler(
             schema, questionnaire_store, flask_babel.get_locale().language
@@ -232,7 +234,9 @@ def submit_questionnaire(
 @questionnaire_blueprint.route("/preview", methods=["GET"])
 @with_questionnaire_store
 @with_schema
-def get_preview(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore):
+def get_preview(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+) -> str:
     try:
         preview_context = PreviewContext(
             language=flask_babel.get_locale().language,
@@ -265,7 +269,12 @@ def get_preview(schema: QuestionnaireSchema, questionnaire_store: QuestionnaireS
 )
 @with_questionnaire_store
 @with_schema
-def get_section(schema, questionnaire_store, section_id, list_item_id=None):
+def get_section(
+    schema: QuestionnaireSchema,
+    questionnaire_store: QuestionnaireStore,
+    section_id: str,
+    list_item_id: str | None = None,
+) -> Response | str:
     try:
         section_handler = SectionHandler(
             schema=schema,
@@ -301,7 +310,13 @@ def get_section(schema, questionnaire_store, section_id, list_item_id=None):
 )
 @with_questionnaire_store
 @with_schema
-def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=None):
+def block(
+    schema: QuestionnaireSchema,
+    questionnaire_store: QuestionnaireStore,
+    block_id: str,
+    list_name: str | None = None,
+    list_item_id: str | None = None,
+) -> Response | str:
     try:
         block_handler = get_block_handler(
             schema=schema,
@@ -350,13 +365,13 @@ def block(schema, questionnaire_store, block_id, list_name=None, list_item_id=No
 @with_questionnaire_store
 @with_schema
 def relationships(
-    schema,
-    questionnaire_store,
-    list_name=None,
-    list_item_id=None,
-    to_list_item_id=None,
-    block_id="relationships",
-):
+    schema: QuestionnaireSchema,
+    questionnaire_store: QuestionnaireStore,
+    list_name: str | None = None,
+    list_item_id: str | None = None,
+    to_list_item_id: str | None = None,
+    block_id: str = "relationships",
+) -> Response | str:
     try:
         block_handler = get_block_handler(
             schema=schema,
@@ -397,8 +412,13 @@ def relationships(
 @with_questionnaire_store
 @with_session_store
 @with_schema
-def get_thank_you(schema, session_store, questionnaire_store):
-    thank_you = ThankYou(schema, session_store, questionnaire_store.submitted_at)
+def get_thank_you(
+    schema: QuestionnaireSchema,
+    session_store: SessionStore,
+    questionnaire_store: QuestionnaireStore,
+) -> Response | str:
+    # Type ignore: Endpoint is only called upon submission
+    thank_you = ThankYou(schema, session_store, questionnaire_store.submitted_at)  # type: ignore
 
     if request.method == "POST":
         confirmation_email = thank_you.confirmation_email
@@ -420,9 +440,12 @@ def get_thank_you(schema, session_store, questionnaire_store):
             error_message=str(confirmation_email.form.errors["email"][0]),
         )
 
+    # Type ignore:  Session data exists at point of submission
     show_feedback_call_to_action = Feedback.is_enabled(
         schema
-    ) and not Feedback.is_limit_reached(session_store.session_data)
+    ) and not Feedback.is_limit_reached(
+        session_store.session_data  # type: ignore
+    )
 
     return render_template(
         template=thank_you.template,
@@ -438,7 +461,9 @@ def get_thank_you(schema, session_store, questionnaire_store):
 @post_submission_blueprint.route("view-response/", methods=["GET"])
 @with_questionnaire_store
 @with_schema
-def get_view_submitted_response(schema, questionnaire_store):
+def get_view_submitted_response(
+    schema: QuestionnaireSchema, questionnaire_store: QuestionnaireStore
+) -> str:
     try:
         view_submitted_response = ViewSubmittedResponse(
             schema,
@@ -514,7 +539,9 @@ def get_view_submitted_response_pdf(
 @post_submission_blueprint.route("confirmation-email/send", methods=["GET", "POST"])
 @with_schema
 @with_session_store
-def send_confirmation_email(session_store, schema):
+def send_confirmation_email(
+    session_store: SessionStore, schema: QuestionnaireSchema
+) -> Response | str:
     try:
         confirmation_email = ConfirmationEmail(
             session_store, schema, serialised_email=request.args.get("email")
@@ -550,7 +577,11 @@ def send_confirmation_email(session_store, schema):
 @with_questionnaire_store
 @with_schema
 @with_session_store
-def confirm_confirmation_email(session_store, schema, questionnaire_store):
+def confirm_confirmation_email(
+    session_store: SessionStore,
+    schema: QuestionnaireSchema,
+    questionnaire_store: QuestionnaireStore,
+) -> Response | str:
     try:
         confirm_email = ConfirmEmail(
             questionnaire_store,
@@ -577,8 +608,11 @@ def confirm_confirmation_email(session_store, schema, questionnaire_store):
 @post_submission_blueprint.route("confirmation-email/sent", methods=["GET"])
 @with_schema
 @with_session_store
-def get_confirmation_email_sent(session_store, schema):
-    if not session_store.session_data.confirmation_email_count:
+def get_confirmation_email_sent(
+    session_store: SessionStore, schema: QuestionnaireSchema
+) -> str:
+    # Type ignore: Session data exists for routes decorated with @login_required, which this is
+    if not session_store.session_data.confirmation_email_count:  # type: ignore
         raise NotFound
 
     try:
@@ -587,11 +621,13 @@ def get_confirmation_email_sent(session_store, schema):
         raise BadRequest from exc
 
     show_send_another_email_guidance = not ConfirmationEmail.is_limit_reached(
-        session_store.session_data
+        session_store.session_data  # type: ignore
     )
     show_feedback_call_to_action = Feedback.is_enabled(
         schema
-    ) and not Feedback.is_limit_reached(session_store.session_data)
+    ) and not Feedback.is_limit_reached(
+        session_store.session_data  # type: ignore
+    )
 
     return render_template(
         template="confirmation-email-sent",
@@ -612,7 +648,11 @@ def get_confirmation_email_sent(session_store, schema):
 @with_questionnaire_store
 @with_session_store
 @with_schema
-def send_feedback(schema, session_store, questionnaire_store):
+def send_feedback(
+    schema: QuestionnaireSchema,
+    session_store: SessionStore,
+    questionnaire_store: QuestionnaireStore,
+) -> Response | str:
     try:
         feedback = Feedback(
             questionnaire_store, schema, session_store, form_data=request.form
@@ -633,8 +673,9 @@ def send_feedback(schema, session_store, questionnaire_store):
 
 @post_submission_blueprint.route("feedback/sent", methods=["GET"])
 @with_session_store
-def get_feedback_sent(session_store):
-    if not session_store.session_data.feedback_count:
+def get_feedback_sent(session_store: SessionStore) -> str:
+    # Type ignore: Session data exists for routes decorated with @login_required, which this is
+    if not session_store.session_data.feedback_count:  # type: ignore
         raise NotFound
 
     return render_template(
@@ -646,7 +687,13 @@ def get_feedback_sent(session_store):
     )
 
 
-def _render_page(template, context, previous_location_url, schema, page_title):
+def _render_page(
+    template: str,
+    context: Mapping,
+    previous_location_url: str,
+    schema: QuestionnaireSchema,
+    page_title: str,
+) -> str:
     session_timeout = get_session_timeout_in_seconds(schema)
 
     return render_template(

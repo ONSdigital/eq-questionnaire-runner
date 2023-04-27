@@ -1,14 +1,20 @@
 from functools import wraps
-from typing import Any, Callable
+from typing import Callable, Concatenate, ParamSpec, TypeVar
 
 from flask_login import current_user
 from werkzeug.exceptions import Unauthorized
 
 from app.globals import get_metadata, get_session_store
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.utilities.schema import load_schema_from_metadata
 
+T = TypeVar("T")
+P = ParamSpec("P")
 
-def with_schema(function: Callable) -> Any:
+
+def with_schema(
+    function: Callable[Concatenate[QuestionnaireSchema, P], T]
+) -> Callable[P, T]:
     """Adds the survey schema as the first argument to the function being wrapped.
     Use on flask request handlers or methods called by flask request handlers.
 
@@ -23,16 +29,19 @@ def with_schema(function: Callable) -> Any:
     """
 
     @wraps(function)
-    def wrapped_function(*args: Any, **kwargs: Any) -> Any:
+    def wrapped_function(*args: P.args, **kwargs: P.kwargs) -> T:
         session_store = get_session_store()
-        if not session_store or not session_store.session_data:
+        if (
+            not session_store
+            or not session_store.session_data
+            or not (metadata := get_metadata(current_user))
+        ):
             raise Unauthorized
 
-        metadata = get_metadata(current_user)
         language_code = session_store.session_data.language_code
 
         schema = load_schema_from_metadata(
-            metadata=metadata, language_code=language_code  # type: ignore
+            metadata=metadata, language_code=language_code
         )
         return function(schema, *args, **kwargs)
 
