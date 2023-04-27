@@ -302,10 +302,10 @@ class QuestionnaireStoreUpdater:
                     self._answer_store.remove_answer(
                         dependency.answer_id, list_item_id=list_item_id
                     )
-                else:
-                    self.dependent_block_id_by_section_key[
-                        (dependency.section_id, list_item_id)
-                    ].add(dependency.block_id)
+
+                self.dependent_block_id_by_section_key[
+                    (dependency.section_id, list_item_id)
+                ].add(dependency.block_id)
 
     def _get_list_item_ids_for_dependency(
         self, dependency: AnswerDependent, is_repeating_answer: bool | None = False
