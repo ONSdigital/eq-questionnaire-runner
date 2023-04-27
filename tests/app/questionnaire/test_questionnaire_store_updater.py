@@ -26,6 +26,7 @@ def test_save_answers_with_form_data(
     answer_value = "1000"
 
     mock_empty_schema.get_answer_ids_for_question.return_value = [answer_id]
+    mock_empty_schema.get_answers_for_question_by_id.return_value = {answer_id: {}}
 
     form_data = {answer_id: answer_value}
 
@@ -67,6 +68,10 @@ def test_update_dynamic_answers(
                 answer_id="percentage-of-shopping",
             )
         }
+    }
+
+    mock_empty_schema.get_answers_for_question_by_id.return_value = {
+        "percentage-of-shopping": {}
     }
 
     mock_questionnaire_store.answer_store = AnswerStore(
@@ -151,6 +156,8 @@ def test_save_empty_answer_removes_existing_answer(
 
     mock_empty_schema.get_answer_ids_for_question.return_value = [answer_id]
 
+    mock_empty_schema.get_answers_for_question_by_id.return_value = {answer_id: {}}
+
     form_data = MultiDict({answer_id: answer_value})
 
     current_question = mock_empty_schema.get_block(location.block_id)["question"]
@@ -197,6 +204,7 @@ def test_default_answers_are_not_saved(
     mock_empty_schema.get_answers_by_answer_id.return_value = [
         {"default": default_value}
     ]
+    mock_empty_schema.get_answers_for_question_by_id.return_value = {answer_id: {}}
 
     # No answer given so will use schema defined default
     form_data = MultiDict({answer_id: None})
@@ -230,6 +238,11 @@ def test_empty_answers(
         checkbox_answer_id,
         radio_answer_id,
     ]
+    mock_empty_schema.get_answers_for_question_by_id.return_value = {
+        string_answer_id: {},
+        checkbox_answer_id: {},
+        radio_answer_id: {},
+    }
 
     form_data = {
         string_answer_id: "",
@@ -601,6 +614,10 @@ def test_update_answers_captures_answer_dependencies(
     mock_schema.get_answer_ids_for_question.return_value = [answer_id]
     mock_schema.answer_dependencies = answer_dependencies
     mock_schema.is_answer_in_repeating_section.return_value = is_repeating
+    mock_schema.get_answers_for_question_by_id.return_value = {
+        "total-employees-answer": {},
+        "total-turnover-answer": {},
+    }
 
     mock_empty_answer_store.add_or_update.return_value = answer_updated
     form_data = MultiDict({answer_id: "some-value"})
@@ -683,6 +700,10 @@ def test_update_answers_with_answer_dependents(
                 answer_id=answer_dependent_answer_id,
             )
         },
+    }
+    mock_schema.get_answers_for_question_by_id.return_value = {
+        "first-answer": {},
+        "second-answer": {},
     }
 
     form_data = MultiDict({"first-answer": updated_answer_value})
@@ -769,6 +790,10 @@ def test_update_repeating_answers_with_answer_dependents(
             )
         },
     }
+    mock_schema.get_answers_for_question_by_id.return_value = {
+        "first-answer": {},
+        "second-answer": {},
+    }
 
     form_data = MultiDict({"first-answer": "answer updated"})
 
@@ -837,6 +862,10 @@ def test_answer_id_section_dependents(
         "first-answer": {"section-2"}
     }
     mock_router.is_path_complete.return_value = is_path_complete
+    mock_schema.get_answers_for_question_by_id.return_value = {
+        "first-answer": {},
+        "second-answer": {},
+    }
 
     answer_store = AnswerStore(
         [
@@ -930,6 +959,10 @@ def test_answer_id_section_dependents_repeating(
     mock_schema.get_answer_ids_for_question.return_value = ["first-answer"]
     mock_schema.when_rules_section_dependencies_by_answer = {
         "first-answer": {"section-2"}
+    }
+    mock_schema.get_answers_for_question_by_id.return_value = {
+        "first-answer": {},
+        "second-answer": {},
     }
 
     answer_store = AnswerStore(
