@@ -230,7 +230,6 @@ class Question(BlockHandler):
                 section_id=section_id,
                 list_item_id=list_item_id,
             )
-            self.questionnaire_store_updater.update_progress_for_dependent_sections()
 
     def clear_radio_answers(self):
         answer_ids_to_remove = []
