@@ -1,4 +1,4 @@
-from typing import Mapping, Optional
+from typing import Iterable, Mapping, MutableMapping, Sequence
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -9,7 +9,7 @@ from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
-from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator, RuleEvaluatorTypes
 
 
 class PathFinder:
@@ -19,8 +19,8 @@ class PathFinder:
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: Optional[MetadataProxy],
-        response_metadata: Mapping,
+        metadata: MetadataProxy | None,
+        response_metadata: MutableMapping,
     ):
         self.answer_store = answer_store
         self.metadata = metadata
@@ -30,7 +30,7 @@ class PathFinder:
         self.list_store = list_store
 
     def routing_path(
-        self, section_id: str, list_item_id: Optional[str] = None
+        self, section_id: str, list_item_id: str | None = None
     ) -> RoutingPath:
         """
         Visits all the blocks in a section and returns a path given a list of answers.
@@ -62,7 +62,7 @@ class PathFinder:
 
     def get_when_rules_block_dependencies(self, section_id: str) -> list[str]:
         """NB: At present when rules block dependencies does not fully support repeating sections.
-        It is supported when the section is dependent i.e the current section is repeating and building the routing path for sections that are not,
+        It is supported when the section is dependent i.e. the current section is repeating and building the routing path for sections that are not,
         It isn't supported if it needs to build the path for repeating sections"""
         dependencies_for_section = (
             self.schema.get_all_when_rules_section_dependencies_for_section(section_id)
@@ -81,10 +81,10 @@ class PathFinder:
         routing_path_block_ids: list[str],
         section: ImmutableDict,
         when_rules_block_dependencies: list[str],
-    ) -> Optional[list[Mapping]]:
+    ) -> list[dict] | None:
         # :TODO: Fix group skipping in its own section. Routing path will be empty and therefore not checked
         if section:
-            not_skipped_blocks: list[Mapping] = []
+            not_skipped_blocks: list[dict] = []
             for group in section["groups"]:
                 if "skip_conditions" in group:
                     skip_conditions = group.get("skip_conditions")
@@ -100,7 +100,9 @@ class PathFinder:
             return not_skipped_blocks
 
     @staticmethod
-    def _block_index_for_block_id(blocks, block_id):
+    def _block_index_for_block_id(
+        blocks: Iterable[Mapping], block_id: str
+    ) -> int | None:
         return next(
             (index for (index, block) in enumerate(blocks) if block["id"] == block_id),
             None,
@@ -108,7 +110,7 @@ class PathFinder:
 
     def _build_routing_path_block_ids(
         self,
-        blocks: list[Mapping],
+        blocks: Sequence[Mapping],
         current_location: Location,
         when_rules_block_dependencies: list[str],
     ) -> list[str]:
@@ -149,9 +151,10 @@ class PathFinder:
                     routing_path_block_ids.append(block_id)
 
                 # If routing rules exist then a rule must match (i.e. default goto)
-                routing_rules = block.get("routing_rules")
+                routing_rules: Iterable[Mapping] | None = block.get("routing_rules")
                 if routing_rules:
-                    block_index = self._evaluate_routing_rules(
+                    # Type ignore: block_index will always be non-null when evaluate is called
+                    block_index = self._evaluate_routing_rules(  # type: ignore
                         this_location,
                         blocks,
                         routing_rules,
@@ -175,13 +178,13 @@ class PathFinder:
 
     def _evaluate_routing_rules(
         self,
-        this_location,
-        blocks,
-        routing_rules,
-        block_index,
-        routing_path_block_ids,
-        when_rules_block_dependencies,
-    ):
+        this_location: Location,
+        blocks: Iterable[Mapping],
+        routing_rules: Iterable[Mapping],
+        block_index: int,
+        routing_path_block_ids: list[str],
+        when_rules_block_dependencies: list[str],
+    ) -> int | None:
         if when_rules_block_dependencies:
             routing_path_block_ids = (
                 when_rules_block_dependencies + routing_path_block_ids
@@ -227,11 +230,11 @@ class PathFinder:
 
     def evaluate_skip_conditions(
         self,
-        this_location,
-        routing_path_block_ids,
-        skip_conditions,
-        when_rules_block_dependencies,
-    ):
+        this_location: Location,
+        routing_path_block_ids: list[str],
+        skip_conditions: ImmutableDict[str, dict] | None,
+        when_rules_block_dependencies: list[str],
+    ) -> RuleEvaluatorTypes:
         if not skip_conditions:
             return False
 
@@ -253,20 +256,22 @@ class PathFinder:
 
         return when_rule_evaluator.evaluate(skip_conditions["when"])
 
-    def _get_next_block_id(self, rule):
+    def _get_next_block_id(self, rule: Mapping) -> str:
         if "group" in rule:
-            return self.schema.get_first_block_id_for_group(rule["group"])
-        return rule["block"]
+            # Type ignore: by this point the block for the rule will exist
+            return self.schema.get_first_block_id_for_group(rule["group"])  # type: ignore
+        # Type ignore: the rules block will be a string
+        return rule["block"]  # type: ignore
 
     def _remove_current_blocks_answers_for_backwards_routing(
-        self, rule: dict, this_location: Location
+        self, rule: Mapping, this_location: Location
     ) -> None:
         if block_id := this_location.block_id:
             answer_ids_for_current_block = self.schema.get_answer_ids_for_block(
                 block_id
             )
             if "when" in rule:
-                self._remove_block_anwers_for_backward_routing_according_to_when_rule(
+                self._remove_block_answers_for_backward_routing_according_to_when_rule(
                     rule["when"], answer_ids_for_current_block
                 )
 
@@ -275,8 +280,8 @@ class PathFinder:
                 CompletionStatus.IN_PROGRESS, this_location.section_id
             )
 
-    def _remove_block_anwers_for_backward_routing_according_to_when_rule(
-        self, rules: dict, answer_ids_for_current_block: list[str]
+    def _remove_block_answers_for_backward_routing_according_to_when_rule(
+        self, rules: Mapping, answer_ids_for_current_block: list[str]
     ) -> None:
         operands = self.schema.get_operands(rules)
 
@@ -288,6 +293,6 @@ class PathFinder:
                 self.answer_store.remove_answer(rule["identifier"])
 
             if QuestionnaireSchema.has_operator(rule):
-                return self._remove_block_anwers_for_backward_routing_according_to_when_rule(
+                return self._remove_block_answers_for_backward_routing_according_to_when_rule(
                     rule, answer_ids_for_current_block
                 )

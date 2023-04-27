@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Any, Callable, Iterable, Mapping, Optional, Union
+from typing import Callable, Iterable, Mapping, MutableMapping
 
 from markupsafe import Markup
 
@@ -14,12 +14,9 @@ from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules import rule_evaluator
 
-ValueSourceTypes = Union[None, str, int, Decimal, list]
-ValueSourceEscapedTypes = Union[
-    Markup,
-    list[Markup],
-]
-IntOrDecimal = Union[int, Decimal]
+ValueSourceTypes = None | str | int | Decimal | list
+ValueSourceEscapedTypes = Markup | list[Markup]
+IntOrDecimal = int | Decimal
 
 
 @dataclass
@@ -27,7 +24,7 @@ class ValueSourceResolver:
     answer_store: AnswerStore
     list_store: ListStore
     metadata: MetadataProxy | None
-    response_metadata: Mapping
+    response_metadata: MutableMapping
     schema: QuestionnaireSchema
     location: Location | RelationshipLocation | None
     list_item_id: str | None
@@ -74,8 +71,8 @@ class ValueSourceResolver:
 
     def _resolve_list_item_id_for_value_source(
         self, value_source: Mapping
-    ) -> Optional[str]:
-        list_item_id: Optional[str] = None
+    ) -> str | None:
+        list_item_id: str | None = None
 
         if list_item_selector := value_source.get("list_item_selector"):
             if list_item_selector["source"] == "location":
@@ -104,7 +101,7 @@ class ValueSourceResolver:
 
     def _resolve_answer_value_source(
         self, value_source: Mapping
-    ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
+    ) -> ValueSourceEscapedTypes | ValueSourceTypes:
         list_item_id = self._resolve_list_item_id_for_value_source(value_source)
         answer_id = value_source["identifier"]
 
@@ -152,14 +149,12 @@ class ValueSourceResolver:
                     else None,
                 )
 
-    def _resolve_list_value_source(
-        self, value_source: Mapping
-    ) -> Union[int, str, list]:
+    def _resolve_list_value_source(self, value_source: Mapping) -> int | str | list:
         identifier = value_source["identifier"]
         list_model: ListModel = self.list_store[identifier]
 
         if selector := value_source.get("selector"):
-            value: Union[str, list, int] = getattr(list_model, selector)
+            value: str | list | int = getattr(list_model, selector)
             return value
 
         return list(list_model)
@@ -171,7 +166,7 @@ class ValueSourceResolver:
 
         The caller is responsible for ensuring the provided Calculated Summary and its answers are on the path.
         """
-        calculated_summary_block: Mapping[str, Any] = self.schema.get_block(value_source["identifier"])  # type: ignore
+        calculated_summary_block: Mapping = self.schema.get_block(value_source["identifier"])  # type: ignore
         calculation = calculated_summary_block["calculation"]
         if calculation.get("answers_to_calculate"):
             operator = self.get_calculation_operator(calculation["calculation_type"])
