@@ -139,7 +139,7 @@ class PlaceholderParser:
         transformed_value: TransformedValueTypes = None
 
         for transform in transform_list:
-            transform_args: MutableMapping[str, Any] = {}
+            transform_args: MutableMapping = {}
             transform_name = transform["transform"]
 
             value_source_resolver = self._value_source_resolver
