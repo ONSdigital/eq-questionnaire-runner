@@ -1,4 +1,4 @@
-from typing import Any, Generator, Mapping, Optional, Union, MutableMapping
+from typing import Any, Generator, Mapping, MutableMapping, Optional, Union
 
 from app.questionnaire.location import Location
 
