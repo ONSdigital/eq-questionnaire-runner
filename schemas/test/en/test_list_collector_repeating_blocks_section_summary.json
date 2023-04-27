@@ -122,9 +122,9 @@
                                                 "label": "Yes",
                                                 "value": "Yes",
                                                 "action": {
-                                                    "type": "RedirectToListAddBlock",
+                                                    "type": "RedirectToListRepeatingBlocks",
                                                     "params": {
-                                                        "block_id": "add-company",
+                                                        "block_id": "add-company-repeating-blocks",
                                                         "list_name": "companies"
                                                     }
                                                 }
@@ -173,7 +173,7 @@
                                                 "label": "Yes",
                                                 "value": "Yes",
                                                 "action": {
-                                                    "type": "RedirectToListAddBlock"
+                                                    "type": "RedirectToListRepeatingBlocks"
                                                 }
                                             },
                                             {
