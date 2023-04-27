@@ -2,6 +2,7 @@ from typing import Any, Mapping, MutableMapping, Optional
 
 from flask import url_for
 from markupsafe import Markup, escape
+from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.answer import AnswerValueEscapedTypes, escape_answer_value
@@ -285,7 +286,7 @@ class Question:
         metadata: MetadataProxy | None = None,
         response_metadata: MutableMapping,
     ) -> Any:
-        resolved_question = {"answers": self.answer_schemas}
+        resolved_question = ImmutableDict({"answers": self.answer_schemas})
 
         if "dynamic_answers" in question_schema:
             placeholder_renderer = PlaceholderRenderer(
@@ -298,8 +299,10 @@ class Question:
                 response_metadata=response_metadata,
             )
 
-            resolved_question = placeholder_renderer.render(
-                data_to_render=question_schema, list_item_id=self.list_item_id
+            resolved_question = ImmutableDict(
+                placeholder_renderer.render(
+                    data_to_render=question_schema, list_item_id=self.list_item_id
+                )
             )
         return resolved_question["answers"]
 
