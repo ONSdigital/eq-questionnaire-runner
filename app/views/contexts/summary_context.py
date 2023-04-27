@@ -77,7 +77,7 @@ class SummaryContext(Context):
         return_to: str | None,
         list_name: str | None = None,
         list_item_id: str | None = None,
-    ) -> Generator[ImmutableDict[str, Any], None, None]:
+    ) -> list[ImmutableDict[str, Any]]:
         location = Location(
             section_id=section_id, list_name=list_name, list_item_id=list_item_id
         )
