@@ -7,7 +7,10 @@ from flask_babel import gettext
 from app.forms.questionnaire_form import generate_form
 from app.helpers import get_address_lookup_api_auth_token
 from app.questionnaire.location import Location
-from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
+from app.questionnaire.questionnaire_store_updater import (
+    QuestionnaireStoreUpdater,
+    DependentSection,
+)
 from app.questionnaire.variants import transform_variants
 from app.views.contexts import ListContext
 from app.views.contexts.question import build_question_context
@@ -254,8 +257,9 @@ class Question(BlockHandler):
         )
 
         for section_id, list_item_id in section_keys_to_evaluate:
+            path = self.router.routing_path(section_id, list_item_id)
             self.questionnaire_store_updater.update_section_status(
-                is_complete=self.router.is_path_complete(self._routing_path),
+                is_complete=self.router.is_path_complete(path),
                 section_id=section_id,
                 list_item_id=list_item_id,
             )
