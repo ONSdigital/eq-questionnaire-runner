@@ -1,7 +1,5 @@
 from typing import Any, Generator, Mapping, Optional, Union
 
-from werkzeug.datastructures import ImmutableDict
-
 from app.questionnaire.location import Location
 
 from ...data_models import AnswerStore, ListStore, ProgressStore
@@ -53,7 +51,7 @@ class SummaryContext(Context):
 
     def _build_all_groups(
         self, return_to: Optional[str]
-    ) -> Generator[ImmutableDict[str, Any], None, None]:
+    ) -> Generator[dict[str, Any], None, None]:
         for section_id in self._router.enabled_section_ids:
             if repeat := self._schema.get_repeat_for_section(section_id):
                 for_repeat = self._list_store[repeat["for_list"]]
@@ -77,7 +75,7 @@ class SummaryContext(Context):
         return_to: str | None,
         list_name: str | None = None,
         list_item_id: str | None = None,
-    ) -> list[ImmutableDict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         location = Location(
             section_id=section_id, list_name=list_name, list_item_id=list_item_id
         )
@@ -99,7 +97,7 @@ class SummaryContext(Context):
         ).get("groups", [])
 
 
-def set_unique_group_ids(groups: list[ImmutableDict]) -> list[ImmutableDict]:
+def set_unique_group_ids(groups: list[dict]) -> list[dict]:
     checked_ids = set()
     id_value = 0
 
