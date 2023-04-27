@@ -7,10 +7,7 @@ from flask_babel import gettext
 from app.forms.questionnaire_form import generate_form
 from app.helpers import get_address_lookup_api_auth_token
 from app.questionnaire.location import Location
-from app.questionnaire.questionnaire_store_updater import (
-    QuestionnaireStoreUpdater,
-    DependentSection,
-)
+from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.variants import transform_variants
 from app.views.contexts import ListContext
 from app.views.contexts.question import build_question_context
@@ -209,7 +206,28 @@ class Question(BlockHandler):
     def handle_post(self):
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
-        self.questionnaire_store_updater.update_answers(self.form.data)
+        dynamic_answers = False
+        for item in self.form.data:
+            if list_item_id := item.split("-")[-1]:
+                if (
+                    list_item_id
+                    # pylint: disable=protected-access
+                    in self.questionnaire_store_updater._list_store._list_item_ids()
+                ):
+                    item_id = item.replace(f"-{list_item_id}", "")
+                    form_data = {item_id: self.form.data[item]}
+                    self.questionnaire_store_updater.update_answers(
+                        form_data, list_item_id
+                    )
+                    dynamic_answers = True
+                elif item in self._schema.get_answer_ids_for_question(
+                    self.rendered_block["question"]
+                ):
+                    form_data = {item: self.form.data[item]}
+                    self.questionnaire_store_updater.update_answers(form_data)
+
+        if not dynamic_answers:
+            self.questionnaire_store_updater.update_answers(self.form.data)
         self.questionnaire_store_updater.update_progress_for_dependent_sections()
         if self.questionnaire_store_updater.is_dirty():
             self._routing_path = self.router.routing_path(
