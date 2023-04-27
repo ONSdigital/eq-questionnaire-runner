@@ -1,4 +1,4 @@
-from typing import Any, Generator, Mapping, Optional, Union
+from typing import Any, Generator, Mapping, Optional, Union, MutableMapping
 
 from app.questionnaire.location import Location
 
@@ -18,7 +18,7 @@ class SummaryContext(Context):
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: Optional[MetadataProxy],
-        response_metadata: Mapping,
+        response_metadata: MutableMapping,
         view_submitted_response: bool,
     ) -> None:
         super().__init__(
