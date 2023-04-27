@@ -302,10 +302,6 @@ class QuestionnaireStoreUpdater:
                     self._answer_store.remove_answer(
                         dependency.answer_id, list_item_id=list_item_id
                     )
-                if self.dependency_has_dynamic_answers(dependency.block_id):
-                    self.dependent_block_id_by_section_key[
-                        (dependency.section_id, None)
-                    ].add(dependency.block_id)
                 else:
                     self.dependent_block_id_by_section_key[
                         (dependency.section_id, list_item_id)
@@ -437,10 +433,3 @@ class QuestionnaireStoreUpdater:
         self, section_ids: Iterable[str] | None = None
     ) -> list[SectionKeyType]:
         return self._progress_store.started_section_keys(section_ids)
-
-    def dependency_has_dynamic_answers(self, block_id: str) -> bool:
-        if question := self._schema.get_block(block_id).get("question"):  # type: ignore
-            # Type ignore always returns at this point
-            if question.get("dynamic_answers"):
-                return True
-        return False
