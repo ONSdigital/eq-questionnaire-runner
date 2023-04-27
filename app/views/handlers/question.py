@@ -254,9 +254,8 @@ class Question(BlockHandler):
         )
 
         for section_id, list_item_id in section_keys_to_evaluate:
-            path = self.router.routing_path(section_id, list_item_id)
             self.questionnaire_store_updater.update_section_status(
-                is_complete=self.router.is_path_complete(path),
+                is_complete=self.router.is_path_complete(self._routing_path),
                 section_id=section_id,
                 list_item_id=list_item_id,
             )
