@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Mapping, Optional
+from typing import Any, Mapping
 
 from flask import url_for
 
 
 class InvalidLocationException(Exception):
-    def __init__(self, value):
+    def __init__(self, value: str):
         super().__init__()
         self.value = value
 
@@ -24,15 +24,15 @@ class Location:
     """
 
     section_id: str
-    block_id: Optional[str] = None
-    list_name: Optional[str] = None
-    list_item_id: Optional[str] = None
+    block_id: str | None = None
+    list_name: str | None = None
+    list_item_id: str | None = None
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(frozenset(self.__dict__.values()))
 
     @classmethod
-    def from_dict(cls, location_dict: Mapping):
+    def from_dict(cls, location_dict: Mapping[str, str]) -> Location:
         section_id = location_dict["section_id"]
         block_id = location_dict["block_id"]
         list_item_id = location_dict.get("list_item_id")
@@ -44,7 +44,7 @@ class Location:
             list_item_id=list_item_id,
         )
 
-    def url(self, **kwargs) -> str:
+    def url(self, **kwargs: Any) -> str:
         """
         Return the survey runner url that this location represents
         Any additional keyword arguments are parsed as query strings.

@@ -6,7 +6,7 @@
     "survey_id": "0",
     "title": "Other input fields",
     "theme": "default",
-    "description": "A questionnaire to test definitions.",
+    "description": "A questionnaire to test definitions (array type).",
     "metadata": [
         {
             "name": "user_id",
@@ -43,10 +43,16 @@
                                 "id": "question",
                                 "title": "Do you connect a LiFePO4 battery to your <em>photovoltaic system</em> to store surplus energy?",
                                 "type": "General",
-                                "definition": {
-                                    "title": "What is a photovoltaic system?",
-                                    "content": "A typical photovoltaic system employs solar panels, each comprising a number of solar cells, which generate electrical power. PV installations may be ground-mounted, rooftop mounted or wall mounted. The mount may be fixed, or use a solar tracker to follow the sun across the sky."
-                                },
+                                "definitions": [
+                                    {
+                                        "title": "What is a photovoltaic system?",
+                                        "contents": [
+                                            {
+                                                "description": "A typical photovoltaic system employs solar panels, each comprising a number of solar cells, which generate electrical power. PV installations may be ground-mounted, rooftop mounted or wall mounted. The mount may be fixed, or use a solar tracker to follow the sun across the sky."
+                                            }
+                                        ]
+                                    }
+                                ],
                                 "answers": [
                                     {
                                         "type": "Radio",

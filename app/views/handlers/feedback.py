@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from functools import cached_property
-from typing import Any, Mapping, Optional, Union
+from typing import Any, Mapping, MutableMapping, Optional, Union
 
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
@@ -268,7 +268,7 @@ class FeedbackPayload:
     def __init__(
         self,
         metadata: MetadataProxy,
-        response_metadata: Mapping[str, Union[str, int, list]],
+        response_metadata: MutableMapping[str, Union[str, int, list]],
         schema: QuestionnaireSchema,
         case_id: Optional[str],
         submission_language_code: Optional[str],
@@ -339,7 +339,7 @@ class FeedbackPayloadV2:
     def __init__(
         self,
         metadata: MetadataProxy,
-        response_metadata: Mapping[str, Union[str, int, list]],
+        response_metadata: MutableMapping[str, Union[str, int, list]],
         schema: QuestionnaireSchema,
         case_id: Optional[str],
         submission_language_code: Optional[str],

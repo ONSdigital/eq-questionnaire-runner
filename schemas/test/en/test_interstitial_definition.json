@@ -54,16 +54,6 @@
                                         }
                                     },
                                     {
-                                        "definition": {
-                                            "title": "Questionnaire",
-                                            "contents": [
-                                                {
-                                                    "description": "A set of printed or written questions with a choice of answers, devised for the purposes of a survey or statistical study"
-                                                }
-                                            ]
-                                        }
-                                    },
-                                    {
                                         "description": "You can now continue."
                                     }
                                 ]
