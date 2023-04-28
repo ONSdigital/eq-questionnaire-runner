@@ -32,11 +32,11 @@ class ListAddQuestion(ListAction):
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
         self.questionnaire_store_updater.update_answers(self.form.data, list_item_id)
-        self.questionnaire_store_updater.update_progress_for_dependent_sections()
 
         self.evaluate_and_update_section_status_on_list_change(
             self.parent_block["for_list"]
         )
+        self.questionnaire_store_updater.update_progress_for_dependent_sections()
         return super().handle_post()
 
     def _resolve_custom_page_title_vars(self) -> MutableMapping:

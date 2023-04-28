@@ -7,7 +7,10 @@ from flask_babel import gettext
 from app.forms.questionnaire_form import generate_form
 from app.helpers import get_address_lookup_api_auth_token
 from app.questionnaire.location import Location
-from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
+from app.questionnaire.questionnaire_store_updater import (
+    DependentSection,
+    QuestionnaireStoreUpdater,
+)
 from app.questionnaire.variants import transform_variants
 from app.views.contexts import ListContext
 from app.views.contexts.question import build_question_context
@@ -207,12 +210,12 @@ class Question(BlockHandler):
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
         self.questionnaire_store_updater.update_answers(self.form.data)
-        self.questionnaire_store_updater.update_progress_for_dependent_sections()
         if self.questionnaire_store_updater.is_dirty():
             self._routing_path = self.router.routing_path(
                 section_id=self._current_location.section_id,
                 list_item_id=self._current_location.list_item_id,
             )
+        self.questionnaire_store_updater.update_progress_for_dependent_sections()
         super().handle_post()
 
     def get_return_to_hub_url(self):
@@ -226,18 +229,16 @@ class Question(BlockHandler):
         section_ids = self._schema.get_section_ids_dependent_on_list(list_name)
         section_ids.append(self.current_location.section_id)
 
-        section_keys_to_evaluate = (
-            self.questionnaire_store_updater.started_section_keys(
-                section_ids=section_ids
-            )
+        section_keys_to_add = self.questionnaire_store_updater.started_section_keys(
+            section_ids=section_ids
         )
-
-        for section_id, list_item_id in section_keys_to_evaluate:
-            path = self.router.routing_path(section_id, list_item_id)
-            self.questionnaire_store_updater.update_section_status(
-                is_complete=self.router.is_path_complete(path),
-                section_id=section_id,
-                list_item_id=list_item_id,
+        for section_id, list_item_id in section_keys_to_add:
+            self.questionnaire_store_updater.dependent_sections.add(
+                DependentSection(
+                    section_id=section_id,
+                    list_item_id=list_item_id,
+                    is_complete=None,
+                )
             )
 
     def clear_radio_answers(self):

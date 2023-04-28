@@ -54,6 +54,8 @@ class ListCollector(Question):
             # pylint: disable=no-member
             # wtforms Form parents are not discoverable in the 2.3.3 implementation
             self.questionnaire_store_updater.update_answers(self.form.data)
+            self.questionnaire_store_updater.update_progress_for_dependent_sections()
             self.questionnaire_store_updater.save()
         else:
+            self.questionnaire_store_updater.update_progress_for_dependent_sections()
             return super().handle_post()

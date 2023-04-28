@@ -114,6 +114,7 @@ class BlockHandler:
         self._set_started_at_metadata()
         self.questionnaire_store_updater.add_completed_location()
         self._update_section_completeness()
+        self.questionnaire_store_updater.update_progress_for_dependent_sections()
         self.questionnaire_store_updater.save()
 
     def _get_routing_path(self):

@@ -35,6 +35,7 @@ class PrimaryPersonListCollector(Question):
             )
 
             self.evaluate_and_update_section_status_on_list_change(list_name)
+            self.questionnaire_store_updater.update_progress_for_dependent_sections()
             self.questionnaire_store_updater.save()
         else:
             self.questionnaire_store_updater.remove_primary_person(list_name)
@@ -48,4 +49,5 @@ class PrimaryPersonListCollector(Question):
             # determined correctly when the parent class' `update_section_status`
             # method is called.
             self.evaluate_and_update_section_status_on_list_change(list_name)
+            self.questionnaire_store_updater.update_progress_for_dependent_sections()
             super().handle_post()

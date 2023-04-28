@@ -52,4 +52,5 @@ class PrimaryPersonQuestion(Question):
         )
 
         self._update_section_completeness(location=self.parent_location)
+        self.questionnaire_store_updater.update_progress_for_dependent_sections()
         self.questionnaire_store_updater.save()
