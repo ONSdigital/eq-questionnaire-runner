@@ -1,4 +1,4 @@
-from typing import Any, Mapping
+from typing import Any, Iterable, Mapping
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -7,10 +7,10 @@ from app.questionnaire.questionnaire_schema import (
     get_grand_calculated_summary_block_ids,
 )
 from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
+from app.views.contexts.summary.group import Group
 
 
 class GrandCalculatedSummaryContext(CalculatedSummaryContext):
-
     def _build_grand_calculated_summary_section(self, rendered_block: Mapping) -> dict:
         """Build up the list of blocks only including blocks / questions / answers which are relevant to the summary"""
         # Type ignore: the block, group and section will all exist at this point
@@ -53,6 +53,33 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
                 )
 
         return routing_path_block_ids
+
+    def build_groups_for_section(
+        self,
+        section: Mapping[str, Any],
+        return_to_block_id: str,
+        routing_path_block_ids: Iterable[str],
+        answer_format: Mapping | None = None,
+    ) -> list[Mapping[str, Group]]:
+        return [
+            Group(
+                group_schema=group,
+                routing_path_block_ids=routing_path_block_ids,
+                answer_store=self._answer_store,
+                list_store=self._list_store,
+                metadata=self._metadata,
+                response_metadata=self._response_metadata,
+                schema=self._schema,
+                location=self.current_location,
+                language=self._language,
+                progress_store=self._progress_store,
+                return_to="grand-calculated-summary",
+                return_to_block_id=return_to_block_id,
+                summary_type="GrandCalculatedSummary",
+                calculated_summary_format=answer_format,
+            ).serialize()
+            for group in section["groups"]
+        ]
 
     def build_view_context_for_grand_calculated_summary(
         self,

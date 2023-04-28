@@ -1,6 +1,6 @@
 from .calculated_summary_context import CalculatedSummaryContext
-from .grand_calculated_summary_context import GrandCalculatedSummaryContext
 from .context import Context
+from .grand_calculated_summary_context import GrandCalculatedSummaryContext
 from .hub_context import HubContext
 from .list_context import ListContext
 from .section_summary_context import SectionSummaryContext

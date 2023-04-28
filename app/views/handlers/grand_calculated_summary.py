@@ -16,7 +16,6 @@ class GrandCalculatedSummary(Content):
             response_metadata=self._questionnaire_store.response_metadata,
             current_location=self._current_location,
             routing_path=self._routing_path,
-            summary_type="GrandCalculatedSummary"
         )
         context = (
             grand_calculated_summary_context.build_view_context_for_grand_calculated_summary()

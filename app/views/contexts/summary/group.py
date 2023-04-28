@@ -52,7 +52,7 @@ class Group:
             language=language,
             return_to_block_id=return_to_block_id,
             calculated_summary_format=calculated_summary_format,
-            summary_type=summary_type
+            summary_type=summary_type,
         )
 
         self.placeholder_renderer = PlaceholderRenderer(
@@ -113,7 +113,9 @@ class Group:
 
             elif summary_type == "GrandCalculatedSummary":
                 if not calculated_summary_format:
-                    raise ValueError("No answer format provided for grand calculated summary")
+                    raise ValueError(
+                        "No answer format provided for grand calculated summary"
+                    )
                 blocks.extend(
                     [
                         CalculatedSummaryBlock(

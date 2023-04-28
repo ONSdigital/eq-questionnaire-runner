@@ -1,5 +1,5 @@
 from decimal import Decimal
-from typing import Any, Mapping, MutableMapping, Iterable
+from typing import Any, Iterable, Mapping, MutableMapping
 
 from flask import url_for
 
@@ -34,6 +34,7 @@ class CalculatedSummaryBlock:
         self.title = block_schema["calculation"].get("title")
         self.return_to = return_to
         self.return_to_block_id = return_to_block_id
+        self.location = location
         self.block_schema = block_schema
         self.answer_format = answer_format
 
@@ -55,7 +56,7 @@ class CalculatedSummaryBlock:
                 "id": self.id,
                 "label": self.title,
                 "value": calculated_total,
-                "link": self.id,
+                "link": self._build_link(),
                 **answer_format,
             }
         ]
@@ -65,18 +66,14 @@ class CalculatedSummaryBlock:
             "questionnaire.block",
             block_id=self.id,
             return_to=self.return_to,
+            return_to_answer_id=self.id,
             return_to_block_id=self.return_to_block_id,
-            calculated_summary=self.id,
+            return_to_section_id=self.location.section_id,
             _anchor=self.id,
         )
 
     def _calculated_summary(self) -> dict:
-        return {
-            "title": self.title,
-            "link": self._build_link(),
-            "id": self.id,
-            "answers": self.answers
-        }
+        return {"id": self.id, "title": self.title, "answers": self.answers}
 
     def serialize(self) -> dict:
         return {
