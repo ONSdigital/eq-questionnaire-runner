@@ -124,7 +124,7 @@
                                                 "action": {
                                                     "type": "RedirectToListRepeatingBlocks",
                                                     "params": {
-                                                        "block_id": "add-company-repeating-blocks",
+                                                        "block_id": "add-company-repeating-block-1",
                                                         "list_name": "companies"
                                                     }
                                                 }
@@ -184,50 +184,63 @@
                                     }
                                 ]
                             },
-                            "add_block": {
-                                "id": "add-company",
-                                "type": "ListAddQuestion",
-                                "question": {
-                                    "id": "add-question-companies",
-                                    "type": "General",
-                                    "title": "Give details about the company or branch that undertakes general insurance business",
-                                    "answers": [
-                                        {
-                                            "id": "company-or-branch-name",
-                                            "label": "Name of UK company or branch",
-                                            "mandatory": true,
-                                            "type": "TextField"
-                                        },
-                                        {
-                                            "id": "registration-number",
-                                            "label": "Registration number",
-                                            "mandatory": true,
-                                            "type": "Number",
-                                            "maximum": {
-                                                "value": 999,
-                                                "exclusive": false
+                            "repeating_blocks": [
+                                {
+                                    "id": "add-company-repeating-block-1",
+                                    "type": "ListRepeatingBlock",
+                                    "question": {
+                                        "id": "add-company-repeating-block-1-question",
+                                        "type": "General",
+                                        "title": "Give details about the company or branch that undertakes general insurance business",
+                                        "answers": [
+                                            {
+                                                "id": "company-or-branch-name",
+                                                "label": "Name of UK company or branch",
+                                                "mandatory": true,
+                                                "type": "TextField"
                                             },
-                                            "decimal_places": 0
-                                        },
-                                        {
-                                            "type": "Radio",
-                                            "label": "Is this UK company or branch an authorised insurer?",
-                                            "id": "authorised-insurer-radio",
-                                            "mandatory": false,
-                                            "options": [
-                                                {
-                                                    "label": "Yes",
-                                                    "value": "Yes"
+                                            {
+                                                "id": "registration-number",
+                                                "label": "Registration number",
+                                                "mandatory": true,
+                                                "type": "Number",
+                                                "maximum": {
+                                                    "value": 999,
+                                                    "exclusive": false
                                                 },
-                                                {
-                                                    "label": "No",
-                                                    "value": "No"
-                                                }
-                                            ]
-                                        }
-                                    ]
+                                                "decimal_places": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "add-company-repeating-block-2",
+                                    "type": "ListRepeatingBlock",
+                                    "question": {
+                                        "id": "add-company-repeating-block-2-question",
+                                        "type": "General",
+                                        "title": "Give details about the company or branch that undertakes general insurance business",
+                                        "answers": [
+                                            {
+                                                "type": "Radio",
+                                                "label": "Is this UK company or branch an authorised insurer?",
+                                                "id": "authorised-insurer-radio",
+                                                "mandatory": false,
+                                                "options": [
+                                                    {
+                                                        "label": "Yes",
+                                                        "value": "Yes"
+                                                    },
+                                                    {
+                                                        "label": "No",
+                                                        "value": "No"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
                                 }
-                            },
+                            ],
                             "edit_block": {
                                 "id": "edit-company",
                                 "type": "ListEditQuestion",

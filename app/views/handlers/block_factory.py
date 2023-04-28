@@ -6,6 +6,7 @@ from app.views.handlers.list_add_question import ListAddQuestion
 from app.views.handlers.list_collector import ListCollector
 from app.views.handlers.list_edit_question import ListEditQuestion
 from app.views.handlers.list_remove_question import ListRemoveQuestion
+from app.views.handlers.list_repeating_block import ListRepeatingBlock
 from app.views.handlers.primary_person_list_collector import PrimaryPersonListCollector
 from app.views.handlers.primary_person_question import PrimaryPersonQuestion
 from app.views.handlers.question import Question
@@ -19,6 +20,7 @@ BLOCK_MAPPINGS = {
     "ListAddQuestion": ListAddQuestion,
     "ListEditQuestion": ListEditQuestion,
     "ListRemoveQuestion": ListRemoveQuestion,
+    "ListRepeatingBlock": ListRepeatingBlock,
     "PrimaryPersonListCollector": PrimaryPersonListCollector,
     "PrimaryPersonListAddOrEditQuestion": PrimaryPersonQuestion,
     "RelationshipCollector": RelationshipCollector,

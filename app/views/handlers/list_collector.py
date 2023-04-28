@@ -29,16 +29,16 @@ class ListCollector(Question):
             )
             return add_url
 
-        # TODO Build URL to the block of type ListRepeatingQuestion
         if self._add_type == ListCollectorAddType.MULTI:
-            add_url = url_for(
+            repeating_block_url = url_for(
                 "questionnaire.block",
                 list_name=self.rendered_block["for_list"],
-                block_id=self.rendered_block["repeating_blocks"]["id"],
+                block_id=self.rendered_block["repeating_blocks"][0]["id"],
                 return_to=self._return_to,
                 return_to_answer_id=self._return_to_answer_id,
                 return_to_block_id=self._return_to_block_id,
             )
+            return repeating_block_url
 
         return super().get_next_location_url()
 

@@ -20,6 +20,7 @@ LIST_COLLECTOR_CHILDREN = [
     "ListEditQuestion",
     "ListRemoveQuestion",
     "PrimaryPersonListAddOrEditQuestion",
+    "ListRepeatingBlock"
 ]
 
 RELATIONSHIP_CHILDREN = ["UnrelatedQuestion"]
@@ -199,13 +200,18 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                         "edit_block",
                         "remove_block",
                         "add_or_edit_block",
-                        "unrelated_block",
+                        "unrelated_block"
                     ]:
                         if block.get(nested_block_name):
                             nested_block = block[nested_block_name]
                             nested_block_id = nested_block["id"]
                             blocks[nested_block_id] = nested_block
                             self._parent_id_map[nested_block_id] = block_id
+                    if block.get("repeating_blocks"):
+                        for repeating_block in block["repeating_blocks"]:
+                            repeating_block_id = repeating_block["id"]
+                            blocks[repeating_block_id] = repeating_block
+                            self._parent_id_map[repeating_block_id] = block_id
 
         return blocks
 
