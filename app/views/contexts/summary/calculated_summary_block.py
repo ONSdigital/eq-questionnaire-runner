@@ -68,7 +68,6 @@ class CalculatedSummaryBlock:
             return_to=self.return_to,
             return_to_answer_id=self.id,
             return_to_block_id=self.return_to_block_id,
-            return_to_section_id=self.location.section_id,
             _anchor=self.id,
         )
 

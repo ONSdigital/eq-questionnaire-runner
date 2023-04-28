@@ -1,15 +1,6 @@
 from copy import deepcopy
 from decimal import Decimal
-from typing import (
-    Any,
-    Callable,
-    Iterable,
-    Mapping,
-    MutableMapping,
-    Optional,
-    Tuple,
-    Union,
-)
+from typing import Any, Callable, Iterable, Mapping, MutableMapping, Optional, Tuple
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -49,6 +40,8 @@ class CalculatedSummaryContext(Context):
         response_metadata: MutableMapping,
         routing_path: RoutingPath,
         current_location: Location,
+        return_to: str | None,
+        return_to_block_id: str | None,
     ) -> None:
         super().__init__(
             language,
@@ -61,6 +54,8 @@ class CalculatedSummaryContext(Context):
         )
         self.routing_path_block_ids = routing_path.block_ids
         self.current_location = current_location
+        self.return_to = return_to
+        self.return_to_block_id = return_to_block_id
 
     def build_groups_for_section(
         self,
@@ -69,6 +64,15 @@ class CalculatedSummaryContext(Context):
         routing_path_block_ids: Iterable[str],
         answer_format: Mapping | None = None,
     ) -> list[Mapping[str, Group]]:
+        """
+        In the case that the user has been directed to a calculated summary from a grand calculated summary
+        the return to block id needs to be a list, both of the calculated summary id and the grand calculated summary one
+        so that if they then edit answers, it's still possible to route back to the grand calculated summary
+        """
+        return_to = "calculated-summary"
+        if self.return_to == "grand-calculated-summary":
+            return_to_block_id += f",{self.return_to_block_id}"
+            return_to = f"{return_to},grand-calculated-summary"
         return [
             Group(
                 group_schema=group,
@@ -81,7 +85,7 @@ class CalculatedSummaryContext(Context):
                 location=self.current_location,
                 language=self._language,
                 progress_store=self._progress_store,
-                return_to="calculated-summary",
+                return_to=return_to,
                 return_to_block_id=return_to_block_id,
                 summary_type="CalculatedSummary",
                 calculated_summary_format=answer_format,

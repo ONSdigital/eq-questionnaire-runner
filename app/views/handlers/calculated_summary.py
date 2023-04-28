@@ -14,6 +14,8 @@ class CalculatedSummary(Content):
             response_metadata=self._questionnaire_store.response_metadata,
             current_location=self._current_location,
             routing_path=self._routing_path,
+            return_to=self.return_to,
+            return_to_block_id=self.return_to_block_id,
         )
         context = calculated_summary_context.build_view_context_for_calculated_summary()
 
