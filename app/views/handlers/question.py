@@ -225,7 +225,7 @@ class Question(BlockHandler):
         ):
             return url_for(".get_questionnaire")
 
-    def evaluate_and_update_section_status_on_list_change(self, list_name):
+    def add_dependent_sections_for_list(self, list_name):
         section_ids = self._schema.get_section_ids_dependent_on_list(list_name)
         section_ids.append(self.current_location.section_id)
 
