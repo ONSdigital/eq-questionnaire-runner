@@ -351,7 +351,7 @@ class QuestionnaireStoreUpdater:
         )
 
         for answer_id, answer_value in form_data.items():
-            if answer_id not in answers_by_answer_id or answer_id == "csrf_token":
+            if answer_id not in answers_by_answer_id:
                 continue
 
             resolved_answer = answers_by_answer_id[answer_id]

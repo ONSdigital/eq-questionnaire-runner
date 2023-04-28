@@ -68,16 +68,33 @@ def convert_answers_to_payload_0_0_3(
                         list_collector_block=block,
                         answers_payload=answers_payload,
                     )
-                if (question := block.get("question")) and (
-                    question.get("dynamic_answers")
-                ):
+                question = block.get("question") or block.get("question_variants") or {}
+                question = (
+                    question[0]["question"] if isinstance(question, tuple) else question
+                )
+                if question.get("dynamic_answers"):
                     resolve_dynamic_answers(
                         question, answer_store, answers_payload, list_store
                     )
 
                 answer_ids = schema.get_answer_ids_for_block(block_id)
+                static_answer_ids = [
+                    answer_id
+                    for answer_id in answer_ids
+                    if not schema.is_answer_dynamic(answer_id)
+                ]
+                has_dynamic_answers = len(static_answer_ids) != len(answer_ids)
+
+                if answer_ids and has_dynamic_answers:
+                    resolve_dynamic_answers(
+                        block=schema.get_all_questions_for_block(block)[0],
+                        answer_store=answer_store,
+                        answers_payload=answers_payload,
+                        list_store=list_store,
+                    )
+
                 answers_in_block = answer_store.get_answers_by_answer_id(
-                    answer_ids, list_item_id=routing_path.list_item_id
+                    static_answer_ids, list_item_id=routing_path.list_item_id
                 )
                 for answer_in_block in answers_in_block:
                     answers_payload.add_or_update(answer_in_block)
