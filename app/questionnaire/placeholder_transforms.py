@@ -1,6 +1,6 @@
 from datetime import date, datetime, timezone
 from decimal import Decimal
-from typing import TYPE_CHECKING, Optional, Sequence, Sized, Union
+from typing import TYPE_CHECKING, Sequence, Sized
 from urllib.parse import quote
 
 from babel import units
@@ -42,7 +42,7 @@ class PlaceholderTransforms:
     input_date_format = "%Y-%m-%d"
 
     def format_currency(
-        self, number: Optional[Union[float, str]] = None, currency: str = "GBP"
+        self, number: float | str | None = None, currency: str = "GBP"
     ) -> str:
         formatted_currency: str = format_currency(number, currency, locale=self.locale)
         return formatted_currency
@@ -95,8 +95,8 @@ class PlaceholderTransforms:
     def email_link(
         self,
         email_address: str,
-        email_subject: Optional[str] = None,
-        email_subject_append: Optional[str] = None,
+        email_subject: str | None = None,
+        email_subject_append: str | None = None,
     ) -> str:
         href = f"mailto:{email_address}"
         if email_subject:
@@ -123,7 +123,7 @@ class PlaceholderTransforms:
 
         return string_to_format
 
-    def format_number(self, number: Union[int, Decimal, str]) -> str:
+    def format_number(self, number: int | Decimal | str) -> str:
         if number or number == 0:
             formatted_decimal: str = format_decimal(number, locale=self.locale)
             return formatted_decimal
@@ -131,14 +131,14 @@ class PlaceholderTransforms:
         return ""
 
     @staticmethod
-    def format_percentage(value: Union[int, Decimal, str]) -> str:
+    def format_percentage(value: int | Decimal | str) -> str:
         return f"{value}%"
 
     def format_unit(
         self,
         unit: str,
-        value: Union[int, Decimal, str],
-        unit_length: Optional[str] = None,
+        value: int | Decimal | str,
+        unit_length: str | None = None,
     ) -> str:
         length = unit_length or "short"
         formatted_unit: str = units.format_unit(
@@ -238,11 +238,11 @@ class PlaceholderTransforms:
         return f"{start_date_formatted} to {end_date_formatted}"
 
     @staticmethod
-    def add(lhs: Union[int, Decimal], rhs: Union[int, Decimal]) -> Union[int, Decimal]:
+    def add(lhs: int | Decimal, rhs: int | Decimal) -> int | Decimal:
         return lhs + rhs
 
     def format_ordinal(
-        self, number_to_format: int, determiner: Optional[str] = None
+        self, number_to_format: int, determiner: str | None = None
     ) -> str:
         indicator = self.get_ordinal_indicator(number_to_format)
 
@@ -325,7 +325,7 @@ class PlaceholderTransforms:
         return f'<a href="{href}">{link_text}</a>'
 
     @staticmethod
-    def list_item_count(list_to_count: Optional[Sized]) -> int:
+    def list_item_count(list_to_count: Sized | None) -> int:
         return len(list_to_count or [])
 
     def option_label_from_value(self, value: str, answer_id: str) -> str:
@@ -336,5 +336,5 @@ class PlaceholderTransforms:
         return self.ops_helper.get_option_label_from_value(value, answer_id)
 
     @staticmethod
-    def conditional_trad_as(trad_as: Optional[str]) -> str:
+    def conditional_trad_as(trad_as: str | None) -> str:
         return f" ({trad_as})" if trad_as else ""

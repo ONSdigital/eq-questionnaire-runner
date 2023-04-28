@@ -138,7 +138,7 @@ def _get_converted_answers_message(
         answer_converter(
             schema=schema,
             questionnaire_store=questionnaire_store,
-            routing_path=full_routing_path,
+            full_routing_path=full_routing_path,
             submitted_at=submitted_at,
             flushed=True,
         )

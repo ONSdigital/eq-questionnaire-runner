@@ -1,4 +1,4 @@
-from typing import Any, Mapping, MutableMapping
+from typing import Mapping, MutableMapping
 
 from jsonpointer import resolve_pointer, set_pointer
 
@@ -45,7 +45,7 @@ class PlaceholderRenderer:
     def render_pointer(
         self,
         *,
-        dict_to_render: Mapping[str, Any],
+        dict_to_render: Mapping,
         pointer_to_render: str,
         list_item_id: str | None,
         placeholder_parser: PlaceholderParser,
@@ -70,7 +70,7 @@ class PlaceholderRenderer:
 
     def render_placeholder(
         self,
-        placeholder_data: MutableMapping[str, Any],
+        placeholder_data: MutableMapping,
         list_item_id: str | None,
         placeholder_parser: PlaceholderParser | None = None,
     ) -> str:
@@ -93,8 +93,9 @@ class PlaceholderRenderer:
 
         if "text_plural" in placeholder_data:
             plural_schema: Mapping[str, dict] = placeholder_data["text_plural"]
-            count = (
-                0
+            # Type ignore: For a valid schema the plural count will return an integer
+            count: int = (
+                0  # type: ignore
                 if self._placeholder_preview_mode
                 else self.get_plural_count(plural_schema["count"])
             )
@@ -116,15 +117,15 @@ class PlaceholderRenderer:
     def render(
         self,
         *,
-        data_to_render: Mapping[str, Any],
+        data_to_render: Mapping,
         list_item_id: str | None,
-    ) -> dict[str, Any]:
+    ) -> dict:
         """
         Transform the current schema json to a fully rendered dictionary
         """
-        data_to_render_mutable: dict[
-            str, Any
-        ] = QuestionnaireSchema.get_mutable_deepcopy(data_to_render)
+        data_to_render_mutable: dict = QuestionnaireSchema.get_mutable_deepcopy(
+            data_to_render
+        )
         pointers = find_pointers_containing(data_to_render_mutable, "placeholders")
 
         placeholder_parser = PlaceholderParser(

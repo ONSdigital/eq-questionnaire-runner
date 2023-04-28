@@ -1,6 +1,8 @@
 from collections import OrderedDict
 from datetime import datetime, timezone
-from typing import Any, Iterable, Mapping, Optional, Union
+from typing import Any, Iterable, Mapping, MutableMapping
+
+from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.answer import AnswerValueTypes, ListAnswer
@@ -10,7 +12,7 @@ from app.questionnaire.location import Location
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.variants import choose_question_to_display
 
-MetadataType = Mapping[str, Union[str, int, list]]
+MetadataType = MutableMapping[str, str | int | list]
 
 
 # pylint: disable=too-many-locals,too-many-nested-blocks
@@ -37,6 +39,7 @@ def convert_answers_to_payload_0_0_1(
     :param list_store: list store
     :param schema: QuestionnaireSchema class with populated schema json
     :param full_routing_path: a list of section routing paths followed in the questionnaire
+    :param progress_store: progress store
     :return: data in a formatted form
     """
     data = OrderedDict()
@@ -50,7 +53,7 @@ def convert_answers_to_payload_0_0_1(
             for answer_in_block in answers_in_block:
                 answer_schema = None
 
-                block = schema.get_block_for_answer_id(answer_in_block.answer_id)
+                block: ImmutableDict = schema.get_block_for_answer_id(answer_in_block.answer_id)  # type: ignore
                 current_location = Location(
                     block_id=block_id,
                     section_id=routing_path.section_id,
@@ -151,7 +154,7 @@ def _get_checkbox_answer_data(
     return checkbox_answer_data
 
 
-def _encode_value(value: AnswerValueTypes) -> Optional[str]:
+def _encode_value(value: AnswerValueTypes) -> str | None:
     if isinstance(value, str):
         if value == "":
             return None
