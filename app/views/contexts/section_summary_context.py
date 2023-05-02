@@ -95,9 +95,9 @@ class SectionSummaryContext(Context):
 
     def build_summary(
         self,
-        return_to: Optional[str],
+        return_to: str | None,
         view_submitted_response: bool,
-    ) -> dict[str, Any]:
+    ) -> dict:
         """
         Build a summary context for a particular location.
 

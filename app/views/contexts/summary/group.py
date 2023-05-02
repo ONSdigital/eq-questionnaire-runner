@@ -80,7 +80,7 @@ class Group:
         progress_store: ProgressStore,
         language: str,
         return_to_block_id: Optional[str],
-        view_submitted_response: Optional[bool] = False,
+        view_submitted_response: bool | None = False,
     ) -> list[dict[str, Block]]:
         blocks = []
 

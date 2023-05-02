@@ -17,7 +17,7 @@ class SummaryContext(Context):
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: Optional[MetadataProxy],
+        metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         view_submitted_response: bool,
     ) -> None:
@@ -51,7 +51,7 @@ class SummaryContext(Context):
 
     def _build_all_groups(
         self, return_to: Optional[str]
-    ) -> Generator[dict[str, Any], None, None]:
+    ) -> Generator[dict, None, None]:
         for section_id in self._router.enabled_section_ids:
             if repeat := self._schema.get_repeat_for_section(section_id):
                 for_repeat = self._list_store[repeat["for_list"]]
@@ -75,7 +75,7 @@ class SummaryContext(Context):
         return_to: str | None,
         list_name: str | None = None,
         list_item_id: str | None = None,
-    ) -> list[dict[str, Any]]:
+    ) -> list[dict]:
         location = Location(
             section_id=section_id, list_name=list_name, list_item_id=list_item_id
         )
