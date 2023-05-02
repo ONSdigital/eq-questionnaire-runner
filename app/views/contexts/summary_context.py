@@ -76,6 +76,8 @@ class SummaryContext(Context):
         list_name: str | None = None,
         list_item_id: str | None = None,
     ) -> list[dict]:
+        final_groups = []
+
         location = Location(
             section_id=section_id, list_name=list_name, list_item_id=list_item_id
         )
@@ -91,43 +93,28 @@ class SummaryContext(Context):
             routing_path=self._router.routing_path(section_id),
         )
 
-        groups: list = section_summary_context(
+        summary = section_summary_context(
             view_submitted_response=self.view_submitted_response, return_to=return_to
-        )["summary"].get("groups", [])
+        )["summary"]
+        groups: list = summary.get("groups", [])
 
-        title_for_location = section_summary_context.title_for_location()
         for group in groups:
-            if not list_item_id:
-                group["section_title"] = title_for_location
-            else:
-                item_title = (
-                    self._placeholder_renderer.render_placeholder(
-                        title_for_location, list_item_id
-                    )
-                    if isinstance(title_for_location, dict)
-                    else title_for_location
-                )
-                group["section_title"] = item_title
+            group["section_title"] = summary["title"]
+            break
 
         return groups
 
 
 def set_unique_group_ids_and_titles(groups: list[dict]) -> list[dict]:
     checked_ids = set()
-    checked_titles = set()
     id_value = 0
 
     for group in groups:
         group_id = group["id"]
-        section_title = group["section_title"]
         if group_id in checked_ids:
             id_value += 1
             group["id"] = f"{group_id}-{id_value}"
 
-        if section_title in checked_titles:
-            group["section_title"] = ""
-
         checked_ids.add(group_id)
-        checked_titles.add(section_title)
 
     return groups

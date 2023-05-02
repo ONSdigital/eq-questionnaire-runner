@@ -172,7 +172,6 @@ def test_context_for_summary():
                 "id": "address-details-group-0",
                 "links": {},
                 "placeholder_text": None,
-                "section_title": "",
                 "title": "Address Details",
             },
             {
@@ -189,7 +188,6 @@ def test_context_for_summary():
                 "links": {},
                 "placeholder_text": None,
                 "title": None,
-                "section_title": "",
             },
             {
                 "blocks": [],
@@ -197,7 +195,6 @@ def test_context_for_summary():
                 "links": {},
                 "placeholder_text": None,
                 "title": "List",
-                "section_title": "",
             },
             {
                 "blocks": [
