@@ -4,14 +4,15 @@ from app.views.handlers.list_edit_question import ListEditQuestion
 
 
 class ListRepeatingBlock(ListEditQuestion):
-
     def get_next_location_url(self) -> str:
         # Get parent
         # Find repeating_sections
         # Find index of this block id
         # If next exists in repeating_sections go to that
         # else go to parent (list collector)
-        repeating_block_ids = [block["id"] for block in self.parent_block["repeating_blocks"]]
+        repeating_block_ids = [
+            block["id"] for block in self.parent_block["repeating_blocks"]
+        ]
         next_block_index = repeating_block_ids.index(self.rendered_block["id"]) + 1
         if next_block_index < len(repeating_block_ids):
             repeating_block_url = url_for(

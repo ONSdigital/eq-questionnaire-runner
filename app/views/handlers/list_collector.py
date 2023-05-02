@@ -67,7 +67,9 @@ class ListCollector(Question):
 
     def handle_post(self):
         if answer_action := self._get_answer_action():
-            if answer_action["type"] in set(add_type.value for add_type in ListCollectorAddType):
+            if answer_action["type"] in set(
+                add_type.value for add_type in ListCollectorAddType
+            ):
                 self._add_type = ListCollectorAddType(answer_action["type"])
 
         if self._add_type:

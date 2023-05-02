@@ -1,4 +1,4 @@
-from typing import MutableMapping, Any
+from typing import Any, MutableMapping
 
 from flask import url_for
 
@@ -16,7 +16,9 @@ class ListAddQuestion(ListAction):
         return True
 
     def get_next_location_url(self):
-        if self._list_item_id and (repeating_blocks := self.parent_block.get("repeating_blocks")):
+        if self._list_item_id and (
+            repeating_blocks := self.parent_block.get("repeating_blocks")
+        ):
             repeating_block_url = url_for(
                 "questionnaire.block",
                 list_name=self.parent_block["for_list"],
@@ -49,7 +51,9 @@ class ListAddQuestion(ListAction):
 
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
-        self.questionnaire_store_updater.update_answers(self.form.data, self._list_item_id)
+        self.questionnaire_store_updater.update_answers(
+            self.form.data, self._list_item_id
+        )
 
         self.evaluate_and_update_section_status_on_list_change(
             self.parent_block["for_list"]
