@@ -3,7 +3,7 @@ import time
 from functools import lru_cache
 from glob import glob
 from pathlib import Path
-from typing import Mapping, Optional
+from typing import Any
 
 import requests
 from requests import RequestException
@@ -59,7 +59,7 @@ def get_schema_list(language_code: str = DEFAULT_LANGUAGE_CODE) -> dict[str, lis
 
 
 @lru_cache(maxsize=None)
-def get_schema_path(language_code, schema_name):
+def get_schema_path(language_code: str, schema_name: str) -> str | None:
     for schemas_by_language in get_schema_path_map(include_test_schemas=True).values():
         schema_path = schemas_by_language.get(language_code, {}).get(schema_name)
         if schema_path:
@@ -67,7 +67,9 @@ def get_schema_path(language_code, schema_name):
 
 
 @lru_cache(maxsize=None)
-def get_schema_path_map(include_test_schemas: Optional[bool] = False) -> Mapping:
+def get_schema_path_map(
+    include_test_schemas: bool = False,
+) -> dict[str, dict[str, dict[str, str]]]:
     schemas = {}
     for survey_type in os.listdir(SCHEMA_DIR):
         if not include_test_schemas and survey_type == "test":
@@ -86,7 +88,7 @@ def get_schema_path_map(include_test_schemas: Optional[bool] = False) -> Mapping
     return schemas
 
 
-def _schema_exists(language_code, schema_name):
+def _schema_exists(language_code: str, schema_name: str) -> bool:
     schema_path_map = get_schema_path_map(include_test_schemas=True)
     return any(
         True
@@ -96,17 +98,18 @@ def _schema_exists(language_code, schema_name):
     )
 
 
-def get_allowed_languages(schema_name, launch_language):
-    for language_combination in LANGUAGES_MAP.get(schema_name, []):
-        if launch_language in language_combination:
-            return language_combination
+def get_allowed_languages(schema_name: str | None, launch_language: str):
+    if schema_name:
+        for language_combination in LANGUAGES_MAP.get(schema_name, []):
+            if launch_language in language_combination:
+                return language_combination
     return [DEFAULT_LANGUAGE_CODE]
 
 
 def load_schema_from_metadata(
-    metadata: MetadataProxy, *, language_code: str
+    metadata: MetadataProxy, *, language_code: str | None
 ) -> QuestionnaireSchema:
-    if metadata and (schema_url := metadata.schema_url):
+    if schema_url := metadata.schema_url:
         # :TODO: Remove before production uses schema_url
         # This is temporary and is only for development/integration purposes.
         # This should not be used in production.
@@ -129,27 +132,32 @@ def load_schema_from_metadata(
         return schema
 
     return load_schema_from_name(
-        metadata.schema_name,
+        # Type ignore: Metadata is validated to have either schema_name or schema_url populated.
+        # This code runs only if schema_url was not present, thus schema_name is present (not None).
+        metadata.schema_name,  # type: ignore
         language_code=language_code,
     )
 
 
-def load_schema_from_name(schema_name, language_code=DEFAULT_LANGUAGE_CODE):
+def load_schema_from_name(
+    schema_name: str, language_code: str | None = DEFAULT_LANGUAGE_CODE
+) -> QuestionnaireSchema:
+    language_code = language_code or DEFAULT_LANGUAGE_CODE
     return _load_schema_from_name(schema_name, language_code)
 
 
 @lru_cache(maxsize=None)
-def _load_schema_from_name(schema_name, language_code):
+def _load_schema_from_name(schema_name: str, language_code: str) -> QuestionnaireSchema:
     schema_json = _load_schema_file(schema_name, language_code)
 
     return QuestionnaireSchema(schema_json, language_code)
 
 
-def get_schema_name_from_params(eq_id, form_type):
+def get_schema_name_from_params(eq_id, form_type) -> str:
     return f"{eq_id}_{form_type}"
 
 
-def _load_schema_file(schema_name, language_code):
+def _load_schema_file(schema_name: str, language_code: str) -> Any:
     """
     Load a schema, optionally for a specified language.
     :param schema_name: The name of the schema e.g. census_household
@@ -182,12 +190,15 @@ def _load_schema_file(schema_name, language_code):
         schema_path=schema_path,
     )
 
-    with open(schema_path, encoding="utf8") as json_file:
+    # Type ignore: Existence of the file is checked prior to call for the path
+    with open(schema_path, encoding="utf8") as json_file:  # type: ignore
         return json_load(json_file)
 
 
 @lru_cache(maxsize=None)
-def load_schema_from_url(schema_url, language_code):
+def load_schema_from_url(
+    schema_url: str, language_code: str | None
+) -> QuestionnaireSchema:
     language_code = language_code or DEFAULT_LANGUAGE_CODE
     pid = os.getpid()
     logger.info(
@@ -206,7 +217,8 @@ def load_schema_from_url(schema_url, language_code):
         status_forcelist=SCHEMA_REQUEST_RETRY_STATUS_CODES,
     )  # Codes to retry according to Google Docs https://cloud.google.com/storage/docs/retry-strategy#client-libraries
 
-    retries.BACKOFF_MAX = SCHEMA_REQUEST_MAX_BACKOFF
+    # Type ignore: MyPy does not recognise BACKOFF_MAX however it is a property, albeit deprecated
+    retries.BACKOFF_MAX = SCHEMA_REQUEST_MAX_BACKOFF  # type: ignore
 
     session.mount("http://", HTTPAdapter(max_retries=retries))
     session.mount("https://", HTTPAdapter(max_retries=retries))

@@ -275,16 +275,10 @@
                                         }
                                     ]
                                 },
-                                "definitions": [
-                                    {
-                                        "title": "What is work in progress?",
-                                        "contents": [
-                                            {
-                                                "description": "This refers to goods and services that have been partially completed (e.g. a solicitor working on a legal case over a period of time and being paid at the end of the contract for the services provided i.e. unbilled work)."
-                                            }
-                                        ]
-                                    }
-                                ],
+                                "definition": {
+                                    "title": "What is work in progress?",
+                                    "content": "This refers to goods and services that have been partially completed (e.g. a solicitor working on a legal case over a period of time and being paid at the end of the contract for the services provided i.e. unbilled work)."
+                                },
                                 "type": "General",
                                 "answers": [
                                     {
