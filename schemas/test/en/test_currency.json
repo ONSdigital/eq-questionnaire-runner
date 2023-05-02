@@ -111,7 +111,7 @@
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "negtaive-answer-gbp",
+                                        "id": "negative-answer-gbp",
                                         "label": "How much did you spend?",
                                         "mandatory": false,
                                         "type": "Currency",
