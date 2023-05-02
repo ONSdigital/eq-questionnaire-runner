@@ -225,55 +225,24 @@ class Router:
             return None
 
         if return_to == "grand-calculated-summary":
-            # Type ignore: the section for the grand calculated summary must exist
-            grand_calculated_summary_section = location.section_id
-            if return_to_block_id:
-                grand_calculated_summary_section: str = self._schema.get_section_id_for_block_id(return_to_block_id)  # type: ignore
-            if grand_calculated_summary_section != location.section_id:
-                # the grand calculated summary is in a different section which will have a different routing path
-                routing_path = self._path_finder.routing_path(
-                    section_id=grand_calculated_summary_section
-                )
-            if self.can_access_location(
-                # grand calculated summaries don't support repeating sections so no need for list item here
-                Location(
-                    block_id=return_to_block_id,
-                    section_id=grand_calculated_summary_section,
-                ),
+            if url := self._get_return_to_for_grand_calculated_summary(
+                return_to_block_id,
+                return_to,
+                location,
                 routing_path,
+                return_to_answer_id,
             ):
-                return url_for(
-                    "questionnaire.block",
-                    block_id=return_to_block_id,
-                    return_to=return_to,
-                    _anchor=return_to_answer_id,
-                )
+                return url
 
         if return_to.startswith("calculated-summary"):
-            # might be multiple blocks in the list
-            return_to_blocks = (
-                return_to_block_id.split(",") if return_to_block_id else ""
-            )
-            return_to_list = return_to.split(",")
-            if self.can_access_location(
-                Location(
-                    block_id=return_to_blocks[0],
-                    section_id=location.section_id,
-                    list_item_id=location.list_item_id,
-                ),
+            if url := self._get_return_to_for_calculated_summary(
+                return_to.split(","),
+                return_to_block_id.split(",") if return_to_block_id else [],
+                location,
                 routing_path,
+                return_to_answer_id,
             ):
-                return url_for(
-                    "questionnaire.block",
-                    block_id=return_to_blocks[0],
-                    list_name=location.list_name,
-                    list_item_id=location.list_item_id,
-                    return_to=return_to_list[-1],  # in the question -> calc summary
-                    return_to_block_id=return_to_blocks[1]
-                    if len(return_to_blocks) > 1
-                    else None,
-                    _anchor=return_to_answer_id,
-                )
+                return url
 
         if is_section_complete is None:
             is_section_complete = self._progress_store.is_section_complete(
@@ -290,6 +259,85 @@ class Router:
         if return_to == "final-summary" and self.is_questionnaire_complete:
             return url_for(
                 "questionnaire.submit_questionnaire", _anchor=return_to_answer_id
+            )
+
+    def _get_return_to_for_grand_calculated_summary(
+        self,
+        return_to_block_id: str | None,
+        return_to: str | None,
+        location: Location,
+        routing_path: RoutingPath,
+        return_to_answer_id: str | None = None,
+    ) -> str | None:
+        """
+        Grand calculated summaries are not always in the same section they're being returned to from
+        """
+        # Type ignore: the section for the grand calculated summary must exist
+        grand_calculated_summary_section = location.section_id
+        if return_to_block_id:
+            grand_calculated_summary_section: str = self._schema.get_section_id_for_block_id(return_to_block_id)  # type: ignore
+        if grand_calculated_summary_section != location.section_id:
+            # the grand calculated summary is in a different section which will have a different routing path
+            routing_path = self._path_finder.routing_path(
+                section_id=grand_calculated_summary_section
+            )
+        if self.can_access_location(
+            # grand calculated summaries don't support repeating sections so no need for list item here
+            Location(
+                block_id=return_to_block_id,
+                section_id=grand_calculated_summary_section,
+            ),
+            routing_path,
+        ):
+            return url_for(
+                "questionnaire.block",
+                block_id=return_to_block_id,
+                return_to=return_to,
+                _anchor=return_to_answer_id,
+            )
+
+    def _get_return_to_for_calculated_summary(
+        self,
+        return_to_types: list[str],
+        return_to_block_ids: list[str],
+        location: Location,
+        routing_path: RoutingPath,
+        return_to_answer_id: str | None = None,
+    ) -> str | None:
+        """
+        In the case of going from a grand calculated summary to a calculated one, and then to a specific question
+        when returning to the calculated summary, the return_to parameters may have multiple block_ids or types in the list
+        for returning to the calculated summary, and then returning to the grand calculated summary
+        """
+        return_to_block_id = None
+        return_to_previous_block_id = None
+
+        return_to = return_to_types[-1]
+
+        if return_to_block_ids:
+            # if there are multiple blocks in the return to list
+            # the first one is the block id to route to, and whatever is left forms return_to_block_id
+            return_to_block_id = return_to_block_ids.pop(0)
+            return_to_previous_block_id = (
+                ",".join(return_to_block_ids) if return_to_block_ids else None
+            )
+
+        if self.can_access_location(
+            Location(
+                block_id=return_to_block_id,
+                section_id=location.section_id,
+                list_item_id=location.list_item_id,
+            ),
+            routing_path,
+        ):
+            return url_for(
+                "questionnaire.block",
+                block_id=return_to_block_id,
+                list_name=location.list_name,
+                list_item_id=location.list_item_id,
+                return_to=return_to,
+                return_to_block_id=return_to_previous_block_id,
+                _anchor=return_to_answer_id,
             )
 
     def get_next_location_url_for_end_of_section(self) -> str:

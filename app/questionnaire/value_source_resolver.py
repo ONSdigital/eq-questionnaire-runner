@@ -129,7 +129,7 @@ class ValueSourceResolver:
     def _resolve_calculated_summary_value_source(
         self, value_source: Mapping, *, assess_routing_path: bool
     ) -> IntOrDecimal:
-        """Calculates the value for the 'calculation' used by the provided Calculated Summary.
+        """Calculates the value for the 'calculation' used by the provided Calculated or Grand Calculated Summary.
 
         The caller is responsible for ensuring the provided Calculated Summary and its answers are on the path.
         """

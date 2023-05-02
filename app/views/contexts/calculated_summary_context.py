@@ -40,8 +40,8 @@ class CalculatedSummaryContext(Context):
         response_metadata: MutableMapping,
         routing_path: RoutingPath,
         current_location: Location,
-        return_to: str | None,
-        return_to_block_id: str | None,
+        return_to: str | None = None,
+        return_to_block_id: str | None = None,
     ) -> None:
         super().__init__(
             language,

@@ -248,8 +248,8 @@
                     "blocks": [
                         {
                             "type": "GrandCalculatedSummary",
-                            "id": "distance-all",
-                            "title": "The grand total weekly distance travelled is %(total)s. Is this correct?",
+                            "id": "distance-grand-calculated-summary",
+                            "title": "We calculate the grand total weekly distance travelled to be %(total)s. Is this correct?",
                             "calculation": {
                                 "operation": {
                                     "+": [
@@ -268,8 +268,8 @@
                         },
                         {
                             "type": "GrandCalculatedSummary",
-                            "id": "number-all",
-                            "title": "The grand total number of journeys per week is calculated to be %(total)s. Is this correct?",
+                            "id": "number-grand-calculated-summary",
+                            "title": "We calculate the grand total journeys per week to be %(total)s. Is this correct?",
                             "calculation": {
                                 "operation": {
                                     "+": [
@@ -305,7 +305,7 @@
                                                                 "arguments": {
                                                                     "value": {
                                                                         "source": "grand_calculated_summary",
-                                                                        "identifier": "distance-all"
+                                                                        "identifier": "distance-grand-calculated-summary"
                                                                     },
                                                                     "unit": "mile",
                                                                     "unit_length": "long"
@@ -326,7 +326,7 @@
                                                                 "arguments": {
                                                                     "number": {
                                                                         "source": "grand_calculated_summary",
-                                                                        "identifier": "number-all"
+                                                                        "identifier": "number-grand-calculated-summary"
                                                                     }
                                                                 }
                                                             }
