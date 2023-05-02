@@ -62,7 +62,7 @@ describe("View Submitted Response", () => {
 
 const firstGroup = 'div[id="calculated-summary-0"]';
 const secondGroup = 'div[id="calculated-summary-0-1"]';
-const groupTitle = 'h2[class="ons-summary__group-title"]';
+const groupTitle = 'h3[class="ons-summary__group-title"]';
 const repeatingSectionAnswer = '[data-qa="checkbox-answer"]';
 
 describe("View Submitted Response Summary Page With Repeating Sections", () => {
@@ -136,9 +136,11 @@ describe("View Submitted Response Summary Page With Repeating Sections", () => {
     await expect(await $(ViewSubmittedResponseRepeatingPage.addressDetailsGroupTitle()).getText()).to.equal("Address Details");
     await expect(await $(ViewSubmittedResponseRepeatingPage.addressQuestion()).getText()).to.equal("What is your address?");
     await expect(await $(ViewSubmittedResponseRepeatingPage.addressAnswer()).getText()).to.equal("NP10 8XG");
-    await expect(await $(firstGroup).$$(groupTitle)[0].getText()).to.equal("Marcus Twin");
+    await expect(await $("body").getHTML()).to.contain("Marcus Twin");
+    await expect(await $(firstGroup).$$(groupTitle)[0].getText()).to.equal("Calculated Summary Group");
     await expect(await $(firstGroup).$$(repeatingSectionAnswer)[0].getText()).to.equal("40 - calculated summary answer (current section)");
-    await expect(await $(secondGroup).$$(groupTitle)[0].getText()).to.equal("John Doe");
+    await expect(await $("body").getHTML()).to.contain("John Doe");
+    await expect(await $(secondGroup).$$(groupTitle)[0].getText()).to.equal("Calculated Summary Group");
     await expect(await $(secondGroup).$$(repeatingSectionAnswer)[0].getText()).to.equal("80 - calculated summary answer (current section)");
   });
 });

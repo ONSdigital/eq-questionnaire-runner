@@ -11,6 +11,7 @@
     {% do summary_groups.append
       (
         {
+          "summaryTitle": group.section_title,
           "groups": [
             {
               "groupTitle": group.title if group.title else None,

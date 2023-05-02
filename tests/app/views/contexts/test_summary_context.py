@@ -140,6 +140,7 @@ def test_context_for_summary():
                 "id": "personal-details-group-0",
                 "links": {},
                 "placeholder_text": None,
+                "section_title": "Your Name",
                 "title": "Personal Details",
             },
             {
@@ -171,6 +172,7 @@ def test_context_for_summary():
                 "id": "address-details-group-0",
                 "links": {},
                 "placeholder_text": None,
+                "section_title": "Your Name",
                 "title": "Address Details",
             },
             {
@@ -179,6 +181,7 @@ def test_context_for_summary():
                 "links": {},
                 "placeholder_text": None,
                 "title": None,
+                "section_title": "Household",
             },
             {
                 "blocks": [],
@@ -186,6 +189,7 @@ def test_context_for_summary():
                 "links": {},
                 "placeholder_text": None,
                 "title": None,
+                "section_title": "Household",
             },
             {
                 "blocks": [],
@@ -193,6 +197,7 @@ def test_context_for_summary():
                 "links": {},
                 "placeholder_text": None,
                 "title": "List",
+                "section_title": "Household",
             },
             {
                 "blocks": [
@@ -253,6 +258,7 @@ def test_context_for_summary():
                 "links": {},
                 "placeholder_text": None,
                 "title": "Questions",
+                "section_title": "Questions",
             },
             {
                 "blocks": [
@@ -330,7 +336,8 @@ def test_context_for_summary():
                 "id": "calculated-summary-0",
                 "links": {},
                 "placeholder_text": None,
-                "title": "James Bond",
+                "title": "Calculated Summary Group",
+                "section_title": "James Bond",
             },
             {
                 "blocks": [
@@ -408,7 +415,8 @@ def test_context_for_summary():
                 "id": "calculated-summary-0-1",
                 "links": {},
                 "placeholder_text": None,
-                "title": "Jane Doe",
+                "title": "Calculated Summary Group",
+                "section_title": "Jane Doe",
             },
         ],
         "summary_type": "Summary",

@@ -1,4 +1,4 @@
-from typing import Any, Generator, MutableMapping, Optional, Union
+from typing import Generator, MutableMapping, Optional, Union
 
 from app.questionnaire.location import Location
 
@@ -95,17 +95,19 @@ class SummaryContext(Context):
             view_submitted_response=self.view_submitted_response, return_to=return_to
         )["summary"].get("groups", [])
 
-        if list_item_id:
-            title_for_location = section_summary_context.title_for_location()
-            title = (
-                self._placeholder_renderer.render_placeholder(
-                    title_for_location, list_item_id
+        title_for_location = section_summary_context.title_for_location()
+        for group in groups:
+            if not list_item_id:
+                group["section_title"] = title_for_location
+            else:
+                item_title = (
+                    self._placeholder_renderer.render_placeholder(
+                        title_for_location, list_item_id
+                    )
+                    if isinstance(title_for_location, dict)
+                    else title_for_location
                 )
-                if isinstance(title_for_location, dict)
-                else title_for_location
-            )
-            for group in groups:
-                group["title"] = title
+                group["section_title"] = item_title
 
         return groups
 
