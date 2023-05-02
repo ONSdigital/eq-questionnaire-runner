@@ -91,10 +91,23 @@ class SummaryContext(Context):
             routing_path=self._router.routing_path(section_id),
         )
 
-        return section_summary_context.build_summary(
-            return_to=return_to,
-            view_submitted_response=self.view_submitted_response,
-        ).get("groups", [])
+        groups: list = section_summary_context(
+            view_submitted_response=self.view_submitted_response, return_to=return_to
+        )["summary"].get("groups", [])
+
+        if list_item_id:
+            title_for_location = section_summary_context.title_for_location()
+            title = (
+                self._placeholder_renderer.render_placeholder(
+                    title_for_location, list_item_id
+                )
+                if isinstance(title_for_location, dict)
+                else title_for_location
+            )
+            for group in groups:
+                group["title"] = title
+
+        return groups
 
 
 def set_unique_group_ids(groups: list[dict]) -> list[dict]:

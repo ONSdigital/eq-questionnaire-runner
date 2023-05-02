@@ -41,10 +41,12 @@ class SectionSummaryContext(Context):
         self.current_location = current_location
 
     def __call__(
-        self, return_to: Optional[str] = "section-summary"
+        self,
+        return_to: Optional[str] = "section-summary",
+        view_submitted_response: bool = False,
     ) -> Mapping[str, Any]:
-        summary = self.build_summary(return_to)
-        title_for_location = self._title_for_location()
+        summary = self.build_summary(return_to, view_submitted_response)
+        title_for_location = self.title_for_location()
         title = (
             self._placeholder_renderer.render_placeholder(
                 title_for_location, self.current_location.list_item_id
@@ -94,7 +96,7 @@ class SectionSummaryContext(Context):
     def build_summary(
         self,
         return_to: Optional[str],
-        view_submitted_response: bool = False,
+        view_submitted_response: bool,
     ) -> dict[str, Any]:
         """
         Build a summary context for a particular location.
@@ -143,7 +145,7 @@ class SectionSummaryContext(Context):
 
         return groups
 
-    def _title_for_location(self) -> Union[str, dict]:
+    def title_for_location(self) -> Union[str, dict]:
         section_id = self.current_location.section_id
         return (
             # Type ignore: section id should exist at this point
