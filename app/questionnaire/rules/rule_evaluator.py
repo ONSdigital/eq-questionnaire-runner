@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
-from typing import Generator, Iterable, Mapping, Optional, Sequence, Union
+from typing import Generator, Iterable, MutableMapping, Optional, Sequence, Union
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
@@ -27,7 +27,7 @@ class RuleEvaluator:
     answer_store: AnswerStore
     list_store: ListStore
     metadata: MetadataProxy | None
-    response_metadata: Mapping
+    response_metadata: MutableMapping
     location: Location | RelationshipLocation | None
     progress_store: ProgressStore
     routing_path_block_ids: Iterable | None = None
