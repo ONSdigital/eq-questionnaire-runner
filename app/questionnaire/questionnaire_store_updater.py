@@ -353,7 +353,7 @@ class QuestionnaireStoreUpdater:
         dependent_sections: Iterable = self._schema.when_rules_block_dependencies_by_section_for_progress_value_source.get(
             self._current_location.section_id, {}
         ).get(
-            self._current_location.block_id, []  # type: ignore
+            self._current_location.block_id, set()  # type: ignore
         )
 
         self.update_section_dependencies(dependent_sections)
