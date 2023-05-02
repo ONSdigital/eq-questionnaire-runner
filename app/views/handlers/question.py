@@ -17,7 +17,7 @@ from app.views.handlers.block import BlockHandler
 class Question(BlockHandler):
     @staticmethod
     def _has_redirect_to_list_add_action(answer_action):
-        return answer_action and (answer_action["type"] == "RedirectToListAddBlock" or answer_action["type"] == "RedirectToListRepeatingBlocks")
+        return answer_action and answer_action["type"] == "RedirectToListAddBlock"
 
     @cached_property
     def form(self):
@@ -98,7 +98,6 @@ class Question(BlockHandler):
         )
 
     def get_next_location_url(self):
-        # TODO handle other add types
         answer_action = self._get_answer_action()
         if self._has_redirect_to_list_add_action(answer_action):
             location_url = self._get_list_add_question_url(answer_action["params"])

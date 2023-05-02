@@ -1,3 +1,5 @@
+from flask import url_for
+
 from app.views.handlers.list_action import ListAction
 
 
@@ -12,6 +14,21 @@ class ListEditQuestion(ListAction):
         if not super().is_location_valid() or list_item_doesnt_exist:
             return False
         return True
+
+    def get_next_location_url(self):
+        if repeating_blocks := self.parent_block.get("repeating_blocks"):
+            repeating_block_url = url_for(
+                "questionnaire.block",
+                list_name=self.parent_block["for_list"],
+                list_item_id=self.current_location.list_item_id,
+                block_id=repeating_blocks[0]["id"],
+                return_to=self._return_to,
+                return_to_answer_id=self._return_to_answer_id,
+                return_to_block_id=self._return_to_block_id,
+            )
+            return repeating_block_url
+
+        return super().get_next_location_url()
 
     def handle_post(self):
         # pylint: disable=no-member
