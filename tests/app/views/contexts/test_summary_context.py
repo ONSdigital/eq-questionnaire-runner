@@ -140,7 +140,7 @@ def test_context_for_summary():
                 "id": "personal-details-group-0",
                 "links": {},
                 "placeholder_text": None,
-                "section_title": "Your Name",
+                "section_title": "Personal Details Section",
                 "title": "Personal Details",
             },
             {
@@ -172,7 +172,7 @@ def test_context_for_summary():
                 "id": "address-details-group-0",
                 "links": {},
                 "placeholder_text": None,
-                "section_title": "Your Name",
+                "section_title": "",
                 "title": "Address Details",
             },
             {
@@ -181,7 +181,7 @@ def test_context_for_summary():
                 "links": {},
                 "placeholder_text": None,
                 "title": None,
-                "section_title": "Household",
+                "section_title": "Household Section",
             },
             {
                 "blocks": [],
@@ -189,7 +189,7 @@ def test_context_for_summary():
                 "links": {},
                 "placeholder_text": None,
                 "title": None,
-                "section_title": "Household",
+                "section_title": "",
             },
             {
                 "blocks": [],
@@ -197,7 +197,7 @@ def test_context_for_summary():
                 "links": {},
                 "placeholder_text": None,
                 "title": "List",
-                "section_title": "Household",
+                "section_title": "",
             },
             {
                 "blocks": [
@@ -257,8 +257,8 @@ def test_context_for_summary():
                 "id": "radio-0",
                 "links": {},
                 "placeholder_text": None,
-                "title": "Questions",
-                "section_title": "Questions",
+                "title": "Questions Group",
+                "section_title": "Questions Section",
             },
             {
                 "blocks": [

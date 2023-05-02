@@ -39,7 +39,7 @@ class SummaryContext(Context):
         summary_options = self._schema.get_summary_options()
         collapsible = summary_options.get("collapsible", False)
 
-        refactored_groups = set_unique_group_ids(groups)
+        refactored_groups = set_unique_group_ids_and_titles(groups)
 
         return {
             "groups": refactored_groups,
@@ -112,15 +112,22 @@ class SummaryContext(Context):
         return groups
 
 
-def set_unique_group_ids(groups: list[dict]) -> list[dict]:
+def set_unique_group_ids_and_titles(groups: list[dict]) -> list[dict]:
     checked_ids = set()
+    checked_titles = set()
     id_value = 0
 
     for group in groups:
         group_id = group["id"]
+        section_title = group["section_title"]
         if group_id in checked_ids:
             id_value += 1
             group["id"] = f"{group_id}-{id_value}"
+
+        if section_title in checked_titles:
+            group["section_title"] = ""
+
         checked_ids.add(group_id)
+        checked_titles.add(section_title)
 
     return groups

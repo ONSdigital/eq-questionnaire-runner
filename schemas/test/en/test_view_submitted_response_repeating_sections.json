@@ -30,7 +30,7 @@
     },
     "sections": [
         {
-            "title": "Your Name",
+            "title": "Personal Details Section",
             "id": "name-section",
             "groups": [
                 {
@@ -85,7 +85,7 @@
         },
         {
             "id": "section",
-            "title": "Household",
+            "title": "Household Section",
             "groups": [
                 {
                     "id": "group",
@@ -284,12 +284,12 @@
         },
         {
             "id": "questions-section",
-            "title": "Questions",
+            "title": "Questions Section",
             "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "id": "radio",
-                    "title": "Questions",
+                    "title": "Questions Group",
                     "blocks": [
                         {
                             "type": "Question",
@@ -426,7 +426,7 @@
         },
         {
             "id": "calculated-summary-section",
-            "title": "Calculated Summary",
+            "title": "Calculated Summary Section",
             "summary": { "show_on_completion": true },
             "repeat": {
                 "for_list": "people",
