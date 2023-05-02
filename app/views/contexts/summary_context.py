@@ -76,8 +76,6 @@ class SummaryContext(Context):
         list_name: str | None = None,
         list_item_id: str | None = None,
     ) -> list[dict]:
-        final_groups = []
-
         location = Location(
             section_id=section_id, list_name=list_name, list_item_id=list_item_id
         )
