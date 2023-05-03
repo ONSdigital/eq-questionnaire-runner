@@ -40,7 +40,6 @@
                         {
                             "type": "Question",
                             "id": "block-1",
-                            "title": "Fruit and veg block",
                             "question": {
                                 "type": "General",
                                 "id": "question-1",
@@ -66,7 +65,6 @@
                         {
                             "type": "Question",
                             "id": "block-2",
-                            "title": "Other food block",
                             "question": {
                                 "type": "General",
                                 "id": "question-2",
@@ -126,7 +124,6 @@
                         {
                             "type": "Question",
                             "id": "block-3",
-                            "title": "Clothing block",
                             "question": {
                                 "type": "General",
                                 "id": "question-3",
@@ -243,7 +240,6 @@
                         {
                             "type": "Question",
                             "id": "block-4",
-                            "title": "Games block",
                             "question": {
                                 "type": "General",
                                 "id": "question-4",
