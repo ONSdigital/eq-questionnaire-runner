@@ -35,7 +35,7 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
     def test_quotes_in_numeric_answers(self):
         testdata = [
             ("test_numbers", "set-minimum"),
-            ("test_currency", "answer"),
+            ("test_currency", "answer-gbp"),
             ("test_percentage", "answer"),
             ("test_unit_patterns", "centimetres"),
             ("test_dates", "date-range-from-answer-day"),
