@@ -168,12 +168,19 @@ class ListCollectorBlock:
         related_answers = self._schema.get_related_answers_for_list_for_section(
             section_id=section_id, list_name=list_model.name
         )
-        if not related_answers:
+
+        blocks = []
+
+        if related_answers:
+            blocks += self.get_blocks_for_related_answers(related_answers)
+
+        if list_model:
+            blocks += self.get_blocks_for_repeating_blocks(list_model)
+
+        if not blocks:
             return None
 
         related_answers_blocks = {}
-
-        blocks = self.get_blocks_for_related_answers(related_answers)
 
         for list_id in list_model:
             serialized_blocks = [
@@ -234,3 +241,14 @@ class ListCollectorBlock:
             blocks.append(mutable_block)
 
         return blocks
+
+    def get_blocks_for_repeating_blocks(self, list_model: ListModel) -> list[ImmutableDict]:
+        blocks = defaultdict(list)
+        for list_id in list_model:
+            list_answers = [(answer_id, answer_list_id) for (answer_id, answer_list_id) in self._answer_store.answer_map if answer_list_id == list_id]
+            for (answer_id, answer_list_id) in list_answers:
+                block = self._schema.get_block_for_answer_id(answer_id)
+                if block:
+                    blocks[block].append(answer_id)
+
+        return [self._schema.get_mutable_deepcopy(block) for (block, answer_id) in blocks.items()]

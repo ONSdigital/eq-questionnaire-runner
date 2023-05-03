@@ -822,10 +822,21 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         parent_block_id = self._parent_id_map[block_id]
         parent_block = self.get_block(parent_block_id)
 
-        if parent_block and parent_block["type"] == "ListCollector":
+        if parent_block and parent_block["type"] == "ListCollector" and not self._block_in_repeating_blocks(block_id, parent_block):
             return parent_block
 
         return self.get_block(block_id)
+
+    def _block_in_repeating_blocks(self, block_id: str, list_collector_block: ImmutableDict) -> bool:
+        if not list_collector_block or not list_collector_block["type"] == "ListCollector":
+            return False
+
+        repeating_blocks = list_collector_block.get("repeating_blocks")
+        if not repeating_blocks:
+            return False
+
+        repeating_block_ids = [repeating_block["id"] for repeating_block in repeating_blocks]
+        return block_id in repeating_block_ids
 
     def _group_for_block(self, block_id: str) -> ImmutableDict | None:
         block = self.get_block(block_id)

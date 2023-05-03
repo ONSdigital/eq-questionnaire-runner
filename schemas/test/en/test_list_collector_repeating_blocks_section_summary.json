@@ -78,24 +78,7 @@
                         "item_label": "Name of UK company or branch",
                         "add_link_text": "Add another UK company or branch",
                         "empty_list_text": "No UK company or branch added",
-                        "related_answers": [
-                            {
-                                "source": "answers",
-                                "identifier": "registration-number"
-                            },
-                            {
-                                "source": "answers",
-                                "identifier": "registration-date"
-                            },
-                            {
-                                "source": "answers",
-                                "identifier": "authorised-trader-uk-radio"
-                            },
-                            {
-                                "source": "answers",
-                                "identifier": "authorised-trader-eu-radio"
-                            }
-                        ]
+                        "related_answers": []
                     }
                 ],
                 "show_non_item_answers": true
