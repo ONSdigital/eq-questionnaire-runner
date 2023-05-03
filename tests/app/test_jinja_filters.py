@@ -237,12 +237,18 @@ def test_format_duration(duration, formatted_duration, app):
 @pytest.mark.parametrize(
     "answer, width",
     (
-        ({}, 10),
+        ({}, 15),
         ({"maximum": {"value": 1}}, 1),
         ({"maximum": {"value": 123456}}, 6),
         ({"maximum": {"value": 12345678901}}, 15),
         ({"minimum": {"value": -123456}, "maximum": {"value": 1234}}, 7),
         ({"decimal_places": 2, "maximum": {"value": 123456}}, 8),
+        ({"maximum": {"value": 999_999_999_999_999}}, 15),
+        ({"decimal_places": 5, "maximum": {"value": 999_999_999_999_999}}, 20),
+        ({"decimal_places": 6, "maximum": {"value": 999_999_999_999_999}}, 30),
+        ({"minimum": {"value": -99_999_999_999_999}}, 15),
+        ({"decimal_places": 5, "minimum": {"value": -99_999_999_999_999}}, 20),
+        ({"decimal_places": 6, "minimum": {"value": -99_999_999_999_999}}, 30),
         (
             {"maximum": {"value": 123456789012345678901123456789012345678901234567890}},
             None,
@@ -598,7 +604,7 @@ def test_get_formatted_address(address_fields, formatted_address):
 @pytest.mark.parametrize(
     "max_value, expected_width",
     [
-        (None, 10),
+        (None, 15),
         (1, 1),
         (123123123123, 15),
     ],
