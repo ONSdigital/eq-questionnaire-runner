@@ -177,7 +177,7 @@ def test_create_question(
 
     # When
     question = Question(
-        question_schema,
+        question_schema=question_schema,
         answer_store=answer_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
