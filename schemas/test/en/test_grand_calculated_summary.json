@@ -285,59 +285,6 @@
                                 },
                                 "title": "Grand calculated summary of journeys"
                             }
-                        },
-                        {
-                            "type": "Interstitial",
-                            "id": "grand-calculated-summary-total-confirmation",
-                            "content": {
-                                "title": "You have provided the following grand totals.",
-                                "contents": [
-                                    {
-                                        "list": [
-                                            {
-                                                "text": "Total weekly distance travelled: <em>{distance_total}</em>",
-                                                "placeholders": [
-                                                    {
-                                                        "placeholder": "distance_total",
-                                                        "transforms": [
-                                                            {
-                                                                "transform": "format_unit",
-                                                                "arguments": {
-                                                                    "value": {
-                                                                        "source": "grand_calculated_summary",
-                                                                        "identifier": "distance-grand-calculated-summary"
-                                                                    },
-                                                                    "unit": "mile",
-                                                                    "unit_length": "long"
-                                                                }
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "text": "Total weekly journeys: <em>{number_total}</em>",
-                                                "placeholders": [
-                                                    {
-                                                        "placeholder": "number_total",
-                                                        "transforms": [
-                                                            {
-                                                                "transform": "format_number",
-                                                                "arguments": {
-                                                                    "number": {
-                                                                        "source": "grand_calculated_summary",
-                                                                        "identifier": "number-grand-calculated-summary"
-                                                                    }
-                                                                }
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
                         }
                     ]
                 }

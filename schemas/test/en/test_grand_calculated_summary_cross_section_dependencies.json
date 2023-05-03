@@ -225,7 +225,7 @@
                             "question": {
                                 "type": "General",
                                 "id": "skip-question-2",
-                                "title": "Skip the calculated summary so it isn't included in the grand calculated summary?",
+                                "title": "Skip the calculated summary so it isn’t included in the grand calculated summary?",
                                 "answers": [
                                     {
                                         "type": "Radio",
@@ -308,15 +308,11 @@
             },
             "enabled": {
                 "when": {
-                    "and": [
+                    "!=": [
+                        null,
                         {
-                            "!=": [
-                                null,
-                                {
-                                    "source": "answers",
-                                    "identifier": "third-number-answer-part-b"
-                                }
-                            ]
+                            "source": "answers",
+                            "identifier": "third-number-answer-part-b"
                         }
                     ]
                 }
