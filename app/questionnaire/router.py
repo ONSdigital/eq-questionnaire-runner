@@ -270,7 +270,7 @@ class Router:
         return_to_answer_id: str | None = None,
     ) -> str | None:
         """
-        Grand calculated summaries are not always in the same section they're being returned to from
+        Builds the return url for a grand calculated summary, accounting for it possibly being in a different section to the calculated summaries it references
         """
         # Type ignore: the section for the grand calculated summary must exist
         grand_calculated_summary_section = location.section_id
@@ -305,18 +305,19 @@ class Router:
         return_to_answer_id: str | None = None,
     ) -> str | None:
         """
-        In the case of going from a grand calculated summary to a calculated one, and then to a specific question
-        when returning to the calculated summary, the return_to parameters may have multiple block_ids or types in the list
-        for returning to the calculated summary, and then returning to the grand calculated summary
+        The return url for a calculated summary varies based on whether it's standalone or part of a grand calculated summary
+
+        If the user navigates from grand calculated summary -> calculated summary -> question, then the return_to_block_ids needs to be a list
+        so that both the calculated summary id and the grand calculated summary ids are stored.
         """
-        return_to_block_id = None
+        return_to_block_id = None #TODO check name?
         return_to_previous_block_id = None
 
         return_to = return_to_types[-1]
 
         if return_to_block_ids:
-            # if there are multiple blocks in the return to list
-            # the first one is the block id to route to, and whatever is left forms return_to_block_id
+            # if there are blocks in the return to list
+            # the first one is the block id to route to, and whatever is left (if anything) forms return_to_block_id
             return_to_block_id = return_to_block_ids.pop(0)
             return_to_previous_block_id = (
                 ",".join(return_to_block_ids) if return_to_block_ids else None
