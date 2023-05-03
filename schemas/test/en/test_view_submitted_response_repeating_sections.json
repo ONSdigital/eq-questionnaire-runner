@@ -599,6 +599,36 @@
                                     }
                                 ]
                             }
+                        },
+                        {
+                            "skip_conditions": {
+                                "when": {
+                                    ">=": [
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "currency-total-playback-2"
+                                        },
+                                        50
+                                    ]
+                                }
+                            },
+                            "type": "Question",
+                            "id": "skippable-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "skippable-answer",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "label": "Capital expenditure",
+                                        "decimal_places": 0,
+                                        "currency": "GBP"
+                                    }
+                                ],
+                                "id": "skippable-question",
+                                "title": "How much do you spend on fruit",
+                                "type": "General"
+                            }
                         }
                     ],
                     "id": "calculated-summary"

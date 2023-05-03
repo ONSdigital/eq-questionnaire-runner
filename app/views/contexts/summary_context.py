@@ -88,7 +88,9 @@ class SummaryContext(Context):
             metadata=self._metadata,
             response_metadata=self._response_metadata,
             current_location=location,
-            routing_path=self._router.routing_path(section_id),
+            routing_path=self._router.routing_path(
+                section_id, list_item_id=list_item_id
+            ),
         )
 
         summary = section_summary_context(

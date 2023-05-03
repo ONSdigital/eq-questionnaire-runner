@@ -329,6 +329,29 @@ def test_context_for_summary():
                         },
                         "title": None,
                     },
+                    {
+                        "id": "skippable-block",
+                        "number": None,
+                        "question": {
+                            "answers": [
+                                {
+                                    "currency": "GBP",
+                                    "id": "skippable-answer",
+                                    "label": "Capital " "expenditure",
+                                    "link": "/questionnaire/people/jufPpX/skippable-block/#skippable-answer",
+                                    "type": "currency",
+                                    "unit": None,
+                                    "unit_length": None,
+                                    "value": None,
+                                }
+                            ],
+                            "id": "skippable-question",
+                            "number": None,
+                            "title": "How much do you spend on fruit",
+                            "type": "General",
+                        },
+                        "title": None,
+                    },
                 ],
                 "id": "calculated-summary-0",
                 "links": {},
@@ -405,6 +428,29 @@ def test_context_for_summary():
                             "title": "Which answer did you give to "
                             "question 4 and a half?",
                             "type": "MutuallyExclusive",
+                        },
+                        "title": None,
+                    },
+                    {
+                        "id": "skippable-block",
+                        "number": None,
+                        "question": {
+                            "answers": [
+                                {
+                                    "currency": "GBP",
+                                    "id": "skippable-answer",
+                                    "label": "Capital " "expenditure",
+                                    "link": "/questionnaire/people/fjWZET/skippable-block/#skippable-answer",
+                                    "type": "currency",
+                                    "unit": None,
+                                    "unit_length": None,
+                                    "value": None,
+                                }
+                            ],
+                            "id": "skippable-question",
+                            "number": None,
+                            "title": "How much do you spend on fruit",
+                            "type": "General",
                         },
                         "title": None,
                     },

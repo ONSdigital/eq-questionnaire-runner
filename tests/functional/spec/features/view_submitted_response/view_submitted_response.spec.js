@@ -17,6 +17,7 @@ import SectionSummarySectionOne from "../../../generated_pages/view_submitted_re
 import ThirdNumberBlockPageSectionTwo from "../../../generated_pages/view_submitted_response_repeating_sections/third-number-block.page";
 import CalculatedSummarySectionTwo from "../../../generated_pages/view_submitted_response_repeating_sections/currency-total-playback-2.page";
 import DependencyQuestionSectionTwo from "../../../generated_pages/view_submitted_response_repeating_sections/mutually-exclusive-checkbox.page";
+import SkippableBlockSectionTwo from "../../../generated_pages/view_submitted_response_repeating_sections/skippable-block.page";
 import SectionSummarySectionTwo from "../../../generated_pages/new_calculated_summary_cross_section_dependencies_repeating/calculated-summary-section-summary.page";
 import ListCollectorAddPage from "../../../generated_pages/view_submitted_response_repeating_sections//list-collector-add.page";
 
@@ -64,6 +65,7 @@ const firstGroup = 'div[id="calculated-summary-0"]';
 const secondGroup = 'div[id="calculated-summary-0-1"]';
 const groupTitle = 'h3[class="ons-summary__group-title"]';
 const repeatingSectionAnswer = '[data-qa="checkbox-answer"]';
+const skippableRepeatingSectionAnswer = '[data-qa="skippable-answer"]';
 
 describe("View Submitted Response Summary Page With Repeating Sections", () => {
   beforeEach("Load the questionnaire", async () => {
@@ -107,6 +109,8 @@ describe("View Submitted Response Summary Page With Repeating Sections", () => {
     await $(CalculatedSummarySectionTwo.submit()).click();
     await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2()).click();
     await $(DependencyQuestionSectionTwo.submit()).click();
+    await $(SkippableBlockSectionTwo.skippable()).setValue(100);
+    await $(SkippableBlockSectionTwo.submit()).click();
     await $(SectionSummarySectionTwo.submit()).click();
     await $(HubPage.submit()).click();
     await $(ThirdNumberBlockPageSectionTwo.thirdNumber()).setValue(40);
@@ -139,6 +143,7 @@ describe("View Submitted Response Summary Page With Repeating Sections", () => {
     await expect(await $("body").getHTML()).to.contain("Marcus Twin");
     await expect(await $(firstGroup).$$(groupTitle)[0].getText()).to.equal("Calculated Summary Group");
     await expect(await $(firstGroup).$$(repeatingSectionAnswer)[0].getText()).to.equal("40 - calculated summary answer (current section)");
+    await expect(await $(firstGroup).$$(skippableRepeatingSectionAnswer)[0].getText()).to.equal("£100.00");
     await expect(await $("body").getHTML()).to.contain("John Doe");
     await expect(await $(secondGroup).$$(groupTitle)[0].getText()).to.equal("Calculated Summary Group");
     await expect(await $(secondGroup).$$(repeatingSectionAnswer)[0].getText()).to.equal("80 - calculated summary answer (current section)");
