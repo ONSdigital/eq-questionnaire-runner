@@ -5,8 +5,9 @@ from functools import cached_property
 from typing import Any, Generator, Iterable, Mapping, Sequence
 
 from flask_babel import force_locale
-from werkzeug.datastructures import ImmutableDict, MultiDict
 from ordered_set import OrderedSet
+from werkzeug.datastructures import ImmutableDict, MultiDict
+
 from app.data_models.answer import Answer
 from app.forms import error_messages
 from app.questionnaire.rules.operator import OPERATION_MAPPING
@@ -907,7 +908,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     ):
                         self._when_rules_section_dependencies_by_section_for_progress_value_source[
                             key
-                        ].append(
+                        ].add(
                             *rule_section_dependencies_for_progress_value_source[key]
                         )
                     else:
@@ -947,7 +948,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _get_section_and_block_ids_dependencies_for_progress_source_and_answer_ids_from_rule(
         self, current_section_id: str, rule: Mapping
-    ) -> tuple[set[str], dict[str, dict[str, OrderedSet[str] | dict[str, OrderedSet[str]]]]]:
+    ) -> tuple[
+        set[str], dict[str, dict[str, OrderedSet[str] | dict[str, OrderedSet[str]]]]
+    ]:
         answer_id_list: set[str] = set()
         dependencies_ids_for_progress_value_source: dict[
             str, dict[str, OrderedSet[str] | dict[str, OrderedSet[str]]]
@@ -973,14 +976,16 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 if identifier != current_section_id:
                     dependencies_ids_for_progress_value_source["sections"][
                         identifier
-                    ] = {current_section_id}
+                    ] = OrderedSet()
+                    # Type ignore: Added as this will be a set rather than a dict at this point
+                    dependencies_ids_for_progress_value_source["sections"][identifier].add(current_section_id)  # type: ignore
             elif selector == "block" and (
                 section_id := self.get_section_id_for_block_id(identifier)
             ):
                 # Type ignore: The identifier key will return a list
                 if section_id != current_section_id:
                     dependencies_ids_for_progress_value_source["blocks"][section_id] = {
-                        identifier: set()
+                        identifier: OrderedSet()
                     }
                     dependencies_ids_for_progress_value_source["blocks"][section_id][identifier].add(current_section_id)  # type: ignore
 
@@ -988,7 +993,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _get_rules_section_dependencies(
         self, current_section_id: str, rules: Mapping | Sequence
-    ) -> tuple[set[str], dict[str, OrderedSet[str]], dict[str, dict[str, OrderedSet[str]]]]:
+    ) -> tuple[
+        set[str], dict[str, OrderedSet[str]], dict[str, dict[str, OrderedSet[str]]]
+    ]:
         """
         Returns a set of sections ids that the current sections depends on.
         """

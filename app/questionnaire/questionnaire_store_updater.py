@@ -339,7 +339,7 @@ class QuestionnaireStoreUpdater:
         Captures a unique list of section ids that are dependents of the current section, for progress value sources.
         """
         dependent_sections: Iterable = self._schema.when_rules_section_dependencies_by_section_for_progress_value_source.get(
-            self._current_location.section_id, []
+            self._current_location.section_id, set()
         )
         self.update_section_dependencies(dependent_sections)
 
