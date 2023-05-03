@@ -71,6 +71,9 @@
             }
         }
     },
+    "post_submission": {
+        "view_response": true
+    },
     "sections": [
         {
             "id": "section-companies",
