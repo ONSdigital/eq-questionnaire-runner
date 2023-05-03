@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-05-03 11:05+0100\n"
+"POT-Creation-Date: 2023-05-03 15:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,39 +17,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: app/forms/validators.py:377 app/jinja_filters.py:115
+#: app/forms/validators.py:377 app/jinja_filters.py:119
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:381 app/jinja_filters.py:123
+#: app/forms/validators.py:381 app/jinja_filters.py:127
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/jinja_filters.py:165
+#: app/jinja_filters.py:169
 #, python-format
 msgid "%(date)s at %(time)s"
 msgstr ""
 
-#: app/jinja_filters.py:179
+#: app/jinja_filters.py:183
 #, python-format
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
 
-#: app/jinja_filters.py:598 templates/partials/summary/list-summary.html:9
+#: app/jinja_filters.py:605 templates/partials/summary/list-summary.html:9
 msgid "Remove"
 msgstr ""
 
-#: app/jinja_filters.py:599 templates/partials/summary/list-summary.html:10
+#: app/jinja_filters.py:606 templates/partials/summary/list-summary.html:10
 msgid "Remove {item_name}"
 msgstr ""
 
-#: app/jinja_filters.py:699
+#: app/jinja_filters.py:706
 #: templates/partials/summary/collapsible-summary.html:26
 #: templates/partials/summary/summary.html:20
 msgid "No answer provided"
@@ -239,19 +239,19 @@ msgid ""
 "browser if using a shared device"
 msgstr ""
 
-#: app/questionnaire/placeholder_transforms.py:160
+#: app/questionnaire/placeholder_transforms.py:158
 msgid "{number_of_years} year"
 msgid_plural "{number_of_years} years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:166
+#: app/questionnaire/placeholder_transforms.py:164
 msgid "{number_of_months} month"
 msgid_plural "{number_of_months} months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:171
+#: app/questionnaire/placeholder_transforms.py:169
 msgid "{number_of_days} day"
 msgid_plural "{number_of_days} days"
 msgstr[0] ""

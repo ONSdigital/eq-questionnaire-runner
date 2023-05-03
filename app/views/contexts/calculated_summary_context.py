@@ -4,6 +4,7 @@ from typing import (
     Any,
     Callable,
     Iterable,
+    Literal,
     Mapping,
     MutableMapping,
     Optional,
@@ -252,7 +253,8 @@ class CalculatedSummaryContext(Context):
 
     @staticmethod
     def _format_total(
-        answer_format: Mapping[str, str], total: Union[int, float, Decimal]
+        answer_format: Mapping[str, Literal["short", "long", "narrow"]],
+        total: Union[int, float, Decimal],
     ) -> str:
         if answer_format["type"] == "currency":
             return get_formatted_currency(total, answer_format["currency"])
