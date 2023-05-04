@@ -885,6 +885,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return messages
 
     def _populate_when_rules_section_dependencies(self) -> None:
+        """
+        Populates section dependencies for when rules, including when rules containing
+        progress value sources.
+        Progress section dependencies by section are directly populated in this method.
+        Progress section dependencies by block are populated in the
+        `self._populate_block_dependencies_for_progress_value_source` called here.
+        """
         for section in self.get_sections():
             when_rules = self.get_values_for_key(section, "when")
             rules: list = list(when_rules)
@@ -929,6 +936,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             str, dict[str, OrderedSet[str]]
         ],
     ) -> None:
+        """
+        Populates section dependencies for progress value sources at the block level
+        """
         dependencies = (
             self._when_rules_block_dependencies_by_section_for_progress_value_source
         )
@@ -951,6 +961,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     ) -> tuple[
         set[str], dict[str, dict[str, OrderedSet[str] | dict[str, OrderedSet[str]]]]
     ]:
+        """
+        For a given rule, returns a set of dependent answer ids and any dependent sections for progress value sources.
+        Progress dependencies are keyed both by section and by block e.g.
+        sections: {"section-1": {"section-2"}}
+        blocks: {"section-1": {"block-1": {"section-2"}}}
+        """
         answer_id_list: set[str] = set()
         dependencies_ids_for_progress_value_source: dict[
             str, dict[str, OrderedSet[str] | dict[str, OrderedSet[str]]]
