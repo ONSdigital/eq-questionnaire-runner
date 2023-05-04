@@ -2,6 +2,7 @@ from collections import defaultdict, namedtuple
 from itertools import combinations
 from typing import Iterable, Mapping
 
+from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerValueTypes, QuestionnaireStore
@@ -42,7 +43,7 @@ class QuestionnaireStoreUpdater:
         self.dependent_block_id_by_section_key: Mapping[
             SectionKeyType, set[str]
         ] = defaultdict(set)
-        self.dependent_sections: set[DependentSection] = set()
+        self.dependent_sections: OrderedSet[DependentSection] = OrderedSet()
 
     def save(self) -> None:
         if self.is_dirty():
