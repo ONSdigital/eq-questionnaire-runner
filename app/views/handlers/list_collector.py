@@ -1,24 +1,16 @@
-from enum import Enum
-from typing import Any
-
 from flask import url_for
 
 from app.views.contexts import ListContext
 from app.views.handlers.question import Question
 
 
-class ListCollectorAddType(Enum):
-    SINGLE = "RedirectToListAddBlock"
-    MULTI = "RedirectToListRepeatingBlocks"
-
-
 class ListCollector(Question):
-    def __init__(self, *args: Any):
-        self._add_type: ListCollectorAddType | None = None
+    def __init__(self, *args):
+        self._is_adding = False
         super().__init__(*args)
 
     def get_next_location_url(self):
-        if self._add_type == ListCollectorAddType.SINGLE:
+        if self._is_adding:
             add_url = url_for(
                 "questionnaire.block",
                 list_name=self.rendered_block["for_list"],
@@ -28,17 +20,6 @@ class ListCollector(Question):
                 return_to_block_id=self._return_to_block_id,
             )
             return add_url
-
-        if self._add_type == ListCollectorAddType.MULTI:
-            repeating_block_url = url_for(
-                "questionnaire.block",
-                list_name=self.rendered_block["for_list"],
-                block_id=self.rendered_block["repeating_blocks"][0]["id"],
-                return_to=self._return_to,
-                return_to_answer_id=self._return_to_answer_id,
-                return_to_block_id=self._return_to_block_id,
-            )
-            return repeating_block_url
 
         return super().get_next_location_url()
 
@@ -66,13 +47,10 @@ class ListCollector(Question):
         }
 
     def handle_post(self):
-        if answer_action := self._get_answer_action():
-            if answer_action["type"] in set(
-                add_type.value for add_type in ListCollectorAddType
-            ):
-                self._add_type = ListCollectorAddType(answer_action["type"])
+        answer_action = self._get_answer_action()
 
-        if self._add_type:
+        if answer_action and answer_action["type"] == "RedirectToListAddBlock":
+            self._is_adding = True
             # pylint: disable=no-member
             # wtforms Form parents are not discoverable in the 2.3.3 implementation
             self.questionnaire_store_updater.update_answers(self.form.data)

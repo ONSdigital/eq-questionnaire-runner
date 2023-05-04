@@ -169,13 +169,13 @@ class ListCollectorBlock:
             section_id=section_id, list_name=list_model.name
         )
 
-        blocks: set[dict] = set()
+        blocks: list[dict] = []
 
         if related_answers:
-            blocks.update(self._get_blocks_for_related_answers(related_answers))
+            blocks += self._get_blocks_for_related_answers(related_answers)
 
         if list_model:
-            blocks.update(self._get_blocks_for_repeating_blocks(list_model))
+            blocks += self._get_blocks_for_repeating_blocks(list_model)
 
         if not blocks:
             return None
