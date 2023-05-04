@@ -67,7 +67,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             OrderedSet
         )
         self._when_rules_block_dependencies_by_section_for_progress_value_source: dict[
-            str, dict[str, OrderedSet[str]]
+            str, DependencyDictType
         ] = defaultdict(lambda: defaultdict(OrderedSet))
         self.calculated_summary_section_dependencies_by_block: dict[
             str, DependencyDictType
