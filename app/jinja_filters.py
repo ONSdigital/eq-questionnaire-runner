@@ -70,7 +70,7 @@ def format_percentage(value: Union[int, float, Decimal]) -> str:
 
 def format_unit(
     unit: str,
-    value: Union[int, float, Decimal],
+    value: int | float | Decimal,
     length: Literal["short", "long", "narrow"] = "short",
 ) -> str:
     formatted_unit: str = units.format_unit(
@@ -101,6 +101,7 @@ def format_unit_input_label(
             locale=flask_babel.get_locale(),
         ).replace("2 ", "")
     else:
+        # Type ignore: We pass an empty string  as the value so that we just return the unit label
         unit_label = units.format_unit(
             value="",  # type: ignore
             measurement_unit=unit,

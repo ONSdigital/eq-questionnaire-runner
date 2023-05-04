@@ -254,7 +254,7 @@ class CalculatedSummaryContext(Context):
     @staticmethod
     def _format_total(
         answer_format: Mapping[str, Literal["short", "long", "narrow"]],
-        total: Union[int, float, Decimal],
+        total: int | float | Decimal,
     ) -> str:
         if answer_format["type"] == "currency":
             return get_formatted_currency(total, answer_format["currency"])
