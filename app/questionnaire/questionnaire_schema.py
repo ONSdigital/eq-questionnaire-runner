@@ -62,7 +62,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._when_rules_section_dependencies_by_section: dict[str, set[str]] = {}
         self._when_rules_section_dependencies_by_section_for_progress_value_source: dict[
             str, OrderedSet[str]
-        ] = {}
+        ] = defaultdict(OrderedSet)
         self._when_rules_block_dependencies_by_section_for_progress_value_source: dict[
             str, DependencyDictType
         ] = {}
@@ -893,6 +893,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         Progress section dependencies by block are populated in the
         `self._populate_block_dependencies_for_progress_value_source` called here.
         """
+        progress_section_dependencies = (
+            self._when_rules_section_dependencies_by_section_for_progress_value_source
+        )
+
         for section in self.get_sections():
             when_rules = self.get_values_for_key(section, "when")
             rules: list = list(when_rules)
@@ -908,28 +912,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     section["id"]
                 ] = rules_section_dependencies
 
-            if rule_section_dependencies_for_progress_value_source:
-                for key in rule_section_dependencies_for_progress_value_source:
-                    if (
-                        key
-                        in self._when_rules_section_dependencies_by_section_for_progress_value_source
-                    ):
-                        self._when_rules_section_dependencies_by_section_for_progress_value_source[
-                            key
-                        ].update(
-                            rule_section_dependencies_for_progress_value_source[key]
-                        )
-                    else:
-                        self._when_rules_section_dependencies_by_section_for_progress_value_source[
-                            key
-                        ] = rule_section_dependencies_for_progress_value_source[
-                            key
-                        ]
+            for (
+                key,
+                values,
+            ) in rule_section_dependencies_for_progress_value_source.items():
+                progress_section_dependencies[key].update(values)
 
-            if rule_block_dependencies_for_progress_value_source:
-                self._populate_block_dependencies_for_progress_value_source(
-                    rule_block_dependencies_for_progress_value_source
-                )
+            self._populate_block_dependencies_for_progress_value_source(
+                rule_block_dependencies_for_progress_value_source
+            )
 
     def _populate_block_dependencies_for_progress_value_source(
         self,
