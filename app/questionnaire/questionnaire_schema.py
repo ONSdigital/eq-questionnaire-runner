@@ -29,6 +29,7 @@ QuestionSchemaType = Mapping
 
 DependencyDictType: TypeAlias = dict[str, OrderedSet[str]]
 
+
 class InvalidSchemaConfigurationException(Exception):
     pass
 
@@ -62,10 +63,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._when_rules_section_dependencies_by_section: dict[str, set[str]] = {}
         self._when_rules_section_dependencies_by_section_for_progress_value_source: dict[
             str, OrderedSet[str]
-        ] = defaultdict(OrderedSet)
+        ] = defaultdict(
+            OrderedSet
+        )
         self._when_rules_block_dependencies_by_section_for_progress_value_source: dict[
-            str, DependencyDictType
-        ] = {}
+            str, dict[str, OrderedSet[str]]
+        ] = defaultdict(lambda: defaultdict(OrderedSet))
         self.calculated_summary_section_dependencies_by_block: dict[
             str, dict[str, set[str]]
         ] = defaultdict(lambda: defaultdict(set))
@@ -934,25 +937,16 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         dependencies = (
             self._when_rules_block_dependencies_by_section_for_progress_value_source
         )
-
         for (
             dependent_section,
             section_dependencies_by_block,
         ) in rule_block_dependencies_for_progress_value_source.items():
-            if dependent_section in dependencies:
-                for block_id, section_ids in section_dependencies_by_block.items():
-                    if block_id in dependencies[dependent_section]:
-                        dependencies[dependent_section][block_id].update(section_ids)
-            else:
-                dependencies[
-                    dependent_section
-                ] = rule_block_dependencies_for_progress_value_source[dependent_section]
+            for block_id, section_ids in section_dependencies_by_block.items():
+                dependencies[dependent_section][block_id].add(*section_ids)
 
     def _get_section_and_block_ids_dependencies_for_progress_source_and_answer_ids_from_rule(
         self, current_section_id: str, rule: Mapping
-    ) -> tuple[
-        set[str], dict[str, dict[str, OrderedSet[str] | DependencyDictType]]
-    ]:
+    ) -> tuple[set[str], dict[str, dict[str, OrderedSet[str] | DependencyDictType]]]:
         """
         For a given rule, returns a set of dependent answer ids and any dependent sections for progress value sources.
         Progress dependencies are keyed both by section and by block e.g.
@@ -961,7 +955,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         """
         answer_id_list: set[str] = set()
         dependencies_ids_for_progress_value_source: dict[
-            str, dict[str, OrderedSet[str] |DependencyDictType]
+            str, dict[str, OrderedSet[str] | DependencyDictType]
         ] = {
             "sections": {},
             "blocks": {},
@@ -1001,9 +995,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _get_rules_section_dependencies(
         self, current_section_id: str, rules: Mapping | Sequence
-    ) -> tuple[
-        set[str], DependencyDictType, dict[str, DependencyDictType]
-    ]:
+    ) -> tuple[set[str], DependencyDictType, dict[str, DependencyDictType]]:
         """
         Returns a set of sections ids that the current sections depends on.
         """

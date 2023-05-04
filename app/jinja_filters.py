@@ -2,7 +2,7 @@
 import re
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Callable, Literal, Mapping, Optional, Union, TypeAlias
+from typing import Any, Callable, Literal, Mapping, Optional, TypeAlias, Union
 
 import flask
 import flask_babel
@@ -83,9 +83,7 @@ def format_unit(
     return formatted_unit
 
 
-def format_unit_input_label(
-    unit: str, unit_length: UnitLengthType = "short"
-) -> str:
+def format_unit_input_label(unit: str, unit_length: UnitLengthType = "short") -> str:
     """
     This function is used to only get the unit of measurement text. If the unit_length
     is long then only the plural form of the word is returned (e.g., Hours, Years, etc).

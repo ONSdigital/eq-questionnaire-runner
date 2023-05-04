@@ -813,11 +813,13 @@ def test_progress_block_and_section_dependencies_are_ordered(
 
     assert {
         "section-1": {
-            "calculated-summary-block": OrderedSet([
-                "section-2",
-                "section-3",
-                "section-5",
-            ])
+            "calculated-summary-block": OrderedSet(
+                [
+                    "section-2",
+                    "section-3",
+                    "section-5",
+                ]
+            )
         }
     } == schema.when_rules_block_dependencies_by_section_for_progress_value_source
 
