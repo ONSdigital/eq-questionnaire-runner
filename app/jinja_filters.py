@@ -2,7 +2,7 @@
 import re
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Callable, Literal, Mapping, Optional, Union
+from typing import Any, Callable, Literal, Mapping, Optional, Union, TypeAlias
 
 import flask
 import flask_babel
@@ -18,6 +18,7 @@ from app.settings import MAX_NUMBER
 blueprint = flask.Blueprint("filters", __name__)
 FormType = Mapping[str, Mapping[str, Any]]
 AnswerType = Mapping[str, Any]
+UnitLengthType: TypeAlias = Literal["short", "long", "narrow"]
 
 
 def mark_safe(context: nodes.EvalContext, value: str) -> Union[Markup, str]:
@@ -71,7 +72,7 @@ def format_percentage(value: Union[int, float, Decimal]) -> str:
 def format_unit(
     unit: str,
     value: int | float | Decimal,
-    length: Literal["short", "long", "narrow"] = "short",
+    length: UnitLengthType = "short",
 ) -> str:
     formatted_unit: str = units.format_unit(
         value=value,
@@ -83,7 +84,7 @@ def format_unit(
 
 
 def format_unit_input_label(
-    unit: str, unit_length: Literal["short", "long", "narrow"] = "short"
+    unit: str, unit_length: UnitLengthType = "short"
 ) -> str:
     """
     This function is used to only get the unit of measurement text. If the unit_length
@@ -190,7 +191,7 @@ def get_format_date_range(start_date: Markup, end_date: Markup) -> Markup:
 def format_unit_processor() -> (
     dict[
         str,
-        Callable[[str, int | float | Decimal, Literal["short", "long", "narrow"]], str],
+        Callable[[str, int | float | Decimal, UnitLengthType], str],
     ]
 ):
     return {"format_unit": format_unit}

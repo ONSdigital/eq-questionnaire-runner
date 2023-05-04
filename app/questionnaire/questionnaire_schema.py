@@ -2,7 +2,7 @@ from collections import defaultdict
 from copy import deepcopy
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Any, Generator, Iterable, Mapping, Sequence
+from typing import Any, Generator, Iterable, Mapping, Sequence, TypeAlias
 
 from flask_babel import force_locale
 from ordered_set import OrderedSet
@@ -27,6 +27,7 @@ RELATIONSHIP_CHILDREN = ["UnrelatedQuestion"]
 
 QuestionSchemaType = Mapping
 
+DependencyDictType: TypeAlias = dict[str, OrderedSet[str]]
 
 class InvalidSchemaConfigurationException(Exception):
     pass
@@ -63,7 +64,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             str, OrderedSet[str]
         ] = {}
         self._when_rules_block_dependencies_by_section_for_progress_value_source: dict[
-            str, dict[str, OrderedSet[str]]
+            str, DependencyDictType
         ] = {}
         self.calculated_summary_section_dependencies_by_block: dict[
             str, dict[str, set[str]]
@@ -107,7 +108,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     @cached_property
     def when_rules_block_dependencies_by_section_for_progress_value_source(
         self,
-    ) -> ImmutableDict[str, dict[str, OrderedSet[str]]]:
+    ) -> ImmutableDict[str, DependencyDictType]:
         return ImmutableDict(
             self._when_rules_block_dependencies_by_section_for_progress_value_source
         )
@@ -915,8 +916,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     ):
                         self._when_rules_section_dependencies_by_section_for_progress_value_source[
                             key
-                        ].add(
-                            *rule_section_dependencies_for_progress_value_source[key]
+                        ].update(
+                            rule_section_dependencies_for_progress_value_source[key]
                         )
                     else:
                         self._when_rules_section_dependencies_by_section_for_progress_value_source[
@@ -933,7 +934,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _populate_block_dependencies_for_progress_value_source(
         self,
         rule_block_dependencies_for_progress_value_source: dict[
-            str, dict[str, OrderedSet[str]]
+            str, DependencyDictType
         ],
     ) -> None:
         """
@@ -950,7 +951,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             if dependent_section in dependencies:
                 for block_id, section_ids in section_dependencies_by_block.items():
                     if block_id in dependencies[dependent_section]:
-                        dependencies[dependent_section][block_id].add(*section_ids)
+                        dependencies[dependent_section][block_id].update(section_ids)
             else:
                 dependencies[
                     dependent_section
@@ -959,7 +960,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _get_section_and_block_ids_dependencies_for_progress_source_and_answer_ids_from_rule(
         self, current_section_id: str, rule: Mapping
     ) -> tuple[
-        set[str], dict[str, dict[str, OrderedSet[str] | dict[str, OrderedSet[str]]]]
+        set[str], dict[str, dict[str, OrderedSet[str] | DependencyDictType]]
     ]:
         """
         For a given rule, returns a set of dependent answer ids and any dependent sections for progress value sources.
@@ -969,7 +970,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         """
         answer_id_list: set[str] = set()
         dependencies_ids_for_progress_value_source: dict[
-            str, dict[str, OrderedSet[str] | dict[str, OrderedSet[str]]]
+            str, dict[str, OrderedSet[str] |DependencyDictType]
         ] = {
             "sections": {},
             "blocks": {},
@@ -1010,7 +1011,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _get_rules_section_dependencies(
         self, current_section_id: str, rules: Mapping | Sequence
     ) -> tuple[
-        set[str], dict[str, OrderedSet[str]], dict[str, dict[str, OrderedSet[str]]]
+        set[str], DependencyDictType, dict[str, DependencyDictType]
     ]:
         """
         Returns a set of sections ids that the current sections depends on.

@@ -1,6 +1,7 @@
 from collections import abc
 
 import pytest
+from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
@@ -803,20 +804,20 @@ def test_progress_block_and_section_dependencies_are_ordered(
     schema = progress_dependencies_schema
 
     assert {
-        "section-1": {"section-4"},
-        "section-2": {"section-7", "section-8", "section-9"},
-        "section-4": {"section-6"},
-        "section-5": {"section-7"},
-        "section-7": {"section-8"},
+        "section-1": OrderedSet(["section-4"]),
+        "section-2": OrderedSet(["section-7", "section-8", "section-9"]),
+        "section-4": OrderedSet(["section-6"]),
+        "section-5": OrderedSet(["section-7"]),
+        "section-7": OrderedSet(["section-8"]),
     } == schema.when_rules_section_dependencies_by_section_for_progress_value_source
 
     assert {
         "section-1": {
-            "calculated-summary-block": {
+            "calculated-summary-block": OrderedSet([
                 "section-2",
                 "section-3",
                 "section-5",
-            }
+            ])
         }
     } == schema.when_rules_block_dependencies_by_section_for_progress_value_source
 
