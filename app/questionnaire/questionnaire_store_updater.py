@@ -49,13 +49,13 @@ class QuestionnaireStoreUpdater:
             self._questionnaire_store.save()
 
     def is_dirty(self) -> bool:
-        if (
-            self._answer_store.is_dirty
-            or self._list_store.is_dirty
-            or self._progress_store.is_dirty
-        ):
-            return True
-        return False
+        return bool(
+            (
+                self._answer_store.is_dirty
+                or self._list_store.is_dirty
+                or self._progress_store.is_dirty
+            )
+        )
 
     def update_relationships_answer(
         self,
@@ -70,10 +70,9 @@ class QuestionnaireStoreUpdater:
     def _remove_completed_relationship_locations_for_list_name(
         self, list_name: str
     ) -> None:
-        target_relationship_collectors = self._get_relationship_collectors_by_list_name(
+        if target_relationship_collectors := self._get_relationship_collectors_by_list_name(
             list_name
-        )
-        if target_relationship_collectors:
+        ):
             for target in target_relationship_collectors:
                 block_id = target["id"]
                 section_id = self._schema.get_section_for_block_id(block_id)["id"]  # type: ignore
@@ -93,11 +92,9 @@ class QuestionnaireStoreUpdater:
             relationship_answer_id = self._schema.get_first_answer_id_for_block(
                 collector["id"]
             )
-            relationship_answers = self._get_relationships_in_answer_store(
+            if relationship_answers := self._get_relationships_in_answer_store(
                 relationship_answer_id
-            )
-
-            if relationship_answers:
+            ):
                 pairs = {
                     (answer["list_item_id"], answer["to_list_item_id"])
                     for answer in relationship_answers
@@ -376,7 +373,7 @@ class QuestionnaireStoreUpdater:
             self._current_question
         )
 
-        answers_updated = None
+        answers_updated = False
 
         for answer_id, answer_value in form_data.items():
             if answer_id not in answer_ids_for_question:

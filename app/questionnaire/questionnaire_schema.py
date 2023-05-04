@@ -70,8 +70,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             str, dict[str, OrderedSet[str]]
         ] = defaultdict(lambda: defaultdict(OrderedSet))
         self.calculated_summary_section_dependencies_by_block: dict[
-            str, dict[str, set[str]]
-        ] = defaultdict(lambda: defaultdict(set))
+            str, DependencyDictType
+        ] = defaultdict(lambda: defaultdict(OrderedSet))
         self._when_rules_section_dependencies_by_answer: dict[
             str, set[str]
         ] = defaultdict(set)
@@ -942,7 +942,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             section_dependencies_by_block,
         ) in rule_block_dependencies_for_progress_value_source.items():
             for block_id, section_ids in section_dependencies_by_block.items():
-                dependencies[dependent_section][block_id].add(*section_ids)
+                dependencies[dependent_section][block_id].update(section_ids)
 
     def _get_section_and_block_ids_dependencies_for_progress_source_and_answer_ids_from_rule(
         self, current_section_id: str, rule: Mapping
