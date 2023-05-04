@@ -135,19 +135,21 @@ class ValueSourceResolver:
             if not self.location:
                 raise ValueError("location is required to resolve block progress")
 
-            if self.location.section_id == self.schema.get_section_id_for_block_id(
-                identifier
-            ) and not self._is_block_on_path(identifier):
+            section_id_for_block = self.schema.get_section_id_for_block_id(identifier)
+            if (
+                self.location.section_id == section_id_for_block
+                and not self._is_block_on_path(identifier)
+            ):
                 return None
 
-            if section_id := self.schema.get_section_id_for_block_id(identifier):
-                return self.progress_store.get_block_status(
-                    block_id=identifier,
-                    section_id=section_id,
-                    list_item_id=self.location.list_item_id
-                    if self.location.section_id == section_id
-                    else None,
-                )
+            # Type ignore: Section id will exist at this point
+            return self.progress_store.get_block_status(
+                block_id=identifier,
+                section_id=section_id_for_block,  # type: ignore
+                list_item_id=self.location.list_item_id
+                if self.location.section_id == section_id_for_block
+                else None,
+            )
 
     def _resolve_list_value_source(self, value_source: Mapping) -> int | str | list:
         identifier = value_source["identifier"]
