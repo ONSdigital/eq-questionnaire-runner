@@ -110,9 +110,11 @@ class CalculatedSummaryContext(Context):
         collapsible = block.get("collapsible") or False
         block_title = block["title"]
 
+        sections = {self.current_location.section_id: groups}
+
         return {
             "summary": {
-                "groups": groups,
+                "sections": sections,
                 "answers_are_editable": True,
                 "calculated_question": self._get_calculated_question(
                     calculation, formatted_total

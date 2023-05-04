@@ -18,8 +18,8 @@
 }}
 {% block form_content %}
 
-  {% if content.summary.groups %}
-    {% set group = content.summary.groups %}
+  {% if content.summary.sections.groups %}
+    {% set sections = content.summary.sections %}
     <h1>{{content.summary.title}}</h1>
     <div>
       {% include 'partials/summary/summary.html' %}

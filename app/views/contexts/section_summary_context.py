@@ -63,8 +63,12 @@ class SectionSummaryContext(Context):
                 "page_title": page_title,
                 "summary_type": "SectionSummary",
                 "answers_are_editable": True,
-                **summary,
-            }
+                "sections": {
+                    "groups": summary.get("groups"),
+                },
+                "collapsible": summary.get("collapsible"),
+                "custom_summary": summary.get("custom_summary"),
+            },
         }
 
     @cached_property

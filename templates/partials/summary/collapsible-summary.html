@@ -3,44 +3,46 @@
 
 {%- set itemList = [] -%}
 
-{%- for group in content.summary.groups -%}
-  {%- if group["blocks"] | length -%}
-    {%- if group.title -%}
-      {%- set item = {
-        "title": group.title,
-        "id": group.id,
-        "content": ""
-      } -%}
+{%- for section, groups in content.summary.sections.items() -%}
+  {%- for group in groups -%}
+    {%- if group["blocks"] | length -%}
+      {%- if group.title -%}
+        {%- set item = {
+          "title": group.title,
+          "id": group.id,
+          "content": ""
+        } -%}
 
-      {%- set summary %}
-        {{ onsSummary({
-          "classes": "summary--no-bottom-border",
-          "summaries": [
-            {
-              "groups": [
-                {
-                  "rows": map_summary_item_config(
-                    group=group,
-                    summary_type=content.summary.summary_type,
-                    answers_are_editable=content.summary.answers_are_editable,
-                    no_answer_provided=_("No answer provided"),
-                    edit_link_text=_("Change"),
-                    edit_link_aria_label=_("Change your answer for:"),
-                    calculated_question=content.summary.calculated_question,
-                    icon=None
-                  )
-                }
-              ]
-            }
-          ]
-        }) }}
-      {%- endset -%}
+        {%- set summary %}
+          {{ onsSummary({
+            "classes": "summary--no-bottom-border",
+            "summaries": [
+              {
+                "groups": [
+                  {
+                    "rows": map_summary_item_config(
+                      group=group,
+                      summary_type=content.summary.summary_type,
+                      answers_are_editable=content.summary.answers_are_editable,
+                      no_answer_provided=_("No answer provided"),
+                      edit_link_text=_("Change"),
+                      edit_link_aria_label=_("Change your answer for:"),
+                      calculated_question=content.summary.calculated_question,
+                      icon=None
+                    )
+                  }
+                ]
+              }
+            ]
+          }) }}
+        {%- endset -%}
 
-      {%- do item | setAttribute("content", item.content + summary) -%}
+        {%- do item | setAttribute("content", item.content + summary) -%}
 
-      {%- do itemList.append(item) -%}
+        {%- do itemList.append(item) -%}
+      {%- endif -%}
     {%- endif -%}
-  {%- endif -%}
+  {%- endfor -%}
 {%- endfor -%}
 
 {{ onsAccordion({
