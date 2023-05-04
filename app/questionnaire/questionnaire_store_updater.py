@@ -17,7 +17,6 @@ from app.questionnaire.router import Router
 DependentSection = namedtuple("DependentSection", "section_id list_item_id is_complete")
 
 
-# pylint: disable=too-many-public-methods
 class QuestionnaireStoreUpdater:
     """Component responsible for any actions that need to happen as a result of updating the questionnaire_store"""
 
@@ -68,7 +67,7 @@ class QuestionnaireStoreUpdater:
             Answer(relationships_answer_id, relationship_store.serialize())  # type: ignore
         )
 
-    def remove_completed_relationship_locations_for_list_name(
+    def _remove_completed_relationship_locations_for_list_name(
         self, list_name: str
     ) -> None:
         target_relationship_collectors = self._get_relationship_collectors_by_list_name(
@@ -129,7 +128,7 @@ class QuestionnaireStoreUpdater:
             self._answer_store.remove_answer(answer_id, list_item_id=list_item_id)
 
     def add_primary_person(self, list_name: str) -> str:
-        self.remove_completed_relationship_locations_for_list_name(list_name)
+        self._remove_completed_relationship_locations_for_list_name(list_name)
 
         if primary_person := self._list_store[list_name].primary_person:
             return primary_person
@@ -142,15 +141,14 @@ class QuestionnaireStoreUpdater:
 
     def add_list_item(self, list_name: str) -> str:
         new_list_item_id = self._list_store.add_list_item(list_name)
-        self.remove_completed_relationship_locations_for_list_name(list_name)
+        self._remove_completed_relationship_locations_for_list_name(list_name)
         return new_list_item_id
 
     def remove_primary_person(self, list_name: str) -> None:
         """Remove the primary person and all of their answers.
         Any context for the primary person will be removed
         """
-        list_item_id = self._list_store[list_name].primary_person
-        if list_item_id:
+        if list_item_id := self._list_store[list_name].primary_person:
             self.remove_list_item_and_answers(list_name, list_item_id)
 
     def remove_list_item_and_answers(self, list_name: str, list_item_id: str) -> None:
@@ -163,14 +161,13 @@ class QuestionnaireStoreUpdater:
             list_item_id=list_item_id
         )
 
-        answers = self.get_relationship_answers_for_list_name(list_name)
-        if answers:
-            self.remove_relationship_answers_for_list_item_id(list_item_id, answers)
+        if answers := self._get_relationship_answers_for_list_name(list_name):
+            self._remove_relationship_answers_for_list_item_id(list_item_id, answers)
             self.update_relationship_question_completeness(list_name)
 
         self._progress_store.remove_progress_for_list_item_id(list_item_id=list_item_id)
 
-    def get_relationship_answers_for_list_name(
+    def _get_relationship_answers_for_list_name(
         self, list_name: str
     ) -> list[Answer] | None:
         associated_relationship_collectors = (
@@ -211,7 +208,7 @@ class QuestionnaireStoreUpdater:
 
         list_model.same_name_items = list(same_name_items)  # type: ignore
 
-    def remove_relationship_answers_for_list_item_id(
+    def _remove_relationship_answers_for_list_item_id(
         self, list_item_id: str, answers: list
     ) -> None:
         for answer in answers:
@@ -342,7 +339,7 @@ class QuestionnaireStoreUpdater:
         dependent_sections: Iterable = self._schema.when_rules_section_dependencies_by_section_for_progress_value_source.get(
             self._current_location.section_id, set()
         )
-        self.update_section_dependencies(dependent_sections)
+        self._update_section_dependencies(dependent_sections)
 
     def _capture_section_dependencies_progress_value_source_for_current_block(
         self,
@@ -357,9 +354,9 @@ class QuestionnaireStoreUpdater:
             self._current_location.block_id, set()  # type: ignore
         )
 
-        self.update_section_dependencies(dependent_sections)
+        self._update_section_dependencies(dependent_sections)
 
-    def update_section_dependencies(self, dependent_sections: Iterable) -> None:
+    def _update_section_dependencies(self, dependent_sections: Iterable) -> None:
         for section_id in dependent_sections:
             if repeating_list := self._schema.get_repeating_list_for_section(
                 section_id
@@ -392,10 +389,9 @@ class QuestionnaireStoreUpdater:
                 self._capture_block_dependencies_for_answer(answer_id)
 
         if answers_updated:
-            self._capture_section_dependencies_progress_value_source_for_current_block()
-            self._capture_section_dependencies_progress_value_source_for_current_section()
+            self.capture_progress_section_dependencies()
 
-    def complete_calculated_summary_block(self) -> None:
+    def capture_progress_section_dependencies(self) -> None:
         self._capture_section_dependencies_progress_value_source_for_current_block()
         self._capture_section_dependencies_progress_value_source_for_current_section()
 

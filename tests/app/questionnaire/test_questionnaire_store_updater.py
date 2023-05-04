@@ -280,7 +280,7 @@ def test_remove_completed_relationship_locations_for_list_name(
     patch_method = "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater._get_relationship_collectors_by_list_name"
     patched = mocker.patch(patch_method)
     patched.return_value = [{"id": "test-relationship-collector"}]
-    questionnaire_store_updater.remove_completed_relationship_locations_for_list_name(
+    questionnaire_store_updater._remove_completed_relationship_locations_for_list_name(  # pylint: disable=protected-access
         "test-relationship-collector"
     )
 
@@ -316,7 +316,7 @@ def test_remove_completed_relationship_locations_for_list_name_no_locations(
         mock_location, mock_empty_schema, mock_questionnaire_store, mock_router, None
     )
 
-    questionnaire_store_updater.remove_completed_relationship_locations_for_list_name(
+    questionnaire_store_updater._remove_completed_relationship_locations_for_list_name(  # pylint: disable=protected-access
         "test-relationship-collector"
     )
 
