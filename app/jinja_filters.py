@@ -216,7 +216,7 @@ def setAttributes(
 @blueprint.app_template_filter()
 def should_wrap_with_fieldset(question: dict[str, list]) -> bool:
     # Logic for when to wrap with a fieldset comes from
-    # https://ons-design-system.netlify.app/patterns/question/
+    # https://service-manual.ons.gov.uk/design-system/components/fieldset
     if question["type"] == "DateRange":
         return False
 
@@ -573,6 +573,8 @@ def map_summary_item_config(
     edit_link_text: str,
     edit_link_aria_label: str,
     calculated_question: Optional[dict[str, list]],
+    remove_link_text: str | None = None,
+    remove_link_aria_label: str | None = None,
     icon: Optional[str] = None,
 ) -> list[Union[dict[str, list], SummaryRow]]:
     rows: list[Union[dict[str, list], SummaryRow]] = []
@@ -595,8 +597,8 @@ def map_summary_item_config(
                 icon=icon,
                 edit_link_text=edit_link_text,
                 edit_link_aria_label=edit_link_aria_label,
-                remove_link_text=flask_babel.lazy_gettext("Remove"),
-                remove_link_aria_label=flask_babel.lazy_gettext("Remove {item_name}"),
+                remove_link_text=remove_link_text,
+                remove_link_aria_label=remove_link_aria_label,
                 related_answers=block.get("related_answers"),
                 item_label=block.get("item_label"),
                 item_anchor=block.get("item_anchor"),

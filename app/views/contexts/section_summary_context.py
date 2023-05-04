@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Any, Generator, Iterable, Mapping, Optional, Union
+from typing import Any, Generator, Iterable, Mapping, MutableMapping, Optional, Union
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -24,7 +24,7 @@ class SectionSummaryContext(Context):
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: Optional[MetadataProxy],
-        response_metadata: Mapping,
+        response_metadata: MutableMapping,
         routing_path: RoutingPath,
         current_location: Location,
     ) -> None:
@@ -41,10 +41,12 @@ class SectionSummaryContext(Context):
         self.current_location = current_location
 
     def __call__(
-        self, return_to: Optional[str] = "section-summary"
+        self,
+        return_to: Optional[str] = "section-summary",
+        view_submitted_response: bool = False,
     ) -> Mapping[str, Any]:
-        summary = self._build_summary(return_to)
-        title_for_location = self._title_for_location()
+        summary = self.build_summary(return_to, view_submitted_response)
+        title_for_location = self.title_for_location()
         title = (
             self._placeholder_renderer.render_placeholder(
                 title_for_location, self.current_location.list_item_id
@@ -91,7 +93,11 @@ class SectionSummaryContext(Context):
             page_title = page_title.format(list_item_position=list_item_position)
         return page_title
 
-    def _build_summary(self, return_to: Optional[str]) -> dict[str, Any]:
+    def build_summary(
+        self,
+        return_to: str | None,
+        view_submitted_response: bool,
+    ) -> dict:
         """
         Build a summary context for a particular location.
 
@@ -131,6 +137,7 @@ class SectionSummaryContext(Context):
                     progress_store=self._progress_store,
                     return_to=return_to,
                     return_to_block_id=None,
+                    view_submitted_response=view_submitted_response,
                 ).serialize()
                 for group in refactored_groups
             ],
@@ -138,7 +145,7 @@ class SectionSummaryContext(Context):
 
         return groups
 
-    def _title_for_location(self) -> Union[str, dict]:
+    def title_for_location(self) -> Union[str, dict]:
         section_id = self.current_location.section_id
         return (
             # Type ignore: section id should exist at this point

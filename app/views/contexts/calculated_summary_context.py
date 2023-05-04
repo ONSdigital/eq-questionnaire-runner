@@ -1,6 +1,15 @@
 from copy import deepcopy
 from decimal import Decimal
-from typing import Any, Callable, Iterable, Mapping, Optional, Tuple, Union
+from typing import (
+    Any,
+    Callable,
+    Iterable,
+    Mapping,
+    MutableMapping,
+    Optional,
+    Tuple,
+    Union,
+)
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -35,7 +44,7 @@ class CalculatedSummaryContext(Context):
         list_store: ListStore,
         progress_store: ProgressStore,
         metadata: Optional[MetadataProxy],
-        response_metadata: Mapping,
+        response_metadata: MutableMapping,
         routing_path: RoutingPath,
         current_location: Location,
     ) -> None:
@@ -130,8 +139,9 @@ class CalculatedSummaryContext(Context):
         else:
             answers_to_calculate = get_calculated_summary_answer_ids(rendered_block)
 
-        blocks_to_calculate: list = [
-            self._schema.get_block_for_answer_id(answer_id)
+        blocks_to_calculate: list[ImmutableDict] = [
+            # Type ignore: the answer blocks will always exist at this point
+            self._schema.get_block_for_answer_id(answer_id)  # type: ignore
             for answer_id in answers_to_calculate
         ]
 
@@ -152,12 +162,12 @@ class CalculatedSummaryContext(Context):
         return {"id": section_id, "groups": [{"id": group["id"], "blocks": blocks}]}
 
     def _remove_unwanted_questions_answers(
-        self, block: Mapping[str, Any], answer_ids_to_keep: Iterable[str]
-    ) -> dict[str, Any]:
+        self, block: ImmutableDict, answer_ids_to_keep: Iterable[str]
+    ) -> dict:
         """
         Evaluates questions in a block and removes any questions not containing a relevant answer
         """
-        transformed_block: dict[str, Any] = transform_variants(
+        transformed_block: ImmutableDict = transform_variants(
             block,
             self._schema,
             self._metadata,

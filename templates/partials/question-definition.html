@@ -1,7 +1,0 @@
-{% from "components/details/_macro.njk" import onsDetails %}
-
-{% for definition in question.definitions %}
-  {% set definition_id = "question-definition-" ~ loop.index %}
-  {% set category = 'Question definition' %}
-  {%- include 'partials/definition.html' -%}
-{% endfor %}

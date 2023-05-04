@@ -1,4 +1,4 @@
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping, MutableMapping, Optional
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -21,15 +21,17 @@ class Group:
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: MetadataProxy | None,
-        response_metadata: Mapping,
+        response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         location: Location,
         language: str,
         progress_store: ProgressStore,
         return_to: str | None,
         return_to_block_id: str | None = None,
+        view_submitted_response: bool | None = False,
     ) -> None:
         self.id = group_schema["id"]
+
         self.title = group_schema.get("title")
         self.location = location
         self.placeholder_text = None
@@ -48,6 +50,7 @@ class Group:
             progress_store=progress_store,
             language=language,
             return_to_block_id=return_to_block_id,
+            view_submitted_response=view_submitted_response,
         )
 
         self.placeholder_renderer = PlaceholderRenderer(
@@ -70,13 +73,14 @@ class Group:
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: Optional[MetadataProxy],
-        response_metadata: Mapping,
+        response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         location: Location,
         return_to: Optional[str],
         progress_store: ProgressStore,
         language: str,
         return_to_block_id: Optional[str],
+        view_submitted_response: bool | None = False,
     ) -> list[dict[str, Block]]:
         blocks = []
 
@@ -131,12 +135,14 @@ class Group:
                         summary_item
                     )
                     blocks.extend([list_summary_element])
-                    self.links["add_link"] = Link(
-                        target="_self",
-                        text=list_summary_element["add_link_text"],
-                        url=list_summary_element["add_link"],
-                        attributes={"data-qa": "add-item-link"},
-                    )
+
+                    if not view_submitted_response:
+                        self.links["add_link"] = Link(
+                            target="_self",
+                            text=list_summary_element["add_link_text"],
+                            url=list_summary_element["add_link"],
+                            attributes={"data-qa": "add-item-link"},
+                        )
 
                     self.placeholder_text = list_summary_element["empty_list_text"]
 
