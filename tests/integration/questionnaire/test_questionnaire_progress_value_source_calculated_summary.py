@@ -328,3 +328,38 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
 
         self.get(self.james_bond_link())
         self.assertNotInBody("Random question about")
+
+    def test_progress_value_source_with_chained_dependencies(self):
+        self.launchSurvey("test_progress_value_source_calculated_summary_extended")
+
+        # 1. Complete section 7
+        self.go_to_section("section-7")
+        self.post({"s7-b3-q1-a1": 1})
+
+        # Check the section is complete
+        self.assertEqualUrl("/questionnaire/")
+        self.assert_section_status(6, "Completed")
+
+        # 2. Complete section 5, will change the status of section 7 to partially completed
+        self.go_to_section("section-5")
+        self.post({"s5-b2-q1-a1": 1})
+
+        # Check the section is complete
+        self.assertEqualUrl("/questionnaire/")
+        self.assert_section_status(4, "Completed")
+        self.assert_section_status(6, "Partially completed")
+
+        # 2. Complete section 1, this will change the status of section 5 to partially completed
+        # and section 7 should once again be complete
+        self.go_to_section("section-1")
+        self.post({"first-number-answer": 1})
+
+        self.post({"second-number-answer": 1})
+
+        self.post()
+
+        # Check the section is complete
+        self.assertEqualUrl("/questionnaire/")
+        self.assert_section_status(1, "Completed")
+        self.assert_section_status(4, "Partially completed")
+        self.assert_section_status(6, "Completed")

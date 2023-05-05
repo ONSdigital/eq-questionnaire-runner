@@ -365,6 +365,40 @@ class QuestionnaireStoreUpdater:
             else:
                 self.dependent_sections.add(DependentSection(section_id, None, None))
 
+            dependent_of_dependents = self.get_dependents_of_dependents(
+                dependent_sections
+            )
+
+            for section_id in dependent_of_dependents:
+                if repeating_list := self._schema.get_repeating_list_for_section(
+                    section_id
+                ):
+                    for list_item_id in self._list_store[repeating_list].items:
+                        self.dependent_sections.add(
+                            DependentSection(section_id, list_item_id, None)
+                        )
+                else:
+                    self.dependent_sections.add(
+                        DependentSection(section_id, None, None)
+                    )
+
+    def get_dependents_of_dependents(self, dependent_sections: Iterable) -> OrderedSet:
+        dependents: OrderedSet = OrderedSet()
+        for dependent in dependent_sections:
+            if (
+                dependent
+                in self._schema.when_rules_section_dependencies_by_section_for_progress_value_source
+            ):
+                for (
+                    section_dependency
+                ) in self._schema.when_rules_section_dependencies_by_section_for_progress_value_source[
+                    dependent
+                ]:
+                    dependents.add(section_dependency)
+                    self.get_dependents_of_dependents(dependents)
+
+        return dependents
+
     def update_answers(
         self, form_data: Mapping, list_item_id: str | None = None
     ) -> None:

@@ -11,6 +11,15 @@ class TestQuestionnaireProgressValueSourceInRepeatingSections(IntegrationTestCas
             }
         self.post(payload)
 
+    def answer_dob_second_repeat(self, payload=None):
+        if not payload:
+            payload = {
+                "second-date-of-birth-answer-year": "1998",
+                "second-date-of-birth-answer-month": "12",
+                "second-date-of-birth-answer-day": 12,
+            }
+        self.post(payload)
+
     def john_doe_link(self):
         return self.getHtmlSoup().find("a", {"data-qa": "hub-row-section-2-1-link"})[
             "href"
@@ -21,9 +30,18 @@ class TestQuestionnaireProgressValueSourceInRepeatingSections(IntegrationTestCas
             "href"
         ]
 
+    def jane_doe_link(self):
+        return self.getHtmlSoup().find("a", {"data-qa": "hub-row-section-4-1-link"})[
+            "href"
+        ]
+
     def add_person(self, first_name, last_name):
         self.assertInBody("What is the name of the person?")
         self.post({"first-name": first_name, "last-name": last_name})
+
+    def add_person_second_list_collector(self, first_name, last_name):
+        self.assertInBody("What is the name of the person?")
+        self.post({"second-first-name": first_name, "second-last-name": last_name})
 
     def assert_section_status(self, section_index, status, other_labels=None):
         self.assertInSelector(status, self.row_selector(section_index))
@@ -432,3 +450,84 @@ class TestQuestionnaireProgressValueSourceInRepeatingSections(IntegrationTestCas
 
         # 16. Assert random question shows up
         self.assertInBody("Random question about")
+
+    def test_section_progress_dependencies_updated_in_repeating_sections_with_chained_dependencies(
+        self,
+    ):
+        """
+        Test that dependency blocks inside repeating sections are updated properly when there are chained dependencies
+        """
+        self.launchSurvey(
+            "test_progress_value_source_repeating_sections_chained_dependencies"
+        )
+
+        self.assertInBody("Choose another section to complete")
+
+        # 1. Complete 3rd section and add 2 people
+        # And answer the random question enabler
+        self.go_to_section("section-3")
+        self.assertInBody("Does anyone else live here?")
+        self.post({"second-anyone-else": "Yes"})
+
+        self.add_person_second_list_collector("Jane", "Doe")
+
+        self.assertInBody("Does anyone else live here?")
+        self.assertInSelector("Jane Doe", self.row_selector(1))
+        self.post({"second-anyone-else": "Yes"})
+
+        self.add_person_second_list_collector("Marie", "Clare")
+
+        self.assertInBody("Does anyone else live here?")
+        self.assertInSelector("Marie Clare", self.row_selector(2))
+        self.post({"second-anyone-else": "No"})
+
+        self.post()
+
+        self.assertInBody("Random question enabler")
+        self.post({"second-random-question-enabler-answer": 1})
+
+        self.post()
+
+        # Go back to the hub
+        self.go_to_hub()
+
+        # 2. The two repeating sections should show as "not started"
+        self.assertInBody("Choose another section to complete")
+        self.assert_section_status(4, "Not started", ["Jane Doe"])
+        self.assert_section_status(5, "Not started", ["Marie Clare"])
+
+        # 3. Complete Jane Doe section
+        self.get(self.jane_doe_link())
+        self.assertInBody("Jane Doe")
+        self.answer_dob_second_repeat()
+        self.post({"second-other-answer": 1})
+
+        # Go back to the hub
+        self.go_to_hub()
+
+        # 4. The Jane Doe section should now be Complete
+        self.assertInBody("Choose another section to complete")
+        self.assert_section_status(4, "Completed", ["Jane Doe"])
+        self.assert_section_status(5, "Not started", ["Marie Clare"])
+
+        # 5. Complete section 2
+        self.go_to_section("section-2")
+        self.post({"s2-b2-q1-a1": 1})
+
+        # 6. Section-2 and should be complete but the Jane Doe section should be partially completed
+        self.assertInBody("Choose another section to complete")
+        self.assert_section_status(2, "Completed")
+        self.assert_section_status(4, "Partially completed", ["Jane Doe"])
+        self.assert_section_status(5, "Not started", ["Marie Clare"])
+
+        # 5. Complete section 1
+        self.go_to_section("section-1")
+        self.post({"s1-b1-q1-a1": 1})
+
+        # 6. Section 1 and the Jane Doe section should now be but complete
+        # but Section-2 should be partially completed
+        self.assertInBody("Choose another section to complete")
+        self.assert_section_status(1, "Completed")
+        self.assert_section_status(2, "Partially completed")
+        self.assert_section_status(4, "Completed", ["Jane Doe"])
+        self.assert_section_status(5, "Not started", ["Marie Clare"])
