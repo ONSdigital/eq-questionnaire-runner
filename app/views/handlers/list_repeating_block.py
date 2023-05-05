@@ -5,6 +5,9 @@ from app.views.handlers.list_edit_question import ListEditQuestion
 
 class ListRepeatingBlock(ListEditQuestion):
     def get_next_location_url(self) -> str:
+        if self._is_returning_to_section_summary():
+            return self.get_section_summary_url()
+
         repeating_block_ids = [
             block["id"] for block in self.parent_block["repeating_blocks"]
         ]
@@ -21,8 +24,4 @@ class ListRepeatingBlock(ListEditQuestion):
             )
             return repeating_block_url
 
-        return self.parent_location.url(
-            return_to=self._return_to,
-            return_to_answer_id=self._return_to_answer_id,
-            return_to_block_id=self._return_to_block_id,
-        )
+        return super().get_next_location_url()
