@@ -275,26 +275,6 @@
                                 },
                                 "title": "Grand total of previous values"
                             }
-                        },
-                        {
-                            "type": "GrandCalculatedSummary",
-                            "id": "currency-grand-playback",
-                            "title": "The grand calculated summary is calculated to be %(total)s. Is this correct?",
-                            "calculation": {
-                                "operation": {
-                                    "+": [
-                                        {
-                                            "source": "calculated_summary",
-                                            "identifier": "currency-section-1"
-                                        },
-                                        {
-                                            "source": "calculated_summary",
-                                            "identifier": "currency-question-3"
-                                        }
-                                    ]
-                                },
-                                "title": "Grand total of previous calculated summaries"
-                            }
                         }
                     ]
                 }
@@ -324,7 +304,7 @@
                         {
                             "type": "GrandCalculatedSummary",
                             "id": "currency-all",
-                            "title": "The grand calculated summary in another section which still match is calculated to be %(total)s. Is this correct?",
+                            "title": "The grand calculated summary is calculated to be %(total)s. Is this correct?",
                             "calculation": {
                                 "operation": {
                                     "+": [
