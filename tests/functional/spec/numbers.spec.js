@@ -20,7 +20,7 @@ describe("Number validation", () => {
 
       await $(TestMinMax.testRange()).setValue("9");
       await $(TestMinMax.testRangeExclusive()).setValue("10");
-      await $(TestMinMax.testMin()).setValue("0");
+      await $(TestMinMax.testMin()).setValue("-124");
       await $(TestMinMax.testMax()).setValue("12345");
       await $(TestMinMax.testMinExclusive()).setValue("123");
       await $(TestMinMax.testMaxExclusive()).setValue("12345");
@@ -30,7 +30,7 @@ describe("Number validation", () => {
 
       await expect(await $(TestMinMax.errorNumber(1)).getText()).to.contain("Enter an answer more than or equal to 10");
       await expect(await $(TestMinMax.errorNumber(2)).getText()).to.contain("Enter an answer more than 10");
-      await expect(await $(TestMinMax.errorNumber(3)).getText()).to.contain("Enter an answer more than or equal to 123");
+      await expect(await $(TestMinMax.errorNumber(3)).getText()).to.contain("Enter an answer more than or equal to -123");
       await expect(await $(TestMinMax.errorNumber(4)).getText()).to.contain("Enter an answer less than or equal to 1,234");
       await expect(await $(TestMinMax.errorNumber(5)).getText()).to.contain("Enter an answer more than 123");
       await expect(await $(TestMinMax.errorNumber(6)).getText()).to.contain("Enter an answer less than 1,234");

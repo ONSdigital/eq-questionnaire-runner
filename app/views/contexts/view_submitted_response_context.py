@@ -63,6 +63,7 @@ def build_view_submitted_response_context(
             progress_store=questionnaire_store.progress_store,
             metadata=questionnaire_store.metadata,
             response_metadata=questionnaire_store.response_metadata,
+            view_submitted_response=True,
         )
         context["summary"] = summary_context()
         context["pdf_url"] = url_for("post_submission.get_view_submitted_response_pdf")
