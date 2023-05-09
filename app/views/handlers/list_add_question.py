@@ -34,7 +34,7 @@ class ListAddQuestion(ListAction):
         self.questionnaire_store_updater.update_answers(self.form.data, list_item_id)
 
         self.add_dependent_sections_for_list(self.parent_block["for_list"])
-        self.questionnaire_store_updater.update_progress_for_dependent_sections()
+
         return super().handle_post()
 
     def _resolve_custom_page_title_vars(self) -> MutableMapping:

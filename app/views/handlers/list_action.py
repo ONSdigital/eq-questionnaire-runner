@@ -92,6 +92,7 @@ class ListAction(Question):
                 self.current_location.section_id, self.current_location.list_item_id
             )
 
+            self.questionnaire_store_updater.update_progress_for_dependent_sections()
             self.questionnaire_store_updater.save()
 
     def _get_location_url(

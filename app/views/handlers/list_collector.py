@@ -57,5 +57,4 @@ class ListCollector(Question):
             self.questionnaire_store_updater.update_progress_for_dependent_sections()
             self.questionnaire_store_updater.save()
         else:
-            self.questionnaire_store_updater.update_progress_for_dependent_sections()
             return super().handle_post()

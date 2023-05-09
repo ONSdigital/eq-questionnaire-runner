@@ -30,8 +30,6 @@ class ListRemoveQuestion(ListAction):
             )
             self.add_dependent_sections_for_list(self.parent_block["for_list"])
 
-        self.questionnaire_store_updater.update_progress_for_dependent_sections()
-
         return super().handle_post()
 
     def individual_response_enabled(self) -> bool:

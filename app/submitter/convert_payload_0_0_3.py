@@ -68,14 +68,6 @@ def convert_answers_to_payload_0_0_3(
                         list_collector_block=block,
                         answers_payload=answers_payload,
                     )
-                question = block.get("question") or block.get("question_variants") or {}
-                question = (
-                    question[0]["question"] if isinstance(question, tuple) else question
-                )
-                if question.get("dynamic_answers"):
-                    resolve_dynamic_answers(
-                        question, answer_store, answers_payload, list_store
-                    )
 
                 answer_ids = schema.get_answer_ids_for_block(block_id)
                 static_answer_ids = [

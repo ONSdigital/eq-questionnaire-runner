@@ -49,5 +49,4 @@ class PrimaryPersonListCollector(Question):
             # determined correctly when the parent class' `update_section_status`
             # method is called.
             self.add_dependent_sections_for_list(list_name)
-            self.questionnaire_store_updater.update_progress_for_dependent_sections()
             super().handle_post()
