@@ -9,16 +9,17 @@ class TestThankYou(IntegrationTestCase):
 
         # We fill in our answers
         form_data = {
-            "answer": "12",
+            "answer-gbp": "12",
             "answer-usd": "345",
             "answer-eur": "67.89",
             "answer-jpy": "0",
         }
 
-        # We submit the form
+        # We submit the form and answers for the first page
         self.post(form_data)
-
-        # Submit answers
+        self.post()
+        # We submit the form and answers for the second page
+        self.post(form_data)
         self.post()
 
         # check we're on the thank you page and there's no sign out button
