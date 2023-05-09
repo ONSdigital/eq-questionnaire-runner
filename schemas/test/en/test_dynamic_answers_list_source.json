@@ -416,7 +416,7 @@
                                             "currency": "GBP",
                                             "decimal_places": 2,
                                             "description": {
-                                                "text": "The answers must be less than {max_value} and greater than {min_value}",
+                                                "text": "The answers must be less than or equal {max_value} and greater than or equal {min_value}",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "min_value",

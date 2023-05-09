@@ -28,7 +28,7 @@ class ListRemoveQuestion(ListAction):
             self.questionnaire_store_updater.remove_list_item_and_answers(
                 list_name, self._current_location.list_item_id
             )
-            self.add_dependent_sections_for_list(self.parent_block["for_list"])
+            self.capture_dependent_sections_for_list(self.parent_block["for_list"])
 
         return super().handle_post()
 
