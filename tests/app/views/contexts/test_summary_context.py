@@ -111,377 +111,441 @@ def test_context_for_summary():
         "answers_are_editable": False,
         "collapsible": False,
         "sections": {
-            "James Bond": [
-                {
-                    "blocks": [
-                        {
-                            "id": "third-number-block",
-                            "number": None,
-                            "question": {
-                                "answers": [
-                                    {
-                                        "currency": "GBP",
-                                        "id": "third-number-answer",
-                                        "label": "Third "
-                                        "answer "
-                                        "in "
-                                        "currency "
-                                        "label",
-                                        "link": "/questionnaire/people/jufPpX/third-number-block/#third-number-answer",
-                                        "type": "currency",
-                                        "unit": None,
-                                        "unit_length": None,
-                                        "value": 2,
-                                    },
-                                    {
-                                        "currency": "GBP",
-                                        "id": "third-number-answer-also-in-total",
-                                        "label": "Third "
-                                        "answer "
-                                        "label "
-                                        "also "
-                                        "in "
-                                        "currency "
-                                        "total "
-                                        "(optional)",
-                                        "link": "/questionnaire/people/jufPpX/third-number-block/#third-number-answer-also-in-total",
-                                        "type": "currency",
-                                        "unit": None,
-                                        "unit_length": None,
-                                        "value": 2,
-                                    },
-                                ],
-                                "id": "third-number-question",
+            "calculated-summary-section-fjWZET": {
+                "groups": [
+                    {
+                        "blocks": [
+                            {
+                                "id": "third-number-block",
                                 "number": None,
-                                "title": "Third Number " "Question " "Title",
-                                "type": "General",
-                            },
-                            "title": None,
-                        },
-                        {
-                            "id": "mutually-exclusive-checkbox",
-                            "number": None,
-                            "question": {
-                                "answers": [
-                                    {
-                                        "currency": None,
-                                        "id": "checkbox-answer",
-                                        "label": None,
-                                        "link": "/questionnaire/people/jufPpX/mutually-exclusive-checkbox/#checkbox-answer",
-                                        "type": "checkbox",
-                                        "unit": None,
-                                        "unit_length": None,
-                                        "value": [
-                                            {
-                                                "detail_answer_value": None,
-                                                "label": "4 "
-                                                "- "
-                                                "calculated "
-                                                "summary "
-                                                "answer "
-                                                "(current "
-                                                "section)",
-                                            }
-                                        ],
-                                    }
-                                ],
-                                "id": "mutually-exclusive-checkbox-question",
-                                "number": None,
-                                "title": "Which answer "
-                                "did you give "
-                                "to question 4 "
-                                "and a half?",
-                                "type": "MutuallyExclusive",
-                            },
-                            "title": None,
-                        },
-                        {
-                            "id": "skippable-block",
-                            "number": None,
-                            "question": {
-                                "answers": [
-                                    {
-                                        "currency": "GBP",
-                                        "id": "skippable-answer",
-                                        "label": "Capital " "expenditure",
-                                        "link": "/questionnaire/people/jufPpX/skippable-block/#skippable-answer",
-                                        "type": "currency",
-                                        "unit": None,
-                                        "unit_length": None,
-                                        "value": None,
-                                    }
-                                ],
-                                "id": "skippable-question",
-                                "number": None,
-                                "title": "How much did "
-                                "James Bond "
-                                "spend on "
-                                "fruit?",
-                                "type": "General",
-                            },
-                            "title": None,
-                        },
-                    ],
-                    "id": "calculated-summary-0",
-                    "links": {},
-                    "placeholder_text": None,
-                    "title": "Calculated Summary Group",
-                }
-            ],
-            "Jane Doe": [
-                {
-                    "blocks": [
-                        {
-                            "id": "third-number-block",
-                            "number": None,
-                            "question": {
-                                "answers": [
-                                    {
-                                        "currency": "GBP",
-                                        "id": "third-number-answer",
-                                        "label": "Third "
-                                        "answer "
-                                        "in "
-                                        "currency "
-                                        "label",
-                                        "link": "/questionnaire/people/fjWZET/third-number-block/#third-number-answer",
-                                        "type": "currency",
-                                        "unit": None,
-                                        "unit_length": None,
-                                        "value": 1,
-                                    },
-                                    {
-                                        "currency": "GBP",
-                                        "id": "third-number-answer-also-in-total",
-                                        "label": "Third "
-                                        "answer "
-                                        "label "
-                                        "also "
-                                        "in "
-                                        "currency "
-                                        "total "
-                                        "(optional)",
-                                        "link": "/questionnaire/people/fjWZET/third-number-block/#third-number-answer-also-in-total",
-                                        "type": "currency",
-                                        "unit": None,
-                                        "unit_length": None,
-                                        "value": 1,
-                                    },
-                                ],
-                                "id": "third-number-question",
-                                "number": None,
-                                "title": "Third Number " "Question Title",
-                                "type": "General",
-                            },
-                            "title": None,
-                        },
-                        {
-                            "id": "mutually-exclusive-checkbox",
-                            "number": None,
-                            "question": {
-                                "answers": [
-                                    {
-                                        "currency": None,
-                                        "id": "checkbox-answer",
-                                        "label": None,
-                                        "link": "/questionnaire/people/fjWZET/mutually-exclusive-checkbox/#checkbox-answer",
-                                        "type": "checkbox",
-                                        "unit": None,
-                                        "unit_length": None,
-                                        "value": [
-                                            {
-                                                "detail_answer_value": None,
-                                                "label": "1 "
-                                                "- "
-                                                "calculated "
-                                                "summary "
-                                                "answer "
-                                                "(previous "
-                                                "section)",
-                                            }
-                                        ],
-                                    }
-                                ],
-                                "id": "mutually-exclusive-checkbox-question",
-                                "number": None,
-                                "title": "Which answer "
-                                "did you give to "
-                                "question 4 and "
-                                "a half?",
-                                "type": "MutuallyExclusive",
-                            },
-                            "title": None,
-                        },
-                        {
-                            "id": "skippable-block",
-                            "number": None,
-                            "question": {
-                                "answers": [
-                                    {
-                                        "currency": "GBP",
-                                        "id": "skippable-answer",
-                                        "label": "Capital " "expenditure",
-                                        "link": "/questionnaire/people/fjWZET/skippable-block/#skippable-answer",
-                                        "type": "currency",
-                                        "unit": None,
-                                        "unit_length": None,
-                                        "value": None,
-                                    }
-                                ],
-                                "id": "skippable-question",
-                                "number": None,
-                                "title": "How much did " "Jane Doe spend " "on fruit?",
-                                "type": "General",
-                            },
-                            "title": None,
-                        },
-                    ],
-                    "id": "calculated-summary-0-1",
-                    "links": {},
-                    "placeholder_text": None,
-                    "title": "Calculated Summary Group",
-                }
-            ],
-            "Personal Details Section": [
-                {
-                    "blocks": [
-                        {
-                            "id": "name",
-                            "number": None,
-                            "question": {
-                                "answers": [
-                                    {
-                                        "currency": None,
-                                        "id": "name-answer",
-                                        "label": "Full " "name",
-                                        "link": "/questionnaire/name/#name-answer",
-                                        "type": "textfield",
-                                        "unit": None,
-                                        "unit_length": None,
-                                        "value": Markup("John"),
-                                    }
-                                ],
-                                "id": "name-question",
-                                "number": None,
-                                "title": "What " "is " "your " "name?",
-                                "type": "General",
-                            },
-                            "title": None,
-                        }
-                    ],
-                    "id": "personal-details-group-0",
-                    "links": {},
-                    "placeholder_text": None,
-                    "title": "Personal Details",
-                },
-                {
-                    "blocks": [
-                        {
-                            "id": "address",
-                            "number": None,
-                            "question": {
-                                "answers": [
-                                    {
-                                        "currency": None,
-                                        "id": "address-answer",
-                                        "label": "Postcode",
-                                        "link": "/questionnaire/address/#address-answer",
-                                        "type": "textfield",
-                                        "unit": None,
-                                        "unit_length": None,
-                                        "value": Markup("1 Street"),
-                                    }
-                                ],
-                                "id": "address-question",
-                                "number": None,
-                                "title": "What " "is " "your " "address?",
-                                "type": "General",
-                            },
-                            "title": None,
-                        }
-                    ],
-                    "id": "address-details-group-0",
-                    "links": {},
-                    "placeholder_text": None,
-                    "title": "Address Details",
-                },
-            ],
-            "Questions Section": [
-                {
-                    "blocks": [
-                        {
-                            "id": "skip-first-block",
-                            "number": None,
-                            "question": {
-                                "answers": [
-                                    {
-                                        "currency": None,
-                                        "id": "skip-first-block-answer",
-                                        "label": None,
-                                        "link": "/questionnaire/skip-first-block/#skip-first-block-answer",
-                                        "type": "radio",
-                                        "unit": None,
-                                        "unit_length": None,
-                                        "value": {
-                                            "detail_answer_value": None,
-                                            "label": "Yes",
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "currency": "GBP",
+                                            "id": "third-number-answer",
+                                            "label": "Third "
+                                            "answer "
+                                            "in "
+                                            "currency "
+                                            "label",
+                                            "link": "/questionnaire/people/fjWZET/third-number-block/#third-number-answer",
+                                            "type": "currency",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "value": 1,
                                         },
-                                    }
-                                ],
-                                "id": "skip-first-block-question",
-                                "number": None,
-                                "title": "Skip "
-                                "First "
-                                "Block "
-                                "so it "
-                                "doesn’t "
-                                "appear "
-                                "in "
-                                "Total?",
-                                "type": "General",
+                                        {
+                                            "currency": "GBP",
+                                            "id": "third-number-answer-also-in-total",
+                                            "label": "Third "
+                                            "answer "
+                                            "label "
+                                            "also "
+                                            "in "
+                                            "currency "
+                                            "total "
+                                            "(optional)",
+                                            "link": "/questionnaire/people/fjWZET/third-number-block/#third-number-answer-also-in-total",
+                                            "type": "currency",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "value": 1,
+                                        },
+                                    ],
+                                    "id": "third-number-question",
+                                    "number": None,
+                                    "title": "Third " "Number " "Question " "Title",
+                                    "type": "General",
+                                },
+                                "title": None,
                             },
-                            "title": None,
-                        },
-                        {
-                            "id": "second-number-block",
-                            "number": None,
-                            "question": {
-                                "answers": [
-                                    {
-                                        "currency": "GBP",
-                                        "id": "second-number-answer-also-in-total",
-                                        "label": "Second "
-                                        "answer "
-                                        "label "
-                                        "also "
-                                        "in "
-                                        "total "
-                                        "(optional)",
-                                        "link": "/questionnaire/second-number-block/#second-number-answer-also-in-total",
-                                        "type": "currency",
-                                        "unit": None,
-                                        "unit_length": None,
-                                        "value": 1,
-                                    }
-                                ],
-                                "id": "second-number-question-also-in-total",
+                            {
+                                "id": "mutually-exclusive-checkbox",
                                 "number": None,
-                                "title": "Second "
-                                "Number "
-                                "Additional "
-                                "Question "
-                                "Title",
-                                "type": "General",
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "currency": None,
+                                            "id": "checkbox-answer",
+                                            "label": None,
+                                            "link": "/questionnaire/people/fjWZET/mutually-exclusive-checkbox/#checkbox-answer",
+                                            "type": "checkbox",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "value": [
+                                                {
+                                                    "detail_answer_value": None,
+                                                    "label": "1 "
+                                                    "- "
+                                                    "calculated "
+                                                    "summary "
+                                                    "answer "
+                                                    "(previous "
+                                                    "section)",
+                                                }
+                                            ],
+                                        }
+                                    ],
+                                    "id": "mutually-exclusive-checkbox-question",
+                                    "number": None,
+                                    "title": "Which "
+                                    "answer "
+                                    "did "
+                                    "you "
+                                    "give "
+                                    "to "
+                                    "question "
+                                    "4 "
+                                    "and "
+                                    "a "
+                                    "half?",
+                                    "type": "MutuallyExclusive",
+                                },
+                                "title": None,
                             },
-                            "title": None,
-                        },
-                    ],
-                    "id": "radio-0",
-                    "links": {},
-                    "placeholder_text": None,
-                    "title": "Questions Group",
-                }
-            ],
+                            {
+                                "id": "skippable-block",
+                                "number": None,
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "currency": "GBP",
+                                            "id": "skippable-answer",
+                                            "label": "Capital " "expenditure",
+                                            "link": "/questionnaire/people/fjWZET/skippable-block/#skippable-answer",
+                                            "type": "currency",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "value": None,
+                                        }
+                                    ],
+                                    "id": "skippable-question",
+                                    "number": None,
+                                    "title": "How "
+                                    "much "
+                                    "did "
+                                    "Jane "
+                                    "Doe "
+                                    "spend "
+                                    "on "
+                                    "fruit?",
+                                    "type": "General",
+                                },
+                                "title": None,
+                            },
+                        ],
+                        "id": "calculated-summary-0-1",
+                        "links": {},
+                        "placeholder_text": None,
+                        "title": "Calculated " "Summary " "Group",
+                    }
+                ],
+                "title": "Jane Doe",
+            },
+            "calculated-summary-section-jufPpX": {
+                "groups": [
+                    {
+                        "blocks": [
+                            {
+                                "id": "third-number-block",
+                                "number": None,
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "currency": "GBP",
+                                            "id": "third-number-answer",
+                                            "label": "Third "
+                                            "answer "
+                                            "in "
+                                            "currency "
+                                            "label",
+                                            "link": "/questionnaire/people/jufPpX/third-number-block/#third-number-answer",
+                                            "type": "currency",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "value": 2,
+                                        },
+                                        {
+                                            "currency": "GBP",
+                                            "id": "third-number-answer-also-in-total",
+                                            "label": "Third "
+                                            "answer "
+                                            "label "
+                                            "also "
+                                            "in "
+                                            "currency "
+                                            "total "
+                                            "(optional)",
+                                            "link": "/questionnaire/people/jufPpX/third-number-block/#third-number-answer-also-in-total",
+                                            "type": "currency",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "value": 2,
+                                        },
+                                    ],
+                                    "id": "third-number-question",
+                                    "number": None,
+                                    "title": "Third " "Number " "Question " "Title",
+                                    "type": "General",
+                                },
+                                "title": None,
+                            },
+                            {
+                                "id": "mutually-exclusive-checkbox",
+                                "number": None,
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "currency": None,
+                                            "id": "checkbox-answer",
+                                            "label": None,
+                                            "link": "/questionnaire/people/jufPpX/mutually-exclusive-checkbox/#checkbox-answer",
+                                            "type": "checkbox",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "value": [
+                                                {
+                                                    "detail_answer_value": None,
+                                                    "label": "4 "
+                                                    "- "
+                                                    "calculated "
+                                                    "summary "
+                                                    "answer "
+                                                    "(current "
+                                                    "section)",
+                                                }
+                                            ],
+                                        }
+                                    ],
+                                    "id": "mutually-exclusive-checkbox-question",
+                                    "number": None,
+                                    "title": "Which "
+                                    "answer "
+                                    "did "
+                                    "you "
+                                    "give "
+                                    "to "
+                                    "question "
+                                    "4 "
+                                    "and "
+                                    "a "
+                                    "half?",
+                                    "type": "MutuallyExclusive",
+                                },
+                                "title": None,
+                            },
+                            {
+                                "id": "skippable-block",
+                                "number": None,
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "currency": "GBP",
+                                            "id": "skippable-answer",
+                                            "label": "Capital " "expenditure",
+                                            "link": "/questionnaire/people/jufPpX/skippable-block/#skippable-answer",
+                                            "type": "currency",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "value": None,
+                                        }
+                                    ],
+                                    "id": "skippable-question",
+                                    "number": None,
+                                    "title": "How "
+                                    "much "
+                                    "did "
+                                    "James "
+                                    "Bond "
+                                    "spend "
+                                    "on "
+                                    "fruit?",
+                                    "type": "General",
+                                },
+                                "title": None,
+                            },
+                        ],
+                        "id": "calculated-summary-0",
+                        "links": {},
+                        "placeholder_text": None,
+                        "title": "Calculated " "Summary " "Group",
+                    }
+                ],
+                "title": "James Bond",
+            },
+            "name-section": {
+                "groups": [
+                    {
+                        "blocks": [
+                            {
+                                "id": "name",
+                                "number": None,
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "currency": None,
+                                            "id": "name-answer",
+                                            "label": "Full " "name",
+                                            "link": "/questionnaire/name/#name-answer",
+                                            "type": "textfield",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "value": Markup("John"),
+                                        }
+                                    ],
+                                    "id": "name-question",
+                                    "number": None,
+                                    "title": "What " "is " "your " "name?",
+                                    "type": "General",
+                                },
+                                "title": None,
+                            }
+                        ],
+                        "id": "personal-details-group-0",
+                        "links": {},
+                        "placeholder_text": None,
+                        "title": "Personal Details",
+                    },
+                    {
+                        "blocks": [
+                            {
+                                "id": "address",
+                                "number": None,
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "currency": None,
+                                            "id": "address-answer",
+                                            "label": "Postcode",
+                                            "link": "/questionnaire/address/#address-answer",
+                                            "type": "textfield",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "value": Markup("1 Street"),
+                                        }
+                                    ],
+                                    "id": "address-question",
+                                    "number": None,
+                                    "title": "What " "is " "your " "address?",
+                                    "type": "General",
+                                },
+                                "title": None,
+                            }
+                        ],
+                        "id": "address-details-group-0",
+                        "links": {},
+                        "placeholder_text": None,
+                        "title": "Address Details",
+                    },
+                ],
+                "title": "Personal Details Section",
+            },
+            "questions-section": {
+                "groups": [
+                    {
+                        "blocks": [
+                            {
+                                "id": "skip-first-block",
+                                "number": None,
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "currency": None,
+                                            "id": "skip-first-block-answer",
+                                            "label": None,
+                                            "link": "/questionnaire/skip-first-block/#skip-first-block-answer",
+                                            "type": "radio",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "value": {
+                                                "detail_answer_value": None,
+                                                "label": "Yes",
+                                            },
+                                        }
+                                    ],
+                                    "id": "skip-first-block-question",
+                                    "number": None,
+                                    "title": "Skip "
+                                    "First "
+                                    "Block "
+                                    "so "
+                                    "it "
+                                    "doesn’t "
+                                    "appear "
+                                    "in "
+                                    "Total?",
+                                    "type": "General",
+                                },
+                                "title": None,
+                            },
+                            {
+                                "id": "second-number-block",
+                                "number": None,
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "currency": "GBP",
+                                            "id": "second-number-answer-also-in-total",
+                                            "label": "Second "
+                                            "answer "
+                                            "label "
+                                            "also "
+                                            "in "
+                                            "total "
+                                            "(optional)",
+                                            "link": "/questionnaire/second-number-block/#second-number-answer-also-in-total",
+                                            "type": "currency",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "value": 1,
+                                        }
+                                    ],
+                                    "id": "second-number-question-also-in-total",
+                                    "number": None,
+                                    "title": "Second "
+                                    "Number "
+                                    "Additional "
+                                    "Question "
+                                    "Title",
+                                    "type": "General",
+                                },
+                                "title": None,
+                            },
+                        ],
+                        "id": "radio-0",
+                        "links": {},
+                        "placeholder_text": None,
+                        "title": "Questions Group",
+                    }
+                ],
+                "title": "Questions Section",
+            },
+            "section": {
+                "groups": [
+                    {
+                        "blocks": [],
+                        "id": "group-0",
+                        "links": {},
+                        "placeholder_text": None,
+                        "title": None,
+                    },
+                    {
+                        "blocks": [],
+                        "id": "group-1",
+                        "links": {},
+                        "placeholder_text": None,
+                        "title": None,
+                    },
+                    {
+                        "blocks": [],
+                        "id": "group-2",
+                        "links": {},
+                        "placeholder_text": None,
+                        "title": "List",
+                    },
+                ],
+                "title": "Household Section",
+            },
         },
         "summary_type": "Summary",
         "view_submitted_response": False,

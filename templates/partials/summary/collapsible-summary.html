@@ -3,8 +3,8 @@
 
 {%- set itemList = [] -%}
 
-{%- for section, groups in content.summary.sections.items() -%}
-  {%- for group in groups -%}
+{%- for section in content.summary.sections.values() -%}
+  {%- for group in section.groups -%}
     {%- if group["blocks"] | length -%}
       {%- if group.title -%}
         {%- set item = {

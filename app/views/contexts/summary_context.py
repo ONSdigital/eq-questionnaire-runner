@@ -92,21 +92,19 @@ class SummaryContext(Context):
         summary = section_summary_context(
             view_submitted_response=self.view_submitted_response, return_to=return_to
         )["summary"]
-        title: str = summary["title"]
 
-        if groups := summary.get("sections", {}).get("groups", []):
-            if final_groups := [group for group in groups if len(group["blocks"]) > 0]:
-                self.summaries[title] = final_groups
+        section_id_key = f"{section_id}-{list_item_id}" if list_item_id else section_id
+        self.summaries[section_id_key] = summary["sections"][section_id]
 
     def set_unique_group_ids(self) -> None:
         checked_ids = set()
         id_value = 0
 
-        for _, groups in self.summaries.items():
-            for group in groups:
-                group_id = group["id"]
-                if group_id in checked_ids:
-                    id_value += 1
-                    group["id"] = f"{group_id}-{id_value}"
-
-                checked_ids.add(group_id)
+        for section in self.summaries.values():
+            if groups := section.get("groups"):
+                for group in groups:
+                    group_id = group["id"]
+                    if group_id in checked_ids:
+                        id_value += 1
+                        group["id"] = f"{group_id}-{id_value}"
+                    checked_ids.add(group_id)

@@ -156,7 +156,12 @@ def test_context_for_section_list_summary(people_answer_store):
         "summary": {
             "answers_are_editable": True,
             "collapsible": False,
-            "sections": {"groups": None},
+            "sections": {
+                "section": {
+                    "groups": None,
+                    "title": "People who live here and " "overnight visitors",
+                }
+            },
             "custom_summary": [
                 {
                     "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
@@ -257,148 +262,151 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
             "collapsible": False,
             "custom_summary": None,
             "sections": {
-                "groups": [
-                    {
-                        "blocks": [],
-                        "id": "group-companies-0",
-                        "links": {},
-                        "placeholder_text": None,
-                        "title": None,
-                    },
-                    {
-                        "blocks": [
-                            {
-                                "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
-                                "add_link_text": "Add another UK company or branch",
-                                "empty_list_text": "No UK company or branch added",
-                                "item_anchor": "#company-or-branch-name",
-                                "item_label": "Name of UK company or branch",
-                                "list": {
-                                    "editable": True,
-                                    "list_items": [
-                                        {
-                                            "edit_link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary",
-                                            "item_title": "company a",
-                                            "list_item_id": "PlwgoG",
-                                            "primary_person": False,
-                                            "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
-                                        },
-                                        {
-                                            "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
-                                            "item_title": "company b",
-                                            "list_item_id": "UHPLbX",
-                                            "primary_person": False,
-                                            "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
-                                        },
-                                    ],
-                                },
-                                "list_name": "companies",
-                                "related_answers": {
-                                    "PlwgoG": [
-                                        {
-                                            "id": "edit-company",
-                                            "number": None,
-                                            "question": {
-                                                "answers": [
-                                                    {
-                                                        "currency": None,
-                                                        "id": "registration-number",
-                                                        "label": "Registration number",
-                                                        "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=regist"
-                                                        "ration-number#registration-number",
-                                                        "type": "number",
-                                                        "unit": None,
-                                                        "unit_length": None,
-                                                        "value": 123,
-                                                    },
-                                                    {
-                                                        "currency": None,
-                                                        "id": "authorised-insurer-radio",
-                                                        "label": "Is this UK company or branch an authorised insurer?",
-                                                        "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=author"
-                                                        "ised-insurer-radio#authorised-insurer-radio",
-                                                        "type": "radio",
-                                                        "unit": None,
-                                                        "unit_length": None,
-                                                        "value": {
-                                                            "detail_answer_value": None,
-                                                            "label": "Yes",
-                                                        },
-                                                    },
-                                                ],
-                                                "id": "edit-question-companies",
-                                                "number": None,
-                                                "title": "What is the name of the company?",
-                                                "type": "General",
-                                            },
-                                            "title": None,
-                                        }
-                                    ],
-                                    "UHPLbX": [
-                                        {
-                                            "id": "edit-company",
-                                            "number": None,
-                                            "question": {
-                                                "answers": [
-                                                    {
-                                                        "currency": None,
-                                                        "id": "registration-number",
-                                                        "label": "Registration number",
-                                                        "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=regist"
-                                                        "ration-number#registration-number",
-                                                        "type": "number",
-                                                        "unit": None,
-                                                        "unit_length": None,
-                                                        "value": 456,
-                                                    },
-                                                    {
-                                                        "currency": None,
-                                                        "id": "authorised-insurer-radio",
-                                                        "label": "Is this UK company or branch an authorised insurer?",
-                                                        "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=author"
-                                                        "ised-insurer-radio#authorised-insurer-radio",
-                                                        "type": "radio",
-                                                        "unit": None,
-                                                        "unit_length": None,
-                                                        "value": {
-                                                            "detail_answer_value": None,
-                                                            "label": "No",
-                                                        },
-                                                    },
-                                                ],
-                                                "id": "edit-question-companies",
-                                                "number": None,
-                                                "title": "What is the name of the company?",
-                                                "type": "General",
-                                            },
-                                            "title": None,
-                                        }
-                                    ],
-                                },
-                                "title": "Companies or UK branches",
-                                "type": "List",
-                            }
-                        ],
-                        "id": "group-companies-1",
-                        "links": {
-                            "add_link": Link(
-                                text="Add another UK company or branch",
-                                url="/questionnaire/companies/add-company/?return_to=section-summary",
-                                target="_self",
-                                attributes={"data-qa": "add-item-link"},
-                            )
+                "section-companies": {
+                    "title": "General insurance business",
+                    "groups": [
+                        {
+                            "blocks": [],
+                            "id": "group-companies-0",
+                            "links": {},
+                            "placeholder_text": None,
+                            "title": None,
                         },
-                        "placeholder_text": "No UK company or branch added",
-                        "title": None,
-                    },
-                    {
-                        "blocks": [],
-                        "id": "group-companies-2",
-                        "links": {},
-                        "placeholder_text": None,
-                        "title": None,
-                    },
-                ],
+                        {
+                            "blocks": [
+                                {
+                                    "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
+                                    "add_link_text": "Add another UK company or branch",
+                                    "empty_list_text": "No UK company or branch added",
+                                    "item_anchor": "#company-or-branch-name",
+                                    "item_label": "Name of UK company or branch",
+                                    "list": {
+                                        "editable": True,
+                                        "list_items": [
+                                            {
+                                                "edit_link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary",
+                                                "item_title": "company a",
+                                                "list_item_id": "PlwgoG",
+                                                "primary_person": False,
+                                                "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
+                                            },
+                                            {
+                                                "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
+                                                "item_title": "company b",
+                                                "list_item_id": "UHPLbX",
+                                                "primary_person": False,
+                                                "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
+                                            },
+                                        ],
+                                    },
+                                    "list_name": "companies",
+                                    "related_answers": {
+                                        "PlwgoG": [
+                                            {
+                                                "id": "edit-company",
+                                                "number": None,
+                                                "question": {
+                                                    "answers": [
+                                                        {
+                                                            "currency": None,
+                                                            "id": "registration-number",
+                                                            "label": "Registration number",
+                                                            "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=regist"
+                                                            "ration-number#registration-number",
+                                                            "type": "number",
+                                                            "unit": None,
+                                                            "unit_length": None,
+                                                            "value": 123,
+                                                        },
+                                                        {
+                                                            "currency": None,
+                                                            "id": "authorised-insurer-radio",
+                                                            "label": "Is this UK company or branch an authorised insurer?",
+                                                            "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=author"
+                                                            "ised-insurer-radio#authorised-insurer-radio",
+                                                            "type": "radio",
+                                                            "unit": None,
+                                                            "unit_length": None,
+                                                            "value": {
+                                                                "detail_answer_value": None,
+                                                                "label": "Yes",
+                                                            },
+                                                        },
+                                                    ],
+                                                    "id": "edit-question-companies",
+                                                    "number": None,
+                                                    "title": "What is the name of the company?",
+                                                    "type": "General",
+                                                },
+                                                "title": None,
+                                            }
+                                        ],
+                                        "UHPLbX": [
+                                            {
+                                                "id": "edit-company",
+                                                "number": None,
+                                                "question": {
+                                                    "answers": [
+                                                        {
+                                                            "currency": None,
+                                                            "id": "registration-number",
+                                                            "label": "Registration number",
+                                                            "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=regist"
+                                                            "ration-number#registration-number",
+                                                            "type": "number",
+                                                            "unit": None,
+                                                            "unit_length": None,
+                                                            "value": 456,
+                                                        },
+                                                        {
+                                                            "currency": None,
+                                                            "id": "authorised-insurer-radio",
+                                                            "label": "Is this UK company or branch an authorised insurer?",
+                                                            "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=author"
+                                                            "ised-insurer-radio#authorised-insurer-radio",
+                                                            "type": "radio",
+                                                            "unit": None,
+                                                            "unit_length": None,
+                                                            "value": {
+                                                                "detail_answer_value": None,
+                                                                "label": "No",
+                                                            },
+                                                        },
+                                                    ],
+                                                    "id": "edit-question-companies",
+                                                    "number": None,
+                                                    "title": "What is the name of the company?",
+                                                    "type": "General",
+                                                },
+                                                "title": None,
+                                            }
+                                        ],
+                                    },
+                                    "title": "Companies or UK branches",
+                                    "type": "List",
+                                }
+                            ],
+                            "id": "group-companies-1",
+                            "links": {
+                                "add_link": Link(
+                                    text="Add another UK company or branch",
+                                    url="/questionnaire/companies/add-company/?return_to=section-summary",
+                                    target="_self",
+                                    attributes={"data-qa": "add-item-link"},
+                                )
+                            },
+                            "placeholder_text": "No UK company or branch added",
+                            "title": None,
+                        },
+                        {
+                            "blocks": [],
+                            "id": "group-companies-2",
+                            "links": {},
+                            "placeholder_text": None,
+                            "title": None,
+                        },
+                    ],
+                },
             },
             "page_title": "General insurance business",
             "summary_type": "SectionSummary",
@@ -442,148 +450,206 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
             "collapsible": False,
             "custom_summary": None,
             "sections": {
-                "groups": [
-                    {
-                        "blocks": [],
-                        "id": "group-companies-0",
-                        "links": {},
-                        "placeholder_text": None,
-                        "title": None,
-                    },
-                    {
-                        "blocks": [
-                            {
-                                "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
-                                "add_link_text": "Add another UK company or branch",
-                                "empty_list_text": "No UK company or branch added",
-                                "item_anchor": "#company-or-branch-name",
-                                "item_label": "Name of UK or non-UK company or branch",
-                                "list": {
-                                    "editable": True,
-                                    "list_items": [
-                                        {
-                                            "edit_link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary",
-                                            "item_title": "company a",
-                                            "list_item_id": "PlwgoG",
-                                            "primary_person": False,
-                                            "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
-                                        },
-                                        {
-                                            "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
-                                            "item_title": "company b",
-                                            "list_item_id": "UHPLbX",
-                                            "primary_person": False,
-                                            "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
-                                        },
-                                    ],
-                                },
-                                "list_name": "companies",
-                                "related_answers": {
-                                    "PlwgoG": [
-                                        {
-                                            "id": "edit-company",
-                                            "number": None,
-                                            "question": {
-                                                "answers": [
-                                                    {
-                                                        "currency": None,
-                                                        "id": "registration-number",
-                                                        "label": "UK Registration number",
-                                                        "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=regist"
-                                                        "ration-number#registration-number",
-                                                        "type": "number",
-                                                        "unit": None,
-                                                        "unit_length": None,
-                                                        "value": 123,
-                                                    },
-                                                    {
-                                                        "currency": None,
-                                                        "id": "authorised-insurer-radio",
-                                                        "label": "Is this UK company or branch an authorised insurer?",
-                                                        "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=author"
-                                                        "ised-insurer-radio#authorised-insurer-radio",
-                                                        "type": "radio",
-                                                        "unit": None,
-                                                        "unit_length": None,
-                                                        "value": {
-                                                            "detail_answer_value": None,
-                                                            "label": "Yes",
-                                                        },
-                                                    },
-                                                ],
-                                                "id": "edit-question-companies",
-                                                "number": None,
-                                                "title": "What is the name of the company?",
-                                                "type": "General",
-                                            },
-                                            "title": None,
-                                        }
-                                    ],
-                                    "UHPLbX": [
-                                        {
-                                            "id": "edit-company",
-                                            "number": None,
-                                            "question": {
-                                                "answers": [
-                                                    {
-                                                        "currency": None,
-                                                        "id": "registration-number",
-                                                        "label": "UK Registration number",
-                                                        "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=regist"
-                                                        "ration-number#registration-number",
-                                                        "type": "number",
-                                                        "unit": None,
-                                                        "unit_length": None,
-                                                        "value": 456,
-                                                    },
-                                                    {
-                                                        "currency": None,
-                                                        "id": "authorised-insurer-radio",
-                                                        "label": "Is this UK company or branch an authorised insurer?",
-                                                        "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=author"
-                                                        "ised-insurer-radio#authorised-insurer-radio",
-                                                        "type": "radio",
-                                                        "unit": None,
-                                                        "unit_length": None,
-                                                        "value": {
-                                                            "detail_answer_value": None,
-                                                            "label": "No",
-                                                        },
-                                                    },
-                                                ],
-                                                "id": "edit-question-companies",
-                                                "number": None,
-                                                "title": "What is the name of the company?",
-                                                "type": "General",
-                                            },
-                                            "title": None,
-                                        }
-                                    ],
-                                },
-                                "title": "Companies or UK branches",
-                                "type": "List",
-                            }
-                        ],
-                        "id": "group-companies-1",
-                        "links": {
-                            "add_link": Link(
-                                text="Add another UK company or branch",
-                                url="/questionnaire/companies/add-company/?return_to=section-summary",
-                                target="_self",
-                                attributes={"data-qa": "add-item-link"},
-                            )
+                "section-companies": {
+                    "groups": [
+                        {
+                            "blocks": [],
+                            "id": "group-companies-0",
+                            "links": {},
+                            "placeholder_text": None,
+                            "title": None,
                         },
-                        "placeholder_text": "No UK company or branch added",
-                        "title": None,
-                    },
-                    {
-                        "blocks": [],
-                        "id": "group-companies-2",
-                        "links": {},
-                        "placeholder_text": None,
-                        "title": None,
-                    },
-                ],
+                        {
+                            "blocks": [
+                                {
+                                    "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
+                                    "add_link_text": "Add "
+                                    "another "
+                                    "UK "
+                                    "company "
+                                    "or "
+                                    "branch",
+                                    "empty_list_text": "No "
+                                    "UK "
+                                    "company "
+                                    "or "
+                                    "branch "
+                                    "added",
+                                    "item_anchor": "#company-or-branch-name",
+                                    "item_label": "Name "
+                                    "of "
+                                    "UK "
+                                    "or "
+                                    "non-UK "
+                                    "company "
+                                    "or "
+                                    "branch",
+                                    "list": {
+                                        "editable": True,
+                                        "list_items": [
+                                            {
+                                                "edit_link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary",
+                                                "item_title": "company " "a",
+                                                "list_item_id": "PlwgoG",
+                                                "primary_person": False,
+                                                "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
+                                            },
+                                            {
+                                                "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
+                                                "item_title": "company " "b",
+                                                "list_item_id": "UHPLbX",
+                                                "primary_person": False,
+                                                "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
+                                            },
+                                        ],
+                                    },
+                                    "list_name": "companies",
+                                    "related_answers": {
+                                        "PlwgoG": [
+                                            {
+                                                "id": "edit-company",
+                                                "number": None,
+                                                "question": {
+                                                    "answers": [
+                                                        {
+                                                            "currency": None,
+                                                            "id": "registration-number",
+                                                            "label": "UK "
+                                                            "Registration "
+                                                            "number",
+                                                            "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=registration-number#registration-number",
+                                                            "type": "number",
+                                                            "unit": None,
+                                                            "unit_length": None,
+                                                            "value": 123,
+                                                        },
+                                                        {
+                                                            "currency": None,
+                                                            "id": "authorised-insurer-radio",
+                                                            "label": "Is "
+                                                            "this "
+                                                            "UK "
+                                                            "company "
+                                                            "or "
+                                                            "branch "
+                                                            "an "
+                                                            "authorised "
+                                                            "insurer?",
+                                                            "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=authorised-insurer-radio#authorised-insurer-radio",
+                                                            "type": "radio",
+                                                            "unit": None,
+                                                            "unit_length": None,
+                                                            "value": {
+                                                                "detail_answer_value": None,
+                                                                "label": "Yes",
+                                                            },
+                                                        },
+                                                    ],
+                                                    "id": "edit-question-companies",
+                                                    "number": None,
+                                                    "title": "What "
+                                                    "is "
+                                                    "the "
+                                                    "name "
+                                                    "of "
+                                                    "the "
+                                                    "company?",
+                                                    "type": "General",
+                                                },
+                                                "title": None,
+                                            }
+                                        ],
+                                        "UHPLbX": [
+                                            {
+                                                "id": "edit-company",
+                                                "number": None,
+                                                "question": {
+                                                    "answers": [
+                                                        {
+                                                            "currency": None,
+                                                            "id": "registration-number",
+                                                            "label": "UK "
+                                                            "Registration "
+                                                            "number",
+                                                            "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=registration-number#registration-number",
+                                                            "type": "number",
+                                                            "unit": None,
+                                                            "unit_length": None,
+                                                            "value": 456,
+                                                        },
+                                                        {
+                                                            "currency": None,
+                                                            "id": "authorised-insurer-radio",
+                                                            "label": "Is "
+                                                            "this "
+                                                            "UK "
+                                                            "company "
+                                                            "or "
+                                                            "branch "
+                                                            "an "
+                                                            "authorised "
+                                                            "insurer?",
+                                                            "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=authorised-insurer-radio#authorised-insurer-radio",
+                                                            "type": "radio",
+                                                            "unit": None,
+                                                            "unit_length": None,
+                                                            "value": {
+                                                                "detail_answer_value": None,
+                                                                "label": "No",
+                                                            },
+                                                        },
+                                                    ],
+                                                    "id": "edit-question-companies",
+                                                    "number": None,
+                                                    "title": "What "
+                                                    "is "
+                                                    "the "
+                                                    "name "
+                                                    "of "
+                                                    "the "
+                                                    "company?",
+                                                    "type": "General",
+                                                },
+                                                "title": None,
+                                            }
+                                        ],
+                                    },
+                                    "title": "Companies " "or " "UK " "branches",
+                                    "type": "List",
+                                }
+                            ],
+                            "id": "group-companies-1",
+                            "links": {
+                                "add_link": Link(
+                                    text="Add "
+                                    "another "
+                                    "UK "
+                                    "company "
+                                    "or "
+                                    "branch",
+                                    url="/questionnaire/companies/add-company/?return_to=section-summary",
+                                    target="_self",
+                                    attributes={"data-qa": "add-item-link"},
+                                )
+                            },
+                            "placeholder_text": "No "
+                            "UK "
+                            "company "
+                            "or "
+                            "branch "
+                            "added",
+                            "title": None,
+                        },
+                        {
+                            "blocks": [],
+                            "id": "group-companies-2",
+                            "links": {},
+                            "placeholder_text": None,
+                            "title": None,
+                        },
+                    ],
+                    "title": "General insurance " "business",
+                }
             },
             "page_title": "General insurance business",
             "summary_type": "SectionSummary",
@@ -627,148 +693,206 @@ def test_context_for_section_summary_with_list_summary_and_second_variant(
             "collapsible": False,
             "custom_summary": None,
             "sections": {
-                "groups": [
-                    {
-                        "blocks": [],
-                        "id": "group-companies-0",
-                        "links": {},
-                        "placeholder_text": None,
-                        "title": None,
-                    },
-                    {
-                        "blocks": [
-                            {
-                                "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
-                                "add_link_text": "Add another UK company or branch",
-                                "empty_list_text": "No UK company or branch added",
-                                "item_anchor": "#company-or-branch-name",
-                                "item_label": "Name of UK or non-UK company or branch",
-                                "list": {
-                                    "editable": True,
-                                    "list_items": [
-                                        {
-                                            "edit_link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary",
-                                            "item_title": "company a",
-                                            "list_item_id": "PlwgoG",
-                                            "primary_person": False,
-                                            "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
-                                        },
-                                        {
-                                            "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
-                                            "item_title": "company b",
-                                            "list_item_id": "UHPLbX",
-                                            "primary_person": False,
-                                            "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
-                                        },
-                                    ],
-                                },
-                                "list_name": "companies",
-                                "related_answers": {
-                                    "PlwgoG": [
-                                        {
-                                            "id": "edit-company",
-                                            "number": None,
-                                            "question": {
-                                                "answers": [
-                                                    {
-                                                        "currency": None,
-                                                        "id": "registration-number",
-                                                        "label": "Non-UK Registration number",
-                                                        "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=regist"
-                                                        "ration-number#registration-number",
-                                                        "type": "number",
-                                                        "unit": None,
-                                                        "unit_length": None,
-                                                        "value": 123,
-                                                    },
-                                                    {
-                                                        "currency": None,
-                                                        "id": "authorised-insurer-radio",
-                                                        "label": "Is this non-UK company or branch an authorised insurer?",
-                                                        "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=author"
-                                                        "ised-insurer-radio#authorised-insurer-radio",
-                                                        "type": "radio",
-                                                        "unit": None,
-                                                        "unit_length": None,
-                                                        "value": {
-                                                            "detail_answer_value": None,
-                                                            "label": "Yes",
-                                                        },
-                                                    },
-                                                ],
-                                                "id": "edit-question-companies",
-                                                "number": None,
-                                                "title": "What is the name of the company?",
-                                                "type": "General",
-                                            },
-                                            "title": None,
-                                        }
-                                    ],
-                                    "UHPLbX": [
-                                        {
-                                            "id": "edit-company",
-                                            "number": None,
-                                            "question": {
-                                                "answers": [
-                                                    {
-                                                        "currency": None,
-                                                        "id": "registration-number",
-                                                        "label": "Non-UK Registration number",
-                                                        "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=regist"
-                                                        "ration-number#registration-number",
-                                                        "type": "number",
-                                                        "unit": None,
-                                                        "unit_length": None,
-                                                        "value": 456,
-                                                    },
-                                                    {
-                                                        "currency": None,
-                                                        "id": "authorised-insurer-radio",
-                                                        "label": "Is this non-UK company or branch an authorised insurer?",
-                                                        "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=author"
-                                                        "ised-insurer-radio#authorised-insurer-radio",
-                                                        "type": "radio",
-                                                        "unit": None,
-                                                        "unit_length": None,
-                                                        "value": {
-                                                            "detail_answer_value": None,
-                                                            "label": "No",
-                                                        },
-                                                    },
-                                                ],
-                                                "id": "edit-question-companies",
-                                                "number": None,
-                                                "title": "What is the name of the company?",
-                                                "type": "General",
-                                            },
-                                            "title": None,
-                                        }
-                                    ],
-                                },
-                                "title": "Companies or UK branches",
-                                "type": "List",
-                            }
-                        ],
-                        "id": "group-companies-1",
-                        "links": {
-                            "add_link": Link(
-                                text="Add another UK company or branch",
-                                url="/questionnaire/companies/add-company/?return_to=section-summary",
-                                target="_self",
-                                attributes={"data-qa": "add-item-link"},
-                            )
+                "section-companies": {
+                    "groups": [
+                        {
+                            "blocks": [],
+                            "id": "group-companies-0",
+                            "links": {},
+                            "placeholder_text": None,
+                            "title": None,
                         },
-                        "placeholder_text": "No UK company or branch added",
-                        "title": None,
-                    },
-                    {
-                        "blocks": [],
-                        "id": "group-companies-2",
-                        "links": {},
-                        "placeholder_text": None,
-                        "title": None,
-                    },
-                ],
+                        {
+                            "blocks": [
+                                {
+                                    "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
+                                    "add_link_text": "Add "
+                                    "another "
+                                    "UK "
+                                    "company "
+                                    "or "
+                                    "branch",
+                                    "empty_list_text": "No "
+                                    "UK "
+                                    "company "
+                                    "or "
+                                    "branch "
+                                    "added",
+                                    "item_anchor": "#company-or-branch-name",
+                                    "item_label": "Name "
+                                    "of "
+                                    "UK "
+                                    "or "
+                                    "non-UK "
+                                    "company "
+                                    "or "
+                                    "branch",
+                                    "list": {
+                                        "editable": True,
+                                        "list_items": [
+                                            {
+                                                "edit_link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary",
+                                                "item_title": "company " "a",
+                                                "list_item_id": "PlwgoG",
+                                                "primary_person": False,
+                                                "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
+                                            },
+                                            {
+                                                "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
+                                                "item_title": "company " "b",
+                                                "list_item_id": "UHPLbX",
+                                                "primary_person": False,
+                                                "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
+                                            },
+                                        ],
+                                    },
+                                    "list_name": "companies",
+                                    "related_answers": {
+                                        "PlwgoG": [
+                                            {
+                                                "id": "edit-company",
+                                                "number": None,
+                                                "question": {
+                                                    "answers": [
+                                                        {
+                                                            "currency": None,
+                                                            "id": "registration-number",
+                                                            "label": "Non-UK "
+                                                            "Registration "
+                                                            "number",
+                                                            "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=registration-number#registration-number",
+                                                            "type": "number",
+                                                            "unit": None,
+                                                            "unit_length": None,
+                                                            "value": 123,
+                                                        },
+                                                        {
+                                                            "currency": None,
+                                                            "id": "authorised-insurer-radio",
+                                                            "label": "Is "
+                                                            "this "
+                                                            "non-UK "
+                                                            "company "
+                                                            "or "
+                                                            "branch "
+                                                            "an "
+                                                            "authorised "
+                                                            "insurer?",
+                                                            "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=authorised-insurer-radio#authorised-insurer-radio",
+                                                            "type": "radio",
+                                                            "unit": None,
+                                                            "unit_length": None,
+                                                            "value": {
+                                                                "detail_answer_value": None,
+                                                                "label": "Yes",
+                                                            },
+                                                        },
+                                                    ],
+                                                    "id": "edit-question-companies",
+                                                    "number": None,
+                                                    "title": "What "
+                                                    "is "
+                                                    "the "
+                                                    "name "
+                                                    "of "
+                                                    "the "
+                                                    "company?",
+                                                    "type": "General",
+                                                },
+                                                "title": None,
+                                            }
+                                        ],
+                                        "UHPLbX": [
+                                            {
+                                                "id": "edit-company",
+                                                "number": None,
+                                                "question": {
+                                                    "answers": [
+                                                        {
+                                                            "currency": None,
+                                                            "id": "registration-number",
+                                                            "label": "Non-UK "
+                                                            "Registration "
+                                                            "number",
+                                                            "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=registration-number#registration-number",
+                                                            "type": "number",
+                                                            "unit": None,
+                                                            "unit_length": None,
+                                                            "value": 456,
+                                                        },
+                                                        {
+                                                            "currency": None,
+                                                            "id": "authorised-insurer-radio",
+                                                            "label": "Is "
+                                                            "this "
+                                                            "non-UK "
+                                                            "company "
+                                                            "or "
+                                                            "branch "
+                                                            "an "
+                                                            "authorised "
+                                                            "insurer?",
+                                                            "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=authorised-insurer-radio#authorised-insurer-radio",
+                                                            "type": "radio",
+                                                            "unit": None,
+                                                            "unit_length": None,
+                                                            "value": {
+                                                                "detail_answer_value": None,
+                                                                "label": "No",
+                                                            },
+                                                        },
+                                                    ],
+                                                    "id": "edit-question-companies",
+                                                    "number": None,
+                                                    "title": "What "
+                                                    "is "
+                                                    "the "
+                                                    "name "
+                                                    "of "
+                                                    "the "
+                                                    "company?",
+                                                    "type": "General",
+                                                },
+                                                "title": None,
+                                            }
+                                        ],
+                                    },
+                                    "title": "Companies " "or " "UK " "branches",
+                                    "type": "List",
+                                }
+                            ],
+                            "id": "group-companies-1",
+                            "links": {
+                                "add_link": Link(
+                                    text="Add "
+                                    "another "
+                                    "UK "
+                                    "company "
+                                    "or "
+                                    "branch",
+                                    url="/questionnaire/companies/add-company/?return_to=section-summary",
+                                    target="_self",
+                                    attributes={"data-qa": "add-item-link"},
+                                )
+                            },
+                            "placeholder_text": "No "
+                            "UK "
+                            "company "
+                            "or "
+                            "branch "
+                            "added",
+                            "title": None,
+                        },
+                        {
+                            "blocks": [],
+                            "id": "group-companies-2",
+                            "links": {},
+                            "placeholder_text": None,
+                            "title": None,
+                        },
+                    ],
+                    "title": "General insurance " "business",
+                }
             },
             "page_title": "General insurance business",
             "summary_type": "SectionSummary",
@@ -814,7 +938,12 @@ def test_context_for_driving_question_summary_empty_list():
                     "type": "List",
                 }
             ],
-            "sections": {"groups": None},
+            "sections": {
+                "section": {
+                    "groups": None,
+                    "title": "List Collector Driving " "Question Summary",
+                }
+            },
             "page_title": "List Collector Driving Question Summary",
             "summary_type": "SectionSummary",
             "title": "List Collector Driving Question Summary",
@@ -882,7 +1011,12 @@ def test_context_for_driving_question_summary():
                     "type": "List",
                 }
             ],
-            "sections": {"groups": None},
+            "sections": {
+                "section": {
+                    "groups": None,
+                    "title": "List Collector Driving " "Question Summary",
+                }
+            },
             "page_title": "List Collector Driving Question Summary",
             "summary_type": "SectionSummary",
             "title": "List Collector Driving Question Summary",

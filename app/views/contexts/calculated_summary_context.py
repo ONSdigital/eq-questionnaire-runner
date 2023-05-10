@@ -110,7 +110,7 @@ class CalculatedSummaryContext(Context):
         collapsible = block.get("collapsible") or False
         block_title = block["title"]
 
-        sections = {self.current_location.section_id: groups}
+        sections = {self.current_location.section_id: {"groups": groups}}
 
         return {
             "summary": {
