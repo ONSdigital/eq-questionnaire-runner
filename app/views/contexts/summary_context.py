@@ -31,7 +31,7 @@ class SummaryContext(Context):
             response_metadata,
         )
         self.view_submitted_response = view_submitted_response
-        self.summaries: dict = {}
+        self.summaries: dict[str, dict[str, list]] = {}
 
     def __call__(
         self, answers_are_editable: bool = False, return_to: str | None = None
