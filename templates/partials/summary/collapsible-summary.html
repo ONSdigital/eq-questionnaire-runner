@@ -3,7 +3,7 @@
 
 {%- set itemList = [] -%}
 
-{%- for section in content.summary.sections.values() -%}
+{%- for section in content.summary.sections -%}
   {%- for group in section.groups -%}
     {%- if group["blocks"] | length -%}
       {%- if group.title -%}

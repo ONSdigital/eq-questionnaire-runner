@@ -63,12 +63,12 @@ class SectionSummaryContext(Context):
                 "page_title": page_title,
                 "summary_type": "SectionSummary",
                 "answers_are_editable": True,
-                "sections": {
-                    self.current_location.section_id: {
+                "sections": [
+                    {
                         "title": title,
                         "groups": summary.get("groups"),
                     }
-                },
+                ],
                 "collapsible": summary.get("collapsible"),
                 "custom_summary": summary.get("custom_summary"),
             },

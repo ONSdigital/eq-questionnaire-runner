@@ -8,7 +8,7 @@
   {% set view_submitted_response = content.summary.view_submitted_response %}
 
 
-  {%- for section in content.summary.sections.values() -%}
+  {%- for section in content.summary.sections -%}
     {% set summary_groups = [] %}
     {%- if section.groups -%}
       {%- for group in section.groups -%}

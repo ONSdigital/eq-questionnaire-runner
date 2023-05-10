@@ -17,7 +17,7 @@
   })
 }}
 {% block form_content %}
-  {%- for section in content.summary.sections.values() -%}
+  {%- for section in content.summary.sections -%}
     {% if section.groups %}
       <h1>{{content.summary.title}}</h1>
       <div>
