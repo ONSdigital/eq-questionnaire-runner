@@ -79,7 +79,7 @@ def convert_answers_to_payload_0_0_3(
 
                 if answer_ids and has_dynamic_answers:
                     resolve_dynamic_answers(
-                        block=schema.get_all_questions_for_block(block)[0],
+                        question=schema.get_all_questions_for_block(block)[0],
                         answer_store=answer_store,
                         answers_payload=answers_payload,
                         list_store=list_store,
@@ -163,12 +163,12 @@ def add_relationships_unrelated_answers(
 
 
 def resolve_dynamic_answers(
-    block: Mapping,
+    question: Mapping,
     answer_store: AnswerStore,
     answers_payload: AnswerStore,
     list_store: ListStore,
 ) -> None:
-    dynamic_answers = block["dynamic_answers"]
+    dynamic_answers = question["dynamic_answers"]
     values = dynamic_answers["values"]
     for answer in dynamic_answers["answers"]:
         if values["source"] == "list":
