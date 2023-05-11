@@ -106,6 +106,7 @@ export function generateToken(
       account_service_url: "http://localhost:8000",
       survey_metadata: getSurveyMetadata(theme, userId, displayAddress, periodId, periodStr),
       version: "v2",
+      response_expires_at: "2023-05-18T10:38:13+00:00"
     };
   } else {
     payload = {
@@ -131,6 +132,7 @@ export function generateToken(
       region_code: regionCode,
       language_code: languageCode,
       account_service_url: "http://localhost:8000",
+      response_expires_at: "2023-05-18T10:38:13+00:00"
     };
   }
 
