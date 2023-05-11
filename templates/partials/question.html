@@ -15,20 +15,24 @@
 
 {%- if question.definition -%}
   {% set definition_id = "question-definition" %}
+  {% set definition_content %}
+    {% set contents = question.definition.contents %}
+    {% include 'partials/contents.html' %}
+  {% endset %}
   {% set question_definition = {
-      "title": question.definition.title,
-      "id": definition_id,
-      "content": question.definition.content,
-      "headingAttributes": {
-        "data-ga": "click",
-        "data-ga-category": "Question definition",
-        "data-ga-action": "Open panel",
-        "data-ga-label": question.definition.title,
-        "data-qa": definition_id ~ "-title"
-      },
-      "contentAttributes": {
-        "data-qa": definition_id ~ "-content"
-      }
+    "title": question.definition.title,
+    "id": definition_id,
+    "content": definition_content,
+    "headingAttributes": {
+      "data-ga": "click",
+      "data-ga-category": "Question definition",
+      "data-ga-action": "Open panel",
+      "data-ga-label": question.definition.title,
+      "data-qa": definition_id ~ "-title"
+    },
+    "contentAttributes": {
+      "data-qa": definition_id ~ "-content"
+    }
   } %}
 {% elif question.definitions %}
   {%- set question_definitions -%}
