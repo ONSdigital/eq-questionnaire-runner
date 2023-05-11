@@ -144,10 +144,7 @@ class PlaceholderParser:
             transform_args: MutableMapping = {}
             transform_name = transform["transform"]
 
-            value_source_resolver = self._value_source_resolver
-
-            if transform_name in TRANSFORMS_REQUIRING_ROUTING_PATH:
-                value_source_resolver = self._get_value_source_resolver_for_transform(
+            value_source_resolver = self._get_value_source_resolver_for_transform(
                     transform_name
                 )
 
@@ -218,10 +215,10 @@ class PlaceholderParser:
         complete_routing_path_block_ids = []
 
         for section_id in section_ids:
-            routing_path_block_ids = self._path_finder.routing_path(
+            routing_path_block_ids = self._routing_path_block_ids_by_section_key(
                 section_id=section_id  # type: ignore
                 # section_id always exists
-            ).block_ids
+            )
             complete_routing_path_block_ids += routing_path_block_ids
 
         return self._get_value_source_resolver(set(complete_routing_path_block_ids))
