@@ -123,7 +123,7 @@ def test_context_for_summary():
                                         {
                                             "currency": None,
                                             "id": "name-answer",
-                                            "label": "Full " "name",
+                                            "label": "Full name",
                                             "link": "/questionnaire/name/#name-answer",
                                             "type": "textfield",
                                             "unit": None,
@@ -133,7 +133,7 @@ def test_context_for_summary():
                                     ],
                                     "id": "name-question",
                                     "number": None,
-                                    "title": "What is your " "name?",
+                                    "title": "What is your name?",
                                     "type": "General",
                                 },
                                 "title": None,
@@ -164,7 +164,7 @@ def test_context_for_summary():
                                     ],
                                     "id": "address-question",
                                     "number": None,
-                                    "title": "What is your " "address?",
+                                    "title": "What is your address?",
                                     "type": "General",
                                 },
                                 "title": None,
@@ -229,9 +229,7 @@ def test_context_for_summary():
                                     ],
                                     "id": "skip-first-block-question",
                                     "number": None,
-                                    "title": "Skip First Block "
-                                    "so it doesn’t "
-                                    "appear in Total?",
+                                    "title": "Skip First Block so it doesn’t appear in Total?",
                                     "type": "General",
                                 },
                                 "title": None,
@@ -244,13 +242,7 @@ def test_context_for_summary():
                                         {
                                             "currency": "GBP",
                                             "id": "second-number-answer-also-in-total",
-                                            "label": "Second "
-                                            "answer "
-                                            "label "
-                                            "also "
-                                            "in "
-                                            "total "
-                                            "(optional)",
+                                            "label": "Second answer label also in total (optional)",
                                             "link": "/questionnaire/second-number-block/#second-number-answer-also-in-total",
                                             "type": "currency",
                                             "unit": None,
@@ -260,9 +252,7 @@ def test_context_for_summary():
                                     ],
                                     "id": "second-number-question-also-in-total",
                                     "number": None,
-                                    "title": "Second Number "
-                                    "Additional "
-                                    "Question Title",
+                                    "title": "Second Number Additional Question Title",
                                     "type": "General",
                                 },
                                 "title": None,
@@ -288,11 +278,7 @@ def test_context_for_summary():
                                         {
                                             "currency": "GBP",
                                             "id": "third-number-answer",
-                                            "label": "Third "
-                                            "answer "
-                                            "in "
-                                            "currency "
-                                            "label",
+                                            "label": "Third answer in currency label",
                                             "link": "/questionnaire/people/jufPpX/third-number-block/#third-number-answer",
                                             "type": "currency",
                                             "unit": None,
@@ -302,14 +288,7 @@ def test_context_for_summary():
                                         {
                                             "currency": "GBP",
                                             "id": "third-number-answer-also-in-total",
-                                            "label": "Third "
-                                            "answer "
-                                            "label "
-                                            "also "
-                                            "in "
-                                            "currency "
-                                            "total "
-                                            "(optional)",
+                                            "label": "Third answer label also in currency total (optional)",
                                             "link": "/questionnaire/people/jufPpX/third-number-block/#third-number-answer-also-in-total",
                                             "type": "currency",
                                             "unit": None,
@@ -319,7 +298,7 @@ def test_context_for_summary():
                                     ],
                                     "id": "third-number-question",
                                     "number": None,
-                                    "title": "Third Number " "Question Title",
+                                    "title": "Third Number Question Title",
                                     "type": "General",
                                 },
                                 "title": None,
@@ -340,23 +319,14 @@ def test_context_for_summary():
                                             "value": [
                                                 {
                                                     "detail_answer_value": None,
-                                                    "label": "4 "
-                                                    "- "
-                                                    "calculated "
-                                                    "summary "
-                                                    "answer "
-                                                    "(current "
-                                                    "section)",
+                                                    "label": "4 - calculated summary answer (current section)",
                                                 }
                                             ],
                                         }
                                     ],
                                     "id": "mutually-exclusive-checkbox-question",
                                     "number": None,
-                                    "title": "Which answer did "
-                                    "you give to "
-                                    "question 4 and a "
-                                    "half?",
+                                    "title": "Which answer did you give to question 4 and a half?",
                                     "type": "MutuallyExclusive",
                                 },
                                 "title": None,
@@ -369,7 +339,7 @@ def test_context_for_summary():
                                         {
                                             "currency": "GBP",
                                             "id": "skippable-answer",
-                                            "label": "Capital " "expenditure",
+                                            "label": "Capital expenditure",
                                             "link": "/questionnaire/people/jufPpX/skippable-block/#skippable-answer",
                                             "type": "currency",
                                             "unit": None,
@@ -379,9 +349,7 @@ def test_context_for_summary():
                                     ],
                                     "id": "skippable-question",
                                     "number": None,
-                                    "title": "How much did "
-                                    "James Bond spend "
-                                    "on fruit?",
+                                    "title": "How much did James Bond spend on fruit?",
                                     "type": "General",
                                 },
                                 "title": None,
@@ -407,11 +375,7 @@ def test_context_for_summary():
                                         {
                                             "currency": "GBP",
                                             "id": "third-number-answer",
-                                            "label": "Third "
-                                            "answer "
-                                            "in "
-                                            "currency "
-                                            "label",
+                                            "label": "Third answer in currency label",
                                             "link": "/questionnaire/people/fjWZET/third-number-block/#third-number-answer",
                                             "type": "currency",
                                             "unit": None,
@@ -421,14 +385,7 @@ def test_context_for_summary():
                                         {
                                             "currency": "GBP",
                                             "id": "third-number-answer-also-in-total",
-                                            "label": "Third "
-                                            "answer "
-                                            "label "
-                                            "also "
-                                            "in "
-                                            "currency "
-                                            "total "
-                                            "(optional)",
+                                            "label": "Third answer label also in currency total (optional)",
                                             "link": "/questionnaire/people/fjWZET/third-number-block/#third-number-answer-also-in-total",
                                             "type": "currency",
                                             "unit": None,
@@ -438,7 +395,7 @@ def test_context_for_summary():
                                     ],
                                     "id": "third-number-question",
                                     "number": None,
-                                    "title": "Third Number " "Question Title",
+                                    "title": "Third Number Question Title",
                                     "type": "General",
                                 },
                                 "title": None,
@@ -459,23 +416,14 @@ def test_context_for_summary():
                                             "value": [
                                                 {
                                                     "detail_answer_value": None,
-                                                    "label": "1 "
-                                                    "- "
-                                                    "calculated "
-                                                    "summary "
-                                                    "answer "
-                                                    "(previous "
-                                                    "section)",
+                                                    "label": "1 - calculated summary answer (previous section)",
                                                 }
                                             ],
                                         }
                                     ],
                                     "id": "mutually-exclusive-checkbox-question",
                                     "number": None,
-                                    "title": "Which answer did "
-                                    "you give to "
-                                    "question 4 and a "
-                                    "half?",
+                                    "title": "Which answer did you give to question 4 and a half?",
                                     "type": "MutuallyExclusive",
                                 },
                                 "title": None,
@@ -488,7 +436,7 @@ def test_context_for_summary():
                                         {
                                             "currency": "GBP",
                                             "id": "skippable-answer",
-                                            "label": "Capital " "expenditure",
+                                            "label": "Capital expenditure",
                                             "link": "/questionnaire/people/fjWZET/skippable-block/#skippable-answer",
                                             "type": "currency",
                                             "unit": None,
@@ -498,9 +446,7 @@ def test_context_for_summary():
                                     ],
                                     "id": "skippable-question",
                                     "number": None,
-                                    "title": "How much did "
-                                    "Jane Doe spend "
-                                    "on fruit?",
+                                    "title": "How much did Jane Doe spend on fruit?",
                                     "type": "General",
                                 },
                                 "title": None,

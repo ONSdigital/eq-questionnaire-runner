@@ -31,7 +31,7 @@ class SummaryContext(Context):
             response_metadata,
         )
         self.view_submitted_response = view_submitted_response
-        self.summaries: list = []
+        self.summaries: list[dict] = []
 
     def __call__(
         self, answers_are_editable: bool = False, return_to: str | None = None
@@ -93,7 +93,7 @@ class SummaryContext(Context):
             view_submitted_response=self.view_submitted_response, return_to=return_to
         )["summary"]
 
-        self.summaries.append(*summary["sections"])
+        self.summaries.extend(summary["sections"])
 
     def set_unique_group_ids(self) -> None:
         checked_ids = set()
