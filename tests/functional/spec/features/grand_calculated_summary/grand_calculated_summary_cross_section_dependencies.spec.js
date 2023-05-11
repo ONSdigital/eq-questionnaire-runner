@@ -1,22 +1,22 @@
-import SkipFirstBlockPage from "../../generated_pages/grand_calculated_summary_cross_section_dependencies/skip-first-block.page";
-import SecondNumberBlockPage from "../../generated_pages/grand_calculated_summary_cross_section_dependencies/second-number-block.page";
-import HubPage from "../../base_pages/hub.page";
-import CurrencySection1Page from "../../generated_pages/grand_calculated_summary_cross_section_dependencies/currency-section-1.page";
-import QuestionsSectionSummaryPage from "../../generated_pages/grand_calculated_summary_cross_section_dependencies/questions-section-summary.page";
-import ThirdNumberBlockPage from "../../generated_pages/grand_calculated_summary_cross_section_dependencies/third-number-block.page";
-import SkipCalculatedSummaryPage from "../../generated_pages/grand_calculated_summary_cross_section_dependencies/skip-calculated-summary.page";
+import SkipFirstBlockPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/skip-first-block.page";
+import SecondNumberBlockPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/second-number-block.page";
+import HubPage from "../../../base_pages/hub.page";
+import CurrencySection1Page from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/currency-section-1.page";
+import QuestionsSectionSummaryPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/questions-section-summary.page";
+import ThirdNumberBlockPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/third-number-block.page";
+import SkipCalculatedSummaryPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/skip-calculated-summary.page";
 import CalculatedSummarySectionSummaryPage
-  from "../../generated_pages/grand_calculated_summary_cross_section_dependencies/calculated-summary-section-summary.page";
-import CurrencyQuestion3Page from "../../generated_pages/grand_calculated_summary_cross_section_dependencies/currency-question-3.page";
-import CurrencyAllPage from "../../generated_pages/grand_calculated_summary_cross_section_dependencies/currency-all.page";
-import ResponseAny from "../../generated_pages/conditional_combined_routing/response-any.page";
-import FirstNumberBlockPartAPage from "../../generated_pages/grand_calculated_summary_cross_section_dependencies/first-number-block-part-a.page";
-import FirstNumberBlockPartBPage from "../../generated_pages/grand_calculated_summary_cross_section_dependencies/first-number-block-part-b.page";
+  from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/calculated-summary-section-summary.page";
+import CurrencyQuestion3Page from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/currency-question-3.page";
+import CurrencyAllPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/currency-all.page";
+import ResponseAny from "../../../generated_pages/conditional_combined_routing/response-any.page";
+import FirstNumberBlockPartAPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/first-number-block-part-a.page";
+import FirstNumberBlockPartBPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/first-number-block-part-b.page";
 
-class TestCase {
-  testCrossSectionDependencies(schema) {
-    before("Get to the second calculated summary", async () => {
-      await browser.openQuestionnaire(schema);
+describe("Feature: Grand Calculated Summary", () => {
+  describe("Given I have a Grand Calculated Summary", () => {
+    before("Getting to the second calculated summary", async () => {
+      await browser.openQuestionnaire("test_grand_calculated_summary_cross_section_dependencies.json");
       await $(HubPage.submit()).click();
       await $(SkipFirstBlockPage.no()).click();
       await $(SkipFirstBlockPage.submit()).click();
@@ -67,7 +67,5 @@ class TestCase {
       await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).to.contain("The grand calculated summary is calculated to be £30.00. Is this correct?");
       await expect(await $(CurrencyAllPage.currencyQuestion3()).isExisting()).to.be.false;
     });
-  }
-}
-
-export const GrandCalculatedSummaryTestCase = new TestCase();
+  });
+});

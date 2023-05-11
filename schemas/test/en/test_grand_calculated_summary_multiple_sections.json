@@ -229,9 +229,6 @@
         {
             "id": "section-2",
             "title": "Section 2",
-            "summary": {
-                "show_on_completion": true
-            },
             "groups": [
                 {
                     "id": "group-3",

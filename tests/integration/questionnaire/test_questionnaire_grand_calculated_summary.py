@@ -48,9 +48,8 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         # section summary then start section 2
         self.post()
         self.post()
-        # another question with grand calculated summary and section summary
+        # another question with grand calculated summary
         self.post({"q4-a1": 100, "q4-a2": 200})
-        self.post()
         self.post()
         # grand calculated summary section
         self.post()
