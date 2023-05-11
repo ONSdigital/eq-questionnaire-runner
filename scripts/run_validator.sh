@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-tag=add-dynamic-answers-validation
+tag=latest
 TAG=${tag} docker-compose -f docker-compose-schema-validator.yml up -d
