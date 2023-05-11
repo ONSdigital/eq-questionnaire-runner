@@ -155,7 +155,9 @@ def test_context_for_summary():
                                             "currency": None,
                                             "id": "address-answer",
                                             "label": "Postcode",
-                                            "link": "/questionnaire/address/#address-answer",
+                                            "link": (
+                                                "/questionnaire/address/#address-answer"
+                                            ),
                                             "type": "textfield",
                                             "unit": None,
                                             "unit_length": None,
@@ -229,7 +231,10 @@ def test_context_for_summary():
                                     ],
                                     "id": "skip-first-block-question",
                                     "number": None,
-                                    "title": "Skip First Block so it doesn’t appear in Total?",
+                                    "title": (
+                                        "Skip First Block so it doesn’t appear in"
+                                        " Total?"
+                                    ),
                                     "type": "General",
                                 },
                                 "title": None,
@@ -242,7 +247,10 @@ def test_context_for_summary():
                                         {
                                             "currency": "GBP",
                                             "id": "second-number-answer-also-in-total",
-                                            "label": "Second answer label also in total (optional)",
+                                            "label": (
+                                                "Second answer label also in total"
+                                                " (optional)"
+                                            ),
                                             "link": "/questionnaire/second-number-block/#second-number-answer-also-in-total",
                                             "type": "currency",
                                             "unit": None,
@@ -288,7 +296,10 @@ def test_context_for_summary():
                                         {
                                             "currency": "GBP",
                                             "id": "third-number-answer-also-in-total",
-                                            "label": "Third answer label also in currency total (optional)",
+                                            "label": (
+                                                "Third answer label also in currency"
+                                                " total (optional)"
+                                            ),
                                             "link": "/questionnaire/people/jufPpX/third-number-block/#third-number-answer-also-in-total",
                                             "type": "currency",
                                             "unit": None,
@@ -319,14 +330,20 @@ def test_context_for_summary():
                                             "value": [
                                                 {
                                                     "detail_answer_value": None,
-                                                    "label": "4 - calculated summary answer (current section)",
+                                                    "label": (
+                                                        "4 - calculated summary answer"
+                                                        " (current section)"
+                                                    ),
                                                 }
                                             ],
                                         }
                                     ],
                                     "id": "mutually-exclusive-checkbox-question",
                                     "number": None,
-                                    "title": "Which answer did you give to question 4 and a half?",
+                                    "title": (
+                                        "Which answer did you give to question 4 and a"
+                                        " half?"
+                                    ),
                                     "type": "MutuallyExclusive",
                                 },
                                 "title": None,
@@ -385,7 +402,10 @@ def test_context_for_summary():
                                         {
                                             "currency": "GBP",
                                             "id": "third-number-answer-also-in-total",
-                                            "label": "Third answer label also in currency total (optional)",
+                                            "label": (
+                                                "Third answer label also in currency"
+                                                " total (optional)"
+                                            ),
                                             "link": "/questionnaire/people/fjWZET/third-number-block/#third-number-answer-also-in-total",
                                             "type": "currency",
                                             "unit": None,
@@ -416,14 +436,20 @@ def test_context_for_summary():
                                             "value": [
                                                 {
                                                     "detail_answer_value": None,
-                                                    "label": "1 - calculated summary answer (previous section)",
+                                                    "label": (
+                                                        "1 - calculated summary answer"
+                                                        " (previous section)"
+                                                    ),
                                                 }
                                             ],
                                         }
                                     ],
                                     "id": "mutually-exclusive-checkbox-question",
                                     "number": None,
-                                    "title": "Which answer did you give to question 4 and a half?",
+                                    "title": (
+                                        "Which answer did you give to question 4 and a"
+                                        " half?"
+                                    ),
                                     "type": "MutuallyExclusive",
                                 },
                                 "title": None,
