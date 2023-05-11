@@ -27,6 +27,7 @@ def test_sms_fulfilment_request_payload():
         response_id="response_id",
         account_service_url="account_service_url",
         collection_exercise_sid="collection_exercise_sid",
+        response_expires_at=datetime.now(tz=timezone.utc),
     )
 
     fulfilment_request = IndividualResponseFulfilmentRequest(

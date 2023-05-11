@@ -88,6 +88,7 @@ class TokenGenerator:
         payload_vars["exp"] = payload_vars["iat"] + float(3600)  # one hour from now
         payload_vars["jti"] = str(uuid4())
         payload_vars["case_id"] = str(uuid4())
+        payload_vars["response_expires_at"] = "2023-05-18T10:38:13+00:00"
 
         for key, value in extra_payload.items():
             payload_vars[key] = value

@@ -85,6 +85,7 @@ class FlaskClientAuthenticationTestCase(AppContextTestCase):
             "ru_name": "Test",
             "return_by": "2016-09-09",
             "account_service_url": "http://upstream.url/",
+            "response_expires_at": "2023-05-18T10:38:13+00:00",
         }
 
 

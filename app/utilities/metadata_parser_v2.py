@@ -89,7 +89,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         required=False, validate=validate.Length(min=1)
     )  # type:ignore
     response_expires_at = VALIDATORS["iso_8601_date_string"](
-        required=False,
+        required=True,
         validate=lambda x: parse_iso_8601_datetime(x) > datetime.now(tz=timezone.utc),
     )  # type:ignore
     region_code = VALIDATORS["string"](
