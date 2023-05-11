@@ -306,6 +306,30 @@
                                                 "value": 100
                                             },
                                             "decimal_places": 0
+                                        },
+                                        {
+                                            "id": "days-a-week",
+                                            "label": {
+                                                "text": "How many days a week you shop at {transformed_value}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "transformed_value",
+                                                        "value": {
+                                                            "source": "answers",
+                                                            "identifier": "supermarket-name"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "mandatory": false,
+                                            "type": "Number",
+                                            "decimal_places": 0,
+                                            "minimum": {
+                                                "value": 1
+                                            },
+                                            "maximum": {
+                                                "value": 7
+                                            }
                                         }
                                     ]
                                 },

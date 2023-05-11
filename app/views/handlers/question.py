@@ -215,6 +215,7 @@ class Question(BlockHandler):
                 section_id=self._current_location.section_id,
                 list_item_id=self._current_location.list_item_id,
             )
+        self.questionnaire_store_updater.update_progress_for_dependent_sections()
         super().handle_post()
 
     def get_return_to_hub_url(self):

@@ -22,7 +22,7 @@ describe("Dynamic answers list value source", () => {
     await addTwoSupermarkets();
     await expect(await $$(labels)[0].getText()).to.equal("Percentage of shopping at Tesco");
     await expect(await $$(labels)[1].getText()).to.equal("Percentage of shopping at Aldi");
-    await expect(await $$(labels).length).to.equal(2);
+    await expect(await $$(labels).length).to.equal(4);
   });
   it("Given list items have been added, When additional items are added using add link, Then the correct dynamic answers are displayed", async () => {
     await $(DriverPage.yes()).click();
@@ -33,7 +33,7 @@ describe("Dynamic answers list value source", () => {
     await $(ListCollectorPage.no()).click();
     await $(ListCollectorPage.submit()).click();
     await expect(await $$(labels)[0].getText()).to.equal("Percentage of shopping at Tesco");
-    await expect(await $$(labels).length).to.equal(1);
+    await expect(await $$(labels).length).to.equal(2);
     await $(DynamicAnswerPage.submit()).click();
     await $(SetMinimumPage.setMinimum()).setValue(2);
     await $(SetMinimumPage.submit()).click();
@@ -46,7 +46,7 @@ describe("Dynamic answers list value source", () => {
     await $(ListCollectorPage.submit()).click();
     await expect(await $$(labels)[0].getText()).to.equal("Percentage of shopping at Tesco");
     await expect(await $$(labels)[1].getText()).to.equal("Percentage of shopping at Aldi");
-    await expect(await $$(labels).length).to.equal(2);
+    await expect(await $$(labels).length).to.equal(4);
   });
   it("Given list items have been added and the dynamic answers are submitted, When the summary is displayed, Then the correct answers should be visible and have correct values", async () => {
     await addTwoSupermarkets();
@@ -60,8 +60,8 @@ describe("Dynamic answers list value source", () => {
     await expect(await $(group).$$(summaryValues)[0].getText()).to.equal("12%");
     await expect(await $(group).$$(summaryTitles)[1].getText()).to.equal("Percentage of shopping at Aldi");
     await expect(await $(group).$$(summaryValues)[1].getText()).to.equal("21%");
-    await expect(await $(group).$$(summaryTitles).length).to.equal(6);
-    await expect(await $(group).$$(summaryValues).length).to.equal(6);
+    await expect(await $(group).$$(summaryTitles).length).to.equal(8);
+    await expect(await $(group).$$(summaryValues).length).to.equal(8);
   });
   it("Given list items have been added and the dynamic answers are submitted, When the dynamic answers are revisited, Then they should be visible and have correct values", async () => {
     await addTwoSupermarkets();
@@ -145,8 +145,8 @@ describe("Dynamic answers list value source", () => {
     await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
     await expect(await $(group).$$(summaryTitles)[0].getText()).to.equal("Percentage of shopping at Aldi");
     await expect(await $(group).$$(summaryValues)[0].getText()).to.equal("21%");
-    await expect(await $(group).$$(summaryTitles).length).to.equal(4);
-    await expect(await $(group).$$(summaryValues).length).to.equal(4);
+    await expect(await $(group).$$(summaryTitles).length).to.equal(5);
+    await expect(await $(group).$$(summaryValues).length).to.equal(5);
   });
   it("Given list items have been added and the dynamic answers are submitted, When the driving question is changed to 'No', Then after changing answer to 'Yes' all answers should re-appear on summary", async () => {
     await addTwoSupermarkets();
@@ -171,8 +171,8 @@ describe("Dynamic answers list value source", () => {
     await expect(await $(group).$$(summaryValues)[0].getText()).to.equal("12%");
     await expect(await $(group).$$(summaryTitles)[1].getText()).to.equal("Percentage of shopping at Aldi");
     await expect(await $(group).$$(summaryValues)[1].getText()).to.equal("21%");
-    await expect(await $(group).$$(summaryTitles).length).to.equal(6);
-    await expect(await $(group).$$(summaryValues).length).to.equal(6);
+    await expect(await $(group).$$(summaryTitles).length).to.equal(8);
+    await expect(await $(group).$$(summaryValues).length).to.equal(8);
   });
 });
 

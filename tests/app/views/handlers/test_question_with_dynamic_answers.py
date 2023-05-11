@@ -30,20 +30,6 @@ def test_question_with_dynamic_answers(storage, language, mocker):
                 "value": "Aldi",
                 "list_item_id": "vhECeh",
             },
-            {
-                "answer_id": "based-checkbox-answer",
-                "value": ["Non UK based supermarkets"],
-            },
-            {
-                "answer_id": "percentage-of-shopping",
-                "value": 12,
-                "list_item_id": "tUJzGV",
-            },
-            {
-                "answer_id": "percentage-of-shopping",
-                "value": 21,
-                "list_item_id": "vhECeh",
-            },
         ]
     )
     questionnaire_store.list_store = ListStore(
@@ -87,6 +73,28 @@ def test_question_with_dynamic_answers(storage, language, mocker):
             "maximum": {"value": 100},
             "original_answer_id": "percentage-of-shopping",
             "type": "Percentage",
+        },
+        {
+            "decimal_places": 0,
+            "id": "days-a-week-tUJzGV",
+            "label": "How many days a week you shop at Tesco",
+            "list_item_id": "tUJzGV",
+            "mandatory": False,
+            "maximum": {"value": 7},
+            "minimum": {"value": 1},
+            "original_answer_id": "days-a-week",
+            "type": "Number",
+        },
+        {
+            "decimal_places": 0,
+            "id": "days-a-week-vhECeh",
+            "label": "How many days a week you shop at Aldi",
+            "list_item_id": "vhECeh",
+            "mandatory": False,
+            "maximum": {"value": 7},
+            "minimum": {"value": 1},
+            "original_answer_id": "days-a-week",
+            "type": "Number",
         },
         {
             "id": "based-checkbox-answer",

@@ -1487,7 +1487,7 @@ def test_no_answers_codes_in_payload_when_no_questions_answered(version):
 
 @pytest.mark.parametrize(
     "version",
-    (AuthPayloadVersion.V2,),
+    (AuthPayloadVersion.V2, None),
 )
 def test_payload_dynamic_answers(version):
     questionnaire_store = get_questionnaire_store(version)
