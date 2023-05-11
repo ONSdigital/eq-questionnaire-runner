@@ -425,6 +425,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_sections(self) -> Iterable[ImmutableDict]:
         return self._sections_by_id.values()
 
+    def get_section_ids(self) -> Iterable[str]:
+        return self._sections_by_id.keys()
+
     def get_section(self, section_id: str) -> ImmutableDict | None:
         return self._sections_by_id.get(section_id)
 

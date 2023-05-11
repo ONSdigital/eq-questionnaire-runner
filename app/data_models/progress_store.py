@@ -111,16 +111,16 @@ class ProgressStore:
 
     def update_section_status(
         self, section_status: str, section_id: str, list_item_id: Optional[str] = None
-    ) -> None:
+    ) -> bool:
+        updated = False
         section_key = (section_id, list_item_id)
         if section_key in self._progress:
+            if self._progress[section_key].status != section_status:
+                updated = True
             self._progress[section_key].status = section_status
             self._is_dirty = True
 
-        elif (
-            section_status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED
-            and section_key not in self._progress
-        ):
+        elif section_status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED:
             self._progress[section_key] = Progress(
                 section_id=section_id,
                 list_item_id=list_item_id,
@@ -128,6 +128,8 @@ class ProgressStore:
                 status=section_status,
             )
             self._is_dirty = True
+
+        return updated
 
     def get_section_status(
         self, section_id: str, list_item_id: Optional[str] = None

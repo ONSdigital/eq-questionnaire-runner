@@ -750,6 +750,7 @@ def test_answer_id_section_dependents(
     mock_schema.when_rules_section_dependencies_by_answer = {
         "first-answer": {"section-2"}
     }
+    mock_schema.get_section_ids.return_value = ["section-1", "section-2"]
     mock_router.is_path_complete.return_value = is_path_complete
 
     answer_store = AnswerStore(
@@ -845,6 +846,7 @@ def test_answer_id_section_dependents_repeating(
     mock_schema.when_rules_section_dependencies_by_answer = {
         "first-answer": {"section-2"}
     }
+    mock_schema.get_section_ids.return_value = ["section-1", "section-2"]
 
     answer_store = AnswerStore(
         [
