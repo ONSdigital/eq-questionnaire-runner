@@ -12,6 +12,11 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
             "href"
         ]
 
+    def section_one_link(self):
+        return self.getHtmlSoup().find("a", {"data-qa": "hub-row-section-1-link"})[
+            "href"
+        ]
+
     def add_person(self, first_name, last_name):
         self.assertEqualUrl("/questionnaire/people/add-person/")
         self.post({"first-name": first_name, "last-name": last_name})
@@ -66,6 +71,7 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
         self.assertInSelector("£1.00", self.row_selector(2))
         self.assertInSelector("Change", self.row_selector(2))
 
+        self.post()
         self.post()
 
         # 3. Should be on the hub page
@@ -203,6 +209,7 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
         self.get("/questionnaire/calculated-summary-block/?resume=True")
         self.assertInBody("We calculate the total of currency values entered to be")
         self.post()
+        self.post()
 
         # 11. Dependent sections should have been updated to partially completed
         self.assert_section_status(1, "Completed")
@@ -260,6 +267,7 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
         self.post({"second-number-answer": 1})
 
         self.post()
+        self.post()
 
         # 2. Complete section 2 and add two people
         self.go_to_section("section-2")
@@ -298,13 +306,19 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
         # END OF HAPPY PATH
 
         # 5. Go back to calculated summary and make it incomplete
-        self.get("/questionnaire/calculated-summary-block/")
-        # Edit first answer
+        self.get(self.section_one_link())
+        # Edit answers
         first_answer_link = self.getHtmlSoup().find(
             "a", {"data-qa": "first-number-answer-edit"}
         )["href"]
         self.get(first_answer_link)
         self.post({"first-number-answer": 2})
+        second_answer_link = self.getHtmlSoup().find(
+            "a", {"data-qa": "second-number-answer-edit"}
+        )["href"]
+        self.get(second_answer_link)
+        self.post({"second-number-answer": 2})
+
         # Don't complete the calculated summary, go back to the hub
         self.go_to_hub()
 
@@ -329,7 +343,7 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
         self.get(self.james_bond_link())
         self.assertNotInBody("Random question about")
 
-    def test_progress_value_source_with_chained_dependencies(self):
+    def test_progress_value_source_with_backward_chained_dependencies(self):
         self.launchSurvey("test_progress_value_source_calculated_summary_extended")
 
         # 1. Complete section 7
@@ -363,3 +377,44 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
         self.assert_section_status(1, "Completed")
         self.assert_section_status(4, "Partially completed")
         self.assert_section_status(6, "Completed")
+
+    def test_progress_value_source_with_chained_dependencies(self):
+        self.launchSurvey("test_progress_value_source_calculated_summary_extended")
+
+        # 1. Complete section 8, 9, 10, 11 and 12
+        self.go_to_section("section-12")
+        self.post({"s12-b2-q1-a1": 1})
+
+        self.go_to_section("section-11")
+        self.post({"s11-b2-q1-a1": 1})
+
+        self.go_to_section("section-8")
+        self.post({"s8-b3-q1-a1": 1})
+
+        self.go_to_section("section-9")
+        self.post({"s9-b2-q1-a1": 1})
+
+        self.go_to_section("section-10")
+        self.post({"s10-b2-q1-a1": 1})
+
+        # Check that sections 8, 9 and 10 are complete, and 11 and 12 are partially complete
+        self.assertEqualUrl("/questionnaire/")
+        self.assert_section_status(7, "Completed")
+        self.assert_section_status(8, "Completed")
+        self.assert_section_status(9, "Completed")
+        self.assert_section_status(10, "Partially completed")
+        self.assert_section_status(11, "Partially completed")
+
+        # 2. Update the second section, this should make sections
+        self.go_to_section("section-2")
+        self.post({"s2-b1-q1-a1": 1})
+        self.post({"anyone-else": "No"})
+
+        # Check that section 11 and 12 are complete, and 8, 9 and 10 are partially complete
+        self.assertEqualUrl("/questionnaire/")
+        self.assert_section_status(2, "Completed")
+        self.assert_section_status(7, "Partially completed")
+        self.assert_section_status(8, "Partially completed")
+        self.assert_section_status(9, "Partially completed")
+        self.assert_section_status(10, "Completed")
+        self.assert_section_status(11, "Completed")

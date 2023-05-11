@@ -805,10 +805,12 @@ def test_progress_block_and_section_dependencies_are_ordered(
 
     assert {
         "section-1": OrderedSet(["section-4"]),
-        "section-2": OrderedSet(["section-7", "section-8", "section-9"]),
+        "section-2": OrderedSet(["section-7", "section-8", "section-9", "section-10"]),
         "section-4": OrderedSet(["section-6"]),
         "section-5": OrderedSet(["section-7"]),
         "section-7": OrderedSet(["section-8"]),
+        "section-9": OrderedSet(["section-12"]),
+        "section-10": OrderedSet(["section-11"]),
     } == schema.when_rules_section_dependencies_by_section_for_progress_value_source
 
     assert {

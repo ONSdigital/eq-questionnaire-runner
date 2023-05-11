@@ -2,7 +2,6 @@ from collections import defaultdict, namedtuple
 from itertools import combinations
 from typing import Iterable, Mapping
 
-from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerValueTypes, QuestionnaireStore
@@ -42,7 +41,7 @@ class QuestionnaireStoreUpdater:
         self.dependent_block_id_by_section_key: Mapping[
             SectionKeyType, set[str]
         ] = defaultdict(set)
-        self.dependent_sections: OrderedSet[DependentSection] = OrderedSet()
+        self.dependent_sections: set = set()
 
     def save(self) -> None:
         if self.is_dirty():
@@ -411,6 +410,8 @@ class QuestionnaireStoreUpdater:
         """Removes dependent blocks from the progress store and updates the progress to IN_PROGRESS.
         Section progress is not updated for the current location as it is handled by `handle_post` on block handlers.
         """
+        evaluated_dependents: list[tuple] = []
+
         self._remove_dependent_blocks_and_capture_dependent_sections()
 
         chronological_dependents = self.get_chronological_section_dependents()
@@ -422,12 +423,20 @@ class QuestionnaireStoreUpdater:
             ) not in self.started_section_keys():
                 continue
 
-            self.evaluate_dependents(
-                section.section_id, section.list_item_id, section.is_complete
-            )
+            if (section.section_id, section.list_item_id) not in evaluated_dependents:
+                self.evaluate_dependents(
+                    section.section_id,
+                    section.list_item_id,
+                    section.is_complete,
+                    evaluated_dependents,
+                )
 
     def evaluate_dependents(
-        self, section_id: str, list_item_id: str | None, is_complete: bool | None
+        self,
+        section_id: str,
+        list_item_id: str | None,
+        is_complete: bool | None,
+        evaluated_dependents: list,
     ) -> None:
         is_path_complete = is_complete
         if is_path_complete is None:
@@ -441,18 +450,21 @@ class QuestionnaireStoreUpdater:
             list_item_id=list_item_id,
         ):
             dependents_of_dependent = self.get_dependents_of_section(section_id)
-            evaluated_dependents: list[tuple] = []
             for dependent in dependents_of_dependent:
                 if repeating_list := self._schema.get_repeating_list_for_section(
                     dependent
                 ):
                     for item_id in self._list_store[repeating_list].items:
                         if (section_id, item_id) not in evaluated_dependents:
-                            self.evaluate_dependents(dependent, item_id, None)
+                            self.evaluate_dependents(
+                                dependent, item_id, None, evaluated_dependents
+                            )
                             evaluated_dependents.append((section_id, item_id))
 
                 elif (section_id, list_item_id) not in evaluated_dependents:
-                    self.evaluate_dependents(dependent, None, None)
+                    self.evaluate_dependents(
+                        dependent, None, None, evaluated_dependents
+                    )
                     evaluated_dependents.append((section_id, None))
 
     def _remove_dependent_blocks_and_capture_dependent_sections(self) -> None:

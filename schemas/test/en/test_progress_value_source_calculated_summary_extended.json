@@ -917,6 +917,180 @@
                     ]
                 }
             ]
+        },
+        {
+            "id": "section-10",
+            "title": "Section 10 (Dependent on Section 2)",
+            "groups": [
+                {
+                    "id": "group-10",
+                    "title": "List",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "s10-b1",
+                            "question": {
+                                "id": "s10-b1-q1",
+                                "title": "Skippable random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s10-b1-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "progress",
+                                            "selector": "section",
+                                            "identifier": "section-2"
+                                        },
+                                        "COMPLETED"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s10-b2",
+                            "question": {
+                                "id": "s10-b2-q1",
+                                "title": "Random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s10-b2-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-11",
+            "title": "Section 11 (Dependent on Section 10)",
+            "groups": [
+                {
+                    "id": "group-11",
+                    "title": "List",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "s11-b1",
+                            "question": {
+                                "id": "s11-b1-q1",
+                                "title": "Skippable random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s11-b1-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "progress",
+                                            "selector": "section",
+                                            "identifier": "section-10"
+                                        },
+                                        "COMPLETED"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s11-b2",
+                            "question": {
+                                "id": "s11-b2-q1",
+                                "title": "Random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s11-b2-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-12",
+            "title": "Section 12 (Dependent on Section 9)",
+            "groups": [
+                {
+                    "id": "group-12",
+                    "title": "List",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "s12-b1",
+                            "question": {
+                                "id": "s12-b1-q1",
+                                "title": "Skippable random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s12-b1-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "progress",
+                                            "selector": "section",
+                                            "identifier": "section-9"
+                                        },
+                                        "COMPLETED"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s12-b2",
+                            "question": {
+                                "id": "s12-b2-q1",
+                                "title": "Random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s12-b2-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }
