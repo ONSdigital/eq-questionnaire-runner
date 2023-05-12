@@ -1,4 +1,5 @@
 import time
+from datetime import datetime, timedelta, timezone
 from uuid import uuid4
 
 from sdc.crypto.encrypter import encrypt
@@ -88,7 +89,9 @@ class TokenGenerator:
         payload_vars["exp"] = payload_vars["iat"] + float(3600)  # one hour from now
         payload_vars["jti"] = str(uuid4())
         payload_vars["case_id"] = str(uuid4())
-        payload_vars["response_expires_at"] = "2023-05-18T10:38:13+00:00"
+        payload_vars["response_expires_at"] = (
+            datetime.now(tz=timezone.utc) + timedelta(days=1)
+        ).isoformat()
 
         for key, value in extra_payload.items():
             payload_vars[key] = value

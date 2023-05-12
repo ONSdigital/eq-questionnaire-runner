@@ -1,5 +1,6 @@
 # pylint: disable=redefined-outer-name
 import uuid
+from datetime import datetime, timedelta, timezone
 
 import pytest
 
@@ -37,7 +38,9 @@ def fake_metadata_runner():
         "response_id": str(uuid.uuid4()),
         "account_service_url": "https://ras.ons.gov.uk",
         "case_id": str(uuid.uuid4()),
-        "response_expires_at": "2023-05-18T10:38:13+00:00",
+        "response_expires_at": (
+            datetime.now(tz=timezone.utc) + timedelta(days=1)
+        ).isoformat(),
     }
 
 
@@ -49,7 +52,9 @@ def fake_business_metadata_runner():
 
     metadata["eq_id"] = "mbs"
     metadata["form_type"] = "0253"
-    metadata["response_expires_at"] = "2023-05-18T10:38:13+00:00"
+    metadata["response_expires_at"] = (
+        datetime.now(tz=timezone.utc) + timedelta(days=1)
+    ).isoformat()
 
     return metadata
 
@@ -69,7 +74,9 @@ def fake_metadata_full():
         "return_by": "2016-07-07",
         "case_ref": "1000000000000001",
         "case_id": str(uuid.uuid4()),
-        "response_expires_at": "2023-05-18T10:38:13+00:00",
+        "response_expires_at": (
+            datetime.now(tz=timezone.utc) + timedelta(days=1)
+        ).isoformat(),
     }
 
     return dict(fake_metadata_runner(), **fake_questionnaire_claims)
@@ -87,7 +94,9 @@ def fake_metadata_runner_v2():
         "case_id": str(uuid.uuid4()),
         "version": AuthPayloadVersion.V2.value,
         "survey_metadata": {"data": {"key": "value"}},
-        "response_expires_at": "2023-05-18T10:38:13+00:00",
+        "response_expires_at": (
+            datetime.now(tz=timezone.utc) + timedelta(days=1)
+        ).isoformat(),
     }
 
 
@@ -107,7 +116,9 @@ def fake_metadata_full_v2_business():
         "case_ref": "1000000000000001",
         "ru_ref": "123456789",
         "form_type": "I",
-        "response_expires_at": "2023-05-18T10:38:13+00:00",
+        "response_expires_at": (
+            datetime.now(tz=timezone.utc) + timedelta(days=1)
+        ).isoformat(),
     }
 
     metadata = fake_metadata_runner_v2()

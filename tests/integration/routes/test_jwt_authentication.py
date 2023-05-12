@@ -4,6 +4,7 @@ import string
 import time
 import unittest
 import uuid
+from datetime import datetime, timedelta, timezone
 
 from sdc.crypto.encrypter import encrypt
 from sdc.crypto.key_store import KeyStore
@@ -85,7 +86,9 @@ class FlaskClientAuthenticationTestCase(AppContextTestCase):
             "ru_name": "Test",
             "return_by": "2016-09-09",
             "account_service_url": "http://upstream.url/",
-            "response_expires_at": "2023-05-18T10:38:13+00:00",
+            "response_expires_at": (
+                datetime.now(tz=timezone.utc) + timedelta(days=1)
+            ).isoformat(),
         }
 
 
