@@ -181,32 +181,6 @@ def test_context_for_summary():
             {
                 "groups": [
                     {
-                        "blocks": [],
-                        "id": "group-0",
-                        "links": {},
-                        "placeholder_text": None,
-                        "title": None,
-                    },
-                    {
-                        "blocks": [],
-                        "id": "group-1",
-                        "links": {},
-                        "placeholder_text": None,
-                        "title": None,
-                    },
-                    {
-                        "blocks": [],
-                        "id": "group-2",
-                        "links": {},
-                        "placeholder_text": None,
-                        "title": "List",
-                    },
-                ],
-                "title": "Household Section",
-            },
-            {
-                "groups": [
-                    {
                         "blocks": [
                             {
                                 "id": "skip-first-block",

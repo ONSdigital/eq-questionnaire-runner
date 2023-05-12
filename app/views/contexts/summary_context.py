@@ -94,7 +94,9 @@ class SummaryContext(Context):
         )["summary"]
 
         if summary.get("sections"):
-            self.summaries.extend(summary["sections"])
+            for section in summary["sections"]:
+                if any(group["blocks"] for group in section["groups"]):
+                    self.summaries.extend(summary["sections"])
 
     def set_unique_group_ids(self) -> None:
         checked_ids = set()

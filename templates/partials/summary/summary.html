@@ -42,7 +42,7 @@
     {% do summary_sections.append
       (
         {
-          "summaryTitle": section.title if summary_type == "Summary" and summary_groups else None,
+          "summaryTitle": section.title if summary_type == "Summary",
           "groups": summary_groups
         }
       )
