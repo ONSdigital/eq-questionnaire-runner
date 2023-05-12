@@ -64,17 +64,16 @@ class SectionSummaryContext(Context):
                 "summary_type": "SectionSummary",
                 "answers_are_editable": True,
                 "collapsible": summary.get("collapsible"),
-                "custom_summary": summary.get("custom_summary"),
             },
         }
 
         if summary.get("custom_summary"):
             summary_context["summary"]["custom_summary"] = summary["custom_summary"]
-        elif summary.get("groups"):
+        elif groups := summary.get("groups"):
             summary_context["summary"]["sections"] = [
                 {
                     "title": title,
-                    "groups": summary.get("groups"),
+                    "groups": groups,
                 }
             ]
 
