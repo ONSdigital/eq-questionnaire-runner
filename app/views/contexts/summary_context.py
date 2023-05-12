@@ -93,7 +93,8 @@ class SummaryContext(Context):
             view_submitted_response=self.view_submitted_response, return_to=return_to
         )["summary"]
 
-        self.summaries.extend(summary["sections"])
+        if summary.get("sections"):
+            self.summaries.extend(summary["sections"])
 
     def set_unique_group_ids(self) -> None:
         checked_ids = set()

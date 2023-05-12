@@ -156,12 +156,6 @@ def test_context_for_section_list_summary(people_answer_store):
         "summary": {
             "answers_are_editable": True,
             "collapsible": False,
-            "sections": [
-                {
-                    "groups": None,
-                    "title": "People who live here and overnight visitors",
-                }
-            ],
             "custom_summary": [
                 {
                     "add_link": "/questionnaire/people/add-person/?return_to=section-summary",
@@ -812,12 +806,6 @@ def test_context_for_driving_question_summary_empty_list():
                     "type": "List",
                 }
             ],
-            "sections": [
-                {
-                    "groups": None,
-                    "title": "List Collector Driving Question Summary",
-                }
-            ],
             "page_title": "List Collector Driving Question Summary",
             "summary_type": "SectionSummary",
             "title": "List Collector Driving Question Summary",
@@ -883,12 +871,6 @@ def test_context_for_driving_question_summary():
                     "related_answers": None,
                     "title": "Household members",
                     "type": "List",
-                }
-            ],
-            "sections": [
-                {
-                    "groups": None,
-                    "title": "List Collector Driving Question Summary",
                 }
             ],
             "page_title": "List Collector Driving Question Summary",

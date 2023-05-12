@@ -17,13 +17,7 @@
   })
 }}
 {% block form_content %}
-  {%- for section in content.summary.sections -%}
-    {% if section.groups %}
-      <h1>{{content.summary.title}}</h1>
-      <div>
-        {% include 'partials/summary/summary.html' %}
-      </div>
-    {% elif content.summary.custom_summary %}
+    {% if content.summary.custom_summary %}
       <h1>{{content.summary.title}}</h1>
       {% for summary in content.summary.custom_summary %}
         {% if summary.type == 'List' %}
@@ -40,8 +34,12 @@
           </div>
         {% endif %}
         {% endfor %}
+    {%- else -%}
+      <h1>{{content.summary.title}}</h1>
+      <div>
+        {% include 'partials/summary/summary.html' %}
+      </div>
     {% endif %}
-  {% endfor %}
 {% endblock %}
 
 {% block submit_button %}
