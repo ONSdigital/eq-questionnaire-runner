@@ -105,16 +105,6 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
             if block_id in routing_path_block_ids
         ]
 
-        # TODO check this
-        routing_path_block_ids = [
-            block["id"]
-            for calculated_summary_id in calculated_summary_ids
-            # Type ignore: section must exist at this time
-            for group in self._schema.get_section_for_block_id(calculated_summary_id)["groups"]  # type: ignore
-            for block in group["blocks"]
-            if block["id"] in routing_path_block_ids
-        ]
-
         answer_format = self._get_summary_format(calculated_summary_ids)
         calculated_section = self._build_grand_calculated_summary_section(block)
 

@@ -226,8 +226,8 @@ class Router:
 
         if return_to == "grand-calculated-summary":
             if url := self._get_return_to_for_grand_calculated_summary(
-                return_to_block_id,
                 return_to,
+                return_to_block_id,
                 location,
                 routing_path,
                 return_to_answer_id,
@@ -263,8 +263,8 @@ class Router:
 
     def _get_return_to_for_grand_calculated_summary(
         self,
-        return_to_block_id: str | None,
         return_to: str | None,
+        return_to_block_id: str | None,
         location: Location,
         routing_path: RoutingPath,
         return_to_answer_id: str | None = None,
@@ -310,14 +310,15 @@ class Router:
         If the user navigates from grand calculated summary -> calculated summary -> question, then the return_to_block_ids needs to be a list
         so that both the calculated summary id and the grand calculated summary ids are stored.
         """
-        return_to_block_id = None #TODO check name?
+        # return to is the calculated summary to go back to first
+        return_to_block_id = None
+        # return to previous is the grand calculated summary to go back to second (if the calculated summary is being edited from a grand calculated summary)
         return_to_previous_block_id = None
 
         return_to = return_to_types[-1]
 
         if return_to_block_ids:
-            # if there are blocks in the return to list
-            # the first one is the block id to route to, and whatever is left (if anything) forms return_to_block_id
+            # the first block is the block id to route to, and whatever is left (if anything) forms return_to_block_id
             return_to_block_id = return_to_block_ids.pop(0)
             return_to_previous_block_id = (
                 ",".join(return_to_block_ids) if return_to_block_ids else None

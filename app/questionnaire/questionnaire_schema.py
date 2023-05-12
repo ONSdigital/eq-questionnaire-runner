@@ -57,6 +57,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._answer_dependencies_map: dict[str, set[AnswerDependent]] = defaultdict(
             set
         )
+        self._calculated_summary_answer_dependencies: dict[str, set[str]] = defaultdict(
+            set
+        )
         self._when_rules_section_dependencies_by_section: dict[str, set[str]] = {}
         self.calculated_summary_section_dependencies_by_block: dict[
             str, dict[str, set[str]]
@@ -251,6 +254,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     answer_ids_for_block, block["id"]
                 )
                 continue
+            elif block["type"] == "GrandCalculatedSummary":
+                calculated_summary_ids = get_grand_calculated_summary_block_ids(block)
+                self._update_answer_dependencies_for_grand_calculated_summary(
+                    calculated_summary_ids, block["id"]
+                )
+                continue
 
             for question in self.get_all_questions_for_block(block):
                 if question["type"] == "Calculated":
@@ -272,10 +281,28 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _update_answer_dependencies_for_calculated_summary(
         self, calculated_summary_answer_ids: Iterable[str], block_id: str
     ) -> None:
+        self._calculated_summary_answer_dependencies[block_id].update(
+            calculated_summary_answer_ids
+        )
         for answer_id in calculated_summary_answer_ids:
             self._answer_dependencies_map[answer_id] |= {
                 self._get_answer_dependent_for_block_id(block_id=block_id)
             }
+
+    def _update_answer_dependencies_for_grand_calculated_summary(
+        self,
+        grand_calculated_summary_calculated_summary_ids: Iterable[str],
+        block_id: str,
+    ) -> None:
+        # validator ensures that any grand calculated summary will come after the calculated summaries it depends on
+        # so the calculated summary dependencies will already be done, and this can just take those
+        for calculated_summary_id in grand_calculated_summary_calculated_summary_ids:
+            for answer_id in self._calculated_summary_answer_dependencies[
+                calculated_summary_id
+            ]:
+                self._answer_dependencies_map[answer_id] |= {
+                    self._get_answer_dependent_for_block_id(block_id=block_id)
+                }
 
     def _update_answer_dependencies_for_calculations(
         self, calculations: tuple[ImmutableDict, ...], *, block_id: str
@@ -972,33 +999,33 @@ def get_sources_for_type_from_data(
     *,
     source_type: str,
     data: MultiDict | Mapping | Sequence,
-    ignore_keys: list,
-) -> list | None:
+    ignore_keys: list | None = None,
+) -> list:
     sources = get_mappings_with_key("source", data, ignore_keys=ignore_keys)
 
     return [source for source in sources if source["source"] == source_type]
+
+
+def get_identifiers_from_calculation_block(
+    calculation_block: Mapping, source_type: str
+) -> list[str]:
+    values = get_sources_for_type_from_data(
+        source_type=source_type, data=calculation_block["calculation"]["operation"]
+    )
+
+    return [value["identifier"] for value in values]
 
 
 def get_calculated_summary_answer_ids(calculated_summary_block: Mapping) -> list[str]:
     if calculated_summary_block["calculation"].get("answers_to_calculate"):
         return calculated_summary_block["calculation"]["answers_to_calculate"]  # type: ignore
 
-    values = get_mappings_with_key(
-        "source", calculated_summary_block["calculation"]["operation"]
-    )
-
-    return [value["identifier"] for value in values if value["source"] == "answers"]
+    return get_identifiers_from_calculation_block(calculated_summary_block, "answers")
 
 
 def get_grand_calculated_summary_block_ids(
-    calculated_summary_block: Mapping[str, Any]
+    grand_calculated_summary_block: Mapping,
 ) -> list[str]:
-    values = get_mappings_with_key(
-        "source", calculated_summary_block["calculation"]["operation"]
+    return get_identifiers_from_calculation_block(
+        grand_calculated_summary_block, "calculated_summary"
     )
-
-    return [
-        value["identifier"]
-        for value in values
-        if value["source"] == "calculated_summary"
-    ]

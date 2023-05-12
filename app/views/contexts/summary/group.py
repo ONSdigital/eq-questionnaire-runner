@@ -39,7 +39,6 @@ class Group:
         self.placeholder_text = None
         self.links: dict[str, Link] = {}
 
-        # Build the links to the calculated summaries here?
         self.blocks = self._build_blocks_and_links(
             group_schema=group_schema,
             routing_path_block_ids=routing_path_block_ids,

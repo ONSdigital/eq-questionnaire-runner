@@ -87,5 +87,24 @@ describe("Feature: Grand Calculated Summary", () => {
       await expect(await browser.getUrl()).to.contain(GrandCalculatedSummary2Page.pageName);
       await expect(await $(GrandCalculatedSummary2Page.grandCalculatedSummaryTitle()).getText()).to.contain("Grand Calculated Summary for section 1 and 2 is calculated to be £910.00. Is this correct?");
     });
+    it("Given I edit an answer included in a grand calculated summary, it should no longer show until the calculated summary has been confirmed.", async () => {
+      await $(GrandCalculatedSummary2Page.submit()).click();
+      // Grand calculated summary section should show as completed
+      await expect(await $(HubPage.summaryRowState("section-3")).getText()).to.equal("Completed");
+      // Now edit an answer from section 2
+      await $(HubPage.summaryRowLink("section-3")).click();
+      await $(GrandCalculatedSummary2Page.calculatedSummary4Edit()).click();
+      await $(CalculatedSummary4Page.q4A1Edit()).click();
+      await $(Block4Page.q4A1()).setValue(1);
+      await $(Block4Page.submit()).click();
+      await $(CalculatedSummary4Page.previous()).click();
+      // TODO test that the previous button behaves differently when you do or dont edit the answer
+      // TODO currently this should be a fail because you can confirm the GCS without confirming the CS
+      await $(Block4Page.previous()).click();
+      // calculated summary section should be in progress
+      await expect(await $(HubPage.summaryRowState("section-2")).getText()).to.equal("Partially completed");
+      // TODO and grand calculated summary section shouldn't show (once routing on progress is ready, but until then, it should at least show as in progress)
+      await expect(await $(HubPage.summaryRowState("section-3")).getText()).to.equal("Partially completed");
+    });
   });
 });

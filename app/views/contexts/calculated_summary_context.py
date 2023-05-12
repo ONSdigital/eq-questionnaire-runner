@@ -72,7 +72,7 @@ class CalculatedSummaryContext(Context):
         return_to = "calculated-summary"
         if self.return_to == "grand-calculated-summary":
             return_to_block_id += f",{self.return_to_block_id}"
-            return_to = f"{return_to},grand-calculated-summary"
+            return_to += ",grand-calculated-summary"
         return [
             Group(
                 group_schema=group,
