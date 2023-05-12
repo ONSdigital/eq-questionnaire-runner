@@ -70,8 +70,7 @@ class SectionSummaryContext(Context):
 
         if summary.get("custom_summary"):
             summary_context["summary"]["custom_summary"] = summary["custom_summary"]
-
-        if summary.get("groups") and not summary_context.get("custom_summary"):
+        elif summary.get("groups"):
             summary_context["summary"]["sections"] = [
                 {
                     "title": title,
