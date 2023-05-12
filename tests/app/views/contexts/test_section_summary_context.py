@@ -55,7 +55,7 @@ def test_build_view_context_for_section_summary(
 
     assert "summary" in context
     assert_summary_context(context)
-    assert len(context["summary"]) == 7
+    assert len(context["summary"]) == 6
     assert "title" in context["summary"]
 
 
@@ -250,7 +250,6 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
         "summary": {
             "answers_are_editable": True,
             "collapsible": False,
-            "custom_summary": None,
             "sections": [
                 {
                     "groups": [
@@ -434,7 +433,6 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
         "summary": {
             "answers_are_editable": True,
             "collapsible": False,
-            "custom_summary": None,
             "sections": [
                 {
                     "groups": [
@@ -618,7 +616,6 @@ def test_context_for_section_summary_with_list_summary_and_second_variant(
         "summary": {
             "answers_are_editable": True,
             "collapsible": False,
-            "custom_summary": None,
             "sections": [
                 {
                     "groups": [

@@ -67,8 +67,8 @@ class SectionSummaryContext(Context):
             },
         }
 
-        if summary.get("custom_summary"):
-            summary_context["summary"]["custom_summary"] = summary["custom_summary"]
+        if custom_summary := summary.get("custom_summary"):
+            summary_context["summary"]["custom_summary"] = custom_summary
         elif groups := summary.get("groups"):
             summary_context["summary"]["sections"] = [
                 {
