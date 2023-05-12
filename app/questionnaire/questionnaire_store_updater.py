@@ -366,11 +366,7 @@ class QuestionnaireStoreUpdater:
                 self._capture_block_dependencies_for_answer(answer_id_to_use)
 
     def update_progress_for_dependent_sections(self) -> None:
-        """Removes dependent blocks from the progress store and updates the progress to IN_PROGRESS.
-        Section progress is not updated for the current location as it is handled by `handle_post` on block handlers.
-        """
-
-        self._remove_dependent_blocks_and_capture_dependent_sections()
+        """Updates the progress to IN_PROGRESS. Section progress is not updated for the current location as it is handled by `handle_post` on block handlers."""
 
         for section in self.dependent_sections:
             if (
@@ -393,8 +389,10 @@ class QuestionnaireStoreUpdater:
                 list_item_id=section.list_item_id,
             )
 
-    def _remove_dependent_blocks_and_capture_dependent_sections(self) -> None:
-        """Removes dependent blocks from the progress store."""
+    def remove_dependent_blocks_and_capture_dependent_sections(self) -> None:
+        """Removes dependent blocks from the progress store.
+        This must be called before updating section progress (update_progress_for_dependent_sections) and section dependencies (_update_section_completeness)
+        """
 
         for (
             section_key,

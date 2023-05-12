@@ -1127,6 +1127,7 @@ def test_dependent_sections_completed_dependant_blocks_removed_and_status_update
     )
 
     # When
+    questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
     questionnaire_store_updater.update_progress_for_dependent_sections()
 
     # Then
@@ -1172,6 +1173,7 @@ def test_dependent_sections_current_section_status_not_updated(mocker):
     )
 
     # When
+    questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
     questionnaire_store_updater.update_progress_for_dependent_sections()
 
     # Then
@@ -1213,6 +1215,7 @@ def test_dependent_sections_not_started_skipped(mock_router, mocker):
     questionnaire_store_updater.update_section_status = mocker.Mock()
 
     # When
+    questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
     questionnaire_store_updater.update_progress_for_dependent_sections()
 
     # Then
@@ -1260,6 +1263,7 @@ def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
     )
 
     # When
+    questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
     questionnaire_store_updater.update_progress_for_dependent_sections()
 
     # Then
@@ -1328,6 +1332,7 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
     )
 
     # When
+    questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
     questionnaire_store_updater.update_progress_for_dependent_sections()
 
     # Then

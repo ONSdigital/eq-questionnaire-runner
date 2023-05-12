@@ -35,6 +35,7 @@ class PrimaryPersonListCollector(Question):
             )
 
             self.capture_dependent_sections_for_list(list_name)
+            self.questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
             self.questionnaire_store_updater.update_progress_for_dependent_sections()
             self.questionnaire_store_updater.save()
         else:
