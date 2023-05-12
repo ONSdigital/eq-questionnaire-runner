@@ -81,7 +81,12 @@ def store_to_serialize(answer_store):
 @pytest.fixture
 def basic_input():
     return {
-        "METADATA": {"test": True},
+        "METADATA": {
+            "test": True,
+            "response_expires_at": (
+                datetime.now(tz=timezone.utc) + timedelta(days=1)
+            ).isoformat(),
+        },
         "ANSWERS": [{"answer_id": "test", "value": "test"}],
         "LISTS": [],
         "PROGRESS": [
