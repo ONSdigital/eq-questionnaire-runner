@@ -1,6 +1,6 @@
 from collections import defaultdict, namedtuple
 from itertools import combinations
-from typing import Iterable, Mapping
+from typing import Iterable, Mapping, Sequence
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -375,6 +375,18 @@ class QuestionnaireStoreUpdater:
                 section_id=section.section_id,
                 list_item_id=section.list_item_id,
             )
+
+    def add_list_item_progress(self, list_item_id: str, repeating_blocks: Sequence[Mapping] | None = None) -> None:
+        if not repeating_blocks:
+            # Cannot default Sequence[Mapping] as it violates pylint dangerous-default-value / W0102 as [] is mutable
+            # https://pylint.readthedocs.io/en/latest/user_guide/messages/warning/dangerous-default-value.html
+            repeating_blocks = []
+
+        block_ids = [block["id"] for block in repeating_blocks]
+        self._progress_store.add_list_item_progress(list_item_id, block_ids)
+
+    def update_list_item_block_complete(self, list_item_id: str, list_block_id: str) -> None:
+        self._progress_store.update_list_item_block_progress(list_item_id, list_block_id)
 
     def _remove_dependent_blocks_and_capture_dependent_sections(self) -> None:
         """Removes dependent blocks from the progress store."""

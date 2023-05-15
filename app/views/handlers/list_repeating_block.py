@@ -25,3 +25,7 @@ class ListRepeatingBlock(ListEditQuestion):
             return repeating_block_url
 
         return super().get_next_location_url()
+
+    def handle_post(self):
+        self.questionnaire_store_updater.update_list_item_block_complete(self._current_location.list_item_id, self.rendered_block["id"])
+        return super().handle_post()

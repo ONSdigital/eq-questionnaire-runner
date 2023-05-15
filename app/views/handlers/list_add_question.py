@@ -41,6 +41,7 @@ class ListAddQuestion(ListAction):
         self._list_item_id = self.questionnaire_store_updater.add_list_item(
             self.parent_block["for_list"]
         )
+        self.questionnaire_store_updater.add_list_item_progress(self._list_item_id, self.parent_block.get("repeating_blocks"))
 
         # Clear the answer from the confirmation question on the list collector question
         answer_ids_to_remove = self._schema.get_answer_ids_for_block(
@@ -58,6 +59,7 @@ class ListAddQuestion(ListAction):
         self.evaluate_and_update_section_status_on_list_change(
             self.parent_block["for_list"]
         )
+
         return super().handle_post()
 
     def _resolve_custom_page_title_vars(self) -> MutableMapping:
