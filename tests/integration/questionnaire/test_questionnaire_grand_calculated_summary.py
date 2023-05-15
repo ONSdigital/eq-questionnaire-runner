@@ -9,13 +9,11 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         # section-1 two types of unit questions
         self.post({"q1-a1": 20, "q1-a2": 5})
         self.post({"q2-a1": 100, "q2-a2": 3})
-        # confirm the two calculated summaries
         self.post()
         self.post()
         # section-2 two more of each question type
         self.post({"q3-a1": 40, "q3-a2": 2})
         self.post({"q4-a1": 10, "q4-a2": 3})
-        # confirm the two calculated summaries
         self.post()
         self.post()
         # check the two grand calculated summaries
@@ -29,7 +27,7 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
 
     def test_grand_calculated_summary_multiple_sections(self):
         self.launchSurvey("test_grand_calculated_summary_multiple_sections")
-        # open section 1 and complete two questions with calculated summary confirmation
+        # section 1
         self.post()
         self.post({"q1-a1": 10, "q1-a2": 20})
         self.post({"q2-a1": 30, "q2-a2": 40})
@@ -45,13 +43,12 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
             "Grand Calculated Summary which should match the previous calculated summary is calculated to be £210.00. Is this correct?"
         )
         self.post()
-        # section summary then start section 2
         self.post()
+        # section 2
         self.post()
-        # another question with grand calculated summary
         self.post({"q4-a1": 100, "q4-a2": 200})
         self.post()
-        # grand calculated summary section
+        # grand calculated summary section with calculated summaries from multiple sections
         self.post()
         self.assertInBody(
             "Grand Calculated Summary for section 1 and 2 is calculated to be £510.00. Is this correct?"
@@ -71,7 +68,6 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         )
         self.post()
         self.post()
-
         # Complete the second section
         self.post()
         self.post(
@@ -105,4 +101,40 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         self.post()
         self.assertInBody(
             "The grand calculated summary is calculated to be £160.00. Is this correct?"
+        )
+
+    def _complete_upto_grand_calculated_summary_overlapping_answers(
+        self, radio_answer: str
+    ):
+        self.post()
+        self.post({"q1-a1": "100", "q1-a2": "200"})
+        self.post({"q2-a1": "10", "q2-a2": "20"})
+        self.post()
+        self.post()
+        self.post({"radio-funding": radio_answer})
+        if radio_answer != "No":
+            # in the no overlap case, the calculated summary is skipped entirely
+            self.post()
+        self.post()
+        self.post()
+
+    def test_grand_calculated_summary_overlapping_answers_full_overlap(self):
+        self.launchSurvey("test_grand_calculated_summary_overlapping_answers")
+        self._complete_upto_grand_calculated_summary_overlapping_answers("AB")
+        self.assertInBody(
+            "Grand Calculated Summary of donations is calculated to be £660.00. Is this correct?"
+        )
+
+    def test_grand_calculated_summary_overlapping_answers_partial_overlap(self):
+        self.launchSurvey("test_grand_calculated_summary_overlapping_answers")
+        self._complete_upto_grand_calculated_summary_overlapping_answers("A")
+        self.assertInBody(
+            "Grand Calculated Summary of donations is calculated to be £440.00. Is this correct?"
+        )
+
+    def test_grand_calculated_summary_overlapping_answers_no_overlap(self):
+        self.launchSurvey("test_grand_calculated_summary_overlapping_answers")
+        self._complete_upto_grand_calculated_summary_overlapping_answers("No")
+        self.assertInBody(
+            "Grand Calculated Summary of donations is calculated to be £330.00. Is this correct?"
         )

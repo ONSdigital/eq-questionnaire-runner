@@ -6,6 +6,7 @@ from flask import url_for
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import get_calculated_summary_answer_ids
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 
 
@@ -23,7 +24,6 @@ class CalculatedSummaryBlock:
         return_to: str | None,
         return_to_block_id: str | None = None,
         progress_store: ProgressStore,
-        answer_format: Mapping,
         routing_path_block_ids: Iterable[str],
     ) -> None:
         """
@@ -36,7 +36,7 @@ class CalculatedSummaryBlock:
         self.return_to_block_id = return_to_block_id
         self.location = location
         self.block_schema = block_schema
-        self.answer_format = answer_format
+        self.schema = schema
 
         self._rule_evaluator = RuleEvaluator(
             schema=schema,
@@ -57,7 +57,7 @@ class CalculatedSummaryBlock:
                 "label": self.title,
                 "value": calculated_total,
                 "link": self._build_link(),
-                **answer_format,
+                **self._get_answer_format(),
             }
         ]
 
@@ -70,6 +70,17 @@ class CalculatedSummaryBlock:
             return_to_block_id=self.return_to_block_id,
             _anchor=self.id,
         )
+
+    def _get_answer_format(self) -> dict:
+        # the format will be the same for all answers in calculated summary so can just take the first
+        first_answer_id = get_calculated_summary_answer_ids(self.block_schema)[0]
+        first_answer = self.schema.get_answers_by_answer_id(first_answer_id)[0]
+        return {
+            "type": first_answer["type"].lower(),
+            "unit": first_answer.get("unit"),
+            "unit_length": first_answer.get("unit_length"),
+            "currency": first_answer.get("currency"),
+        }
 
     def _calculated_summary(self) -> dict:
         return {"id": self.id, "title": self.title, "answers": self.answers}

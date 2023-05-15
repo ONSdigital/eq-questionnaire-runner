@@ -28,7 +28,6 @@ class Group:
         progress_store: ProgressStore,
         return_to: str | None,
         return_to_block_id: str | None = None,
-        calculated_summary_format: Mapping | None = None,
         summary_type: str | None = None,
         view_submitted_response: bool | None = False,
     ) -> None:
@@ -53,7 +52,6 @@ class Group:
             language=language,
             return_to_block_id=return_to_block_id,
             view_submitted_response=view_submitted_response,
-            calculated_summary_format=calculated_summary_format,
             summary_type=summary_type,
         )
 
@@ -85,7 +83,6 @@ class Group:
         language: str,
         return_to_block_id: Optional[str],
         view_submitted_response: bool | None = False,
-        calculated_summary_format: Mapping | None = None,
         summary_type: str | None = None,
     ) -> list[dict[str, Block]]:
         blocks = []
@@ -113,12 +110,9 @@ class Group:
                         ).serialize()
                     ]
                 )
-
+            # check the summary_type as opposed to the block type
+            # otherwise this gets called on section summaries as well
             elif summary_type == "GrandCalculatedSummary":
-                if not calculated_summary_format:
-                    raise ValueError(
-                        "No answer format provided for grand calculated summary"
-                    )
                 blocks.extend(
                     [
                         CalculatedSummaryBlock(
@@ -132,7 +126,6 @@ class Group:
                             return_to=return_to,
                             return_to_block_id=return_to_block_id,
                             progress_store=progress_store,
-                            answer_format=calculated_summary_format,
                             routing_path_block_ids=routing_path_block_ids,
                         ).serialize()
                     ]

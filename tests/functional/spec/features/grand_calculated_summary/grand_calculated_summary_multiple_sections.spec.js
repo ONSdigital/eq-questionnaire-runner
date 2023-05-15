@@ -16,6 +16,7 @@ describe("Feature: Grand Calculated Summary", () => {
     before("Reaching the grand calculated summary section", async () => {
       await browser.openQuestionnaire("test_grand_calculated_summary_multiple_sections.json");
       await $(HubPage.submit()).click();
+
       // complete 2 questions in section 1
       await $(Block1Page.q1A1()).setValue(10);
       await $(Block1Page.q1A2()).setValue(20);
@@ -24,6 +25,7 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(Block2Page.q2A2()).setValue(40);
       await $(Block2Page.submit()).click();
       await $(CalculatedSummary1Page.submit()).click();
+
       // and the one for section 2
       await $(Block3Page.q3A1()).setValue(100);
       await $(Block3Page.q3A2()).setValue(200);
@@ -39,68 +41,93 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(CalculatedSummary4Page.submit()).click();
       await $(HubPage.submit()).click();
     });
-    it("Given I go back to the calculated summary and press continue, I am taken back to the grand calculated summary", async () => {
-      await expect(await $(GrandCalculatedSummary2Page.grandCalculatedSummaryTitle()).getText()).to.contain("Grand Calculated Summary for section 1 and 2 is calculated to be £415.00. Is this correct?");
+
+    it("Given I click on the change link for a calculated summary then press continue, I am taken back to the grand calculated summary", async () => {
+      await expect(await $(GrandCalculatedSummary2Page.grandCalculatedSummaryTitle()).getText()).to.contain(
+        "Grand Calculated Summary for section 1 and 2 is calculated to be £415.00. Is this correct?"
+      );
       await $(GrandCalculatedSummary2Page.calculatedSummary1Edit()).click();
       await expect(await browser.getUrl()).to.contain(CalculatedSummary1Page.pageName);
+
       await $(CalculatedSummary1Page.submit()).click();
       await expect(await browser.getUrl()).to.contain(GrandCalculatedSummary2Page.pageName);
     });
+
     it("Given I go back to the calculated summary and then to a question and edit the answer. I am first taken back to the updated calculated summary, and then the updated grand calculated summary.", async () => {
       await $(GrandCalculatedSummary2Page.calculatedSummary4Edit()).click();
-      await expect(await browser.getUrl()).to.contain(CalculatedSummary4Page.pageName);
-      // value before
-      await expect(await $(CalculatedSummary4Page.calculatedSummaryTitle()).getText()).to.contain("Calculated Summary for Question 4 is calculated to be £15.00. Is this correct?");
+      await expect(await $(CalculatedSummary4Page.calculatedSummaryTitle()).getText()).to.contain(
+        "Calculated Summary for Question 4 is calculated to be £15.00. Is this correct?"
+      );
       await $(CalculatedSummary4Page.q4A1Edit()).click();
       await expect(await browser.getUrl()).to.contain(Block4Page.pageName);
+
       await $(Block4Page.q4A1()).setValue(50);
       await $(Block4Page.submit()).click();
-      // calc summary has updated
+
+      // first taken back to the calculated summary which has updated
       await expect(await browser.getUrl()).to.contain(CalculatedSummary4Page.pageName);
-      await expect(await $(CalculatedSummary4Page.calculatedSummaryTitle()).getText()).to.contain("Calculated Summary for Question 4 is calculated to be £60.00. Is this correct?");
+      await expect(await $(CalculatedSummary4Page.calculatedSummaryTitle()).getText()).to.contain(
+        "Calculated Summary for Question 4 is calculated to be £60.00. Is this correct?"
+      );
       await $(CalculatedSummary4Page.submit()).click();
-      // should now be back at the updated grand calculated summary
+
+      // then taken back to the grand calculated summary which has also been updated correctly
       await expect(await browser.getUrl()).to.contain(GrandCalculatedSummary2Page.pageName);
-      await expect(await $(GrandCalculatedSummary2Page.grandCalculatedSummaryTitle()).getText()).to.contain("Grand Calculated Summary for section 1 and 2 is calculated to be £460.00. Is this correct?");
+      await expect(await $(GrandCalculatedSummary2Page.grandCalculatedSummaryTitle()).getText()).to.contain(
+        "Grand Calculated Summary for section 1 and 2 is calculated to be £460.00. Is this correct?"
+      );
     });
+
     it("Given I go back to another calculated summary and edit multiple answers, I am still correctly routed back to the grand calculated summary", async () => {
       await $(GrandCalculatedSummary2Page.calculatedSummary1Edit()).click();
-      // value before
-      await expect(await $(CalculatedSummary1Page.calculatedSummaryTitle()).getText()).to.contain("Calculated Summary for Question 1 is calculated to be £100.00. Is this correct?");
+      await expect(await $(CalculatedSummary1Page.calculatedSummaryTitle()).getText()).to.contain(
+        "Calculated Summary for Question 1 is calculated to be £100.00. Is this correct?"
+      );
+
       // change first answer
       await $(CalculatedSummary1Page.q1A1Edit()).click();
       await expect(await browser.getUrl()).to.contain(Block1Page.pageName);
       await $(Block1Page.q1A1()).setValue(100);
       await $(Block1Page.submit()).click();
+
       // back at updated calculated summary
       await expect(await browser.getUrl()).to.contain(CalculatedSummary1Page.pageName);
-      await expect(await $(CalculatedSummary1Page.calculatedSummaryTitle()).getText()).to.contain("Calculated Summary for Question 1 is calculated to be £190.00. Is this correct?");
+      await expect(await $(CalculatedSummary1Page.calculatedSummaryTitle()).getText()).to.contain(
+        "Calculated Summary for Question 1 is calculated to be £190.00. Is this correct?"
+      );
+
       // change another answer
       await $(CalculatedSummary1Page.q2A2Edit()).click();
       await expect(await browser.getUrl()).to.contain(Block2Page.pageName);
       await $(Block2Page.q2A2()).setValue(400);
       await $(Block2Page.submit()).click();
+
       // back at updated calculated summary
-      await expect(await $(CalculatedSummary1Page.calculatedSummaryTitle()).getText()).to.contain("Calculated Summary for Question 1 is calculated to be £550.00. Is this correct?");
+      await expect(await $(CalculatedSummary1Page.calculatedSummaryTitle()).getText()).to.contain(
+        "Calculated Summary for Question 1 is calculated to be £550.00. Is this correct?"
+      );
+
       // and submitting still goes back to grand calculated summary
       await $(CalculatedSummary1Page.submit()).click();
       await expect(await browser.getUrl()).to.contain(GrandCalculatedSummary2Page.pageName);
-      await expect(await $(GrandCalculatedSummary2Page.grandCalculatedSummaryTitle()).getText()).to.contain("Grand Calculated Summary for section 1 and 2 is calculated to be £910.00. Is this correct?");
+      await expect(await $(GrandCalculatedSummary2Page.grandCalculatedSummaryTitle()).getText()).to.contain(
+        "Grand Calculated Summary for section 1 and 2 is calculated to be £910.00. Is this correct?"
+      );
     });
+
     it("Given I edit an answer included in a grand calculated summary, it should no longer show until the calculated summary has been confirmed.", async () => {
       await $(GrandCalculatedSummary2Page.submit()).click();
-      // Grand calculated summary section should show as completed
       await expect(await $(HubPage.summaryRowState("section-3")).getText()).to.equal("Completed");
-      // Now edit an answer from section 2
+
+      // Now edit an answer from section 2 and go back to the hub
       await $(HubPage.summaryRowLink("section-3")).click();
       await $(GrandCalculatedSummary2Page.calculatedSummary4Edit()).click();
       await $(CalculatedSummary4Page.q4A1Edit()).click();
       await $(Block4Page.q4A1()).setValue(1);
       await $(Block4Page.submit()).click();
       await $(CalculatedSummary4Page.previous()).click();
-      // TODO test that the previous button behaves differently when you do or dont edit the answer
-      // TODO currently this should be a fail because you can confirm the GCS without confirming the CS
       await $(Block4Page.previous()).click();
+
       // calculated summary section should be in progress
       await expect(await $(HubPage.summaryRowState("section-2")).getText()).to.equal("Partially completed");
       // TODO and grand calculated summary section shouldn't show (once routing on progress is ready, but until then, it should at least show as in progress)

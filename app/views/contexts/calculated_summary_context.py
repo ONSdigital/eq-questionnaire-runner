@@ -62,7 +62,6 @@ class CalculatedSummaryContext(Context):
         section: Mapping[str, Any],
         return_to_block_id: str,
         routing_path_block_ids: Iterable[str],
-        answer_format: Mapping | None = None,
     ) -> list[Mapping[str, Group]]:
         """
         In the case that the user has been directed to a calculated summary from a grand calculated summary
@@ -88,7 +87,6 @@ class CalculatedSummaryContext(Context):
                 return_to=return_to,
                 return_to_block_id=return_to_block_id,
                 summary_type="CalculatedSummary",
-                calculated_summary_format=answer_format,
             ).serialize()
             for group in section["groups"]
         ]

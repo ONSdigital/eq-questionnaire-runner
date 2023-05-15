@@ -59,7 +59,6 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         section: Mapping[str, Any],
         return_to_block_id: str,
         routing_path_block_ids: Iterable[str],
-        answer_format: Mapping | None = None,
     ) -> list[Mapping[str, Group]]:
         return [
             Group(
@@ -76,7 +75,6 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
                 return_to="grand-calculated-summary",
                 return_to_block_id=return_to_block_id,
                 summary_type="GrandCalculatedSummary",
-                calculated_summary_format=answer_format,
             ).serialize()
             for group in section["groups"]
         ]
@@ -98,23 +96,16 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         calculated_summary_ids = get_grand_calculated_summary_block_ids(block)
         routing_path_block_ids = self._blocks_on_routing_path(calculated_summary_ids)
 
-        # remove calculated summaries not on the path
-        calculated_summary_ids = [
-            block_id
-            for block_id in calculated_summary_ids
-            if block_id in routing_path_block_ids
-        ]
-
-        answer_format = self._get_summary_format(calculated_summary_ids)
         calculated_section = self._build_grand_calculated_summary_section(block)
 
         groups = self.build_groups_for_section(
-            calculated_section, block_id, routing_path_block_ids, answer_format
+            calculated_section, block_id, routing_path_block_ids
         )
-
         total = self._get_evaluated_total(
             calculation["operation"], routing_path_block_ids
         )
+
+        answer_format = self._get_summary_format(groups)
         formatted_total = self._format_total(answer_format, total)
 
         return {
@@ -130,18 +121,16 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
             }
         }
 
-    def _get_summary_format(self, calculated_summary_ids: list[str]) -> dict:
+    def _get_summary_format(self, groups: list[Mapping]) -> dict:
         """
-        Validator ensures that the format of every answer making up the grand calculated summary will be the same
-        so taking the format of the first question will suffice
+        Get the format of the final value from the first calculated summary.
+        Validator ensures that they are all the same
         """
-        # Type ignore: validator ensures the grand calculated summary has at least one calculated summary
-        first_calculated_summary: ImmutableDict = self._schema.get_block(calculated_summary_ids[0])  # type: ignore
-        first_answer_id = get_calculated_summary_answer_ids(first_calculated_summary)[0]
-        first_answer = self._schema.get_answers_by_answer_id(first_answer_id)[0]
+        first_calculated_summary = groups[0]["blocks"][0]["calculated_summary"]
+        first_answer = first_calculated_summary["answers"][0]
         return {
-            "type": first_answer["type"].lower(),
-            "unit": first_answer.get("unit"),
-            "unit_length": first_answer.get("unit_length"),
-            "currency": first_answer.get("currency"),
+            "type": first_answer["type"],
+            "unit": first_answer["unit"],
+            "unit_length": first_answer["unit_length"],
+            "currency": first_answer["currency"],
         }

@@ -36,8 +36,15 @@ class ValueSourceResolver:
 
     def _is_answer_on_path(self, answer_id: str) -> bool:
         if self.routing_path_block_ids:
-            block = self.schema.get_block_for_answer_id(answer_id)
-            return block is not None and block["id"] in self.routing_path_block_ids
+            # Type ignore: any answer will have a block
+            block: Mapping = self.schema.get_block_for_answer_id(answer_id)  # type: ignore
+            return self._is_block_on_path(block)
+
+        return True
+
+    def _is_block_on_path(self, block: Mapping) -> bool:
+        if self.routing_path_block_ids:
+            return block["id"] in self.routing_path_block_ids
 
         return True
 
@@ -128,12 +135,16 @@ class ValueSourceResolver:
 
     def _resolve_calculated_summary_value_source(
         self, value_source: Mapping, *, assess_routing_path: bool
-    ) -> IntOrDecimal:
+    ) -> IntOrDecimal | None:
         """Calculates the value for the 'calculation' used by the provided Calculated Summary.
 
         The caller is responsible for ensuring the provided Calculated Summary and its answers are on the path.
         """
         calculated_summary_block: Mapping = self.schema.get_block(value_source["identifier"])  # type: ignore
+
+        if not self._is_block_on_path(calculated_summary_block):
+            return None
+
         calculation = calculated_summary_block["calculation"]
         if calculation.get("answers_to_calculate"):
             operator = self.get_calculation_operator(calculation["calculation_type"])

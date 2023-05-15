@@ -5,8 +5,7 @@ import CurrencySection1Page from "../../../generated_pages/grand_calculated_summ
 import QuestionsSectionSummaryPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/questions-section-summary.page";
 import ThirdNumberBlockPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/third-number-block.page";
 import SkipCalculatedSummaryPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/skip-calculated-summary.page";
-import CalculatedSummarySectionSummaryPage
-  from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/calculated-summary-section-summary.page";
+import CalculatedSummarySectionSummaryPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/calculated-summary-section-summary.page";
 import CurrencyQuestion3Page from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/currency-question-3.page";
 import CurrencyAllPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/currency-all.page";
 import ResponseAny from "../../../generated_pages/conditional_combined_routing/response-any.page";
@@ -43,7 +42,9 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(HubPage.submit()).click();
       await expect(await $(CurrencyAllPage.currencySection1()).getText()).to.contain("£330.00");
       await expect(await $(CurrencyAllPage.currencyQuestion3()).getText()).to.contain("£70.00");
-      await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).to.contain("The grand calculated summary is calculated to be £400.00. Is this correct?");
+      await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).to.contain(
+        "The grand calculated summary is calculated to be £400.00. Is this correct?"
+      );
     });
     it("Given I go back and skip the second calculated summary, it is not included in the grand calculated summary", async () => {
       await $(ResponseAny.previous()).click();
@@ -53,7 +54,9 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(SkipCalculatedSummaryPage.submit()).click();
       await $(CalculatedSummarySectionSummaryPage.submit()).click();
       await $(HubPage.submit()).click();
-      await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).to.contain("The grand calculated summary is calculated to be £330.00. Is this correct?");
+      await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).to.contain(
+        "The grand calculated summary is calculated to be £330.00. Is this correct?"
+      );
       await expect(await $(CurrencyAllPage.currencyQuestion3()).isExisting()).to.be.false;
     });
     it("Given I go back to section one and skip the first block, it is not included in the first calculated summary and consequently not included in the grand calculated summary", async () => {
@@ -64,7 +67,9 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(SkipFirstBlockPage.submit()).click();
       await $(QuestionsSectionSummaryPage.submit()).click();
       await $(HubPage.summaryRowLink("grand-calculated-summary-section")).click();
-      await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).to.contain("The grand calculated summary is calculated to be £30.00. Is this correct?");
+      await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).to.contain(
+        "The grand calculated summary is calculated to be £30.00. Is this correct?"
+      );
       await expect(await $(CurrencyAllPage.currencyQuestion3()).isExisting()).to.be.false;
     });
   });

@@ -1,0 +1,286 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Grand Calculated Summary with overlapping answers",
+    "theme": "default",
+    "description": "A schema to showcase grand calculated summaries which include multiple calculated summaries using the same answers",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": {}
+    },
+    "sections": [
+        {
+            "id": "section-1",
+            "title": "Charity donations",
+            "summary": {
+                "show_on_completion": true
+            },
+            "groups": [
+                {
+                    "id": "group-1",
+                    "title": "Group title for charity donations",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "block-1",
+                            "question": {
+                                "type": "General",
+                                "id": "question-1",
+                                "title": "How much did you donate to charity last month?",
+                                "answers": [
+                                    {
+                                        "id": "q1-a1",
+                                        "label": "Donation to Charity A last month",
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "id": "q1-a2",
+                                        "label": "Donation to Charity B last month",
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "mandatory": false
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "block-2",
+                            "question": {
+                                "type": "General",
+                                "id": "question-2",
+                                "title": "How much will you donate to charity this month?",
+                                "answers": [
+                                    {
+                                        "id": "q2-a1",
+                                        "label": "Donation to Charity A this month",
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "id": "q2-a2",
+                                        "label": "Donation to Charity B this month",
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "mandatory": false
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-1",
+                            "title": "Total donations to Charity A is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total donations to Charity A",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q1-a1"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q2-a1"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-2",
+                            "title": "Total donations to Charity B is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total donations to Charity B",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q1-a2"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q2-a2"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "block-3",
+                            "question": {
+                                "type": "General",
+                                "id": "question-3",
+                                "title": "Does your job match any donation amount? This determines which calculated summary you see next, if any.",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "radio-funding",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes, for every donation my job contributes an equal amount",
+                                                "value": "AB"
+                                            },
+                                            {
+                                                "label": "My job will only match donations to charity A",
+                                                "value": "A"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "radio-funding"
+                                        },
+                                        "AB"
+                                    ]
+                                }
+                            },
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-3",
+                            "title": "Total donations to match is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total charity donation to match",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q1-a1"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q1-a2"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q2-a1"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q2-a2"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "radio-funding"
+                                        },
+                                        "A"
+                                    ]
+                                }
+                            },
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-4",
+                            "title": "Total donations to Charity A to match is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total Charity A donation to match",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q1-a1"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q2-a1"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-3",
+            "title": "Grand calculated summary",
+            "enabled": {
+                "when": {
+                    "!=": [
+                        0,
+                        {
+                            "source": "calculated_summary",
+                            "identifier": "calculated-summary-2"
+                        }
+                    ]
+                }
+            },
+            "groups": [
+                {
+                    "id": "group-2",
+                    "title": "Group title for the grand calculated summary of donations",
+                    "blocks": [
+                        {
+                            "type": "GrandCalculatedSummary",
+                            "id": "grand-calculated-summary-donations",
+                            "title": "Grand Calculated Summary of donations is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total donations to charity",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calculated-summary-1"
+                                        },
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calculated-summary-2"
+                                        },
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calculated-summary-3"
+                                        },
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calculated-summary-4"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
