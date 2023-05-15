@@ -197,7 +197,7 @@
                             "id": "third-number-block",
                             "question": {
                                 "id": "third-number-question",
-                                "title": "Third Number Question Title",
+                                "title": "Third Number Question which will open up an additional question if you enter 100 for part a",
                                 "type": "General",
                                 "answers": [
                                     {
@@ -212,6 +212,36 @@
                                         "id": "third-number-answer-part-b",
                                         "label": "Third answer part b (optional)",
                                         "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "identifier": "third-number-answer-part-a",
+                                            "source": "answers"
+                                        },
+                                        100
+                                    ]
+                                }
+                            },
+                            "type": "Question",
+                            "id": "fourth-number-block",
+                            "question": {
+                                "id": "fourth-number-question",
+                                "title": "Extra question if you entered 100 on part a of the previous question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "fourth-number-answer",
+                                        "label": "Fourth answer",
+                                        "mandatory": true,
                                         "type": "Currency",
                                         "currency": "GBP",
                                         "decimal_places": 2
@@ -270,6 +300,10 @@
                                         {
                                             "source": "answers",
                                             "identifier": "third-number-answer-part-b"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "fourth-number-answer"
                                         }
                                     ]
                                 },
@@ -283,9 +317,6 @@
         {
             "id": "grand-calculated-summary-section",
             "title": "Grand Calculated Summary should only show if all calculated summaries have been confirmed",
-            "summary": {
-                "show_on_completion": true
-            },
             "enabled": {
                 "when": {
                     "!=": [
