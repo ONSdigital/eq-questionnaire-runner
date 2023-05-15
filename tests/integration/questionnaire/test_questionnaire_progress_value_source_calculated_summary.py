@@ -306,18 +306,13 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
         # END OF HAPPY PATH
 
         # 5. Go back to calculated summary and make it incomplete
-        self.get(self.section_one_link())
-        # Edit answers
+        self.get("/questionnaire/calculated-summary-block/")
+        # Edit first answer
         first_answer_link = self.getHtmlSoup().find(
             "a", {"data-qa": "first-number-answer-edit"}
         )["href"]
         self.get(first_answer_link)
         self.post({"first-number-answer": 2})
-        second_answer_link = self.getHtmlSoup().find(
-            "a", {"data-qa": "second-number-answer-edit"}
-        )["href"]
-        self.get(second_answer_link)
-        self.post({"second-number-answer": 2})
 
         # Don't complete the calculated summary, go back to the hub
         self.go_to_hub()
