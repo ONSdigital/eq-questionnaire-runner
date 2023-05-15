@@ -132,16 +132,16 @@ def test_build_view_context_for_currency_calculated_summary(
     assert context_summary["title"] == title
 
     assert "calculated_question" in context_summary
-    assert len(context_summary["groups"][0]["blocks"]) == total_blocks
+    assert len(context_summary["sections"][0]["groups"][0]["blocks"]) == total_blocks
     assert (
         context_summary["calculated_question"]["title"]
         == "Grand total of previous values"
     )
     assert context_summary["calculated_question"]["answers"][0]["value"] == value
 
-    answer_change_link = context_summary["groups"][0]["blocks"][0]["question"][
-        "answers"
-    ][0]["link"]
+    answer_change_link = context_summary["sections"][0]["groups"][0]["blocks"][0][
+        "question"
+    ]["answers"][0]["link"]
     assert "return_to=calculated-summary" in answer_change_link
     assert f"return_to_answer_id={return_to_answer_id}" in answer_change_link
     assert f"return_to_block_id={block_id}" in answer_change_link

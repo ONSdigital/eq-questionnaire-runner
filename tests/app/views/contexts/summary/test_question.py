@@ -2,11 +2,12 @@
 import pytest
 from mock import MagicMock
 
-from app.data_models import Answer, ProgressStore
+from app.data_models import Answer, ListStore, ProgressStore
 from app.data_models.answer_store import AnswerStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
+from app.utilities.schema import load_schema_from_name
 from app.views.contexts.summary.question import Question
 
 
@@ -128,11 +129,13 @@ def address_questionnaire_schema(concatenation_type):
     )
 
 
-def address_question(answer_store, list_store, schema):
+def address_question(answer_store, list_store, progress_store, schema):
     question_schema = schema.get_questions("what-is-your-address-question")[0]
     return Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
+        progress_store=progress_store,
         schema=schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, schema),
         location=None,
@@ -141,6 +144,9 @@ def address_question(answer_store, list_store, schema):
         value_source_resolver=get_value_source_resolver(
             answer_store, list_store, schema
         ),
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
 
@@ -165,6 +171,7 @@ def test_create_question(
     expected_len,
     answer_store,
     list_store,
+    progress_store,
     mock_schema,
 ):
     # Given
@@ -179,6 +186,8 @@ def test_create_question(
     question = Question(
         question_schema=question_schema,
         answer_store=answer_store,
+        list_store=list_store,
+        progress_store=progress_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -187,6 +196,9 @@ def test_create_question(
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -204,7 +216,11 @@ def test_create_question(
     ),
 )
 def test_concatenate_textfield_answers(
-    concatenation_type, concatenation_character, list_store, answer_store
+    concatenation_type,
+    concatenation_character,
+    list_store,
+    progress_store,
+    answer_store,
 ):
     # Given
     schema = address_questionnaire_schema(concatenation_type)
@@ -216,7 +232,7 @@ def test_concatenate_textfield_answers(
     ):
         answer_store.add_or_update(answer)
 
-    question = address_question(answer_store, list_store, schema)
+    question = address_question(answer_store, list_store, progress_store, schema)
     # Then
     assert (
         question.answers[0]["value"]
@@ -234,7 +250,11 @@ def test_concatenate_textfield_answers(
     ),
 )
 def test_concatenate_textfield_answers_default(
-    concatenation_type, concatenation_character, list_store, answer_store
+    concatenation_type,
+    concatenation_character,
+    list_store,
+    answer_store,
+    progress_store,
 ):
     # Given
     schema = address_questionnaire_schema(concatenation_type)
@@ -246,7 +266,7 @@ def test_concatenate_textfield_answers_default(
         answer_store.add_or_update(answer)
 
     # When
-    question = address_question(answer_store, list_store, schema)
+    question = address_question(answer_store, list_store, progress_store, schema)
 
     # Then
     assert (
@@ -265,7 +285,12 @@ def test_concatenate_textfield_answers_default(
     ),
 )
 def test_concatenate_number_and_checkbox_answers(
-    concatenation_type, concatenation_character, list_store, answer_store, mock_schema
+    concatenation_type,
+    concatenation_character,
+    list_store,
+    answer_store,
+    progress_store,
+    mock_schema,
 ):
     # Given
     answer_store.add_or_update(Answer(answer_id="age", value=7))
@@ -303,6 +328,8 @@ def test_concatenate_number_and_checkbox_answers(
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
+        progress_store=progress_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -311,6 +338,9 @@ def test_concatenate_number_and_checkbox_answers(
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -322,7 +352,9 @@ def test_concatenate_number_and_checkbox_answers(
 
 
 @pytest.mark.usefixtures("app")
-def test_merge_date_range_answers(answer_store, list_store, mock_schema):
+def test_merge_date_range_answers(
+    answer_store, list_store, progress_store, mock_schema
+):
     # Given
     answer_store.add_or_update(Answer(answer_id="answer_1", value="13/02/2016"))
     answer_store.add_or_update(Answer(answer_id="answer_2", value="13/09/2016"))
@@ -341,6 +373,8 @@ def test_merge_date_range_answers(answer_store, list_store, mock_schema):
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
+        progress_store=progress_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -349,6 +383,9 @@ def test_merge_date_range_answers(answer_store, list_store, mock_schema):
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -358,7 +395,9 @@ def test_merge_date_range_answers(answer_store, list_store, mock_schema):
 
 
 @pytest.mark.usefixtures("app")
-def test_merge_multiple_date_range_answers(answer_store, list_store, mock_schema):
+def test_merge_multiple_date_range_answers(
+    answer_store, list_store, progress_store, mock_schema
+):
     # Given
     for answer in (
         Answer(answer_id="answer_1", value="13/02/2016"),
@@ -384,6 +423,8 @@ def test_merge_multiple_date_range_answers(answer_store, list_store, mock_schema
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
+        progress_store=progress_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -392,6 +433,9 @@ def test_merge_multiple_date_range_answers(answer_store, list_store, mock_schema
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -403,7 +447,9 @@ def test_merge_multiple_date_range_answers(answer_store, list_store, mock_schema
 
 
 @pytest.mark.usefixtures("app")
-def test_create_question_with_multiple_answers(answer_store, list_store, mock_schema):
+def test_create_question_with_multiple_answers(
+    answer_store, list_store, progress_store, mock_schema
+):
     # Given
     for answer in (
         Answer(answer_id="answer_1", value="Han"),
@@ -425,6 +471,8 @@ def test_create_question_with_multiple_answers(answer_store, list_store, mock_sc
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
+        progress_store=progress_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -433,6 +481,9 @@ def test_create_question_with_multiple_answers(answer_store, list_store, mock_sc
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -442,7 +493,7 @@ def test_create_question_with_multiple_answers(answer_store, list_store, mock_sc
 
 
 @pytest.mark.usefixtures("app")
-def test_checkbox_button_options(answer_store, list_store, mock_schema):
+def test_checkbox_button_options(answer_store, list_store, progress_store, mock_schema):
     # Given
     answer_store.add_or_update(
         Answer(answer_id="answer_1", value=["Light Side", "Dark Side"])
@@ -469,6 +520,8 @@ def test_checkbox_button_options(answer_store, list_store, mock_schema):
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
+        progress_store=progress_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -477,6 +530,9 @@ def test_checkbox_button_options(answer_store, list_store, mock_schema):
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -486,7 +542,9 @@ def test_checkbox_button_options(answer_store, list_store, mock_schema):
 
 
 @pytest.mark.usefixtures("app")
-def test_checkbox_button_detail_answer_empty(answer_store, list_store, mock_schema):
+def test_checkbox_button_detail_answer_empty(
+    answer_store, list_store, progress_store, mock_schema
+):
     # Given
     answer_store.add_or_update(Answer(answer_id="answer_1", value=["other", ""]))
 
@@ -515,6 +573,8 @@ def test_checkbox_button_detail_answer_empty(answer_store, list_store, mock_sche
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
+        progress_store=progress_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -523,6 +583,9 @@ def test_checkbox_button_detail_answer_empty(answer_store, list_store, mock_sche
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -576,6 +639,7 @@ def test_checkbox_answer_with_detail_answer_returns_the_value(
     expected_value,
     answer_store,
     list_store,
+    progress_store,
     mock_schema,
 ):
     # Given
@@ -600,6 +664,8 @@ def test_checkbox_answer_with_detail_answer_returns_the_value(
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
+        progress_store=progress_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -608,6 +674,9 @@ def test_checkbox_answer_with_detail_answer_returns_the_value(
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -616,7 +685,9 @@ def test_checkbox_answer_with_detail_answer_returns_the_value(
 
 
 @pytest.mark.usefixtures("app")
-def test_checkbox_button_other_option_text(answer_store, list_store, mock_schema):
+def test_checkbox_button_other_option_text(
+    answer_store, list_store, progress_store, mock_schema
+):
     # Given
     answer_store.add_or_update(
         Answer(answer_id="answer_1", value=["Light Side", "other"])
@@ -648,6 +719,8 @@ def test_checkbox_button_other_option_text(answer_store, list_store, mock_schema
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
+        progress_store=progress_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -656,6 +729,9 @@ def test_checkbox_button_other_option_text(answer_store, list_store, mock_schema
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -702,7 +778,14 @@ def test_checkbox_button_other_option_text(answer_store, list_store, mock_schema
     ),
 )
 def test_radio_answer_with_detail_answers_returns_correct_value(
-    answer_type, options, answers, expected, answer_store, list_store, mock_schema
+    answer_type,
+    options,
+    answers,
+    expected,
+    answer_store,
+    list_store,
+    progress_store,
+    mock_schema,
 ):
     # Given
     for answer in answers:
@@ -726,6 +809,8 @@ def test_radio_answer_with_detail_answers_returns_correct_value(
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
+        progress_store=progress_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -734,6 +819,9 @@ def test_radio_answer_with_detail_answers_returns_correct_value(
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -774,7 +862,14 @@ def test_radio_answer_with_detail_answers_returns_correct_value(
     ),
 )
 def test_answer_types_selected_option_label(
-    answer_type, options, answers, expected, answer_store, list_store, mock_schema
+    answer_type,
+    options,
+    answers,
+    expected,
+    answer_store,
+    list_store,
+    progress_store,
+    mock_schema,
 ):
     for answer in answers:
         answer_store.add_or_update(answer)
@@ -797,6 +892,8 @@ def test_answer_types_selected_option_label(
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
+        progress_store=progress_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, mock_schema),
         value_source_resolver=get_value_source_resolver(
@@ -805,6 +902,9 @@ def test_answer_types_selected_option_label(
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -813,7 +913,7 @@ def test_answer_types_selected_option_label(
 
 @pytest.mark.usefixtures("app")
 def test_dynamic_checkbox_answer_options(
-    answer_store, list_store, mock_schema, dynamic_answer_options_schema
+    answer_store, list_store, progress_store, mock_schema, dynamic_answer_options_schema
 ):
     # Given
     answer_schema = {
@@ -839,6 +939,8 @@ def test_dynamic_checkbox_answer_options(
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
+        progress_store=progress_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(
             answer_store, list_store, mock_schema, response_metadata
@@ -849,6 +951,9 @@ def test_dynamic_checkbox_answer_options(
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -890,6 +995,7 @@ def test_dynamic_checkbox_answer_options(
 def test_dynamic_answer_options(
     answer_type,
     list_store,
+    progress_store,
     answer_store_value,
     expected,
     dynamic_answer_options_schema,
@@ -911,6 +1017,8 @@ def test_dynamic_answer_options(
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
+        progress_store=progress_store,
         schema=mock_schema,
         rule_evaluator=get_rule_evaluator(
             answer_store, list_store, mock_schema, response_metadata
@@ -921,6 +1029,9 @@ def test_dynamic_answer_options(
         location=None,
         block_id="house-type",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
@@ -963,7 +1074,7 @@ def test_dynamic_answer_options(
         ),
     ),
 )
-def test_get_answer(answer_schema, answer_store, expected, list_store):
+def test_get_answer(answer_schema, answer_store, expected, list_store, progress_store):
     schema = address_questionnaire_schema("Newline")
 
     # Given
@@ -973,6 +1084,8 @@ def test_get_answer(answer_schema, answer_store, expected, list_store):
     question = Question(
         question_schema,
         answer_store=answer_store,
+        list_store=list_store,
+        progress_store=progress_store,
         schema=schema,
         rule_evaluator=get_rule_evaluator(answer_store, list_store, schema),
         value_source_resolver=get_value_source_resolver(
@@ -981,7 +1094,162 @@ def test_get_answer(answer_schema, answer_store, expected, list_store):
         location=None,
         block_id="address-group",
         return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
     )
 
     # Then
     assert question.get_answer(answer_store, "building") == expected
+
+
+@pytest.mark.usefixtures("app")
+@pytest.mark.parametrize(
+    "answer_store, list_store, expected",
+    (
+        (
+            AnswerStore(
+                [
+                    {"answer_id": "any-supermarket-answer", "value": "Yes"},
+                    {
+                        "answer_id": "supermarket-name",
+                        "value": "Tesco",
+                        "list_item_id": "awTNTI",
+                    },
+                    {
+                        "answer_id": "supermarket-name",
+                        "value": "Aldi",
+                        "list_item_id": "FMOByU",
+                    },
+                    {"answer_id": "list-collector-answer", "value": "No"},
+                    {
+                        "answer_id": "based-checkbox-answer",
+                        "value": ["Non UK based supermarkets"],
+                    },
+                    {
+                        "answer_id": "percentage-of-shopping",
+                        "value": 12,
+                        "list_item_id": "awTNTI",
+                    },
+                    {
+                        "answer_id": "percentage-of-shopping",
+                        "value": 21,
+                        "list_item_id": "FMOByU",
+                    },
+                ],
+            ),
+            ListStore([{"items": ["awTNTI", "FMOByU"], "name": "supermarkets"}]),
+            [
+                {
+                    "currency": None,
+                    "id": "percentage-of-shopping-awTNTI",
+                    "label": "Percentage of shopping at Tesco",
+                    "link": "/questionnaire/group/?list_item_id=awTNTI#percentage-of-shopping-awTNTI",
+                    "type": "percentage",
+                    "unit": None,
+                    "unit_length": None,
+                    "value": 12,
+                },
+                {
+                    "currency": None,
+                    "id": "percentage-of-shopping-FMOByU",
+                    "label": "Percentage of shopping at Aldi",
+                    "link": "/questionnaire/group/?list_item_id=FMOByU#percentage-of-shopping-FMOByU",
+                    "type": "percentage",
+                    "unit": None,
+                    "unit_length": None,
+                    "value": 21,
+                },
+                {
+                    "currency": None,
+                    "id": "based-checkbox-answer",
+                    "label": "Are supermarkets UK or non UK based?",
+                    "link": "/questionnaire/group/#based-checkbox-answer",
+                    "type": "checkbox",
+                    "unit": None,
+                    "unit_length": None,
+                    "value": [
+                        {
+                            "detail_answer_value": None,
+                            "label": "Non UK based supermarkets",
+                        }
+                    ],
+                },
+            ],
+        ),
+    ),
+)
+def test_dynamic_answers(answer_store, list_store, progress_store, expected):
+    schema = load_schema_from_name("test_dynamic_answers_list_source", "en")
+
+    # Given
+    question_schema = {
+        "dynamic_answers": {
+            "values": {"source": "list", "identifier": "supermarkets"},
+            "answers": [
+                {
+                    "label": {
+                        "text": "Percentage of shopping at {transformed_value}",
+                        "placeholders": [
+                            {
+                                "placeholder": "transformed_value",
+                                "value": {
+                                    "source": "answers",
+                                    "identifier": "supermarket-name",
+                                },
+                            }
+                        ],
+                    },
+                    "id": "percentage-of-shopping",
+                    "mandatory": False,
+                    "type": "Percentage",
+                    "maximum": {"value": 100},
+                    "decimal_places": 0,
+                }
+            ],
+        },
+        "answers": [
+            {
+                "id": "based-checkbox-answer",
+                "label": "Are supermarkets UK or non UK based?",
+                "instruction": "Select any answers that apply",
+                "mandatory": False,
+                "options": [
+                    {
+                        "label": "UK based supermarkets",
+                        "value": "UK based supermarkets",
+                    },
+                    {
+                        "label": "Non UK based supermarkets",
+                        "value": "Non UK based supermarkets",
+                    },
+                ],
+                "type": "Checkbox",
+            }
+        ],
+        "id": "dynamic-answer-question",
+        "title": "What percent of your shopping do you do at each of the following supermarket?",
+        "type": "General",
+    }
+
+    # When
+    question = Question(
+        question_schema,
+        answer_store=answer_store,
+        list_store=list_store,
+        progress_store=progress_store,
+        schema=schema,
+        rule_evaluator=get_rule_evaluator(answer_store, list_store, schema),
+        value_source_resolver=get_value_source_resolver(
+            answer_store, list_store, schema
+        ),
+        location=None,
+        block_id="group",
+        return_to=None,
+        language="en",
+        metadata={},
+        response_metadata={},
+    )
+
+    # Then
+    assert question.answers == expected

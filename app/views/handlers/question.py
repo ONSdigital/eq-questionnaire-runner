@@ -7,7 +7,10 @@ from flask_babel import gettext
 from app.forms.questionnaire_form import generate_form
 from app.helpers import get_address_lookup_api_auth_token
 from app.questionnaire.location import Location
-from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
+from app.questionnaire.questionnaire_store_updater import (
+    DependentSection,
+    QuestionnaireStoreUpdater,
+)
 from app.questionnaire.variants import transform_variants
 from app.views.contexts import ListContext
 from app.views.contexts.question import build_question_context
@@ -114,11 +117,23 @@ class Question(BlockHandler):
         )
 
     def _get_answers_for_question(self, question_json) -> dict[str, Any]:
-        answer_ids = self._schema.get_answer_ids_for_question(question_json)
-        answers = self._questionnaire_store.answer_store.get_answers_by_answer_id(
-            answer_ids=answer_ids, list_item_id=self._current_location.list_item_id
+        answers_by_answer_id = self._schema.get_answers_for_question_by_id(
+            question_json
         )
-        return {answer.answer_id: answer.value for answer in answers if answer}
+        answer_value_by_answer_id = {}
+
+        for answer_id, resolved_answer in answers_by_answer_id.items():
+            list_item_id = (
+                resolved_answer.get("list_item_id")
+                or self._current_location.list_item_id
+            )
+            answer_id_to_use = resolved_answer.get("original_answer_id") or answer_id
+            if answer := self._questionnaire_store.answer_store.get_answer(
+                answer_id=answer_id_to_use, list_item_id=list_item_id
+            ):
+                answer_value_by_answer_id[answer_id] = answer.value
+
+        return answer_value_by_answer_id
 
     def _get_list_add_question_url(self, params):
         block_id = params["block_id"]
@@ -212,22 +227,20 @@ class Question(BlockHandler):
         ):
             return url_for(".get_questionnaire")
 
-    def evaluate_and_update_section_status_on_list_change(self, list_name):
+    def capture_dependent_sections_for_list(self, list_name):
         section_ids = self._schema.get_section_ids_dependent_on_list(list_name)
         section_ids.append(self.current_location.section_id)
 
-        section_keys_to_evaluate = (
-            self.questionnaire_store_updater.started_section_keys(
-                section_ids=section_ids
-            )
+        section_keys_to_add = self.questionnaire_store_updater.started_section_keys(
+            section_ids=section_ids
         )
-
-        for section_id, list_item_id in section_keys_to_evaluate:
-            path = self.router.routing_path(section_id, list_item_id)
-            self.questionnaire_store_updater.update_section_status(
-                is_complete=self.router.is_path_complete(path),
-                section_id=section_id,
-                list_item_id=list_item_id,
+        for section_id, list_item_id in section_keys_to_add:
+            self.questionnaire_store_updater.dependent_sections.add(
+                DependentSection(
+                    section_id=section_id,
+                    list_item_id=list_item_id,
+                    is_complete=None,
+                )
             )
 
     def clear_radio_answers(self):

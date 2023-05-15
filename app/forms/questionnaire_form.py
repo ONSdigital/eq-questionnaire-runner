@@ -483,19 +483,20 @@ def get_answer_fields(
     if routing_path_block_ids:
         block_ids = get_flattened_mapping_values(routing_path_block_ids)
 
-    value_source_resolver = ValueSourceResolver(
-        answer_store=answer_store,
-        list_store=list_store,
-        metadata=metadata,
-        schema=schema,
-        location=location,
-        list_item_id=list_item_id,
-        escape_answer_values=False,
-        response_metadata=response_metadata,
-        routing_path_block_ids=block_ids,
-        assess_routing_path=False,
-        progress_store=progress_store,
-    )
+    def _get_value_source_resolver(list_item: str | None = None) -> ValueSourceResolver:
+        return ValueSourceResolver(
+            answer_store=answer_store,
+            list_store=list_store,
+            metadata=metadata,
+            schema=schema,
+            location=location,
+            list_item_id=list_item,
+            escape_answer_values=False,
+            response_metadata=response_metadata,
+            routing_path_block_ids=block_ids,
+            assess_routing_path=False,
+            progress_store=progress_store,
+        )
 
     rule_evaluator = RuleEvaluator(
         schema=schema,
@@ -509,7 +510,14 @@ def get_answer_fields(
 
     answer_fields = {}
     question_title = question.get("title")
-    for answer in question.get("answers", []):
+
+    value_source_resolved_for_location = _get_value_source_resolver(list_item_id)
+    for answer in question["answers"]:
+        if "list_item_id" in answer:
+            value_source_resolver = _get_value_source_resolver(answer["list_item_id"])
+        else:
+            value_source_resolver = value_source_resolved_for_location
+
         for option in answer.get("options", []):
             if "detail_answer" in option:
                 if data:
@@ -581,7 +589,7 @@ def _clear_detail_answer_field(
     """
     Clears the detail answer field if the parent option is not selected
     """
-    for answer in question_schema["answers"]:
+    for answer in question_schema.get("answers", []):
         for option in answer.get("options", []):
             if "detail_answer" in option and option["value"] not in form_data.getlist(
                 answer["id"]

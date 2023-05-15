@@ -1,6 +1,6 @@
 from collections import defaultdict, namedtuple
 from itertools import combinations
-from typing import Iterable, Mapping
+from typing import Any, Iterable, Mapping
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -77,7 +77,7 @@ class QuestionnaireStoreUpdater:
                 section_id = self._schema.get_section_for_block_id(block_id)["id"]  # type: ignore
                 self.remove_completed_location(Location(section_id, block_id))
 
-    def update_relationship_question_completeness(self, list_name: str) -> None:
+    def _update_relationship_question_completeness(self, list_name: str) -> None:
         relationship_collectors = self._get_relationship_collectors_by_list_name(
             list_name
         )
@@ -157,13 +157,24 @@ class QuestionnaireStoreUpdater:
             list_item_id=list_item_id
         )
 
-        if answers := self._get_relationship_answers_for_list_name(list_name):
+        if answers := self.get_relationship_answers_for_list_name(list_name):
             self._remove_relationship_answers_for_list_item_id(list_item_id, answers)
-            self.update_relationship_question_completeness(list_name)
+            self._update_relationship_question_completeness(list_name)
 
         self._progress_store.remove_progress_for_list_item_id(list_item_id=list_item_id)
 
-    def _get_relationship_answers_for_list_name(
+        for list_collector in self._schema.get_list_collectors_for_list(
+            for_list=list_name,
+            section=self._schema.get_section(self._current_location.section_id),  # type: ignore
+            # type ignore Section and answer_id below must exist at this point
+        ):
+            block = self._schema.get_add_block_for_list_collector(list_collector["id"])
+            answer_ids = self._schema.get_answer_ids_for_block(block["id"])  # type: ignore
+            # type ignore non-optional return, always exists
+            for answer_id in answer_ids:
+                self._capture_block_dependencies_for_answer(answer_id)
+
+    def get_relationship_answers_for_list_name(
         self, list_name: str
     ) -> list[Answer] | None:
         associated_relationship_collectors = (
@@ -366,7 +377,7 @@ class QuestionnaireStoreUpdater:
             else:
                 self.dependent_sections.add(DependentSection(section_id, None, None))
 
-    def get_dependents_of_section(self, section_id: str) -> list:
+    def _get_dependents_of_section(self, section_id: str) -> list:
         dependents: list = []
         if (
             section_id
@@ -380,27 +391,25 @@ class QuestionnaireStoreUpdater:
         return dependents
 
     def update_answers(
-        self, form_data: Mapping, list_item_id: str | None = None
+        self, form_data: Mapping[str, Any], list_item_id: str | None = None
     ) -> None:
         list_item_id = list_item_id or self._current_location.list_item_id
-        answer_ids_for_question = self._schema.get_answer_ids_for_question(
+        answers_by_answer_id = self._schema.get_answers_for_question_by_id(
             self._current_question
         )
 
-        answers_updated = False
-
         for answer_id, answer_value in form_data.items():
-            if answer_id not in answer_ids_for_question:
+            if answer_id not in answers_by_answer_id:
                 continue
 
-            if answers_updated := self._update_answer(
-                answer_id, list_item_id, answer_value
-            ):
-                self._capture_section_dependencies_for_answer(answer_id)
-                self._capture_block_dependencies_for_answer(answer_id)
+            resolved_answer = answers_by_answer_id[answer_id]
+            answer_id_to_use = resolved_answer.get("original_answer_id") or answer_id
+            list_item_id_to_use = resolved_answer.get("list_item_id") or list_item_id
 
-        if answers_updated:
-            self.capture_progress_section_dependencies()
+            if self._update_answer(answer_id_to_use, list_item_id_to_use, answer_value):
+                self._capture_section_dependencies_for_answer(answer_id_to_use)
+                self._capture_block_dependencies_for_answer(answer_id_to_use)
+                self.capture_progress_section_dependencies()
 
     def capture_progress_section_dependencies(self) -> None:
         self._capture_section_dependencies_progress_value_source_for_current_block()
@@ -412,8 +421,6 @@ class QuestionnaireStoreUpdater:
         """
         evaluated_dependents: list[tuple] = []
 
-        self._remove_dependent_blocks_and_capture_dependent_sections()
-
         chronological_dependents = self.get_chronological_section_dependents()
 
         for section in chronological_dependents:
@@ -424,14 +431,14 @@ class QuestionnaireStoreUpdater:
                 continue
 
             if (section.section_id, section.list_item_id) not in evaluated_dependents:
-                self.evaluate_dependents(
+                self._evaluate_dependents(
                     section.section_id,
                     section.list_item_id,
                     section.is_complete,
                     evaluated_dependents,
                 )
 
-    def evaluate_dependents(
+    def _evaluate_dependents(
         self,
         section_id: str,
         list_item_id: str | None,
@@ -449,25 +456,25 @@ class QuestionnaireStoreUpdater:
             section_id=section_id,
             list_item_id=list_item_id,
         ):
-            dependents_of_dependent = self.get_dependents_of_section(section_id)
+            dependents_of_dependent = self._get_dependents_of_section(section_id)
             for dependent in dependents_of_dependent:
                 if repeating_list := self._schema.get_repeating_list_for_section(
                     dependent
                 ):
                     for item_id in self._list_store[repeating_list].items:
                         if (section_id, item_id) not in evaluated_dependents:
-                            self.evaluate_dependents(
+                            self._evaluate_dependents(
                                 dependent, item_id, None, evaluated_dependents
                             )
                             evaluated_dependents.append((section_id, item_id))
 
                 elif (section_id, list_item_id) not in evaluated_dependents:
-                    self.evaluate_dependents(
+                    self._evaluate_dependents(
                         dependent, None, None, evaluated_dependents
                     )
                     evaluated_dependents.append((section_id, None))
 
-    def _remove_dependent_blocks_and_capture_dependent_sections(self) -> None:
+    def remove_dependent_blocks_and_capture_dependent_sections(self) -> None:
         """Removes dependent blocks from the progress store."""
 
         for (

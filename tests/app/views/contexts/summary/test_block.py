@@ -31,6 +31,7 @@ def test_create_block(mocker):
         location=location,
         return_to="final-summary",
         progress_store=ProgressStore(),
+        language="en",
     )
 
     # Then

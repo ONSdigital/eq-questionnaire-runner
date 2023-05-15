@@ -1309,3 +1309,74 @@ def progress_dependencies_schema():
     return load_schema_from_name(
         "test_progress_value_source_calculated_summary_extended"
     )
+
+@pytest.fixture
+@pytest.mark.usefixtures("app", "gb_locale")
+def placeholder_transform_question_dynamic_answers_json():
+    return {
+        "dynamic_answers": {
+            "values": {"source": "list", "identifier": "supermarkets"},
+            "answers": [
+                {
+                    "label": {
+                        "text": "Percentage of shopping at {transformed_value}",
+                        "placeholders": [
+                            {
+                                "placeholder": "transformed_value",
+                                "value": {
+                                    "source": "answers",
+                                    "identifier": "supermarket-name",
+                                },
+                            }
+                        ],
+                    },
+                    "id": "percentage-of-shopping",
+                    "mandatory": False,
+                    "type": "Percentage",
+                    "maximum": {"value": 100},
+                    "decimal_places": 0,
+                }
+            ],
+        },
+        "answers": [],
+        "id": "dynamic-answer-question",
+        "title": "What percent of your shopping do you do at each of the following supermarket?",
+        "type": "General",
+    }
+
+
+@pytest.fixture
+@pytest.mark.usefixtures("app", "gb_locale")
+def placeholder_transform_question_dynamic_answers_pointer_json():
+    return {
+        "question": {
+            "dynamic_answers": {
+                "values": {"source": "list", "identifier": "supermarkets"},
+                "answers": [
+                    {
+                        "label": {
+                            "text": "Percentage of shopping at {transformed_value}",
+                            "placeholders": [
+                                {
+                                    "placeholder": "transformed_value",
+                                    "value": {
+                                        "source": "answers",
+                                        "identifier": "supermarket-name",
+                                    },
+                                }
+                            ],
+                        },
+                        "id": "percentage-of-shopping",
+                        "mandatory": False,
+                        "type": "Percentage",
+                        "maximum": {"value": 100},
+                        "decimal_places": 0,
+                    }
+                ],
+            },
+            "answers": [],
+            "id": "dynamic-answer-question",
+            "title": "What percent of your shopping do you do at each of the following supermarket?",
+            "type": "General",
+        }
+    }
