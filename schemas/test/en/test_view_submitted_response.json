@@ -35,6 +35,7 @@
     "sections": [
         {
             "id": "name-section",
+            "title": "Name Section",
             "groups": [
                 {
                     "blocks": [
