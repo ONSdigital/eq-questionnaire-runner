@@ -90,8 +90,9 @@ export function generateToken(
   const iat = KJUR.jws.IntDate.get("now");
   const exp = KJUR.jws.IntDate.get("now") + 1800;
   const caseId = uuidv4();
-  const expiresAt = new Date(Date.now() + 604800000);
-  const expiresAtISO = `${expiresAt.toISOString().slice(0, -5)}+00:00`;
+  const currentDate = new Date();
+  currentDate.setUTCDate(currentDate.getUTCDate() + 1);
+  const isoDate = currentDate.toISOString();
 
   if (version === "v2") {
     payload = {
@@ -108,7 +109,7 @@ export function generateToken(
       account_service_url: "http://localhost:8000",
       survey_metadata: getSurveyMetadata(theme, userId, displayAddress, periodId, periodStr),
       version: "v2",
-      response_expires_at: expiresAtISO,
+      response_expires_at: isoDate,
     };
   } else {
     payload = {
@@ -134,7 +135,7 @@ export function generateToken(
       region_code: regionCode,
       language_code: languageCode,
       account_service_url: "http://localhost:8000",
-      response_expires_at: expiresAtISO,
+      response_expires_at: isoDate,
     };
   }
 
