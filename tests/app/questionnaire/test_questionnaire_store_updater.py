@@ -1353,3 +1353,61 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
                 section_id=section_id, list_item_id="item-2", is_complete=False
             ),
         }
+
+
+@pytest.mark.parametrize(
+    "dependent_section_status",
+    [CompletionStatus.IN_PROGRESS, CompletionStatus.COMPLETED],
+)
+def test_dependent_sections_added_dependant_block_removed(
+    dependent_section_status, mock_router
+):
+    # Given
+    current_location = Location(
+        section_id="company-summary-section", block_id="total-turnover-block"
+    )
+    progress_store = ProgressStore(
+        [
+            {
+                "section_id": "company-summary-section",
+                "block_ids": ["total-turnover-block", "total-employees-block"],
+                "status": "COMPLETED",
+            },
+            {
+                "section_id": "breakdown-section",
+                "block_ids": [
+                    "turnover-breakdown-block",
+                ],
+                "status": dependent_section_status,
+            },
+        ],
+    )
+    questionnaire_store_updater = get_questionnaire_store_updater(
+        current_location=current_location,
+        progress_store=progress_store,
+        router=mock_router,
+    )
+    dependent_section_key = ("breakdown-section", None)
+    dependent_block_id = "turnover-breakdown-block"
+
+    questionnaire_store_updater.dependent_block_id_by_section_key = {
+        dependent_section_key: {dependent_block_id}
+    }
+
+    assert dependent_block_id in progress_store.get_completed_block_ids(
+        *dependent_section_key
+    )
+    assert questionnaire_store_updater.dependent_sections == set()
+
+    # When
+    questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
+
+    # Then
+    assert dependent_block_id not in progress_store.get_completed_block_ids(
+        *dependent_section_key
+    )
+    assert questionnaire_store_updater.dependent_sections == {
+        DependentSection(
+            section_id="breakdown-section", list_item_id=None, is_complete=False
+        )
+    }
