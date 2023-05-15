@@ -129,6 +129,9 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(CurrencyTotalPlaybackPage.milkAnswerEdit()).click();
       await $(FirstQuestionBlockPage.milk()).setValue(100);
       await $(FirstQuestionBlockPage.submit()).click();
+      await $(SkipQuestionPage.yes()).click();
+      await $(SkipQuestionPage.submit()).click();
+      await $(CurrencyTotalPlaybackPage.submit()).click();
       await $(CalculatedSummarySectionSummaryPage.submit()).click();
       await expect(await $(HubPage.summaryRowState("dependent-question-section")).getText()).to.equal("Partially completed");
     });
@@ -155,6 +158,7 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(SkipQuestionPage.submit()).click();
       await $(ButterPage.butter()).setValue(60);
       await $(ButterPage.submit()).click();
+      await $(CurrencyTotalPlaybackPage.submit()).click();
       await $(CalculatedSummarySectionSummaryPage.submit()).click();
 
       await expect(await $(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).to.be.true;
