@@ -1,12 +1,15 @@
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping, MutableMapping, Optional
 
 from flask import url_for
 from markupsafe import Markup, escape
+from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import AnswerStore
+from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.answer import AnswerValueEscapedTypes, escape_answer_value
+from app.data_models.metadata_proxy import MetadataProxy
 from app.forms.field_handlers.select_handlers import DynamicAnswerOptions
 from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
+from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.views.contexts.summary.answer import (
@@ -16,12 +19,15 @@ from app.views.contexts.summary.answer import (
 )
 
 
+# pylint: disable=too-many-locals
 class Question:
     def __init__(
         self,
         question_schema: QuestionSchemaType,
         *,
         answer_store: AnswerStore,
+        list_store: ListStore,
+        progress_store: ProgressStore,
         schema: QuestionnaireSchema,
         rule_evaluator: RuleEvaluator,
         value_source_resolver: ValueSourceResolver,
@@ -29,12 +35,18 @@ class Question:
         block_id: str,
         return_to: Optional[str],
         return_to_block_id: Optional[str] = None,
+        metadata: MetadataProxy | None,
+        response_metadata: MutableMapping,
+        language: str,
     ) -> None:
         self.list_item_id = location.list_item_id if location else None
         self.id = question_schema["id"]
         self.type = question_schema["type"]
         self.schema = schema
-        self.answer_schemas = iter(question_schema["answers"])
+        self.answer_schemas = iter(question_schema.get("answers", []))
+        self.answer_store = answer_store
+        self.list_store = list_store
+        self.progress_store = progress_store
         self.summary = question_schema.get("summary")
         self.title = (
             question_schema.get("title") or question_schema["answers"][0]["label"]
@@ -51,13 +63,16 @@ class Question:
             list_name=location.list_name if location else None,
             return_to=return_to,
             return_to_block_id=return_to_block_id,
+            metadata=metadata,
+            response_metadata=response_metadata,
+            language=language,
         )
 
     def get_answer(
-        self, answer_store: AnswerStore, answer_id: str
+        self, answer_store: AnswerStore, answer_id: str, list_item_id: str | None = None
     ) -> Optional[AnswerValueEscapedTypes]:
         answer = answer_store.get_answer(
-            answer_id, self.list_item_id
+            answer_id, list_item_id or self.list_item_id
         ) or self.schema.get_default_answer(answer_id)
 
         return escape_answer_value(answer.value) if answer else None
@@ -68,9 +83,12 @@ class Question:
         answer_store: AnswerStore,
         question_schema: QuestionSchemaType,
         block_id: str,
-        list_name: Optional[str],
-        return_to: Optional[str],
-        return_to_block_id: Optional[str],
+        list_name: str | None,
+        return_to: str | None,
+        return_to_block_id: str | None,
+        metadata: MetadataProxy | None,
+        response_metadata: MutableMapping,
+        language: str,
     ) -> list[dict[str, Any]]:
         if self.summary:
             answer_id = f"{self.id}-concatenated-answer"
@@ -95,9 +113,17 @@ class Question:
             ]
 
         summary_answers = []
-        for answer_schema in self.answer_schemas:
-            answer_value: Optional[AnswerValueEscapedTypes] = self.get_answer(
-                answer_store, answer_schema["id"]
+
+        for answer_schema in self._get_resolved_answers(
+            question_schema=question_schema,
+            language=language,
+            metadata=metadata,
+            response_metadata=response_metadata,
+        ):
+            list_item_id = answer_schema.get("list_item_id")
+            answer_id = answer_schema.get("original_answer_id") or answer_schema["id"]
+            answer_value = self.get_answer(
+                answer_store, answer_id, list_item_id=list_item_id
             )
             answer = self._build_answer(
                 answer_store, question_schema, answer_schema, answer_value
@@ -108,7 +134,7 @@ class Question:
                 answer_value=answer,
                 block_id=block_id,
                 list_name=list_name,
-                list_item_id=self.list_item_id,
+                list_item_id=list_item_id or self.list_item_id,
                 return_to=return_to,
                 return_to_block_id=return_to_block_id,
             ).serialize()
@@ -251,6 +277,34 @@ class Question:
         for option in self.get_answer_options(answer_schema):
             if answer == option["value"]:
                 return option["label"]
+
+    def _get_resolved_answers(
+        self,
+        *,
+        question_schema: QuestionSchemaType,
+        language: str,
+        metadata: MetadataProxy | None = None,
+        response_metadata: MutableMapping,
+    ) -> Any:
+        resolved_question = ImmutableDict({"answers": self.answer_schemas})
+
+        if "dynamic_answers" in question_schema:
+            placeholder_renderer = PlaceholderRenderer(
+                answer_store=self.answer_store,
+                list_store=self.list_store,
+                progress_store=self.progress_store,
+                schema=self.schema,
+                language=language,
+                metadata=metadata,
+                response_metadata=response_metadata,
+            )
+
+            resolved_question = ImmutableDict(
+                placeholder_renderer.render(
+                    data_to_render=question_schema, list_item_id=self.list_item_id
+                )
+            )
+        return resolved_question["answers"]
 
     def serialize(self) -> dict[str, Any]:
         return {
