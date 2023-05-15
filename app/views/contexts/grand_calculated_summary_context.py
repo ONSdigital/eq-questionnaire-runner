@@ -105,12 +105,13 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
             calculation["operation"], routing_path_block_ids
         )
 
+        sections = [{"id": self.current_location.section_id, "groups": groups}]
         answer_format = self._get_summary_format(groups)
         formatted_total = self._format_total(answer_format, total)
 
         return {
             "summary": {
-                "groups": groups,
+                "sections": sections,
                 "answers_are_editable": True,
                 "calculated_question": self._get_calculated_question(
                     calculation, formatted_total

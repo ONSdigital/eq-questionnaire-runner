@@ -225,7 +225,7 @@ def test_build_view_context_for_return_to_calculated_summary(
     assert_summary_context(context)
     context_summary = context["summary"]
 
-    answer_change_link = context_summary["groups"][0]["blocks"][0]["question"][
+    answer_change_link = context_summary["sections"][0]["groups"][0]["blocks"][0]["question"][
         "answers"
     ][0]["link"]
     assert f"return_to=calculated-summary,{return_to}" in answer_change_link

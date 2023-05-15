@@ -111,10 +111,10 @@ def test_build_view_context_for_grand_calculated_summary(
     assert context_summary["title"] == title
 
     assert "calculated_question" in context_summary
-    assert len(context_summary["groups"][0]["blocks"]) == total_blocks
+    assert len(context_summary["sections"][0]["groups"][0]["blocks"]) == total_blocks
     assert context_summary["calculated_question"]["answers"][0]["value"] == value
 
-    answer_change_link = context_summary["groups"][0]["blocks"][0][
+    answer_change_link = context_summary["sections"][0]["groups"][0]["blocks"][0][
         "calculated_summary"
     ]["answers"][0]["link"]
     assert "return_to=grand-calculated-summary" in answer_change_link
