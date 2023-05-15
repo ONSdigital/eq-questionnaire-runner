@@ -515,12 +515,7 @@ class QuestionnaireStoreUpdater:
         return self._progress_store.started_section_keys(section_ids)
 
     def get_chronological_section_dependents(self) -> list:
-        chronological_sections_dependents: list = []
-        sections_by_id = self._schema.get_section_ids()
-        for section_id in sections_by_id:
-            chronological_sections_dependents.extend(
-                dependent_section
-                for dependent_section in self.dependent_sections
-                if section_id == dependent_section.section_id
-            )
-        return chronological_sections_dependents
+        sections = list(self._schema.get_section_ids())
+        return sorted(
+            self.dependent_sections, key=lambda x: sections.index(x.section_id)
+        )

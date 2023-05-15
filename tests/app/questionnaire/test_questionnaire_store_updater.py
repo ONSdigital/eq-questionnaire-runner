@@ -1090,11 +1090,11 @@ def get_questionnaire_store_updater(
     [CompletionStatus.IN_PROGRESS, CompletionStatus.COMPLETED],
 )
 def test_dependent_sections_completed_dependant_blocks_removed_and_status_updated(
-    dependent_section_status, mock_router
+    mocker, dependent_section_status, mock_router
 ):
     # Given
     current_location = Location(
-        section_id="company-summary-section", block_id="total-turnover-block"
+        section_id="company-summary-section", block_id="breakdown-section"
     )
     progress_store = ProgressStore(
         [
@@ -1129,6 +1129,14 @@ def test_dependent_sections_completed_dependant_blocks_removed_and_status_update
         section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
     )
 
+    mocker.patch(
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater.get_chronological_section_dependents",
+        return_value=[
+            DependentSection(
+                section_id="breakdown-section", list_item_id=None, is_complete=False
+            )
+        ],
+    )
     # When
     questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
     questionnaire_store_updater.update_progress_for_dependent_sections()
@@ -1280,7 +1288,7 @@ def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
     [CompletionStatus.IN_PROGRESS, CompletionStatus.COMPLETED],
 )
 def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_status_updated(
-    dependent_section_status, mock_router
+    mocker, dependent_section_status, mock_router
 ):
     # Given
     current_location = Location(
@@ -1336,6 +1344,14 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
         )
     )
 
+    mocker.patch(
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater.get_chronological_section_dependents",
+        return_value=[
+            DependentSection(
+                section_id="breakdown-section", list_item_id=None, is_complete=None
+            )
+        ],
+    )
     # When
     questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
     questionnaire_store_updater.update_progress_for_dependent_sections()

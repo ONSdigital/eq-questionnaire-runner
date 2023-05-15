@@ -160,6 +160,7 @@ describe("Feature: Routing rules based on progress value sources in repeating se
       await $(SecondNumberBlockPage.secondNumber()).setValue(2);
       await $(SecondNumberBlockPage.submit()).click();
       await $(CalculatedSummaryBlockPage.submit()).click();
+      await browser.url(HubPage.url());
 
       await expect(await $(HubPage.summaryRowState("section-1")).getText()).to.equal("Completed");
       await expect(await $(HubPage.summaryRowState("section-2")).getText()).to.equal("Partially completed");
@@ -175,6 +176,7 @@ describe("Feature: Routing rules based on progress value sources in repeating se
       await $(SecondNumberBlockPage.secondNumber()).setValue(2);
       await $(SecondNumberBlockPage.submit()).click();
       await $(CalculatedSummaryBlockPage.submit()).click();
+      await browser.url(HubPage.url());
 
       await $(HubPage.summaryRowLink("section-2")).click();
 
