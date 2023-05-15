@@ -827,6 +827,71 @@ class TestRouterPreviousLocation(RouterTestCase):
         assert expected_location_url == previous_location_url
 
     @pytest.mark.usefixtures("app")
+    def test_return_to_grand_calculated_summary_from_answer(self):
+        """
+        If going from GCS ->  CS -> answer -> CS -> GCS this tests going from CS -> GCS having just come from an answer
+        """
+        self.schema = load_schema_from_name("test_grand_calculated_summary")
+
+        current_location = Location(
+            section_id="section-1", block_id="first-number-block"
+        )
+
+        routing_path = RoutingPath(
+            ["distance-calculated-summary-1"],
+            section_id="section-1",
+        )
+        previous_location_url = self.router.get_previous_location_url(
+            current_location,
+            routing_path,
+            return_to="calculated-summary,grand-calculated-summary",
+            return_to_answer_id="distance-calculated-summary-1",
+            return_to_block_id="distance-calculated-summary-1,distance-grand-calculated-summary",
+        )
+
+        expected_previous_url = url_for(
+            "questionnaire.block",
+            return_to="grand-calculated-summary",
+            block_id="distance-calculated-summary-1",
+            return_to_block_id="distance-grand-calculated-summary",
+            _anchor="distance-calculated-summary-1",
+        )
+
+        assert expected_previous_url == previous_location_url
+
+    @pytest.mark.usefixtures("app")
+    def test_return_to_grand_calculated_summary_from_calculated_summary(self):
+        """
+        If going from GCS ->  CS -> GCS this tests going from CS -> GCS having just come from the grand calculated summary
+        """
+        self.schema = load_schema_from_name("test_grand_calculated_summary")
+
+        current_location = Location(
+            section_id="section-1", block_id="distance-calculated-summary-1"
+        )
+
+        routing_path = RoutingPath(
+            ["distance-grand-calculated-summary"],
+            section_id="section-3",
+        )
+        previous_location_url = self.router.get_previous_location_url(
+            current_location,
+            routing_path,
+            return_to="grand-calculated-summary",
+            return_to_answer_id="distance-calculated-summary-1",
+            return_to_block_id="distance-grand-calculated-summary",
+        )
+
+        expected_previous_url = url_for(
+            "questionnaire.block",
+            return_to="grand-calculated-summary",
+            block_id="distance-grand-calculated-summary",
+            _anchor="distance-calculated-summary-1",
+        )
+
+        assert expected_previous_url == previous_location_url
+
+    @pytest.mark.usefixtures("app")
     def test_return_to_section_summary_section_is_complete(self):
         self.schema = load_schema_from_name("test_section_summary")
         self.progress_store = ProgressStore(

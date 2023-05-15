@@ -145,3 +145,89 @@ def test_build_view_context_for_currency_calculated_summary(
     assert "return_to=calculated-summary" in answer_change_link
     assert f"return_to_answer_id={return_to_answer_id}" in answer_change_link
     assert f"return_to_block_id={block_id}" in answer_change_link
+
+
+@pytest.mark.usefixtures("app")
+@pytest.mark.parametrize(
+    "block_id, return_to_answer_id, return_to, return_to_block_id",
+    (
+        (
+            "distance-calculated-summary-1",
+            "q1-a1",
+            "grand-calculated-summary",
+            "distance-grand-calculated-summary",
+        ),
+        (
+            "number-calculated-summary-1",
+            "q1-a2",
+            "grand-calculated-summary",
+            "number-grand-calculated-summary",
+        ),
+        (
+            "distance-calculated-summary-2",
+            "q3-a1",
+            "grand-calculated-summary",
+            "distance-grand-calculated-summary",
+        ),
+        (
+            "number-calculated-summary-2",
+            "q3-a2",
+            "grand-calculated-summary",
+            "number-grand-calculated-summary",
+        ),
+    ),
+)
+def test_build_view_context_for_return_to_calculated_summary(
+    test_grand_calculated_summary_schema,
+    test_grand_calculated_summary_answers,
+    list_store,
+    progress_store,
+    mocker,
+    block_id,
+    return_to_answer_id,
+    return_to,
+    return_to_block_id,
+):
+    """
+    Tests the return to links for a calculated summary that has been reached by a change link on a grand calculated summary
+    """
+    mocker.patch(
+        "app.jinja_filters.flask_babel.get_locale",
+        mocker.MagicMock(return_value="en_GB"),
+    )
+
+    block_ids = [
+        "first-number-block",
+        "second-number-block",
+        "distance-calculated-summary-1",
+        "number-calculated-summary-1",
+        "third-number-block",
+        "fourth-number-block",
+        "distance-calculated-summary-2",
+        "number-calculated-summary-2",
+    ]
+
+    calculated_summary_context = CalculatedSummaryContext(
+        language="en",
+        schema=test_grand_calculated_summary_schema,
+        answer_store=test_grand_calculated_summary_answers,
+        list_store=list_store,
+        progress_store=progress_store,
+        metadata=None,
+        response_metadata={},
+        routing_path=RoutingPath(section_id="default-section", block_ids=block_ids),
+        current_location=Location(section_id="default-section", block_id=block_id),
+        return_to=return_to,
+        return_to_block_id=return_to_block_id,
+    )
+
+    context = calculated_summary_context.build_view_context_for_calculated_summary()
+    assert_summary_context(context)
+    context_summary = context["summary"]
+
+    answer_change_link = context_summary["groups"][0]["blocks"][0]["question"][
+        "answers"
+    ][0]["link"]
+    assert f"return_to=calculated-summary,{return_to}" in answer_change_link
+    assert f"return_to_answer_id={return_to_answer_id}" in answer_change_link
+    assert f"return_to_block_id={block_id},{return_to_block_id}" in answer_change_link
