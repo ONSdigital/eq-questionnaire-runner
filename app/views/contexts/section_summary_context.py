@@ -57,15 +57,27 @@ class SectionSummaryContext(Context):
 
         page_title = self.get_page_title(title_for_location)
 
-        return {
+        summary_context = {
             "summary": {
                 "title": title,
                 "page_title": page_title,
                 "summary_type": "SectionSummary",
                 "answers_are_editable": True,
-                **summary,
-            }
+                "collapsible": summary.get("collapsible"),
+            },
         }
+
+        if custom_summary := summary.get("custom_summary"):
+            summary_context["summary"]["custom_summary"] = custom_summary
+        elif groups := summary.get("groups"):
+            summary_context["summary"]["sections"] = [
+                {
+                    "title": title,
+                    "groups": groups,
+                }
+            ]
+
+        return summary_context
 
     @cached_property
     def section(self) -> ImmutableDict:
