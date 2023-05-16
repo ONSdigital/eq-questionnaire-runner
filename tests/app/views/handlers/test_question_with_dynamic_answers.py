@@ -36,7 +36,6 @@ def test_question_with_dynamic_answers(storage, language, mocker):
     questionnaire_store.list_store = ListStore(
         [{"items": ["tUJzGV", "vhECeh"], "name": "supermarkets"}]
     )
-    # pylint: disable=protected-access
     questionnaire_store.set_metadata({"response_expires_at": get_response_expires_at()})
     schema = load_schema_from_name("test_dynamic_answers_list_source")
 
