@@ -55,9 +55,8 @@ class ListAddQuestion(ListAction):
             self.form.data, self._list_item_id
         )
 
-        self.evaluate_and_update_section_status_on_list_change(
-            self.parent_block["for_list"]
-        )
+        self.capture_dependent_sections_for_list(self.parent_block["for_list"])
+
         return super().handle_post()
 
     def _resolve_custom_page_title_vars(self) -> MutableMapping:

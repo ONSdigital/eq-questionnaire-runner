@@ -104,6 +104,7 @@ class Group:
                             return_to=return_to,
                             return_to_block_id=return_to_block_id,
                             progress_store=progress_store,
+                            language=language,
                         ).serialize()
                     ]
                 )
