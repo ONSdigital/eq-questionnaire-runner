@@ -424,6 +424,7 @@ class QuestionnaireStoreUpdater:
                     is_complete=section.is_complete,
                     evaluated_dependents=evaluated_dependents,
                 )
+                evaluated_dependents.append((section.section_id, section.list_item_id))
 
     def _evaluate_dependents(
         self,
@@ -447,28 +448,28 @@ class QuestionnaireStoreUpdater:
             dependents_of_dependent = self._schema.when_rules_section_dependencies_by_section_for_progress_value_source[
                 section_id
             ]
-            for dependent in dependents_of_dependent:
+            for dependent_section_id in dependents_of_dependent:
                 if repeating_list := self._schema.get_repeating_list_for_section(
-                    dependent
+                    dependent_section_id
                 ):
                     for item_id in self._list_store[repeating_list].items:
-                        if (section_id, item_id) not in evaluated_dependents:
+                        if (dependent_section_id, item_id) not in evaluated_dependents:
                             self._evaluate_dependents(
-                                section_id=dependent,
+                                section_id=dependent_section_id,
                                 list_item_id=item_id,
                                 is_complete=None,
                                 evaluated_dependents=evaluated_dependents,
                             )
-                            evaluated_dependents.append((section_id, item_id))
+                            evaluated_dependents.append((dependent_section_id, item_id))
 
-                elif (section_id, list_item_id) not in evaluated_dependents:
+                elif (dependent_section_id, list_item_id) not in evaluated_dependents:
                     self._evaluate_dependents(
-                        section_id=dependent,
+                        section_id=dependent_section_id,
                         list_item_id=None,
                         is_complete=None,
                         evaluated_dependents=evaluated_dependents,
                     )
-                    evaluated_dependents.append((section_id, None))
+                    evaluated_dependents.append((dependent_section_id, None))
 
     def remove_dependent_blocks_and_capture_dependent_sections(self) -> None:
         """Removes dependent blocks from the progress store."""
