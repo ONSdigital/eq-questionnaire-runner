@@ -91,6 +91,7 @@ class ListAction(Question):
             self._routing_path = self.router.routing_path(
                 self.current_location.section_id, self.current_location.list_item_id
             )
+            self.questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
             self.questionnaire_store_updater.update_progress_for_dependent_sections()
             self.questionnaire_store_updater.save()
 
