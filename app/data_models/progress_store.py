@@ -255,9 +255,15 @@ class ProgressStore:
                 block_progress.status = list_item_block_completeness
             self._update_list_item_progress(list_item_progress)
 
+    def remove_list_item_progress(self, list_item_id: str) -> None:
+        if self._list_item_progress.get(list_item_id):
+            del self._list_item_progress[list_item_id]
+
     def is_list_item_complete(self, list_item_id: str) -> bool:
         if list_item_progress := self._list_item_progress.get(list_item_id):
             return list_item_progress.status == CompletionStatus.COMPLETED
+        # TODO exception more appropriate?
+        return False
 
     @staticmethod
     def _update_list_item_progress(list_item_progress: ListItemProgress) -> None:

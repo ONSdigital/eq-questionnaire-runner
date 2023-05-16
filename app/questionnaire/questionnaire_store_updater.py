@@ -152,7 +152,7 @@ class QuestionnaireStoreUpdater:
             self.remove_list_item_and_answers(list_name, list_item_id)
 
     def remove_list_item_and_answers(self, list_name: str, list_item_id: str) -> None:
-        """Remove answers from the answer store and update the list store to remove it.
+        """Remove answers from the answer store, remove list item progress form the progress store and update the list store to remove it.
         Any related relationship answers are re-evaluated for completeness.
         """
         self._list_store.delete_list_item(list_name, list_item_id)
@@ -167,6 +167,7 @@ class QuestionnaireStoreUpdater:
             self.update_relationship_question_completeness(list_name)
 
         self._progress_store.remove_progress_for_list_item_id(list_item_id=list_item_id)
+        self._progress_store.remove_list_item_progress(list_item_id=list_item_id)
 
         for list_collector in self._schema.get_list_collectors_for_list(
             for_list=list_name,
@@ -396,10 +397,10 @@ class QuestionnaireStoreUpdater:
             repeating_blocks = []
 
         block_ids = [block["id"] for block in repeating_blocks]
-        self._progress_store.add_list_item_progress(list_item_id, block_ids)
+        self._progress_store.add_list_item_progress(list_item_id=list_item_id, list_item_block_ids=block_ids)
 
     def update_list_item_block_complete(self, list_item_id: str, list_block_id: str) -> None:
-        self._progress_store.update_list_item_block_progress(list_item_id, list_block_id)
+        self._progress_store.update_list_item_block_progress(list_item_id=list_item_id, list_block_id=list_block_id)
 
     def remove_dependent_blocks_and_capture_dependent_sections(self) -> None:
         """Removes dependent blocks from the progress store.
