@@ -56,6 +56,11 @@ def flush_data() -> Response:
 
         if metadata := get_metadata(user):
             contextvars.bind_contextvars(tx_id=metadata.tx_id)
+            contextvars.bind_contextvars(ce_id=metadata.collection_exercise_sid)
+            if schema_name := metadata.schema_name:
+                contextvars.bind_contextvars(schema_name=schema_name)
+            if schema_url := metadata.schema_url:
+                contextvars.bind_contextvars(schema_url=schema_url)
         if _submit_data(user):
             return Response(status=200)
         return Response(status=404)
