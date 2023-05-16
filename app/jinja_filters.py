@@ -547,7 +547,10 @@ class SummaryRow:
 
         multiple_answers = len(question["answers"]) > 1
 
-        if summary_type in ("CalculatedSummary", "GrandCalculatedSummary") and not answers_are_editable:
+        if (
+            summary_type in ("CalculatedSummary", "GrandCalculatedSummary")
+            and not answers_are_editable
+        ):
             self.total = True
 
         for answer in question["answers"]:
