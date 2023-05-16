@@ -14,6 +14,7 @@ from app.views.handlers.individual_response import (
     GB_WLS_REGION_CODE,
     IndividualResponseFulfilmentRequest,
 )
+from tests.app.parser.conftest import get_response_expires_at
 
 DUMMY_MOBILE_NUMBER = "07700900258"
 
@@ -27,7 +28,7 @@ def test_sms_fulfilment_request_payload():
         response_id="response_id",
         account_service_url="account_service_url",
         collection_exercise_sid="collection_exercise_sid",
-        response_expires_at=datetime.now(tz=timezone.utc),
+        response_expires_at=get_response_expires_at(),
     )
 
     fulfilment_request = IndividualResponseFulfilmentRequest(

@@ -6,6 +6,7 @@ from app.data_models.answer_store import Answer
 from app.data_models.progress_store import CompletionStatus
 from app.data_models.session_store import SessionStore
 from app.storage import storage_encryption
+from tests.app.parser.conftest import get_response_expires_at
 
 
 @pytest.fixture
@@ -83,9 +84,7 @@ def basic_input():
     return {
         "METADATA": {
             "test": True,
-            "response_expires_at": (
-                datetime.now(tz=timezone.utc) + timedelta(days=1)
-            ).isoformat(),
+            "response_expires_at": get_response_expires_at(),
         },
         "ANSWERS": [{"answer_id": "test", "value": "test"}],
         "LISTS": [],

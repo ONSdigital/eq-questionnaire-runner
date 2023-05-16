@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 
 import pytest
 from freezegun import freeze_time
@@ -8,6 +8,7 @@ from app.questionnaire import Location
 from app.utilities.schema import load_schema_from_name
 from app.views.handlers.question import Question
 
+from ...parser.conftest import get_response_expires_at
 from .conftest import set_storage_data
 
 
@@ -36,11 +37,7 @@ def test_question_with_dynamic_answers(storage, language, mocker):
         [{"items": ["tUJzGV", "vhECeh"], "name": "supermarkets"}]
     )
     # pylint: disable=protected-access
-    questionnaire_store._metadata = {
-        "response_expires_at": (
-            datetime.now(tz=timezone.utc) + timedelta(days=1)
-        ).isoformat()
-    }
+    questionnaire_store.set_metadata({"response_expires_at": get_response_expires_at()})
     schema = load_schema_from_name("test_dynamic_answers_list_source")
 
     mocker.patch(

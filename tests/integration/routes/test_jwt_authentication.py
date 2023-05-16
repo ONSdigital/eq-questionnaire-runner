@@ -4,7 +4,6 @@ import string
 import time
 import unittest
 import uuid
-from datetime import datetime, timedelta, timezone
 
 from sdc.crypto.encrypter import encrypt
 from sdc.crypto.key_store import KeyStore
@@ -14,6 +13,7 @@ from tests.app.authentication import (
     TEST_DO_NOT_USE_SR_PUBLIC_KEY,
     TEST_DO_NOT_USE_UPSTREAM_PRIVATE_KEY,
 )
+from tests.app.parser.conftest import get_response_expires_at
 from tests.integration.app_context_test_case import AppContextTestCase
 from tests.integration.integration_test_case import (
     EQ_USER_AUTHENTICATION_RRM_PRIVATE_KEY_KID,
@@ -86,9 +86,7 @@ class FlaskClientAuthenticationTestCase(AppContextTestCase):
             "ru_name": "Test",
             "return_by": "2016-09-09",
             "account_service_url": "http://upstream.url/",
-            "response_expires_at": (
-                datetime.now(tz=timezone.utc) + timedelta(days=1)
-            ).isoformat(),
+            "response_expires_at": get_response_expires_at(),
         }
 
 
