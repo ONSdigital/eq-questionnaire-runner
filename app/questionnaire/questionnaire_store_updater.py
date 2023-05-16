@@ -29,6 +29,7 @@ class QuestionnaireStoreUpdater:
         router: Router,
         current_question: Mapping | None,
     ):
+        self.evaluated_dependents = []
         self._current_location = current_location
         self._current_question = current_question or {}
         self._schema = schema
@@ -406,8 +407,6 @@ class QuestionnaireStoreUpdater:
         """Removes dependent blocks from the progress store and updates the progress to IN_PROGRESS.
         Section progress is not updated for the current location as it is handled by `handle_post` on block handlers.
         """
-        evaluated_dependents: list[tuple] = []
-
         chronological_dependents = self.get_chronological_section_dependents()
 
         for section in chronological_dependents:
@@ -417,14 +416,18 @@ class QuestionnaireStoreUpdater:
             ) not in self.started_section_keys():
                 continue
 
-            if (section.section_id, section.list_item_id) not in evaluated_dependents:
+            if (
+                section.section_id,
+                section.list_item_id,
+            ) not in self.evaluated_dependents:
                 self._evaluate_dependents(
                     section_id=section.section_id,
                     list_item_id=section.list_item_id,
                     is_complete=section.is_complete,
-                    evaluated_dependents=evaluated_dependents,
                 )
-                evaluated_dependents.append((section.section_id, section.list_item_id))
+                self.evaluated_dependents.append(
+                    (section.section_id, section.list_item_id)
+                )
 
     def _evaluate_dependents(
         self,
@@ -432,7 +435,6 @@ class QuestionnaireStoreUpdater:
         section_id: str,
         list_item_id: str | None,
         is_complete: bool | None,
-        evaluated_dependents: list[tuple],
     ) -> None:
         is_path_complete = is_complete
         if is_path_complete is None:
@@ -453,23 +455,29 @@ class QuestionnaireStoreUpdater:
                     dependent_section_id
                 ):
                     for item_id in self._list_store[repeating_list].items:
-                        if (dependent_section_id, item_id) not in evaluated_dependents:
+                        if (
+                            dependent_section_id,
+                            item_id,
+                        ) not in self.evaluated_dependents:
                             self._evaluate_dependents(
                                 section_id=dependent_section_id,
                                 list_item_id=item_id,
                                 is_complete=None,
-                                evaluated_dependents=evaluated_dependents,
                             )
-                            evaluated_dependents.append((dependent_section_id, item_id))
+                            self.evaluated_dependents.append(
+                                (dependent_section_id, item_id)
+                            )
 
-                elif (dependent_section_id, list_item_id) not in evaluated_dependents:
+                elif (
+                    dependent_section_id,
+                    list_item_id,
+                ) not in self.evaluated_dependents:
                     self._evaluate_dependents(
                         section_id=dependent_section_id,
                         list_item_id=None,
                         is_complete=None,
-                        evaluated_dependents=evaluated_dependents,
                     )
-                    evaluated_dependents.append((dependent_section_id, None))
+                    self.evaluated_dependents.append((dependent_section_id, None))
 
     def remove_dependent_blocks_and_capture_dependent_sections(self) -> None:
         """Removes dependent blocks from the progress store."""

@@ -1,5 +1,8 @@
+from collections import defaultdict
+
 import pytest
 from mock import MagicMock, Mock
+from ordered_set import OrderedSet
 from werkzeug.datastructures import MultiDict
 
 from app.data_models import QuestionnaireStore
@@ -12,6 +15,7 @@ from app.questionnaire.questionnaire_store_updater import (
     DependentSection,
     QuestionnaireStoreUpdater,
 )
+from app.utilities.schema import load_schema_from_name
 
 
 # pylint: disable=too-many-locals, too-many-lines
@@ -1432,3 +1436,143 @@ def test_dependent_sections_added_dependant_block_removed(
             section_id="breakdown-section", list_item_id=None, is_complete=False
         )
     }
+
+
+def test_questionnaire_store_updater_dependency_capture(
+    mocker, mock_router, mock_schema
+):
+    current_location = Location(section_id="section-1", block_id="block-2")
+
+    mock_schema.when_rules_section_dependencies_by_section_for_progress_value_source = (
+        defaultdict(
+            lambda: {
+                "section-1": OrderedSet(["section-2", "section-3"]),
+                "section-2": OrderedSet(
+                    ["section-3", "section-4", "section-5", "section-6"]
+                ),
+                "section-3": OrderedSet(["section-4", "section-5", "section-7"]),
+            }
+        )
+    )
+    mock_schema.get_repeating_list_for_section.return_value = False
+
+    progress_store = ProgressStore(
+        [
+            {
+                "section_id": "section-1",
+                "block_ids": ["block-1", "block-2"],
+                "status": "IN PROGRESS",
+            },
+            {
+                "section_id": "section-2",
+                "block_ids": ["block-1", "block-2"],
+                "status": "COMPLETED",
+            },
+            {
+                "section_id": "section-3",
+                "block_ids": ["block-1", "block-2"],
+                "status": "COMPLETED",
+            },
+            {
+                "section_id": "section-4",
+                "block_ids": ["block-1", "block-2"],
+                "status": "COMPLETED",
+            },
+            {
+                "section_id": "section-5",
+                "block_ids": ["block-1", "block-2"],
+                "status": "COMPLETED",
+            },
+            {
+                "section_id": "section-6",
+                "block_ids": ["block-1", "block-2"],
+                "status": "COMPLETED",
+            },
+            {
+                "section_id": "section-7",
+                "block_ids": ["block-1", "block-2"],
+                "status": "COMPLETED",
+            },
+        ],
+    )
+
+    questionnaire_store_updater = get_questionnaire_store_updater(
+        current_location=current_location,
+        progress_store=progress_store,
+        router=mock_router,
+        schema=mock_schema,
+    )
+
+    mocker.patch(
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater.get_chronological_section_dependents",
+        return_value=[
+            DependentSection(
+                section_id="section-1", list_item_id=None, is_complete=True
+            ),
+            DependentSection(
+                section_id="section-2", list_item_id=None, is_complete=None
+            ),
+            DependentSection(
+                section_id="section-3", list_item_id=None, is_complete=None
+            ),
+            DependentSection(
+                section_id="section-4", list_item_id=None, is_complete=None
+            ),
+            DependentSection(
+                section_id="section-5", list_item_id=None, is_complete=None
+            ),
+            DependentSection(
+                section_id="section-6", list_item_id=None, is_complete=None
+            ),
+            DependentSection(
+                section_id="section-7", list_item_id=None, is_complete=None
+            ),
+        ],
+    )
+
+    questionnaire_store_updater.update_progress_for_dependent_sections()
+
+    assert len(questionnaire_store_updater.evaluated_dependents) == 6
+
+
+def test_questionnaire_store_updater_dependency_evaluation_order(
+    mocker, mock_router, mock_schema
+):
+    current_location = Location(section_id="section-2", block_id="list-collector")
+
+    schema = load_schema_from_name(
+        "test_progress_value_source_calculated_summary_extended"
+    )
+
+    progress_store = ProgressStore(
+        [
+            {
+                "section_id": "section-12",
+                "block_ids": ["s12-b2"],
+                "status": "IN_PROGRESS",
+            },
+            {
+                "section_id": "section-11",
+                "block_ids": ["s11-b2"],
+                "status": "IN_PROGRESS",
+            },
+            {"section_id": "section-8", "block_ids": ["s8-b3"], "status": "COMPLETED"},
+            {"section_id": "section-9", "block_ids": ["s9-b2"], "status": "COMPLETED"},
+            {
+                "section_id": "section-10",
+                "block_ids": ["s10-b2"],
+                "status": "COMPLETED",
+            },
+        ]
+    )
+
+    questionnaire_store_updater = get_questionnaire_store_updater(
+        current_location=current_location,
+        progress_store=progress_store,
+        router=mock_router,
+        schema=schema,
+    )
+
+    questionnaire_store_updater.update_progress_for_dependent_sections()
+
+    assert len(questionnaire_store_updater.evaluated_dependents) == 3
