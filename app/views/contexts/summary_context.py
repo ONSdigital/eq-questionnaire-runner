@@ -1,4 +1,4 @@
-from typing import Generator, MutableMapping, Optional, Union
+from typing import MutableMapping
 
 from app.questionnaire.location import Location
 
@@ -31,43 +31,39 @@ class SummaryContext(Context):
             response_metadata,
         )
         self.view_submitted_response = view_submitted_response
+        self.summaries: list[dict] = []
 
     def __call__(
-        self, answers_are_editable: bool = False, return_to: Optional[str] = None
-    ) -> dict[str, Union[str, list, bool]]:
-        groups = list(self._build_all_groups(return_to))
+        self, answers_are_editable: bool = False, return_to: str | None = None
+    ) -> dict[str, dict | str | list | bool]:
+        self._build_all_groups(return_to)
         summary_options = self._schema.get_summary_options()
         collapsible = summary_options.get("collapsible", False)
-
-        refactored_groups = set_unique_group_ids_and_titles(groups)
+        self.set_unique_group_ids()
 
         return {
-            "groups": refactored_groups,
+            "sections": self.summaries,
             "answers_are_editable": answers_are_editable,
             "collapsible": collapsible,
             "summary_type": "Summary",
             "view_submitted_response": self.view_submitted_response,
         }
 
-    def _build_all_groups(
-        self, return_to: Optional[str]
-    ) -> Generator[dict, None, None]:
+    def _build_all_groups(self, return_to: str | None) -> None:
         for section_id in self._router.enabled_section_ids:
             if repeat := self._schema.get_repeat_for_section(section_id):
                 for_repeat = self._list_store[repeat["for_list"]]
 
                 if for_repeat.count > 0:
                     for item in for_repeat.items:
-                        yield from self.build_summary_item(
+                        self.build_summary_item(
                             section_id=section_id,
                             return_to=return_to,
                             list_item_id=item,
                             list_name=for_repeat.name,
                         )
             else:
-                yield from self.build_summary_item(
-                    section_id=section_id, return_to=return_to
-                )
+                self.build_summary_item(section_id=section_id, return_to=return_to)
 
     def build_summary_item(
         self,
@@ -75,7 +71,7 @@ class SummaryContext(Context):
         return_to: str | None,
         list_name: str | None = None,
         list_item_id: str | None = None,
-    ) -> list[dict]:
+    ) -> None:
         location = Location(
             section_id=section_id, list_name=list_name, list_item_id=list_item_id
         )
@@ -96,25 +92,20 @@ class SummaryContext(Context):
         summary = section_summary_context(
             view_submitted_response=self.view_submitted_response, return_to=return_to
         )["summary"]
-        groups: list = summary.get("groups", [])
 
-        for group in groups:
-            group["section_title"] = summary["title"]
-            break
+        for section in summary.get("sections", []):
+            if any(group["blocks"] for group in section["groups"]):
+                self.summaries.extend(summary["sections"])
 
-        return groups
+    def set_unique_group_ids(self) -> None:
+        checked_ids = set()
+        id_value = 0
 
-
-def set_unique_group_ids_and_titles(groups: list[dict]) -> list[dict]:
-    checked_ids = set()
-    id_value = 0
-
-    for group in groups:
-        group_id = group["id"]
-        if group_id in checked_ids:
-            id_value += 1
-            group["id"] = f"{group_id}-{id_value}"
-
-        checked_ids.add(group_id)
-
-    return groups
+        for section in self.summaries:
+            if groups := section.get("groups"):
+                for group in groups:
+                    group_id = group["id"]
+                    if group_id in checked_ids:
+                        id_value += 1
+                        group["id"] = f"{group_id}-{id_value}"
+                    checked_ids.add(group_id)

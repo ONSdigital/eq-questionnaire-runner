@@ -34,23 +34,27 @@ def test_build_view_submitted_response_context_summary(app: Flask):
         assert context["summary"]["collapsible"] is False
         assert context["view_submitted_response"]["expired"] is False
         assert (
-            context["summary"]["groups"][0]["blocks"][0]["question"]["answers"][0][
-                "value"
-            ]
+            context["summary"]["sections"][0]["groups"][0]["blocks"][0]["question"][
+                "answers"
+            ][0]["value"]
             == "John Smith"
         )
         assert (
-            context["summary"]["groups"][0]["blocks"][0]["question"]["title"]
+            context["summary"]["sections"][0]["groups"][0]["blocks"][0]["question"][
+                "title"
+            ]
             == "What is your name?"
         )
         assert (
-            context["summary"]["groups"][1]["blocks"][0]["question"]["answers"][0][
-                "value"
-            ]
+            context["summary"]["sections"][0]["groups"][1]["blocks"][0]["question"][
+                "answers"
+            ][0]["value"]
             == "NP10 8XG"
         )
         assert (
-            context["summary"]["groups"][1]["blocks"][0]["question"]["title"]
+            context["summary"]["sections"][0]["groups"][1]["blocks"][0]["question"][
+                "title"
+            ]
             == "What is your address?"
         )
 
