@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import pytest
 from freezegun import freeze_time
@@ -35,6 +35,12 @@ def test_question_with_dynamic_answers(storage, language, mocker):
     questionnaire_store.list_store = ListStore(
         [{"items": ["tUJzGV", "vhECeh"], "name": "supermarkets"}]
     )
+    # pylint: disable=protected-access
+    questionnaire_store._metadata = {
+        "response_expires_at": (
+            datetime.now(tz=timezone.utc) + timedelta(days=1)
+        ).isoformat()
+    }
     schema = load_schema_from_name("test_dynamic_answers_list_source")
 
     mocker.patch(
