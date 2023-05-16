@@ -1,6 +1,6 @@
 from collections import defaultdict, namedtuple
 from itertools import combinations
-from typing import Iterable, Mapping, Sequence
+from typing import Iterable, Mapping, Sequence, Any
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -168,6 +168,17 @@ class QuestionnaireStoreUpdater:
 
         self._progress_store.remove_progress_for_list_item_id(list_item_id=list_item_id)
 
+        for list_collector in self._schema.get_list_collectors_for_list(
+            for_list=list_name,
+            section=self._schema.get_section(self._current_location.section_id),  # type: ignore
+            # type ignore Section and answer_id below must exist at this point
+        ):
+            block = self._schema.get_add_block_for_list_collector(list_collector["id"])
+            answer_ids = self._schema.get_answer_ids_for_block(block["id"])  # type: ignore
+            # type ignore non-optional return, always exists
+            for answer_id in answer_ids:
+                self._capture_block_dependencies_for_answer(answer_id)
+
     def get_relationship_answers_for_list_name(
         self, list_name: str
     ) -> list[Answer] | None:
@@ -332,28 +343,30 @@ class QuestionnaireStoreUpdater:
                 self.dependent_sections.add(DependentSection(section_id, None, None))
 
     def update_answers(
-        self, form_data: Mapping, list_item_id: str | None = None
+        self, form_data: Mapping[str, Any], list_item_id: str | None = None
     ) -> None:
         list_item_id = list_item_id or self._current_location.list_item_id
-        answer_ids_for_question = self._schema.get_answer_ids_for_question(
+        answers_by_answer_id = self._schema.get_answers_for_question_by_id(
             self._current_question
         )
 
         for answer_id, answer_value in form_data.items():
-            if answer_id not in answer_ids_for_question:
+            if answer_id not in answers_by_answer_id:
                 continue
 
-            answer_updated = self._update_answer(answer_id, list_item_id, answer_value)
+            resolved_answer = answers_by_answer_id[answer_id]
+            answer_id_to_use = resolved_answer.get("original_answer_id") or answer_id
+            list_item_id_to_use = resolved_answer.get("list_item_id") or list_item_id
+
+            answer_updated = self._update_answer(
+                answer_id_to_use, list_item_id_to_use, answer_value
+            )
             if answer_updated:
-                self._capture_section_dependencies_for_answer(answer_id)
-                self._capture_block_dependencies_for_answer(answer_id)
+                self._capture_section_dependencies_for_answer(answer_id_to_use)
+                self._capture_block_dependencies_for_answer(answer_id_to_use)
 
     def update_progress_for_dependent_sections(self) -> None:
-        """Removes dependent blocks from the progress store and updates the progress to IN_PROGRESS.
-        Section progress is not updated for the current location as it is handled by `handle_post` on block handlers.
-        """
-
-        self._remove_dependent_blocks_and_capture_dependent_sections()
+        """Updates the progress to IN_PROGRESS. Section progress is not updated for the current location as it is handled by `handle_post` on block handlers."""
 
         for section in self.dependent_sections:
             if (
@@ -388,8 +401,10 @@ class QuestionnaireStoreUpdater:
     def update_list_item_block_complete(self, list_item_id: str, list_block_id: str) -> None:
         self._progress_store.update_list_item_block_progress(list_item_id, list_block_id)
 
-    def _remove_dependent_blocks_and_capture_dependent_sections(self) -> None:
-        """Removes dependent blocks from the progress store."""
+    def remove_dependent_blocks_and_capture_dependent_sections(self) -> None:
+        """Removes dependent blocks from the progress store.
+        This must be called before updating section progress (update_progress_for_dependent_sections) and section dependencies (_update_section_completeness)
+        """
 
         for (
             section_key,

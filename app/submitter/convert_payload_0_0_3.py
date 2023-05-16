@@ -70,8 +70,23 @@ def convert_answers_to_payload_0_0_3(
                     )
 
                 answer_ids = schema.get_answer_ids_for_block(block_id)
+                static_answer_ids = [
+                    answer_id
+                    for answer_id in answer_ids
+                    if not schema.is_answer_dynamic(answer_id)
+                ]
+                has_dynamic_answers = len(static_answer_ids) != len(answer_ids)
+
+                if answer_ids and has_dynamic_answers:
+                    resolve_dynamic_answers(
+                        question=schema.get_all_questions_for_block(block)[0],
+                        answer_store=answer_store,
+                        answers_payload=answers_payload,
+                        list_store=list_store,
+                    )
+
                 answers_in_block = answer_store.get_answers_by_answer_id(
-                    answer_ids, list_item_id=routing_path.list_item_id
+                    static_answer_ids, list_item_id=routing_path.list_item_id
                 )
                 for answer_in_block in answers_in_block:
                     answers_payload.add_or_update(answer_in_block)
@@ -145,3 +160,20 @@ def add_relationships_unrelated_answers(
             )
         ):
             answers_payload.add_or_update(unrelated_answer)
+
+
+def resolve_dynamic_answers(
+    question: Mapping,
+    answer_store: AnswerStore,
+    answers_payload: AnswerStore,
+    list_store: ListStore,
+) -> None:
+    dynamic_answers = question["dynamic_answers"]
+    values = dynamic_answers["values"]
+    for answer in dynamic_answers["answers"]:
+        if values["source"] == "list":
+            for list_item_id in list_store[values["identifier"]].items:
+                if extracted_answer := answer_store.get_answer(
+                    answer["id"], list_item_id=list_item_id
+                ):
+                    answers_payload.add_or_update(extracted_answer)
