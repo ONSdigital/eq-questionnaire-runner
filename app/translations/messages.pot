@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-27 09:02+0100\n"
+"POT-Creation-Date: 2023-05-16 13:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.11.0\n"
+"Generated-By: Babel 2.12.1\n"
 
 #: app/forms/validators.py:377 app/jinja_filters.py:115
 #, python-format
@@ -41,9 +41,9 @@ msgstr ""
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
 
-#: app/jinja_filters.py:701
-#: templates/partials/summary/collapsible-summary.html:26
-#: templates/partials/summary/summary.html:22
+#: app/jinja_filters.py:716
+#: templates/partials/summary/collapsible-summary.html:27
+#: templates/partials/summary/summary.html:25
 msgid "No answer provided"
 msgstr ""
 
@@ -456,7 +456,7 @@ msgstr ""
 #: templates/individual_response/confirmation-post.html:21
 #: templates/individual_response/confirmation-text-message.html:29
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
-#: templates/sectionsummary.html:10 templates/sectionsummary.html:50
+#: templates/sectionsummary.html:10 templates/sectionsummary.html:48
 msgid "Continue"
 msgstr ""
 
@@ -546,7 +546,7 @@ msgstr ""
 
 #: app/views/handlers/confirm_email.py:129
 #: app/views/handlers/confirmation_email.py:67
-#: app/views/handlers/feedback.py:84 app/views/handlers/question.py:170
+#: app/views/handlers/feedback.py:84 app/views/handlers/question.py:185
 msgid "Error: {page_title}"
 msgstr ""
 
@@ -735,14 +735,6 @@ msgstr ""
 msgid "View Submitted Response"
 msgstr ""
 
-#: templates/calculatedsummary.html:13
-msgid "Please review your answers and confirm these are correct"
-msgstr ""
-
-#: templates/calculatedsummary.html:24
-msgid "Yes, I confirm these are correct"
-msgstr ""
-
 #: templates/census-thank-you.html:9 templates/confirmation-email.html:8
 msgid "There is a problem with this page"
 msgstr ""
@@ -871,7 +863,7 @@ msgstr ""
 msgid "If you can’t answer someone else’s questions"
 msgstr ""
 
-#: templates/interstitial.html:23 templates/partials/question.html:45
+#: templates/interstitial.html:23 templates/partials/question.html:49
 msgid "If you can’t answer questions for this person"
 msgstr ""
 
@@ -930,13 +922,13 @@ msgid "Save questions as PDF"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:37
-#: templates/partials/summary/collapsible-summary.html:49
+#: templates/partials/summary/collapsible-summary.html:51
 #: templates/preview.html:92
 msgid "Show all"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:38
-#: templates/partials/summary/collapsible-summary.html:50
+#: templates/partials/summary/collapsible-summary.html:52
 #: templates/preview.html:93
 msgid "Hide all"
 msgstr ""
@@ -1323,6 +1315,14 @@ msgstr ""
 msgid "Continue survey"
 msgstr ""
 
+#: templates/layouts/_calculatedsummary.html:14
+msgid "Please review your answers and confirm these are correct"
+msgstr ""
+
+#: templates/layouts/_calculatedsummary.html:25
+msgid "Yes, I confirm these are correct"
+msgstr ""
+
 #: templates/layouts/_questionnaire.html:39
 msgid "Choose another section and return to this later"
 msgstr ""
@@ -1382,7 +1382,7 @@ msgid ""
 msgstr ""
 
 #: templates/partials/preview-question.html:34
-#: templates/partials/question.html:81
+#: templates/partials/question.html:85
 msgid "Or"
 msgstr ""
 
@@ -1390,19 +1390,19 @@ msgstr ""
 msgid "{max_characters} characters can be added."
 msgstr ""
 
-#: templates/partials/question.html:72
+#: templates/partials/question.html:76
 msgid "Selecting this will clear your answer"
 msgstr ""
 
-#: templates/partials/question.html:73
+#: templates/partials/question.html:77
 msgid "cleared"
 msgstr ""
 
-#: templates/partials/question.html:76
+#: templates/partials/question.html:80
 msgid "Selecting this will deselect any selected options"
 msgstr ""
 
-#: templates/partials/question.html:77 templates/partials/question.html:85
+#: templates/partials/question.html:81 templates/partials/question.html:89
 msgid "deselected"
 msgstr ""
 
@@ -1568,14 +1568,14 @@ msgstr ""
 msgid "Start survey"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:27
+#: templates/partials/summary/collapsible-summary.html:28
 #: templates/partials/summary/list-summary.html:7
-#: templates/partials/summary/summary.html:25
+#: templates/partials/summary/summary.html:28
 msgid "Change"
 msgstr ""
 
-#: templates/partials/summary/collapsible-summary.html:28
-#: templates/partials/summary/summary.html:26
+#: templates/partials/summary/collapsible-summary.html:29
+#: templates/partials/summary/summary.html:29
 msgid "Change your answer for:"
 msgstr ""
 
@@ -1584,7 +1584,7 @@ msgid "Change details for {item_name}"
 msgstr ""
 
 #: templates/partials/summary/list-summary.html:9
-#: templates/partials/summary/summary.html:23
+#: templates/partials/summary/summary.html:26
 msgid "Remove"
 msgstr ""
 
@@ -1592,7 +1592,7 @@ msgstr ""
 msgid "Remove {item_name}"
 msgstr ""
 
-#: templates/partials/summary/summary.html:24
+#: templates/partials/summary/summary.html:27
 msgid "Remove your answer for:"
 msgstr ""
 
