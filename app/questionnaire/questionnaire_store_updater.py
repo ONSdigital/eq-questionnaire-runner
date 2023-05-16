@@ -419,18 +419,19 @@ class QuestionnaireStoreUpdater:
 
             if (section.section_id, section.list_item_id) not in evaluated_dependents:
                 self._evaluate_dependents(
-                    section.section_id,
-                    section.list_item_id,
-                    section.is_complete,
-                    evaluated_dependents,
+                    section_id=section.section_id,
+                    list_item_id=section.list_item_id,
+                    is_complete=section.is_complete,
+                    evaluated_dependents=evaluated_dependents,
                 )
 
     def _evaluate_dependents(
         self,
+        *,
         section_id: str,
         list_item_id: str | None,
         is_complete: bool | None,
-        evaluated_dependents: list,
+        evaluated_dependents: list[tuple],
     ) -> None:
         is_path_complete = is_complete
         if is_path_complete is None:
@@ -453,13 +454,19 @@ class QuestionnaireStoreUpdater:
                     for item_id in self._list_store[repeating_list].items:
                         if (section_id, item_id) not in evaluated_dependents:
                             self._evaluate_dependents(
-                                dependent, item_id, None, evaluated_dependents
+                                section_id=dependent,
+                                list_item_id=item_id,
+                                is_complete=None,
+                                evaluated_dependents=evaluated_dependents,
                             )
                             evaluated_dependents.append((section_id, item_id))
 
                 elif (section_id, list_item_id) not in evaluated_dependents:
                     self._evaluate_dependents(
-                        dependent, None, None, evaluated_dependents
+                        section_id=dependent,
+                        list_item_id=None,
+                        is_complete=None,
+                        evaluated_dependents=evaluated_dependents,
                     )
                     evaluated_dependents.append((section_id, None))
 
