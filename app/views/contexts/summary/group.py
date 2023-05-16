@@ -16,7 +16,7 @@ class Group:
     def __init__(
         self,
         *,
-        group_schema: Mapping[str, Any],
+        group_schema: Mapping,
         routing_path_block_ids: Iterable[str],
         answer_store: AnswerStore,
         list_store: ListStore,
@@ -70,7 +70,7 @@ class Group:
     def _build_blocks_and_links(
         self,
         *,
-        group_schema: Mapping[str, Any],
+        group_schema: Mapping,
         routing_path_block_ids: Iterable[str],
         answer_store: AnswerStore,
         list_store: ListStore,
@@ -172,7 +172,7 @@ class Group:
 
         return blocks
 
-    def serialize(self) -> Mapping[str, Any]:
+    def serialize(self) -> Mapping:
         return self.placeholder_renderer.render(
             data_to_render={
                 "id": self.id,

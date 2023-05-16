@@ -463,6 +463,7 @@ class SummaryRowItem:
                 multiple_answers
                 or answer_type == "relationship"
                 or summary_type == "CalculatedSummary"
+                or summary_type == "GrandCalculatedSummary"
             )
             and "label" in answer
             and answer["label"]
@@ -546,7 +547,7 @@ class SummaryRow:
 
         multiple_answers = len(question["answers"]) > 1
 
-        if summary_type == "CalculatedSummary" and not answers_are_editable:
+        if summary_type in ("CalculatedSummary", "GrandCalculatedSummary") and not answers_are_editable:
             self.total = True
 
         for answer in question["answers"]:
@@ -617,7 +618,7 @@ def map_summary_item_config(
 
             rows.extend(list_collector_rows)
 
-    if summary_type == "CalculatedSummary":
+    if summary_type in ("CalculatedSummary", "GrandCalculatedSummary"):
         rows.append(SummaryRow(calculated_question, summary_type, False, "", "", ""))
 
     return rows

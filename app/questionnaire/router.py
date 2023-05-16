@@ -236,7 +236,8 @@ class Router:
 
         if return_to.startswith("calculated-summary"):
             if url := self._get_return_to_for_calculated_summary(
-                return_to.split(","),
+                # if there are multiple return to block types, the last one is where to go next
+                return_to.split(",")[-1],
                 return_to_block_id.split(",") if return_to_block_id else [],
                 location,
                 routing_path,
@@ -270,7 +271,8 @@ class Router:
         return_to_answer_id: str | None = None,
     ) -> str | None:
         """
-        Builds the return url for a grand calculated summary, accounting for it possibly being in a different section to the calculated summaries it references
+        Builds the return url for a grand calculated summary,
+        and accounts for it possibly being in a different section to the calculated summaries it references
         """
         # Type ignore: the section for the grand calculated summary must exist
         grand_calculated_summary_section = location.section_id
@@ -298,7 +300,7 @@ class Router:
 
     def _get_return_to_for_calculated_summary(
         self,
-        return_to_types: list[str],
+        return_to: str,
         return_to_block_ids: list[str],
         location: Location,
         routing_path: RoutingPath,
@@ -307,26 +309,24 @@ class Router:
         """
         The return url for a calculated summary varies based on whether it's standalone or part of a grand calculated summary
 
-        If the user navigates from grand calculated summary -> calculated summary -> question, then the return_to_block_ids needs to be a list
+        If the user goes from GrandCalculatedSummary -> CalculatedSummary -> Question, then return_to_block_ids needs to be a list
         so that both the calculated summary id and the grand calculated summary ids are stored.
         """
-        # return to is the calculated summary to go back to first
+        # the calculated summary to go back to first
+        block_id = None
+        # the grand calculated summary to go back to second (if applicable)
         return_to_block_id = None
-        # return to previous is the grand calculated summary to go back to second (if the calculated summary is being edited from a grand calculated summary)
-        return_to_previous_block_id = None
-
-        return_to = return_to_types[-1]
 
         if return_to_block_ids:
-            # the first block is the block id to route to, and whatever is left (if anything) forms return_to_block_id
-            return_to_block_id = return_to_block_ids.pop(0)
-            return_to_previous_block_id = (
+            # the first block is the block id to route to, and whatever is left (if anything) forms where to go next
+            block_id = return_to_block_ids.pop(0)
+            return_to_block_id = (
                 ",".join(return_to_block_ids) if return_to_block_ids else None
             )
 
         if self.can_access_location(
             Location(
-                block_id=return_to_block_id,
+                block_id=block_id,
                 section_id=location.section_id,
                 list_item_id=location.list_item_id,
             ),
@@ -334,11 +334,11 @@ class Router:
         ):
             return url_for(
                 "questionnaire.block",
-                block_id=return_to_block_id,
+                block_id=block_id,
                 list_name=location.list_name,
                 list_item_id=location.list_item_id,
                 return_to=return_to,
-                return_to_block_id=return_to_previous_block_id,
+                return_to_block_id=return_to_block_id,
                 _anchor=return_to_answer_id,
             )
 

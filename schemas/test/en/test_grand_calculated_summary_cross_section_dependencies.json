@@ -316,7 +316,7 @@
         },
         {
             "id": "grand-calculated-summary-section",
-            "title": "Grand Calculated Summary should only show if all calculated summaries have been confirmed",
+            "title": "Grand Calculated Summary which is only enabled if you answer part b of question 3",
             "enabled": {
                 "when": {
                     "!=": [

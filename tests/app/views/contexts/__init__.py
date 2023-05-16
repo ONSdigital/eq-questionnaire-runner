@@ -1,6 +1,4 @@
-def assert_summary_context(
-    context, summary_item_type="question"
-):  # TODO: nicer option for this?
+def assert_summary_context(context, summary_item_type="question"):
     summary_context = context["summary"]
     for key_value in ("sections", "answers_are_editable", "summary_type"):
         assert (

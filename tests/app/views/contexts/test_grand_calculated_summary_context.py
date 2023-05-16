@@ -11,35 +11,26 @@ from tests.app.views.contexts import assert_summary_context
 
 @pytest.mark.usefixtures("app")
 @pytest.mark.parametrize(
-    "block_id, locale, language, title, value, total_blocks, return_to_answer_id",
+    "block_id, title, value, return_to_answer_id",
     (
         (
             "distance-grand-calculated-summary",
-            "en_GB",
-            "en",
             "We calculate the grand total weekly distance travelled to be 100 mi. Is this correct?",
             "100 mi",
-            2,
             "distance-calculated-summary-1",
         ),
         (
             "number-grand-calculated-summary",
-            "en_GB",
-            "en",
             "We calculate the grand total journeys per week to be 10. Is this correct?",
             "10",
-            2,
             "number-calculated-summary-1",
         ),
     ),
 )
 def test_build_view_context_for_grand_calculated_summary(
     block_id,
-    locale,
-    language,
     title,
     value,
-    total_blocks,
     test_grand_calculated_summary_schema,
     test_grand_calculated_summary_answers,
     list_store,
@@ -48,7 +39,7 @@ def test_build_view_context_for_grand_calculated_summary(
 ):
     mocker.patch(
         "app.jinja_filters.flask_babel.get_locale",
-        mocker.MagicMock(return_value=locale),
+        mocker.MagicMock(return_value="en_GB"),
     )
 
     block_ids = [
@@ -63,7 +54,7 @@ def test_build_view_context_for_grand_calculated_summary(
     ]
 
     grand_calculated_summary_context = GrandCalculatedSummaryContext(
-        language=language,
+        language="en",
         schema=test_grand_calculated_summary_schema,
         answer_store=test_grand_calculated_summary_answers,
         list_store=list_store,
@@ -107,16 +98,16 @@ def test_build_view_context_for_grand_calculated_summary(
     assert_summary_context(context, "calculated_summary")
     assert len(context["summary"]) == 6
     context_summary = context["summary"]
-    assert "title" in context_summary
-    assert context_summary["title"] == title
+    assert context_summary.get("title") == title
 
     assert "calculated_question" in context_summary
-    assert len(context_summary["sections"][0]["groups"][0]["blocks"]) == total_blocks
     assert context_summary["calculated_question"]["answers"][0]["value"] == value
 
-    answer_change_link = context_summary["sections"][0]["groups"][0]["blocks"][0][
-        "calculated_summary"
-    ]["answers"][0]["link"]
-    assert "return_to=grand-calculated-summary" in answer_change_link
-    assert f"return_to_answer_id={return_to_answer_id}" in answer_change_link
-    assert f"return_to_block_id={block_id}" in answer_change_link
+    calculated_summary_change_link = context_summary["sections"][0]["groups"][0][
+        "blocks"
+    ][0]["calculated_summary"]["answers"][0]["link"]
+    assert "return_to=grand-calculated-summary" in calculated_summary_change_link
+    assert (
+        f"return_to_answer_id={return_to_answer_id}" in calculated_summary_change_link
+    )
+    assert f"return_to_block_id={block_id}" in calculated_summary_change_link

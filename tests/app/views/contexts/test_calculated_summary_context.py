@@ -189,7 +189,7 @@ def test_build_view_context_for_return_to_calculated_summary(
     return_to_block_id,
 ):
     """
-    Tests the return to links for a calculated summary that has been reached by a change link on a grand calculated summary
+    Tests the change answer links for a calculated summary that has been reached by a change link on a grand calculated summary
     """
     mocker.patch(
         "app.jinja_filters.flask_babel.get_locale",
@@ -222,12 +222,13 @@ def test_build_view_context_for_return_to_calculated_summary(
     )
 
     context = calculated_summary_context.build_view_context_for_calculated_summary()
+    assert "summary" in context
     assert_summary_context(context)
     context_summary = context["summary"]
 
-    answer_change_link = context_summary["sections"][0]["groups"][0]["blocks"][0]["question"][
-        "answers"
-    ][0]["link"]
+    answer_change_link = context_summary["sections"][0]["groups"][0]["blocks"][0][
+        "question"
+    ]["answers"][0]["link"]
     assert f"return_to=calculated-summary,{return_to}" in answer_change_link
     assert f"return_to_answer_id={return_to_answer_id}" in answer_change_link
     assert f"return_to_block_id={block_id},{return_to_block_id}" in answer_change_link

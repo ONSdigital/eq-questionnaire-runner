@@ -13,7 +13,7 @@ from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 class CalculatedSummaryBlock:
     def __init__(
         self,
-        block_schema: Mapping[str, Any],
+        block_schema: Mapping,
         *,
         answer_store: AnswerStore,
         list_store: ListStore,
@@ -32,11 +32,10 @@ class CalculatedSummaryBlock:
 
         self.id = block_schema["id"]
         self.title = block_schema["calculation"].get("title")
-        self.return_to = return_to
-        self.return_to_block_id = return_to_block_id
-        self.location = location
-        self.block_schema = block_schema
-        self.schema = schema
+        self._return_to = return_to
+        self._return_to_block_id = return_to_block_id
+        self._block_schema = block_schema
+        self._schema = schema
 
         self._rule_evaluator = RuleEvaluator(
             schema=schema,
@@ -65,16 +64,16 @@ class CalculatedSummaryBlock:
         return url_for(
             "questionnaire.block",
             block_id=self.id,
-            return_to=self.return_to,
+            return_to=self._return_to,
             return_to_answer_id=self.id,
-            return_to_block_id=self.return_to_block_id,
+            return_to_block_id=self._return_to_block_id,
             _anchor=self.id,
         )
 
     def _get_answer_format(self) -> dict:
         # the format will be the same for all answers in calculated summary so can just take the first
-        first_answer_id = get_calculated_summary_answer_ids(self.block_schema)[0]
-        first_answer = self.schema.get_answers_by_answer_id(first_answer_id)[0]
+        first_answer_id = get_calculated_summary_answer_ids(self._block_schema)[0]
+        first_answer = self._schema.get_answers_by_answer_id(first_answer_id)[0]
         return {
             "type": first_answer["type"].lower(),
             "unit": first_answer.get("unit"),

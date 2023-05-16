@@ -285,7 +285,7 @@
         },
         {
             "id": "section-3",
-            "title": "Grand calculated summary section",
+            "title": "Grand calculated summary section which only shows if the previous calculated summary is non zero",
             "enabled": {
                 "when": {
                     "!=": [

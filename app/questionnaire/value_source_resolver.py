@@ -138,7 +138,8 @@ class ValueSourceResolver:
     ) -> IntOrDecimal | None:
         """Calculates the value for the 'calculation' used by the provided Calculated Summary.
 
-        The caller is responsible for ensuring the provided Calculated Summary and its answers are on the path.
+        The caller is responsible for ensuring the provided Calculated Summary and its answers are on the path,
+        or providing routing_path_block_ids when initialising the value source resolver.
         """
         calculated_summary_block: Mapping = self.schema.get_block(value_source["identifier"])  # type: ignore
 

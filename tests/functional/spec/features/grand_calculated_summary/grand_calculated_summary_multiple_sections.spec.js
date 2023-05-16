@@ -115,7 +115,7 @@ describe("Feature: Grand Calculated Summary", () => {
       );
     });
 
-    it("Given I edit an answer included in a grand calculated summary, it should no longer show until the calculated summary has been confirmed.", async () => {
+    it("Given I edit an answer included in a grand calculated summary, both the calculated and grand calculated summary sections should return to partially completed.", async () => {
       await $(GrandCalculatedSummary2Page.submit()).click();
       await expect(await $(HubPage.summaryRowState("section-3")).getText()).to.equal("Completed");
 
@@ -130,7 +130,7 @@ describe("Feature: Grand Calculated Summary", () => {
 
       // calculated summary section should be in progress
       await expect(await $(HubPage.summaryRowState("section-2")).getText()).to.equal("Partially completed");
-      // TODO and grand calculated summary section shouldn't show (once routing on progress is ready, but until then, it should at least show as in progress)
+      // TODO: grand calculated summary should not show, but this requires progress source, until this is implemented, it should at least show as in progress
       await expect(await $(HubPage.summaryRowState("section-3")).getText()).to.equal("Partially completed");
     });
   });
