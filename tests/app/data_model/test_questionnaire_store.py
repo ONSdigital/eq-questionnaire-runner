@@ -57,7 +57,7 @@ def test_questionnaire_store_updates_storage(questionnaire_store, basic_input):
     store.set_metadata(basic_input["METADATA"])
     store.answer_store = AnswerStore(basic_input["ANSWERS"])
     store.response_metadata = basic_input["RESPONSE_METADATA"]
-    store.progress_store = ProgressStore(basic_input["PROGRESS"])
+    store.progress_store = ProgressStore(basic_input["PROGRESS"], basic_input["LIST_ITEM_PROGRESS"])
 
     # When
     store.save()
@@ -77,7 +77,7 @@ def test_questionnaire_store_errors_on_invalid_object(questionnaire_store, basic
     store.set_metadata(non_serializable_metadata)
     store.response_metadata = basic_input["RESPONSE_METADATA"]
     store.answer_store = AnswerStore(basic_input["ANSWERS"])
-    store.progress_store = ProgressStore(basic_input["PROGRESS"])
+    store.progress_store = ProgressStore(basic_input["PROGRESS"], basic_input["LIST_ITEM_PROGRESS"])
 
     # When / Then
     with pytest.raises(TypeError):
@@ -90,7 +90,7 @@ def test_questionnaire_store_deletes(questionnaire_store, basic_input):
     store.set_metadata(basic_input["METADATA"])
     store.response_metadata = basic_input["RESPONSE_METADATA"]
     store.answer_store = AnswerStore(basic_input["ANSWERS"])
-    store.progress_store = ProgressStore(basic_input["PROGRESS"])
+    store.progress_store = ProgressStore(basic_input["PROGRESS"], basic_input["LIST_ITEM_PROGRESS"])
 
     # When
     store.delete()

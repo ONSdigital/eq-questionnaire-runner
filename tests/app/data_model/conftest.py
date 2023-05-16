@@ -92,6 +92,22 @@ def basic_input():
                 "block_ids": ["a-test-block"],
             }
         ],
+        "LIST_ITEM_PROGRESS": [
+            {
+                "list_item_id": "def456",
+                "status": CompletionStatus.COMPLETED,
+                "blocks": [
+                    {
+                        "block_id": "ghi789",
+                        "status": CompletionStatus.COMPLETED
+                    },
+                    {
+                        "block_id": "jkl123",
+                        "status": CompletionStatus.COMPLETED
+                    }
+                ]
+            }
+        ],
         "RESPONSE_METADATA": {"test-meta": "test"},
     }
 
