@@ -20,6 +20,7 @@ LIST_COLLECTOR_CHILDREN = [
     "ListEditQuestion",
     "ListRemoveQuestion",
     "PrimaryPersonListAddOrEditQuestion",
+    "ListRepeatingBlock",
 ]
 
 RELATIONSHIP_CHILDREN = ["UnrelatedQuestion"]
@@ -66,6 +67,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ] = defaultdict(set)
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
+        self._repeating_blocks_by_id: dict[str, ImmutableDict] = {}
 
         # The ordering here is required as they depend on each other.
         self._sections_by_id = self._get_sections_by_id()
@@ -209,6 +211,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                             nested_block_id = nested_block["id"]
                             blocks[nested_block_id] = nested_block
                             self._parent_id_map[nested_block_id] = block_id
+                    if block.get("repeating_blocks"):
+                        for repeating_block in block["repeating_blocks"]:
+                            repeating_block_id = repeating_block["id"]
+                            blocks[repeating_block_id] = repeating_block
+                            self._parent_id_map[repeating_block_id] = block_id
+                            self._repeating_blocks_by_id[repeating_block_id] = repeating_block
 
         return blocks
 
@@ -816,7 +824,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         parent_block_id = self._parent_id_map[block_id]
         parent_block = self.get_block(parent_block_id)
 
-        if parent_block and parent_block["type"] == "ListCollector":
+        if parent_block and parent_block["type"] == "ListCollector" and block_id not in self._repeating_blocks_by_id:
             return parent_block
 
         return self.get_block(block_id)
@@ -966,6 +974,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             for item in summary.get("items", []):
                 if item["for_list"] == list_name and item.get("item_anchor_answer_id"):
                     return f"#{str(item['item_anchor_answer_id'])}"
+
+    def is_block_in_repeating_blocks(self, block_id: str) -> bool:
+        return block_id in self._repeating_blocks_by_id
+
+    def is_answer_in_repeating_blocks(self, answer_id: str) -> bool:
+        if block := self.get_block_for_answer_id(answer_id):
+            return self.is_block_in_repeating_blocks(block_id=block["id"])
 
 
 def get_sources_for_type_from_data(

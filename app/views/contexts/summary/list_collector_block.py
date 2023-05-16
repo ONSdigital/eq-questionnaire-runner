@@ -162,18 +162,25 @@ class ListCollectorBlock:
 
     def _get_related_answers(
         self, list_model: ListModel
-    ) -> Optional[dict[str, list[dict[str, Any]]]]:
+    ) -> dict[str, list[dict]] | None:
         section_id = self._section["id"]
 
         related_answers = self._schema.get_related_answers_for_list_for_section(
             section_id=section_id, list_name=list_model.name
         )
-        if not related_answers:
+
+        blocks: list[dict] = []
+
+        if related_answers:
+            blocks += self._get_blocks_for_related_answers(related_answers)
+
+        if list_model:
+            blocks += self._get_blocks_for_repeating_blocks(list_model)
+
+        if not blocks:
             return None
 
         related_answers_blocks = {}
-
-        blocks = self.get_blocks_for_related_answers(related_answers)
 
         for list_id in list_model:
             serialized_blocks = [
@@ -200,9 +207,9 @@ class ListCollectorBlock:
 
         return related_answers_blocks
 
-    def get_blocks_for_related_answers(
+    def _get_blocks_for_related_answers(
         self, related_answers: tuple
-    ) -> list[dict[str, Any]]:
+    ) -> list[dict]:
         blocks = []
         answers_by_block = defaultdict(list)
 
@@ -234,3 +241,16 @@ class ListCollectorBlock:
             blocks.append(mutable_block)
 
         return blocks
+
+    def _get_blocks_for_repeating_blocks(self, list_model: ListModel) -> list[dict]:
+        blocks: defaultdict[ImmutableDict, list[str]] = defaultdict(list)
+        for list_id in list_model:
+            list_answers = [(answer_id, answer_list_id)
+                            for (answer_id, answer_list_id) in self._answer_store.answer_map
+                            if answer_list_id == list_id and self._schema.is_answer_in_repeating_blocks(answer_id)]
+            for (answer_id, answer_list_id) in list_answers:
+                block = self._schema.get_block_for_answer_id(answer_id)
+                if block:
+                    blocks[block].append(answer_id)
+
+        return [self._schema.get_mutable_deepcopy(block) for (block, answer_id) in blocks.items()]
