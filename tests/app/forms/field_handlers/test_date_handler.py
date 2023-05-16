@@ -50,7 +50,7 @@ def test_generate_date_form_validates_single_date_period(
     app, value_source_resolver, rule_evaluator
 ):
     schema = load_schema_from_name("test_date_validation_single")
-    value_source_resolver._schema = schema
+    value_source_resolver.schema = schema
     value_source_resolver.metadata = {"ref_p_start_date": "2017-02-20"}
 
     handler = DateHandler(
@@ -69,7 +69,7 @@ def test_generate_date_form_validates_single_date_period(
 def test_generate_date_form_validates_single_date_period_with_bespoke_message(
     app, value_source_resolver, rule_evaluator
 ):
-    value_source_resolver._schema = load_schema_from_name("test_date_validation_single")
+    value_source_resolver.schema = load_schema_from_name("test_date_validation_single")
     answer = {
         "id": "date-range-from",
         "mandatory": True,
