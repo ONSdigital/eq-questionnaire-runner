@@ -63,14 +63,16 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             set
         )
         self._when_rules_section_dependencies_by_section: dict[str, set[str]] = {}
-        self._when_rules_section_dependencies_by_section_for_progress_value_source: dict[
+        self._when_rules_section_dependencies_by_section_for_progress_value_source: defaultdict[
             str, OrderedSet[str]
         ] = defaultdict(
             OrderedSet
         )
-        self._when_rules_block_dependencies_by_section_for_progress_value_source: dict[
+        self._when_rules_block_dependencies_by_section_for_progress_value_source: defaultdict[
             str, DependencyDictType
-        ] = defaultdict(lambda: defaultdict(OrderedSet))
+        ] = defaultdict(
+            lambda: defaultdict(OrderedSet)
+        )
         self.calculated_summary_section_dependencies_by_block: dict[
             str, DependencyDictType
         ] = defaultdict(lambda: defaultdict(OrderedSet))
@@ -106,18 +108,16 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     @cached_property
     def when_rules_section_dependencies_by_section_for_progress_value_source(
         self,
-    ) -> ImmutableDict[str, OrderedSet[str]]:
-        return ImmutableDict(
+    ) -> defaultdict[str, OrderedSet[str]]:
+        return (
             self._when_rules_section_dependencies_by_section_for_progress_value_source
         )
 
     @cached_property
     def when_rules_block_dependencies_by_section_for_progress_value_source(
         self,
-    ) -> ImmutableDict[str, DependencyDictType]:
-        return ImmutableDict(
-            self._when_rules_block_dependencies_by_section_for_progress_value_source
-        )
+    ) -> defaultdict[str, DependencyDictType]:
+        return self._when_rules_block_dependencies_by_section_for_progress_value_source
 
     @cached_property
     def when_rules_section_dependencies_by_answer(self) -> ImmutableDict[str, set[str]]:

@@ -377,19 +377,6 @@ class QuestionnaireStoreUpdater:
             else:
                 self.dependent_sections.add(DependentSection(section_id, None, None))
 
-    def _get_dependents_of_section(self, section_id: str) -> list:
-        dependents: list = []
-        if (
-            section_id
-            in self._schema.when_rules_section_dependencies_by_section_for_progress_value_source
-        ):
-            dependents.extend(
-                self._schema.when_rules_section_dependencies_by_section_for_progress_value_source[
-                    section_id
-                ]
-            )
-        return dependents
-
     def update_answers(
         self, form_data: Mapping[str, Any], list_item_id: str | None = None
     ) -> None:
@@ -456,7 +443,9 @@ class QuestionnaireStoreUpdater:
             section_id=section_id,
             list_item_id=list_item_id,
         ):
-            dependents_of_dependent = self._get_dependents_of_section(section_id)
+            dependents_of_dependent = self._schema.when_rules_section_dependencies_by_section_for_progress_value_source[
+                section_id
+            ]
             for dependent in dependents_of_dependent:
                 if repeating_list := self._schema.get_repeating_list_for_section(
                     dependent
