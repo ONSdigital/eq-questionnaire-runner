@@ -228,9 +228,11 @@ class Question(BlockHandler):
         section_ids = self._schema.get_section_ids_dependent_on_list(list_name)
         section_ids.append(self.current_location.section_id)
 
-        section_keys_to_add = self.questionnaire_store_updater.started_section_keys(
-            section_ids=section_ids
-        )
+        # Only add sections which are repeated sections for this list, or the section in which this list is collected
+        # Prevents list item progresses being added as dependants
+        section_keys_to_add = [section_key
+                               for section_key in self.questionnaire_store_updater.started_section_keys(section_ids=section_ids)
+                               if not (section_key[0] == self.current_location.section_id and section_key[1])]
         for section_id, list_item_id in section_keys_to_add:
             self.questionnaire_store_updater.dependent_sections.add(
                 DependentSection(

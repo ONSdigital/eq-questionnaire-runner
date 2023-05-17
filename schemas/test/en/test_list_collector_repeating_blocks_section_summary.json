@@ -343,21 +343,6 @@
                                 "id": "confirmation-checkbox-question",
                                 "title": "Are all companies or branches based in UK?",
                                 "type": "General"
-                            },
-                            "skip_conditions": {
-                                "when": {
-                                    "!=": [
-                                        {
-                                            "count": [
-                                                {
-                                                    "source": "list",
-                                                    "identifier": "companies"
-                                                }
-                                            ]
-                                        },
-                                        3
-                                    ]
-                                }
                             }
                         }
                     ]

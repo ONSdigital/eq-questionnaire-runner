@@ -1,8 +1,7 @@
 from dataclasses import astuple, dataclass
-from typing import Iterable, Iterator, MutableMapping, Optional, Sequence
+from typing import Iterable, Iterator, MutableMapping, Optional
 
-from app.data_models.progress import Progress, ProgressDictType, ListItemProgress, BlockProgress, \
-    ListItemProgressDictType
+from app.data_models.progress import Progress, ProgressDictType
 from app.questionnaire.location import Location
 
 SectionKeyType = tuple[str, Optional[str]]
@@ -26,8 +25,7 @@ class ProgressStore:
     """
 
     def __init__(
-        self, in_progress_sections: Iterable[ProgressDictType] | None = None, list_item_progress: Iterable[ListItemProgressDictType] | None = None
-    ) -> None:
+        self, in_progress_sections: Iterable[ProgressDictType] | None = None) -> None:
         """
         Instantiate a ProgressStore object that tracks the status of sections and its completed blocks
         Args:
@@ -37,9 +35,6 @@ class ProgressStore:
         self._is_routing_backwards: bool = False
         self._progress: MutableMapping[SectionKeyType, Progress] = self._build_map(
             in_progress_sections or []
-        )
-        self._list_item_progress: MutableMapping[str, ListItemProgress] = self._build_list_item_map(
-            list_item_progress or []
         )
 
     def __contains__(self, section_key: SectionKeyType) -> bool:
@@ -70,13 +65,6 @@ class ProgressStore:
                 section_progress.get("list_item_id"),
             ): Progress.from_dict(section_progress)
             for section_progress in section_progress_list
-        }
-
-    @staticmethod
-    def _build_list_item_map(list_item_progress: Iterable[ListItemProgressDictType]) -> MutableMapping[str, ListItemProgress]:
-        return {
-            list_item["list_item_id"]: ListItemProgress.from_dict(list_item)
-            for list_item in list_item_progress
         }
 
     @property
@@ -150,7 +138,7 @@ class ProgressStore:
         return CompletionStatus.NOT_STARTED
 
     def get_completed_block_ids(
-        self, section_id: str, list_item_id: Optional[str] = None
+        self, section_id: str, list_item_id: str | None = None
     ) -> list[str]:
         section_key = (section_id, list_item_id)
         if section_key in self._progress:
@@ -218,16 +206,12 @@ class ProgressStore:
     def serialize_progress(self) -> list[Progress]:
         return list(self._progress.values())
 
-    def serialize_list_item_progress(self) -> list[ListItemProgressDictType]:
-        return [block_progress.to_dict() for block_progress in self._list_item_progress.values()]
-
     def remove_location_for_backwards_routing(self, location: Location) -> None:
         self.remove_completed_location(location=location)
         self._is_routing_backwards = True
 
     def clear(self) -> None:
         self._progress.clear()
-        self._list_item_progress.clear()
         self._is_dirty = True
 
     def started_section_keys(
@@ -237,40 +221,3 @@ class ProgressStore:
             statuses={CompletionStatus.COMPLETED, CompletionStatus.IN_PROGRESS},
             section_ids=section_ids,
         )
-
-    def add_list_item_progress(self, list_item_id: str, list_item_block_ids: Sequence[str]) -> None:
-        if not self._list_item_progress.get(list_item_id):
-            self._list_item_progress[list_item_id] = ListItemProgress(
-                list_item_id=list_item_id,
-                status=(CompletionStatus.IN_PROGRESS
-                        if list_item_block_ids
-                        else CompletionStatus.COMPLETED),
-                blocks=[BlockProgress(block_id=block_id, status=CompletionStatus.IN_PROGRESS)
-                        for block_id in list_item_block_ids])
-
-    def update_list_item_block_progress(self, list_item_id: str, list_block_id: str,
-                                        list_item_block_completeness: str = CompletionStatus.COMPLETED) -> None:
-        if list_item_progress := self._list_item_progress.get(list_item_id):
-            if block_progress := next((block for block in list_item_progress.blocks if block.block_id == list_block_id), None):
-                block_progress.status = list_item_block_completeness
-            self._update_list_item_progress(list_item_progress)
-
-    def remove_list_item_progress(self, list_item_id: str) -> None:
-        if self._list_item_progress.get(list_item_id):
-            del self._list_item_progress[list_item_id]
-
-    def is_list_item_complete(self, list_item_id: str) -> bool:
-        if list_item_progress := self._list_item_progress.get(list_item_id):
-            return list_item_progress.status == CompletionStatus.COMPLETED
-        # TODO exception more appropriate?
-        return False
-
-    @staticmethod
-    def _update_list_item_progress(list_item_progress: ListItemProgress) -> None:
-        if all(
-            block_progress.status == CompletionStatus.COMPLETED
-            for block_progress in list_item_progress.blocks
-        ):
-            list_item_progress.status = CompletionStatus.COMPLETED
-        else:
-            list_item_progress.status = CompletionStatus.IN_PROGRESS

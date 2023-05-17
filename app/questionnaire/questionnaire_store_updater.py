@@ -1,6 +1,6 @@
 from collections import defaultdict, namedtuple
 from itertools import combinations
-from typing import Iterable, Mapping, Sequence, Any
+from typing import Iterable, Mapping, Any
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -167,7 +167,6 @@ class QuestionnaireStoreUpdater:
             self.update_relationship_question_completeness(list_name)
 
         self._progress_store.remove_progress_for_list_item_id(list_item_id=list_item_id)
-        self._progress_store.remove_list_item_progress(list_item_id=list_item_id)
 
         for list_collector in self._schema.get_list_collectors_for_list(
             for_list=list_name,
@@ -249,6 +248,12 @@ class QuestionnaireStoreUpdater:
             CompletionStatus.COMPLETED if is_complete else CompletionStatus.IN_PROGRESS
         )
         self._progress_store.update_section_status(status, section_id, list_item_id)
+
+    def get_completed_block_ids(self, section_id: str, list_item_id: str | None = None) -> list[str]:
+        return self._progress_store.get_completed_block_ids(section_id=section_id, list_item_id=list_item_id)
+
+    def is_section_complete(self, section_id: str, list_item_id: str | None = None) -> bool:
+        return self._progress_store.is_section_complete(section_id, list_item_id)
 
     def _update_answer(
         self,
@@ -389,18 +394,6 @@ class QuestionnaireStoreUpdater:
                 section_id=section.section_id,
                 list_item_id=section.list_item_id,
             )
-
-    def add_list_item_progress(self, list_item_id: str, repeating_blocks: Sequence[Mapping] | None = None) -> None:
-        if not repeating_blocks:
-            # Cannot default Sequence[Mapping] as it violates pylint dangerous-default-value / W0102 as [] is mutable
-            # https://pylint.readthedocs.io/en/latest/user_guide/messages/warning/dangerous-default-value.html
-            repeating_blocks = []
-
-        block_ids = [block["id"] for block in repeating_blocks]
-        self._progress_store.add_list_item_progress(list_item_id=list_item_id, list_item_block_ids=block_ids)
-
-    def update_list_item_block_complete(self, list_item_id: str, list_block_id: str) -> None:
-        self._progress_store.update_list_item_block_progress(list_item_id=list_item_id, list_block_id=list_block_id)
 
     def remove_dependent_blocks_and_capture_dependent_sections(self) -> None:
         """Removes dependent blocks from the progress store.

@@ -65,7 +65,7 @@ class QuestionnaireStore:
 
     def _deserialize(self, data: str) -> None:
         json_data = json_loads(data)
-        self.progress_store = ProgressStore(json_data.get("PROGRESS"), json_data.get("LIST_ITEM_PROGRESS"))
+        self.progress_store = ProgressStore(json_data.get("PROGRESS"))
         self.set_metadata(json_data.get("METADATA", {}))
         self.answer_store = AnswerStore(json_data.get("ANSWERS"))
         self.list_store = ListStore.deserialize(json_data.get("LISTS"))
@@ -77,7 +77,6 @@ class QuestionnaireStore:
             "ANSWERS": list(self.answer_store),
             "LISTS": self.list_store.serialize(),
             "PROGRESS": self.progress_store.serialize_progress(),
-            "LIST_ITEM_PROGRESS": self.progress_store.serialize_list_item_progress(),
             "RESPONSE_METADATA": self.response_metadata,
         }
         return json_dumps(data)
