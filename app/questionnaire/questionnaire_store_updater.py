@@ -29,7 +29,7 @@ class QuestionnaireStoreUpdater:
         router: Router,
         current_question: Mapping | None,
     ):
-        self.evaluated_dependents = []
+        self.evaluated_dependents: list[tuple] = []
         self._current_location = current_location
         self._current_question = current_question or {}
         self._schema = schema

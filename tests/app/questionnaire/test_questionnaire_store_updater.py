@@ -1535,9 +1535,7 @@ def test_questionnaire_store_updater_dependency_capture(
     assert len(questionnaire_store_updater.evaluated_dependents) == 6
 
 
-def test_questionnaire_store_updater_dependency_evaluation_order(
-    mocker, mock_router, mock_schema
-):
+def test_questionnaire_store_updater_dependency_evaluation_order(mocker, mock_router):
     current_location = Location(section_id="section-2", block_id="list-collector")
 
     schema = load_schema_from_name(
@@ -1573,6 +1571,38 @@ def test_questionnaire_store_updater_dependency_evaluation_order(
         schema=schema,
     )
 
+    mocker.patch(
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater.get_chronological_section_dependents",
+        return_value=[
+            DependentSection(
+                section_id="section-7", list_item_id=None, is_complete=None
+            ),
+            DependentSection(
+                section_id="section-8", list_item_id=None, is_complete=None
+            ),
+            DependentSection(
+                section_id="section-9", list_item_id=None, is_complete=None
+            ),
+            DependentSection(
+                section_id="section-10", list_item_id=None, is_complete=None
+            ),
+        ],
+    )
+
+    mocker.patch(
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater.update_section_status",
+        return_value=True,
+    )
+
     questionnaire_store_updater.update_progress_for_dependent_sections()
 
-    assert len(questionnaire_store_updater.evaluated_dependents) == 3
+    expected_evaluation = [
+        ("section-8", None),
+        ("section-12", None),
+        ("section-9", None),
+        ("section-11", None),
+        ("section-10", None),
+    ]
+
+    assert len(questionnaire_store_updater.evaluated_dependents) == 5
+    assert questionnaire_store_updater.evaluated_dependents == expected_evaluation
