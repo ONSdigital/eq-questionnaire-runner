@@ -420,11 +420,7 @@ class QuestionnaireStoreUpdater:
                 section.section_id,
                 section.list_item_id,
             ) not in self.evaluated_dependents:
-                self._evaluate_dependents(
-                    section_id=section.section_id,
-                    list_item_id=section.list_item_id,
-                    is_complete=section.is_complete,
-                )
+                self._evaluate_dependents(dependent_section=section)
                 self.evaluated_dependents.append(
                     (section.section_id, section.list_item_id)
                 )
@@ -432,23 +428,24 @@ class QuestionnaireStoreUpdater:
     def _evaluate_dependents(
         self,
         *,
-        section_id: str,
-        list_item_id: str | None,
-        is_complete: bool | None,
+        dependent_section: DependentSection,
     ) -> None:
-        is_path_complete = is_complete
+        is_path_complete = dependent_section.is_complete
         if is_path_complete is None:
             is_path_complete = self._router.is_path_complete(
-                self._router.routing_path(section_id, list_item_id=list_item_id)
+                self._router.routing_path(
+                    dependent_section.section_id,
+                    list_item_id=dependent_section.list_item_id,
+                )
             )
 
         if self.update_section_status(
             is_complete=is_path_complete,
-            section_id=section_id,
-            list_item_id=list_item_id,
+            section_id=dependent_section.section_id,
+            list_item_id=dependent_section.list_item_id,
         ):
             dependents_of_dependent = self._schema.when_rules_section_dependencies_by_section_for_progress_value_source[
-                section_id
+                dependent_section.section_id
             ]
             for dependent_section_id in dependents_of_dependent:
                 if repeating_list := self._schema.get_repeating_list_for_section(
@@ -460,9 +457,11 @@ class QuestionnaireStoreUpdater:
                             item_id,
                         ) not in self.evaluated_dependents:
                             self._evaluate_dependents(
-                                section_id=dependent_section_id,
-                                list_item_id=item_id,
-                                is_complete=None,
+                                dependent_section=DependentSection(
+                                    section_id=dependent_section_id,
+                                    list_item_id=item_id,
+                                    is_complete=None,
+                                )
                             )
                             self.evaluated_dependents.append(
                                 (dependent_section_id, item_id)
@@ -470,12 +469,14 @@ class QuestionnaireStoreUpdater:
 
                 elif (
                     dependent_section_id,
-                    list_item_id,
+                    dependent_section.list_item_id,
                 ) not in self.evaluated_dependents:
                     self._evaluate_dependents(
-                        section_id=dependent_section_id,
-                        list_item_id=None,
-                        is_complete=None,
+                        dependent_section=DependentSection(
+                            section_id=dependent_section_id,
+                            list_item_id=None,
+                            is_complete=None,
+                        )
                     )
                     self.evaluated_dependents.append((dependent_section_id, None))
 
