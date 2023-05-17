@@ -1,4 +1,4 @@
-from typing import Any, Iterable, Mapping, MutableMapping, Optional
+from typing import Iterable, Mapping, MutableMapping
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -74,14 +74,14 @@ class Group:
         routing_path_block_ids: Iterable[str],
         answer_store: AnswerStore,
         list_store: ListStore,
-        metadata: Optional[MetadataProxy],
+        metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         location: Location,
-        return_to: Optional[str],
+        return_to: str | None,
         progress_store: ProgressStore,
         language: str,
-        return_to_block_id: Optional[str],
+        return_to_block_id: str | None,
         view_submitted_response: bool | None = False,
         summary_type: str | None = None,
     ) -> list[dict[str, Block]]:
@@ -133,11 +133,9 @@ class Group:
                 )
 
             elif block["type"] == "ListCollector":
-                section: Optional[ImmutableDict] = schema.get_section(
-                    location.section_id
-                )
+                section: ImmutableDict | None = schema.get_section(location.section_id)
 
-                summary_item: Optional[ImmutableDict]
+                summary_item: ImmutableDict | None
                 if summary_item := schema.get_summary_item_for_list_for_section(
                     # Type ignore: section id will not be optional at this point
                     section_id=section["id"],  # type: ignore

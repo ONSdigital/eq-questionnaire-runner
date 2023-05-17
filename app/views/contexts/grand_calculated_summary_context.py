@@ -1,9 +1,8 @@
-from typing import Any, Iterable, Mapping
+from typing import Iterable, Mapping, Sequence
 
 from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire.questionnaire_schema import (
-    get_calculated_summary_answer_ids,
     get_grand_calculated_summary_block_ids,
 )
 from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
@@ -11,7 +10,9 @@ from app.views.contexts.summary.group import Group
 
 
 class GrandCalculatedSummaryContext(CalculatedSummaryContext):
-    def _build_grand_calculated_summary_section(self, rendered_block: Mapping) -> dict:
+    def _build_grand_calculated_summary_section(
+        self, rendered_block: ImmutableDict
+    ) -> dict:
         """
         Build list of calculated summary blocks that the grand calculated summary will be adding up
         """
@@ -32,7 +33,9 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
             ],
         }
 
-    def _blocks_on_routing_path(self, calculated_summary_ids: list[str]) -> list[str]:
+    def _blocks_on_routing_path(
+        self, calculated_summary_ids: Iterable[str]
+    ) -> list[str]:
         """
         Find all blocks on the routing path for each of the calculated summaries
         """
@@ -60,7 +63,7 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         section: Mapping,
         return_to_block_id: str,
         routing_path_block_ids: Iterable[str],
-    ) -> list[Mapping[str, Group]]:
+    ) -> list[Mapping]:
         return [
             Group(
                 group_schema=group,
@@ -113,7 +116,7 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         )
 
     @staticmethod
-    def _get_summary_format(groups: list[Mapping]) -> dict:
+    def _get_summary_format(groups: Sequence[Mapping]) -> dict:
         """
         Get the format of the final value from the first calculated summary.
         Validator ensures that they are all the same

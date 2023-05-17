@@ -1,5 +1,5 @@
 from decimal import Decimal
-from typing import Any, Iterable, Mapping, MutableMapping
+from typing import Iterable, Mapping, MutableMapping, TypeAlias
 
 from flask import url_for
 
@@ -8,6 +8,8 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.questionnaire_schema import get_calculated_summary_answer_ids
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+
+NumericType: TypeAlias = int | float | Decimal
 
 
 class CalculatedSummaryBlock:
@@ -49,7 +51,7 @@ class CalculatedSummaryBlock:
         )
 
         # Type ignore: for a calculated summary the resolved answer would only ever be one of these 3
-        calculated_total: int | float | Decimal = self._rule_evaluator.evaluate(block_schema["calculation"]["operation"])  # type: ignore
+        calculated_total: NumericType = self._rule_evaluator.evaluate(block_schema["calculation"]["operation"])  # type: ignore
         self.answers = [
             {
                 "id": self.id,

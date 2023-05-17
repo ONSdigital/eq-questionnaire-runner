@@ -1,6 +1,4 @@
-from copy import deepcopy
-from decimal import Decimal
-from typing import Any, Callable, Iterable, Mapping, MutableMapping, Optional, Tuple
+from typing import Callable, Iterable, Mapping, MutableMapping, Tuple
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -23,9 +21,8 @@ from app.questionnaire.schema_utils import get_answer_ids_in_block
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.questionnaire.variants import choose_question_to_display, transform_variants
 from app.views.contexts.context import Context
+from app.views.contexts.summary.calculated_summary_block import NumericType
 from app.views.contexts.summary.group import Group
-
-NumericType = int | float | Decimal
 
 
 class CalculatedSummaryContext(Context):
@@ -36,7 +33,7 @@ class CalculatedSummaryContext(Context):
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: Optional[MetadataProxy],
+        metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         routing_path: RoutingPath,
         current_location: Location,
@@ -62,7 +59,7 @@ class CalculatedSummaryContext(Context):
         section: Mapping,
         return_to_block_id: str,
         routing_path_block_ids: Iterable[str],
-    ) -> list[Mapping[str, Group]]:
+    ) -> list[Mapping]:
         """
         If the calculated summary is being edited from a grand calculated summary
         the details of the grand calculated summary to return to needs to be passed down to the calculated summary answer links
@@ -123,7 +120,7 @@ class CalculatedSummaryContext(Context):
         self,
         *,
         block: ImmutableDict,
-        groups: list[Mapping[str, Group]],
+        groups: Iterable[Mapping],
         calculation: ImmutableDict,
         formatted_total: str,
         summary_type: str,
@@ -188,7 +185,7 @@ class CalculatedSummaryContext(Context):
         """
         Evaluates questions in a block and removes any questions not containing a relevant answer
         """
-        transformed_block: ImmutableDict = transform_variants(
+        block_to_transform: ImmutableDict = transform_variants(
             block,
             self._schema,
             self._metadata,
@@ -198,8 +195,9 @@ class CalculatedSummaryContext(Context):
             self.current_location,
             self._progress_store,
         )
-        transformed_block = deepcopy(transformed_block)
-        transformed_block = QuestionnaireSchema.get_mutable_deepcopy(transformed_block)
+        transformed_block: dict = QuestionnaireSchema.get_mutable_deepcopy(
+            block_to_transform
+        )
         block_question = transformed_block["question"]
 
         matching_answers = []
@@ -222,7 +220,7 @@ class CalculatedSummaryContext(Context):
 
     def _get_evaluated_total(
         self,
-        calculation: Callable | ImmutableDict,
+        calculation: ImmutableDict,
         routing_path_block_ids: Iterable[str],
     ) -> NumericType:
         """
@@ -238,7 +236,7 @@ class CalculatedSummaryContext(Context):
             location=self.current_location,
             progress_store=self._progress_store,
         )
-
+        # Type ignore: in the case of a calculated summation it will always be a numeric type
         calculated_total: NumericType = evaluate_calculated_summary.evaluate(calculation)  # type: ignore
         return calculated_total
 
@@ -256,7 +254,7 @@ class CalculatedSummaryContext(Context):
 
         return self._format_total(answer_format, calculated_total)
 
-    def _get_answer_format(self, groups: list) -> Tuple[dict, list]:
+    def _get_answer_format(self, groups: Iterable[Mapping]) -> Tuple[dict, list]:
         values_to_calculate: list = []
         answer_format: dict = {"type": None}
         for group in groups:

@@ -1,4 +1,4 @@
-from typing import Generator, Mapping, MutableMapping
+from typing import Generator, Mapping, MutableMapping, Sequence
 
 from flask import url_for
 
@@ -301,7 +301,7 @@ class Router:
     def _get_return_to_for_calculated_summary(
         self,
         return_to: str,
-        return_to_block_ids: list[str],
+        return_to_block_ids: Sequence[str],
         location: Location,
         routing_path: RoutingPath,
         return_to_answer_id: str | None = None,

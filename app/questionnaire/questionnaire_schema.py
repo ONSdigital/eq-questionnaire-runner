@@ -357,7 +357,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _update_answer_dependencies_for_dynamic_options(
         self,
-        dynamic_options_values: Mapping[str, Mapping],
+        dynamic_options_values: Mapping,
         *,
         block_id: str,
         answer_id: str,
@@ -1064,7 +1064,7 @@ def get_identifiers_from_calculation_block(
 
 def get_calculated_summary_answer_ids(calculated_summary_block: Mapping) -> list[str]:
     if calculated_summary_block["calculation"].get("answers_to_calculate"):
-        return calculated_summary_block["calculation"]["answers_to_calculate"]  # type: ignore
+        return list(calculated_summary_block["calculation"]["answers_to_calculate"])
 
     return get_identifiers_from_calculation_block(calculated_summary_block, "answers")
 

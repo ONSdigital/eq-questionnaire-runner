@@ -3,6 +3,7 @@ from decimal import Decimal
 from typing import Callable, Iterable, Mapping, MutableMapping
 
 from markupsafe import Markup
+from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import ProgressStore
 from app.data_models.answer import AnswerValueTypes, escape_answer_value
@@ -37,12 +38,12 @@ class ValueSourceResolver:
     def _is_answer_on_path(self, answer_id: str) -> bool:
         if self.routing_path_block_ids:
             # Type ignore: any answer will have a block
-            block: Mapping = self.schema.get_block_for_answer_id(answer_id)  # type: ignore
+            block: ImmutableDict = self.schema.get_block_for_answer_id(answer_id)  # type: ignore
             return self._is_block_on_path(block)
 
         return True
 
-    def _is_block_on_path(self, block: Mapping) -> bool:
+    def _is_block_on_path(self, block: ImmutableDict) -> bool:
         if self.routing_path_block_ids:
             return block["id"] in self.routing_path_block_ids
 
@@ -141,7 +142,7 @@ class ValueSourceResolver:
         The caller is responsible for ensuring the provided Calculated Summary and its answers are on the path,
         or providing routing_path_block_ids when initialising the value source resolver.
         """
-        calculated_summary_block: Mapping = self.schema.get_block(value_source["identifier"])  # type: ignore
+        calculated_summary_block: ImmutableDict = self.schema.get_block(value_source["identifier"])  # type: ignore
 
         if not self._is_block_on_path(calculated_summary_block):
             return None
