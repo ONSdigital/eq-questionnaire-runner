@@ -55,8 +55,10 @@ def flush_data() -> Response:
         user = _get_user(decrypted_token["response_id"])
 
         if metadata := get_metadata(user):
-            contextvars.bind_contextvars(tx_id=metadata.tx_id)
-            contextvars.bind_contextvars(ce_id=metadata.collection_exercise_sid)
+            contextvars.bind_contextvars(
+                tx_id=metadata.tx_id,
+                ce_id=metadata.collection_exercise_sid,
+            )
             if schema_name := metadata.schema_name:
                 contextvars.bind_contextvars(schema_name=schema_name)
             if schema_url := metadata.schema_url:
