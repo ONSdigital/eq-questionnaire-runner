@@ -2,6 +2,7 @@ from collections import defaultdict
 
 import pytest
 from mock import MagicMock, Mock
+from mock.mock import call
 from ordered_set import OrderedSet
 from werkzeug.datastructures import MultiDict
 
@@ -383,7 +384,7 @@ def test_remove_completed_relationship_locations_for_list_name(
     patch_method = "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater._get_relationship_collectors_by_list_name"
     patched = mocker.patch(patch_method)
     patched.return_value = [{"id": "test-relationship-collector"}]
-    questionnaire_store_updater._remove_completed_relationship_locations_for_list_name(  # pylint: disable=protected-access
+    questionnaire_store_updater.remove_completed_relationship_locations_for_list_name(
         "test-relationship-collector"
     )
 
@@ -419,7 +420,7 @@ def test_remove_completed_relationship_locations_for_list_name_no_locations(
         mock_location, mock_empty_schema, mock_questionnaire_store, mock_router, None
     )
 
-    questionnaire_store_updater._remove_completed_relationship_locations_for_list_name(  # pylint: disable=protected-access
+    questionnaire_store_updater.remove_completed_relationship_locations_for_list_name(
         "test-relationship-collector"
     )
 
@@ -1507,7 +1508,7 @@ def test_questionnaire_store_updater_dependency_capture(
         "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater.get_chronological_section_dependents",
         return_value=[
             DependentSection(
-                section_id="section-1", list_item_id=None, is_complete=True
+                section_id="section-1", list_item_id=None, is_complete=None
             ),
             DependentSection(
                 section_id="section-2", list_item_id=None, is_complete=None
@@ -1532,7 +1533,15 @@ def test_questionnaire_store_updater_dependency_capture(
 
     questionnaire_store_updater.update_progress_for_dependent_sections()
 
-    assert len(questionnaire_store_updater.evaluated_dependents) == 6
+    assert mock_router.routing_path.call_count == 6
+    assert mock_router.routing_path.call_args_list == [
+        call("section-2", list_item_id=None),
+        call("section-3", list_item_id=None),
+        call("section-4", list_item_id=None),
+        call("section-5", list_item_id=None),
+        call("section-6", list_item_id=None),
+        call("section-7", list_item_id=None),
+    ]
 
 
 def test_questionnaire_store_updater_dependency_evaluation_order(mocker, mock_router):
@@ -1596,13 +1605,11 @@ def test_questionnaire_store_updater_dependency_evaluation_order(mocker, mock_ro
 
     questionnaire_store_updater.update_progress_for_dependent_sections()
 
-    expected_evaluation = [
-        ("section-8", None),
-        ("section-12", None),
-        ("section-9", None),
-        ("section-11", None),
-        ("section-10", None),
+    assert mock_router.routing_path.call_count == 5
+    assert mock_router.routing_path.call_args_list == [
+        call("section-8", list_item_id=None),
+        call("section-9", list_item_id=None),
+        call("section-12", list_item_id=None),
+        call("section-10", list_item_id=None),
+        call("section-11", list_item_id=None),
     ]
-
-    assert len(questionnaire_store_updater.evaluated_dependents) == 5
-    assert questionnaire_store_updater.evaluated_dependents == expected_evaluation
