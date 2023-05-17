@@ -3,6 +3,7 @@ import uuid
 
 from mock import patch
 
+from tests.app.parser.conftest import get_response_expires_at
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -179,6 +180,7 @@ class TestFlushData(IntegrationTestCase):
                 "lists": [],
             },
             "started_at": "2023-02-07T11:42:32.380784+00:00",
+            "response_expires_at": get_response_expires_at(),
         }
         self.launchSurveyV2("test_textfield")
         form_data = {"name-answer": "Joe Bloggs"}

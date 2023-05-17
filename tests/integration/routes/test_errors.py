@@ -6,6 +6,7 @@ from app.settings import (
     ACCOUNT_SERVICE_BASE_URL_SOCIAL,
     ONS_URL,
 )
+from tests.app.parser.conftest import get_response_expires_at
 from tests.integration.create_token import ACCOUNT_SERVICE_URL
 from tests.integration.integration_test_case import IntegrationTestCase
 
@@ -31,6 +32,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         "language_code": "en",
         "account_service_url": "http://correct.place",
         "roles": [],
+        "response_expires_at": get_response_expires_at(),
     }
 
     def test_errors_404(self):

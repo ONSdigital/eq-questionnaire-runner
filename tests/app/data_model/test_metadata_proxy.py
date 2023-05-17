@@ -12,6 +12,7 @@ METADATA_V1 = {
     "tx_id": "tx_id",
     "collection_exercise_sid": "collection_exercise_sid",
     "case_id": "case_id",
+    "response_expires_at": "2023-05-24T10:46:32+00:00",
 }
 
 METADATA_V2 = {
@@ -22,6 +23,7 @@ METADATA_V2 = {
     "tx_id": "tx_id",
     "collection_exercise_sid": "collection_exercise_sid",
     "case_id": "case_id",
+    "response_expires_at": "2023-05-24T10:46:32+00:00",
     "survey_metadata": {
         "data": {
             "ru_ref": "432423423423",
@@ -45,6 +47,10 @@ METADATA_V2 = {
         (
             MetadataProxy.from_dict(METADATA_V2)["schema_name"],
             METADATA_V2["schema_name"],
+        ),
+        (
+            MetadataProxy.from_dict(METADATA_V2)["response_expires_at"],
+            METADATA_V2["response_expires_at"],
         ),
         (MetadataProxy.from_dict(METADATA_V1)["non_existing"], None),
         (MetadataProxy.from_dict(METADATA_V2)["non_existing"], None),
