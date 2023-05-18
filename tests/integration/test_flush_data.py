@@ -5,6 +5,7 @@ from httmock import HTTMock, urlmatch
 from mock import patch
 
 from app.utilities.schema import get_schema_path_map
+from tests.app.parser.conftest import get_response_expires_at
 from tests.integration.integration_test_case import IntegrationTestCase
 
 SCHEMA_PATH_MAP = get_schema_path_map(include_test_schemas=True)
@@ -191,6 +192,7 @@ class TestFlushData(IntegrationTestCase):
                 "lists": [],
             },
             "started_at": "2023-02-07T11:42:32.380784+00:00",
+            "response_expires_at": get_response_expires_at(),
         }
         self.launchSurveyV2("test_textfield")
         form_data = {"name-answer": "Joe Bloggs"}
