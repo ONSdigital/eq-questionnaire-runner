@@ -81,7 +81,6 @@ def get_schema_path_map(
                 for schema_file in glob(
                     f"{SCHEMA_DIR}/{survey_type}/{language_code}/*.json"
                 )
-                if "list_collector" in schema_file
             }
             for language_code in LANGUAGE_CODES
         }

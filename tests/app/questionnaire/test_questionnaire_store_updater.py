@@ -383,7 +383,7 @@ def test_remove_completed_relationship_locations_for_list_name(
         "test-relationship-collector"
     )
 
-    completed = mock_empty_progress_store.serialize_progress()
+    completed = mock_empty_progress_store.serialize()
     assert len(completed) == 0
 
 
@@ -403,7 +403,7 @@ def test_remove_completed_relationship_locations_for_list_name_no_locations(
         "section",
         Location(section_id="section", block_id="test-relationship-collector"),
     )
-    initial_progress_store = mock_empty_progress_store.serialize_progress()
+    initial_progress_store = mock_empty_progress_store.serialize()
     mock_questionnaire_store = mocker.MagicMock(
         spec=QuestionnaireStore,
         completed_blocks=[],
@@ -419,7 +419,7 @@ def test_remove_completed_relationship_locations_for_list_name_no_locations(
         "test-relationship-collector"
     )
 
-    assert mock_empty_progress_store.serialize_progress() == initial_progress_store
+    assert mock_empty_progress_store.serialize() == initial_progress_store
 
 
 @pytest.mark.usefixtures(

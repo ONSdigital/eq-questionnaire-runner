@@ -76,7 +76,7 @@ class QuestionnaireStore:
             "METADATA": self._metadata,
             "ANSWERS": list(self.answer_store),
             "LISTS": self.list_store.serialize(),
-            "PROGRESS": self.progress_store.serialize_progress(),
+            "PROGRESS": self.progress_store.serialize(),
             "RESPONSE_METADATA": self.response_metadata,
         }
         return json_dumps(data)

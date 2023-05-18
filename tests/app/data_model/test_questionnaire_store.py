@@ -48,7 +48,7 @@ def test_questionnaire_store_missing_keys(questionnaire_store, basic_input):
     assert store.metadata == MetadataProxy.from_dict(basic_input["METADATA"])
     assert store.response_metadata == basic_input["RESPONSE_METADATA"]
     assert store.answer_store == AnswerStore(basic_input["ANSWERS"])
-    assert not store.progress_store.serialize_progress()
+    assert not store.progress_store.serialize()
 
 
 def test_questionnaire_store_updates_storage(questionnaire_store, basic_input):

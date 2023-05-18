@@ -25,7 +25,8 @@ class ProgressStore:
     """
 
     def __init__(
-        self, in_progress_sections: Iterable[ProgressDictType] | None = None) -> None:
+        self, in_progress_sections: Iterable[ProgressDictType] | None = None
+    ) -> None:
         """
         Instantiate a ProgressStore object that tracks the status of sections and its completed blocks
         Args:
@@ -203,7 +204,7 @@ class ProgressStore:
 
             self._is_dirty = True
 
-    def serialize_progress(self) -> list[Progress]:
+    def serialize(self) -> list[Progress]:
         return list(self._progress.values())
 
     def remove_location_for_backwards_routing(self, location: Location) -> None:
