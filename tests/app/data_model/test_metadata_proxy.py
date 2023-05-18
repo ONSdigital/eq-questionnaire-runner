@@ -12,7 +12,7 @@ METADATA_V1 = {
     "tx_id": "tx_id",
     "collection_exercise_sid": "collection_exercise_sid",
     "case_id": "case_id",
-    "response_expires_at": "2023-05-24T10:46:32+00:00",
+    "response_expires_at": "2023-04-24T10:46:32+00:00",
 }
 
 METADATA_V2 = {
@@ -23,7 +23,7 @@ METADATA_V2 = {
     "tx_id": "tx_id",
     "collection_exercise_sid": "collection_exercise_sid",
     "case_id": "case_id",
-    "response_expires_at": "2023-05-24T10:46:32+00:00",
+    "response_expires_at": "2023-04-24T10:46:32+00:00",
     "survey_metadata": {
         "data": {
             "ru_ref": "432423423423",
