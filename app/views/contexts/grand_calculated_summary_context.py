@@ -1,4 +1,4 @@
-from typing import Iterable, Mapping, Sequence
+from typing import Iterable, Mapping
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -104,7 +104,10 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
             calculation["operation"], routing_path_block_ids
         )
 
-        answer_format = self._get_summary_format(groups)
+        # validator ensures all calculated summaries are of the same type, so the first can be used for the format
+        answer_format = self._schema.get_answer_format_for_calculated_summary(
+            calculated_summary_ids[0]
+        )
         formatted_total = self._format_total(answer_format, total)
 
         return self._build_formatted_summary(
@@ -114,18 +117,3 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
             formatted_total=formatted_total,
             summary_type="GrandCalculatedSummary",
         )
-
-    @staticmethod
-    def _get_summary_format(groups: Sequence[Mapping]) -> dict:
-        """
-        Get the format of the final value from the first calculated summary.
-        Validator ensures that they are all the same
-        """
-        first_calculated_summary = groups[0]["blocks"][0]["calculated_summary"]
-        first_answer = first_calculated_summary["answers"][0]
-        return {
-            "type": first_answer["type"],
-            "unit": first_answer["unit"],
-            "unit_length": first_answer["unit_length"],
-            "currency": first_answer["currency"],
-        }

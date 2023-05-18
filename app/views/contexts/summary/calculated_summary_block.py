@@ -6,7 +6,6 @@ from flask import url_for
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
-from app.questionnaire.questionnaire_schema import get_calculated_summary_answer_ids
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 
 NumericType: TypeAlias = int | float | Decimal
@@ -52,13 +51,14 @@ class CalculatedSummaryBlock:
 
         # Type ignore: for a calculated summary the resolved answer would only ever be one of these 3
         calculated_total: NumericType = self._rule_evaluator.evaluate(block_schema["calculation"]["operation"])  # type: ignore
+        answer_format = self._schema.get_answer_format_for_calculated_summary(self.id)
         self.answers = [
             {
                 "id": self.id,
                 "label": self.title,
                 "value": calculated_total,
                 "link": self._build_link(),
-                **self._get_answer_format(),
+                **answer_format,
             }
         ]
 
@@ -71,17 +71,6 @@ class CalculatedSummaryBlock:
             return_to_block_id=self._return_to_block_id,
             _anchor=self.id,
         )
-
-    def _get_answer_format(self) -> dict:
-        # the format will be the same for all answers in calculated summary so can just take the first
-        first_answer_id = get_calculated_summary_answer_ids(self._block_schema)[0]
-        first_answer = self._schema.get_answers_by_answer_id(first_answer_id)[0]
-        return {
-            "type": first_answer["type"].lower(),
-            "unit": first_answer.get("unit"),
-            "unit_length": first_answer.get("unit_length"),
-            "currency": first_answer.get("currency"),
-        }
 
     def _calculated_summary(self) -> dict:
         return {"id": self.id, "title": self.title, "answers": self.answers}
