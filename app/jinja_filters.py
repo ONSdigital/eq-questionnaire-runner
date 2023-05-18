@@ -548,7 +548,7 @@ class SummaryRow:
         multiple_answers = len(question["answers"]) > 1
 
         if (
-            summary_type in ("CalculatedSummary", "GrandCalculatedSummary")
+            summary_type in {"CalculatedSummary", "GrandCalculatedSummary"}
             and not answers_are_editable
         ):
             self.total = True
@@ -621,7 +621,7 @@ def map_summary_item_config(
 
             rows.extend(list_collector_rows)
 
-    if summary_type in ("CalculatedSummary", "GrandCalculatedSummary"):
+    if summary_type in {"CalculatedSummary", "GrandCalculatedSummary"}:
         rows.append(SummaryRow(calculated_question, summary_type, False, "", "", ""))
 
     return rows

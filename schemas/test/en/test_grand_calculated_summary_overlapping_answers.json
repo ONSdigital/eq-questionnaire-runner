@@ -6,7 +6,7 @@
     "survey_id": "0",
     "title": "Grand Calculated Summary with overlapping answers",
     "theme": "default",
-    "description": "A schema to showcase grand calculated summaries which include multiple calculated summaries using the same answers",
+    "description": "A schema to showcase grand calculated summaries which include multiple calculated summaries using the same answers. The idea here is that you provide 4 answers on charity donations, that sum up to a total personal donation, and then these answers are re-used in a different calculated summary that sums up how much your job contributes. The final grand calculated summary includes the sum of all your answers, and it may sum up some answers twice, if they are also included in the job match calculated summary. (E.g. if you donate £10 to charity A, and your job matches it, that totals a donation of £20, summing your answer twice)",
     "metadata": [
         {
             "name": "user_id",
@@ -133,12 +133,13 @@
                             "question": {
                                 "type": "General",
                                 "id": "question-3",
-                                "title": "Does your job match any donation amount? This determines which calculated summary you see next, if any.",
+                                "title": "Does your job match any donation amount? This determines which calculated summary you see next (if any)",
                                 "answers": [
                                     {
                                         "type": "Radio",
                                         "id": "radio-funding",
                                         "mandatory": true,
+                                        "description": "If you select the first option all your answers so far will be reused in a new calculated summary for matching donations. If you select the second option, only your answers for donations to charity A will be reused.",
                                         "options": [
                                             {
                                                 "label": "Yes, for every donation my job contributes an equal amount",
@@ -171,9 +172,9 @@
                             },
                             "type": "CalculatedSummary",
                             "id": "calculated-summary-3",
-                            "title": "Total donations to match is calculated to be %(total)s. Is this correct?",
+                            "title": "Total donations to match is calculated to be %(total)s. Is this correct? This reuses your answers to question 1 and 2",
                             "calculation": {
-                                "title": "Total charity donation to match",
+                                "title": "Total matched donation (reusing answers from question 1 and 2)",
                                 "operation": {
                                     "+": [
                                         {
@@ -210,9 +211,9 @@
                             },
                             "type": "CalculatedSummary",
                             "id": "calculated-summary-4",
-                            "title": "Total donations to Charity A to match is calculated to be %(total)s. Is this correct?",
+                            "title": "Total donations to Charity A to match is calculated to be %(total)s. Is this correct? This is reusing your part a answers from question 1 and 2",
                             "calculation": {
-                                "title": "Total Charity A donation to match",
+                                "title": "Total matched Charity A donation (reusing answers for how much you donate to charity A)",
                                 "operation": {
                                     "+": [
                                         {
@@ -237,12 +238,12 @@
             "groups": [
                 {
                     "id": "group-2",
-                    "title": "Group title for the grand calculated summary of donations",
+                    "title": "Grand calculated summary of donations",
                     "blocks": [
                         {
                             "type": "GrandCalculatedSummary",
                             "id": "grand-calculated-summary-donations",
-                            "title": "Grand Calculated Summary of donations is calculated to be %(total)s. Is this correct?",
+                            "title": "Grand Calculated Summary of donations is calculated to be %(total)s. Is this correct? The total matched donation (if present) uses the same answers as the other two calculated summaries, so these answers are summed up twice in the total.",
                             "calculation": {
                                 "title": "Total donations to charity",
                                 "operation": {
