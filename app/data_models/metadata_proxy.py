@@ -49,11 +49,11 @@ class MetadataProxy:
     case_id: str
     collection_exercise_sid: str
     response_id: str
+    response_expires_at: datetime
     survey_metadata: Optional[SurveyMetadata] = None
     schema_url: Optional[str] = None
     schema_name: Optional[str] = None
     language_code: Optional[str] = None
-    response_expires_at: Optional[datetime] = None
     channel: Optional[str] = None
     region_code: Optional[str] = None
     version: Optional[AuthPayloadVersion] = None
