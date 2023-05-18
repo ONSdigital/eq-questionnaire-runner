@@ -117,8 +117,8 @@ class ProgressStore:
         if section_key in self._progress:
             if self._progress[section_key].status != section_status:
                 updated = True
-            self._progress[section_key].status = section_status
-            self._is_dirty = True
+                self._progress[section_key].status = section_status
+                self._is_dirty = True
 
         elif section_status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED:
             self._progress[section_key] = Progress(
