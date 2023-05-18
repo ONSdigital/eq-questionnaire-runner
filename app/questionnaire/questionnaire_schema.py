@@ -106,6 +106,34 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return ImmutableDict(self._when_rules_section_dependencies_by_section)
 
     @cached_property
+    def when_rules_section_dependencies_for_progress(
+        self,
+    ) -> defaultdict[str, set[str]]:
+        when_rules_section_dependencies_for_progress = defaultdict(set)
+        for (
+            section,
+            dependent,
+        ) in (
+            self._when_rules_block_dependencies_by_section_for_progress_value_source.items()
+        ):
+            section_dependents = get_flattened_mapping_values(dependent)
+            for dependent_section in section_dependents:
+                when_rules_section_dependencies_for_progress[dependent_section] = {
+                    section
+                }
+        for (
+            section,
+            dependents,
+        ) in (
+            self._when_rules_section_dependencies_by_section_for_progress_value_source.items()
+        ):
+            for dependent_section in dependents:
+                when_rules_section_dependencies_for_progress[dependent_section] = {
+                    section
+                }
+        return when_rules_section_dependencies_for_progress
+
+    @cached_property
     def when_rules_section_dependencies_by_section_for_progress_value_source(
         self,
     ) -> defaultdict[str, OrderedSet[str]]:
@@ -201,21 +229,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     ) -> set[str]:
         all_section_dependencies = self.when_rules_section_dependencies_by_section.get(
             section_id, set()
-        ).union(
-            self.when_rules_section_dependencies_by_section_for_progress_value_source.get(
-                section_id, set()
-            )
         )
 
-        block_dependencies: dict = (
-            self.when_rules_block_dependencies_by_section_for_progress_value_source.get(
-                section_id, {}
-            )
-        )
+        if progress_dependencies := self.when_rules_section_dependencies_for_progress[
+            section_id
+        ]:
+            all_section_dependencies.update(progress_dependencies)
 
-        section_ids = get_flattened_mapping_values(block_dependencies)
-
-        return all_section_dependencies.union(section_ids)
+        return all_section_dependencies
 
     def _get_sections_by_id(self) -> dict[str, ImmutableDict]:
         return {

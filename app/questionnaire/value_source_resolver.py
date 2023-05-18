@@ -136,10 +136,7 @@ class ValueSourceResolver:
                 raise ValueError("location is required to resolve block progress")
 
             section_id_for_block = self.schema.get_section_id_for_block_id(identifier)
-            if (
-                self.location.section_id == section_id_for_block
-                and not self._is_block_on_path(identifier)
-            ):
+            if not self._is_block_on_path(identifier):
                 return None
 
             # Type ignore: Section id will exist at this point
