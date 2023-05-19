@@ -458,29 +458,35 @@ class QuestionnaireStoreUpdater:
                             dependent_section_id,
                             item_id,
                         ) not in evaluated_dependents:
-                            self._evaluate_dependents(
-                                dependent_section=DependentSection(
-                                    section_id=dependent_section_id,
-                                    list_item_id=item_id,
-                                    is_complete=None,
-                                ),
+                            self._evaluate_dependent_of_dependents(
+                                dependent_section_id=dependent_section_id,
+                                list_item_id=item_id,
                                 evaluated_dependents=evaluated_dependents,
                             )
-                            evaluated_dependents.append((dependent_section_id, item_id))
-
                 elif (
                     dependent_section_id,
                     dependent_section.list_item_id,
                 ) not in evaluated_dependents:
-                    self._evaluate_dependents(
-                        dependent_section=DependentSection(
-                            section_id=dependent_section_id,
-                            list_item_id=None,
-                            is_complete=None,
-                        ),
+                    self._evaluate_dependent_of_dependents(
+                        dependent_section_id=dependent_section_id,
                         evaluated_dependents=evaluated_dependents,
                     )
-                    evaluated_dependents.append((dependent_section_id, None))
+
+    def _evaluate_dependent_of_dependents(
+        self,
+        dependent_section_id: str,
+        evaluated_dependents: list[tuple],
+        list_item_id: str | None = None,
+    ) -> None:
+        self._evaluate_dependents(
+            dependent_section=DependentSection(
+                section_id=dependent_section_id,
+                list_item_id=list_item_id,
+                is_complete=None,
+            ),
+            evaluated_dependents=evaluated_dependents,
+        )
+        evaluated_dependents.append((dependent_section_id, list_item_id))
 
     def remove_dependent_blocks_and_capture_dependent_sections(self) -> None:
         """Removes dependent blocks from the progress store."""
