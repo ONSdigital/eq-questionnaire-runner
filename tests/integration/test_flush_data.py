@@ -1,9 +1,14 @@
 import time
 import uuid
 
+from httmock import HTTMock, urlmatch
 from mock import patch
 
+from app.utilities.schema import get_schema_path_map
+from tests.app.parser.conftest import get_response_expires_at
 from tests.integration.integration_test_case import IntegrationTestCase
+
+SCHEMA_PATH_MAP = get_schema_path_map(include_test_schemas=True)
 
 
 class TestFlushData(IntegrationTestCase):
@@ -28,6 +33,14 @@ class TestFlushData(IntegrationTestCase):
         self.encrypter_patcher.stop()
 
         super().tearDown()
+
+    @staticmethod
+    @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema")
+    def schema_url_mock(_url, _request):
+        schema_path = SCHEMA_PATH_MAP["test"]["en"]["test_textfield"]
+
+        with open(schema_path, encoding="utf8") as json_data:
+            return json_data.read()
 
     def test_flush_data_successful(self):
         self.post(
@@ -179,6 +192,7 @@ class TestFlushData(IntegrationTestCase):
                 "lists": [],
             },
             "started_at": "2023-02-07T11:42:32.380784+00:00",
+            "response_expires_at": get_response_expires_at(),
         }
         self.launchSurveyV2("test_textfield")
         form_data = {"name-answer": "Joe Bloggs"}
@@ -191,3 +205,38 @@ class TestFlushData(IntegrationTestCase):
         self.assertStatusOK()
         mock_convert_answers_v2.assert_called_once()
         mock_convert_answers.assert_not_called()
+
+    def test_flush_logs_output(self):
+        with self.assertLogs() as logs:
+            self.post(
+                url=f"/flush?token={self.token_generator.create_token(schema_name='test_textfield', payload=self.get_payload())}"
+            )
+
+            flush_log = logs.output[5]
+
+            self.assertIn("successfully flushed answers", flush_log)
+            self.assertIn("tx_id", flush_log)
+            self.assertIn("ce_id", flush_log)
+            self.assertIn("schema_name", flush_log)
+            self.assertNotIn("schema_url", flush_log)
+
+    def test_flush_logs_output_schema_url(self):
+        schema_url = "http://eq-survey-register.url/my-test-schema"
+        token = self.token_generator.create_token_with_schema_url(
+            "test_textfield", schema_url
+        )
+        with HTTMock(self.schema_url_mock):
+            self.get(url=f"/session?token={token}")
+            self.assertStatusOK()
+            with self.assertLogs() as logs:
+                self.post(
+                    url=f"/flush?token={self.token_generator.create_token_with_schema_url('test_textfield', schema_url, payload=self.get_payload())}"
+                )
+
+                flush_log = logs.output[6]
+
+                self.assertIn("successfully flushed answers", flush_log)
+                self.assertIn("tx_id", flush_log)
+                self.assertIn("ce_id", flush_log)
+                self.assertIn("schema_name", flush_log)
+                self.assertIn("schema_url", flush_log)
