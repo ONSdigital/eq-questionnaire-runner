@@ -108,7 +108,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     @cached_property
     def when_rules_section_dependencies_for_progress(
         self,
-    ) -> defaultdict[str, set[str]]:
+    ) -> ImmutableDict[str, set[str]]:
         """
         This method flips the dependencies that were captured for progress value sources so that they can be
         evaluated properly for when rules, this is because for when rules we need to check for dependencies in
@@ -137,21 +137,23 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 when_rules_section_dependencies_for_progress[dependent_section].add(
                     section
                 )
-        return when_rules_section_dependencies_for_progress
+        return ImmutableDict(when_rules_section_dependencies_for_progress)
 
     @cached_property
     def when_rules_section_dependencies_by_section_for_progress_value_source(
         self,
-    ) -> defaultdict[str, OrderedSet[str]]:
-        return (
+    ) -> ImmutableDict[str, OrderedSet[str]]:
+        return ImmutableDict(
             self._when_rules_section_dependencies_by_section_for_progress_value_source
         )
 
     @cached_property
     def when_rules_block_dependencies_by_section_for_progress_value_source(
         self,
-    ) -> defaultdict[str, DependencyDictType]:
-        return self._when_rules_block_dependencies_by_section_for_progress_value_source
+    ) -> ImmutableDict[str, DependencyDictType]:
+        return ImmutableDict(
+            self._when_rules_block_dependencies_by_section_for_progress_value_source
+        )
 
     @cached_property
     def when_rules_section_dependencies_by_answer(self) -> ImmutableDict[str, set[str]]:
@@ -237,9 +239,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             section_id, set()
         )
 
-        if progress_dependencies := self.when_rules_section_dependencies_for_progress[
+        if progress_dependencies := self.when_rules_section_dependencies_for_progress.get(
             section_id
-        ]:
+        ):
             all_section_dependencies.update(progress_dependencies)
 
         return all_section_dependencies

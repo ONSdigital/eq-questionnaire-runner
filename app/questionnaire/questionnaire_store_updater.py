@@ -2,6 +2,7 @@ from collections import defaultdict, namedtuple
 from itertools import combinations
 from typing import Any, Iterable, Mapping
 
+from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerValueTypes, QuestionnaireStore
@@ -446,9 +447,9 @@ class QuestionnaireStoreUpdater:
             section_id=dependent_section.section_id,
             list_item_id=dependent_section.list_item_id,
         ):
-            dependents_of_dependent = self._schema.when_rules_section_dependencies_by_section_for_progress_value_source[
-                dependent_section.section_id
-            ]
+            dependents_of_dependent: OrderedSet = self._schema.when_rules_section_dependencies_by_section_for_progress_value_source.get(
+                dependent_section.section_id, OrderedSet()
+            )
             for dependent_section_id in dependents_of_dependent:
                 if repeating_list := self._schema.get_repeating_list_for_section(
                     dependent_section_id
