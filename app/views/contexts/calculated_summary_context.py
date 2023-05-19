@@ -87,7 +87,7 @@ class CalculatedSummaryContext(Context):
             for group in section["groups"]
         ]
 
-    def build_view_context_for_calculated_summary(self) -> dict[str, dict]:
+    def build_view_context(self) -> dict[str, dict]:
         # type ignores added as block will exist at this point
         block_id: str = self.current_location.block_id  # type: ignore
         block: ImmutableDict = self._schema.get_block(block_id)  # type: ignore

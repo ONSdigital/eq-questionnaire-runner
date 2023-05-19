@@ -3,7 +3,7 @@ from typing import Iterable, Mapping
 from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire.questionnaire_schema import (
-    get_grand_calculated_summary_block_ids,
+    get_calculation_block_ids_for_grand_calculated_summary,
 )
 from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
 from app.views.contexts.summary.group import Group
@@ -19,15 +19,16 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         # Type ignore: the block, group and section will all exist at this point
         block_id: str = self.current_location.block_id  # type: ignore
         calculated_summary_group: ImmutableDict = self._schema.get_group_for_block_id(block_id)  # type: ignore
-        section_id: str = self._schema.get_section_id_for_block_id(block_id)  # type: ignore
 
-        calculated_summary_ids = get_grand_calculated_summary_block_ids(rendered_block)
+        calculated_summary_ids = get_calculation_block_ids_for_grand_calculated_summary(
+            rendered_block
+        )
         blocks_to_calculate = [
             self._schema.get_block(block_id) for block_id in calculated_summary_ids
         ]
 
         return {
-            "id": section_id,
+            "id": self.current_location.section_id,
             "groups": [
                 {"id": calculated_summary_group["id"], "blocks": blocks_to_calculate}
             ],
@@ -83,7 +84,7 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
             for group in section["groups"]
         ]
 
-    def build_view_context_for_grand_calculated_summary(self) -> dict[str, dict]:
+    def build_view_context(self) -> dict[str, dict]:
         """
         Build summary section with formatted total and change links for each calculated summary
         """
@@ -92,7 +93,9 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         block: ImmutableDict = self._schema.get_block(block_id)  # type: ignore
 
         calculation = block["calculation"]
-        calculated_summary_ids = get_grand_calculated_summary_block_ids(block)
+        calculated_summary_ids = get_calculation_block_ids_for_grand_calculated_summary(
+            block
+        )
         routing_path_block_ids = self._blocks_on_routing_path(calculated_summary_ids)
 
         calculated_section = self._build_grand_calculated_summary_section(block)

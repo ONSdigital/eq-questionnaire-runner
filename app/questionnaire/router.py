@@ -224,26 +224,30 @@ class Router:
         if not return_to:
             return None
 
-        if return_to == "grand-calculated-summary":
-            if url := self._get_return_to_for_grand_calculated_summary(
-                return_to,
-                return_to_block_id,
-                location,
-                routing_path,
-                return_to_answer_id,
-            ):
-                return url
+        if return_to == "grand-calculated-summary" and (
+            url := self._get_return_to_for_grand_calculated_summary(
+                return_to=return_to,
+                return_to_block_id=return_to_block_id,
+                location=location,
+                routing_path=routing_path,
+                return_to_answer_id=return_to_answer_id,
+            )
+        ):
+            return url
 
-        if return_to.startswith("calculated-summary"):
-            if url := self._get_return_to_for_calculated_summary(
+        if return_to.startswith("calculated-summary") and (
+            url := self._get_return_to_for_calculated_summary(
                 # if there are multiple return to block types, the last one is where to go next
-                return_to.split(",")[-1],
-                return_to_block_id.split(",") if return_to_block_id else [],
-                location,
-                routing_path,
-                return_to_answer_id,
-            ):
-                return url
+                return_to=return_to.split(",")[-1],
+                return_to_block_ids=return_to_block_id.split(",")
+                if return_to_block_id
+                else [],
+                location=location,
+                routing_path=routing_path,
+                return_to_answer_id=return_to_answer_id,
+            )
+        ):
+            return url
 
         if is_section_complete is None:
             is_section_complete = self._progress_store.is_section_complete(
@@ -264,6 +268,7 @@ class Router:
 
     def _get_return_to_for_grand_calculated_summary(
         self,
+        *,
         return_to: str | None,
         return_to_block_id: str | None,
         location: Location,
@@ -300,6 +305,7 @@ class Router:
 
     def _get_return_to_for_calculated_summary(
         self,
+        *,
         return_to: str,
         return_to_block_ids: Sequence[str],
         location: Location,
@@ -319,10 +325,8 @@ class Router:
 
         if return_to_block_ids:
             # the first block is the block id to route to, and whatever is left (if anything) forms where to go next
-            block_id = return_to_block_ids.pop(0)
-            return_to_block_id = (
-                ",".join(return_to_block_ids) if return_to_block_ids else None
-            )
+            block_id, *remaining = return_to_block_ids
+            return_to_block_id = ",".join(remaining) if remaining else None
 
         if self.can_access_location(
             Location(

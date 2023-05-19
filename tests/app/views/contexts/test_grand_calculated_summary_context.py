@@ -91,7 +91,7 @@ def test_build_view_context_for_grand_calculated_summary(
     )
 
     context = (
-        grand_calculated_summary_context.build_view_context_for_grand_calculated_summary()
+        grand_calculated_summary_context.build_view_context()
     )
 
     assert "summary" in context

@@ -122,7 +122,7 @@ def test_build_view_context_for_currency_calculated_summary(
         current_location=Location(section_id="default-section", block_id=block_id),
     )
 
-    context = calculated_summary_context.build_view_context_for_calculated_summary()
+    context = calculated_summary_context.build_view_context()
 
     assert "summary" in context
     assert_summary_context(context)
@@ -221,7 +221,7 @@ def test_build_view_context_for_return_to_calculated_summary(
         return_to_block_id=return_to_block_id,
     )
 
-    context = calculated_summary_context.build_view_context_for_calculated_summary()
+    context = calculated_summary_context.build_view_context()
     assert "summary" in context
     assert_summary_context(context)
     context_summary = context["summary"]

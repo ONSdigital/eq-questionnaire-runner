@@ -32,7 +32,7 @@ class CalculatedSummaryBlock:
         """
 
         self.id = block_schema["id"]
-        self.title = block_schema["calculation"].get("title")
+        self.title = block_schema["calculation"]["title"]
         self._return_to = return_to
         self._return_to_block_id = return_to_block_id
         self._block_schema = block_schema
