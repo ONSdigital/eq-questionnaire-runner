@@ -857,6 +857,12 @@ def test_has_operator_returns_correct_value(rule, expected_result):
 def test_progress_dependencies_for_when_rules(
     progress_dependencies_schema,
 ):
+    """
+    Asserts that the dependencies captured by
+    schema.when_rules_section_dependencies_by_section_for_progress_value_source and
+    schema.when_rules_section_dependencies_by_block_for_progress_value_source are flipped
+    correctly so that progress dependencies can be evaluated with our normal when rules
+    """
     schema = progress_dependencies_schema
 
     assert {
