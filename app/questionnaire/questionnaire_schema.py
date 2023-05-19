@@ -55,7 +55,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self, questionnaire_json: Mapping, language_code: str = DEFAULT_LANGUAGE_CODE
     ):
         self._parent_id_map: dict[str, str] = {}
-        self._list_name_to_section_map: dict[str, list[str]] = {}
+        self._list_name_to_section_map: dict[str, set[str]] = {}
         self._answer_dependencies_map: dict[str, set[AnswerDependent]] = defaultdict(
             set
         )
@@ -213,8 +213,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                             nested_block_id = nested_block["id"]
                             blocks[nested_block_id] = nested_block
                             self._parent_id_map[nested_block_id] = block_id
-                    if block.get("repeating_blocks"):
-                        for repeating_block in block["repeating_blocks"]:
+                    if repeating_blocks := block.get("repeating_blocks"):
+                        for repeating_block in repeating_blocks:
                             repeating_block_id = repeating_block["id"]
                             blocks[repeating_block_id] = repeating_block
                             self._parent_id_map[repeating_block_id] = block_id
@@ -430,7 +430,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_section(self, section_id: str) -> ImmutableDict | None:
         return self._sections_by_id.get(section_id)
 
-    def get_section_ids_dependent_on_list(self, list_name: str) -> list[str]:
+    def get_section_ids_dependent_on_list(self, list_name: str) -> set[str]:
         try:
             return self._list_name_to_section_map[list_name]
         except KeyError:
@@ -475,8 +475,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         operands: Sequence = rules[operator]
         return operands
 
-    def _section_ids_associated_to_list_name(self, list_name: str) -> list[str]:
-        section_ids: list[str] = []
+    def _section_ids_associated_to_list_name(self, list_name: str) -> set[str]:
+        section_ids: set[str] = set()
 
         for section in self.get_sections():
             ignore_keys = ["question_variants", "content_variants"]
@@ -484,7 +484,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
             rule: Mapping = next(when_rules, {})
             if self._is_list_name_in_rule(rule, list_name):
-                section_ids.append(section["id"])
+                section_ids.add(section["id"])
         return section_ids
 
     @staticmethod
@@ -1027,6 +1027,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def is_answer_in_repeating_blocks(self, answer_id: str) -> bool:
         if block := self.get_block_for_answer_id(answer_id):
             return self.is_block_in_repeating_blocks(block_id=block["id"])
+        return False
 
 
 def get_sources_for_type_from_data(

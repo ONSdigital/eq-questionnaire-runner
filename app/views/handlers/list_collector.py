@@ -23,7 +23,7 @@ class ListCollector(Question):
             )
             return add_url
 
-        if not self._is_list_collector_complete() and (incomplete_block := next(self._get_incomplete_repeating_block_ids(), None)):
+        if incomplete_block := next(self._get_incomplete_repeating_block_ids(), None):
             repeating_block_url = url_for(
                 "questionnaire.block",
                 list_name=self.rendered_block["for_list"],
@@ -69,7 +69,7 @@ class ListCollector(Question):
             # wtforms Form parents are not discoverable in the 2.3.3 implementation
             self.questionnaire_store_updater.update_answers(self.form.data)
             self.questionnaire_store_updater.save()
-        elif not self.rendered_block["repeating_blocks"] or (self.rendered_block["repeating_blocks"] and self._is_list_collector_complete()):
+        elif not self.rendered_block.get("repeating_blocks") or self._is_list_collector_complete():
             return super().handle_post()
 
     def _is_list_collector_complete(self):
@@ -79,12 +79,16 @@ class ListCollector(Question):
             for list_item_id in list_model.items)
 
     def _get_incomplete_repeating_block_ids(self) -> Generator:
-        list_model = self._questionnaire_store.list_store.get(self.rendered_block["for_list"])
         repeating_blocks = self.rendered_block.get("repeating_blocks")
+        if not repeating_blocks:
+            return
 
+        list_model = self._questionnaire_store.list_store.get(self.rendered_block["for_list"])
         for list_item_id in list_model.items:
-            if not self.questionnaire_store_updater.is_section_complete(self.current_location.section_id, list_item_id):
-                complete_block_ids = self.questionnaire_store_updater.get_completed_block_ids(self.current_location.section_id, list_item_id)
-                for repeating_block in repeating_blocks:
-                    if repeating_block["id"] not in complete_block_ids:
-                        yield list_item_id, repeating_block["id"]
+            if self.questionnaire_store_updater.is_section_complete(self.current_location.section_id, list_item_id):
+                continue
+
+            complete_block_ids = self.questionnaire_store_updater.get_completed_block_ids(self.current_location.section_id, list_item_id)
+            for repeating_block in repeating_blocks:
+                if repeating_block["id"] not in complete_block_ids:
+                    yield list_item_id, repeating_block["id"]
