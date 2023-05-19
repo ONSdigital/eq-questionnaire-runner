@@ -41,7 +41,7 @@ class QuestionnaireStoreUpdater:
         self.dependent_block_id_by_section_key: Mapping[
             SectionKeyType, set[str]
         ] = defaultdict(set)
-        self.dependent_sections: set = set()
+        self.dependent_sections: set[DependentSection] = set()
 
     def save(self) -> None:
         if self.is_dirty():
