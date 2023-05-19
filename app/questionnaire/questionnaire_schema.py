@@ -109,6 +109,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def when_rules_section_dependencies_for_progress(
         self,
     ) -> defaultdict[str, set[str]]:
+        """
+        This method flips the dependencies that were captured for progress value sources so that they can be
+        evaluated properly for when rules, this is because for when rules we need to check for dependencies in
+        previous sections, whereas for progress we are checking for dependent blocks/sections in "future" sections
+        """
         when_rules_section_dependencies_for_progress = defaultdict(set)
         for (
             section,
@@ -118,9 +123,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ):
             section_dependents = get_flattened_mapping_values(dependent)
             for dependent_section in section_dependents:
-                when_rules_section_dependencies_for_progress[dependent_section] = {
+                when_rules_section_dependencies_for_progress[dependent_section].add(
                     section
-                }
+                )
+
         for (
             section,
             dependents,
@@ -128,9 +134,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             self._when_rules_section_dependencies_by_section_for_progress_value_source.items()
         ):
             for dependent_section in dependents:
-                when_rules_section_dependencies_for_progress[dependent_section] = {
+                when_rules_section_dependencies_for_progress[dependent_section].add(
                     section
-                }
+                )
         return when_rules_section_dependencies_for_progress
 
     @cached_property
