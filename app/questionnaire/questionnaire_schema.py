@@ -1052,7 +1052,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 calculated_summary_block  # type: ignore
             )
             answer_id_list.update(calculated_summary_answer_ids)
-        elif source == "progress" and identifier and selector:
+        elif source == "progress" and identifier:
             if selector == "section":
                 if identifier != current_section_id:
                     dependencies_ids_for_progress_value_source["sections"][
