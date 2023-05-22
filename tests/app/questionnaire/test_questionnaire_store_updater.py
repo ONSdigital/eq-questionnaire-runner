@@ -1487,6 +1487,11 @@ def test_questionnaire_store_updater_dependency_capture(
     status_unchanged_section_ids,
     expected_routing_path_calls,
 ):
+    """
+    This test is intended to ensure that the order in which dependencies are captured and evaluated is correct.
+    We should only call the routing path for a given section once and need to ensure that only the necessary paths are evaluated
+    i.e. only sections in which the status has changed should be evaluated.
+    """
     current_location = Location(section_id="section-1", block_id="block-2")
     mock_dependencies = defaultdict(OrderedSet) | {
         "section-1": OrderedSet(["section-2", "section-3"]),
