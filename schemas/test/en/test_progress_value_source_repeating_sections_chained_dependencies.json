@@ -269,7 +269,6 @@
                             "question": {
                                 "id": "second-question",
                                 "title": "Question",
-                                "description": ["The next question is used as a dependency in the repeating sections."],
                                 "type": "General",
                                 "answers": [
                                     {
@@ -467,7 +466,7 @@
                                     ],
                                     "text": "Random question about <em>{person_name_possessive}</em>"
                                 },
-                                "description": ["Shows because the random question was completed in section 1"],
+                                "description": ["Shows because section 2 was completed"],
                                 "type": "General"
                             },
                             "skip_conditions": {
