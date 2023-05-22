@@ -133,5 +133,18 @@ describe("Feature: Grand Calculated Summary", () => {
       // TODO: grand calculated summary should not show, but this requires progress source, until this is implemented, it should at least show as in progress
       await expect(await $(HubPage.summaryRowState("section-3")).getText()).to.equal("Partially completed");
     });
+
+    it("Given I set both answers to block 4 to zero which removes the Grand Calculated Summary from the path, I am routed back to the Hub after the calculated summary", async () => {
+      await $(HubPage.summaryRowLink("section-3")).click();
+      await $(GrandCalculatedSummary2Page.calculatedSummary4Edit()).click();
+      await $(CalculatedSummary4Page.q4A1Edit()).click();
+      await $(Block4Page.q4A1()).setValue(0);
+      await $(Block4Page.q4A2()).setValue(0);
+      await $(Block4Page.submit()).click();
+      await $(CalculatedSummary4Page.submit()).click();
+      // should be back at Hub, and grand calculated summary section not present
+      await expect(await browser.getUrl()).to.contain(HubPage.pageName);
+      await expect(await $(HubPage.summaryRowLink("section-3")).isExisting()).to.be.false;
+    });
   });
 });

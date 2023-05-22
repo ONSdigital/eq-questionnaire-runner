@@ -9,7 +9,6 @@ import CalculatedSummarySectionSummaryPage from "../../../generated_pages/grand_
 import CurrencyQuestion3Page from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/currency-question-3.page";
 import CurrencyAllPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/currency-all.page";
 import FirstNumberBlockPartAPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/first-number-block-part-a.page";
-import FirstNumberBlockPartBPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/first-number-block-part-b.page";
 import FourthNumberBlockPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/fourth-number-block.page";
 
 describe("Feature: Grand Calculated Summary", () => {
@@ -19,19 +18,17 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(HubPage.submit()).click();
       await $(SkipFirstBlockPage.no()).click();
       await $(SkipFirstBlockPage.submit()).click();
-      await $(FirstNumberBlockPartAPage.firstNumberA()).setValue(100);
+      await $(FirstNumberBlockPartAPage.firstNumberA()).setValue(300);
       await $(FirstNumberBlockPartAPage.submit()).click();
-      await $(FirstNumberBlockPartBPage.firstNumberB()).setValue(200);
-      await $(FirstNumberBlockPartBPage.submit()).click();
       await $(SecondNumberBlockPage.secondNumberA()).setValue(10);
-      await $(SecondNumberBlockPage.secondNumberB()).setValue(20);
+      await $(SecondNumberBlockPage.secondNumberB()).setValue(5);
+      await $(SecondNumberBlockPage.secondNumberC()).setValue(15);
       await $(SecondNumberBlockPage.submit()).click();
       await $(CurrencySection1Page.submit()).click();
       await $(QuestionsSectionSummaryPage.submit()).click();
       // section 2
       await $(HubPage.submit()).click();
-      await $(ThirdNumberBlockPage.thirdNumberPartA()).setValue(30);
-      await $(ThirdNumberBlockPage.thirdNumberPartB()).setValue(40);
+      await $(ThirdNumberBlockPage.thirdNumberPartA()).setValue(70);
       await $(ThirdNumberBlockPage.submit()).click();
     });
     it("Given I don't skip the second calculated summary, it is included in the grand calculated summary", async () => {
@@ -88,13 +85,13 @@ describe("Feature: Grand Calculated Summary", () => {
       await expect(await $(HubPage.summaryRowState("grand-calculated-summary-section")).getText()).to.equal("Completed");
       await $(HubPage.summaryRowLink("grand-calculated-summary-section")).click();
       await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).to.contain(
-        "The grand calculated summary is calculated to be £500.00. Is this correct?"
+        "The grand calculated summary is calculated to be £460.00. Is this correct?"
       );
     });
-    it("Given I change my answer to question 3 from the grand calculated summary, this opens up an additional question, and when I press continue I am taken to this question first, then the calculated summary, and then the grand calculated summary", async () => {
+    it("Given I provide an answer to question 3b from the grand calculated summary, this opens up an additional question, and when I press continue I am taken to this question first, then the calculated summary, and then the grand calculated summary", async () => {
       await $(CurrencyAllPage.currencyQuestion3Edit()).click();
-      await $(CurrencyQuestion3Page.thirdNumberAnswerPartAEdit()).click();
-      await $(ThirdNumberBlockPage.thirdNumberPartA()).setValue(100);
+      await $(CurrencyQuestion3Page.thirdNumberAnswerPartBEdit()).click();
+      await $(ThirdNumberBlockPage.thirdNumberPartB()).setValue(10);
       await $(ThirdNumberBlockPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(FourthNumberBlockPage.pageName);
       await $(FourthNumberBlockPage.fourthNumber()).setValue(1);

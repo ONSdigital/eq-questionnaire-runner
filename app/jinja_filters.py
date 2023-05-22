@@ -462,8 +462,7 @@ class SummaryRowItem:
             (
                 multiple_answers
                 or answer_type == "relationship"
-                or summary_type == "CalculatedSummary"
-                or summary_type == "GrandCalculatedSummary"
+                or summary_type in {"CalculatedSummary", "GrandCalculatedSummary"}
             )
             and "label" in answer
             and answer["label"]

@@ -64,15 +64,13 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         self.post({"skip-answer-1": "Yes"})
         self.post({"second-number-answer-a": "30", "second-number-answer-b": "60"})
         self.assertInBody(
-            "We calculate the total of currency values entered to be £90.00. Is this correct?"
+            "We calculate your total monthly expenditure on household bills to be £90.00. Is this correct?"
         )
         self.post()
         self.post()
         # Complete the second section
         self.post()
-        self.post(
-            {"third-number-answer-part-a": "30", "third-number-answer-part-b": "40"}
-        )
+        self.post({"third-number-answer-part-a": "70"})
 
     def test_grand_calculated_summary_cross_section_dependencies_with_skip(self):
         self.launchSurvey("test_grand_calculated_summary_cross_section_dependencies")
@@ -101,6 +99,26 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         self.post()
         self.assertInBody(
             "The grand calculated summary is calculated to be £160.00. Is this correct?"
+        )
+
+    def test_grand_calculated_summary_cross_section_dependencies_extra_question(self):
+        self.launchSurvey("test_grand_calculated_summary_cross_section_dependencies")
+        self._complete_upto_grand_calculated_summary_cross_section_dependencies()
+
+        # edit question to unlock the extra one
+        self.previous()
+        self.post(
+            {"third-number-answer-part-a": "70", "third-number-answer-part-b": "20"}
+        )
+        self.post({"fourth-number-answer": "40"})
+        self.post({"skip-answer-2": "No"})
+        self.post()
+        self.post()
+
+        # grand calculated summary will now include the extra question answer
+        self.post()
+        self.assertInBody(
+            "The grand calculated summary is calculated to be £220.00. Is this correct?"
         )
 
     def _complete_upto_grand_calculated_summary_overlapping_answers(

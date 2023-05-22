@@ -241,6 +241,20 @@
                                 "type": "General",
                                 "id": "question-4",
                                 "title": "How much do you spend per week on games? (Question 4, section 2, group 3)",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "<strong>Note:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "The grand calculated summary section after this will only show if the total spending on games is not zero",
+                                                "You should test that if you use the change links on the grand calculated summary to come back here and set both answers to 0, that you are <strong>not</strong> routed to the grand calculated summary when you press continue on the calculated summary, but instead, taken to the Hub.",
+                                                "If you use the change links on the grand calculated summary to edit these answer values to a non-zero sum, pressing continue twice should take you back to the grand calculated summary"
+                                            ]
+                                        }
+                                    ]
+                                },
                                 "answers": [
                                     {
                                         "id": "q4-a1",

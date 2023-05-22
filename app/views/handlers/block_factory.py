@@ -4,9 +4,11 @@ from app.data_models import QuestionnaireStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException, Location
 from app.questionnaire.relationship_location import RelationshipLocation
-from app.views.handlers.calculation_summary import CalculatedSummary
+from app.views.handlers.calculation_summary import (
+    CalculatedSummary,
+    GrandCalculatedSummary,
+)
 from app.views.handlers.content import Content
-from app.views.handlers.calculation_summary import GrandCalculatedSummary
 from app.views.handlers.list_add_question import ListAddQuestion
 from app.views.handlers.list_collector import ListCollector
 from app.views.handlers.list_edit_question import ListEditQuestion
