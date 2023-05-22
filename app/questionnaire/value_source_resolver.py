@@ -127,6 +127,8 @@ class ValueSourceResolver:
         identifier = value_source["identifier"]
         selector = value_source["selector"]
         if selector == "section":
+            # List item id is set to None here as we do not support checking progress value sources for
+            # repeating sections
             return self.progress_store.get_section_status(
                 section_id=identifier, list_item_id=None
             )
@@ -135,14 +137,15 @@ class ValueSourceResolver:
             if not self.location:
                 raise ValueError("location is required to resolve block progress")
 
-            section_id_for_block = self.schema.get_section_id_for_block_id(identifier)
             if not self._is_block_on_path(identifier):
                 return None
 
             # Type ignore: Section id will exist at this point
+            section_id_for_block: str = self.schema.get_section_id_for_block_id(identifier)  # type: ignore
+
             return self.progress_store.get_block_status(
                 block_id=identifier,
-                section_id=section_id_for_block,  # type: ignore
+                section_id=section_id_for_block,
                 list_item_id=self.location.list_item_id
                 if self.location.section_id == section_id_for_block
                 else None,
