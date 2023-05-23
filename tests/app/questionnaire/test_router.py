@@ -903,8 +903,8 @@ class TestRouterPreviousLocation(RouterTestCase):
             (
                 "calculated-summary,invalid",
                 "second-number-block",
-                "invalid-first,invalid-second",
-                "/questionnaire/first-number-block/?return_to=calculated-summary,invalid&return_to_block_id=invalid-first,invalid-second#distance-calculated-summary-1",
+                "invalid-1,invalid-2",
+                "/questionnaire/first-number-block/?return_to=calculated-summary,invalid&return_to_block_id=invalid-1,invalid-2#distance-calculated-summary-1",
             ),
             (
                 "invalid",
