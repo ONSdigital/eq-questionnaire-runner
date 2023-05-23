@@ -28,6 +28,10 @@ def strip_tags(value: str) -> Markup:
     return escape(Markup(value).striptags())
 
 
+def is_summary_with_calculation(summary_type: str) -> bool:
+    return summary_type in {"GrandCalculatedSummary", "CalculatedSummary"}
+
+
 @blueprint.app_template_filter()
 def format_number(value: Union[int, Decimal, float]) -> str:
     formatted_number: str
@@ -462,7 +466,7 @@ class SummaryRowItem:
             (
                 multiple_answers
                 or answer_type == "relationship"
-                or summary_type in {"CalculatedSummary", "GrandCalculatedSummary"}
+                or is_summary_with_calculation(summary_type)
             )
             and "label" in answer
             and answer["label"]
@@ -546,10 +550,7 @@ class SummaryRow:
 
         multiple_answers = len(question["answers"]) > 1
 
-        if (
-            summary_type in {"CalculatedSummary", "GrandCalculatedSummary"}
-            and not answers_are_editable
-        ):
+        if is_summary_with_calculation(summary_type) and not answers_are_editable:
             self.total = True
 
         for answer in question["answers"]:
@@ -620,7 +621,7 @@ def map_summary_item_config(
 
             rows.extend(list_collector_rows)
 
-    if summary_type in {"CalculatedSummary", "GrandCalculatedSummary"}:
+    if is_summary_with_calculation(summary_type):
         rows.append(SummaryRow(calculated_question, summary_type, False, "", "", ""))
 
     return rows

@@ -56,6 +56,7 @@ class CalculatedSummaryContext(Context):
 
     def build_groups_for_section(
         self,
+        *,
         section: Mapping,
         return_to_block_id: str,
         routing_path_block_ids: Iterable[str],
@@ -96,7 +97,9 @@ class CalculatedSummaryContext(Context):
         calculation = block["calculation"]
 
         groups = self.build_groups_for_section(
-            calculated_section, block_id, self.routing_path_block_ids
+            section=calculated_section,
+            return_to_block_id=block_id,
+            routing_path_block_ids=self.routing_path_block_ids,
         )
 
         formatted_total = self._get_formatted_total(
@@ -220,6 +223,7 @@ class CalculatedSummaryContext(Context):
 
     def _get_evaluated_total(
         self,
+        *,
         calculation: ImmutableDict,
         routing_path_block_ids: Iterable[str],
     ) -> NumericType:
@@ -247,7 +251,8 @@ class CalculatedSummaryContext(Context):
 
         if isinstance(calculation, ImmutableDict):
             calculated_total = self._get_evaluated_total(
-                calculation, self.routing_path_block_ids
+                calculation=calculation,
+                routing_path_block_ids=self.routing_path_block_ids,
             )
         else:
             calculated_total = calculation(values_to_calculate)

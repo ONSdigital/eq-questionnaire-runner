@@ -53,7 +53,7 @@ describe("Feature: Grand Calculated Summary", () => {
       await expect(await browser.getUrl()).to.contain(GrandCalculatedSummary2Page.pageName);
     });
 
-    it("Given I go back to the calculated summary and then to a question and edit the answer. I am first taken back to the updated calculated summary, and then the updated grand calculated summary.", async () => {
+    it("Given I go back to the calculated summary and then to a question and edit the answer. I am first taken back to the each calculated summary that uses the answer, the grand calculated summary in section 1, and then the updated grand calculated summary in section 3.", async () => {
       await $(GrandCalculatedSummary2Page.calculatedSummary4Edit()).click();
       await expect(await $(CalculatedSummary4Page.calculatedSummaryTitle()).getText()).to.contain(
         "Calculated Summary for Question 4 is calculated to be £15.00. Is this correct?"
@@ -90,7 +90,7 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(Block1Page.q1A1()).setValue(100);
       await $(Block1Page.submit()).click();
 
-      // back at updated calculated summary
+      // go to each calculated summary that uses the answer in turn, then each grand calculated summary up to the one we were editing
       await expect(await browser.getUrl()).to.contain(CalculatedSummary1Page.pageName);
       await expect(await $(CalculatedSummary1Page.calculatedSummaryTitle()).getText()).to.contain(
         "Calculated Summary for Question 1 is calculated to be £190.00. Is this correct?"
@@ -107,8 +107,16 @@ describe("Feature: Grand Calculated Summary", () => {
         "Calculated Summary for Question 1 is calculated to be £550.00. Is this correct?"
       );
 
-      // and submitting still goes back to grand calculated summary
+      // will now step through each question until the section is done before going back to grand calculated summary
       await $(CalculatedSummary1Page.submit()).click();
+      await expect(await browser.getUrl()).to.contain(Block3Page.pageName);
+      await $(Block3Page.submit()).click();
+      await expect(await browser.getUrl()).to.contain(CalculatedSummary2Page.pageName);
+      await $(CalculatedSummary2Page.submit()).click();
+      await expect(await browser.getUrl()).to.contain(CalculatedSummary3Page.pageName);
+      await $(CalculatedSummary3Page.submit()).click();
+      await expect(await browser.getUrl()).to.contain(GrandCalculatedSummary1Page.pageName);
+      await $(GrandCalculatedSummary1Page.submit()).click();
       await expect(await browser.getUrl()).to.contain(GrandCalculatedSummary2Page.pageName);
       await expect(await $(GrandCalculatedSummary2Page.grandCalculatedSummaryTitle()).getText()).to.contain(
         "Grand Calculated Summary for section 1 and 2 is calculated to be £910.00. Is this correct?"

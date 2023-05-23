@@ -61,6 +61,7 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
 
     def build_groups_for_section(
         self,
+        *,
         section: Mapping,
         return_to_block_id: str,
         routing_path_block_ids: Iterable[str],
@@ -101,10 +102,13 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         calculated_section = self._build_grand_calculated_summary_section(block)
 
         groups = self.build_groups_for_section(
-            calculated_section, block_id, routing_path_block_ids
+            section=calculated_section,
+            return_to_block_id=block_id,
+            routing_path_block_ids=routing_path_block_ids,
         )
         total = self._get_evaluated_total(
-            calculation["operation"], routing_path_block_ids
+            calculation=calculation["operation"],
+            routing_path_block_ids=routing_path_block_ids,
         )
 
         # validator ensures all calculated summaries are of the same type, so the first can be used for the format

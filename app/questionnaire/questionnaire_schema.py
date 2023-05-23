@@ -284,42 +284,42 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _update_answer_dependencies_for_summary(self, block: ImmutableDict) -> None:
         if block["type"] == "CalculatedSummary":
-            answer_ids_for_block = get_calculated_summary_answer_ids(block)
-            self._update_answer_dependencies_for_calculated_summary(
-                answer_ids_for_block, block["id"]
+            self._update_answer_dependencies_for_calculated_summary_dependency(
+                calculated_summary_block=block, dependent_block=block
             )
         else:  # must be GrandCalculatedSummary
-            calculated_summary_ids = (
-                get_calculation_block_ids_for_grand_calculated_summary(block)
-            )
-            self._update_answer_dependencies_for_grand_calculated_summary(
-                calculated_summary_ids, block["id"]
-            )
+            self._update_answer_dependencies_for_grand_calculated_summary(block)
 
-    def _update_answer_dependencies_for_calculated_summary(
-        self, calculated_summary_answer_ids: Iterable[str], block_id: str
+    def _update_answer_dependencies_for_calculated_summary_dependency(
+        self, *, calculated_summary_block: ImmutableDict, dependent_block: ImmutableDict
     ) -> None:
+        """
+        Given a calculated summary block and a block which depends on that calculated summary (may just be the calculated summary itself)
+        update the answer to be a dependency for the dependent block
+        """
+        calculated_summary_answer_ids = get_calculated_summary_answer_ids(
+            calculated_summary_block
+        )
         for answer_id in calculated_summary_answer_ids:
             self._answer_dependencies_map[answer_id] |= {
-                self._get_answer_dependent_for_block_id(block_id=block_id)
+                self._get_answer_dependent_for_block_id(block_id=dependent_block["id"])
             }
 
     def _update_answer_dependencies_for_grand_calculated_summary(
-        self,
-        grand_calculated_summary_calculated_summary_ids: Iterable[str],
-        block_id: str,
+        self, grand_calculated_summary_block: ImmutableDict
     ) -> None:
-        # validator ensures that any grand calculated summary will come after the calculated summaries it depends on
-        # so the calculated summary dependencies will already be done, and this can just take those
+        grand_calculated_summary_calculated_summary_ids = (
+            get_calculation_block_ids_for_grand_calculated_summary(
+                grand_calculated_summary_block
+            )
+        )
         for calculated_summary_id in grand_calculated_summary_calculated_summary_ids:
             # Type ignore: safe to assume block exists
             calculated_summary_block: ImmutableDict = self.get_block(calculated_summary_id)  # type: ignore
-            for answer_id in get_calculated_summary_answer_ids(
-                calculated_summary_block
-            ):
-                self._answer_dependencies_map[answer_id] |= {
-                    self._get_answer_dependent_for_block_id(block_id=block_id)
-                }
+            self._update_answer_dependencies_for_calculated_summary_dependency(
+                calculated_summary_block=calculated_summary_block,
+                dependent_block=grand_calculated_summary_block,
+            )
 
     def _update_answer_dependencies_for_calculations(
         self, calculations: tuple[ImmutableDict, ...], *, block_id: str
