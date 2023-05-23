@@ -2,7 +2,6 @@ from typing import Any, MutableMapping
 
 from flask import url_for
 
-from app.questionnaire import Location
 from app.views.handlers.list_action import ListAction
 
 
@@ -42,12 +41,6 @@ class ListAddQuestion(ListAction):
         self._list_item_id = self.questionnaire_store_updater.add_list_item(
             self.parent_block["for_list"]
         )
-        completed_location = Location(
-            section_id=self.current_location.section_id,
-            block_id=self.current_location.block_id,
-            list_item_id=self._list_item_id,
-            list_name=self.parent_block["for_list"])
-        self.questionnaire_store_updater.add_completed_location(completed_location)
 
         # Clear the answer from the confirmation question on the list collector question
         answer_ids_to_remove = self._schema.get_answer_ids_for_block(

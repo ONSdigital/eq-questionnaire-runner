@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Any
+from typing import Any, Sequence
 
 from flask import url_for
 from flask_babel import gettext
@@ -252,3 +252,29 @@ class Question(BlockHandler):
                 answer_ids_to_remove, self.current_location.list_item_id
             )
             self.questionnaire_store_updater.save()
+
+    def get_first_incomplete_repeating_block_location(self, repeating_block_ids: Sequence[str], section_id: str, list_name: str) -> Location | None:
+        if not repeating_block_ids:
+            return None
+
+        list_model = self._questionnaire_store.list_store.get(list_name)
+        for list_item_id in list_model.items:
+            if incomplete_location := self.get_first_incomplete_repeating_block_location_for_list_item(repeating_block_ids=repeating_block_ids,
+                                                                                                       section_id=section_id,
+                                                                                                       list_item_id=list_item_id,
+                                                                                                       list_name=list_name):
+                return incomplete_location
+
+    def get_first_incomplete_repeating_block_location_for_list_item(self, repeating_block_ids: Sequence[str], section_id: str, list_item_id: str,
+                                                                    list_name: str) -> Location | None:
+        if self.questionnaire_store_updater.is_section_complete(section_id, list_item_id):
+            return None
+
+        complete_block_ids = self.questionnaire_store_updater.get_completed_block_ids(section_id, list_item_id)
+        for repeating_block_id in repeating_block_ids:
+            if repeating_block_id not in complete_block_ids:
+                return Location(
+                    section_id=section_id,
+                    block_id=repeating_block_id,
+                    list_name=list_name,
+                    list_item_id=list_item_id)

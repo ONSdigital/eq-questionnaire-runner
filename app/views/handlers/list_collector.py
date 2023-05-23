@@ -1,4 +1,4 @@
-from typing import Generator
+from functools import cached_property
 
 from flask import url_for
 
@@ -10,6 +10,14 @@ class ListCollector(Question):
     def __init__(self, *args):
         self._is_adding = False
         super().__init__(*args)
+
+    @cached_property
+    def repeating_block_ids(self) -> list[str]:
+        return [block["id"] for block in self.rendered_block.get("repeating_blocks")]
+
+    @cached_property
+    def list_name(self) -> str:
+        return self.rendered_block.get("for_list")
 
     def get_next_location_url(self):
         if self._is_adding:
@@ -23,12 +31,12 @@ class ListCollector(Question):
             )
             return add_url
 
-        if incomplete_block := next(self._get_incomplete_repeating_block_ids(), None):
+        if incomplete_block := self.get_first_incomplete_repeating_block_location(self.repeating_block_ids, self.current_location.section_id, self.list_name):
             repeating_block_url = url_for(
                 "questionnaire.block",
-                list_name=self.rendered_block["for_list"],
-                list_item_id=incomplete_block[0],
-                block_id=incomplete_block[1],
+                list_name=self.list_name,
+                list_item_id=incomplete_block.list_item_id,
+                block_id=incomplete_block.block_id,
                 return_to=self._return_to,
                 return_to_answer_id=self._return_to_answer_id,
                 return_to_block_id=self._return_to_block_id,
@@ -53,7 +61,7 @@ class ListCollector(Question):
             **question_context,
             **list_context(
                 self.rendered_block["summary"],
-                for_list=self.rendered_block["for_list"],
+                for_list=self.list_name,
                 edit_block_id=self.rendered_block["edit_block"]["id"],
                 remove_block_id=self.rendered_block["remove_block"]["id"],
                 return_to=self._return_to,
@@ -69,26 +77,14 @@ class ListCollector(Question):
             # wtforms Form parents are not discoverable in the 2.3.3 implementation
             self.questionnaire_store_updater.update_answers(self.form.data)
             self.questionnaire_store_updater.save()
-        elif not self.rendered_block.get("repeating_blocks") or self._is_list_collector_complete():
+        elif self._is_list_collector_complete():
             return super().handle_post()
 
     def _is_list_collector_complete(self):
-        list_model = self._questionnaire_store.list_store.get(self.rendered_block["for_list"])
+        if not self.repeating_block_ids:
+            return True
+
+        list_model = self._questionnaire_store.list_store.get(self.list_name)
         return all(
             self.questionnaire_store_updater.is_section_complete(section_id=self.current_location.section_id, list_item_id=list_item_id)
             for list_item_id in list_model.items)
-
-    def _get_incomplete_repeating_block_ids(self) -> Generator:
-        repeating_blocks = self.rendered_block.get("repeating_blocks")
-        if not repeating_blocks:
-            return
-
-        list_model = self._questionnaire_store.list_store.get(self.rendered_block["for_list"])
-        for list_item_id in list_model.items:
-            if self.questionnaire_store_updater.is_section_complete(self.current_location.section_id, list_item_id):
-                continue
-
-            complete_block_ids = self.questionnaire_store_updater.get_completed_block_ids(self.current_location.section_id, list_item_id)
-            for repeating_block in repeating_blocks:
-                if repeating_block["id"] not in complete_block_ids:
-                    yield list_item_id, repeating_block["id"]
