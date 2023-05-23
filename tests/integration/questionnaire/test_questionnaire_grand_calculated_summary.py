@@ -130,7 +130,7 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         self.post({"q2-a1": "10", "q2-a2": "20"})
         self.post()
         self.post()
-        self.post({"radio-funding": radio_answer})
+        self.post({"radio-extra": radio_answer})
         if radio_answer != "No":
             # in the no overlap case, the calculated summary is skipped entirely
             self.post()
@@ -141,19 +141,19 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         self.launchSurvey("test_grand_calculated_summary_overlapping_answers")
         self._complete_upto_grand_calculated_summary_overlapping_answers("AB")
         self.assertInBody(
-            "Grand Calculated Summary of donations is calculated to be £660.00. Is this correct?"
+            "Grand Calculated Summary of purchases this week comes to £660.00. Is this correct?"
         )
 
     def test_grand_calculated_summary_overlapping_answers_partial_overlap(self):
         self.launchSurvey("test_grand_calculated_summary_overlapping_answers")
         self._complete_upto_grand_calculated_summary_overlapping_answers("A")
         self.assertInBody(
-            "Grand Calculated Summary of donations is calculated to be £360.00. Is this correct?"
+            "Grand Calculated Summary of purchases this week comes to £360.00. Is this correct?"
         )
 
     def test_grand_calculated_summary_overlapping_answers_no_overlap(self):
         self.launchSurvey("test_grand_calculated_summary_overlapping_answers")
         self._complete_upto_grand_calculated_summary_overlapping_answers("No")
         self.assertInBody(
-            "Grand Calculated Summary of donations is calculated to be £330.00. Is this correct?"
+            "Grand Calculated Summary of purchases this week comes to £330.00. Is this correct?"
         )
