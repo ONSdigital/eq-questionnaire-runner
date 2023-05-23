@@ -161,7 +161,7 @@
                                 "id": "s2-b3-q1",
                                 "title": "Section 2 Question 3",
                                 "type": "General",
-                                "description": ["Shows if the answer to the previous question is not 0"],
+                                "description": ["Shows if the answer to the Section 2 Question 1 is not 0"],
                                 "answers": [
                                     {
                                         "id": "s2-b3-q1-a1",

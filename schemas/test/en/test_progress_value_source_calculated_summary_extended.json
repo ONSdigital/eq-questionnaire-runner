@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "survey_id": "139",
     "theme": "default",
-    "title": "Progress Value Source Repeating Sections Test",
+    "title": "Progress Value Source Caluclated Summary (Extended)",
     "data_version": "0.0.3",
-    "description": "Progress Value Source Repeating Sections Test",
+    "description": "An extended version of the Progress Value Source Calculated Summary schema intended to test chained dependency evaluation for progress value sources where multiple sections have progress value source dependencies on one another",
     "navigation": {
         "visible": true
     },
@@ -31,9 +31,42 @@
     ],
     "questionnaire_flow": {
         "type": "Hub",
-        "options": {}
+        "options": {
+            "required_completed_sections": ["introduction-section"]
+        }
     },
     "sections": [
+        {
+            "id": "introduction-section",
+            "title": "Guidance",
+            "show_on_hub": false,
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "interstitial",
+                            "content": {
+                                "title": "Guidance for completing this test schema",
+                                "contents": [
+                                    {
+                                        "description": "This schema was created in order to ensure that dependencies based on a progress value sources captured in order."
+                                    },
+                                    {
+                                        "description": "It is also being used to test progress value sources with chained dependents. For example, In this schema, <em>Sections 7, 8, 9 and 10 are all dependent on Section 2</em>, and <em>Sections 11 and 12 are dependent on Section 9 and 10</em>."
+                                    },
+                                    {
+                                        "description": "So we can use this schema to test journeys and ensure that all dependent sections are updated. <em>For example if we had not started Section 2 yet, but Sections 8, 9 and 10 are all Complete, and sections 11 and 12 are Partially Completed</em>. Given the dependencies in this schema, <em>completing Section 2 would mean that the status of Sections 8, 9 and 10 would change to Partially Complete and Sections 11 and 12 to Complete</em>."
+                                    }
+                                ]
+                            },
+                            "type": "Interstitial"
+                        }
+                    ],
+                    "id": "introduction-group",
+                    "title": " Test Schema Guidance"
+                }
+            ]
+        },
         {
             "id": "section-1",
             "title": "Calculated Summary",

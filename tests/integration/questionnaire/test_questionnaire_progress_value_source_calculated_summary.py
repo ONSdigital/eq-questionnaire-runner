@@ -340,6 +340,7 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
 
     def test_progress_value_source_with_backward_chained_dependencies(self):
         self.launchSurvey("test_progress_value_source_calculated_summary_extended")
+        self.post()
 
         # 1. Complete section 7
         self.go_to_section("section-7")
@@ -375,6 +376,7 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
 
     def test_progress_value_source_with_chained_dependencies(self):
         self.launchSurvey("test_progress_value_source_calculated_summary_extended")
+        self.post()
 
         # 1. Complete section 8, 9, 10, 11 and 12
         self.go_to_section("section-12")
