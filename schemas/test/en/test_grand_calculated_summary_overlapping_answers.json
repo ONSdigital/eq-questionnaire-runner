@@ -24,9 +24,7 @@
     "questionnaire_flow": {
         "type": "Hub",
         "options": {
-            "required_completed_sections": [
-                "introduction-section"
-            ]
+            "required_completed_sections": ["introduction-section"]
         }
     },
     "sections": [
