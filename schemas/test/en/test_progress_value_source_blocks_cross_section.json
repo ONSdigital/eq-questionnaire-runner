@@ -23,17 +23,15 @@
     ],
     "questionnaire_flow": {
         "type": "Hub",
-        "options": {
-            "summary": {
-                "collapsible": false
-            }
-        }
+        "options": {}
     },
     "sections": [
         {
             "id": "section-1",
             "title": "Section One",
-            "summary": { "show_on_completion": true },
+            "summary": {
+                "show_on_completion": true
+            },
             "groups": [
                 {
                     "blocks": [
@@ -141,7 +139,9 @@
         {
             "id": "section-2",
             "title": "Section Two",
-            "summary": { "show_on_completion": true },
+            "summary": {
+                "show_on_completion": true
+            },
             "groups": [
                 {
                     "blocks": [
