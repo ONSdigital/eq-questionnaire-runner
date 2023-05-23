@@ -286,6 +286,17 @@ class Router:
             grand_calculated_summary_section: str = self._schema.get_section_id_for_block_id(return_to_block_id)  # type: ignore
         if grand_calculated_summary_section != location.section_id:
             # the grand calculated summary is in a different section which will have a different routing path
+            # BUT - we should not jump back to the grand calculated summary if the current section is not complete
+            # route to each incomplete question in the section first, and then go back to the grand calculated summary
+            if next_incomplete_block := self._get_first_incomplete_location_in_section(routing_path):
+                if self.can_access_location(next_incomplete_block, routing_path):
+                    return url_for(
+                        "questionnaire.block",
+                        block_id=next_incomplete_block.block_id,
+                        return_to=return_to,
+                        return_to_block_id=return_to_block_id,
+                        _anchor=return_to_answer_id,
+                    )
             routing_path = self._path_finder.routing_path(
                 section_id=grand_calculated_summary_section
             )
@@ -346,6 +357,17 @@ class Router:
                 return_to_block_id=return_to_block_id,
                 _anchor=return_to_answer_id,
             )
+        elif next_incomplete_block := self._get_first_incomplete_location_in_section(routing_path):
+            if self.can_access_location(next_incomplete_block, routing_path):
+                return url_for(
+                    "questionnaire.block",
+                    block_id=next_incomplete_block.block_id,
+                    list_name=location.list_name,
+                    list_item_id=location.list_item_id,
+                    return_to=return_to,
+                    return_to_block_id=return_to_block_id,
+                    _anchor=return_to_answer_id,
+                )
 
     def get_next_location_url_for_end_of_section(self) -> str:
         if self._schema.is_flow_hub and self.can_access_hub():

@@ -1,0 +1,109 @@
+import HubPage from "../../../base_pages/hub.page";
+import IntroductionBlockPage from "../../../generated_pages/grand_calculated_summary_overlapping_answers/introduction-block.page";
+import Block1Page from "../../../generated_pages/grand_calculated_summary_overlapping_answers/block-1.page";
+import Block2Page from "../../../generated_pages/grand_calculated_summary_overlapping_answers/block-2.page";
+import CalculatedSummary1Page from "../../../generated_pages/grand_calculated_summary_overlapping_answers/calculated-summary-1.page";
+import CalculatedSummary2Page from "../../../generated_pages/grand_calculated_summary_overlapping_answers/calculated-summary-2.page";
+import Block3Page from "../../../generated_pages/grand_calculated_summary_overlapping_answers/block-3.page";
+import CalculatedSummary4Page from "../../../generated_pages/grand_calculated_summary_overlapping_answers/calculated-summary-4.page";
+import GrandCalculatedSummaryDonationsPage from "../../../generated_pages/grand_calculated_summary_overlapping_answers/grand-calculated-summary-donations.page";
+import Section1SummaryPage from "../../../generated_pages/grand_calculated_summary_overlapping_answers/section-1-summary.page";
+
+describe("Feature: Grand Calculated Summary", () => {
+  describe("Given I have a Grand Calculated Summary with overlapping answers", () => {
+    before("completing the survey", async () => {
+      await browser.openQuestionnaire("test_grand_calculated_summary_overlapping_answers.json");
+      await $(IntroductionBlockPage.submit()).click();
+      await $(HubPage.submit()).click();
+      await $(Block1Page.q1A1()).setValue(100);
+      await $(Block1Page.q1A2()).setValue(200);
+      await $(Block1Page.submit()).click();
+      await $(Block2Page.q2A1()).setValue(10);
+      await $(Block2Page.q2A2()).setValue(20);
+      await $(Block2Page.submit()).click();
+      await $(CalculatedSummary1Page.submit()).click();
+      await $(CalculatedSummary2Page.submit()).click();
+      await $(Block3Page.a()).click();
+      await $(Block3Page.submit()).click();
+      await $(CalculatedSummary4Page.submit()).click();
+      await $(Section1SummaryPage.submit()).click();
+      await $(HubPage.submit()).click();
+      await expect(await $(GrandCalculatedSummaryDonationsPage.grandCalculatedSummaryTitle()).getText()).to.contain(
+        "Grand Calculated Summary of donations is calculated to be £360.00. Is this correct?"
+      );
+      await $(GrandCalculatedSummaryDonationsPage.submit()).click();
+    });
+
+    it("Given I edit an answer that is only used in a single calculated summary, I am routed back to the calculated summary and then the grand calculated summary", async () => {
+      await $(HubPage.summaryRowLink("section-3")).click();
+      await $(GrandCalculatedSummaryDonationsPage.calculatedSummary2Edit()).click();
+      await $(CalculatedSummary2Page.q1A2Edit()).click();
+      await $(Block1Page.q1A2()).setValue(300);
+      await $(Block1Page.submit()).click();
+
+      // taken back to calculated summary
+      await expect(await browser.getUrl()).to.contain(CalculatedSummary2Page.pageName);
+      await $(CalculatedSummary2Page.submit()).click();
+
+      // then grand calculated summary
+      await expect(await browser.getUrl()).to.contain(GrandCalculatedSummaryDonationsPage.pageName);
+      await expect(await $(GrandCalculatedSummaryDonationsPage.grandCalculatedSummaryTitle()).getText()).to.contain(
+        "Grand Calculated Summary of donations is calculated to be £460.00. Is this correct?"
+      );
+    });
+
+    it("Given I edit an answer that is used in two calculated summaries, if I edit it from the first calculated summary change link, I taken through each block between the question and the second calculated summary before returning to the grand calculated summary", async () => {
+      await $(GrandCalculatedSummaryDonationsPage.calculatedSummary2Edit()).click();
+      await $(CalculatedSummary2Page.q2A2Edit()).click();
+      await $(Block2Page.q2A2()).setValue(400);
+      await $(Block2Page.submit()).click();
+
+      // taken back to the FIRST calculated summary which uses it
+      await expect(await browser.getUrl()).to.contain(CalculatedSummary2Page.pageName);
+      await expect(await $(CalculatedSummary2Page.calculatedSummaryTitle()).getText()).to.contain(
+        "Total donations to Charity B is calculated to be £700.00. Is this correct?"
+      );
+      await $(CalculatedSummary2Page.submit()).click();
+
+      // taken back to the SECOND calculated summary which uses it
+      await expect(await browser.getUrl()).to.contain(CalculatedSummary4Page.pageName);
+      await expect(await $(CalculatedSummary4Page.calculatedSummaryTitle()).getText()).to.contain(
+        "Total donations this month to match is calculated to be £410.00. Is this correct?"
+      );
+      await $(CalculatedSummary4Page.submit()).click();
+
+      // then grand calculated summary
+      await expect(await browser.getUrl()).to.contain(GrandCalculatedSummaryDonationsPage.pageName);
+      await expect(await $(GrandCalculatedSummaryDonationsPage.grandCalculatedSummaryTitle()).getText()).to.contain(
+        "Grand Calculated Summary of donations is calculated to be £1,220.00. Is this correct?"
+      );
+    });
+
+    it("Given I edit an answer that is used in two calculated summaries, if I edit it from the second calculated summary change link, I taken through each block between the question and the second calculated summary before returning to the grand calculated summary", async () => {
+      await $(GrandCalculatedSummaryDonationsPage.calculatedSummary4Edit()).click();
+      await $(CalculatedSummary4Page.q2A2Edit()).click();
+      await $(Block2Page.q2A2()).setValue(500);
+      await $(Block2Page.submit()).click();
+
+      // taken back to the FIRST calculated summary which uses it
+      await expect(await browser.getUrl()).to.contain(CalculatedSummary2Page.pageName);
+      await expect(await $(CalculatedSummary2Page.calculatedSummaryTitle()).getText()).to.contain(
+        "Total donations to Charity B is calculated to be £800.00. Is this correct?"
+      );
+      await $(CalculatedSummary4Page.submit()).click();
+
+      // taken back to the SECOND calculated summary which uses it
+      await expect(await browser.getUrl()).to.contain(CalculatedSummary4Page.pageName);
+      await expect(await $(CalculatedSummary4Page.calculatedSummaryTitle()).getText()).to.contain(
+        "Total donations this month to match is calculated to be £510.00. Is this correct?"
+      );
+      await $(CalculatedSummary4Page.submit()).click();
+
+      // then grand calculated summary
+      await expect(await browser.getUrl()).to.contain(GrandCalculatedSummaryDonationsPage.pageName);
+      await expect(await $(GrandCalculatedSummaryDonationsPage.grandCalculatedSummaryTitle()).getText()).to.contain(
+        "Grand Calculated Summary of donations is calculated to be £1,420.00. Is this correct?"
+      );
+    });
+  });
+});

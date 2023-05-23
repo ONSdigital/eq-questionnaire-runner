@@ -56,7 +56,8 @@
                                                 "When you select that your job matches donations, it unlocks one of two new calculated summaries which reuses your answers to the first two questions to produce an additional sum for what your job contributes",
                                                 "In the case that you pick `my job does not match donations` verify that you do not see a calculated summary about job donations",
                                                 "In the case that you pick one of the other options, verify that the grand calculated summary includes the correct answers, especially those which are on the path and used by a calculated summary that is not on the path",
-                                                "e.g. if you donate a total of £100 to charity A and £100 to charity B, and your job matches all donations, you should see a total of £400 on the grand calculated summary page"
+                                                "e.g. if you donate a total of £100 to charity A and £100 to charity B, and your job matches all donations, you should see a total of £400 on the grand calculated summary page",
+                                                "Additionally, verify that if you use a change link on a grand calculated summary, to edit an answer that is in two calculated summaries, you are routed to each of these calculated summaries to re-confirm them first, and only then taken back to the grand calculated summary, <strong>regardless of which of the calculated summary change links you used to edit the answer</strong>."
                                             ]
                                         }
                                     ]
