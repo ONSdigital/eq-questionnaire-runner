@@ -44,7 +44,7 @@
                                 "description": [
                                     "If you answer 0, then the second question will be skipped because of a routing rule, as well as the fourth question because of a skip condition referencing the progress of question 2, as well as the 6th question because of a routing rule referencing the progress of question 4.",
                                     "So only questions 3, 5, 7 will be displayed.",
-                                    "Otherwise, questions 2, 4 and 6 will display."
+                                    "Otherwise, questions 2, 4 and 6 will can also display."
                                 ],
                                 "type": "General",
                                 "answers": [
