@@ -288,7 +288,9 @@ class Router:
             # the grand calculated summary is in a different section which will have a different routing path
             # BUT - we should not jump back to the grand calculated summary if the current section is not complete
             # route to each incomplete question in the section first, and then go back to the grand calculated summary
-            if next_incomplete_block := self._get_first_incomplete_location_in_section(routing_path):
+            if next_incomplete_block := self._get_first_incomplete_location_in_section(
+                routing_path
+            ):
                 if self.can_access_location(next_incomplete_block, routing_path):
                     return url_for(
                         "questionnaire.block",
@@ -357,7 +359,9 @@ class Router:
                 return_to_block_id=return_to_block_id,
                 _anchor=return_to_answer_id,
             )
-        elif next_incomplete_block := self._get_first_incomplete_location_in_section(routing_path):
+        if next_incomplete_block := self._get_first_incomplete_location_in_section(
+            routing_path
+        ):
             if self.can_access_location(next_incomplete_block, routing_path):
                 return url_for(
                     "questionnaire.block",
