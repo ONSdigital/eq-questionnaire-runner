@@ -230,7 +230,7 @@ class Question(BlockHandler):
 
         for section_id, list_item_id in self.questionnaire_store_updater.started_section_keys(section_ids=section_ids):
             # Only add sections which are repeated sections for this list, or the section in which this list is collected
-            # Prevents list item progresses being added as dependants
+            # Prevents list item progresses being added as dependants as these are captured by started_section_keys(section_ids=section_ids)
             if section_id == self.current_location.section_id and list_item_id or section_id != self.current_location.section_id and not list_item_id:
                 continue
             self.questionnaire_store_updater.dependent_sections.add(
