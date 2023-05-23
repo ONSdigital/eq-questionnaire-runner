@@ -23,8 +23,16 @@ class DecimalFieldWithSeparator(DecimalField):
     def process_formdata(self, valuelist):
         if valuelist:
             try:
-                self.data = Decimal(
-                    valuelist[0].replace(numbers.get_group_symbol(DEFAULT_LOCALE), "")
-                )
+                data = valuelist[0]
+                if numbers.get_group_symbol(DEFAULT_LOCALE) in data:
+                    data = data.replace(numbers.get_group_symbol(DEFAULT_LOCALE), "")
+                try:
+                    self.data = Decimal(
+                        numbers.format_decimal(
+                            data, locale=DEFAULT_LOCALE, group_separator=False
+                        )
+                    )
+                except InvalidOperation:
+                    self.data = Decimal(data)
             except (ValueError, TypeError, InvalidOperation):
                 pass

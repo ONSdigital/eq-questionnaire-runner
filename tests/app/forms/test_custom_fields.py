@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 import pytest
 from wtforms.fields import Field
 
@@ -29,6 +31,45 @@ def test_integer_field(mock_form):
         integer_field.process_formdata(["NonInteger"])
     except IndexError:
         pytest.fail("Exceptions should not thrown by CustomIntegerField")
+
+
+@pytest.mark.parametrize(
+    "number_input, result",
+    [
+        ("_110", 110),
+        ("1_10", 110),
+        ("1__10", 110),
+        ("1_1,0", 110),
+        ("_1_1,0,0", 1100),
+        ("1.10", None),
+    ],
+)
+def test_integer_field_formats(mock_form, number_input, result):
+    integer_field = IntegerFieldWithSeparator(_form=mock_form, name="aName")
+    assert isinstance(integer_field, Field)
+
+    integer_field.process_formdata([number_input])
+
+    assert integer_field.data == result
+
+
+@pytest.mark.parametrize(
+    "number_input, result",
+    [
+        ("1_1,0", Decimal("110")),
+        ("1.10", Decimal("1.1")),
+        ("_1.1_0", Decimal("1.1")),
+        ("_1.1_0,0", Decimal("1.1")),
+        ("_1._1,0,0", Decimal("1.1")),
+    ],
+)
+def test_decimal_field_formats(mock_form, number_input, result):
+    integer_field = DecimalFieldWithSeparator(_form=mock_form, name="aName")
+    assert isinstance(integer_field, Field)
+
+    integer_field.process_formdata([number_input])
+
+    assert integer_field.data == result
 
 
 def test_decimal_field(mock_form):
