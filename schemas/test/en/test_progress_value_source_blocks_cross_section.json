@@ -22,7 +22,7 @@
         }
     ],
     "questionnaire_flow": {
-        "type": "Linear",
+        "type": "Hub",
         "options": {
             "summary": {
                 "collapsible": false
@@ -32,6 +32,8 @@
     "sections": [
         {
             "id": "section-1",
+            "title": "Section One",
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "blocks": [
@@ -42,9 +44,9 @@
                                 "id": "s1-b1-q1",
                                 "title": "Section 1 Question 1",
                                 "description": [
-                                    "If you answer 0, then the second question will be skipped because of a routing rule, as well as the fourth question because of a skip condition referencing the progress of question 2, as well as the 6th question because of a routing rule referencing the progress of question 4.",
-                                    "So only questions 3, 5, 7 will be displayed.",
-                                    "Otherwise, questions 2, 4 and 6 will display."
+                                    "If you answer 0, then the second question will be skipped because of a routing rule, as well as the fourth question because of a skip condition referencing the progress of question 2, as well as the 6th question in the Second Section because of a routing rule referencing the progress of question 4.",
+                                    "So only question 3 in Section One, and questions 5 and 7 in Section Two will be displayed.",
+                                    "Otherwise, questions 2 and 4 in Section Ona and question 6 in Section Two can also display."
                                 ],
                                 "type": "General",
                                 "answers": [
@@ -138,6 +140,8 @@
         },
         {
             "id": "section-2",
+            "title": "Section Two",
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
                     "blocks": [
@@ -182,7 +186,7 @@
                             "question": {
                                 "id": "s2-b6-q1",
                                 "title": "Section 2 Question 6",
-                                "description": ["Showing this question because question 4 was completed"],
+                                "description": ["Showing this question because question 4 in Section One was completed"],
                                 "type": "General",
                                 "answers": [
                                     {
