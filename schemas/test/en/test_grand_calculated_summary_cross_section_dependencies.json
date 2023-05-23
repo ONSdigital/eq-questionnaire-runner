@@ -247,7 +247,7 @@
                             "question": {
                                 "type": "General",
                                 "id": "skip-question-2",
-                                "title": "Skip the calculated summary of other outgoing costs so it isn't included in the grand calculated summary?",
+                                "title": "Skip the calculated summary of other outgoing costs so it isn`t included in the grand calculated summary?",
                                 "answers": [
                                     {
                                         "type": "Radio",

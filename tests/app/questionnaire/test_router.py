@@ -891,6 +891,56 @@ class TestRouterPreviousLocation(RouterTestCase):
 
         assert expected_previous_url == previous_location_url
 
+    @pytest.mark.parametrize(
+        "return_to, current_block, return_to_block_id, expected_url",
+        [
+            (
+                "grand-calculated-summary",
+                "distance-calculated-summary-1",
+                "invalid-block",
+                "/questionnaire/second-number-block/?return_to=grand-calculated-summary&return_to_block_id=invalid-block#distance-calculated-summary-1",
+            ),
+            (
+                "calculated-summary,invalid",
+                "second-number-block",
+                "invalid-first,invalid-second",
+                "/questionnaire/first-number-block/?return_to=calculated-summary,invalid&return_to_block_id=invalid-first,invalid-second#distance-calculated-summary-1",
+            ),
+            (
+                "invalid",
+                "distance-calculated-summary-1",
+                "first-number-block",
+                "/questionnaire/second-number-block/?return_to=invalid&return_to_block_id=first-number-block#distance-calculated-summary-1",
+            ),
+        ],
+    )
+    @pytest.mark.usefixtures("app")
+    def test_return_to_grand_calculated_summary_invalid_url(
+        self, return_to, current_block, return_to_block_id, expected_url
+    ):
+        self.schema = load_schema_from_name("test_grand_calculated_summary")
+
+        current_location = Location(section_id="section-1", block_id=current_block)
+
+        routing_path = RoutingPath(
+            [
+                "first-number-block",
+                "second-number-block",
+                "distance-calculated-summary-1",
+                "number-calculated-summary-1",
+            ],
+            section_id="section-1",
+        )
+        previous_location_url = self.router.get_previous_location_url(
+            current_location,
+            routing_path,
+            return_to=return_to,
+            return_to_answer_id="distance-calculated-summary-1",
+            return_to_block_id=return_to_block_id,
+        )
+
+        assert expected_url == previous_location_url
+
     @pytest.mark.usefixtures("app")
     def test_return_to_section_summary_section_is_complete(self):
         self.schema = load_schema_from_name("test_section_summary")

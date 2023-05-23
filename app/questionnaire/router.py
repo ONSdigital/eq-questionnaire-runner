@@ -279,9 +279,10 @@ class Router:
         Builds the return url for a grand calculated summary,
         and accounts for it possibly being in a different section to the calculated summaries it references
         """
-        # Type ignore: the section for the grand calculated summary must exist
         grand_calculated_summary_section = location.section_id
-        if return_to_block_id:
+        # if return_to_block_id is invalid and no block is found, the section doesn't update but can_access_location will be false, so it still returns None
+        if return_to_block_id and self._schema.get_block(return_to_block_id):
+            # Type ignore: if the block is valid, then we'll be able to find a section for it
             grand_calculated_summary_section: str = self._schema.get_section_id_for_block_id(return_to_block_id)  # type: ignore
         if grand_calculated_summary_section != location.section_id:
             # the grand calculated summary is in a different section which will have a different routing path

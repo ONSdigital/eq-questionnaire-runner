@@ -759,19 +759,16 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         """
         Given a calculated summary block id, find the format of the total by using the first answer
         """
-        answer_format = {"type": None}
-        if calculated_summary_block := self.get_block(calculated_summary_block_id):
-            first_answer_id = get_calculated_summary_answer_ids(
-                calculated_summary_block
-            )[0]
-            first_answer = self.get_answers_by_answer_id(first_answer_id)[0]
-            answer_format = {
-                "type": first_answer["type"].lower(),
-                "unit": first_answer.get("unit"),
-                "unit_length": first_answer.get("unit_length"),
-                "currency": first_answer.get("currency"),
-            }
-        return answer_format
+        # Type ignore: the block will exist for any valid calculated summary id
+        calculated_summary_block: ImmutableDict = self.get_block(calculated_summary_block_id)  # type: ignore
+        first_answer_id = get_calculated_summary_answer_ids(calculated_summary_block)[0]
+        first_answer = self.get_answers_by_answer_id(first_answer_id)[0]
+        return {
+            "type": first_answer["type"].lower(),
+            "unit": first_answer.get("unit"),
+            "unit_length": first_answer.get("unit_length"),
+            "currency": first_answer.get("currency"),
+        }
 
     def get_answer_ids_for_block(self, block_id: str) -> list[str]:
         block = self.get_block(block_id)

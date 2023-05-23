@@ -125,6 +125,7 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         self, radio_answer: str
     ):
         self.post()
+        self.post()
         self.post({"q1-a1": "100", "q1-a2": "200"})
         self.post({"q2-a1": "10", "q2-a2": "20"})
         self.post()
@@ -147,7 +148,7 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         self.launchSurvey("test_grand_calculated_summary_overlapping_answers")
         self._complete_upto_grand_calculated_summary_overlapping_answers("A")
         self.assertInBody(
-            "Grand Calculated Summary of donations is calculated to be £440.00. Is this correct?"
+            "Grand Calculated Summary of donations is calculated to be £360.00. Is this correct?"
         )
 
     def test_grand_calculated_summary_overlapping_answers_no_overlap(self):

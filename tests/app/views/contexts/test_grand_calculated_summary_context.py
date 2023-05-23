@@ -90,9 +90,7 @@ def test_build_view_context_for_grand_calculated_summary(
         return_to_block_id=None,
     )
 
-    context = (
-        grand_calculated_summary_context.build_view_context()
-    )
+    context = grand_calculated_summary_context.build_view_context()
 
     assert "summary" in context
     assert_summary_context(context, "calculated_summary")

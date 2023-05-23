@@ -23,9 +23,52 @@
     ],
     "questionnaire_flow": {
         "type": "Hub",
-        "options": {}
+        "options": {
+            "required_completed_sections": [
+                "introduction-section"
+            ]
+        }
     },
     "sections": [
+        {
+            "id": "introduction-section",
+            "title": "Introduction",
+            "show_on_hub": false,
+            "groups": [
+                {
+                    "id": "introduction-group",
+                    "title": "Introduction",
+                    "blocks": [
+                        {
+                            "type": "Introduction",
+                            "id": "introduction-block",
+                            "primary_content": [
+                                {
+                                    "id": "about",
+                                    "contents": [
+                                        {
+                                            "title": "About",
+                                            "list": [
+                                                "This survey tests that when you re-use answers between calculated summaries, the grand calculated summary still resolves to the correct value"
+                                            ]
+                                        },
+                                        {
+                                            "title": "How to test this schema",
+                                            "list": [
+                                                "When you select that your job matches donations, it unlocks one of two new calculated summaries which reuses your answers to the first two questions to produce an additional sum for what your job contributes",
+                                                "In the case that you pick `my job does not match donations` verify that you do not see a calculated summary about job donations",
+                                                "In the case that you pick one of the other options, verify that the grand calculated summary includes the correct answers, especially those which are on the path and used by a calculated summary that is not on the path",
+                                                "e.g. if you donate a total of £100 to charity A and £100 to charity B, and your job matches all donations, you should see a total of £400 on the grand calculated summary page"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
         {
             "id": "section-1",
             "title": "Charity donations",
@@ -134,19 +177,25 @@
                                 "type": "General",
                                 "id": "question-3",
                                 "title": "Does your job match any donation amount? This determines which calculated summary you see next (if any)",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "If you select the first option, all your answers so far will be reused in a new calculated summary for matching donations. If you select the second option, only your answers for donations to question 2 will be reused."
+                                        }
+                                    ]
+                                },
                                 "answers": [
                                     {
                                         "type": "Radio",
                                         "id": "radio-funding",
                                         "mandatory": true,
-                                        "description": "If you select the first option all your answers so far will be reused in a new calculated summary for matching donations. If you select the second option, only your answers for donations to charity A will be reused.",
                                         "options": [
                                             {
                                                 "label": "Yes, for every donation my job contributes an equal amount",
                                                 "value": "AB"
                                             },
                                             {
-                                                "label": "My job will only match donations to charity A",
+                                                "label": "My job will only match donations made this month",
                                                 "value": "A"
                                             },
                                             {
@@ -211,18 +260,18 @@
                             },
                             "type": "CalculatedSummary",
                             "id": "calculated-summary-4",
-                            "title": "Total donations to Charity A to match is calculated to be %(total)s. Is this correct? This is reusing your part a answers from question 1 and 2",
+                            "title": "Total donations this month to match is calculated to be %(total)s. Is this correct? This is reusing your answers to question 2",
                             "calculation": {
-                                "title": "Total matched Charity A donation (reusing answers for how much you donate to charity A)",
+                                "title": "Total matched donation (reusing answers from question 2)",
                                 "operation": {
                                     "+": [
                                         {
                                             "source": "answers",
-                                            "identifier": "q1-a1"
+                                            "identifier": "q2-a1"
                                         },
                                         {
                                             "source": "answers",
-                                            "identifier": "q2-a1"
+                                            "identifier": "q2-a2"
                                         }
                                     ]
                                 }
