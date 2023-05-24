@@ -6,7 +6,7 @@ from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
-from app.data_models.progress_store import ProgressStore
+from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.placeholder_parser import PlaceholderParser
@@ -1289,6 +1289,24 @@ def section_dependencies_calculated_summary_schema():
 def section_dependencies_new_calculated_summary_schema():
     return load_schema_from_name(
         "test_routing_and_skipping_section_dependencies_new_calculated_summary"
+    )
+
+
+@pytest.fixture
+def grand_calculated_summary_progress_store():
+    return ProgressStore(
+        [
+            {
+                "section_id": "section-1",
+                "block_ids": [
+                    "first-number-block",
+                    "second-number-block",
+                    "distance-calculated-summary-1",
+                    "number-calculated-summary-1",
+                ],
+                "status": CompletionStatus.COMPLETED,
+            }
+        ]
     )
 
 

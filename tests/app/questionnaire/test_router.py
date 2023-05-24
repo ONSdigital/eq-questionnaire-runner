@@ -661,6 +661,61 @@ class TestRouterNextLocation(RouterTestCase):
             == next_location_url
         )
 
+    @pytest.mark.usefixtures("app")
+    def test_return_to_grand_calculated_summary_from_incomplete_section(
+        self, grand_calculated_summary_progress_store
+    ):
+        """
+        This tests that if you try to return to a grand calculated summary section from an incomplete section
+        you are routed to the next block in the incomplete section rather than the grand calculated summary
+        """
+        self.schema = load_schema_from_name("test_grand_calculated_summary")
+        # number calculated summary not complete yet
+        self.progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "section-1",
+                    "block_ids": [
+                        "first-number-block",
+                        "second-number-block",
+                        "distance-calculated-summary-1",
+                    ],
+                    "status": CompletionStatus.IN_PROGRESS,
+                }
+            ]
+        )
+
+        current_location = Location(
+            section_id="section-1", block_id="distance-calculated-summary-1"
+        )
+        routing_path = RoutingPath(
+            [
+                "first-number-block",
+                "second-number-block",
+                "distance-calculated-summary-1",
+                "number-calculated-summary-1",
+            ],
+            section_id="section-1",
+        )
+        next_location_url = self.router.get_next_location_url(
+            current_location,
+            routing_path,
+            return_to="grand-calculated-summary",
+            return_to_answer_id="distance-calculated-summary-1",
+            return_to_block_id="distance-grand-calculated-summary",
+        )
+
+        # because number calculated summary isn't done, should go there before jumping to the grand calculated summary
+        expected_next_url = url_for(
+            "questionnaire.block",
+            return_to="grand-calculated-summary",
+            return_to_answer_id="distance-calculated-summary-1",
+            return_to_block_id="distance-grand-calculated-summary",
+            block_id="number-calculated-summary-1",
+        )
+
+        assert expected_next_url == next_location_url
+
 
 class TestRouterNextLocationLinearFlow(RouterTestCase):
     @pytest.mark.usefixtures("app")
@@ -827,11 +882,14 @@ class TestRouterPreviousLocation(RouterTestCase):
         assert expected_location_url == previous_location_url
 
     @pytest.mark.usefixtures("app")
-    def test_return_to_grand_calculated_summary_from_answer(self):
+    def test_return_to_grand_calculated_summary_from_answer(
+        self, grand_calculated_summary_progress_store
+    ):
         """
         If going from GCS ->  CS -> answer -> CS -> GCS this tests going from CS -> GCS having just come from an answer
         """
         self.schema = load_schema_from_name("test_grand_calculated_summary")
+        self.progress_store = grand_calculated_summary_progress_store
 
         current_location = Location(
             section_id="section-1", block_id="first-number-block"
@@ -860,19 +918,22 @@ class TestRouterPreviousLocation(RouterTestCase):
         assert expected_previous_url == previous_location_url
 
     @pytest.mark.usefixtures("app")
-    def test_return_to_grand_calculated_summary_from_calculated_summary(self):
+    def test_return_to_grand_calculated_summary_from_calculated_summary(
+        self, grand_calculated_summary_progress_store
+    ):
         """
         If going from GCS ->  CS -> GCS this tests going from CS -> GCS having just come from the grand calculated summary
         """
         self.schema = load_schema_from_name("test_grand_calculated_summary")
+        self.progress_store = grand_calculated_summary_progress_store
 
         current_location = Location(
             section_id="section-1", block_id="distance-calculated-summary-1"
         )
 
         routing_path = RoutingPath(
-            ["distance-grand-calculated-summary"],
-            section_id="section-3",
+            ["distance-calculated-summary-1"],
+            section_id="section-1",
         )
         previous_location_url = self.router.get_previous_location_url(
             current_location,
