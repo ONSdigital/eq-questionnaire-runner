@@ -267,12 +267,11 @@ class Question(BlockHandler):
 
     def get_first_incomplete_repeating_block_location_for_list_item(self, repeating_block_ids: Sequence[str], section_id: str, list_item_id: str,
                                                                     list_name: str) -> Location | None:
-        if self.questionnaire_store_updater.is_section_complete(section_id, list_item_id):
+        if self.questionnaire_store_updater.is_section_complete(section_id=section_id, list_item_id=list_item_id):
             return None
 
-        complete_block_ids = self.questionnaire_store_updater.get_completed_block_ids(section_id, list_item_id)
         for repeating_block_id in repeating_block_ids:
-            if repeating_block_id not in complete_block_ids:
+            if not self.router.is_block_complete(block_id=repeating_block_id, section_id=section_id, list_item_id=list_item_id):
                 return Location(
                     section_id=section_id,
                     block_id=repeating_block_id,

@@ -249,9 +249,6 @@ class QuestionnaireStoreUpdater:
         )
         self._progress_store.update_section_status(status, section_id, list_item_id)
 
-    def get_completed_block_ids(self, section_id: str, list_item_id: str | None = None) -> list[str]:
-        return self._progress_store.get_completed_block_ids(section_id=section_id, list_item_id=list_item_id)
-
     def is_section_complete(self, section_id: str, list_item_id: str | None = None) -> bool:
         return self._progress_store.is_section_complete(section_id, list_item_id)
 
