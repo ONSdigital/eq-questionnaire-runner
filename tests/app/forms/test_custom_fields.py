@@ -95,4 +95,4 @@ def test_decimal_field_nan_input(mock_form):
     with pytest.raises(ValidationError) as context:
         decimal_field.process_formdata(["NaN"])
 
-    assert error_messages["INVALID_DECIMAL"] == str(context.value)
+    assert error_messages["INVALID_NUMBER"] == str(context.value)

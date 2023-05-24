@@ -24,7 +24,7 @@ class DecimalFieldWithSeparator(DecimalField):
     def process_formdata(self, valuelist):
         if valuelist:
             if valuelist[0] == "NaN":
-                raise ValidationError(error_messages["INVALID_DECIMAL"])
+                raise ValidationError(error_messages["INVALID_NUMBER"])
             try:
                 self.data = Decimal(
                     valuelist[0]
