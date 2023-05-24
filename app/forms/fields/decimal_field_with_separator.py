@@ -1,8 +1,9 @@
 from decimal import Decimal, InvalidOperation
 
 from babel import numbers
-from wtforms import DecimalField
+from wtforms import DecimalField, ValidationError
 
+from app.forms import error_messages
 from app.settings import DEFAULT_LOCALE
 
 
@@ -22,17 +23,13 @@ class DecimalFieldWithSeparator(DecimalField):
 
     def process_formdata(self, valuelist):
         if valuelist:
+            if valuelist[0] == "NaN":
+                raise ValidationError(error_messages["INVALID_DECIMAL"])
             try:
-                data = valuelist[0]
-                if numbers.get_group_symbol(DEFAULT_LOCALE) in data:
-                    data = data.replace(numbers.get_group_symbol(DEFAULT_LOCALE), "")
-                try:
-                    self.data = Decimal(
-                        numbers.format_decimal(
-                            data, locale=DEFAULT_LOCALE, group_separator=False
-                        )
-                    )
-                except InvalidOperation:
-                    self.data = Decimal(data)
+                self.data = Decimal(
+                    valuelist[0]
+                    .replace(numbers.get_group_symbol(DEFAULT_LOCALE), "")
+                    .replace("_", "")
+                )
             except (ValueError, TypeError, InvalidOperation):
                 pass

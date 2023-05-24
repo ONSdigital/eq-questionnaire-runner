@@ -1,8 +1,10 @@
 from decimal import Decimal
 
 import pytest
+from wtforms import ValidationError
 from wtforms.fields import Field
 
+from app.forms import error_messages
 from app.forms.fields import (
     DecimalFieldWithSeparator,
     IntegerFieldWithSeparator,
@@ -44,13 +46,20 @@ def test_integer_field(mock_form):
         ("1.10", None),
     ],
 )
-def test_integer_field_formats(mock_form, number_input, result):
+def test_integer_field_inputs(mock_form, number_input, result):
     integer_field = IntegerFieldWithSeparator(_form=mock_form, name="aName")
-    assert isinstance(integer_field, Field)
-
     integer_field.process_formdata([number_input])
 
     assert integer_field.data == result
+
+
+def test_integer_field_nan_input(mock_form):
+    integer_field = IntegerFieldWithSeparator(_form=mock_form, name="aName")
+
+    with pytest.raises(ValidationError) as context:
+        integer_field.process_formdata(["NaN"])
+
+    assert error_messages["INVALID_NUMBER"] == str(context.value)
 
 
 @pytest.mark.parametrize(
@@ -63,13 +72,11 @@ def test_integer_field_formats(mock_form, number_input, result):
         ("_1._1,0,0", Decimal("1.1")),
     ],
 )
-def test_decimal_field_formats(mock_form, number_input, result):
-    integer_field = DecimalFieldWithSeparator(_form=mock_form, name="aName")
-    assert isinstance(integer_field, Field)
+def test_decimal_field_inputs(mock_form, number_input, result):
+    decimal_field = DecimalFieldWithSeparator(_form=mock_form, name="aName")
+    decimal_field.process_formdata([number_input])
 
-    integer_field.process_formdata([number_input])
-
-    assert integer_field.data == result
+    assert decimal_field.data == result
 
 
 def test_decimal_field(mock_form):
@@ -80,3 +87,12 @@ def test_decimal_field(mock_form):
         decimal_field.process_formdata(["NonDecimal"])
     except IndexError:
         pytest.fail("Exception should not be thrown by CustomDecimalField")
+
+
+def test_decimal_field_nan_input(mock_form):
+    decimal_field = DecimalFieldWithSeparator(_form=mock_form, name="aName")
+
+    with pytest.raises(ValidationError) as context:
+        decimal_field.process_formdata(["NaN"])
+
+    assert error_messages["INVALID_DECIMAL"] == str(context.value)

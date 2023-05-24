@@ -1,8 +1,7 @@
-from decimal import InvalidOperation
-
 from babel import numbers
-from wtforms import IntegerField
+from wtforms import IntegerField, ValidationError
 
+from app.forms import error_messages
 from app.settings import DEFAULT_LOCALE
 
 
@@ -22,17 +21,13 @@ class IntegerFieldWithSeparator(IntegerField):
 
     def process_formdata(self, valuelist):
         if valuelist:
+            if valuelist[0] == "NaN":
+                raise ValidationError(error_messages["INVALID_NUMBER"])
             try:
-                data = valuelist[0]
-                if numbers.get_group_symbol(DEFAULT_LOCALE) in data:
-                    data = data.replace(numbers.get_group_symbol(DEFAULT_LOCALE), "")
-                try:
-                    self.data = int(
-                        numbers.format_decimal(
-                            data, locale=DEFAULT_LOCALE, group_separator=False
-                        )
-                    )
-                except InvalidOperation:
-                    self.data = int(data)
+                self.data = int(
+                    valuelist[0]
+                    .replace(numbers.get_group_symbol(DEFAULT_LOCALE), "")
+                    .replace("_", "")
+                )
             except ValueError:
                 pass
