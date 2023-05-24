@@ -15,6 +15,7 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.submitter import RabbitMQSubmitter
+from tests.app.parser.conftest import get_response_expires_at
 
 METADATA_V1 = MetadataProxy.from_dict(
     {
@@ -39,6 +40,7 @@ METADATA_V1 = MetadataProxy.from_dict(
         "display_address": "68 Abingdon Road, Goathill",
         "case_ref": "1000000000000001",
         "jti": str(uuid.uuid4()),
+        "response_expires_at": get_response_expires_at(),
     }
 )
 
@@ -69,6 +71,7 @@ METADATA_V2 = MetadataProxy.from_dict(
         "region_code": "GB-ENG",
         "channel": "RH",
         "jti": str(uuid.uuid4()),
+        "response_expires_at": get_response_expires_at(),
     }
 )
 
