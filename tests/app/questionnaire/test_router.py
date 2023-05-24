@@ -662,9 +662,7 @@ class TestRouterNextLocation(RouterTestCase):
         )
 
     @pytest.mark.usefixtures("app")
-    def test_return_to_grand_calculated_summary_from_incomplete_section(
-        self, grand_calculated_summary_progress_store
-    ):
+    def test_return_to_grand_calculated_summary_from_incomplete_section(self):
         """
         This tests that if you try to return to a grand calculated summary section from an incomplete section
         you are routed to the next block in the incomplete section rather than the grand calculated summary
