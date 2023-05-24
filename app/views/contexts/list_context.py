@@ -3,7 +3,9 @@ from typing import Any, Generator, Mapping, Optional, Sequence
 
 from flask import url_for
 from flask_babel import lazy_gettext
+from werkzeug.datastructures import ImmutableDict
 
+from app.questionnaire import Location
 from app.views.contexts.context import Context
 
 
@@ -12,6 +14,7 @@ class ListContext(Context):
         self,
         summary_definition: Mapping[str, Any],
         for_list: str,
+        list_collector_location: Location,
         return_to: Optional[str] = None,
         edit_block_id: Optional[str] = None,
         remove_block_id: Optional[str] = None,
@@ -22,6 +25,7 @@ class ListContext(Context):
             list(
                 self._build_list_items_context(
                     for_list,
+                    list_collector_location,
                     return_to,
                     summary_definition,
                     edit_block_id,
@@ -44,6 +48,7 @@ class ListContext(Context):
     def _build_list_items_context(
         self,
         for_list: str,
+        list_collector_location: Location,
         return_to: Optional[str],
         summary_definition: Mapping[str, Any],
         edit_block_id: Optional[str],
@@ -59,6 +64,10 @@ class ListContext(Context):
                 if list_item_id in for_list_item_ids
             ]
         primary_person = self._list_store[for_list].primary_person
+
+        # Type ignore: block_id will be present as we must be at the location of a list collector
+        list_collector_block: ImmutableDict = self._schema.get_block(list_collector_location.block_id)  # type: ignore
+        has_repeating_blocks = bool(list_collector_block.get("repeating_blocks"))
 
         for list_item_id in list_item_ids:
             partial_url_for = partial(
@@ -77,6 +86,8 @@ class ListContext(Context):
                 ),
                 "primary_person": is_primary,
                 "list_item_id": list_item_id,
+                "is_complete": self._progress_store.is_section_complete(section_id=list_collector_location.section_id, list_item_id=list_item_id),
+                "repeating_blocks": has_repeating_blocks
             }
 
             if edit_block_id:

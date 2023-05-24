@@ -22,6 +22,7 @@ class UnrelatedQuestion(RelationshipQuestion):
         return self.list_context(
             self.rendered_block["list_summary"]["summary"],
             self.list_name,
+            self.current_location,
             for_list_item_ids=self.get_remaining_relationships_for_individual(),
         )
 
@@ -36,7 +37,7 @@ class UnrelatedQuestion(RelationshipQuestion):
             self.current_location
         )
         previous_item_index = list_model.index(previous_location.to_list_item_id)
-        return list_model[previous_item_index + 1 :]
+        return list_model[previous_item_index + 1:]
 
     def handle_post(self):
         if answer_action := self._get_answer_action():

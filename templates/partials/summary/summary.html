@@ -27,15 +27,13 @@
                     remove_link_aria_label=_("Remove your answer for:") if not view_submitted_response else "",
                     edit_link_text=_("Change") if not view_submitted_response else "",
                     edit_link_aria_label=_("Change your answer for:") if not view_submitted_response else "",
-                    calculated_question=content.summary.calculated_question,
-                    icon=None
+                    calculated_question=content.summary.calculated_question
                   ),
                   "classes": "ons-u-mt-m" if loop.index > 1 else "",
                   "placeholderText": group.placeholder_text,
                   "summaryLink": group.links.add_link,
                 }
-            )
-          %}
+            ) %}
         {%- endif -%}
       {%- endfor -%}
     {%- endif -%}
@@ -45,8 +43,7 @@
           "summaryTitle": section.title if summary_type == "Summary",
           "groups": summary_groups
         }
-      )
-    %}
+      ) %}
   {%- endfor -%}
 
 

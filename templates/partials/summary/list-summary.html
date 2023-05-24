@@ -3,7 +3,7 @@
 {% if list.editable %}
   {% set rows = map_list_collector_config(
     list.list_items,
-    "person",
+    True,
     _("Change"),
     _("Change details for {item_name}"),
     _("Remove"),
@@ -12,7 +12,7 @@
 {% else %}
   {% set rows = map_list_collector_config(
     list.list_items,
-    "person"
+    True
   ) %}
 {% endif %}
 

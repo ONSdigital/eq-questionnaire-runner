@@ -107,6 +107,9 @@ class ListCollectorBlock:
         list_summary_context = self.list_context(
             list_collector_block["summary"],
             for_list=list_collector_block["for_list"],
+            list_collector_location=Location(section_id=self._location.section_id,
+                                             list_name=list_collector_block["for_list"],
+                                             block_id=list_collector_block["id"]),
             return_to="section-summary",
             edit_block_id=edit_block_id,
             remove_block_id=remove_block_id,

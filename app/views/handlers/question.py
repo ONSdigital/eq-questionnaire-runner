@@ -204,6 +204,7 @@ class Question(BlockHandler):
         return self.list_context(
             self.rendered_block["list_summary"]["summary"],
             self.rendered_block["list_summary"]["for_list"],
+            self.current_location
         )
 
     def handle_post(self):

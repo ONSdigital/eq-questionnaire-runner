@@ -575,7 +575,6 @@ def map_summary_item_config(
     calculated_question: Optional[dict[str, list]],
     remove_link_text: str | None = None,
     remove_link_aria_label: str | None = None,
-    icon: Optional[str] = None,
 ) -> list[Union[dict[str, list], SummaryRow]]:
     rows: list[Union[dict[str, list], SummaryRow]] = []
 
@@ -594,7 +593,6 @@ def map_summary_item_config(
         else:
             list_collector_rows = map_list_collector_config(
                 list_items=block["list"]["list_items"],
-                icon=icon,
                 edit_link_text=edit_link_text,
                 edit_link_aria_label=edit_link_aria_label,
                 remove_link_text=remove_link_text,
@@ -620,8 +618,8 @@ def map_summary_item_config_processor() -> dict[str, Callable]:
 # pylint: disable=too-many-locals
 @blueprint.app_template_filter()  # type: ignore
 def map_list_collector_config(
-    list_items: list[dict[str, Union[str, int]]],
-    icon: Optional[str],
+    list_items: list[dict[str, str | int]],
+    render_icon: bool = False,
     edit_link_text: str = "",
     edit_link_aria_label: str = "",
     remove_link_text: Optional[str] = None,
@@ -677,7 +675,7 @@ def map_list_collector_config(
             )
 
         row_item = {
-            "iconType": icon,
+            "iconType": "check" if render_icon and list_item.get("repeating_blocks") and list_item.get("is_complete") else None,
             "actions": actions,
             "id": list_item.get("list_item_id"),
             "rowTitleAttributes": {
