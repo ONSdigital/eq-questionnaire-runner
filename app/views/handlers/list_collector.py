@@ -13,7 +13,7 @@ class ListCollector(Question):
 
     @cached_property
     def repeating_block_ids(self) -> list[str]:
-        return [block["id"] for block in self.rendered_block.get("repeating_blocks")]
+        return [block["id"] for block in self.rendered_block.get("repeating_blocks", [])]
 
     @cached_property
     def list_name(self) -> str:
@@ -81,10 +81,6 @@ class ListCollector(Question):
             return super().handle_post()
 
     def _is_list_collector_complete(self):
-        if not self.repeating_block_ids:
-            return True
-
-        list_model = self._questionnaire_store.list_store.get(self.list_name)
-        return all(
-            self.questionnaire_store_updater.is_section_complete(section_id=self.current_location.section_id, list_item_id=list_item_id)
-            for list_item_id in list_model.items)
+        return not self.get_first_incomplete_repeating_block_location(repeating_block_ids=self.repeating_block_ids,
+                                                                      section_id=self.current_location.section_id,
+                                                                      list_name=self.list_name)

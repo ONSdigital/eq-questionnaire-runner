@@ -55,7 +55,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self, questionnaire_json: Mapping, language_code: str = DEFAULT_LANGUAGE_CODE
     ):
         self._parent_id_map: dict[str, str] = {}
-        self._list_name_to_section_map: dict[str, set[str]] = {}
+        self._list_name_to_section_map: dict[str, list[str]] = {}
         self._answer_dependencies_map: dict[str, set[AnswerDependent]] = defaultdict(
             set
         )
@@ -430,7 +430,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_section(self, section_id: str) -> ImmutableDict | None:
         return self._sections_by_id.get(section_id)
 
-    def get_section_ids_dependent_on_list(self, list_name: str) -> set[str]:
+    def get_section_ids_dependent_on_list(self, list_name: str) -> list[str]:
         try:
             return self._list_name_to_section_map[list_name]
         except KeyError:
@@ -475,8 +475,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         operands: Sequence = rules[operator]
         return operands
 
-    def _section_ids_associated_to_list_name(self, list_name: str) -> set[str]:
-        section_ids: set[str] = set()
+    def _section_ids_associated_to_list_name(self, list_name: str) -> list[str]:
+        section_ids: list[str] = []
 
         for section in self.get_sections():
             ignore_keys = ["question_variants", "content_variants"]
@@ -484,7 +484,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
             rule: Mapping = next(when_rules, {})
             if self._is_list_name_in_rule(rule, list_name):
-                section_ids.add(section["id"])
+                section_ids.append(section["id"])
         return section_ids
 
     @staticmethod

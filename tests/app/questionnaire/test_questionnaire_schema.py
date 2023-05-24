@@ -205,7 +205,7 @@ def test_get_section_ids_by_list_name(sections_dependent_on_list_schema):
     when_blocks = schema.get_section_ids_dependent_on_list("list")
 
     assert len(when_blocks) == 2
-    assert {"section2", "section4"} == when_blocks
+    assert ["section2", "section4"] == when_blocks
 
 
 def test_get_all_questions_for_block_question_variants():

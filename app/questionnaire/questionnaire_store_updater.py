@@ -149,9 +149,9 @@ class QuestionnaireStoreUpdater:
         """
         list_item_id = self._list_store[list_name].primary_person
         if list_item_id:
-            self.remove_list_item_from_all_stores(list_name, list_item_id)
+            self.remove_list_item_data(list_name, list_item_id)
 
-    def remove_list_item_from_all_stores(self, list_name: str, list_item_id: str) -> None:
+    def remove_list_item_data(self, list_name: str, list_item_id: str) -> None:
         """Remove answers from the answer store, remove list item progress form the progress store and update the list store to remove it.
         Any related relationship answers are re-evaluated for completeness.
         """
