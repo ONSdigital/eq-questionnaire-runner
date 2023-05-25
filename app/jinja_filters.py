@@ -674,8 +674,16 @@ def map_list_collector_config(
                 }
             )
 
+        icon = (
+            "check"
+            if render_icon
+            and list_item.get("repeating_blocks")
+            and list_item.get("is_complete")
+            else None
+        )
+
         row_item = {
-            "iconType": "check" if render_icon and list_item.get("repeating_blocks") and list_item.get("is_complete") else None,
+            "iconType": icon,
             "actions": actions,
             "id": list_item.get("list_item_id"),
             "rowTitleAttributes": {
