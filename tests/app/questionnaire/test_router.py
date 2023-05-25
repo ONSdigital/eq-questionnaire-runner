@@ -1056,7 +1056,7 @@ class TestRouterPreviousLocation(RouterTestCase):
 
     @pytest.mark.usefixtures("app")
     def test_return_to_grand_calculated_summary_from_answer_incomplete_section(
-        self, grand_calculated_summary_progress_store, grand_calculated_summary_schema
+        self, grand_calculated_summary_schema
     ):
         """
         This tests that if you are on a calculated summary, and your return_to_block_id is another calculated summary that you cannot reach yet
@@ -1112,7 +1112,7 @@ class TestRouterPreviousLocation(RouterTestCase):
 
     @pytest.mark.usefixtures("app")
     def test_return_to_grand_calculated_summary_from_calculated_summary_incomplete_section(
-        self, grand_calculated_summary_progress_store, grand_calculated_summary_schema
+        self, grand_calculated_summary_schema
     ):
         """
         This tests that if you are on a calculated summary, and your return_to_block_id is a grand calculated summary
