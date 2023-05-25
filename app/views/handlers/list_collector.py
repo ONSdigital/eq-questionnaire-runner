@@ -31,7 +31,9 @@ class ListCollector(Question):
             )
             return add_url
 
-        if incomplete_block := self.get_first_incomplete_repeating_block_location(self.repeating_block_ids, self.current_location.section_id, self.list_name):
+        if incomplete_block := self.get_first_incomplete_repeating_block_location(self.repeating_block_ids,
+                                                                                  self.current_location.section_id,
+                                                                                  self.list_name):
             repeating_block_url = url_for(
                 "questionnaire.block",
                 list_name=self.list_name,
@@ -65,6 +67,7 @@ class ListCollector(Question):
                 edit_block_id=self.rendered_block["edit_block"]["id"],
                 remove_block_id=self.rendered_block["remove_block"]["id"],
                 return_to=self._return_to,
+                list_collector_location=self.current_location
             ),
         }
 
