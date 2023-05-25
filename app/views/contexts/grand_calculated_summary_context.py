@@ -89,8 +89,7 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         Build summary section with formatted total and change links for each calculated summary
         """
         # Type ignore: Block will exist at this point
-        block_id: str = self.current_location.block_id  # type: ignore
-        block: ImmutableDict = self._schema.get_block(block_id)  # type: ignore
+        block: ImmutableDict = self._schema.get_block(self.current_location.block_id)  # type: ignore
 
         calculation = block["calculation"]
         calculated_summary_ids = get_calculation_block_ids_for_grand_calculated_summary(
@@ -102,7 +101,7 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
 
         groups = self.build_groups_for_section(
             section=calculated_section,
-            return_to_block_id=block_id,
+            return_to_block_id=block["id"],
             routing_path_block_ids=routing_path_block_ids,
         )
         total = self._get_evaluated_total(
