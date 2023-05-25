@@ -62,7 +62,6 @@ class ListCollector(Question):
             **list_context(
                 self.rendered_block["summary"],
                 for_list=self.list_name,
-                list_collector_location=self.current_location,
                 edit_block_id=self.rendered_block["edit_block"]["id"],
                 remove_block_id=self.rendered_block["remove_block"]["id"],
                 return_to=self._return_to,
