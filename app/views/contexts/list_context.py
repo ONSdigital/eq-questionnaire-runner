@@ -65,7 +65,7 @@ class ListContext(Context):
             ]
         primary_person = self._list_store[for_list].primary_person
 
-        # Type ignore: block_id will be present as we must be at the location of a list collector
+        # Type ignore: block_id will be present as this location must correspond the location of a list collector
         list_collector_block: ImmutableDict = self._schema.get_block(list_collector_location.block_id)  # type: ignore
         has_repeating_blocks = bool(list_collector_block.get("repeating_blocks"))
 
@@ -86,8 +86,11 @@ class ListContext(Context):
                 ),
                 "primary_person": is_primary,
                 "list_item_id": list_item_id,
-                "is_complete": self._progress_store.is_section_complete(section_id=list_collector_location.section_id, list_item_id=list_item_id),
-                "repeating_blocks": has_repeating_blocks
+                "is_complete": self._progress_store.is_section_complete(
+                    section_id=list_collector_location.section_id,
+                    list_item_id=list_item_id,
+                ),
+                "repeating_blocks": has_repeating_blocks,
             }
 
             if edit_block_id:

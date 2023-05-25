@@ -33,7 +33,8 @@
                   "placeholderText": group.placeholder_text,
                   "summaryLink": group.links.add_link,
                 }
-            ) %}
+            )
+          %}
         {%- endif -%}
       {%- endfor -%}
     {%- endif -%}
@@ -43,7 +44,8 @@
           "summaryTitle": section.title if summary_type == "Summary",
           "groups": summary_groups
         }
-      ) %}
+      )
+    %}
   {%- endfor -%}
 
 
