@@ -50,9 +50,9 @@ class NumberCheck:
         field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
     ) -> None:
         try:
-            if (value := field.raw_data[0]) and math.isnan(float(value)):
+            if math.isnan(float(field.raw_data[0])):
                 raise validators.StopValidation(error_messages["INVALID_NUMBER"])
-        except ValueError:
+        except (TypeError, ValueError):
             pass
 
         try:
