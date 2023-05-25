@@ -145,8 +145,8 @@ class PlaceholderParser:
             transform_name = transform["transform"]
 
             value_source_resolver = self._get_value_source_resolver_for_transform(
-                    transform_name
-                )
+                transform_name
+            )
 
             for arg_key, arg_value in transform["arguments"].items():
                 resolved_value: ValueSourceEscapedTypes | ValueSourceTypes | TransformedValueTypes
