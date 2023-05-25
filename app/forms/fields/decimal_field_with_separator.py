@@ -1,9 +1,8 @@
 from decimal import Decimal, InvalidOperation
 
 from babel import numbers
-from wtforms import DecimalField, ValidationError
+from wtforms import DecimalField
 
-from app.forms import error_messages
 from app.settings import DEFAULT_LOCALE
 
 

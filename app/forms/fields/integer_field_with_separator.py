@@ -1,7 +1,6 @@
 from babel import numbers
-from wtforms import IntegerField, ValidationError
+from wtforms import IntegerField
 
-from app.forms import error_messages
 from app.settings import DEFAULT_LOCALE
 
 

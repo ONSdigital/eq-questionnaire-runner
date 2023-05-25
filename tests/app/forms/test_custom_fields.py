@@ -1,10 +1,8 @@
 from decimal import Decimal
 
 import pytest
-from wtforms import ValidationError
 from wtforms.fields import Field
 
-from app.forms import error_messages
 from app.forms.fields import (
     DecimalFieldWithSeparator,
     IntegerFieldWithSeparator,
