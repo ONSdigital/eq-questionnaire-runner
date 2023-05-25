@@ -50,8 +50,12 @@ class NumberCheck:
         field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
     ) -> None:
         try:
-            if math.isnan(float(field.raw_data[0])):
-                raise validators.ValidationError(error_messages["INVALID_NUMBER"])
+            if (value := field.raw_data[0]) and math.isnan(float(value)):
+                raise validators.StopValidation(error_messages["INVALID_NUMBER"])
+        except ValueError:
+            pass
+
+        try:
             Decimal(
                 field.raw_data[0]
                 .replace(numbers.get_group_symbol(flask_babel.get_locale()), "")
@@ -129,8 +133,14 @@ class NumberRange:
         field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
     ) -> None:
         value: Union[int, Decimal] = field.data
-        if math.isnan(float(field.raw_data[0])):
+        try:
+            raw_value = float(field.raw_data[0])
+        except (TypeError, ValueError):
+            raw_value = False
+
+        if math.isnan(raw_value):
             raise validators.ValidationError(error_messages["INVALID_NUMBER"])
+
         if value is not None:
             error_message = self.validate_minimum(value) or self.validate_maximum(value)
             if error_message:

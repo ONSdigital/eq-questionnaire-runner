@@ -74,6 +74,37 @@ def test_number_range_validator_raises_ValidationError(
     assert error_messages[error_type] % error_dict == str(exc.value)
 
 
+@pytest.mark.usefixtures("gb_locale")
+def test_number_range_validator_nan_check_passes(mock_form, mock_field, value=None):
+    validator = NumberRange(
+        minimum=10,
+        maximum=100,
+        minimum_exclusive=False,
+        maximum_exclusive=False,
+    )
+    mock_field.data = value
+    mock_field.raw_data = [value]
+
+    validator(mock_form, mock_field)
+
+
+@pytest.mark.usefixtures("gb_locale")
+def test_number_range_validator_nan_check_raises_exception(
+    mock_form, mock_field, value="NaN"
+):
+    validator = NumberRange(
+        minimum=10,
+        maximum=100,
+        minimum_exclusive=False,
+        maximum_exclusive=False,
+    )
+    mock_field.data = value
+    mock_field.raw_data = [value]
+
+    with pytest.raises(ValidationError):
+        validator(mock_form, mock_field)
+
+
 @pytest.mark.parametrize(
     "minimum, maximum, value",
     (
