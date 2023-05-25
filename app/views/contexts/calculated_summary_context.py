@@ -257,7 +257,7 @@ class CalculatedSummaryContext(Context):
         else:
             calculated_total = calculation(values_to_calculate)
 
-        return self._format_total(answer_format, calculated_total)
+        return self._format_total(answer_format=answer_format, total=calculated_total)
 
     def _get_answer_format(self, groups: Iterable[Mapping]) -> Tuple[dict, list]:
         values_to_calculate: list = []
@@ -288,7 +288,7 @@ class CalculatedSummaryContext(Context):
         return answer_format, values_to_calculate
 
     @staticmethod
-    def _format_total(answer_format: Mapping[str, str], total: NumericType) -> str:
+    def _format_total(*, answer_format: Mapping[str, str], total: NumericType) -> str:
         if answer_format["type"] == "currency":
             return get_formatted_currency(total, answer_format["currency"])
 

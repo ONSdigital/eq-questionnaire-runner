@@ -12,13 +12,12 @@ from app.views.contexts.summary.group import Group
 class GrandCalculatedSummaryContext(CalculatedSummaryContext):
     def _build_grand_calculated_summary_section(
         self, rendered_block: ImmutableDict
-    ) -> dict:
+    ) -> dict[str, str | list]:
         """
         Build list of calculated summary blocks that the grand calculated summary will be adding up
         """
         # Type ignore: the block, group and section will all exist at this point
-        block_id: str = self.current_location.block_id  # type: ignore
-        calculated_summary_group: ImmutableDict = self._schema.get_group_for_block_id(block_id)  # type: ignore
+        calculated_summary_group: ImmutableDict = self._schema.get_group_for_block_id(self.current_location.block_id)  # type: ignore
 
         calculated_summary_ids = get_calculation_block_ids_for_grand_calculated_summary(
             rendered_block
@@ -115,7 +114,7 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         answer_format = self._schema.get_answer_format_for_calculated_summary(
             calculated_summary_ids[0]
         )
-        formatted_total = self._format_total(answer_format, total)
+        formatted_total = self._format_total(answer_format=answer_format, total=total)
 
         return self._build_formatted_summary(
             block=block,

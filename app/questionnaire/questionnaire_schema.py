@@ -1059,6 +1059,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     return f"#{str(item['item_anchor_answer_id'])}"
 
 
+def is_summary_with_calculation(summary_type: str) -> bool:
+    return summary_type in {"GrandCalculatedSummary", "CalculatedSummary"}
+
+
 def get_sources_for_type_from_data(
     *,
     source_type: str,

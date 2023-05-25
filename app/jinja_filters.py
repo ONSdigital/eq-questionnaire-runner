@@ -12,6 +12,7 @@ from jinja2 import nodes, pass_eval_context
 from markupsafe import Markup, escape
 from wtforms import SelectFieldBase
 
+from app.questionnaire.questionnaire_schema import is_summary_with_calculation
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import MAX_NUMBER
 
@@ -26,10 +27,6 @@ def mark_safe(context: nodes.EvalContext, value: str) -> Union[Markup, str]:
 
 def strip_tags(value: str) -> Markup:
     return escape(Markup(value).striptags())
-
-
-def is_summary_with_calculation(summary_type: str) -> bool:
-    return summary_type in {"GrandCalculatedSummary", "CalculatedSummary"}
 
 
 @blueprint.app_template_filter()
