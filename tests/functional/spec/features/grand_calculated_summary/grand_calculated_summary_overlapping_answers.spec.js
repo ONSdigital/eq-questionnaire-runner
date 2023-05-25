@@ -65,10 +65,6 @@ describe("Feature: Grand Calculated Summary", () => {
       );
       await $(CalculatedSummary2Page.submit()).click();
 
-      // block 3 is reached because its between two summaries which need to be re-confirmed
-      await expect(await browser.getUrl()).to.contain(Block3Page.pageName);
-      await $(Block3Page.submit()).click();
-
       // taken back to the SECOND calculated summary which uses it
       await expect(await browser.getUrl()).to.contain(CalculatedSummary4Page.pageName);
       await expect(await $(CalculatedSummary4Page.calculatedSummaryTitle()).getText()).to.contain(
@@ -88,10 +84,6 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(CalculatedSummary4Page.q2A2Edit()).click();
       await $(Block2Page.q2A2()).setValue(500);
       await $(Block2Page.submit()).click();
-
-      // taken to the a calculated summary prior to the question, because we can't reach calculated summary 4 yet, so we step through the section until the routing path is viable
-      await expect(await browser.getUrl()).to.contain(CalculatedSummary1Page.pageName);
-      await $(CalculatedSummary1Page.submit()).click();
 
       // taken back to the FIRST calculated summary which uses it
       await expect(await browser.getUrl()).to.contain(CalculatedSummary2Page.pageName);

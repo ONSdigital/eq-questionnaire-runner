@@ -1293,6 +1293,11 @@ def section_dependencies_new_calculated_summary_schema():
 
 
 @pytest.fixture
+def grand_calculated_summary_schema():
+    return load_schema_from_name("test_grand_calculated_summary")
+
+
+@pytest.fixture
 def grand_calculated_summary_progress_store():
     return ProgressStore(
         [

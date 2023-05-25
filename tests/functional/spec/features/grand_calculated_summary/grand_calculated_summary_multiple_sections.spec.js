@@ -107,12 +107,8 @@ describe("Feature: Grand Calculated Summary", () => {
         "Calculated Summary for Question 1 is calculated to be £550.00. Is this correct?"
       );
 
-      // will now step through each question until the section is done before going back to grand calculated summary
+      // Go to each calculated/grand calculated summary including this answer and reconfirm before being taken back to grand calculated summary
       await $(CalculatedSummary1Page.submit()).click();
-      await expect(await browser.getUrl()).to.contain(Block3Page.pageName);
-      await $(Block3Page.submit()).click();
-      await expect(await browser.getUrl()).to.contain(CalculatedSummary2Page.pageName);
-      await $(CalculatedSummary2Page.submit()).click();
       await expect(await browser.getUrl()).to.contain(CalculatedSummary3Page.pageName);
       await $(CalculatedSummary3Page.submit()).click();
       await expect(await browser.getUrl()).to.contain(GrandCalculatedSummary1Page.pageName);
