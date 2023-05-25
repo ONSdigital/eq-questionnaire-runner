@@ -126,7 +126,7 @@
                                 "id": "s2-b2-q1",
                                 "title": "Section 2 Question 2",
                                 "type": "General",
-                                "description": ["Shows if the answer to the previous question is not 0"],
+                                "description": ["Always shows"],
                                 "answers": [
                                     {
                                         "id": "s2-b2-q1-a1",
