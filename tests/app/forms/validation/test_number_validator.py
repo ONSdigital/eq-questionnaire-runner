@@ -7,12 +7,7 @@ from app.forms.validators import DecimalPlaces
 
 @pytest.mark.parametrize(
     "value",
-    (
-        [None],
-        [""],
-        ["a"],
-        ["2E2"],
-    ),
+    ([None], [""], ["a"], ["2E2"], ["NaN"]),
 )
 @pytest.mark.usefixtures("gb_locale")
 def test_number_validator_raises_StopValidation(

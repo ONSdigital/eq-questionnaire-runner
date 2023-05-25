@@ -28,6 +28,15 @@ from app.forms.validators import NumberRange
             {"min": "10"},
         ),
         (
+            10,
+            100,
+            "NaN",
+            False,
+            True,
+            "INVALID_NUMBER",
+            {"max": "100"},
+        ),
+        (
             None,
             1000,
             1000,
@@ -57,6 +66,7 @@ def test_number_range_validator_raises_ValidationError(
         maximum_exclusive=max_excl,
     )
     mock_field.data = value
+    mock_field.raw_data = [value]
 
     with pytest.raises(ValidationError) as exc:
         validator(mock_form, mock_field)
@@ -76,5 +86,6 @@ def test_number_range_validator_raises_ValidationError(
 def test_number_range_validator(minimum, maximum, value, mock_form, mock_field):
     validator = NumberRange(minimum=minimum, maximum=maximum)
     mock_field.data = value
+    mock_field.raw_data = [value]
 
     validator(mock_form, mock_field)

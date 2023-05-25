@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 import re
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
@@ -49,10 +50,12 @@ class NumberCheck:
         field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
     ) -> None:
         try:
+            if math.isnan(float(field.raw_data[0])):
+                raise validators.ValidationError(error_messages["INVALID_NUMBER"])
             Decimal(
-                field.raw_data[0].replace(
-                    numbers.get_group_symbol(flask_babel.get_locale()), ""
-                )
+                field.raw_data[0]
+                .replace(numbers.get_group_symbol(flask_babel.get_locale()), "")
+                .replace("_", "")
             )
         except (ValueError, TypeError, InvalidOperation, AttributeError) as exc:
             raise validators.StopValidation(self.message) from exc
@@ -126,6 +129,8 @@ class NumberRange:
         field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
     ) -> None:
         value: Union[int, Decimal] = field.data
+        if math.isnan(float(field.raw_data[0])):
+            raise validators.ValidationError(error_messages["INVALID_NUMBER"])
         if value is not None:
             error_message = self.validate_minimum(value) or self.validate_maximum(value)
             if error_message:
@@ -183,6 +188,7 @@ class DecimalPlaces:
             field.raw_data[0]
             .replace(numbers.get_group_symbol(flask_babel.get_locale()), "")
             .replace(" ", "")
+            .replace("_", "")
         )
         decimal_symbol = numbers.get_decimal_symbol(flask_babel.get_locale())
         if data and decimal_symbol in data:

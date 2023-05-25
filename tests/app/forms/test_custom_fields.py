@@ -53,15 +53,6 @@ def test_integer_field_inputs(mock_form, number_input, result):
     assert integer_field.data == result
 
 
-def test_integer_field_nan_input(mock_form):
-    integer_field = IntegerFieldWithSeparator(_form=mock_form, name="aName")
-
-    with pytest.raises(ValidationError) as context:
-        integer_field.process_formdata(["NaN"])
-
-    assert error_messages["INVALID_NUMBER"] == str(context.value)
-
-
 @pytest.mark.parametrize(
     "number_input, result",
     [
@@ -87,12 +78,3 @@ def test_decimal_field(mock_form):
         decimal_field.process_formdata(["NonDecimal"])
     except IndexError:
         pytest.fail("Exception should not be thrown by CustomDecimalField")
-
-
-def test_decimal_field_nan_input(mock_form):
-    decimal_field = DecimalFieldWithSeparator(_form=mock_form, name="aName")
-
-    with pytest.raises(ValidationError) as context:
-        decimal_field.process_formdata(["NaN"])
-
-    assert error_messages["INVALID_NUMBER"] == str(context.value)
