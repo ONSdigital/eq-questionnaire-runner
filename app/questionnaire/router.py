@@ -1,4 +1,4 @@
-from typing import Generator, Mapping, MutableMapping, Sequence
+from typing import Generator, Mapping, MutableMapping
 
 from flask import url_for
 
