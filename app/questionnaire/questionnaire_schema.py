@@ -213,8 +213,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                             nested_block_id = nested_block["id"]
                             blocks[nested_block_id] = nested_block
                             self._parent_id_map[nested_block_id] = block_id
-                    if block.get("repeating_blocks"):
-                        for repeating_block in block["repeating_blocks"]:
+                    if repeating_blocks := block.get("repeating_blocks"):
+                        for repeating_block in repeating_blocks:
                             repeating_block_id = repeating_block["id"]
                             blocks[repeating_block_id] = repeating_block
                             self._parent_id_map[repeating_block_id] = block_id
@@ -1027,6 +1027,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def is_answer_in_repeating_blocks(self, answer_id: str) -> bool:
         if block := self.get_block_for_answer_id(answer_id):
             return self.is_block_in_repeating_blocks(block_id=block["id"])
+        return False
 
 
 def get_sources_for_type_from_data(

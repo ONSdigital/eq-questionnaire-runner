@@ -1,6 +1,6 @@
 from collections import defaultdict, namedtuple
 from itertools import combinations
-from typing import Any, Iterable, Mapping
+from typing import Iterable, Mapping, Any
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -149,10 +149,10 @@ class QuestionnaireStoreUpdater:
         """
         list_item_id = self._list_store[list_name].primary_person
         if list_item_id:
-            self.remove_list_item_and_answers(list_name, list_item_id)
+            self.remove_list_item_data(list_name, list_item_id)
 
-    def remove_list_item_and_answers(self, list_name: str, list_item_id: str) -> None:
-        """Remove answers from the answer store and update the list store to remove it.
+    def remove_list_item_data(self, list_name: str, list_item_id: str) -> None:
+        """Remove answers from the answer store, remove list item progress form the progress store and update the list store to remove it.
         Any related relationship answers are re-evaluated for completeness.
         """
         self._list_store.delete_list_item(list_name, list_item_id)
@@ -248,6 +248,9 @@ class QuestionnaireStoreUpdater:
             CompletionStatus.COMPLETED if is_complete else CompletionStatus.IN_PROGRESS
         )
         self._progress_store.update_section_status(status, section_id, list_item_id)
+
+    def is_section_complete(self, section_id: str, list_item_id: str | None = None) -> bool:
+        return self._progress_store.is_section_complete(section_id, list_item_id)
 
     def _update_answer(
         self,

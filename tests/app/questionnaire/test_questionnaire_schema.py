@@ -720,14 +720,14 @@ def test_when_rules_section_dependencies_by_section(
 ):
     schema = skipping_section_dependencies_schema
     assert {
-        "household-personal-details-section": {
-            "skip-confirmation-section",
-            "skip-section",
-        },
-        "household-section": {"skip-section"},
-        "primary-person": {"skip-confirmation-section", "skip-section"},
-        "skip-confirmation-section": {"skip-section"},
-    } == schema.when_rules_section_dependencies_by_section
+               "household-personal-details-section": {
+                   "skip-confirmation-section",
+                   "skip-section",
+               },
+               "household-section": {"skip-section"},
+               "primary-person": {"skip-confirmation-section", "skip-section"},
+               "skip-confirmation-section": {"skip-section"},
+           } == schema.when_rules_section_dependencies_by_section
 
 
 def test_when_rules_section_dependencies_by_answer(
@@ -735,17 +735,17 @@ def test_when_rules_section_dependencies_by_answer(
 ):
     schema = skipping_section_dependencies_schema
     assert {
-        "enable-section-answer": {"household-section"},
-        "skip-age-answer": {
-            "household-personal-details-section",
-            "primary-person",
-            "skip-confirmation-section",
-        },
-        "skip-confirmation-answer": {
-            "household-personal-details-section",
-            "primary-person",
-        },
-    } == schema.when_rules_section_dependencies_by_answer
+               "enable-section-answer": {"household-section"},
+               "skip-age-answer": {
+                   "household-personal-details-section",
+                   "primary-person",
+                   "skip-confirmation-section",
+               },
+               "skip-confirmation-answer": {
+                   "household-personal-details-section",
+                   "primary-person",
+               },
+           } == schema.when_rules_section_dependencies_by_answer
 
 
 def test_when_rules_section_dependencies_calculated_summary(
@@ -754,12 +754,12 @@ def test_when_rules_section_dependencies_calculated_summary(
     schema = section_dependencies_calculated_summary_schema
 
     assert {
-        "milk-answer": {"dependent-enabled-section", "dependent-question-section"},
-        "eggs-answer": {"dependent-enabled-section", "dependent-question-section"},
-        "bread-answer": {"dependent-enabled-section", "dependent-question-section"},
-        "cheese-answer": {"dependent-enabled-section", "dependent-question-section"},
-        "butter-answer": {"dependent-enabled-section", "dependent-question-section"},
-    } == schema.when_rules_section_dependencies_by_answer
+               "milk-answer": {"dependent-enabled-section", "dependent-question-section"},
+               "eggs-answer": {"dependent-enabled-section", "dependent-question-section"},
+               "bread-answer": {"dependent-enabled-section", "dependent-question-section"},
+               "cheese-answer": {"dependent-enabled-section", "dependent-question-section"},
+               "butter-answer": {"dependent-enabled-section", "dependent-question-section"},
+           } == schema.when_rules_section_dependencies_by_answer
 
 
 def test_when_rules_section_dependencies_new_calculated_summary(
@@ -768,12 +768,12 @@ def test_when_rules_section_dependencies_new_calculated_summary(
     schema = section_dependencies_new_calculated_summary_schema
 
     assert {
-        "milk-answer": {"dependent-enabled-section", "dependent-question-section"},
-        "eggs-answer": {"dependent-enabled-section", "dependent-question-section"},
-        "bread-answer": {"dependent-enabled-section", "dependent-question-section"},
-        "cheese-answer": {"dependent-enabled-section", "dependent-question-section"},
-        "butter-answer": {"dependent-enabled-section", "dependent-question-section"},
-    } == schema.when_rules_section_dependencies_by_answer
+               "milk-answer": {"dependent-enabled-section", "dependent-question-section"},
+               "eggs-answer": {"dependent-enabled-section", "dependent-question-section"},
+               "bread-answer": {"dependent-enabled-section", "dependent-question-section"},
+               "cheese-answer": {"dependent-enabled-section", "dependent-question-section"},
+               "butter-answer": {"dependent-enabled-section", "dependent-question-section"},
+           } == schema.when_rules_section_dependencies_by_answer
 
 
 @pytest.mark.parametrize(

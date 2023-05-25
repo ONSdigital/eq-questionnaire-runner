@@ -294,7 +294,7 @@ def test_remove_all_answers_with_list_item_id(
     questionnaire_store_updater = QuestionnaireStoreUpdater(
         mock_location, mock_empty_schema, mock_questionnaire_store, mock_router, None
     )
-    questionnaire_store_updater.remove_list_item_and_answers("abc", "abcdef")
+    questionnaire_store_updater.remove_list_item_data("abc", "abcdef")
 
     assert len(mock_empty_answer_store) == 1
     assert mock_empty_answer_store.get_answer("test3", "uvwxyz")

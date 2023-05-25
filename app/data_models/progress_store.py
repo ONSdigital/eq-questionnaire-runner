@@ -25,7 +25,7 @@ class ProgressStore:
     """
 
     def __init__(
-        self, in_progress_sections: Optional[Iterable[ProgressDictType]] = None
+        self, in_progress_sections: Iterable[ProgressDictType] | None = None
     ) -> None:
         """
         Instantiate a ProgressStore object that tracks the status of sections and its completed blocks
@@ -139,7 +139,7 @@ class ProgressStore:
         return CompletionStatus.NOT_STARTED
 
     def get_completed_block_ids(
-        self, section_id: str, list_item_id: Optional[str] = None
+        self, section_id: str, list_item_id: str | None = None
     ) -> list[str]:
         section_key = (section_id, list_item_id)
         if section_key in self._progress:
