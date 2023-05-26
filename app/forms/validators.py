@@ -51,7 +51,7 @@ class NumberCheck:
     ) -> None:
         try:
             if math.isnan(float(field.raw_data[0])):
-                raise validators.StopValidation(error_messages["INVALID_NUMBER"])
+                raise validators.StopValidation(self.message)
         except (TypeError, ValueError):
             pass
 
@@ -139,7 +139,7 @@ class NumberRange:
             raw_value = False
 
         if math.isnan(raw_value):
-            raise validators.ValidationError(error_messages["INVALID_NUMBER"])
+            raise validators.ValidationError(self.messages["INVALID_NUMBER"])
 
         if value is not None:
             error_message = self.validate_minimum(value) or self.validate_maximum(value)
