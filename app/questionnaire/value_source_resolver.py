@@ -37,9 +37,14 @@ class ValueSourceResolver:
     def _is_answer_on_path(self, answer_id: str) -> bool:
         if self.routing_path_block_ids:
             block = self.schema.get_block_for_answer_id(answer_id)
-            return block is not None and block["id"] in self.routing_path_block_ids
-
+            return block is not None and self._is_block_on_path(block["id"])
         return True
+
+    def _is_block_on_path(self, block_id: str) -> bool:
+        return (
+            self.routing_path_block_ids is not None
+            and block_id in self.routing_path_block_ids
+        )
 
     def _get_answer_value(
         self,
@@ -116,6 +121,36 @@ class ValueSourceResolver:
 
         return answer_value
 
+    def _resolve_progress_value_source(
+        self, value_source: Mapping
+    ) -> ValueSourceEscapedTypes | ValueSourceTypes | None:
+        identifier = value_source["identifier"]
+        selector = value_source["selector"]
+        if selector == "section":
+            # List item id is set to None here as we do not support checking progress value sources for
+            # repeating sections
+            return self.progress_store.get_section_status(
+                section_id=identifier, list_item_id=None
+            )
+
+        if selector == "block":
+            if not self.location:
+                raise ValueError("location is required to resolve block progress")
+
+            if not self._is_block_on_path(identifier):
+                return None
+
+            # Type ignore: Section id will exist at this point
+            section_id_for_block: str = self.schema.get_section_id_for_block_id(identifier)  # type: ignore
+
+            return self.progress_store.get_block_status(
+                block_id=identifier,
+                section_id=section_id_for_block,
+                list_item_id=self.location.list_item_id
+                if self.location.section_id == section_id_for_block
+                else None,
+            )
+
     def _resolve_list_value_source(self, value_source: Mapping) -> int | str | list:
         identifier = value_source["identifier"]
         list_model: ListModel = self.list_store[identifier]
@@ -154,12 +189,25 @@ class ValueSourceResolver:
             self.list_store,
             self.metadata,
             self.response_metadata,
+            progress_store=self.progress_store,
             location=self.location,
             routing_path_block_ids=self.routing_path_block_ids,
-            progress_store=self.progress_store,
         )
 
         return evaluator.evaluate(calculation["operation"])  # type: ignore
+
+    def _resolve_metadata_source(self, value_source: Mapping) -> str | None:
+        if not self.metadata:
+            raise NoMetadataException
+        identifier = value_source["identifier"]
+        return self.metadata[identifier]
+
+    def _resolve_location_source(self, value_source: Mapping) -> str | None:
+        if value_source.get("identifier") == "list_item_id":
+            return self.list_item_id
+
+    def _resolve_response_metadata_source(self, value_source: Mapping) -> str | None:
+        return self.response_metadata.get(value_source.get("identifier"))
 
     @staticmethod
     def get_calculation_operator(
@@ -175,29 +223,18 @@ class ValueSourceResolver:
     ) -> ValueSourceEscapedTypes | ValueSourceTypes:
         source = value_source["source"]
 
-        #  We always need to assess the routing path for calculated summary value sources
-        #  as they may contain answers that are not on the path
-        if source == "answers":
-            return self._resolve_answer_value_source(value_source)
-
-        if source == "list":
-            return self._resolve_list_value_source(value_source)
-
-        if source == "metadata":
-            if not self.metadata:
-                raise NoMetadataException
-            identifier = value_source["identifier"]
-            return self.metadata[identifier]
-
-        if source == "location" and value_source.get("identifier") == "list_item_id":
-            # This does not use the location object because
-            # routes such as individual response does not have the concept of location.
-            return self.list_item_id
-
-        if source == "response_metadata":
-            return self.response_metadata.get(value_source["identifier"])
-
         if source == "calculated_summary":
             return self._resolve_calculated_summary_value_source(
-                value_source, assess_routing_path=True
+                value_source=value_source, assess_routing_path=True
             )
+
+        resolve_method_mapping = {
+            "answers": self._resolve_answer_value_source,
+            "list": self._resolve_list_value_source,
+            "metadata": self._resolve_metadata_source,
+            "location": self._resolve_location_source,
+            "response_metadata": self._resolve_response_metadata_source,
+            "progress": self._resolve_progress_value_source,
+        }
+
+        return resolve_method_mapping[source](value_source)

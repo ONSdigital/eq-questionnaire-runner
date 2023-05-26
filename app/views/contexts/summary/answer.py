@@ -61,7 +61,7 @@ class Answer:
         return_to_block_id: Optional[str],
     ) -> str:
         return url_for(
-            "questionnaire.block",
+            endpoint="questionnaire.block",
             list_name=list_name,
             block_id=block_id,
             list_item_id=list_item_id,
