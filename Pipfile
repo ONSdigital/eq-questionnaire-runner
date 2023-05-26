@@ -38,7 +38,7 @@ pytest-mock = "*"
 
 [packages]
 colorama = "*"
-flask = "==2.2.2"
+flask = "==2.2.5"
 flask-babel = "*"
 flask-login = "*"
 flask-wtf = "*"
