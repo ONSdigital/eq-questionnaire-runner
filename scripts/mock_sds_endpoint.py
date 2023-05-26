@@ -128,7 +128,7 @@ def get_sds_data():
 
     if dataset_id == "002":
         return SUPPLEMENTARY_DATA_PRODCOM_PAYLOAD
-    elif  dataset_id == "001":
+    elif dataset_id == "001":
         return SUPPLEMENTARY_DATA_TILES_AND_SLATE_PAYLOAD
     else:
         return Response(status=404)
