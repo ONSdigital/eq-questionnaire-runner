@@ -127,7 +127,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
         self.get(f"/session?token={token}")
 
-    def launchPrepopSurvey(
+    def launchSupplementaryDataSurvey(
         self, schema_name="test_supplementary_data", **payload_kwargs
     ):
         """

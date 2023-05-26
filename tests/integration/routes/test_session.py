@@ -91,7 +91,7 @@ class TestSession(IntegrationTestCase):
 
     def test_supplementary_data_is_loaded_when_sds_dataset_id_in_metadata(self):
         with patch("app.routes.session.get_supplementary_data", return_value={}):
-            self.launchPrepopSurvey()
+            self.launchSupplementaryDataSurvey()
             self.assertStatusOK()
 
 

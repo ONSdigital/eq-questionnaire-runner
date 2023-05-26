@@ -5,5 +5,5 @@ class AuthPayloadVersion(Enum):
     V2 = "v2"
 
 
-class PrepopSchemaVersion(Enum):
+class SupplementaryDataSchemaVersion(Enum):
     V1 = "v1"

@@ -10,7 +10,7 @@ from marshmallow import (
     validates_schema,
 )
 
-from app.authentication.auth_payload_versions import PrepopSchemaVersion
+from app.authentication.auth_payload_versions import SupplementaryDataSchemaVersion
 from app.utilities.metadata_parser_v2 import VALIDATORS, StripWhitespaceMixin
 
 
@@ -22,10 +22,10 @@ class ItemsData(Schema, StripWhitespaceMixin):
     pass
 
 
-class PrepopData(Schema, StripWhitespaceMixin):
+class SupplementaryData(Schema, StripWhitespaceMixin):
     identifier = VALIDATORS["string"](validate=validate.Length(min=1))
     schema_version = VALIDATORS["string"](
-        validate=validate.OneOf([PrepopSchemaVersion.V1.value])
+        validate=validate.OneOf([SupplementaryDataSchemaVersion.V1.value])
     )
     items = fields.Nested(ItemsData, required=False, unknown=EXCLUDE)
 
@@ -37,14 +37,19 @@ class PrepopData(Schema, StripWhitespaceMixin):
             and data.get("identifier")
             and data["identifier"] != self.context["ru_ref"]
         ):
-            raise ValidationError("Prepop data did not return the specified Unit ID")
+            raise ValidationError(
+                "Supplementary data did not return the specified Unit ID"
+            )
 
 
-class PrepopMetadataSchema(Schema, StripWhitespaceMixin):
+class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
     dataset_id = VALIDATORS["string"](validate=validate.Length(min=1))
     survey_id = VALIDATORS["string"](validate=validate.Length(min=1))
     data = fields.Nested(
-        PrepopData, required=True, unknown=EXCLUDE, validate=validate.Length(min=1)
+        SupplementaryData,
+        required=True,
+        unknown=EXCLUDE,
+        validate=validate.Length(min=1),
     )
 
     @validates_schema()
@@ -55,14 +60,18 @@ class PrepopMetadataSchema(Schema, StripWhitespaceMixin):
             and data.get("dataset_id")
             and data["dataset_id"] != self.context["dataset_id"]
         ):
-            raise ValidationError("Prepop data did not return the specified Dataset ID")
+            raise ValidationError(
+                "Supplementary data did not return the specified Dataset ID"
+            )
 
 
 def validate_supplementary_data_v1(
     supplementary_data: Mapping, dataset_id: str, ru_ref: str
 ) -> dict:
     """Validate claims required for runner to function"""
-    supplementary_data_metadata_schema = PrepopMetadataSchema(unknown=INCLUDE)
+    supplementary_data_metadata_schema = SupplementaryDataMetadataSchema(
+        unknown=INCLUDE
+    )
     supplementary_data_metadata_schema.context = {
         "dataset_id": dataset_id,
         "ru_ref": ru_ref,
