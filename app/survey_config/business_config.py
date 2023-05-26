@@ -16,7 +16,7 @@ class BusinessSurveyConfig(SurveyConfig):
     footer_links: Iterable[MutableMapping] = field(default_factory=list)
     footer_legal_links: Iterable[Mapping] = field(default_factory=list)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self.base_url = self._stripped_base_url
         super().__post_init__()
 

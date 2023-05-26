@@ -329,6 +329,10 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         """
         return BeautifulSoup(self.getResponseData(), "html.parser")
 
+    @staticmethod
+    def row_selector(row_number):
+        return f".ons-summary__item:nth-of-type({row_number})"
+
     # Extra Helper Assertions
     def assertInHead(self, content):
         self.assertInSelector(content, "head")

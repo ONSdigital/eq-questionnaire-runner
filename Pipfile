@@ -38,7 +38,7 @@ pytest-mock = "*"
 
 [packages]
 colorama = "*"
-flask = "*"
+flask = "==2.2.2"
 flask-babel = "*"
 flask-login = "*"
 flask-wtf = "*"
@@ -72,6 +72,7 @@ google-cloud-tasks = "*"
 simplejson = "*"
 markupsafe = "*"
 pdfkit = "*"
+ordered-set = "*"
 
 [requires]
 python_version = "3.10"
