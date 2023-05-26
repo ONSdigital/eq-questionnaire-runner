@@ -172,7 +172,9 @@ class ValueSourceResolver:
         """
         calculated_summary_block: ImmutableDict = self.schema.get_block(value_source["identifier"])  # type: ignore
 
-        if not self._is_block_on_path(calculated_summary_block["id"]):
+        if self.routing_path_block_ids and not self._is_block_on_path(
+            calculated_summary_block["id"]
+        ):
             return None
 
         calculation = calculated_summary_block["calculation"]
