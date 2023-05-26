@@ -17,7 +17,7 @@ class SocialSurveyConfig(
     footer_links: Iterable[MutableMapping] = field(default_factory=list)
     footer_legal_links: Iterable[Mapping] = field(default_factory=list)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         super().__post_init__()
 
         upstream_base_url = f"{self.base_url}/{self.language_code}"

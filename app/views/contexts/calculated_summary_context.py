@@ -1,3 +1,16 @@
+from copy import deepcopy
+from decimal import Decimal
+from typing import (
+    Any,
+    Callable,
+    Iterable,
+    Literal,
+    Mapping,
+    MutableMapping,
+    Optional,
+    Tuple,
+    Union,
+)
 from typing import Callable, Iterable, Mapping, MutableMapping, Tuple
 
 from werkzeug.datastructures import ImmutableDict
@@ -288,7 +301,10 @@ class CalculatedSummaryContext(Context):
         return answer_format, values_to_calculate
 
     @staticmethod
-    def _format_total(*, answer_format: Mapping[str, str], total: NumericType) -> str:
+    def _format_total(*,
+        answer_format: Mapping[str, Literal["short", "long", "narrow"]],
+        total: NumericType,
+    ) -> str:
         if answer_format["type"] == "currency":
             return get_formatted_currency(total, answer_format["currency"])
 

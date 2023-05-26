@@ -29,11 +29,17 @@ def test_questionnaire_store_json_loads(
     expected_completed_block_ids = basic_input["PROGRESS"][0]["block_ids"][0]
 
     assert (
-        len(store.progress_store.get_completed_block_ids("a-test-section", "abc123"))
+        len(
+            store.progress_store.get_completed_block_ids(
+                section_id="a-test-section", list_item_id="abc123"
+            )
+        )
         == 1
     )
     assert (
-        store.progress_store.get_completed_block_ids("a-test-section", "abc123")[0]
+        store.progress_store.get_completed_block_ids(
+            section_id="a-test-section", list_item_id="abc123"
+        )[0]
         == expected_completed_block_ids
     )
 

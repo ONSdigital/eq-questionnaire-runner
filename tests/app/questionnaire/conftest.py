@@ -1293,6 +1293,25 @@ def section_dependencies_new_calculated_summary_schema():
 
 
 @pytest.fixture
+def progress_block_dependencies_schema():
+    return load_schema_from_name("test_progress_value_source_calculated_summary")
+
+
+@pytest.fixture
+def progress_section_dependencies_schema():
+    return load_schema_from_name(
+        "test_progress_value_source_section_enabled_hub_complex"
+    )
+
+
+@pytest.fixture
+def progress_dependencies_schema():
+    return load_schema_from_name(
+        "test_progress_value_source_calculated_summary_extended"
+    )
+
+
+@pytest.fixture
 def grand_calculated_summary_schema():
     return load_schema_from_name("test_grand_calculated_summary")
 
