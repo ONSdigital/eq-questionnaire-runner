@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, Response
 
 app = Flask(__name__)
 
@@ -128,7 +128,10 @@ def get_sds_data():
 
     if dataset_id == "002":
         return SUPPLEMENTARY_DATA_PRODCOM_PAYLOAD
-    return SUPPLEMENTARY_DATA_TILES_AND_SLATE_PAYLOAD
+    elif  dataset_id == "001":
+        return SUPPLEMENTARY_DATA_TILES_AND_SLATE_PAYLOAD
+    else:
+        return Response(status=404)
 
 
 if __name__ == "__main__":
