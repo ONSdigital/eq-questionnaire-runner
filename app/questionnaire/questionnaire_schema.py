@@ -26,7 +26,7 @@ LIST_COLLECTOR_CHILDREN = [
 RELATIONSHIP_CHILDREN = ["UnrelatedQuestion"]
 
 QuestionSchemaType = Mapping
-
+TRANSFORMS_REQUIRING_ROUTING_PATH = ["first_non_empty_item"]
 
 class InvalidSchemaConfigurationException(Exception):
     pass
@@ -1043,16 +1043,17 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         return section_ids
 
-    def _populate_placeholder_section_dependencies(self, transform_name) -> None:
+    def _populate_placeholder_section_dependencies(self) -> None:
         for section in self.get_sections():
             for block in self.get_blocks_for_section(section):
                 transforms = get_mappings_with_key(
-                    "transform", block, ignore_keys=["when"]
+                    "transform", block
                 )
                 buffer = [
                     transform
                     for transform in transforms
-                    if transform["transform"] == transform_name
+                        for transform_name in TRANSFORMS_REQUIRING_ROUTING_PATH
+                            if transform["transform"] == transform_name
                 ]
                 section_dependencies = self._get_placeholder_section_dependencies(
                     sources=buffer,
