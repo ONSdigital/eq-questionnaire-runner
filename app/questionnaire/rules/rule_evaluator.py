@@ -45,8 +45,8 @@ class RuleEvaluator:
             location=self.location,
             list_item_id=list_item_id,
             routing_path_block_ids=self.routing_path_block_ids,
-            use_default_answer=True,
             progress_store=self.progress_store,
+            use_default_answer=True,
         )
 
         renderer: PlaceholderRenderer = PlaceholderRenderer(

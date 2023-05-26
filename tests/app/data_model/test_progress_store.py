@@ -68,7 +68,7 @@ def test_deserialisation():
     store = ProgressStore(in_progress_sections)
 
     assert store.get_section_status(section_id="s1") == CompletionStatus.IN_PROGRESS
-    assert store.get_completed_block_ids("s1") == ["one", "two"]
+    assert store.get_completed_block_ids(section_id="s1") == ["one", "two"]
 
     assert (
         store.get_section_status(section_id="s2", list_item_id="abc123")

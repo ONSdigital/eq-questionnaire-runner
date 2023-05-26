@@ -3,6 +3,8 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import TYPE_CHECKING, Any, Mapping, MutableMapping, Sequence, TypeAlias
 
+from ordered_set import OrderedSet
+
 from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
@@ -105,7 +107,7 @@ class PlaceholderParser:
         return self._placeholder_map
 
     def _get_value_source_resolver(
-        self, routing_path_block_ids: set[str] | None = None
+        self, routing_path_block_ids: OrderedSet[str] | None = None
     ) -> ValueSourceResolver:
         return ValueSourceResolver(
             answer_store=self._answer_store,
