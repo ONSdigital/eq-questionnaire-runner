@@ -58,15 +58,22 @@ class PrepopMetadataSchema(Schema, StripWhitespaceMixin):
             raise ValidationError("Prepop data did not return the specified Dataset ID")
 
 
-def validate_prepop_data_v1(prepop_data: Mapping, dataset_id: str, ru_ref: str) -> dict:
+def validate_supplementary_data_v1(
+    supplementary_data: Mapping, dataset_id: str, ru_ref: str
+) -> dict:
     """Validate claims required for runner to function"""
-    prepop_metadata_schema = PrepopMetadataSchema(unknown=INCLUDE)
-    prepop_metadata_schema.context = {"dataset_id": dataset_id, "ru_ref": ru_ref}
-    validated_prepop_data = prepop_metadata_schema.load(prepop_data)
+    supplementary_data_metadata_schema = PrepopMetadataSchema(unknown=INCLUDE)
+    supplementary_data_metadata_schema.context = {
+        "dataset_id": dataset_id,
+        "ru_ref": ru_ref,
+    }
+    validated_supplementary_data = supplementary_data_metadata_schema.load(
+        supplementary_data
+    )
 
-    if prepop_items := prepop_data.get("data", {}).get("items"):
-        for key, values in prepop_items.items():
+    if supplementary_data_items := supplementary_data.get("data", {}).get("items"):
+        for key, values in supplementary_data_items.items():
             items = [ItemsSchema(unknown=INCLUDE).load(value) for value in values]
-            validated_prepop_data["data"]["items"][key] = items
+            validated_supplementary_data["data"]["items"][key] = items
 
-    return validated_prepop_data
+    return validated_supplementary_data

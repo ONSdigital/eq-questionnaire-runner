@@ -32,18 +32,18 @@ from app.utilities.metadata_parser_v2 import (
     validate_questionnaire_claims,
     validate_runner_claims_v2,
 )
-from app.utilities.prepop_parser import validate_prepop_data_v1
 from app.utilities.schema import load_schema_from_metadata
+from app.utilities.supplementary_data_parser import validate_supplementary_data_v1
 
 logger = get_logger()
 
 session_blueprint = Blueprint("session", __name__)
 
-PREPOP_URL = ""
-PREPOP_REQUEST_MAX_BACKOFF = 0.2
-PREPOP_REQUEST_MAX_RETRIES = 2  # Totals no. of request should be 3. The initial request + PREPOP_REQUEST_MAX_RETRIES
-PREPOP_REQUEST_TIMEOUT = 3
-PREPOP_REQUEST_RETRY_STATUS_CODES = [
+SUPPLEMENTARY_DATA_URL = "http://localhost:5003/v1/unit_data"
+SUPPLEMENTARY_DATA_REQUEST_MAX_BACKOFF = 0.2
+SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES = 2  # Totals no. of request should be 3. The initial request + SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES
+SUPPLEMENTARY_DATA_REQUEST_TIMEOUT = 3
+SUPPLEMENTARY_DATA_REQUEST_RETRY_STATUS_CODES = [
     408,
     429,
     500,
@@ -53,9 +53,9 @@ PREPOP_REQUEST_RETRY_STATUS_CODES = [
 ]
 
 
-class PrepopRequestFailed(Exception):
+class SupplementaryDataRequestFailed(Exception):
     def __str__(self) -> str:
-        return "Prepop request failed"
+        return "Supplementary Data request failed"
 
 
 @session_blueprint.after_request
@@ -152,60 +152,73 @@ def login() -> Response:
     cookie_session["language_code"] = metadata.language_code
 
     if (dataset_id := metadata["sds_dataset_id"]) and ru_ref:
-        get_prepop_data(prepop_url=PREPOP_URL, dataset_id=dataset_id, ru_ref=ru_ref)
+        get_supplementary_data(
+            supplementary_data_url=SUPPLEMENTARY_DATA_URL,
+            dataset_id=dataset_id,
+            ru_ref=ru_ref,
+        )
 
     return redirect(url_for("questionnaire.get_questionnaire"))
 
 
-def get_prepop_data(prepop_url: str, dataset_id: str, ru_ref: str) -> dict:
-    constructed_prepop_url = f"{prepop_url}?dataset_id={dataset_id}&unit_id={ru_ref}"
+def get_supplementary_data(
+    supplementary_data_url: str, dataset_id: str, ru_ref: str
+) -> dict:
+    constructed_supplementary_data_url = (
+        f"{supplementary_data_url}?dataset_id={dataset_id}&unit_id={ru_ref}"
+    )
 
     session = requests.Session()
 
     retries = Retry(
-        total=PREPOP_REQUEST_MAX_RETRIES,
-        status_forcelist=PREPOP_REQUEST_RETRY_STATUS_CODES,
+        total=SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES,
+        status_forcelist=SUPPLEMENTARY_DATA_REQUEST_RETRY_STATUS_CODES,
     )  # Codes to retry according to Google Docs https://cloud.google.com/storage/docs/retry-strategy#client-libraries
 
     # Type ignore: MyPy does not recognise BACKOFF_MAX however it is a property, albeit deprecated
-    retries.BACKOFF_MAX = PREPOP_REQUEST_MAX_BACKOFF  # type: ignore
+    retries.BACKOFF_MAX = SUPPLEMENTARY_DATA_REQUEST_MAX_BACKOFF  # type: ignore
 
     session.mount("http://", HTTPAdapter(max_retries=retries))
     session.mount("https://", HTTPAdapter(max_retries=retries))
 
     try:
-        response = session.get(constructed_prepop_url, timeout=PREPOP_REQUEST_TIMEOUT)
+        response = session.get(
+            constructed_supplementary_data_url,
+            timeout=SUPPLEMENTARY_DATA_REQUEST_TIMEOUT,
+        )
     except RequestException as exc:
         logger.exception(
-            "Error requesting prepopulated data",
-            prepop_url=constructed_prepop_url,
+            "Error requesting supplementary data",
+            supplementary_data_url=constructed_supplementary_data_url,
         )
-        raise PrepopRequestFailed from exc
+        raise SupplementaryDataRequestFailed from exc
 
     if response.status_code == 200:
-        prepop_response_content = response.content.decode()
-        prepop_data = json.loads(prepop_response_content)
+        supplementary_data_response_content = response.content.decode()
+        supplementary_data = json.loads(supplementary_data_response_content)
 
-        return validate_prepop_data(
-            prepop_data=prepop_data, dataset_id=dataset_id, ru_ref=ru_ref
+        return validate_supplementary_data(
+            supplementary_data=supplementary_data, dataset_id=dataset_id, ru_ref=ru_ref
         )
 
     logger.error(
-        "got a non-200 response for prepop data request",
+        "got a non-200 response for supplementary data request",
         status_code=response.status_code,
-        schema_url=constructed_prepop_url,
+        schema_url=constructed_supplementary_data_url,
     )
 
-    raise PrepopRequestFailed
+    raise SupplementaryDataRequestFailed
 
 
-def validate_prepop_data(prepop_data: Mapping, dataset_id: str, ru_ref: str) -> dict:
+def validate_supplementary_data(
+    supplementary_data: Mapping, dataset_id: str, ru_ref: str
+) -> dict:
     try:
-        return validate_prepop_data_v1(
-            prepop_data=prepop_data, dataset_id=dataset_id, ru_ref=ru_ref
+        return validate_supplementary_data_v1(
+            supplementary_data=supplementary_data, dataset_id=dataset_id, ru_ref=ru_ref
         )
     except ValidationError as e:
-        raise ValidationError("Invalid prepopulation data") from e
+        raise ValidationError("Invalid supplementary_dataulation data") from e
 
 
 def validate_jti(decrypted_token: dict[str, str | list | int]) -> None:

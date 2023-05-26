@@ -89,8 +89,8 @@ class TestSession(IntegrationTestCase):
             self.assertIn("expires_at", parsed_json)
             self.assertEqual(parsed_json["expires_at"], expected_expires_at)
 
-    def test_prepop_data_is_loaded_when_sds_dataset_id_in_metadata(self):
-        with patch("app.routes.session.get_prepop_data", return_value={}):
+    def test_supplementary_data_is_loaded_when_sds_dataset_id_in_metadata(self):
+        with patch("app.routes.session.get_supplementary_data", return_value={}):
             self.launchPrepopSurvey()
             self.assertStatusOK()
 

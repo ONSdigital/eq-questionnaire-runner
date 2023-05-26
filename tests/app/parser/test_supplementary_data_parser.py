@@ -1,10 +1,10 @@
 import pytest
 from marshmallow import ValidationError
 
-from app.routes.session import validate_prepop_data
-from app.utilities.prepop_parser import validate_prepop_data_v1
+from app.routes.session import validate_supplementary_data
+from app.utilities.supplementary_data_parser import validate_supplementary_data_v1
 
-PREPOP_PAYLOAD = {
+SUPPLEMENTARY_DATA_PAYLOAD = {
     "dataset_id": "001",
     "survey_id": "123",
     "data": {
@@ -40,34 +40,42 @@ PREPOP_PAYLOAD = {
 }
 
 
-def test_invalid_prepop_data_payload_raises_error():
+def test_invalid_supplementary_data_payload_raises_error():
     with pytest.raises(ValidationError):
-        validate_prepop_data(prepop_data={}, dataset_id="001", ru_ref="12346789012A")
+        validate_supplementary_data(
+            supplementary_data={}, dataset_id="001", ru_ref="12346789012A"
+        )
 
 
-def test_validate_prepop_payload():
-    validated_payload = validate_prepop_data_v1(
-        prepop_data=PREPOP_PAYLOAD, dataset_id="001", ru_ref="12346789012A"
+def test_validate_supplementary_data_payload():
+    validated_payload = validate_supplementary_data_v1(
+        supplementary_data=SUPPLEMENTARY_DATA_PAYLOAD,
+        dataset_id="001",
+        ru_ref="12346789012A",
     )
 
-    assert validated_payload == PREPOP_PAYLOAD
+    assert validated_payload == SUPPLEMENTARY_DATA_PAYLOAD
 
 
-def test_validate_prepop_payload_incorrect_dataset_id():
+def test_validate_supplementary_data_payload_incorrect_dataset_id():
     with pytest.raises(ValidationError):
-        validate_prepop_data_v1(
-            prepop_data=PREPOP_PAYLOAD, dataset_id="002", ru_ref="12346789012A"
+        validate_supplementary_data_v1(
+            supplementary_data=SUPPLEMENTARY_DATA_PAYLOAD,
+            dataset_id="002",
+            ru_ref="12346789012A",
         )
 
 
-def test_validate_prepop_payload_incorrect_ru_ref():
+def test_validate_supplementary_data_payload_incorrect_ru_ref():
     with pytest.raises(ValidationError):
-        validate_prepop_data_v1(
-            prepop_data=PREPOP_PAYLOAD, dataset_id="001", ru_ref="000000000001"
+        validate_supplementary_data_v1(
+            supplementary_data=SUPPLEMENTARY_DATA_PAYLOAD,
+            dataset_id="001",
+            ru_ref="000000000001",
         )
 
 
-def test_prepop_payload_with_no_items_is_validated():
+def test_supplementary_data_payload_with_no_items_is_validated():
     payload = {
         "dataset_id": "001",
         "survey_id": "123",
@@ -77,14 +85,14 @@ def test_prepop_payload_with_no_items_is_validated():
         },
     }
 
-    validated_payload = validate_prepop_data_v1(
-        prepop_data=payload, dataset_id="001", ru_ref="12346789012A"
+    validated_payload = validate_supplementary_data_v1(
+        supplementary_data=payload, dataset_id="001", ru_ref="12346789012A"
     )
 
     assert validated_payload == payload
 
 
-def test_validate_prepop_payload_missing_survey_id():
+def test_validate_supplementary_data_payload_missing_survey_id():
     payload = {
         "dataset_id": "001",
         "data": {
@@ -94,12 +102,12 @@ def test_validate_prepop_payload_missing_survey_id():
     }
 
     with pytest.raises(ValidationError):
-        validate_prepop_data_v1(
-            prepop_data=payload, dataset_id="001", ru_ref="12346789012A"
+        validate_supplementary_data_v1(
+            supplementary_data=payload, dataset_id="001", ru_ref="12346789012A"
         )
 
 
-def test_validate_prepop_payload_with_unknown_field():
+def test_validate_supplementary_data_payload_with_unknown_field():
     payload = {
         "dataset_id": "001",
         "survey_id": "123",
@@ -110,14 +118,14 @@ def test_validate_prepop_payload_with_unknown_field():
         },
     }
 
-    validated_payload = validate_prepop_data_v1(
-        prepop_data=payload, dataset_id="001", ru_ref="12346789012A"
+    validated_payload = validate_supplementary_data_v1(
+        supplementary_data=payload, dataset_id="001", ru_ref="12346789012A"
     )
 
     assert validated_payload == payload
 
 
-def test_validate_prepop_invalid_schema_version():
+def test_validate_supplementary_data_invalid_schema_version():
     payload = {
         "dataset_id": "001",
         "survey_id": "123",
@@ -129,12 +137,12 @@ def test_validate_prepop_invalid_schema_version():
     }
 
     with pytest.raises(ValidationError):
-        validate_prepop_data_v1(
-            prepop_data=payload, dataset_id="001", ru_ref="12346789012A"
+        validate_supplementary_data_v1(
+            supplementary_data=payload, dataset_id="001", ru_ref="12346789012A"
         )
 
 
-def test_validate_prepop_payload_missing_identifier_in_items():
+def test_validate_supplementary_data_payload_missing_identifier_in_items():
     payload = {
         "dataset_id": "001",
         "survey_id": "123",
@@ -170,6 +178,6 @@ def test_validate_prepop_payload_missing_identifier_in_items():
     }
 
     with pytest.raises(ValidationError):
-        validate_prepop_data_v1(
-            prepop_data=payload, dataset_id="001", ru_ref="12346789012A"
+        validate_supplementary_data_v1(
+            supplementary_data=payload, dataset_id="001", ru_ref="12346789012A"
         )

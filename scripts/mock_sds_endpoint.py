@@ -2,7 +2,7 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
-PREPOP_TILES_AND_SLATE_PAYLOAD = {
+SUPPLEMENTARY_DATA_TILES_AND_SLATE_PAYLOAD = {
     "dataset_id": "001",
     "survey_id": "123",
     "data": {
@@ -37,7 +37,7 @@ PREPOP_TILES_AND_SLATE_PAYLOAD = {
     },
 }
 
-PREPOP_PRODCOM_PAYLOAD = {
+SUPPLEMENTARY_DATA_PRODCOM_PAYLOAD = {
     "dataset_id": "002",
     "survey_id": "123",
     "data": {
@@ -127,8 +127,8 @@ def get_sds_data():
     dataset_id = request.args.get("dataset_id")
 
     if dataset_id == "002":
-        return PREPOP_PRODCOM_PAYLOAD
-    return PREPOP_TILES_AND_SLATE_PAYLOAD
+        return SUPPLEMENTARY_DATA_PRODCOM_PAYLOAD
+    return SUPPLEMENTARY_DATA_TILES_AND_SLATE_PAYLOAD
 
 
 if __name__ == "__main__":

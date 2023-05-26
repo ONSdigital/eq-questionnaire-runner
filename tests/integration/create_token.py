@@ -51,7 +51,7 @@ PAYLOAD_V2_BUSINESS = {
     "account_service_url": ACCOUNT_SERVICE_URL,
 }
 
-PAYLOAD_V2_PREPOP = {
+PAYLOAD_V2_SUPPLEMENTARY_DATA = {
     "version": AuthPayloadVersion.V2.value,
     "survey_metadata": {
         "data": {
@@ -137,8 +137,8 @@ class TokenGenerator:
 
         return self.generate_token(payload)
 
-    def create_prepop_token(self, schema_name, **extra_payload):
-        payload = PAYLOAD_V2_PREPOP
+    def create_supplementary_data_token(self, schema_name, **extra_payload):
+        payload = PAYLOAD_V2_SUPPLEMENTARY_DATA
 
         payload = self._get_payload_with_params(
             schema_name=schema_name, payload=payload, **extra_payload
