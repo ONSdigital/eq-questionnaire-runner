@@ -23,6 +23,7 @@ def test_text_area_supports_maxlength_property(mock_form):
     assert text_area.maxlength == 20
 
 
+@pytest.mark.usefixtures("gb_locale")
 def test_integer_field(mock_form):
     integer_field = IntegerFieldWithSeparator(_form=mock_form, name="aName")
     assert isinstance(integer_field, Field)
@@ -33,6 +34,7 @@ def test_integer_field(mock_form):
         pytest.fail("Exceptions should not thrown by CustomIntegerField")
 
 
+@pytest.mark.usefixtures("gb_locale")
 @pytest.mark.parametrize(
     "number_input, result",
     [
@@ -51,6 +53,7 @@ def test_integer_field_inputs(mock_form, number_input, result):
     assert integer_field.data == result
 
 
+@pytest.mark.usefixtures("gb_locale")
 @pytest.mark.parametrize(
     "number_input, result",
     [
@@ -68,6 +71,7 @@ def test_decimal_field_inputs(mock_form, number_input, result):
     assert decimal_field.data == result
 
 
+@pytest.mark.usefixtures("gb_locale")
 def test_decimal_field(mock_form):
     decimal_field = DecimalFieldWithSeparator(_form=mock_form, name="aName")
     assert isinstance(decimal_field, Field)

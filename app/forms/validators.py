@@ -20,6 +20,7 @@ from app.forms.fields import (
     DecimalFieldWithSeparator,
     IntegerFieldWithSeparator,
 )
+from app.helpers.form_helpers import sanitise_number
 from app.jinja_filters import format_number, get_formatted_currency
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.rules.utils import parse_datetime
@@ -50,15 +51,13 @@ class NumberCheck:
         field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
     ) -> None:
         try:
-            Decimal(
-                field.raw_data[0]
-                .replace(numbers.get_group_symbol(flask_babel.get_locale()), "")
-                .replace("_", "")
-            )
+            Decimal(sanitise_number(number=field.raw_data[0]))
         except (ValueError, TypeError, InvalidOperation, AttributeError) as exc:
             raise validators.StopValidation(self.message) from exc
 
-        if "e" in field.raw_data[0].lower() or (field.data and math.isnan(field.data)):
+        if "e" in field.raw_data[0].lower() or (
+            field.data is not None and math.isnan(field.data)
+        ):
             raise validators.StopValidation(self.message)
 
 
@@ -181,12 +180,7 @@ class DecimalPlaces:
     def __call__(
         self, form: "QuestionnaireForm", field: DecimalFieldWithSeparator
     ) -> None:
-        data = (
-            field.raw_data[0]
-            .replace(numbers.get_group_symbol(flask_babel.get_locale()), "")
-            .replace(" ", "")
-            .replace("_", "")
-        )
+        data = sanitise_number(field.raw_data[0])
         decimal_symbol = numbers.get_decimal_symbol(flask_babel.get_locale())
         if data and decimal_symbol in data:
             if self.max_decimals == 0:

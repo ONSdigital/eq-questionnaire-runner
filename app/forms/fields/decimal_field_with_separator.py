@@ -1,9 +1,8 @@
 from decimal import Decimal, InvalidOperation
 
-from babel import numbers
 from wtforms import DecimalField
 
-from app.settings import DEFAULT_LOCALE
+from app.helpers.form_helpers import sanitise_number
 
 
 class DecimalFieldWithSeparator(DecimalField):
@@ -23,10 +22,6 @@ class DecimalFieldWithSeparator(DecimalField):
     def process_formdata(self, valuelist):
         if valuelist:
             try:
-                self.data = Decimal(
-                    valuelist[0]
-                    .replace(numbers.get_group_symbol(DEFAULT_LOCALE), "")
-                    .replace("_", "")
-                )
+                self.data = Decimal(sanitise_number(valuelist[0]))
             except (ValueError, TypeError, InvalidOperation):
                 pass
