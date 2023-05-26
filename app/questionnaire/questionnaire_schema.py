@@ -287,15 +287,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             self._update_answer_dependencies_for_calculated_summary_dependency(
                 calculated_summary_block=block, dependent_block=block
             )
-        else:  # must be GrandCalculatedSummary
+        elif block["type"] == "GrandCalculatedSummary":
             self._update_answer_dependencies_for_grand_calculated_summary(block)
 
     def _update_answer_dependencies_for_calculated_summary_dependency(
         self, *, calculated_summary_block: ImmutableDict, dependent_block: ImmutableDict
     ) -> None:
         """
-        Given a calculated summary block and a block which depends on that calculated summary (may just be the calculated summary itself)
-        update the answer to be a dependency for the dependent block
+        update all calculated summary answers to be dependencies of the dependent block
         """
         calculated_summary_answer_ids = get_calculated_summary_answer_ids(
             calculated_summary_block
