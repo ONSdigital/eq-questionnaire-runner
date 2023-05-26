@@ -50,12 +50,6 @@ class NumberCheck:
         field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
     ) -> None:
         try:
-            if math.isnan(float(field.raw_data[0])):
-                raise validators.StopValidation(self.message)
-        except (TypeError, ValueError):
-            pass
-
-        try:
             Decimal(
                 field.raw_data[0]
                 .replace(numbers.get_group_symbol(flask_babel.get_locale()), "")
@@ -64,7 +58,7 @@ class NumberCheck:
         except (ValueError, TypeError, InvalidOperation, AttributeError) as exc:
             raise validators.StopValidation(self.message) from exc
 
-        if "e" in field.raw_data[0].lower():
+        if "e" in field.raw_data[0].lower() or math.isnan(float(field.raw_data[0])):
             raise validators.StopValidation(self.message)
 
 
@@ -133,13 +127,6 @@ class NumberRange:
         field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
     ) -> None:
         value: Union[int, Decimal] = field.data
-        try:
-            raw_value = float(field.raw_data[0])
-        except (TypeError, ValueError):
-            raw_value = False
-
-        if math.isnan(raw_value):
-            raise validators.ValidationError(self.messages["INVALID_NUMBER"])
 
         if value is not None:
             error_message = self.validate_minimum(value) or self.validate_maximum(value)
