@@ -282,24 +282,20 @@ class Router:
         Builds the return url for a grand calculated summary,
         and accounts for it possibly being in a different section to the calculated summaries it references
         """
-        grand_calculated_summary_section = location.section_id
-        # if return_to_block_id is invalid and no block is found, the section doesn't update but can_access_location will be false, so it still returns None
-        if return_to_block_id and self._schema.get_block(return_to_block_id):
-            # Type ignore: if the block is valid, then we'll be able to find a section for it
-            grand_calculated_summary_section: str = self._schema.get_section_id_for_block_id(return_to_block_id)  # type: ignore
+        if not (return_to_block_id and self._schema.is_block_valid(return_to_block_id)):
+            return None
+
+        # Type ignore: if the block is valid, then we'll be able to find a section for it
+        grand_calculated_summary_section: str = self._schema.get_section_id_for_block_id(return_to_block_id)  # type: ignore
         if grand_calculated_summary_section != location.section_id:
             # the grand calculated summary is in a different section which will have a different routing path
-            # BUT - we should not jump back to the grand calculated summary if the current section is not complete
-            # instead go to the next incomplete block in the section
-            if next_incomplete_location := self._get_first_incomplete_location_in_section(
-                routing_path
-            ):
-                if is_for_previous:
-                    # but only in the case of going forwards, not for previous
-                    return None
-                return next_incomplete_location.url(
-                    return_to=return_to,
+            # but don't go to it unless the current section is complete
+            if not self._progress_store.is_section_complete(location.section_id):
+                return self._get_return_url_for_inaccessible_location(
+                    is_for_previous=is_for_previous,
                     return_to_block_id=return_to_block_id,
+                    return_to=return_to,
+                    routing_path=routing_path,
                 )
 
             routing_path = self._path_finder.routing_path(
@@ -319,6 +315,12 @@ class Router:
                 return_to=return_to,
                 _anchor=return_to_answer_id,
             )
+        return self._get_return_url_for_inaccessible_location(
+            is_for_previous=is_for_previous,
+            return_to_block_id=return_to_block_id,
+            return_to=return_to,
+            routing_path=routing_path,
+        )
 
     def _get_return_to_for_calculated_summary(
         self,
@@ -367,8 +369,25 @@ class Router:
                 _anchor=return_to_answer_id,
             )
 
-        # if you can't access the return to location when you click next
-        # then go to the next incomplete block in the section and preserve return options (but only for next, not previous)
+        return self._get_return_url_for_inaccessible_location(
+            is_for_previous=is_for_previous,
+            return_to_block_id=return_to_block_id,
+            return_to=return_to,
+            routing_path=routing_path,
+        )
+
+    def _get_return_url_for_inaccessible_location(
+        self,
+        *,
+        is_for_previous: bool,
+        return_to_block_id: str | None,
+        return_to: str | None,
+        routing_path: RoutingPath,
+    ) -> str | None:
+        """
+        Routes to the next incomplete block in the section and preserves return to parameters
+        but only when routing forwards, returns None in the case of the previous link
+        """
         if (
             not is_for_previous
             and return_to_block_id
