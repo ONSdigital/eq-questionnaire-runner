@@ -67,7 +67,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ] = defaultdict(set)
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
-
+        self.placeholder_section_dependencies_by_block: dict[
+            str, dict[str, set[str]]
+        ]
         # The ordering here is required as they depend on each other.
         self._sections_by_id = self._get_sections_by_id()
         self._groups_by_id = self._get_groups_by_id()
@@ -984,6 +986,18 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 section_dependencies.add(section_id)  # type: ignore
 
         return section_dependencies
+    
+    def _get_placeholder_section_dependencies(self, sources: list[Mapping],transform_name):
+        section_dependencies: set[str] = set()
+        for source in sources:
+            answer_id_list : list = []
+            identifier: str = source["identifier"]
+        
+        placeholder_block = self.get_block(identifier)
+        placeholder_answer_ids = get_placeholder_answer_ids(placeholder_block)
+        answer_id_list.extend(placeholder_answer_ids)
+        for answer_id in answer_id_list:
+            block = self.get_block_for_answer_id(answer_id, transform_name)
 
     def get_summary_item_for_list_for_section(
         self, *, section_id: str, list_name: str
@@ -1026,7 +1040,22 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                             section_ids.append(section_id)
 
         return section_ids
-
+        
+    def _populate_placeholder_dependencies(self, transform_name) -> None:
+        for section in self.get_sections():
+            for block in self.get_blocks_for_section(section):
+                transforms = get_mappings_with_key("transform", block, ignore_keys= ["when"])
+                buffer = [
+                    transform
+                    for transform in transforms
+                    if transform["transform"] == transform_name
+                ]
+                placeholder_dependencies = (
+                    self._get_placeholder_section_dependencies(
+                        sources = buffer,
+                        transform_name = transform_name
+                    )
+                )
 
 def get_sources_for_type_from_data(
     *,
@@ -1047,4 +1076,12 @@ def get_calculated_summary_answer_ids(calculated_summary_block: Mapping) -> list
         "source", calculated_summary_block["calculation"]["operation"]
     )
 
+    return [value["identifier"] for value in values if value["source"] == "answers"]
+
+def get_placeholder_answer_ids(placeholder_block: Mapping, transform_name) -> list[str]:
+    if placeholder_block[""].get(""): #ENTER THE RIGHT STRINGS
+        return placeholder_block[""]("")
+    values = get_mappings_with_key(
+        "soutce", placeholder_block[""][""]
+    )
     return [value["identifier"] for value in values if value["source"] == "answers"]
