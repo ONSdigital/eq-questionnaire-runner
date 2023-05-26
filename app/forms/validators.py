@@ -58,7 +58,7 @@ class NumberCheck:
         except (ValueError, TypeError, InvalidOperation, AttributeError) as exc:
             raise validators.StopValidation(self.message) from exc
 
-        if "e" in field.raw_data[0].lower() or math.isnan(float(field.raw_data[0])):
+        if "e" in field.raw_data[0].lower() or math.isnan(float(field.data[0])):
             raise validators.StopValidation(self.message)
 
 

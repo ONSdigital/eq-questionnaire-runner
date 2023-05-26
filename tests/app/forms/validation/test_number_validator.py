@@ -52,4 +52,5 @@ def test_decimal_validator_raises_StopValidation(
 @pytest.mark.usefixtures("gb_locale")
 def test_number_validator(number_check, value, mock_form, mock_field):
     mock_field.raw_data = value
+    mock_field.data = value
     number_check(mock_form, mock_field)
