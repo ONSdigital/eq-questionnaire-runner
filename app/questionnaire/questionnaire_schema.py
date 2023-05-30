@@ -28,6 +28,7 @@ RELATIONSHIP_CHILDREN = ["UnrelatedQuestion"]
 QuestionSchemaType = Mapping
 TRANSFORMS_REQUIRING_ROUTING_PATH = ["first_non_empty_item"]
 
+
 class InvalidSchemaConfigurationException(Exception):
     pass
 
@@ -65,9 +66,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._when_rules_section_dependencies_by_answer: dict[
             str, set[str]
         ] = defaultdict(set)
+        self.placeholder_section_dependencies_by_block: dict[
+            str, dict[str, set[str]]
+        ] = defaultdict(lambda: defaultdict(set))
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
-        self.placeholder_section_dependencies_by_block: dict[str, dict[str, set[str]]]
         # The ordering here is required as they depend on each other.
         self._sections_by_id = self._get_sections_by_id()
         self._groups_by_id = self._get_groups_by_id()
@@ -992,13 +995,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             answer_id_list: list = []
             identifier: str = source["identifier"]
 
-        placeholder_block = self.get_block(identifier)
-        placeholder_answer_ids = get_placeholder_answer_ids(placeholder_block)
-        answer_id_list.extend(placeholder_answer_ids)
-        for answer_id in answer_id_list:
-            block = self.get_block_for_answer_id(answer_id)
-            section_id = self.get_section_id_for_block_id(block["id"])
-            section_dependencies.add(section_id)
+            placeholder_block = self.get_block(identifier)
+            placeholder_answer_ids = get_placeholder_answer_ids(placeholder_block)
+            answer_id_list.extend(placeholder_answer_ids)
+            for answer_id in answer_id_list:
+                block = self.get_block_for_answer_id(answer_id)
+                section_id = self.get_section_id_for_block_id(block["id"])
+                section_dependencies.add(section_id)
         return section_dependencies
 
     def get_summary_item_for_list_for_section(
@@ -1029,39 +1032,41 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 if item["for_list"] == list_name and item.get("item_anchor_answer_id"):
                     return f"#{str(item['item_anchor_answer_id'])}"
 
-    def get_placeholder_dependencies(self, transform_name: str) -> list[str | None]:
-        section_ids = []
-        mapping = get_mappings_with_key("transform", self.json.get("sections"))
-        for transform in mapping:
-            if transform["transform"] == transform_name:
-                for item in transform.get("arguments", []).get("items", []):
-                    if item.get("source") == "answers":
-                        block = self.get_block_for_answer_id(item["identifier"])
-                        section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
-                        if section_id not in section_ids:
-                            section_ids.append(section_id)
+    # def get_placeholder_dependencies(self, transform_name: str) -> list[str | None]:
+    #     section_ids = []
+    #     mapping = get_mappings_with_key("transform", self.json.get("sections"))
+    #     for transform in mapping:
+    #         if transform["transform"] == transform_name:
+    #             for item in transform.get("arguments", []).get("items", []):
+    #                 if item.get("source") == "answers":
+    #                     block = self.get_block_for_answer_id(item["identifier"])
+    #                     section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
+    #                     if section_id not in section_ids:
+    #                         section_ids.append(section_id)
 
-        return section_ids
+    #     return section_ids
 
     def _populate_placeholder_section_dependencies(self) -> None:
         for section in self.get_sections():
             for block in self.get_blocks_for_section(section):
                 transforms = get_mappings_with_key(
-                    "transform", block
-                )
-                buffer = [
-                    transform
-                    for transform in transforms
-                        for transform_name in TRANSFORMS_REQUIRING_ROUTING_PATH
-                            if transform["transform"] == transform_name
-                ]
-                section_dependencies = self._get_placeholder_section_dependencies(
-                    sources=buffer,
+                    "transform",
+                    block,
                 )
 
+                placeholder_sources = []
+                for transform in transforms:
+                    for transform_name in TRANSFORMS_REQUIRING_ROUTING_PATH:
+                        if transform["transform"] == transform_name:
+                            if transform.get("source") == "answers":
+                                placeholder_sources.append(transform.get("source"))
+
+                placeholder_dependenices = self._get_placeholder_section_dependencies(
+                    sources=placeholder_sources
+                )
                 self.placeholder_section_dependencies_by_block[section["id"]][
                     block["id"]
-                ].update(section_dependencies)
+                ].update(placeholder_dependenices)
 
 
 def get_sources_for_type_from_data(
@@ -1087,7 +1092,5 @@ def get_calculated_summary_answer_ids(calculated_summary_block: Mapping) -> list
 
 
 def get_placeholder_answer_ids(placeholder_block: Mapping) -> list[str]:
-    values = get_mappings_with_key(
-        "soutce", placeholder_block["transforms"]["arguments"]
-    )
+    values = get_mappings_with_key("source", placeholder_block["answers"]["arguments"])
     return [value["identifier"] for value in values if value["source"] == "answers"]
