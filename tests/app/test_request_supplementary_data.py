@@ -13,7 +13,7 @@ from tests.app.utilities.test_schema import get_mocked_make_request
 TEST_SDS_URL = "http://test.domain/v1/unit_data"
 
 mock_supplementary_data_payload = {
-    "dataset_id": "001",
+    "dataset_id": "44f1b432-9421-49e5-bd26-e63e18a30b69",
     "survey_id": "123",
     "data": {
         "schema_version": "v1",
@@ -60,7 +60,9 @@ def test_get_supplementary_data_200(app: Flask):
             status=200,
         )
         loaded_supplementary_data = get_supplementary_data(
-            dataset_id="001", unit_id="12346789012A", survey_id="123"
+            dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
+            unit_id="12346789012A",
+            survey_id="123",
         )
 
     assert loaded_supplementary_data == mock_supplementary_data_payload
@@ -84,7 +86,9 @@ def test_get_supplementary_data_non_200(app: Flask, status_code):
 
         with pytest.raises(SupplementaryDataRequestFailed) as exc:
             get_supplementary_data(
-                dataset_id="001", unit_id="12346789012A", survey_id="123"
+                dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
+                unit_id="12346789012A",
+                survey_id="123",
             )
 
     assert str(exc.value) == "Supplementary Data request failed"
@@ -98,7 +102,9 @@ def test_get_supplementary_data_request_failed(app: Flask):
         responses.add(responses.GET, TEST_SDS_URL, body=RequestException())
         with pytest.raises(SupplementaryDataRequestFailed) as exc:
             get_supplementary_data(
-                dataset_id="001", unit_id="12346789012A", survey_id="123"
+                dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
+                unit_id="12346789012A",
+                survey_id="123",
             )
 
     assert str(exc.value) == "Supplementary Data request failed"
@@ -116,7 +122,9 @@ def test_get_supplementary_data_retries_timeout_error(
 
         try:
             supplementary_data = get_supplementary_data(
-                dataset_id="001", unit_id="12346789012A", survey_id="123"
+                dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
+                unit_id="12346789012A",
+                survey_id="123",
             )
         except SupplementaryDataRequestFailed:
             return pytest.fail("Supplementary data request unexpectedly failed")
@@ -144,7 +152,9 @@ def test_get_supplementary_data_retries_transient_error(app: Flask, mocker):
 
         try:
             supplementary_data = get_supplementary_data(
-                dataset_id="001", unit_id="12346789012A", survey_id="123"
+                dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
+                unit_id="12346789012A",
+                survey_id="123",
             )
         except SupplementaryDataRequestFailed:
             return pytest.fail("Supplementary data request unexpectedly failed")
@@ -168,7 +178,9 @@ def test_get_supplementary_data_max_retries(app: Flask, mocker):
 
         with pytest.raises(SupplementaryDataRequestFailed) as exc:
             get_supplementary_data(
-                dataset_id="001", unit_id="12346789012A", survey_id="123"
+                dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
+                unit_id="12346789012A",
+                survey_id="123",
             )
 
     assert str(exc.value) == "Supplementary Data request failed"
