@@ -53,7 +53,8 @@
                                         {
                                             "title": "How to test this schema",
                                             "list": [
-                                                "Your answer to the third question, may unlock an additional calculated summary which re-uses your answers to the first two questions",
+                                                "Ensure that the grand calculated summary section does not show unless all dependent calculated summaries in section-1 have been confirmed.",
+                                                "Your answer to the third question, may unlock an additional calculated summary which re-use your answers to the first two questions",
                                                 "If you do not select to buy extra food, verify no additional calculated summary occurs, and that the grand calculated summary is correct",
                                                 "If you choose to buy any food items twice, verify that they are included twice in the grand calculated summary, one for each calculated summary",
                                                 "Verify that if you have the extra calculated summary, and change the cost of bread for example <strong>using either of the calculated summary change links which include it</strong> that you are routed to each calculated summary first, and only then the grand calculated summary"
@@ -282,6 +283,11 @@
         {
             "id": "section-3",
             "title": "Grand calculated summary",
+            "enabled": {
+                "when": {
+                    "==": [{ "source": "progress", "selector": "section", "identifier": "section-1" }, "COMPLETED"]
+                }
+            },
             "groups": [
                 {
                     "id": "group-2",

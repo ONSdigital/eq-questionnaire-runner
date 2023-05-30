@@ -781,39 +781,49 @@ class TestRouterNextLocation(RouterTestCase):
 
         assert expected_previous_url == next_location_url
 
+    @pytest.mark.parametrize(
+        "return_to_block_id",
+        ("grand-calculated-summary-1", "grand-calculated-summary-2"),
+    )
     @pytest.mark.usefixtures("app")
     def test_return_to_grand_calculated_summary_from_incomplete_section(
-        self, grand_calculated_summary_schema
+        self, return_to_block_id
     ):
         """
-        This tests that if you try to return to a grand calculated summary section from an incomplete section
+        This tests that if you try to return to a grand calculated summary from an incomplete section
+        (or the same section but before the dependencies of the grand calculated summary are complete)
         you are routed to the next block in the incomplete section rather than the grand calculated summary
         """
-        self.schema = grand_calculated_summary_schema
-        # number calculated summary not complete yet
+        self.schema = load_schema_from_name(
+            "test_grand_calculated_summary_multiple_sections"
+        )
+        # calculated summary 3 is not complete yet
         self.progress_store = ProgressStore(
             [
                 {
                     "section_id": "section-1",
                     "block_ids": [
-                        "first-number-block",
-                        "second-number-block",
-                        "distance-calculated-summary-1",
+                        "block-1",
+                        "block-2",
+                        "calculated-summary-1",
+                        "block-3",
+                        "calculated-summary-2",
                     ],
-                    "status": CompletionStatus.IN_PROGRESS,
+                    "status": "IN_PROGRESS",
                 }
             ]
         )
 
-        current_location = Location(
-            section_id="section-1", block_id="distance-calculated-summary-1"
-        )
+        current_location = Location(section_id="section-1", block_id="block-2")
         routing_path = RoutingPath(
             [
-                "first-number-block",
-                "second-number-block",
-                "distance-calculated-summary-1",
-                "number-calculated-summary-1",
+                "block-1",
+                "block-2",
+                "calculated-summary-1",
+                "block-3",
+                "calculated-summary-2",
+                "calculated-summary-3",
+                "grand-calculated-summary-1",
             ],
             section_id="section-1",
         )
@@ -821,16 +831,17 @@ class TestRouterNextLocation(RouterTestCase):
             current_location,
             routing_path,
             return_to="grand-calculated-summary",
-            return_to_answer_id="distance-calculated-summary-1",
-            return_to_block_id="distance-grand-calculated-summary",
+            return_to_answer_id="calculated-summary-1",
+            return_to_block_id=return_to_block_id,
         )
 
-        # because number calculated summary isn't done, should go there before jumping to the grand calculated summary
+        # because calculated summary 3 isn't done, should go there before jumping to the grand calculated summary
+        # test from grand-calculated-summary-1 which is in the same section, and grand-calculated-summary-2 which is in another
         expected_next_url = url_for(
             "questionnaire.block",
             return_to="grand-calculated-summary",
-            return_to_block_id="distance-grand-calculated-summary",
-            block_id="number-calculated-summary-1",
+            return_to_block_id=return_to_block_id,
+            block_id="calculated-summary-3",
         )
 
         assert expected_next_url == next_location_url

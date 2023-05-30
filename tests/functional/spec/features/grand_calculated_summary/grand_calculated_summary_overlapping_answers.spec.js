@@ -14,6 +14,10 @@ describe("Feature: Grand Calculated Summary", () => {
     before("completing the survey", async () => {
       await browser.openQuestionnaire("test_grand_calculated_summary_overlapping_answers.json");
       await $(IntroductionBlockPage.submit()).click();
+
+      // grand calculated summary should not be enabled until section-1 complete
+      await expect(await $(HubPage.summaryRowLink("section-3")).isExisting()).to.be.false;
+
       await $(HubPage.submit()).click();
       await $(Block1Page.q1A1()).setValue(100);
       await $(Block1Page.q1A2()).setValue(200);
@@ -90,7 +94,7 @@ describe("Feature: Grand Calculated Summary", () => {
       await expect(await $(CalculatedSummary2Page.calculatedSummaryTitle()).getText()).to.contain(
         "Total of eggs and cheese is calculated to be £800.00. Is this correct?"
       );
-      await $(CalculatedSummary4Page.submit()).click();
+      await $(CalculatedSummary2Page.submit()).click();
 
       // taken back to the SECOND calculated summary which uses it
       await expect(await browser.getUrl()).to.contain(CalculatedSummary4Page.pageName);
@@ -104,6 +108,23 @@ describe("Feature: Grand Calculated Summary", () => {
       await expect(await $(GrandCalculatedSummaryShoppingPage.grandCalculatedSummaryTitle()).getText()).to.contain(
         "Grand Calculated Summary of purchases this week comes to £1,420.00. Is this correct?"
       );
+      await $(GrandCalculatedSummaryShoppingPage.submit()).click();
+    });
+
+    it("Given I change an answer and return to the Hub before all calculated summaries are confirmed, the grand calculated summary section becomes inaccessible", async () => {
+      await $(HubPage.summaryRowLink("section-3")).click();
+      await $(GrandCalculatedSummaryShoppingPage.calculatedSummary4Edit()).click();
+      await $(CalculatedSummary4Page.q2A2Edit()).click();
+      await $(Block2Page.q2A2()).setValue(100);
+      await $(Block2Page.submit()).click();
+
+      // confirm one of the calculated summaries but return to the hub instead of confirming the other
+      await $(CalculatedSummary2Page.submit()).click();
+      await browser.url(HubPage.url());
+
+      // calculated summary 4 is not confirmed so GCS doesn't show
+      await expect(await $(HubPage.summaryRowState("section-1")).getText()).to.equal("Partially completed");
+      await expect(await $(HubPage.summaryRowLink("section-3")).isExisting()).to.be.false;
     });
   });
 });
