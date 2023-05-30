@@ -8,6 +8,7 @@ from app.questionnaire import Location
 from app.utilities.schema import load_schema_from_name
 from app.views.handlers.question import Question
 
+from ...parser.conftest import get_response_expires_at
 from .conftest import set_storage_data
 
 
@@ -35,6 +36,7 @@ def test_question_with_dynamic_answers(storage, language, mocker):
     questionnaire_store.list_store = ListStore(
         [{"items": ["tUJzGV", "vhECeh"], "name": "supermarkets"}]
     )
+    questionnaire_store.set_metadata({"response_expires_at": get_response_expires_at()})
     schema = load_schema_from_name("test_dynamic_answers_list_source")
 
     mocker.patch(

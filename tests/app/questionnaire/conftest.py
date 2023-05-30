@@ -1293,6 +1293,25 @@ def section_dependencies_new_calculated_summary_schema():
 
 
 @pytest.fixture
+def progress_block_dependencies_schema():
+    return load_schema_from_name("test_progress_value_source_calculated_summary")
+
+
+@pytest.fixture
+def progress_section_dependencies_schema():
+    return load_schema_from_name(
+        "test_progress_value_source_section_enabled_hub_complex"
+    )
+
+
+@pytest.fixture
+def progress_dependencies_schema():
+    return load_schema_from_name(
+        "test_progress_value_source_calculated_summary_extended"
+    )
+
+
+@pytest.fixture
 @pytest.mark.usefixtures("app", "gb_locale")
 def placeholder_transform_question_dynamic_answers_json():
     return {

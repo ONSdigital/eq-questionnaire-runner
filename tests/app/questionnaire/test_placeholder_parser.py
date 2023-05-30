@@ -1,4 +1,3 @@
-# pylint: disable=too-many-lines
 from mock import Mock
 
 from app.data_models import ProgressStore
@@ -8,6 +7,8 @@ from app.questionnaire import Location
 from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.utilities.schema import load_schema_from_name
 from tests.app.questionnaire.conftest import get_metadata
+
+# pylint: disable=too-many-lines
 
 
 def test_parse_placeholders(placeholder_list, parser):
