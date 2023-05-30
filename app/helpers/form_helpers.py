@@ -1,6 +1,5 @@
 import re
 from decimal import Decimal
-from typing import Optional, Union
 
 import flask_babel
 from babel import numbers
