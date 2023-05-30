@@ -54,15 +54,12 @@ class NumberCheck:
         field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
     ) -> None:
         try:
-            Decimal(sanitise_number(number=field.raw_data[0]))
+            # number is sanitised to guard against inputs like `,NaN_` etc
+            number = Decimal(sanitise_number(number=field.raw_data[0]))
         except (ValueError, TypeError, InvalidOperation, AttributeError) as exc:
             raise validators.StopValidation(self.message) from exc
 
-        if "e" in field.raw_data[0].lower() or math.isnan(
-            Decimal(
-                sanitise_number(number=field.raw_data[0])
-            )  # number is sanitised to guard against inputs like `,NaN_` etc
-        ):
+        if "e" in field.raw_data[0].lower() or math.isnan(number):
             raise validators.StopValidation(self.message)
 
 
