@@ -58,8 +58,10 @@ class NumberCheck:
         except (ValueError, TypeError, InvalidOperation, AttributeError) as exc:
             raise validators.StopValidation(self.message) from exc
 
-        if "e" in field.raw_data[0].lower() or (
-            field.data is not None and math.isnan(field.data)
+        if "e" in field.raw_data[0].lower() or math.isnan(
+            Decimal(
+                sanitise_number(number=field.raw_data[0])
+            )  # number is sanitised to guard against inputs like `,NaN_` etc
         ):
             raise validators.StopValidation(self.message)
 
