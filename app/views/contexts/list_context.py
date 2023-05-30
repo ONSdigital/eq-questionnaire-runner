@@ -23,15 +23,15 @@ class ListContext(Context):
         list_items = (
             list(
                 self._build_list_items_context(
-                    for_list,
-                    section_id,
-                    has_repeating_blocks,
-                    return_to,
-                    summary_definition,
-                    edit_block_id,
-                    remove_block_id,
-                    primary_person_edit_block_id,
-                    for_list_item_ids,
+                    for_list=for_list,
+                    section_id=section_id,
+                    has_repeating_blocks=has_repeating_blocks,
+                    return_to=return_to,
+                    summary_definition=summary_definition,
+                    edit_block_id=edit_block_id,
+                    remove_block_id=remove_block_id,
+                    primary_person_edit_block_id=primary_person_edit_block_id,
+                    for_list_item_ids=for_list_item_ids,
                 )
             )
             if summary_definition
@@ -47,6 +47,7 @@ class ListContext(Context):
 
     def _build_list_items_context(
             self,
+            *,
             for_list: str,
             section_id: str,
             has_repeating_blocks: bool,
