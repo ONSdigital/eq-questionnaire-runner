@@ -40,7 +40,7 @@ class SurveyConfig:
     privacy_and_data_protection_url: str = field(init=False)
     language_code: Optional[str] = None
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self.contact_us_url: str = f"{self.base_url}/contact-us/"
         self.cookie_settings_url: str = f"{self.base_url}/cookies/"
         self.cookie_domain: str = self.cookie_settings_url.split("://")[-1].split("/")[

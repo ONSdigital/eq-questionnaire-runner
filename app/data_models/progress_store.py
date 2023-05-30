@@ -111,16 +111,16 @@ class ProgressStore:
 
     def update_section_status(
         self, section_status: str, section_id: str, list_item_id: Optional[str] = None
-    ) -> None:
+    ) -> bool:
+        updated = False
         section_key = (section_id, list_item_id)
         if section_key in self._progress:
-            self._progress[section_key].status = section_status
-            self._is_dirty = True
+            if self._progress[section_key].status != section_status:
+                updated = True
+                self._progress[section_key].status = section_status
+                self._is_dirty = True
 
-        elif (
-            section_status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED
-            and section_key not in self._progress
-        ):
+        elif section_status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED:
             self._progress[section_key] = Progress(
                 section_id=section_id,
                 list_item_id=list_item_id,
@@ -128,6 +128,8 @@ class ProgressStore:
                 status=section_status,
             )
             self._is_dirty = True
+
+        return updated
 
     def get_section_status(
         self, section_id: str, list_item_id: Optional[str] = None
@@ -138,8 +140,19 @@ class ProgressStore:
 
         return CompletionStatus.NOT_STARTED
 
+    def get_block_status(
+        self, *, block_id: str, section_id: str, list_item_id: str | None = None
+    ) -> str:
+        section_blocks = self.get_completed_block_ids(
+            section_id=section_id, list_item_id=list_item_id
+        )
+        if block_id in section_blocks:
+            return CompletionStatus.COMPLETED
+
+        return CompletionStatus.NOT_STARTED
+
     def get_completed_block_ids(
-        self, section_id: str, list_item_id: str | None = None
+        self, *, section_id: str, list_item_id: str | None = None
     ) -> list[str]:
         section_key = (section_id, list_item_id)
         if section_key in self._progress:
@@ -151,7 +164,9 @@ class ProgressStore:
         section_id = location.section_id
         list_item_id = location.list_item_id
 
-        completed_block_ids = self.get_completed_block_ids(section_id, list_item_id)
+        completed_block_ids = self.get_completed_block_ids(
+            section_id=section_id, list_item_id=list_item_id
+        )
 
         if location.block_id not in completed_block_ids:
             completed_block_ids.append(location.block_id)  # type: ignore

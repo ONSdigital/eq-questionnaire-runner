@@ -1,10 +1,12 @@
 from typing import Generator, Iterable, Mapping, Sequence
 
+from ordered_set import OrderedSet
+
 
 def get_flattened_mapping_values(
     map_to_flatten: Mapping[tuple, Iterable[str]] | Mapping[str, Iterable[str]]
-) -> set[str]:
-    return {x for v in map_to_flatten.values() for x in v}
+) -> OrderedSet[str]:
+    return OrderedSet([x for v in map_to_flatten.values() for x in v])
 
 
 def get_mappings_with_key(  # noqa: C901 pylint: disable=too-complex

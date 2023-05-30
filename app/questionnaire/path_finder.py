@@ -44,7 +44,7 @@ class PathFinder:
 
         if section:
             when_rules_block_dependencies = self.get_when_rules_block_dependencies(
-                section["id"]
+                section_id
             )
             blocks = self._get_not_skipped_blocks_in_section(
                 current_location,
@@ -64,11 +64,13 @@ class PathFinder:
         """NB: At present when rules block dependencies does not fully support repeating sections.
         It is supported when the section is dependent i.e. the current section is repeating and building the routing path for sections that are not,
         It isn't supported if it needs to build the path for repeating sections"""
+        dependencies_for_section = (
+            self.schema.get_all_when_rules_section_dependencies_for_section(section_id)
+        )
+
         return [
             block_id
-            for dependent_section in self.schema.when_rules_section_dependencies_by_section.get(
-                section_id, {}
-            )
+            for dependent_section in dependencies_for_section
             for block_id in self.routing_path(dependent_section)
             if (dependent_section, None) in self.progress_store.started_section_keys()
         ]
@@ -194,9 +196,9 @@ class PathFinder:
             self.list_store,
             self.metadata,
             self.response_metadata,
+            progress_store=self.progress_store,
             location=this_location,
             routing_path_block_ids=routing_path_block_ids,
-            progress_store=self.progress_store,
         )
         for rule in routing_rules:
             rule_valid = (

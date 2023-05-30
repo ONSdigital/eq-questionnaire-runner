@@ -2,7 +2,7 @@
 import re
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Callable, Mapping, Optional, Union
+from typing import Any, Callable, Literal, Mapping, Optional, TypeAlias, Union
 
 import flask
 import flask_babel
@@ -18,6 +18,7 @@ from app.settings import MAX_NUMBER
 blueprint = flask.Blueprint("filters", __name__)
 FormType = Mapping[str, Mapping[str, Any]]
 AnswerType = Mapping[str, Any]
+UnitLengthType: TypeAlias = Literal["short", "long", "narrow"]
 
 
 def mark_safe(context: nodes.EvalContext, value: str) -> Union[Markup, str]:
@@ -69,7 +70,9 @@ def format_percentage(value: Union[int, float, Decimal]) -> str:
 
 
 def format_unit(
-    unit: str, value: Union[int, float, Decimal], length: str = "short"
+    unit: str,
+    value: int | float | Decimal,
+    length: UnitLengthType = "short",
 ) -> str:
     formatted_unit: str = units.format_unit(
         value=value,
@@ -80,7 +83,7 @@ def format_unit(
     return formatted_unit
 
 
-def format_unit_input_label(unit: str, unit_length: str = "short") -> str:
+def format_unit_input_label(unit: str, unit_length: UnitLengthType = "short") -> str:
     """
     This function is used to only get the unit of measurement text. If the unit_length
     is long then only the plural form of the word is returned (e.g., Hours, Years, etc).
@@ -97,8 +100,9 @@ def format_unit_input_label(unit: str, unit_length: str = "short") -> str:
             locale=flask_babel.get_locale(),
         ).replace("2 ", "")
     else:
+        # Type ignore: We pass an empty string  as the value so that we just return the unit label
         unit_label = units.format_unit(
-            value="",
+            value="",  # type: ignore
             measurement_unit=unit,
             length=unit_length,
             locale=flask_babel.get_locale(),
@@ -183,7 +187,10 @@ def get_format_date_range(start_date: Markup, end_date: Markup) -> Markup:
 
 @blueprint.app_context_processor
 def format_unit_processor() -> (
-    dict[str, Callable[[str, Union[int, Decimal], str], str]]
+    dict[
+        str,
+        Callable[[str, int | float | Decimal, UnitLengthType], str],
+    ]
 ):
     return {"format_unit": format_unit}
 

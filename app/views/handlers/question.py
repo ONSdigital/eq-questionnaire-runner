@@ -213,6 +213,9 @@ class Question(BlockHandler):
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
         self.questionnaire_store_updater.update_answers(self.form.data)
         if self.questionnaire_store_updater.is_dirty():
+            # We prematurely complete the block, as we need it completed to build the routing path
+            # In order to support progress value source references of the previous block
+            self.questionnaire_store_updater.add_completed_location()
             self._routing_path = self.router.routing_path(
                 section_id=self._current_location.section_id,
                 list_item_id=self._current_location.list_item_id,
