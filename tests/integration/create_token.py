@@ -65,7 +65,7 @@ PAYLOAD_V2_SUPPLEMENTARY_DATA = {
             "trad_as": "Integration Tests",
             "employment_date": "1983-06-02",
             "display_address": "68 Abingdon Road, Goathill",
-            "sds_dataset_id": "001",
+            "sds_dataset_id": str(uuid4()),
             "survey_id": "123",
         }
     },

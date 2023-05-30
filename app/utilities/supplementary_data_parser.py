@@ -43,7 +43,7 @@ class SupplementaryData(Schema, StripWhitespaceMixin):
 
 
 class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
-    dataset_id = VALIDATORS["string"](validate=validate.Length(min=1))
+    dataset_id = VALIDATORS["uuid"]()
     survey_id = VALIDATORS["string"](validate=validate.Length(min=1))
     data = fields.Nested(
         SupplementaryData,

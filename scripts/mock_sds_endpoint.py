@@ -1,137 +1,25 @@
+import json
+
 from flask import Flask, Response, request
 
 app = Flask(__name__)
-
-SUPPLEMENTARY_DATA_TILES_AND_SLATE_PAYLOAD = {
-    "dataset_id": "001",
-    "survey_id": "123",
-    "data": {
-        "schema_version": "v1",
-        "identifier": "12346789012A",
-        "items": {
-            "local_units": [
-                {
-                    "identifier": "0001",
-                    "lu_name": "TEST NAME. 1",
-                    "lu_address": [
-                        "FIRST ADDRESS 1",
-                        "FIRST ADDRESS 2",
-                        "TOWN",
-                        "COUNTY",
-                        "POST CODE",
-                    ],
-                },
-                {
-                    "identifier": "0002",
-                    "lu_name": "TEST NAME 2",
-                    "lu_address": [
-                        "SECOND ADDRESS 1",
-                        "SECOND ADDRESS 1",
-                        "TOWN",
-                        "COUNTY",
-                        "POSTCODE",
-                    ],
-                },
-            ]
-        },
-    },
-}
-
-SUPPLEMENTARY_DATA_PRODCOM_PAYLOAD = {
-    "dataset_id": "002",
-    "survey_id": "123",
-    "data": {
-        "schema_version": "v1",
-        "identifier": "12346789012A",
-        "note": {
-            "title": "Volume of total production",
-            "description": "Figures should cover the total quantity of the goods produced during the period of the return",
-        },
-        "items": {
-            "products": [
-                {
-                    "identifier": "89929001",
-                    "name": "Articles and equipment for sports or outdoor games",
-                    "cn_codes": "2504 + 250610 + 2512 + 2519 + 2524",
-                    "guidance_include": {
-                        "title": "Include",
-                        "list": [
-                            "for children's playgrounds",
-                            "swimming pools and paddling pools",
-                        ],
-                    },
-                    "guidance_exclude": {
-                        "title": "Exclude",
-                        "list": [
-                            "sports holdalls, gloves, clothing of textile materials, footwear, protective eyewear, rackets, balls, skates",
-                            "for skiing, water sports, golf, fishing', for skiing, water sports, golf, fishing, table tennis, PE, gymnastics, athletics",
-                        ],
-                    },
-                    "value_sales": {
-                        "answer_code": "89929001",
-                        "label": "Value of sales",
-                    },
-                    "volume_sales": {
-                        "answer_code": "89929002",
-                        "label": "Volume of sales",
-                        "unit_label": "Tonnes",
-                    },
-                    "total_volume": {
-                        "answer_code": "89929005",
-                        "label": "Total volume produced",
-                        "unit_label": "Tonnes",
-                    },
-                },
-                {
-                    "identifier": "201630601",
-                    "name": "Other Minerals",
-                    "cn_codes": "5908 + 5910 + 591110 + 591120 + 591140",
-                    "guidance_include": {
-                        "title": "Include",
-                        "list": [
-                            "natural graphite",
-                            "quartz for industrial use",
-                            "diatomite; magnesia; feldspar",
-                            "magnesite; natural magnesium carbonate",
-                            "talc including steatite and chlorite",
-                            "unexpanded vermiculite and perlite",
-                        ],
-                    },
-                    "guidance_exclude": {
-                        "title": "Exclude",
-                        "list": ["natural quartz sands"],
-                    },
-                    "value_sales": {
-                        "answer_code": "201630601",
-                        "label": "Value of sales",
-                    },
-                    "volume_sales": {
-                        "answer_code": "201630602",
-                        "label": "Volume of sales",
-                        "unit_label": "Kilogram",
-                    },
-                    "total_volume": {
-                        "answer_code": "201630605",
-                        "label": "Total volume produced",
-                        "unit_label": "Kilogram",
-                    },
-                },
-            ]
-        },
-    },
-}
 
 
 @app.route("/v1/unit_data")
 def get_sds_data():
     dataset_id = request.args.get("dataset_id")
 
-    if dataset_id == "001":
-        return SUPPLEMENTARY_DATA_TILES_AND_SLATE_PAYLOAD
-    if dataset_id == "002":
-        return SUPPLEMENTARY_DATA_PRODCOM_PAYLOAD
+    if dataset_id == "c067f6de-6d64-42b1-8b02-431a3486c178":
+        return load_mock_data("scripts/mock_data/supplementary_data_no_repeat.json")
+    if dataset_id == "34a80231-c49a-44d0-91a6-8fe1fb190e64":
+        return load_mock_data("scripts/mock_data/supplementary_data_with_repeat.json")
 
     return Response(status=404)
+
+
+def load_mock_data(filename):
+    with open(filename, encoding="utf-8") as mock_data_file:
+        return json.load(mock_data_file)
 
 
 if __name__ == "__main__":
