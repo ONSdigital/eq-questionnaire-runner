@@ -1,6 +1,6 @@
 from datetime import date, datetime, timezone
 from decimal import Decimal
-from typing import TYPE_CHECKING, Sequence, Sized
+from typing import TYPE_CHECKING, Literal, Sequence, Sized
 from urllib.parse import quote
 
 from babel import units
@@ -41,9 +41,7 @@ class PlaceholderTransforms:
 
     input_date_format = "%Y-%m-%d"
 
-    def format_currency(
-        self, number: float | str | None = None, currency: str = "GBP"
-    ) -> str:
+    def format_currency(self, number: Decimal | float, currency: str = "GBP") -> str:
         formatted_currency: str = format_currency(number, currency, locale=self.locale)
         return formatted_currency
 
@@ -137,8 +135,8 @@ class PlaceholderTransforms:
     def format_unit(
         self,
         unit: str,
-        value: int | Decimal | str,
-        unit_length: str | None = None,
+        value: int | Decimal,
+        unit_length: Literal["short", "long", "narrow"] | None = None,
     ) -> str:
         length = unit_length or "short"
         formatted_unit: str = units.format_unit(

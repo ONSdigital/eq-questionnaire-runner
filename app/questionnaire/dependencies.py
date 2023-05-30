@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Mapping, Sequence
 
+from ordered_set import OrderedSet
 from werkzeug.datastructures import MultiDict
 
 from app.data_models import ProgressStore
@@ -30,7 +31,7 @@ def get_block_ids_for_calculated_summary_dependencies(
     ]
 
     if block_id := location.block_id:
-        dependents = dependent_sections[block_id]
+        dependents = OrderedSet(dependent_sections[block_id])
     else:
         dependents = get_flattened_mapping_values(dependent_sections)
 

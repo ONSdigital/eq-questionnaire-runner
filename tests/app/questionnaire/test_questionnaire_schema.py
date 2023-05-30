@@ -1,6 +1,7 @@
 from collections import abc
 
 import pytest
+from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
@@ -776,6 +777,67 @@ def test_when_rules_section_dependencies_new_calculated_summary(
     } == schema.when_rules_section_dependencies_by_answer
 
 
+def test_progress_block_dependencies(
+    progress_block_dependencies_schema,
+):
+    schema = progress_block_dependencies_schema
+
+    assert {
+        "section-1": {"calculated-summary-block": {"section-2", "section-3"}}
+    } == schema.when_rules_block_dependencies_by_section_for_progress_value_source
+
+
+def test_progress_section_dependencies(
+    progress_section_dependencies_schema,
+):
+    schema = progress_section_dependencies_schema
+
+    assert {
+        "section-1": {"section-2"},
+        "section-2": {"section-4"},
+    } == schema.when_rules_section_dependencies_by_section_for_progress_value_source
+
+
+def test_progress_block_and_section_dependencies_are_ordered(
+    progress_dependencies_schema,
+):
+    schema = progress_dependencies_schema
+
+    assert (
+        ImmutableDict(
+            {
+                "section-1": OrderedSet(["section-4"]),
+                "section-2": OrderedSet(
+                    ["section-7", "section-8", "section-9", "section-10"]
+                ),
+                "section-4": OrderedSet(["section-6"]),
+                "section-5": OrderedSet(["section-7"]),
+                "section-7": OrderedSet(["section-8"]),
+                "section-9": OrderedSet(["section-12"]),
+                "section-10": OrderedSet(["section-11"]),
+            }
+        )
+        == schema.when_rules_section_dependencies_by_section_for_progress_value_source
+    )
+
+    assert (
+        ImmutableDict(
+            {
+                "section-1": {
+                    "calculated-summary-block": OrderedSet(
+                        [
+                            "section-2",
+                            "section-3",
+                            "section-5",
+                        ]
+                    )
+                }
+            }
+        )
+        == schema.when_rules_block_dependencies_by_section_for_progress_value_source
+    )
+
+
 @pytest.mark.parametrize(
     "rule, expected_result",
     (
@@ -802,3 +864,29 @@ def test_when_rules_section_dependencies_new_calculated_summary(
 def test_has_operator_returns_correct_value(rule, expected_result):
     result = QuestionnaireSchema.has_operator(rule)
     assert result == expected_result
+
+
+def test_progress_dependencies_for_when_rules(
+    progress_dependencies_schema,
+):
+    """
+    Asserts that the dependencies captured by
+    schema.when_rules_section_dependencies_by_section_for_progress_value_source and
+    schema.when_rules_section_dependencies_by_block_for_progress_value_source are flipped
+    correctly so that progress dependencies can be evaluated with our normal when rules
+    """
+    schema = progress_dependencies_schema
+
+    assert {
+        "section-10": {"section-2"},
+        "section-11": {"section-10"},
+        "section-12": {"section-9"},
+        "section-2": {"section-1"},
+        "section-3": {"section-1"},
+        "section-4": {"section-1"},
+        "section-5": {"section-1"},
+        "section-6": {"section-4"},
+        "section-7": {"section-5", "section-2"},
+        "section-8": {"section-7", "section-2"},
+        "section-9": {"section-2"},
+    } == schema.when_rules_section_dependencies_for_progress
