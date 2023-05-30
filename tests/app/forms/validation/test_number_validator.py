@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 import pytest
 from wtforms.validators import StopValidation, ValidationError
 
@@ -7,12 +9,7 @@ from app.forms.validators import DecimalPlaces
 
 @pytest.mark.parametrize(
     "value",
-    (
-        [None],
-        [""],
-        ["a"],
-        ["2E2"],
-    ),
+    ([None], [""], ["a"], ["2E2"], ["NaN"], [",NaN_"]),
 )
 @pytest.mark.usefixtures("gb_locale")
 def test_number_validator_raises_StopValidation(
@@ -49,12 +46,13 @@ def test_decimal_validator_raises_StopValidation(
 @pytest.mark.parametrize(
     "value",
     (
-        ["0"],
-        ["10"],
-        ["-10"],
+        "0",
+        "10",
+        "-10",
     ),
 )
 @pytest.mark.usefixtures("gb_locale")
 def test_number_validator(number_check, value, mock_form, mock_field):
-    mock_field.raw_data = value
+    mock_field.raw_data = [value]
+    mock_field.data = Decimal(value)
     number_check(mock_form, mock_field)

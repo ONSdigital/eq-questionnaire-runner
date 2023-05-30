@@ -1,7 +1,6 @@
-from babel import numbers
 from wtforms import IntegerField
 
-from app.settings import DEFAULT_LOCALE
+from app.helpers.form_helpers import sanitise_number
 
 
 class IntegerFieldWithSeparator(IntegerField):
@@ -21,8 +20,6 @@ class IntegerFieldWithSeparator(IntegerField):
     def process_formdata(self, valuelist):
         if valuelist:
             try:
-                self.data = int(
-                    valuelist[0].replace(numbers.get_group_symbol(DEFAULT_LOCALE), "")
-                )
+                self.data = int(sanitise_number(valuelist[0]))
             except ValueError:
                 pass
