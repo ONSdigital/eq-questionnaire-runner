@@ -21,7 +21,7 @@ class TestApplicationVariables(IntegrationTestCase):
         self.get("/dump/debug")
         actual = json_loads(self.getResponseData())
         self._client.set_cookie(
-            "localhost", key="ons_cookie_policy", value="'usage':true"
+            domain="localhost", key="ons_cookie_policy", value="'usage':true"
         )
         self.get("/questionnaire/feedback/")
         self.assertStatusOK()
@@ -38,7 +38,7 @@ class TestApplicationVariables(IntegrationTestCase):
         self.get("/dump/debug")
         actual = json_loads(self.getResponseData())
         self._client.set_cookie(
-            "localhost", key="ons_cookie_policy", value="'usage':true"
+            domain="localhost", key="ons_cookie_policy", value="'usage':true"
         )
         self.get("/questionnaire/name-block/")
         self.assertStatusOK()
@@ -53,7 +53,7 @@ class TestApplicationVariables(IntegrationTestCase):
         self.get("/dump/debug")
         actual = json_loads(self.getResponseData())
         self._client.set_cookie(
-            "localhost", key="ons_cookie_policy", value="'usage':true"
+            domain="localhost", key="ons_cookie_policy", value="'usage':true"
         )
         self.get("/questionnaire/individual-confirmation/")
         self.assertStatusOK()

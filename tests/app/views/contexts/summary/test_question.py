@@ -184,7 +184,7 @@ def test_create_question(
 
     # When
     question = Question(
-        question_schema,
+        question_schema=question_schema,
         answer_store=answer_store,
         list_store=list_store,
         progress_store=progress_store,

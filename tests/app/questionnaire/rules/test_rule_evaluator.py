@@ -12,6 +12,7 @@ from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.operator import Operator
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from app.utilities.schema import load_schema_from_name
 from tests.app.questionnaire.conftest import get_metadata
 from tests.app.questionnaire.test_value_source_resolver import get_list_items
 
@@ -45,6 +46,7 @@ def get_rule_evaluator(
         section_id="test-section", block_id="test-block"
     ),
     routing_path_block_ids: Optional[list] = None,
+    progress: ProgressStore = ProgressStore(),
 ):
     if not schema:
         schema = get_mock_schema()
@@ -60,7 +62,7 @@ def get_rule_evaluator(
         list_store=list_store,
         location=location,
         routing_path_block_ids=routing_path_block_ids,
-        progress_store=ProgressStore(),
+        progress_store=progress,
     )
 
 
@@ -248,6 +250,45 @@ def test_metadata_source(metadata_value, expected_result):
                 Operator.EQUAL: [
                     {"source": "metadata", "identifier": "some_key"},
                     3,
+                ]
+            },
+        )
+        is expected_result
+    )
+
+
+@pytest.mark.parametrize(
+    "identifier, selector, expected_result",
+    [("s1-b1", "block", True), ("s1-b2", "block", True), ("s1-b3", "block", False)],
+)
+def test_progress_source(identifier, selector, expected_result):
+    schema = load_schema_from_name("test_progress_value_source_blocks")
+    in_progress_sections = [
+        {
+            "section_id": "section-1",
+            "list_item_id": None,
+            "status": "COMPLETED",
+            "block_ids": ["s1-b1", "s1-b2"],
+        },
+    ]
+
+    rule_evaluator = get_rule_evaluator(
+        schema=schema,
+        location=Location(section_id="section-1", block_id="s1-b3", list_item_id=None),
+        progress=ProgressStore(in_progress_sections),
+        routing_path_block_ids=["s1-b1", "s1-b2", "s1-b3"],
+    )
+
+    assert (
+        rule_evaluator.evaluate(
+            rule={
+                Operator.EQUAL: [
+                    {
+                        "source": "progress",
+                        "selector": selector,
+                        "identifier": identifier,
+                    },
+                    "COMPLETED",
                 ]
             },
         )

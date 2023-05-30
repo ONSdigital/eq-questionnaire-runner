@@ -46,6 +46,7 @@ def get_value_source_resolver(
     routing_path_block_ids: Optional[list] = None,
     use_default_answer=False,
     escape_answer_values=False,
+    progress_store: ProgressStore | None = None,
 ):
     if not schema:
         schema = get_mock_schema()
@@ -65,7 +66,7 @@ def get_value_source_resolver(
         routing_path_block_ids=routing_path_block_ids,
         use_default_answer=use_default_answer,
         escape_answer_values=escape_answer_values,
-        progress_store=ProgressStore(),
+        progress_store=progress_store,
     )
 
 
@@ -685,3 +686,13 @@ def test_answer_value_with_selector_can_be_escaped():
         )
         == ESCAPED_CONTENT
     )
+
+
+def test_progress_values_source_throws_if_no_location_given():
+    value_source_resolver = get_value_source_resolver(
+        progress_store=ProgressStore(), location=None
+    )
+    with pytest.raises(ValueError):
+        value_source_resolver.resolve(
+            {"source": "progress", "selector": "block", "identifier": "a-block"}
+        )
