@@ -67,7 +67,8 @@ class ListCollector(Question):
                 edit_block_id=self.rendered_block["edit_block"]["id"],
                 remove_block_id=self.rendered_block["remove_block"]["id"],
                 return_to=self._return_to,
-                list_collector_location=self.current_location
+                section_id=self.current_location.section_id,
+                has_repeating_blocks=bool(self.repeating_block_ids)
             ),
         }
 

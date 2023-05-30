@@ -20,9 +20,9 @@ class UnrelatedQuestion(RelationshipQuestion):
 
     def get_list_summary_context(self):
         return self.list_context(
-            self.rendered_block["list_summary"]["summary"],
-            self.list_name,
-            self.current_location,
+            summary_definition=self.rendered_block["list_summary"]["summary"],
+            for_list=self.list_name,
+            section_id=self.current_location.section_id,
             for_list_item_ids=self.get_remaining_relationships_for_individual(),
         )
 
@@ -59,8 +59,8 @@ class UnrelatedQuestion(RelationshipQuestion):
                     from_list_item_id, to_list_item_id
                 )
                 if relationship and (
-                    relationship.relationship
-                    == self.relationship_router.UNRELATED_RELATIONSHIP_VALUE
+                        relationship.relationship
+                        == self.relationship_router.UNRELATED_RELATIONSHIP_VALUE
                 ):
                     self.relationship_store.remove_relationship(
                         from_list_item_id, to_list_item_id

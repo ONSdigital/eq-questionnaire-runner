@@ -124,12 +124,12 @@ class Question(BlockHandler):
 
         for answer_id, resolved_answer in answers_by_answer_id.items():
             list_item_id = (
-                resolved_answer.get("list_item_id")
-                or self._current_location.list_item_id
+                    resolved_answer.get("list_item_id")
+                    or self._current_location.list_item_id
             )
             answer_id_to_use = resolved_answer.get("original_answer_id") or answer_id
             if answer := self._questionnaire_store.answer_store.get_answer(
-                answer_id=answer_id_to_use, list_item_id=list_item_id
+                    answer_id=answer_id_to_use, list_item_id=list_item_id
             ):
                 answer_value_by_answer_id[answer_id] = answer.value
 
@@ -148,9 +148,9 @@ class Question(BlockHandler):
 
     def _is_list_just_primary(self, list_items, list_name):
         return (
-            len(list_items) == 1
-            and list_items[0]
-            == self._questionnaire_store.list_store[list_name].primary_person
+                len(list_items) == 1
+                and list_items[0]
+                == self._questionnaire_store.list_store[list_name].primary_person
         )
 
     def _get_answer_action(self):
@@ -165,8 +165,8 @@ class Question(BlockHandler):
                 action = option.get("action")
 
                 if action and (
-                    option["value"] == submitted_answer
-                    or option["value"] in submitted_answer
+                        option["value"] == submitted_answer
+                        or option["value"] in submitted_answer
                 ):
                     return action
 
@@ -187,7 +187,7 @@ class Question(BlockHandler):
             )
 
         if self._schema.has_address_lookup_answer(self.rendered_block["question"]) and (
-            address_lookup_api_auth_token := get_address_lookup_api_auth_token()
+                address_lookup_api_auth_token := get_address_lookup_api_auth_token()
         ):
             context["address_lookup_api_auth_token"] = address_lookup_api_auth_token
 
@@ -202,9 +202,10 @@ class Question(BlockHandler):
 
     def get_list_summary_context(self):
         return self.list_context(
-            self.rendered_block["list_summary"]["summary"],
-            self.rendered_block["list_summary"]["for_list"],
-            self.current_location
+            summary_definition=self.rendered_block["list_summary"]["summary"],
+            for_list=self.rendered_block["list_summary"]["for_list"],
+            section_id=self.current_location.section_id,
+            has_repeating_blocks=bool(self.rendered_block.get("repeating_blocks"))
         )
 
     def handle_post(self):
@@ -220,8 +221,8 @@ class Question(BlockHandler):
 
     def get_return_to_hub_url(self):
         if (
-            self.rendered_block["type"] in ["Question", "ConfirmationQuestion"]
-            and self.router.can_access_hub()
+                self.rendered_block["type"] in ["Question", "ConfirmationQuestion"]
+                and self.router.can_access_hub()
         ):
             return url_for(".get_questionnaire")
 
@@ -254,25 +255,29 @@ class Question(BlockHandler):
             )
             self.questionnaire_store_updater.save()
 
-    def get_first_incomplete_repeating_block_location(self, repeating_block_ids: Sequence[str], section_id: str, list_name: str) -> Location | None:
+    def get_first_incomplete_repeating_block_location(self, repeating_block_ids: Sequence[str], section_id: str,
+                                                      list_name: str) -> Location | None:
         if not repeating_block_ids:
             return None
 
         list_model = self._questionnaire_store.list_store.get(list_name)
         for list_item_id in list_model.items:
-            if incomplete_location := self.get_first_incomplete_repeating_block_location_for_list_item(repeating_block_ids=repeating_block_ids,
-                                                                                                       section_id=section_id,
-                                                                                                       list_item_id=list_item_id,
-                                                                                                       list_name=list_name):
+            if incomplete_location := self.get_first_incomplete_repeating_block_location_for_list_item(
+                    repeating_block_ids=repeating_block_ids,
+                    section_id=section_id,
+                    list_item_id=list_item_id,
+                    list_name=list_name):
                 return incomplete_location
 
-    def get_first_incomplete_repeating_block_location_for_list_item(self, repeating_block_ids: Sequence[str], section_id: str, list_item_id: str,
+    def get_first_incomplete_repeating_block_location_for_list_item(self, repeating_block_ids: Sequence[str],
+                                                                    section_id: str, list_item_id: str,
                                                                     list_name: str) -> Location | None:
         if self.questionnaire_store_updater.is_section_complete(section_id=section_id, list_item_id=list_item_id):
             return None
 
         for repeating_block_id in repeating_block_ids:
-            if not self.router.is_block_complete(block_id=repeating_block_id, section_id=section_id, list_item_id=list_item_id):
+            if not self.router.is_block_complete(block_id=repeating_block_id, section_id=section_id,
+                                                 list_item_id=list_item_id):
                 return Location(
                     section_id=section_id,
                     block_id=repeating_block_id,
