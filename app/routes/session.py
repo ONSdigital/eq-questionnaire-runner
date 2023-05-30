@@ -1,15 +1,11 @@
-import json
 from datetime import datetime, timezone
 from typing import Any, Iterable, Mapping
 
-import requests
 from flask import Blueprint, g, jsonify, redirect, request
 from flask import session as cookie_session
 from flask import url_for
 from flask_login import login_required, logout_user
 from marshmallow import INCLUDE, ValidationError
-from requests import RequestException
-from requests.adapters import HTTPAdapter, Retry
 from sdc.crypto.exceptions import InvalidTokenException
 from structlog import contextvars, get_logger
 from werkzeug.exceptions import Unauthorized
@@ -27,35 +23,17 @@ from app.helpers.template_helpers import (
 )
 from app.questionnaire import QuestionnaireSchema
 from app.routes.errors import _render_error_page
+from app.supplementary_data import get_supplementary_data
 from app.utilities.metadata_parser import validate_runner_claims
 from app.utilities.metadata_parser_v2 import (
     validate_questionnaire_claims,
     validate_runner_claims_v2,
 )
 from app.utilities.schema import load_schema_from_metadata
-from app.utilities.supplementary_data_parser import validate_supplementary_data_v1
 
 logger = get_logger()
 
 session_blueprint = Blueprint("session", __name__)
-
-SUPPLEMENTARY_DATA_URL = "http://localhost:5003/v1/unit_data"
-SUPPLEMENTARY_DATA_REQUEST_MAX_BACKOFF = 0.2
-SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES = 2  # Totals no. of request should be 3. The initial request + SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES
-SUPPLEMENTARY_DATA_REQUEST_TIMEOUT = 3
-SUPPLEMENTARY_DATA_REQUEST_RETRY_STATUS_CODES = [
-    408,
-    429,
-    500,
-    502,
-    503,
-    504,
-]
-
-
-class SupplementaryDataRequestFailed(Exception):
-    def __str__(self) -> str:
-        return "Supplementary Data request failed"
 
 
 @session_blueprint.after_request
@@ -151,74 +129,15 @@ def login() -> Response:
 
     cookie_session["language_code"] = metadata.language_code
 
-    if (dataset_id := metadata["sds_dataset_id"]) and ru_ref:
+    # Type ignore: survey_id and either ru_ref or qid are required for schemas that use supplementary data
+    if dataset_id := metadata["sds_dataset_id"]:
         get_supplementary_data(
-            supplementary_data_url=SUPPLEMENTARY_DATA_URL,
             dataset_id=dataset_id,
-            ru_ref=ru_ref,
+            unit_id=metadata["ru_ref"] or metadata["qid"],  # type: ignore
+            survey_id=metadata["survey_id"],  # type: ignore
         )
 
     return redirect(url_for("questionnaire.get_questionnaire"))
-
-
-def get_supplementary_data(
-    supplementary_data_url: str, dataset_id: str, ru_ref: str
-) -> dict:
-    constructed_supplementary_data_url = (
-        f"{supplementary_data_url}?dataset_id={dataset_id}&unit_id={ru_ref}"
-    )
-
-    session = requests.Session()
-
-    retries = Retry(
-        total=SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES,
-        status_forcelist=SUPPLEMENTARY_DATA_REQUEST_RETRY_STATUS_CODES,
-    )  # Codes to retry according to Google Docs https://cloud.google.com/storage/docs/retry-strategy#client-libraries
-
-    # Type ignore: MyPy does not recognise BACKOFF_MAX however it is a property, albeit deprecated
-    retries.BACKOFF_MAX = SUPPLEMENTARY_DATA_REQUEST_MAX_BACKOFF  # type: ignore
-
-    session.mount("http://", HTTPAdapter(max_retries=retries))
-    session.mount("https://", HTTPAdapter(max_retries=retries))
-
-    try:
-        response = session.get(
-            constructed_supplementary_data_url,
-            timeout=SUPPLEMENTARY_DATA_REQUEST_TIMEOUT,
-        )
-    except RequestException as exc:
-        logger.exception(
-            "Error requesting supplementary data",
-            supplementary_data_url=constructed_supplementary_data_url,
-        )
-        raise SupplementaryDataRequestFailed from exc
-
-    if response.status_code == 200:
-        supplementary_data_response_content = response.content.decode()
-        supplementary_data = json.loads(supplementary_data_response_content)
-
-        return validate_supplementary_data(
-            supplementary_data=supplementary_data, dataset_id=dataset_id, ru_ref=ru_ref
-        )
-
-    logger.error(
-        "got a non-200 response for supplementary data request",
-        status_code=response.status_code,
-        schema_url=constructed_supplementary_data_url,
-    )
-
-    raise SupplementaryDataRequestFailed
-
-
-def validate_supplementary_data(
-    supplementary_data: Mapping, dataset_id: str, ru_ref: str
-) -> dict:
-    try:
-        return validate_supplementary_data_v1(
-            supplementary_data=supplementary_data, dataset_id=dataset_id, ru_ref=ru_ref
-        )
-    except ValidationError as e:
-        raise ValidationError("Invalid supplementary_dataulation data") from e
 
 
 def validate_jti(decrypted_token: dict[str, str | list | int]) -> None:

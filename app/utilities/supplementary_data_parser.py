@@ -35,7 +35,7 @@ class SupplementaryData(Schema, StripWhitespaceMixin):
         if (
             data
             and data.get("identifier")
-            and data["identifier"] != self.context["ru_ref"]
+            and data["identifier"] != self.context["unit_id"]
         ):
             raise ValidationError(
                 "Supplementary data did not return the specified Unit ID"
@@ -55,18 +55,26 @@ class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
     @validates_schema()
     def validate_dataset_id(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
-        if (
-            data
-            and data.get("dataset_id")
-            and data["dataset_id"] != self.context["dataset_id"]
-        ):
-            raise ValidationError(
-                "Supplementary data did not return the specified Dataset ID"
-            )
+        if data:
+            if (
+                data.get("dataset_id")
+                and data["dataset_id"] != self.context["dataset_id"]
+            ):
+                raise ValidationError(
+                    "Supplementary data did not return the specified Dataset ID"
+                )
+
+            if data.get("survey_id") and data["survey_id"] != self.context["survey_id"]:
+                raise ValidationError(
+                    "Supplementary data did not return the specified Survey ID"
+                )
 
 
 def validate_supplementary_data_v1(
-    supplementary_data: Mapping, dataset_id: str, ru_ref: str
+    supplementary_data: Mapping,
+    dataset_id: str,
+    unit_id: str,
+    survey_id: str,
 ) -> dict:
     """Validate claims required for runner to function"""
     supplementary_data_metadata_schema = SupplementaryDataMetadataSchema(
@@ -74,7 +82,8 @@ def validate_supplementary_data_v1(
     )
     supplementary_data_metadata_schema.context = {
         "dataset_id": dataset_id,
-        "ru_ref": ru_ref,
+        "unit_id": unit_id,
+        "survey_id": survey_id,
     }
     validated_supplementary_data = supplementary_data_metadata_schema.load(
         supplementary_data

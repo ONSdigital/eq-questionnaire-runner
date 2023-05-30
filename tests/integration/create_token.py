@@ -66,6 +66,7 @@ PAYLOAD_V2_SUPPLEMENTARY_DATA = {
             "employment_date": "1983-06-02",
             "display_address": "68 Abingdon Road, Goathill",
             "sds_dataset_id": "001",
+            "survey_id": "123",
         }
     },
     "collection_exercise_sid": "789",

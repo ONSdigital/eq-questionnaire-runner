@@ -23,6 +23,10 @@
         {
             "name": "sds_dataset_id",
             "type": "string"
+        },
+        {
+            "name": "survey_id",
+            "type": "string"
         }
     ],
     "questionnaire_flow": {

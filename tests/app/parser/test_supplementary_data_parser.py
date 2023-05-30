@@ -1,7 +1,7 @@
 import pytest
 from marshmallow import ValidationError
 
-from app.routes.session import validate_supplementary_data
+from app.supplementary_data import validate_supplementary_data
 from app.utilities.supplementary_data_parser import validate_supplementary_data_v1
 
 SUPPLEMENTARY_DATA_PAYLOAD = {
@@ -43,7 +43,10 @@ SUPPLEMENTARY_DATA_PAYLOAD = {
 def test_invalid_supplementary_data_payload_raises_error():
     with pytest.raises(ValidationError):
         validate_supplementary_data(
-            supplementary_data={}, dataset_id="001", ru_ref="12346789012A"
+            supplementary_data={},
+            dataset_id="001",
+            unit_id="12346789012A",
+            survey_id="123",
         )
 
 
@@ -51,7 +54,8 @@ def test_validate_supplementary_data_payload():
     validated_payload = validate_supplementary_data_v1(
         supplementary_data=SUPPLEMENTARY_DATA_PAYLOAD,
         dataset_id="001",
-        ru_ref="12346789012A",
+        unit_id="12346789012A",
+        survey_id="123",
     )
 
     assert validated_payload == SUPPLEMENTARY_DATA_PAYLOAD
@@ -62,16 +66,28 @@ def test_validate_supplementary_data_payload_incorrect_dataset_id():
         validate_supplementary_data_v1(
             supplementary_data=SUPPLEMENTARY_DATA_PAYLOAD,
             dataset_id="002",
-            ru_ref="12346789012A",
+            unit_id="12346789012A",
+            survey_id="123",
         )
 
 
-def test_validate_supplementary_data_payload_incorrect_ru_ref():
+def test_validate_supplementary_data_payload_incorrect_survey_id():
     with pytest.raises(ValidationError):
         validate_supplementary_data_v1(
             supplementary_data=SUPPLEMENTARY_DATA_PAYLOAD,
             dataset_id="001",
-            ru_ref="000000000001",
+            unit_id="12346789012A",
+            survey_id="234",
+        )
+
+
+def test_validate_supplementary_data_payload_incorrect_unit_id():
+    with pytest.raises(ValidationError):
+        validate_supplementary_data_v1(
+            supplementary_data=SUPPLEMENTARY_DATA_PAYLOAD,
+            dataset_id="001",
+            unit_id="000000000001",
+            survey_id="123",
         )
 
 
@@ -86,7 +102,10 @@ def test_supplementary_data_payload_with_no_items_is_validated():
     }
 
     validated_payload = validate_supplementary_data_v1(
-        supplementary_data=payload, dataset_id="001", ru_ref="12346789012A"
+        supplementary_data=payload,
+        dataset_id="001",
+        unit_id="12346789012A",
+        survey_id="123",
     )
 
     assert validated_payload == payload
@@ -103,7 +122,10 @@ def test_validate_supplementary_data_payload_missing_survey_id():
 
     with pytest.raises(ValidationError):
         validate_supplementary_data_v1(
-            supplementary_data=payload, dataset_id="001", ru_ref="12346789012A"
+            supplementary_data=payload,
+            dataset_id="001",
+            unit_id="12346789012A",
+            survey_id="123",
         )
 
 
@@ -119,7 +141,10 @@ def test_validate_supplementary_data_payload_with_unknown_field():
     }
 
     validated_payload = validate_supplementary_data_v1(
-        supplementary_data=payload, dataset_id="001", ru_ref="12346789012A"
+        supplementary_data=payload,
+        dataset_id="001",
+        unit_id="12346789012A",
+        survey_id="123",
     )
 
     assert validated_payload == payload
@@ -138,7 +163,10 @@ def test_validate_supplementary_data_invalid_schema_version():
 
     with pytest.raises(ValidationError):
         validate_supplementary_data_v1(
-            supplementary_data=payload, dataset_id="001", ru_ref="12346789012A"
+            supplementary_data=payload,
+            dataset_id="001",
+            unit_id="12346789012A",
+            survey_id="123",
         )
 
 
@@ -179,5 +207,8 @@ def test_validate_supplementary_data_payload_missing_identifier_in_items():
 
     with pytest.raises(ValidationError):
         validate_supplementary_data_v1(
-            supplementary_data=payload, dataset_id="001", ru_ref="12346789012A"
+            supplementary_data=payload,
+            dataset_id="001",
+            unit_id="12346789012A",
+            survey_id="123",
         )
