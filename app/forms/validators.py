@@ -20,11 +20,14 @@ from app.forms.fields import (
     DecimalFieldWithSeparator,
     IntegerFieldWithSeparator,
 )
-from app.helpers.form_helpers import sanitise_number
-from app.jinja_filters import format_number, get_formatted_currency
+from app.helpers.form_helpers import (
+    format_message_with_title,
+    format_playback_value,
+    sanitise_mobile_number,
+    sanitise_number,
+)
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.rules.utils import parse_datetime
-from app.utilities import safe_content
 
 if TYPE_CHECKING:
     from app.forms.questionnaire_form import QuestionnaireForm  # pragma: no cover
@@ -447,20 +450,6 @@ class SumCheck:
         raise NotImplementedError(f"Condition '{condition}' is not implemented")
 
 
-def format_playback_value(
-    value: Union[float, Decimal], currency: Optional[str] = None
-) -> str:
-    if currency:
-        return get_formatted_currency(value, currency)
-
-    formatted_number: str = format_number(value)
-    return formatted_number
-
-
-def format_message_with_title(error_message: str, question_title: str) -> str:
-    return error_message % {"question_title": safe_content(question_title)}
-
-
 class MutuallyExclusiveCheck:
     def __init__(self, question_title: str, messages: OptionalMessage = None):
         self.messages = {**error_messages, **(messages or {})}
@@ -487,11 +476,6 @@ class MutuallyExclusiveCheck:
                 self.question_title,
             )
             raise validators.ValidationError(message)
-
-
-def sanitise_mobile_number(data: str) -> str:
-    data = re.sub(r"[\s.,\t\-{}\[\]()/]", "", data)
-    return re.sub(r"^(0{1,2}44|\+44|0)", "", data)
 
 
 class MobileNumberCheck:

@@ -1,5 +1,12 @@
+import re
+from decimal import Decimal
+from typing import Optional, Union
+
 import flask_babel
 from babel import numbers
+
+from app.jinja_filters import format_number, get_formatted_currency
+from app.utilities import safe_content
 
 
 def sanitise_number(number: str) -> str:
@@ -8,3 +15,22 @@ def sanitise_number(number: str) -> str:
         .replace("_", "")
         .replace(" ", "")
     )
+
+
+def sanitise_mobile_number(data: str) -> str:
+    data = re.sub(r"[\s.,\t\-{}\[\]()/]", "", data)
+    return re.sub(r"^(0{1,2}44|\+44|0)", "", data)
+
+
+def format_playback_value(
+    value: Union[float, Decimal], currency: Optional[str] = None
+) -> str:
+    if currency:
+        return get_formatted_currency(value, currency)
+
+    formatted_number: str = format_number(value)
+    return formatted_number
+
+
+def format_message_with_title(error_message: str, question_title: str) -> str:
+    return error_message % {"question_title": safe_content(question_title)}
