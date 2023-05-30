@@ -1245,12 +1245,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     block,
                 )
 
-                placeholder_sources = []
-                for transform in transforms:
-                    for transform_name in TRANSFORMS_REQUIRING_ROUTING_PATH:
-                        if transform["transform"] == transform_name:
-                            if transform.get("source") == "answers":
-                                placeholder_sources.append(transform.get("source"))
+                placeholder_sources = [
+                    transform.get("source")
+                    for transform in transforms
+                    if transform["transform"] in TRANSFORMS_REQUIRING_ROUTING_PATH
+                    and transform.get("source") == "answers"
+                ]
 
                 placeholder_dependenices = self._get_placeholder_section_dependencies(
                     sources=placeholder_sources
