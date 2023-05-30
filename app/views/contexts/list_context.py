@@ -9,16 +9,16 @@ from app.views.contexts.context import Context
 
 class ListContext(Context):
     def __call__(
-            self,
-            summary_definition: Mapping,
-            for_list: str,
-            section_id: str,
-            has_repeating_blocks: bool,
-            return_to: str | None = None,
-            edit_block_id: str | None = None,
-            remove_block_id: str | None = None,
-            primary_person_edit_block_id: str | None = None,
-            for_list_item_ids: Sequence[str] | None = None,
+        self,
+        summary_definition: Mapping,
+        for_list: str,
+        section_id: str,
+        has_repeating_blocks: bool,
+        return_to: str | None = None,
+        edit_block_id: str | None = None,
+        remove_block_id: str | None = None,
+        primary_person_edit_block_id: str | None = None,
+        for_list_item_ids: Sequence[str] | None = None,
     ) -> dict[str, Any]:
         list_items = (
             list(
@@ -46,17 +46,17 @@ class ListContext(Context):
         }
 
     def _build_list_items_context(
-            self,
-            *,
-            for_list: str,
-            section_id: str,
-            has_repeating_blocks: bool,
-            return_to: str | None,
-            summary_definition: Mapping,
-            edit_block_id: str | None,
-            remove_block_id: str | None,
-            primary_person_edit_block_id: str | None,
-            for_list_item_ids: Sequence[str] | None,
+        self,
+        *,
+        for_list: str,
+        section_id: str,
+        has_repeating_blocks: bool,
+        return_to: str | None,
+        summary_definition: Mapping,
+        edit_block_id: str | None,
+        remove_block_id: str | None,
+        primary_person_edit_block_id: str | None,
+        for_list_item_ids: Sequence[str] | None,
     ) -> Generator[dict, Any, None]:
         list_item_ids = self._list_store[for_list]
         if for_list_item_ids:
@@ -84,8 +84,9 @@ class ListContext(Context):
                 ),
                 "primary_person": is_primary,
                 "list_item_id": list_item_id,
-                "is_complete": self._progress_store.is_section_complete(section_id=section_id,
-                                                                        list_item_id=list_item_id),
+                "is_complete": self._progress_store.is_section_complete(
+                    section_id=section_id, list_item_id=list_item_id
+                ),
                 "repeating_blocks": has_repeating_blocks,
             }
 
@@ -107,10 +108,10 @@ class ListContext(Context):
             yield list_item_context
 
     def _get_item_title(
-            self,
-            summary_definition: Mapping[str, Any],
-            list_item_id: Optional[str],
-            is_primary: bool,
+        self,
+        summary_definition: Mapping[str, Any],
+        list_item_id: Optional[str],
+        is_primary: bool,
     ) -> str:
         rendered_summary: dict[str, Any] = self._placeholder_renderer.render(
             data_to_render=summary_definition, list_item_id=list_item_id

@@ -13,7 +13,9 @@ class ListCollector(Question):
 
     @cached_property
     def repeating_block_ids(self) -> list[str]:
-        return [block["id"] for block in self.rendered_block.get("repeating_blocks", [])]
+        return [
+            block["id"] for block in self.rendered_block.get("repeating_blocks", [])
+        ]
 
     @cached_property
     def list_name(self) -> str:
@@ -31,9 +33,9 @@ class ListCollector(Question):
             )
             return add_url
 
-        if incomplete_block := self.get_first_incomplete_repeating_block_location(self.repeating_block_ids,
-                                                                                  self.current_location.section_id,
-                                                                                  self.list_name):
+        if incomplete_block := self.get_first_incomplete_repeating_block_location(
+            self.repeating_block_ids, self.current_location.section_id, self.list_name
+        ):
             repeating_block_url = url_for(
                 "questionnaire.block",
                 list_name=self.list_name,
@@ -68,7 +70,7 @@ class ListCollector(Question):
                 remove_block_id=self.rendered_block["remove_block"]["id"],
                 return_to=self._return_to,
                 section_id=self.current_location.section_id,
-                has_repeating_blocks=bool(self.repeating_block_ids)
+                has_repeating_blocks=bool(self.repeating_block_ids),
             ),
         }
 
@@ -85,6 +87,8 @@ class ListCollector(Question):
             return super().handle_post()
 
     def _is_list_collector_complete(self):
-        return not self.get_first_incomplete_repeating_block_location(repeating_block_ids=self.repeating_block_ids,
-                                                                      section_id=self.current_location.section_id,
-                                                                      list_name=self.list_name)
+        return not self.get_first_incomplete_repeating_block_location(
+            repeating_block_ids=self.repeating_block_ids,
+            section_id=self.current_location.section_id,
+            list_name=self.list_name,
+        )

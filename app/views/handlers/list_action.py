@@ -110,5 +110,9 @@ class ListAction(Question):
         )
 
     def _is_returning_to_section_summary(self) -> bool:
-        return self._return_to == "section-summary" and \
-            self.router.can_display_section_summary(self.parent_location.section_id, self.parent_location.list_item_id)
+        return (
+            self._return_to == "section-summary"
+            and self.router.can_display_section_summary(
+                self.parent_location.section_id, self.parent_location.list_item_id
+            )
+        )

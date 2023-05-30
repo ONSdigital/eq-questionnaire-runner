@@ -1,6 +1,6 @@
 from collections import defaultdict, namedtuple
 from itertools import combinations
-from typing import Iterable, Mapping, Any
+from typing import Any, Iterable, Mapping
 
 from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict
@@ -23,12 +23,12 @@ class QuestionnaireStoreUpdater:
     EMPTY_ANSWER_VALUES: tuple[None, list, str, dict] = (None, [], "", {})
 
     def __init__(
-            self,
-            current_location: Location,
-            schema: QuestionnaireSchema,
-            questionnaire_store: QuestionnaireStore,
-            router: Router,
-            current_question: Mapping | None,
+        self,
+        current_location: Location,
+        schema: QuestionnaireSchema,
+        questionnaire_store: QuestionnaireStore,
+        router: Router,
+        current_question: Mapping | None,
     ):
         self._current_location = current_location
         self._current_question = current_question or {}
@@ -51,16 +51,16 @@ class QuestionnaireStoreUpdater:
     def is_dirty(self) -> bool:
         return bool(
             (
-                    self._answer_store.is_dirty
-                    or self._list_store.is_dirty
-                    or self._progress_store.is_dirty
+                self._answer_store.is_dirty
+                or self._list_store.is_dirty
+                or self._progress_store.is_dirty
             )
         )
 
     def update_relationships_answer(
-            self,
-            relationship_store: RelationshipStore,
-            relationships_answer_id: str,
+        self,
+        relationship_store: RelationshipStore,
+        relationships_answer_id: str,
     ) -> None:
         self._answer_store.add_or_update(
             # Type ignore: serialize returns a list of typed dicts, so it is a valid answer type
@@ -68,10 +68,10 @@ class QuestionnaireStoreUpdater:
         )
 
     def remove_completed_relationship_locations_for_list_name(
-            self, list_name: str
+        self, list_name: str
     ) -> None:
         if target_relationship_collectors := self._get_relationship_collectors_by_list_name(
-                list_name
+            list_name
         ):
             for target in target_relationship_collectors:
                 block_id = target["id"]
@@ -93,7 +93,7 @@ class QuestionnaireStoreUpdater:
                 collector["id"]
             )
             if relationship_answers := self._get_relationships_in_answer_store(
-                    relationship_answer_id
+                relationship_answer_id
             ):
                 pairs = {
                     (answer["list_item_id"], answer["to_list_item_id"])
@@ -109,17 +109,17 @@ class QuestionnaireStoreUpdater:
                     self.add_completed_location(location)
 
     def _get_relationship_collectors_by_list_name(
-            self, list_name: str
+        self, list_name: str
     ) -> list[ImmutableDict] | None:
         return self._schema.get_relationship_collectors_by_list_name(list_name)
 
     def _get_relationships_in_answer_store(
-            self, relationship_answer_id: str
+        self, relationship_answer_id: str
     ) -> list[RelationshipDict]:
         return self._answer_store.get_answer(relationship_answer_id).value  # type: ignore
 
     def remove_answers(
-            self, answer_ids: list[str], list_item_id: str | None = None
+        self, answer_ids: list[str], list_item_id: str | None = None
     ) -> None:
         for answer_id in answer_ids:
             self._answer_store.remove_answer(answer_id, list_item_id=list_item_id)
@@ -165,9 +165,9 @@ class QuestionnaireStoreUpdater:
         self._progress_store.remove_progress_for_list_item_id(list_item_id=list_item_id)
 
         for list_collector in self._schema.get_list_collectors_for_list(
-                for_list=list_name,
-                section=self._schema.get_section(self._current_location.section_id),  # type: ignore
-                # type ignore Section and answer_id below must exist at this point
+            for_list=list_name,
+            section=self._schema.get_section(self._current_location.section_id),  # type: ignore
+            # type ignore Section and answer_id below must exist at this point
         ):
             block = self._schema.get_add_block_for_list_collector(list_collector["id"])
             answer_ids = self._schema.get_answer_ids_for_block(block["id"])  # type: ignore
@@ -176,7 +176,7 @@ class QuestionnaireStoreUpdater:
                 self._capture_block_dependencies_for_answer(answer_id)
 
     def get_relationship_answers_for_list_name(
-            self, list_name: str
+        self, list_name: str
     ) -> list[Answer] | None:
         associated_relationship_collectors = (
             self._get_relationship_collectors_by_list_name(list_name)
@@ -192,7 +192,7 @@ class QuestionnaireStoreUpdater:
         return self._answer_store.get_answers_by_answer_id(relationship_answer_ids)
 
     def update_same_name_items(
-            self, list_name: str, same_name_answer_ids: list[str] | None
+        self, list_name: str, same_name_answer_ids: list[str] | None
     ) -> None:
         if not same_name_answer_ids:
             return
@@ -217,7 +217,7 @@ class QuestionnaireStoreUpdater:
         list_model.same_name_items = list(same_name_items)  # type: ignore
 
     def _remove_relationship_answers_for_list_item_id(
-            self, list_item_id: str, answers: list
+        self, list_item_id: str, answers: list
     ) -> None:
         for answer in answers:
             answers_to_keep = [
@@ -238,7 +238,7 @@ class QuestionnaireStoreUpdater:
         return self._progress_store.remove_completed_location(location)
 
     def update_section_status(
-            self, is_complete: bool, section_id: str, list_item_id: str | None = None
+        self, is_complete: bool, section_id: str, list_item_id: str | None = None
     ) -> bool:
         status = (
             CompletionStatus.COMPLETED if is_complete else CompletionStatus.IN_PROGRESS
@@ -247,14 +247,16 @@ class QuestionnaireStoreUpdater:
             status, section_id, list_item_id
         )
 
-    def is_section_complete(self, section_id: str, list_item_id: str | None = None) -> bool:
+    def is_section_complete(
+        self, section_id: str, list_item_id: str | None = None
+    ) -> bool:
         return self._progress_store.is_section_complete(section_id, list_item_id)
 
     def _update_answer(
-            self,
-            answer_id: str,
-            list_item_id: str | None,
-            answer_value: AnswerValueTypes,
+        self,
+        answer_id: str,
+        list_item_id: str | None,
+        answer_value: AnswerValueTypes,
     ) -> bool:
         answer_value_to_store = (
             {
@@ -297,7 +299,7 @@ class QuestionnaireStoreUpdater:
 
         for dependency in dependencies:
             for list_item_id in self._get_list_item_ids_for_dependency(
-                    dependency, is_repeating_answer
+                dependency, is_repeating_answer
             ):
                 if dependency.answer_id:
                     self._answer_store.remove_answer(
@@ -309,7 +311,7 @@ class QuestionnaireStoreUpdater:
                 ].add(dependency.block_id)
 
     def _get_list_item_ids_for_dependency(
-            self, dependency: AnswerDependent, is_repeating_answer: bool | None = False
+        self, dependency: AnswerDependent, is_repeating_answer: bool | None = False
     ) -> list[str] | list[None]:
         if dependency.for_list:
             list_item_ids: list[str] | list[None]
@@ -334,7 +336,7 @@ class QuestionnaireStoreUpdater:
 
         for section_id in answer_id_section_dependents.get(answer_id, {}):
             if repeating_list := self._schema.get_repeating_list_for_section(
-                    section_id
+                section_id
             ):
                 for list_item_id in self._list_store[repeating_list].items:
                     self.dependent_sections.add(
@@ -344,7 +346,7 @@ class QuestionnaireStoreUpdater:
                 self.dependent_sections.add(DependentSection(section_id, None, None))
 
     def _capture_section_dependencies_progress_value_source_for_current_section(
-            self,
+        self,
     ) -> None:
         """
         Captures a unique list of section ids that are dependents of the current section, for progress value sources.
@@ -355,7 +357,7 @@ class QuestionnaireStoreUpdater:
         self._update_section_dependencies(dependent_sections)
 
     def _capture_section_dependencies_progress_value_source_for_current_block(
-            self,
+        self,
     ) -> None:
         """
         Captures a unique list of section ids that are dependents of the current block, for progress value sources.
@@ -372,7 +374,7 @@ class QuestionnaireStoreUpdater:
     def _update_section_dependencies(self, dependent_sections: Iterable) -> None:
         for section_id in dependent_sections:
             if repeating_list := self._schema.get_repeating_list_for_section(
-                    section_id
+                section_id
             ):
                 for list_item_id in self._list_store[repeating_list].items:
                     self.dependent_sections.add(
@@ -382,7 +384,7 @@ class QuestionnaireStoreUpdater:
                 self.dependent_sections.add(DependentSection(section_id, None, None))
 
     def update_answers(
-            self, form_data: Mapping[str, Any], list_item_id: str | None = None
+        self, form_data: Mapping[str, Any], list_item_id: str | None = None
     ) -> None:
         list_item_id = list_item_id or self._current_location.list_item_id
         answers_by_answer_id = self._schema.get_answers_for_question_by_id(
@@ -416,14 +418,14 @@ class QuestionnaireStoreUpdater:
 
         for section in chronological_dependents:
             if (
-                    section.section_id,
-                    section.list_item_id,
+                section.section_id,
+                section.list_item_id,
             ) not in self.started_section_keys():
                 continue
 
             if (
-                    section.section_id,
-                    section.list_item_id,
+                section.section_id,
+                section.list_item_id,
             ) not in evaluated_dependents:
                 self._evaluate_dependents(
                     dependent_section=section, evaluated_dependents=evaluated_dependents
@@ -431,10 +433,10 @@ class QuestionnaireStoreUpdater:
                 evaluated_dependents.append((section.section_id, section.list_item_id))
 
     def _evaluate_dependents(
-            self,
-            *,
-            dependent_section: DependentSection,
-            evaluated_dependents: list[tuple],
+        self,
+        *,
+        dependent_section: DependentSection,
+        evaluated_dependents: list[tuple],
     ) -> None:
         is_path_complete = dependent_section.is_complete
         if is_path_complete is None:
@@ -446,21 +448,21 @@ class QuestionnaireStoreUpdater:
             )
 
         if self.update_section_status(
-                is_complete=is_path_complete,
-                section_id=dependent_section.section_id,
-                list_item_id=dependent_section.list_item_id,
+            is_complete=is_path_complete,
+            section_id=dependent_section.section_id,
+            list_item_id=dependent_section.list_item_id,
         ):
             dependents_of_dependent: OrderedSet = self._schema.when_rules_section_dependencies_by_section_for_progress_value_source.get(
                 dependent_section.section_id, OrderedSet()
             )
             for dependent_section_id in dependents_of_dependent:
                 if repeating_list := self._schema.get_repeating_list_for_section(
-                        dependent_section_id
+                    dependent_section_id
                 ):
                     for item_id in self._list_store[repeating_list].items:
                         if (
-                                dependent_section_id,
-                                item_id,
+                            dependent_section_id,
+                            item_id,
                         ) not in evaluated_dependents:
                             self._evaluate_dependent_of_dependents(
                                 dependent_section_id=dependent_section_id,
@@ -468,8 +470,8 @@ class QuestionnaireStoreUpdater:
                                 evaluated_dependents=evaluated_dependents,
                             )
                 elif (
-                        dependent_section_id,
-                        dependent_section.list_item_id,
+                    dependent_section_id,
+                    dependent_section.list_item_id,
                 ) not in evaluated_dependents:
                     self._evaluate_dependent_of_dependents(
                         dependent_section_id=dependent_section_id,
@@ -477,10 +479,10 @@ class QuestionnaireStoreUpdater:
                     )
 
     def _evaluate_dependent_of_dependents(
-            self,
-            dependent_section_id: str,
-            evaluated_dependents: list[tuple],
-            list_item_id: str | None = None,
+        self,
+        dependent_section_id: str,
+        evaluated_dependents: list[tuple],
+        list_item_id: str | None = None,
     ) -> None:
         self._evaluate_dependents(
             dependent_section=DependentSection(
@@ -496,8 +498,8 @@ class QuestionnaireStoreUpdater:
         """Removes dependent blocks from the progress store."""
 
         for (
-                section_key,
-                blocks_to_remove,
+            section_key,
+            blocks_to_remove,
         ) in self.dependent_block_id_by_section_key.items():
             if section_key not in self.started_section_keys():
                 continue
@@ -514,8 +516,8 @@ class QuestionnaireStoreUpdater:
                 blocks_removed |= self.remove_completed_location(location)
 
             if blocks_removed and (
-                    section_id != self._current_location.section_id
-                    or list_item_id != self._current_location.list_item_id
+                section_id != self._current_location.section_id
+                or list_item_id != self._current_location.list_item_id
             ):
                 # Since this section key will be marked as incomplete, any `DependentSection` with is_complete as `None`
                 # can be removed as we do not need to re-evaluate progress as we already know the section would be incomplete.
@@ -528,7 +530,7 @@ class QuestionnaireStoreUpdater:
                 )
 
     def started_section_keys(
-            self, section_ids: Iterable[str] | None = None
+        self, section_ids: Iterable[str] | None = None
     ) -> list[SectionKeyType]:
         return self._progress_store.started_section_keys(section_ids)
 

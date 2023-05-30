@@ -549,8 +549,8 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                     "actions": [
                         {
                             "ariaLabel": "edit_link_aria_label Is this UK "
-                                         "company or branch an authorised "
-                                         "insurer?",
+                            "company or branch an authorised "
+                            "insurer?",
                             "attributes": {
                                 "data-ga": "click",
                                 "data-ga-action": "Edit click",
@@ -564,7 +564,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                     "attributes": {"data-qa": "authorised-insurer-radio"},
                     "id": "authorised-insurer-radio",
                     "rowTitle": "Is this UK company or branch an authorised "
-                                "insurer?",
+                    "insurer?",
                     "rowTitleAttributes": {"data-qa": "authorised-insurer-radio-label"},
                     "valueList": [{"text": "Yes"}],
                 },
@@ -815,7 +815,7 @@ def test_summary_item_config_with_list_collector():
                     "actions": [
                         {
                             "ariaLabel": "Change your answer for: "
-                                         "Registration number",
+                            "Registration number",
                             "attributes": {
                                 "data-ga": "click",
                                 "data-ga-action": "Edit click",
@@ -836,8 +836,8 @@ def test_summary_item_config_with_list_collector():
                     "actions": [
                         {
                             "ariaLabel": "Change your answer for: Is this UK "
-                                         "company or branch an authorised "
-                                         "insurer?",
+                            "company or branch an authorised "
+                            "insurer?",
                             "attributes": {
                                 "data-ga": "click",
                                 "data-ga-action": "Edit click",
@@ -851,7 +851,7 @@ def test_summary_item_config_with_list_collector():
                     "attributes": {"data-qa": "authorised-insurer-radio"},
                     "id": "authorised-insurer-radio",
                     "rowTitle": "Is this UK company or branch an authorised "
-                                "insurer?",
+                    "insurer?",
                     "rowTitleAttributes": {"data-qa": "authorised-insurer-radio-label"},
                     "valueList": [{"text": "Yes"}],
                 },

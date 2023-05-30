@@ -38,7 +38,7 @@ class UnrelatedQuestion(RelationshipQuestion):
             self.current_location
         )
         previous_item_index = list_model.index(previous_location.to_list_item_id)
-        return list_model[previous_item_index + 1:]
+        return list_model[previous_item_index + 1 :]
 
     def handle_post(self):
         if answer_action := self._get_answer_action():
@@ -60,8 +60,8 @@ class UnrelatedQuestion(RelationshipQuestion):
                     from_list_item_id, to_list_item_id
                 )
                 if relationship and (
-                        relationship.relationship
-                        == self.relationship_router.UNRELATED_RELATIONSHIP_VALUE
+                    relationship.relationship
+                    == self.relationship_router.UNRELATED_RELATIONSHIP_VALUE
                 ):
                     self.relationship_store.remove_relationship(
                         from_list_item_id, to_list_item_id

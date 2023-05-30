@@ -7,11 +7,11 @@ from app.views.contexts import ListContext
 
 @pytest.mark.usefixtures("app")
 def test_build_list_collector_context(
-        list_collector_block,
-        schema,
-        people_answer_store,
-        people_list_store,
-        progress_store,
+    list_collector_block,
+    schema,
+    people_answer_store,
+    people_list_store,
+    progress_store,
 ):
     list_context = ListContext(
         DEFAULT_LANGUAGE_CODE,
@@ -27,7 +27,7 @@ def test_build_list_collector_context(
         list_collector_block["summary"],
         for_list="people",
         section_id="section-id",
-        has_repeating_blocks=False
+        has_repeating_blocks=False,
     )
 
     assert all(keys in list_context["list"] for keys in ["list_items", "editable"])
@@ -35,7 +35,7 @@ def test_build_list_collector_context(
 
 @pytest.mark.usefixtures("app")
 def test_build_list_summary_context_no_summary_block(
-        schema, people_answer_store, people_list_store, progress_store
+    schema, people_answer_store, people_list_store, progress_store
 ):
     list_context = ListContext(
         DEFAULT_LANGUAGE_CODE,
@@ -48,17 +48,20 @@ def test_build_list_summary_context_no_summary_block(
     )
 
     list_context = list_context(
-        summary_definition=None, for_list="people", section_id="section-id", has_repeating_blocks=False
+        summary_definition=None,
+        for_list="people",
+        section_id="section-id",
+        has_repeating_blocks=False,
     )
     assert list_context == {"list": {"editable": False, "list_items": []}}
 
 
 @pytest.mark.usefixtures("app")
 def test_build_list_summary_context(
-        list_collector_block,
-        people_answer_store,
-        people_list_store,
-        progress_store,
+    list_collector_block,
+    people_answer_store,
+    people_list_store,
+    progress_store,
 ):
     schema = load_schema_from_name("test_list_collector_primary_person")
     expected = [
@@ -106,10 +109,10 @@ def test_build_list_summary_context(
 
 @pytest.mark.usefixtures("app")
 def test_assert_primary_person_string_appended(
-        list_collector_block,
-        people_answer_store,
-        people_list_store,
-        progress_store,
+    list_collector_block,
+    people_answer_store,
+    people_list_store,
+    progress_store,
 ):
     schema = load_schema_from_name("test_list_collector_primary_person")
     people_list_store["people"].primary_person = "PlwgoG"
@@ -127,7 +130,7 @@ def test_assert_primary_person_string_appended(
         summary_definition=list_collector_block["summary"],
         for_list=list_collector_block["for_list"],
         section_id="section-id",
-        has_repeating_blocks=False
+        has_repeating_blocks=False,
     )
 
     assert list_context["list"]["list_items"][0]["primary_person"] is True
@@ -137,10 +140,10 @@ def test_assert_primary_person_string_appended(
 
 @pytest.mark.usefixtures("app")
 def test_for_list_item_ids(
-        list_collector_block,
-        people_answer_store,
-        people_list_store,
-        progress_store,
+    list_collector_block,
+    people_answer_store,
+    people_list_store,
+    progress_store,
 ):
     schema = load_schema_from_name("test_list_collector_primary_person")
 
@@ -158,7 +161,7 @@ def test_for_list_item_ids(
         for_list=list_collector_block["for_list"],
         for_list_item_ids=["UHPLbX"],
         section_id="section-id",
-        has_repeating_blocks=False
+        has_repeating_blocks=False,
     )
 
     expected = [

@@ -296,7 +296,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                             repeating_block_id = repeating_block["id"]
                             blocks[repeating_block_id] = repeating_block
                             self._parent_id_map[repeating_block_id] = block_id
-                            self._repeating_blocks_by_id[repeating_block_id] = repeating_block
+                            self._repeating_blocks_by_id[
+                                repeating_block_id
+                            ] = repeating_block
 
         return blocks
 
@@ -951,7 +953,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         parent_block_id = self._parent_id_map[block_id]
         parent_block = self.get_block(parent_block_id)
 
-        if parent_block and parent_block["type"] == "ListCollector" and block_id not in self._repeating_blocks_by_id:
+        if (
+            parent_block
+            and parent_block["type"] == "ListCollector"
+            and block_id not in self._repeating_blocks_by_id
+        ):
             return parent_block
 
         return self.get_block(block_id)
