@@ -904,3 +904,28 @@ def test_get_block_with_repeating_blocks(list_collector_with_repeating_blocks):
 
     assert block1["id"] == "repeating-block-1"
     assert block2["id"] == "repeating-block-2"
+
+
+def test_is_block_in_repeating_blocks(list_collector_with_repeating_blocks):
+    schema = QuestionnaireSchema(list_collector_with_repeating_blocks)
+
+    assert schema.is_block_in_repeating_blocks("repeating-block-1")
+    assert not schema.is_block_in_repeating_blocks("list-collector-edit-block")
+
+
+def test_is_answer_in_repeating_blocks(list_collector_with_repeating_blocks):
+    schema = QuestionnaireSchema(list_collector_with_repeating_blocks)
+
+    assert schema.is_answer_in_repeating_blocks("repeating-block-1-question-answer-1")
+    assert not schema.is_answer_in_repeating_blocks("list-collector-add-block-question-answer")
+
+
+def test_get_block_for_answer_id_returns_repeating_block_for_repeating_block_answer_id(
+        list_collector_with_repeating_blocks):
+    schema = QuestionnaireSchema(list_collector_with_repeating_blocks)
+
+    block1 = schema.get_block_for_answer_id("repeating-block-1-question-answer-1")
+    block2 = schema.get_block_for_answer_id("repeating-block-2-question-answer-1")
+
+    assert block1["id"] == "repeating-block-1"
+    assert block2["id"] == "repeating-block-2"
