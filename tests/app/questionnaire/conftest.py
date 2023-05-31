@@ -972,6 +972,167 @@ def section_with_repeating_list():
 
 
 @pytest.fixture
+def list_collector_with_repeating_blocks():
+    return {
+        "sections": [
+            {
+                "id": "section",
+                "groups": [
+                    {
+                        "id": "group",
+                        "title": "List",
+                        "blocks": [
+                            {
+                                "id": "list-collector-block",
+                                "type": "ListCollector",
+                                "for_list": "people",
+                                "question": {
+                                    "id": "list-collector-next-question",
+                                    "type": "General",
+                                    "title": "Do you need to add any more to this list?",
+                                    "answers": [
+                                        {
+                                            "id": "list-collector-next-question-answer-1",
+                                            "mandatory": True,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RedirectToListAddBlock"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "add_block": {
+                                    "id": "list-collector-add-block",
+                                    "type": "ListAddQuestion",
+                                    "question": {
+                                        "id": "list-collector-add-block-question",
+                                        "type": "General",
+                                        "title": "What is the name of the list item?",
+                                        "answers": [
+                                            {
+                                                "id": "list-collector-add-block-question-answer",
+                                                "label": "Name of list item",
+                                                "mandatory": True,
+                                                "type": "TextField"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "repeating_blocks": [
+                                    {
+                                        "id": "repeating-block-1",
+                                        "type": "ListRepeatingBlock",
+                                        "question": {
+                                            "id": "repeating-block-1-question",
+                                            "type": "General",
+                                            "title": "This is the question for repeating block 1.",
+                                            "answers": [
+                                                {
+                                                    "id": "repeating-block-1-question-answer-1",
+                                                    "label": "Answer 1",
+                                                    "mandatory": True,
+                                                    "type": "Number",
+                                                },
+                                                {
+                                                    "id": "repeating-block-1-question-answer-2",
+                                                    "label": "Answer 2",
+                                                    "mandatory": True,
+                                                    "type": "Number",
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "repeating-block-2",
+                                        "type": "ListRepeatingBlock",
+                                        "question": {
+                                            "id": "repeating-block-2-question",
+                                            "type": "General",
+                                            "title": "This is the question for repeating block 2.",
+                                            "answers": [
+
+                                                {
+                                                    "id": "repeating-block-2-question-answer-1",
+                                                    "label": "Answer 1",
+                                                    "mandatory": True,
+                                                    "type": "TextField",
+                                                },
+                                                {
+                                                    "id": "repeating-block-2-question-answer-2",
+                                                    "label": "Answer 2",
+                                                    "mandatory": True,
+                                                    "type": "TextField",
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "edit_block": {
+                                    "id": "list-collector-edit-block",
+                                    "type": "ListEditQuestion",
+                                    "question": {
+                                        "id": "list-collector-edit-block-question",
+                                        "type": "General",
+                                        "title": "What is the name of the list item?",
+                                        "answers": [
+                                            {
+                                                "id": "list-collector-add-block-question-answer",
+                                                "label": "Name of list item",
+                                                "mandatory": True,
+                                                "type": "TextField"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "remove_block": {
+                                    "id": "list-collector-remove-block",
+                                    "type": "ListRemoveQuestion",
+                                    "question": {
+                                        "id": "list-collector-remove-block-question",
+                                        "type": "General",
+                                        "title": "Are you sure you want to remove this list item?",
+                                        "answers": [
+                                            {
+                                                "id": "list-collector-remove-block-question-answer",
+                                                "mandatory": True,
+                                                "type": "Radio",
+                                                "options": [
+                                                    {
+                                                        "label": "Yes",
+                                                        "value": "Yes",
+                                                        "action": {
+                                                            "type": "RemoveListItemAndAnswers"
+                                                        }
+                                                    },
+                                                    {
+                                                        "label": "No",
+                                                        "value": "No"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                            },
+                        ],
+                    }
+                ],
+            }
+        ]
+    }
+
+
+@pytest.fixture
 def mock_schema(mocker):
     schema = mocker.MagicMock(
         QuestionnaireSchema(
@@ -1165,7 +1326,7 @@ def mock_empty_progress_store(mocker):
 
 @pytest.fixture
 def mock_questionnaire_store(
-    populated_list_store, mock_empty_answer_store, mock_empty_progress_store, mocker
+        populated_list_store, mock_empty_answer_store, mock_empty_progress_store, mocker
 ):
     return mocker.MagicMock(
         spec=QuestionnaireStore,
