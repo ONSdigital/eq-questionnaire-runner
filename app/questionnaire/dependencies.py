@@ -66,19 +66,22 @@ def get_block_ids_for_placeholder_dependencies(
     sections_to_ignore: list | None = None,
 ) -> dict[tuple, tuple[str, ...]]:
     block_ids_by_section: dict[tuple, tuple[str, ...]] = {}
+    sections_to_ignore = sections_to_ignore or []
     dependent_sections = schema.placeholder_section_dependencies_by_block[
         location.section_id
     ]
-    if block_id := location.block_id:
-        dependents = dependent_sections[block_id]
+    if block_id := location.block_id: 
+        dependents = OrderedSet(dependent_sections[block_id])
     else:
         dependents = get_flattened_mapping_values(dependent_sections)
-
+    print("$$$$$$"+ str(get_sources_for_type_from_data(
+        source_type="metadata", data=data, ignore_keys=["when"]
+    )))
     if dependents and not get_sources_for_type_from_data(
-        source_type="transforms", data=data, ignore_keys=["when"]
+        source_type="metadata", data=data, ignore_keys=["when"]
     ):
         return block_ids_by_section
-
+    print(dependents)
     for section in dependents:
         # Dependent sections other than the current section cannot be a repeating section
         list_item_id = location.list_item_id if section == location.section_id else None
@@ -90,5 +93,5 @@ def get_block_ids_for_placeholder_dependencies(
         if key in progress_store.started_section_keys():
             routing_path = path_finder.routing_path(*key)
             block_ids_by_section[key] = routing_path.block_ids
-
+    
     return block_ids_by_section
