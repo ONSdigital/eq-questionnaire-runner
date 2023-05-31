@@ -28,9 +28,10 @@ LIST_COLLECTOR_CHILDREN = [
 RELATIONSHIP_CHILDREN = ["UnrelatedQuestion"]
 
 QuestionSchemaType = Mapping
-TRANSFORMS_REQUIRING_ROUTING_PATH = ["first_non_empty_item"]
 
 DependencyDictType: TypeAlias = dict[str, OrderedSet[str]]
+
+TRANSFORMS_REQUIRING_ROUTING_PATH = ["first_non_empty_item"]
 
 
 class InvalidSchemaConfigurationException(Exception):
@@ -1180,19 +1181,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         return section_dependencies
 
-    def _get_placeholder_section_dependencies(self, sources: list[Mapping]):
+    def _get_placeholder_section_dependencies(self, answer_ids: list):
         section_dependencies: set[str] = set()
-        for source in sources:
-            answer_id_list: list = []
-            identifier: str = source["identifier"]
-
-            placeholder_block = self.get_block(identifier)
-            placeholder_answer_ids = get_placeholder_answer_ids(placeholder_block)
-            answer_id_list.extend(placeholder_answer_ids)
-            for answer_id in answer_id_list:
-                block = self.get_block_for_answer_id(answer_id)
-                section_id = self.get_section_id_for_block_id(block["id"])
-                section_dependencies.add(section_id)
+        for answer_id in answer_ids:
+            block = self.get_block_for_answer_id(answer_id)
+            section_id = self.get_section_id_for_block_id(block["id"])
+            section_dependencies.add(section_id)
         return section_dependencies
 
     def get_summary_item_for_list_for_section(
@@ -1245,15 +1239,17 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     block,
                 )
 
-                placeholder_sources = [
-                    transform.get("source")
-                    for transform in transforms
-                    if transform["transform"] in TRANSFORMS_REQUIRING_ROUTING_PATH
-                    and transform.get("source") == "answers"
-                ]
+                placeholder_answer_ids = []
+
+                for transform in transforms:
+                    if transform["transform"] in TRANSFORMS_REQUIRING_ROUTING_PATH:
+                        for item in transform["arguments"]["items"]:
+                            if item.get("source") == "answers":
+                                identifier = item.get("identifier")
+                                placeholder_answer_ids.append(identifier)
 
                 placeholder_dependenices = self._get_placeholder_section_dependencies(
-                    sources=placeholder_sources
+                    placeholder_answer_ids
                 )
                 self.placeholder_section_dependencies_by_block[section["id"]][
                     block["id"]
@@ -1279,9 +1275,4 @@ def get_calculated_summary_answer_ids(calculated_summary_block: Mapping) -> list
         "source", calculated_summary_block["calculation"]["operation"]
     )
 
-    return [value["identifier"] for value in values if value["source"] == "answers"]
-
-
-def get_placeholder_answer_ids(placeholder_block: Mapping) -> list[str]:
-    values = get_mappings_with_key("source", placeholder_block["answers"]["arguments"])
     return [value["identifier"] for value in values if value["source"] == "answers"]
