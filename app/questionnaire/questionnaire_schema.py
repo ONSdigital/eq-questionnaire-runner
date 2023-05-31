@@ -32,8 +32,6 @@ QuestionSchemaType = Mapping
 DependencyDictType: TypeAlias = dict[str, OrderedSet[str]]
 
 TRANSFORMS_REQUIRING_ROUTING_PATH = ["first_non_empty_item"]
-
-
 class InvalidSchemaConfigurationException(Exception):
     pass
 
@@ -1238,16 +1236,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     "transform",
                     block,
                 )
-
-                placeholder_answer_ids = []
-
-                for transform in transforms:
-                    if transform["transform"] in TRANSFORMS_REQUIRING_ROUTING_PATH:
-                        for item in transform["arguments"]["items"]:
-                            if item.get("source") == "answers":
-                                identifier = item.get("identifier")
-                                placeholder_answer_ids.append(identifier)
-
+               
+                placeholder_answer_ids = [
+                item.get("identifier")
+                for transform in transforms
+                if transform["transform"] in TRANSFORMS_REQUIRING_ROUTING_PATH
+                for item in transform["arguments"]["items"]
+                if item.get("source") == "answers"
+                ]
+ 
                 placeholder_dependenices = self._get_placeholder_section_dependencies(
                     placeholder_answer_ids
                 )
