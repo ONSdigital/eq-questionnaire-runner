@@ -1,0 +1,139 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Other input fields",
+    "theme": "default",
+    "description": "A questionnaire to demo optional question guidance and descriptions",
+    "messages": {
+        "NUMBER_TOO_LARGE": "Number is too large",
+        "NUMBER_TOO_SMALL": "Number cannot be less than zero",
+        "INVALID_NUMBER": "Please enter an integer"
+    },
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "mandatory-checkbox",
+                            "question": {
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": {
+                                                "text": "{company_name}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "company_name",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "first_non_empty_item",
+                                                                "arguments": {
+                                                                    "items": [
+                                                                        {
+                                                                            "source": "metadata",
+                                                                            "identifier": "metadata-1"
+                                                                        },
+                                                                        {
+                                                                            "source": "metadata",
+                                                                            "identifier": "metadata-2"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
+                                "description": {
+                                    "text": "{company_name} rhys",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "company_name",
+                                            "transforms": [
+                                                {
+                                                    "transform": "first_non_empty_item",
+                                                    "arguments": {
+                                                        "items": [
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "metadata-1"
+                                                            },
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "metadata-2"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "mandatory-checkbox-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "None",
+                                                "value": "None"
+                                            },
+                                            {
+                                                "label": "Ham & Cheese",
+                                                "value": "Ham & Cheese"
+                                            },
+                                            {
+                                                "label": "Ham",
+                                                "value": "Ham"
+                                            },
+                                            {
+                                                "label": "Pineapple",
+                                                "value": "Pineapple"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "mandatory-checkbox-question",
+                                "title": "Which pizza toppings would you like?",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "checkboxes"
+                }
+            ]
+        }
+    ]
+}
