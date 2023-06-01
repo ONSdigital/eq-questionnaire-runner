@@ -63,8 +63,9 @@
                                         "id": "total-answer",
                                         "label": "Total",
                                         "mandatory": true,
-                                        "type": "Percentage",
-                                        "decimal_places": 0
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
                                     }
                                 ]
                             }
@@ -276,11 +277,11 @@
                                         "decimal_places": 0
                                     }
                                 ],
-                                "warning": "These answers must add up to the total provided in the previous question",
+                                "warning": "These answers must add up to the total of 100%",
                                 "calculations": [
                                     {
                                         "calculation_type": "sum",
-                                        "answer_id": "total-answer",
+                                        "value": 100,
                                         "answers_to_calculate": ["percentage-of-shopping-elsewhere", "percentage-of-shopping"],
                                         "conditions": ["equals"]
                                     }
@@ -335,13 +336,16 @@
                                                     }
                                                 ]
                                             },
-                                            "id": "amount-of-shopping",
+                                            "id": "spending-amount",
                                             "mandatory": false,
                                             "type": "Currency",
                                             "currency": "GBP",
                                             "decimal_places": 2,
                                             "maximum": {
-                                                "value": 10000
+                                                "value": {
+                                                    "source": "answers",
+                                                    "identifier": "total-answer"
+                                                }
                                             },
                                             "minimum": {
                                                 "value": 0
@@ -349,9 +353,18 @@
                                         }
                                     ]
                                 },
+                                "warning": "These answers must add up to the total provided in the previous question",
+                                "calculations": [
+                                    {
+                                        "calculation_type": "sum",
+                                        "answer_id": "total-answer",
+                                        "answers_to_calculate": ["spending-amount"],
+                                        "conditions": ["equals"]
+                                    }
+                                ],
                                 "id": "dynamic-answer-only-question",
                                 "title": "How much do you spend at each of the following supermarket?",
-                                "type": "General"
+                                "type": "Calculated"
                             }
                         }
                     ]
