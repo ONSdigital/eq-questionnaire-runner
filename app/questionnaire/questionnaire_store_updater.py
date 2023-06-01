@@ -496,7 +496,11 @@ class QuestionnaireStoreUpdater:
             section_key,
             blocks_to_remove,
         ) in self.dependent_block_id_by_section_key.items():
-            if section_key not in self.started_section_keys():
+            if section_key not in self.started_section_keys() and not any(
+                block_id
+                for block_id in blocks_to_remove
+                if self._schema.block_has_dynamic_answer(block_id)
+            ):
                 continue
 
             section_id, list_item_id = section_key
@@ -505,7 +509,9 @@ class QuestionnaireStoreUpdater:
             for block_id in blocks_to_remove:
                 location = Location(
                     section_id=section_id,
-                    list_item_id=list_item_id,
+                    list_item_id=None
+                    if self._schema.block_has_dynamic_answer(block_id)
+                    else list_item_id,
                     block_id=block_id,
                 )
                 blocks_removed |= self.remove_completed_location(location)

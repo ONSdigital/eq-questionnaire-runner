@@ -338,20 +338,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     self._update_answer_dependencies_for_calculations(
                         question["calculations"], block_id=block["id"]
                     )
+                    self.check_for_dynamic_answers(
+                        question=question, block_id=block["id"]
+                    )
                     continue
 
-                if dynamic_answers := question.get("dynamic_answers"):
-                    for answer in dynamic_answers["answers"]:
-                        value_source = dynamic_answers["values"]
-                        self._update_answer_dependencies_for_value_source(
-                            value_source, block_id=block["id"], answer_id=answer["id"]
-                        )
-
-                        self._dynamic_answer_ids.add(answer["id"])
-
-                        self._update_answer_dependencies_for_answer(
-                            answer, block_id=block["id"]
-                        )
+                self.check_for_dynamic_answers(question=question, block_id=block["id"])
 
                 for answer in question.get("answers", []):
                     self._update_answer_dependencies_for_answer(
@@ -706,6 +698,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def is_answer_dynamic(self, answer_id: str) -> bool:
         return answer_id in self._dynamic_answer_ids
+
+    def block_has_dynamic_answer(self, block_id: str) -> bool:
+        return (
+            "dynamic_answers" in self.get_block(block_id).get("question", {})  # type: ignore
+            if self.get_block(block_id)
+            else False
+        )
 
     def is_repeating_answer(
         self,
@@ -1203,6 +1202,20 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             for item in summary.get("items", []):
                 if item["for_list"] == list_name and item.get("item_anchor_answer_id"):
                     return f"#{str(item['item_anchor_answer_id'])}"
+
+    def check_for_dynamic_answers(self, *, question: Mapping, block_id: str) -> None:
+        if dynamic_answers := question.get("dynamic_answers"):
+            for answer in dynamic_answers["answers"]:
+                value_source = dynamic_answers["values"]
+                self._update_answer_dependencies_for_value_source(
+                    value_source,
+                    block_id=block_id,
+                    answer_id=answer["id"],
+                )
+
+                self._dynamic_answer_ids.add(answer["id"])
+
+                self._update_answer_dependencies_for_answer(answer, block_id=block_id)
 
 
 def get_sources_for_type_from_data(

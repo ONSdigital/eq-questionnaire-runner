@@ -1203,6 +1203,7 @@ def test_dependent_sections_current_section_status_not_updated(mocker):
 
 def test_dependent_sections_not_started_skipped(mock_router, mocker):
     # Given
+    schema = QuestionnaireSchema({})
     current_location = Location(
         section_id="company-summary-section", block_id="total-turnover-block"
     )
@@ -1219,6 +1220,7 @@ def test_dependent_sections_not_started_skipped(mock_router, mocker):
         current_location=current_location,
         progress_store=progress_store,
         router=mock_router,
+        schema=schema,
     )
 
     dependent_section_key = ("breakdown-section", None)
@@ -1294,7 +1296,7 @@ def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
 def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_status_updated(
     mocker, dependent_section_status, mock_router
 ):
-    # Given
+    schema = QuestionnaireSchema({})
     current_location = Location(
         section_id="company-summary-section", block_id="total-turnover-block"
     )
@@ -1336,6 +1338,7 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
         progress_store=progress_store,
         list_store=list_store,
         router=mock_router,
+        schema=schema,
     )
 
     questionnaire_store_updater.dependent_block_id_by_section_key = {

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import itertools
 import logging
 from collections.abc import Callable
@@ -386,8 +387,17 @@ class QuestionnaireForm(FlaskForm):
         return minimum, maximum
 
     def _get_formatted_calculation_values(
-        self, answers_list: Sequence[str]
+        self, answers_sequence: Sequence[str]
     ) -> list[str]:
+        answers_list = list(copy.copy(answers_sequence))
+        list_item_ids = self.list_store["supermarkets"]
+        for answer_id in answers_list:
+            if self.schema.is_answer_dynamic(answer_id):
+                answers_list.remove(answer_id)
+                answers_list.extend(
+                    f"{answer_id}-{list_item_id}" for list_item_id in list_item_ids
+                )
+
         return [
             self.get_data(answer_id).replace(" ", "").replace(",", "")
             for answer_id in answers_list
