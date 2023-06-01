@@ -1,5 +1,7 @@
 import pytest
 
+from app.data_models import CompletionStatus, ProgressStore
+from app.data_models.progress import ProgressDictType
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import ListContext
@@ -173,5 +175,185 @@ def test_for_list_item_ids(
             "list_item_id": "UHPLbX",
         }
     ]
+
+    assert expected == list_context["list"]["list_items"]
+
+
+@pytest.mark.usefixtures("app")
+def test_list_context_items_complete_without_repeating_blocks(
+    people_answer_store, people_list_store, list_collector_block
+):
+    schema = load_schema_from_name("test_list_collector_primary_person")
+    expected = [
+        {
+            "item_title": "Toni Morrison",
+            "edit_link": "/questionnaire/people/PlwgoG/edit-person/",
+            "remove_link": "/questionnaire/people/PlwgoG/remove-person/",
+            "primary_person": False,
+            "list_item_id": "PlwgoG",
+            "is_complete": True,
+            "repeating_blocks": False,
+        },
+        {
+            "item_title": "Barry Pheloung",
+            "edit_link": "/questionnaire/people/UHPLbX/edit-person/",
+            "remove_link": "/questionnaire/people/UHPLbX/remove-person/",
+            "primary_person": False,
+            "list_item_id": "UHPLbX",
+            "is_complete": True,
+            "repeating_blocks": False,
+        },
+    ]
+
+    progress_store = ProgressStore(
+        [
+            ProgressDictType(
+                section_id="section-id",
+                list_item_id="PlwgoG",
+                status=CompletionStatus.COMPLETED,
+                block_ids=[],
+            ),
+            ProgressDictType(
+                section_id="section-id",
+                list_item_id="UHPLbX",
+                status=CompletionStatus.COMPLETED,
+                block_ids=[],
+            ),
+        ]
+    )
+
+    list_context = ListContext(
+        DEFAULT_LANGUAGE_CODE,
+        schema,
+        people_answer_store,
+        people_list_store,
+        progress_store,
+        metadata={},
+        response_metadata={},
+    )
+
+    list_context = list_context(
+        summary_definition=list_collector_block["summary"],
+        for_list="people",
+        section_id="section-id",
+        has_repeating_blocks=False,
+        edit_block_id=list_collector_block["edit_block"]["id"],
+        remove_block_id=list_collector_block["remove_block"]["id"],
+    )
+
+    assert expected == list_context["list"]["list_items"]
+
+
+@pytest.mark.usefixtures("app")
+def test_list_context_items_incomplete_with_repeating_blocks(
+    repeating_blocks_answer_store, repeating_blocks_list_store, progress_store
+):
+    schema = load_schema_from_name("test_list_collector_repeating_blocks")
+    list_collector_block = schema.get_block("list-collector-block")
+    expected = [
+        {
+            "item_title": "1 - Add answer",
+            "edit_link": "/questionnaire/repeating_blocks_list_collector/PlwgoG/list-collector-edit-block/",
+            "remove_link": "/questionnaire/repeating_blocks_list_collector/PlwgoG/list-collector-remove-block/",
+            "primary_person": False,
+            "list_item_id": "PlwgoG",
+            "is_complete": False,
+            "repeating_blocks": True,
+        },
+        {
+            "item_title": "2 - Add answer",
+            "edit_link": "/questionnaire/repeating_blocks_list_collector/UHPLbX/list-collector-edit-block/",
+            "remove_link": "/questionnaire/repeating_blocks_list_collector/UHPLbX/list-collector-remove-block/",
+            "primary_person": False,
+            "list_item_id": "UHPLbX",
+            "is_complete": False,
+            "repeating_blocks": True,
+        },
+    ]
+
+    list_context = ListContext(
+        DEFAULT_LANGUAGE_CODE,
+        schema,
+        repeating_blocks_answer_store,
+        repeating_blocks_list_store,
+        progress_store,
+        metadata={},
+        response_metadata={},
+    )
+
+    list_context = list_context(
+        summary_definition=list_collector_block["summary"],
+        for_list=list_collector_block["for_list"],
+        section_id="section",
+        has_repeating_blocks=True,
+        edit_block_id=list_collector_block["edit_block"]["id"],
+        remove_block_id=list_collector_block["remove_block"]["id"],
+    )
+
+    assert expected == list_context["list"]["list_items"]
+
+
+@pytest.mark.usefixtures("app")
+def test_list_context_items_complete_with_repeating_blocks(
+    repeating_blocks_answer_store, repeating_blocks_list_store
+):
+    schema = load_schema_from_name("test_list_collector_repeating_blocks")
+    list_collector_block = schema.get_block("list-collector-block")
+    expected = [
+        {
+            "item_title": "1 - Add answer",
+            "edit_link": "/questionnaire/repeating_blocks_list_collector/PlwgoG/list-collector-edit-block/",
+            "remove_link": "/questionnaire/repeating_blocks_list_collector/PlwgoG/list-collector-remove-block/",
+            "primary_person": False,
+            "list_item_id": "PlwgoG",
+            "is_complete": True,
+            "repeating_blocks": True,
+        },
+        {
+            "item_title": "2 - Add answer",
+            "edit_link": "/questionnaire/repeating_blocks_list_collector/UHPLbX/list-collector-edit-block/",
+            "remove_link": "/questionnaire/repeating_blocks_list_collector/UHPLbX/list-collector-remove-block/",
+            "primary_person": False,
+            "list_item_id": "UHPLbX",
+            "is_complete": True,
+            "repeating_blocks": True,
+        },
+    ]
+
+    progress_store = ProgressStore(
+        [
+            ProgressDictType(
+                section_id="section",
+                list_item_id="PlwgoG",
+                status=CompletionStatus.COMPLETED,
+                block_ids=[],
+            ),
+            ProgressDictType(
+                section_id="section",
+                list_item_id="UHPLbX",
+                status=CompletionStatus.COMPLETED,
+                block_ids=[],
+            ),
+        ]
+    )
+
+    list_context = ListContext(
+        DEFAULT_LANGUAGE_CODE,
+        schema,
+        repeating_blocks_answer_store,
+        repeating_blocks_list_store,
+        progress_store,
+        metadata={},
+        response_metadata={},
+    )
+
+    list_context = list_context(
+        summary_definition=list_collector_block["summary"],
+        for_list=list_collector_block["for_list"],
+        section_id="section",
+        has_repeating_blocks=True,
+        edit_block_id=list_collector_block["edit_block"]["id"],
+        remove_block_id=list_collector_block["remove_block"]["id"],
+    )
 
     assert expected == list_context["list"]["list_items"]

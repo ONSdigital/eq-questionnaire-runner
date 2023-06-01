@@ -5,6 +5,7 @@ from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
+from app.utilities.schema import load_schema_from_name
 
 
 def assert_all_dict_values_are_hashable(data):
@@ -892,13 +893,13 @@ def test_progress_dependencies_for_when_rules(
            } == schema.when_rules_section_dependencies_for_progress
 
 
-def test_get_blocks_with_repeating_blocks(list_collector_with_repeating_blocks):
-    schema = QuestionnaireSchema(list_collector_with_repeating_blocks)
+def test_get_blocks_with_repeating_blocks():
+    schema = load_schema_from_name("test_list_collector_repeating_blocks")
     assert len(schema.get_blocks()) == 6
 
 
-def test_get_block_with_repeating_blocks(list_collector_with_repeating_blocks):
-    schema = QuestionnaireSchema(list_collector_with_repeating_blocks)
+def test_get_block_with_repeating_blocks():
+    schema = load_schema_from_name("test_list_collector_repeating_blocks")
     block1 = schema.get_block("repeating-block-1")
     block2 = schema.get_block("repeating-block-2")
 
@@ -906,23 +907,24 @@ def test_get_block_with_repeating_blocks(list_collector_with_repeating_blocks):
     assert block2["id"] == "repeating-block-2"
 
 
-def test_is_block_in_repeating_blocks(list_collector_with_repeating_blocks):
-    schema = QuestionnaireSchema(list_collector_with_repeating_blocks)
+def test_is_block_in_repeating_blocks():
+    schema = load_schema_from_name("test_list_collector_repeating_blocks")
 
     assert schema.is_block_in_repeating_blocks("repeating-block-1")
     assert not schema.is_block_in_repeating_blocks("list-collector-edit-block")
 
 
-def test_is_answer_in_repeating_blocks(list_collector_with_repeating_blocks):
-    schema = QuestionnaireSchema(list_collector_with_repeating_blocks)
+def test_is_answer_in_repeating_blocks():
+    schema = load_schema_from_name("test_list_collector_repeating_blocks")
 
     assert schema.is_answer_in_repeating_blocks("repeating-block-1-question-answer-1")
-    assert not schema.is_answer_in_repeating_blocks("list-collector-add-block-question-answer")
+    assert not schema.is_answer_in_repeating_blocks(
+        "list-collector-add-block-question-answer"
+    )
 
 
-def test_get_block_for_answer_id_returns_repeating_block_for_repeating_block_answer_id(
-        list_collector_with_repeating_blocks):
-    schema = QuestionnaireSchema(list_collector_with_repeating_blocks)
+def test_get_block_for_answer_id_returns_repeating_block_for_repeating_block_answer_id():
+    schema = load_schema_from_name("test_list_collector_repeating_blocks")
 
     block1 = schema.get_block_for_answer_id("repeating-block-1-question-answer-1")
     block2 = schema.get_block_for_answer_id("repeating-block-2-question-answer-1")
