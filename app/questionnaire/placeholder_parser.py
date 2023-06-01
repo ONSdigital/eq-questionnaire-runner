@@ -145,7 +145,6 @@ class PlaceholderParser:
 
         for transform in transform_list:
             transform_args: MutableMapping = {}
-            transform_name = transform["transform"]
             value_source_resolver = self._get_value_source_resolver_for_transform(
                 transform
             )
@@ -207,7 +206,7 @@ class PlaceholderParser:
         return all(source == "metadata" for source in sources)
 
     def _get_value_source_resolver_for_transform(
-        self, transform
+        self, transform: Mapping
     ) -> ValueSourceResolver:
         if self._location:
             block_ids = get_block_ids_for_placeholder_dependencies(
@@ -218,9 +217,9 @@ class PlaceholderParser:
                 data=transform,
             )
             self._routing_path_block_ids_by_section_key.update(block_ids)
-            routing_path_block_ids = []
-            for key in block_ids:
-                routing_path_block_ids += block_ids[key]
-            return self._get_value_source_resolver(set(routing_path_block_ids))
+            routing_path_block_ids: list = []
+            for value in block_ids.values():
+                routing_path_block_ids += value
+            return self._get_value_source_resolver(OrderedSet(routing_path_block_ids))
 
         return self._value_source_resolver

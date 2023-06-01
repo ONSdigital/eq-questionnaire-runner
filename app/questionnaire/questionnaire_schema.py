@@ -1181,12 +1181,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         return section_dependencies
 
-    def _get_placeholder_section_dependencies(self, answer_ids: list):
+    def _get_placeholder_section_dependencies(self, answer_ids: list) -> set[str]:
         section_dependencies: set[str] = set()
         for answer_id in answer_ids:
             block = self.get_block_for_answer_id(answer_id)
-            section_id = self.get_section_id_for_block_id(block["id"])
-            section_dependencies.add(section_id)
+            # Type ignore: block_id and section_id is never None
+            section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
+            section_dependencies.add(section_id)  # type: ignore
         return section_dependencies
 
     def get_summary_item_for_list_for_section(
@@ -1216,20 +1217,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             for item in summary.get("items", []):
                 if item["for_list"] == list_name and item.get("item_anchor_answer_id"):
                     return f"#{str(item['item_anchor_answer_id'])}"
-
-    # def get_placeholder_dependencies(self, transform_name: str) -> list[str | None]:
-    #     section_ids = []
-    #     mapping = get_mappings_with_key("transform", self.json.get("sections"))
-    #     for transform in mapping:
-    #         if transform["transform"] == transform_name:
-    #             for item in transform.get("arguments", []).get("items", []):
-    #                 if item.get("source") == "answers":
-    #                     block = self.get_block_for_answer_id(item["identifier"])
-    #                     section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
-    #                     if section_id not in section_ids:
-    #                         section_ids.append(section_id)
-
-    #     return section_ids
 
     def _populate_placeholder_section_dependencies(self) -> None:
         for section in self.get_sections():
