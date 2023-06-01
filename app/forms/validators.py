@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 import re
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
@@ -19,10 +20,14 @@ from app.forms.fields import (
     DecimalFieldWithSeparator,
     IntegerFieldWithSeparator,
 )
-from app.jinja_filters import format_number, get_formatted_currency
+from app.helpers.form_helpers import (
+    format_message_with_title,
+    format_playback_value,
+    sanitise_mobile_number,
+    sanitise_number,
+)
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.rules.utils import parse_datetime
-from app.utilities import safe_content
 
 if TYPE_CHECKING:
     from app.forms.questionnaire_form import QuestionnaireForm  # pragma: no cover
@@ -49,15 +54,12 @@ class NumberCheck:
         field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
     ) -> None:
         try:
-            Decimal(
-                field.raw_data[0].replace(
-                    numbers.get_group_symbol(flask_babel.get_locale()), ""
-                )
-            )
+            # number is sanitised to guard against inputs like `,NaN_` etc
+            number = Decimal(sanitise_number(number=field.raw_data[0]))
         except (ValueError, TypeError, InvalidOperation, AttributeError) as exc:
             raise validators.StopValidation(self.message) from exc
 
-        if "e" in field.raw_data[0].lower():
+        if "e" in field.raw_data[0].lower() or math.isnan(number):
             raise validators.StopValidation(self.message)
 
 
@@ -126,6 +128,7 @@ class NumberRange:
         field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
     ) -> None:
         value: Union[int, Decimal] = field.data
+
         if value is not None:
             error_message = self.validate_minimum(value) or self.validate_maximum(value)
             if error_message:
@@ -179,11 +182,7 @@ class DecimalPlaces:
     def __call__(
         self, form: "QuestionnaireForm", field: DecimalFieldWithSeparator
     ) -> None:
-        data = (
-            field.raw_data[0]
-            .replace(numbers.get_group_symbol(flask_babel.get_locale()), "")
-            .replace(" ", "")
-        )
+        data = sanitise_number(field.raw_data[0])
         decimal_symbol = numbers.get_decimal_symbol(flask_babel.get_locale())
         if data and decimal_symbol in data:
             if self.max_decimals == 0:
@@ -450,20 +449,6 @@ class SumCheck:
         raise NotImplementedError(f"Condition '{condition}' is not implemented")
 
 
-def format_playback_value(
-    value: Union[float, Decimal], currency: Optional[str] = None
-) -> str:
-    if currency:
-        return get_formatted_currency(value, currency)
-
-    formatted_number: str = format_number(value)
-    return formatted_number
-
-
-def format_message_with_title(error_message: str, question_title: str) -> str:
-    return error_message % {"question_title": safe_content(question_title)}
-
-
 class MutuallyExclusiveCheck:
     def __init__(self, question_title: str, messages: OptionalMessage = None):
         self.messages = {**error_messages, **(messages or {})}
@@ -490,11 +475,6 @@ class MutuallyExclusiveCheck:
                 self.question_title,
             )
             raise validators.ValidationError(message)
-
-
-def sanitise_mobile_number(data: str) -> str:
-    data = re.sub(r"[\s.,\t\-{}\[\]()/]", "", data)
-    return re.sub(r"^(0{1,2}44|\+44|0)", "", data)
 
 
 class MobileNumberCheck:

@@ -1,4 +1,5 @@
 import AboutYou from "../generated_pages/multiple_answers/about-you-block.page";
+import BlockPage from "../generated_pages/percentage/block.page";
 
 async function answerAllButOne() {
   await $(AboutYou.textfield()).setValue("John Doe");
@@ -133,5 +134,22 @@ describe("Error Messages", () => {
 
     await $(AboutYou.errorNumber(14)).click();
     await expect(await $(AboutYou.textarea()).isFocused()).to.be.true;
+  });
+});
+describe("Error Message NaN value", () => {
+  beforeEach(async () => {
+    await browser.openQuestionnaire("test_percentage.json");
+  });
+  it("Given a NaN value was entered on percentage question, When the error is displayed, Then the error message is correct", async () => {
+    await $(BlockPage.answer()).setValue("NaN");
+    await $(BlockPage.submit()).click();
+    await expect(await $(BlockPage.errorHeader()).getText()).to.equal("There is a problem with your answer");
+    await expect(await $(BlockPage.answerErrorItem()).getText()).to.equal("Enter a number");
+  });
+  it("Given a NaN value with separators was entered on percentage question, When the error is displayed, Then the error message is correct", async () => {
+    await $(BlockPage.answer()).setValue(",NaN_");
+    await $(BlockPage.submit()).click();
+    await expect(await $(BlockPage.errorHeader()).getText()).to.equal("There is a problem with your answer");
+    await expect(await $(BlockPage.answerErrorItem()).getText()).to.equal("Enter a number");
   });
 });
