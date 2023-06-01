@@ -119,10 +119,12 @@ describe("Dynamic answers list value source", () => {
     await $$(percentageInputs)[0].setValue(12);
     await $$(percentageInputs)[1].setValue(21);
     await setMinimumAndGetSectionSummary();
+    await $(SectionSummaryPage.supermarketsListRemoveLink()).waitForExist();
     await $(SectionSummaryPage.supermarketsListRemoveLink(1)).click();
     await $(ListCollectorRemovePage.yes()).click();
     await $(ListCollectorRemovePage.submit()).click();
     await $(DynamicAnswerPage.submit()).click();
+    await $(SetMinimumPage.setMinimum()).waitForExist();
     await $(SetMinimumPage.setMinimum()).setValue(2);
     await $(SetMinimumPage.submit()).click();
     await $(DynamicAnswerOnlyPage.submit()).click();
