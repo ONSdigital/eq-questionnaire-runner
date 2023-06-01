@@ -31,11 +31,7 @@ class SupplementaryData(Schema, StripWhitespaceMixin):
     @validates_schema()
     def validate_unit_id(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
-        if (
-            data
-            and data.get("identifier")
-            and data["identifier"] != self.context["unit_id"]
-        ):
+        if data and data["identifier"] != self.context["unit_id"]:
             raise ValidationError(
                 "Supplementary data did not return the specified Unit ID"
             )
@@ -55,15 +51,12 @@ class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
     def validate_dataset_and_survey_id(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
         if data:
-            if (
-                data.get("dataset_id")
-                and data["dataset_id"] != self.context["dataset_id"]
-            ):
+            if data["dataset_id"] != self.context["dataset_id"]:
                 raise ValidationError(
                     "Supplementary data did not return the specified Dataset ID"
                 )
 
-            if data.get("survey_id") and data["survey_id"] != self.context["survey_id"]:
+            if data["survey_id"] != self.context["survey_id"]:
                 raise ValidationError(
                     "Supplementary data did not return the specified Survey ID"
                 )
