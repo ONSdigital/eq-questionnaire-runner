@@ -1,7 +1,6 @@
 from typing import Mapping
 
 from marshmallow import (
-    EXCLUDE,
     INCLUDE,
     Schema,
     ValidationError,
@@ -27,7 +26,7 @@ class SupplementaryData(Schema, StripWhitespaceMixin):
     schema_version = VALIDATORS["string"](
         validate=validate.OneOf([SupplementaryDataSchemaVersion.V1.value])
     )
-    items = fields.Nested(ItemsData, required=False, unknown=EXCLUDE)
+    items = fields.Nested(ItemsData, required=False, unknown=INCLUDE)
 
     @validates_schema()
     def validate_unit_id(self, data, **kwargs):
@@ -48,12 +47,12 @@ class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
     data = fields.Nested(
         SupplementaryData,
         required=True,
-        unknown=EXCLUDE,
+        unknown=INCLUDE,
         validate=validate.Length(min=1),
     )
 
     @validates_schema()
-    def validate_dataset_id(self, data, **kwargs):
+    def validate_dataset_and_survey_id(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
         if data:
             if (

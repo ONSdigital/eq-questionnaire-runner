@@ -1,5 +1,6 @@
 import json
 from typing import Mapping
+from urllib.parse import urlencode
 
 from flask import current_app
 from marshmallow import ValidationError
@@ -9,7 +10,6 @@ from structlog import get_logger
 from app.utilities.request_session import get_retryable_session
 from app.utilities.supplementary_data_parser import validate_supplementary_data_v1
 
-SUPPLEMENTARY_DATA_URL = "http://localhost:5003/v1/unit_data"
 SUPPLEMENTARY_DATA_REQUEST_BACKOFF_FACTOR = 0.2
 SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES = 2  # Totals no. of request should be 3. The initial request + SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES
 SUPPLEMENTARY_DATA_REQUEST_TIMEOUT = 3
@@ -30,11 +30,14 @@ class SupplementaryDataRequestFailed(Exception):
         return "Supplementary Data request failed"
 
 
-def get_supplementary_data(dataset_id: str, unit_id: str, survey_id: str) -> dict:
+def get_supplementary_data(*, dataset_id: str, unit_id: str, survey_id: str) -> dict:
     supplementary_data_url = current_app.config["SDS_API_BASE_URL"]
 
+    parameters = {"dataset_id": dataset_id, "unit_id": unit_id}
+
+    encoded_parameters = urlencode(parameters)
     constructed_supplementary_data_url = (
-        f"{supplementary_data_url}?dataset_id={dataset_id}&unit_id={unit_id}"
+        f"{supplementary_data_url}?{encoded_parameters}"
     )
 
     session = get_retryable_session(

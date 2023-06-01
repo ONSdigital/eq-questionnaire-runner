@@ -1,7 +1,7 @@
 import pytest
 from marshmallow import ValidationError
 
-from app.supplementary_data import validate_supplementary_data
+from app.services.supplementary_data import validate_supplementary_data
 from app.utilities.supplementary_data_parser import validate_supplementary_data_v1
 
 SUPPLEMENTARY_DATA_PAYLOAD = {

@@ -3,7 +3,7 @@ import responses
 from flask import Flask, current_app
 from requests import RequestException
 
-from app.supplementary_data import (
+from app.services.supplementary_data import (
     SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES,
     SupplementaryDataRequestFailed,
     get_supplementary_data,
@@ -116,7 +116,7 @@ def test_get_supplementary_data_retries_timeout_error(
     with app.app_context():
         current_app.config["SDS_API_BASE_URL"] = TEST_SDS_URL
         mocker.patch(
-            "app.supplementary_data.validate_supplementary_data",
+            "app.services.supplementary_data.validate_supplementary_data",
             return_value=mock_supplementary_data_payload,
         )
 
@@ -146,7 +146,7 @@ def test_get_supplementary_data_retries_transient_error(app: Flask, mocker):
         )
 
         mocker.patch(
-            "app.supplementary_data.validate_supplementary_data",
+            "app.services.supplementary_data.validate_supplementary_data",
             return_value=mock_supplementary_data_payload,
         )
 

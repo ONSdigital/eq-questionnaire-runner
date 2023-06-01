@@ -23,7 +23,7 @@ from app.helpers.template_helpers import (
 )
 from app.questionnaire import QuestionnaireSchema
 from app.routes.errors import _render_error_page
-from app.supplementary_data import get_supplementary_data
+from app.services.supplementary_data import get_supplementary_data
 from app.utilities.metadata_parser import validate_runner_claims
 from app.utilities.metadata_parser_v2 import (
     validate_questionnaire_claims,
