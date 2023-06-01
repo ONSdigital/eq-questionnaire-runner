@@ -27,7 +27,7 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(Block2Page.submit()).click();
       await $(CalculatedSummary1Page.submit()).click();
       await $(CalculatedSummary2Page.submit()).click();
-      await $(Block3Page.a()).click();
+      await $(Block3Page.yesExtraBreadAndCheese()).click();
       await $(Block3Page.submit()).click();
       await $(CalculatedSummary4Page.submit()).click();
       await $(Section1SummaryPage.submit()).click();

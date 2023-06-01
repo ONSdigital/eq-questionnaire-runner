@@ -139,14 +139,18 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
 
     def test_grand_calculated_summary_overlapping_answers_full_overlap(self):
         self.launchSurvey("test_grand_calculated_summary_overlapping_answers")
-        self._complete_upto_grand_calculated_summary_overlapping_answers("AB")
+        self._complete_upto_grand_calculated_summary_overlapping_answers(
+            "Yes, I am going to buy two of everything"
+        )
         self.assertInBody(
             "Grand Calculated Summary of purchases this week comes to £660.00. Is this correct?"
         )
 
     def test_grand_calculated_summary_overlapping_answers_partial_overlap(self):
         self.launchSurvey("test_grand_calculated_summary_overlapping_answers")
-        self._complete_upto_grand_calculated_summary_overlapping_answers("A")
+        self._complete_upto_grand_calculated_summary_overlapping_answers(
+            "Yes, extra bread and cheese"
+        )
         self.assertInBody(
             "Grand Calculated Summary of purchases this week comes to £360.00. Is this correct?"
         )

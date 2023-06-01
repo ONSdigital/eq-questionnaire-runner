@@ -191,11 +191,11 @@
                                         "options": [
                                             {
                                                 "label": "Yes, I am going to buy two of everything",
-                                                "value": "AB"
+                                                "value": "Yes, I am going to buy two of everything"
                                             },
                                             {
                                                 "label": "Yes, extra bread and cheese",
-                                                "value": "A"
+                                                "value": "Yes, extra bread and cheese"
                                             },
                                             {
                                                 "label": "No",
@@ -214,7 +214,7 @@
                                             "source": "answers",
                                             "identifier": "radio-extra"
                                         },
-                                        "AB"
+                                        "Yes, I am going to buy two of everything"
                                     ]
                                 }
                             },
@@ -253,7 +253,7 @@
                                             "source": "answers",
                                             "identifier": "radio-extra"
                                         },
-                                        "A"
+                                        "Yes, extra bread and cheese"
                                     ]
                                 }
                             },
