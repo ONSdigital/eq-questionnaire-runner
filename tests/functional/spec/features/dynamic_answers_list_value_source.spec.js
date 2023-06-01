@@ -178,10 +178,10 @@ async function addTwoSupermarkets() {
 
 async function setMinimumAndGetSectionSummary() {
   await $(DynamicAnswerPage.submit()).click();
-  await expect(await browser.getUrl()).to.contain(SetMinimumPage.pageName);
+  await $(SetMinimumPage.setMinimum()).waitForExist();
   await $(SetMinimumPage.setMinimum()).setValue(2);
   await $(SetMinimumPage.submit()).click();
-  await expect(await browser.getUrl()).to.contain(DynamicAnswerOnlyPage.pageName);
+  await $(DynamicAnswerOnlyPage.submit()).waitForExist();
   await $(DynamicAnswerOnlyPage.submit()).click();
-  await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
+  await $(SectionSummaryPage.submit()).waitForExist();
 }
