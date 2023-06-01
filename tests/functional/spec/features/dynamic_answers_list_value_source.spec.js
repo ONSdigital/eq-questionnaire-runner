@@ -183,5 +183,5 @@ async function setMinimumAndGetSectionSummary() {
   await $(SetMinimumPage.submit()).click();
   await $(DynamicAnswerOnlyPage.submit()).waitForExist();
   await $(DynamicAnswerOnlyPage.submit()).click();
-  await $(SectionSummaryPage.submit()).waitForExist();
+  await $(SectionSummaryPage.supermarketsListAddLink()).waitForExist();
 }
