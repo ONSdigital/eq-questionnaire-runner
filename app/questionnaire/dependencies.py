@@ -70,13 +70,15 @@ def get_block_ids_for_placeholder_dependencies(
     dependent_sections = schema.placeholder_section_dependencies_by_block[
         location.section_id
     ]
-    if block_id := location.block_id: 
+    if block_id := location.block_id:
         dependents = OrderedSet(dependent_sections[block_id])
     else:
         dependents = get_flattened_mapping_values(dependent_sections)
 
     if dependents and not get_sources_for_type_from_data(
-        source_type="answers", data=data, ignore_keys=["when"],
+        source_type="answers",
+        data=data,
+        ignore_keys=["when"],
     ):
         return block_ids_by_section
     for section in dependents:
@@ -86,7 +88,7 @@ def get_block_ids_for_placeholder_dependencies(
 
         if key in sections_to_ignore:
             continue
-        
+
         if key in progress_store.started_section_keys():
             routing_path = path_finder.routing_path(*key)
             block_ids_by_section[key] = routing_path.block_ids

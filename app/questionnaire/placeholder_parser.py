@@ -221,8 +221,6 @@ class PlaceholderParser:
             routing_path_block_ids = []
             for key in block_ids:
                 routing_path_block_ids += block_ids[key]
-            print(routing_path_block_ids)
             return self._get_value_source_resolver(set(routing_path_block_ids))
-        
-        return self._value_source_resolver
 
+        return self._value_source_resolver
