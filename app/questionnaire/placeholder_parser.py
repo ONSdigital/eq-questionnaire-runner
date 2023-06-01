@@ -13,6 +13,7 @@ from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire import path_finder as pf
 from app.questionnaire.dependencies import (
     get_block_ids_for_calculated_summary_dependencies,
+    get_block_ids_for_placeholder_dependencies,
 )
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 from app.questionnaire.relationship_location import RelationshipLocation
@@ -145,9 +146,8 @@ class PlaceholderParser:
         for transform in transform_list:
             transform_args: MutableMapping = {}
             transform_name = transform["transform"]
-
             value_source_resolver = self._get_value_source_resolver_for_transform(
-                transform_name
+                transform
             )
 
             for arg_key, arg_value in transform["arguments"].items():
@@ -207,20 +207,22 @@ class PlaceholderParser:
         return all(source == "metadata" for source in sources)
 
     def _get_value_source_resolver_for_transform(
-        self, transform_name: str
+        self, transform
     ) -> ValueSourceResolver:
-        if not (
-            section_ids := self._schema.get_placeholder_dependencies(transform_name)
-        ):
-            return self._value_source_resolver
-
-        complete_routing_path_block_ids = []
-
-        for section_id in section_ids:
-            routing_path_block_ids = self._routing_path_block_ids_by_section_key(
-                section_id=section_id  # type: ignore
-                # section_id always exists
+        if self._location:
+            block_ids = get_block_ids_for_placeholder_dependencies(
+                schema=self._schema,
+                location=self._location,
+                progress_store=self._progress_store,
+                path_finder=self._path_finder,
+                data=transform,
             )
-            complete_routing_path_block_ids += routing_path_block_ids
+            self._routing_path_block_ids_by_section_key.update(block_ids)
+            routing_path_block_ids = []
+            for key in block_ids:
+                routing_path_block_ids += block_ids[key]
+            print(routing_path_block_ids)
+            return self._get_value_source_resolver(set(routing_path_block_ids))
+        
+        return self._value_source_resolver
 
-        return self._get_value_source_resolver(set(complete_routing_path_block_ids))

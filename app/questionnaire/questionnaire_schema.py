@@ -1245,12 +1245,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 if item.get("source") == "answers"
                 ]
  
-                placeholder_dependenices = self._get_placeholder_section_dependencies(
+                placeholder_dependencies = self._get_placeholder_section_dependencies(
                     placeholder_answer_ids
                 )
                 self.placeholder_section_dependencies_by_block[section["id"]][
                     block["id"]
-                ].update(placeholder_dependenices)
+                ].update(placeholder_dependencies)
 
 
 def get_sources_for_type_from_data(
