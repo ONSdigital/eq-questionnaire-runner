@@ -1906,3 +1906,41 @@ def test_form_for_radio_other_selected(app, answer_store, list_store):
 
         other_text_field = getattr(form, "other-answer-mandatory")
         assert other_text_field.data == "Other text field value"
+
+
+def test_dynamic_answers_question_validates(app, answer_store):
+    with app.test_request_context():
+        schema = load_schema_from_name(
+            "test_validation_sum_against_total_dynamic_answers_based_on_list_collector"
+        )
+
+        question_schema = schema.get_block("dynamic-answer").get("question")
+
+        list_store = ListStore([{"name": "people", "items": ["lCIZsS"]}])
+
+        form_data = MultiDict(
+            {
+                "percentage-of-shopping-lCIZsS": "25",
+                "percentage-of-shopping-elsewhere": "75",
+            }
+        )
+
+        expected_form_data = {
+            "csrf_token": None,
+            "percentage-of-shopping-lCIZsS": "25",
+            "percentage-of-shopping-elsewhere": "75",
+        }
+
+        form = generate_form(
+            schema,
+            question_schema,
+            answer_store,
+            list_store,
+            metadata=get_metadata(),
+            response_metadata={},
+            form_data=form_data,
+            progress_store=ProgressStore(),
+        )
+
+        form.validate()
+        assert form.data, expected_form_data

@@ -33,6 +33,7 @@
     "sections": [
         {
             "id": "section",
+            "title": "Supermarkets",
             "summary": {
                 "show_on_completion": true,
                 "items": [
@@ -49,27 +50,7 @@
             "groups": [
                 {
                     "id": "group",
-                    "title": "Validate sum against total",
                     "blocks": [
-                        {
-                            "type": "Question",
-                            "id": "total-block",
-                            "question": {
-                                "id": "total-question",
-                                "title": "Total",
-                                "type": "General",
-                                "answers": [
-                                    {
-                                        "id": "total-answer",
-                                        "label": "Total",
-                                        "mandatory": true,
-                                        "type": "Currency",
-                                        "currency": "GBP",
-                                        "decimal_places": 2
-                                    }
-                                ]
-                            }
-                        },
                         {
                             "id": "list-collector",
                             "type": "ListCollector",
@@ -289,6 +270,25 @@
                                 "id": "dynamic-answer-question",
                                 "title": "What percent of your shopping do you do at each of the following supermarket?",
                                 "type": "Calculated"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "total-block",
+                            "question": {
+                                "id": "total-question",
+                                "title": "Total amount you spend",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "total-answer",
+                                        "label": "Total",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
                             }
                         },
                         {

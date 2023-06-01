@@ -92,6 +92,12 @@ class ListAction(Question):
                 self.current_location.section_id, self.current_location.list_item_id
             )
             self.questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
+            self.current_location.list_item_id = (
+                None
+                if self.questionnaire_store_updater.dependent_sections
+                else self._current_location.list_item_id
+            )
+            self._update_section_completeness()
             self.questionnaire_store_updater.update_progress_for_dependent_sections()
             self.questionnaire_store_updater.save()
 
