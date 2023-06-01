@@ -75,8 +75,8 @@
                                         }
                                     ]
                                 },
-                                "description": {
-                                    "text": "{company_name} rhys",
+                                "description": [{
+                                    "text": "{company_name}",
                                     "placeholders": [
                                         {
                                             "placeholder": "company_name",
@@ -99,7 +99,7 @@
                                             ]
                                         }
                                     ]
-                                },
+                                }],
                                 "answers": [
                                     {
                                         "id": "mandatory-checkbox-answer",
