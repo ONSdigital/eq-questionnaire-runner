@@ -138,7 +138,7 @@ class SectionSummaryContext(Context):
             "groups": [
                 Group(
                     group_schema=group,
-                    routing_path=self.routing_path,
+                    routing_path_block_ids=self.routing_path.block_ids,
                     answer_store=self._answer_store,
                     list_store=self._list_store,
                     metadata=self._metadata,
@@ -172,7 +172,7 @@ class SectionSummaryContext(Context):
         for summary_element in section_summary:
             if summary_element["type"] == "List":
                 list_collector_block = ListCollectorBlock(
-                    routing_path=self.routing_path,
+                    routing_path_block_ids=self.routing_path.block_ids,
                     answer_store=self._answer_store,
                     list_store=self._list_store,
                     progress_store=self._progress_store,
