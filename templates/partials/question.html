@@ -59,7 +59,7 @@
   {%- if question.guidance -%}
     {% set contents = question.guidance.contents %}
     {% for item in contents %}
-      {%- if item["description"] -%}
+      {%- if item["title"] or item["description"] or item["list"] -%}
         {% call onsPanel({
           "id": "question-guidance-" ~ question.id,
           "classes": "ons-u-mb-m"
