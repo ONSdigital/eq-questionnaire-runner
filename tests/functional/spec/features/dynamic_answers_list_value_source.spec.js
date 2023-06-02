@@ -72,6 +72,7 @@ describe("Dynamic answers list value source", () => {
     await $(DynamicAnswerOnlyPage.previous()).click();
     await $(SetMinimumPage.previous()).click();
     await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
+    await $(inputs).waitForExist({ timeout: timeout });
     await expect(await $$(inputs)[0].getValue()).to.equal("12");
     await expect(await $$(inputs)[1].getValue()).to.equal("21");
     await expect(await $$(labels)[0].getText()).to.equal("Percentage of shopping at Tesco");
@@ -85,6 +86,7 @@ describe("Dynamic answers list value source", () => {
     await $(SectionSummaryPage.previous()).click();
     await $(DynamicAnswerOnlyPage.previous()).click();
     await $(SetMinimumPage.previous()).click();
+    await $(inputs).waitForExist({ timeout: timeout });
     await $$(inputs)[0].setValue(21);
     await $$(inputs)[1].setValue(12);
     await $(DynamicAnswerPage.submit()).click();
@@ -100,6 +102,7 @@ describe("Dynamic answers list value source", () => {
     await $(group).waitForExist({ timeout: timeout });
     await $(group).$$(summaryActions)[0].$("a").click();
     await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
+    await $(inputs).waitForExist({ timeout: timeout });
     await expect(await $$(inputs)[0].isFocused()).to.be.true;
     await $(DynamicAnswerPage.submit()).click();
     await $(group).waitForExist({ timeout: timeout });
@@ -114,6 +117,7 @@ describe("Dynamic answers list value source", () => {
     await setMinimumAndGetSectionSummary();
     await $(group).waitForExist({ timeout: timeout });
     await $(group).$$(summaryActions)[0].$("a").click();
+    await $(inputs).waitForExist({ timeout: timeout });
     await $$(inputs)[0].setValue(21);
     await $(DynamicAnswerPage.submit()).click();
     await $(group).waitForExist({ timeout: timeout });
@@ -182,6 +186,7 @@ async function addTwoSupermarkets() {
   await $(ListCollectorAddPage.submit()).click();
   await $(ListCollectorPage.no()).click();
   await $(ListCollectorPage.submit()).click();
+  await $('[data-qa="input-text"]').waitForExist({ timeout: 2000 });
 }
 
 async function setMinimumAndGetSectionSummary() {
