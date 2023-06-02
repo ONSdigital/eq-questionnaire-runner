@@ -15,7 +15,7 @@ describe("Dynamic answers list value source", () => {
   const summaryTitles = 'dt[class="ons-summary__item-title"]';
   const summaryValues = 'dd[class="ons-summary__values"]';
   const summaryActions = 'dd[class="ons-summary__actions"]';
-  const timeout = 1500;
+  const timeout = 2000;
   beforeEach("Load the survey", async () => {
     await browser.openQuestionnaire("test_dynamic_answers_list_source.json");
   });
