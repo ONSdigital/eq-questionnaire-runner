@@ -8,12 +8,12 @@ import SetMinimumPage from "../../generated_pages/dynamic_answers_list_source/mi
 import SectionSummaryPage from "../../generated_pages/dynamic_answers_list_source/section-summary.page";
 
 describe("Dynamic answers list value source", () => {
-  const labels = 'label[class="ons-label"]';
+  const labels = ".ons-label";
   const inputs = '[data-qa="input-text"]';
-  const group = 'div[id="group-2"]';
-  const summaryTitles = 'dt[class="ons-summary__item-title"]';
-  const summaryValues = 'dd[class="ons-summary__values"]';
-  const summaryActions = 'dd[class="ons-summary__actions"]';
+  const group = "#group-2";
+  const summaryTitles = ".ons-summary__item-title";
+  const summaryValues = ".ons-summary__values";
+  const summaryActions = ".ons-summary__actions";
   const timeout = 2000;
   beforeEach("Load the survey", async () => {
     await browser.openQuestionnaire("test_dynamic_answers_list_source.json");
