@@ -36,6 +36,7 @@ describe("Dynamic answers list value source", () => {
     await expect(await $$(labels)[0].getText()).to.equal("Percentage of shopping at Tesco");
     await expect(await $$(labels).length).to.equal(2);
     await setMinimumAndGetSectionSummary();
+    await $(SectionSummaryPage.supermarketsListAddLink()).waitForExist({ timeout: 2000 });
     await $(SectionSummaryPage.supermarketsListAddLink()).click();
     await $(ListCollectorAddPage.supermarketName()).setValue("Aldi");
     await $(ListCollectorAddPage.setMaximum()).setValue(10000);
@@ -48,11 +49,13 @@ describe("Dynamic answers list value source", () => {
   });
   it("Given list items have been added and the dynamic answers are submitted, When the summary is displayed, Then the correct answers should be visible and have correct values", async () => {
     await addTwoSupermarkets();
+    await $(percentageInputs).waitForExist({ timeout: 2000 });
     await $$(percentageInputs)[0].setValue(12);
     await $$(percentageInputs)[1].setValue(21);
     await $$(numberInputs)[0].setValue(3);
     await $$(numberInputs)[1].setValue(7);
     await setMinimumAndGetSectionSummary();
+    await $(group).waitForExist({ timeout: 2000 });
     await expect(await $(group).$$(summaryTitles)[0].getText()).to.equal("Percentage of shopping at Tesco");
     await expect(await $(group).$$(summaryValues)[0].getText()).to.equal("12%");
     await expect(await $(group).$$(summaryTitles)[1].getText()).to.equal("Percentage of shopping at Aldi");
@@ -64,6 +67,7 @@ describe("Dynamic answers list value source", () => {
   });
   it("Given list items have been added and the dynamic answers are submitted, When the dynamic answers are revisited, Then they should be visible and have correct values", async () => {
     await addTwoSupermarkets();
+    await $(percentageInputs).waitForExist({ timeout: 2000 });
     await $$(percentageInputs)[0].setValue(12);
     await $$(percentageInputs)[1].setValue(21);
     await setMinimumAndGetSectionSummary();
@@ -78,57 +82,70 @@ describe("Dynamic answers list value source", () => {
   });
   it("Given list items have been added and the dynamic answers are submitted, When the dynamic answers are resubmitted with different values, Then they should be displayed correctly on summary", async () => {
     await addTwoSupermarkets();
+    await $(percentageInputs).waitForExist({ timeout: 2000 });
     await $$(percentageInputs)[0].setValue(12);
     await $$(percentageInputs)[1].setValue(21);
     await setMinimumAndGetSectionSummary();
     await $(SectionSummaryPage.previous()).click();
     await $(DynamicAnswerOnlyPage.previous()).click();
     await $(SetMinimumPage.previous()).click();
+    await $(percentageInputs).waitForExist({ timeout: 2000 });
     await $$(percentageInputs)[0].setValue(21);
     await $$(percentageInputs)[1].setValue(12);
     await $(DynamicAnswerPage.submit()).click();
+    await $(group).waitForExist({ timeout: 2000 });
     await expect(await $(group).$$(summaryValues)[0].getText()).to.equal("21%");
     await expect(await $(group).$$(summaryValues)[1].getText()).to.equal("12%");
   });
   it("Given list items have been added and the dynamic answers are submitted, When the summary edit answer link is used for dynamic answer, Then the focus is on correct answer option", async () => {
     await addTwoSupermarkets();
+    await $(percentageInputs).waitForExist({ timeout: 2000 });
     await $$(percentageInputs)[0].setValue(12);
     await $$(percentageInputs)[1].setValue(21);
     await setMinimumAndGetSectionSummary();
+    await $(group).waitForExist({ timeout: 2000 });
     await $(group).$$(summaryActions)[0].$("a").click();
     await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
+    await $(percentageInputs).waitForExist({ timeout: 2000 });
     await expect(await $$(percentageInputs)[0].isFocused()).to.be.true;
     await $(DynamicAnswerPage.submit()).click();
+    await $(group).waitForExist({ timeout: 2000 });
     await $(group).$$(summaryActions)[1].$("a").click();
     await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
     await expect(await $$(percentageInputs)[1].isFocused()).to.be.true;
   });
   it("Given list items have been added and the dynamic answers are submitted, When the dynamic answers are resubmitted with answers updated, Then they should be displayed correctly on summary", async () => {
     await addTwoSupermarkets();
+    await $(percentageInputs).waitForExist({ timeout: 2000 });
     await $$(percentageInputs)[0].setValue(12);
     await $$(percentageInputs)[1].setValue(21);
     await setMinimumAndGetSectionSummary();
+    await $(group).waitForExist({ timeout: 2000 });
     await $(group).$$(summaryActions)[0].$("a").click();
+    await $(percentageInputs).waitForExist({ timeout: 2000 });
     await $$(percentageInputs)[0].setValue(21);
     await $(DynamicAnswerPage.submit()).click();
+    await $(group).waitForExist({ timeout: 2000 });
     await expect(await $(group).$$(summaryValues)[0].getText()).to.equal("21%");
     await expect(await $(group).$$(summaryValues)[1].getText()).to.equal("21%");
   });
   it("Given list items have been added and the dynamic answers are submitted, When the list items are removed and answers updated, Then they should be displayed correctly on summary", async () => {
     await addTwoSupermarkets();
+    await $(percentageInputs).waitForExist({ timeout: 2000 });
     await $$(percentageInputs)[0].setValue(12);
     await $$(percentageInputs)[1].setValue(21);
     await setMinimumAndGetSectionSummary();
-    await $(SectionSummaryPage.supermarketsListRemoveLink()).waitForExist();
+    await $(SectionSummaryPage.supermarketsListRemoveLink(1)).waitForExist({ timeout: 2000 });
     await $(SectionSummaryPage.supermarketsListRemoveLink(1)).click();
     await $(ListCollectorRemovePage.yes()).click();
     await $(ListCollectorRemovePage.submit()).click();
     await $(DynamicAnswerPage.submit()).click();
-    await $(SetMinimumPage.setMinimum()).waitForExist();
+    await $(SetMinimumPage.setMinimum()).waitForExist({ timeout: 2000 });
     await $(SetMinimumPage.setMinimum()).setValue(2);
     await $(SetMinimumPage.submit()).click();
     await $(DynamicAnswerOnlyPage.submit()).click();
     await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
+    await $(group).waitForExist({ timeout: 2000 });
     await expect(await $(group).$$(summaryTitles)[0].getText()).to.equal("Percentage of shopping at Aldi");
     await expect(await $(group).$$(summaryValues)[0].getText()).to.equal("21%");
     await expect(await $(group).$$(summaryTitles).length).to.equal(5);
@@ -136,6 +153,7 @@ describe("Dynamic answers list value source", () => {
   });
   it("Given list items have been added and the dynamic answers are submitted, When the driving question is changed to 'No', Then after changing answer to 'Yes' all answers should re-appear on summary", async () => {
     await addTwoSupermarkets();
+    await $(percentageInputs).waitForExist({ timeout: 2000 });
     await $$(percentageInputs)[0].setValue(12);
     await $$(percentageInputs)[1].setValue(21);
     await $$(numberInputs)[0].setValue(3);
@@ -152,6 +170,7 @@ describe("Dynamic answers list value source", () => {
     await $(DriverPage.submit()).click();
     await expect(await $(SectionSummaryPage.supermarketsListEditLink(1)).isExisting()).to.be.true;
     await expect(await $(SectionSummaryPage.supermarketsListAddLink()).isExisting()).to.be.true;
+    await $(group).waitForExist({ timeout: 2000 });
     await expect(await $(group).$$(summaryTitles)[0].getText()).to.equal("Percentage of shopping at Tesco");
     await expect(await $(group).$$(summaryValues)[0].getText()).to.equal("12%");
     await expect(await $(group).$$(summaryTitles)[1].getText()).to.equal("Percentage of shopping at Aldi");
@@ -180,10 +199,10 @@ async function addTwoSupermarkets() {
 
 async function setMinimumAndGetSectionSummary() {
   await $(DynamicAnswerPage.submit()).click();
-  await $(SetMinimumPage.setMinimum()).waitForExist();
+  await $(SetMinimumPage.setMinimum()).waitForExist({ timeout: 2000 });
   await $(SetMinimumPage.setMinimum()).setValue(2);
   await $(SetMinimumPage.submit()).click();
-  await $(DynamicAnswerOnlyPage.submit()).waitForExist();
+  await $(DynamicAnswerOnlyPage.submit()).waitForExist({ timeout: 2000 });
   await $(DynamicAnswerOnlyPage.submit()).click();
   await $(SectionSummaryPage.supermarketsListAddLink()).waitForExist({ timeout: 2000 });
 }
