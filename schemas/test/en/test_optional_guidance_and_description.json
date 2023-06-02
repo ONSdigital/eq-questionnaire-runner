@@ -7,22 +7,17 @@
     "title": "Other input fields",
     "theme": "default",
     "description": "A questionnaire to demo optional question guidance and descriptions",
-    "messages": {
-        "NUMBER_TOO_LARGE": "Number is too large",
-        "NUMBER_TOO_SMALL": "Number cannot be less than zero",
-        "INVALID_NUMBER": "Please enter an integer"
-    },
     "metadata": [
-        {
-            "name": "user_id",
-            "type": "string"
-        },
         {
             "name": "period_id",
             "type": "string"
         },
         {
             "name": "ru_name",
+            "type": "string"
+        },
+        {
+            "name": "user_id",
             "type": "string"
         }
     ],
@@ -42,28 +37,53 @@
                     "blocks": [
                         {
                             "type": "Question",
-                            "id": "mandatory-checkbox",
+                            "id": "description-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "answer-1",
+                                        "label": "Enter any description text that you want to be displayed",
+                                        "max_length": 20,
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    },
+                                    {
+                                        "id": "answer-2",
+                                        "label": "Enter any description text that you want to be displayed",
+                                        "max_length": 20,
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    }
+                                ],
+                                "id": "description-question",
+                                "title": "Do not enter anything here so you get an empty question description and question guidance on the following pages!",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "mandatory-radio",
                             "question": {
                                 "guidance": {
                                     "contents": [
                                         {
                                             "description": {
-                                                "text": "{company_name}",
+                                                "text": "{description_text}",
                                                 "placeholders": [
                                                     {
-                                                        "placeholder": "company_name",
+                                                        "placeholder": "description_text",
                                                         "transforms": [
                                                             {
                                                                 "transform": "first_non_empty_item",
                                                                 "arguments": {
                                                                     "items": [
                                                                         {
-                                                                            "source": "metadata",
-                                                                            "identifier": "metadata-1"
+                                                                            "source": "answers",
+                                                                            "identifier": "answer-1"
                                                                         },
                                                                         {
-                                                                            "source": "metadata",
-                                                                            "identifier": "metadata-2"
+                                                                            "source": "answers",
+                                                                            "identifier": "answer-2"
                                                                         }
                                                                     ]
                                                                 }
@@ -77,22 +97,22 @@
                                 },
                                 "description": [
                                     {
-                                        "text": "{company_name}",
+                                        "text": "{description_text}",
                                         "placeholders": [
                                             {
-                                                "placeholder": "company_name",
+                                                "placeholder": "description_text",
                                                 "transforms": [
                                                     {
                                                         "transform": "first_non_empty_item",
                                                         "arguments": {
                                                             "items": [
                                                                 {
-                                                                    "source": "metadata",
-                                                                    "identifier": "metadata-1"
+                                                                    "source": "answers",
+                                                                    "identifier": "answer-1"
                                                                 },
                                                                 {
-                                                                    "source": "metadata",
-                                                                    "identifier": "metadata-2"
+                                                                    "source": "answers",
+                                                                    "identifier": "answer-2"
                                                                 }
                                                             ]
                                                         }
@@ -104,80 +124,91 @@
                                 ],
                                 "answers": [
                                     {
-                                        "id": "mandatory-checkbox-answer",
+                                        "id": "mandatory-radio-answer",
                                         "mandatory": true,
                                         "options": [
                                             {
-                                                "label": "None",
-                                                "value": "None"
+                                                "label": "Yes",
+                                                "value": "Yes"
                                             },
                                             {
-                                                "label": "Ham & Cheese",
-                                                "value": "Ham & Cheese"
-                                            },
-                                            {
-                                                "label": "Ham",
-                                                "value": "Ham"
-                                            },
-                                            {
-                                                "label": "Pineapple",
-                                                "value": "Pineapple"
+                                                "label": "No",
+                                                "value": "No"
                                             }
                                         ],
-                                        "type": "Checkbox"
+                                        "type": "Radio"
                                     }
                                 ],
-                                "id": "mandatory-checkbox-question",
-                                "title": "Which pizza toppings would you like?",
+                                "id": "mandatory-radio-question",
+                                "title": "Were the question description and guidance displayed?",
                                 "type": "General"
                             }
                         },
                         {
                             "type": "Question",
-                            "id": "mandatory-checkbox-two",
+                            "id": "mandatory-radio-two",
                             "question": {
                                 "guidance": {
                                     "contents": [
                                         {
-                                            "description": "Description with an empty list"
+                                            "description": "Description with an empty content list"
                                         },
                                         {
-                                            "list": ["", "", "", ""]
+                                            "list": [
+                                                "List item one",
+                                                {
+                                                    "text": "{description_text}",
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "description_text",
+                                                            "transforms": [
+                                                                {
+                                                                    "transform": "first_non_empty_item",
+                                                                    "arguments": {
+                                                                        "items": [
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "answer-1"
+                                                                            },
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "answer-2"
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
                                         }
                                     ]
                                 },
                                 "answers": [
                                     {
-                                        "id": "mandatory-checkbox-answer-two",
+                                        "id": "mandatory-radio-answer-two",
                                         "mandatory": true,
                                         "options": [
                                             {
-                                                "label": "None",
-                                                "value": "None"
+                                                "label": "Yes",
+                                                "value": "Yes"
                                             },
                                             {
-                                                "label": "Ham & Cheese",
-                                                "value": "Ham & Cheese"
-                                            },
-                                            {
-                                                "label": "Ham",
-                                                "value": "Ham"
-                                            },
-                                            {
-                                                "label": "Pineapple",
-                                                "value": "Pineapple"
+                                                "label": "No",
+                                                "value": "No"
                                             }
                                         ],
-                                        "type": "Checkbox"
+                                        "type": "Radio"
                                     }
                                 ],
-                                "id": "mandatory-checkbox-question-two",
-                                "title": "Which pizza toppings would you like?",
+                                "id": "mandatory-radio-question-two",
+                                "title": "Was the contents list in the question guidance displayed?",
                                 "type": "General"
                             }
                         }
                     ],
-                    "id": "checkboxes"
+                    "id": "radios"
                 }
             ]
         }
