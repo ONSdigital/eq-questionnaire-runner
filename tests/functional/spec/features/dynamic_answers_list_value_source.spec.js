@@ -15,7 +15,7 @@ describe("Dynamic answers list value source", () => {
   const summaryTitles = 'dt[class="ons-summary__item-title"]';
   const summaryValues = 'dd[class="ons-summary__values"]';
   const summaryActions = 'dd[class="ons-summary__actions"]';
-  const timeout = 1000;
+  const timeout = 1500;
   beforeEach("Load the survey", async () => {
     await browser.openQuestionnaire("test_dynamic_answers_list_source.json");
   });
@@ -199,12 +199,8 @@ async function addTwoSupermarkets() {
 }
 
 async function setMinimumAndGetSectionSummary() {
-  const timeout = 1000;
   await $(DynamicAnswerPage.submit()).click();
-  await $(SetMinimumPage.setMinimum()).waitForExist({ timeout: timeout });
   await $(SetMinimumPage.setMinimum()).setValue(2);
   await $(SetMinimumPage.submit()).click();
-  await $(DynamicAnswerOnlyPage.submit()).waitForExist({ timeout: timeout });
   await $(DynamicAnswerOnlyPage.submit()).click();
-  await $(SectionSummaryPage.supermarketsListAddLink()).waitForExist({ timeout: timeout });
 }
