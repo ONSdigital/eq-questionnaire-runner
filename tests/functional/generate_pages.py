@@ -222,6 +222,12 @@ SUMMARY_TITLE_GETTER = Template(
 """
 )
 
+SUMMARY_GROUP_GETTER = Template(
+    r"""  ${group_id_camel}Content(groupNumber) { return `#${group_id_without_number}-` + groupNumber; }
+
+"""
+)
+
 SUMMARY_QUESTION_GETTER = Template(
     r"""  ${questionName}() { return `[data-qa=${questionId}]`; }
 
@@ -657,8 +663,10 @@ def write_summary_spec(
             group_context = {
                 "group_id_camel": camel_case(generate_pascal_case_from_id(group["id"])),
                 "group_id": f'{group["id"]}-0',
+                "group_id_without_number": f'{group["id"]}',
             }
             page_spec.write(SUMMARY_TITLE_GETTER.substitute(group_context))
+            page_spec.write(SUMMARY_GROUP_GETTER.substitute(group_context))
 
 
 def long_names_required(question, num_questions):
