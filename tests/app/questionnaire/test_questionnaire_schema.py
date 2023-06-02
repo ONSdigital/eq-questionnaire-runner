@@ -301,7 +301,7 @@ def test_get_relationship_collectors_by_list_name(mock_relationship_collector_sc
 
 
 def test_get_relationship_collectors_by_list_name_no_collectors(
-        mock_relationship_collector_schema,
+    mock_relationship_collector_schema,
 ):
     schema = QuestionnaireSchema(mock_relationship_collector_schema)
     collectors = schema.get_relationship_collectors_by_list_name("not-a-list")
@@ -310,7 +310,7 @@ def test_get_relationship_collectors_by_list_name_no_collectors(
 
 
 def test_answer_should_not_have_list_item_id_without_repeat_or_list_collector(
-        question_schema,
+    question_schema,
 ):
     schema = QuestionnaireSchema(question_schema)
 
@@ -324,7 +324,7 @@ def test_is_repeating_answer_within_repeat(section_with_repeating_list):
 
 
 def test_is_repeating_answer_within_list_collector(
-        list_collector_variant_schema,
+    list_collector_variant_schema,
 ):
     schema = QuestionnaireSchema(list_collector_variant_schema)
 
@@ -393,7 +393,7 @@ def test_doesnt_have_address_lookup_answer():
 
 
 def test_answer_dependencies_for_calculated_question_non_repeating(
-        calculated_question_with_dependent_sections_schema_non_repeating,
+    calculated_question_with_dependent_sections_schema_non_repeating,
 ):
     schema = calculated_question_with_dependent_sections_schema_non_repeating
 
@@ -418,7 +418,7 @@ def test_answer_dependencies_for_calculated_question_non_repeating(
 
 
 def test_answer_dependencies_for_calculated_question_repeating(
-        calculated_question_with_dependent_sections_schema_repeating,
+    calculated_question_with_dependent_sections_schema_repeating,
 ):
     schema = calculated_question_with_dependent_sections_schema_repeating
 
@@ -443,7 +443,7 @@ def test_answer_dependencies_for_calculated_question_repeating(
 
 
 def test_answer_dependencies_for_calculated_question_value_source(
-        calculated_question_with_dependent_sections_schema,
+    calculated_question_with_dependent_sections_schema,
 ):
     schema = calculated_question_with_dependent_sections_schema
 
@@ -488,7 +488,7 @@ def test_answer_dependencies_for_calculated_question_value_source(
 
 
 def test_answer_dependencies_for_calculated_summary(
-        calculated_summary_schema,
+    calculated_summary_schema,
 ):
     schema = calculated_summary_schema
 
@@ -660,7 +660,7 @@ def test_answer_dependencies_for_min_max(numbers_schema):
 
 
 def test_answer_dependencies_for_dynamic_options(
-        dynamic_radio_options_from_checkbox_schema,
+    dynamic_radio_options_from_checkbox_schema,
 ):
     schema = dynamic_radio_options_from_checkbox_schema
 
@@ -683,7 +683,7 @@ def test_answer_dependencies_for_dynamic_options(
 
 
 def test_answer_dependencies_for_dynamic_options_function_driven(
-        dynamic_answer_options_function_driven_schema,
+    dynamic_answer_options_function_driven_schema,
 ):
     schema = dynamic_answer_options_function_driven_schema
 
@@ -718,148 +718,148 @@ def test_answer_dependencies_for_dynamic_options_function_driven(
 
 
 def test_when_rules_section_dependencies_by_section(
-        skipping_section_dependencies_schema,
+    skipping_section_dependencies_schema,
 ):
     schema = skipping_section_dependencies_schema
     assert {
-               "household-personal-details-section": {
-                   "skip-confirmation-section",
-                   "skip-section",
-               },
-               "household-section": {"skip-section"},
-               "primary-person": {"skip-confirmation-section", "skip-section"},
-               "skip-confirmation-section": {"skip-section"},
-           } == schema.when_rules_section_dependencies_by_section
+        "household-personal-details-section": {
+            "skip-confirmation-section",
+            "skip-section",
+        },
+        "household-section": {"skip-section"},
+        "primary-person": {"skip-confirmation-section", "skip-section"},
+        "skip-confirmation-section": {"skip-section"},
+    } == schema.when_rules_section_dependencies_by_section
 
 
 def test_when_rules_section_dependencies_by_answer(
-        skipping_section_dependencies_schema,
+    skipping_section_dependencies_schema,
 ):
     schema = skipping_section_dependencies_schema
     assert {
-               "enable-section-answer": {"household-section"},
-               "skip-age-answer": {
-                   "household-personal-details-section",
-                   "primary-person",
-                   "skip-confirmation-section",
-               },
-               "skip-confirmation-answer": {
-                   "household-personal-details-section",
-                   "primary-person",
-               },
-           } == schema.when_rules_section_dependencies_by_answer
+        "enable-section-answer": {"household-section"},
+        "skip-age-answer": {
+            "household-personal-details-section",
+            "primary-person",
+            "skip-confirmation-section",
+        },
+        "skip-confirmation-answer": {
+            "household-personal-details-section",
+            "primary-person",
+        },
+    } == schema.when_rules_section_dependencies_by_answer
 
 
 def test_when_rules_section_dependencies_calculated_summary(
-        section_dependencies_calculated_summary_schema,
+    section_dependencies_calculated_summary_schema,
 ):
     schema = section_dependencies_calculated_summary_schema
 
     assert {
-               "milk-answer": {"dependent-enabled-section", "dependent-question-section"},
-               "eggs-answer": {"dependent-enabled-section", "dependent-question-section"},
-               "bread-answer": {"dependent-enabled-section", "dependent-question-section"},
-               "cheese-answer": {"dependent-enabled-section", "dependent-question-section"},
-               "butter-answer": {"dependent-enabled-section", "dependent-question-section"},
-           } == schema.when_rules_section_dependencies_by_answer
+        "milk-answer": {"dependent-enabled-section", "dependent-question-section"},
+        "eggs-answer": {"dependent-enabled-section", "dependent-question-section"},
+        "bread-answer": {"dependent-enabled-section", "dependent-question-section"},
+        "cheese-answer": {"dependent-enabled-section", "dependent-question-section"},
+        "butter-answer": {"dependent-enabled-section", "dependent-question-section"},
+    } == schema.when_rules_section_dependencies_by_answer
 
 
 def test_when_rules_section_dependencies_new_calculated_summary(
-        section_dependencies_new_calculated_summary_schema,
+    section_dependencies_new_calculated_summary_schema,
 ):
     schema = section_dependencies_new_calculated_summary_schema
 
     assert {
-               "milk-answer": {"dependent-enabled-section", "dependent-question-section"},
-               "eggs-answer": {"dependent-enabled-section", "dependent-question-section"},
-               "bread-answer": {"dependent-enabled-section", "dependent-question-section"},
-               "cheese-answer": {"dependent-enabled-section", "dependent-question-section"},
-               "butter-answer": {"dependent-enabled-section", "dependent-question-section"},
-           } == schema.when_rules_section_dependencies_by_answer
+        "milk-answer": {"dependent-enabled-section", "dependent-question-section"},
+        "eggs-answer": {"dependent-enabled-section", "dependent-question-section"},
+        "bread-answer": {"dependent-enabled-section", "dependent-question-section"},
+        "cheese-answer": {"dependent-enabled-section", "dependent-question-section"},
+        "butter-answer": {"dependent-enabled-section", "dependent-question-section"},
+    } == schema.when_rules_section_dependencies_by_answer
 
 
 def test_progress_block_dependencies(
-        progress_block_dependencies_schema,
+    progress_block_dependencies_schema,
 ):
     schema = progress_block_dependencies_schema
 
     assert {
-               "section-1": {"calculated-summary-block": {"section-2", "section-3"}}
-           } == schema.when_rules_block_dependencies_by_section_for_progress_value_source
+        "section-1": {"calculated-summary-block": {"section-2", "section-3"}}
+    } == schema.when_rules_block_dependencies_by_section_for_progress_value_source
 
 
 def test_progress_section_dependencies(
-        progress_section_dependencies_schema,
+    progress_section_dependencies_schema,
 ):
     schema = progress_section_dependencies_schema
 
     assert {
-               "section-1": {"section-2"},
-               "section-2": {"section-4"},
-           } == schema.when_rules_section_dependencies_by_section_for_progress_value_source
+        "section-1": {"section-2"},
+        "section-2": {"section-4"},
+    } == schema.when_rules_section_dependencies_by_section_for_progress_value_source
 
 
 def test_progress_block_and_section_dependencies_are_ordered(
-        progress_dependencies_schema,
+    progress_dependencies_schema,
 ):
     schema = progress_dependencies_schema
 
     assert (
-            ImmutableDict(
-                {
-                    "section-1": OrderedSet(["section-4"]),
-                    "section-2": OrderedSet(
-                        ["section-7", "section-8", "section-9", "section-10"]
-                    ),
-                    "section-4": OrderedSet(["section-6"]),
-                    "section-5": OrderedSet(["section-7"]),
-                    "section-7": OrderedSet(["section-8"]),
-                    "section-9": OrderedSet(["section-12"]),
-                    "section-10": OrderedSet(["section-11"]),
-                }
-            )
-            == schema.when_rules_section_dependencies_by_section_for_progress_value_source
+        ImmutableDict(
+            {
+                "section-1": OrderedSet(["section-4"]),
+                "section-2": OrderedSet(
+                    ["section-7", "section-8", "section-9", "section-10"]
+                ),
+                "section-4": OrderedSet(["section-6"]),
+                "section-5": OrderedSet(["section-7"]),
+                "section-7": OrderedSet(["section-8"]),
+                "section-9": OrderedSet(["section-12"]),
+                "section-10": OrderedSet(["section-11"]),
+            }
+        )
+        == schema.when_rules_section_dependencies_by_section_for_progress_value_source
     )
 
     assert (
-            ImmutableDict(
-                {
-                    "section-1": {
-                        "calculated-summary-block": OrderedSet(
-                            [
-                                "section-2",
-                                "section-3",
-                                "section-5",
-                            ]
-                        )
-                    }
+        ImmutableDict(
+            {
+                "section-1": {
+                    "calculated-summary-block": OrderedSet(
+                        [
+                            "section-2",
+                            "section-3",
+                            "section-5",
+                        ]
+                    )
                 }
-            )
-            == schema.when_rules_block_dependencies_by_section_for_progress_value_source
+            }
+        )
+        == schema.when_rules_block_dependencies_by_section_for_progress_value_source
     )
 
 
 @pytest.mark.parametrize(
     "rule, expected_result",
     (
-            ([], False),
-            ("This is a string", False),
-            ({"key": "value"}, False),
-            (
-                    {"invalid-operator": ({"source": "answers", "identifier": "answer"}, 123)},
-                    False,
-            ),
-            ({"==": ({"source": "answers", "identifier": "answer"}, 123)}, True),
-            ({">": ({"source": "answers", "identifier": "answer"}, 123)}, True),
-            (
-                    {
-                        "or": (
-                                {"source": "answers", "identifier": "answer"},
-                                "No I need to correct this",
-                        )
-                    },
-                    True,
-            ),
+        ([], False),
+        ("This is a string", False),
+        ({"key": "value"}, False),
+        (
+            {"invalid-operator": ({"source": "answers", "identifier": "answer"}, 123)},
+            False,
+        ),
+        ({"==": ({"source": "answers", "identifier": "answer"}, 123)}, True),
+        ({">": ({"source": "answers", "identifier": "answer"}, 123)}, True),
+        (
+            {
+                "or": (
+                    {"source": "answers", "identifier": "answer"},
+                    "No I need to correct this",
+                )
+            },
+            True,
+        ),
     ),
 )
 def test_has_operator_returns_correct_value(rule, expected_result):
@@ -868,7 +868,7 @@ def test_has_operator_returns_correct_value(rule, expected_result):
 
 
 def test_progress_dependencies_for_when_rules(
-        progress_dependencies_schema,
+    progress_dependencies_schema,
 ):
     """
     Asserts that the dependencies captured by
@@ -879,18 +879,18 @@ def test_progress_dependencies_for_when_rules(
     schema = progress_dependencies_schema
 
     assert {
-               "section-10": {"section-2"},
-               "section-11": {"section-10"},
-               "section-12": {"section-9"},
-               "section-2": {"section-1"},
-               "section-3": {"section-1"},
-               "section-4": {"section-1"},
-               "section-5": {"section-1"},
-               "section-6": {"section-4"},
-               "section-7": {"section-5", "section-2"},
-               "section-8": {"section-7", "section-2"},
-               "section-9": {"section-2"},
-           } == schema.when_rules_section_dependencies_for_progress
+        "section-10": {"section-2"},
+        "section-11": {"section-10"},
+        "section-12": {"section-9"},
+        "section-2": {"section-1"},
+        "section-3": {"section-1"},
+        "section-4": {"section-1"},
+        "section-5": {"section-1"},
+        "section-6": {"section-4"},
+        "section-7": {"section-5", "section-2"},
+        "section-8": {"section-7", "section-2"},
+        "section-9": {"section-2"},
+    } == schema.when_rules_section_dependencies_for_progress
 
 
 def test_get_blocks_with_repeating_blocks():

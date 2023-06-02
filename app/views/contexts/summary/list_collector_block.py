@@ -16,16 +16,16 @@ from app.views.contexts.summary.block import Block
 
 class ListCollectorBlock:
     def __init__(
-            self,
-            routing_path: RoutingPath,
-            answer_store: AnswerStore,
-            list_store: ListStore,
-            progress_store: ProgressStore,
-            metadata: Optional[MetadataProxy],
-            response_metadata: MutableMapping,
-            schema: QuestionnaireSchema,
-            location: Location,
-            language: str,
+        self,
+        routing_path: RoutingPath,
+        answer_store: AnswerStore,
+        list_store: ListStore,
+        progress_store: ProgressStore,
+        metadata: Optional[MetadataProxy],
+        response_metadata: MutableMapping,
+        schema: QuestionnaireSchema,
+        location: Location,
+        language: str,
     ) -> None:
         self._location = location
         self._placeholder_renderer = PlaceholderRenderer(
@@ -99,7 +99,7 @@ class ListCollectorBlock:
 
         if len(current_list) == 1 and current_list.primary_person:
             if primary_person_block := self._schema.get_list_collector_for_list(
-                    self._section, for_list=summary["for_list"], primary=True
+                self._section, for_list=summary["for_list"], primary=True
             ):
                 primary_person_edit_block_id = edit_block_id = primary_person_block[
                     "add_or_edit_block"
@@ -142,9 +142,9 @@ class ListCollectorBlock:
         )
 
     def _add_link(
-            self,
-            summary: Mapping[str, Any],
-            list_collector_block: Optional[Mapping[str, Any]],
+        self,
+        summary: Mapping[str, Any],
+        list_collector_block: Optional[Mapping[str, Any]],
     ) -> Optional[str]:
         if list_collector_block:
             return url_for(
@@ -155,7 +155,7 @@ class ListCollectorBlock:
             )
 
         if driving_question_block := self._schema.get_driving_question_for_list(
-                self._section, summary["for_list"]
+            self._section, summary["for_list"]
         ):
             return url_for(
                 "questionnaire.block",
@@ -164,7 +164,7 @@ class ListCollectorBlock:
             )
 
     def _get_related_answers(
-            self, list_model: ListModel, repeating_blocks: Sequence[ImmutableDict]
+        self, list_model: ListModel, repeating_blocks: Sequence[ImmutableDict]
     ) -> dict[str, list[dict]] | None:
         section_id = self._section["id"]
 
@@ -230,7 +230,7 @@ class ListCollectorBlock:
 
             # We need to filter out answers for both variants and normal questions
             for variant_or_block in mutable_block.get(
-                    "question_variants", [mutable_block]
+                "question_variants", [mutable_block]
             ):
                 answers = [
                     answer

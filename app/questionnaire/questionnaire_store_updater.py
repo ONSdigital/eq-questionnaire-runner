@@ -238,7 +238,7 @@ class QuestionnaireStoreUpdater:
         return self._progress_store.remove_completed_location(location)
 
     def update_section_status(
-        self, is_complete: bool, section_id: str, list_item_id: str | None = None
+        self, *, is_complete: bool, section_id: str, list_item_id: str | None = None
     ) -> bool:
         status = (
             CompletionStatus.COMPLETED if is_complete else CompletionStatus.IN_PROGRESS

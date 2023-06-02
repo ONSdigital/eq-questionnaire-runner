@@ -42,8 +42,8 @@ class ListRepeatingBlock(ListEditQuestion):
             list_name=self.current_location.list_name,
         ):
             self.questionnaire_store_updater.update_section_status(
-                True,
-                self.current_location.section_id,
-                self.current_location.list_item_id,
+                is_complete=True,
+                section_id=self.current_location.section_id,
+                list_item_id=self.current_location.list_item_id,
             )
         return super().handle_post()
