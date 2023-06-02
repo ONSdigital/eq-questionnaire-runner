@@ -180,6 +180,14 @@ ANSWER_SUFFIX_GETTER = Template(
 """
 )
 
+QUESTION_LABELS_GETTER = r"""  labels() { return `.ons-label`; }
+
+"""
+
+QUESTION_INPUTS_GETTER = r"""  inputs() { return `[data-qa="input-text"]`; }
+
+"""
+
 DYNAMIC_ANSWER_GETTER = Template(
     r"""  answerByIndex(answerIndex) {
     return `#${answerId}-${answerIndex}`;
@@ -497,6 +505,8 @@ def process_question(question, page_spec, num_questions, page_name):
     page_spec.write(QUESTION_TITLE.substitute(question_context))
     page_spec.write(ANSWER_NUMBERED_ERROR_LIST_GETTER)
     page_spec.write(ANSWER_SINGLE_ERROR_LINK_GETTER)
+    page_spec.write(QUESTION_LABELS_GETTER)
+    page_spec.write(QUESTION_INPUTS_GETTER)
 
 
 def process_calculated_summary(answers, page_spec):
