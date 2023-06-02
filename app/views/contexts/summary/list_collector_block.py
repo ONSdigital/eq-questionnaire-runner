@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Any, Mapping, MutableMapping, Optional
+from typing import Any, Mapping, MutableMapping, Optional, Sequence
 
 from flask import url_for
 from werkzeug.datastructures import ImmutableDict
@@ -16,16 +16,16 @@ from app.views.contexts.summary.block import Block
 
 class ListCollectorBlock:
     def __init__(
-        self,
-        routing_path: RoutingPath,
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        progress_store: ProgressStore,
-        metadata: Optional[MetadataProxy],
-        response_metadata: MutableMapping,
-        schema: QuestionnaireSchema,
-        location: Location,
-        language: str,
+            self,
+            routing_path: RoutingPath,
+            answer_store: AnswerStore,
+            list_store: ListStore,
+            progress_store: ProgressStore,
+            metadata: Optional[MetadataProxy],
+            response_metadata: MutableMapping,
+            schema: QuestionnaireSchema,
+            location: Location,
+            language: str,
     ) -> None:
         self._location = location
         self._placeholder_renderer = PlaceholderRenderer(
@@ -92,13 +92,14 @@ class ListCollectorBlock:
             edit_block_id = list_collector_block["edit_block"]["id"]
             remove_block_id = list_collector_block["remove_block"]["id"]
             add_link = self._add_link(summary, list_collector_block)
-            related_answers = self._get_related_answers(current_list)
+            repeating_blocks = list_collector_block.get("repeating_blocks", [])
+            related_answers = self._get_related_answers(current_list, repeating_blocks)
             item_anchor = self._schema.get_item_anchor(section_id, current_list.name)
             item_label = self._schema.get_item_label(section_id, current_list.name)
 
         if len(current_list) == 1 and current_list.primary_person:
             if primary_person_block := self._schema.get_list_collector_for_list(
-                self._section, for_list=summary["for_list"], primary=True
+                    self._section, for_list=summary["for_list"], primary=True
             ):
                 primary_person_edit_block_id = edit_block_id = primary_person_block[
                     "add_or_edit_block"
@@ -141,9 +142,9 @@ class ListCollectorBlock:
         )
 
     def _add_link(
-        self,
-        summary: Mapping[str, Any],
-        list_collector_block: Optional[Mapping[str, Any]],
+            self,
+            summary: Mapping[str, Any],
+            list_collector_block: Optional[Mapping[str, Any]],
     ) -> Optional[str]:
         if list_collector_block:
             return url_for(
@@ -154,7 +155,7 @@ class ListCollectorBlock:
             )
 
         if driving_question_block := self._schema.get_driving_question_for_list(
-            self._section, summary["for_list"]
+                self._section, summary["for_list"]
         ):
             return url_for(
                 "questionnaire.block",
@@ -163,7 +164,7 @@ class ListCollectorBlock:
             )
 
     def _get_related_answers(
-        self, list_model: ListModel
+            self, list_model: ListModel, repeating_blocks: Sequence[ImmutableDict]
     ) -> dict[str, list[dict]] | None:
         section_id = self._section["id"]
 
@@ -177,7 +178,7 @@ class ListCollectorBlock:
             blocks += self._get_blocks_for_related_answers(related_answers)
 
         if list_model:
-            blocks += self._get_blocks_for_repeating_blocks(list_model)
+            blocks += repeating_blocks
 
         if not blocks:
             return None
@@ -229,7 +230,7 @@ class ListCollectorBlock:
 
             # We need to filter out answers for both variants and normal questions
             for variant_or_block in mutable_block.get(
-                "question_variants", [mutable_block]
+                    "question_variants", [mutable_block]
             ):
                 answers = [
                     answer
@@ -242,22 +243,3 @@ class ListCollectorBlock:
             blocks.append(mutable_block)
 
         return blocks
-
-    def _get_blocks_for_repeating_blocks(self, list_model: ListModel) -> list[dict]:
-        blocks: defaultdict[ImmutableDict, list[str]] = defaultdict(list)
-        for list_id in list_model:
-            list_answers = [
-                (answer_id, answer_list_id)
-                for (answer_id, answer_list_id) in self._answer_store.answer_map
-                if answer_list_id == list_id
-                and self._schema.is_answer_in_repeating_blocks(answer_id)
-            ]
-            for answer_id, answer_list_id in list_answers:
-                block = self._schema.get_block_for_answer_id(answer_id)
-                if block:
-                    blocks[block].append(answer_id)
-
-        return [
-            self._schema.get_mutable_deepcopy(block)
-            for (block, answer_id) in blocks.items()
-        ]
