@@ -29,9 +29,8 @@ describe("Suggestions", () => {
     // Browser needs to pause before typing starts to allow for the autosuggest Javascript to initialise
     await browser.pause(500);
     await browser.keys(" United");
-    await suggestionsList.waitForExist();
+    await suggestionsOption.waitForExist({ timeout: 2000});
     await expect(await $$(".ons-js-autosuggest-listbox li").length).to.not.equal(0);
-    await suggestionsOption.waitForClickable();
     await suggestionsOption.click();
     await $(MultipleSuggestionsPage.submit()).click();
     await expect(await browser.getUrl()).to.contain(SubmitPage.url());
