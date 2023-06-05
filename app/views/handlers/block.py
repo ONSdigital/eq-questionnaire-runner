@@ -53,6 +53,14 @@ class BlockHandler:
     def current_location(self):
         return self._current_location
 
+    @property
+    def return_to(self):
+        return self._return_to
+
+    @property
+    def return_to_block_id(self):
+        return self._return_to_block_id
+
     @cached_property
     def questionnaire_store_updater(self):
         return QuestionnaireStoreUpdater(

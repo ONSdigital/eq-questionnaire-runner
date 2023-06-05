@@ -510,7 +510,25 @@ class TestRouterNextLocation(RouterTestCase):
         ("test_calculated_summary",),
     )
     def test_return_to_calculated_summary(self, schema):
+        """
+        This tests that when you hit continue on an edited answer for a calculated summary
+        and all dependent answers for that calculated summary are complete, you are routed to the calculated summary
+        """
         self.schema = load_schema_from_name(schema)
+        # for the purposes of this test, assume the routing path consists only of the first two blocks and the calculated summary
+        # and that those two blocks are complete - this will be a sufficient condition to return to the calculated summary
+        self.progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "default-section",
+                    "block_ids": [
+                        "first-number-block",
+                        "second-number-block",
+                    ],
+                    "status": CompletionStatus.IN_PROGRESS,
+                }
+            ]
+        )
 
         current_location = Location(
             section_id="default-section", block_id="second-number-block"
@@ -518,8 +536,9 @@ class TestRouterNextLocation(RouterTestCase):
 
         routing_path = RoutingPath(
             [
+                "first-number-block",
                 "second-number-block",
-                "currency-total-playback-skipped-fourth",
+                "currency-total-playback",
             ],
             section_id="default-section",
         )
@@ -529,11 +548,11 @@ class TestRouterNextLocation(RouterTestCase):
             routing_path,
             return_to_answer_id="first-number-answer",
             return_to="calculated-summary",
-            return_to_block_id="currency-total-playback-skipped-fourth",
+            return_to_block_id="currency-total-playback",
         )
         expected_location = Location(
             section_id="default-section",
-            block_id="currency-total-playback-skipped-fourth",
+            block_id="currency-total-playback",
         )
 
         expected_location_url = url_for(
@@ -541,8 +560,7 @@ class TestRouterNextLocation(RouterTestCase):
             list_item_id=expected_location.list_item_id,
             block_id=expected_location.block_id,
             return_to="calculated-summary",
-            return_to_answer_id="first-number-answer",
-            return_to_block_id="currency-total-playback-skipped-fourth",
+            _anchor="first-number-answer",
         )
 
         assert expected_location_url == next_location_url
@@ -556,10 +574,24 @@ class TestRouterNextLocation(RouterTestCase):
         ),
     )
     def test_return_to_calculated_summary_not_on_allowable_path(self, schema):
+        """
+        This tests that if you try to return to a calculated summary before all its dependencies have been answered
+        then you are instead routed to the first incomplete block of the section
+        """
         self.schema = load_schema_from_name(schema)
+        self.progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "default-section",
+                    "block_ids": ["block-3"],
+                    "status": CompletionStatus.IN_PROGRESS,
+                }
+            ]
+        )
 
         current_location = Location(section_id="default-section", block_id="block-3")
 
+        # block 3 is complete, and block 4 is not, so block 4 should be routed to before the calculated summary
         routing_path = RoutingPath(
             [
                 "block-3",
@@ -587,7 +619,6 @@ class TestRouterNextLocation(RouterTestCase):
             list_item_id=expected_location.list_item_id,
             block_id=expected_location.block_id,
             return_to="calculated-summary",
-            return_to_answer_id="answer-3",
             return_to_block_id="calculated-summary-block",
         )
 
@@ -613,6 +644,15 @@ class TestRouterNextLocation(RouterTestCase):
         self, schema, return_to_block_id, expected_url
     ):
         self.schema = load_schema_from_name(schema)
+        self.progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "default-section",
+                    "block_ids": ["fifth-number-block"],
+                    "status": CompletionStatus.IN_PROGRESS,
+                }
+            ]
+        )
 
         current_location = Location(
             section_id="default-section", block_id="fifth-number-block"
@@ -638,6 +678,15 @@ class TestRouterNextLocation(RouterTestCase):
     )
     def test_return_to_calculated_summary_return_to_block_id_not_on_path(self, schema):
         self.schema = load_schema_from_name(schema)
+        self.progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "default-section",
+                    "block_ids": ["fifth-number-block"],
+                    "status": CompletionStatus.IN_PROGRESS,
+                }
+            ]
+        )
 
         current_location = Location(
             section_id="default-section", block_id="fifth-number-block"
@@ -660,6 +709,196 @@ class TestRouterNextLocation(RouterTestCase):
             "/questionnaire/sixth-number-block/?return_to=calculated-summary&return_to_block_id=fourth-number-block"
             == next_location_url
         )
+
+    @pytest.mark.usefixtures("app")
+    def test_return_to_grand_calculated_summary_from_answer(
+        self, grand_calculated_summary_progress_store, grand_calculated_summary_schema
+    ):
+        """
+        If going from GCS ->  CS -> answer -> CS -> GCS this tests going from CS -> GCS having just come from an answer
+        """
+        self.schema = grand_calculated_summary_schema
+        self.progress_store = grand_calculated_summary_progress_store
+
+        current_location = Location(
+            section_id="section-1", block_id="first-number-block"
+        )
+
+        routing_path = RoutingPath(
+            ["distance-calculated-summary-1"],
+            section_id="section-1",
+        )
+        next_location_url = self.router.get_next_location_url(
+            current_location,
+            routing_path,
+            return_to="calculated-summary,grand-calculated-summary",
+            return_to_answer_id="distance-calculated-summary-1",
+            return_to_block_id="distance-calculated-summary-1,distance-grand-calculated-summary",
+        )
+
+        expected_previous_url = url_for(
+            "questionnaire.block",
+            return_to="grand-calculated-summary",
+            block_id="distance-calculated-summary-1",
+            return_to_block_id="distance-grand-calculated-summary",
+            _anchor="distance-calculated-summary-1",
+        )
+
+        assert expected_previous_url == next_location_url
+
+    @pytest.mark.usefixtures("app")
+    def test_return_to_grand_calculated_summary_from_calculated_summary(
+        self, grand_calculated_summary_progress_store, grand_calculated_summary_schema
+    ):
+        """
+        If going from GCS ->  CS -> GCS this tests going from CS -> GCS having just come from the grand calculated summary
+        """
+        self.schema = grand_calculated_summary_schema
+        self.progress_store = grand_calculated_summary_progress_store
+
+        current_location = Location(
+            section_id="section-1", block_id="distance-calculated-summary-1"
+        )
+
+        routing_path = RoutingPath(
+            ["distance-calculated-summary-1"],
+            section_id="section-1",
+        )
+        next_location_url = self.router.get_next_location_url(
+            current_location,
+            routing_path,
+            return_to="grand-calculated-summary",
+            return_to_answer_id="distance-calculated-summary-1",
+            return_to_block_id="distance-grand-calculated-summary",
+        )
+
+        expected_previous_url = url_for(
+            "questionnaire.block",
+            return_to="grand-calculated-summary",
+            block_id="distance-grand-calculated-summary",
+            _anchor="distance-calculated-summary-1",
+        )
+
+        assert expected_previous_url == next_location_url
+
+    @pytest.mark.parametrize(
+        "return_to_block_id",
+        ("grand-calculated-summary-1", "grand-calculated-summary-2"),
+    )
+    @pytest.mark.usefixtures("app")
+    def test_return_to_grand_calculated_summary_from_incomplete_section(
+        self, return_to_block_id
+    ):
+        """
+        This tests that if you try to return to a grand calculated summary from an incomplete section
+        (or the same section but before the dependencies of the grand calculated summary are complete)
+        you are routed to the next block in the incomplete section rather than the grand calculated summary
+        """
+        self.schema = load_schema_from_name(
+            "test_grand_calculated_summary_multiple_sections"
+        )
+        # calculated summary 3 is not complete yet
+        self.progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "section-1",
+                    "block_ids": [
+                        "block-1",
+                        "block-2",
+                        "calculated-summary-1",
+                        "block-3",
+                        "calculated-summary-2",
+                    ],
+                    "status": "IN_PROGRESS",
+                }
+            ]
+        )
+
+        current_location = Location(section_id="section-1", block_id="block-2")
+        routing_path = RoutingPath(
+            [
+                "block-1",
+                "block-2",
+                "calculated-summary-1",
+                "block-3",
+                "calculated-summary-2",
+                "calculated-summary-3",
+                "grand-calculated-summary-1",
+            ],
+            section_id="section-1",
+        )
+        next_location_url = self.router.get_next_location_url(
+            current_location,
+            routing_path,
+            return_to="grand-calculated-summary",
+            return_to_answer_id="calculated-summary-1",
+            return_to_block_id=return_to_block_id,
+        )
+
+        # because calculated summary 3 isn't done, should go there before jumping to the grand calculated summary
+        # test from grand-calculated-summary-1 which is in the same section, and grand-calculated-summary-2 which is in another
+        expected_next_url = url_for(
+            "questionnaire.block",
+            return_to="grand-calculated-summary",
+            return_to_block_id=return_to_block_id,
+            block_id="calculated-summary-3",
+        )
+
+        assert expected_next_url == next_location_url
+
+    @pytest.mark.usefixtures("app")
+    def test_return_to_calculated_summary_from_incomplete_section(
+        self, grand_calculated_summary_schema
+    ):
+        """
+        This tests that if you try to return to a calculated summary section from an incomplete section
+        you are routed to the next block in the incomplete section rather than the calculated summary
+        """
+        self.schema = grand_calculated_summary_schema
+        # second-number block not complete yet
+        self.progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "section-1",
+                    "block_ids": [
+                        "first-number-block",
+                        "distance-calculated-summary-1",
+                    ],
+                    "status": CompletionStatus.IN_PROGRESS,
+                }
+            ]
+        )
+
+        current_location = Location(
+            section_id="section-1", block_id="first-number-block"
+        )
+        routing_path = RoutingPath(
+            [
+                "first-number-block",
+                "second-number-block",
+                "distance-calculated-summary-1",
+                "number-calculated-summary-1",
+            ],
+            section_id="section-1",
+        )
+        # the test is being done as part of a two-step return to but its identical functionally
+        next_location_url = self.router.get_next_location_url(
+            current_location,
+            routing_path,
+            return_to="calculated-summary,grand-calculated-summary",
+            return_to_answer_id="first-number-block",
+            return_to_block_id="distance-calculated-summary-1,distance-grand-calculated-summary",
+        )
+
+        # should take you to the second-number-block before going back to the calculated summary
+        expected_next_url = url_for(
+            "questionnaire.block",
+            return_to="calculated-summary,grand-calculated-summary",
+            return_to_block_id="distance-calculated-summary-1,distance-grand-calculated-summary",
+            block_id="second-number-block",
+        )
+
+        assert expected_next_url == next_location_url
 
 
 class TestRouterNextLocationLinearFlow(RouterTestCase):
@@ -825,6 +1064,173 @@ class TestRouterPreviousLocation(RouterTestCase):
         )
 
         assert expected_location_url == previous_location_url
+
+    @pytest.mark.usefixtures("app")
+    def test_return_to_grand_calculated_summary_from_answer_incomplete_section(
+        self, grand_calculated_summary_schema
+    ):
+        """
+        This tests that if you are on a calculated summary, and your return_to_block_id is another calculated summary that you cannot reach yet
+        if you click previous, then you are taken to the previous block in the section
+        (rather than the first incomplete block of the section which is what next location would return)
+        """
+        self.schema = grand_calculated_summary_schema
+        # trying to go to number-calculated-summary-1 but distance-calculated-summary-1 which comes before is not complete yet
+        self.progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "section-1",
+                    "block_ids": [
+                        "first-number-block",
+                        "second-number-block",
+                        "number-calculated-summary-1",
+                    ],
+                    "status": CompletionStatus.IN_PROGRESS,
+                }
+            ]
+        )
+
+        current_location = Location(
+            section_id="section-1", block_id="second-number-block"
+        )
+
+        routing_path = RoutingPath(
+            [
+                "first-number-block",
+                "second-number-block",
+                "distance-calculated-summary-1",
+                "number-calculated-summary-1",
+            ],
+            section_id="section-1",
+        )
+        previous_location_url = self.router.get_previous_location_url(
+            current_location,
+            routing_path,
+            return_to="calculated-summary,grand-calculated-summary",
+            return_to_answer_id="second-number-block",
+            return_to_block_id="number-calculated-summary-1,number-grand-calculated-summary",
+        )
+        # return to can't go to the distance calculated summary, so go to previous block with return params preserved
+        expected_previous_url = url_for(
+            "questionnaire.block",
+            return_to="calculated-summary,grand-calculated-summary",
+            return_to_block_id="number-calculated-summary-1,number-grand-calculated-summary",
+            block_id="first-number-block",
+            _anchor="second-number-block",
+        )
+
+        assert expected_previous_url == previous_location_url
+
+    @pytest.mark.usefixtures("app")
+    def test_return_to_grand_calculated_summary_from_calculated_summary_incomplete_section(
+        self, grand_calculated_summary_schema
+    ):
+        """
+        This tests that if you are on a calculated summary, and your return_to_block_id is a grand calculated summary
+        if you click previous, then you are taken to the previous block in the section
+        (rather than the first incomplete block of the section which is what next location would return)
+        """
+        self.schema = grand_calculated_summary_schema
+        # number calculated summary is not complete, so the section is not complete
+        self.progress_store = ProgressStore(
+            [
+                {
+                    "section_id": "section-1",
+                    "block_ids": [
+                        "first-number-block",
+                        "second-number-block",
+                        "distance-calculated-summary-1",
+                    ],
+                    "status": CompletionStatus.IN_PROGRESS,
+                }
+            ]
+        )
+
+        current_location = Location(
+            section_id="section-1", block_id="distance-calculated-summary-1"
+        )
+
+        routing_path = RoutingPath(
+            [
+                "first-number-block",
+                "second-number-block",
+                "distance-calculated-summary-1",
+                "number-calculated-summary-1",
+            ],
+            section_id="section-1",
+        )
+        previous_location_url = self.router.get_previous_location_url(
+            current_location,
+            routing_path,
+            return_to="grand-calculated-summary",
+            return_to_answer_id="distance-calculated-summary-1",
+            return_to_block_id="distance-grand-calculated-summary",
+        )
+        # return to can't go to the grand calculated summary, so routing is just to the previous block in the section with return params preserved
+        expected_previous_url = url_for(
+            "questionnaire.block",
+            return_to="grand-calculated-summary",
+            return_to_block_id="distance-grand-calculated-summary",
+            block_id="second-number-block",
+            _anchor="distance-calculated-summary-1",
+        )
+
+        assert expected_previous_url == previous_location_url
+
+    @pytest.mark.parametrize(
+        "return_to, current_block, return_to_block_id, expected_url",
+        [
+            (
+                "grand-calculated-summary",
+                "distance-calculated-summary-1",
+                "invalid-block",
+                "/questionnaire/second-number-block/?return_to=grand-calculated-summary&return_to_block_id=invalid-block#distance-calculated-summary-1",
+            ),
+            (
+                "calculated-summary,invalid",
+                "second-number-block",
+                "invalid-1,invalid-2",
+                "/questionnaire/first-number-block/?return_to=calculated-summary,invalid&return_to_block_id=invalid-1,invalid-2#distance-calculated-summary-1",
+            ),
+            (
+                "invalid",
+                "distance-calculated-summary-1",
+                "first-number-block",
+                "/questionnaire/second-number-block/?return_to=invalid&return_to_block_id=first-number-block#distance-calculated-summary-1",
+            ),
+        ],
+    )
+    @pytest.mark.usefixtures("app")
+    def test_return_to_grand_calculated_summary_invalid_url(
+        self,
+        return_to,
+        current_block,
+        return_to_block_id,
+        expected_url,
+        grand_calculated_summary_schema,
+    ):
+        self.schema = grand_calculated_summary_schema
+
+        current_location = Location(section_id="section-1", block_id=current_block)
+
+        routing_path = RoutingPath(
+            [
+                "first-number-block",
+                "second-number-block",
+                "distance-calculated-summary-1",
+                "number-calculated-summary-1",
+            ],
+            section_id="section-1",
+        )
+        previous_location_url = self.router.get_previous_location_url(
+            current_location,
+            routing_path,
+            return_to=return_to,
+            return_to_answer_id="distance-calculated-summary-1",
+            return_to_block_id=return_to_block_id,
+        )
+
+        assert expected_url == previous_location_url
 
     @pytest.mark.usefixtures("app")
     def test_return_to_section_summary_section_is_complete(self):
