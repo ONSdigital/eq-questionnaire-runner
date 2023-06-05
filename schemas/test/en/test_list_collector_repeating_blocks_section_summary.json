@@ -49,10 +49,6 @@
         {
             "answer_id": "any-other-companies-or-branches-answer",
             "code": "2"
-        },
-        {
-            "answer_id": "confirmation-checkbox-answer",
-            "code": "3"
         }
     ],
     "questionnaire_flow": {
@@ -127,13 +123,13 @@
                                                 "source": "answers",
                                                 "identifier": "any-companies-or-branches-answer"
                                             },
-                                            "No"
+                                            "Yes"
                                         ]
                                     },
-                                    "block": "confirmation-checkbox"
+                                    "block": "any-other-companies-or-branches"
                                 },
                                 {
-                                    "block": "any-other-companies-or-branches"
+                                    "section": "End"
                                 }
                             ]
                         },
@@ -316,32 +312,6 @@
                                         }
                                     ]
                                 }
-                            }
-                        },
-                        {
-                            "type": "Question",
-                            "id": "confirmation-checkbox",
-                            "question": {
-                                "answers": [
-                                    {
-                                        "id": "confirmation-checkbox-answer",
-                                        "mandatory": false,
-                                        "options": [
-                                            {
-                                                "label": "Yes",
-                                                "value": "Yes"
-                                            },
-                                            {
-                                                "label": "No",
-                                                "value": "No"
-                                            }
-                                        ],
-                                        "type": "Radio"
-                                    }
-                                ],
-                                "id": "confirmation-checkbox-question",
-                                "title": "Are all companies or branches based in UK?",
-                                "type": "General"
                             }
                         }
                     ]
