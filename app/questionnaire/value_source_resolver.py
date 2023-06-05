@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Callable, Iterable, Mapping, MutableMapping
+from typing import Callable, Generator, Iterable, Mapping, MutableMapping
 
 from markupsafe import Markup
 from werkzeug.datastructures import ImmutableDict
@@ -100,11 +100,31 @@ class ValueSourceResolver:
             else None
         )
 
+    def resolve_dynamic_answers(
+        self,
+        answer_id: str,
+    ) -> Generator[AnswerValueTypes, None, None]:
+        # Type ignore: the answer block will exist at this stage
+        if question := self.schema.get_block_for_answer_id(answer_id).get("question"):  # type: ignore
+            if dynamic_answers := question.get("dynamic_answers"):
+                values = dynamic_answers["values"]
+                if values["source"] == "list":
+                    for list_item_id in self.list_store[values["identifier"]].items:
+                        if answer_value := self._get_answer_value(
+                            answer_id=answer_id, list_item_id=list_item_id
+                        ):
+                            yield answer_value
+
     def _resolve_answer_value_source(
         self, value_source: Mapping
     ) -> ValueSourceEscapedTypes | ValueSourceTypes:
         list_item_id = self._resolve_list_item_id_for_value_source(value_source)
         answer_id = value_source["identifier"]
+
+        if not list_item_id and (
+            dynamic_answer_value := list(self.resolve_dynamic_answers(answer_id))
+        ):
+            return dynamic_answer_value
 
         answer_value = self._get_answer_value(
             answer_id=answer_id, list_item_id=list_item_id

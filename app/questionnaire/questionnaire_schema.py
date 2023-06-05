@@ -473,22 +473,45 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                         )
                     }
         if value_source["source"] == "list":
-            section = self.get_section_for_block_id(block_id)
-            list_collector = self.get_list_collector_for_list(
-                # Returns of methods are optional, but they always exist at this point, same with optional returns below
-                section=section,  # type: ignore
-                for_list=value_source["identifier"],  # type: ignore
+            self._update_answer_dependencies_for_list_source(
+                block_id=block_id, list_name=value_source["identifier"]
             )
-            add_block_question = self.get_add_block_for_list_collector(  # type: ignore
-                list_collector["id"]  # type: ignore
-            )["question"]
-            answer_ids_for_block = list(
-                self.get_answers_for_question_by_id(add_block_question)
-            )
-            for block_answer_id in answer_ids_for_block:
-                self._answer_dependencies_map[block_answer_id] |= {
-                    self._get_answer_dependent_for_block_id(block_id=block_id, for_list=value_source["identifier"])  # type: ignore
-                }
+
+    def _update_answer_dependencies_for_list_source(
+        self, *, block_id: str, list_name: str
+    ) -> None:
+        # Type ignore: section will always exist at this point, same with optional returns below
+        section: ImmutableDict = self.get_section_for_block_id(block_id)  # type: ignore
+        list_collector: ImmutableDict = self.get_list_collector_for_list(  # type: ignore
+            section=section,
+            for_list=list_name,
+        )
+
+        add_block_question = self.get_add_block_for_list_collector(  # type: ignore
+            list_collector["id"]
+        )["question"]
+        answer_ids_for_block = list(
+            self.get_answers_for_question_by_id(add_block_question)
+        )
+        for block_answer_id in answer_ids_for_block:
+            self._answer_dependencies_map[block_answer_id] |= {
+                self._get_answer_dependent_for_block_id(
+                    block_id=block_id, for_list=list_name
+                ),
+                # a non-repeating block may depend on the list, such as ones with dynamic-answers
+                self._get_answer_dependent_for_block_id(block_id=block_id),
+            }
+
+        # removing an item from a list will require any dependent calculated summaries to be re-confirmed
+        block: ImmutableDict = self.get_block(block_id)  # type: ignore
+        if block["type"] == "CalculatedSummary":
+            if remove_block_question := self.get_remove_block_id_for_list(list_name):
+                for block_answer_id in self.get_answer_ids_for_block(
+                    remove_block_question
+                ):
+                    self._answer_dependencies_map[block_answer_id] |= {
+                        self._get_answer_dependent_for_block_id(block_id=block_id)
+                    }
 
     def _get_answer_dependent_for_block_id(
         self,
