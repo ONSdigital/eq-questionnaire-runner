@@ -27,7 +27,7 @@ describe("Suggestions", () => {
     await suggestionsOption.click();
     await $(MultipleSuggestionsPage.multipleCountry()).click();
     // Browser needs to pause before typing starts to allow for the autosuggest Javascript to initialise
-    await browser.pause(500);
+    await browser.pause(2000);
     await browser.keys(" United");
     await suggestionsList.waitForExist();
     await expect(await $$(".ons-js-autosuggest-listbox li").length).to.not.equal(0);
