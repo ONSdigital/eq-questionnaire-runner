@@ -1,4 +1,4 @@
-from typing import Any, Mapping, MutableMapping, Optional
+from typing import Iterable, Mapping, MutableMapping
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -6,9 +6,9 @@ from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
-from app.questionnaire.routing_path import RoutingPath
 from app.survey_config.link import Link
 from app.views.contexts.summary.block import Block
+from app.views.contexts.summary.calculated_summary_block import CalculatedSummaryBlock
 from app.views.contexts.summary.list_collector_block import ListCollectorBlock
 
 
@@ -16,8 +16,8 @@ class Group:
     def __init__(
         self,
         *,
-        group_schema: Mapping[str, Any],
-        routing_path: RoutingPath,
+        group_schema: Mapping,
+        routing_path_block_ids: Iterable[str],
         answer_store: AnswerStore,
         list_store: ListStore,
         metadata: MetadataProxy | None,
@@ -28,6 +28,7 @@ class Group:
         progress_store: ProgressStore,
         return_to: str | None,
         return_to_block_id: str | None = None,
+        summary_type: str | None = None,
         view_submitted_response: bool | None = False,
     ) -> None:
         self.id = group_schema["id"]
@@ -39,7 +40,7 @@ class Group:
 
         self.blocks = self._build_blocks_and_links(
             group_schema=group_schema,
-            routing_path=routing_path,
+            routing_path_block_ids=routing_path_block_ids,
             answer_store=answer_store,
             list_store=list_store,
             metadata=metadata,
@@ -51,6 +52,7 @@ class Group:
             language=language,
             return_to_block_id=return_to_block_id,
             view_submitted_response=view_submitted_response,
+            summary_type=summary_type,
         )
 
         self.placeholder_renderer = PlaceholderRenderer(
@@ -68,24 +70,25 @@ class Group:
     def _build_blocks_and_links(
         self,
         *,
-        group_schema: Mapping[str, Any],
-        routing_path: RoutingPath,
+        group_schema: Mapping,
+        routing_path_block_ids: Iterable[str],
         answer_store: AnswerStore,
         list_store: ListStore,
-        metadata: Optional[MetadataProxy],
+        metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         location: Location,
-        return_to: Optional[str],
+        return_to: str | None,
         progress_store: ProgressStore,
         language: str,
-        return_to_block_id: Optional[str],
+        return_to_block_id: str | None,
         view_submitted_response: bool | None = False,
+        summary_type: str | None = None,
     ) -> list[dict[str, Block]]:
         blocks = []
 
         for block in group_schema["blocks"]:
-            if block["id"] not in routing_path:
+            if block["id"] not in routing_path_block_ids:
                 continue
             if block["type"] in [
                 "Question",
@@ -108,20 +111,38 @@ class Group:
                         ).serialize()
                     ]
                 )
-
-            elif block["type"] == "ListCollector":
-                section: Optional[ImmutableDict] = schema.get_section(
-                    location.section_id
+            # check the summary_type as opposed to the block type
+            # otherwise this gets called on section summaries as well
+            elif summary_type == "GrandCalculatedSummary":
+                blocks.extend(
+                    [
+                        CalculatedSummaryBlock(
+                            block,
+                            answer_store=answer_store,
+                            list_store=list_store,
+                            metadata=metadata,
+                            response_metadata=response_metadata,
+                            schema=schema,
+                            location=location,
+                            return_to=return_to,
+                            return_to_block_id=return_to_block_id,
+                            progress_store=progress_store,
+                            routing_path_block_ids=routing_path_block_ids,
+                        ).serialize()
+                    ]
                 )
 
-                summary_item: Optional[ImmutableDict]
+            elif block["type"] == "ListCollector":
+                section: ImmutableDict | None = schema.get_section(location.section_id)
+
+                summary_item: ImmutableDict | None
                 if summary_item := schema.get_summary_item_for_list_for_section(
                     # Type ignore: section id will not be optional at this point
                     section_id=section["id"],  # type: ignore
                     list_name=block["for_list"],
                 ):
                     list_collector_block = ListCollectorBlock(
-                        routing_path=routing_path,
+                        routing_path_block_ids=routing_path_block_ids,
                         answer_store=answer_store,
                         list_store=list_store,
                         progress_store=progress_store,
@@ -149,7 +170,7 @@ class Group:
 
         return blocks
 
-    def serialize(self) -> Mapping[str, Any]:
+    def serialize(self) -> Mapping:
         return self.placeholder_renderer.render(
             data_to_render={
                 "id": self.id,

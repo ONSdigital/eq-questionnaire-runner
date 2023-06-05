@@ -3,6 +3,7 @@ from decimal import Decimal
 from typing import Callable, Iterable, Mapping, MutableMapping
 
 from markupsafe import Markup
+from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import ProgressStore
 from app.data_models.answer import AnswerValueTypes, escape_answer_value
@@ -163,12 +164,19 @@ class ValueSourceResolver:
 
     def _resolve_calculated_summary_value_source(
         self, value_source: Mapping, *, assess_routing_path: bool
-    ) -> IntOrDecimal:
+    ) -> IntOrDecimal | None:
         """Calculates the value for the 'calculation' used by the provided Calculated Summary.
 
-        The caller is responsible for ensuring the provided Calculated Summary and its answers are on the path.
+        The caller is responsible for ensuring the provided Calculated Summary and its answers are on the path,
+        or providing routing_path_block_ids when initialising the value source resolver.
         """
-        calculated_summary_block: Mapping = self.schema.get_block(value_source["identifier"])  # type: ignore
+        calculated_summary_block: ImmutableDict = self.schema.get_block(value_source["identifier"])  # type: ignore
+
+        if self.routing_path_block_ids and not self._is_block_on_path(
+            calculated_summary_block["id"]
+        ):
+            return None
+
         calculation = calculated_summary_block["calculation"]
         if calculation.get("answers_to_calculate"):
             operator = self.get_calculation_operator(calculation["calculation_type"])

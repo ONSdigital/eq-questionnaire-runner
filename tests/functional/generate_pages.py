@@ -866,6 +866,10 @@ def process_block(
             base_page = "CalculatedSummaryPage"
             base_page_file = "calculated-summary.page"
 
+        if block["type"] == "GrandCalculatedSummary":
+            base_page = "GrandCalculatedSummaryPage"
+            base_page_file = "grand-calculated-summary.page"
+
         if block["type"] == "Introduction":
             base_page = "IntroductionPageBase"
             base_page_file = "introduction.page"
@@ -910,6 +914,21 @@ def process_block(
                 ]
 
                 process_calculated_summary(calculated_summary_answer_ids, page_spec)
+
+        elif block["type"] == "GrandCalculatedSummary":
+            values = _get_dictionaries_with_key(
+                "source", block["calculation"]["operation"]
+            )
+
+            calculated_summary_ids = [
+                value["identifier"]
+                for value in values
+                if value["source"] == "calculated_summary"
+            ]
+
+            # each calculated summary in a grand calculated summary is constructed such that it will have a single "answer" linking back to it
+            # so the processing for calculated summaries can be directly reused.
+            process_calculated_summary(calculated_summary_ids, page_spec)
 
         elif block["type"] == "Interstitial":
             has_definition = False
