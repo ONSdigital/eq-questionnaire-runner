@@ -217,7 +217,9 @@ class PlaceholderParser:
                 data=transform,
             )
             self._routing_path_block_ids_by_section_key.update(block_ids)
-            routing_path_block_ids: list = [value for values in block_ids.values() for value in values]
+            routing_path_block_ids: list = [
+                value for values in block_ids.values() for value in values
+            ]
             return self._get_value_source_resolver(OrderedSet(routing_path_block_ids))
 
         return self._value_source_resolver
