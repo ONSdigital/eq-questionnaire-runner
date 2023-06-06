@@ -108,7 +108,10 @@ class ValueSourceResolver:
         assess_routing_path = self.assess_routing_path
 
         answer_value = self._get_answer_value(
-            answer_id=answer_id, list_item_id=list_item_id, assess_routing_path=assess_routing_path)
+            answer_id=answer_id,
+            list_item_id=list_item_id,
+            assess_routing_path=assess_routing_path,
+        )
 
         if isinstance(answer_value, Mapping):
             answer_value = (
