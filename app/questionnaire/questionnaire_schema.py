@@ -326,11 +326,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _populate_answer_dependencies(self) -> None:
         for block in self.get_blocks():
-            if block["type"] == "CalculatedSummary":
-                answer_ids_for_block = get_calculated_summary_answer_ids(block)
-                self._update_answer_dependencies_for_calculated_summary(
-                    answer_ids_for_block, block["id"]
-                )
+            if block["type"] in {"CalculatedSummary", "GrandCalculatedSummary"}:
+                self._update_answer_dependencies_for_summary(block)
                 continue
 
             for question in self.get_all_questions_for_block(block):
@@ -355,13 +352,43 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                                 option["detail_answer"], block_id=block["id"]
                             )
 
-    def _update_answer_dependencies_for_calculated_summary(
-        self, calculated_summary_answer_ids: Iterable[str], block_id: str
+    def _update_answer_dependencies_for_summary(self, block: ImmutableDict) -> None:
+        if block["type"] == "CalculatedSummary":
+            self._update_answer_dependencies_for_calculated_summary_dependency(
+                calculated_summary_block=block, dependent_block=block
+            )
+        elif block["type"] == "GrandCalculatedSummary":
+            self._update_answer_dependencies_for_grand_calculated_summary(block)
+
+    def _update_answer_dependencies_for_calculated_summary_dependency(
+        self, *, calculated_summary_block: ImmutableDict, dependent_block: ImmutableDict
     ) -> None:
+        """
+        update all calculated summary answers to be dependencies of the dependent block
+        """
+        calculated_summary_answer_ids = get_calculated_summary_answer_ids(
+            calculated_summary_block
+        )
         for answer_id in calculated_summary_answer_ids:
             self._answer_dependencies_map[answer_id] |= {
-                self._get_answer_dependent_for_block_id(block_id=block_id)
+                self._get_answer_dependent_for_block_id(block_id=dependent_block["id"])
             }
+
+    def _update_answer_dependencies_for_grand_calculated_summary(
+        self, grand_calculated_summary_block: ImmutableDict
+    ) -> None:
+        grand_calculated_summary_calculated_summary_ids = (
+            get_calculation_block_ids_for_grand_calculated_summary(
+                grand_calculated_summary_block
+            )
+        )
+        for calculated_summary_id in grand_calculated_summary_calculated_summary_ids:
+            # Type ignore: safe to assume block exists
+            calculated_summary_block: ImmutableDict = self.get_block(calculated_summary_id)  # type: ignore
+            self._update_answer_dependencies_for_calculated_summary_dependency(
+                calculated_summary_block=calculated_summary_block,
+                dependent_block=grand_calculated_summary_block,
+            )
 
     def _update_answer_dependencies_for_calculations(
         self, calculations: tuple[ImmutableDict, ...], *, block_id: str
@@ -400,7 +427,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _update_answer_dependencies_for_dynamic_options(
         self,
-        dynamic_options_values: Mapping[str, Mapping],
+        dynamic_options_values: Mapping,
         *,
         block_id: str,
         answer_id: str,
@@ -804,6 +831,23 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_first_answer_id_for_block(self, block_id: str) -> str:
         answer_ids = self.get_answer_ids_for_block(block_id)
         return answer_ids[0]
+
+    def get_answer_format_for_calculated_summary(
+        self, calculated_summary_block_id: str
+    ) -> dict:
+        """
+        Given a calculated summary block id, find the format of the total by using the first answer
+        """
+        # Type ignore: the block will exist for any valid calculated summary id
+        calculated_summary_block: ImmutableDict = self.get_block(calculated_summary_block_id)  # type: ignore
+        first_answer_id = get_calculated_summary_answer_ids(calculated_summary_block)[0]
+        first_answer = self.get_answers_by_answer_id(first_answer_id)[0]
+        return {
+            "type": first_answer["type"].lower(),
+            "unit": first_answer.get("unit"),
+            "unit_length": first_answer.get("unit_length"),
+            "currency": first_answer.get("currency"),
+        }
 
     def get_answer_ids_for_block(self, block_id: str) -> list[str]:
         block = self.get_block(block_id)
@@ -1218,23 +1262,44 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 self._update_answer_dependencies_for_answer(answer, block_id=block_id)
 
 
+def is_summary_with_calculation(summary_type: str) -> bool:
+    return summary_type in {"GrandCalculatedSummary", "CalculatedSummary"}
+
+
 def get_sources_for_type_from_data(
     *,
     source_type: str,
     data: MultiDict | Mapping | Sequence,
-    ignore_keys: list,
-) -> list | None:
+    ignore_keys: list | None = None,
+) -> list:
     sources = get_mappings_with_key("source", data, ignore_keys=ignore_keys)
 
     return [source for source in sources if source["source"] == source_type]
 
 
-def get_calculated_summary_answer_ids(calculated_summary_block: Mapping) -> list[str]:
-    if calculated_summary_block["calculation"].get("answers_to_calculate"):
-        return calculated_summary_block["calculation"]["answers_to_calculate"]  # type: ignore
-
-    values = get_mappings_with_key(
-        "source", calculated_summary_block["calculation"]["operation"]
+def get_identifiers_from_calculation_block(
+    *, calculation_block: Mapping, source_type: str
+) -> list[str]:
+    values = get_sources_for_type_from_data(
+        source_type=source_type, data=calculation_block["calculation"]["operation"]
     )
 
-    return [value["identifier"] for value in values if value["source"] == "answers"]
+    return [value["identifier"] for value in values]
+
+
+def get_calculated_summary_answer_ids(calculated_summary_block: Mapping) -> list[str]:
+    if calculated_summary_block["calculation"].get("answers_to_calculate"):
+        return list(calculated_summary_block["calculation"]["answers_to_calculate"])
+
+    return get_identifiers_from_calculation_block(
+        calculation_block=calculated_summary_block, source_type="answers"
+    )
+
+
+def get_calculation_block_ids_for_grand_calculated_summary(
+    grand_calculated_summary_block: Mapping,
+) -> list[str]:
+    return get_identifiers_from_calculation_block(
+        calculation_block=grand_calculated_summary_block,
+        source_type="calculated_summary",
+    )
