@@ -64,17 +64,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
     it("When I continue and enter nothing, all zeros or 10 at breakdown level, Then I should be able to get to the summary", async () => {
       await addTwoSupermarkets();
       await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
-      await expect(await $$(labels).length).to.equal(3);
-      await $$(percentageInputs)[0].setValue(34);
-      await $$(percentageInputs)[1].setValue(33);
-      await $(DynamicAnswerPage.percentageOfShoppingElsewhere()).setValue(33);
-      await $(DynamicAnswerPage.submit()).click();
-      await $(TotalBlockPage.total()).setValue(100);
-      await $(TotalBlockPage.submit()).click();
-      await expect(await browser.getUrl()).to.contain(DynamicAnswerOnlyPage.pageName);
-      await $$(currencyInputs)[0].setValue(50);
-      await $$(currencyInputs)[1].setValue(50);
-      await $(DynamicAnswerOnlyPage.submit()).click();
+      await fillDynamicAnswers(percentageInputs, currencyInputs);
       await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
     });
   });
@@ -82,15 +72,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
     it("When I continue and enter nothing, all zeros or 10 at breakdown level, Then I should be able to get to the summary", async () => {
       await addTwoSupermarkets();
       await expect(await $$(labels).length).to.equal(3);
-      await $$(percentageInputs)[0].setValue(34);
-      await $$(percentageInputs)[1].setValue(33);
-      await $(DynamicAnswerPage.percentageOfShoppingElsewhere()).setValue(33);
-      await $(DynamicAnswerPage.submit()).click();
-      await $(TotalBlockPage.total()).setValue(100);
-      await $(TotalBlockPage.submit()).click();
-      await $$(currencyInputs)[0].setValue(50);
-      await $$(currencyInputs)[1].setValue(50);
-      await $(DynamicAnswerOnlyPage.submit()).click();
+      await fillDynamicAnswers(percentageInputs, currencyInputs);
       await $(SectionSummaryPage.supermarketsListAddLink()).click();
       await $(ListCollectorAddPage.supermarketName()).setValue("Morrisons");
       await $(ListCollectorAddPage.submit()).click();
@@ -103,16 +85,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
   describe("Given I start a grouped answer with multi rule validation survey and enter 10 into the total", () => {
     it("When I continue and enter nothing, all zeros or 10 at breakdown level, Then I should be able to get to the summary", async () => {
       await addTwoSupermarkets();
-      await expect(await $$(labels).length).to.equal(3);
-      await $$(percentageInputs)[0].setValue(34);
-      await $$(percentageInputs)[1].setValue(33);
-      await $(DynamicAnswerPage.percentageOfShoppingElsewhere()).setValue(33);
-      await $(DynamicAnswerPage.submit()).click();
-      await $(TotalBlockPage.total()).setValue(100);
-      await $(TotalBlockPage.submit()).click();
-      await $$(currencyInputs)[0].setValue(50);
-      await $$(currencyInputs)[1].setValue(50);
-      await $(DynamicAnswerOnlyPage.submit()).click();
+      await fillDynamicAnswers(percentageInputs, currencyInputs);
       await $(SectionSummaryPage.supermarketsListRemoveLink(1)).click();
       await $(ListCollectorRemovePage.yes()).click();
       await $(ListCollectorRemovePage.submit()).click();
@@ -123,21 +96,27 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
   describe("Given I start a grouped answer with multi rule validation survey and enter 10 into the total", () => {
     it("When I continue and enter nothing, all zeros or 10 at breakdown level, Then I should be able to get to the summary", async () => {
       await addTwoSupermarkets();
-      await expect(await $$(labels).length).to.equal(3);
-      await $$(percentageInputs)[0].setValue(34);
-      await $$(percentageInputs)[1].setValue(33);
-      await $(DynamicAnswerPage.percentageOfShoppingElsewhere()).setValue(33);
-      await $(DynamicAnswerPage.submit()).click();
-      await $(TotalBlockPage.total()).setValue(100);
-      await $(TotalBlockPage.submit()).click();
-      await $$(currencyInputs)[0].setValue(50);
-      await $$(currencyInputs)[1].setValue(50);
-      await $(DynamicAnswerOnlyPage.submit()).click();
+      await fillDynamicAnswers(percentageInputs, currencyInputs);
       await $(SectionSummaryPage.supermarketsListEditLink(1)).click();
       await $(ListCollectorEditPage.supermarketName()).setValue("Aldi");
       await $(ListCollectorEditPage.submit()).click();
+      await $(DynamicAnswerPage.submit()).click();
+      await $(TotalBlockPage.submit()).click();
+      await $(DynamicAnswerOnlyPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
       await expect(await $(group).$$(summaryTitles)[0].getText()).to.equal("Percentage of shopping at Aldi");
+    });
+  });
+  describe("Given I start a grouped answer with multi rule validation survey and enter 10 into the total", () => {
+    it("When I continue and enter nothing, all zeros or 10 at breakdown level, Then I should be able to get to the summary", async () => {
+      await addTwoSupermarkets();
+      await fillDynamicAnswers(percentageInputs, currencyInputs);
+      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
+      await $(SectionSummaryPage.previous()).click();
+      await $(DynamicAnswerOnlyPage.previous()).click();
+      await $(TotalBlockPage.previous()).click();
+      await $(DynamicAnswerPage.previous()).click();
+      await expect(await browser.getUrl()).to.contain(ListCollectorPage.pageName);
     });
   });
 });
@@ -153,4 +132,16 @@ async function addTwoSupermarkets() {
   await $(ListCollectorAddPage.submit()).click();
   await $(ListCollectorPage.no()).click();
   await $(ListCollectorPage.submit()).click();
+}
+
+async function fillDynamicAnswers(percentageInputs, currencyInputs) {
+  await $$(percentageInputs)[0].setValue(34);
+  await $$(percentageInputs)[1].setValue(33);
+  await $(DynamicAnswerPage.percentageOfShoppingElsewhere()).setValue(33);
+  await $(DynamicAnswerPage.submit()).click();
+  await $(TotalBlockPage.total()).setValue(100);
+  await $(TotalBlockPage.submit()).click();
+  await $$(currencyInputs)[0].setValue(50);
+  await $$(currencyInputs)[1].setValue(50);
+  await $(DynamicAnswerOnlyPage.submit()).click();
 }

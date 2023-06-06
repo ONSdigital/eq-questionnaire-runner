@@ -93,8 +93,16 @@ class ListAction(Question):
             )
             self.questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
             self.current_location.list_item_id = (
+                # list_item_id has to be removed in order to update section completeness, otherwise in self._update_section_completeness() call below section key
+                # won't be accepted and section status will remain "COMPLETED", list_item_id is removed if list collector block dependencies are present,
+                # a specific scenario for dynamic answers
                 None
-                if self.questionnaire_store_updater.dependent_sections
+                if self.questionnaire_store_updater.dependent_block_id_by_section_key[
+                    (
+                        self.current_location.section_id,
+                        self.current_location.list_item_id,
+                    )
+                ]
                 else self._current_location.list_item_id
             )
             self._update_section_completeness()
