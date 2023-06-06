@@ -2,19 +2,29 @@ from datetime import date
 
 from ..integration_test_case import IntegrationTestCase
 
+
 # pylint: disable=too-many-public-methods
 
 
 class TestQuestionnaireListCollector(IntegrationTestCase):
-    def add_company(self, company_name: str, is_driving: bool = False):
-        if is_driving:
-            self.post({"any-companies-or-branches-answer": "Yes"})
-        else:
-            self.post({"any-other-companies-or-branches-answer": "Yes"})
+    def add_company(self, company_name: str):
+        self.assertInUrl("/companies/add-company/")
         self.post({"company-or-branch-name": company_name})
 
+    def add_company_from_list_collector(
+            self, company_name: str, is_driving: bool = False
+    ):
+        if is_driving:
+            self.assertInUrl("/questionnaire/any-companies-or-branches/")
+            self.post({"any-companies-or-branches-answer": "Yes"})
+        else:
+            self.assertInUrl("/questionnaire/any-other-companies-or-branches/")
+            self.post({"any-other-companies-or-branches-answer": "Yes"})
+        self.add_company(company_name)
+
     def post_repeating_block_1(self, registration_number: int, registration_date: date):
-        self.assertInBody("Registration number (Mandatory)")
+        self.assertInUrl("/companies/")
+        self.assertInUrl("/companies-repeating-block-1/")
 
         self.post(
             {
@@ -26,14 +36,93 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         )
 
     def post_repeating_block_2(self, trader_uk: str, trader_eu: str | None = None):
-        self.assertInBody(
-            "Is this company or branch authorised to trade in the UK? (Mandatory)"
-        )
+        self.assertInUrl("/companies/")
+        self.assertInUrl("/companies-repeating-block-2/")
         self.post(
             {
                 "authorised-trader-uk-radio": trader_uk,
                 "authorised-trader-eu-radio": trader_eu,
             }
+        )
+
+    def add_company_and_repeating_blocks(
+            self,
+            company_name: str,
+            registration_number: int,
+            registration_date: date,
+            trader_uk: str,
+            trader_eu: str | None = None,
+            is_driving: bool = False,
+    ):
+        self.add_company_from_list_collector(
+            company_name=company_name, is_driving=is_driving
+        )
+        self.post_repeating_block_1(
+            registration_number=registration_number, registration_date=registration_date
+        )
+        self.post_repeating_block_2(trader_uk=trader_uk, trader_eu=trader_eu)
+
+    def assert_company_completed(self, company_name: str, selector: str):
+        self.assertInSelector(company_name, selector)
+        self.assertInSelector("ons-summary__item-title-icon--check", selector)
+
+    def assert_company_incomplete(self, company_name: str, selector: str):
+        self.assertInSelector(company_name, selector)
+        self.assertNotInSelector("ons-summary__item-title-icon--check", selector)
+
+    def assert_list_item_answers_in_summary(self):
+        self.assertInSelector("Company1", "[class='ons-summary__item']")
+
+    def get_list_item_link(self, action, position):
+        selector = f"[data-qa='list-item-{action}-{position}-link']"
+        selected = self.getHtmlSoup().select(selector)
+        return selected[0].get("href")
+
+    def get_link(self, selector: str):
+        return self.get_links(selector)[0]
+
+    def get_links(self, selector: str):
+        selected = self.getHtmlSoup().select(selector)
+        return [element["href"] for element in selected]
+
+    def add_three_companies(self):
+        # Add first company
+
+        self.add_company_and_repeating_blocks(
+            company_name="Company1",
+            registration_number=123,
+            registration_date=date(2023, 1, 1),
+            trader_uk="Yes",
+            trader_eu="Yes",
+            is_driving=True,
+        )
+
+        # Add second company
+
+        self.add_company_and_repeating_blocks(
+            company_name="Company2",
+            registration_number=456,
+            registration_date=date(2023, 2, 2),
+            trader_uk="Yes",
+        )
+
+        # Add third company
+        self.add_company_and_repeating_blocks(
+            company_name="Company3",
+            registration_number=789,
+            registration_date=date(2023, 3, 3),
+            trader_uk="No",
+            trader_eu="Yes",
+        )
+
+        self.assert_company_completed(
+            company_name="Company1", selector="[data-qa='list-item-1-label']"
+        )
+        self.assert_company_completed(
+            company_name="Company2", selector="[data-qa='list-item-2-label']"
+        )
+        self.assert_company_completed(
+            company_name="Company3", selector="[data-qa='list-item-3-label']"
         )
 
     def test_invalid_invalid_list_item_id(self):
@@ -48,615 +137,343 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
     def test_happy_path(self):
         self.launchSurvey("test_list_collector_repeating_blocks_section_summary")
 
-        # Add first company
+        # Add some items to the list
+        self.add_three_companies()
 
-        self.assertInBody(
-            "Do any companies or branches within your United Kingdom group undertake general insurance business?"
+        # Remove item 2
+
+        remove_link = self.get_list_item_link("remove", 2)
+
+        self.get(remove_link)
+
+        self.assertInBody("Are you sure you want to remove this company or UK branch?")
+
+        # Cancel
+
+        self.post({"remove-confirmation": "No"})
+
+        self.assertEqualUrl("/questionnaire/any-other-companies-or-branches/")
+
+        # Remove again
+
+        self.get(remove_link)
+
+        self.post({"remove-confirmation": "Yes"})
+
+        # Check list item 3 has moved to second position
+
+        self.assert_company_completed(
+            company_name="Company3", selector="[data-qa='list-item-2-label']"
         )
 
-        self.add_company("Company1", is_driving=True)
+        # Test the previous link
 
+        edit_link_1 = self.get_list_item_link("change", 1)
+        remove_link_1 = self.get_list_item_link("remove", 1)
+
+        self.get(edit_link_1)
+        self.assertInUrl("/edit-company/")
+        self.previous()
+        self.assertEqualUrl("/questionnaire/any-other-companies-or-branches/")
+
+        self.get(remove_link_1)
+        self.assertInUrl("/remove-company/")
+        self.previous()
+        self.assertEqualUrl("/questionnaire/any-other-companies-or-branches/")
+
+        # Submit survey
+
+        self.post({"any-other-companies-or-branches-answer": "No"})
+        self.post()
+        self.post()
+        self.assertInBody(
+            "Thank you for completing the Test a List Collector with Repeating Blocks and Section Summary Items"
+        )
+
+    def test_incomplete_repeating_blocks(self):
+        self.launchSurvey("test_list_collector_repeating_blocks_section_summary")
+
+        # Add first company - only add block and first repeating block
+
+        self.add_company_from_list_collector(company_name="Company1", is_driving=True)
         self.post_repeating_block_1(
             registration_number=123, registration_date=date(2023, 1, 1)
         )
+        self.previous()  # Return to the list collector via previous button
 
+        # Add second company - complete
+
+        self.add_company_and_repeating_blocks(
+            company_name="Company2",
+            registration_number=456,
+            registration_date=date(2023, 2, 2),
+            trader_uk="Yes",
+        )
+
+        # Add third company - only the add block
+        self.add_company_from_list_collector(company_name="Company3")
+        cancel_link = self.get_link("[id='cancel-and-return']")
+        self.get(cancel_link)  # Return to the list collector via cancel button
+
+        # Add fourth company - complete
+
+        self.add_company_and_repeating_blocks(
+            company_name="Company4",
+            registration_number=101,
+            registration_date=date(2023, 4, 4),
+            trader_uk="No",
+        )
+
+        # Assert completeness
+
+        self.assert_company_incomplete(
+            company_name="Company1", selector="[data-qa='list-item-1-label']"
+        )
+        self.assert_company_completed(
+            company_name="Company2", selector="[data-qa='list-item-2-label']"
+        )
+        self.assert_company_incomplete(
+            company_name="Company3", selector="[data-qa='list-item-3-label']"
+        )
+        self.assert_company_completed(
+            company_name="Company4", selector="[data-qa='list-item-4-label']"
+        )
+
+        # Attempt to move along path after list collector - will route to first incomplete block of first incomplete item
+
+        self.post({"any-other-companies-or-branches-answer": "No"})
+
+        # Should be routed to incomplete block 2 of item 1
         self.post_repeating_block_2(trader_uk="Yes", trader_eu="Yes")
-
-        self.assertInSelector("Company1", "[data-qa='list-item-1-label']")
-        self.assertInSelector(
-            "ons-summary__item-title-icon--check", "[data-qa='list-item-1-label']"
+        self.assert_company_completed(
+            company_name="Company1", selector="[data-qa='list-item-1-label']"
         )
 
-        # Add second company
+        self.post({"any-other-companies-or-branches-answer": "No"})
 
-        self.add_company("Company2")
-        self.post_repeating_block_1(
-            registration_number=456, registration_date=date(2023, 2, 2)
-        )
-
-        self.post_repeating_block_2(trader_uk="Yes")
-
-        self.assertInSelector("Company2", "[data-qa='list-item-2-label']")
-        self.assertInSelector(
-            "ons-summary__item-title-icon--check", "[data-qa='list-item-2-label']"
-        )
-
-        # Add third company
-
-        self.add_company("Company3")
+        # Should be routed to incomplete block 1 of item 3
         self.post_repeating_block_1(
             registration_number=789, registration_date=date(2023, 3, 3)
         )
-
-        self.post_repeating_block_2(trader_uk="No", trader_eu="Yes")
-
-        self.assertInSelector("Company3", "[data-qa='list-item-3-label']")
-        self.assertInSelector(
-            "ons-summary__item-title-icon--check", "[data-qa='list-item-3-label']"
+        self.post_repeating_block_2(trader_uk="Yes", trader_eu="No")
+        self.assert_company_completed(
+            company_name="Company3", selector="[data-qa='list-item-3-label']"
         )
 
-        # self.add_person("John", "Doe")
-        #
-        # self.assertInSelector("John Doe", "[data-qa='list-item-2-label']")
-        #
-        # self.add_person("A", "Mistake")
-        #
-        # self.assertInSelector("A Mistake", "[data-qa='list-item-3-label']")
-        #
-        # self.add_person("Johnny", "Doe")
-        #
-        # self.assertInSelector("Johnny Doe", "[data-qa='list-item-4-label']")
-        #
-        # # Make another mistake
-        #
-        # mistake_change_link = self.get_link("change", 3)
-        #
-        # self.get(mistake_change_link)
-        #
-        # self.post({"first-name": "Another", "last-name": "Mistake"})
-        #
-        # self.assertInSelector("Another Mistake", "[data-qa='list-item-3-label']")
-        #
-        # # Get rid of the mistake
-        #
-        # mistake_remove_link = self.get_link("remove", 3)
-        #
-        # self.get(mistake_remove_link)
-        #
-        # self.assertInBody("Are you sure you want to remove this person?")
-        #
-        # # Cancel
-        #
-        # self.post({"remove-confirmation": "No"})
-        #
-        # self.assertEqualUrl("/questionnaire/list-collector/")
-        #
-        # # Remove again
-        #
-        # self.get(mistake_remove_link)
-        #
-        # self.post({"remove-confirmation": "Yes"})
-        #
-        # # Make sure Johnny has moved up the list
-        # self.assertInSelector("Johnny Doe", "[data-qa='list-item-3-label']")
-        #
-        # # Test the previous links
-        # john_change_link = self.get_link("change", 2)
-        # john_remove_link = self.get_link("remove", 2)
-        #
-        # self.get(john_change_link)
-        #
-        # self.previous()
-        #
-        # self.assertEqualUrl("/questionnaire/list-collector/")
-        #
-        # self.get(john_remove_link)
-        #
-        # self.assertInUrl("remove")
-        #
-        # self.previous()
-        #
-        # self.assertEqualUrl("/questionnaire/list-collector/")
+        # Can now submit the survey as all items are complete
+        self.post({"any-other-companies-or-branches-answer": "No"})
+        self.post()
+        self.post()
+        self.assertInBody(
+            "Thank you for completing the Test a List Collector with Repeating Blocks and Section Summary Items"
+        )
 
-    # def test_list_collector_submission(self):
-    #     self.launchSurvey("test_list_collector")
-    #
-    #     self.post(action="start_questionnaire")
-    #
-    #     self.assertInBody("Does anyone else live here?")
-    #
-    #     self.post({"anyone-else": "Yes"})
-    #
-    #     self.add_person("Marie Claire", "Doe")
-    #
-    #     self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
-    #
-    #     self.add_person("John", "Doe")
-    #
-    #     self.assertInSelector("John Doe", "[data-qa='list-item-2-label']")
-    #
-    #     self.post({"anyone-else": "No"})
-    #
-    #     self.post()
-    #
-    #     self.post({"another-anyone-else": "No"})
-    #
-    #     self.assertInBody("List Collector Summary")
-    #
-    #     self.assertInBody("Household members")
-    #
-    #     john_remove_link = self.get_link("remove", 2)
-    #
-    #     mary_remove_link = self.get_link("remove", 1)
-    #
-    #     self.get(john_remove_link)
-    #
-    #     self.post({"remove-confirmation": "Yes"})
-    #
-    #     self.get(mary_remove_link)
-    #
-    #     self.post({"remove-confirmation": "Yes"})
-    #
-    #     self.assertInBody("There are no householders")
-    #
-    #     self.post()
-    #
-    #     self.post()
-    #
-    #     self.assertInUrl("thank-you")
+    def test_adding_from_the_summary_page_adds_the_return_to_param_to_the_url(
+            self,
+    ):
+        self.launchSurvey("test_list_collector_repeating_blocks_section_summary")
 
-    # def test_optional_list_collector_submission(self):
-    #     self.launchSurvey("test_list_collector")
-    #
-    #     self.post(action="start_questionnaire")
-    #
-    #     self.assertInBody("Does anyone else live here?")
-    #
-    #     self.post({"anyone-else": "No"})
-    #
-    #     self.post()
-    #
-    #     self.post({"another-anyone-else": "No"})
-    #
-    #     self.assertInBody("List Collector Summary")
-    #
-    #     self.post()
-    #
-    #     self.assertInUrl(SUBMIT_URL_PATH)
-    #
-    # def test_list_summary_on_question(self):
-    #     self.launchSurvey("test_list_summary_on_question")
-    #
-    #     self.post(action="start_questionnaire")
-    #
-    #     self.post({"anyone-else": "Yes"})
-    #
-    #     self.add_person("Marie Claire", "Doe")
-    #
-    #     self.post({"anyone-else": "No"})
-    #
-    #     self.post()
-    #
-    #     self.post({"another-anyone-else": "No"})
-    #
-    #     self.assertInBody("Are any of these people related to one another?")
-    #
-    #     self.assertInBody("Marie Claire Doe")
-    #
-    #     self.post({"radio-mandatory-answer": "No, all household members are unrelated"})
-    #
-    #     self.assertInUrl("/sections/section/")
-    #
-    #     self.assertInBody("Marie Claire Doe")
-    #
-    # def test_questionnaire_summary_with_custom_section_summary(self):
-    #     self.launchSurvey("test_list_summary_on_question")
-    #
-    #     self.post(action="start_questionnaire")
-    #
-    #     self.post({"anyone-else": "Yes"})
-    #
-    #     self.add_person("Marie Claire", "Doe")
-    #
-    #     self.post({"anyone-else": "No"})
-    #
-    #     self.post()
-    #
-    #     self.post({"another-anyone-else": "No"})
-    #
-    #     self.post({"radio-mandatory-answer": "No, all household members are unrelated"})
-    #
-    #     self.post()
-    #
-    #     self.assertInBody("Check your answers and submit")
-    #
-    #     self.assertNotInBody("No, all household members are unrelated")
-    #
-    # def test_cancel_text_displayed_on_add_block_if_exists(self):
-    #     self.launchSurvey("test_list_collector")
-    #
-    #     self.post(action="start_questionnaire")
-    #
-    #     self.post({"anyone-else": "Yes"})
-    #
-    #     self.assertInBody("Don’t need to add anyone else?")
-    #
-    # def test_cancel_text_displayed_on_edit_block_if_exists(self):
-    #     self.launchSurvey("test_list_collector")
-    #
-    #     self.post(action="start_questionnaire")
-    #
-    #     self.post({"anyone-else": "Yes"})
-    #
-    #     self.add_person("Someone", "Else")
-    #
-    #     change_link = self.get_link("change", 1)
-    #
-    #     self.get(change_link)
-    #
-    #     self.assertInBody("Don’t need to change anything?")
-    #
-    # def test_warning_text_displayed_on_remove_block_if_exists(self):
-    #     self.launchSurvey("test_list_collector")
-    #
-    #     self.post(action="start_questionnaire")
-    #
-    #     self.post({"anyone-else": "Yes"})
-    #
-    #     self.add_person("Someone", "Else")
-    #
-    #     remove_link = self.get_link("remove", 1)
-    #
-    #     self.get(remove_link)
-    #
-    #     self.assertIsNotNone(
-    #         self.getHtmlSoup().select("#question-warning-remove-question")
-    #     )
-    #
-    #     self.assertInBody("All of the information about this person will be deleted")
-    #
-    # def test_list_collector_return_to_when_section_summary_cant_be_displayed(self):
-    #     # Given I have completed a section and returned to a list_collector from the section summary
-    #     self.launchSurvey("test_relationships", roles=["dumper"])
-    #
-    #     self.add_person("Marie", "Doe")
-    #
-    #     self.post({"anyone-else": "No"})
-    #
-    #     self.assertInUrl("/sections/section/")
-    #
-    #     add_someone_link = self.get_add_someone_link()
-    #
-    #     self.get(add_someone_link)
-    #
-    #     # When I update the list collector, which changes the section status to in-progress
-    #     self.add_person("John", "Doe")
-    #
-    #     # Then my next location is the parent list collector without last updated guidance being shown
-    #     self.assertInBody("Does anyone else live at 1 Pleasant Lane?")
-    #     self.assertNotInBody("This is the last viewed question in this section")
-    #
-    # def test_adding_person_using_second_list_collector_when_no_people(
-    #         self,
-    # ):
-    #     self.launchSurvey("test_list_collector_two_list_collectors")
-    #
-    #     self.assertInBody("Does anyone live at your address?")
-    #
-    #     self.post({"anyone-usually-live-at-answer": "No"})
-    #
-    #     self.assertInBody("Does anyone else live here?")
-    #
-    #     self.post({"anyone-else": "No"})
-    #
-    #     self.assertInBody("Does anyone else live at your address?")
-    #
-    #     self.post({"another-anyone-usually-live-at-answer": "Yes"})
-    #
-    #     self.assertInBody("What is the name of the person?")
-    #
-    #     self.post({"first-name": "Marie", "last-name": "Day"})
-    #
-    #     self.post({"another-anyone-else": "No"})
-    #
-    #     self.assertInUrl("/questionnaire/sections/section/")
-    #
-    #     first_person_change_link = self.get_link("change", 1)
-    #
-    #     self.get(first_person_change_link)
-    #
-    #     self.assertInBody("Change details for Marie Day")
-    #
-    #     self.post({"first-name": "James", "last-name": "May"})
-    #
-    #     self.assertInUrl("/questionnaire/sections/section/")
-    #
-    #     first_person_remove_link = self.get_link("remove", 1)
-    #
-    #     self.get(first_person_remove_link)
-    #
-    #     self.assertInBody("Are you sure you want to remove this person?")
-    #
-    # def test_adding_from_the_summary_page_adds_the_return_to_param_to_the_url(
-    #         self,
-    # ):
-    #     self.launchSurvey("test_list_collector")
-    #
-    #     self.assertInBody("Does anyone else live here?")
-    #
-    #     self.post({"anyone-else": "Yes"})
-    #
-    #     self.add_person("Marie Claire", "Doe")
-    #
-    #     self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
-    #
-    #     self.post({"anyone-else": "No"})
-    #
-    #     self.post()
-    #
-    #     self.post({"another-anyone-else": "No"})
-    #
-    #     self.assertInBody("List Collector Summary")
-    #
-    #     # Make another mistake
-    #
-    #     add_link = self.get_add_someone_link()
-    #
-    #     self.get(add_link)
-    #
-    #     self.assertInUrl("?return_to=section-summary")
-    #
-    # def test_removing_from_the_summary_page_adds_the_return_to_param_to_the_url(
-    #         self,
-    # ):
-    #     self.launchSurvey("test_list_collector")
-    #
-    #     self.assertInBody("Does anyone else live here?")
-    #
-    #     self.post({"anyone-else": "Yes"})
-    #
-    #     self.add_person("Marie Claire", "Doe")
-    #
-    #     self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
-    #
-    #     self.post({"anyone-else": "No"})
-    #
-    #     self.post()
-    #
-    #     self.post({"another-anyone-else": "No"})
-    #
-    #     self.assertInBody("List Collector Summary")
-    #
-    #     # Make another mistake
-    #
-    #     remove_link = self.get_link("remove", 1)
-    #
-    #     self.get(remove_link)
-    #
-    #     self.assertInUrl("?return_to=section-summary")
-    #
-    # def test_changing_item_from_the_summary_page_adds_the_return_to_param_to_the_url(
-    #         self,
-    # ):
-    #     self.launchSurvey("test_list_collector")
-    #
-    #     self.assertInBody("Does anyone else live here?")
-    #
-    #     self.post({"anyone-else": "Yes"})
-    #
-    #     self.add_person("Marie Claire", "Doe")
-    #
-    #     self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
-    #
-    #     self.post({"anyone-else": "No"})
-    #
-    #     self.post()
-    #
-    #     self.post({"another-anyone-else": "No"})
-    #
-    #     self.assertInBody("List Collector Summary")
-    #
-    #     change_link = self.get_link("change", 1)
-    #
-    #     self.get(change_link)
-    #
-    #     self.assertInUrl("?return_to=section-summary")
-    #
-    # def test_adding_from_the_summary_page_and_then_removing_from_parent_page_keeps_return_to_url_param(
-    #         self,
-    # ):
-    #     self.launchSurvey("test_list_collector")
-    #
-    #     self.assertInBody("Does anyone else live here?")
-    #
-    #     self.post({"anyone-else": "Yes"})
-    #
-    #     self.add_person("Marie Claire", "Doe")
-    #
-    #     self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
-    #
-    #     self.post({"anyone-else": "No"})
-    #
-    #     self.post()
-    #
-    #     self.post({"another-anyone-else": "No"})
-    #
-    #     self.assertInBody("List Collector Summary")
-    #
-    #     # Add another one form the summary
-    #
-    #     add_link = self.get_add_someone_link()
-    #
-    #     self.get(add_link)
-    #
-    #     self.add_person("Don", "Page")
-    #
-    #     self.assertInSelector("Don Page", "[data-qa='list-item-2-label']")
-    #
-    #     remove_link = self.get_link("remove", 2)
-    #
-    #     self.get(remove_link)
-    #
-    #     self.assertInUrl("?return_to=section-summary")
-    #
-    #     self.post({"remove-confirmation": "Yes"})
-    #
-    #     self.assertInUrl("?return_to=section-summary")
-    #
-    # def test_adding_from_the_summary_page_and_then_changing_from_parent_page_keeps_return_to_url_param(
-    #         self,
-    # ):
-    #     self.launchSurvey("test_list_collector")
-    #
-    #     self.assertInBody("Does anyone else live here?")
-    #
-    #     self.post({"anyone-else": "Yes"})
-    #
-    #     self.add_person("Marie Claire", "Doe")
-    #
-    #     self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
-    #
-    #     self.post({"anyone-else": "No"})
-    #
-    #     self.post()
-    #
-    #     self.post({"another-anyone-else": "No"})
-    #
-    #     self.assertInBody("List Collector Summary")
-    #
-    #     # Add another one form the summary
-    #
-    #     add_link = self.get_add_someone_link()
-    #
-    #     self.get(add_link)
-    #
-    #     self.add_person("Don", "Page")
-    #
-    #     self.assertInSelector("Don Page", "[data-qa='list-item-2-label']")
-    #
-    #     change_link = self.get_link("change", 2)
-    #
-    #     self.get(change_link)
-    #
-    #     self.assertInUrl("?return_to=section-summary")
-    #
-    #     self.post({"first-name": "Another", "last-name": "Name"})
-    #
-    #     self.assertInUrl("?return_to=section-summary")
-    #
-    # def test_adding_from_the_summary_page_and_then_clicking_previous_link_from_edit_question_block_persists_return_to_url_param(
-    #         self,
-    # ):
-    #     self.launchSurvey("test_list_collector")
-    #
-    #     self.assertInBody("Does anyone else live here?")
-    #
-    #     self.post({"anyone-else": "Yes"})
-    #
-    #     self.add_person("Marie Claire", "Doe")
-    #
-    #     self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
-    #
-    #     self.post({"anyone-else": "No"})
-    #
-    #     self.post()
-    #
-    #     self.post({"another-anyone-else": "No"})
-    #
-    #     self.assertInBody("List Collector Summary")
-    #
-    #     # Add another one form the summary
-    #
-    #     add_link = self.get_add_someone_link()
-    #
-    #     self.get(add_link)
-    #
-    #     self.add_person("Don", "Page")
-    #
-    #     self.assertInSelector("Don Page", "[data-qa='list-item-2-label']")
-    #
-    #     change_link = self.get_link("change", 2)
-    #
-    #     self.get(change_link)
-    #
-    #     self.previous()
-    #
-    #     self.assertInUrl("?return_to=section-summary")
-    #
-    # def test_adding_from_the_summary_page_and_then_clicking_previous_link_from_remove_question_block_persists_return_to_url_param(
-    #         self,
-    # ):
-    #     self.launchSurvey("test_list_collector")
-    #
-    #     self.assertInBody("Does anyone else live here?")
-    #
-    #     self.post({"anyone-else": "Yes"})
-    #
-    #     self.add_person("Marie Claire", "Doe")
-    #
-    #     self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
-    #
-    #     self.post({"anyone-else": "No"})
-    #
-    #     self.post()
-    #
-    #     self.post({"another-anyone-else": "No"})
-    #
-    #     self.assertInBody("List Collector Summary")
-    #
-    #     # Add another one form the summary
-    #
-    #     add_link = self.get_add_someone_link()
-    #
-    #     self.get(add_link)
-    #
-    #     self.add_person("Don", "Page")
-    #
-    #     self.assertInSelector("Don Page", "[data-qa='list-item-2-label']")
-    #
-    #     remove_link = self.get_link("remove", 2)
-    #
-    #     self.get(remove_link)
-    #
-    #     self.previous()
-    #
-    #     self.assertInUrl("?return_to=section-summary")
-    #
-    # def test_adding_from_the_summary_page_and_then_adding_again_from_list_collector_persists_the_return_to_url_param(
-    #         self,
-    # ):
-    #     self.launchSurvey("test_list_collector")
-    #
-    #     self.assertInBody("Does anyone else live here?")
-    #
-    #     self.post({"anyone-else": "Yes"})
-    #
-    #     self.add_person("Marie Claire", "Doe")
-    #
-    #     self.assertInSelector("Marie Claire Doe", "[data-qa='list-item-1-label']")
-    #
-    #     self.post({"anyone-else": "No"})
-    #
-    #     self.post()
-    #
-    #     self.post({"another-anyone-else": "No"})
-    #
-    #     self.assertInBody("List Collector Summary")
-    #
-    #     # Add another one form the summary
-    #
-    #     add_link = self.get_add_someone_link()
-    #
-    #     self.get(add_link)
-    #
-    #     self.add_person("Don", "Page")
-    #
-    #     self.assertInSelector("Don Page", "[data-qa='list-item-2-label']")
-    #
-    #     self.post({"anyone-else": "Yes"})
-    #
-    #     self.assertInUrl("?return_to=section-summary")
-    #
-    #     self.add_person("Another", "Person")
-    #
-    #     self.assertInUrl("?return_to=section-summary")
+        # Add first company
+
+        self.add_company_and_repeating_blocks(
+            company_name="Company1",
+            registration_number=123,
+            registration_date=date(2023, 1, 1),
+            trader_uk="Yes",
+            trader_eu="Yes",
+            is_driving=True,
+        )
+
+        # Assert list items complete
+
+        self.assert_company_completed(
+            company_name="Company1", selector="[data-qa='list-item-1-label']"
+        )
+
+        # Navigate to section summary
+        self.post({"any-other-companies-or-branches-answer": "No"})
+        self.assertInUrl("/sections/section-companies/")
+
+        # Add second company - from section summary
+
+        add_link = self.get_link("[data-qa='add-item-link']")
+        self.get(add_link)
+        self.assertInUrl("?return_to=section-summary")
+        self.add_company(company_name="Company2")
+        self.post_repeating_block_1(
+            registration_number=456, registration_date=date(2023, 2, 2)
+        )
+        self.post_repeating_block_2(trader_uk="Yes", trader_eu="No")
+
+        self.assert_company_completed(
+            company_name="Company2", selector="[data-qa='list-item-2-label']"
+        )
+
+        # Navigate to the submit page summary
+        self.post({"any-other-companies-or-branches-answer": "No"})
+        self.post()
+        self.assertInUrl("/submit/")
+        add_link = self.get_link("[data-qa='add-item-link']")
+        self.get(add_link)
+        self.assertInUrl("?return_to=section-summary")
+
+        # Add third company - from submit summary
+
+        self.add_company(company_name="Company3")
+        self.post_repeating_block_1(
+            registration_number=789, registration_date=date(2023, 3, 3)
+        )
+        self.post_repeating_block_2(trader_uk="No")
+
+        self.assert_company_completed(
+            company_name="Company3", selector="[data-qa='list-item-3-label']"
+        )
+
+        # Submit
+        self.post({"any-other-companies-or-branches-answer": "No"})
+        self.post()
+        self.post()
+        self.assertInBody(
+            "Thank you for completing the Test a List Collector with Repeating Blocks and Section Summary Items"
+        )
+
+    def test_removing_from_the_summary_page_adds_the_return_to_param_to_the_url(
+            self,
+    ):
+        self.launchSurvey("test_list_collector_repeating_blocks_section_summary")
+
+        # Add some items to the list
+        self.add_three_companies()
+
+        # Navigate to section summary
+        self.post({"any-other-companies-or-branches-answer": "No"})
+
+        # Remove item 3
+
+        remove_link = self.get_list_item_link("remove", 3)
+        self.get(remove_link)
+        self.assertInUrl("?return_to=section-summary")
+        self.assertInBody("Are you sure you want to remove this company or UK branch?")
+        self.post({"remove-confirmation": "Yes"})
+
+        # Navigate to submit summary
+        self.assertInUrl("/sections/section-companies/")
+        self.post()
+
+        # Remove item 2
+
+        remove_link = self.get_list_item_link("remove", 2)
+        self.get(remove_link)
+        self.assertInUrl("?return_to=section-summary")
+        self.assertInBody("Are you sure you want to remove this company or UK branch?")
+        self.post({"remove-confirmation": "Yes"})
+
+        # Submit
+        self.post()
+        self.post()
+        self.assertInBody(
+            "Thank you for completing the Test a List Collector with Repeating Blocks and Section Summary Items"
+        )
+
+    def test_edit_repeating_block_from_the_summary_page_adds_the_return_to_param_to_the_url(
+            self,
+    ):
+        self.launchSurvey("test_list_collector_repeating_blocks_section_summary")
+
+        # Add some items to the list
+        self.add_three_companies()
+
+        # Navigate to section summary
+        self.post({"any-other-companies-or-branches-answer": "No"})
+        self.assertInUrl("/sections/section-companies/")
+
+        # Edit  item 3
+
+        edit_links = self.get_links("[data-qa='registration-number-edit']")
+        self.get(edit_links[2])
+        self.assertInUrl("?return_to=section-summary")
+        self.post_repeating_block_1(
+            registration_number=000, registration_date=date(2023, 9, 9)
+        )
+        self.assertInUrl("/sections/section-companies/")
+
+        # Remove item 2
+
+        edit_links = self.get_links("[data-qa='authorised-trader-uk-radio-edit']")
+        self.get(edit_links[2])
+        self.assertInUrl("?return_to=section-summary")
+        self.post_repeating_block_2(trader_uk="No", trader_eu="No")
+        self.assertInUrl("/sections/section-companies/")
+
+        # Submit
+        self.post()
+        self.post()
+        self.assertInBody(
+            "Thank you for completing the Test a List Collector with Repeating Blocks and Section Summary Items"
+        )
+
+    def test_adding_incomplete_list_item_from_summary_returns_to_list_collector_not_summary(
+            self,
+    ):
+        self.launchSurvey("test_list_collector_repeating_blocks_section_summary")
+
+        # Add some items to the list
+        self.add_three_companies()
+
+        # Navigate to section summary
+        self.post({"any-other-companies-or-branches-answer": "No"})
+        self.assertInUrl("/sections/section-companies/")
+
+        # Add incomplete item from section summary add link
+        add_link = self.get_link("[data-qa='add-item-link']")
+        self.get(add_link)
+        self.add_company(company_name="Company4")
+        cancel_link = self.get_link("[id='cancel-and-return']")
+        self.get(cancel_link)
+        self.assertInUrl("/any-other-companies-or-branches/")
+        self.assert_company_incomplete(
+            company_name="Company4", selector="[data-qa='list-item-4-label']"
+        )
+
+        # Complete the incomplete item
+        self.post({"any-other-companies-or-branches-answer": "No"})
+        self.post_repeating_block_1(
+            registration_number=101, registration_date=date(2023, 4, 4)
+        )
+        self.post_repeating_block_2(trader_uk="Yes", trader_eu="Yes")
+        self.assert_company_completed(
+            company_name="Company4", selector="[data-qa='list-item-4-label']"
+        )
+
+        # Navigate to submit summary
+        self.post({"any-other-companies-or-branches-answer": "No"})
+        self.post()
+
+        # Add incomplete item from submit summary add link
+        add_link = self.get_link("[data-qa='add-item-link']")
+        self.get(add_link)
+        self.add_company(company_name="Company5")
+        cancel_link = self.get_link("[id='cancel-and-return']")
+        self.get(cancel_link)
+        self.assertInUrl("/any-other-companies-or-branches/")
+        self.assert_company_incomplete(
+            company_name="Company5", selector="[data-qa='list-item-5-label']"
+        )
+
+        # Complete the incomplete item
+        self.post({"any-other-companies-or-branches-answer": "No"})
+        self.post_repeating_block_1(
+            registration_number=121, registration_date=date(2023, 5, 5)
+        )
+        self.post_repeating_block_2(trader_uk="No", trader_eu="No")
+        self.assert_company_completed(
+            company_name="Company5", selector="[data-qa='list-item-5-label']"
+        )
+
+        # Submit
+        self.post({"any-other-companies-or-branches-answer": "No"})
+        self.post()
+        self.post()
+        self.assertInBody(
+            "Thank you for completing the Test a List Collector with Repeating Blocks and Section Summary Items"
+        )

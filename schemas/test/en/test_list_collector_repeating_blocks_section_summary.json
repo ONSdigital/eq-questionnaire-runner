@@ -209,7 +209,7 @@
                                     }
                                 },
                                 {
-                                    "id": "add-company-repeating-block-2",
+                                    "id": "companies-repeating-block-2",
                                     "type": "ListRepeatingBlock",
                                     "question": {
                                         "id": "companies-repeating-block-2-question",
