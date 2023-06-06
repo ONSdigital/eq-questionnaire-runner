@@ -195,15 +195,15 @@ def mock_autoescape_context(mocker):
     return mocker.Mock(autoescape=True)
 
 
-@pytest.fixture(name="mocked_response_content")
-def mocked_response_content_fixture(mocker):
+@pytest.fixture
+def mocked_response_content(mocker):
     decodable_content = Mock()
     decodable_content.decode.return_value = b"{}"
     mocker.patch("requests.models.Response.content", decodable_content)
 
 
-@pytest.fixture(name="mocked_make_request_with_timeout")
-def mocked_make_request_with_timeout_fixture(
+@pytest.fixture
+def mocked_make_request_with_timeout(
     mocker, mocked_response_content  # pylint: disable=unused-argument
 ):
     connect_timeout_error = ConnectTimeoutError("connect timed out")
