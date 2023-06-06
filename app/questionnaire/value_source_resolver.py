@@ -121,8 +121,10 @@ class ValueSourceResolver:
         list_item_id = self._resolve_list_item_id_for_value_source(value_source)
         answer_id = value_source["identifier"]
 
-        if not list_item_id and (
-            dynamic_answer_value := list(self.resolve_dynamic_answers(answer_id))
+        if (
+            not list_item_id
+            and self.schema.is_answer_dynamic(answer_id)
+            and (dynamic_answer_value := list(self.resolve_dynamic_answers(answer_id)))
         ):
             return dynamic_answer_value
 

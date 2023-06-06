@@ -30,6 +30,9 @@ def get_mock_schema():
             }
         )
     )
+    schema.get_block_for_answer_id = Mock(
+        return_value={},
+    )
     return schema
 
 

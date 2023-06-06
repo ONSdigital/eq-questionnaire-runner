@@ -512,9 +512,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             self._answer_dependencies_map[block_answer_id] |= {
                 self._get_answer_dependent_for_block_id(
                     block_id=block_id, for_list=list_name
-                ),
-                # a non-repeating block may depend on the list, such as ones with dynamic-answers
-                self._get_answer_dependent_for_block_id(block_id=block_id),
+                )
+                if self.is_block_in_repeating_section(block_id)
+                # non-repeating blocks such as dynamic-answers could depend on the list
+                else self._get_answer_dependent_for_block_id(block_id=block_id)
             }
         # removing an item from a list will require any dependent calculated summaries to be re-confirmed, so cache dependencies
         if remove_block_question := self.get_remove_block_id_for_list(list_name):

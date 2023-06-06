@@ -186,3 +186,86 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
             }
         )
         self.assertInBody("Enter an answer more than or equal to £60.00")
+
+    def test_calculated_summary_repeating_answers_only(self):
+        self.launchSurvey("test_calculated_summary_repeating_answers_only")
+
+        self.post({"any-transport-answer": "Yes"})
+        self.post({"transport-name": "Bus"})
+        self.post({"list-collector-answer": "Yes"})
+        self.post({"transport-name": "Tube"})
+
+        # get the ids before finishing the collector
+        list_item_ids = self.get_list_item_ids()
+        assert len(list_item_ids) == 2
+        self.post({"list-collector-answer": "No"})
+
+        self.post(
+            {
+                f"cost-of-transport-{list_item_ids[0]}": "100",
+                f"cost-of-transport-{list_item_ids[1]}": "200",
+            }
+        )
+        self.assertInBody(
+            "We calculate the total monthly spending on public transport to be £300.00. Is this correct?"
+        )
+        self.post()
+        self.post()
+        self.post()
+
+    def test_calculated_summary_repeating_and_static_answers(self):
+        self.launchSurvey("test_calculated_summary_repeating_and_static_answers")
+        self.post()
+        self.post({"any-supermarket-answer": "Yes"})
+        self.post({"supermarket-name": "Tesco"})
+        self.post({"list-collector-answer": "Yes"})
+        self.post({"supermarket-name": "Sainsburys"})
+        self.post({"list-collector-answer": "Yes"})
+        self.post({"supermarket-name": "Lidl"})
+
+        list_item_ids = self.get_list_item_ids()
+        assert len(list_item_ids) == 3
+        self.post({"list-collector-answer": "No"})
+
+        self.post(
+            {
+                f"cost-of-shopping-{list_item_ids[0]}": "100",
+                f"cost-of-shopping-{list_item_ids[1]}": "200",
+                f"cost-of-shopping-{list_item_ids[2]}": "300",
+                f"cost-of-other-{list_item_ids[0]}": "10",
+                f"cost-of-other-{list_item_ids[1]}": "20",
+                f"cost-of-other-{list_item_ids[2]}": "30",
+                f"days-a-week-{list_item_ids[0]}": "5",
+                f"days-a-week-{list_item_ids[1]}": "4",
+                f"days-a-week-{list_item_ids[2]}": "3",
+                "based-checkbox-answer": "UK based supermarkets",
+            }
+        )
+        self.post({"extra-spending-answer": "50"})
+        self.post({"extra-spending-method-answer": "Yes"})
+        self.assertInBody(
+            "We calculate the total cost of your weekly shopping to be £710.00. Is this correct?"
+        )
+        self.assertNotInBody("How many days a week do you shop at Tesco?")
+        self.assertInBody("How much do you spend on groceries at Tesco?")
+        self.assertInBody("How much do you spend on other items at Tesco?")
+        self.post()
+        self.assertInBody(
+            "We calculate the total visits to the shop to be 12. Is this correct?"
+        )
+        self.assertNotInBody("How much do you spend on groceries at Tesco?")
+        self.assertNotInBody("How much do you spend on other items at Tesco?")
+        self.assertInBody("How many days a week do you shop at Tesco?")
+        self.post()
+        self.post()
+        self.post()
+        self.post({"weekly-car-trips-answer": "15"})
+        self.assertInBody("There is a problem with your answer")
+        self.assertInBody("Enter an answer less than or equal to 12")
+        self.post({"weekly-car-trips-answer": "15"})
+        self.post({"weekly-car-trips-answer": "4"})
+        self.post({"weekly-trips-cost-answer": "25"})
+        self.assertInBody("Total weekly supermarket spending: <em>£710.00</em>")
+        self.assertInBody("Total weekly supermarket visits: <em>12</em>")
+        self.assertInBody("Total of supermarket visits by car: <em>4</em>")
+        self.assertInBody("Total spending on parking: <em>£25.00</em>")
