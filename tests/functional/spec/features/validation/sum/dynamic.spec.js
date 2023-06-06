@@ -18,8 +18,8 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
     await browser.openQuestionnaire("test_validation_sum_against_total_dynamic_answers_based_on_list_collector.json");
   });
 
-  describe("Given I start a grouped answer with multi rule validation survey and enter 10 into the total", () => {
-    it("When I continue and enter nothing, all zeros or 10 at breakdown level, Then I should be able to get to the summary", async () => {
+  describe("Given I add list items with hardcoded total used for validation of dynamic answers", () => {
+    it("When I continue and enter numbers on dynamic and static answers page that don't add up to that total, Then validation error should be displayed with appropriate message", async () => {
       await addTwoSupermarkets();
       await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
       await expect(await $$(labels).length).to.equal(3);
@@ -30,8 +30,8 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await expect(await $(DynamicAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 100");
     });
   });
-  describe("Given I start a grouped answer with multi rule validation survey and enter 10 into the total", () => {
-    it("When I continue and enter nothing, all zeros or 10 at breakdown level, Then I should be able to get to the summary", async () => {
+  describe("Given I add list items with hardcoded total used for validation of dynamic answers", () => {
+    it("When I continue and enter numbers on dynamic and static answers page that add up to that total, Then I should be able to get to the subsequent question", async () => {
       await addTwoSupermarkets();
       await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
       await expect(await $$(labels).length).to.equal(3);
@@ -42,8 +42,8 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await expect(await browser.getUrl()).to.contain(TotalBlockPage.pageName);
     });
   });
-  describe("Given I start a grouped answer with multi rule validation survey and enter 10 into the total", () => {
-    it("When I continue and enter nothing, all zeros or 10 at breakdown level, Then I should be able to get to the summary", async () => {
+  describe("Given I add list items with custom total used for validation of dynamic answers", () => {
+    it("When I continue and enter numbers on dynamic answers only page that don't add up to that total, Then validation error should be displayed with appropriate message", async () => {
       await addTwoSupermarkets();
       await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
       await expect(await $$(labels).length).to.equal(3);
@@ -60,16 +60,16 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await expect(await $(DynamicAnswerOnlyPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to £100.00");
     });
   });
-  describe("Given I start a grouped answer with multi rule validation survey and enter 10 into the total", () => {
-    it("When I continue and enter nothing, all zeros or 10 at breakdown level, Then I should be able to get to the summary", async () => {
+  describe("Given I add list items with custom total used for validation of dynamic answers", () => {
+    it("When I continue and enter numbers on dynamic answers only page that add up to that total, Then I should be able to get to the summary", async () => {
       await addTwoSupermarkets();
       await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
       await fillDynamicAnswers(percentageInputs, currencyInputs);
       await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
     });
   });
-  describe("Given I start a grouped answer with multi rule validation survey and enter 10 into the total", () => {
-    it("When I continue and enter nothing, all zeros or 10 at breakdown level, Then I should be able to get to the summary", async () => {
+  describe("Given I add list items and fill all the dynamic answers", () => {
+    it("When I continue and add another list item, Then I should be revisiting dynamic answers which should be updated to reflect the changes", async () => {
       await addTwoSupermarkets();
       await expect(await $$(labels).length).to.equal(3);
       await fillDynamicAnswers(percentageInputs, currencyInputs);
@@ -82,8 +82,8 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await expect(await $$(labels).length).to.equal(4);
     });
   });
-  describe("Given I start a grouped answer with multi rule validation survey and enter 10 into the total", () => {
-    it("When I continue and enter nothing, all zeros or 10 at breakdown level, Then I should be able to get to the summary", async () => {
+  describe("Given I add list items and fill all the dynamic answers", () => {
+    it("When I continue and remove existing list item, Then I should be revisiting dynamic answers which should be updated to reflect the changes", async () => {
       await addTwoSupermarkets();
       await fillDynamicAnswers(percentageInputs, currencyInputs);
       await $(SectionSummaryPage.supermarketsListRemoveLink(1)).click();
@@ -93,8 +93,8 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await expect(await $$(labels).length).to.equal(2);
     });
   });
-  describe("Given I start a grouped answer with multi rule validation survey and enter 10 into the total", () => {
-    it("When I continue and enter nothing, all zeros or 10 at breakdown level, Then I should be able to get to the summary", async () => {
+  describe("Given I add list items and fill all the dynamic answers", () => {
+    it("When I continue and edit existing list item, Then I should be revisiting dynamic answers which should be updated to reflect the changes", async () => {
       await addTwoSupermarkets();
       await fillDynamicAnswers(percentageInputs, currencyInputs);
       await $(SectionSummaryPage.supermarketsListEditLink(1)).click();
@@ -107,8 +107,8 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await expect(await $(group).$$(summaryTitles)[0].getText()).to.equal("Percentage of shopping at Aldi");
     });
   });
-  describe("Given I start a grouped answer with multi rule validation survey and enter 10 into the total", () => {
-    it("When I continue and enter nothing, all zeros or 10 at breakdown level, Then I should be able to get to the summary", async () => {
+  describe("Given I add list items and fill all the dynamic answers", () => {
+    it("When I journey backwards, Then I should be revisiting all the previous blocks", async () => {
       await addTwoSupermarkets();
       await fillDynamicAnswers(percentageInputs, currencyInputs);
       await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
@@ -116,7 +116,8 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await $(DynamicAnswerOnlyPage.previous()).click();
       await $(TotalBlockPage.previous()).click();
       await $(DynamicAnswerPage.previous()).click();
-      await expect(await browser.getUrl()).to.contain(ListCollectorPage.pageName);
+      await $(ListCollectorPage.previous()).click();
+      await expect(await browser.getUrl()).to.contain(DriverPage.pageName);
     });
   });
 });
