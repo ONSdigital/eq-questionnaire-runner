@@ -168,7 +168,7 @@
                                     "title": "What is the type of public transport?",
                                     "answers": [
                                         {
-                                            "id": "transport-name",
+                                            "id": "edit-transport-name",
                                             "label": "Transport type",
                                             "mandatory": true,
                                             "type": "Dropdown",
