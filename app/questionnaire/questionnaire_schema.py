@@ -699,9 +699,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def is_answer_dynamic(self, answer_id: str) -> bool:
         return answer_id in self._dynamic_answer_ids
 
+    def get_list_name_for_dynamic_answer(self, block_id: str) -> str | None:
+        return self.get_block(block_id).get("question", {}).get("dynamic_answers", {}).get("values", {}).get("identifier", {})  # type: ignore
+        # type ignore block always exists at this point
+
     def block_has_dynamic_answer(self, block_id: str) -> bool:
         return (
             "dynamic_answers" in self.get_block(block_id).get("question", {})  # type: ignore
+            # type ignore block always exists at this point
             if self.get_block(block_id)
             else False
         )

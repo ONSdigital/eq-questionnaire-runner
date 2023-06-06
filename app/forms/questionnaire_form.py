@@ -390,17 +390,22 @@ class QuestionnaireForm(FlaskForm):
         self, answers_sequence: Sequence[str]
     ) -> list[str]:
         answers_list = list(copy.copy(answers_sequence))
-        list_item_ids = self.list_store["supermarkets"]
+        block_id = self.location.block_id if self.location else None  # type: ignore
+        # type ignore self.location always exists at this point
+        list_name = (
+            self.schema.get_list_name_for_dynamic_answer(block_id) if block_id else None
+        )
+        list_item_ids = self.list_store[list_name] if list_name else None
         for answer_id in answers_list:
-            if self.schema.is_answer_dynamic(answer_id):
+            if self.schema.is_answer_dynamic(answer_id) and list_item_ids:
                 answers_list.remove(answer_id)
                 answers_list.extend(
                     f"{answer_id}-{list_item_id}" for list_item_id in list_item_ids
                 )
 
         return [
-            self.get_data(answer_id).replace(" ", "").replace(",", "")
-            for answer_id in answers_list
+            self.get_data(formatted_answer_id).replace(" ", "").replace(",", "")
+            for formatted_answer_id in answers_list
         ]
 
     @staticmethod
