@@ -112,7 +112,7 @@ class PlaceholderParser:
     def _get_value_source_resolver(
         self,
         routing_path_block_ids: OrderedSet[str] | None = None,
-        assess_routing_path=False,
+        assess_routing_path: bool = False,
     ) -> ValueSourceResolver:
         return ValueSourceResolver(
             answer_store=self._answer_store,
