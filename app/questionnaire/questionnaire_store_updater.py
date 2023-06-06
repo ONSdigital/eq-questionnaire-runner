@@ -169,12 +169,8 @@ class QuestionnaireStoreUpdater:
             section=self._schema.get_section(self._current_location.section_id),  # type: ignore
             # type ignore Section and answer_id below must exist at this point
         ):
-            add_block_id: str = self._schema.get_add_block_for_list_collector(list_collector["id"])["id"]  # type: ignore
             remove_block_id: str = self._schema.get_remove_block_id_for_list(list_name)  # type: ignore
-            answer_ids = [
-                # *self._schema.get_answer_ids_for_block(add_block_id),
-                *self._schema.get_answer_ids_for_block(remove_block_id),
-            ]
+            answer_ids = self._schema.get_answer_ids_for_block(remove_block_id)
             # type ignore non-optional return, always exists
             for answer_id in answer_ids:
                 self._capture_block_dependencies_for_answer(answer_id)
