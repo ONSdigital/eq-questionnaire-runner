@@ -110,8 +110,9 @@ class PlaceholderParser:
         return self._placeholder_map
 
     def _get_value_source_resolver(
-        self, routing_path_block_ids: OrderedSet[str] | None = None
+        self, routing_path_block_ids: OrderedSet[str] | None = None, assess_routing_path = False
     ) -> ValueSourceResolver:
+
         return ValueSourceResolver(
             answer_store=self._answer_store,
             list_store=self._list_store,
@@ -122,7 +123,7 @@ class PlaceholderParser:
             escape_answer_values=True,
             response_metadata=self._response_metadata,
             use_default_answer=True,
-            assess_routing_path=False,
+            assess_routing_path=assess_routing_path,
             routing_path_block_ids=routing_path_block_ids,
             progress_store=self._progress_store,
         )
@@ -220,6 +221,6 @@ class PlaceholderParser:
             routing_path_block_ids: list = [
                 value for values in block_ids.values() for value in values
             ]
-            return self._get_value_source_resolver(OrderedSet(routing_path_block_ids))
+            return self._get_value_source_resolver(OrderedSet(routing_path_block_ids), assess_routing_path= True)
 
         return self._value_source_resolver
