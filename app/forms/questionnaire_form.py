@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import copy
 import itertools
 import logging
 from collections.abc import Callable
@@ -389,7 +388,7 @@ class QuestionnaireForm(FlaskForm):
     def _get_formatted_calculation_values(
         self, answers_sequence: Sequence[str]
     ) -> list[str]:
-        answers_list = list(copy.copy(answers_sequence))
+        answers_list = list(answers_sequence)
         block_id = self.location.block_id if self.location else None  # type: ignore
         # type ignore self.location always exists at this point
         list_name = (
