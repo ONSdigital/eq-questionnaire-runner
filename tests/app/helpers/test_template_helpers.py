@@ -523,6 +523,16 @@ def test_service_links_context(
             f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
         ),
         (
+            DESNZBusinessSurveyConfig(),
+            "en",
+            f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
+        ),
+        (
+            DESNZNIBusinessSurveyConfig(),
+            "en",
+            f"{ACCOUNT_SERVICE_BASE_URL}/contact-us/",
+        ),
+        (
             SocialSurveyConfig(),
             "en",
             f"{ONS_URL}/aboutus/contactus/surveyenquiries/",
@@ -612,6 +622,16 @@ def test_sign_out_button_text_context(
             f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
         ),
         (
+            DESNZBusinessSurveyConfig(),
+            True,
+            f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
+        ),
+        (
+            DESNZNIBusinessSurveyConfig(),
+            True,
+            f"{ACCOUNT_SERVICE_BASE_URL}/cookies/",
+        ),
+        (
             SocialSurveyConfig(),
             True,
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/cookies/",
@@ -677,6 +697,16 @@ def test_cookie_settings_url_context(
         ),
         (
             ORRBusinessSurveyConfig(),
+            "en",
+            ACCOUNT_SERVICE_BASE_URL,
+        ),
+        (
+            DESNZBusinessSurveyConfig(),
+            "en",
+            ACCOUNT_SERVICE_BASE_URL,
+        ),
+        (
+            DESNZNIBusinessSurveyConfig(),
             "en",
             ACCOUNT_SERVICE_BASE_URL,
         ),
@@ -813,6 +843,14 @@ def test_account_service_my_todo_url_context(
         ),
         (
             ORRBusinessSurveyConfig(),
+            f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
+        ),
+        (
+            DESNZBusinessSurveyConfig(),
+            f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
+        ),
+        (
+            DESNZNIBusinessSurveyConfig(),
             f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
         ),
         (
@@ -1080,6 +1118,18 @@ def test_use_default_survey_title_in_context_when_no_cookie(
         ),
         (
             SurveyType.ORR,
+            "en",
+            QuestionnaireSchema({"survey_id": "001"}),
+            [{"survey_id": "001"}],
+        ),
+        (
+            SurveyType.DESNZ,
+            "en",
+            QuestionnaireSchema({"survey_id": "001"}),
+            [{"survey_id": "001"}],
+        ),
+        (
+            SurveyType.DESNZ_NI,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
             [{"survey_id": "001"}],
