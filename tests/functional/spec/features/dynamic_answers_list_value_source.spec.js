@@ -143,10 +143,6 @@ describe("Dynamic answers list value source", () => {
     await $(SectionSummaryPage.supermarketsListRemoveLink(1)).click();
     await $(ListCollectorRemovePage.yes()).click();
     await $(ListCollectorRemovePage.submit()).click();
-    await $(DynamicAnswerPage.submit()).click();
-    await $(SetMinimumPage.setMinimum()).setValue(2);
-    await $(SetMinimumPage.submit()).click();
-    await $(DynamicAnswerOnlyPage.submit()).click();
     await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
     await expect(await $(group).$$(summaryTitles)[0].getText()).to.equal("Percentage of shopping at Aldi");
     await expect(await $(group).$$(summaryValues)[0].getText()).to.equal("21%");
