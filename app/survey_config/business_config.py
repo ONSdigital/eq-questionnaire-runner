@@ -159,13 +159,14 @@ class DBTNIBusinessSurveyConfig(BusinessSurveyConfig):
 
 @dataclass
 class DESNZBusinessSurveyConfig(BusinessSurveyConfig):
-    masthead_logo: str = read_file("./templates/assets/images/desnz.svg")
+    masthead_logo: str = read_file("./templates/assets/images/desnz-logo-stacked.svg")
 
 
 @dataclass
 class DESNZNIBusinessSurveyConfig(BusinessSurveyConfig):
-    masthead_logo: str = read_file("./templates/assets/images/desnz.svg"
-    )  + read_file("./templates/assets/images/finance-ni-logo-stacked.svg")
+    masthead_logo: str = read_file(
+        "./templates/assets/images/desnz-logo-stacked.svg"
+    ) + read_file("./templates/assets/images/finance-ni-logo-stacked.svg")
 
 
 @dataclass

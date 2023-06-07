@@ -4,10 +4,10 @@ from .business_config import (
     DBTDSITBusinessSurveyConfig,
     DBTDSITNIBusinessSurveyConfig,
     DBTNIBusinessSurveyConfig,
-    NIBusinessSurveyConfig,
-    ORRBusinessSurveyConfig,
     DESNZBusinessSurveyConfig,
     DESNZNIBusinessSurveyConfig,
+    NIBusinessSurveyConfig,
+    ORRBusinessSurveyConfig,
 )
 from .census_config import (
     CensusNISRASurveyConfig,

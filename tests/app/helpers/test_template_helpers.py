@@ -22,11 +22,13 @@ from app.survey_config import (
     DBTDSITBusinessSurveyConfig,
     DBTDSITNIBusinessSurveyConfig,
     DBTNIBusinessSurveyConfig,
+    DESNZBusinessSurveyConfig,
+    DESNZNIBusinessSurveyConfig,
     NIBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
     SocialSurveyConfig,
     SurveyConfig,
-    WelshCensusSurveyConfig, DESNZBusinessSurveyConfig, DESNZNIBusinessSurveyConfig,
+    WelshCensusSurveyConfig,
 )
 from app.survey_config.survey_type import SurveyType
 from tests.app.helpers.conftest import (
@@ -346,7 +348,7 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             DESNZBusinessSurveyConfig(),
             [
                 "Test",
-                read_file("./templates/assets/images/desnz.svg"),
+                read_file("./templates/assets/images/desnz-logo-stacked.svg"),
                 None,
             ],
         ),
@@ -356,7 +358,8 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             DESNZNIBusinessSurveyConfig(),
             [
                 "Test",
-                read_file("./templates/assets/images/desnz.svg"),
+                read_file("./templates/assets/images/desnz-logo-stacked.svg")
+                + read_file("./templates/assets/images/finance-ni-logo-stacked.svg"),
                 None,
             ],
         ),
