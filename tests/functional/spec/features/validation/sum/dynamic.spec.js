@@ -9,9 +9,6 @@ import ListCollectorRemovePage from "../../../../generated_pages/validation_sum_
 import ListCollectorEditPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers_based_on_list_collector/list-collector-edit.page";
 
 describe("Feature: Sum of dynamic answers based on list and optional static answers equal to validation against total ", () => {
-  const labels = ".ons-label";
-  const percentageInputs = 'input[class="ons-input ons-input--text ons-input-type__input ons-input-number--w-3"]';
-  const currencyInputs = 'input[class="ons-input ons-input--text ons-input-type__input"]';
   const summaryTitles = 'dt[class="ons-summary__item-title"]';
   beforeEach(async () => {
     await browser.openQuestionnaire("test_validation_sum_against_total_dynamic_answers_based_on_list_collector.json");
@@ -21,9 +18,9 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
     it("When I continue and enter numbers on dynamic and static answers page that don't add up to that total, Then validation error should be displayed with appropriate message", async () => {
       await addTwoSupermarkets();
       await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
-      await expect(await $$(labels).length).to.equal(3);
-      await $$(percentageInputs)[0].setValue(33);
-      await $$(percentageInputs)[1].setValue(33);
+      await expect(await $$(DynamicAnswerPage.labels()).length).to.equal(3);
+      await $$(DynamicAnswerPage.inputs())[0].setValue(33);
+      await $$(DynamicAnswerPage.inputs())[1].setValue(33);
       await $(DynamicAnswerPage.percentageOfShoppingElsewhere()).setValue(33);
       await $(DynamicAnswerPage.submit()).click();
       await expect(await $(DynamicAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 100");
@@ -33,9 +30,9 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
     it("When I continue and enter numbers on dynamic and static answers page that add up to that total, Then I should be able to get to the subsequent question", async () => {
       await addTwoSupermarkets();
       await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
-      await expect(await $$(labels).length).to.equal(3);
-      await $$(percentageInputs)[0].setValue(34);
-      await $$(percentageInputs)[1].setValue(33);
+      await expect(await $$(DynamicAnswerPage.labels()).length).to.equal(3);
+      await $$(DynamicAnswerPage.inputs())[0].setValue(34);
+      await $$(DynamicAnswerPage.inputs())[1].setValue(33);
       await $(DynamicAnswerPage.percentageOfShoppingElsewhere()).setValue(33);
       await $(DynamicAnswerPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(TotalBlockPage.pageName);
@@ -45,16 +42,16 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
     it("When I continue and enter numbers on dynamic answers only page that don't add up to that total, Then validation error should be displayed with appropriate message", async () => {
       await addTwoSupermarkets();
       await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
-      await expect(await $$(labels).length).to.equal(3);
-      await $$(percentageInputs)[0].setValue(34);
-      await $$(percentageInputs)[1].setValue(33);
+      await expect(await $$(DynamicAnswerPage.labels()).length).to.equal(3);
+      await $$(DynamicAnswerPage.inputs())[0].setValue(34);
+      await $$(DynamicAnswerPage.inputs())[1].setValue(33);
       await $(DynamicAnswerPage.percentageOfShoppingElsewhere()).setValue(33);
       await $(DynamicAnswerPage.submit()).click();
       await $(TotalBlockPage.total()).setValue(100);
       await $(TotalBlockPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(DynamicAnswerOnlyPage.pageName);
-      await $$(currencyInputs)[0].setValue(50);
-      await $$(currencyInputs)[1].setValue(0);
+      await $$(DynamicAnswerOnlyPage.inputs())[0].setValue(50);
+      await $$(DynamicAnswerOnlyPage.inputs())[1].setValue(0);
       await $(DynamicAnswerOnlyPage.submit()).click();
       await expect(await $(DynamicAnswerOnlyPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to £100.00");
     });
@@ -63,39 +60,39 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
     it("When I continue and enter numbers on dynamic answers only page that add up to that total, Then I should be able to get to the summary", async () => {
       await addTwoSupermarkets();
       await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
-      await fillDynamicAnswers(percentageInputs, currencyInputs);
+      await fillDynamicAnswers();
       await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
     });
   });
   describe("Given I add list items and fill all the dynamic answers", () => {
     it("When I continue and add another list item, Then I should be revisiting dynamic answers which should be updated to reflect the changes", async () => {
       await addTwoSupermarkets();
-      await expect(await $$(labels).length).to.equal(3);
-      await fillDynamicAnswers(percentageInputs, currencyInputs);
+      await expect(await $$(DynamicAnswerPage.labels()).length).to.equal(3);
+      await fillDynamicAnswers();
       await $(SectionSummaryPage.supermarketsListAddLink()).click();
       await $(ListCollectorAddPage.supermarketName()).setValue("Morrisons");
       await $(ListCollectorAddPage.submit()).click();
       await $(ListCollectorPage.no()).click();
       await $(ListCollectorPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
-      await expect(await $$(labels).length).to.equal(4);
+      await expect(await $$(DynamicAnswerPage.labels()).length).to.equal(4);
     });
   });
   describe("Given I add list items and fill all the dynamic answers", () => {
     it("When I continue and remove existing list item, Then I should be revisiting dynamic answers which should be updated to reflect the changes", async () => {
       await addTwoSupermarkets();
-      await fillDynamicAnswers(percentageInputs, currencyInputs);
+      await fillDynamicAnswers();
       await $(SectionSummaryPage.supermarketsListRemoveLink(1)).click();
       await $(ListCollectorRemovePage.yes()).click();
       await $(ListCollectorRemovePage.submit()).click();
       await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
-      await expect(await $$(labels).length).to.equal(2);
+      await expect(await $$(DynamicAnswerPage.labels()).length).to.equal(2);
     });
   });
   describe("Given I add list items and fill all the dynamic answers", () => {
     it("When I continue and edit existing list item, Then I should be revisiting dynamic answers which should be updated to reflect the changes", async () => {
       await addTwoSupermarkets();
-      await fillDynamicAnswers(percentageInputs, currencyInputs);
+      await fillDynamicAnswers();
       await $(SectionSummaryPage.supermarketsListEditLink(1)).click();
       await $(ListCollectorEditPage.supermarketName()).setValue("Aldi");
       await $(ListCollectorEditPage.submit()).click();
@@ -110,7 +107,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
   describe("Given I add list items and fill all the dynamic answers", () => {
     it("When I journey backwards, Then I should be revisiting all the previous blocks", async () => {
       await addTwoSupermarkets();
-      await fillDynamicAnswers(percentageInputs, currencyInputs);
+      await fillDynamicAnswers();
       await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
       await $(SectionSummaryPage.previous()).click();
       await $(DynamicAnswerOnlyPage.previous()).click();
@@ -135,14 +132,14 @@ async function addTwoSupermarkets() {
   await $(ListCollectorPage.submit()).click();
 }
 
-async function fillDynamicAnswers(percentageInputs, currencyInputs) {
-  await $$(percentageInputs)[0].setValue(34);
-  await $$(percentageInputs)[1].setValue(33);
+async function fillDynamicAnswers() {
+  await $$(DynamicAnswerPage.inputs())[0].setValue(34);
+  await $$(DynamicAnswerPage.inputs())[1].setValue(33);
   await $(DynamicAnswerPage.percentageOfShoppingElsewhere()).setValue(33);
   await $(DynamicAnswerPage.submit()).click();
   await $(TotalBlockPage.total()).setValue(100);
   await $(TotalBlockPage.submit()).click();
-  await $$(currencyInputs)[0].setValue(50);
-  await $$(currencyInputs)[1].setValue(50);
+  await $$(DynamicAnswerOnlyPage.inputs())[0].setValue(50);
+  await $$(DynamicAnswerOnlyPage.inputs())[1].setValue(50);
   await $(DynamicAnswerOnlyPage.submit()).click();
 }
