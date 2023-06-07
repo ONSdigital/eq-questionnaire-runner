@@ -12,7 +12,6 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
   const labels = ".ons-label";
   const percentageInputs = 'input[class="ons-input ons-input--text ons-input-type__input ons-input-number--w-3"]';
   const currencyInputs = 'input[class="ons-input ons-input--text ons-input-type__input"]';
-  const group = 'div[id="group-2"]';
   const summaryTitles = 'dt[class="ons-summary__item-title"]';
   beforeEach(async () => {
     await browser.openQuestionnaire("test_validation_sum_against_total_dynamic_answers_based_on_list_collector.json");
@@ -104,7 +103,8 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await $(TotalBlockPage.submit()).click();
       await $(DynamicAnswerOnlyPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
-      await expect(await $(group).$$(summaryTitles)[0].getText()).to.equal("Percentage of shopping at Aldi");
+      await $(SectionSummaryPage.groupContent(2)).waitForExist({ timeout: 2000 });
+      await expect(await $(SectionSummaryPage.groupContent(2)).$$(summaryTitles)[0].getText()).to.equal("Percentage of shopping at Aldi");
     });
   });
   describe("Given I add list items and fill all the dynamic answers", () => {
