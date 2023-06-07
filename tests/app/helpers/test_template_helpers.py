@@ -26,7 +26,7 @@ from app.survey_config import (
     ORRBusinessSurveyConfig,
     SocialSurveyConfig,
     SurveyConfig,
-    WelshCensusSurveyConfig,
+    WelshCensusSurveyConfig, DESNZBusinessSurveyConfig, DESNZNIBusinessSurveyConfig,
 )
 from app.survey_config.survey_type import SurveyType
 from tests.app.helpers.conftest import (
@@ -338,6 +338,26 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
                 "Test",
                 read_file("./templates/assets/images/orr-logo.svg"),
                 read_file("./templates/assets/images/orr-mobile-logo.svg"),
+            ],
+        ),
+        (
+            SurveyType.DESNZ,
+            "Test",
+            DESNZBusinessSurveyConfig(),
+            [
+                "Test",
+                read_file("./templates/assets/images/desnz.svg"),
+                None,
+            ],
+        ),
+        (
+            SurveyType.DESNZ,
+            "Test",
+            DESNZNIBusinessSurveyConfig(),
+            [
+                "Test",
+                read_file("./templates/assets/images/desnz.svg"),
+                None,
             ],
         ),
     ),

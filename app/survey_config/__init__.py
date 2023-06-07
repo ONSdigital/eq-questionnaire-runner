@@ -6,6 +6,8 @@ from .business_config import (
     DBTNIBusinessSurveyConfig,
     NIBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
+    DESNZBusinessSurveyConfig,
+    DESNZNIBusinessSurveyConfig,
 )
 from .census_config import (
     CensusNISRASurveyConfig,
@@ -29,5 +31,7 @@ __all__ = [
     "DBTDSITBusinessSurveyConfig",
     "DBTDSITNIBusinessSurveyConfig",
     "ORRBusinessSurveyConfig",
+    "DESNZBusinessSurveyConfig",
+    "DESNZNIBusinessSurveyConfig",
     "Link",
 ]
