@@ -188,7 +188,10 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.assertInBody("Enter an answer more than or equal to £60.00")
 
     def test_calculated_summary_repeating_answers_only(self):
-        self.launchSurvey("test_calculated_summary_repeating_answers_only")
+        """
+        Tests the happy path of a calculated summary with repeating answers
+        """
+        self.launchSurvey("test_new_calculated_summary_repeating_answers_only")
 
         self.post({"any-transport-answer": "Yes"})
         self.post({"transport-name": "Bus"})
@@ -214,7 +217,11 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.post()
 
     def test_calculated_summary_repeating_and_static_answers(self):
-        self.launchSurvey("test_calculated_summary_repeating_and_static_answers")
+        """
+        This tests a calculated summary which uses both repeating and static answers
+        it pipes the calculated summary into a second section and disallows an answer greater than the total sum
+        """
+        self.launchSurvey("test_new_calculated_summary_repeating_and_static_answers")
         self.post()
         self.post({"any-supermarket-answer": "Yes"})
         self.post({"supermarket-name": "Tesco"})

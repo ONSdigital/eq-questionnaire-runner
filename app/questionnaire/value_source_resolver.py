@@ -105,22 +105,29 @@ class ValueSourceResolver:
         answer_id: str,
     ) -> Generator[AnswerValueTypes, None, None]:
         # Type ignore: the answer block will exist at this stage
-        if question := self.schema.get_block_for_answer_id(answer_id).get("question"):  # type: ignore
-            if dynamic_answers := question.get("dynamic_answers"):
-                values = dynamic_answers["values"]
-                if values["source"] == "list":
-                    for list_item_id in self.list_store[values["identifier"]].items:
-                        if answer_value := self._get_answer_value(
-                            answer_id=answer_id, list_item_id=list_item_id
-                        ):
-                            yield answer_value
+        question = self.schema.get_block_for_answer_id(answer_id).get("question", {})  # type: ignore
+
+        if not (dynamic_answers := question.get("dynamic_answers")):
+            return
+
+        values = dynamic_answers["values"]
+        if values["source"] == "list":
+            for list_item_id in self.list_store[values["identifier"]].items:
+                if answer_value := self._get_answer_value(
+                    answer_id=answer_id, list_item_id=list_item_id
+                ):
+                    yield answer_value
 
     def _resolve_answer_value_source(
         self, value_source: Mapping
     ) -> ValueSourceEscapedTypes | ValueSourceTypes:
+        """resolves answer value by first checking if the answer is dynamic whilst not in a repeating section,
+        which indicates that it is a dynamic answer resolving to a list. Otherwise, retrieve answer value as normal.
+        """
         list_item_id = self._resolve_list_item_id_for_value_source(value_source)
         answer_id = value_source["identifier"]
 
+        # if not in a repeating section and the id is for a list of dynamic answers, then return the list of values
         if (
             not list_item_id
             and self.schema.is_answer_dynamic(answer_id)
