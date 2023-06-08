@@ -473,7 +473,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     self._get_answer_dependent_for_block_id(
                         block_id=block_id, for_list=value_source["identifier"]
                     )
-                    # type: ignore
                 }
 
     def _get_answer_dependent_for_block_id(

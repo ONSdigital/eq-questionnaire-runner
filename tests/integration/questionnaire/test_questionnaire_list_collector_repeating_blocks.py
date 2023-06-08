@@ -2,7 +2,6 @@ from datetime import date
 
 from ..integration_test_case import IntegrationTestCase
 
-
 # pylint: disable=too-many-public-methods
 
 
@@ -12,7 +11,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         self.post({"company-or-branch-name": company_name})
 
     def add_company_from_list_collector(
-            self, company_name: str, is_driving: bool = False
+        self, company_name: str, is_driving: bool = False
     ):
         if is_driving:
             self.assertInUrl("/questionnaire/any-companies-or-branches/")
@@ -46,13 +45,13 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         )
 
     def add_company_and_repeating_blocks(
-            self,
-            company_name: str,
-            registration_number: int,
-            registration_date: date,
-            trader_uk: str,
-            trader_eu: str | None = None,
-            is_driving: bool = False,
+        self,
+        company_name: str,
+        registration_number: int,
+        registration_date: date,
+        trader_uk: str,
+        trader_eu: str | None = None,
+        is_driving: bool = False,
     ):
         self.add_company_from_list_collector(
             company_name=company_name, is_driving=is_driving
@@ -269,7 +268,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         )
 
     def test_adding_from_the_summary_page_adds_the_return_to_param_to_the_url(
-            self,
+        self,
     ):
         self.launchSurvey("test_list_collector_repeating_blocks_section_summary")
 
@@ -338,7 +337,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         )
 
     def test_removing_from_the_summary_page_adds_the_return_to_param_to_the_url(
-            self,
+        self,
     ):
         self.launchSurvey("test_list_collector_repeating_blocks_section_summary")
 
@@ -376,7 +375,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         )
 
     def test_edit_repeating_block_from_the_summary_page_adds_the_return_to_param_to_the_url(
-            self,
+        self,
     ):
         self.launchSurvey("test_list_collector_repeating_blocks_section_summary")
 
@@ -413,7 +412,7 @@ class TestQuestionnaireListCollector(IntegrationTestCase):
         )
 
     def test_adding_incomplete_list_item_from_summary_returns_to_list_collector_not_summary(
-            self,
+        self,
     ):
         self.launchSurvey("test_list_collector_repeating_blocks_section_summary")
 
