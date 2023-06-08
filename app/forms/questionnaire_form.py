@@ -388,7 +388,7 @@ class QuestionnaireForm(FlaskForm):
     def _get_formatted_calculation_values(
         self, answers_sequence: Sequence[str]
     ) -> list[str]:
-        answers_list = []
+        answers_list: list[str] = []
         block_id = self.location.block_id if self.location else None
         if block_id and self.schema.block_has_dynamic_answer(block_id):
             list_name = (
