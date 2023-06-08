@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Any, Mapping, MutableMapping, Optional, Sequence
+from typing import Any, Iterable, Mapping, MutableMapping, Optional, Sequence
 
 from flask import url_for
 from werkzeug.datastructures import ImmutableDict
@@ -9,7 +9,6 @@ from app.data_models.list_store import ListModel, ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
-from app.questionnaire.routing_path import RoutingPath
 from app.views.contexts.list_context import ListContext
 from app.views.contexts.summary.block import Block
 
@@ -17,7 +16,7 @@ from app.views.contexts.summary.block import Block
 class ListCollectorBlock:
     def __init__(
         self,
-        routing_path: RoutingPath,
+        routing_path_block_ids: Iterable[str],
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
@@ -47,7 +46,7 @@ class ListCollectorBlock:
         self._answer_store = answer_store
         self._metadata = metadata
         self._response_metadata = response_metadata
-        self._routing_path = routing_path
+        self._routing_path_block_ids = routing_path_block_ids
         self._progress_store = progress_store
 
     # pylint: disable=too-many-locals
@@ -74,7 +73,7 @@ class ListCollectorBlock:
         list_collector_blocks_on_path = [
             list_collector_block
             for list_collector_block in list_collector_blocks
-            if list_collector_block["id"] in self._routing_path.block_ids
+            if list_collector_block["id"] in self._routing_path_block_ids
         ]
 
         list_collector_block = (

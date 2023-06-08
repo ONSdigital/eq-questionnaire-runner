@@ -12,6 +12,7 @@ from jinja2 import nodes, pass_eval_context
 from markupsafe import Markup, escape
 from wtforms import SelectFieldBase
 
+from app.questionnaire.questionnaire_schema import is_summary_with_calculation
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import MAX_NUMBER
 
@@ -469,7 +470,7 @@ class SummaryRowItem:
             (
                 multiple_answers
                 or answer_type == "relationship"
-                or summary_type == "CalculatedSummary"
+                or is_summary_with_calculation(summary_type)
             )
             and "label" in answer
             and answer["label"]
@@ -553,7 +554,7 @@ class SummaryRow:
 
         multiple_answers = len(question["answers"]) > 1
 
-        if summary_type == "CalculatedSummary" and not answers_are_editable:
+        if is_summary_with_calculation(summary_type) and not answers_are_editable:
             self.total = True
 
         for answer in question["answers"]:
@@ -597,6 +598,17 @@ def map_summary_item_config(
                     edit_link_aria_label,
                 )
             )
+        elif block.get("calculated_summary"):
+            rows.append(
+                SummaryRow(
+                    block["calculated_summary"],
+                    summary_type,
+                    answers_are_editable,
+                    no_answer_provided,
+                    edit_link_text,
+                    edit_link_aria_label,
+                )
+            )
         else:
             list_collector_rows = map_list_collector_config(
                 list_items=block["list"]["list_items"],
@@ -611,7 +623,7 @@ def map_summary_item_config(
 
             rows.extend(list_collector_rows)
 
-    if summary_type == "CalculatedSummary":
+    if is_summary_with_calculation(summary_type):
         rows.append(SummaryRow(calculated_question, summary_type, False, "", "", ""))
 
     return rows

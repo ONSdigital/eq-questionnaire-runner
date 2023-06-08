@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-08 10:08+0100\n"
+"POT-Creation-Date: 2023-05-18 10:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: app/forms/validators.py:376 app/jinja_filters.py:119
+#: app/forms/validators.py:377 app/jinja_filters.py:119
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:380 app/jinja_filters.py:127
+#: app/forms/validators.py:381 app/jinja_filters.py:127
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
@@ -41,7 +41,7 @@ msgstr ""
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
 
-#: app/jinja_filters.py:714
+#: app/jinja_filters.py:716
 #: templates/partials/summary/collapsible-summary.html:27
 #: templates/partials/summary/summary.html:25
 msgid "No answer provided"
@@ -202,7 +202,7 @@ msgstr ""
 msgid "Enter the year in a valid format. For example, 2023."
 msgstr ""
 
-#: app/forms/validators.py:387
+#: app/forms/validators.py:388
 #, python-format
 msgid "%(num)s day"
 msgid_plural "%(num)s days"
@@ -460,7 +460,7 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: app/views/contexts/list_context.py:120
+#: app/views/contexts/list_context.py:109
 msgid " (You)"
 msgstr ""
 
@@ -735,14 +735,6 @@ msgstr ""
 msgid "View Submitted Response"
 msgstr ""
 
-#: templates/calculatedsummary.html:13
-msgid "Please review your answers and confirm these are correct"
-msgstr ""
-
-#: templates/calculatedsummary.html:24
-msgid "Yes, I confirm these are correct"
-msgstr ""
-
 #: templates/census-thank-you.html:9 templates/confirmation-email.html:8
 msgid "There is a problem with this page"
 msgstr ""
@@ -930,13 +922,13 @@ msgid "Save questions as PDF"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:37
-#: templates/partials/summary/collapsible-summary.html:50
+#: templates/partials/summary/collapsible-summary.html:51
 #: templates/preview.html:92
 msgid "Show all"
 msgstr ""
 
 #: templates/partials/introduction/preview.html:38
-#: templates/partials/summary/collapsible-summary.html:51
+#: templates/partials/summary/collapsible-summary.html:52
 #: templates/preview.html:93
 msgid "Hide all"
 msgstr ""
@@ -1321,6 +1313,14 @@ msgstr ""
 
 #: templates/layouts/_base.html:156
 msgid "Continue survey"
+msgstr ""
+
+#: templates/layouts/_calculatedsummary.html:14
+msgid "Please review your answers and confirm these are correct"
+msgstr ""
+
+#: templates/layouts/_calculatedsummary.html:25
+msgid "Yes, I confirm these are correct"
 msgstr ""
 
 #: templates/layouts/_questionnaire.html:39

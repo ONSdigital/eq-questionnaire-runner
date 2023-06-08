@@ -1,4 +1,4 @@
-def assert_summary_context(context):
+def assert_summary_context(context, summary_item_type="question"):
     summary_context = context["summary"]
     for key_value in ("sections", "answers_are_editable", "summary_type"):
         assert (
@@ -10,10 +10,10 @@ def assert_summary_context(context):
             assert "id" in group
             assert "blocks" in group
             for block in group["blocks"]:
-                assert "question" in block
-                assert "title" in block["question"]
-                assert "answers" in block["question"]
-                for answer in block["question"]["answers"]:
+                assert summary_item_type in block
+                assert "title" in block[summary_item_type]
+                assert "answers" in block[summary_item_type]
+                for answer in block[summary_item_type]["answers"]:
                     assert "id" in answer
                     assert "value" in answer
                     assert "type" in answer

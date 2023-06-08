@@ -395,6 +395,11 @@ def test_calculated_summary_schema():
 
 
 @pytest.fixture
+def test_grand_calculated_summary_schema():
+    return load_schema_from_name("test_grand_calculated_summary")
+
+
+@pytest.fixture
 def test_calculated_summary_answers():
     answers = [
         {"value": 1, "answer_id": "first-number-answer"},
@@ -410,6 +415,21 @@ def test_calculated_summary_answers():
         {"value": 10, "answer_id": "fifth-number-answer"},
         {"value": 11, "answer_id": "sixth-percent-answer"},
         {"value": 12, "answer_id": "sixth-number-answer"},
+    ]
+    return AnswerStore(answers)
+
+
+@pytest.fixture
+def test_grand_calculated_summary_answers():
+    answers = [
+        {"value": 10, "answer_id": "q1-a1"},
+        {"value": 1, "answer_id": "q1-a2"},
+        {"value": 20, "answer_id": "q2-a1"},
+        {"value": 2, "answer_id": "q2-a2"},
+        {"value": 30, "answer_id": "q3-a1"},
+        {"value": 3, "answer_id": "q3-a2"},
+        {"value": 40, "answer_id": "q4-a1"},
+        {"value": 4, "answer_id": "q4-a2"},
     ]
     return AnswerStore(answers)
 
