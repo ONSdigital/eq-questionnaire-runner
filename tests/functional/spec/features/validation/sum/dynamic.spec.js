@@ -1,12 +1,12 @@
-import ListCollectorPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers_based_on_list_collector/list-collector.page";
-import ListCollectorAddPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers_based_on_list_collector/list-collector-add.page";
-import DynamicAnswerPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers_based_on_list_collector/dynamic-answer.page";
-import DynamicAnswerOnlyPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers_based_on_list_collector/dynamic-answer-only.page";
-import TotalBlockPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers_based_on_list_collector/total-block.page";
-import DriverPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers_based_on_list_collector/any-supermarket.page";
-import SectionSummaryPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers_based_on_list_collector/section-summary.page";
-import ListCollectorRemovePage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers_based_on_list_collector/list-collector-remove.page";
-import ListCollectorEditPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers_based_on_list_collector/list-collector-edit.page";
+import ListCollectorPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/list-collector.page";
+import ListCollectorAddPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/list-collector-add.page";
+import DynamicAnswerPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/dynamic-answer.page";
+import DynamicAnswerOnlyPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/dynamic-answer-only.page";
+import TotalBlockPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/total-block.page";
+import DriverPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/any-supermarket.page";
+import SectionSummaryPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/section-summary.page";
+import ListCollectorRemovePage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/list-collector-remove.page";
+import ListCollectorEditPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/list-collector-edit.page";
 
 describe("Feature: Sum of dynamic answers based on list and optional static answers equal to validation against total ", () => {
   const summaryTitles = 'dt[class="ons-summary__item-title"]';
