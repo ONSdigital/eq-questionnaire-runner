@@ -1911,7 +1911,7 @@ def test_form_for_radio_other_selected(app, answer_store, list_store):
 def test_dynamic_answers_question_validates(app, answer_store):
     with app.test_request_context():
         schema = load_schema_from_name(
-            "test_validation_sum_against_total_dynamic_answers_based_on_list_collector"
+            "test_validation_sum_against_total_dynamic_answers"
         )
 
         question_schema = schema.get_block("dynamic-answer").get("question")
@@ -1968,7 +1968,7 @@ def test_dynamic_answers_question_validates(app, answer_store):
 def test_dynamic_answers_question_raises_validation_error(app, answer_store):
     with app.test_request_context():
         schema = load_schema_from_name(
-            "test_validation_sum_against_total_dynamic_answers_based_on_list_collector"
+            "test_validation_sum_against_total_dynamic_answers"
         )
 
         question_schema = schema.get_block("dynamic-answer").get("question")

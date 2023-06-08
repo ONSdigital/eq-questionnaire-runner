@@ -11,7 +11,7 @@ import ListCollectorEditPage from "../../../../generated_pages/validation_sum_ag
 describe("Feature: Sum of dynamic answers based on list and optional static answers equal to validation against total ", () => {
   const summaryTitles = 'dt[class="ons-summary__item-title"]';
   beforeEach(async () => {
-    await browser.openQuestionnaire("test_validation_sum_against_total_dynamic_answers_based_on_list_collector.json");
+    await browser.openQuestionnaire("test_validation_sum_against_total_dynamic_answers.json");
   });
 
   describe("Given I add list items with hardcoded total used for validation of dynamic answers", () => {
