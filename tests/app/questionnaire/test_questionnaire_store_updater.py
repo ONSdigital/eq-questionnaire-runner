@@ -16,6 +16,7 @@ from app.questionnaire.questionnaire_store_updater import (
     DependentSection,
     QuestionnaireStoreUpdater,
 )
+from app.utilities.schema import load_schema_from_name
 
 
 # pylint: disable=too-many-locals, too-many-lines
@@ -1203,7 +1204,9 @@ def test_dependent_sections_current_section_status_not_updated(mocker):
 
 def test_dependent_sections_not_started_skipped(mock_router, mocker):
     # Given
-    schema = QuestionnaireSchema({})
+    schema = load_schema_from_name(
+        "test_validation_sum_against_total_hub_with_dependent_section"
+    )
     current_location = Location(
         section_id="company-summary-section", block_id="total-turnover-block"
     )
@@ -1296,7 +1299,9 @@ def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
 def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_status_updated(
     mocker, dependent_section_status, mock_router
 ):
-    schema = QuestionnaireSchema({})
+    schema = load_schema_from_name(
+        "test_validation_sum_against_total_hub_with_dependent_section"
+    )
     current_location = Location(
         section_id="company-summary-section", block_id="total-turnover-block"
     )
