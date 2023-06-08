@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Test Prepop Data",
+    "title": "Test Supplementary Data",
     "theme": "default",
-    "description": "A questionnaire to demo loading prepop data.",
+    "description": "A questionnaire to demo loading Supplementary data.",
     "metadata": [
         {
             "name": "user_id",
@@ -46,10 +46,10 @@
                         {
                             "id": "interstitial-definition",
                             "content": {
-                                "title": "Prepop",
+                                "title": "Supplementary Data",
                                 "contents": [
                                     {
-                                        "description": "You have successfully loaded Prepop data"
+                                        "description": "You have successfully loaded Supplementary data"
                                     }
                                 ]
                             },

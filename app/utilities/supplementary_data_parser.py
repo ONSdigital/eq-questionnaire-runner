@@ -68,7 +68,7 @@ def validate_supplementary_data_v1(
     unit_id: str,
     survey_id: str,
 ) -> dict:
-    """Validate claims required for runner to function"""
+    """Validate claims required for supplementary data"""
     supplementary_data_metadata_schema = SupplementaryDataMetadataSchema(
         unknown=INCLUDE
     )
