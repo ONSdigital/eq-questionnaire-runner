@@ -733,6 +733,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return self.get_block(block_id)["question"]["dynamic_answers"]["values"]["identifier"]  # type: ignore
 
     def block_has_dynamic_answer(self, block_id: str) -> bool:
+        # type ignore block always exists at this point
         return "dynamic_answers" in self.get_block(block_id).get("question", {})  # type: ignore
 
     def is_repeating_answer(
