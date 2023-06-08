@@ -1,14 +1,14 @@
 import HubPage from "../../../base_pages/hub.page";
-import AnySupermarketPage from "../../../generated_pages/calculated_summary_repeating_and_static_answers/any-supermarket.page.js";
-import ListCollectorPage from "../../../generated_pages/calculated_summary_repeating_and_static_answers/list-collector.page.js";
-import ExtraSpendingBlockPage from "../../../generated_pages/calculated_summary_repeating_and_static_answers/extra-spending-block.page.js";
-import CalculatedSummarySpendingPage from "../../../generated_pages/calculated_summary_repeating_and_static_answers/calculated-summary-spending.page.js";
-import CalculatedSummaryVisitsPage from "../../../generated_pages/calculated_summary_repeating_and_static_answers/calculated-summary-visits.page.js";
-import ListCollectorAddPage from "../../../generated_pages/calculated_summary_repeating_and_static_answers/list-collector-add.page";
-import DynamicAnswerPage from "../../../generated_pages/calculated_summary_repeating_and_static_answers/dynamic-answer.page";
-import Section1SummaryPage from "../../../generated_pages/calculated_summary_repeating_and_static_answers/section-1-summary.page";
-import ExtraSpendingMethodBlockPage from "../../../generated_pages/calculated_summary_repeating_and_static_answers/extra-spending-method-block.page";
-import ListCollectorRemovePage from "../../../generated_pages/calculated_summary_repeating_and_static_answers/list-collector-remove.page";
+import AnySupermarketPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/any-supermarket.page.js";
+import ListCollectorPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/list-collector.page.js";
+import ExtraSpendingBlockPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/extra-spending-block.page.js";
+import CalculatedSummarySpendingPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/calculated-summary-spending.page.js";
+import CalculatedSummaryVisitsPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/calculated-summary-visits.page.js";
+import ListCollectorAddPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/list-collector-add.page";
+import DynamicAnswerPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/dynamic-answer.page";
+import Section1SummaryPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/section-1-summary.page";
+import ExtraSpendingMethodBlockPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/extra-spending-method-block.page";
+import ListCollectorRemovePage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/list-collector-remove.page";
 
 describe("Calculated summary with repeating answers", () => {
   const currencyInputs = 'input[class="ons-input ons-input--text ons-input-type__input ons-input-number--w-20"]';
@@ -29,7 +29,7 @@ describe("Calculated summary with repeating answers", () => {
   const dynamicAnswerChangeLink = (answerIndex) => $(group).$$(summaryActions)[answerIndex].$("a");
 
   before("Completing the list collector and dynamic answer", async () => {
-    await browser.openQuestionnaire("test_new_calculated_summary_repeating_and_static_answers.json");
+    await browser.openQuestionnaire("test_new_new_calculated_summary_repeating_and_static_answers.json");
     await $(HubPage.submit()).click();
     await $(AnySupermarketPage.yes()).click();
     await $(AnySupermarketPage.submit()).click();
