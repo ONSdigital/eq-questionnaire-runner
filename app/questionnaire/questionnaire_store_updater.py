@@ -158,7 +158,7 @@ class QuestionnaireStoreUpdater:
             list_item_id=list_item_id
         )
 
-        if answers := self.get_relationship_answers_for_list_name(list_name):
+        if answers := self._get_relationship_answers_for_list_name(list_name):
             self._remove_relationship_answers_for_list_item_id(list_item_id, answers)
             self._update_relationship_question_completeness(list_name)
 
@@ -175,7 +175,7 @@ class QuestionnaireStoreUpdater:
             for answer_id in answer_ids:
                 self._capture_block_dependencies_for_answer(answer_id)
 
-    def get_relationship_answers_for_list_name(
+    def _get_relationship_answers_for_list_name(
         self, list_name: str
     ) -> list[Answer] | None:
         associated_relationship_collectors = (
@@ -414,7 +414,7 @@ class QuestionnaireStoreUpdater:
         """
         evaluated_dependents: list[tuple] = []
 
-        chronological_dependents = self.get_chronological_section_dependents()
+        chronological_dependents = self._get_chronological_section_dependents()
 
         for section in chronological_dependents:
             if (
@@ -534,7 +534,7 @@ class QuestionnaireStoreUpdater:
     ) -> list[SectionKeyType]:
         return self._progress_store.started_section_keys(section_ids)
 
-    def get_chronological_section_dependents(self) -> list:
+    def _get_chronological_section_dependents(self) -> list:
         sections = list(self._schema.get_section_ids())
         return sorted(
             self.dependent_sections, key=lambda x: sections.index(x.section_id)

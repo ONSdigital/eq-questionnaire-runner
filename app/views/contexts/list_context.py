@@ -45,6 +45,7 @@ class ListContext(Context):
             }
         }
 
+    # pylint: disable=too-many-locals
     def _build_list_items_context(
         self,
         *,
