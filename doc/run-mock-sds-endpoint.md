@@ -10,7 +10,7 @@ SDS_API_BASE_URL=http://localhost:5003/v1/unit_data
 
 From the home directory, run using
 ```python
- python -m scripts.mock_sds_endpoint
+python -m scripts.mock_sds_endpoint
 ```
 
 The following datasets are available using the mocked endpoint. To retrieve the data, one of the following dataset IDs needs to be set using the `sds_dataset_id`
