@@ -1908,12 +1908,12 @@ def test_form_for_radio_other_selected(app, answer_store, list_store):
         assert other_text_field.data == "Other text field value"
 
 
-def test_dynamic_answers_question_validates(app, answer_store):
+def test_dynamic_answers_question_validates(app):
     with app.test_request_context():
         schema = load_schema_from_name(
             "test_validation_sum_against_total_dynamic_answers"
         )
-
+        answer_store = AnswerStore([{"answer_id": "total-answer", "value": 100}])
         question_schema = schema.get_block("dynamic-answer").get("question")
         question_schema = QuestionnaireSchema.get_mutable_deepcopy(question_schema)
         question_schema["answers"].append(
@@ -1965,12 +1965,12 @@ def test_dynamic_answers_question_validates(app, answer_store):
         assert form.data, expected_form_data
 
 
-def test_dynamic_answers_question_raises_validation_error(app, answer_store):
+def test_dynamic_answers_question_raises_validation_error(app):
     with app.test_request_context():
         schema = load_schema_from_name(
             "test_validation_sum_against_total_dynamic_answers"
         )
-
+        answer_store = AnswerStore([{"answer_id": "total-answer", "value": 100}])
         question_schema = schema.get_block("dynamic-answer").get("question")
         question_schema = QuestionnaireSchema.get_mutable_deepcopy(question_schema)
         question_schema["answers"].append(
