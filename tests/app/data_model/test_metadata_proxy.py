@@ -1,7 +1,7 @@
 import pytest
 from werkzeug.datastructures import ImmutableDict
 
-from app.authentication.auth_payload_version import AuthPayloadVersion
+from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.data_models.metadata_proxy import MetadataProxy, SurveyMetadata
 
 METADATA_V1 = {
