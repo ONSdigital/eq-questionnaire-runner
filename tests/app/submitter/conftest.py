@@ -7,7 +7,7 @@ from google.resumable_media import InvalidResponse
 from mock import MagicMock
 from requests import Response
 
-from app.authentication.auth_payload_version import AuthPayloadVersion
+from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.data_models import QuestionnaireStore
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore

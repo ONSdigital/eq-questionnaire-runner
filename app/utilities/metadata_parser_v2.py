@@ -14,7 +14,7 @@ from marshmallow import (
 )
 from structlog import get_logger
 
-from app.authentication.auth_payload_version import AuthPayloadVersion
+from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.questionnaire.rules.utils import parse_iso_8601_datetime
 from app.utilities.metadata_validators import DateString, RegionCode, UUIDString
 
