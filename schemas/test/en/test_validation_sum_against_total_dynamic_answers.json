@@ -47,7 +47,7 @@
                                     ]
                                 },
                                 "id": "total-question",
-                                "title": "Total percentage of shopping",
+                                "title": "What percentage of your shopping do you do at supermarkets?",
                                 "type": "General",
                                 "answers": [
                                     {
