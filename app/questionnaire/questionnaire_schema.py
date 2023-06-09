@@ -81,6 +81,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ] = defaultdict(set)
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
+        self.dynamic_answers_parent_block_ids: set[None] = set()
 
         # The ordering here is required as they depend on each other.
         self._sections_by_id = self._get_sections_by_id()
@@ -89,7 +90,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._questions_by_id = self._get_questions_by_id()
         self._answers_by_id = self._get_answers_by_id()
         self._dynamic_answer_ids: set[None] = set()
-        self.dynamic_answers_parent_block_ids: set[None] = set()
 
         # Post schema parsing.
         self._populate_answer_dependencies()
