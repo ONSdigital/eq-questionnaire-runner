@@ -499,11 +499,7 @@ class QuestionnaireStoreUpdater:
             # We don't want to skip current iteration if the block has dynamic answers,
             # if block has dynamic answers we don't use list_item_id from section_key set, so the location is removed in
             # self.remove_completed_location and dependencies updated
-            if section_key not in self.started_section_keys() and not any(
-                block_id
-                for block_id in blocks_to_remove
-                if block_id in self._schema.dynamic_answers_parent_block_ids
-            ):
+            if section_key not in self.started_section_keys():
                 continue
 
             section_id, list_item_id = section_key
