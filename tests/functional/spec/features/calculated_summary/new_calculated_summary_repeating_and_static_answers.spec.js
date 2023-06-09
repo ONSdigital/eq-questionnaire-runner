@@ -29,7 +29,7 @@ describe("Calculated summary with repeating answers", () => {
   const dynamicAnswerChangeLink = (answerIndex) => $(group).$$(summaryActions)[answerIndex].$("a");
 
   before("Completing the list collector and dynamic answer", async () => {
-    await browser.openQuestionnaire("test_new_new_calculated_summary_repeating_and_static_answers.json");
+    await browser.openQuestionnaire("test_new_calculated_summary_repeating_and_static_answers.json");
     await $(HubPage.submit()).click();
     await $(AnySupermarketPage.yes()).click();
     await $(AnySupermarketPage.submit()).click();
