@@ -512,9 +512,7 @@ class QuestionnaireStoreUpdater:
             for block_id in blocks_to_remove:
                 location = Location(
                     section_id=section_id,
-                    list_item_id=None
-                    if block_id in self._schema.dynamic_answers_parent_block_ids
-                    else list_item_id,
+                    list_item_id=list_item_id,
                     block_id=block_id,
                 )
                 blocks_removed |= self.remove_completed_location(location)

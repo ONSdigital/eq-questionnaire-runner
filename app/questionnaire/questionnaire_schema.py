@@ -482,7 +482,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             )
             for block_answer_id in answer_ids_for_block:
                 self._answer_dependencies_map[block_answer_id] |= {
-                    self._get_answer_dependent_for_block_id(block_id=block_id, for_list=value_source["identifier"])  # type: ignore
+                    self._get_answer_dependent_for_block_id(
+                        block_id=block_id, for_list=value_source["identifier"]
+                    )
+                    if self.is_block_in_repeating_section(block_id)
+                    # non-repeating blocks such as dynamic-answers could depend on the list
+                    else self._get_answer_dependent_for_block_id(block_id=block_id)
                 }
 
     def _get_answer_dependent_for_block_id(
