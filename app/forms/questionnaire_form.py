@@ -390,7 +390,7 @@ class QuestionnaireForm(FlaskForm):
     ) -> list[str]:
         answers_list: list[str] = []
         block_id = self.location.block_id if self.location else None
-        if block_id and self.schema.block_has_dynamic_answer(block_id):
+        if block_id and block_id in self.schema.dynamic_answers_parent_block_ids:
             list_name = self.schema.get_list_name_for_dynamic_answer(block_id)
             list_item_ids = self.list_store[list_name] if list_name else None
             for answer_id in answers_sequence:

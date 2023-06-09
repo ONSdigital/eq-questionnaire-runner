@@ -89,11 +89,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._questions_by_id = self._get_questions_by_id()
         self._answers_by_id = self._get_answers_by_id()
         self._dynamic_answer_ids: set[None] = set()
+        self.dynamic_answers_parent_block_ids: set[None] = set()
 
         # Post schema parsing.
         self._populate_answer_dependencies()
         self._populate_when_rules_section_dependencies()
         self._populate_calculated_summary_section_dependencies()
+        self._populate_dynamic_answers_parent_block_ids()
 
     @cached_property
     def answer_dependencies(self) -> ImmutableDict[str, set[AnswerDependent]]:
@@ -732,9 +734,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         # type ignore block always exists at this point
         return self.get_block(block_id)["question"]["dynamic_answers"]["values"]["identifier"]  # type: ignore
 
-    def block_has_dynamic_answer(self, block_id: str) -> bool:
-        # type ignore block always exists at this point
-        return "dynamic_answers" in self.get_block(block_id).get("question", {})  # type: ignore
+    def _populate_dynamic_answers_parent_block_ids(self) -> None:
+        for block in self.get_blocks():
+            for question in self.get_all_questions_for_block(block):
+                if "dynamic_answers" in question:
+                    self.dynamic_answers_parent_block_ids.add(block["id"])
 
     def is_repeating_answer(
         self,
