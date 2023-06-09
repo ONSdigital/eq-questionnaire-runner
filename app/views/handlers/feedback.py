@@ -7,7 +7,7 @@ from flask_babel import gettext, lazy_gettext
 from sdc.crypto.encrypter import encrypt
 from werkzeug.datastructures import MultiDict
 
-from app.authentication.auth_payload_version import AuthPayloadVersion
+from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.data_models import QuestionnaireStore
 from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
 from app.data_models.session_data import SessionData
