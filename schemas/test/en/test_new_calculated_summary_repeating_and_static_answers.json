@@ -325,6 +325,14 @@
                                             }
                                         ],
                                         "type": "Checkbox"
+                                    },
+                                    {
+                                        "id": "extra-static-answer",
+                                        "label": "How much do you spend on food at other types of shop?",
+                                        "type": "Currency",
+                                        "mandatory": false,
+                                        "currency": "GBP",
+                                        "decimal_places": 2
                                     }
                                 ],
                                 "id": "dynamic-answer-question",
@@ -419,6 +427,10 @@
                                         {
                                             "source": "answers",
                                             "identifier": "extra-spending-answer"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "extra-static-answer"
                                         }
                                     ]
                                 }

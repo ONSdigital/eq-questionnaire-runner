@@ -246,12 +246,13 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
                 f"days-a-week-{list_item_ids[1]}": "4",
                 f"days-a-week-{list_item_ids[2]}": "3",
                 "based-checkbox-answer": "UK based supermarkets",
+                "extra-static-answer": "5",
             }
         )
         self.post({"extra-spending-answer": "50"})
         self.post({"extra-spending-method-answer": "Yes"})
         self.assertInBody(
-            "We calculate the total cost of your weekly shopping to be £710.00. Is this correct?"
+            "We calculate the total cost of your weekly shopping to be £715.00. Is this correct?"
         )
         self.assertNotInBody("How many days a week do you shop at Tesco?")
         self.assertInBody("How much do you spend on groceries at Tesco?")
@@ -272,7 +273,7 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.post({"weekly-car-trips-answer": "15"})
         self.post({"weekly-car-trips-answer": "4"})
         self.post({"weekly-trips-cost-answer": "25"})
-        self.assertInBody("Total weekly supermarket spending: <em>£710.00</em>")
+        self.assertInBody("Total weekly supermarket spending: <em>£715.00</em>")
         self.assertInBody("Total weekly supermarket visits: <em>12</em>")
         self.assertInBody("Total of supermarket visits by car: <em>4</em>")
         self.assertInBody("Total spending on parking: <em>£25.00</em>")

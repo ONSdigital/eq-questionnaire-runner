@@ -1,6 +1,6 @@
 from collections import defaultdict, namedtuple
 from itertools import combinations
-from typing import Any, Iterable, Mapping
+from typing import Iterable, Mapping
 
 from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict
@@ -169,6 +169,19 @@ class QuestionnaireStoreUpdater:
             answer_ids = self._schema.get_answer_ids_for_block(remove_block_id)
             for answer_id in answer_ids:
                 self._capture_block_dependencies_for_answer(answer_id)
+
+        # Same for the add block, so that dynamic-answers which depend on it, for instance, need to be revisited
+        # in case there is any validation like summing to a total
+        for list_collector in self._schema.get_list_collectors_for_list(
+            for_list=list_name,
+            # Type ignore: section must exist at this point
+            section=self._schema.get_section(self._current_location.section_id),  # type: ignore
+        ):
+            if add_block := self._schema.get_add_block_for_list_collector(
+                list_collector["id"]
+            ):
+                for answer_id in self._schema.get_answer_ids_for_block(add_block["id"]):
+                    self._capture_block_dependencies_for_answer(answer_id)
 
     def get_relationship_answers_for_list_name(
         self, list_name: str
@@ -374,7 +387,7 @@ class QuestionnaireStoreUpdater:
                 self.dependent_sections.add(DependentSection(section_id, None, None))
 
     def update_answers(
-        self, form_data: Mapping[str, Any], list_item_id: str | None = None
+        self, form_data: Mapping, list_item_id: str | None = None
     ) -> None:
         list_item_id = list_item_id or self._current_location.list_item_id
         answers_by_answer_id = self._schema.get_answers_for_question_by_id(
