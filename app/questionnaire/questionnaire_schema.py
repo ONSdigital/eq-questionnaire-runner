@@ -81,7 +81,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ] = defaultdict(set)
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
-        self.dynamic_answers_parent_block_ids: set[None] = set()
+        self.dynamic_answers_parent_block_ids: set[str] = set()
 
         # The ordering here is required as they depend on each other.
         self._sections_by_id = self._get_sections_by_id()
@@ -95,7 +95,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._populate_answer_dependencies()
         self._populate_when_rules_section_dependencies()
         self._populate_calculated_summary_section_dependencies()
-        self._populate_dynamic_answers_parent_block_ids()
 
     @cached_property
     def answer_dependencies(self) -> ImmutableDict[str, set[AnswerDependent]]:
@@ -734,12 +733,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         # type ignore block always exists at this point
         return self.get_block(block_id)["question"]["dynamic_answers"]["values"]["identifier"]  # type: ignore
 
-    def _populate_dynamic_answers_parent_block_ids(self) -> None:
-        for block in self.get_blocks():
-            for question in self.get_all_questions_for_block(block):
-                if "dynamic_answers" in question:
-                    self.dynamic_answers_parent_block_ids.add(block["id"])
-
     def is_repeating_answer(
         self,
         answer_id: str,
@@ -1258,6 +1251,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self, *, question: Mapping, block_id: str
     ) -> None:
         if dynamic_answers := question.get("dynamic_answers"):
+            self.dynamic_answers_parent_block_ids.add(block_id)
             for answer in dynamic_answers["answers"]:
                 value_source = dynamic_answers["values"]
                 self._update_answer_dependencies_for_value_source(
