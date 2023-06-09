@@ -4,9 +4,11 @@ import DynamicAnswerPage from "../../../../generated_pages/validation_sum_agains
 import DynamicAnswerOnlyPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/dynamic-answer-only.page";
 import TotalBlockPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/total-block.page";
 import DriverPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/any-supermarket.page";
-import SectionSummaryPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/section-summary.page";
+import SectionSummaryPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/dynamic-answers-section-summary.page";
 import ListCollectorRemovePage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/list-collector-remove.page";
 import ListCollectorEditPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/list-collector-edit.page";
+import HubPage from "../../../../base_pages/hub.page";
+import TotalBlockOtherPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/total-block-other.page";
 
 describe("Feature: Sum of dynamic answers based on list and optional static answers equal to validation against total ", () => {
   const summaryTitles = 'dt[class="ons-summary__item-title"]';
@@ -35,7 +37,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await $$(DynamicAnswerPage.inputs())[1].setValue(33);
       await $(DynamicAnswerPage.percentageOfShoppingElsewhere()).setValue(33);
       await $(DynamicAnswerPage.submit()).click();
-      await expect(await browser.getUrl()).to.contain(TotalBlockPage.pageName);
+      await expect(await browser.getUrl()).to.contain(TotalBlockOtherPage.pageName);
     });
   });
   describe("Given I add list items with custom total used for validation of dynamic answers", () => {
@@ -47,8 +49,8 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await $$(DynamicAnswerPage.inputs())[1].setValue(33);
       await $(DynamicAnswerPage.percentageOfShoppingElsewhere()).setValue(33);
       await $(DynamicAnswerPage.submit()).click();
-      await $(TotalBlockPage.total()).setValue(100);
-      await $(TotalBlockPage.submit()).click();
+      await $(TotalBlockOtherPage.totalOther()).setValue(100);
+      await $(TotalBlockOtherPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(DynamicAnswerOnlyPage.pageName);
       await $$(DynamicAnswerOnlyPage.inputs())[0].setValue(50);
       await $$(DynamicAnswerOnlyPage.inputs())[1].setValue(0);
@@ -97,7 +99,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await $(ListCollectorEditPage.supermarketName()).setValue("Aldi");
       await $(ListCollectorEditPage.submit()).click();
       await $(DynamicAnswerPage.submit()).click();
-      await $(TotalBlockPage.submit()).click();
+      await $(TotalBlockOtherPage.submit()).click();
       await $(DynamicAnswerOnlyPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
       await $(SectionSummaryPage.groupContent(2)).waitForExist({ timeout: 2000 });
@@ -111,7 +113,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
       await $(SectionSummaryPage.previous()).click();
       await $(DynamicAnswerOnlyPage.previous()).click();
-      await $(TotalBlockPage.previous()).click();
+      await $(TotalBlockOtherPage.previous()).click();
       await $(DynamicAnswerPage.previous()).click();
       await $(ListCollectorPage.previous()).click();
       await expect(await browser.getUrl()).to.contain(DriverPage.pageName);
@@ -120,6 +122,9 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
 });
 
 async function addTwoSupermarkets() {
+  await $(TotalBlockPage.total()).setValue(100);
+  await $(TotalBlockPage.submit()).click();
+  await $(HubPage.summaryRowLink("dynamic-answers-section")).click();
   await $(DriverPage.yes()).click();
   await $(DriverPage.submit()).click();
   await $(ListCollectorAddPage.supermarketName()).setValue("Tesco");
@@ -137,8 +142,8 @@ async function fillDynamicAnswers() {
   await $$(DynamicAnswerPage.inputs())[1].setValue(33);
   await $(DynamicAnswerPage.percentageOfShoppingElsewhere()).setValue(33);
   await $(DynamicAnswerPage.submit()).click();
-  await $(TotalBlockPage.total()).setValue(100);
-  await $(TotalBlockPage.submit()).click();
+  await $(TotalBlockOtherPage.totalOther()).setValue(100);
+  await $(TotalBlockOtherPage.submit()).click();
   await $$(DynamicAnswerOnlyPage.inputs())[0].setValue(50);
   await $$(DynamicAnswerOnlyPage.inputs())[1].setValue(50);
   await $(DynamicAnswerOnlyPage.submit()).click();

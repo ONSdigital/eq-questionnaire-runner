@@ -23,16 +23,53 @@
     ],
 
     "questionnaire_flow": {
-        "type": "Linear",
+        "type": "Hub",
         "options": {
-            "summary": {
-                "collapsible": false
-            }
+            "required_completed_sections": ["total-section"]
         }
     },
     "sections": [
         {
-            "id": "section",
+            "id": "total-section",
+            "title": "Total",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "total-block",
+                            "question": {
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Answer will be used for validation in the next section."
+                                        }
+                                    ]
+                                },
+                                "id": "total-question",
+                                "title": "Total percentage of shopping",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "total-answer",
+                                        "label": "Total",
+                                        "mandatory": true,
+                                        "type": "Percentage",
+                                        "maximum": {
+                                            "value": 100
+                                        },
+                                        "decimal_places": 0
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "total-group"
+                }
+            ]
+        },
+        {
+            "id": "dynamic-answers-section",
             "title": "Supermarkets",
             "summary": {
                 "show_on_completion": true,
@@ -253,7 +290,7 @@
                                 "guidance": {
                                     "contents": [
                                         {
-                                            "description": "Answers are validated against hardcoded value of 100%. Last answer is static."
+                                            "description": "Answers are validated against total percentage from previous section."
                                         }
                                     ]
                                 },
@@ -309,11 +346,11 @@
                                         "decimal_places": 0
                                     }
                                 ],
-                                "warning": "These answers must add up to the total of 100%",
+                                "warning": "These answers must add up to the total provided in the previous section",
                                 "calculations": [
                                     {
                                         "calculation_type": "sum",
-                                        "value": 100,
+                                        "answer_id": "total-answer",
                                         "answers_to_calculate": ["percentage-of-shopping-elsewhere", "percentage-of-shopping"],
                                         "conditions": ["equals"]
                                     }
@@ -325,7 +362,7 @@
                         },
                         {
                             "type": "Question",
-                            "id": "total-block",
+                            "id": "total-block-other",
                             "question": {
                                 "guidance": {
                                     "contents": [
@@ -334,12 +371,12 @@
                                         }
                                     ]
                                 },
-                                "id": "total-question",
+                                "id": "total-question-other",
                                 "title": "Total amount you spend",
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "total-answer",
+                                        "id": "total-answer-other",
                                         "label": "Total",
                                         "mandatory": true,
                                         "type": "Currency",
@@ -402,7 +439,7 @@
                                             "maximum": {
                                                 "value": {
                                                     "source": "answers",
-                                                    "identifier": "total-answer"
+                                                    "identifier": "total-answer-other"
                                                 }
                                             },
                                             "minimum": {
@@ -415,7 +452,7 @@
                                 "calculations": [
                                     {
                                         "calculation_type": "sum",
-                                        "answer_id": "total-answer",
+                                        "answer_id": "total-answer-other",
                                         "answers_to_calculate": ["spending-amount"],
                                         "conditions": ["equals"]
                                     }
