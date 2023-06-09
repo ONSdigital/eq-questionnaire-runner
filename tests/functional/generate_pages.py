@@ -293,7 +293,6 @@ LIST_SECTION_SUMMARY_REMOVE_LINK_GETTER = Template(
 """
 )
 
-
 NON_ITEM_ANSWERS_LIST_SECTION_SUMMARY_LABEL_GETTER = Template(
     r"""  ${list_name}ListLabel(listItemInstance) { return `dt[data-qa="list-item-` + listItemInstance + `-label"]`; }
 
@@ -830,6 +829,15 @@ def process_block(
                 spec_file,
                 relative_require,
                 page_filename=f'{block["id"]}-{list_operation}.page.js',
+            )
+        for repeating_block in block.get("repeating_blocks", []):
+            process_block(
+                repeating_block,
+                dir_out,
+                schema_data,
+                spec_file,
+                relative_require,
+                page_filename=f'{repeating_block["id"]}-repeating-block.page.js',
             )
 
     if block["type"] == "PrimaryPersonListCollector":

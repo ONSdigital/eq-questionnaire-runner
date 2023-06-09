@@ -1,4 +1,4 @@
-import checkPeopleInList from "../helpers";
+import { checkPeopleInList } from "../helpers";
 import HubPage from "../base_pages/hub.page.js";
 import PrimaryPersonListCollectorPage from "../generated_pages/list_collector_driving_checkbox/primary-person-list-collector.page.js";
 import PrimaryPersonListCollectorAddPage from "../generated_pages/list_collector_driving_checkbox/primary-person-list-collector-add.page.js";

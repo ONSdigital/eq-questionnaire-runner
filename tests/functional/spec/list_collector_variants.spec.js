@@ -1,4 +1,4 @@
-import checkPeopleInList from "../helpers";
+import { checkPeopleInList } from "../helpers";
 import YouLiveHerePage from "../generated_pages/list_collector_variants/you-live-here-block.page.js";
 import ListCollectorPage from "../generated_pages/list_collector_variants/list-collector.page.js";
 import ListCollectorAddPage from "../generated_pages/list_collector_variants/list-collector-add.page.js";
