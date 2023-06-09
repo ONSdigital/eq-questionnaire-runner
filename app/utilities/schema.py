@@ -5,9 +5,7 @@ from glob import glob
 from pathlib import Path
 from typing import Any
 
-import requests
 from requests import RequestException
-from requests.adapters import HTTPAdapter, Retry
 from structlog import get_logger
 
 from app.data_models.metadata_proxy import MetadataProxy
@@ -16,6 +14,7 @@ from app.questionnaire.questionnaire_schema import (
     QuestionnaireSchema,
 )
 from app.utilities.json import json_load, json_loads
+from app.utilities.request_session import get_retryable_session
 
 logger = get_logger()
 
@@ -28,7 +27,7 @@ LANGUAGES_MAP = {
     "phm_0001": [["en", "cy"]],
 }
 
-SCHEMA_REQUEST_MAX_BACKOFF = 0.2
+SCHEMA_REQUEST_BACKOFF_FACTOR = 0.2
 SCHEMA_REQUEST_MAX_RETRIES = 2  # Totals no. of request should be 3. The initial request + SCHEMA_REQUEST_MAX_RETRIES
 SCHEMA_REQUEST_TIMEOUT = 3
 SCHEMA_REQUEST_RETRY_STATUS_CODES = [
@@ -210,18 +209,11 @@ def load_schema_from_url(
 
     constructed_schema_url = f"{schema_url}?language={language_code}"
 
-    session = requests.Session()
-
-    retries = Retry(
-        total=SCHEMA_REQUEST_MAX_RETRIES,
-        status_forcelist=SCHEMA_REQUEST_RETRY_STATUS_CODES,
-    )  # Codes to retry according to Google Docs https://cloud.google.com/storage/docs/retry-strategy#client-libraries
-
-    # Type ignore: MyPy does not recognise BACKOFF_MAX however it is a property, albeit deprecated
-    retries.BACKOFF_MAX = SCHEMA_REQUEST_MAX_BACKOFF  # type: ignore
-
-    session.mount("http://", HTTPAdapter(max_retries=retries))
-    session.mount("https://", HTTPAdapter(max_retries=retries))
+    session = get_retryable_session(
+        max_retries=SCHEMA_REQUEST_MAX_RETRIES,
+        retry_status_codes=SCHEMA_REQUEST_RETRY_STATUS_CODES,
+        backoff_factor=SCHEMA_REQUEST_BACKOFF_FACTOR,
+    )
 
     try:
         req = session.get(constructed_schema_url, timeout=SCHEMA_REQUEST_TIMEOUT)
