@@ -31,17 +31,16 @@
     ],
     "questionnaire_flow": {
         "type": "Hub",
-        "options": {
-        }
+        "options": {}
     },
     "sections": [
         {
             "id": "date-section",
-            "title":"Picking Date",
-            "groups":[
+            "title": "Picking Date",
+            "groups": [
                 {
                     "id": "date-group",
-                    "blocks":[
+                    "blocks": [
                         {
                             "id": "date-question-block",
                             "type": "Question",
@@ -171,7 +170,6 @@
                     ]
                 }
             ]
-
         },
         {
             "id": "repeating-section",
@@ -201,7 +199,7 @@
                                 "id": "confirmation-question",
                                 "title": {
                                     "text": "Between {date_entry_answer_from} to {date_entry_answer_to} did anyone else live here?",
-                                    "placeholders":[
+                                    "placeholders": [
                                         {
                                             "placeholder": "date_entry_answer_from",
                                             "transforms": [
