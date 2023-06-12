@@ -332,18 +332,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 continue
 
             for question in self.get_all_questions_for_block(block):
+                self.update_dependencies_for_dynamic_answers(
+                    question=question, block_id=block["id"]
+                )
+
                 if question["type"] == "Calculated":
                     self._update_answer_dependencies_for_calculations(
                         question["calculations"], block_id=block["id"]
                     )
-                    self.update_dependencies_for_dynamic_answers(
-                        question=question, block_id=block["id"]
-                    )
                     continue
-
-                self.update_dependencies_for_dynamic_answers(
-                    question=question, block_id=block["id"]
-                )
 
                 for answer in question.get("answers", []):
                     self._update_answer_dependencies_for_answer(
