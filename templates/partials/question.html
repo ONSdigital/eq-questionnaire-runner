@@ -60,7 +60,7 @@
   {%- if question.guidance -%}
     {% set contents = question.guidance.contents %}
     {% for item in contents %}
-      {%- if item["title"] or item["description"] or item["list"] -%}
+      {%- if (item['title'], item['description'], item['list'], item['definition'], item['guidance'])|select|first -%}
         {%  set display.guidance=True %}
       {%- endif -%}
     {% endfor %}
