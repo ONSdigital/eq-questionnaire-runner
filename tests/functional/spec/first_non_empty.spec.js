@@ -7,6 +7,7 @@ import AddPersonPage from "../generated_pages/first_non_empty_item_repeating_sec
 import ListCollectorPage from "../generated_pages/first_non_empty_item_repeating_sections/list-collector.page";
 import RepeatingSectionPage from "../generated_pages/first_non_empty_item_repeating_sections/repeating-section-summary.page";
 import HubPage from "../base_pages/hub.page.js";
+import TotalHouseExpenseBlockPage from "../generated_pages/first_non_empty_item_repeating_sections/total-house-expense-block.page";
 
 describe("First Non Empty Item Transform", () => {
   before("Launch survey", async () => {
@@ -79,6 +80,8 @@ describe("First Non Empty Item Transform Repeating Sections", () => {
     await $(DateEntryBlockPage.dateEntryTomonth()).setValue("01");
     await $(DateEntryBlockPage.dateEntryToyear()).setValue("2017");
     await $(DateEntryBlockPage.submit()).click();
+    await $(TotalHouseExpenseBlockPage.totalTurnover()).setValue("21332");
+    await $(TotalHouseExpenseBlockPage.submit()).click();
     await $(HubPage.submit()).click();
 
     // Add a person to the list collector
