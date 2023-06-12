@@ -7,7 +7,7 @@ from sdc.crypto.encrypter import encrypt
 from sdc.crypto.key_store import KeyStore
 from structlog import contextvars, get_logger
 
-from app.authentication.auth_payload_version import AuthPayloadVersion
+from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.authentication.user import User
 from app.authentication.user_id_generator import UserIDGenerator
 from app.data_models import QuestionnaireStore

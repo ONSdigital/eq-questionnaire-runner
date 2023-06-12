@@ -5,7 +5,7 @@ import pytest
 from freezegun import freeze_time
 from mock import Mock
 
-from app.authentication.auth_payload_version import AuthPayloadVersion
+from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.data_models import QuestionnaireStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.session_data import SessionData
