@@ -81,6 +81,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ] = defaultdict(set)
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
+        self.min_and_max_map = {}
 
         # The ordering here is required as they depend on each other.
         self._sections_by_id = self._get_sections_by_id()
@@ -94,10 +95,33 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._populate_answer_dependencies()
         self._populate_when_rules_section_dependencies()
         self._populate_calculated_summary_section_dependencies()
+        self._populate_min_max_map()
 
     @cached_property
     def answer_dependencies(self) -> ImmutableDict[str, set[AnswerDependent]]:
         return ImmutableDict(self._answer_dependencies_map)
+
+    def _populate_min_max_map(self):
+        for block in self.get_blocks():
+            if block["type"] == "Question":
+                for answer in block.get("question")["answers"]:
+                    answer_id = answer["id"]
+                    if ("minimum" in answer and type(answer["minimum"]["value"]) not in [str, int] and answer["minimum"]["value"]["source"] == "answers") or ("maximum" in answer and type(answer["maximum"]["value"]) not in [str, int] and answer["maximum"]["value"]["source"] == "answers"):
+                        if answer["type"] != "Date":
+                            if "minimum" in answer:
+                                answer_to_search_for_min = self.get_answers_by_answer_id(answer_id)[0]
+                                if type(answer_to_search_for_min["minimum"]["value"]) != int:
+                                    answer = answer_to_search_for_min["minimum"]["value"]
+                                    answer_id = answer_to_search_for_min["minimum"]["value"]["identifier"]
+                                    if answer_id == "set-minimum":
+                                        pass
+                                    self.min_and_max_map[answer_id] = self.get_answers_by_answer_id(answer["identifier"])[0].get("minimum", {}).get("value", {})
+                            if "maximum" in answer:
+                                answer_to_search_for_max = self.get_answers_by_answer_id(answer_id)[0]
+                                if type(answer_to_search_for_max["maximum"]["value"]) != int:
+                                    answer = answer_to_search_for_max["maximum"]["value"]
+                                    answer_id = answer_to_search_for_max["maximum"]["value"]["identifier"]
+                                    self.min_and_max_map[answer_id] = self.get_answers_by_answer_id(answer["identifier"])[0].get("maximum", {}).get("value", {})
 
     @cached_property
     def when_rules_section_dependencies_by_section(

@@ -7,7 +7,7 @@ from typing import Any, Callable, Literal, Mapping, Optional, TypeAlias, Union
 import flask
 import flask_babel
 from babel import numbers, units
-from flask import current_app
+from flask import current_app, g
 from jinja2 import nodes, pass_eval_context
 from markupsafe import Markup, escape
 from wtforms import SelectFieldBase
@@ -256,9 +256,21 @@ def should_wrap_with_fieldset_processor() -> dict[str, Callable]:
 @blueprint.app_template_filter()
 def get_width_for_number(answer: AnswerType) -> Optional[int]:
     allowable_widths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 40, 50]
+    min_value = None
+    max_value = None
 
-    min_value = answer.get("minimum", {}).get("value", 0)
-    max_value = answer.get("maximum", {}).get("value", MAX_NUMBER)
+    schema = g.get("schema")
+
+    if answer.get("minimum", {}) and isinstance(answer["minimum"]["value"], dict):
+        if (identifier := answer["minimum"]["value"].get("identifier", None)) in schema.min_and_max_map:
+            min_value = schema.min_and_max_map[identifier] or None
+    if answer.get("maximum", {}) and isinstance(answer["maximum"]["value"], dict):
+        if (identifier := answer["maximum"]["value"].get("identifier", None)) in schema.min_and_max_map:
+            max_value = schema.min_and_max_map[identifier] or None
+    if not min_value:
+        min_value = answer.get("minimum", {}).get("value", 0)
+    if not max_value:
+        max_value = answer.get("maximum", {}).get("value", MAX_NUMBER)
 
     min_value_width = len(str(min_value))
     max_value_width = len(str(max_value))
