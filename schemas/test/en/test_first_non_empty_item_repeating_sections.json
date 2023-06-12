@@ -4,9 +4,9 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Other input fields",
+    "title": "Test first non empty item with repeating sections",
     "theme": "default",
-    "description": "Questionnaire to check placeholder takes account answers on a path",
+    "description": "A questionnaire to test ListCollector",
     "metadata": [
         {
             "name": "user_id",
@@ -21,15 +21,6 @@
             "type": "string"
         },
         {
-            "name": "ru_ref",
-            "type": "string"
-        },
-        {
-            "name": "trad_as",
-            "type": "string",
-            "optional": true
-        },
-        {
             "name": "ref_p_start_date",
             "type": "date"
         },
@@ -39,20 +30,18 @@
         }
     ],
     "questionnaire_flow": {
-        "type": "Linear",
+        "type": "Hub",
         "options": {
-            "summary": {
-                "collapsible": false
-            }
         }
     },
     "sections": [
         {
-            "id": "default-section",
-            "groups": [
+            "id": "date-section",
+            "title":"Picking Date",
+            "groups":[
                 {
-                    "id": "default-group",
-                    "blocks": [
+                    "id": "date-group",
+                    "blocks":[
                         {
                             "id": "date-question-block",
                             "type": "Question",
@@ -114,7 +103,7 @@
                             },
                             "routing_rules": [
                                 {
-                                    "block": "total-turnover-block",
+                                    "block": "list-collector",
                                     "when": {
                                         "in": [
                                             {
@@ -178,15 +167,41 @@
                                     }
                                 }
                             }
-                        },
+                        }
+                    ]
+                }
+            ]
+
+        },
+        {
+            "id": "repeating-section",
+            "title": "Repeating Section",
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "people",
+                        "title": "Household members",
+                        "add_link_text": "Add someone to this household",
+                        "empty_list_text": "There are no householders"
+                    }
+                ]
+            },
+            "groups": [
+                {
+                    "id": "group",
+                    "title": "List",
+                    "blocks": [
                         {
-                            "id": "total-turnover-block",
-                            "type": "Question",
+                            "id": "list-collector",
+                            "type": "ListCollector",
+                            "for_list": "people",
                             "question": {
-                                "id": "total-turnover-question",
+                                "id": "confirmation-question",
                                 "title": {
-                                    "text": "For the period {date_entry_answer_from} to {date_entry_answer_to}, what was {ru_name}&#39;s total turnover, excluding VAT?",
-                                    "placeholders": [
+                                    "text": "Between {date_entry_answer_from} to {date_entry_answer_to} did anyone else live here?",
+                                    "placeholders":[
                                         {
                                             "placeholder": "date_entry_answer_from",
                                             "transforms": [
@@ -244,28 +259,138 @@
                                                     }
                                                 }
                                             ]
-                                        },
-                                        {
-                                            "placeholder": "ru_name",
-                                            "value": {
-                                                "source": "metadata",
-                                                "identifier": "ru_name"
-                                            }
                                         }
                                     ]
                                 },
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "total-turnover-answer",
+                                        "id": "anyone-else",
                                         "mandatory": true,
-                                        "type": "Currency",
-                                        "label": "Total turnover excluding VAT",
-                                        "description": "Enter the full value (e.g. 56,234.33) or a value to the nearest &#xA3;thousand (e.g. 56,000). Do not enter &#39;56&#39; for &#xA3;56,000.",
-                                        "decimal_places": 2,
-                                        "currency": "GBP"
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
                                     }
                                 ]
+                            },
+                            "add_block": {
+                                "id": "add-person",
+                                "type": "ListAddQuestion",
+                                "cancel_text": "Don’t need to add anyone else?",
+                                "question": {
+                                    "id": "add-question",
+                                    "type": "General",
+                                    "title": "What is the name of the person?",
+                                    "answers": [
+                                        {
+                                            "id": "first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "edit_block": {
+                                "id": "edit-person",
+                                "type": "ListEditQuestion",
+                                "cancel_text": "Don’t need to change anything?",
+                                "question": {
+                                    "id": "edit-question",
+                                    "type": "General",
+                                    "title": "What is the name of the person?",
+                                    "answers": [
+                                        {
+                                            "id": "first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-person",
+                                "type": "ListRemoveQuestion",
+                                "cancel_text": "Don’t need to remove this person?",
+                                "question": {
+                                    "id": "remove-question",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this person?",
+                                    "warning": "All of the information about this person will be deleted",
+                                    "answers": [
+                                        {
+                                            "id": "remove-confirmation",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": "Household members",
+                                "item_title": {
+                                    "text": "{person_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "person_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
                             }
                         }
                     ]
