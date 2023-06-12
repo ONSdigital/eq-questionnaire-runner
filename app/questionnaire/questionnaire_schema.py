@@ -374,22 +374,25 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     ) -> None:
         """
         update all calculated summary answers to be dependencies of the dependent block
+
+        in the case that one of the calculated summary answers is dynamic, so has multiple answers for a particular list
+        the calculated summary block needs to depend on the `remove_block` for the list
+        so that removing items forces user to reconfirm the calculated summary
+
+        but not the add/edit block, as those don't update the total unless the dynamic answers change which it already depends on
         """
         calculated_summary_answer_ids = get_calculated_summary_answer_ids(
             calculated_summary_block
         )
         for answer_id in calculated_summary_answer_ids:
-            # for any dynamic answer ids based on a list, the calculated summary needs to depend on the remove block for the list
-            # but not the add/edit as those don't update the total value unless the dynamic answers change which it depends on already
             if answer_id in self._dynamic_answer_ids:
                 # Type ignore: answer_id is valid so block must exist
                 block_id: str = self.get_block_for_answer_id(answer_id)["id"]  # type: ignore
                 if block_id in self._list_collector_dynamic_answer_dependencies:
-                    # the id to depend on will be the stored remove block id which was determined when calculating dependencies of the dynamic answers
-                    list_answer_id_to_depend_on = (
-                        self._list_collector_dynamic_answer_dependencies[block_id]
-                    )
-                    self._answer_dependencies_map[list_answer_id_to_depend_on] |= {
+                    remove_block_id = self._list_collector_dynamic_answer_dependencies[
+                        block_id
+                    ]
+                    self._answer_dependencies_map[remove_block_id] |= {
                         # note the omission of for_list here is intentional, as the calculated summary is not repeating
                         self._get_answer_dependent_for_block_id(
                             block_id=dependent_block["id"]
@@ -497,7 +500,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _update_answer_dependencies_for_list_source(
         self, *, block_id: str, list_name: str
     ) -> None:
-        """Updates dependencies for a block depending on a list collector"""
+        """Updates dependencies for a block depending on a list collector
+
+        This method also stores a map of { block_depending_on_list_source -> remove_block_for_that_list }, because:
+        blocks like dynamic_answers, don't directly need to depend on the remove_block,
+        but a block depending on the dynamic answers might (such as a calculated summary)
+        """
         # Type ignore: section will always exist at this point, same with optional returns below
         section: ImmutableDict = self.get_section_for_block_id(block_id)  # type: ignore
         list_collector: ImmutableDict = self.get_list_collector_for_list(  # type: ignore

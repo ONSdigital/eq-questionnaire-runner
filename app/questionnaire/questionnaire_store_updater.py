@@ -151,6 +151,9 @@ class QuestionnaireStoreUpdater:
     def remove_list_item_and_answers(self, list_name: str, list_item_id: str) -> None:
         """Remove answers from the answer store and update the list store to remove it.
         Any related relationship answers are re-evaluated for completeness.
+
+        Dependencies of both the add_block and the remove_block for the list are captured and their progress updated.
+        (E.g. dynamic-answers depending on the add block could have validation, so need revisiting if an item is removed)
         """
         self._list_store.delete_list_item(list_name, list_item_id)
 
@@ -164,14 +167,11 @@ class QuestionnaireStoreUpdater:
 
         self._progress_store.remove_progress_for_list_item_id(list_item_id=list_item_id)
 
-        # capture any dependencies of the remove-block, so their progress can be re-evaluated
         if remove_block_id := self._schema.get_remove_block_id_for_list(list_name):
             answer_ids = self._schema.get_answer_ids_for_block(remove_block_id)
             for answer_id in answer_ids:
                 self._capture_block_dependencies_for_answer(answer_id)
 
-        # Same for the add block, so that dynamic-answers which depend on it, for instance, need to be revisited
-        # in case there is any validation like summing to a total
         for list_collector in self._schema.get_list_collectors_for_list(
             for_list=list_name,
             # Type ignore: section must exist at this point
