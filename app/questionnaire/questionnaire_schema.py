@@ -113,8 +113,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                         for item in ["minimum", "maximum"]:
                             if (
                                 item in answer
-                                and type(answer_to_search_for_min_max[item]["value"])
-                                != int
+                                and not isinstance(answer_to_search_for_min_max[item]["value"], int)
                             ):
                                 min_max_answer_id = answer_to_search_for_min_max[item][
                                     "value"
