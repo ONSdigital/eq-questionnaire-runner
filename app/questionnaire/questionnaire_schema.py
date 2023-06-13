@@ -15,6 +15,7 @@ from app.questionnaire.rules.operator import OPERATION_MAPPING
 from app.questionnaire.schema_utils import get_answers_from_question
 from app.utilities.make_immutable import make_immutable
 from app.utilities.mappings import get_flattened_mapping_values, get_mappings_with_key
+from tests.functional.generate_pages import get_all_questions
 
 DEFAULT_LANGUAGE_CODE = "en"
 
@@ -105,7 +106,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _populate_min_max_map(self) -> None:
         for block in self.get_blocks():
             if block["type"] == "Question":
-                for answer in get_answers_from_question(block["question"]):
+                for answer in get_answers_from_question(get_all_questions(block)[0]):
                     answer_id = answer["id"]
                     if answer["type"] != "Date":
                         answer_to_search_for_min_max = self.get_answers_by_answer_id(
