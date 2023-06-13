@@ -81,7 +81,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ] = defaultdict(set)
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
-        self.min_and_max_map = {}
+        self.min_and_max_map: dict[str, str] = {}
 
         # The ordering here is required as they depend on each other.
         self._sections_by_id = self._get_sections_by_id()
@@ -102,7 +102,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return ImmutableDict(self._answer_dependencies_map)
 
     # pylint: disable=too-many-nested-blocks
-    def _populate_min_max_map(self):
+    def _populate_min_max_map(self) -> None:
         for block in self.get_blocks():
             if block["type"] == "Question":
                 for answer in get_answers_from_question(block["question"]):
