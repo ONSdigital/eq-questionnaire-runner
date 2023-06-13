@@ -186,7 +186,18 @@
                                     "question": {
                                         "id": "companies-repeating-block-1-question",
                                         "type": "General",
-                                        "title": "Give details about the company or branch that undertakes general insurance business",
+                                        "title": {
+                                            "text": "Give details about {company_name}",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "company_name",
+                                                    "value": {
+                                                        "source": "answers",
+                                                        "identifier": "company-or-branch-name"
+                                                    }
+                                                }
+                                            ]
+                                        },
                                         "answers": [
                                             {
                                                 "id": "registration-number",
@@ -214,11 +225,39 @@
                                     "question": {
                                         "id": "companies-repeating-block-2-question",
                                         "type": "General",
-                                        "title": "Give details about the company or branch that undertakes general insurance business",
+                                        "title": {
+                                            "text": "Give details about how {company_name} has been trading over the past {date_difference}.",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "company_name",
+                                                    "value": {
+                                                        "source": "answers",
+                                                        "identifier": "company-or-branch-name"
+                                                    }
+                                                },
+                                                {
+                                                    "placeholder": "date_difference",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "calculate_date_difference",
+                                                            "arguments": {
+                                                                "first_date": {
+                                                                    "source": "answers",
+                                                                    "identifier": "registration-date"
+                                                                },
+                                                                "second_date": {
+                                                                    "value": "now"
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
                                         "answers": [
                                             {
                                                 "type": "Radio",
-                                                "label": "Is this company or branch authorised to trade in the UK? (Mandatory)",
+                                                "label": "Has this company been trading in the UK? (Mandatory)",
                                                 "id": "authorised-trader-uk-radio",
                                                 "mandatory": true,
                                                 "options": [
@@ -234,7 +273,7 @@
                                             },
                                             {
                                                 "type": "Radio",
-                                                "label": "Is this company or branch authorised to trade in the EU?",
+                                                "label": "Has this company been trading in the EU? (Mandatory)",
                                                 "id": "authorised-trader-eu-radio",
                                                 "mandatory": false,
                                                 "options": [
