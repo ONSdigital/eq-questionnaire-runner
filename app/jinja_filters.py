@@ -262,10 +262,14 @@ def get_width_for_number(answer: AnswerType) -> Optional[int]:
     schema = g.get("schema")
 
     if answer.get("minimum", {}) and isinstance(answer["minimum"]["value"], dict):
-        if (identifier := answer["minimum"]["value"].get("identifier", None)) in schema.min_and_max_map:
+        if (
+            identifier := answer["minimum"]["value"].get("identifier", None)
+        ) in schema.min_and_max_map:
             min_value = schema.min_and_max_map[identifier] or None
     if answer.get("maximum", {}) and isinstance(answer["maximum"]["value"], dict):
-        if (identifier := answer["maximum"]["value"].get("identifier", None)) in schema.min_and_max_map:
+        if (
+            identifier := answer["maximum"]["value"].get("identifier", None)
+        ) in schema.min_and_max_map:
             max_value = schema.min_and_max_map[identifier] or None
     if not min_value:
         min_value = answer.get("minimum", {}).get("value", 0)
