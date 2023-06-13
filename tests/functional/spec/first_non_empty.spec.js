@@ -80,7 +80,7 @@ describe("First Non Empty Item Transform Repeating Sections", () => {
     await $(DateEntryBlockPage.dateEntryTomonth()).setValue("01");
     await $(DateEntryBlockPage.dateEntryToyear()).setValue("2017");
     await $(DateEntryBlockPage.submit()).click();
-    await $(TotalHouseExpenseBlockPage.totalTurnover()).setValue("21332");
+    await $(TotalHouseExpenseBlockPage.totalHouseExpense()).setValue("21332");
     await $(TotalHouseExpenseBlockPage.submit()).click();
     await $(HubPage.submit()).click();
 
