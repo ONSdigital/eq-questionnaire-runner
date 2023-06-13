@@ -114,7 +114,7 @@
                             },
                             "routing_rules": [
                                 {
-                                    "block": "date-entry-block",
+                                    "block": "total-turnover-block",
                                     "when": {
                                         "in": [
                                             {
@@ -180,12 +180,12 @@
                             }
                         },
                         {
-                            "id": "house-expense-block",
+                            "id": "total-turnover-block",
                             "type": "Question",
                             "question": {
-                                "id": "house-expense-question",
+                                "id": "total-turnover-question",
                                 "title": {
-                                    "text": "For the period {date_entry_answer_from} to {date_entry_answer_to}, what was your total expense on your house",
+                                    "text": "For the period {date_entry_answer_from} to {date_entry_answer_to}, what was {ru_name}&#39;s total turnover, excluding VAT?",
                                     "placeholders": [
                                         {
                                             "placeholder": "date_entry_answer_from",
@@ -244,16 +244,23 @@
                                                     }
                                                 }
                                             ]
+                                        },
+                                        {
+                                            "placeholder": "ru_name",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ru_name"
+                                            }
                                         }
                                     ]
                                 },
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "house-expense-answer",
+                                        "id": "total-turnover-answer",
                                         "mandatory": true,
                                         "type": "Currency",
-                                        "label": "House Expense",
+                                        "label": "Total turnover excluding VAT",
                                         "description": "Enter the full value (e.g. 56,234.33) or a value to the nearest &#xA3;thousand (e.g. 56,000). Do not enter &#39;56&#39; for &#xA3;56,000.",
                                         "decimal_places": 2,
                                         "currency": "GBP"

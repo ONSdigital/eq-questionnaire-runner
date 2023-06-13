@@ -172,7 +172,6 @@
                             "type": "Question",
                             "question": {
                                 "id": "total-house-expense-question",
-                                "mandatory": false,
                                 "title": {
                                     "text": "For the period {date_entry_answer_from} to {date_entry_answer_to}, how much did you spend for house expenses",
                                     "placeholders": [
