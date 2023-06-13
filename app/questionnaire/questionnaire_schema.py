@@ -110,8 +110,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                         answer_to_search_for_min_max = self.get_answers_by_answer_id(answer_id)[0]
                         for item in ["minimum", "maximum"]:
                             if item in answer and type(answer_to_search_for_min_max[item]["value"]) != int:
-                                answer_id = answer_to_search_for_min_max[item]["value"]["identifier"]
-                                self.min_and_max_map[answer_id] = self.get_answers_by_answer_id(answer_id)[0].get(item, {}).get("value", {})
+                                min_max_answer_id = answer_to_search_for_min_max[item]["value"]["identifier"]
+                                self.min_and_max_map[min_max_answer_id] = self.get_answers_by_answer_id(min_max_answer_id)[0].get(item, {}).get("value", {})
 
     @cached_property
     def when_rules_section_dependencies_by_section(
