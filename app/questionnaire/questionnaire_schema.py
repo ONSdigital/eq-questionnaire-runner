@@ -101,6 +101,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def answer_dependencies(self) -> ImmutableDict[str, set[AnswerDependent]]:
         return ImmutableDict(self._answer_dependencies_map)
 
+    # pylint: disable=too-many-nested-blocks
     def _populate_min_max_map(self):
         for block in self.get_blocks():
             if block["type"] == "Question":
