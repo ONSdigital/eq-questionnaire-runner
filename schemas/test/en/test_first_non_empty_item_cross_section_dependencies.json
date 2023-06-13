@@ -114,7 +114,7 @@
                             },
                             "routing_rules": [
                                 {
-                                    "block": "total-turnover-block",
+                                    "block": "date-entry-block",
                                     "when": {
                                         "in": [
                                             {
@@ -180,12 +180,105 @@
                             }
                         },
                         {
-                            "id": "total-turnover-block",
+                            "id": "house-expense-block",
                             "type": "Question",
                             "question": {
-                                "id": "total-turnover-question",
+                                "id": "house-expense-question",
                                 "title": {
-                                    "text": "For the period {date_entry_answer_from} to {date_entry_answer_to}, what was {ru_name}&#39;s total turnover, excluding VAT?",
+                                    "text": "For the period {date_entry_answer_from} to {date_entry_answer_to}, what was your total expense on your house",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "date_entry_answer_from",
+                                            "transforms": [
+                                                {
+                                                    "transform": "first_non_empty_item",
+                                                    "arguments": {
+                                                        "items": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "date-entry-answer-from"
+                                                            },
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "ref_p_start_date"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "previous_transform"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "date_entry_answer_to",
+                                            "transforms": [
+                                                {
+                                                    "transform": "first_non_empty_item",
+                                                    "arguments": {
+                                                        "items": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "date-entry-answer-to"
+                                                            },
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "ref_p_end_date"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "previous_transform"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "house-expense-answer",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "label": "House Expense",
+                                        "description": "Enter the full value (e.g. 56,234.33) or a value to the nearest &#xA3;thousand (e.g. 56,000). Do not enter &#39;56&#39; for &#xA3;56,000.",
+                                        "decimal_places": 2,
+                                        "currency": "GBP"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "second-section",
+            "title": "Second Section",
+            "groups": [
+                {
+                    "id": "second-section-group",
+                    "blocks": [
+                        {
+                            "id": "food-question-block",
+                            "type": "Question",
+                            "question": {
+                                "id": "food-question",
+                                "title": {
+                                    "text": "For the period {date_entry_answer_from} to {date_entry_answer_to}, how much do you spend on food?",
                                     "placeholders": [
                                         {
                                             "placeholder": "date_entry_answer_from",
@@ -257,11 +350,11 @@
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "total-turnover-answer",
+                                        "id": "food-answer",
                                         "mandatory": true,
                                         "type": "Currency",
-                                        "label": "Total turnover excluding VAT",
-                                        "description": "Enter the full value (e.g. 56,234.33) or a value to the nearest &#xA3;thousand (e.g. 56,000). Do not enter &#39;56&#39; for &#xA3;56,000.",
+                                        "label": "Total food expense",
+                                        "description": "Enter the full value (e.g. 32.33) or a value to the nearest &#xA3;thousand (e.g. 56,000). Do not enter &#39;56&#39; for &#xA3;56,000.",
                                         "decimal_places": 2,
                                         "currency": "GBP"
                                     }
@@ -271,108 +364,6 @@
                     ]
                 }
             ]
-        },
-        {
-            "id": "second-section",
-            "title": "Second Section",
-            "groups":[
-                {
-                    "id": "second-section-group",
-                    "blocks": [
-                        {
-                            "id": "food-question-block",
-                            "type": "Question",
-                            "question":{
-                                "id": "food-question",
-                                "title":{
-                                   "text": "For the period {date_entry_answer_from} to {date_entry_answer_to}, how much do you spend on food?",
-                                   "placeholders": [
-                                    {
-                                        "placeholder": "date_entry_answer_from",
-                                        "transforms": [
-                                            {
-                                                "transform": "first_non_empty_item",
-                                                "arguments": {
-                                                    "items": [
-                                                        {
-                                                             "source": "answers",
-                                                            "identifier": "date-entry-answer-from"
-                                                        },
-                                                        {
-                                                            "source": "metadata",
-                                                            "identifier": "ref_p_start_date"
-                                                        }
-                                                    ]
-                                                }
-                                            },
-                                            {
-                                                "transform": "format_date",
-                                                "arguments": {
-                                                    "date_to_format": {
-                                                        "source": "previous_transform"
-                                                    },
-                                                    "date_format": "d MMMM yyyy"
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "placeholder": "date_entry_answer_to",
-                                        "transforms": [
-                                            {
-                                                "transform": "first_non_empty_item",
-                                                "arguments": {
-                                                    "items": [
-                                                        {
-                                                            "source": "answers",
-                                                            "identifier": "date-entry-answer-to"
-                                                        },
-                                                        {
-                                                            "source": "metadata",
-                                                            "identifier": "ref_p_end_date"
-                                                        }
-                                                    ]
-                                                }
-                                            },
-                                            {
-                                                "transform": "format_date",
-                                                "arguments": {
-                                                    "date_to_format": {
-                                                        "source": "previous_transform"
-                                                    },
-                                                    "date_format": "d MMMM yyyy"
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "placeholder": "ru_name",
-                                        "value": {
-                                            "source": "metadata",
-                                            "identifier": "ru_name"
-                                        }
-                                    }
-                                ]
-                            },
-                            "type": "General",
-                            "answers": [
-                                {
-                                    "id": "food-answer",
-                                    "mandatory": true,
-                                    "type": "Currency",
-                                    "label": "Total food expense",
-                                    "description": "Enter the full value (e.g. 32.33) or a value to the nearest &#xA3;thousand (e.g. 56,000). Do not enter &#39;56&#39; for &#xA3;56,000.",
-                                    "decimal_places": 2,
-                                    "currency": "GBP"
-                                }
-                            ]
-                        }
-                        }
-                    ]
-                }
-            ]
-
         }
     ]
 }
-
