@@ -21,6 +21,8 @@ from app.survey_config import (
     DBTDSITBusinessSurveyConfig,
     DBTDSITNIBusinessSurveyConfig,
     DBTNIBusinessSurveyConfig,
+    DESNZBusinessSurveyConfig,
+    DESNZNIBusinessSurveyConfig,
     NIBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
     SocialSurveyConfig,
@@ -188,6 +190,8 @@ def survey_config_mapping(
         SurveyType.DBT_NI: DBTNIBusinessSurveyConfig,
         SurveyType.DBT_DSIT: DBTDSITBusinessSurveyConfig,
         SurveyType.DBT_DSIT_NI: DBTDSITNIBusinessSurveyConfig,
+        SurveyType.DESNZ: DESNZBusinessSurveyConfig,
+        SurveyType.DESNZ_NI: DESNZNIBusinessSurveyConfig,
         SurveyType.ORR: ORRBusinessSurveyConfig,
         SurveyType.CENSUS: (
             WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig
