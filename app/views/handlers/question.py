@@ -78,6 +78,9 @@ class Question(BlockHandler):
             transformed_block["question"]["title"]
         )
 
+        if transformed_block["type"] == "ListCollectorContent":
+            return {**transformed_block}
+
         self._set_page_title(page_title)
         rendered_question = self.placeholder_renderer.render(
             data_to_render=transformed_block["question"],
