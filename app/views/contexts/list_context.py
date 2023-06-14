@@ -1,5 +1,5 @@
 from functools import partial
-from typing import Any, Generator, Mapping, Optional, Sequence
+from typing import Any, Generator, Mapping, Sequence
 
 from flask import url_for
 from flask_babel import lazy_gettext
@@ -111,7 +111,7 @@ class ListContext(Context):
     def _get_item_title(
         self,
         summary_definition: Mapping[str, Any],
-        list_item_id: Optional[str],
+        list_item_id: str | None,
         is_primary: bool,
     ) -> str:
         rendered_summary: dict[str, Any] = self._placeholder_renderer.render(

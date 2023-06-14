@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Any, Iterable, Mapping, MutableMapping, Optional, Sequence
+from typing import Any, Iterable, Mapping, MutableMapping, Sequence
 
 from flask import url_for
 from werkzeug.datastructures import ImmutableDict
@@ -20,7 +20,7 @@ class ListCollectorBlock:
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: Optional[MetadataProxy],
+        metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         location: Location,
@@ -143,8 +143,8 @@ class ListCollectorBlock:
     def _add_link(
         self,
         summary: Mapping[str, Any],
-        list_collector_block: Optional[Mapping[str, Any]],
-    ) -> Optional[str]:
+        list_collector_block: Mapping[str, Any] | None,
+    ) -> str | None:
         if list_collector_block:
             return url_for(
                 "questionnaire.block",

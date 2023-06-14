@@ -641,13 +641,13 @@ def map_list_collector_config(
     render_icon: bool = False,
     edit_link_text: str = "",
     edit_link_aria_label: str = "",
-    remove_link_text: Optional[str] = None,
-    remove_link_aria_label: Optional[str] = None,
-    related_answers: Optional[dict] = None,
-    item_label: Optional[str] = None,
-    item_anchor: Optional[str] = None,
-) -> list[Union[dict[str, list], SummaryRow]]:
-    rows: list[Union[dict[str, list], SummaryRow]] = []
+    remove_link_text: str | None = None,
+    remove_link_aria_label: str | None = None,
+    related_answers: dict | None = None,
+    item_label: str | None = None,
+    item_anchor: str | None = None,
+) -> list[dict[str, list] | SummaryRow]:
+    rows: list[dict[str, list] | SummaryRow] = []
 
     for index, list_item in enumerate(list_items, start=1):
         item_name = list_item.get("item_title")
