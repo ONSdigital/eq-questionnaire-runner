@@ -149,7 +149,7 @@ class QuestionnaireStoreUpdater:
             self.remove_list_item_data(list_name, list_item_id)
 
     def remove_list_item_data(self, list_name: str, list_item_id: str) -> None:
-        """Remove answers from the answer store, remove list item progress form the progress store and update the list store to remove it.
+        """Remove answers from the answer store, remove list item progress from the progress store and update the list store to remove it.
         Any related relationship answers are re-evaluated for completeness.
         """
         self._list_store.delete_list_item(list_name, list_item_id)

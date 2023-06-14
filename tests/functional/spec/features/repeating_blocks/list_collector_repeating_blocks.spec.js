@@ -1,13 +1,13 @@
-import AnyCompaniesOrBranchesPage from "../generated_pages/list_collector_repeating_blocks_section_summary/any-companies-or-branches.page";
-import AddCompanyPage from "../generated_pages/list_collector_repeating_blocks_section_summary/any-other-companies-or-branches-add.page";
-import EditCompanyPage from "../generated_pages/list_collector_repeating_blocks_section_summary/any-other-companies-or-branches-edit.page";
-import RemoveCompanyPage from "../generated_pages/list_collector_repeating_blocks_section_summary/any-other-companies-or-branches-remove.page";
-import CompaniesRepeatingBlock1Page from "../generated_pages/list_collector_repeating_blocks_section_summary/companies-repeating-block-1-repeating-block.page";
-import CompaniesRepeatingBlock2Page from "../generated_pages/list_collector_repeating_blocks_section_summary/companies-repeating-block-2-repeating-block.page";
-import AnyOtherCompaniesOrBranchesPage from "../generated_pages/list_collector_repeating_blocks_section_summary/any-other-companies-or-branches.page";
-import SectionCompaniesPage from "../generated_pages/list_collector_repeating_blocks_section_summary/section-companies-summary.page";
-import SubmitPage from "../generated_pages/list_collector_repeating_blocks_section_summary/submit.page";
-import { checkCompaniesInList, checkListItemComplete, checkListItemIncomplete } from "../helpers";
+import AnyCompaniesOrBranchesPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/any-companies-or-branches.page";
+import AddCompanyPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/any-other-companies-or-branches-add.page";
+import EditCompanyPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/any-other-companies-or-branches-edit.page";
+import RemoveCompanyPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/any-other-companies-or-branches-remove.page";
+import CompaniesRepeatingBlock1Page from "../../../generated_pages/list_collector_repeating_blocks_section_summary/companies-repeating-block-1-repeating-block.page";
+import CompaniesRepeatingBlock2Page from "../../../generated_pages/list_collector_repeating_blocks_section_summary/companies-repeating-block-2-repeating-block.page";
+import AnyOtherCompaniesOrBranchesPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/any-other-companies-or-branches.page";
+import SectionCompaniesPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/section-companies-summary.page";
+import SubmitPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/submit.page";
+import { checkItemsInList, checkListItemComplete, checkListItemIncomplete } from "../../../helpers";
 
 describe("List Collector Repeating Blocks", () => {
   describe("Given a normal journey through the list collector with repeating blocks, the answers can be submitted.", () => {
@@ -97,7 +97,7 @@ describe("List Collector Repeating Blocks", () => {
 
     it("The list collector shows all of the companies.", async () => {
       const companiesExpected = ["ONS", "GOV", "MOD"];
-      checkCompaniesInList(companiesExpected, AnyOtherCompaniesOrBranchesPage.listLabel);
+      checkItemsInList(companiesExpected, AnyOtherCompaniesOrBranchesPage.listLabel);
     });
 
     it("The list collector allows the name of 'GOV' to be changed", async () => {
@@ -135,7 +135,7 @@ describe("List Collector Repeating Blocks", () => {
 
     it("The list collector shows all of the companies.", async () => {
       const companiesExpected = ["ONS", "MOD", "Council", "another one"];
-      checkCompaniesInList(companiesExpected, AnyOtherCompaniesOrBranchesPage.listLabel);
+      checkItemsInList(companiesExpected, AnyOtherCompaniesOrBranchesPage.listLabel);
     });
 
     it("The list collector can then be submitted", async () => {
@@ -199,7 +199,7 @@ describe("List Collector Repeating Blocks", () => {
 
     it("The list collector shows all of the companies as well as checkmarks on the complete items 1 and 4, but not on the incomplete items 3 and 4.", async () => {
       const companiesExpected = ["ONS", "GOV", "MOD", "NAV"];
-      checkCompaniesInList(companiesExpected, AnyOtherCompaniesOrBranchesPage.listLabel);
+      checkItemsInList(companiesExpected, AnyOtherCompaniesOrBranchesPage.listLabel);
       checkListItemComplete(`dt[data-qa="list-item-1-label"]`);
       checkListItemIncomplete(`dt[data-qa="list-item-2-label"]`);
       checkListItemIncomplete(`dt[data-qa="list-item-3-label"]`);
