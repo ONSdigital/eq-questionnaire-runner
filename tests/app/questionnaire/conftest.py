@@ -988,6 +988,7 @@ def mock_schema(mocker):
             }
         )
     )
+    schema.is_answer_dynamic = mocker.MagicMock(return_value=False)
     return schema
 
 

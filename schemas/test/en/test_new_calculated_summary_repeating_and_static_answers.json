@@ -23,7 +23,7 @@
     ],
     "questionnaire_flow": {
         "type": "Hub",
-        "options": {}
+        "options": { "required_completed_sections": ["section-1"] }
     },
     "sections": [
         {

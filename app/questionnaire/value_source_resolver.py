@@ -100,23 +100,21 @@ class ValueSourceResolver:
             else None
         )
 
-    def resolve_dynamic_answers(
+    def _resolve_dynamic_answers(
         self,
         answer_id: str,
     ) -> Generator[AnswerValueTypes, None, None]:
         # Type ignore: the answer block will exist at this stage
         question = self.schema.get_block_for_answer_id(answer_id).get("question", {})  # type: ignore
 
-        if not (dynamic_answers := question.get("dynamic_answers")):
-            return
-
-        values = dynamic_answers["values"]
-        if values["source"] == "list":
-            for list_item_id in self.list_store[values["identifier"]].items:
-                if answer_value := self._get_answer_value(
-                    answer_id=answer_id, list_item_id=list_item_id
-                ):
-                    yield answer_value
+        if dynamic_answers := question.get("dynamic_answers"):
+            values = dynamic_answers["values"]
+            if values["source"] == "list":
+                for list_item_id in self.list_store[values["identifier"]]:
+                    if answer_value := self._get_answer_value(
+                        answer_id=answer_id, list_item_id=list_item_id
+                    ):
+                        yield answer_value
 
     def _resolve_answer_value_source(
         self, value_source: Mapping
@@ -128,12 +126,8 @@ class ValueSourceResolver:
         answer_id = value_source["identifier"]
 
         # if not in a repeating section and the id is for a list of dynamic answers, then return the list of values
-        if (
-            not list_item_id
-            and self.schema.is_answer_dynamic(answer_id)
-            and (dynamic_answer_value := list(self.resolve_dynamic_answers(answer_id)))
-        ):
-            return dynamic_answer_value
+        if not list_item_id and self.schema.is_answer_dynamic(answer_id):
+            return list(self._resolve_dynamic_answers(answer_id))
 
         answer_value = self._get_answer_value(
             answer_id=answer_id, list_item_id=list_item_id

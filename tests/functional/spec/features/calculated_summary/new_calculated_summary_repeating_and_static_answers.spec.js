@@ -6,13 +6,13 @@ import CalculatedSummarySpendingPage from "../../../generated_pages/new_calculat
 import CalculatedSummaryVisitsPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/calculated-summary-visits.page.js";
 import ListCollectorAddPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/list-collector-add.page";
 import DynamicAnswerPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/dynamic-answer.page";
-import Section1SummaryPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/section-1-summary.page";
+import SummaryPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/section-1-summary.page";
 import ExtraSpendingMethodBlockPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/extra-spending-method-block.page";
 import ListCollectorRemovePage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/list-collector-remove.page";
+import SupermarketTransportPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/supermarket-transport.page";
+import SupermarketTransportCostPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/supermarket-transport-cost.page";
 
 describe("Calculated summary with repeating answers", () => {
-  const currencyInputs = 'input[class="ons-input ons-input--text ons-input-type__input ons-input-number--w-20"]';
-  const daysInputs = 'input[class="ons-input ons-input--text ons-input-type__input ons-input-number--w-1"]';
   const group = 'div[id="group"]';
   const summaryValues = 'dd[class="ons-summary__values"]';
   const summaryActions = 'dd[class="ons-summary__actions"]';
@@ -41,12 +41,12 @@ describe("Calculated summary with repeating answers", () => {
     await $(ListCollectorAddPage.submit()).click();
     await $(ListCollectorPage.no()).click();
     await $(ListCollectorPage.submit()).click();
-    await $$(currencyInputs)[0].setValue(300);
-    await $$(currencyInputs)[1].setValue(200);
-    await $$(currencyInputs)[2].setValue(30);
-    await $$(currencyInputs)[3].setValue(15);
-    await $$(daysInputs)[0].setValue(4);
-    await $$(daysInputs)[1].setValue(2);
+    await $$(DynamicAnswerPage.inputs())[0].setValue(300);
+    await $$(DynamicAnswerPage.inputs())[1].setValue(200);
+    await $$(DynamicAnswerPage.inputs())[2].setValue(30);
+    await $$(DynamicAnswerPage.inputs())[3].setValue(15);
+    await $$(DynamicAnswerPage.inputs())[4].setValue(4);
+    await $$(DynamicAnswerPage.inputs())[5].setValue(2);
     await $(DynamicAnswerPage.extraStatic()).setValue(5);
     await $(DynamicAnswerPage.submit()).click();
     await $(ExtraSpendingBlockPage.extraSpending()).setValue(0);
@@ -76,7 +76,7 @@ describe("Calculated summary with repeating answers", () => {
 
   it("Given I click on a change link, edit an answer and continue, I return to the calculated summary to reconfirm it", async () => {
     await dynamicAnswerChangeLink(0).click();
-    await $$(daysInputs)[1].setValue(3);
+    await $$(DynamicAnswerPage.inputs())[5].setValue(3);
     await $(DynamicAnswerPage.submit()).click();
     await expect(await browser.getUrl()).to.contain(CalculatedSummaryVisitsPage.pageName);
     await expect(await $(CalculatedSummaryVisitsPage.calculatedSummaryTitle()).getText()).to.contain(
@@ -87,7 +87,7 @@ describe("Calculated summary with repeating answers", () => {
   });
 
   it("Given I go back and change an answer that opens up a new question before the calculated summary, I am taken to the new question, and then the calculated summary", async () => {
-    await $(Section1SummaryPage.extraSpendingAnswerEdit()).click();
+    await $(SummaryPage.extraSpendingAnswerEdit()).click();
     await $(ExtraSpendingBlockPage.extraSpending()).setValue(50);
     await $(ExtraSpendingBlockPage.submit()).click();
 
@@ -104,11 +104,11 @@ describe("Calculated summary with repeating answers", () => {
 
     // then jump straight back to section summary (as other calculated summary is unchanged
     await $(CalculatedSummarySpendingPage.submit()).click();
-    await expect(await browser.getUrl()).to.contain(Section1SummaryPage.pageName);
+    await expect(await browser.getUrl()).to.contain(SummaryPage.pageName);
   });
 
   it("Given I add a new item to the list, I return to the list collector block, then the dynamic answers, then both calculated summaries to confirm newly added answers", async () => {
-    await $(Section1SummaryPage.supermarketsListAddLink()).click();
+    await $(SummaryPage.supermarketsListAddLink()).click();
     await $(ListCollectorAddPage.supermarketName()).setValue("Sainsburys");
     await $(ListCollectorAddPage.submit()).click();
     await $(ListCollectorPage.no()).click();
@@ -116,9 +116,9 @@ describe("Calculated summary with repeating answers", () => {
 
     // return to dynamic answer
     await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
-    await $$(currencyInputs)[2].setValue(100);
-    await $$(currencyInputs)[5].setValue(10);
-    await $$(daysInputs)[2].setValue(7);
+    await $$(DynamicAnswerPage.inputs())[2].setValue(100);
+    await $$(DynamicAnswerPage.inputs())[5].setValue(10);
+    await $$(DynamicAnswerPage.inputs())[8].setValue(7);
     await $(DynamicAnswerPage.submit()).click();
 
     // Currently when a section is incomplete, you are taken to each block in the section in turn, if the return_to is inaccessible
@@ -141,15 +141,15 @@ describe("Calculated summary with repeating answers", () => {
     );
     await assertSummaryValues(["4", "3", "2"]);
     await $(CalculatedSummaryVisitsPage.submit()).click();
-    await expect(await browser.getUrl()).to.contain(Section1SummaryPage.pageName);
+    await expect(await browser.getUrl()).to.contain(SummaryPage.pageName);
   });
 
   it("Given I remove an item from the list which changes the calculated summaries, I return to each calculated summary to confirm new total with answers removed", async () => {
-    await expect(await $(Section1SummaryPage.supermarketsListLabel(1)).getText()).to.equal("Tesco");
-    await expect(await $(Section1SummaryPage.supermarketsListLabel(2)).getText()).to.equal("Lidl");
-    await expect(await $(Section1SummaryPage.supermarketsListLabel(3)).getText()).to.equal("Sainsburys");
-    await expect(await $(Section1SummaryPage.supermarketsListLabel(4)).isExisting()).to.be.false;
-    await $(Section1SummaryPage.supermarketsListRemoveLink(1)).click();
+    await expect(await $(SummaryPage.supermarketsListLabel(1)).getText()).to.equal("Tesco");
+    await expect(await $(SummaryPage.supermarketsListLabel(2)).getText()).to.equal("Lidl");
+    await expect(await $(SummaryPage.supermarketsListLabel(3)).getText()).to.equal("Sainsburys");
+    await expect(await $(SummaryPage.supermarketsListLabel(4)).isExisting()).to.be.false;
+    await $(SummaryPage.supermarketsListRemoveLink(1)).click();
 
     await expect(await browser.getUrl()).to.contain(ListCollectorRemovePage.pageName);
     await $(ListCollectorRemovePage.yes()).click();
@@ -173,8 +173,28 @@ describe("Calculated summary with repeating answers", () => {
     await assertSummaryValues(["3", "7"]);
     await $(CalculatedSummaryVisitsPage.submit()).click();
 
-    await expect(await $(Section1SummaryPage.supermarketsListLabel(1)).getText()).to.equal("Lidl");
-    await expect(await $(Section1SummaryPage.supermarketsListLabel(2)).getText()).to.equal("Sainsburys");
-    await expect(await $(Section1SummaryPage.supermarketsListLabel(3)).isExisting()).to.be.false;
+    await expect(await $(SummaryPage.supermarketsListLabel(1)).getText()).to.equal("Lidl");
+    await expect(await $(SummaryPage.supermarketsListLabel(2)).getText()).to.equal("Sainsburys");
+    await expect(await $(SummaryPage.supermarketsListLabel(3)).isExisting()).to.be.false;
+  });
+
+  it("Given I proceed to the second section, the calculated summary of days I visit the supermarket is used as a maximum to the first question", async () => {
+    await $(SummaryPage.submit()).click();
+    await $(HubPage.submit()).click();
+    await $(SupermarketTransportPage.weeklyCarTrips()).setValue(11);
+    await $(SupermarketTransportPage.submit()).click();
+    await expect(await $(SupermarketTransportPage.singleErrorLink()).getText()).to.contain("Enter an answer less than or equal to 10");
+    await $(SupermarketTransportPage.weeklyCarTrips()).setValue(9);
+    await $(SupermarketTransportPage.submit()).click();
+    await expect(await browser.getUrl()).to.contain(SupermarketTransportCostPage.pageName);
+  });
+
+  it("Given I reach the final block, the calculated summary of dynamic answers is piped in correctly", async () => {
+    await $(SupermarketTransportCostPage.weeklyTripsCost()).setValue(30);
+    await $(SupermarketTransportCostPage.submit()).click();
+    await expect(await $("body").getText()).to.have.string("Total weekly supermarket spending: £380.00");
+    await expect(await $("body").getText()).to.have.string("Total weekly supermarket visits: 10");
+    await expect(await $("body").getText()).to.have.string("Total of supermarket visits by car: 9");
+    await expect(await $("body").getText()).to.have.string("Total spending on parking: £30.00");
   });
 });
