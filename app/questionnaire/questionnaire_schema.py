@@ -105,7 +105,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _populate_min_max_map(self) -> None:
         for block in self.get_blocks():
             if block["type"] == "Question":
-                for answer in get_answers_from_question(self.get_all_questions_for_block(block)[0]):
+                for answer in get_answers_from_question(
+                    self.get_all_questions_for_block(block)[0]
+                ):
                     answer_id = answer["id"]
                     if answer["type"] != "Date":
                         answer_to_search_for_min_max = self.get_answers_by_answer_id(
