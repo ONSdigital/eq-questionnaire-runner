@@ -1,0 +1,470 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "A test schema to validate a sum of dynamic answers are equal to a given total",
+    "theme": "default",
+    "description": "A survey that tests calculated answers against a total",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": {
+            "required_completed_sections": ["total-section"]
+        }
+    },
+    "sections": [
+        {
+            "id": "total-section",
+            "title": "Total",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "total-block",
+                            "question": {
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Answer will be used for validation in the next section."
+                                        }
+                                    ]
+                                },
+                                "id": "total-question",
+                                "title": "What percentage of your shopping do you do at supermarkets?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "total-answer",
+                                        "label": "Total",
+                                        "mandatory": true,
+                                        "type": "Percentage",
+                                        "maximum": {
+                                            "value": 100
+                                        },
+                                        "decimal_places": 0
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "total-group"
+                }
+            ]
+        },
+        {
+            "id": "dynamic-answers-section",
+            "title": "Supermarkets",
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "supermarkets",
+                        "title": "Household members",
+                        "add_link_text": "Add another supermarket",
+                        "empty_list_text": "There are no supermarkets"
+                    }
+                ],
+                "show_non_item_answers": true
+            },
+            "groups": [
+                {
+                    "id": "group",
+                    "blocks": [
+                        {
+                            "type": "ListCollectorDrivingQuestion",
+                            "id": "any-supermarket",
+                            "for_list": "supermarkets",
+                            "question": {
+                                "type": "General",
+                                "id": "any-supermarket-question",
+                                "title": "Do you need to add any supermarkets?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "any-supermarket-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock",
+                                                    "params": {
+                                                        "block_id": "add-supermarket",
+                                                        "list_name": "supermarkets"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "section": "End",
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "any-supermarket-answer"
+                                            },
+                                            "No"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "list-collector"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "list-collector",
+                            "type": "ListCollector",
+                            "for_list": "supermarkets",
+                            "question": {
+                                "id": "confirmation-question",
+                                "type": "General",
+                                "title": "Do you need to add any more supermarkets?",
+                                "answers": [
+                                    {
+                                        "id": "list-collector-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-supermarket",
+                                "type": "ListAddQuestion",
+                                "cancel_text": "Don’t need to add any other supermarkets?",
+                                "question": {
+                                    "guidance": {
+                                        "contents": [
+                                            {
+                                                "description": "Maximum spending value will be used for each supermarket’s max spending validation and placeholders."
+                                            }
+                                        ]
+                                    },
+                                    "id": "add-question",
+                                    "type": "General",
+                                    "title": "Which supermarkets do you use for your weekly shopping?",
+                                    "answers": [
+                                        {
+                                            "id": "supermarket-name",
+                                            "label": "Supermarket",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "edit_block": {
+                                "id": "edit-supermarket",
+                                "type": "ListEditQuestion",
+                                "cancel_text": "Don’t need to change anything?",
+                                "question": {
+                                    "id": "edit-question",
+                                    "type": "General",
+                                    "title": "What is the name of the supermarket?",
+                                    "answers": [
+                                        {
+                                            "id": "supermarket-name",
+                                            "label": "Supermarket",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-supermarket",
+                                "type": "ListRemoveQuestion",
+                                "cancel_text": "Don’t need to remove this supermarket?",
+                                "question": {
+                                    "id": "remove-question",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this supermarket?",
+                                    "warning": "All of the information about this supermarket will be deleted",
+                                    "answers": [
+                                        {
+                                            "id": "remove-confirmation",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": "Supermarkets",
+                                "item_title": {
+                                    "text": "{supermarket_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "supermarket_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "supermarket-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "dynamic-answer",
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "supermarkets"
+                                                }
+                                            ]
+                                        },
+                                        0
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Answers are validated against total percentage from previous section."
+                                        }
+                                    ]
+                                },
+                                "dynamic_answers": {
+                                    "values": {
+                                        "source": "list",
+                                        "identifier": "supermarkets"
+                                    },
+                                    "answers": [
+                                        {
+                                            "label": {
+                                                "text": "Percentage of shopping at {transformed_value}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "transformed_value",
+                                                        "value": {
+                                                            "source": "answers",
+                                                            "identifier": "supermarket-name"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "id": "percentage-of-shopping",
+                                            "mandatory": false,
+                                            "type": "Percentage",
+                                            "maximum": {
+                                                "value": 100
+                                            },
+                                            "decimal_places": 0
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "label": {
+                                            "text": "Percentage of shopping elsewhere",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "transformed_value",
+                                                    "value": {
+                                                        "source": "answers",
+                                                        "identifier": "supermarket-name"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "id": "percentage-of-shopping-elsewhere",
+                                        "mandatory": false,
+                                        "type": "Percentage",
+                                        "maximum": {
+                                            "value": 100
+                                        },
+                                        "decimal_places": 0
+                                    }
+                                ],
+                                "warning": "These answers must add up to the total provided in the previous section",
+                                "calculations": [
+                                    {
+                                        "calculation_type": "sum",
+                                        "answer_id": "total-answer",
+                                        "answers_to_calculate": ["percentage-of-shopping-elsewhere", "percentage-of-shopping"],
+                                        "conditions": ["equals"]
+                                    }
+                                ],
+                                "id": "dynamic-answer-question",
+                                "title": "What percent of your shopping do you do at each of the following supermarket?",
+                                "type": "Calculated"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "total-block-other",
+                            "question": {
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Answer will be used for validation in the next question."
+                                        }
+                                    ]
+                                },
+                                "id": "total-question-other",
+                                "title": "Total amount you spend",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "total-answer-other",
+                                        "label": "Total",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "dynamic-answer-only",
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "supermarkets"
+                                                }
+                                            ]
+                                        },
+                                        0
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Answers are validated against total amount from previous question."
+                                        }
+                                    ]
+                                },
+                                "dynamic_answers": {
+                                    "values": {
+                                        "source": "list",
+                                        "identifier": "supermarkets"
+                                    },
+                                    "answers": [
+                                        {
+                                            "label": {
+                                                "text": "How much do you spend at {transformed_value}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "transformed_value",
+                                                        "value": {
+                                                            "source": "answers",
+                                                            "identifier": "supermarket-name"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "id": "spending-amount",
+                                            "mandatory": false,
+                                            "type": "Currency",
+                                            "currency": "GBP",
+                                            "decimal_places": 2,
+                                            "maximum": {
+                                                "value": {
+                                                    "source": "answers",
+                                                    "identifier": "total-answer-other"
+                                                }
+                                            },
+                                            "minimum": {
+                                                "value": 0
+                                            }
+                                        }
+                                    ]
+                                },
+                                "warning": "These answers must add up to the total provided in the previous question",
+                                "calculations": [
+                                    {
+                                        "calculation_type": "sum",
+                                        "answer_id": "total-answer-other",
+                                        "answers_to_calculate": ["spending-amount"],
+                                        "conditions": ["equals"]
+                                    }
+                                ],
+                                "id": "dynamic-answer-only-question",
+                                "title": "How much do you spend at each of the following supermarket?",
+                                "type": "Calculated"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
