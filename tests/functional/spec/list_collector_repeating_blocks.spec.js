@@ -1,16 +1,13 @@
-import AnyCompaniesOrBranchesPage
-  from "../generated_pages/list_collector_repeating_blocks_section_summary/any-companies-or-branches.page";
-import AddCompanyPage
-  from "../generated_pages/list_collector_repeating_blocks_section_summary/any-other-companies-or-branches-add.page";
-import CompaniesRepeatingBlock1Page
-  from "../generated_pages/list_collector_repeating_blocks_section_summary/companies-repeating-block-1-repeating-block.page";
-import CompaniesRepeatingBlock2Page
-  from "../generated_pages/list_collector_repeating_blocks_section_summary/companies-repeating-block-2-repeating-block.page";
-import AnyOtherCompaniesOrBranchesPage
-  from "../generated_pages/list_collector_repeating_blocks_section_summary/any-other-companies-or-branches.page";
-import SectionCompaniesPage
-  from "../generated_pages/list_collector_repeating_blocks_section_summary/section-companies-summary.page";
+import AnyCompaniesOrBranchesPage from "../generated_pages/list_collector_repeating_blocks_section_summary/any-companies-or-branches.page";
+import AddCompanyPage from "../generated_pages/list_collector_repeating_blocks_section_summary/any-other-companies-or-branches-add.page";
+import EditCompanyPage from "../generated_pages/list_collector_repeating_blocks_section_summary/any-other-companies-or-branches-edit.page";
+import RemoveCompanyPage from "../generated_pages/list_collector_repeating_blocks_section_summary/any-other-companies-or-branches-remove.page";
+import CompaniesRepeatingBlock1Page from "../generated_pages/list_collector_repeating_blocks_section_summary/companies-repeating-block-1-repeating-block.page";
+import CompaniesRepeatingBlock2Page from "../generated_pages/list_collector_repeating_blocks_section_summary/companies-repeating-block-2-repeating-block.page";
+import AnyOtherCompaniesOrBranchesPage from "../generated_pages/list_collector_repeating_blocks_section_summary/any-other-companies-or-branches.page";
+import SectionCompaniesPage from "../generated_pages/list_collector_repeating_blocks_section_summary/section-companies-summary.page";
 import SubmitPage from "../generated_pages/list_collector_repeating_blocks_section_summary/submit.page";
+import { checkCompaniesInList, checkListItemComplete, checkListItemIncomplete } from "../helpers";
 
 describe("List Collector Repeating Blocks", () => {
   describe("Given a normal journey through the list collector with repeating blocks, the answers can be submitted.", () => {
@@ -200,9 +197,13 @@ describe("List Collector Repeating Blocks", () => {
       await $(CompaniesRepeatingBlock2Page.submit()).click();
     });
 
-    it("The list collector shows all of the companies.", async () => {
+    it("The list collector shows all of the companies as well as checkmarks on the complete items 1 and 4, but not on the incomplete items 3 and 4.", async () => {
       const companiesExpected = ["ONS", "GOV", "MOD", "NAV"];
       checkCompaniesInList(companiesExpected, AnyOtherCompaniesOrBranchesPage.listLabel);
+      checkListItemComplete(`dt[data-qa="list-item-1-label"]`);
+      checkListItemIncomplete(`dt[data-qa="list-item-2-label"]`);
+      checkListItemIncomplete(`dt[data-qa="list-item-3-label"]`);
+      checkListItemComplete(`dt[data-qa="list-item-1-label"]`);
     });
 
     it("Attempting to complete the list collector will navigate the user to the first incomplete block of the second list item.", async () => {
@@ -223,6 +224,13 @@ describe("List Collector Repeating Blocks", () => {
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
       await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioNo()).click();
       await $(CompaniesRepeatingBlock2Page.submit()).click();
+    });
+
+    it("All items are now marked as completed with the checkmark icon.", async () => {
+      checkListItemComplete(`dt[data-qa="list-item-1-label"]`);
+      checkListItemComplete(`dt[data-qa="list-item-2-label"]`);
+      checkListItemComplete(`dt[data-qa="list-item-3-label"]`);
+      checkListItemComplete(`dt[data-qa="list-item-4-label"]`);
     });
 
     it("The list collector can now be submitted.", async () => {
@@ -263,7 +271,6 @@ describe("List Collector Repeating Blocks", () => {
       await $(CompaniesRepeatingBlock1Page.registrationDateyear()).setValue(2023);
       await $(CompaniesRepeatingBlock1Page.submit()).click();
       await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioNo()).click();
-      await $(CompaniesRepeatingBlock2Page.authorisedTraderEuRadioNo()).click();
       await $(CompaniesRepeatingBlock2Page.submit()).click();
 
       await $(AnyOtherCompaniesOrBranchesPage.no()).click();
@@ -273,10 +280,30 @@ describe("List Collector Repeating Blocks", () => {
     });
 
     it("Edit the registration number of the second item.", async () => {
-      await $$(`a[data-qa="registration-number-edit"]`)[1].click();
-      await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(456);
-      await $(CompaniesRepeatingBlock1Page.submit()).click();
       await expect(await $$(`dd[data-qa="registration-number"]`)[1].getText()).to.have.string(456);
+      await $$(`a[data-qa="registration-number-edit"]`)[1].click();
+      await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(789);
+      await $(CompaniesRepeatingBlock1Page.submit()).click();
+      await expect(await $$(`dd[data-qa="registration-number"]`)[1].getText()).to.have.string(789);
+
+      await expect(await $$(`dd[data-qa="registration-date"]`)[0].getText()).to.have.string("1 January 2023");
+      await $$(`a[data-qa="registration-date-edit"]`)[0].click();
+      await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(9);
+      await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(9);
+      await $(CompaniesRepeatingBlock1Page.submit()).click();
+      await expect(await $$(`dd[data-qa="registration-date"]`)[0].getText()).to.have.string("9 September 2023");
+
+      await expect(await $$(`dd[data-qa="authorised-trader-uk-radio"]`)[0].getText()).to.have.string("Yes");
+      await $$(`a[data-qa="authorised-trader-uk-radio-edit"]`)[0].click();
+      await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioNo()).click();
+      await $(CompaniesRepeatingBlock2Page.submit()).click();
+      await expect(await $$(`dd[data-qa="authorised-trader-uk-radio"]`)[0].getText()).to.have.string("No");
+
+      await expect(await $$(`dd[data-qa="authorised-trader-eu-radio"]`)[1].getText()).to.have.string("No answer provided");
+      await $$(`a[data-qa="authorised-trader-eu-radio-edit"]`)[1].click();
+      await $(CompaniesRepeatingBlock2Page.authorisedTraderEuRadioYes()).click();
+      await $(CompaniesRepeatingBlock2Page.submit()).click();
+      await expect(await $$(`dd[data-qa="authorised-trader-eu-radio"]`)[1].getText()).to.have.string("Yes");
     });
 
     it("The list collector can then be submitted", async () => {

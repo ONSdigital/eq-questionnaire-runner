@@ -14,3 +14,10 @@ export const checkCompaniesInList = async (companiesExpected, listLabel) => {
     await expect(await $(listLabel(i)).getText()).to.equal(companiesExpected[i - 1]);
   }
 };
+
+export const checkListItemComplete = async (listItemLabel) => {
+  await expect(await $(listItemLabel).$(`.ons-summary__item-title-icon.ons-summary__item-title-icon--check`).isExisting()).to.be.true;
+};
+export const checkListItemIncomplete = async (listItemLabel) => {
+  await expect(await $(listItemLabel).$(`.ons-summary__item-title-icon.ons-summary__item-title-icon--check`).isExisting()).to.be.false;
+};
