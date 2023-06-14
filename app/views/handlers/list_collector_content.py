@@ -25,3 +25,19 @@ class ListCollectorContent(Question):
                 return_to=self._return_to,
             ),
         }
+
+    def get_next_location_url(self):
+        return self.router.get_next_location_url(
+            self._current_location,
+            self._routing_path,
+            self._return_to,
+            self._return_to_answer_id,
+            self._return_to_block_id,
+        )
+
+    def handle_post(self):
+        self._set_started_at_metadata()
+        self.questionnaire_store_updater.add_completed_location()
+        self._update_section_completeness()
+        self.questionnaire_store_updater.update_progress_for_dependent_sections()
+        self.questionnaire_store_updater.save()
