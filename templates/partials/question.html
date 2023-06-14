@@ -6,6 +6,7 @@
 {% from 'macros/helpers.html' import interviewer_note %}
 
 {% set form = content.form %}
+{% set display = namespace(guidance=False) %}
 
 {% set title= interviewer_note(question.title) if block.interviewer_only else question.title %}
 {% set question_title= question.title %}
@@ -58,12 +59,19 @@
 {% set question_guidance %}
   {%- if question.guidance -%}
     {% set contents = question.guidance.contents %}
-    {% call onsPanel({
-      "id": "question-guidance-" ~ question.id,
-      "classes": "ons-u-mb-m"
-    }) %}
-      {% include 'partials/contents.html' %}
-    {% endcall %}
+    {% for item in contents %}
+      {%- if (item['title'], item['description'], item['list'], item['definition'], item['guidance'])|select|first -%}
+        {%  set display.guidance=True %}
+      {%- endif -%}
+    {% endfor %}
+    {%- if display.guidance -%}
+        {% call onsPanel({
+          "id": "question-guidance-" ~ question.id,
+          "classes": "ons-u-mb-m"
+        }) %}
+          {% include 'partials/contents.html' %}
+        {% endcall %}
+    {%- endif -%}
   {% endif %}
 {% endset %}
 
