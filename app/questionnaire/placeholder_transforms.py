@@ -67,7 +67,7 @@ class PlaceholderTransforms:
         :param list_to_filter: anything that is iterable
         :return: a list with no empty values
 
-        In this filter the following values are considered non empty:
+        In this filter the following values are considered empty:
         - None
         - any empty sequence, for example, '', (), [].
         - any empty mapping, for example, {}.
