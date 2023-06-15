@@ -11,10 +11,7 @@ from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire import path_finder as pf
-from app.questionnaire.dependencies import (
-    get_block_ids_for_calculated_summary_dependencies,
-    get_block_ids_for_placeholder_dependencies,
-)
+from app.questionnaire.dependencies import get_block_ids_for_dependencies
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.value_source_resolver import (
@@ -193,7 +190,7 @@ class PlaceholderParser:
         self, data: Sequence[Mapping], sections_to_ignore: list | None = None
     ) -> dict[tuple, tuple[str, ...]] | None:
         if self._location:
-            return get_block_ids_for_calculated_summary_dependencies(
+            return get_block_ids_for_dependencies(
                 schema=self._schema,
                 location=self._location,
                 progress_store=self._progress_store,
@@ -211,12 +208,13 @@ class PlaceholderParser:
         self, transform: Mapping
     ) -> ValueSourceResolver:
         if self._location:
-            block_ids = get_block_ids_for_placeholder_dependencies(
+            block_ids = get_block_ids_for_dependencies(
                 schema=self._schema,
                 location=self._location,
                 progress_store=self._progress_store,
                 path_finder=self._path_finder,
                 data=transform,
+                source_type="answers",
             )
             self._routing_path_block_ids_by_section_key.update(block_ids)
             routing_path_block_ids: list = [
