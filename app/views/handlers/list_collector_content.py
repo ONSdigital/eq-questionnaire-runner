@@ -1,4 +1,4 @@
-from app.views.contexts import ListContext
+from app.views.contexts.list_content_context import ListContentContext
 from app.views.handlers.question import Question
 
 
@@ -8,7 +8,7 @@ class ListCollectorContent(Question):
         super().__init__(*args)
 
     def get_context(self):
-        list_context = ListContext(
+        list_context = ListContentContext(
             self._language,
             self._schema,
             self._questionnaire_store.answer_store,
@@ -20,7 +20,8 @@ class ListCollectorContent(Question):
 
         return {
             **list_context(
-                self.rendered_block["summary"],
+                summary_definition=self.rendered_block["summary"],
+                content_definition=self.rendered_block["content"],
                 for_list=self.rendered_block["for_list"],
                 return_to=self._return_to,
             ),
