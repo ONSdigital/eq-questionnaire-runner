@@ -109,7 +109,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     self.get_all_questions_for_block(block)[0]
                 ):
                     answer_id = answer["id"]
-                    if answer["type"] not in ["Date", "MonthYearDate"]:
+                    if answer["type"] not in ["Date", "MonthYearDate", "YearDate"]:
                         answer_to_search_for_min_max = self.get_answers_by_answer_id(
                             answer_id
                         )[0]
