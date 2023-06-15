@@ -11,6 +11,7 @@ import ExtraSpendingMethodBlockPage from "../../../generated_pages/new_calculate
 import ListCollectorRemovePage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/list-collector-remove.page";
 import SupermarketTransportPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/supermarket-transport.page";
 import SupermarketTransportCostPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/supermarket-transport-cost.page";
+import CalculatedSummaryPipingPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/calculated-summary-piping.page";
 
 describe("Calculated summary with repeating answers", () => {
   const group = 'div[id="group"]';
@@ -26,7 +27,7 @@ describe("Calculated summary with repeating answers", () => {
     await expect(await $(group).$$(summaryValues).length).to.equal(values.length);
   };
 
-  const dynamicAnswerChangeLink = (answerIndex) => $(group).$$(summaryActions)[answerIndex].$("a");
+  const dynamicAnswerChangeLink = (answerIndex) => $$(summaryActions)[answerIndex].$("a");
 
   before("Completing the list collector and dynamic answer", async () => {
     await browser.openQuestionnaire("test_new_calculated_summary_repeating_and_static_answers.json");
@@ -178,12 +179,15 @@ describe("Calculated summary with repeating answers", () => {
     await expect(await $(SummaryPage.supermarketsListLabel(3)).isExisting()).to.be.false;
   });
 
-  it("Given I proceed to the second section, the calculated summary of days I visit the supermarket is used as a maximum to the first question", async () => {
+  it("Given I proceed to the second section and enter a value greater than the calculated summary from the previous section, the correct error message is displayed", async () => {
     await $(SummaryPage.submit()).click();
     await $(HubPage.submit()).click();
     await $(SupermarketTransportPage.weeklyCarTrips()).setValue(11);
     await $(SupermarketTransportPage.submit()).click();
     await expect(await $(SupermarketTransportPage.singleErrorLink()).getText()).to.contain("Enter an answer less than or equal to 10");
+  });
+
+  it("Given I change my answer to a value less than the calculated summary from the previous section, I am able to proceed", async () => {
     await $(SupermarketTransportPage.weeklyCarTrips()).setValue(9);
     await $(SupermarketTransportPage.submit()).click();
     await expect(await browser.getUrl()).to.contain(SupermarketTransportCostPage.pageName);
@@ -192,9 +196,27 @@ describe("Calculated summary with repeating answers", () => {
   it("Given I reach the final block, the calculated summary of dynamic answers is piped in correctly", async () => {
     await $(SupermarketTransportCostPage.weeklyTripsCost()).setValue(30);
     await $(SupermarketTransportCostPage.submit()).click();
+    await expect(await browser.getUrl()).to.contain(CalculatedSummaryPipingPage.pageName);
     await expect(await $("body").getText()).to.have.string("Total weekly supermarket spending: £380.00");
     await expect(await $("body").getText()).to.have.string("Total weekly supermarket visits: 10");
     await expect(await $("body").getText()).to.have.string("Total of supermarket visits by car: 9");
     await expect(await $("body").getText()).to.have.string("Total spending on parking: £30.00");
+    await $(CalculatedSummaryPipingPage.submit()).click();
+  });
+
+  it("Given I return to section 1 and update the calculated summary used in section 2 validation, the progress of section 2 is updated", async () => {
+    await expect(await $(HubPage.summaryRowState("section-1")).getText()).to.equal("Completed");
+    await expect(await $(HubPage.summaryRowState("section-2")).getText()).to.equal("Completed");
+    await $(HubPage.summaryRowLink("section-1")).click();
+    await dynamicAnswerChangeLink(8).click();
+    await $$(DynamicAnswerPage.inputs())[5].setValue(1);
+    await $(DynamicAnswerPage.submit()).click();
+    await $(ExtraSpendingBlockPage.submit()).click();
+    await $(ExtraSpendingMethodBlockPage.submit()).click();
+    await $(CalculatedSummarySpendingPage.submit()).click();
+    await $(CalculatedSummaryVisitsPage.submit()).click();
+    await $(SummaryPage.submit()).click();
+    await expect(await $(HubPage.summaryRowState("section-1")).getText()).to.equal("Completed");
+    await expect(await $(HubPage.summaryRowState("section-2")).getText()).to.equal("Partially completed");
   });
 });
