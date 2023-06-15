@@ -1271,6 +1271,10 @@ def is_summary_with_calculation(summary_type: str) -> bool:
     return summary_type in {"GrandCalculatedSummary", "CalculatedSummary"}
 
 
+def is_summary_with_calculation(summary_type: str) -> bool:
+    return summary_type in {"GrandCalculatedSummary", "CalculatedSummary"}
+
+
 def get_sources_for_type_from_data(
     *,
     source_type: str,
