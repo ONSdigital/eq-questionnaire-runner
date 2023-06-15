@@ -475,6 +475,7 @@ def get_answer_fields(
                 response_metadata=response_metadata,
             ),
             data=question,
+            source_type="calculated_summary",
         )
 
     block_ids = None

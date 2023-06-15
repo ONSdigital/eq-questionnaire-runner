@@ -195,6 +195,7 @@ class PlaceholderParser:
                 sections_to_ignore=sections_to_ignore,
                 data=data,
                 path_finder=self._path_finder,
+                source_type="calculated_summary",
             )
         return {}
 

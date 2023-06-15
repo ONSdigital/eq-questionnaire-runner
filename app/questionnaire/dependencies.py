@@ -20,34 +20,34 @@ def get_block_ids_for_dependencies(
     location: Location | RelationshipLocation,
     progress_store: ProgressStore,
     path_finder: PathFinder,
+    source_type: str,
     data: MultiDict | Mapping | Sequence,
     sections_to_ignore: list | None = None,
-    source_type: str = "calculated_summary",
+    ignore_keys: list[str] | None = None,
 ) -> dict[tuple, tuple[str, ...]]:
     block_ids_by_section: dict[tuple, tuple[str, ...]] = {}
-
     sections_to_ignore = sections_to_ignore or []
 
-    if not source_type == "calculated_summary":
-        dependent_sections = schema.placeholder_section_dependencies_by_block[
-            location.section_id
-        ]
+    if source_type == "calculated_summary":
+        dependent_sections = (
+            schema.calculated_summary_section_dependencies_by_block.get(
+                location.section_id, {}
+            )
+        )
+    else:
+        dependent_sections = schema.placeholder_section_dependencies_by_block.get(
+            location.section_id, {}
+        )
         ignore_keys = None
-    else:
-        dependent_sections = schema.calculated_summary_section_dependencies_by_block[
-            location.section_id
-        ]
-        ignore_keys = ["when"]
 
-    if block_id := location.block_id:
-        dependents = OrderedSet(dependent_sections[block_id])
-    else:
-        dependents = get_flattened_mapping_values(dependent_sections)
+    dependents = (
+        OrderedSet(dependent_sections.get(location.block_id, []))
+        if location.block_id
+        else get_flattened_mapping_values(dependent_sections)
+    )
 
     if dependents and not get_sources_for_type_from_data(
-        source_type=source_type,
-        data=data,
-        ignore_keys=ignore_keys,
+        source_type=source_type, data=data, ignore_keys=ignore_keys
     ):
         return block_ids_by_section
 
