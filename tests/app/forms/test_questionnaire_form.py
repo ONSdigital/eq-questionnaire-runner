@@ -1906,3 +1906,113 @@ def test_form_for_radio_other_selected(app, answer_store, list_store):
 
         other_text_field = getattr(form, "other-answer-mandatory")
         assert other_text_field.data == "Other text field value"
+
+
+def test_dynamic_answers_question_validates(app):
+    with app.test_request_context():
+        schema = load_schema_from_name(
+            "test_validation_sum_against_total_dynamic_answers"
+        )
+        answer_store = AnswerStore([{"answer_id": "total-answer", "value": 100}])
+        question_schema = schema.get_block("dynamic-answer").get("question")
+        question_schema = QuestionnaireSchema.get_mutable_deepcopy(question_schema)
+        question_schema["answers"].append(
+            {
+                "label": "Percentage of shopping at Tesco",
+                "id": "percentage-of-shopping-lCIZsS",
+                "mandatory": False,
+                "type": "Percentage",
+                "maximum": {"value": 100},
+                "decimal_places": 0,
+                "original_answer_id": "percentage-of-shopping",
+                "list_item_id": "lCIZsS",
+            }
+        )
+
+        list_store = ListStore([{"name": "supermarkets", "items": ["lCIZsS"]}])
+
+        form_data = MultiDict(
+            {
+                "percentage-of-shopping-lCIZsS": "25",
+                "percentage-of-shopping-elsewhere": "75",
+            }
+        )
+
+        expected_form_data = {
+            "csrf_token": None,
+            "percentage-of-shopping-lCIZsS": "25",
+            "percentage-of-shopping-elsewhere": "75",
+        }
+
+        form = generate_form(
+            schema,
+            question_schema,
+            answer_store,
+            list_store,
+            metadata=get_metadata(),
+            response_metadata={},
+            form_data=form_data,
+            progress_store=ProgressStore(),
+            location=Location(
+                section_id="section",
+                block_id="dynamic-answer",
+                list_name=None,
+                list_item_id=None,
+            ),
+        )
+
+        form.validate()
+        assert form.data, expected_form_data
+
+
+def test_dynamic_answers_question_raises_validation_error(app):
+    with app.test_request_context():
+        schema = load_schema_from_name(
+            "test_validation_sum_against_total_dynamic_answers"
+        )
+        answer_store = AnswerStore([{"answer_id": "total-answer", "value": 100}])
+        question_schema = schema.get_block("dynamic-answer").get("question")
+        question_schema = QuestionnaireSchema.get_mutable_deepcopy(question_schema)
+        question_schema["answers"].append(
+            {
+                "label": "Percentage of shopping at Tesco",
+                "id": "percentage-of-shopping-lCIZsS",
+                "mandatory": False,
+                "type": "Percentage",
+                "maximum": {"value": 100},
+                "decimal_places": 0,
+                "original_answer_id": "percentage-of-shopping",
+                "list_item_id": "lCIZsS",
+            }
+        )
+
+        list_store = ListStore([{"name": "supermarkets", "items": ["lCIZsS"]}])
+
+        form_data = MultiDict(
+            {
+                "percentage-of-shopping-lCIZsS": "25",
+                "percentage-of-shopping-elsewhere": "70",
+            }
+        )
+
+        form = generate_form(
+            schema,
+            question_schema,
+            answer_store,
+            list_store,
+            metadata=get_metadata(),
+            response_metadata={},
+            form_data=form_data,
+            progress_store=ProgressStore(),
+            location=Location(
+                section_id="section",
+                block_id="dynamic-answer",
+                list_name=None,
+                list_item_id=None,
+            ),
+        )
+
+        form.validate()
+        assert form.question_errors["dynamic-answer-question"] == schema.error_messages[
+            "TOTAL_SUM_NOT_EQUALS"
+        ] % {"total": "100"}

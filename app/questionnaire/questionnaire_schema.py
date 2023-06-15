@@ -81,6 +81,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ] = defaultdict(set)
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
+        self.dynamic_answers_parent_block_ids: set[str] = set()
 
         # The ordering here is required as they depend on each other.
         self._sections_by_id = self._get_sections_by_id()
@@ -332,24 +333,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 continue
 
             for question in self.get_all_questions_for_block(block):
+                self.update_dependencies_for_dynamic_answers(
+                    question=question, block_id=block["id"]
+                )
+
                 if question["type"] == "Calculated":
                     self._update_answer_dependencies_for_calculations(
                         question["calculations"], block_id=block["id"]
                     )
                     continue
-
-                if dynamic_answers := question.get("dynamic_answers"):
-                    for answer in dynamic_answers["answers"]:
-                        value_source = dynamic_answers["values"]
-                        self._update_answer_dependencies_for_value_source(
-                            value_source, block_id=block["id"], answer_id=answer["id"]
-                        )
-
-                        self._dynamic_answer_ids.add(answer["id"])
-
-                        self._update_answer_dependencies_for_answer(
-                            answer, block_id=block["id"]
-                        )
 
                 for answer in question.get("answers", []):
                     self._update_answer_dependencies_for_answer(
@@ -774,6 +766,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def is_answer_dynamic(self, answer_id: str) -> bool:
         return answer_id in self._dynamic_answer_ids
+
+    def get_list_name_for_dynamic_answer(self, block_id: str) -> str:
+        # type ignore block always exists at this point
+        return self.get_block(block_id)["question"]["dynamic_answers"]["values"]["identifier"]  # type: ignore
 
     def is_repeating_answer(
         self,
@@ -1286,6 +1282,23 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             for item in summary.get("items", []):
                 if item["for_list"] == list_name and item.get("item_anchor_answer_id"):
                     return f"#{str(item['item_anchor_answer_id'])}"
+
+    def update_dependencies_for_dynamic_answers(
+        self, *, question: Mapping, block_id: str
+    ) -> None:
+        if dynamic_answers := question.get("dynamic_answers"):
+            self.dynamic_answers_parent_block_ids.add(block_id)
+            for answer in dynamic_answers["answers"]:
+                value_source = dynamic_answers["values"]
+                self._update_answer_dependencies_for_value_source(
+                    value_source,
+                    block_id=block_id,
+                    answer_id=answer["id"],
+                )
+
+                self._dynamic_answer_ids.add(answer["id"])
+
+                self._update_answer_dependencies_for_answer(answer, block_id=block_id)
 
 
 def is_summary_with_calculation(summary_type: str) -> bool:
