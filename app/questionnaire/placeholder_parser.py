@@ -28,8 +28,6 @@ if TYPE_CHECKING:
 
 TransformedValueTypes: TypeAlias = None | str | int | Decimal | bool
 
-TRANSFORMS_REQUIRING_ROUTING_PATH = ["first_non_empty_item"]
-
 
 class PlaceholderParser:
     """
