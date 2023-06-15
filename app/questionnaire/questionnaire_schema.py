@@ -55,7 +55,7 @@ class AnswerDependent:
 
 class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def __init__(
-            self, questionnaire_json: Mapping, language_code: str = DEFAULT_LANGUAGE_CODE
+        self, questionnaire_json: Mapping, language_code: str = DEFAULT_LANGUAGE_CODE
     ):
         self._parent_id_map: dict[str, str] = {}
         self._list_name_to_section_map: dict[str, list[str]] = {}
@@ -102,13 +102,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @cached_property
     def when_rules_section_dependencies_by_section(
-            self,
+        self,
     ) -> ImmutableDict[str, set[str]]:
         return ImmutableDict(self._when_rules_section_dependencies_by_section)
 
     @cached_property
     def when_rules_section_dependencies_for_progress(
-            self,
+        self,
     ) -> ImmutableDict[str, set[str]]:
         """
         This method flips the dependencies that were captured for progress value sources so that they can be
@@ -117,10 +117,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         """
         when_rules_section_dependencies_for_progress = defaultdict(set)
         for (
-                section,
-                dependent,
+            section,
+            dependent,
         ) in (
-                self._when_rules_block_dependencies_by_section_for_progress_value_source.items()
+            self._when_rules_block_dependencies_by_section_for_progress_value_source.items()
         ):
             section_dependents = get_flattened_mapping_values(dependent)
             for dependent_section in section_dependents:
@@ -129,10 +129,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 )
 
         for (
-                section,
-                dependents,
+            section,
+            dependents,
         ) in (
-                self._when_rules_section_dependencies_by_section_for_progress_value_source.items()
+            self._when_rules_section_dependencies_by_section_for_progress_value_source.items()
         ):
             for dependent_section in dependents:
                 when_rules_section_dependencies_for_progress[dependent_section].add(
@@ -142,7 +142,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @cached_property
     def when_rules_section_dependencies_by_section_for_progress_value_source(
-            self,
+        self,
     ) -> ImmutableDict[str, OrderedSet[str]]:
         return ImmutableDict(
             self._when_rules_section_dependencies_by_section_for_progress_value_source
@@ -150,7 +150,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @cached_property
     def when_rules_block_dependencies_by_section_for_progress_value_source(
-            self,
+        self,
     ) -> ImmutableDict[str, DependencyDictType]:
         return ImmutableDict(
             self._when_rules_block_dependencies_by_section_for_progress_value_source
@@ -234,14 +234,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return is_enabled
 
     def get_all_when_rules_section_dependencies_for_section(
-            self, section_id: str
+        self, section_id: str
     ) -> set[str]:
         all_section_dependencies = self.when_rules_section_dependencies_by_section.get(
             section_id, set()
         )
 
         if progress_dependencies := self.when_rules_section_dependencies_for_progress.get(
-                section_id
+            section_id
         ):
             all_section_dependencies.update(progress_dependencies)
 
@@ -274,9 +274,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
                 blocks[block_id] = block
                 if block["type"] in (
-                        "ListCollector",
-                        "PrimaryPersonListCollector",
-                        "RelationshipCollector",
+                    "ListCollector",
+                    "PrimaryPersonListCollector",
+                    "RelationshipCollector",
                 ):
                     for nested_block_name in [
                         "add_block",
@@ -361,7 +361,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             self._update_answer_dependencies_for_grand_calculated_summary(block)
 
     def _update_answer_dependencies_for_calculated_summary_dependency(
-            self, *, calculated_summary_block: ImmutableDict, dependent_block: ImmutableDict
+        self, *, calculated_summary_block: ImmutableDict, dependent_block: ImmutableDict
     ) -> None:
         """
         update all calculated summary answers to be dependencies of the dependent block
@@ -375,7 +375,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             }
 
     def _update_answer_dependencies_for_grand_calculated_summary(
-            self, grand_calculated_summary_block: ImmutableDict
+        self, grand_calculated_summary_block: ImmutableDict
     ) -> None:
         grand_calculated_summary_calculated_summary_ids = (
             get_calculation_block_ids_for_grand_calculated_summary(
@@ -391,7 +391,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             )
 
     def _update_answer_dependencies_for_calculations(
-            self, calculations: tuple[ImmutableDict, ...], *, block_id: str
+        self, calculations: tuple[ImmutableDict, ...], *, block_id: str
     ) -> None:
         for calculation in calculations:
             if source_answer_id := calculation.get("answer_id"):
@@ -410,7 +410,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 )
 
     def _update_answer_dependencies_for_answer(
-            self, answer: Mapping, *, block_id: str
+        self, answer: Mapping, *, block_id: str
     ) -> None:
         for key in ["minimum", "maximum"]:
             value = answer.get(key, {}).get("value")
@@ -426,11 +426,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             )
 
     def _update_answer_dependencies_for_dynamic_options(
-            self,
-            dynamic_options_values: Mapping,
-            *,
-            block_id: str,
-            answer_id: str,
+        self,
+        dynamic_options_values: Mapping,
+        *,
+        block_id: str,
+        answer_id: str,
     ) -> None:
         value_sources = get_mappings_with_key("source", dynamic_options_values)
         for value_source in value_sources:
@@ -439,11 +439,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             )
 
     def _update_answer_dependencies_for_value_source(
-            self,
-            value_source: Mapping,
-            *,
-            block_id: str,
-            answer_id: str | None = None,
+        self,
+        value_source: Mapping,
+        *,
+        block_id: str,
+        answer_id: str | None = None,
     ) -> None:
         if value_source["source"] == "answers":
             self._answer_dependencies_map[value_source["identifier"]] |= {
@@ -488,11 +488,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 }
 
     def _get_answer_dependent_for_block_id(
-            self,
-            *,
-            block_id: str,
-            answer_id: str | None = None,
-            for_list: str | None = None,
+        self,
+        *,
+        block_id: str,
+        answer_id: str | None = None,
+        for_list: str | None = None,
     ) -> AnswerDependent:
         section_id: str = self.get_section_id_for_block_id(block_id)  # type: ignore
         if not for_list:
@@ -544,7 +544,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return schema
 
     def _is_list_name_in_rule(
-            self, when_rule: Mapping[str, list], list_name: str
+        self, when_rule: Mapping[str, list], list_name: str
     ) -> bool:
         if not QuestionnaireSchema.has_operator(when_rule):
             return False
@@ -586,18 +586,18 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @staticmethod
     def get_blocks_for_section(
-            section: Mapping,
+        section: Mapping,
     ) -> Generator[ImmutableDict, None, None]:
         return (block for group in section["groups"] for block in group["blocks"])
 
     @classmethod
     def get_driving_question_for_list(
-            cls, section: Mapping, list_name: str
+        cls, section: Mapping, list_name: str
     ) -> ImmutableDict | None:
         for block in cls.get_blocks_for_section(section):
             if (
-                    block["type"] == "ListCollectorDrivingQuestion"
-                    and list_name == block["for_list"]
+                block["type"] == "ListCollectorDrivingQuestion"
+                and list_name == block["for_list"]
             ):
                 return block
 
@@ -668,8 +668,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         block = self.get_block(block_id)
 
         if (
-                block
-                and block.get("type") in LIST_COLLECTOR_CHILDREN + RELATIONSHIP_CHILDREN
+            block
+            and block.get("type") in LIST_COLLECTOR_CHILDREN + RELATIONSHIP_CHILDREN
         ):
             section_id = self._get_parent_section_id_for_block(block_id)
         else:
@@ -736,8 +736,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return self.get_block(block_id)["question"]["dynamic_answers"]["values"]["identifier"]  # type: ignore
 
     def is_repeating_answer(
-            self,
-            answer_id: str,
+        self,
+        answer_id: str,
     ) -> bool:
         return bool(
             self.is_answer_in_list_collector_block(answer_id)
@@ -762,7 +762,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return None
 
     def get_add_block_for_list_collector(
-            self, list_collector_id: str
+        self, list_collector_id: str
     ) -> ImmutableDict | None:
         add_block_map = {
             "ListCollector": "add_block",
@@ -789,7 +789,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @staticmethod
     def get_list_collectors_for_list(
-            section: Mapping, for_list: str, primary: bool = False
+        section: Mapping, for_list: str, primary: bool = False
     ) -> Generator[ImmutableDict, None, None]:
         collector_type = "PrimaryPersonListCollector" if primary else "ListCollector"
 
@@ -801,7 +801,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @staticmethod
     def get_list_collector_for_list(
-            section: Mapping, for_list: str, primary: bool = False
+        section: Mapping, for_list: str, primary: bool = False
     ) -> ImmutableDict | None:
         try:
             return next(
@@ -814,7 +814,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @classmethod
     def get_answers_for_question_by_id(
-            cls, question: QuestionSchemaType
+        cls, question: QuestionSchemaType
     ) -> dict[str, dict]:
         answers: dict[str, dict] = {}
 
@@ -835,7 +835,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return answer_ids[0]
 
     def get_answer_format_for_calculated_summary(
-            self, calculated_summary_block_id: str
+        self, calculated_summary_block_id: str
     ) -> dict:
         """
         Given a calculated summary block id, find the format of the total by using the first answer
@@ -871,7 +871,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ]
 
     def get_relationship_collectors_by_list_name(
-            self, list_name: str
+        self, list_name: str
     ) -> list[ImmutableDict] | None:
         relationship_collectors = self.get_relationship_collectors()
         if relationship_collectors:
@@ -882,7 +882,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             ]
 
     def get_unrelated_block_no_answer_values(
-            self, unrelated_answer_id: str
+        self, unrelated_answer_id: str
     ) -> list[str] | None:
         if unrelated_answers := self.get_answers_by_answer_id(unrelated_answer_id):
             return [
@@ -960,7 +960,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         )
 
     def get_values_for_key(
-            self, block: Mapping, key: str, ignore_keys: list[str] | None = None
+        self, block: Mapping, key: str, ignore_keys: list[str] | None = None
     ) -> Generator:
         ignore_keys = ignore_keys or []
         for k, v in block.items():
@@ -1040,8 +1040,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 ] = rules_section_dependencies
 
             for (
-                    key,
-                    values,
+                key,
+                values,
             ) in rule_section_dependencies_for_progress_value_source.items():
                 progress_section_dependencies[key].update(values)
 
@@ -1050,10 +1050,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             )
 
     def _populate_block_dependencies_for_progress_value_source(
-            self,
-            rule_block_dependencies_for_progress_value_source: dict[
-                str, DependencyDictType
-            ],
+        self,
+        rule_block_dependencies_for_progress_value_source: dict[
+            str, DependencyDictType
+        ],
     ) -> None:
         """
         Populates section dependencies for progress value sources at the block level
@@ -1062,14 +1062,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             self._when_rules_block_dependencies_by_section_for_progress_value_source
         )
         for (
-                dependent_section,
-                section_dependencies_by_block,
+            dependent_section,
+            section_dependencies_by_block,
         ) in rule_block_dependencies_for_progress_value_source.items():
             for block_id, section_ids in section_dependencies_by_block.items():
                 dependencies[dependent_section][block_id].update(section_ids)
 
     def _get_section_and_block_ids_dependencies_for_progress_source_and_answer_ids_from_rule(
-            self, current_section_id: str, rule: Mapping
+        self, current_section_id: str, rule: Mapping
     ) -> tuple[set[str], dict[str, dict[str, OrderedSet[str] | DependencyDictType]]]:
         """
         For a given rule, returns a set of dependent answer ids and any dependent sections for progress value sources.
@@ -1100,23 +1100,27 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         elif source == "progress" and identifier:
             if selector == "section" and identifier != current_section_id:
                 # Type ignore: Added as this will be a set rather than a dict at this point
-                dependencies_ids_for_progress_value_source["sections"][identifier] = OrderedSet(
-                    [current_section_id])  # type: ignore
+                dependencies_ids_for_progress_value_source["sections"][
+                    identifier
+                ] = OrderedSet(
+                    [current_section_id]
+                )  # type: ignore
             elif selector == "block" and (
-                    section_id := self.get_section_id_for_block_id(identifier)
+                section_id := self.get_section_id_for_block_id(identifier)
             ):
                 # Type ignore: The identifier key will return a list
                 if section_id != current_section_id:
                     dependencies_ids_for_progress_value_source["blocks"][section_id] = {
                         identifier: OrderedSet()
                     }
-                    dependencies_ids_for_progress_value_source["blocks"][section_id][identifier].append(
-                        current_section_id)  # type: ignore
+                    dependencies_ids_for_progress_value_source["blocks"][section_id][
+                        identifier  # type: ignore
+                    ].append(current_section_id)
 
         return answer_id_list, dependencies_ids_for_progress_value_source
 
     def _get_rules_section_dependencies(
-            self, current_section_id: str, rules: Mapping | Sequence
+        self, current_section_id: str, rules: Mapping | Sequence
     ) -> tuple[set[str], DependencyDictType, dict[str, DependencyDictType]]:
         """
         Returns a set of sections ids that the current sections depends on.
@@ -1199,8 +1203,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 ].update(section_dependencies)
 
     def _get_calculated_summary_section_dependencies(
-            self,
-            sources: list[Mapping],
+        self,
+        sources: list[Mapping],
     ) -> set[str]:
         # Type ignore: Added to this method as the block will exist at this point
         section_dependencies: set[str] = set()
@@ -1224,7 +1228,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return section_dependencies
 
     def get_summary_item_for_list_for_section(
-            self, *, section_id: str, list_name: str
+        self, *, section_id: str, list_name: str
     ) -> ImmutableDict | None:
         if summary := self.get_summary_for_section(section_id):
             for item in summary.get("items", []):
@@ -1232,10 +1236,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     return item  # type: ignore
 
     def get_related_answers_for_list_for_section(
-            self, *, section_id: str, list_name: str
+        self, *, section_id: str, list_name: str
     ) -> tuple[ImmutableDict] | None:
         if item := self.get_summary_item_for_list_for_section(
-                section_id=section_id, list_name=list_name
+            section_id=section_id, list_name=list_name
         ):
             return item.get("related_answers")
 
@@ -1252,7 +1256,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     return f"#{str(item['item_anchor_answer_id'])}"
 
     def update_dependencies_for_dynamic_answers(
-            self, *, question: Mapping, block_id: str
+        self, *, question: Mapping, block_id: str
     ) -> None:
         if dynamic_answers := question.get("dynamic_answers"):
             self.dynamic_answers_parent_block_ids.add(block_id)
@@ -1274,10 +1278,10 @@ def is_summary_with_calculation(summary_type: str) -> bool:
 
 
 def get_sources_for_type_from_data(
-        *,
-        source_type: str,
-        data: MultiDict | Mapping | Sequence,
-        ignore_keys: list | None = None,
+    *,
+    source_type: str,
+    data: MultiDict | Mapping | Sequence,
+    ignore_keys: list | None = None,
 ) -> list:
     sources = get_mappings_with_key("source", data, ignore_keys=ignore_keys)
 
@@ -1285,7 +1289,7 @@ def get_sources_for_type_from_data(
 
 
 def get_identifiers_from_calculation_block(
-        *, calculation_block: Mapping, source_type: str
+    *, calculation_block: Mapping, source_type: str
 ) -> list[str]:
     values = get_sources_for_type_from_data(
         source_type=source_type, data=calculation_block["calculation"]["operation"]
@@ -1304,7 +1308,7 @@ def get_calculated_summary_answer_ids(calculated_summary_block: Mapping) -> list
 
 
 def get_calculation_block_ids_for_grand_calculated_summary(
-        grand_calculated_summary_block: Mapping,
+    grand_calculated_summary_block: Mapping,
 ) -> list[str]:
     return get_identifiers_from_calculation_block(
         calculation_block=grand_calculated_summary_block,
