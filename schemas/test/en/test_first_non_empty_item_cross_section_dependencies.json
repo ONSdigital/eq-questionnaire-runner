@@ -39,16 +39,14 @@
         }
     ],
     "questionnaire_flow": {
-        "type": "Linear",
+        "type": "Hub",
         "options": {
-            "summary": {
-                "collapsible": false
-            }
         }
     },
     "sections": [
         {
             "id": "default-section",
+            "title": "Total Turnover",
             "groups": [
                 {
                     "id": "default-group",
@@ -274,7 +272,7 @@
         },
         {
             "id": "second-section",
-            "title": "Second Section",
+            "title": "Food Expenses",
             "groups": [
                 {
                     "id": "second-section-group",
