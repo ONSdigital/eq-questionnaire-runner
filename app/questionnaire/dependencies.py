@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from app.questionnaire.path_finder import PathFinder  # pragma: no cover
 
 
-def get_block_ids_for_calculated_summary_dependencies(
+def get_block_ids_for_dependencies(
     schema: QuestionnaireSchema,
     location: Location | RelationshipLocation,
     progress_store: ProgressStore,
