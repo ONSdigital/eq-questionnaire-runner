@@ -1110,7 +1110,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     dependencies_ids_for_progress_value_source["blocks"][section_id] = {
                         identifier: OrderedSet()
                     }
-                    dependencies_ids_for_progress_value_source["blocks"][section_id][identifier].add(
+                    dependencies_ids_for_progress_value_source["blocks"][section_id][identifier].append(
                         current_section_id)  # type: ignore
 
         return answer_id_list, dependencies_ids_for_progress_value_source
