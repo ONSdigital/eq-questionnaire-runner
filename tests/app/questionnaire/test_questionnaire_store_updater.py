@@ -1141,7 +1141,7 @@ def test_dependent_sections_completed_dependant_blocks_removed_and_status_update
     )
 
     mocker.patch(
-        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater._get_chronological_section_dependents",
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater.get_chronological_section_dependents",
         return_value=[
             DependentSection(
                 section_id="breakdown-section", list_item_id=None, is_complete=False
@@ -1356,7 +1356,7 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
     )
 
     mocker.patch(
-        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater._get_chronological_section_dependents",
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater.get_chronological_section_dependents",
         return_value=[
             DependentSection(
                 section_id="breakdown-section", list_item_id=None, is_complete=None
@@ -1531,7 +1531,7 @@ def test_questionnaire_store_updater_dependency_capture(
         schema=mock_schema,
     )
     mocker.patch(
-        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater._get_chronological_section_dependents",
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater.get_chronological_section_dependents",
         return_value=[
             DependentSection(
                 section_id="section-1", list_item_id=None, is_complete=None

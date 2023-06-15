@@ -9,6 +9,7 @@ from app.data_models.list_store import ListModel, ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
+from app.questionnaire.routing_path import RoutingPath
 from app.views.contexts.list_context import ListContext
 from app.views.contexts.summary.block import Block
 

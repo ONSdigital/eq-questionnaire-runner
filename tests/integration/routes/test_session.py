@@ -2,8 +2,10 @@ import time
 from datetime import datetime, timedelta, timezone
 
 from freezegun import freeze_time
+from mock.mock import patch
 
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
+from app.services.supplementary_data import SupplementaryDataRequestFailed
 from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.utilities.json import json_loads
 from tests.integration.integration_test_case import IntegrationTestCase
@@ -87,6 +89,20 @@ class TestSession(IntegrationTestCase):
 
             self.assertIn("expires_at", parsed_json)
             self.assertEqual(parsed_json["expires_at"], expected_expires_at)
+
+    def test_supplementary_data_is_loaded_when_sds_dataset_id_in_metadata(self):
+        with patch("app.routes.session.get_supplementary_data", return_value={}):
+            self.launchSupplementaryDataSurvey()
+            self.assertStatusOK()
+
+    def test_supplementary_data_raises_500_error_on_exception(self):
+        with patch(
+            "app.routes.session.get_supplementary_data",
+            side_effect=SupplementaryDataRequestFailed,
+        ):
+            self.launchSupplementaryDataSurvey()
+            self.assertStatusCode(500)
+            self.assertInBody("Sorry, there is a problem with this service")
 
 
 class TestCensusSession(IntegrationTestCase):

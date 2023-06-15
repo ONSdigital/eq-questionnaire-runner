@@ -1,10 +1,14 @@
 # pylint: disable=redefined-outer-name
 
 from datetime import datetime, timedelta, timezone
+from http.client import HTTPMessage
 
 import fakeredis
 import pytest
 from mock import MagicMock
+from mock.mock import Mock
+from requests.adapters import ConnectTimeoutError, ReadTimeoutError
+from urllib3.connectionpool import HTTPConnectionPool, HTTPResponse
 
 from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
@@ -194,3 +198,33 @@ def location():
 @pytest.fixture
 def mock_autoescape_context(mocker):
     return mocker.Mock(autoescape=True)
+
+
+@pytest.fixture
+def mocked_response_content(mocker):
+    decodable_content = Mock()
+    decodable_content.decode.return_value = b"{}"
+    mocker.patch("requests.models.Response.content", decodable_content)
+
+
+@pytest.fixture
+def mocked_make_request_with_timeout(
+    mocker, mocked_response_content  # pylint: disable=unused-argument
+):
+    connect_timeout_error = ConnectTimeoutError("connect timed out")
+    read_timeout_error = ReadTimeoutError(
+        pool=None, message="read timed out", url="test-url"
+    )
+
+    response_not_timed_out = HTTPResponse(status=200, headers={}, msg=HTTPMessage())
+    response_not_timed_out.drain_conn = Mock(return_value=None)
+
+    return mocker.patch.object(
+        HTTPConnectionPool,
+        "_make_request",
+        side_effect=[
+            connect_timeout_error,
+            read_timeout_error,
+            response_not_timed_out,
+        ],
+    )
