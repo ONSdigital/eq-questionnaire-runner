@@ -12,5 +12,7 @@ class SurveyType(Enum):
     DBT_DSIT = "dbt-dsit"
     DBT_DSIT_NI = "dbt-dsit-ni"
     ORR = "orr"
+    DESNZ = "desnz"
+    DESNZ_NI = "desnz-ni"
     CENSUS = "census"
     CENSUS_NISRA = "census-nisra"
