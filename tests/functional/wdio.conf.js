@@ -16,14 +16,14 @@ export const config = {
   // NPM script (see https://docs.npmjs.com/cli/run-script) then the current working
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
-  specs: ["./spec/**/*repeating_block*.js"],
+  specs: ["./spec/**/*.js"],
   suites: {
     timeout_modal_expired: ["./spec/timeout/timeout_modal_expired/*.js"],
     timeout_modal_extended: ["./spec/timeout/timeout_modal_extended/*.js"],
     timeout_modal_extended_new_window: ["./spec/timeout/timeout_modal_extended_new_window/*.js"],
     components: ["./spec/components/**/*.js"],
     features: ["./spec/features/**/*.js"],
-    general: ["./spec/*.spec.js"],
+    general: ["./spec/*.spec.js"]
   },
   // Patterns to exclude.
   exclude: [
@@ -63,10 +63,10 @@ export const config = {
           "--window-size=3840,2160",
           "--no-sandbox",
           "--disable-gpu",
-          "--disable-extensions",
-        ],
-      },
-    },
+          "--disable-extensions"
+        ]
+      }
+    }
   ],
   //
   // ===================
@@ -142,7 +142,7 @@ export const config = {
   mochaOpts: {
     ui: "bdd",
     timeout: 60000,
-    compilers: ["js:@babel/register"],
+    compilers: ["js:@babel/register"]
   },
   //
   // =====
@@ -192,7 +192,7 @@ export const config = {
    * @param {String} commandName hook command name
    * @param {Array} args arguments that command would receive
    */
-  before: async function (capabilities, specs) {
+  before: async function(capabilities, specs) {
     const chai = require("chai");
     const JwtHelper = require("./jwt_helper");
 
@@ -200,7 +200,7 @@ export const config = {
 
     await browser.addCommand(
       "openQuestionnaire",
-      async function (
+      async function(
         schema,
         {
           version = "v1",
@@ -212,7 +212,7 @@ export const config = {
           periodStr = "May 2016",
           region = "GB-ENG",
           language = "en",
-          includeLogoutUrl = false,
+          includeLogoutUrl = false
         } = {}
       ) {
         const token = await JwtHelper.generateToken(schema, {
@@ -225,7 +225,7 @@ export const config = {
           periodStr,
           regionCode: region,
           languageCode: language,
-          includeLogoutUrl,
+          includeLogoutUrl
         });
         this.url(`/session?token=${token}`);
       }
@@ -292,11 +292,11 @@ export const config = {
    * @param {Array.<Object>} capabilities list of capabilities details
    * @param {Array.<String>} specs List of spec file paths that ran
    */
-  after: function (result) {
+  after: function(result) {
     if (result === 1 && !process.env.EQ_RUN_FUNCTIONAL_TESTS_HEADLESS) {
       browser.debug();
     }
-  },
+  }
   // afterSession: function (config, capabilities, specs) {
   // },
   /**

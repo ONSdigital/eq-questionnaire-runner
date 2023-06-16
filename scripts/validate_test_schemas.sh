@@ -37,7 +37,7 @@ echo "--- Testing Schemas in $file_path ---"
 failed=0
 passed=0
 
-file_path_name=$(find "$file_path" -name '*repeating_block*.json')
+file_path_name=$(find "$file_path" -name '*.json')
 
 for schema in ${file_path_name}; do
 
