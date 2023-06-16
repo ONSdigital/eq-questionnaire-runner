@@ -4,6 +4,7 @@ from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
+from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.utilities.json import json_dumps, json_loads
 
 
@@ -64,6 +65,9 @@ def test_questionnaire_store_updates_storage(questionnaire_store, basic_input):
     store.answer_store = AnswerStore(basic_input["ANSWERS"])
     store.response_metadata = basic_input["RESPONSE_METADATA"]
     store.progress_store = ProgressStore(basic_input["PROGRESS"])
+    store.supplementary_data_store = SupplementaryDataStore.deserialize(
+        basic_input["SUPPLEMENTARY_DATA"]
+    )
 
     # When
     store.save()

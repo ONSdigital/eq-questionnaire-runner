@@ -91,6 +91,14 @@ def test_delete_list_item_id():
     assert not store._lists  # pylint: disable=protected-access
 
 
+def test_delete_list():
+    store = ListStore()
+    store.add_list_item("people")
+    store.add_list_item("people")
+    store.delete_list("people")
+    assert not store._lists  # pylint: disable=protected-access
+
+
 def test_delete_list_item_id_does_not_raise():
     store = ListStore()
     store.add_list_item("people")
