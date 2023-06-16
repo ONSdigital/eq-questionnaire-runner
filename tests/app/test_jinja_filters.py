@@ -308,11 +308,17 @@ def test_get_width_for_number(answer, width, app):
             True,
         ),
         (
-            {"type": "General", "answers": [{"minimum": {"value": {"identifier":"1"}}}]},
+            {
+                "type": "General",
+                "answers": [{"minimum": {"value": {"identifier": "1"}}}],
+            },
             True,
         ),
         (
-            {"type": "General", "answers": [{"maximum": {"value": {"identifier":"1"}}}]},
+            {
+                "type": "General",
+                "answers": [{"maximum": {"value": {"identifier": "1"}}}],
+            },
             True,
         ),
     ),
