@@ -212,6 +212,3 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.assertInBody(
             "We calculate the total monthly spending on public transport to be £300.00. Is this correct?"
         )
-        self.post()
-        self.post()
-        self.post()
