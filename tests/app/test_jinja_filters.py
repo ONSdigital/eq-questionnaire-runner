@@ -255,8 +255,9 @@ def test_format_duration(duration, formatted_duration, app):
         ),
     ),
 )
-def test_get_width_for_number(answer, width):
-    assert get_width_for_number(answer) == width
+def test_get_width_for_number(answer, width, app):
+    with app.app_context():
+        assert get_width_for_number(answer) == width
 
 
 @pytest.mark.parametrize(

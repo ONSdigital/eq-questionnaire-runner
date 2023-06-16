@@ -109,7 +109,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     self.get_all_questions_for_block(block)[0]
                 ):
                     answer_id = answer["id"]
-                    if answer["type"] not in ["Date", "MonthYearDate", "YearDate"]:
+                    if (answer_type := answer.get("type")) and answer_type not in ["Date", "MonthYearDate", "YearDate"]:
                         answer_to_search_for_min_max = self.get_answers_by_answer_id(
                             answer_id
                         )[0]
@@ -117,14 +117,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                             if item in answer and not isinstance(
                                 answer_to_search_for_min_max[item]["value"], int
                             ):
-                                min_max_answer_id = answer_to_search_for_min_max[item][
-                                    "value"
-                                ]["identifier"]
-                                self.min_and_max_map[min_max_answer_id] = (
-                                    self.get_answers_by_answer_id(min_max_answer_id)[0]
-                                    .get(item, {})
-                                    .get("value", {})
-                                )
+                                if answer_to_search_for_min_max[item]["value"]["source"] == "answers":
+                                    min_max_answer_id = answer_to_search_for_min_max[item][
+                                        "value"
+                                    ]["identifier"]
+                                    self.min_and_max_map[min_max_answer_id] = (
+                                        self.get_answers_by_answer_id(min_max_answer_id)[0]
+                                        .get(item, {})
+                                        .get("value", {})
+                                    )
 
     @cached_property
     def when_rules_section_dependencies_by_section(
