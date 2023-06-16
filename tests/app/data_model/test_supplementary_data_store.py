@@ -1,7 +1,10 @@
 import pytest
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models.supplementary_data_store import SupplementaryDataStore
+from app.data_models.supplementary_data_store import (
+    InvalidSupplementaryDataSelector,
+    SupplementaryDataStore,
+)
 
 
 def test_supplementary_data_serialisation(supplementary_data_store_with_data):
@@ -75,7 +78,7 @@ def test_get_supplementary_data(
 
 
 def test_get_supplementary_data_invalid_selectors(supplementary_data_store_with_data):
-    with pytest.raises(ValueError) as exception:
+    with pytest.raises(InvalidSupplementaryDataSelector) as exception:
         supplementary_data_store_with_data.get_data(
             identifier="identifier", selectors=["INVALID"], list_item_id=None
         )

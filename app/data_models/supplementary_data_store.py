@@ -9,6 +9,10 @@ SupplementaryDataKeyType: TypeAlias = tuple[str, str | None]
 SupplementaryDataValueType: TypeAlias = dict | str | list | None
 
 
+class InvalidSupplementaryDataSelector(Exception):
+    pass
+
+
 class SupplementaryDataStore:
     """
     An object that stores supplementary data
@@ -93,7 +97,7 @@ class SupplementaryDataStore:
             # for nested data, index with each selector
             for selector in selectors:
                 if not isinstance(value, dict):
-                    raise ValueError(
+                    raise InvalidSupplementaryDataSelector(
                         f"Cannot use the selector `{selector}` on non-nested data"
                     )
                 value = value[selector]

@@ -145,7 +145,7 @@ def _set_questionnaire_supplementary_data(
     then fetch it and add it to the store
     """
     existing_sds_dataset_id = (
-        questionnaire_store.metadata.survey_metadata.data.get("sds_dataset_id")
+        questionnaire_store.metadata.survey_metadata.data["sds_dataset_id"]
         if questionnaire_store.metadata and questionnaire_store.metadata.survey_metadata
         else None
     )
