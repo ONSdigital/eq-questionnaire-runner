@@ -611,13 +611,14 @@ def test_get_formatted_address(address_fields, formatted_address):
     ],
 )
 def test_other_config_numeric_input_class(
-    answer_schema_number, max_value, expected_width
+    answer_schema_number, max_value, expected_width, app
 ):
-    if max_value:
-        answer_schema_number["maximum"] = {"value": max_value}
+    with app.app_context():
+        if max_value:
+            answer_schema_number["maximum"] = {"value": max_value}
 
-    other = OtherConfig(Mock(), answer_schema_number)
-    assert other.width == expected_width
+        other = OtherConfig(Mock(), answer_schema_number)
+        assert other.width == expected_width
 
 
 def test_other_config_non_dropdown_input_type(answer_schema_textfield):
