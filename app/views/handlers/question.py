@@ -264,7 +264,7 @@ class Question(BlockHandler):
             self.questionnaire_store_updater.save()
 
     def get_first_incomplete_repeating_block_location(
-        self, repeating_block_ids: Sequence[str], section_id: str, list_name: str
+        self, *, repeating_block_ids: Sequence[str], section_id: str, list_name: str
     ) -> Location | None:
         if not repeating_block_ids:
             return None
@@ -281,6 +281,7 @@ class Question(BlockHandler):
 
     def get_first_incomplete_repeating_block_location_for_list_item(
         self,
+        *,
         repeating_block_ids: Sequence[str],
         section_id: str,
         list_item_id: str,

@@ -7,7 +7,7 @@ from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerValueTypes, QuestionnaireStore
 from app.data_models.answer_store import Answer
-from app.data_models.progress_store import CompletionStatus, SectionKeyType
+from app.data_models.progress_store import CompletionStatus, ProgressKeyType
 from app.data_models.relationship_store import RelationshipDict, RelationshipStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
@@ -40,7 +40,7 @@ class QuestionnaireStoreUpdater:
         self._router = router
 
         self.dependent_block_id_by_section_key: Mapping[
-            SectionKeyType, set[str]
+            ProgressKeyType, set[str]
         ] = defaultdict(set)
         self.dependent_sections: set[DependentSection] = set()
 
@@ -237,20 +237,22 @@ class QuestionnaireStoreUpdater:
         location = location or self._current_location
         return self._progress_store.remove_completed_location(location)
 
-    def update_section_status(
+    def update_section_or_list_item_completion_status(
         self, *, is_complete: bool, section_id: str, list_item_id: str | None = None
     ) -> bool:
         status = (
             CompletionStatus.COMPLETED if is_complete else CompletionStatus.IN_PROGRESS
         )
-        return self._progress_store.update_section_status(
+        return self._progress_store.update_section_or_list_item_completion_status(
             status, section_id, list_item_id
         )
 
     def is_section_complete(
         self, section_id: str, list_item_id: str | None = None
     ) -> bool:
-        return self._progress_store.is_section_complete(section_id, list_item_id)
+        return self._progress_store.is_section_or_list_item_complete(
+            section_id, list_item_id
+        )
 
     def _update_answer(
         self,
@@ -447,7 +449,7 @@ class QuestionnaireStoreUpdater:
                 )
             )
 
-        if self.update_section_status(
+        if self.update_section_or_list_item_completion_status(
             is_complete=is_path_complete,
             section_id=dependent_section.section_id,
             list_item_id=dependent_section.list_item_id,
@@ -531,7 +533,7 @@ class QuestionnaireStoreUpdater:
 
     def started_section_keys(
         self, section_ids: Iterable[str] | None = None
-    ) -> list[SectionKeyType]:
+    ) -> list[ProgressKeyType]:
         return self._progress_store.started_section_keys(section_ids)
 
     def _get_chronological_section_dependents(self) -> list:

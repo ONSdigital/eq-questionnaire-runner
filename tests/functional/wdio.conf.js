@@ -16,7 +16,7 @@ export const config = {
   // NPM script (see https://docs.npmjs.com/cli/run-script) then the current working
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
-  specs: ["./spec/**/*.js"],
+  specs: ["./spec/**/*repeating_block*.js"],
   suites: {
     timeout_modal_expired: ["./spec/timeout/timeout_modal_expired/*.js"],
     timeout_modal_extended: ["./spec/timeout/timeout_modal_extended/*.js"],

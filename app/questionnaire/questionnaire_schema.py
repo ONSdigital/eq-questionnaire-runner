@@ -717,6 +717,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_blocks(self) -> Iterable[ImmutableDict]:
         return self._blocks_by_id.values()
 
+    def get_repeating_blocks(self) -> dict[str, ImmutableDict]:
+        return self._repeating_blocks_by_id
+
     def get_block(self, block_id: str) -> ImmutableDict | None:
         return self._blocks_by_id.get(block_id)
 
@@ -1268,9 +1271,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             for item in summary.get("items", []):
                 if item["for_list"] == list_name and item.get("item_anchor_answer_id"):
                     return f"#{str(item['item_anchor_answer_id'])}"
-
-    def is_block_in_repeating_blocks(self, block_id: str) -> bool:
-        return block_id in self._repeating_blocks_by_id
 
     def update_dependencies_for_dynamic_answers(
         self, *, question: Mapping, block_id: str

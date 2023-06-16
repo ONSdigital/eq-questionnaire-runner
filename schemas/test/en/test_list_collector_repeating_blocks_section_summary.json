@@ -23,32 +23,40 @@
     ],
     "answer_codes": [
         {
-            "answer_id": "any-companies-or-branches-answer",
+            "answer_id": "responsible-party-answer",
             "code": "1"
         },
         {
+            "answer_id": "any-companies-or-branches-answer",
+            "code": "2"
+        },
+        {
             "answer_id": "company-or-branch-name",
-            "code": "1a"
+            "code": "2a"
         },
         {
             "answer_id": "registration-number",
-            "code": "1b"
+            "code": "2b"
         },
         {
             "answer_id": "registration-date",
-            "code": "1c"
+            "code": "2c"
         },
         {
             "answer_id": "authorised-trader-uk-radio",
-            "code": "1d"
+            "code": "2d"
         },
         {
             "answer_id": "authorised-trader-eu-radio",
-            "code": "1e"
+            "code": "2e"
         },
         {
             "answer_id": "any-other-companies-or-branches-answer",
-            "code": "2"
+            "code": "3"
+        },
+        {
+            "answer_id": "any-other-trading-details-answer",
+            "code": "4"
         }
     ],
     "questionnaire_flow": {
@@ -82,6 +90,49 @@
                 {
                     "id": "group-companies",
                     "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "responsible-party",
+                            "question": {
+                                "type": "General",
+                                "id": "responsible-party-question",
+                                "title": "Are you the responsible party for reporting trading details for a company of branch?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "responsible-party-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "any-companies-or-branches",
+                                    "when": {
+                                        "==": [
+                                            "Yes",
+                                            {
+                                                "source": "answers",
+                                                "identifier": "responsible-party-answer"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        },
                         {
                             "type": "ListCollectorDrivingQuestion",
                             "id": "any-companies-or-branches",
@@ -214,7 +265,10 @@
                                                 "id": "registration-date",
                                                 "label": "Date of Registration (Mandatory)",
                                                 "mandatory": true,
-                                                "type": "Date"
+                                                "type": "Date",
+                                                "maximum": {
+                                                    "value": "now"
+                                                }
                                             }
                                         ]
                                     }
@@ -273,7 +327,7 @@
                                             },
                                             {
                                                 "type": "Radio",
-                                                "label": "Has this company been trading in the EU? (Mandatory)",
+                                                "label": "Has this company been trading in the EU? (Not mandatory)",
                                                 "id": "authorised-trader-eu-radio",
                                                 "mandatory": false,
                                                 "options": [
@@ -351,6 +405,23 @@
                                         }
                                     ]
                                 }
+                            }
+                        },
+                        {
+                            "id": "any-other-trading-details",
+                            "type": "Question",
+                            "question": {
+                                "id": "any-other-trading-details-question",
+                                "type": "General",
+                                "title": "Do you have any other details about the trading you have reported for?",
+                                "answers": [
+                                    {
+                                        "id": "any-other-trading-details-answer",
+                                        "label": "Answer 1",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    }
+                                ]
                             }
                         }
                     ]

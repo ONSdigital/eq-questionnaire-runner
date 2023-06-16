@@ -1,3 +1,4 @@
+import ResponsiblePartyPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/responsible-party.page";
 import AnyCompaniesOrBranchesPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/any-companies-or-branches.page";
 import AddCompanyPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/any-other-companies-or-branches-add.page";
 import EditCompanyPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/any-other-companies-or-branches-edit.page";
@@ -6,6 +7,7 @@ import CompaniesRepeatingBlock1Page from "../../../generated_pages/list_collecto
 import CompaniesRepeatingBlock2Page from "../../../generated_pages/list_collector_repeating_blocks_section_summary/companies-repeating-block-2-repeating-block.page";
 import AnyOtherCompaniesOrBranchesPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/any-other-companies-or-branches.page";
 import SectionCompaniesPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/section-companies-summary.page";
+import AnyOtherTradingDetailsPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/any-other-trading-details.page";
 import SubmitPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/submit.page";
 import { checkItemsInList, checkListItemComplete, checkListItemIncomplete } from "../../../helpers";
 
@@ -15,6 +17,8 @@ describe("List Collector Repeating Blocks", () => {
       await browser.openQuestionnaire("test_list_collector_repeating_blocks_section_summary.json");
     });
     it("The user is able to add companies, complete repeating blocks, and submit.", async () => {
+      await $(ResponsiblePartyPage.yes()).click();
+      await $(AnyCompaniesOrBranchesPage.submit()).click();
       await $(AnyCompaniesOrBranchesPage.yes()).click();
       await $(AnyCompaniesOrBranchesPage.submit()).click();
 
@@ -45,6 +49,7 @@ describe("List Collector Repeating Blocks", () => {
       await $(AnyOtherCompaniesOrBranchesPage.no()).click();
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
 
+      await $(AnyOtherTradingDetailsPage.submit()).click();
       await $(SectionCompaniesPage.submit()).click();
       await $(SubmitPage.submit()).click();
     });
@@ -55,6 +60,8 @@ describe("List Collector Repeating Blocks", () => {
       await browser.openQuestionnaire("test_list_collector_repeating_blocks_section_summary.json");
     });
     it("The user is able to add companies and complete repeating blocks.", async () => {
+      await $(ResponsiblePartyPage.yes()).click();
+      await $(AnyCompaniesOrBranchesPage.submit()).click();
       await $(AnyCompaniesOrBranchesPage.yes()).click();
       await $(AnyCompaniesOrBranchesPage.submit()).click();
 
@@ -142,6 +149,7 @@ describe("List Collector Repeating Blocks", () => {
       await $(AnyOtherCompaniesOrBranchesPage.no()).click();
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
 
+      await $(AnyOtherTradingDetailsPage.submit()).click();
       await $(SectionCompaniesPage.submit()).click();
       await $(SubmitPage.submit()).click();
     });
@@ -152,6 +160,8 @@ describe("List Collector Repeating Blocks", () => {
       await browser.openQuestionnaire("test_list_collector_repeating_blocks_section_summary.json");
     });
     it("The user is able to add companies complete some repeating blocks and leave others incomplete.", async () => {
+      await $(ResponsiblePartyPage.yes()).click();
+      await $(AnyCompaniesOrBranchesPage.submit()).click();
       await $(AnyCompaniesOrBranchesPage.yes()).click();
       await $(AnyCompaniesOrBranchesPage.submit()).click();
 
@@ -237,6 +247,7 @@ describe("List Collector Repeating Blocks", () => {
       await $(AnyOtherCompaniesOrBranchesPage.no()).click();
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
 
+      await $(AnyOtherTradingDetailsPage.submit()).click();
       await $(SectionCompaniesPage.submit()).click();
       await $(SubmitPage.submit()).click();
     });
@@ -247,6 +258,8 @@ describe("List Collector Repeating Blocks", () => {
       await browser.openQuestionnaire("test_list_collector_repeating_blocks_section_summary.json");
     });
     it("The user is able to add companies, complete repeating blocks and navigate to the section summary.", async () => {
+      await $(ResponsiblePartyPage.yes()).click();
+      await $(AnyCompaniesOrBranchesPage.submit()).click();
       await $(AnyCompaniesOrBranchesPage.yes()).click();
       await $(AnyCompaniesOrBranchesPage.submit()).click();
 
@@ -276,10 +289,11 @@ describe("List Collector Repeating Blocks", () => {
       await $(AnyOtherCompaniesOrBranchesPage.no()).click();
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
 
+      await $(AnyOtherTradingDetailsPage.submit()).click();
       await $(SectionCompaniesPage.submit()).click();
     });
 
-    it("Edit the registration number of the second item.", async () => {
+    it("Edit each type of answer on different items from the section summary.", async () => {
       await expect(await $$(`dd[data-qa="registration-number"]`)[1].getText()).to.have.string(456);
       await $$(`a[data-qa="registration-number-edit"]`)[1].click();
       await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(789);
@@ -288,10 +302,10 @@ describe("List Collector Repeating Blocks", () => {
 
       await expect(await $$(`dd[data-qa="registration-date"]`)[0].getText()).to.have.string("1 January 2023");
       await $$(`a[data-qa="registration-date-edit"]`)[0].click();
-      await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(9);
-      await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(9);
+      await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(4);
+      await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(4);
       await $(CompaniesRepeatingBlock1Page.submit()).click();
-      await expect(await $$(`dd[data-qa="registration-date"]`)[0].getText()).to.have.string("9 September 2023");
+      await expect(await $$(`dd[data-qa="registration-date"]`)[0].getText()).to.have.string("4 April 2023");
 
       await expect(await $$(`dd[data-qa="authorised-trader-uk-radio"]`)[0].getText()).to.have.string("Yes");
       await $$(`a[data-qa="authorised-trader-uk-radio-edit"]`)[0].click();

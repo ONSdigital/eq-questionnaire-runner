@@ -70,7 +70,7 @@
                             "question": {
                                 "id": "list-collector-next-question",
                                 "type": "General",
-                                "title": "Do you need to add any more to this list?",
+                                "title": "This List Collector demonstrates a collector with Repeating Blocks which are asked after adding an item, and that must be completed before navigated past the list collector.\nDo you need to add any more to this list?",
                                 "answers": [
                                     {
                                         "id": "list-collector-next-question-answer-1",
@@ -98,7 +98,7 @@
                                 "question": {
                                     "id": "list-collector-add-block-question",
                                     "type": "General",
-                                    "title": "What is the name of the list item?",
+                                    "title": "What is the name of the list item? This item will be followed up by 2 pages of related questions (repeating blocks)",
                                     "answers": [
                                         {
                                             "id": "list-collector-add-block-question-answer",
@@ -116,7 +116,7 @@
                                     "question": {
                                         "id": "repeating-block-1-question",
                                         "type": "General",
-                                        "title": "This is the question for repeating block 1.",
+                                        "title": "This is the question for repeating block 1, which relates to an item that was added to the list collector.",
                                         "answers": [
                                             {
                                                 "id": "repeating-block-1-question-answer-1",
@@ -139,7 +139,7 @@
                                     "question": {
                                         "id": "repeating-block-2-question",
                                         "type": "General",
-                                        "title": "This is the question for repeating block 2.",
+                                        "title": "This is the question for repeating block 2, which relates to an item that was added to the list collector.",
                                         "answers": [
                                             {
                                                 "id": "repeating-block-2-question-answer-1",

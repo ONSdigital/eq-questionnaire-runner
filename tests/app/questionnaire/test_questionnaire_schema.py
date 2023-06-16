@@ -907,13 +907,6 @@ def test_get_block_with_repeating_blocks():
     assert block2["id"] == "repeating-block-2"
 
 
-def test_is_block_in_repeating_blocks():
-    schema = load_schema_from_name("test_list_collector_repeating_blocks")
-
-    assert schema.is_block_in_repeating_blocks("repeating-block-1")
-    assert not schema.is_block_in_repeating_blocks("list-collector-edit-block")
-
-
 def test_get_block_for_answer_id_returns_repeating_block_for_repeating_block_answer_id():
     schema = load_schema_from_name("test_list_collector_repeating_blocks")
 

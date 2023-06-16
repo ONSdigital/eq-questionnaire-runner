@@ -58,7 +58,7 @@ class ListContext(Context):
         remove_block_id: str | None,
         primary_person_edit_block_id: str | None,
         for_list_item_ids: Sequence[str] | None,
-    ) -> Generator[dict, Any, None]:
+    ) -> Generator[dict, None, None]:
         list_item_ids = self._list_store[for_list]
         if for_list_item_ids:
             list_item_ids = [
@@ -85,7 +85,7 @@ class ListContext(Context):
                 ),
                 "primary_person": is_primary,
                 "list_item_id": list_item_id,
-                "is_complete": self._progress_store.is_section_complete(
+                "is_complete": self._progress_store.is_section_or_list_item_complete(
                     section_id=section_id, list_item_id=list_item_id
                 ),
                 "repeating_blocks": has_repeating_blocks,

@@ -19,7 +19,7 @@ class ListCollector(Question):
 
     @cached_property
     def list_name(self) -> str:
-        return self.rendered_block.get("for_list")
+        return self.rendered_block["for_list"]
 
     def get_next_location_url(self):
         if self._is_adding:
@@ -34,7 +34,9 @@ class ListCollector(Question):
             return add_url
 
         if incomplete_block := self.get_first_incomplete_repeating_block_location(
-            self.repeating_block_ids, self.current_location.section_id, self.list_name
+            repeating_block_ids=self.repeating_block_ids,
+            section_id=self.current_location.section_id,
+            list_name=self.list_name,
         ):
             repeating_block_url = url_for(
                 "questionnaire.block",

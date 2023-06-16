@@ -19,7 +19,7 @@ class ListAddQuestion(ListAction):
         if self._list_item_id and (
             repeating_blocks := self.parent_block.get("repeating_blocks")
         ):
-            repeating_block_url = url_for(
+            return url_for(
                 "questionnaire.block",
                 list_name=self.parent_block["for_list"],
                 list_item_id=self._list_item_id,
@@ -28,7 +28,6 @@ class ListAddQuestion(ListAction):
                 return_to_answer_id=self._return_to_answer_id,
                 return_to_block_id=self._return_to_block_id,
             )
-            return repeating_block_url
 
         return self.parent_location.url(
             return_to=self._return_to,

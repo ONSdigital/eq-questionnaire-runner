@@ -8,7 +8,7 @@ from app.views.handlers.list_action import ListAction
 class ListRepeatingBlock(ListAction):
     @cached_property
     def repeating_block_ids(self) -> list[str]:
-        return [block["id"] for block in self.parent_block["repeating_blocks"]]
+        return list(self._schema.get_repeating_blocks().keys())
 
     def get_next_location_url(self) -> str:
         if self._is_returning_to_section_summary():
@@ -41,7 +41,7 @@ class ListRepeatingBlock(ListAction):
             list_item_id=self.current_location.list_item_id,
             list_name=self.current_location.list_name,
         ):
-            self.questionnaire_store_updater.update_section_status(
+            self.questionnaire_store_updater.update_section_or_list_item_completion_status(
                 is_complete=True,
                 section_id=self.current_location.section_id,
                 list_item_id=self.current_location.list_item_id,
