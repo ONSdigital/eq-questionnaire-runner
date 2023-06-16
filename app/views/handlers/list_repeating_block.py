@@ -2,10 +2,10 @@ from functools import cached_property
 
 from flask import url_for
 
-from app.views.handlers.list_edit_question import ListEditQuestion
+from app.views.handlers.list_action import ListAction
 
 
-class ListRepeatingBlock(ListEditQuestion):
+class ListRepeatingBlock(ListAction):
     @cached_property
     def repeating_block_ids(self) -> list[str]:
         return [block["id"] for block in self.parent_block["repeating_blocks"]]
@@ -46,4 +46,13 @@ class ListRepeatingBlock(ListEditQuestion):
                 section_id=self.current_location.section_id,
                 list_item_id=self.current_location.list_item_id,
             )
-        return super().handle_post()
+
+        # Cannot invoke parent handle_post as that would invoke self.update_section_completeness which overwrites the progress update done here
+        self.questionnaire_store_updater.update_answers(self.form.data)
+        if self.questionnaire_store_updater.is_dirty():
+            self._routing_path = self.router.routing_path(
+                self.current_location.section_id, self.current_location.list_item_id
+            )
+            self.questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
+            self.questionnaire_store_updater.update_progress_for_dependent_sections()
+            self.questionnaire_store_updater.save()
