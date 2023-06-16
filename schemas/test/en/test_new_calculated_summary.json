@@ -400,12 +400,14 @@
                                                         "placeholder": "unit_total",
                                                         "transforms": [
                                                             {
-                                                                "transform": "format_number",
+                                                                "transform": "format_unit",
                                                                 "arguments": {
-                                                                    "number": {
+                                                                    "value": {
                                                                         "source": "calculated_summary",
                                                                         "identifier": "unit-total-playback"
-                                                                    }
+                                                                    },
+                                                                    "unit": "length-centimeter",
+                                                                    "unit_length": "short"
                                                                 }
                                                             }
                                                         ]
