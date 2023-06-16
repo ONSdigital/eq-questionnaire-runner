@@ -314,7 +314,7 @@ def test_get_width_for_number(answer, width, app):
                     {"type": "Currency", "minimum": {"value": {"identifier": "1"}}}
                 ],
             },
-            True,
+            False,
         ),
         (
             {
@@ -323,7 +323,7 @@ def test_get_width_for_number(answer, width, app):
                     {"type": "Currency", "maximum": {"value": {"identifier": "1"}}}
                 ],
             },
-            True,
+            False,
         ),
     ),
 )
