@@ -119,7 +119,9 @@ class QuestionnaireStore:
                 deleted_list_item_ids.update(mappings.values())
             else:
                 for identifier, list_item_id in mappings.items():
-                    if identifier not in new_data["items"][list_name]:
+                    if identifier not in [
+                        item["identifier"] for item in new_data["items"][list_name]
+                    ]:
                         self.list_store.delete_list_item(list_name, list_item_id)
                         deleted_list_item_ids.add(list_item_id)
         self.answer_store.remove_all_answers_for_list_item_ids(deleted_list_item_ids)
