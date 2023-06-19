@@ -255,9 +255,9 @@ def test_format_duration(duration, formatted_duration, app):
         ),
     ),
 )
-def test_get_width_for_number(answer, width, app):
+def test_get_width_for_number(answer, width, app, self):
     with app.app_context():
-        min_and_max_map = {"set-maximum": 10000, "set-minimum": -1000}
+        self.schema.min_and_max_map.return_value = {"set-maximum": 10000, "set-minimum": -1000}
         assert get_width_for_number(answer) == width
 
 
