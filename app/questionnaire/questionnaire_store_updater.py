@@ -237,21 +237,14 @@ class QuestionnaireStoreUpdater:
         location = location or self._current_location
         return self._progress_store.remove_completed_location(location)
 
-    def update_section_or_list_item_completion_status(
+    def update_progress_completion_status(
         self, *, is_complete: bool, section_id: str, list_item_id: str | None = None
     ) -> bool:
         status = (
             CompletionStatus.COMPLETED if is_complete else CompletionStatus.IN_PROGRESS
         )
-        return self._progress_store.update_section_or_list_item_completion_status(
+        return self._progress_store.update_progress_completion_status(
             status, section_id, list_item_id
-        )
-
-    def is_section_complete(
-        self, section_id: str, list_item_id: str | None = None
-    ) -> bool:
-        return self._progress_store.is_section_or_list_item_complete(
-            section_id, list_item_id
         )
 
     def _update_answer(
@@ -449,7 +442,7 @@ class QuestionnaireStoreUpdater:
                 )
             )
 
-        if self.update_section_or_list_item_completion_status(
+        if self.update_progress_completion_status(
             is_complete=is_path_complete,
             section_id=dependent_section.section_id,
             list_item_id=dependent_section.list_item_id,
@@ -534,7 +527,7 @@ class QuestionnaireStoreUpdater:
     def started_section_keys(
         self, section_ids: Iterable[str] | None = None
     ) -> list[ProgressKeyType]:
-        return self._progress_store.started_section_keys(section_ids)
+        return self._progress_store.started_progress_keys(section_ids)
 
     def _get_chronological_section_dependents(self) -> list:
         sections = list(self._schema.get_section_ids())

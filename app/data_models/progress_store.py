@@ -84,7 +84,7 @@ class ProgressStore:
     def is_routing_backwards(self) -> bool:
         return self._is_routing_backwards
 
-    def is_section_or_list_item_complete(
+    def is_progress_complete(
         self, section_id: str, list_item_id: str | None = None
     ) -> bool:
         """
@@ -121,7 +121,7 @@ class ProgressStore:
             if any(section_id in progress_key for section_id in section_ids)
         ]
 
-    def update_section_or_list_item_completion_status(
+    def update_progress_completion_status(
         self,
         completion_status: str,
         section_id: str,
@@ -149,7 +149,7 @@ class ProgressStore:
 
         return updated
 
-    def get_section_or_list_item_status(
+    def get_progress_status(
         self, section_id: str, list_item_id: str | None = None
     ) -> str:
         progress_key = (section_id, list_item_id)
@@ -248,7 +248,7 @@ class ProgressStore:
         self._progress.clear()
         self._is_dirty = True
 
-    def started_section_keys(
+    def started_progress_keys(
         self, section_ids: Iterable[str] | None = None
     ) -> list[ProgressKeyType]:
         return self.progress_keys(

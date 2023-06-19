@@ -10,7 +10,7 @@ def test_serialisation():
 
     store.add_completed_location(Location(section_id="s1", block_id="one"))
     store.add_completed_location(Location(section_id="s1", block_id="two"))
-    store.update_section_or_list_item_completion_status(
+    store.update_progress_completion_status(
         completion_status=CompletionStatus.COMPLETED, section_id="s1"
     )
 
@@ -22,7 +22,7 @@ def test_serialisation():
             list_item_id="abc123",
         )
     )
-    store.update_section_or_list_item_completion_status(
+    store.update_progress_completion_status(
         completion_status=CompletionStatus.IN_PROGRESS,
         section_id="s2",
         list_item_id="abc123",
@@ -67,14 +67,11 @@ def test_deserialisation():
     ]
     store = ProgressStore(in_progress_sections)
 
-    assert (
-        store.get_section_or_list_item_status(section_id="s1")
-        == CompletionStatus.IN_PROGRESS
-    )
+    assert store.get_progress_status(section_id="s1") == CompletionStatus.IN_PROGRESS
     assert store.get_completed_block_ids(section_id="s1") == ["one", "two"]
 
     assert (
-        store.get_section_or_list_item_status(section_id="s2", list_item_id="abc123")
+        store.get_progress_status(section_id="s2", list_item_id="abc123")
         == CompletionStatus.COMPLETED
     )
     assert store.get_completed_block_ids(section_id="s2", list_item_id="abc123") == [
@@ -155,12 +152,9 @@ def test_add_completed_location_existing():
     store.add_completed_location(non_repeating_location)
     store.add_completed_location(repeating_location)
 
+    assert store.get_progress_status(section_id="s1") == CompletionStatus.COMPLETED
     assert (
-        store.get_section_or_list_item_status(section_id="s1")
-        == CompletionStatus.COMPLETED
-    )
-    assert (
-        store.get_section_or_list_item_status(section_id="s2", list_item_id="abc123")
+        store.get_progress_status(section_id="s2", list_item_id="abc123")
         == CompletionStatus.COMPLETED
     )
 
@@ -197,12 +191,9 @@ def test_add_completed_location_new():
     store.add_completed_location(non_repeating_location)
     store.add_completed_location(repeating_location)
 
+    assert store.get_progress_status(section_id="s1") == CompletionStatus.COMPLETED
     assert (
-        store.get_section_or_list_item_status(section_id="s1")
-        == CompletionStatus.COMPLETED
-    )
-    assert (
-        store.get_section_or_list_item_status(section_id="s2", list_item_id="abc123")
+        store.get_progress_status(section_id="s2", list_item_id="abc123")
         == CompletionStatus.COMPLETED
     )
 
@@ -253,12 +244,9 @@ def test_remove_completed_location():
     ]
     assert store.get_completed_block_ids(section_id="s3") == []
 
-    assert store.get_section_or_list_item_status("s1") == CompletionStatus.COMPLETED
-    assert (
-        store.get_section_or_list_item_status("s2", "abc123")
-        == CompletionStatus.COMPLETED
-    )
-    assert store.get_section_or_list_item_status("s3") == CompletionStatus.IN_PROGRESS
+    assert store.get_progress_status("s1") == CompletionStatus.COMPLETED
+    assert store.get_progress_status("s2", "abc123") == CompletionStatus.COMPLETED
+    assert store.get_progress_status("s3") == CompletionStatus.IN_PROGRESS
 
     assert store.is_dirty
 
@@ -303,21 +291,18 @@ def test_update_section_status():
     ]
     store = ProgressStore(completed)
 
-    store.update_section_or_list_item_completion_status(
+    store.update_progress_completion_status(
         completion_status=CompletionStatus.IN_PROGRESS, section_id="s1"
     )
-    store.update_section_or_list_item_completion_status(
+    store.update_progress_completion_status(
         completion_status=CompletionStatus.IN_PROGRESS,
         section_id="s2",
         list_item_id="abc123",
     )
 
+    assert store.get_progress_status(section_id="s1") == CompletionStatus.IN_PROGRESS
     assert (
-        store.get_section_or_list_item_status(section_id="s1")
-        == CompletionStatus.IN_PROGRESS
-    )
-    assert (
-        store.get_section_or_list_item_status(section_id="s2", list_item_id="abc123")
+        store.get_progress_status(section_id="s2", list_item_id="abc123")
         == CompletionStatus.IN_PROGRESS
     )
     assert store.is_dirty
@@ -334,11 +319,9 @@ def test_update_non_existing_section_status():
     ]
     store = ProgressStore(completed)
 
-    store.update_section_or_list_item_completion_status(
-        "s2", CompletionStatus.IN_PROGRESS
-    )
+    store.update_progress_completion_status("s2", CompletionStatus.IN_PROGRESS)
 
-    assert store.get_section_or_list_item_status("s1") == CompletionStatus.COMPLETED
+    assert store.get_progress_status("s1") == CompletionStatus.COMPLETED
 
     assert "s2" not in store
     assert store.get_completed_block_ids(section_id="s2") == []
@@ -363,12 +346,9 @@ def test_get_section_status():
     ]
     store = ProgressStore(existing_progress)
 
+    assert store.get_progress_status(section_id="s1") == CompletionStatus.COMPLETED
     assert (
-        store.get_section_or_list_item_status(section_id="s1")
-        == CompletionStatus.COMPLETED
-    )
-    assert (
-        store.get_section_or_list_item_status(section_id="s2", list_item_id="abc123")
+        store.get_progress_status(section_id="s2", list_item_id="abc123")
         == CompletionStatus.IN_PROGRESS
     )
 
@@ -433,18 +413,9 @@ def test_is_section_complete():
 
     store = ProgressStore(completed)
 
-    assert (
-        store.is_section_or_list_item_complete(section_id="s1", list_item_id=None)
-        is True
-    )
-    assert (
-        store.is_section_or_list_item_complete(section_id="s4", list_item_id="123abc")
-        is True
-    )
-    assert (
-        store.is_section_or_list_item_complete(section_id="s5", list_item_id="456def")
-        is True
-    )
+    assert store.is_progress_complete(section_id="s1", list_item_id=None)
+    assert store.is_progress_complete(section_id="s4", list_item_id="123abc")
+    assert store.is_progress_complete(section_id="s5", list_item_id="456def")
 
 
 def test_remove_progress_for_list_item_id():

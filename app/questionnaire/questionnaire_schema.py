@@ -23,7 +23,7 @@ LIST_COLLECTOR_CHILDREN = [
     "ListEditQuestion",
     "ListRemoveQuestion",
     "PrimaryPersonListAddOrEditQuestion",
-    "ListRepeatingBlock",
+    "ListRepeatingQuestion",
 ]
 
 RELATIONSHIP_CHILDREN = ["UnrelatedQuestion"]
@@ -82,7 +82,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ] = defaultdict(set)
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
-        self._repeating_blocks_by_id: dict[str, ImmutableDict] = {}
+        self._repeating_block_ids: list[str] = []
         self.dynamic_answers_parent_block_ids: set[str] = set()
 
         # The ordering here is required as they depend on each other.
@@ -297,9 +297,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                             repeating_block_id = repeating_block["id"]
                             blocks[repeating_block_id] = repeating_block
                             self._parent_id_map[repeating_block_id] = block_id
-                            self._repeating_blocks_by_id[
-                                repeating_block_id
-                            ] = repeating_block
+                            self._repeating_block_ids.append(repeating_block_id)
 
         return blocks
 
@@ -717,8 +715,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_blocks(self) -> Iterable[ImmutableDict]:
         return self._blocks_by_id.values()
 
-    def get_repeating_blocks(self) -> dict[str, ImmutableDict]:
-        return self._repeating_blocks_by_id
+    def get_repeating_block_ids(self) -> list[str]:
+        return self._repeating_block_ids
 
     def get_block(self, block_id: str) -> ImmutableDict | None:
         return self._blocks_by_id.get(block_id)
@@ -1004,7 +1002,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         if (
             parent_block
             and parent_block["type"] == "ListCollector"
-            and block_id not in self._repeating_blocks_by_id
+            and block_id not in self._repeating_block_ids
         ):
             return parent_block
 

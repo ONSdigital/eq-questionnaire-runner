@@ -157,7 +157,7 @@ class HubContext(Context):
     ) -> dict[str, Union[str, list]]:
         row_id = f"{section_id}-{list_item_index}" if list_item_index else section_id
 
-        section_status = self._progress_store.get_section_or_list_item_status(
+        section_status = self._progress_store.get_progress_status(
             section_id, list_item_id
         )
 

@@ -233,7 +233,7 @@
                             "repeating_blocks": [
                                 {
                                     "id": "companies-repeating-block-1",
-                                    "type": "ListRepeatingBlock",
+                                    "type": "ListRepeatingQuestion",
                                     "question": {
                                         "id": "companies-repeating-block-1-question",
                                         "type": "General",
@@ -275,7 +275,7 @@
                                 },
                                 {
                                     "id": "companies-repeating-block-2",
-                                    "type": "ListRepeatingBlock",
+                                    "type": "ListRepeatingQuestion",
                                     "question": {
                                         "id": "companies-repeating-block-2-question",
                                         "type": "General",
@@ -417,7 +417,7 @@
                                 "answers": [
                                     {
                                         "id": "any-other-trading-details-answer",
-                                        "label": "Answer 1",
+                                        "label": "Additional details",
                                         "mandatory": false,
                                         "type": "TextField"
                                     }

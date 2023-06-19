@@ -112,7 +112,7 @@
                             "repeating_blocks": [
                                 {
                                     "id": "repeating-block-1",
-                                    "type": "ListRepeatingBlock",
+                                    "type": "ListRepeatingQuestion",
                                     "question": {
                                         "id": "repeating-block-1-question",
                                         "type": "General",
@@ -135,7 +135,7 @@
                                 },
                                 {
                                     "id": "repeating-block-2",
-                                    "type": "ListRepeatingBlock",
+                                    "type": "ListRepeatingQuestion",
                                     "question": {
                                         "id": "repeating-block-2-question",
                                         "type": "General",

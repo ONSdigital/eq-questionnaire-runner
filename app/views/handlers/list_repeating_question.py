@@ -5,10 +5,10 @@ from flask import url_for
 from app.views.handlers.list_action import ListAction
 
 
-class ListRepeatingBlock(ListAction):
+class ListRepeatingQuestion(ListAction):
     @cached_property
     def repeating_block_ids(self) -> list[str]:
-        return list(self._schema.get_repeating_blocks().keys())
+        return self._schema.get_repeating_block_ids()
 
     def get_next_location_url(self) -> str:
         if self._is_returning_to_section_summary():
@@ -41,7 +41,7 @@ class ListRepeatingBlock(ListAction):
             list_item_id=self.current_location.list_item_id,
             list_name=self.current_location.list_name,
         ):
-            self.questionnaire_store_updater.update_section_or_list_item_completion_status(
+            self.questionnaire_store_updater.update_progress_completion_status(
                 is_complete=True,
                 section_id=self.current_location.section_id,
                 list_item_id=self.current_location.list_item_id,

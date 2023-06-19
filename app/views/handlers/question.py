@@ -287,7 +287,7 @@ class Question(BlockHandler):
         list_item_id: str,
         list_name: str,
     ) -> Location | None:
-        if self.questionnaire_store_updater.is_section_complete(
+        if self._questionnaire_store.progress_store.is_progress_complete(
             section_id=section_id, list_item_id=list_item_id
         ):
             return None
