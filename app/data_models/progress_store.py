@@ -29,9 +29,16 @@ class ProgressStore:
         in_progress_sections_and_list_items: Iterable[ProgressDictType] | None = None,
     ) -> None:
         """
-        Instantiate a ProgressStore object that tracks the status of sections and list items, and their completed blocks.
+        Instantiate a ProgressStore object that tracks the progress status of sections and list items,
+            and their completed blocks.
+            - Standard Sections are keyed by Section ID, and a None List Item ID
+            - Repeating Sections (dynamic Sections created for List Items) are keyed by their randomly generated
+                Section ID, and their List Item ID
+            - List Items are keyed by the Section ID for the Section in which their List Collector appears,
+                and the List Item ID.
         Args:
-            in_progress_sections_and_list_items: A list of hierarchical dict containing the completion status and completed blocks
+            in_progress_sections_and_list_items: A list of hierarchical dict containing the completion status
+                and completed blocks
         """
         self._is_dirty: bool = False
         self._is_routing_backwards: bool = False
@@ -78,8 +85,12 @@ class ProgressStore:
         return self._is_routing_backwards
 
     def is_section_or_list_item_complete(
-        self, section_id: str, list_item_id: Optional[str] = None
+        self, section_id: str, list_item_id: str | None = None
     ) -> bool:
+        """
+        Return True if the CompletionStatus of the Section or List Item specified by the given section_id and
+         list_item_id is COMPLETED or INDIVIDUAL_RESPONSE_REQUESTED, else False.
+        """
         return (section_id, list_item_id) in self.progress_keys(
             statuses={
                 CompletionStatus.COMPLETED,
@@ -89,8 +100,8 @@ class ProgressStore:
 
     def progress_keys(
         self,
-        statuses: Optional[Iterable[str]] = None,
-        section_ids: Optional[Iterable[str]] = None,
+        statuses: Iterable[str] | None = None,
+        section_ids: Iterable[str] | None = None,
     ) -> list[ProgressKeyType]:
         if not statuses:
             statuses = {*CompletionStatus()}
@@ -114,7 +125,7 @@ class ProgressStore:
         self,
         completion_status: str,
         section_id: str,
-        list_item_id: Optional[str] = None,
+        list_item_id: str | None = None,
     ) -> bool:
         """
         Updates the completion status of the section or list item specified by the key based on the given section id and list item id.
@@ -139,7 +150,7 @@ class ProgressStore:
         return updated
 
     def get_section_or_list_item_status(
-        self, section_id: str, list_item_id: Optional[str] = None
+        self, section_id: str, list_item_id: str | None = None
     ) -> str:
         progress_key = (section_id, list_item_id)
         if progress_key in self._progress:
@@ -238,7 +249,7 @@ class ProgressStore:
         self._is_dirty = True
 
     def started_section_keys(
-        self, section_ids: Optional[Iterable[str]] = None
+        self, section_ids: Iterable[str] | None = None
     ) -> list[ProgressKeyType]:
         return self.progress_keys(
             statuses={CompletionStatus.COMPLETED, CompletionStatus.IN_PROGRESS},
