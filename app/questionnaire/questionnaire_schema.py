@@ -1134,7 +1134,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         elif source == "progress" and identifier:
             if selector == "section" and identifier != current_section_id:
                 # Type ignore: Added as this will be a set rather than a dict at this point
-                dependencies_ids_for_progress_value_source["sections"][identifier] = OrderedSet([current_section_id])  # type: ignore
+                dependencies_ids_for_progress_value_source["sections"][
+                    identifier
+                ] = OrderedSet(
+                    [current_section_id]
+                )  # type: ignore
             elif selector == "block" and (
                 section_id := self.get_section_id_for_block_id(identifier)
             ):
@@ -1143,7 +1147,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     dependencies_ids_for_progress_value_source["blocks"][section_id] = {
                         identifier: OrderedSet()
                     }
-                    dependencies_ids_for_progress_value_source["blocks"][section_id][identifier].add(current_section_id)  # type: ignore
+                    dependencies_ids_for_progress_value_source["blocks"][section_id][
+                        identifier  # type: ignore
+                    ].append(current_section_id)
 
         return answer_id_list, dependencies_ids_for_progress_value_source
 
