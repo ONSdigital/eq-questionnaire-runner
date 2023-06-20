@@ -1,4 +1,5 @@
 import time
+from copy import deepcopy
 from uuid import uuid4
 
 from sdc.crypto.encrypter import encrypt
@@ -7,6 +8,7 @@ from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.keys import KEY_PURPOSE_AUTHENTICATION
 from tests.app.parser.conftest import get_response_expires_at
 
+MISSING = object()
 ACCOUNT_SERVICE_URL = "http://upstream.url"
 
 PAYLOAD = {
@@ -138,8 +140,17 @@ class TokenGenerator:
 
         return self.generate_token(payload)
 
-    def create_supplementary_data_token(self, schema_name, **extra_payload):
-        payload = PAYLOAD_V2_SUPPLEMENTARY_DATA
+    def create_supplementary_data_token(
+        self, schema_name, sds_dataset_id=MISSING, **extra_payload
+    ):
+        payload = deepcopy(PAYLOAD_V2_SUPPLEMENTARY_DATA)
+
+        # need to distinguish between the id not being provided, and being passed in as None
+        if sds_dataset_id is not MISSING:
+            if sds_dataset_id:
+                payload["survey_metadata"]["data"]["sds_dataset_id"] = sds_dataset_id
+            else:
+                del payload["survey_metadata"]["data"]["sds_dataset_id"]
 
         payload = self._get_payload_with_params(
             schema_name=schema_name, payload=payload, **extra_payload

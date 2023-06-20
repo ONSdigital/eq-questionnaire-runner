@@ -1,7 +1,10 @@
+# pylint: disable=redefined-outer-name
 from datetime import datetime, timedelta, timezone
 
 import pytest
+from mock.mock import Mock
 
+from app.data_models import ListStore, QuestionnaireStore
 from app.data_models.answer_store import Answer
 from app.data_models.progress_store import CompletionStatus
 from app.data_models.session_store import SessionStore
@@ -159,8 +162,8 @@ def app_session_store_encoded(mocker, session_data):
 
 
 @pytest.fixture
-def supplementary_data_store_with_data():
-    fake_data = {
+def supplementary_data():
+    return {
         "schema_version": "v1",
         "identifier": "12346789012A",
         "note": {
@@ -189,5 +192,40 @@ def supplementary_data_store_with_data():
             ]
         },
     }
-    list_mappings = {"products": {"89929001": "item-1", "201630601": "item-2"}}
-    return SupplementaryDataStore(fake_data, list_mappings)
+
+
+@pytest.fixture
+def supplementary_data_list_mappings():
+    return {
+        "products": {
+            "89929001": "item-1",
+            "201630601": "item-2",
+        },
+    }
+
+
+@pytest.fixture
+def supplementary_data_store_with_data(
+    supplementary_data, supplementary_data_list_mappings
+):
+    return SupplementaryDataStore(
+        supplementary_data=supplementary_data,
+        list_mappings=supplementary_data_list_mappings,
+    )
+
+
+@pytest.fixture
+def questionnaire_store_with_supplementary_data(
+    questionnaire_store, supplementary_data_store_with_data
+):
+    questionnaire_store = QuestionnaireStore(questionnaire_store.storage)
+    questionnaire_store.supplementary_data_store = supplementary_data_store_with_data
+    questionnaire_store.list_store = ListStore(
+        [{"items": ["item-1", "item-2"], "name": "products"}]
+    )
+    # Mock the identifier generation in list store so the ids are item-1, item-2, ...
+    # pylint: disable=protected-access
+    questionnaire_store.list_store._generate_identifier = Mock(
+        side_effect=(f"item-{i}" for i in range(3, 100))
+    )
+    return questionnaire_store

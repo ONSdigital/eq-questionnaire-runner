@@ -1562,3 +1562,63 @@ def test_payload_dynamic_answers(version):
         Answer(answer_id="percentage-of-shopping", value=21, list_item_id="vhECeh")
         in data_payload["answers"]
     )
+
+
+def test_payload_supplementary_data():
+    questionnaire_store = get_questionnaire_store(AuthPayloadVersion.V2)
+
+    full_routing_path = [
+        RoutingPath(
+            ["dynamic-answer"],
+            section_id="section",
+        )
+    ]
+
+    supplementary_data = {
+        "survey_name": "supermarket test survey",
+        "items": {
+            "supermarkets": [
+                {"identifier": "123", "name": "Tesco"},
+                {"identifier": "456", "name": "Aldi"},
+            ]
+        },
+    }
+    supermarkets_list_map = {"123": "tUJzGV", "456": "vhECeh"}
+
+    list_item_ids = list(supermarkets_list_map.values())
+    questionnaire_store.supplementary_data_store = SupplementaryDataStore(
+        supplementary_data=supplementary_data,
+        list_mappings={"supermarkets": supermarkets_list_map},
+    )
+    questionnaire_store.list_store = ListStore(
+        [{"items": list_item_ids, "name": "supermarkets"}]
+    )
+    questionnaire_store.answer_store = AnswerStore(
+        [
+            Answer("percentage-of-shopping", 12, list_item_ids[0]).to_dict(),
+            Answer("percentage-of-shopping", 21, list_item_ids[1]).to_dict(),
+        ]
+    )
+
+    schema = load_schema_from_name("test_supplementary_data")
+
+    data_payload = get_payload_data(
+        questionnaire_store.answer_store,
+        questionnaire_store.list_store,
+        schema,
+        full_routing_path,
+        questionnaire_store.metadata,
+        questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
+    )
+
+    assert "supplementary_data" in data_payload
+    assert "lists" in data_payload
+    assert data_payload["supplementary_data"] == supplementary_data
+    assert len(data_payload["lists"]) == 1
+    assert data_payload["lists"][0] == {
+        "items": list_item_ids,
+        "name": "supermarkets",
+        "supplementary_data_mapping": supermarkets_list_map,
+    }
