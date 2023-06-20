@@ -343,6 +343,24 @@ def test_get_width_for_number(answer, width, app):
             },
             False,
         ),
+        (
+            {
+                "type": "General",
+                "answers": [
+                    {"type": "Currency", "minimum": {"value": {"identifier": "1"}}}
+                ],
+            },
+            False,
+        ),
+        (
+            {
+                "type": "General",
+                "answers": [
+                    {"type": "Currency", "maximum": {"value": {"identifier": "1"}}}
+                ],
+            },
+            False,
+        ),
     ),
 )
 def test_should_wrap_with_fieldset(question, expected):
