@@ -133,6 +133,13 @@
                             "question": {
                                 "id": "date-entry-question",
                                 "title": "What are the dates of the period that you will be reporting for?",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Enter a date between 12 April 2016 and 21 June 2016"
+                                        }
+                                    ]
+                                },
                                 "type": "DateRange",
                                 "answers": [
                                     {
