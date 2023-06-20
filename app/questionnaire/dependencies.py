@@ -7,7 +7,10 @@ from werkzeug.datastructures import MultiDict
 
 from app.data_models import ProgressStore
 from app.questionnaire import Location, QuestionnaireSchema
-from app.questionnaire.questionnaire_schema import get_sources_for_type_from_data
+from app.questionnaire.questionnaire_schema import (
+    DependencyDictType,
+    get_sources_for_type_from_data,
+)
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.utilities.mappings import get_flattened_mapping_values
 
@@ -27,17 +30,16 @@ def get_block_ids_for_dependencies(
 ) -> dict[tuple, tuple[str, ...]]:
     block_ids_by_section: dict[tuple, tuple[str, ...]] = {}
     sections_to_ignore = sections_to_ignore or []
-
+    dependent_sections: dict[str, set[str]] | dict[str, OrderedSet[str]]
     if source_type == "calculated_summary":
-        dependent_sections = (
-            schema.calculated_summary_section_dependencies_by_block.get(
-                location.section_id, {}
-            )
-        )
+        dependent_sections = schema.calculated_summary_section_dependencies_by_block[
+            location.section_id
+        ]
+
     else:
-        dependent_sections = schema.placeholder_section_dependencies_by_block.get(
-            location.section_id, {}
-        )
+        dependent_sections = schema.placeholder_section_dependencies_by_block[
+            location.section_id
+        ]
         ignore_keys = None
 
     dependents = (
