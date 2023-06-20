@@ -1,6 +1,9 @@
 # coding: utf-8
 from datetime import datetime, timezone
 
+from flask import g
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+
 import pytest
 import simplejson as json
 from jinja2 import Undefined
@@ -255,12 +258,14 @@ def test_format_duration(duration, formatted_duration, app):
         ),
     ),
 )
-def test_get_width_for_number(answer, width, app, self):
+def test_get_width_for_number(answer, width, app):
     with app.app_context():
-        self.schema.min_and_max_map.return_value = {
+        schema = QuestionnaireSchema({})
+        schema.min_and_max_map = {
             "set-maximum": 10000,
             "set-minimum": -1000,
         }
+        g.schema = schema
         assert get_width_for_number(answer) == width
 
 
