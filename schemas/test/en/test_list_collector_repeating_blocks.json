@@ -1,227 +1,227 @@
 {
-    "mime_type": "application/json/ons/eq",
-    "language": "en",
-    "schema_version": "0.0.1",
-    "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Test a Simple List Collector with Repeating Blocks",
-    "theme": "default",
-    "description": "A questionnaire to test a simple list collector with repeating blocks and no additional blocks or sections.",
-    "metadata": [
-        {
-            "name": "user_id",
-            "type": "string"
-        },
-        {
-            "name": "period_id",
-            "type": "string"
-        },
-        {
-            "name": "ru_name",
-            "type": "string"
-        }
-    ],
-    "answer_codes": [
-        {
-            "answer_id": "list-collector-next-question-answer-1",
-            "code": "1"
-        },
-        {
-            "answer_id": "list-collector-add-block-question-answer",
-            "code": "1a"
-        },
-        {
-            "answer_id": "repeating-block-1-question-answer-1",
-            "code": "1b"
-        },
-        {
-            "answer_id": "repeating-block-1-question-answer-2",
-            "code": "1c"
-        },
-        {
-            "answer_id": "repeating-block-2-question-answer-1",
-            "code": "1d"
-        },
-        {
-            "answer_id": "repeating-block-2-question-answer-2",
-            "code": "1e"
-        }
-    ],
-    "questionnaire_flow": {
-        "type": "Linear",
-        "options": {
-            "summary": {
-                "collapsible": false
-            }
-        }
+  "mime_type": "application/json/ons/eq",
+  "language": "en",
+  "schema_version": "0.0.1",
+  "data_version": "0.0.3",
+  "survey_id": "0",
+  "title": "Test a Simple List Collector with Repeating Blocks",
+  "theme": "default",
+  "description": "A questionnaire to test a simple list collector with repeating blocks and no additional blocks or sections.",
+  "metadata": [
+    {
+      "name": "user_id",
+      "type": "string"
     },
-    "sections": [
+    {
+      "name": "period_id",
+      "type": "string"
+    },
+    {
+      "name": "ru_name",
+      "type": "string"
+    }
+  ],
+  "answer_codes": [
+    {
+      "answer_id": "list-collector-next-question-answer-1",
+      "code": "1"
+    },
+    {
+      "answer_id": "list-collector-add-block-question-answer",
+      "code": "1a"
+    },
+    {
+      "answer_id": "repeating-block-1-question-answer-1",
+      "code": "1b"
+    },
+    {
+      "answer_id": "repeating-block-1-question-answer-2",
+      "code": "1c"
+    },
+    {
+      "answer_id": "repeating-block-2-question-answer-1",
+      "code": "1d"
+    },
+    {
+      "answer_id": "repeating-block-2-question-answer-2",
+      "code": "1e"
+    }
+  ],
+  "questionnaire_flow": {
+    "type": "Linear",
+    "options": {
+      "summary": {
+        "collapsible": false
+      }
+    }
+  },
+  "sections": [
+    {
+      "id": "section",
+      "groups": [
         {
-            "id": "section",
-            "groups": [
-                {
-                    "id": "group",
-                    "title": "List",
-                    "blocks": [
-                        {
-                            "id": "list-collector-block",
-                            "type": "ListCollector",
-                            "for_list": "repeating_blocks_list_collector",
-                            "question": {
-                                "id": "list-collector-next-question",
-                                "type": "General",
-                                "title": "This List Collector demonstrates a collector with Repeating Blocks which are asked after adding an item, and that must be completed before navigated past the list collector.\nDo you need to add any more to this list?",
-                                "answers": [
-                                    {
-                                        "id": "list-collector-next-question-answer-1",
-                                        "mandatory": true,
-                                        "type": "Radio",
-                                        "options": [
-                                            {
-                                                "label": "Yes",
-                                                "value": "Yes",
-                                                "action": {
-                                                    "type": "RedirectToListAddBlock"
-                                                }
-                                            },
-                                            {
-                                                "label": "No",
-                                                "value": "No"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            "add_block": {
-                                "id": "list-collector-add-block",
-                                "type": "ListAddQuestion",
-                                "question": {
-                                    "id": "list-collector-add-block-question",
-                                    "type": "General",
-                                    "title": "What is the name of the list item? This item will be followed up by 2 pages of related questions (repeating blocks)",
-                                    "answers": [
-                                        {
-                                            "id": "list-collector-add-block-question-answer",
-                                            "label": "Name of list item",
-                                            "mandatory": true,
-                                            "type": "TextField"
-                                        }
-                                    ]
-                                }
-                            },
-                            "repeating_blocks": [
-                                {
-                                    "id": "repeating-block-1",
-                                    "type": "ListRepeatingQuestion",
-                                    "question": {
-                                        "id": "repeating-block-1-question",
-                                        "type": "General",
-                                        "title": "This is the question for repeating block 1, which relates to an item that was added to the list collector.",
-                                        "answers": [
-                                            {
-                                                "id": "repeating-block-1-question-answer-1",
-                                                "label": "Answer 1",
-                                                "mandatory": true,
-                                                "type": "Number"
-                                            },
-                                            {
-                                                "id": "repeating-block-1-question-answer-2",
-                                                "label": "Answer 2",
-                                                "mandatory": true,
-                                                "type": "Number"
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "id": "repeating-block-2",
-                                    "type": "ListRepeatingQuestion",
-                                    "question": {
-                                        "id": "repeating-block-2-question",
-                                        "type": "General",
-                                        "title": "This is the question for repeating block 2, which relates to an item that was added to the list collector.",
-                                        "answers": [
-                                            {
-                                                "id": "repeating-block-2-question-answer-1",
-                                                "label": "Answer 1",
-                                                "mandatory": true,
-                                                "type": "TextField"
-                                            },
-                                            {
-                                                "id": "repeating-block-2-question-answer-2",
-                                                "label": "Answer 2",
-                                                "mandatory": true,
-                                                "type": "TextField"
-                                            }
-                                        ]
-                                    }
-                                }
-                            ],
-                            "edit_block": {
-                                "id": "list-collector-edit-block",
-                                "type": "ListEditQuestion",
-                                "question": {
-                                    "id": "list-collector-edit-block-question",
-                                    "type": "General",
-                                    "title": "What is the name of the list item?",
-                                    "answers": [
-                                        {
-                                            "id": "list-collector-add-block-question-answer",
-                                            "label": "Name of list item",
-                                            "mandatory": true,
-                                            "type": "TextField"
-                                        }
-                                    ]
-                                }
-                            },
-                            "remove_block": {
-                                "id": "list-collector-remove-block",
-                                "type": "ListRemoveQuestion",
-                                "question": {
-                                    "id": "list-collector-remove-block-question",
-                                    "type": "General",
-                                    "title": "Are you sure you want to remove this list item?",
-                                    "answers": [
-                                        {
-                                            "id": "list-collector-remove-block-question-answer",
-                                            "mandatory": true,
-                                            "type": "Radio",
-                                            "options": [
-                                                {
-                                                    "label": "Yes",
-                                                    "value": "Yes",
-                                                    "action": {
-                                                        "type": "RemoveListItemAndAnswers"
-                                                    }
-                                                },
-                                                {
-                                                    "label": "No",
-                                                    "value": "No"
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            },
-                            "summary": {
-                                "title": "Collected items",
-                                "item_title": {
-                                    "text": "{item}",
-                                    "placeholders": [
-                                        {
-                                            "placeholder": "item",
-                                            "value": {
-                                                "source": "answers",
-                                                "identifier": "list-collector-add-block-question-answer"
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
+          "id": "group",
+          "title": "List",
+          "blocks": [
+            {
+              "id": "list-collector-block",
+              "type": "ListCollector",
+              "for_list": "repeating-blocks-list-collector",
+              "question": {
+                "id": "list-collector-next-question",
+                "type": "General",
+                "title": "This List Collector demonstrates a collector with Repeating Blocks which are asked after adding an item, and that must be completed before navigated past the list collector.\nDo you need to add any more to this list?",
+                "answers": [
+                  {
+                    "id": "list-collector-next-question-answer-1",
+                    "mandatory": true,
+                    "type": "Radio",
+                    "options": [
+                      {
+                        "label": "Yes",
+                        "value": "Yes",
+                        "action": {
+                          "type": "RedirectToListAddBlock"
                         }
+                      },
+                      {
+                        "label": "No",
+                        "value": "No"
+                      }
                     ]
+                  }
+                ]
+              },
+              "add_block": {
+                "id": "list-collector-add-block",
+                "type": "ListAddQuestion",
+                "question": {
+                  "id": "list-collector-add-block-question",
+                  "type": "General",
+                  "title": "What is the name of the list item? This item will be followed up by 2 pages of related questions (repeating blocks)",
+                  "answers": [
+                    {
+                      "id": "list-collector-add-block-question-answer",
+                      "label": "Name of list item",
+                      "mandatory": true,
+                      "type": "TextField"
+                    }
+                  ]
                 }
-            ]
+              },
+              "repeating_blocks": [
+                {
+                  "id": "repeating-block-1",
+                  "type": "ListRepeatingQuestion",
+                  "question": {
+                    "id": "repeating-block-1-question",
+                    "type": "General",
+                    "title": "This is the question for repeating block 1, which relates to an item that was added to the list collector.",
+                    "answers": [
+                      {
+                        "id": "repeating-block-1-question-answer-1",
+                        "label": "Answer 1",
+                        "mandatory": true,
+                        "type": "Number"
+                      },
+                      {
+                        "id": "repeating-block-1-question-answer-2",
+                        "label": "Answer 2",
+                        "mandatory": true,
+                        "type": "Number"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "repeating-block-2",
+                  "type": "ListRepeatingQuestion",
+                  "question": {
+                    "id": "repeating-block-2-question",
+                    "type": "General",
+                    "title": "This is the question for repeating block 2, which relates to an item that was added to the list collector.",
+                    "answers": [
+                      {
+                        "id": "repeating-block-2-question-answer-1",
+                        "label": "Answer 1",
+                        "mandatory": true,
+                        "type": "TextField"
+                      },
+                      {
+                        "id": "repeating-block-2-question-answer-2",
+                        "label": "Answer 2",
+                        "mandatory": true,
+                        "type": "TextField"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "edit_block": {
+                "id": "list-collector-edit-block",
+                "type": "ListEditQuestion",
+                "question": {
+                  "id": "list-collector-edit-block-question",
+                  "type": "General",
+                  "title": "What is the name of the list item?",
+                  "answers": [
+                    {
+                      "id": "list-collector-add-block-question-answer",
+                      "label": "Name of list item",
+                      "mandatory": true,
+                      "type": "TextField"
+                    }
+                  ]
+                }
+              },
+              "remove_block": {
+                "id": "list-collector-remove-block",
+                "type": "ListRemoveQuestion",
+                "question": {
+                  "id": "list-collector-remove-block-question",
+                  "type": "General",
+                  "title": "Are you sure you want to remove this list item?",
+                  "answers": [
+                    {
+                      "id": "list-collector-remove-block-question-answer",
+                      "mandatory": true,
+                      "type": "Radio",
+                      "options": [
+                        {
+                          "label": "Yes",
+                          "value": "Yes",
+                          "action": {
+                            "type": "RemoveListItemAndAnswers"
+                          }
+                        },
+                        {
+                          "label": "No",
+                          "value": "No"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              "summary": {
+                "title": "Collected items",
+                "item_title": {
+                  "text": "{item}",
+                  "placeholders": [
+                    {
+                      "placeholder": "item",
+                      "value": {
+                        "source": "answers",
+                        "identifier": "list-collector-add-block-question-answer"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
         }
-    ]
+      ]
+    }
+  ]
 }

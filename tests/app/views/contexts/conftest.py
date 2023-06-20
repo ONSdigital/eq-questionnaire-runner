@@ -373,7 +373,7 @@ def people_list_store():
 @pytest.fixture
 def repeating_blocks_list_store():
     return ListStore(
-        [{"items": ["PlwgoG", "UHPLbX"], "name": "repeating_blocks_list_collector"}]
+        [{"items": ["PlwgoG", "UHPLbX"], "name": "repeating-blocks-list-collector"}]
     )
 
 
