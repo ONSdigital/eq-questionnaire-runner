@@ -10,6 +10,43 @@ import SectionCompaniesPage from "../../../generated_pages/list_collector_repeat
 import AnyOtherTradingDetailsPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/any-other-trading-details.page";
 import SubmitPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/submit.page";
 import { checkItemsInList, checkListItemComplete, checkListItemIncomplete } from "../../../helpers";
+import HubPage from "../../../base_pages/hub.page";
+
+async function proceedToListCollector() {
+  await $(ResponsiblePartyPage.yes()).click();
+  await $(AnyCompaniesOrBranchesPage.submit()).click();
+  await $(AnyCompaniesOrBranchesPage.yes()).click();
+  await $(AnyCompaniesOrBranchesPage.submit()).click();
+}
+
+async function addCompany(
+  companyOrBranchName,
+  registrationNumber,
+  registrationDateDay,
+  registrationDateMonth,
+  registrationDateYear,
+  authorisedTraderUk,
+  authorisedTraderEu
+) {
+  await $(AddCompanyPage.companyOrBranchName()).setValue(companyOrBranchName);
+  await $(AddCompanyPage.submit()).click();
+  await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(registrationNumber);
+  await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(registrationDateDay);
+  await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(registrationDateMonth);
+  await $(CompaniesRepeatingBlock1Page.registrationDateyear()).setValue(registrationDateYear);
+  await $(CompaniesRepeatingBlock1Page.submit()).click();
+  if (authorisedTraderUk) {
+    await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioYes()).click();
+  } else {
+    await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioNo()).click();
+  }
+  if (authorisedTraderEu) {
+    await $(CompaniesRepeatingBlock2Page.authorisedTraderEuRadioYes()).click();
+  } else if (authorisedTraderEu !== undefined) {
+    await $(CompaniesRepeatingBlock2Page.authorisedTraderEuRadioNo()).click();
+  }
+  await $(CompaniesRepeatingBlock2Page.submit()).click();
+}
 
 describe("List Collector Repeating Blocks", () => {
   describe("Given a normal journey through the list collector with repeating blocks, the answers can be submitted.", () => {
@@ -17,34 +54,11 @@ describe("List Collector Repeating Blocks", () => {
       await browser.openQuestionnaire("test_list_collector_repeating_blocks_section_summary.json");
     });
     it("The user is able to add companies, complete repeating blocks, and submit.", async () => {
-      await $(ResponsiblePartyPage.yes()).click();
-      await $(AnyCompaniesOrBranchesPage.submit()).click();
-      await $(AnyCompaniesOrBranchesPage.yes()).click();
-      await $(AnyCompaniesOrBranchesPage.submit()).click();
-
-      await $(AddCompanyPage.companyOrBranchName()).setValue("ONS");
-      await $(AddCompanyPage.submit()).click();
-      await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(123);
-      await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(1);
-      await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(1);
-      await $(CompaniesRepeatingBlock1Page.registrationDateyear()).setValue(2023);
-      await $(CompaniesRepeatingBlock1Page.submit()).click();
-      await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioYes()).click();
-      await $(CompaniesRepeatingBlock2Page.authorisedTraderEuRadioYes()).click();
-      await $(CompaniesRepeatingBlock2Page.submit()).click();
-
+      await proceedToListCollector();
+      await addCompany("ONS", 123, 1, 1, 2023, true, true);
       await $(AnyOtherCompaniesOrBranchesPage.yes()).click();
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
-      await $(AddCompanyPage.companyOrBranchName()).setValue("GOV");
-      await $(AddCompanyPage.submit()).click();
-      await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(456);
-      await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(2);
-      await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(2);
-      await $(CompaniesRepeatingBlock1Page.registrationDateyear()).setValue(2023);
-      await $(CompaniesRepeatingBlock1Page.submit()).click();
-      await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioNo()).click();
-      await $(CompaniesRepeatingBlock2Page.authorisedTraderEuRadioNo()).click();
-      await $(CompaniesRepeatingBlock2Page.submit()).click();
+      await addCompany("GOV", 456, 2, 2, 2023, false, false);
 
       await $(AnyOtherCompaniesOrBranchesPage.no()).click();
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
@@ -60,46 +74,14 @@ describe("List Collector Repeating Blocks", () => {
       await browser.openQuestionnaire("test_list_collector_repeating_blocks_section_summary.json");
     });
     it("The user is able to add companies and complete repeating blocks.", async () => {
-      await $(ResponsiblePartyPage.yes()).click();
-      await $(AnyCompaniesOrBranchesPage.submit()).click();
-      await $(AnyCompaniesOrBranchesPage.yes()).click();
-      await $(AnyCompaniesOrBranchesPage.submit()).click();
-
-      await $(AddCompanyPage.companyOrBranchName()).setValue("ONS");
-      await $(AddCompanyPage.submit()).click();
-      await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(123);
-      await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(1);
-      await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(1);
-      await $(CompaniesRepeatingBlock1Page.registrationDateyear()).setValue(2023);
-      await $(CompaniesRepeatingBlock1Page.submit()).click();
-      await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioYes()).click();
-      await $(CompaniesRepeatingBlock2Page.authorisedTraderEuRadioYes()).click();
-      await $(CompaniesRepeatingBlock2Page.submit()).click();
-
+      await proceedToListCollector();
+      await addCompany("ONS", 123, 1, 1, 2023, true, true);
       await $(AnyOtherCompaniesOrBranchesPage.yes()).click();
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
-      await $(AddCompanyPage.companyOrBranchName()).setValue("GOV");
-      await $(AddCompanyPage.submit()).click();
-      await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(456);
-      await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(2);
-      await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(2);
-      await $(CompaniesRepeatingBlock1Page.registrationDateyear()).setValue(2023);
-      await $(CompaniesRepeatingBlock1Page.submit()).click();
-      await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioNo()).click();
-      await $(CompaniesRepeatingBlock2Page.authorisedTraderEuRadioNo()).click();
-      await $(CompaniesRepeatingBlock2Page.submit()).click();
-
+      await addCompany("GOV", 456, 2, 2, 2023, false, false);
       await $(AnyOtherCompaniesOrBranchesPage.yes()).click();
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
-      await $(AddCompanyPage.companyOrBranchName()).setValue("MOD");
-      await $(AddCompanyPage.submit()).click();
-      await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(789);
-      await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(3);
-      await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(3);
-      await $(CompaniesRepeatingBlock1Page.registrationDateyear()).setValue(2023);
-      await $(CompaniesRepeatingBlock1Page.submit()).click();
-      await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioYes()).click();
-      await $(CompaniesRepeatingBlock2Page.submit()).click();
+      await addCompany("MOD", 789, 3, 3, 2023, true);
     });
 
     it("The list collector shows all of the companies.", async () => {
@@ -128,16 +110,7 @@ describe("List Collector Repeating Blocks", () => {
     it("The list collector can add more companies.", async () => {
       await $(AnyOtherCompaniesOrBranchesPage.yes()).click();
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
-      await $(AddCompanyPage.companyOrBranchName()).setValue("Council");
-      await $(AddCompanyPage.submit()).click();
-      await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(101);
-      await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(4);
-      await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(4);
-      await $(CompaniesRepeatingBlock1Page.registrationDateyear()).setValue(2023);
-      await $(CompaniesRepeatingBlock1Page.submit()).click();
-      await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioNo()).click();
-      await $(CompaniesRepeatingBlock2Page.authorisedTraderEuRadioYes()).click();
-      await $(CompaniesRepeatingBlock2Page.submit()).click();
+      await addCompany("Council", 101, 4, 4, 2023, false, true);
     });
 
     it("The list collector shows all of the companies.", async () => {
@@ -160,22 +133,9 @@ describe("List Collector Repeating Blocks", () => {
       await browser.openQuestionnaire("test_list_collector_repeating_blocks_section_summary.json");
     });
     it("The user is able to add companies complete some repeating blocks and leave others incomplete.", async () => {
-      await $(ResponsiblePartyPage.yes()).click();
-      await $(AnyCompaniesOrBranchesPage.submit()).click();
-      await $(AnyCompaniesOrBranchesPage.yes()).click();
-      await $(AnyCompaniesOrBranchesPage.submit()).click();
+      await proceedToListCollector();
 
-      await $(AddCompanyPage.companyOrBranchName()).setValue("ONS");
-      await $(AddCompanyPage.submit()).click();
-      await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(123);
-      await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(1);
-      await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(1);
-      await $(CompaniesRepeatingBlock1Page.registrationDateyear()).setValue(2023);
-      await $(CompaniesRepeatingBlock1Page.submit()).click();
-      await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioYes()).click();
-      await $(CompaniesRepeatingBlock2Page.authorisedTraderEuRadioYes()).click();
-      await $(CompaniesRepeatingBlock2Page.submit()).click();
-
+      await addCompany("ONS", 123, 1, 1, 2023, true, true);
       await $(AnyOtherCompaniesOrBranchesPage.yes()).click();
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
       await $(AddCompanyPage.companyOrBranchName()).setValue("GOV");
@@ -195,16 +155,7 @@ describe("List Collector Repeating Blocks", () => {
 
       await $(AnyOtherCompaniesOrBranchesPage.yes()).click();
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
-      await $(AddCompanyPage.companyOrBranchName()).setValue("NAV");
-      await $(AddCompanyPage.submit()).click();
-      await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(101);
-      await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(4);
-      await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(4);
-      await $(CompaniesRepeatingBlock1Page.registrationDateyear()).setValue(2023);
-      await $(CompaniesRepeatingBlock1Page.submit()).click();
-      await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioYes()).click();
-      await $(CompaniesRepeatingBlock2Page.authorisedTraderEuRadioYes()).click();
-      await $(CompaniesRepeatingBlock2Page.submit()).click();
+      await addCompany("NAV", 101, 4, 4, 2023, true, true);
     });
 
     it("The list collector shows all of the companies as well as checkmarks on the complete items 1 and 4, but not on the incomplete items 3 and 4.", async () => {
@@ -246,7 +197,6 @@ describe("List Collector Repeating Blocks", () => {
     it("The list collector can now be submitted.", async () => {
       await $(AnyOtherCompaniesOrBranchesPage.no()).click();
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
-
       await $(AnyOtherTradingDetailsPage.submit()).click();
       await $(SectionCompaniesPage.submit()).click();
       await $(SubmitPage.submit()).click();
@@ -258,37 +208,13 @@ describe("List Collector Repeating Blocks", () => {
       await browser.openQuestionnaire("test_list_collector_repeating_blocks_section_summary.json");
     });
     it("The user is able to add companies, complete repeating blocks and navigate to the section summary.", async () => {
-      await $(ResponsiblePartyPage.yes()).click();
-      await $(AnyCompaniesOrBranchesPage.submit()).click();
-      await $(AnyCompaniesOrBranchesPage.yes()).click();
-      await $(AnyCompaniesOrBranchesPage.submit()).click();
-
-      await $(AddCompanyPage.companyOrBranchName()).setValue("ONS");
-      await $(AddCompanyPage.submit()).click();
-      await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(123);
-      await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(1);
-      await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(1);
-      await $(CompaniesRepeatingBlock1Page.registrationDateyear()).setValue(2023);
-      await $(CompaniesRepeatingBlock1Page.submit()).click();
-      await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioYes()).click();
-      await $(CompaniesRepeatingBlock2Page.authorisedTraderEuRadioYes()).click();
-      await $(CompaniesRepeatingBlock2Page.submit()).click();
-
+      await proceedToListCollector();
+      await addCompany("ONS", 123, 1, 1, 2023, true, true);
       await $(AnyOtherCompaniesOrBranchesPage.yes()).click();
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
-      await $(AddCompanyPage.companyOrBranchName()).setValue("GOV");
-      await $(AddCompanyPage.submit()).click();
-      await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(456);
-      await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(2);
-      await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(2);
-      await $(CompaniesRepeatingBlock1Page.registrationDateyear()).setValue(2023);
-      await $(CompaniesRepeatingBlock1Page.submit()).click();
-      await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioNo()).click();
-      await $(CompaniesRepeatingBlock2Page.submit()).click();
-
+      await addCompany("GOV", 456, 2, 2, 2023, false);
       await $(AnyOtherCompaniesOrBranchesPage.no()).click();
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
-
       await $(AnyOtherTradingDetailsPage.submit()).click();
       await $(SectionCompaniesPage.submit()).click();
     });
@@ -323,5 +249,68 @@ describe("List Collector Repeating Blocks", () => {
     it("The list collector can then be submitted", async () => {
       await $(SubmitPage.submit()).click();
     });
+  });
+});
+
+describe("Given a journey through the list collector with repeating blocks, in a mandatory section of  hub questionnaire, the incomplete repeating blocks mark the list collector incomplete and thus navigate back there.", () => {
+  before("Load the survey", async () => {
+    await browser.openQuestionnaire("test_list_collector_repeating_blocks_with_hub.json");
+  });
+  it("The user is able to add a compete company and an incomplete company.", async () => {
+    await proceedToListCollector();
+
+    await addCompany("ONS", 123, 1, 1, 2023, true, true);
+    await $(AnyOtherCompaniesOrBranchesPage.yes()).click();
+    await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
+    await $(AddCompanyPage.companyOrBranchName()).setValue("GOV");
+    await $(AddCompanyPage.submit()).click();
+    await $(CompaniesRepeatingBlock1Page.cancelAndReturn()).click();
+  });
+
+  it("Navigating to the root of the questionnaire will redirect to the incomplete list collector, which we can then complete.", async () => {
+    await browser.url("questionnaire/");
+    await expect(await browser.getUrl()).to.contain(AnyOtherCompaniesOrBranchesPage.url());
+
+    await $(AnyOtherCompaniesOrBranchesPage.no()).click();
+    await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
+    await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(456);
+    await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(2);
+    await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(2);
+    await $(CompaniesRepeatingBlock1Page.registrationDateyear()).setValue(2023);
+    await $(CompaniesRepeatingBlock1Page.submit()).click();
+    await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioNo()).click();
+    await $(CompaniesRepeatingBlock2Page.submit()).click();
+  });
+
+  it("Another incomplete item can be added via the section summary.", async () => {
+    await $(AnyOtherCompaniesOrBranchesPage.no()).click();
+    await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
+    await $(AnyOtherTradingDetailsPage.submit()).click();
+    await $(SectionCompaniesPage.companiesListAddLink()).click();
+    await $(AddCompanyPage.companyOrBranchName()).setValue("MOD");
+    await $(AddCompanyPage.submit()).click();
+    await $(CompaniesRepeatingBlock1Page.cancelAndReturn()).click();
+  });
+
+  it("Navigating to the submit page of the section will redirect to the incomplete list collector, which we can then complete.", async () => {
+    await browser.url("questionnaire/sections/section-companies/");
+    await expect(await browser.getUrl()).to.contain(AnyOtherCompaniesOrBranchesPage.url());
+
+    await $(AnyOtherCompaniesOrBranchesPage.no()).click();
+    await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
+    await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(789);
+    await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(3);
+    await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(3);
+    await $(CompaniesRepeatingBlock1Page.registrationDateyear()).setValue(2023);
+    await $(CompaniesRepeatingBlock1Page.submit()).click();
+    await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioYes()).click();
+    await $(CompaniesRepeatingBlock2Page.submit()).click();
+  });
+
+  it("The section can now be submitted and and hub completed.", async () => {
+    await $(AnyOtherCompaniesOrBranchesPage.no()).click();
+    await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
+    await $(SectionCompaniesPage.submit()).click();
+    await $(HubPage.submit()).click();
   });
 });
