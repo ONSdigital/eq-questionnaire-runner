@@ -102,7 +102,7 @@
                             },
                             "routing_rules": [
                                 {
-                                    "block": "total-house-expense-block",
+                                    "block": "End",
                                     "when": {
                                         "in": [
                                             {
@@ -172,88 +172,6 @@
                                         "days": 50
                                     }
                                 }
-                            }
-                        },
-                        {
-                            "id": "total-house-expense-block",
-                            "type": "Question",
-                            "question": {
-                                "id": "total-house-expense-question",
-                                "title": {
-                                    "text": "For the period {date_entry_answer_from} to {date_entry_answer_to}, how much did you spend for house expenses",
-                                    "placeholders": [
-                                        {
-                                            "placeholder": "date_entry_answer_from",
-                                            "transforms": [
-                                                {
-                                                    "transform": "first_non_empty_item",
-                                                    "arguments": {
-                                                        "items": [
-                                                            {
-                                                                "source": "answers",
-                                                                "identifier": "date-entry-answer-from"
-                                                            },
-                                                            {
-                                                                "source": "metadata",
-                                                                "identifier": "ref_p_start_date"
-                                                            }
-                                                        ]
-                                                    }
-                                                },
-                                                {
-                                                    "transform": "format_date",
-                                                    "arguments": {
-                                                        "date_to_format": {
-                                                            "source": "previous_transform"
-                                                        },
-                                                        "date_format": "d MMMM yyyy"
-                                                    }
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "placeholder": "date_entry_answer_to",
-                                            "transforms": [
-                                                {
-                                                    "transform": "first_non_empty_item",
-                                                    "arguments": {
-                                                        "items": [
-                                                            {
-                                                                "source": "answers",
-                                                                "identifier": "date-entry-answer-to"
-                                                            },
-                                                            {
-                                                                "source": "metadata",
-                                                                "identifier": "ref_p_end_date"
-                                                            }
-                                                        ]
-                                                    }
-                                                },
-                                                {
-                                                    "transform": "format_date",
-                                                    "arguments": {
-                                                        "date_to_format": {
-                                                            "source": "previous_transform"
-                                                        },
-                                                        "date_format": "d MMMM yyyy"
-                                                    }
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                },
-                                "type": "General",
-                                "answers": [
-                                    {
-                                        "id": "total-house-expense-answer",
-                                        "mandatory": true,
-                                        "type": "Currency",
-                                        "label": "Total turnover excluding VAT",
-                                        "description": "Enter the full value (e.g. 56,234.33) or a value to the nearest &#xA3;thousand (e.g. 56,000). Do not enter &#39;56&#39; for &#xA3;56,000.",
-                                        "decimal_places": 2,
-                                        "currency": "GBP"
-                                    }
-                                ]
                             }
                         }
                     ]

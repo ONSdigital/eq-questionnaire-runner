@@ -7,7 +7,6 @@ import AddPersonPage from "../generated_pages/first_non_empty_item_repeating_sec
 import ListCollectorPage from "../generated_pages/first_non_empty_item_repeating_sections/list-collector.page";
 import RepeatingSectionPage from "../generated_pages/first_non_empty_item_repeating_sections/repeating-section-summary.page";
 import HubPage from "../base_pages/hub.page.js";
-import TotalHouseExpenseBlockPage from "../generated_pages/first_non_empty_item_repeating_sections/total-house-expense-block.page";
 
 describe("First Non Empty Item Transform", () => {
   before("Launch survey", async () => {
@@ -38,6 +37,7 @@ describe("First Non Empty Item Transform", () => {
 describe("First Non Empty Item Transform Cross Section", () => {
   before("Launch survey", async () => {
     await browser.openQuestionnaire("test_first_non_empty_item_cross_section_dependencies.json");
+    await $(HubPage.submit()).click();
   });
 
   it("When the custom date range is entered and the answer is changed back to metadata range, then metadata should be displayed for both sections", async () => {
@@ -51,14 +51,16 @@ describe("First Non Empty Item Transform Cross Section", () => {
     await $(DateEntryBlockPage.dateEntryTomonth()).setValue("01");
     await $(DateEntryBlockPage.dateEntryToyear()).setValue("2017");
     await $(DateEntryBlockPage.submit()).click();
-    // Change to original dates
-    await $(TotalTurnoverBlockPage.previous()).click();
-    await $(DateEntryBlockPage.previous()).click();
+
+    // Check date changed and then change to original dates
+    await $(HubPage.submit()).click();
+    await expect(await $(FoodQuestionBlockPage.questionTitle()).getText()).to.contain("5 January 2017 to 25 January 2017");
+    await $(FoodQuestionBlockPage.previous()).click();
+    await $(HubPage.summaryRowLink("default-section")).click();
     await $(DateQuestionBlockPage.yesICanReportForThisPeriod()).click();
     await $(DateQuestionBlockPage.submit()).click();
     // Check the next section if the metadata date is shown
-    await $(TotalTurnoverBlockPage.totalTurnover()).setValue("21332");
-    await $(TotalTurnoverBlockPage.submit()).click();
+    await $(HubPage.submit()).click();
     await expect(await browser.getUrl()).to.contain(FoodQuestionBlockPage.pageName);
     await expect(await $(FoodQuestionBlockPage.questionTitle()).getText()).to.contain("1 January 2017 to 1 February 2017");
   });
@@ -80,8 +82,6 @@ describe("First Non Empty Item Transform Repeating Sections", () => {
     await $(DateEntryBlockPage.dateEntryTomonth()).setValue("01");
     await $(DateEntryBlockPage.dateEntryToyear()).setValue("2017");
     await $(DateEntryBlockPage.submit()).click();
-    await $(TotalHouseExpenseBlockPage.totalHouseExpense()).setValue("21332");
-    await $(TotalHouseExpenseBlockPage.submit()).click();
     await $(HubPage.submit()).click();
 
     // Add a person to the list collector
