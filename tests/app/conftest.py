@@ -17,6 +17,7 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
+from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.publisher import PubSubPublisher
 from app.questionnaire.location import Location
 from app.setup import create_app
@@ -161,6 +162,11 @@ def list_store():
 @pytest.fixture
 def progress_store():
     return ProgressStore()
+
+
+@pytest.fixture
+def supplementary_data_store():
+    return SupplementaryDataStore()
 
 
 @pytest.fixture

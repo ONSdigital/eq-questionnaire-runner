@@ -7,6 +7,7 @@ from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
+from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
 from app.submitter.converter_v2 import get_payload_data
@@ -90,6 +91,7 @@ def test_convert_answers_v2_to_payload_0_0_3(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then
@@ -147,6 +149,7 @@ def test_convert_payload_0_0_3_multiple_answers(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then
@@ -199,6 +202,7 @@ def test_radio_answer(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     assert len(data_payload["answers"]) == 1
@@ -241,6 +245,7 @@ def test_number_answer(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     assert len(data_payload["answers"]) == 1
@@ -283,6 +288,7 @@ def test_percentage_answer(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     assert len(data_payload["answers"]) == 1
@@ -327,6 +333,7 @@ def test_textarea_answer(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     assert len(data_payload["answers"]) == 1
@@ -369,6 +376,7 @@ def test_currency_answer(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     assert len(data_payload["answers"]) == 1
@@ -421,6 +429,7 @@ def test_dropdown_answer(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then
@@ -469,6 +478,7 @@ def test_date_answer(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     assert len(data_payload["answers"]) == 1
@@ -517,6 +527,7 @@ def test_month_year_date_answer(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     assert len(data_payload["answers"]) == 1
@@ -560,6 +571,7 @@ def test_unit_answer(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     assert len(data_payload["answers"]) == 1
@@ -616,6 +628,7 @@ def test_primary_person_list_item_conversion(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     data_dict = json_loads(json_dumps(output["answers"]))
@@ -671,6 +684,7 @@ def test_list_item_conversion(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     del answer_objects[-1]
@@ -721,6 +735,7 @@ def test_list_item_conversion_empty_list(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Answers not on the routing path
@@ -767,6 +782,7 @@ def test_default_answers_not_present_when_not_answered(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     data = json_loads(json_dumps(output["answers"]))
@@ -825,6 +841,7 @@ def test_list_structure_in_payload_is_as_expected(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     data_dict = json_loads(json_dumps(output["lists"]))
@@ -880,6 +897,7 @@ def test_primary_person_not_in_payload_when_not_answered(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     data_dict = json_loads(json_dumps(output["lists"]))
@@ -957,6 +975,7 @@ def test_relationships_in_payload(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     data = json_loads(json_dumps(output["answers"]))
@@ -1034,6 +1053,7 @@ def test_no_relationships_in_payload(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     data = json_loads(json_dumps(output["answers"]))
@@ -1128,6 +1148,7 @@ def test_unrelated_block_answers_in_payload(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     data = json_loads(json_dumps(output["answers"]))
@@ -1239,6 +1260,7 @@ def test_unrelated_block_answers_not_on_path_not_in_payload(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     data = json_loads(json_dumps(output["answers"]))
@@ -1340,6 +1362,7 @@ def test_relationship_answers_not_on_path_in_payload(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     data = json_loads(json_dumps(output["answers"]))
@@ -1405,6 +1428,7 @@ def test_answers_codes_only_present_for_answered_questions(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then
@@ -1443,6 +1467,7 @@ def test_all_answers_codes_for_answer_options_in_payload_when_one_is_answered(ve
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then
@@ -1479,6 +1504,7 @@ def test_no_answers_codes_in_payload_when_no_questions_answered(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then
@@ -1524,6 +1550,7 @@ def test_payload_dynamic_answers(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then
