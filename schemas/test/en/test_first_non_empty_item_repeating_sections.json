@@ -6,7 +6,7 @@
     "survey_id": "0",
     "title": "Test first non empty item with repeating sections",
     "theme": "default",
-    "description": "A questionnaire to test ListCollector",
+    "description": "Questionnaire to test first non empty item with repeating sections",
     "metadata": [
         {
             "name": "user_id",
