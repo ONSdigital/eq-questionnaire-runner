@@ -1,11 +1,9 @@
 # coding: utf-8
 from datetime import datetime, timezone
 
-from flask import g
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-
 import pytest
 import simplejson as json
+from flask import g
 from jinja2 import Undefined
 from mock import Mock
 
@@ -27,6 +25,7 @@ from app.jinja_filters import (
     should_wrap_with_fieldset,
     strip_tags,
 )
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 
 
 @pytest.mark.parametrize(
