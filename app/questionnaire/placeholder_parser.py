@@ -28,6 +28,8 @@ if TYPE_CHECKING:
 
 TransformedValueTypes: TypeAlias = None | str | int | Decimal | bool
 
+TRANSFORMS_REQUIRING_ROUTING_PATH = ["first_non_empty_item"]
+
 
 class PlaceholderParser:
     """
@@ -79,11 +81,19 @@ class PlaceholderParser:
         self, placeholder_list: Sequence[Mapping]
     ) -> MutableMapping[str, ValueSourceEscapedTypes | ValueSourceTypes]:
         placeholder_list = QuestionnaireSchema.get_mutable_deepcopy(placeholder_list)
-
         sections_to_ignore = list(self._routing_path_block_ids_by_section_key)
+        source_type = "calculated_summary"
+        assess_routing_path = False
+
+        for transform in TRANSFORMS_REQUIRING_ROUTING_PATH:
+            if transform in str(placeholder_list):
+                source_type = "answers"
+                assess_routing_path = True
 
         if routing_path_block_ids_map := self._get_routing_path_block_ids(
-            sections_to_ignore=sections_to_ignore, data=placeholder_list
+            sections_to_ignore=sections_to_ignore,
+            source_type=source_type,
+            data=placeholder_list,
         ):
             self._routing_path_block_ids_by_section_key.update(
                 routing_path_block_ids_map
@@ -93,7 +103,7 @@ class PlaceholderParser:
                 routing_path_block_ids_map
             )
             self._value_source_resolver = self._get_value_source_resolver(
-                routing_path_block_ids
+                routing_path_block_ids, assess_routing_path
             )
 
         for placeholder in placeholder_list:
@@ -142,24 +152,19 @@ class PlaceholderParser:
 
         for transform in transform_list:
             transform_args: MutableMapping = {}
-            value_source_resolver = self._get_value_source_resolver_for_transform(
-                transform
-            )
 
             for arg_key, arg_value in transform["arguments"].items():
                 resolved_value: ValueSourceEscapedTypes | ValueSourceTypes | TransformedValueTypes
 
                 if isinstance(arg_value, list):
-                    resolved_value = self._resolve_value_source_list(
-                        arg_value, value_source_resolver=value_source_resolver
-                    )
+                    resolved_value = self._resolve_value_source_list(arg_value)
                 elif isinstance(arg_value, dict):
                     if "value" in arg_value:
                         resolved_value = arg_value["value"]
                     elif arg_value["source"] == "previous_transform":
                         resolved_value = transformed_value
                     else:
-                        resolved_value = value_source_resolver.resolve(arg_value)
+                        resolved_value = self._value_source_resolver.resolve(arg_value)
                 else:
                     resolved_value = arg_value
 
@@ -171,13 +176,12 @@ class PlaceholderParser:
 
         return transformed_value
 
-    @staticmethod
     def _resolve_value_source_list(
-        value_source_list: list[dict], value_source_resolver: ValueSourceResolver
+        self, value_source_list: list[dict]
     ) -> list[ValueSourceTypes]:
         values: list[ValueSourceTypes] = []
         for value_source in value_source_list:
-            value = value_source_resolver.resolve(value_source)
+            value = self._value_source_resolver.resolve(value_source)
             if isinstance(value, list):
                 values.extend(value)
             else:
@@ -185,7 +189,10 @@ class PlaceholderParser:
         return values
 
     def _get_routing_path_block_ids(
-        self, data: Sequence[Mapping], sections_to_ignore: list | None = None
+        self,
+        data: Sequence[Mapping],
+        source_type: str,
+        sections_to_ignore: list | None = None,
     ) -> dict[tuple, tuple[str, ...]] | None:
         if self._location:
             return get_block_ids_for_dependencies(
@@ -195,32 +202,10 @@ class PlaceholderParser:
                 sections_to_ignore=sections_to_ignore,
                 data=data,
                 path_finder=self._path_finder,
-                source_type="calculated_summary",
+                source_type=source_type,
             )
         return {}
 
     def _all_value_sources_metadata(self, placeholder: Mapping) -> bool:
         sources = self._schema.get_values_for_key(placeholder, key="source")
         return all(source == "metadata" for source in sources)
-
-    def _get_value_source_resolver_for_transform(
-        self, transform: Mapping
-    ) -> ValueSourceResolver:
-        if self._location:
-            block_ids = get_block_ids_for_dependencies(
-                schema=self._schema,
-                location=self._location,
-                progress_store=self._progress_store,
-                path_finder=self._path_finder,
-                data=transform,
-                source_type="answers",
-            )
-            self._routing_path_block_ids_by_section_key.update(block_ids)
-            routing_path_block_ids: list = [
-                value for values in block_ids.values() for value in values
-            ]
-            return self._get_value_source_resolver(
-                OrderedSet(routing_path_block_ids), assess_routing_path=True
-            )
-
-        return self._value_source_resolver
