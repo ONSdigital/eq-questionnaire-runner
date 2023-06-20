@@ -8,7 +8,7 @@ from mock import MagicMock
 from requests import Response
 
 from app.authentication.auth_payload_versions import AuthPayloadVersion
-from app.data_models import QuestionnaireStore
+from app.data_models import ListStore, QuestionnaireStore
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.data_models.metadata_proxy import MetadataProxy
@@ -161,3 +161,68 @@ def gcs_blob_with_retry(mocker):
     )
 
     return blob
+
+
+@pytest.fixture
+def repeating_blocks_answer_store():
+    return AnswerStore(
+        [
+            {
+                "answer_id": "list-collector-add-block-question-answer",
+                "value": "1 - Add answer",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "repeating-block-1-question-answer-1",
+                "value": "1 - RB 1 A 1",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "repeating-block-1-question-answer-2",
+                "value": "1 - RB 1 A 2",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "repeating-block-2-question-answer-1",
+                "value": "1 - RB 2 A 1",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "repeating-block-2-question-answer-2",
+                "value": "1 - RB 2 A 2",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "list-collector-add-block-question-answer",
+                "value": "2 - Add answer",
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "repeating-block-1-question-answer-1",
+                "value": "2 - RB 1 A 1",
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "repeating-block-1-question-answer-2",
+                "value": "2 - RB 1 A 2",
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "repeating-block-2-question-answer-1",
+                "value": "2 - RB 2 A 1",
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "repeating-block-2-question-answer-2",
+                "value": "2 - RB 2 A 2",
+                "list_item_id": "UHPLbX",
+            },
+        ]
+    )
+
+
+@pytest.fixture
+def repeating_blocks_list_store():
+    return ListStore(
+        [{"items": ["PlwgoG", "UHPLbX"], "name": "repeating-blocks-list-collector"}]
+    )

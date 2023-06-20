@@ -9,11 +9,11 @@ from app.views.contexts import ListContext
 
 @pytest.mark.usefixtures("app")
 def test_build_list_collector_context(
-        list_collector_block,
-        schema,
-        people_answer_store,
-        people_list_store,
-        progress_store,
+    list_collector_block,
+    schema,
+    people_answer_store,
+    people_list_store,
+    progress_store,
 ):
     list_context = ListContext(
         DEFAULT_LANGUAGE_CODE,
@@ -37,7 +37,7 @@ def test_build_list_collector_context(
 
 @pytest.mark.usefixtures("app")
 def test_build_list_summary_context_no_summary_block(
-        schema, people_answer_store, people_list_store, progress_store
+    schema, people_answer_store, people_list_store, progress_store
 ):
     list_context = ListContext(
         DEFAULT_LANGUAGE_CODE,
@@ -60,10 +60,10 @@ def test_build_list_summary_context_no_summary_block(
 
 @pytest.mark.usefixtures("app")
 def test_build_list_summary_context(
-        list_collector_block,
-        people_answer_store,
-        people_list_store,
-        progress_store,
+    list_collector_block,
+    people_answer_store,
+    people_list_store,
+    progress_store,
 ):
     schema = load_schema_from_name("test_list_collector_primary_person")
     expected = [
@@ -111,10 +111,10 @@ def test_build_list_summary_context(
 
 @pytest.mark.usefixtures("app")
 def test_assert_primary_person_string_appended(
-        list_collector_block,
-        people_answer_store,
-        people_list_store,
-        progress_store,
+    list_collector_block,
+    people_answer_store,
+    people_list_store,
+    progress_store,
 ):
     schema = load_schema_from_name("test_list_collector_primary_person")
     people_list_store["people"].primary_person = "PlwgoG"
@@ -142,10 +142,10 @@ def test_assert_primary_person_string_appended(
 
 @pytest.mark.usefixtures("app")
 def test_for_list_item_ids(
-        list_collector_block,
-        people_answer_store,
-        people_list_store,
-        progress_store,
+    list_collector_block,
+    people_answer_store,
+    people_list_store,
+    progress_store,
 ):
     schema = load_schema_from_name("test_list_collector_primary_person")
 
@@ -181,7 +181,7 @@ def test_for_list_item_ids(
 
 @pytest.mark.usefixtures("app")
 def test_list_context_items_complete_without_repeating_blocks(
-        people_answer_store, people_list_store, list_collector_block
+    people_answer_store, people_list_store, list_collector_block
 ):
     schema = load_schema_from_name("test_list_collector_primary_person")
     expected = [
@@ -246,7 +246,7 @@ def test_list_context_items_complete_without_repeating_blocks(
 
 @pytest.mark.usefixtures("app")
 def test_list_context_items_incomplete_with_repeating_blocks(
-        repeating_blocks_answer_store, repeating_blocks_list_store, progress_store
+    repeating_blocks_answer_store, repeating_blocks_list_store, progress_store
 ):
     schema = load_schema_from_name("test_list_collector_repeating_blocks")
     list_collector_block = schema.get_block("list-collector-block")
@@ -295,7 +295,7 @@ def test_list_context_items_incomplete_with_repeating_blocks(
 
 @pytest.mark.usefixtures("app")
 def test_list_context_items_complete_with_repeating_blocks(
-        repeating_blocks_answer_store, repeating_blocks_list_store
+    repeating_blocks_answer_store, repeating_blocks_list_store
 ):
     schema = load_schema_from_name("test_list_collector_repeating_blocks")
     list_collector_block = schema.get_block("list-collector-block")

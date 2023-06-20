@@ -785,7 +785,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             ]
             return add_block
 
-    def get_repeating_blocks_for_list_collector(self, list_collector_id: str) -> list[ImmutableDict]:
+    def get_repeating_blocks_for_list_collector(
+            self, list_collector_id: str
+    ) -> list[ImmutableDict] | None:
         if list_collector := self.get_block(list_collector_id):
             return list_collector.get("repeating_blocks", [])
 
@@ -796,7 +798,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         answer_ids = []
         if add_block := self.get_add_block_for_list_collector(list_collector_id):
             answer_ids.extend(self.get_answer_ids_for_block(add_block["id"]))
-        if repeating_blocks := self.get_repeating_blocks_for_list_collector(list_collector_id):
+        if repeating_blocks := self.get_repeating_blocks_for_list_collector(
+                list_collector_id
+        ):
             for repeating_block in repeating_blocks:
                 answer_ids.extend(self.get_answer_ids_for_block(repeating_block["id"]))
         return answer_ids

@@ -1386,7 +1386,7 @@ def test_answers_codes_only_present_for_answered_questions(version):
     questionnaire_store = get_questionnaire_store(version)
 
     full_routing_path = [
-        RoutingPath(["mandatory-checkbox", "name-block"], section_id="default-section")
+        RoutingPath(["list-collector-block"], section_id="default-section")
     ]
 
     questionnaire_store.answer_store = AnswerStore(
@@ -1535,3 +1535,100 @@ def test_payload_dynamic_answers(version):
         Answer(answer_id="percentage-of-shopping", value=21, list_item_id="vhECeh")
         in data_payload["answers"]
     )
+
+
+@pytest.mark.parametrize(
+    "version",
+    (
+        None,
+        AuthPayloadVersion.V2,
+    ),
+)
+def test_repeating_block_answers_present(
+    version, repeating_blocks_answer_store, repeating_blocks_list_store
+):
+    questionnaire_store = get_questionnaire_store(version)
+
+    full_routing_path = [RoutingPath(["list-collector-block"], section_id="section")]
+
+    questionnaire_store.answer_store = repeating_blocks_answer_store
+    questionnaire_store.list_store = repeating_blocks_list_store
+
+    schema = load_schema_from_name("test_list_collector_repeating_blocks")
+
+    data_payload = get_payload_data(
+        questionnaire_store.answer_store,
+        questionnaire_store.list_store,
+        schema,
+        full_routing_path,
+        questionnaire_store.metadata,
+        questionnaire_store.response_metadata,
+        questionnaire_store.progress_store,
+    )
+
+    expected_answer_codes = [
+        {"answer_id": "list-collector-add-block-question-answer", "code": "1a"},
+        {"answer_id": "repeating-block-1-question-answer-1", "code": "1b"},
+        {"answer_id": "repeating-block-1-question-answer-2", "code": "1c"},
+        {"answer_id": "repeating-block-2-question-answer-1", "code": "1d"},
+        {"answer_id": "repeating-block-2-question-answer-2", "code": "1e"},
+    ]
+
+    expected_answers = [
+        {
+            "answer_id": "list-collector-add-block-question-answer",
+            "value": "1 - Add answer",
+            "list_item_id": "PlwgoG",
+        },
+        {
+            "answer_id": "repeating-block-1-question-answer-1",
+            "value": "1 - RB 1 A 1",
+            "list_item_id": "PlwgoG",
+        },
+        {
+            "answer_id": "repeating-block-1-question-answer-2",
+            "value": "1 - RB 1 A 2",
+            "list_item_id": "PlwgoG",
+        },
+        {
+            "answer_id": "repeating-block-2-question-answer-1",
+            "value": "1 - RB 2 A 1",
+            "list_item_id": "PlwgoG",
+        },
+        {
+            "answer_id": "repeating-block-2-question-answer-2",
+            "value": "1 - RB 2 A 2",
+            "list_item_id": "PlwgoG",
+        },
+        {
+            "answer_id": "list-collector-add-block-question-answer",
+            "value": "2 - Add answer",
+            "list_item_id": "UHPLbX",
+        },
+        {
+            "answer_id": "repeating-block-1-question-answer-1",
+            "value": "2 - RB 1 A 1",
+            "list_item_id": "UHPLbX",
+        },
+        {
+            "answer_id": "repeating-block-1-question-answer-2",
+            "value": "2 - RB 1 A 2",
+            "list_item_id": "UHPLbX",
+        },
+        {
+            "answer_id": "repeating-block-2-question-answer-1",
+            "value": "2 - RB 2 A 1",
+            "list_item_id": "UHPLbX",
+        },
+        {
+            "answer_id": "repeating-block-2-question-answer-2",
+            "value": "2 - RB 2 A 2",
+            "list_item_id": "UHPLbX",
+        },
+    ]
+
+    answers_dict = json_loads(json_dumps(data_payload["answers"]))
+    answer_codes_dict = json_loads(json_dumps(data_payload["answer_codes"]))
+
+    assert answers_dict == expected_answers
+    assert answer_codes_dict == expected_answer_codes
