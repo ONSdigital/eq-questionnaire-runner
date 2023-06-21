@@ -41,7 +41,7 @@ class ListRepeatingQuestion(ListAction):
             list_item_id=self.current_location.list_item_id,
             list_name=self.current_location.list_name,
         ):
-            self.questionnaire_store_updater.update_progress_completion_status(
+            self.questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status(
                 is_complete=True,
                 section_id=self.current_location.section_id,
                 list_item_id=self.current_location.list_item_id,

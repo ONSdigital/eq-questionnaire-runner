@@ -130,7 +130,7 @@ class ValueSourceResolver:
         if selector == "section":
             # List item id is set to None here as we do not support checking progress value sources for
             # repeating sections
-            return self.progress_store.get_progress_status(
+            return self.progress_store.get_section_or_repeating_blocks_progress_status(
                 section_id=identifier, list_item_id=None
             )
 

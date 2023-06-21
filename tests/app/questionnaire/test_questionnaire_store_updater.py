@@ -909,7 +909,12 @@ def test_answer_id_section_dependents(
     questionnaire_store_updater.update_answers(form_data)
     questionnaire_store_updater.update_progress_for_dependent_sections()
 
-    assert progress_store.get_progress_status(section_id="section-2") is expected_status
+    assert (
+        progress_store.get_section_or_repeating_blocks_progress_status(
+            section_id="section-2"
+        )
+        is expected_status
+    )
 
 
 @pytest.mark.parametrize(
@@ -1043,13 +1048,13 @@ def test_answer_id_section_dependents_repeating(
     questionnaire_store_updater.update_progress_for_dependent_sections()
 
     assert (
-        progress_store.get_progress_status(
+        progress_store.get_section_or_repeating_blocks_progress_status(
             section_id="section-2", list_item_id="list-item-id-1"
         )
         is expected_list_item_1_status
     )
     assert (
-        progress_store.get_progress_status(
+        progress_store.get_section_or_repeating_blocks_progress_status(
             section_id="section-2", list_item_id="list-item-id-2"
         )
         is expected_list_item_2_status
@@ -1158,7 +1163,7 @@ def test_dependent_sections_completed_dependant_blocks_removed_and_status_update
         section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
     )
     assert (
-        progress_store.get_progress_status(
+        progress_store.get_section_or_repeating_blocks_progress_status(
             section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
         )
         == CompletionStatus.IN_PROGRESS
@@ -1192,7 +1197,9 @@ def test_dependent_sections_current_section_status_not_updated(mocker):
         dependent_section_key: {dependent_block_id}
     }
 
-    questionnaire_store_updater.update_progress_completion_status = mocker.Mock()
+    questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status = (
+        mocker.Mock()
+    )
     assert dependent_block_id in progress_store.get_completed_block_ids(
         section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
     )
@@ -1206,7 +1213,10 @@ def test_dependent_sections_current_section_status_not_updated(mocker):
         section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
     )
     # Status for current section is handled separately by handle post.
-    assert questionnaire_store_updater.update_progress_completion_status.call_count == 0
+    assert (
+        questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status.call_count
+        == 0
+    )
 
 
 def test_dependent_sections_not_started_skipped(mock_router, mocker):
@@ -1241,7 +1251,9 @@ def test_dependent_sections_not_started_skipped(mock_router, mocker):
     }
 
     questionnaire_store_updater.remove_completed_location = mocker.Mock()
-    questionnaire_store_updater.update_progress_completion_status = mocker.Mock()
+    questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status = (
+        mocker.Mock()
+    )
 
     # When
     questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
@@ -1249,7 +1261,10 @@ def test_dependent_sections_not_started_skipped(mock_router, mocker):
 
     # Then
     assert questionnaire_store_updater.remove_completed_location.call_count == 0
-    assert questionnaire_store_updater.update_progress_completion_status.call_count == 0
+    assert (
+        questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status.call_count
+        == 0
+    )
 
 
 def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
@@ -1285,7 +1300,9 @@ def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
     questionnaire_store_updater.dependent_block_id_by_section_key = {
         dependent_section_key: {dependent_block_id}
     }
-    questionnaire_store_updater.update_progress_completion_status = mocker.Mock()
+    questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status = (
+        mocker.Mock()
+    )
 
     assert dependent_block_id not in progress_store.get_completed_block_ids(
         section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
@@ -1296,7 +1313,10 @@ def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
     questionnaire_store_updater.update_progress_for_dependent_sections()
 
     # Then
-    assert questionnaire_store_updater.update_progress_completion_status.call_count == 0
+    assert (
+        questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status.call_count
+        == 0
+    )
 
 
 @pytest.mark.parametrize(
@@ -1382,7 +1402,9 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
             section_id=section_id, list_item_id=list_item_id
         )
         assert (
-            progress_store.get_progress_status(section_id, list_item_id)
+            progress_store.get_section_or_repeating_blocks_progress_status(
+                section_id, list_item_id
+            )
             == CompletionStatus.IN_PROGRESS
         )
         assert questionnaire_store_updater.dependent_sections == {

@@ -426,7 +426,9 @@ def test_remove_answer_and_block_if_routing_backwards(list_store):
     assert len(path_finder.answer_store) == 2
     assert not path_finder.answer_store.get_answer("confirm-zero-employees-answer")
     assert (
-        path_finder.progress_store.get_progress_status(section_id="default-section")
+        path_finder.progress_store.get_section_or_repeating_blocks_progress_status(
+            section_id="default-section"
+        )
         == CompletionStatus.IN_PROGRESS
     )
 
