@@ -101,43 +101,38 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def answer_dependencies(self) -> ImmutableDict[str, set[AnswerDependent]]:
         return ImmutableDict(self._answer_dependencies_map)
 
-    # pylint: disable=too-many-nested-blocks
     def _populate_min_max_map(self) -> None:
-        for block in self.get_blocks():
-            if block["type"] == "Question":
-                if questions := self.get_all_questions_for_block(block):
-                    for answer in get_answers_from_question(questions[0]):
-                        answer_id = answer["id"]
-                        if (answer_type := answer.get("type")) and answer_type not in [
-                            "Date",
-                            "MonthYearDate",
-                            "YearDate",
-                        ]:
-                            answer_to_search_for_min_max = (
-                                self.get_answers_by_answer_id(answer_id)[0]
+        for answer_id, answer in self._answers_by_id.items():
+            if (answer_type := answer.get("type")) and answer_type not in [
+                "Date",
+                "MonthYearDate",
+                "YearDate",
+            ]:
+                answer_to_search_for_min_max = (
+                    self.get_answers_by_answer_id(answer_id)[0]
+                )
+                for item in ["minimum", "maximum"]:
+                    if item in answer and not isinstance(
+                        answer_to_search_for_min_max[item]["value"], int
+                    ):
+                        if (
+                            answer_to_search_for_min_max[item]["value"][
+                                "source"
+                            ]
+                            == "answers"
+                        ):
+                            min_max_answer_id = (
+                                answer_to_search_for_min_max[item]["value"][
+                                    "identifier"
+                                ]
                             )
-                            for item in ["minimum", "maximum"]:
-                                if item in answer and not isinstance(
-                                    answer_to_search_for_min_max[item]["value"], int
-                                ):
-                                    if (
-                                        answer_to_search_for_min_max[item]["value"][
-                                            "source"
-                                        ]
-                                        == "answers"
-                                    ):
-                                        min_max_answer_id = (
-                                            answer_to_search_for_min_max[item]["value"][
-                                                "identifier"
-                                            ]
-                                        )
-                                        self.min_and_max_map[min_max_answer_id] = (
-                                            self.get_answers_by_answer_id(
-                                                min_max_answer_id
-                                            )[0]
-                                            .get(item, {})
-                                            .get("value", {})
-                                        )
+                            self.min_and_max_map[min_max_answer_id] = (
+                                self.get_answers_by_answer_id(
+                                    min_max_answer_id
+                                )[0]
+                                .get(item, {})
+                                .get("value", {})
+                            )
 
     @cached_property
     def when_rules_section_dependencies_by_section(
