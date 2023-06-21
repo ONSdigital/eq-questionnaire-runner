@@ -253,19 +253,16 @@ def should_wrap_with_fieldset_processor() -> dict[str, Callable]:
     return {"should_wrap_with_fieldset": should_wrap_with_fieldset}
 
 
-def get_min_max_values(min_max: str, answer: AnswerType, default_value: int) -> int:
+def get_min_max_values(min_max: Literal["minimum", "maximum"], answer: AnswerType, default_value: int) -> int:
     schema = g.get("schema")
-    min_max_value = None
 
     if answer.get(min_max, {}) and isinstance(answer[min_max]["value"], dict):
         if (
             identifier := answer[min_max]["value"].get("identifier", None)
         ) in schema.min_and_max_map:
-            min_max_value = schema.min_and_max_map[identifier]
+            return len(str(schema.min_and_max_map[identifier]))
 
-    if not min_max_value:
-        min_max_value = answer.get(min_max, {}).get("value", default_value)
-    return len(str(min_max_value))
+    return len(str(answer.get(min_max, {}).get("value", default_value)))
 
 
 @blueprint.app_template_filter()
