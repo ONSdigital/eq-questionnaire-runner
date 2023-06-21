@@ -253,7 +253,9 @@ def should_wrap_with_fieldset_processor() -> dict[str, Callable]:
     return {"should_wrap_with_fieldset": should_wrap_with_fieldset}
 
 
-def get_min_max_values(min_max: Literal["minimum", "maximum"], answer: AnswerType, default_value: int) -> int:
+def get_min_max_values(
+    min_max: Literal["minimum", "maximum"], answer: AnswerType, default_value: int
+) -> int:
     schema = g.get("schema")
 
     if answer.get(min_max, {}) and isinstance(answer[min_max]["value"], dict):
