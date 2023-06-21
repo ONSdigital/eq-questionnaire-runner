@@ -261,7 +261,7 @@ def get_min_max_values(min_max: str, answer: AnswerType, default_value: int) -> 
         if (
             identifier := answer[min_max]["value"].get("identifier", None)
         ) in schema.min_and_max_map:
-            min_max_value = schema.min_and_max_map[identifier] or None
+            min_max_value = schema.min_and_max_map[identifier]
 
     if not min_max_value:
         min_max_value = answer.get(min_max, {}).get("value", default_value)
