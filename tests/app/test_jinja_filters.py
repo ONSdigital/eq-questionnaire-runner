@@ -255,8 +255,11 @@ def test_format_duration(duration, formatted_duration, app):
             {"maximum": {"value": 123456789012345678901123456789012345678901234567890}},
             None,
         ),
-        ({"maximum": {"value": {"identifier": "set-maximum","source": "answers"}}}, 5),
-        ({"minimum": {"value": {"identifier": "set-minimum","source": "answers"}}}, 15),
+        ({"maximum": {"value": {"identifier": "set-maximum", "source": "answers"}}}, 5),
+        (
+            {"minimum": {"value": {"identifier": "set-minimum", "source": "answers"}}},
+            15,
+        ),
     ),
 )
 def test_get_width_for_number(answer, width, app):
