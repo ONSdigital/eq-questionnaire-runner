@@ -21,8 +21,8 @@ SUBMITTED_AT = datetime.now(timezone.utc)
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_convert_answers_v2_to_payload_0_0_3(version):
@@ -101,8 +101,8 @@ def test_convert_answers_v2_to_payload_0_0_3(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_convert_payload_0_0_3_multiple_answers(version):
@@ -157,8 +157,8 @@ def test_convert_payload_0_0_3_multiple_answers(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_radio_answer(version):
@@ -208,8 +208,8 @@ def test_radio_answer(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_number_answer(version):
@@ -250,8 +250,8 @@ def test_number_answer(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_percentage_answer(version):
@@ -292,8 +292,8 @@ def test_percentage_answer(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_textarea_answer(version):
@@ -336,8 +336,8 @@ def test_textarea_answer(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_currency_answer(version):
@@ -378,8 +378,8 @@ def test_currency_answer(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_dropdown_answer(version):
@@ -431,8 +431,8 @@ def test_dropdown_answer(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_date_answer(version):
@@ -479,8 +479,8 @@ def test_date_answer(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_month_year_date_answer(version):
@@ -527,8 +527,8 @@ def test_month_year_date_answer(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_unit_answer(version):
@@ -569,8 +569,8 @@ def test_unit_answer(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_primary_person_list_item_conversion(version):
@@ -628,8 +628,8 @@ def test_primary_person_list_item_conversion(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_list_item_conversion(version):
@@ -685,8 +685,8 @@ def test_list_item_conversion(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_list_item_conversion_empty_list(version):
@@ -737,8 +737,8 @@ def test_list_item_conversion_empty_list(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_default_answers_not_present_when_not_answered(version):
@@ -778,8 +778,8 @@ def test_default_answers_not_present_when_not_answered(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_list_structure_in_payload_is_as_expected(version):
@@ -837,8 +837,8 @@ def test_list_structure_in_payload_is_as_expected(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_primary_person_not_in_payload_when_not_answered(version):
@@ -890,8 +890,8 @@ def test_primary_person_not_in_payload_when_not_answered(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_relationships_in_payload(version):
@@ -982,8 +982,8 @@ def test_relationships_in_payload(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_no_relationships_in_payload(version):
@@ -1045,8 +1045,8 @@ def test_no_relationships_in_payload(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_unrelated_block_answers_in_payload(version):
@@ -1161,8 +1161,8 @@ def test_unrelated_block_answers_in_payload(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_unrelated_block_answers_not_on_path_not_in_payload(version):
@@ -1252,8 +1252,8 @@ def test_unrelated_block_answers_not_on_path_not_in_payload(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_relationship_answers_not_on_path_in_payload(version):
@@ -1378,8 +1378,8 @@ def test_relationship_answers_not_on_path_in_payload(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_answers_codes_only_present_for_answered_questions(version):
@@ -1416,8 +1416,8 @@ def test_answers_codes_only_present_for_answered_questions(version):
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_all_answers_codes_for_answer_options_in_payload_when_one_is_answered(version):
@@ -1456,8 +1456,8 @@ def test_all_answers_codes_for_answer_options_in_payload_when_one_is_answered(ve
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_no_answers_codes_in_payload_when_no_questions_answered(version):
@@ -1528,24 +1528,24 @@ def test_payload_dynamic_answers(version):
 
     # Then
     assert (
-            Answer(answer_id="percentage-of-shopping", value=12, list_item_id="tUJzGV")
-            in data_payload["answers"]
+        Answer(answer_id="percentage-of-shopping", value=12, list_item_id="tUJzGV")
+        in data_payload["answers"]
     )
     assert (
-            Answer(answer_id="percentage-of-shopping", value=21, list_item_id="vhECeh")
-            in data_payload["answers"]
+        Answer(answer_id="percentage-of-shopping", value=21, list_item_id="vhECeh")
+        in data_payload["answers"]
     )
 
 
 @pytest.mark.parametrize(
     "version",
     (
-            None,
-            AuthPayloadVersion.V2,
+        None,
+        AuthPayloadVersion.V2,
     ),
 )
 def test_repeating_block_answers_present(
-        version, repeating_blocks_answer_store, repeating_blocks_list_store
+    version, repeating_blocks_answer_store, repeating_blocks_list_store
 ):
     questionnaire_store = get_questionnaire_store(version)
 
