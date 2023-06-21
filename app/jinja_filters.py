@@ -256,28 +256,25 @@ def should_wrap_with_fieldset_processor() -> dict[str, Callable]:
 @blueprint.app_template_filter()
 def get_width_for_number(answer: AnswerType) -> Optional[int]:
     allowable_widths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 40, 50]
-    min_value = None
-    max_value = None
+    minMax = {"minimum": None, "maximum": None}
+    minMaxList = list(minMax.keys())
 
     schema = g.get("schema")
 
-    if answer.get("minimum", {}) and isinstance(answer["minimum"]["value"], dict):
-        if (
-            identifier := answer["minimum"]["value"].get("identifier", None)
-        ) in schema.min_and_max_map:
-            min_value = schema.min_and_max_map[identifier] or None
-    if answer.get("maximum", {}) and isinstance(answer["maximum"]["value"], dict):
-        if (
-            identifier := answer["maximum"]["value"].get("identifier", None)
-        ) in schema.min_and_max_map:
-            max_value = schema.min_and_max_map[identifier] or None
-    if not min_value:
-        min_value = answer.get("minimum", {}).get("value", 0)
-    if not max_value:
-        max_value = answer.get("maximum", {}).get("value", MAX_NUMBER)
+    for item in minMaxList:
+        if answer.get(item, {}) and isinstance(answer[item]["value"], dict):
+            if (
+                identifier := answer[item]["value"].get("identifier", None)
+            ) in schema.min_and_max_map:
+                minMax[item] = schema.min_and_max_map[identifier] or None
 
-    min_value_width = len(str(min_value))
-    max_value_width = len(str(max_value))
+    if not minMax["minimum"]:
+        minMax["minimum"] = answer.get("minimum", {}).get("value", 0)
+    if not minMax["maximum"]:
+        minMax["maximum"] = answer.get("maximum", {}).get("value", MAX_NUMBER)
+
+    min_value_width = len(str(minMax["minimum"]))
+    max_value_width = len(str(minMax["maximum"]))
 
     width = min_value_width if min_value_width > max_value_width else max_value_width
 
