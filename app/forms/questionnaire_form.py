@@ -466,7 +466,6 @@ def get_answer_fields(
             location.section_id
         ]
         routing_path_block_ids = get_block_ids_for_dependencies(
-            schema=schema,
             location=location,
             progress_store=progress_store,
             path_finder=PathFinder(

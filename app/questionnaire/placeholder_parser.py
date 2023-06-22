@@ -201,7 +201,6 @@ class PlaceholderParser:
         ]
 
         return get_block_ids_for_dependencies(
-            schema=self._schema,
             location=self._location,
             progress_store=self._progress_store,
             sections_to_ignore=sections_to_ignore,
