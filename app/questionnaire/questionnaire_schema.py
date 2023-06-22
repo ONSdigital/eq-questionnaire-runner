@@ -1263,27 +1263,23 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     return f"#{str(item['item_anchor_answer_id'])}"
 
     def _populate_placeholder_section_dependencies(self) -> None:
-        for section in self.get_sections():
-            for block in self.get_blocks_for_section(section):
-                transforms = get_mappings_with_key(
-                    "transform",
-                    block,
-                )
+        for block in self.get_blocks():
+            transforms = get_mappings_with_key("transform", block)
+            placeholder_answer_ids = [
+                item.get("identifier")
+                for transform in transforms
+                if transform["transform"] in TRANSFORMS_REQUIRING_ROUTING_PATH
+                for item in transform["arguments"]["items"]
+                if item.get("source") == "answers"
+            ]
+            placeholder_dependencies = self._get_placeholder_section_dependencies(
+                placeholder_answer_ids
+            )
 
-                placeholder_answer_ids = [
-                    item.get("identifier")
-                    for transform in transforms
-                    if transform["transform"] in TRANSFORMS_REQUIRING_ROUTING_PATH
-                    for item in transform["arguments"]["items"]
-                    if item.get("source") == "answers"
-                ]
-
-                placeholder_dependencies = self._get_placeholder_section_dependencies(
-                    placeholder_answer_ids
-                )
-                self.placeholder_section_dependencies_by_block[section["id"]][
-                    block["id"]
-                ].update(placeholder_dependencies)
+            section = self.get_section_for_block_id(block["id"])
+            self.placeholder_section_dependencies_by_block[section["id"]][
+                block["id"]
+            ].update(placeholder_dependencies)
 
 
 def is_summary_with_calculation(summary_type: str) -> bool:
