@@ -112,22 +112,28 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                             "MonthYearDate",
                             "YearDate",
                         ]:
-                            answer_to_search_for_min_max = self.get_answers_by_answer_id(answer_id)[
-                                0
-                            ]
+                            answer_to_search_for_min_max = (
+                                self.get_answers_by_answer_id(answer_id)[0]
+                            )
                             for item in ["minimum", "maximum"]:
                                 if item in answer and not isinstance(
                                     answer_to_search_for_min_max[item]["value"], int
                                 ):
                                     if (
-                                        answer_to_search_for_min_max[item]["value"]["source"]
+                                        answer_to_search_for_min_max[item]["value"][
+                                            "source"
+                                        ]
                                         == "answers"
                                     ):
-                                        min_max_answer_id = answer_to_search_for_min_max[item][
-                                            "value"
-                                        ]["identifier"]
+                                        min_max_answer_id = (
+                                            answer_to_search_for_min_max[item]["value"][
+                                                "identifier"
+                                            ]
+                                        )
                                         self.min_and_max_map[min_max_answer_id] = (
-                                            self.get_answers_by_answer_id(min_max_answer_id)[0]
+                                            self.get_answers_by_answer_id(
+                                                min_max_answer_id
+                                            )[0]
                                             .get(item, {})
                                             .get("value", {})
                                         )
