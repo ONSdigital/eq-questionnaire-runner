@@ -188,7 +188,7 @@ class ProgressStore:
             self, *, block_id: str, section_id: str, list_item_id: str | None = None
     ) -> str:
         """
-        Return the completion status of the block specified by th given block_id,
+        Return the completion status of the block specified by the given block_id,
         if it is part of the progress of the given Section or Repeating Blocks for list item
         specified by the given section_id or list_item_id
         """
