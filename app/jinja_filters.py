@@ -274,7 +274,7 @@ def get_width_for_number(answer: AnswerType) -> Optional[int]:
     min_value_width = get_min_max_values("minimum", answer, 0)
     max_value_width = get_min_max_values("maximum", answer, MAX_NUMBER)
 
-    width = min_value_width if min_value_width > max_value_width else max_value_width
+    width = max(min_value_width, max_value_width)
 
     width += answer.get("decimal_places", 0)
 
