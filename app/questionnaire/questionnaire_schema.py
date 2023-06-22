@@ -106,14 +106,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             if block["type"] == "Question":
                 if questions := self.get_all_questions_for_block(block):
                     for answer in get_answers_from_question(questions[0]):
-                        answer_id = answer["id"]
                         if (answer_type := answer.get("type")) and answer_type not in [
                             "Date",
                             "MonthYearDate",
                             "YearDate",
                         ]:
                             answer_to_search_for_min_max = (
-                                self.get_answers_by_answer_id(answer_id)[0]
+                                self.get_answers_by_answer_id(answer["id"])[0]
                             )
                             for item in ["minimum", "maximum"]:
                                 if item in answer and not isinstance(
