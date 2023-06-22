@@ -478,7 +478,6 @@ def get_answer_fields(
             ),
             data=question,
             source_type="calculated_summary",
-            ignore_keys=None,
             dependent_sections=dependent_sections,
         )
 

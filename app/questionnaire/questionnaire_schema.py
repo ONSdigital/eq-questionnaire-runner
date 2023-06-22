@@ -1276,10 +1276,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 placeholder_answer_ids
             )
 
-            section = self.get_section_for_block_id(block["id"])
-            self.placeholder_section_dependencies_by_block[section["id"]][
-                block["id"]
-            ].update(placeholder_dependencies)
+            if section := self.get_section_for_block_id(block["id"]):
+                self.placeholder_section_dependencies_by_block[section["id"]][
+                    block["id"]
+                ].update(placeholder_dependencies)
 
 
 def is_summary_with_calculation(summary_type: str) -> bool:
