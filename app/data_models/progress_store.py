@@ -25,9 +25,9 @@ class ProgressStore:
     """
 
     def __init__(
-            self,
-            in_progress_sections_and_repeating_blocks: Iterable[ProgressDictType]
-                                                       | None = None,
+        self,
+        in_progress_sections_and_repeating_blocks: Iterable[ProgressDictType]
+        | None = None,
     ) -> None:
         """
         Instantiate a ProgressStore object that tracks the progress status of Sections & Repeating Sections,
@@ -50,16 +50,16 @@ class ProgressStore:
         ] = self._build_map(in_progress_sections_and_repeating_blocks or [])
 
     def __contains__(
-            self, section_and_repeating_blocks_progress_key: ProgressKeyType
+        self, section_and_repeating_blocks_progress_key: ProgressKeyType
     ) -> bool:
         return (
-                section_and_repeating_blocks_progress_key
-                in self._section_and_repeating_blocks_progress
+            section_and_repeating_blocks_progress_key
+            in self._section_and_repeating_blocks_progress
         )
 
     @staticmethod
     def _build_map(
-            section_and_repeating_blocks_progress_list: Iterable[ProgressDictType],
+        section_and_repeating_blocks_progress_list: Iterable[ProgressDictType],
     ) -> MutableMapping:
         """
         Builds the ProgressStore's data structure from a list of progress dictionaries.
@@ -95,7 +95,7 @@ class ProgressStore:
         return self._is_routing_backwards
 
     def is_section_or_repeating_blocks_progress_complete(
-            self, section_id: str, list_item_id: str | None = None
+        self, section_id: str, list_item_id: str | None = None
     ) -> bool:
         """
         Return True if the CompletionStatus of the Section or List Item specified by the given section_id and
@@ -112,9 +112,9 @@ class ProgressStore:
         )
 
     def section_and_repeating_blocks_progress_keys(
-            self,
-            statuses: Iterable[str] | None = None,
-            section_ids: Iterable[str] | None = None,
+        self,
+        statuses: Iterable[str] | None = None,
+        section_ids: Iterable[str] | None = None,
     ) -> list[ProgressKeyType]:
         """
         Return the Keys of the Section and Repeating Blocks progresses stored in this ProgressStore.
@@ -138,10 +138,10 @@ class ProgressStore:
         ]
 
     def update_section_or_repeating_blocks_progress_completion_status(
-            self,
-            completion_status: str,
-            section_id: str,
-            list_item_id: str | None = None,
+        self,
+        completion_status: str,
+        section_id: str,
+        list_item_id: str | None = None,
     ) -> bool:
         """
         Updates the completion status of the section or repeating blocks for a list item specified by the key based on the given section id and list item id.
@@ -150,8 +150,8 @@ class ProgressStore:
         section_key = (section_id, list_item_id)
         if section_key in self._section_and_repeating_blocks_progress:
             if (
-                    self._section_and_repeating_blocks_progress[section_key].status
-                    != completion_status
+                self._section_and_repeating_blocks_progress[section_key].status
+                != completion_status
             ):
                 updated = True
                 self._section_and_repeating_blocks_progress[
@@ -171,7 +171,7 @@ class ProgressStore:
         return updated
 
     def get_section_or_repeating_blocks_progress_status(
-            self, section_id: str, list_item_id: str | None = None
+        self, section_id: str, list_item_id: str | None = None
     ) -> str:
         """
         Return the CompletionStatus of the Section or Repeating Blocks for a list item,
@@ -185,7 +185,7 @@ class ProgressStore:
         return CompletionStatus.NOT_STARTED
 
     def get_block_status(
-            self, *, block_id: str, section_id: str, list_item_id: str | None = None
+        self, *, block_id: str, section_id: str, list_item_id: str | None = None
     ) -> str:
         """
         Return the completion status of the block specified by the given block_id,
@@ -201,7 +201,7 @@ class ProgressStore:
         return CompletionStatus.NOT_STARTED
 
     def get_completed_block_ids(
-            self, *, section_id: str, list_item_id: str | None = None
+        self, *, section_id: str, list_item_id: str | None = None
     ) -> list[str]:
         """
         Return the block ids recorded as part of the progress for the Section or Repeating Blocks
@@ -251,9 +251,9 @@ class ProgressStore:
         """
         progress_key = (location.section_id, location.list_item_id)
         if (
-                progress_key in self._section_and_repeating_blocks_progress
-                and location.block_id
-                in self._section_and_repeating_blocks_progress[progress_key].block_ids
+            progress_key in self._section_and_repeating_blocks_progress
+            and location.block_id
+            in self._section_and_repeating_blocks_progress[progress_key].block_ids
         ):
             self._section_and_repeating_blocks_progress[progress_key].block_ids.remove(
                 location.block_id
@@ -299,7 +299,7 @@ class ProgressStore:
         self._is_dirty = True
 
     def started_section_and_repeating_blocks_progress_keys(
-            self, section_ids: Iterable[str] | None = None
+        self, section_ids: Iterable[str] | None = None
     ) -> list[ProgressKeyType]:
         return self.section_and_repeating_blocks_progress_keys(
             statuses={CompletionStatus.COMPLETED, CompletionStatus.IN_PROGRESS},
