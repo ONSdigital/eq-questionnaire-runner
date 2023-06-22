@@ -101,7 +101,8 @@ class PlaceholderParser:
                 routing_path_block_ids_map
             )
             self._value_source_resolver = self._get_value_source_resolver(
-                routing_path_block_ids, assess_routing_path
+                routing_path_block_ids=routing_path_block_ids,
+                assess_routing_path=assess_routing_path,
             )
 
         for placeholder in placeholder_list:
@@ -114,6 +115,7 @@ class PlaceholderParser:
 
     def _get_value_source_resolver(
         self,
+        *,
         routing_path_block_ids: OrderedSet[str] | None = None,
         assess_routing_path: bool = False,
     ) -> ValueSourceResolver:
