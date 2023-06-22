@@ -33,7 +33,7 @@ class ProgressStore:
         Instantiate a ProgressStore object that tracks the progress status of Sections & Repeating Sections,
         and their completed blocks, as well as Repeating Blocks for List Items.
             - Standard Sections are keyed by Section ID, and a None List Item ID
-            - Repeating Sections (dynamic Sections created for List Items that have been added to a List Collector)
+            - Repeating Sections (dynamic Sections created for List Items that have been added using a List Collector)
                 are keyed by their Section ID, and the List Item ID of the item it is the section for.
             - Repeating Blocks for List Items are keyed by the Section ID for the Section in which their List Collector
                 appears, and the List Item ID. Repeating Blocks progress is only tracked if the List Collector
@@ -192,10 +192,10 @@ class ProgressStore:
         if it is part of the progress of the given Section or Repeating Blocks for list item
         specified by the given section_id or list_item_id
         """
-        section_or_list_item_blocks = self.get_completed_block_ids(
+        blocks = self.get_completed_block_ids(
             section_id=section_id, list_item_id=list_item_id
         )
-        if block_id in section_or_list_item_blocks:
+        if block_id in blocks:
             return CompletionStatus.COMPLETED
 
         return CompletionStatus.NOT_STARTED

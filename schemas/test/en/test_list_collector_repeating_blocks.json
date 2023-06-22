@@ -70,7 +70,14 @@
                             "question": {
                                 "id": "list-collector-next-question",
                                 "type": "General",
-                                "title": "This List Collector demonstrates a collector with Repeating Blocks which are asked after adding an item, and that must be completed before navigated past the list collector.\nDo you need to add any more to this list?",
+                                "title": "Do you need to add any more to this list?",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "This List Collector demonstrates a collector with Repeating Blocks which are asked after adding an item, and that must be completed before navigated past the list collector."
+                                        }
+                                    ]
+                                },
                                 "answers": [
                                     {
                                         "id": "list-collector-next-question-answer-1",
@@ -98,7 +105,14 @@
                                 "question": {
                                     "id": "list-collector-add-block-question",
                                     "type": "General",
-                                    "title": "What is the name of the list item? This item will be followed up by 2 pages of related questions (repeating blocks)",
+                                    "title": "What is the name of the list item?",
+                                    "guidance": {
+                                        "contents": [
+                                            {
+                                                "description": " This item will be followed up by 2 pages of related questions (repeating blocks)"
+                                            }
+                                        ]
+                                    },
                                     "answers": [
                                         {
                                             "id": "list-collector-add-block-question-answer",
@@ -117,6 +131,13 @@
                                         "id": "repeating-block-1-question",
                                         "type": "General",
                                         "title": "This is the question for repeating block 1, which relates to an item that was added to the list collector.",
+                                        "guidance": {
+                                            "contents": [
+                                                {
+                                                    "description": "Enter numbers"
+                                                }
+                                            ]
+                                        },
                                         "answers": [
                                             {
                                                 "id": "repeating-block-1-question-answer-1",
