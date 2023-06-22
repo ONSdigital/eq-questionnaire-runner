@@ -100,7 +100,7 @@ def basic_input():
                 "block_ids": ["a-test-block"],
             }
         ],
-        "SUPPLEMENTARY_DATA": {"supplementary_data": {}, "list_mappings": {}},
+        "SUPPLEMENTARY_DATA": {"data": {}, "list_mappings": {}},
         "RESPONSE_METADATA": {"test-meta": "test"},
     }
 

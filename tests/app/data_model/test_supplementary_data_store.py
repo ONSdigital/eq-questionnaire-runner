@@ -14,7 +14,7 @@ def test_supplementary_data_serialisation(supplementary_data_store_with_data):
     serialized = supplementary_data_store_with_data.serialize()
 
     assert serialized == {
-        "supplementary_data": raw_data,
+        "data": raw_data,
         "list_mappings": list_mappings,
     }
 
@@ -32,7 +32,7 @@ def test_supplementary_data_deserialisation():
     list_mappings = {"products": {"89929001": "item-1", "201630601": "item-2"}}
 
     serialized = {
-        "supplementary_data": raw_data,
+        "data": raw_data,
         "list_mappings": list_mappings,
     }
 

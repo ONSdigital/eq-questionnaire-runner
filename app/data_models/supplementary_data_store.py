@@ -106,7 +106,7 @@ class SupplementaryDataStore:
 
     def serialize(self) -> dict:
         return {
-            "supplementary_data": self._raw_data,
+            "data": self._raw_data,
             "list_mappings": self._list_mappings,
         }
 
@@ -116,6 +116,6 @@ class SupplementaryDataStore:
             return cls()
 
         return cls(
-            supplementary_data=serialized_data["supplementary_data"],
+            supplementary_data=serialized_data["data"],
             list_mappings=serialized_data["list_mappings"],
         )
