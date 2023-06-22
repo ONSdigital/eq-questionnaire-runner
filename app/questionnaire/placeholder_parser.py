@@ -193,18 +193,24 @@ class PlaceholderParser:
         source_type: str,
         sections_to_ignore: list | None = None,
     ) -> dict[tuple, tuple[str, ...]] | None:
-        if self._location:
-            return get_block_ids_for_dependencies(
-                schema=self._schema,
-                location=self._location,
-                progress_store=self._progress_store,
-                sections_to_ignore=sections_to_ignore,
-                data=data,
-                path_finder=self._path_finder,
-                source_type=source_type,
-                ignore_keys=None,
-            )
-        return {}
+        if not self._location:
+            return {}
+
+        dependent_sections = self._schema.placeholder_section_dependencies_by_block[
+            self._location.section_id
+        ]
+
+        return get_block_ids_for_dependencies(
+            schema=self._schema,
+            location=self._location,
+            progress_store=self._progress_store,
+            sections_to_ignore=sections_to_ignore,
+            data=data,
+            path_finder=self._path_finder,
+            source_type=source_type,
+            ignore_keys=None,
+            dependent_sections=dependent_sections,
+        )
 
     def _all_value_sources_metadata(self, placeholder: Mapping) -> bool:
         sources = self._schema.get_values_for_key(placeholder, key="source")

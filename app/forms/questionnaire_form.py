@@ -462,6 +462,9 @@ def get_answer_fields(
     routing_path_block_ids: dict[tuple, tuple[str, ...]] = {}
 
     if location and progress_store:
+        dependent_sections = schema.calculated_summary_section_dependencies_by_block[
+            location.section_id
+        ]
         routing_path_block_ids = get_block_ids_for_dependencies(
             schema=schema,
             location=location,
@@ -476,6 +479,7 @@ def get_answer_fields(
             ),
             data=question,
             source_type="calculated_summary",
+            dependent_sections=dependent_sections,
         )
 
     block_ids = None
