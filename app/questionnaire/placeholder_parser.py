@@ -13,6 +13,7 @@ from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire import path_finder as pf
 from app.questionnaire.dependencies import get_block_ids_for_dependencies
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
+from app.questionnaire.questionnaire_schema import TRANSFORMS_REQUIRING_ROUTING_PATH
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.value_source_resolver import (
     ValueSourceEscapedTypes,
@@ -27,8 +28,6 @@ if TYPE_CHECKING:
     )
 
 TransformedValueTypes: TypeAlias = None | str | int | Decimal | bool
-
-TRANSFORMS_REQUIRING_ROUTING_PATH = ["first_non_empty_item"]
 
 
 class PlaceholderParser:
@@ -80,7 +79,6 @@ class PlaceholderParser:
     def __call__(
         self, placeholder_list: Sequence[Mapping]
     ) -> MutableMapping[str, ValueSourceEscapedTypes | ValueSourceTypes]:
-        placeholder_list = QuestionnaireSchema.get_mutable_deepcopy(placeholder_list)
         sections_to_ignore = list(self._routing_path_block_ids_by_section_key)
         source_type = "calculated_summary"
         assess_routing_path = False
@@ -91,9 +89,9 @@ class PlaceholderParser:
                 assess_routing_path = True
 
         if routing_path_block_ids_map := self._get_routing_path_block_ids(
-            sections_to_ignore=sections_to_ignore,
-            source_type=source_type,
             data=placeholder_list,
+            source_type=source_type,
+            sections_to_ignore=sections_to_ignore,
         ):
             self._routing_path_block_ids_by_section_key.update(
                 routing_path_block_ids_map
@@ -190,6 +188,7 @@ class PlaceholderParser:
 
     def _get_routing_path_block_ids(
         self,
+        *,
         data: Sequence[Mapping],
         source_type: str,
         sections_to_ignore: list | None = None,
@@ -203,6 +202,7 @@ class PlaceholderParser:
                 data=data,
                 path_finder=self._path_finder,
                 source_type=source_type,
+                ignore_keys=None,
             )
         return {}
 

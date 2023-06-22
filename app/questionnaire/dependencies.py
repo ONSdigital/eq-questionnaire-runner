@@ -16,6 +16,7 @@ if TYPE_CHECKING:
 
 
 def get_block_ids_for_dependencies(
+    *,
     schema: QuestionnaireSchema,
     location: Location | RelationshipLocation,
     progress_store: ProgressStore,
