@@ -82,16 +82,26 @@ class PlaceholderParser:
         sections_to_ignore = list(self._routing_path_block_ids_by_section_key)
         source_type = "calculated_summary"
         assess_routing_path = False
-
+        dependent_sections = (
+            self._schema.calculated_summary_section_dependencies_by_block[
+                self._location.section_id
+            ]
+        )
         for transform in TRANSFORMS_REQUIRING_ROUTING_PATH:
             if transform in str(placeholder_list):
                 source_type = "answers"
                 assess_routing_path = True
+                dependent_sections = (
+                    self._schema.placeholder_section_dependencies_by_block[
+                        self._location.section_id
+                    ]
+                )
 
         if routing_path_block_ids_map := self._get_routing_path_block_ids(
             data=placeholder_list,
             source_type=source_type,
             sections_to_ignore=sections_to_ignore,
+            dependent_sections=dependent_sections,
         ):
             self._routing_path_block_ids_by_section_key.update(
                 routing_path_block_ids_map
@@ -194,13 +204,10 @@ class PlaceholderParser:
         data: Sequence[Mapping],
         source_type: str,
         sections_to_ignore: list | None = None,
+        dependent_sections: dict[str, set[str]] | dict[str, OrderedSet[str]],
     ) -> dict[tuple, tuple[str, ...]] | None:
         if not self._location:
             return {}
-
-        dependent_sections = self._schema.placeholder_section_dependencies_by_block[
-            self._location.section_id
-        ]
 
         return get_block_ids_for_dependencies(
             location=self._location,
