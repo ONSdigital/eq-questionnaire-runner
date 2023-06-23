@@ -171,12 +171,12 @@ class ListCollectorBlock:
             section_id=section_id, list_name=list_model.name
         )
 
-        blocks: list[dict] = []
+        blocks: list[dict | ImmutableDict] = []
 
         if related_answers:
             blocks += self._get_blocks_for_related_answers(related_answers)
 
-        if list_model:
+        if len(list_model):
             blocks += repeating_blocks
 
         if not blocks:
