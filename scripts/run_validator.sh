@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-tag=feat-looping-4
+tag=latest
 TAG=${tag} docker-compose -f docker-compose-schema-validator.yml up -d
