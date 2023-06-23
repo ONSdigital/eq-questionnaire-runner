@@ -1,8 +1,10 @@
 import json
 
 from flask import Flask, Response, request
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route("/v1/unit_data")
