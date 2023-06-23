@@ -146,13 +146,16 @@
                         "id": "repeating-block-1-question-answer-1",
                         "label": "How many grams of this item do you need?",
                         "mandatory": true,
-                        "type": "Number"
+                        "type": "Unit",
+                        "unit": "mass-gram",
+                        "unit_length": "short"
                       },
                       {
                         "id": "repeating-block-1-question-answer-2",
-                        "label": "How much  are you willing to spend on this item?",
+                        "label": "How much are you willing to spend on this item?",
                         "mandatory": true,
-                        "type": "Number"
+                        "type": "Currency",
+                        "currency": "GBP"
                       }
                     ]
                   }
