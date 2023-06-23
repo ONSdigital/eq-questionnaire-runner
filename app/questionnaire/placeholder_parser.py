@@ -198,7 +198,7 @@ class PlaceholderParser:
         if not self._location:
             return {}
 
-        dependent_sections = (
+        dependent_sections: dict[str, set[str]] | dict[str, OrderedSet[str]] = (
             self._schema.calculated_summary_section_dependencies_by_block[
                 self._location.section_id
             ]
