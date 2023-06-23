@@ -180,6 +180,14 @@ ANSWER_SUFFIX_GETTER = Template(
 """
 )
 
+QUESTION_LABELS_GETTER = r"""  labels() { return `.ons-label`; }
+
+"""
+
+QUESTION_INPUTS_GETTER = r"""  inputs() { return `[data-qa="input-text"]`; }
+
+"""
+
 DYNAMIC_ANSWER_GETTER = Template(
     r"""  answerByIndex(answerIndex) {
     return `#${answerId}-${answerIndex}`;
@@ -218,6 +226,12 @@ SUMMARY_ANSWER_EDIT_GETTER = Template(
 
 SUMMARY_TITLE_GETTER = Template(
     r"""  ${group_id_camel}Title() { return `#${group_id} .ons-summary__group-title`; }
+
+"""
+)
+
+SUMMARY_GROUP_GETTER = Template(
+    r"""  ${group_id_camel}Content(groupNumber) { return `#${group_id_without_number}-` + groupNumber; }
 
 """
 )
@@ -491,6 +505,8 @@ def process_question(question, page_spec, num_questions, page_name):
     page_spec.write(QUESTION_TITLE.substitute(question_context))
     page_spec.write(ANSWER_NUMBERED_ERROR_LIST_GETTER)
     page_spec.write(ANSWER_SINGLE_ERROR_LINK_GETTER)
+    page_spec.write(QUESTION_LABELS_GETTER)
+    page_spec.write(QUESTION_INPUTS_GETTER)
 
 
 def process_calculated_summary(answers, page_spec):
@@ -657,8 +673,10 @@ def write_summary_spec(
             group_context = {
                 "group_id_camel": camel_case(generate_pascal_case_from_id(group["id"])),
                 "group_id": f'{group["id"]}-0',
+                "group_id_without_number": f'{group["id"]}',
             }
             page_spec.write(SUMMARY_TITLE_GETTER.substitute(group_context))
+            page_spec.write(SUMMARY_GROUP_GETTER.substitute(group_context))
 
 
 def long_names_required(question, num_questions):
@@ -848,6 +866,10 @@ def process_block(
             base_page = "CalculatedSummaryPage"
             base_page_file = "calculated-summary.page"
 
+        if block["type"] == "GrandCalculatedSummary":
+            base_page = "GrandCalculatedSummaryPage"
+            base_page_file = "grand-calculated-summary.page"
+
         if block["type"] == "Introduction":
             base_page = "IntroductionPageBase"
             base_page_file = "introduction.page"
@@ -892,6 +914,21 @@ def process_block(
                 ]
 
                 process_calculated_summary(calculated_summary_answer_ids, page_spec)
+
+        elif block["type"] == "GrandCalculatedSummary":
+            values = _get_dictionaries_with_key(
+                "source", block["calculation"]["operation"]
+            )
+
+            calculated_summary_ids = [
+                value["identifier"]
+                for value in values
+                if value["source"] == "calculated_summary"
+            ]
+
+            # each calculated summary in a grand calculated summary is constructed such that it will have a single "answer" linking back to it
+            # so the processing for calculated summaries can be directly reused.
+            process_calculated_summary(calculated_summary_ids, page_spec)
 
         elif block["type"] == "Interstitial":
             has_definition = False
