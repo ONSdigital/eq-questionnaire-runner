@@ -186,3 +186,29 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
             }
         )
         self.assertInBody("Enter an answer more than or equal to £60.00")
+
+    def test_calculated_summary_repeating_answers_only(self):
+        """
+        Tests a calculated summary with a dynamic answer source resolving to a list of repeating answers
+        """
+        self.launchSurvey("test_new_calculated_summary_repeating_answers_only")
+
+        self.post({"any-transport-answer": "Yes"})
+        self.post({"transport-name": "Bus"})
+        self.post({"list-collector-answer": "Yes"})
+        self.post({"transport-name": "Tube"})
+
+        # get the ids before finishing the collector
+        list_item_ids = self.get_list_item_ids()
+        assert len(list_item_ids) == 2
+        self.post({"list-collector-answer": "No"})
+
+        self.post(
+            {
+                f"cost-of-transport-{list_item_ids[0]}": "100",
+                f"cost-of-transport-{list_item_ids[1]}": "200",
+            }
+        )
+        self.assertInBody(
+            "We calculate the total monthly spending on public transport to be £300.00. Is this correct?"
+        )

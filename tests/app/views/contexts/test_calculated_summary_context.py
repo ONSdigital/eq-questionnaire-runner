@@ -1,5 +1,6 @@
 import pytest
 
+from app.data_models import ListStore
 from app.questionnaire import Location
 from app.questionnaire.routing_path import RoutingPath
 from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
@@ -232,3 +233,79 @@ def test_build_view_context_for_return_to_calculated_summary(
     assert f"return_to=calculated-summary,{return_to}" in answer_change_link
     assert f"return_to_answer_id={return_to_answer_id}" in answer_change_link
     assert f"return_to_block_id={block_id},{return_to_block_id}" in answer_change_link
+
+
+@pytest.mark.usefixtures("app")
+@pytest.mark.parametrize(
+    "block_id,expected_answer_ids,expected_block_ids",
+    (
+        (
+            "calculated-summary-spending",
+            [
+                "cost-of-shopping-CHKtQS",
+                "cost-of-shopping-laFWcs",
+                "cost-of-other-CHKtQS",
+                "cost-of-other-laFWcs",
+                "extra-static-answer",
+            ],
+            ["dynamic-answer", "extra-spending-block"],
+        ),
+        (
+            "calculated-summary-visits",
+            [
+                "days-a-week-CHKtQS",
+                "days-a-week-laFWcs",
+            ],
+            ["dynamic-answer"],
+        ),
+    ),
+)
+def test_build_view_context_for_calculated_summary_with_dynamic_answers(
+    test_calculated_summary_repeating_and_static_answers_schema,
+    answer_store,
+    progress_store,
+    mocker,
+    block_id,
+    expected_answer_ids,
+    expected_block_ids,
+):
+    """
+    Tests that when different dynamic answers for the same list are used in different calculated summaries
+    that the calculated summary context filters the answers to keep correctly.
+    """
+    mocker.patch(
+        "app.jinja_filters.flask_babel.get_locale",
+        mocker.MagicMock(return_value="en_GB"),
+    )
+
+    block_ids = [
+        "any-supermarket",
+        "list-collector",
+        "dynamic-answer",
+        "extra-spending-block",
+    ]
+
+    calculated_summary_context = CalculatedSummaryContext(
+        language="en",
+        schema=test_calculated_summary_repeating_and_static_answers_schema,
+        answer_store=answer_store,
+        list_store=ListStore([{"items": ["CHKtQS", "laFWcs"], "name": "supermarkets"}]),
+        progress_store=progress_store,
+        metadata=None,
+        response_metadata={},
+        routing_path=RoutingPath(section_id="section-1", block_ids=block_ids),
+        current_location=Location(section_id="section-1", block_id=block_id),
+    )
+
+    context = calculated_summary_context.build_view_context()
+    assert "summary" in context
+    assert_summary_context(context)
+    context_summary = context["summary"]
+    calculation_blocks = context_summary["sections"][0]["groups"][0]["blocks"]
+
+    block_ids = [block["id"] for block in calculation_blocks]
+    assert block_ids == expected_block_ids
+
+    answers_to_keep = calculation_blocks[0]["question"]["answers"]
+    answer_ids = [answer["id"] for answer in answers_to_keep]
+    assert answer_ids == expected_answer_ids

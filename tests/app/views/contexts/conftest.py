@@ -335,6 +335,13 @@ def test_grand_calculated_summary_schema():
 
 
 @pytest.fixture
+def test_calculated_summary_repeating_and_static_answers_schema():
+    return load_schema_from_name(
+        "test_new_calculated_summary_repeating_and_static_answers"
+    )
+
+
+@pytest.fixture
 def test_calculated_summary_answers():
     answers = [
         {"value": 1, "answer_id": "first-number-answer"},

@@ -5,12 +5,11 @@ from typing import (
     TYPE_CHECKING,
     Iterable,
     Mapping,
-    Optional,
     Sequence,
     Sized,
+    TypeAlias,
     TypedDict,
     TypeVar,
-    Union,
 )
 
 from babel.dates import format_datetime
@@ -29,7 +28,7 @@ if TYPE_CHECKING:
     )
 
 ComparableValue = TypeVar("ComparableValue", str, int, float, Decimal, date)
-NonArrayPrimitiveTypes = Union[str, int, float, Decimal, None]
+NonArrayPrimitiveTypes: TypeAlias = str | int | float | Decimal | None
 
 DAYS_OF_WEEK = {
     "MONDAY": 0,
@@ -108,7 +107,7 @@ class Operations:
         return any(iter(values))
 
     @staticmethod
-    def evaluate_count(values: Optional[Sized]) -> int:
+    def evaluate_count(values: Sized | None) -> int:
         return len(values or [])
 
     @staticmethod
@@ -132,10 +131,10 @@ class Operations:
 
     @staticmethod
     def resolve_date_from_string(
-        date_string: Optional[str],
-        offset: Optional[DateOffset] = None,
+        date_string: str | None,
+        offset: DateOffset | None = None,
         offset_by_full_weeks: bool = False,
-    ) -> Optional[date]:
+    ) -> date | None:
         datetime_value = parse_datetime(date_string)
         if not datetime_value:
             return None
@@ -186,9 +185,9 @@ class Operations:
 
     def _resolve_self_reference(
         self,
-        self_reference_value: Union[ValueSourceTypes, date],
-        operands: Sequence[Union[ValueSourceTypes, date]],
-    ) -> list[Union[ValueSourceTypes, date]]:
+        self_reference_value: ValueSourceTypes | date,
+        operands: Sequence[ValueSourceTypes | date],
+    ) -> list[ValueSourceTypes | date]:
         resolved_operands = []
         for operand in operands:
             if isinstance(operand, dict) and QuestionnaireSchema.has_operator(operand):
@@ -211,7 +210,7 @@ class Operations:
     def evaluate_map(
         self,
         function: Mapping[str, list],
-        iterables: Sequence[Union[ValueSourceTypes, date]],
+        iterables: Sequence[ValueSourceTypes | date],
     ) -> list[str]:
         function_operator = next(iter(function))
         function_operands = deepcopy(function[function_operator])
@@ -228,7 +227,7 @@ class Operations:
 
     def evaluate_option_label_from_value(self, value: str, answer_id: str) -> str:
         answers = self.schema.get_answers_by_answer_id(answer_id)
-        label_options: Union[str, dict] = [
+        label_options: str | dict = [
             options["label"]
             for answer in answers
             for options in answer["options"]
@@ -242,7 +241,11 @@ class Operations:
             label = self.renderer.render_placeholder(label_options, list_item_id=None)
         return label
 
-    @staticmethod
-    def evaluate_sum(*args: tuple) -> Union[int, float, Decimal]:
-        # type ignore added as will only return int, float or decimal
-        return sum(value for value in args if isinstance(value, (int, float, Decimal)))  # type: ignore
+    def evaluate_sum(self, *args: tuple) -> int | float | Decimal:
+        """recursively evaluate the sum of any list-like arguments"""
+        return sum(
+            # Cannot use Iterable or Sequence as the type check for value as this would include primitive types like str
+            self.evaluate_sum(*value) if isinstance(value, (list, tuple)) else value
+            for value in args
+            if isinstance(value, (int, float, Decimal, list, tuple))
+        )
