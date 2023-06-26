@@ -1,4 +1,4 @@
-import checkPeopleInList from "../helpers";
+import { checkItemsInList } from "../helpers";
 import HubPage from "../base_pages/hub.page.js";
 import PrimaryPersonListCollectorPage from "../generated_pages/list_collector_driving_checkbox/primary-person-list-collector.page.js";
 import PrimaryPersonListCollectorAddPage from "../generated_pages/list_collector_driving_checkbox/primary-person-list-collector-add.page.js";
@@ -35,7 +35,7 @@ describe("List Collector Driving Checkbox Question", () => {
       await $(ListCollectorTemporaryAwayPage.submit()).click();
 
       const householdMembersExpected = ["Marcus Twin (You)", "Suzy Clemens"];
-      await checkPeopleInList(householdMembersExpected, SummaryPage.peopleListLabel);
+      await checkItemsInList(householdMembersExpected, SummaryPage.peopleListLabel);
     });
   });
 
@@ -49,7 +49,7 @@ describe("List Collector Driving Checkbox Question", () => {
       await $(PrimaryPersonListCollectorPage.submit()).click();
 
       const householdMembersExpected = ["Suzy Clemens"];
-      await checkPeopleInList(householdMembersExpected, SummaryPage.peopleListLabel);
+      await checkItemsInList(householdMembersExpected, SummaryPage.peopleListLabel);
     });
   });
 
@@ -65,7 +65,7 @@ describe("List Collector Driving Checkbox Question", () => {
       await $(ListCollectorTemporaryAwayPage.submit()).click();
 
       const householdMembersExpected = ["Suzy Clemens", "Christopher Pike"];
-      await checkPeopleInList(householdMembersExpected, SummaryPage.peopleListLabel);
+      await checkItemsInList(householdMembersExpected, SummaryPage.peopleListLabel);
     });
   });
 });

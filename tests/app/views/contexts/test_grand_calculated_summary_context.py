@@ -59,7 +59,7 @@ def test_build_view_context_for_grand_calculated_summary(
         answer_store=test_grand_calculated_summary_answers,
         list_store=list_store,
         progress_store=ProgressStore(
-            in_progress_sections=[
+            in_progress_sections_and_repeating_blocks=[
                 {
                     "section_id": "section-1",
                     "status": CompletionStatus.COMPLETED,

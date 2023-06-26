@@ -186,6 +186,64 @@ def people_answer_store():
 
 
 @pytest.fixture
+def repeating_blocks_answer_store():
+    return AnswerStore(
+        [
+            {
+                "answer_id": "company-or-branch-name",
+                "value": "CompanyA",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "registration-number",
+                "value": "123",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "registration-date",
+                "value": "2023-01-01",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "authorised-trader-uk-radio",
+                "value": "Yes",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "authorised-trader-eu-radio",
+                "value": "Yes",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "company-or-branch-name",
+                "value": "CompanyB",
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "registration-number",
+                "value": "456",
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "registration-date",
+                "value": "2023-01-01",
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "authorised-trader-uk-radio",
+                "value": "No",
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "authorised-trader-eu-radio",
+                "value": "No",
+                "list_item_id": "UHPLbX",
+            },
+        ]
+    )
+
+
+@pytest.fixture
 def companies_answer_store():
     return AnswerStore(
         [
@@ -310,6 +368,11 @@ def companies_variants_answer_store_second_variant():
 @pytest.fixture
 def people_list_store():
     return ListStore([{"items": ["PlwgoG", "UHPLbX"], "name": "people"}])
+
+
+@pytest.fixture
+def repeating_blocks_list_store():
+    return ListStore([{"items": ["PlwgoG", "UHPLbX"], "name": "companies"}])
 
 
 @pytest.fixture

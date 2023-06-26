@@ -191,6 +191,11 @@ def current_location():
 
 
 @pytest.fixture
+def location():
+    return Location("test-section", "test-block", "test-list", "list_item_id")
+
+
+@pytest.fixture
 def mock_autoescape_context(mocker):
     return mocker.Mock(autoescape=True)
 

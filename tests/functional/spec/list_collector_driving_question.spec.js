@@ -1,4 +1,4 @@
-import checkPeopleInList from "../helpers";
+import { checkItemsInList } from "../helpers";
 import HubPage from "../base_pages/hub.page.js";
 import AnyoneUsuallyLiveAtPage from "../generated_pages/list_collector_driving_question/anyone-usually-live-at.page.js";
 import AnyoneElseLiveAtListCollectorPage from "../generated_pages/list_collector_driving_question/anyone-else-live-at.page.js";
@@ -29,7 +29,7 @@ describe("List Collector Driving Question", () => {
 
       const peopleExpected = ["Marcus Twin", "Suzy Clemens"];
 
-      await checkPeopleInList(peopleExpected, SectionSummaryPage.peopleListLabel);
+      await checkItemsInList(peopleExpected, SectionSummaryPage.peopleListLabel);
     });
   });
 

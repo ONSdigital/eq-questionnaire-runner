@@ -8,7 +8,7 @@ from mock import MagicMock
 from requests import Response
 
 from app.authentication.auth_payload_versions import AuthPayloadVersion
-from app.data_models import QuestionnaireStore
+from app.data_models import ListStore, QuestionnaireStore
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.data_models.metadata_proxy import MetadataProxy
@@ -161,3 +161,72 @@ def gcs_blob_with_retry(mocker):
     )
 
     return blob
+
+
+@pytest.fixture
+def repeating_blocks_answer_store():
+    return AnswerStore(
+        [
+            {"answer_id": "responsible-party-answer", "value": "Yes"},
+            {"answer_id": "any-companies-or-branches-answer", "value": "Yes"},
+            {
+                "answer_id": "company-or-branch-name",
+                "value": "CompanyA",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "registration-number",
+                "value": "123",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "registration-date",
+                "value": "2023-01-01",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "authorised-trader-uk-radio",
+                "value": "Yes",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "authorised-trader-eu-radio",
+                "value": "Yes",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "company-or-branch-name",
+                "value": "CompanyB",
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "registration-number",
+                "value": "456",
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "registration-date",
+                "value": "2023-01-01",
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "authorised-trader-uk-radio",
+                "value": "No",
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "authorised-trader-eu-radio",
+                "value": "No",
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "any-other-trading-details",
+                "value": "N/A",
+            },
+        ]
+    )
+
+
+@pytest.fixture
+def repeating_blocks_list_store():
+    return ListStore([{"items": ["PlwgoG", "UHPLbX"], "name": "companies"}])

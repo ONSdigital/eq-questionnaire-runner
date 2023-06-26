@@ -5,6 +5,7 @@ from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
+from app.utilities.schema import load_schema_from_name
 
 
 def assert_all_dict_values_are_hashable(data):
@@ -890,3 +891,33 @@ def test_progress_dependencies_for_when_rules(
         "section-8": {"section-7", "section-2"},
         "section-9": {"section-2"},
     } == schema.when_rules_section_dependencies_for_progress
+
+
+def test_get_blocks_with_repeating_blocks():
+    schema = load_schema_from_name(
+        "test_list_collector_repeating_blocks_section_summary"
+    )
+    assert len(schema.get_blocks()) == 9
+
+
+def test_get_block_with_repeating_blocks():
+    schema = load_schema_from_name(
+        "test_list_collector_repeating_blocks_section_summary"
+    )
+    block1 = schema.get_block("companies-repeating-block-1")
+    block2 = schema.get_block("companies-repeating-block-2")
+
+    assert block1["id"] == "companies-repeating-block-1"
+    assert block2["id"] == "companies-repeating-block-2"
+
+
+def test_get_block_for_answer_id_returns_repeating_block_for_repeating_block_answer_id():
+    schema = load_schema_from_name(
+        "test_list_collector_repeating_blocks_section_summary"
+    )
+
+    block1 = schema.get_block_for_answer_id("registration-number")
+    block2 = schema.get_block_for_answer_id("authorised-trader-eu-radio")
+
+    assert block1["id"] == "companies-repeating-block-1"
+    assert block2["id"] == "companies-repeating-block-2"

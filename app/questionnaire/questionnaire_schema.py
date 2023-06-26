@@ -23,6 +23,7 @@ LIST_COLLECTOR_CHILDREN = [
     "ListEditQuestion",
     "ListRemoveQuestion",
     "PrimaryPersonListAddOrEditQuestion",
+    "ListRepeatingQuestion",
 ]
 
 RELATIONSHIP_CHILDREN = ["UnrelatedQuestion"]
@@ -81,6 +82,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ] = defaultdict(set)
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
+        self._repeating_block_ids: list[str] = []
         self.dynamic_answers_parent_block_ids: set[str] = set()
 
         # The ordering here is required as they depend on each other.
@@ -291,6 +293,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                             nested_block_id = nested_block["id"]
                             blocks[nested_block_id] = nested_block
                             self._parent_id_map[nested_block_id] = block_id
+                    if repeating_blocks := block.get("repeating_blocks"):
+                        for repeating_block in repeating_blocks:
+                            repeating_block_id = repeating_block["id"]
+                            blocks[repeating_block_id] = repeating_block
+                            self._parent_id_map[repeating_block_id] = block_id
+                            self._repeating_block_ids.append(repeating_block_id)
 
         return blocks
 
@@ -743,6 +751,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_blocks(self) -> Iterable[ImmutableDict]:
         return self._blocks_by_id.values()
 
+    def get_repeating_block_ids(self) -> list[str]:
+        return self._repeating_block_ids
+
     def get_block(self, block_id: str) -> ImmutableDict | None:
         return self._blocks_by_id.get(block_id)
 
@@ -810,12 +821,25 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             ]
             return add_block
 
-    def get_answer_ids_for_list_items(self, list_collector_id: str) -> list[str] | None:
+    def get_repeating_blocks_for_list_collector(
+        self, list_collector_id: str
+    ) -> list[ImmutableDict] | None:
+        if list_collector := self.get_block(list_collector_id):
+            return list_collector.get("repeating_blocks", [])
+
+    def get_answer_ids_for_list_items(self, list_collector_id: str) -> list[str]:
         """
-        Get answer ids used to add items to a list.
+        Get answer ids used to add items to a list, including any repeating block answers if any exist.
         """
+        answer_ids = []
         if add_block := self.get_add_block_for_list_collector(list_collector_id):
-            return self.get_answer_ids_for_block(add_block["id"])
+            answer_ids.extend(self.get_answer_ids_for_block(add_block["id"]))
+        if repeating_blocks := self.get_repeating_blocks_for_list_collector(
+            list_collector_id
+        ):
+            for repeating_block in repeating_blocks:
+                answer_ids.extend(self.get_answer_ids_for_block(repeating_block["id"]))
+        return answer_ids
 
     def get_questions(self, question_id: str) -> list[ImmutableDict] | None:
         """Return a list of questions matching some question id
@@ -1022,7 +1046,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         parent_block_id = self._parent_id_map[block_id]
         parent_block = self.get_block(parent_block_id)
 
-        if parent_block and parent_block["type"] == "ListCollector":
+        if (
+            parent_block
+            and parent_block["type"] == "ListCollector"
+            and block_id not in self._repeating_block_ids
+        ):
             return parent_block
 
         return self.get_block(block_id)

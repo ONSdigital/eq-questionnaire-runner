@@ -49,11 +49,6 @@ def answer_store():
 
 
 @pytest.fixture
-def location():
-    return Location("test-section", "test-block", "test-list", "list_item_id")
-
-
-@pytest.fixture
 def response_metadata():
     return {"started_at": "2021-01-01T09:00:00.220038+00:00"}
 

@@ -262,6 +262,9 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
     def getLinkById(self, identifier: str):
         return self.getHtmlSoup().find("a", id=identifier)
 
+    def getLinksByAttribute(self, attributes: dict[str, str]):
+        return [tag["href"] for tag in self.getHtmlSoup().findAll("a", attributes)]
+
     def getSignOutButton(self):
         return self.getHtmlSoup().find("a", {"data-qa": "btn-save-sign-out"})
 
