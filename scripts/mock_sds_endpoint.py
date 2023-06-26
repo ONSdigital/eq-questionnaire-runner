@@ -13,6 +13,10 @@ def get_sds_data():
         return load_mock_data("scripts/mock_data/supplementary_data_no_repeat.json")
     if dataset_id == "34a80231-c49a-44d0-91a6-8fe1fb190e64":
         return load_mock_data("scripts/mock_data/supplementary_data_with_repeat.json")
+    if dataset_id == "6b378962-f0c7-4e8c-947e-7d24ee1b6b88":
+        return load_mock_data(
+            "scripts/mock_data/supplementary_data_with_repeat_v2.json"
+        )
 
     return Response(status=404)
 
