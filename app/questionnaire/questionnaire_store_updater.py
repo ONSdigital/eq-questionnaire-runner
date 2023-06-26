@@ -1,6 +1,6 @@
 from collections import defaultdict, namedtuple
 from itertools import combinations
-from typing import Any, Iterable, Mapping
+from typing import Iterable, Mapping
 
 from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict
@@ -163,17 +163,29 @@ class QuestionnaireStoreUpdater:
             self._update_relationship_question_completeness(list_name)
 
         self._progress_store.remove_progress_for_list_item_id(list_item_id=list_item_id)
+        self._capture_dependencies_for_list_item_removal(list_name)
+
+    def _capture_dependencies_for_list_item_removal(self, list_name: str) -> None:
+        """
+        If an item is removed from a list, dependencies of both the add block and remove block need to be captured
+        and their progress updated.
+        (E.g. dynamic-answers depending on the add block could have validation, so need revisiting if an item is removed)
+        """
+        if remove_block_id := self._schema.get_remove_block_id_for_list(list_name):
+            answer_ids = self._schema.get_answer_ids_for_block(remove_block_id)
+            for answer_id in answer_ids:
+                self._capture_block_dependencies_for_answer(answer_id)
 
         for list_collector in self._schema.get_list_collectors_for_list(
             for_list=list_name,
+            # Type ignore: section must exist at this point
             section=self._schema.get_section(self._current_location.section_id),  # type: ignore
-            # type ignore Section and answer_id below must exist at this point
         ):
-            block = self._schema.get_add_block_for_list_collector(list_collector["id"])
-            answer_ids = self._schema.get_answer_ids_for_block(block["id"])  # type: ignore
-            # type ignore non-optional return, always exists
-            for answer_id in answer_ids:
-                self._capture_block_dependencies_for_answer(answer_id)
+            if add_block := self._schema.get_add_block_for_list_collector(
+                list_collector["id"]
+            ):
+                for answer_id in self._schema.get_answer_ids_for_block(add_block["id"]):
+                    self._capture_block_dependencies_for_answer(answer_id)
 
     def _get_relationship_answers_for_list_name(
         self, list_name: str
@@ -379,7 +391,7 @@ class QuestionnaireStoreUpdater:
                 self.dependent_sections.add(DependentSection(section_id, None, None))
 
     def update_answers(
-        self, form_data: Mapping[str, Any], list_item_id: str | None = None
+        self, form_data: Mapping, list_item_id: str | None = None
     ) -> None:
         list_item_id = list_item_id or self._current_location.list_item_id
         answers_by_answer_id = self._schema.get_answers_for_question_by_id(
