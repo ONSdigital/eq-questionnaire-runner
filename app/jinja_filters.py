@@ -76,8 +76,8 @@ def format_unit(
     length: UnitLengthType = "short",
 ) -> str:
     # mass-metric-ton no longer supported for en_GB and related locales, but still present in business schema and allowed in validator,
-    # until removed from schema we substitute mass-ton for mass-metric-ton and vice versa, before/after unit formatting
-    measurement_unit = "mass-ton" if unit == "mass-metric-ton" else unit
+    # until removed from schema we substitute mass-tonne for mass-metric-ton before format unit
+    measurement_unit = "mass-tonne" if unit == "mass-metric-ton" else unit
 
     formatted_unit: str = units.format_unit(
         value=value,
@@ -85,8 +85,7 @@ def format_unit(
         length=length,
         locale=flask_babel.get_locale(),
     )
-    if unit == "mass-metric-ton":
-        return formatted_unit.replace("tn", "mt").replace("ton", "metric ton")
+
     return formatted_unit
 
 
@@ -100,8 +99,8 @@ def format_unit_input_label(unit: str, unit_length: UnitLengthType = "short") ->
     """
     unit_label: str
     # mass-metric-ton no longer supported for en_GB and related locales, but still present in business schema and allowed in validator,
-    # until removed from schema we substitute mass-ton for mass-metric-ton and vice versa, before/after unit formatting
-    measurement_unit = "mass-ton" if unit == "mass-metric-ton" else unit
+    # until removed from schema we substitute mass-tonne for mass-metric-ton before format unit
+    measurement_unit = "mass-tonne" if unit == "mass-metric-ton" else unit
 
     if unit_length == "long":
         unit_label = units.format_unit(
@@ -118,9 +117,6 @@ def format_unit_input_label(unit: str, unit_length: UnitLengthType = "short") ->
             length=unit_length,
             locale=flask_babel.get_locale(),
         ).strip()
-
-    if unit == "mass-metric-ton":
-        unit_label = unit_label.replace("tn", "mt").replace("ton", "metric ton")
 
     return unit_label
 
