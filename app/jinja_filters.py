@@ -76,7 +76,7 @@ def format_unit(
     length: UnitLengthType = "short",
 ) -> str:
     # mass-metric-ton no longer supported for en_GB and related locales, but still present in business schema and allowed in validator,
-    # until removed from schema we substitute mass-ton for mass-metric-ton and vice versa before/after unit formatting
+    # until removed from schema we substitute mass-ton for mass-metric-ton and vice versa, before/after unit formatting
     measurement_unit = "mass-ton" if unit == "mass-metric-ton" else unit
 
     formatted_unit: str = units.format_unit(
@@ -100,7 +100,7 @@ def format_unit_input_label(unit: str, unit_length: UnitLengthType = "short") ->
     """
     unit_label: str
     # mass-metric-ton no longer supported for en_GB and related locales, but still present in business schema and allowed in validator,
-    # until removed from schema we substitute mass-ton for mass-metric-ton and vice versa before/after unit formatting
+    # until removed from schema we substitute mass-ton for mass-metric-ton and vice versa, before/after unit formatting
     measurement_unit = "mass-ton" if unit == "mass-metric-ton" else unit
 
     if unit_length == "long":
