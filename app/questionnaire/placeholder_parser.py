@@ -196,6 +196,7 @@ class PlaceholderParser:
         if not self._location:
             return {}
 
+        dependent_sections: dict[str, set[str]] | dict[str, OrderedSet[str]]
         if assess_routing_path:
             dependent_sections = self._schema.placeholder_section_dependencies_by_block[
                 self._location.section_id
