@@ -1,10 +1,8 @@
 import json
 
 from flask import Flask, Response, request
-from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
 
 
 @app.route("/v1/unit_data")
@@ -37,11 +35,11 @@ def load_mock_sds_dataset_metadata(survey_id: str, period_id: str):
     print(survey_id)
     if survey_id == "123":
         return load_mock_data(
-            "scripts/mock_data/supplementary_dataset_multiple_item_response.json"
+            "scripts/mock_data/supplementary_dataset_single_item_response.json"
         )
     if survey_id == "456":
         return load_mock_data(
-            "scripts/mock_data/supplementary_dataset_single_item_response.json"
+            "scripts/mock_data/supplementary_dataset_multiple_item_response.json"
         )
 
     return Response(status=404)
