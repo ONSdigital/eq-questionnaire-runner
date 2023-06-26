@@ -3,10 +3,10 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "123",
+    "survey_id": "456",
     "title": "Test Supplementary Data",
     "theme": "default",
-    "description": "A questionnaire to demo loading Supplementary data.",
+    "description": "A questionnaire to demo loading Supplementary data with a survey and period id that correspond to multiple test datasets.",
     "metadata": [
         {
             "name": "user_id",
