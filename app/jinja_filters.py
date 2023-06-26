@@ -98,9 +98,6 @@ def format_unit_input_label(unit: str, unit_length: UnitLengthType = "short") ->
     :param (str) unit_length length of unit text, can be one of short/long/narrow
     """
     unit_label: str
-    # mass-metric-ton no longer supported for en_GB and related locales, but still present in business schema and allowed in validator,
-    # until removed from schema we substitute mass-tonne for mass-metric-ton before format unit
-    unit = "mass-tonne" if unit == "mass-metric-ton" else unit
 
     if unit_length == "long":
         unit_label = format_unit(value=2, unit=unit, length=unit_length).replace(
