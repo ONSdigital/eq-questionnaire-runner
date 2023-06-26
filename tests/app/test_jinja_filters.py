@@ -153,6 +153,9 @@ def test_format_percentage(percentage, formatted_percentage):
         ("duration-year", 100, "short", "100 bl", "cy"),
         ("duration-hour", 100, "long", "100 awr", "cy"),
         ("duration-year", 100, "long", "100 mlynedd", "cy"),
+        ("mass-metric-ton", 100, "long", "100 metric tons", "en_GB"),
+        ("mass-metric-ton", 1, "long", "1 metric ton", "en_GB"),
+        ("mass-metric-ton", 100, "short", "100 mt", "en_GB"),
     ),
 )
 def test_format_unit(unit, value, length, formatted_unit, language, mocker):
@@ -204,6 +207,8 @@ def test_format_unit(unit, value, length, formatted_unit, language, mocker):
         ("duration-hour", "long", "awr", "cy"),
         ("duration-year", "short", "bl", "cy"),
         ("duration-year", "long", "flynedd", "cy"),
+        ("mass-metric-ton", "long", "metric tons", "en_GB"),
+        ("mass-metric-ton", "short", "mt", "en_GB"),
     ),
 )
 def test_format_unit_input_label(unit, length, formatted_unit, language, mocker):
