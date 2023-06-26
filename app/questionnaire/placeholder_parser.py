@@ -80,17 +80,15 @@ class PlaceholderParser:
         self, placeholder_list: Sequence[Mapping]
     ) -> MutableMapping[str, ValueSourceEscapedTypes | ValueSourceTypes]:
         sections_to_ignore = list(self._routing_path_block_ids_by_section_key)
-        source_type = "calculated_summary"
         assess_routing_path = False
 
         for transform in TRANSFORMS_REQUIRING_ROUTING_PATH:
             if transform in str(placeholder_list):
-                source_type = "answers"
                 assess_routing_path = True
 
         if routing_path_block_ids_map := self._get_routing_path_block_ids(
             data=placeholder_list,
-            source_type=source_type,
+            assess_routing_path=assess_routing_path,
             sections_to_ignore=sections_to_ignore,
         ):
             self._routing_path_block_ids_by_section_key.update(
@@ -192,21 +190,24 @@ class PlaceholderParser:
         self,
         *,
         data: Sequence[Mapping],
-        source_type: str,
+        assess_routing_path: bool,
         sections_to_ignore: list | None = None,
     ) -> dict[tuple, tuple[str, ...]] | None:
         if not self._location:
             return {}
 
-        dependent_sections: dict[str, set[str]] | dict[str, OrderedSet[str]] = (
-            self._schema.calculated_summary_section_dependencies_by_block[
+        if assess_routing_path:
+            dependent_sections = self._schema.placeholder_section_dependencies_by_block[
                 self._location.section_id
             ]
-            if source_type == "calculated_summary"
-            else self._schema.placeholder_section_dependencies_by_block[
-                self._location.section_id
-            ]
-        )
+            source_type = "answers"
+        else:
+            dependent_sections = (
+                self._schema.calculated_summary_section_dependencies_by_block[
+                    self._location.section_id
+                ]
+            )
+            source_type = "calculated_summary"
 
         return get_block_ids_for_dependencies(
             location=self._location,
