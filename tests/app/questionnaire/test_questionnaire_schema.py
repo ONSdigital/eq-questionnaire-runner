@@ -894,24 +894,30 @@ def test_progress_dependencies_for_when_rules(
 
 
 def test_get_blocks_with_repeating_blocks():
-    schema = load_schema_from_name("test_list_collector_repeating_blocks")
-    assert len(schema.get_blocks()) == 6
+    schema = load_schema_from_name(
+        "test_list_collector_repeating_blocks_section_summary"
+    )
+    assert len(schema.get_blocks()) == 9
 
 
 def test_get_block_with_repeating_blocks():
-    schema = load_schema_from_name("test_list_collector_repeating_blocks")
-    block1 = schema.get_block("repeating-block-1")
-    block2 = schema.get_block("repeating-block-2")
+    schema = load_schema_from_name(
+        "test_list_collector_repeating_blocks_section_summary"
+    )
+    block1 = schema.get_block("companies-repeating-block-1")
+    block2 = schema.get_block("companies-repeating-block-2")
 
-    assert block1["id"] == "repeating-block-1"
-    assert block2["id"] == "repeating-block-2"
+    assert block1["id"] == "companies-repeating-block-1"
+    assert block2["id"] == "companies-repeating-block-2"
 
 
 def test_get_block_for_answer_id_returns_repeating_block_for_repeating_block_answer_id():
-    schema = load_schema_from_name("test_list_collector_repeating_blocks")
+    schema = load_schema_from_name(
+        "test_list_collector_repeating_blocks_section_summary"
+    )
 
-    block1 = schema.get_block_for_answer_id("repeating-block-1-question-answer-1")
-    block2 = schema.get_block_for_answer_id("repeating-block-2-question-answer-1")
+    block1 = schema.get_block_for_answer_id("registration-number")
+    block2 = schema.get_block_for_answer_id("authorised-trader-eu-radio")
 
-    assert block1["id"] == "repeating-block-1"
-    assert block2["id"] == "repeating-block-2"
+    assert block1["id"] == "companies-repeating-block-1"
+    assert block2["id"] == "companies-repeating-block-2"

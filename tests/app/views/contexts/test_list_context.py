@@ -248,22 +248,24 @@ def test_list_context_items_complete_without_repeating_blocks(
 def test_list_context_items_incomplete_with_repeating_blocks(
     repeating_blocks_answer_store, repeating_blocks_list_store, progress_store
 ):
-    schema = load_schema_from_name("test_list_collector_repeating_blocks")
-    list_collector_block = schema.get_block("list-collector-block")
+    schema = load_schema_from_name(
+        "test_list_collector_repeating_blocks_section_summary"
+    )
+    list_collector_block = schema.get_block("any-other-companies-or-branches")
     expected = [
         {
-            "item_title": "1 - Add answer",
-            "edit_link": "/questionnaire/repeating-blocks-list-collector/PlwgoG/list-collector-edit-block/",
-            "remove_link": "/questionnaire/repeating-blocks-list-collector/PlwgoG/list-collector-remove-block/",
+            "item_title": "CompanyA",
+            "edit_link": "/questionnaire/companies/PlwgoG/edit-company/",
+            "remove_link": "/questionnaire/companies/PlwgoG/remove-company/",
             "primary_person": False,
             "list_item_id": "PlwgoG",
             "is_complete": False,
             "repeating_blocks": True,
         },
         {
-            "item_title": "2 - Add answer",
-            "edit_link": "/questionnaire/repeating-blocks-list-collector/UHPLbX/list-collector-edit-block/",
-            "remove_link": "/questionnaire/repeating-blocks-list-collector/UHPLbX/list-collector-remove-block/",
+            "item_title": "CompanyB",
+            "edit_link": "/questionnaire/companies/UHPLbX/edit-company/",
+            "remove_link": "/questionnaire/companies/UHPLbX/remove-company/",
             "primary_person": False,
             "list_item_id": "UHPLbX",
             "is_complete": False,
@@ -284,7 +286,7 @@ def test_list_context_items_incomplete_with_repeating_blocks(
     list_context = list_context(
         summary_definition=list_collector_block["summary"],
         for_list=list_collector_block["for_list"],
-        section_id="section",
+        section_id="section-companies",
         has_repeating_blocks=True,
         edit_block_id=list_collector_block["edit_block"]["id"],
         remove_block_id=list_collector_block["remove_block"]["id"],
@@ -297,22 +299,24 @@ def test_list_context_items_incomplete_with_repeating_blocks(
 def test_list_context_items_complete_with_repeating_blocks(
     repeating_blocks_answer_store, repeating_blocks_list_store
 ):
-    schema = load_schema_from_name("test_list_collector_repeating_blocks")
-    list_collector_block = schema.get_block("list-collector-block")
+    schema = load_schema_from_name(
+        "test_list_collector_repeating_blocks_section_summary"
+    )
+    list_collector_block = schema.get_block("any-other-companies-or-branches")
     expected = [
         {
-            "item_title": "1 - Add answer",
-            "edit_link": "/questionnaire/repeating-blocks-list-collector/PlwgoG/list-collector-edit-block/",
-            "remove_link": "/questionnaire/repeating-blocks-list-collector/PlwgoG/list-collector-remove-block/",
+            "item_title": "CompanyA",
+            "edit_link": "/questionnaire/companies/PlwgoG/edit-company/",
+            "remove_link": "/questionnaire/companies/PlwgoG/remove-company/",
             "primary_person": False,
             "list_item_id": "PlwgoG",
             "is_complete": True,
             "repeating_blocks": True,
         },
         {
-            "item_title": "2 - Add answer",
-            "edit_link": "/questionnaire/repeating-blocks-list-collector/UHPLbX/list-collector-edit-block/",
-            "remove_link": "/questionnaire/repeating-blocks-list-collector/UHPLbX/list-collector-remove-block/",
+            "item_title": "CompanyB",
+            "edit_link": "/questionnaire/companies/UHPLbX/edit-company/",
+            "remove_link": "/questionnaire/companies/UHPLbX/remove-company/",
             "primary_person": False,
             "list_item_id": "UHPLbX",
             "is_complete": True,
@@ -323,13 +327,13 @@ def test_list_context_items_complete_with_repeating_blocks(
     progress_store = ProgressStore(
         [
             ProgressDictType(
-                section_id="section",
+                section_id="section-companies",
                 list_item_id="PlwgoG",
                 status=CompletionStatus.COMPLETED,
                 block_ids=[],
             ),
             ProgressDictType(
-                section_id="section",
+                section_id="section-companies",
                 list_item_id="UHPLbX",
                 status=CompletionStatus.COMPLETED,
                 block_ids=[],
@@ -350,7 +354,7 @@ def test_list_context_items_complete_with_repeating_blocks(
     list_context = list_context(
         summary_definition=list_collector_block["summary"],
         for_list=list_collector_block["for_list"],
-        section_id="section",
+        section_id="section-companies",
         has_repeating_blocks=True,
         edit_block_id=list_collector_block["edit_block"]["id"],
         remove_block_id=list_collector_block["remove_block"]["id"],

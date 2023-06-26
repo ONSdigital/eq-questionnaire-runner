@@ -1549,12 +1549,24 @@ def test_repeating_block_answers_present(
 ):
     questionnaire_store = get_questionnaire_store(version)
 
-    full_routing_path = [RoutingPath(["list-collector-block"], section_id="section")]
+    full_routing_path = [
+        RoutingPath(
+            [
+                "responsible-party",
+                "any-companies-or-branches",
+                "any-other-companies-or-branches",
+                "any-other-trading-details",
+            ],
+            section_id="section-companies",
+        )
+    ]
 
     questionnaire_store.answer_store = repeating_blocks_answer_store
     questionnaire_store.list_store = repeating_blocks_list_store
 
-    schema = load_schema_from_name("test_list_collector_repeating_blocks")
+    schema = load_schema_from_name(
+        "test_list_collector_repeating_blocks_section_summary"
+    )
 
     data_payload = get_payload_data(
         questionnaire_store.answer_store,
@@ -1567,62 +1579,66 @@ def test_repeating_block_answers_present(
     )
 
     expected_answer_codes = [
-        {"answer_id": "list-collector-add-block-question-answer", "code": "1a"},
-        {"answer_id": "repeating-block-1-question-answer-1", "code": "1b"},
-        {"answer_id": "repeating-block-1-question-answer-2", "code": "1c"},
-        {"answer_id": "repeating-block-2-question-answer-1", "code": "1d"},
-        {"answer_id": "repeating-block-2-question-answer-2", "code": "1e"},
+        {"answer_id": "responsible-party-answer", "code": "1"},
+        {"answer_id": "any-companies-or-branches-answer", "code": "2"},
+        {"answer_id": "company-or-branch-name", "code": "2a"},
+        {"answer_id": "registration-number", "code": "2b"},
+        {"answer_id": "registration-date", "code": "2c"},
+        {"answer_id": "authorised-trader-uk-radio", "code": "2d"},
+        {"answer_id": "authorised-trader-eu-radio", "code": "2e"},
     ]
 
     expected_answers = [
+        {"answer_id": "responsible-party-answer", "value": "Yes"},
+        {"answer_id": "any-companies-or-branches-answer", "value": "Yes"},
         {
-            "answer_id": "list-collector-add-block-question-answer",
-            "value": "1 - Add answer",
+            "answer_id": "company-or-branch-name",
+            "value": "CompanyA",
             "list_item_id": "PlwgoG",
         },
         {
-            "answer_id": "repeating-block-1-question-answer-1",
-            "value": "1 - RB 1 A 1",
+            "answer_id": "registration-number",
+            "value": "123",
             "list_item_id": "PlwgoG",
         },
         {
-            "answer_id": "repeating-block-1-question-answer-2",
-            "value": "1 - RB 1 A 2",
+            "answer_id": "registration-date",
+            "value": "2023-01-01",
             "list_item_id": "PlwgoG",
         },
         {
-            "answer_id": "repeating-block-2-question-answer-1",
-            "value": "1 - RB 2 A 1",
+            "answer_id": "authorised-trader-uk-radio",
+            "value": "Yes",
             "list_item_id": "PlwgoG",
         },
         {
-            "answer_id": "repeating-block-2-question-answer-2",
-            "value": "1 - RB 2 A 2",
+            "answer_id": "authorised-trader-eu-radio",
+            "value": "Yes",
             "list_item_id": "PlwgoG",
         },
         {
-            "answer_id": "list-collector-add-block-question-answer",
-            "value": "2 - Add answer",
+            "answer_id": "company-or-branch-name",
+            "value": "CompanyB",
             "list_item_id": "UHPLbX",
         },
         {
-            "answer_id": "repeating-block-1-question-answer-1",
-            "value": "2 - RB 1 A 1",
+            "answer_id": "registration-number",
+            "value": "456",
             "list_item_id": "UHPLbX",
         },
         {
-            "answer_id": "repeating-block-1-question-answer-2",
-            "value": "2 - RB 1 A 2",
+            "answer_id": "registration-date",
+            "value": "2023-01-01",
             "list_item_id": "UHPLbX",
         },
         {
-            "answer_id": "repeating-block-2-question-answer-1",
-            "value": "2 - RB 2 A 1",
+            "answer_id": "authorised-trader-uk-radio",
+            "value": "No",
             "list_item_id": "UHPLbX",
         },
         {
-            "answer_id": "repeating-block-2-question-answer-2",
-            "value": "2 - RB 2 A 2",
+            "answer_id": "authorised-trader-eu-radio",
+            "value": "No",
             "list_item_id": "UHPLbX",
         },
     ]

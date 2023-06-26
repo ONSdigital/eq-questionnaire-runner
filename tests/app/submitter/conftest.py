@@ -167,55 +167,61 @@ def gcs_blob_with_retry(mocker):
 def repeating_blocks_answer_store():
     return AnswerStore(
         [
+            {"answer_id": "responsible-party-answer", "value": "Yes"},
+            {"answer_id": "any-companies-or-branches-answer", "value": "Yes"},
             {
-                "answer_id": "list-collector-add-block-question-answer",
-                "value": "1 - Add answer",
+                "answer_id": "company-or-branch-name",
+                "value": "CompanyA",
                 "list_item_id": "PlwgoG",
             },
             {
-                "answer_id": "repeating-block-1-question-answer-1",
-                "value": "1 - RB 1 A 1",
+                "answer_id": "registration-number",
+                "value": "123",
                 "list_item_id": "PlwgoG",
             },
             {
-                "answer_id": "repeating-block-1-question-answer-2",
-                "value": "1 - RB 1 A 2",
+                "answer_id": "registration-date",
+                "value": "2023-01-01",
                 "list_item_id": "PlwgoG",
             },
             {
-                "answer_id": "repeating-block-2-question-answer-1",
-                "value": "1 - RB 2 A 1",
+                "answer_id": "authorised-trader-uk-radio",
+                "value": "Yes",
                 "list_item_id": "PlwgoG",
             },
             {
-                "answer_id": "repeating-block-2-question-answer-2",
-                "value": "1 - RB 2 A 2",
+                "answer_id": "authorised-trader-eu-radio",
+                "value": "Yes",
                 "list_item_id": "PlwgoG",
             },
             {
-                "answer_id": "list-collector-add-block-question-answer",
-                "value": "2 - Add answer",
+                "answer_id": "company-or-branch-name",
+                "value": "CompanyB",
                 "list_item_id": "UHPLbX",
             },
             {
-                "answer_id": "repeating-block-1-question-answer-1",
-                "value": "2 - RB 1 A 1",
+                "answer_id": "registration-number",
+                "value": "456",
                 "list_item_id": "UHPLbX",
             },
             {
-                "answer_id": "repeating-block-1-question-answer-2",
-                "value": "2 - RB 1 A 2",
+                "answer_id": "registration-date",
+                "value": "2023-01-01",
                 "list_item_id": "UHPLbX",
             },
             {
-                "answer_id": "repeating-block-2-question-answer-1",
-                "value": "2 - RB 2 A 1",
+                "answer_id": "authorised-trader-uk-radio",
+                "value": "No",
                 "list_item_id": "UHPLbX",
             },
             {
-                "answer_id": "repeating-block-2-question-answer-2",
-                "value": "2 - RB 2 A 2",
+                "answer_id": "authorised-trader-eu-radio",
+                "value": "No",
                 "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "any-other-trading-details",
+                "value": "N/A",
             },
         ]
     )
@@ -223,6 +229,4 @@ def repeating_blocks_answer_store():
 
 @pytest.fixture
 def repeating_blocks_list_store():
-    return ListStore(
-        [{"items": ["PlwgoG", "UHPLbX"], "name": "repeating-blocks-list-collector"}]
-    )
+    return ListStore([{"items": ["PlwgoG", "UHPLbX"], "name": "companies"}])
