@@ -103,13 +103,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _populate_min_max_map(self) -> None:
         for answer in self._answers_by_id.items():
-            if (answer_type := answer[0].get("type")) and answer_type not in [
+            if (answer_type := answer.get("type")) and answer_type not in [
                 "Date",
                 "MonthYearDate",
                 "YearDate",
             ]:
                 for item in ["minimum", "maximum"]:
-                    if item in answer[0] and not isinstance(answer[item]["value"], int):
+                    if item in answer and not isinstance(answer[item]["value"], int):
                         if answer[item]["value"]["source"] == "answers":
                             min_max_answer_id = answer[item]["value"]["identifier"]
                             self.min_and_max_map[min_max_answer_id] = (
