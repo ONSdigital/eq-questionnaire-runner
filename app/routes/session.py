@@ -134,7 +134,7 @@ def login() -> Response:
         get_supplementary_data(
             dataset_id=dataset_id,
             unit_id=metadata["ru_ref"] or metadata["qid"],  # type: ignore
-            survey_id=g.schema.json["survey_id"],  # type: ignore
+            survey_id=metadata["survey_id"],  # type: ignore
         )
 
     return redirect(url_for("questionnaire.get_questionnaire"))
