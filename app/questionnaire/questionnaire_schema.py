@@ -3,7 +3,7 @@ from collections import defaultdict
 from copy import deepcopy
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Any, Generator, Iterable, Mapping, Sequence, TypeAlias
+from typing import Any, Generator, Iterable, Literal, Mapping, Sequence, TypeAlias
 
 from flask_babel import force_locale
 from ordered_set import OrderedSet
@@ -102,29 +102,20 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return ImmutableDict(self._answer_dependencies_map)
 
     def _populate_min_max_map(self) -> None:
-        for _, answers in self._answers_by_id.items():
+        for answer_id, answers in self._answers_by_id.items():
             if (answer_type := answers[0].get("type")) and answer_type not in [
                 "Date",
                 "MonthYearDate",
                 "YearDate",
             ]:
-                answer_to_search_for_min_max = answers[0]
-                for item in ["minimum", "maximum"]:
-                    if item in answers[0] and not isinstance(
-                        answer_to_search_for_min_max[item]["value"], int
-                    ):
-                        if (
-                            answer_to_search_for_min_max[item]["value"]["source"]
-                            == "answers"
-                        ):
-                            min_max_answer_id = answer_to_search_for_min_max[item][
-                                "value"
-                            ]["identifier"]
-                            self.min_and_max_map[min_max_answer_id] = (
-                                self.get_answers_by_answer_id(min_max_answer_id)[0]
-                                .get(item, {})
-                                .get("value", {})
-                            )
+                for min_max in ["minimum", "maximum"]:
+                    if value := answers[0].get(min_max, {}).get("value"):
+                        if isinstance(value, int):
+                            self.min_and_max_map[answer_id] = str(value)
+                        elif isinstance(value, dict) and value:
+                            if value.get("source") == "answers":
+                                if value["identifier"] in self.min_and_max_map:
+                                    self.min_and_max_map[answer_id] = self.min_and_max_map[value["identifier"]]
 
     @cached_property
     def when_rules_section_dependencies_by_section(
