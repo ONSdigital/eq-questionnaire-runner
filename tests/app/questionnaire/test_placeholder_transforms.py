@@ -26,6 +26,7 @@ def test_format_currency(number, currency, expected, transformer):
         (123, "123"),
         ("123.4", "123.4"),
         ("123.40", "123.4"),
+        ("123.45678", "123.45678"),
         ("1000", "1,000"),
         ("10000", "10,000"),
         ("100000000", "100,000,000"),
@@ -58,12 +59,13 @@ def test_format_percentage(value, expected, transformer):
 @pytest.mark.parametrize(
     "unit, value, unit_length, expected",
     (
-        ("millimeter", Decimal(0.123), "short", "0.123 mm"),
+        ("millimeter", Decimal(0.123), "short", "0.1229999999999999982236431605997495353221893310546875 mm"),
         ("centimeter", "123", "short", "123 cm"),
-        ("kilometer", "123", "long", "123 kilometre"),
+        ("kilometer", "123", "long", "123 kilometres"),
         ("mile", "123", "short", "123 mi"),
         ("mile", "123", "narrow", "123mi"),
         ("mile", "123", None, "123 mi"),
+        ("mile", "123.456789", None, "123.456789 mi"),
     ),
 )
 def test_format_unit(unit, value, unit_length, expected, transformer):

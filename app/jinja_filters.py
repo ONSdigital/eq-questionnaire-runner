@@ -35,7 +35,7 @@ def format_number(value: Union[int, Decimal, float]) -> str:
     formatted_number: str
     if value or value == 0:
         formatted_number = numbers.format_decimal(
-            value, locale=flask_babel.get_locale()
+            value, locale=flask_babel.get_locale(), decimal_quantization=False
         )
         return formatted_number
 
@@ -80,11 +80,11 @@ def format_unit(
     measurement_unit = "mass-tonne" if unit == "mass-metric-ton" else unit
 
     formatted_unit: str = units.format_unit(
-        value=value,
+        value=0,
         measurement_unit=measurement_unit,
         length=length,
         locale=flask_babel.get_locale(),
-    )
+    ).replace("0", str(value))
 
     return formatted_unit
 

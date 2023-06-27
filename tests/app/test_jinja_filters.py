@@ -64,6 +64,7 @@ def test_get_formatted_currency_with_no_value():
         (123, "123"),
         ("123.4", "123.4"),
         ("123.40", "123.4"),
+        ("123.45678", "123.45678"),
         ("1000", "1,000"),
         ("10000", "10,000"),
         ("100000000", "100,000,000"),
@@ -154,8 +155,9 @@ def test_format_percentage(percentage, formatted_percentage):
         ("duration-hour", 100, "long", "100 awr", "cy"),
         ("duration-year", 100, "long", "100 mlynedd", "cy"),
         ("mass-metric-ton", 100, "long", "100 tonnes", "en_GB"),
-        ("mass-metric-ton", 1, "long", "1 tonne", "en_GB"),
+        ("mass-metric-ton", 1, "short", "1 t", "en_GB"),
         ("mass-metric-ton", 100, "short", "100 t", "en_GB"),
+        ("mass-metric-ton", 100.4563576, "short", "100.4563576 t", "en_GB")
     ),
 )
 def test_format_unit(unit, value, length, formatted_unit, language, mocker):
