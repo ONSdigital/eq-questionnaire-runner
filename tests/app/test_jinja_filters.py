@@ -156,6 +156,7 @@ def test_format_percentage(percentage, formatted_percentage):
         ("duration-year", 100, "long", "100 mlynedd", "cy"),
         ("mass-metric-ton", 100, "long", "100 tonnes", "en_GB"),
         ("mass-metric-ton", 1, "short", "1 t", "en_GB"),
+        ("mass-metric-ton", 1, "long", "1 tonne", "en_GB"),
         ("mass-metric-ton", 100, "short", "100 t", "en_GB"),
         ("mass-metric-ton", 100.4563576, "short", "100.4563576 t", "en_GB"),
     ),
