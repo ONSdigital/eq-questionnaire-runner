@@ -12,15 +12,19 @@ class ListContentContext(Context):
         summary_definition: Mapping[str, Any],
         content_definition: ImmutableDict,
         for_list: str,
+        section_id: str,
+        has_repeating_blocks: bool,
         return_to: Optional[str] = None,
         for_list_item_ids: Optional[Sequence[str]] = None,
     ) -> dict[str, Any]:
         list_items = (
             list(
                 self._build_list_items_context(
-                    for_list,
-                    summary_definition,
-                    for_list_item_ids,
+                    for_list=for_list,
+                    section_id=section_id,
+                    has_repeating_blocks=has_repeating_blocks,
+                    summary_definition=summary_definition,
+                    for_list_item_ids=for_list_item_ids,
                 )
             )
             if summary_definition
@@ -37,10 +41,13 @@ class ListContentContext(Context):
 
     def _build_list_items_context(
         self,
+        *,
         for_list: str,
-        summary_definition: Mapping[str, Any],
-        for_list_item_ids: Optional[Sequence[str]],
-    ) -> Generator[dict[str, Any], Any, None]:
+        section_id: str,
+        has_repeating_blocks: bool,
+        summary_definition: Mapping,
+        for_list_item_ids: Sequence[str] | None,
+    ) -> Generator[dict, None, None]:
         list_item_ids = self._list_store[for_list]
         if for_list_item_ids:
             list_item_ids = [
@@ -50,12 +57,17 @@ class ListContentContext(Context):
             ]
 
         for list_item_id in list_item_ids:
+
             yield {
                 "item_title": self._get_item_title(
                     summary_definition, list_item_id, False
                 ),
                 "primary_person": False,
                 "list_item_id": list_item_id,
+                "is_complete": self._progress_store.is_section_or_repeating_blocks_progress_complete(
+                    section_id=section_id, list_item_id=list_item_id
+                ),
+                "repeating_blocks": has_repeating_blocks,
             }
 
     def _get_item_title(

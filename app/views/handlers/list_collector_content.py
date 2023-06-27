@@ -1,3 +1,7 @@
+from functools import cached_property
+
+from flask import url_for
+
 from app.views.contexts.list_content_context import ListContentContext
 from app.views.handlers.question import Question
 
@@ -6,6 +10,16 @@ class ListCollectorContent(Question):
     def __init__(self, *args):
         self._is_adding = False
         super().__init__(*args)
+
+    @cached_property
+    def repeating_block_ids(self) -> list[str]:
+        return [
+            block["id"] for block in self.rendered_block.get("repeating_blocks", [])
+        ]
+
+    @cached_property
+    def list_name(self) -> str:
+        return self.rendered_block["for_list"]
 
     def get_context(self):
         list_context = ListContentContext(
@@ -22,19 +36,29 @@ class ListCollectorContent(Question):
             **list_context(
                 summary_definition=self.rendered_block["summary"],
                 content_definition=self.rendered_block["content"],
+                section_id=self.current_location.section_id,
                 for_list=self.rendered_block["for_list"],
                 return_to=self._return_to,
+                has_repeating_blocks=bool(self.repeating_block_ids),
             ),
         }
 
     def get_next_location_url(self):
-        return self.router.get_next_location_url(
-            self._current_location,
-            self._routing_path,
-            self._return_to,
-            self._return_to_answer_id,
-            self._return_to_block_id,
-        )
+        if incomplete_block := self.get_first_incomplete_repeating_block_location(
+            repeating_block_ids=self.repeating_block_ids,
+            section_id=self.current_location.section_id,
+            list_name=self.list_name,
+        ):
+            return url_for(
+                "questionnaire.block",
+                list_name=self.list_name,
+                list_item_id=incomplete_block.list_item_id,
+                block_id=incomplete_block.block_id,
+                return_to=self._return_to,
+                return_to_answer_id=self._return_to_answer_id,
+                return_to_block_id=self._return_to_block_id,
+            )
+        return super().get_next_location_url()
 
     def handle_post(self):
         self._set_started_at_metadata()

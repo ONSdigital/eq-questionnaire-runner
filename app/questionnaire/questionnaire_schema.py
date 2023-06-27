@@ -277,7 +277,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
                 blocks[block_id] = block
                 if block["type"] in (
-                    "ListCollector",
+                    "ListCollector"
+                    "ListCollectorContent",
                     "PrimaryPersonListCollector",
                     "RelationshipCollector",
                 ):
@@ -992,7 +993,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @staticmethod
     def is_list_block_type(block_type: str) -> bool:
-        list_blocks = ["ListCollector"] + LIST_COLLECTOR_CHILDREN
+        list_blocks = ["ListCollector", "ListCollectorContent"] + LIST_COLLECTOR_CHILDREN
         return block_type in list_blocks
 
     @staticmethod
@@ -1048,7 +1049,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         if (
             parent_block
-            and parent_block["type"] == "ListCollector"
+            and parent_block["type"] in ["ListCollector", "ListCollectorContent"]
             and block_id not in self._repeating_block_ids
         ):
             return parent_block
