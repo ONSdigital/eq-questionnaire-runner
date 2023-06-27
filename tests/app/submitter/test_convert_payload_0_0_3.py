@@ -1603,6 +1603,7 @@ def test_repeating_block_answers_present(
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     expected_answer_codes = [
