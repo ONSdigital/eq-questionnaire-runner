@@ -78,13 +78,13 @@ def format_unit(
     # mass-metric-ton no longer supported for en_GB and related locales, but still present in business schema and allowed in validator,
     # until removed from schema we substitute mass-tonne for mass-metric-ton before format unit
     measurement_unit = "mass-tonne" if unit == "mass-metric-ton" else unit
-
+    formatted_value = value if value in [1, 2, ""] else 0
     formatted_unit: str = units.format_unit(
-        value=0,
+        value=formatted_value,
         measurement_unit=measurement_unit,
         length=length,
         locale=flask_babel.get_locale(),
-    ).replace("0", str(value))
+    ).replace(str(formatted_value), str(value))
 
     return formatted_unit
 

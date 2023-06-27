@@ -123,7 +123,9 @@ class PlaceholderTransforms:
 
     def format_number(self, number: int | Decimal | str) -> str:
         if number or number == 0:
-            formatted_decimal: str = format_decimal(number, locale=self.locale, decimal_quantization=False)
+            formatted_decimal: str = format_decimal(
+                number, locale=self.locale, decimal_quantization=False
+            )
             return formatted_decimal
 
         return ""
@@ -139,12 +141,13 @@ class PlaceholderTransforms:
         unit_length: Literal["short", "long", "narrow"] | None = None,
     ) -> str:
         length = unit_length or "short"
+        formatted_value = value if value in [1, 2, ""] else 0
         formatted_unit: str = units.format_unit(
-            value=0,
+            value=formatted_value,
             measurement_unit=unit,
             length=length,
             locale=self.locale,
-        ).replace("0", str(value))
+        ).replace(str(formatted_value), str(value))
         return formatted_unit
 
     @staticmethod
