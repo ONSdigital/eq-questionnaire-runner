@@ -134,7 +134,7 @@ def login() -> Response:
         get_supplementary_data(
             dataset_id=dataset_id,
             unit_id=metadata["ru_ref"] or metadata["qid"],  # type: ignore
-            survey_id=metadata["survey_id"],  # type: ignore
+            survey_id=g.schema.json["survey_id"],  # type: ignore
         )
 
     return redirect(url_for("questionnaire.get_questionnaire"))
@@ -203,8 +203,8 @@ def get_signed_out() -> Response | str:
 
     survey_config = get_survey_config()
     redirect_url = (
-        survey_config.account_service_todo_url
-        or survey_config.account_service_log_out_url
+            survey_config.account_service_todo_url
+            or survey_config.account_service_log_out_url
     )
     return render_template(
         template="signed-out",
@@ -226,7 +226,7 @@ def get_runner_claims(decrypted_token: Mapping[str, Any]) -> dict:
 
 
 def get_questionnaire_claims(
-    decrypted_token: Mapping, schema_metadata: Iterable[Mapping[str, str]]
+        decrypted_token: Mapping, schema_metadata: Iterable[Mapping[str, str]]
 ) -> dict:
     try:
         if decrypted_token.get("version") == AuthPayloadVersion.V2.value:
