@@ -100,11 +100,36 @@ class ValueSourceResolver:
             else None
         )
 
+    def _resolve_dynamic_answers(
+        self,
+        answer_id: str,
+    ) -> list[AnswerValueTypes]:
+        # Type ignore: the answer block will exist at this stage
+        question = self.schema.get_block_for_answer_id(answer_id).get("question", {})  # type: ignore
+        answer_values: list[AnswerValueTypes] = []
+
+        if dynamic_answers := question.get("dynamic_answers"):
+            values = dynamic_answers["values"]
+            if values["source"] == "list":
+                for list_item_id in self.list_store[values["identifier"]]:
+                    if answer_value := self._get_answer_value(
+                        answer_id=answer_id, list_item_id=list_item_id
+                    ):
+                        answer_values.append(answer_value)
+        return answer_values
+
     def _resolve_answer_value_source(
         self, value_source: Mapping
     ) -> ValueSourceEscapedTypes | ValueSourceTypes:
+        """resolves answer value by first checking if the answer is dynamic whilst not in a repeating section,
+        which indicates that it is a dynamic answer resolving to a list. Otherwise, retrieve answer value as normal.
+        """
         list_item_id = self._resolve_list_item_id_for_value_source(value_source)
         answer_id = value_source["identifier"]
+
+        # if not in a repeating section and the id is for a list of dynamic answers, then return the list of values
+        if not list_item_id and self.schema.is_answer_dynamic(answer_id):
+            return self._resolve_dynamic_answers(answer_id)
 
         answer_value = self._get_answer_value(
             answer_id=answer_id, list_item_id=list_item_id
@@ -130,7 +155,7 @@ class ValueSourceResolver:
         if selector == "section":
             # List item id is set to None here as we do not support checking progress value sources for
             # repeating sections
-            return self.progress_store.get_section_status(
+            return self.progress_store.get_section_or_repeating_blocks_progress_status(
                 section_id=identifier, list_item_id=None
             )
 

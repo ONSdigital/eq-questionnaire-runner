@@ -1,5 +1,5 @@
 from functools import partial
-from typing import Any, Generator, Mapping, Optional, Sequence
+from typing import Any, Generator, Mapping, Sequence
 
 from flask import url_for
 from flask_babel import lazy_gettext
@@ -10,24 +10,28 @@ from app.views.contexts.context import Context
 class ListContext(Context):
     def __call__(
         self,
-        summary_definition: Mapping[str, Any],
+        summary_definition: Mapping,
         for_list: str,
-        return_to: Optional[str] = None,
-        edit_block_id: Optional[str] = None,
-        remove_block_id: Optional[str] = None,
-        primary_person_edit_block_id: Optional[str] = None,
-        for_list_item_ids: Optional[Sequence[str]] = None,
+        section_id: str,
+        has_repeating_blocks: bool,
+        return_to: str | None = None,
+        edit_block_id: str | None = None,
+        remove_block_id: str | None = None,
+        primary_person_edit_block_id: str | None = None,
+        for_list_item_ids: Sequence[str] | None = None,
     ) -> dict[str, Any]:
         list_items = (
             list(
                 self._build_list_items_context(
-                    for_list,
-                    return_to,
-                    summary_definition,
-                    edit_block_id,
-                    remove_block_id,
-                    primary_person_edit_block_id,
-                    for_list_item_ids,
+                    for_list=for_list,
+                    section_id=section_id,
+                    has_repeating_blocks=has_repeating_blocks,
+                    return_to=return_to,
+                    summary_definition=summary_definition,
+                    edit_block_id=edit_block_id,
+                    remove_block_id=remove_block_id,
+                    primary_person_edit_block_id=primary_person_edit_block_id,
+                    for_list_item_ids=for_list_item_ids,
                 )
             )
             if summary_definition
@@ -41,16 +45,20 @@ class ListContext(Context):
             }
         }
 
+    # pylint: disable=too-many-locals
     def _build_list_items_context(
         self,
+        *,
         for_list: str,
-        return_to: Optional[str],
-        summary_definition: Mapping[str, Any],
-        edit_block_id: Optional[str],
-        remove_block_id: Optional[str],
-        primary_person_edit_block_id: Optional[str],
-        for_list_item_ids: Optional[Sequence[str]],
-    ) -> Generator[dict[str, Any], Any, None]:
+        section_id: str,
+        has_repeating_blocks: bool,
+        return_to: str | None,
+        summary_definition: Mapping,
+        edit_block_id: str | None,
+        remove_block_id: str | None,
+        primary_person_edit_block_id: str | None,
+        for_list_item_ids: Sequence[str] | None,
+    ) -> Generator[dict, None, None]:
         list_item_ids = self._list_store[for_list]
         if for_list_item_ids:
             list_item_ids = [
@@ -77,6 +85,10 @@ class ListContext(Context):
                 ),
                 "primary_person": is_primary,
                 "list_item_id": list_item_id,
+                "is_complete": self._progress_store.is_section_or_repeating_blocks_progress_complete(
+                    section_id=section_id, list_item_id=list_item_id
+                ),
+                "repeating_blocks": has_repeating_blocks,
             }
 
             if edit_block_id:
@@ -99,7 +111,7 @@ class ListContext(Context):
     def _get_item_title(
         self,
         summary_definition: Mapping[str, Any],
-        list_item_id: Optional[str],
+        list_item_id: str | None,
         is_primary: bool,
     ) -> str:
         rendered_summary: dict[str, Any] = self._placeholder_renderer.render(
