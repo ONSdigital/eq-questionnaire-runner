@@ -102,15 +102,17 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return ImmutableDict(self._answer_dependencies_map)
 
     def _populate_min_max_map(self) -> None:
-        for answer in self._answers_by_id.items():
+        for answer_id, answer in self._answers_by_id.items():
             if (answer_type := answer[0].get("type")) and answer_type not in [
                 "Date",
                 "MonthYearDate",
                 "YearDate",
             ]:
-                answer_to_search_for_min_max = answer[0]
+                answer_to_search_for_min_max = self.get_answers_by_answer_id(answer_id)[
+                    0
+                ]
                 for item in ["minimum", "maximum"]:
-                    if item in answer_to_search_for_min_max and not isinstance(
+                    if item in answer[0] and not isinstance(
                         answer_to_search_for_min_max[item]["value"], int
                     ):
                         if (
