@@ -109,16 +109,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 "YearDate",
             ]:
                 for item in ["minimum", "maximum"]:
-                    if item in answer[0] and not isinstance(
-                        answer[item]["value"], int
-                    ):
-                        if (
-                            answer[item]["value"]["source"]
-                            == "answers"
-                        ):
-                            min_max_answer_id = answer[item][
-                                "value"
-                            ]["identifier"]
+                    if item in answer[0] and not isinstance(answer[item]["value"], int):
+                        if answer[item]["value"]["source"] == "answers":
+                            min_max_answer_id = answer[item]["value"]["identifier"]
                             self.min_and_max_map[min_max_answer_id] = (
                                 self.get_answers_by_answer_id(min_max_answer_id)[0]
                                 .get(item, {})
