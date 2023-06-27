@@ -113,11 +113,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                         if isinstance(value, int):
                             self.min_and_max_map[answer_id] = str(value)
                         elif isinstance(value, dict) and value:
-                            if value.get("source") == "answers":
-                                if value["identifier"] in self.min_and_max_map:
-                                    self.min_and_max_map[
-                                        answer_id
-                                    ] = self.min_and_max_map[value["identifier"]]
+                            if (
+                                value.get("source") == "answers"
+                                and value["identifier"] in self.min_and_max_map
+                            ):
+                                self.min_and_max_map[answer_id] = self.min_and_max_map[
+                                    value["identifier"]
+                                ]
 
     @cached_property
     def when_rules_section_dependencies_by_section(
