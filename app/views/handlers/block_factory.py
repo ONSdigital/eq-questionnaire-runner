@@ -11,6 +11,7 @@ from app.views.handlers.calculation_summary import (
 from app.views.handlers.content import Content
 from app.views.handlers.list_add_question import ListAddQuestion
 from app.views.handlers.list_collector import ListCollector
+from app.views.handlers.list_collector_content import ListCollectorContent
 from app.views.handlers.list_edit_question import ListEditQuestion
 from app.views.handlers.list_remove_question import ListRemoveQuestion
 from app.views.handlers.list_repeating_question import ListRepeatingQuestion
@@ -24,6 +25,7 @@ BLOCK_MAPPINGS = {
     "ConfirmationQuestion": Question,
     "ListCollectorDrivingQuestion": Question,
     "ListCollector": ListCollector,
+    "ListCollectorContent": ListCollectorContent,
     "ListAddQuestion": ListAddQuestion,
     "ListEditQuestion": ListEditQuestion,
     "ListRemoveQuestion": ListRemoveQuestion,
