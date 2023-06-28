@@ -3,7 +3,7 @@ from collections import defaultdict
 from copy import deepcopy
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Any, Generator, Iterable, Mapping, Sequence, TypeAlias
+from typing import Any, Generator, Iterable, Literal, Mapping, Sequence, TypeAlias
 
 from flask_babel import force_locale
 from ordered_set import OrderedSet
@@ -101,6 +101,19 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def answer_dependencies(self) -> ImmutableDict[str, set[AnswerDependent]]:
         return ImmutableDict(self._answer_dependencies_map)
 
+    def _append_to_min_max_map(self, min_max: Literal["minimum", "maximum"], answer_id: str, answers: dict) -> None:
+        if value := answers[0].get(min_max, {}).get("value"):
+            if isinstance(value, int):
+                self.min_and_max_map[answer_id] = str(value)
+            elif isinstance(value, dict) and value:
+                if (
+                    value.get("source") == "answers"
+                    and value["identifier"] in self.min_and_max_map
+                ):
+                    self.min_and_max_map[answer_id] = self.min_and_max_map[
+                        value["identifier"]
+                    ]
+
     def _populate_min_max_map(self) -> None:
         for answer_id, answers in self._answers_by_id.items():
             if (answer_type := answers[0].get("type")) and answer_type not in [
@@ -108,18 +121,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 "MonthYearDate",
                 "YearDate",
             ]:
-                for min_max in ["minimum", "maximum"]:
-                    if value := answers[0].get(min_max, {}).get("value"):
-                        if isinstance(value, int):
-                            self.min_and_max_map[answer_id] = str(value)
-                        elif isinstance(value, dict) and value:
-                            if (
-                                value.get("source") == "answers"
-                                and value["identifier"] in self.min_and_max_map
-                            ):
-                                self.min_and_max_map[answer_id] = self.min_and_max_map[
-                                    value["identifier"]
-                                ]
+                self._append_to_min_max_map("minimum", answer_id, answers)
+                self._append_to_min_max_map("maximum", answer_id, answers)
 
     @cached_property
     def when_rules_section_dependencies_by_section(
