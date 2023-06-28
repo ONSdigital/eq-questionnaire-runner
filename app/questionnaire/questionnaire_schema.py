@@ -101,7 +101,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def answer_dependencies(self) -> ImmutableDict[str, set[AnswerDependent]]:
         return ImmutableDict(self._answer_dependencies_map)
 
-    def _append_to_min_max_map(self, min_max: Literal["minimum", "maximum"], answer_id: str, answers: list) -> None:
+    def _append_to_min_max_map(
+        self, min_max: Literal["minimum", "maximum"], answer_id: str, answers: list
+    ) -> None:
         if value := answers[0].get(min_max, {}).get("value"):
             if isinstance(value, int):
                 self.min_and_max_map[answer_id] = str(value)
