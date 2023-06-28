@@ -105,7 +105,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for answer_id, answers in self._answers_by_id.items():
             for min_max in ["minimum", "maximum"]:
                 if (
-                    value := answers[0].get(min_max, {}).get("value")
+                    (value := answers[0].get(min_max, {}).get("value"))
                     and (answer_type := answers[0].get("type"))
                     and answer_type
                     not in [
