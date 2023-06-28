@@ -1,4 +1,5 @@
 from collections import abc
+from app.utilities.schema import load_schema_from_name
 
 import pytest
 from ordered_set import OrderedSet
@@ -25,6 +26,23 @@ def test_schema_json_is_immutable_and_hashable(question_schema):
 
     assert str(e.value) == "'ImmutableDict' objects are immutable"
     assert_all_dict_values_are_hashable(json)
+
+
+def test_schema_min_max_populate():
+    schema = load_schema_from_name("test_numbers")
+    assert schema._populate_min_max_map() == {
+        "set-minimum": "True",
+        "set-maximum": "True",
+        "test-range": "True",
+        "test-range-exclusive": "True",
+        "test-min": "True",
+        "test-max": "True",
+        "test-min-exclusive": "True",
+        "test-max-exclusive": "True",
+        "test-percent": "True",
+        "test-decimal": "True",
+        "test-answer": "True",
+    }
 
 
 def test_schema_attributes_returns_hashable_values(question_schema):

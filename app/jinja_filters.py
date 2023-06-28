@@ -260,7 +260,7 @@ def get_min_max_values(
 
     if answer.get(min_max, {}) and isinstance(answer[min_max]["value"], dict):
         if (
-            identifier := answer[min_max]["value"].get("identifier", None)
+            identifier := answer[min_max]["value"].get("identifier")
         ) in schema.min_and_max_map:
             return len(str(schema.min_and_max_map[identifier]))
 
