@@ -30,18 +30,18 @@ def test_schema_json_is_immutable_and_hashable(question_schema):
 
 def test_schema_min_max_populate():
     schema = load_schema_from_name("test_numbers")
-    assert schema._populate_min_max_map() == {
-        "set-minimum": "True",
-        "set-maximum": "True",
-        "test-range": "True",
-        "test-range-exclusive": "True",
-        "test-min": "True",
-        "test-max": "True",
-        "test-min-exclusive": "True",
-        "test-max-exclusive": "True",
-        "test-percent": "True",
-        "test-decimal": "True",
-        "test-answer": "True",
+    assert schema.min_and_max_map == {
+        "set-minimum": "1000",
+        "set-maximum": "10000",
+        "test-range": "10000",
+        "test-range-exclusive": "10000",
+        "test-min": "-123",
+        "test-max": "1234",
+        "test-min-exclusive": "123",
+        "test-max-exclusive": "1234",
+        "test-percent": "100",
+        "test-decimal": "10000",
+        "other-answer": "10000",
     }
 
 

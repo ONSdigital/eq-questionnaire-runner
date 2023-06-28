@@ -103,27 +103,23 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _populate_min_max_map(self) -> None:
         for answer_id, answers in self._answers_by_id.items():
-            for min_max in ["minimum", "maximum"]:
-                if (
-                    (value := answers[0].get(min_max, {}).get("value"))
-                    and (answer_type := answers[0].get("type"))
-                    and answer_type
-                    not in [
-                        "Date",
-                        "MonthYearDate",
-                        "YearDate",
-                    ]
-                ):
-                    if isinstance(value, int):
-                        self.min_and_max_map[answer_id] = str(value)
-                    elif isinstance(value, dict) and value:
-                        if (
-                            value.get("source") == "answers"
-                            and value["identifier"] in self.min_and_max_map
-                        ):
-                            self.min_and_max_map[answer_id] = self.min_and_max_map[
-                                value["identifier"]
-                            ]
+            if (answer_type := answers[0].get("type")) and answer_type not in [
+                "Date",
+                "MonthYearDate",
+                "YearDate",
+            ]:
+                for min_max in ["minimum", "maximum"]:
+                    if value := answers[0].get(min_max, {}).get("value"):
+                        if isinstance(value, int):
+                            self.min_and_max_map[answer_id] = str(value)
+                        elif isinstance(value, dict) and value:
+                            if (
+                                value.get("source") == "answers"
+                                and value["identifier"] in self.min_and_max_map
+                            ):
+                                self.min_and_max_map[answer_id] = self.min_and_max_map[
+                                    value["identifier"]
+                                ]
 
     @cached_property
     def when_rules_section_dependencies_by_section(
