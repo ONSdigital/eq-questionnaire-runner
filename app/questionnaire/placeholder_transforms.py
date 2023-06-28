@@ -9,6 +9,7 @@ from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
+from app.jinja_filters import format_number
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.rules.operations import DateOffset
 from app.questionnaire.rules.operations_helper import OperationHelper
@@ -147,7 +148,7 @@ class PlaceholderTransforms:
             measurement_unit=unit,
             length=length,
             locale=self.locale,
-        ).replace(str(formatted_value), str(value))
+        ).replace(str(formatted_value), str(format_number(value)))
         return formatted_unit
 
     @staticmethod

@@ -84,7 +84,7 @@ def format_unit(
         measurement_unit=measurement_unit,
         length=length,
         locale=flask_babel.get_locale(),
-    ).replace(str(formatted_value), str(value))
+    ).replace(str(formatted_value), str(format_number(value)))
 
     return formatted_unit
 

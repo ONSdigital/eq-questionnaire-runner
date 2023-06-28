@@ -63,7 +63,7 @@ def test_format_percentage(value, expected, transformer):
             "millimeter",
             Decimal(0.123),
             "short",
-            "0.1229999999999999982236431605997495353221893310546875 mm",
+            "0.1229999999999999982236431606 mm",
         ),
         ("centimeter", "123", "short", "123 cm"),
         ("kilometer", "123", "long", "123 kilometres"),
@@ -73,8 +73,9 @@ def test_format_percentage(value, expected, transformer):
         ("mile", "123.456789", None, "123.456789 mi"),
     ),
 )
-def test_format_unit(unit, value, unit_length, expected, transformer):
-    assert transformer().format_unit(unit, value, unit_length) == expected
+def test_format_unit(unit, value, unit_length, expected, transformer, app):
+    with app.app_context():
+        assert transformer().format_unit(unit, value, unit_length) == expected
 
 
 def test_format_list(transformer):
