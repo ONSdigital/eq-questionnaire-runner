@@ -1,11 +1,11 @@
 from collections import abc
-from app.utilities.schema import load_schema_from_name
 
 import pytest
 from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
+from app.utilities.schema import load_schema_from_name
 
 
 def assert_all_dict_values_are_hashable(data):
