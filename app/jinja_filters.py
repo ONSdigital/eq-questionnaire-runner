@@ -75,12 +75,17 @@ def format_unit(
     value: int | float | Decimal,
     length: UnitLengthType = "short",
 ) -> str:
+    # mass-metric-ton no longer supported for en_GB and related locales, but still present in business schema and allowed in validator,
+    # until removed from schema we substitute mass-tonne for mass-metric-ton before format unit
+    measurement_unit = "mass-tonne" if unit == "mass-metric-ton" else unit
+
     formatted_unit: str = units.format_unit(
         value=value,
-        measurement_unit=unit,
+        measurement_unit=measurement_unit,
         length=length,
         locale=flask_babel.get_locale(),
     )
+
     return formatted_unit
 
 
@@ -93,20 +98,15 @@ def format_unit_input_label(unit: str, unit_length: UnitLengthType = "short") ->
     :param (str) unit_length length of unit text, can be one of short/long/narrow
     """
     unit_label: str
+
     if unit_length == "long":
-        unit_label = units.format_unit(
-            value=2,
-            measurement_unit=unit,
-            length=unit_length,
-            locale=flask_babel.get_locale(),
-        ).replace("2 ", "")
+        unit_label = format_unit(value=2, unit=unit, length=unit_length).replace(
+            "2 ", ""
+        )
     else:
         # Type ignore: We pass an empty string  as the value so that we just return the unit label
-        unit_label = units.format_unit(
-            value="",  # type: ignore
-            measurement_unit=unit,
-            length=unit_length,
-            locale=flask_babel.get_locale(),
+        unit_label = format_unit(
+            value="", unit=unit, length=unit_length  # type: ignore
         ).strip()
 
     return unit_label
