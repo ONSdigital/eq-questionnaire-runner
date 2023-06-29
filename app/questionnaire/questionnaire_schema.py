@@ -118,7 +118,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _populate_mix_max_for_numeric_answers(self) -> None:
         for answer_id, answers in self._answers_by_id.items():
-            if (answer_type := answers[0].get("type")) and answer_type in [
+            if (answer_type := answers[0]["type"]) and answer_type in [
                 "Currency",
                 "Duration",
                 "Number",
