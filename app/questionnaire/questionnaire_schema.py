@@ -118,10 +118,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _populate_mix_max_for_numeric_answers(self) -> None:
         for answer_id, answers in self._answers_by_id.items():
-            if (answer_type := answers[0].get("type")) and answer_type not in [
-                "Date",
-                "MonthYearDate",
-                "YearDate",
+            if (answer_type := answers[0].get("type")) and answer_type in [
+                "Currency",
+                "Duration",
+                "Number",
+                "Percentage",
+                "Unit",
             ]:
                 self._append_to_min_max_map("minimum", answer_id, answers)
                 self._append_to_min_max_map("maximum", answer_id, answers)
