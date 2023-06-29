@@ -124,7 +124,7 @@ def test_custom_section(
 
 
 @pytest.mark.usefixtures("app")
-def test_context_for_section_list_summary(people_answer_store):
+def test_context_for_section_list_summary(people_answer_store, progress_store):
     schema = load_schema_from_name("test_list_collector_list_summary")
 
     summary_context = SectionSummaryContext(
@@ -137,7 +137,7 @@ def test_context_for_section_list_summary(people_answer_store):
                 {"items": ["gTrlio"], "name": "visitors"},
             ]
         ),
-        progress_store=ProgressStore(),
+        progress_store=progress_store,
         metadata=get_metadata({"display_address": "70 Abingdon Road, Goathill"}),
         response_metadata={},
         current_location=Location(section_id="section"),
@@ -172,6 +172,8 @@ def test_context_for_section_list_summary(people_answer_store):
                                 "list_item_id": "PlwgoG",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=section-summary",
+                                "is_complete": False,
+                                "repeating_blocks": False,
                             },
                             {
                                 "edit_link": "/questionnaire/people/UHPLbX/edit-person/?return_to=section-summary",
@@ -179,6 +181,8 @@ def test_context_for_section_list_summary(people_answer_store):
                                 "list_item_id": "UHPLbX",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/people/UHPLbX/remove-person/?return_to=section-summary",
+                                "is_complete": False,
+                                "repeating_blocks": False,
                             },
                         ],
                     },
@@ -202,6 +206,8 @@ def test_context_for_section_list_summary(people_answer_store):
                                 "list_item_id": "gTrlio",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/visitors/gTrlio/remove-visitor/?return_to=section-summary",
+                                "is_complete": False,
+                                "repeating_blocks": False,
                             }
                         ],
                     },
@@ -222,7 +228,9 @@ def test_context_for_section_list_summary(people_answer_store):
 
 # pylint: disable=line-too-long
 @pytest.mark.usefixtures("app")
-def test_context_for_section_summary_with_list_summary(companies_answer_store):
+def test_context_for_section_summary_with_list_summary(
+    companies_answer_store, progress_store
+):
     schema = load_schema_from_name("test_list_collector_section_summary")
 
     summary_context = SectionSummaryContext(
@@ -234,7 +242,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                 {"items": ["PlwgoG", "UHPLbX"], "name": "companies"},
             ]
         ),
-        progress_store=ProgressStore(),
+        progress_store=progress_store,
         metadata=None,
         response_metadata={},
         current_location=Location(section_id="section-companies"),
@@ -277,6 +285,8 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                                 "list_item_id": "PlwgoG",
                                                 "primary_person": False,
                                                 "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
+                                                "is_complete": False,
+                                                "repeating_blocks": False,
                                             },
                                             {
                                                 "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
@@ -284,6 +294,8 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
                                                 "list_item_id": "UHPLbX",
                                                 "primary_person": False,
                                                 "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
+                                                "is_complete": False,
+                                                "repeating_blocks": False,
                                             },
                                         ],
                                     },
@@ -404,7 +416,7 @@ def test_context_for_section_summary_with_list_summary(companies_answer_store):
 
 @pytest.mark.usefixtures("app")
 def test_context_for_section_summary_with_list_summary_and_first_variant(
-    companies_variants_answer_store_first_variant,
+    companies_variants_answer_store_first_variant, progress_store
 ):
     schema = load_schema_from_name("test_list_collector_variants_section_summary")
 
@@ -417,7 +429,7 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                 {"items": ["PlwgoG", "UHPLbX"], "name": "companies"},
             ]
         ),
-        progress_store=ProgressStore(),
+        progress_store=progress_store,
         metadata=None,
         response_metadata={},
         current_location=Location(section_id="section-companies"),
@@ -460,6 +472,8 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                                                 "list_item_id": "PlwgoG",
                                                 "primary_person": False,
                                                 "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
+                                                "is_complete": False,
+                                                "repeating_blocks": False,
                                             },
                                             {
                                                 "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
@@ -467,6 +481,8 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                                                 "list_item_id": "UHPLbX",
                                                 "primary_person": False,
                                                 "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
+                                                "is_complete": False,
+                                                "repeating_blocks": False,
                                             },
                                         ],
                                     },
@@ -587,7 +603,7 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
 
 @pytest.mark.usefixtures("app")
 def test_context_for_section_summary_with_list_summary_and_second_variant(
-    companies_variants_answer_store_second_variant,
+    companies_variants_answer_store_second_variant, progress_store
 ):
     schema = load_schema_from_name("test_list_collector_variants_section_summary")
 
@@ -600,7 +616,7 @@ def test_context_for_section_summary_with_list_summary_and_second_variant(
                 {"items": ["PlwgoG", "UHPLbX"], "name": "companies"},
             ]
         ),
-        progress_store=ProgressStore(),
+        progress_store=progress_store,
         metadata=None,
         response_metadata={},
         current_location=Location(section_id="section-companies"),
@@ -643,6 +659,8 @@ def test_context_for_section_summary_with_list_summary_and_second_variant(
                                                 "list_item_id": "PlwgoG",
                                                 "primary_person": False,
                                                 "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
+                                                "is_complete": False,
+                                                "repeating_blocks": False,
                                             },
                                             {
                                                 "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
@@ -650,6 +668,8 @@ def test_context_for_section_summary_with_list_summary_and_second_variant(
                                                 "list_item_id": "UHPLbX",
                                                 "primary_person": False,
                                                 "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
+                                                "is_complete": False,
+                                                "repeating_blocks": False,
                                             },
                                         ],
                                     },
@@ -812,7 +832,7 @@ def test_context_for_driving_question_summary_empty_list():
 
 
 @pytest.mark.usefixtures("app")
-def test_context_for_driving_question_summary():
+def test_context_for_driving_question_summary(progress_store):
     schema = load_schema_from_name("test_list_collector_driving_question")
 
     summary_context = SectionSummaryContext(
@@ -830,7 +850,7 @@ def test_context_for_driving_question_summary():
             ]
         ),
         ListStore([{"items": ["PlwgoG"], "name": "people"}]),
-        ProgressStore(),
+        progress_store,
         metadata=None,
         response_metadata={},
         current_location=Location(section_id="section"),
@@ -861,6 +881,8 @@ def test_context_for_driving_question_summary():
                                 "list_item_id": "PlwgoG",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=section-summary",
+                                "is_complete": False,
+                                "repeating_blocks": False,
                             }
                         ],
                     },

@@ -12,8 +12,12 @@ from werkzeug.exceptions import Unauthorized
 from werkzeug.wrappers.response import Response
 
 from app.authentication.auth_payload_versions import AuthPayloadVersion
-from app.authentication.authenticator import decrypt_token, store_session
+from app.authentication.authenticator import (
+    create_session_questionnaire_store,
+    decrypt_token,
+)
 from app.authentication.jti_claim_storage import JtiTokenUsed, use_jti_claim
+from app.data_models import QuestionnaireStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_session_store, get_session_timeout_in_seconds
 from app.helpers.template_helpers import (
@@ -113,7 +117,8 @@ def login() -> Response:
 
     logger.info("decrypted token and parsed metadata")
 
-    store_session(claims)
+    with create_session_questionnaire_store(claims) as questionnaire_store:
+        _set_questionnaire_supplementary_data(questionnaire_store, metadata)
 
     cookie_session["expires_in"] = get_session_timeout_in_seconds(g.schema)
 
@@ -129,15 +134,41 @@ def login() -> Response:
 
     cookie_session["language_code"] = metadata.language_code
 
-    # Type ignore: survey_id and either ru_ref or qid are required for schemas that use supplementary data
-    if dataset_id := metadata["sds_dataset_id"]:
-        get_supplementary_data(
-            dataset_id=dataset_id,
-            unit_id=metadata["ru_ref"] or metadata["qid"],  # type: ignore
-            survey_id=metadata["survey_id"],  # type: ignore
-        )
-
     return redirect(url_for("questionnaire.get_questionnaire"))
+
+
+def _set_questionnaire_supplementary_data(
+    questionnaire_store: QuestionnaireStore, metadata: MetadataProxy
+) -> None:
+    """
+    If the survey metadata has an sds dataset id, and it either doesn't match what it stored, or there is no stored supplementary data
+    then fetch it and add it to the store
+    """
+    if not (new_sds_dataset_id := metadata["sds_dataset_id"]):
+        return
+
+    existing_sds_dataset_id = (
+        questionnaire_store.metadata.survey_metadata["sds_dataset_id"]
+        if questionnaire_store.metadata and questionnaire_store.metadata.survey_metadata
+        else None
+    )
+
+    if existing_sds_dataset_id == new_sds_dataset_id:
+        # no need to fetch again
+        return
+
+    supplementary_data = get_supplementary_data(
+        # Type ignore: survey_id and either ru_ref or qid are required for schemas that use supplementary data
+        dataset_id=new_sds_dataset_id,
+        unit_id=metadata["ru_ref"] or metadata["qid"],  # type: ignore
+        survey_id=metadata["survey_id"],  # type: ignore
+    )
+    logger.info(
+        "fetched supplementary data",
+        survey_id=metadata["survey_id"],
+        sds_dataset_id=new_sds_dataset_id,
+    )
+    questionnaire_store.set_supplementary_data(supplementary_data["data"])
 
 
 def validate_jti(decrypted_token: dict[str, str | list | int]) -> None:

@@ -34,12 +34,7 @@ class ListAction(Question):
         return True
 
     def get_previous_location_url(self):
-        if (
-            self._return_to == "section-summary"
-            and self.router.can_display_section_summary(
-                self.parent_location.section_id, self.parent_location.list_item_id
-            )
-        ):
+        if self._is_returning_to_section_summary():
             return self.get_section_summary_url()
 
         block_id = self._request_args.get("previous")
@@ -56,11 +51,8 @@ class ListAction(Question):
         )
 
     def get_next_location_url(self):
-        if self._return_to == "section-summary":
-            if self.router.can_display_section_summary(
-                self.parent_location.section_id, self.parent_location.list_item_id
-            ):
-                return self.get_section_summary_url()
+        if self._is_returning_to_section_summary():
+            return self.get_section_summary_url()
 
         if self.router.is_block_complete(
             block_id=self.parent_location.block_id,
@@ -92,7 +84,6 @@ class ListAction(Question):
                 self.current_location.section_id, self.current_location.list_item_id
             )
             self.questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
-            self._update_section_completeness()
             self.questionnaire_store_updater.update_progress_for_dependent_sections()
             self.questionnaire_store_updater.save()
 
@@ -116,4 +107,12 @@ class ListAction(Question):
             return_to=return_to,
             return_to_answer_id=return_to_answer_id,
             return_to_block_id=return_to_block_id,
+        )
+
+    def _is_returning_to_section_summary(self) -> bool:
+        return (
+            self._return_to == "section-summary"
+            and self.router.can_display_section_summary(
+                self.parent_location.section_id, self.parent_location.list_item_id
+            )
         )

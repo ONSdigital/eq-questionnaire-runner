@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Any
+from typing import Any, Sequence
 
 from flask import url_for
 from flask_babel import gettext
@@ -202,8 +202,10 @@ class Question(BlockHandler):
 
     def get_list_summary_context(self):
         return self.list_context(
-            self.rendered_block["list_summary"]["summary"],
-            self.rendered_block["list_summary"]["for_list"],
+            summary_definition=self.rendered_block["list_summary"]["summary"],
+            for_list=self.rendered_block["list_summary"]["for_list"],
+            section_id=self.current_location.section_id,
+            has_repeating_blocks=bool(self.rendered_block.get("repeating_blocks")),
         )
 
     def handle_post(self):
@@ -231,10 +233,16 @@ class Question(BlockHandler):
         section_ids = self._schema.get_section_ids_dependent_on_list(list_name)
         section_ids.append(self.current_location.section_id)
 
-        section_keys_to_add = self.questionnaire_store_updater.started_section_keys(
+        for (
+            section_id,
+            list_item_id,
+        ) in self.questionnaire_store_updater.started_section_keys(
             section_ids=section_ids
-        )
-        for section_id, list_item_id in section_keys_to_add:
+        ):
+            # Only add sections which are repeated sections for this list, or the section in which this list is collected
+            # Prevents list item progresses being added as dependants as these are captured by started_section_keys(section_ids=section_ids)
+            if section_id == self.current_location.section_id and list_item_id:
+                continue
             self.questionnaire_store_updater.dependent_sections.add(
                 DependentSection(
                     section_id=section_id,
@@ -254,3 +262,45 @@ class Question(BlockHandler):
                 answer_ids_to_remove, self.current_location.list_item_id
             )
             self.questionnaire_store_updater.save()
+
+    def get_first_incomplete_repeating_block_location(
+        self, *, repeating_block_ids: Sequence[str], section_id: str, list_name: str
+    ) -> Location | None:
+        if not repeating_block_ids:
+            return None
+
+        list_model = self._questionnaire_store.list_store.get(list_name)
+        for list_item_id in list_model.items:
+            if incomplete_location := self.get_first_incomplete_repeating_block_location_for_list_item(
+                repeating_block_ids=repeating_block_ids,
+                section_id=section_id,
+                list_item_id=list_item_id,
+                list_name=list_name,
+            ):
+                return incomplete_location
+
+    def get_first_incomplete_repeating_block_location_for_list_item(
+        self,
+        *,
+        repeating_block_ids: Sequence[str],
+        section_id: str,
+        list_item_id: str,
+        list_name: str,
+    ) -> Location | None:
+        if self._questionnaire_store.progress_store.is_section_or_repeating_blocks_progress_complete(
+            section_id=section_id, list_item_id=list_item_id
+        ):
+            return None
+
+        for repeating_block_id in repeating_block_ids:
+            if not self.router.is_block_complete(
+                block_id=repeating_block_id,
+                section_id=section_id,
+                list_item_id=list_item_id,
+            ):
+                return Location(
+                    section_id=section_id,
+                    block_id=repeating_block_id,
+                    list_name=list_name,
+                    list_item_id=list_item_id,
+                )

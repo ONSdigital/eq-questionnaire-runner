@@ -212,12 +212,18 @@ class CalculatedSummaryContext(Context):
         ]
 
         if block_question["id"] in questions_to_keep:
-            answers_to_keep = [
-                answer
-                for answer in block_question["answers"]
-                if answer["id"] in answer_ids_to_keep
-            ]
-            block_question["answers"] = answers_to_keep
+            if answers := block_question.get("answers"):
+                answers_to_keep = [
+                    answer for answer in answers if answer["id"] in answer_ids_to_keep
+                ]
+                block_question["answers"] = answers_to_keep
+            if dynamic_answers := block_question.get("dynamic_answers"):
+                dynamic_answers_to_keep = [
+                    answer
+                    for answer in dynamic_answers["answers"]
+                    if answer["id"] in answer_ids_to_keep
+                ]
+                block_question["dynamic_answers"]["answers"] = dynamic_answers_to_keep
 
         return transformed_block
 

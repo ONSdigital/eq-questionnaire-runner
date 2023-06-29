@@ -72,7 +72,8 @@ class PathFinder:
             block_id
             for dependent_section in dependencies_for_section
             for block_id in self.routing_path(dependent_section)
-            if (dependent_section, None) in self.progress_store.started_section_keys()
+            if (dependent_section, None)
+            in self.progress_store.started_section_and_repeating_blocks_progress_keys()
         ]
 
     def _get_not_skipped_blocks_in_section(
@@ -276,7 +277,7 @@ class PathFinder:
                 )
 
             self.progress_store.remove_location_for_backwards_routing(this_location)
-            self.progress_store.update_section_status(
+            self.progress_store.update_section_or_repeating_blocks_progress_completion_status(
                 CompletionStatus.IN_PROGRESS, this_location.section_id
             )
 

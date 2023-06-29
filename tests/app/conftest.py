@@ -17,6 +17,7 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
+from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.publisher import PubSubPublisher
 from app.questionnaire.location import Location
 from app.setup import create_app
@@ -164,6 +165,11 @@ def progress_store():
 
 
 @pytest.fixture
+def supplementary_data_store():
+    return SupplementaryDataStore()
+
+
+@pytest.fixture
 def publisher(mocker):
     mocker.patch(
         "app.publisher.publisher.google.auth._default._get_explicit_environ_credentials",
@@ -188,6 +194,11 @@ def datastore(mock_client):
 @pytest.fixture
 def current_location():
     return Location(section_id="some-section", block_id="some-block")
+
+
+@pytest.fixture
+def location():
+    return Location("test-section", "test-block", "test-list", "list_item_id")
 
 
 @pytest.fixture
