@@ -163,7 +163,11 @@ def _set_questionnaire_supplementary_data(
         unit_id=metadata["ru_ref"] or metadata["qid"],  # type: ignore
         survey_id=metadata["survey_id"],  # type: ignore
     )
-    logger.info("supplementary data fetched")
+    logger.info(
+        "fetched supplementary data",
+        survey_id=metadata["survey_id"],
+        sds_dataset_id=new_sds_dataset_id,
+    )
     questionnaire_store.set_supplementary_data(supplementary_data["data"])
 
 
