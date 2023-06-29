@@ -38,7 +38,7 @@ def test_build_view_context_for_grand_calculated_summary(
     return_to_answer_id,
 ):
     mocker.patch(
-        "app.jinja_filters.flask_babel.get_locale",
+        "app.setup.get_locale",
         mocker.MagicMock(return_value="en_GB"),
     )
 

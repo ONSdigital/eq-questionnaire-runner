@@ -80,7 +80,7 @@ def test_build_view_context_for_currency_calculated_summary(
     skip_fourth,
 ):
     mocker.patch(
-        "app.jinja_filters.flask_babel.get_locale",
+        "app.setup.get_locale",
         mocker.MagicMock(return_value=locale),
     )
 
@@ -192,7 +192,7 @@ def test_build_view_context_for_return_to_calculated_summary(
     Tests the change answer links for a calculated summary that has been reached by a change link on a grand calculated summary
     """
     mocker.patch(
-        "app.jinja_filters.flask_babel.get_locale",
+        "app.setup.get_locale",
         mocker.MagicMock(return_value="en_GB"),
     )
 

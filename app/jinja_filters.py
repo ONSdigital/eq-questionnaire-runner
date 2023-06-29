@@ -12,9 +12,10 @@ from jinja2 import nodes, pass_eval_context
 from markupsafe import Markup, escape
 from wtforms import SelectFieldBase
 
+from app import setup
 from app.questionnaire.questionnaire_schema import is_summary_with_calculation
 from app.questionnaire.rules.utils import parse_datetime
-from app.settings import DEFAULT_LOCALE, MAX_NUMBER
+from app.settings import MAX_NUMBER
 
 blueprint = flask.Blueprint("filters", __name__)
 FormType = Mapping[str, Mapping[str, Any]]
@@ -79,17 +80,11 @@ def format_unit(
     # until removed from schema we substitute mass-tonne for mass-metric-ton before format unit
     measurement_unit = "mass-tonne" if unit == "mass-metric-ton" else unit
 
-    locale = (
-        DEFAULT_LOCALE
-        if str(flask_babel.get_locale()) in {"en", "eo"}
-        else flask_babel.get_locale()
-    )
-
     formatted_unit: str = units.format_unit(
         value=value,
         measurement_unit=measurement_unit,
         length=length,
-        locale=locale,
+        locale=setup.get_locale(),
     )
 
     return formatted_unit
