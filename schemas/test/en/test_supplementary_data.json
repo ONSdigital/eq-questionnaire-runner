@@ -22,8 +22,7 @@
         },
         {
             "name": "sds_dataset_id",
-            "type": "string",
-            "optional": true
+            "type": "string"
         },
         {
             "name": "survey_id",
