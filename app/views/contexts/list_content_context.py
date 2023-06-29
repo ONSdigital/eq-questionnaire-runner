@@ -57,7 +57,6 @@ class ListContentContext(Context):
             ]
 
         for list_item_id in list_item_ids:
-
             yield {
                 "item_title": self._get_item_title(
                     summary_definition, list_item_id, False

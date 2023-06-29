@@ -14,17 +14,28 @@ class ListRepeatingQuestion(ListAction):
         if self._is_returning_to_section_summary():
             return self.get_section_summary_url()
 
-        if first_incomplete_location := self.get_first_incomplete_repeating_block_url(self.current_location.list_item_id):
+        if first_incomplete_location := self.get_first_incomplete_repeating_block_url(
+            self.current_location.list_item_id
+        ):
             return first_incomplete_location
 
-        if not first_incomplete_location and self.parent_block["type"] == "ListCollectorContent":
-            if self._questionnaire_store.progress_store.is_section_or_repeating_blocks_progress_complete(
-            section_id=self.current_location.section_id, list_item_id=self._current_location.list_item_id):
-                if list_item_ids := self.list_context._list_store._list_item_ids():
-                    index = list_item_ids.index(self.current_location.list_item_id)
-                    if (list_item_ids[index] != list_item_ids[-1]) and (next_id := list_item_ids[index + 1]):
-                        if first_incomplete_location := self.get_first_incomplete_repeating_block_url(list_item_id=next_id):
-                            return first_incomplete_location
+        if (
+            not first_incomplete_location
+            and self.parent_block["type"] == "ListCollectorContent"
+            and self._questionnaire_store.progress_store.is_section_or_repeating_blocks_progress_complete(
+                section_id=self.current_location.section_id,
+                list_item_id=self._current_location.list_item_id,
+            )
+        ):
+            if list_item_ids := self.list_context._list_store._list_item_ids():
+                index = list_item_ids.index(self.current_location.list_item_id)
+                if (list_item_ids[index] != list_item_ids[-1]) and (
+                    next_id := list_item_ids[index + 1]
+                ):
+                    if first_incomplete_location := self.get_first_incomplete_repeating_block_url(
+                        list_item_id=next_id
+                    ):
+                        return first_incomplete_location
 
         return super().get_next_location_url()
 
