@@ -4,6 +4,7 @@ from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
+from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.utilities.json import json_dumps, json_loads
 
 
@@ -64,6 +65,9 @@ def test_questionnaire_store_updates_storage(questionnaire_store, basic_input):
     store.answer_store = AnswerStore(basic_input["ANSWERS"])
     store.response_metadata = basic_input["RESPONSE_METADATA"]
     store.progress_store = ProgressStore(basic_input["PROGRESS"])
+    store.supplementary_data_store = SupplementaryDataStore.deserialize(
+        basic_input["SUPPLEMENTARY_DATA"]
+    )
 
     # When
     store.save()
@@ -112,3 +116,138 @@ def test_questionnaire_store_raises_when_writing_to_metadata(questionnaire_store
 
     with pytest.raises(TypeError):
         store.metadata["no"] = "writing"
+
+
+class TestQuestionnaireStoreWithSupplementaryData:
+    store: QuestionnaireStore
+
+    def assert_list_store_data(self, list_name: str, list_item_ids: list[str]):
+        """Helper function to check that ListStore contains the given list with matching list_item_ids"""
+        lists = [list_model.name for list_model in self.store.list_store]
+        assert list_name in lists
+        assert self.store.list_store[list_name].items == list_item_ids
+
+    def test_adding_new_supplementary_data(
+        self, questionnaire_store, supplementary_data
+    ):
+        """Tests that adding supplementary data adds supplementary list items to the list store
+        this test doesn't mock list item ids, and checks that they match those in list_mappings
+        """
+        self.store = QuestionnaireStore(questionnaire_store.storage)
+        self.store.set_supplementary_data(supplementary_data)
+        assert "products" in self.store.supplementary_data_store.list_mappings
+        supplementary_list_item_ids = list(
+            self.store.supplementary_data_store.list_mappings["products"].values()
+        )
+        # check list mapping ids match list store ids
+        self.assert_list_store_data("products", supplementary_list_item_ids)
+
+    def test_updating_supplementary_data(
+        self, questionnaire_store_with_supplementary_data, supplementary_data
+    ):
+        """Test that overwriting supplementary data with additional lists/items adds them to the list store
+        without duplicating any existing data"""
+        self.store = questionnaire_store_with_supplementary_data
+
+        supplementary_data["items"]["supermarkets"] = [{"identifier": "54321"}]
+        supplementary_data["items"]["products"].append({"identifier": "12345"})
+        self.store.set_supplementary_data(supplementary_data)
+
+        assert self.store.supplementary_data_store.list_mappings == {
+            "products": {
+                "89929001": "item-1",
+                "201630601": "item-2",
+                "12345": "item-3",
+            },
+            "supermarkets": {"54321": "item-4"},
+        }
+
+        self.assert_list_store_data("products", ["item-1", "item-2", "item-3"])
+        self.assert_list_store_data("supermarkets", ["item-4"])
+
+    def test_removing_some_supplementary_data(
+        self, questionnaire_store_with_supplementary_data, supplementary_data
+    ):
+        """Tests that if you overwrite existing supplementary data with data that is missing list item ids
+        or lists, that the list store is updated to remove that data"""
+        self.store = questionnaire_store_with_supplementary_data
+
+        del supplementary_data["items"]["products"][0]
+        self.store.set_supplementary_data(supplementary_data)
+
+        # products item-1 should be gone
+        self.assert_list_store_data("products", ["item-2"])
+
+    def test_removing_all_supplementary_data(
+        self, questionnaire_store_with_supplementary_data
+    ):
+        """Checks that removing all supplementary data clears out the list store"""
+        self.store = questionnaire_store_with_supplementary_data
+        self.store.set_supplementary_data({})
+        assert len(list(self.store.list_store)) == 0
+
+    def test_removing_supplementary_lists_with_answers(
+        self, questionnaire_store_with_supplementary_data, supplementary_data
+    ):
+        """Tests that if you overwrite supplementary data,
+        related answers for old list/list_item_ids are removed from the answer store"""
+        self.store = questionnaire_store_with_supplementary_data
+
+        # add some answers for the supplementary list items
+        self.store.answer_store = AnswerStore(
+            [
+                {
+                    "answer_id": "product-sales-answer",
+                    "value": "100",
+                    "list_item_id": "item-1",
+                },
+                {
+                    "answer_id": "product-sales-answer",
+                    "value": "200",
+                    "list_item_id": "item-2",
+                },
+            ]
+        )
+
+        # delete the first product and update supplementary data
+        del supplementary_data["items"]["products"][0]
+        self.store.set_supplementary_data(supplementary_data)
+
+        # item-1 should be gone
+        self.assert_list_store_data("products", ["item-2"])
+        # the answer for it should be too
+        answers = list(self.store.answer_store.answer_map.keys())
+        assert len(answers) == 1
+        assert answers[0] == ("product-sales-answer", "item-2")
+
+        # remove all answers
+        self.store.set_supplementary_data({})
+        assert not self.store.answer_store.answer_map
+
+    def test_removing_supplementary_data_ignores_non_supplementary_data(
+        self, questionnaire_store_with_supplementary_data
+    ):
+        """Tests that removing supplementary data does not affect other lists and answers"""
+        self.store = questionnaire_store_with_supplementary_data
+        # unrelated
+        self.store.answer_store = AnswerStore(
+            [
+                {
+                    "answer_id": "unrelated-answer",
+                    "value": "100",
+                    "list_item_id": "JxSW21",
+                },
+                {
+                    "answer_id": "sales",
+                    "value": "200",
+                },
+            ]
+        )
+        self.store.list_store.add_list_item("supermarkets")
+        self.assert_list_store_data("products", ["item-1", "item-2"])
+        self.assert_list_store_data("supermarkets", ["item-3"])
+
+        self.store.set_supplementary_data({})
+        self.assert_list_store_data("supermarkets", ["item-3"])
+        answers = list(self.store.answer_store.answer_map.keys())
+        assert answers == [("unrelated-answer", "JxSW21"), ("sales", None)]
