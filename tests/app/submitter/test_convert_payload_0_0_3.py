@@ -12,6 +12,7 @@ from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
 from app.submitter.converter_v2 import get_payload_data
 from app.utilities.json import json_dumps, json_loads
+from app.utilities.make_immutable import make_immutable
 from app.utilities.schema import load_schema_from_name
 from tests.app.submitter.conftest import get_questionnaire_store
 from tests.app.submitter.schema import make_schema
@@ -1731,10 +1732,10 @@ def test_payload_supplementary_data():
 
     assert "supplementary_data" in data_payload
     assert "lists" in data_payload
-    assert data_payload["supplementary_data"] == supplementary_data
+    assert data_payload["supplementary_data"] == make_immutable(supplementary_data)
     assert len(data_payload["lists"]) == 1
     assert data_payload["lists"][0] == {
         "items": list_item_ids,
         "name": "supermarkets",
-        "supplementary_data_mapping": supermarkets_list_map,
+        "supplementary_data_mapping": make_immutable(supermarkets_list_map),
     }

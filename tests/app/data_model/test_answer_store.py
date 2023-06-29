@@ -103,13 +103,13 @@ def test_remove_answer_without_list_item_id(basic_answer_store):
 
 
 def test_remove_all_answers_for_list_item_id(relationship_answer_store):
-    relationship_answer_store.remove_all_answers_for_list_item_ids(["abc123"])
+    relationship_answer_store.remove_all_answers_for_list_item_ids("abc123")
     assert relationship_answer_store.get_answer("answer1") is None
 
 
 def test_remove_all_answers_for_list_item_id_doesnt_exist(relationship_answer_store):
     len_before = len(relationship_answer_store)
-    relationship_answer_store.remove_all_answers_for_list_item_ids(["not-an-id"])
+    relationship_answer_store.remove_all_answers_for_list_item_ids("not-an-id")
     assert len(relationship_answer_store) == len_before
 
 

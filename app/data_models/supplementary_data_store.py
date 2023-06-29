@@ -5,6 +5,8 @@ from typing import Iterable, Mapping, MutableMapping, TypeAlias
 
 from werkzeug.datastructures import ImmutableDict
 
+from app.utilities.make_immutable import make_immutable
+
 SupplementaryDataKeyType: TypeAlias = tuple[str, str | None]
 SupplementaryDataValueType: TypeAlias = dict | str | list | None
 
@@ -34,11 +36,13 @@ class SupplementaryDataStore:
 
     @cached_property
     def raw_data(self) -> ImmutableDict:
-        return ImmutableDict(self._raw_data)
+        data: ImmutableDict = make_immutable(self._raw_data)
+        return data
 
     @cached_property
     def list_mappings(self) -> ImmutableDict:
-        return ImmutableDict(self._list_mappings)
+        mappings: ImmutableDict = make_immutable(self._list_mappings)
+        return mappings
 
     def _build_map(
         self, data: MutableMapping
@@ -90,17 +94,14 @@ class SupplementaryDataStore:
         For example if you wanted the identifier for the first item in "some_list"
         it would be get_data(identifier="some_list", selectors=["identifier"], list_item_id=list_item_id-1)
         """
-        if not (value := self._data_map.get((identifier, list_item_id))):
-            return None
-
-        if selectors:
-            # for nested data, index with each selector
-            for selector in selectors:
-                if not isinstance(value, dict):
-                    raise InvalidSupplementaryDataSelector(
-                        f"Cannot use the selector `{selector}` on non-nested data"
-                    )
-                value = value[selector]
+        value = self._data_map.get((identifier, list_item_id))
+        # for nested data, index with each selector
+        for selector in selectors or []:
+            if not isinstance(value, dict):
+                raise InvalidSupplementaryDataSelector(
+                    f"Cannot use the selector `{selector}` on non-nested data"
+                )
+            value = value[selector]
 
         return value
 

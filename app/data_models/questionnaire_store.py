@@ -75,7 +75,9 @@ class QuestionnaireStore:
             self._remove_old_supplementary_lists_and_answers(new_data=to_set)
 
         list_mappings = {
-            list_name: self._create_supplementary_list(list_name, list_data)
+            list_name: self._create_supplementary_list(
+                list_name=list_name, list_data=list_data
+            )
             for list_name, list_data in to_set.get("items", {}).items()
         }
 
@@ -84,7 +86,7 @@ class QuestionnaireStore:
         )
 
     def _create_supplementary_list(
-        self, list_name: str, list_data: list[dict]
+        self, *, list_name: str, list_data: list[dict]
     ) -> dict[str, str]:
         """
         Creates or updates a list in ListStore based off supplementary data
@@ -114,17 +116,18 @@ class QuestionnaireStore:
         """
         deleted_list_item_ids: set[str] = set()
         for list_name, mappings in self.supplementary_data_store.list_mappings.items():
-            if list_name not in new_data.get("items", {}):
-                self.list_store.delete_list(list_name)
-                deleted_list_item_ids.update(mappings.values())
-            else:
+            if list_name in new_data.get("items", {}):
+                new_identifiers = [
+                    item["identifier"] for item in new_data["items"][list_name]
+                ]
                 for identifier, list_item_id in mappings.items():
-                    if identifier not in [
-                        item["identifier"] for item in new_data["items"][list_name]
-                    ]:
+                    if identifier not in new_identifiers:
                         self.list_store.delete_list_item(list_name, list_item_id)
                         deleted_list_item_ids.add(list_item_id)
-        self.answer_store.remove_all_answers_for_list_item_ids(deleted_list_item_ids)
+            else:
+                self.list_store.delete_list(list_name)
+                deleted_list_item_ids.update(mappings.values())
+        self.answer_store.remove_all_answers_for_list_item_ids(*deleted_list_item_ids)
 
     def _deserialize(self, data: str) -> None:
         json_data = json_loads(data)

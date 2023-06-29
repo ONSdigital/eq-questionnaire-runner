@@ -140,25 +140,6 @@ class TestSession(IntegrationTestCase):
         mock_get.assert_called_once()
         mock_set.assert_called_once()
 
-    @patch("app.routes.session.get_supplementary_data")
-    @patch(
-        "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
-    )
-    def test_supplementary_data_is_removed_when_no_sds_dataset_id_in_metadata(
-        self,
-        mock_set,
-        mock_get,
-    ):
-        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="same")
-        self.assertStatusOK()
-        mock_set.assert_called_once()
-        mock_get.assert_called_once()
-        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id=None)
-        self.assertStatusOK()
-        # no new fetch should happen, but supplementary data should be set to None
-        mock_get.assert_called_once()
-        self.assertEqual(mock_set.call_count, 2)
-
     def test_supplementary_data_raises_500_error_on_exception(self):
         with patch(
             "app.routes.session.get_supplementary_data",

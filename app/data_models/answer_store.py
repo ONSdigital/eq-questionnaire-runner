@@ -137,9 +137,7 @@ class AnswerStore:
 
         return False
 
-    def remove_all_answers_for_list_item_ids(
-        self, list_item_ids: Iterable[str]
-    ) -> None:
+    def remove_all_answers_for_list_item_ids(self, *list_item_ids: str) -> None:
         """Remove all answers associated with any of the list_item_ids passed in.
         This method iterates through the entire list of answers.
 

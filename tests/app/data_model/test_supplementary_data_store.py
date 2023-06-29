@@ -5,17 +5,19 @@ from app.data_models.supplementary_data_store import (
     InvalidSupplementaryDataSelector,
     SupplementaryDataStore,
 )
+from app.utilities.make_immutable import make_immutable
 
 
-def test_supplementary_data_serialisation(supplementary_data_store_with_data):
-    raw_data = supplementary_data_store_with_data.raw_data
-    list_mappings = supplementary_data_store_with_data.list_mappings
-
+def test_supplementary_data_serialisation(
+    supplementary_data_store_with_data,
+    supplementary_data,
+    supplementary_data_list_mappings,
+):
     serialized = supplementary_data_store_with_data.serialize()
 
     assert serialized == {
-        "data": raw_data,
-        "list_mappings": list_mappings,
+        "data": supplementary_data,
+        "list_mappings": supplementary_data_list_mappings,
     }
 
 
@@ -38,8 +40,8 @@ def test_supplementary_data_deserialisation():
 
     deserialized = SupplementaryDataStore.deserialize(serialized)
 
-    assert deserialized.raw_data == ImmutableDict(raw_data)
-    assert deserialized.list_mappings == ImmutableDict(list_mappings)
+    assert deserialized.raw_data == make_immutable(raw_data)
+    assert deserialized.list_mappings == make_immutable(list_mappings)
     assert deserialized._data_map == {  # pylint: disable=protected-access
         ("identifier", None): "12346789012A",
         ("products", "item-1"): {"identifier": "89929001"},

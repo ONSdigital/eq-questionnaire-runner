@@ -144,17 +144,14 @@ def _set_questionnaire_supplementary_data(
     If the survey metadata has an sds dataset id, and it either doesn't match what it stored, or there is no stored supplementary data
     then fetch it and add it to the store
     """
+    if not (new_sds_dataset_id := metadata["sds_dataset_id"]):
+        return
+
     existing_sds_dataset_id = (
         questionnaire_store.metadata.survey_metadata["sds_dataset_id"]
         if questionnaire_store.metadata and questionnaire_store.metadata.survey_metadata
         else None
     )
-
-    if not (new_sds_dataset_id := metadata["sds_dataset_id"]):
-        if existing_sds_dataset_id:
-            # remove what is already there
-            questionnaire_store.set_supplementary_data({})
-        return
 
     if existing_sds_dataset_id == new_sds_dataset_id:
         # no need to fetch again
@@ -166,6 +163,7 @@ def _set_questionnaire_supplementary_data(
         unit_id=metadata["ru_ref"] or metadata["qid"],  # type: ignore
         survey_id=metadata["survey_id"],  # type: ignore
     )
+    logger.info("supplementary data fetched")
     questionnaire_store.set_supplementary_data(supplementary_data["data"])
 
 
