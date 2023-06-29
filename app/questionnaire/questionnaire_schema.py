@@ -108,10 +108,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             if isinstance(value, int):
                 self.min_and_max_map[answer_id] = str(value)
             elif isinstance(value, dict) and value:
-                if (
-                    value.get("source") == "answers"
-                    and value["identifier"] in self.min_and_max_map
-                ):
+                if value.get("source") == "answers":
                     self.min_and_max_map[answer_id] = self.min_and_max_map[
                         value["identifier"]
                     ]
