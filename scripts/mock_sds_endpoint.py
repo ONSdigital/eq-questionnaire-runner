@@ -38,11 +38,7 @@ def load_mock_sds_dataset_metadata(survey_id: str, period_id: str):
     del period_id  # not required for mock
     if survey_id == "123":
         return load_mock_data(
-            "scripts/mock_data/supplementary_dataset_single_item_response.json"
-        )
-    if survey_id == "456":
-        return load_mock_data(
-            "scripts/mock_data/supplementary_dataset_multiple_item_response.json"
+            "scripts/mock_data/supplementary_dataset_metadata_response.json"
         )
 
     return Response(status=404)

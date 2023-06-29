@@ -1,6 +1,6 @@
 {
   "dataset_id": "6b378962-f0c7-4e8c-947e-7d24ee1b6b88",
-  "survey_id": "456",
+  "survey_id": "123",
   "data": {
     "schema_version": "v1",
     "identifier": "12346789012A",
@@ -92,7 +92,9 @@
           },
           "guidance_exclude": {
             "title": "Exclude",
-            "list": []
+            "list": [
+              "cutlery"
+            ]
           },
           "value_sales": {
             "answer_code": "20234633101",
