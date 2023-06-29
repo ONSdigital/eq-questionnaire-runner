@@ -95,7 +95,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._populate_answer_dependencies()
         self._populate_when_rules_section_dependencies()
         self._populate_calculated_summary_section_dependencies()
-        self._populate_min_max_map()
+        self._populate_mix_max_for_numeric_answers()
 
     @cached_property
     def answer_dependencies(self) -> ImmutableDict[str, set[AnswerDependent]]:
@@ -116,9 +116,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                         value["identifier"]
                     ]
 
-    def _populate_min_max_map(self) -> None:
+    def _populate_mix_max_for_numeric_answers(self) -> None:
         for answer_id, answers in self._answers_by_id.items():
-            if (answer_type := answers[0].get("type")) and answer_type not in [
+            if (answer_type := answers[0]["type"]) and answer_type in [
                 "Date",
                 "MonthYearDate",
                 "YearDate",
