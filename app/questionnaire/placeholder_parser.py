@@ -13,7 +13,6 @@ from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire import path_finder as pf
 from app.questionnaire.dependencies import get_block_ids_for_dependencies
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
-from app.questionnaire.questionnaire_schema import TRANSFORMS_REQUIRING_ROUTING_PATH
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.value_source_resolver import (
     ValueSourceEscapedTypes,
@@ -172,8 +171,9 @@ class PlaceholderParser:
 
         return transformed_value
 
+    @staticmethod
     def _resolve_value_source_list(
-        self, value_source_list: list[dict], value_source_resolver: ValueSourceResolver
+        value_source_list: list[dict], value_source_resolver: ValueSourceResolver
     ) -> list[ValueSourceTypes]:
         values: list[ValueSourceTypes] = []
         for value_source in value_source_list:
