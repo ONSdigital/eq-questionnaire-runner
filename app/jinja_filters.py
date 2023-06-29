@@ -12,7 +12,6 @@ from jinja2 import nodes, pass_eval_context
 from markupsafe import Markup, escape
 from wtforms import SelectFieldBase
 
-from app import setup
 from app.questionnaire.questionnaire_schema import is_summary_with_calculation
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import MAX_NUMBER
@@ -84,7 +83,7 @@ def format_unit(
         value=value,
         measurement_unit=measurement_unit,
         length=length,
-        locale=setup.get_locale(),
+        locale=flask_babel.get_locale(),
     )
 
     return formatted_unit

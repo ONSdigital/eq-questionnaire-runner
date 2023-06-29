@@ -159,7 +159,9 @@ def test_format_percentage(percentage, formatted_percentage):
     ),
 )
 def test_format_unit(unit, value, length, formatted_unit, language, mocker):
-    mocker.patch("app.setup.get_locale", mocker.Mock(return_value=language))
+    mocker.patch(
+        "app.jinja_filters.flask_babel.get_locale", mocker.Mock(return_value=language)
+    )
     assert format_unit(unit, value, length=length) == formatted_unit
 
 
@@ -210,7 +212,9 @@ def test_format_unit(unit, value, length, formatted_unit, language, mocker):
     ),
 )
 def test_format_unit_input_label(unit, length, formatted_unit, language, mocker):
-    mocker.patch("app.setup.get_locale", mocker.Mock(return_value=language))
+    mocker.patch(
+        "app.jinja_filters.flask_babel.get_locale", mocker.Mock(return_value=language)
+    )
     assert format_unit_input_label(unit, unit_length=length) == formatted_unit
 
 
