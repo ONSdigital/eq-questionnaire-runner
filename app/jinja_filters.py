@@ -256,7 +256,6 @@ def should_wrap_with_fieldset_processor() -> dict[str, Callable]:
 def get_min_max_values(
     min_max: Literal["minimum", "maximum"], answer: AnswerType, default_value: int
 ) -> int:
-
     if answer.get(min_max, {}) and isinstance(answer[min_max]["value"], dict):
         schema = g.get("schema")
         if (
