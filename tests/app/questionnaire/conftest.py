@@ -823,7 +823,13 @@ def question_schema():
                                     "id": "question1",
                                     "title": "A Question",
                                     "type": "General",
-                                    "answers": [{"id": "answer1", "label": "Answer 1", "type": "General"}],
+                                    "answers": [
+                                        {
+                                            "id": "answer1",
+                                            "label": "Answer 1",
+                                            "type": "General",
+                                        }
+                                    ],
                                 },
                             }
                         ],
