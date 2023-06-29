@@ -1,4 +1,5 @@
 import time
+from copy import deepcopy
 from uuid import uuid4
 
 from sdc.crypto.encrypter import encrypt
@@ -138,8 +139,14 @@ class TokenGenerator:
 
         return self.generate_token(payload)
 
-    def create_supplementary_data_token(self, schema_name, **extra_payload):
+    def create_supplementary_data_token(
+        self, schema_name, sds_dataset_id=None, **extra_payload
+    ):
         payload = PAYLOAD_V2_SUPPLEMENTARY_DATA
+
+        if sds_dataset_id:
+            payload = deepcopy(payload)
+            payload["survey_metadata"]["data"]["sds_dataset_id"] = sds_dataset_id
 
         payload = self._get_payload_with_params(
             schema_name=schema_name, payload=payload, **extra_payload

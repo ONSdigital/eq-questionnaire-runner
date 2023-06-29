@@ -137,15 +137,15 @@ class AnswerStore:
 
         return False
 
-    def remove_all_answers_for_list_item_id(self, list_item_id: str) -> None:
-        """Remove all answers associated with a particular list_item_id.
+    def remove_all_answers_for_list_item_ids(self, *list_item_ids: str) -> None:
+        """Remove all answers associated with any of the list_item_ids passed in.
         This method iterates through the entire list of answers.
 
         *Not efficient.*
         """
         keys_to_delete = []
         for answer in self:
-            if answer.list_item_id == list_item_id:
+            if answer.list_item_id and answer.list_item_id in list_item_ids:
                 keys_to_delete.append((answer.answer_id, answer.list_item_id))
 
         for key in keys_to_delete:

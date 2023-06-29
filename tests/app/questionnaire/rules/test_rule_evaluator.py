@@ -31,6 +31,7 @@ def get_mock_schema():
             }
         )
     )
+    schema.is_answer_dynamic = Mock(return_value=False)
     return schema
 
 
@@ -52,6 +53,7 @@ def get_rule_evaluator(
         schema = get_mock_schema()
         schema.is_repeating_answer = Mock(return_value=True)
         schema.get_default_answer = Mock(return_value=None)
+        schema.is_answer_dynamic = Mock(return_value=False)
 
     return RuleEvaluator(
         language=language,

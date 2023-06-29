@@ -1,15 +1,34 @@
-from typing import MutableMapping
+from typing import Any, MutableMapping
+
+from flask import url_for
 
 from app.views.handlers.list_action import ListAction
 
 
 class ListAddQuestion(ListAction):
+    def __init__(self, *args: Any):
+        self._list_item_id: str | None = None
+        super().__init__(*args)
+
     def is_location_valid(self):
         if not super().is_location_valid() or self._current_location.list_item_id:
             return False
         return True
 
     def get_next_location_url(self):
+        if self._list_item_id and (
+            repeating_blocks := self.parent_block.get("repeating_blocks")
+        ):
+            return url_for(
+                "questionnaire.block",
+                list_name=self.parent_block["for_list"],
+                list_item_id=self._list_item_id,
+                block_id=repeating_blocks[0]["id"],
+                return_to=self._return_to,
+                return_to_answer_id=self._return_to_answer_id,
+                return_to_block_id=self._return_to_block_id,
+            )
+
         return self.parent_location.url(
             return_to=self._return_to,
             return_to_answer_id=self._return_to_answer_id,
@@ -18,7 +37,7 @@ class ListAddQuestion(ListAction):
 
     def handle_post(self):
         # Ensure the section is in progress when user adds an item
-        list_item_id = self.questionnaire_store_updater.add_list_item(
+        self._list_item_id = self.questionnaire_store_updater.add_list_item(
             self.parent_block["for_list"]
         )
 
@@ -31,7 +50,9 @@ class ListAddQuestion(ListAction):
 
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
-        self.questionnaire_store_updater.update_answers(self.form.data, list_item_id)
+        self.questionnaire_store_updater.update_answers(
+            self.form.data, self._list_item_id
+        )
 
         self.capture_dependent_sections_for_list(self.parent_block["for_list"])
 

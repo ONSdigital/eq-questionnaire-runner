@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Any, Iterable, Mapping, MutableMapping, Optional
+from typing import Any, Iterable, Mapping, MutableMapping, Sequence
 
 from flask import url_for
 from werkzeug.datastructures import ImmutableDict
@@ -20,7 +20,7 @@ class ListCollectorBlock:
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
-        metadata: Optional[MetadataProxy],
+        metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         location: Location,
@@ -91,7 +91,8 @@ class ListCollectorBlock:
             edit_block_id = list_collector_block["edit_block"]["id"]
             remove_block_id = list_collector_block["remove_block"]["id"]
             add_link = self._add_link(summary, list_collector_block)
-            related_answers = self._get_related_answers(current_list)
+            repeating_blocks = list_collector_block.get("repeating_blocks", [])
+            related_answers = self._get_related_answers(current_list, repeating_blocks)
             item_anchor = self._schema.get_item_anchor(section_id, current_list.name)
             item_label = self._schema.get_item_label(section_id, current_list.name)
 
@@ -106,6 +107,8 @@ class ListCollectorBlock:
         list_summary_context = self.list_context(
             list_collector_block["summary"],
             for_list=list_collector_block["for_list"],
+            section_id=self._location.section_id,
+            has_repeating_blocks=bool(list_collector_block.get("repeating_blocks")),
             return_to="section-summary",
             edit_block_id=edit_block_id,
             remove_block_id=remove_block_id,
@@ -140,8 +143,8 @@ class ListCollectorBlock:
     def _add_link(
         self,
         summary: Mapping[str, Any],
-        list_collector_block: Optional[Mapping[str, Any]],
-    ) -> Optional[str]:
+        list_collector_block: Mapping[str, Any] | None,
+    ) -> str | None:
         if list_collector_block:
             return url_for(
                 "questionnaire.block",
@@ -160,19 +163,26 @@ class ListCollectorBlock:
             )
 
     def _get_related_answers(
-        self, list_model: ListModel
-    ) -> Optional[dict[str, list[dict[str, Any]]]]:
+        self, list_model: ListModel, repeating_blocks: Sequence[ImmutableDict]
+    ) -> dict[str, list[dict]] | None:
         section_id = self._section["id"]
 
         related_answers = self._schema.get_related_answers_for_list_for_section(
             section_id=section_id, list_name=list_model.name
         )
-        if not related_answers:
+
+        blocks: list[dict | ImmutableDict] = []
+
+        if related_answers:
+            blocks += self._get_blocks_for_related_answers(related_answers)
+
+        if len(list_model):
+            blocks += repeating_blocks
+
+        if not blocks:
             return None
 
         related_answers_blocks = {}
-
-        blocks = self.get_blocks_for_related_answers(related_answers)
 
         for list_id in list_model:
             serialized_blocks = [
@@ -200,9 +210,7 @@ class ListCollectorBlock:
 
         return related_answers_blocks
 
-    def get_blocks_for_related_answers(
-        self, related_answers: tuple
-    ) -> list[dict[str, Any]]:
+    def _get_blocks_for_related_answers(self, related_answers: tuple) -> list[dict]:
         blocks = []
         answers_by_block = defaultdict(list)
 

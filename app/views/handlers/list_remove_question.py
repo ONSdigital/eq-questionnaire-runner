@@ -25,7 +25,7 @@ class ListRemoveQuestion(ListAction):
 
         if answer_action and answer_action["type"] == "RemoveListItemAndAnswers":
             list_name = self.parent_block["for_list"]
-            self.questionnaire_store_updater.remove_list_item_and_answers(
+            self.questionnaire_store_updater.remove_list_item_data(
                 list_name, self._current_location.list_item_id
             )
             self.capture_dependent_sections_for_list(self.parent_block["for_list"])
