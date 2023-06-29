@@ -27,15 +27,13 @@ class ListRepeatingQuestion(ListAction):
                 list_item_id=self._current_location.list_item_id,
             )
         ):
-            if list_item_ids := self.list_context._list_store._list_item_ids():
-                index = list_item_ids.index(self.current_location.list_item_id)
-                if (list_item_ids[index] != list_item_ids[-1]) and (
-                    next_id := list_item_ids[index + 1]
-                ):
-                    if first_incomplete_location := self.get_first_incomplete_repeating_block_url(
-                        list_item_id=next_id
-                    ):
-                        return first_incomplete_location
+            return url_for(
+                "questionnaire.block",
+                block_id=self.parent_block["id"],
+                return_to=self._return_to,
+                return_to_answer_id=self._return_to_answer_id,
+                return_to_block_id=self._return_to_block_id,
+            )
 
         return super().get_next_location_url()
 

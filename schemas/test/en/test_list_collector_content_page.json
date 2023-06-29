@@ -321,9 +321,6 @@
         {
             "id": "section-list-collector-contents",
             "title": "List Collector Contents",
-            "summary": {
-                "show_on_completion": true
-            },
             "groups": [
                 {
                     "id": "group-list-collector-contents",
