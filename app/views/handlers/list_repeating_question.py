@@ -14,13 +14,28 @@ class ListRepeatingQuestion(ListAction):
         if self._is_returning_to_section_summary():
             return self.get_section_summary_url()
 
+        if first_incomplete_location := self.get_first_incomplete_repeating_block_url(self.current_location.list_item_id):
+            return first_incomplete_location
+
+        if not first_incomplete_location and self.parent_block["type"] == "ListCollectorContent":
+            if self._questionnaire_store.progress_store.is_section_or_repeating_blocks_progress_complete(
+            section_id=self.current_location.section_id, list_item_id=self._current_location.list_item_id):
+                if list_item_ids := self.list_context._list_store._list_item_ids():
+                    index = list_item_ids.index(self.current_location.list_item_id)
+                    if (list_item_ids[index] != list_item_ids[-1]) and (next_id := list_item_ids[index + 1]):
+                        if first_incomplete_location := self.get_first_incomplete_repeating_block_url(list_item_id=next_id):
+                            return first_incomplete_location
+
+        return super().get_next_location_url()
+
+    def get_first_incomplete_repeating_block_url(self, list_item_id):
         if first_incomplete_block := self.get_first_incomplete_repeating_block_location_for_list_item(
             repeating_block_ids=self.repeating_block_ids,
             section_id=self.current_location.section_id,
-            list_item_id=self.current_location.list_item_id,
+            list_item_id=list_item_id,
             list_name=self.current_location.list_name,
         ):
-            repeating_block_url = url_for(
+            return url_for(
                 "questionnaire.block",
                 list_name=first_incomplete_block.list_name,
                 list_item_id=first_incomplete_block.list_item_id,
@@ -29,9 +44,8 @@ class ListRepeatingQuestion(ListAction):
                 return_to_answer_id=self._return_to_answer_id,
                 return_to_block_id=self._return_to_block_id,
             )
-            return repeating_block_url
 
-        return super().get_next_location_url()
+        return None
 
     def handle_post(self):
         self.questionnaire_store_updater.add_completed_location(self.current_location)
