@@ -1,5 +1,4 @@
 import pytest
-from werkzeug.datastructures import ImmutableDict
 
 from app.data_models.supplementary_data_store import (
     InvalidSupplementaryDataSelector,
