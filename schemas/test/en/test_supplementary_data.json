@@ -3,11 +3,15 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
+    "survey_id": "123",
     "title": "Test Supplementary Data",
     "theme": "default",
     "description": "A questionnaire to demo loading Supplementary data.",
     "metadata": [
+        {
+            "name": "survey_id",
+            "type": "string"
+        },
         {
             "name": "user_id",
             "type": "string"
@@ -22,10 +26,6 @@
         },
         {
             "name": "sds_dataset_id",
-            "type": "string"
-        },
-        {
-            "name": "survey_id",
             "type": "string"
         }
     ],
