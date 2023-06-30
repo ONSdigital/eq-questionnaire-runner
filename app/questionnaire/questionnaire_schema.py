@@ -117,7 +117,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     elif min_max == "minimum":
                         self.min_and_max_map[answer_id] = "0"
                     elif min_max == "maximum":
-                        self.min_and_max_map[answer_id] = MAX_NUMBER
+                        self.min_and_max_map[answer_id] = str(MAX_NUMBER)
 
     def _populate_mix_max_for_numeric_answers(self) -> None:
         for answer_id, answers in self._answers_by_id.items():
