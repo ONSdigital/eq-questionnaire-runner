@@ -33,13 +33,17 @@ def strip_tags(value: str) -> Markup:
 
 @blueprint.app_template_filter()
 def format_number(value: Union[int, Decimal, float]) -> str:
-    formatted_number: str
-    if value or value == 0:
-        formatted_number = numbers.format_decimal(
-            value, locale=flask_babel.get_locale()
-        )
-        return formatted_number
 
+    if isinstance(value, Decimal):
+        x = unit_dec(value)
+        return x
+    else:
+        formatted_number: str
+        if value or value == 0:
+            formatted_number = numbers.format_decimal(
+                value, locale=flask_babel.get_locale()
+            )
+            return formatted_number
     return ""
 
 

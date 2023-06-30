@@ -47,7 +47,6 @@
                                         "type": "Unit",
                                         "unit": "length-centimeter",
                                         "unit_length": "short",
-                                        "decimal_places": 6,
                                         "maximum": {
                                             "value": 1000
                                         }
@@ -59,7 +58,6 @@
                                         "type": "Unit",
                                         "unit": "length-meter",
                                         "unit_length": "short",
-                                        "decimal_places": 6,
                                         "maximum": {
                                             "value": 1000
                                         }

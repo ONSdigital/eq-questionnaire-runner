@@ -123,9 +123,13 @@ class PlaceholderTransforms:
         return string_to_format
 
     def format_number(self, number: int | Decimal | str) -> str:
-        if number or number == 0:
-            formatted_decimal: str = format_decimal(number, locale=self.locale)
-            return formatted_decimal
+        if isinstance(number, Decimal):
+            x: str = unit_dec(number)
+            return x
+        else:
+            if number or number == 0:
+                formatted_decimal: str = format_decimal(number, locale=self.locale)
+                return formatted_decimal
 
         return ""
 
