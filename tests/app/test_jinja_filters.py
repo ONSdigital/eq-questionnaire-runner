@@ -75,8 +75,9 @@ def test_get_formatted_currency_with_no_value():
         (Undefined(), ""),
     ),
 )
-def test_format_number(number, formatted_number):
-    assert format_number(number) == formatted_number
+def test_format_number(number, formatted_number, app):
+    with app.app_context():
+        assert format_number(number) == formatted_number
 
 
 def test_format_date_time_in_bst(mock_autoescape_context, app):
