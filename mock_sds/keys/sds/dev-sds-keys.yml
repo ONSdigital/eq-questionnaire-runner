@@ -1,0 +1,23 @@
+keys:
+  772b22b197e2cbb098b43c863c535271ab65ec41:
+    platform: sdc
+    purpose: authorization
+    service: sds
+    type: public
+    use: encryption
+    value: |
+      -----BEGIN PUBLIC KEY-----
+      MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA7/ELXEzPM7jJoUtbh30g
+      jYombYUvX0z1rRoZlMeZ8f+OZEM4TAs8YYw454SfLMlfL1CP2kWjsbuNiYqfLMYy
+      fMempz/SlcxbSspD/avQIN250zh9uKQRd6gYBsJlQ2vjOnHZCcxZ2sPTYYBnmn53
+      tptIwAXF/XaAT0Dr0PVHKT8S36SQQRMZlP5vskQ4PNP0bM8hFDf0fXzrZngOtCv2
+      t5ga9O5SmpXWY3BBvSi9P2w1MLD2pk2qJRyAelaz6xhNrWvdwxrU1CiAzA9c4Tym
+      dI78dn28CVLCaheKOsM75rzwLtHeUVbsVl+AAOb+brifsJ93l8jJZwfX8gbN0VXa
+      5ZPwzgURHZovUz1JtNImPtW37TM/XGgB1z0juoQIi+B4cTA38FsgCV/QluQzRBFt
+      kpU4z564qW9Oqz+9z8NsB2+FBYl9Uw1//VgsPkYellnNFpaYApo5fKo1sfldVPGm
+      WiJD003o4hSC2vgeqykIzcNzl5lp2dUPi0ILVQ7shEnJVhcWGGS5Vh1R2eCTv+iC
+      N5z1DCwbNvLHwqmb8STah0Kk8jnYerXWlAZwWfOhBrwS2g0exmWUirJILEQSTEK/
+      3ECs8VWgXNusHHjt8070EoEvRc9/futydI1uL2pbM3iuU7hmr/MfWdtfy+iUpmjd
+      XO5vbcfl73Oy1LJQz3dQOYsCAwEAAQ==
+      -----END PUBLIC KEY-----
+    version: v1
