@@ -13,6 +13,7 @@ from app.data_models.answer import Answer
 from app.forms import error_messages
 from app.questionnaire.rules.operator import OPERATION_MAPPING
 from app.questionnaire.schema_utils import get_answers_from_question
+from app.settings import MAX_NUMBER
 from app.utilities.make_immutable import make_immutable
 from app.utilities.mappings import get_flattened_mapping_values, get_mappings_with_key
 
@@ -109,9 +110,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 self.min_and_max_map[answer_id] = str(value)
             elif isinstance(value, dict) and value:
                 if value.get("source") == "answers":
-                    self.min_and_max_map[answer_id] = self.min_and_max_map[
-                        value["identifier"]
-                    ]
+                    if value["identifier"] in self.min_and_max_map:
+                        self.min_and_max_map[answer_id] = self.min_and_max_map[
+                            value["identifier"]
+                        ]
+                    elif min_max == "minimum":
+                        self.min_and_max_map[answer_id] = "0"
+                    elif min_max == "maximum":
+                        self.min_and_max_map[answer_id] = MAX_NUMBER
 
     def _populate_mix_max_for_numeric_answers(self) -> None:
         for answer_id, answers in self._answers_by_id.items():
