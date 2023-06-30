@@ -15,6 +15,7 @@ from wtforms import SelectFieldBase
 from app.questionnaire.questionnaire_schema import is_summary_with_calculation
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import MAX_NUMBER
+from app.utilities.decimal_places import unit_dec
 
 blueprint = flask.Blueprint("filters", __name__)
 FormType = Mapping[str, Mapping[str, Any]]
@@ -85,6 +86,11 @@ def format_unit(
         length=length,
         locale=flask_babel.get_locale(),
     )
+
+    if isinstance(value, (Decimal, float)):
+        x = unit_dec(value)
+        y = formatted_unit.split(" ")[1]
+        return f"{x} {y}"
 
     return formatted_unit
 

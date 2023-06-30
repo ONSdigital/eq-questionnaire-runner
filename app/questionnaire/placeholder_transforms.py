@@ -14,6 +14,7 @@ from app.questionnaire.rules.operations import DateOffset
 from app.questionnaire.rules.operations_helper import OperationHelper
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
+from app.utilities.decimal_places import unit_dec
 
 if TYPE_CHECKING:
     from app.questionnaire.placeholder_renderer import (
@@ -145,6 +146,12 @@ class PlaceholderTransforms:
             length=length,
             locale=self.locale,
         )
+
+        if isinstance(value, (Decimal, float)):
+            x = unit_dec(value)
+            y = formatted_unit.split(" ")[1]
+            return f"{x} {y}"
+
         return formatted_unit
 
     @staticmethod
