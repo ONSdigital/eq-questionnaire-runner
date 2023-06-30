@@ -243,6 +243,25 @@
                                 "title": "Volume Units",
                                 "type": "General"
                             }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "set-weight-units-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "mass-metric-ton",
+                                        "label": "Mass tonnes",
+                                        "mandatory": false,
+                                        "type": "Unit",
+                                        "unit": "mass-metric-ton",
+                                        "unit_length": "short"
+                                    }
+                                ],
+                                "id": "set-weight-unit-questions",
+                                "title": "Weight Units",
+                                "type": "General"
+                            }
                         }
                     ],
                     "id": "test"
