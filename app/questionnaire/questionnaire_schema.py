@@ -850,7 +850,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @staticmethod
     def get_list_collectors_for_list(
-        section: Mapping, for_list: str, primary: bool = False, content: bool = False
+        section: Mapping, for_list: str, primary: bool = False
     ) -> Generator[ImmutableDict, None, None]:
         collector_type = (
             ["PrimaryPersonListCollector"]
