@@ -321,6 +321,18 @@
         {
             "id": "section-list-collector-contents",
             "title": "List Collector Contents",
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "companies",
+                        "title": "Companies or UK branches",
+                        "item_label": "Name of UK company or branch"
+                    }
+                ],
+                "show_non_item_answers": true
+            },
             "groups": [
                 {
                     "id": "group-list-collector-contents",

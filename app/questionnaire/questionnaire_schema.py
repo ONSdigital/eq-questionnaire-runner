@@ -850,14 +850,18 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @staticmethod
     def get_list_collectors_for_list(
-        section: Mapping, for_list: str, primary: bool = False
+        section: Mapping, for_list: str, primary: bool = False, content: bool = False
     ) -> Generator[ImmutableDict, None, None]:
-        collector_type = "PrimaryPersonListCollector" if primary else "ListCollector"
+        collector_type = (
+            ["PrimaryPersonListCollector"]
+            if primary
+            else ["ListCollectorContent", "ListCollector"]
+        )
 
         return (
             block
             for block in QuestionnaireSchema.get_blocks_for_section(section)
-            if block["type"] == collector_type and block["for_list"] == for_list
+            if block["type"] in collector_type and block["for_list"] == for_list
         )
 
     @staticmethod
