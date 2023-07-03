@@ -105,7 +105,7 @@ def decrypt_supplementary_data(supplementary_data: MutableMapping) -> Mapping:
 
 
 def validate_supplementary_data(
-        supplementary_data: Mapping, dataset_id: str, unit_id: str, survey_id: str
+    supplementary_data: Mapping, dataset_id: str, unit_id: str, survey_id: str
 ) -> dict:
     try:
         return validate_supplementary_data_v1(
