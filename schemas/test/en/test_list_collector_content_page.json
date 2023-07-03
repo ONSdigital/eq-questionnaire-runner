@@ -26,7 +26,8 @@
         "options": {
             "summary": {
                 "collapsible": false
-            }
+            },
+            "required_completed_sections": ["section-companies"]
         }
     },
     "post_submission": {
@@ -362,7 +363,7 @@
                                 "title": "Companies",
                                 "contents": [
                                     {
-                                        "description": "This is a list of companies"
+                                        "description": "You have previously reported the following companies. Press continue to updated registration and trading information."
                                     }
                                 ]
                             },

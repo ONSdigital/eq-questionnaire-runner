@@ -192,8 +192,8 @@ class Group:
                         language=language,
                     )
 
-                    list_summary_element = list_collector_content_block.list_summary_element(
-                        summary_item
+                    list_summary_element = (
+                        list_collector_content_block.list_summary_element(summary_item)
                     )
                     blocks.extend([list_summary_element])
 
