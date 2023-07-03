@@ -10,7 +10,6 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.views.contexts.list_content_context import ListContentContext
-from app.views.contexts.list_context import ListContext
 from app.views.contexts.summary.block import Block
 
 
@@ -94,7 +93,7 @@ class ListCollectorContentBlock:
         return {
             "title": rendered_summary["title"],
             "type": rendered_summary["type"],
-            "empty_list_text": rendered_summary.get("empty_list_text"),
+            "empty_list_text": None,
             "list_name": rendered_summary["for_list"],
             "related_answers": related_answers,
             **list_summary_context,

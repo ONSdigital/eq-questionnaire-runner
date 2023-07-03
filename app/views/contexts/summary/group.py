@@ -180,7 +180,7 @@ class Group:
                     section_id=section["id"],  # type: ignore
                     list_name=block["for_list"],
                 ):
-                    list_collector_block = ListCollectorContentBlock(
+                    list_collector_content_block = ListCollectorContentBlock(
                         routing_path_block_ids=routing_path_block_ids,
                         answer_store=answer_store,
                         list_store=list_store,
@@ -192,7 +192,7 @@ class Group:
                         language=language,
                     )
 
-                    list_summary_element = list_collector_block.list_summary_element(
+                    list_summary_element = list_collector_content_block.list_summary_element(
                         summary_item
                     )
                     blocks.extend([list_summary_element])

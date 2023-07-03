@@ -612,6 +612,7 @@ def map_summary_item_config(
         else:
             list_collector_rows = map_list_collector_config(
                 list_items=block["list"]["list_items"],
+                editable=block["list"]["editable"],
                 edit_link_text=edit_link_text,
                 edit_link_aria_label=edit_link_aria_label,
                 remove_link_text=remove_link_text,
@@ -638,6 +639,7 @@ def map_summary_item_config_processor() -> dict[str, Callable]:
 @blueprint.app_template_filter()  # type: ignore
 def map_list_collector_config(
     list_items: list[dict[str, str | int]],
+    editable: bool = True,
     render_icon: bool = False,
     edit_link_text: str = "",
     edit_link_aria_label: str = "",
@@ -656,7 +658,7 @@ def map_list_collector_config(
         edit_link_aria_label_text = None
         remove_link_aria_label_text = None
 
-        if edit_link_text:
+        if edit_link_text and editable:
             url = (
                 f'{list_item.get("edit_link")}{item_anchor}'
                 if item_anchor
@@ -678,7 +680,7 @@ def map_list_collector_config(
 
             actions.append(edit_link)
 
-        if not list_item.get("primary_person") and remove_link_text:
+        if not list_item.get("primary_person") and remove_link_text and editable:
             if remove_link_aria_label:
                 remove_link_aria_label_text = remove_link_aria_label.format(
                     item_name=item_name

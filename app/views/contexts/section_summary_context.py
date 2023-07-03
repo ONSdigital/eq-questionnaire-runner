@@ -8,12 +8,12 @@ from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities import safe_content
-from .summary.list_collector_content_block import ListCollectorContentBlock
 
 from ...data_models.metadata_proxy import MetadataProxy
 from .context import Context
 from .summary import Group
 from .summary.list_collector_block import ListCollectorBlock
+from .summary.list_collector_content_block import ListCollectorContentBlock
 
 
 class SectionSummaryContext(Context):
