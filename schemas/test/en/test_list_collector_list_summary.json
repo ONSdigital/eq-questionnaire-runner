@@ -5,6 +5,7 @@
     "data_version": "0.0.3",
     "survey_id": "0",
     "title": "Test ListCollector",
+    "preview_questions": true,
     "theme": "default",
     "description": "A questionnaire to test ListCollector",
     "metadata": [
@@ -111,6 +112,202 @@
                     "id": "group",
                     "title": "Questions",
                     "blocks": [
+                        {
+                            "id": "introduction",
+                            "type": "Introduction",
+                            "primary_content": [
+                                {
+                                    "id": "business-details",
+                                    "title": {
+                                        "text": "You are completing this for {company_name}",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "company_name",
+                                                "transforms": [
+                                                    {
+                                                        "transform": "first_non_empty_item",
+                                                        "arguments": {
+                                                            "items": [
+                                                                {
+                                                                    "source": "metadata",
+                                                                    "identifier": "trad_as"
+                                                                },
+                                                                {
+                                                                    "source": "metadata",
+                                                                    "identifier": "ru_name"
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "contents": [
+                                        {
+                                            "description": {
+                                                "text": "If the company details or structure have changed contact us on {telephone_number_link} or email {email_link}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "telephone_number_link",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "telephone_number_link",
+                                                                "arguments": {
+                                                                    "telephone_number": "0300 1234 931"
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "placeholder": "email_link",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "email_link",
+                                                                "arguments": {
+                                                                    "email_address": "surveys@ons.gov.uk",
+                                                                    "email_subject": "Change of details reference",
+                                                                    "email_subject_append": {
+                                                                        "identifier": "ru_ref",
+                                                                        "source": "metadata"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "guidance": {
+                                                "contents": [
+                                                    {
+                                                        "title": "Coronavirus (COVID-19) guidance",
+                                                        "description": "<strong>Explain your figures</strong> in the comment section to minimise us contacting you and to help us tell an industry story"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "use-of-information",
+                                    "contents": [
+                                        {
+                                            "list": [
+                                                "Data should relate to all sites in England, Scotland and Wales unless otherwise stated.",
+                                                "You can provide informed estimates if actual figures aren’t available.",
+                                                "We will treat your data securely and confidentially."
+                                            ]
+                                        },
+                                        {
+                                            "description": "To take part, all you need to do is check that you have the information you need to answer the survey questions."
+                                        }
+                                    ]
+                                }
+                            ],
+                            "preview_content": {
+                                "id": "preview",
+                                "title": "Information you need",
+                                "contents": [
+                                    {
+                                        "description": "You can select the dates of the period you are reporting for, if the given dates are not appropriate."
+                                    },
+                                    {
+                                        "description": "<a rel='noopener noreferrer' target='_blank' href='https://www.ons.gov.uk/surveys/informationforbusinesses/aboutonsbusinesssurveys/detailedguidancetohelpcompletethequarterlyacquisitionsanddisposalsofcapitalassetssurvey'>Read the detailed guidance for completing this survey</a>"
+                                    }
+                                ],
+                                "questions": [
+                                    {
+                                        "id": "employee-pay-frequency",
+                                        "question": "Employee pay frequency",
+                                        "contents": [
+                                            {
+                                                "list": [
+                                                    "You will need to indicate how frequently employees are paid i.e weekly, fortnightly, calendar monthly, four weekly or five weekly.",
+                                                    "You will be asked to answer the questions below for all of your selected pay patterns."
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "what-you-need-to-know",
+                                        "question": "What you need to know",
+                                        "contents": [
+                                            {
+                                                "list": [
+                                                    "You can provide informed estimates if actual figures aren’t available",
+                                                    "All information you provide is strictly confidential"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "definition-of-innovation",
+                                        "question": "Definition of innovation",
+                                        "contents": [
+                                            {
+                                                "description": {
+                                                    "text": "Innovation, for the purpose of this survey, is defined as <strong>new</strong> or <strong>significantly improved goods or services</strong> as well as <strong>processes</strong> used to produce or supply all goods or services that {ru_name} has introduced, regardless of their origin.",
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "ru_name",
+                                                            "value": {
+                                                                "source": "metadata",
+                                                                "identifier": "ru_name"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "description": {
+                                                    "text": "These innovations may be new to {ru_name} or new to the market",
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "ru_name",
+                                                            "value": {
+                                                                "source": "metadata",
+                                                                "identifier": "ru_name"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "description": {
+                                                    "text": "Investments for future innovation and changes that {ru_name} has introduced at a <strong>strategic</strong> level (in organisation and practices) are also covered",
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "ru_name",
+                                                            "value": {
+                                                                "source": "metadata",
+                                                                "identifier": "ru_name"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "secondary_content": [
+                                {
+                                    "id": "how-we-use-your-data",
+                                    "contents": [
+                                        {
+                                            "title": "How we use your data",
+                                            "list": [
+                                                "You cannot appeal your selection. Your business was selected to give us a comprehensive view of the UK economy",
+                                                "The data from you business is essential is it helps us calculate the GDP of the UK",
+                                                "Our surveys inform government decisions. For example, past statistics from our surveys led to the introduction of business grants"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
                         {
                             "id": "primary-person-list-collector",
                             "type": "PrimaryPersonListCollector",
