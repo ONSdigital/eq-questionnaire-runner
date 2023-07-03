@@ -2,7 +2,11 @@
 
 <div class="block" id="{{content.block.id}}">
 
-{% set question = block['question'] %}
-{% include 'partials/question.html' %}
+{%-  if block['question'] -%}
+  {% set question = block['question'] %}
+  {% include 'partials/question.html' %}
+{%- elif content["list"] and content["list"] -%}
+  {% include 'partials/list-content.html' %}
+{%-  endif -%}
 
 </div>
