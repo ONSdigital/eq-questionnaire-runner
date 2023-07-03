@@ -20,6 +20,7 @@ class SectionPreviewContext(Context):
         response_metadata: MutableMapping,
         section_id: str,
     ):
+        placeholder_preview_mode = True
         super().__init__(
             language,
             schema,
@@ -28,6 +29,7 @@ class SectionPreviewContext(Context):
             progress_store,
             metadata,
             response_metadata,
+            placeholder_preview_mode,
         )
         self._section_id = section_id
 

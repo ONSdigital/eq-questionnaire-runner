@@ -27,6 +27,7 @@ class PreviewContext(Context):
         if not schema.preview_enabled:
             raise PreviewNotEnabledException
 
+        placeholder_preview_mode = True
         super().__init__(
             language,
             schema,
@@ -35,6 +36,7 @@ class PreviewContext(Context):
             progress_store,
             metadata,
             response_metadata,
+            placeholder_preview_mode,
         )
 
     def __call__(self) -> dict[str, Union[str, list, bool]]:
