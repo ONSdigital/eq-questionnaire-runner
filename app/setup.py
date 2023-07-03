@@ -36,6 +36,7 @@ from app.routes.questionnaire import post_submission_blueprint, questionnaire_bl
 from app.routes.schema import schema_blueprint
 from app.routes.session import session_blueprint
 from app.secrets import SecretStore, validate_required_secrets
+from app.settings import DEFAULT_LOCALE
 from app.storage import Datastore, Dynamodb, Redis
 from app.submitter import (
     GCSFeedbackSubmitter,
@@ -479,7 +480,11 @@ def get_minimized_asset(filename):
 
 
 def get_locale():
-    return cookie_session.get("language_code")
+    return (
+        DEFAULT_LOCALE
+        if cookie_session.get("language_code") == "en"
+        else cookie_session.get("language_code")
+    )
 
 
 def get_timezone():
