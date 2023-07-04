@@ -249,16 +249,6 @@ class SectionSummaryContext(Context):
                     list_collector_blocks = []
                     non_list_collector_blocks = []
                 elif block["type"] == "ListCollectorContent":
-                    # if list collector block encountered, close the previously started non list collector blocks list if exists
-                    if non_list_collector_blocks:
-                        previously_started_group = {
-                            "id": f"{group_name}-{group_number}",
-                            "blocks": non_list_collector_blocks,
-                        }
-                        # add previous non list collector blocks group to all groups and increase the group number for the list collector group
-                        # that you handle next
-                        refactored_groups.append(previously_started_group)
-                        group_number += 1
                     list_collector_blocks.append(block)
                     list_collector_group = {
                         "id": f"{group_name}-{group_number}",

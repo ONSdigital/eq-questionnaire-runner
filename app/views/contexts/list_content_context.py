@@ -58,9 +58,7 @@ class ListContentContext(Context):
 
         for list_item_id in list_item_ids:
             yield {
-                "item_title": self._get_item_title(
-                    summary_definition, list_item_id, False
-                ),
+                "item_title": self._get_item_title(summary_definition, list_item_id),
                 "primary_person": False,
                 "list_item_id": list_item_id,
                 "is_complete": self._progress_store.is_section_or_repeating_blocks_progress_complete(
@@ -70,16 +68,11 @@ class ListContentContext(Context):
             }
 
     def _get_item_title(
-        self,
-        summary_definition: Mapping[str, Any],
-        list_item_id: Optional[str],
-        is_primary: bool,
+        self, summary_definition: Mapping[str, Any], list_item_id: Optional[str]
     ) -> str:
         rendered_summary: dict[str, Any] = self._placeholder_renderer.render(
             data_to_render=summary_definition, list_item_id=list_item_id
         )
-        if is_primary:
-            rendered_summary["item_title"] += lazy_gettext(" (You)")
 
         title: str = rendered_summary["item_title"]
         return title

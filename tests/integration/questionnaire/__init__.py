@@ -12,6 +12,15 @@ class QuestionnaireTestCase(IntegrationTestCase):
         number_of_people = self.number_of_people()
         return self.get_list_item_ids()[number_of_people - 1]
 
+    def add_company(self, name: str, number: str, authorised_insurer: str):
+        self.post(
+            {
+                "company-or-branch-name": name,
+                "registration-number": number,
+                "authorised-insurer-radio": authorised_insurer,
+            }
+        )
+
     def number_of_people(self):
         return len(self.get_list_item_ids())
 

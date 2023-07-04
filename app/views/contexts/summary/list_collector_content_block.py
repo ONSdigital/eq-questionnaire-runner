@@ -111,47 +111,15 @@ class ListCollectorContentBlock:
             self._response_metadata,
         )
 
-    def _add_link(
-        self,
-        summary: Mapping[str, Any],
-        list_collector_block: Mapping[str, Any] | None,
-    ) -> str | None:
-        if list_collector_block:
-            return url_for(
-                "questionnaire.block",
-                list_name=summary["for_list"],
-                block_id=list_collector_block["add_block"]["id"],
-                return_to="section-summary",
-            )
-
-        if driving_question_block := self._schema.get_driving_question_for_list(
-            self._section, summary["for_list"]
-        ):
-            return url_for(
-                "questionnaire.block",
-                block_id=driving_question_block["id"],
-                return_to="section-summary",
-            )
-
     def _get_related_answers(
         self, list_model: ListModel, repeating_blocks: Sequence[ImmutableDict]
     ) -> dict[str, list[dict]] | None:
         section_id = self._section["id"]
 
-        related_answers = self._schema.get_related_answers_for_list_for_section(
-            section_id=section_id, list_name=list_model.name
-        )
-
         blocks: list[dict | ImmutableDict] = []
-
-        if related_answers:
-            blocks += self._get_blocks_for_related_answers(related_answers)
 
         if len(list_model):
             blocks += repeating_blocks
-
-        if not blocks:
-            return None
 
         related_answers_blocks = {}
 
@@ -180,36 +148,3 @@ class ListCollectorContentBlock:
             related_answers_blocks[list_id] = serialized_blocks
 
         return related_answers_blocks
-
-    def _get_blocks_for_related_answers(self, related_answers: tuple) -> list[dict]:
-        blocks = []
-        answers_by_block = defaultdict(list)
-
-        for answer in related_answers:
-            answer_id = answer["identifier"]
-            # block is not optional at this point
-            block: Mapping = self._schema.get_block_for_answer_id(answer_id)  # type: ignore
-
-            block_to_keep = (
-                block["edit_block"] if block["type"] == "ListCollector" else block
-            )
-            answers_by_block[block_to_keep].append(answer_id)
-
-        for immutable_block, answer_ids in answers_by_block.items():
-            mutable_block = self._schema.get_mutable_deepcopy(immutable_block)
-
-            # We need to filter out answers for both variants and normal questions
-            for variant_or_block in mutable_block.get(
-                "question_variants", [mutable_block]
-            ):
-                answers = [
-                    answer
-                    for answer in variant_or_block["question"].get("answers", {})
-                    if answer["id"] in answer_ids
-                ]
-                # Mutate the answers to only keep the related answers
-                variant_or_block["question"]["answers"] = answers
-
-            blocks.append(mutable_block)
-
-        return blocks
