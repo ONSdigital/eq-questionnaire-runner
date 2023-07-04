@@ -26,7 +26,7 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
 
         self.post()
 
-        self.assertEqualUrl("/questionnaire/list-collector-content/")
+        self.assertInUrl("/questionnaire/list-collector-content/")
 
         self.assertInBody(
             "You have previously reported the following companies. Press continue to updated registration and trading information."
@@ -95,3 +95,100 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
         self.post()
 
         self.assertInUrl("/questionnaire/")
+
+    def test_hub_section_in_progress(self):
+        self.launchSurvey("test_list_collector_content_page")
+
+        self.post({"any-companies-or-branches-answer": "Yes"})
+
+        self.add_company("Tesco", "123", "No")
+
+        self.post({"any-other-companies-or-branches-answer": "Yes"})
+
+        self.add_company("Asda", "456", "No")
+
+        self.post({"any-other-companies-or-branches-answer": "No"})
+
+        self.post()
+
+        self.post()
+
+        self.assertInUrl("/questionnaire/list-collector-content/")
+
+        self.assertInBody(
+            "You have previously reported the following companies. Press continue to updated registration and trading information."
+        )
+
+        self.post()
+
+        self.assertInUrl("/companies-repeating-block-1/")
+
+        self.assertInBody("Give details about Tesco")
+
+        self.post(
+            {
+                "registration-number-repeating-block": "123",
+                "registration-date-repeating-block-day": "1",
+                "registration-date-repeating-block-month": "1",
+                "registration-date-repeating-block-year": "1990",
+            }
+        )
+
+        self.previous()
+
+        self.previous()
+
+        self.assertInBody("Partially completed")
+
+    def test_hub_section_in_progress_when_one_complete(self):
+        self.launchSurvey("test_list_collector_content_page")
+
+        self.post({"any-companies-or-branches-answer": "Yes"})
+
+        self.add_company("Tesco", "123", "No")
+
+        self.post({"any-other-companies-or-branches-answer": "Yes"})
+
+        self.add_company("Asda", "456", "No")
+
+        self.post({"any-other-companies-or-branches-answer": "No"})
+
+        self.post()
+
+        self.post()
+
+        self.assertInUrl("/questionnaire/list-collector-content/")
+
+        self.assertInBody(
+            "You have previously reported the following companies. Press continue to updated registration and trading information."
+        )
+
+        self.post()
+
+        self.assertInUrl("/companies-repeating-block-1/")
+
+        self.assertInBody("Give details about Tesco")
+
+        self.post(
+            {
+                "registration-number-repeating-block": "123",
+                "registration-date-repeating-block-day": "1",
+                "registration-date-repeating-block-month": "1",
+                "registration-date-repeating-block-year": "1990",
+            }
+        )
+
+        self.assertInUrl("/companies-repeating-block-2/")
+
+        self.assertInBody("Give details about how Tesco")
+
+        self.post(
+            {
+                "authorised-trader-uk-radio-repeating-block": "Yes",
+                "authorised-trader-eu-radio-repeating-block": "No",
+            }
+        )
+
+        self.previous()
+
+        self.assertInBody("Partially completed")

@@ -518,15 +518,27 @@ class Router:
         self,
     ) -> Generator[ProgressKeyType, None, None]:
         for section_id in self.enabled_section_ids:
-            repeating_list = self._schema.get_repeating_list_for_section(section_id)
-
-            if repeating_list:
+            if repeating_list := self._schema.get_repeating_list_for_section(
+                section_id
+            ):
                 for list_item_id in self._list_store[repeating_list]:
-                    section_key: ProgressKeyType = (section_id, list_item_id)
-                    yield section_key
+                    yield (section_id, list_item_id)
+
+            elif (
+                repeating_blocks_list := self._schema.get_repeating_blocks_list_for_section(
+                    section_id
+                )
+            ) and (
+                self._schema.get_repeating_blocks_block_type(section_id)
+                == "ListCollectorContent"
+            ):
+                for list_item_id in self._list_store[repeating_blocks_list]:
+                    yield (section_id, list_item_id)
+
+                yield (section_id, None)
+
             else:
-                section_key = (section_id, None)
-                yield section_key
+                yield (section_id, None)
 
     def _get_first_incomplete_section_key(self) -> tuple[str, str | None] | None:
         for section_id, list_item_id in self.get_enabled_section_keys():
