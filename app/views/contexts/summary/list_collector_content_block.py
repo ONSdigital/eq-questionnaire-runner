@@ -1,7 +1,5 @@
-from collections import defaultdict
 from typing import Any, Iterable, Mapping, MutableMapping, Sequence
 
-from flask import url_for
 from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerStore, ProgressStore

@@ -172,12 +172,14 @@ class Group:
                     self.placeholder_text = list_summary_element["empty_list_text"]
 
             elif block["type"] == "ListCollectorContent":
-                section: ImmutableDict | None = schema.get_section(location.section_id)
+                list_collector_content_section: ImmutableDict | None = (
+                    schema.get_section(location.section_id)
+                )
 
-                summary_item: ImmutableDict | None
-                if summary_item := schema.get_summary_item_for_list_for_section(
+                list_collector_summary_item: ImmutableDict | None
+                if list_collector_summary_item := schema.get_summary_item_for_list_for_section(
                     # Type ignore: section id will not be optional at this point
-                    section_id=section["id"],  # type: ignore
+                    section_id=list_collector_content_section["id"],  # type: ignore
                     list_name=block["for_list"],
                 ):
                     list_collector_content_block = ListCollectorContentBlock(
@@ -193,7 +195,9 @@ class Group:
                     )
 
                     list_summary_element = (
-                        list_collector_content_block.list_summary_element(summary_item)
+                        list_collector_content_block.list_summary_element(
+                            list_collector_summary_item
+                        )
                     )
                     blocks.extend([list_summary_element])
 

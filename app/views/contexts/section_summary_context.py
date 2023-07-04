@@ -13,7 +13,6 @@ from ...data_models.metadata_proxy import MetadataProxy
 from .context import Context
 from .summary import Group
 from .summary.list_collector_block import ListCollectorBlock
-from .summary.list_collector_content_block import ListCollectorContentBlock
 
 
 class SectionSummaryContext(Context):
@@ -170,43 +169,20 @@ class SectionSummaryContext(Context):
     def _custom_summary_elements(
         self, section_summary: Iterable[Mapping]
     ) -> Generator[dict[str, Any], Any, None]:
-        content = False
         for summary_element in section_summary:
             if summary_element["type"] == "List":
-                blocks = self._schema.get_blocks_for_section(self.section)
-                for block in blocks:
-                    if block["type"] == "ListCollectorContent":
-                        content = True
-                        break
-
-                if content:
-                    list_collector_content_block = ListCollectorContentBlock(
-                        routing_path_block_ids=self.routing_path.block_ids,
-                        answer_store=self._answer_store,
-                        list_store=self._list_store,
-                        progress_store=self._progress_store,
-                        metadata=self._metadata,
-                        response_metadata=self._response_metadata,
-                        schema=self._schema,
-                        location=self.current_location,
-                        language=self._language,
-                    )
-                    yield list_collector_content_block.list_summary_element(
-                        summary_element
-                    )
-                else:
-                    list_collector_block = ListCollectorBlock(
-                        routing_path_block_ids=self.routing_path.block_ids,
-                        answer_store=self._answer_store,
-                        list_store=self._list_store,
-                        progress_store=self._progress_store,
-                        metadata=self._metadata,
-                        response_metadata=self._response_metadata,
-                        schema=self._schema,
-                        location=self.current_location,
-                        language=self._language,
-                    )
-                    yield list_collector_block.list_summary_element(summary_element)
+                list_collector_block = ListCollectorBlock(
+                    routing_path_block_ids=self.routing_path.block_ids,
+                    answer_store=self._answer_store,
+                    list_store=self._list_store,
+                    progress_store=self._progress_store,
+                    metadata=self._metadata,
+                    response_metadata=self._response_metadata,
+                    schema=self._schema,
+                    location=self.current_location,
+                    language=self._language,
+                )
+                yield list_collector_block.list_summary_element(summary_element)
 
     def _get_safe_page_title(self, title: Union[Mapping, str]) -> str:
         return (
@@ -237,18 +213,6 @@ class SectionSummaryContext(Context):
                         # that you handle next
                         refactored_groups.append(previously_started_group)
                         group_number += 1
-                    list_collector_blocks.append(block)
-                    list_collector_group = {
-                        "id": f"{group_name}-{group_number}",
-                        "blocks": list_collector_blocks,
-                    }
-                    # add current list collector group to all groups and increase the group number for the next group
-                    refactored_groups.append(list_collector_group)
-                    group_number += 1
-                    # reset both types of block lists for next iterations of this loop if any
-                    list_collector_blocks = []
-                    non_list_collector_blocks = []
-                elif block["type"] == "ListCollectorContent":
                     list_collector_blocks.append(block)
                     list_collector_group = {
                         "id": f"{group_name}-{group_number}",

@@ -1,6 +1,5 @@
-from typing import Any, Generator, Mapping, Optional, Sequence
+from typing import Any, Generator, Mapping, Optional
 
-from flask_babel import lazy_gettext
 from werkzeug.datastructures import ImmutableDict
 
 from app.views.contexts.context import Context
@@ -15,7 +14,6 @@ class ListContentContext(Context):
         section_id: str,
         has_repeating_blocks: bool,
         return_to: Optional[str] = None,
-        for_list_item_ids: Optional[Sequence[str]] = None,
     ) -> dict[str, Any]:
         list_items = (
             list(
@@ -24,7 +22,6 @@ class ListContentContext(Context):
                     section_id=section_id,
                     has_repeating_blocks=has_repeating_blocks,
                     summary_definition=summary_definition,
-                    for_list_item_ids=for_list_item_ids,
                 )
             )
             if summary_definition
@@ -46,15 +43,8 @@ class ListContentContext(Context):
         section_id: str,
         has_repeating_blocks: bool,
         summary_definition: Mapping,
-        for_list_item_ids: Sequence[str] | None,
     ) -> Generator[dict, None, None]:
         list_item_ids = self._list_store[for_list]
-        if for_list_item_ids:
-            list_item_ids = [
-                list_item_id  # type: ignore
-                for list_item_id in list_item_ids
-                if list_item_id in for_list_item_ids
-            ]
 
         for list_item_id in list_item_ids:
             yield {
