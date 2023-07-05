@@ -24,9 +24,6 @@
     "questionnaire_flow": {
         "type": "Hub",
         "options": {
-            "summary": {
-                "collapsible": false
-            },
             "required_completed_sections": ["section-companies"]
         }
     },
