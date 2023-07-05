@@ -231,6 +231,9 @@ class PlaceholderParser:
             self._routing_path_block_ids_by_section_key.update(block_ids)
             routing_path_block_ids: list = get_flattened_mapping_values(block_ids)
 
+            if self._value_source_resolver.routing_path_block_ids:
+                routing_path_block_ids += self._value_source_resolver.routing_path_block_ids
+
             return self._get_value_source_resolver(
                 routing_path_block_ids=routing_path_block_ids,
                 assess_routing_path=True,
