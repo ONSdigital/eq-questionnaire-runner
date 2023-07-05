@@ -19,6 +19,7 @@ import VisitorListCollectorPage from "../generated_pages/list_collector_list_sum
 import VisitorListCollectorAddPage from "../generated_pages/list_collector_list_summary/visitor-list-collector-add.page.js";
 import PeopleListSectionSummaryPage from "../generated_pages/list_collector_list_summary/section-summary.page.js";
 import { SubmitPage } from "../base_pages/submit.page.js";
+import IntroductionPage from "../generated_pages/list_collector_list_summary/introduction.page.js";
 
 describe("List Collector", () => {
   describe("Given a normal journey through the list collector without variants", () => {
@@ -172,6 +173,7 @@ describe("List Collector", () => {
   describe("Given I start a list collector survey and complete to Section Summary", () => {
     beforeEach(async () => {
       await browser.openQuestionnaire("test_list_collector_list_summary.json");
+      await $(IntroductionPage.submit()).click();
       await $(PrimaryPersonListCollectorPage.yes()).click();
       await $(PrimaryPersonListCollectorPage.submit()).click();
       await $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Marcus");

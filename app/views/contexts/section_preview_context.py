@@ -28,6 +28,7 @@ class SectionPreviewContext(Context):
             progress_store,
             metadata,
             response_metadata,
+            placeholder_preview_mode=True,
         )
         self._section_id = section_id
 
