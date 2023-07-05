@@ -104,8 +104,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _get_min_max_values(
         self, answer: dict[str, str], min_max: Literal["minimum", "maximum"]
-    ) -> str:
-        if value := answer.get(min_max, {}).get("value"):
+    ) -> int or None:
+        if value := answer.get(min_max).get("value"):
             if isinstance(value, int):
                 return value
             if isinstance(value, dict) and value:
