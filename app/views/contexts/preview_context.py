@@ -35,6 +35,7 @@ class PreviewContext(Context):
             progress_store,
             metadata,
             response_metadata,
+            placeholder_preview_mode=True,
         )
 
     def __call__(self) -> dict[str, Union[str, list, bool]]:
