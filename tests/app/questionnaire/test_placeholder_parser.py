@@ -1,12 +1,10 @@
 from mock import Mock
 
 from app.data_models import ProgressStore
-from app.data_models.answer_store import Answer, AnswerStore
+from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.questionnaire import Location
-from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.placeholder_parser import PlaceholderParser
-from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
 from tests.app.questionnaire.conftest import get_metadata
 
@@ -1142,7 +1140,7 @@ def test_placeholder_parser_calculated_summary_dependencies_cache(
 
 
 def test_placeholder_dependencies_cache(mocker, mock_renderer):
-    schema = load_schema_from_name("test_first_non_empty_item")
+    schema = load_schema_from_name("test_placeholder_first_non_empty_item")
     path_finder = mocker.patch("app.questionnaire.path_finder.PathFinder.routing_path")
     placeholder_list = [
         {
