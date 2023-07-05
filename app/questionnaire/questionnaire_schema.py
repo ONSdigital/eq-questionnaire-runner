@@ -117,13 +117,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         answer: dict[str, Union[str, dict[str, str]]],
         min_max: Literal["minimum", "maximum"],
     ) -> Optional[int]:
-        if value := answer.get(min_max).get("value"):
+        if value := answer.get(min_max, {}).get("value"):
             if isinstance(value, int):
                 return value
             if isinstance(value, dict) and value:
                 if value.get("source") == "answers":
                     if value["identifier"] in self.min_and_max_map:
-                        return int(self.min_and_max_map[value["identifier"]])
+                        return self.min_and_max_map[value["identifier"]]
                     if min_max == "minimum":
                         return 0
                     if min_max == "maximum":
