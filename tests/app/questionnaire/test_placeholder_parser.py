@@ -1141,23 +1141,9 @@ def test_placeholder_parser_calculated_summary_dependencies_cache(
     assert path_finder.called == 1
 
 
-def test_placeholder_dependencies_cache(
-    mock_renderer, answer_store, list_store, progress_store
-):
+def test_placeholder_dependencies_cache(mocker, mock_renderer):
     schema = load_schema_from_name("test_first_non_empty_item")
-    answer_store.add_or_update(
-        Answer(
-            answer_id="date-answer", value="No, I need to report for a different period"
-        )
-    )
-    answer_store.add_or_update(
-        Answer(answer_id="date-entry-answer-from", value="2016-04-16")
-    )
-    answer_store.add_or_update(
-        Answer(answer_id="date-entry-answer-to", value="2016-04-28")
-    )
-
-    path_finder = PathFinder(schema, answer_store, list_store, progress_store, None, {})
+    path_finder = mocker.patch("app.questionnaire.path_finder.PathFinder.routing_path")
     placeholder_list = [
         {
             "placeholder": "date_entry_answer_from",
@@ -1214,11 +1200,30 @@ def test_placeholder_dependencies_cache(
         section_id="default-section",
         block_id="total-turnover-block",
     )
-
+    
+    progress_store = ProgressStore(	
+        [	
+            {	
+                "section_id": "default-section",	
+                "block_ids": ["date-question-block", "date-entry-block"],	
+                "status": "IN_PROGRESS",	
+            }	
+        ]	
+    )
+    answer_store = AnswerStore(	
+        [	
+            {	
+                "answer_id": "date-answer",	
+                "value": "No, I need to report for a different period",	
+            },	
+            {"answer_id": "date-entry-answer-from", "value": "2016-04-16"},	
+            {"answer_id": "date-entry-answer-to", "value": "2016-04-28"},	
+        ]	
+    )
     placeholder_parser = PlaceholderParser(
         language="en",
         answer_store=answer_store,
-        list_store=list_store,
+        list_store=ListStore(),
         metadata=get_metadata(),
         response_metadata={},
         schema=schema,
@@ -1226,16 +1231,8 @@ def test_placeholder_dependencies_cache(
         progress_store=progress_store,
         location=location,
     )
-
-    section_id = schema.get_section_id_for_block_id("total-turnover-block")
-    routing_path = path_finder.routing_path(section_id=section_id)
-    expected_routing_path = RoutingPath(
-        ["date-question-block", "date-entry-block", "total-turnover-block"],
-        section_id="default-section",
-    )
-
-    placeholder = placeholder_parser(placeholder_list=placeholder_list)
+    placeholder = placeholder_parser(placeholder_list)
 
     assert placeholder["date_entry_answer_from"] == "16 April 2016"
     assert placeholder["date_entry_answer_to"] == "28 April 2016"
-    assert routing_path == expected_routing_path
+    assert path_finder.called == 1
